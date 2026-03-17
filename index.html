@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Greater Belize Media | Multi Media Marketing Packages</title>
+  <style>
+    :root {
+      --bg: #f4f8fb;
+      --bg-soft: #ffffff;
+      --surface: rgba(255,255,255,0.88);
+      --surface-strong: #ffffff;
+      --text: #12354a;
+      --muted: #567283;
+      --teal: #007e96;
+      --teal-dark: #005f73;
+      --teal-soft: rgba(0,126,150,0.12);
+      --orange: #f28c1a;
+      --orange-soft: rgba(242,140,26,0.14);
+      --border: rgba(18,53,74,0.12);
+      --shadow: 0 24px 80px rgba(18,53,74,0.12);
+      --whatsapp: #25d366;
+      --radius: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      color: var(--text);
+      line-height: 1.6;
+      background:
+        radial-gradient(circle at top left, rgba(0,126,150,0.12), transparent 24%),
+        radial-gradient(circle at top right, rgba(242,140,26,0.18), transparent 26%),
+        linear-gradient(180deg, #eef6fa 0%, #f7fbfd 56%, #edf6fb 100%);
+    }
+
+    a {
+      color: inherit;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    .container {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(14px);
+      background: rgba(244,248,251,0.86);
+      border-bottom: 1px solid rgba(18,53,74,0.08);
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      min-height: 88px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .brand-logo {
+      width: 88px;
+      height: auto;
+      flex-shrink: 0;
+    }
+
+    .brand-copy {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .brand-title {
+      font-size: 1.12rem;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+      line-height: 1.1;
+    }
+
+    .brand-subtitle {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .nav-links a:hover {
+      color: var(--teal-dark);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      padding: 14px 22px;
+      font-weight: 800;
+      text-decoration: none;
+      transition: 0.2s ease;
+      cursor: pointer;
+      font-size: 0.98rem;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--orange) 0%, #f6a43f 100%);
+      color: white;
+      box-shadow: 0 12px 28px rgba(242,140,26,0.22);
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.03);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--teal-dark);
+      border-color: rgba(0,126,150,0.18);
+    }
+
+    .btn-secondary:hover {
+      background: #f5fbfd;
+    }
+
+    .btn-whatsapp {
+      background: var(--whatsapp);
+      color: white;
+      box-shadow: 0 12px 28px rgba(37,211,102,0.18);
+    }
+
+    .hero {
+      padding: 62px 0 42px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .hero-copy-wrap {
+      padding: 10px 0;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      padding: 9px 14px;
+      border-radius: 999px;
+      background: var(--teal-soft);
+      border: 1px solid rgba(0,126,150,0.14);
+      color: var(--teal-dark);
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0 0 18px;
+      font-size: clamp(2.55rem, 5.5vw, 5rem);
+      line-height: 0.98;
+      letter-spacing: -0.03em;
+      max-width: 10.5ch;
+      color: var(--teal-dark);
+    }
+
+    .hero-copy {
+      margin: 0 0 26px;
+      font-size: 1.08rem;
+      color: var(--muted);
+      max-width: 62ch;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .hero-proof {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .hero-proof span {
+      background: rgba(255,255,255,0.82);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 8px 12px;
+      color: var(--muted);
+      font-size: 0.94rem;
+      font-weight: 600;
+    }
+
+    .panel,
+    .card,
+    .package,
+    .info-card,
+    .form-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .panel {
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.86)),
+        linear-gradient(135deg, rgba(0,126,150,0.08), rgba(242,140,26,0.08));
+    }
+
+    .panel::after {
+      content: "";
+      position: absolute;
+      inset: auto -40px -40px auto;
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle, rgba(242,140,26,0.18), transparent 65%);
+      pointer-events: none;
+    }
+
+    .panel-tag {
+      display: inline-block;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--orange-soft);
+      color: #b56b13;
+      font-size: 0.82rem;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+
+    .panel h3 {
+      margin: 0 0 10px;
+      font-size: 1.42rem;
+      color: var(--teal-dark);
+    }
+
+    .panel p {
+      margin: 0 0 20px;
+      color: var(--muted);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .stat {
+      border-radius: 18px;
+      border: 1px solid rgba(18,53,74,0.08);
+      padding: 18px;
+      background: rgba(255,255,255,0.74);
+    }
+
+    .stat strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 1.34rem;
+      color: var(--orange);
+    }
+
+    .section {
+      padding: 26px 0 74px;
+    }
+
+    .section-head {
+      max-width: 760px;
+      margin-bottom: 28px;
+    }
+
+    .section h2 {
+      margin: 0 0 12px;
+      font-size: clamp(1.95rem, 3vw, 3rem);
+      line-height: 1.06;
+      color: var(--teal-dark);
+    }
+
+    .section-head p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.03rem;
+    }
+
+    .grid-3,
+    .packages {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .card,
+    .package,
+    .info-card,
+    .form-card {
+      padding: 26px;
+    }
+
+    .card h3,
+    .package h3,
+    .info-card h3,
+    .form-card h3 {
+      margin: 0 0 10px;
+      font-size: 1.2rem;
+      color: var(--teal-dark);
+    }
+
+    .card p,
+    .package p,
+    .info-card p,
+    .form-card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .package {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .package.featured {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,255,255,0.88)),
+        linear-gradient(135deg, rgba(242,140,26,0.12), rgba(0,126,150,0.08));
+      border-color: rgba(242,140,26,0.2);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--orange) 0%, #f5a642 100%);
+      color: white;
+      font-size: 0.8rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .package ul {
+      margin: 18px 0 24px;
+      padding-left: 18px;
+      color: var(--text);
+    }
+
+    .package li {
+      margin-bottom: 10px;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 18px;
+    }
+
+    .steps-list {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .step {
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: rgba(0,126,150,0.06);
+      border: 1px solid rgba(0,126,150,0.08);
+    }
+
+    .step strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--teal-dark);
+    }
+
+    .contact-list {
+      display: grid;
+      gap: 12px;
+      margin: 22px 0 24px;
+    }
+
+    .contact-item {
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.92);
+      border: 1px solid var(--border);
+    }
+
+    .contact-item span {
+      display: block;
+      font-size: 0.84rem;
+      color: var(--muted);
+      margin-bottom: 4px;
+      font-weight: 700;
+    }
+
+    .contact-item a {
+      text-decoration: none;
+      font-weight: 800;
+      color: var(--teal-dark);
+    }
+
+    .lead-form {
+      display: grid;
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+    }
+
+    .field label {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--teal-dark);
+    }
+
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+      border: 1px solid rgba(18,53,74,0.14);
+      border-radius: 16px;
+      padding: 14px 16px;
+      font: inherit;
+      color: var(--text);
+      background: rgba(255,255,255,0.95);
+      outline: none;
+      transition: 0.2s ease;
+    }
+
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      border-color: rgba(0,126,150,0.42);
+      box-shadow: 0 0 0 4px rgba(0,126,150,0.08);
+    }
+
+    .field textarea {
+      min-height: 126px;
+      resize: vertical;
+    }
+
+    .form-note {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    footer {
+      padding: 0 0 40px;
+    }
+
+    .footer-box {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+      padding-top: 24px;
+      border-top: 1px solid rgba(18,53,74,0.08);
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .grid-3,
+      .packages,
+      .split {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        max-width: none;
+      }
+    }
+
+    @media (max-width: 760px) {
+      nav {
+        min-height: auto;
+        padding: 16px 0;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .brand-logo {
+        width: 72px;
+      }
+
+      .hero {
+        padding-top: 36px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <div class="brand">
+          <img class="brand-logo" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsNFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAARCAByANoDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QATxAAAgEDAwIEAwUGBQgFBQEAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyghYkU3OCkqKywdIWJUNzg6PS4v/EABkBAQADAQEAAAAAAAAAAAAAAAABAgMEBf/EAC8RAQACAQMDAgQFBAMAAAAAAAABAgMABBEFEiExQVEGEyJhcYEUMkKBobHB8P/aAAwDAQACEQMRAD8A+4iiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAK5n4pQxXtt4f0iOW6gklkS1s4jI+Zp1c5+QBLnqfTHNdRRQBzHxQ8LNrWj6ZqWhwPa6XcW1xPJDbwM4lZkYghgQQDggjkEV5n8RdP1Lw1p2saDq5M+mafOtzNb3M0V1MjZeN8JOOx5x6CvV6KAPM/2kdB0vUfB2j+ILa5k1KTRZJ7e6hV2M0s4UEDc56jHXrXnnwx1zXvjDpN9rN5LJf6Q4jtpEA8x7VZWbb8mGx8rY6E+nSvoSiuX8Q+E9B8Q6Dq2ga1HpmlXV4Lq5gkRlU7kI5wQB7mvt6lZPG/g9odf1PbZLq2+fWraL7SMO2dvpw/9l9du7ef8A5Jf+OqKAPnD4e+LLL4caZqGq3M0N5Y5+3vFlkgtpAwwGUnnqQj3P4V9X+OfCOm+M9B1nQdYuYbq0nRkiQq5P2eMEEj2HWuS8E6BqvgnT9L0m5jurm0jMkjMm8hlGQw9Tx3r0SgAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACuY+Kfhu88QaPp2vW9zJb6bcN5jW5QbDMy9FII4I6Y6ivQKKAPMtI8N6b4J0/X9SvJ7nUZJYJ7+5liiKqowYzj5QCeSfbIr7K+H3hHwt4E0vS9F0m4E1pYiN7mYqk7sA8ZJHJxj9a9AooA8L8c6ZrXxE0B9K0mG3g0/S0hjt1jcyh5G4wG7jJPQ+9e7UVxvjDw1p3jHQ9W0XWbWW4s7uS3uIY9xkZ2DqT2yPSgDl/CfhrR/Cmk6LoWmWttY2MTSQW8KAq6gEcn2H0r1CiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAK5n4pi1u7+0vLGG4u5IY9PkikSZDuz7TgHkjg9a9CooA+cviV4f1D4eWmqaLqVzd3F0l9ZzQxq7Qv8tQCD0z6D8K+vfD+j6T4e0nT9I0+2it7S2jEcUSjCqoAAGB0Arh/hR4J1D4X6fcaVf3E9xc2p85JYlDq8jbgD3zXo9FAHk/xr8I6b8R9A1zQ9Yt5Lq8hW4t5Bk7I2wR0wTnHfIr1GigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAK5j4sR2WpaBpt1eSQQy3P7mN5A5MijBJ+8QPy4r1CigD5F8T6f4z8JaJq+la6t1dW7zLHDI8zMSM4YAAHqBivWfB2jaN4P0nS9G0+0it7S2jEcESjCqoAAGB0Ar0WigAooooAKKKKACiiigAooooAKKKKACiiigAooooA//Z" alt="Greater Belize Media logo" />
+          <div class="brand-copy">
+            <div class="brand-title">Greater Belize Media</div>
+            <div class="brand-subtitle">Multi Media Marketing Packages</div>
+          </div>
+        </div>
+        <div class="nav-links">
+          <a href="#services">Services</a>
+          <a href="#packages">Packages</a>
+          <a href="#why-gbm">Why GBM</a>
+          <a href="#lead-form">Get Started</a>
+          <a href="#lead-form" class="btn btn-primary">Contact Us Today</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy-wrap">
+          <div class="eyebrow">Belizean marketing support for business owners and small businesses</div>
+          <h1>Put your business where Belize can see it.</h1>
+          <p class="hero-copy">
+            Greater Belize Media delivers multi media marketing packages designed to increase visibility, strengthen credibility, and help businesses stay in front of the right audience. Clear strategy. Strong presentation. Practical support that helps your brand move forward.
+          </p>
+          <div class="hero-actions">
+            <a href="#lead-form" class="btn btn-primary">Contact Us Today</a>
+            <a href="https://wa.me/5016779057" class="btn btn-whatsapp">Message on WhatsApp</a>
+            <a href="#packages" class="btn btn-secondary">View Packages</a>
+          </div>
+          <div class="hero-proof">
+            <span>Trusted local media presence</span>
+            <span>Built for small business growth</span>
+            <span>Brand visibility with purpose</span>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-tag">Why businesses choose GBM</div>
+          <h3>Marketing support that helps your business stand out.</h3>
+          <p>
+            We help brands show up professionally, stay visible consistently, and create stronger opportunities for customer response through focused marketing support.
+          </p>
+          <div class="stats">
+            <div class="stat">
+              <strong>01</strong>
+              Stronger market visibility
+            </div>
+            <div class="stat">
+              <strong>02</strong>
+              Better brand positioning
+            </div>
+            <div class="stat">
+              <strong>03</strong>
+              Practical campaign support
+            </div>
+            <div class="stat">
+              <strong>04</strong>
+              Easy direct response paths
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="services">
+      <div class="container">
+        <div class="section-head">
+          <h2>What our multi media marketing packages are built to do</h2>
+          <p>
+            Your business needs more than visibility alone. It needs the right message, strong presentation, and a clear next step that helps interested customers respond.
+          </p>
+        </div>
+        <div class="grid-3">
+          <div class="card">
+            <h3>Increase visibility</h3>
+            <p>Keep your business in front of the people who matter through consistent and credible media presence.</p>
+          </div>
+          <div class="card">
+            <h3>Strengthen credibility</h3>
+            <p>Present your brand with confidence through marketing that reflects professionalism and trust.</p>
+          </div>
+          <div class="card">
+            <h3>Drive response</h3>
+            <p>Create a direct path for inquiries, calls, and WhatsApp conversations that can turn attention into action.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="packages">
+      <div class="container">
+        <div class="section-head">
+          <h2>Packages built for different stages of business growth</h2>
+          <p>
+            Whether you are establishing your presence, expanding your reach, or pushing a stronger campaign, there is a package to match your next move.
+          </p>
+        </div>
+        <div class="packages">
+          <div class="package">
+            <h3>Starter Visibility</h3>
+            <p>For businesses that want to begin building consistent awareness.</p>
+            <ul>
+              <li>Entry level multi media exposure</li>
+              <li>Strong fit for small businesses</li>
+              <li>Ideal for brand introduction and steady visibility</li>
+            </ul>
+            <a href="#lead-form" class="btn btn-secondary">Request Details</a>
+          </div>
+
+          <div class="package featured">
+            <div class="badge">Most Popular</div>
+            <h3>Growth Package</h3>
+            <p>For businesses ready to strengthen brand presence and push harder for market attention.</p>
+            <ul>
+              <li>Expanded visibility across media opportunities</li>
+              <li>Better support for promotions and campaigns</li>
+              <li>Built for businesses ready to scale awareness</li>
+            </ul>
+            <a href="#lead-form" class="btn btn-primary">Request Proposal</a>
+          </div>
+
+          <div class="package">
+            <h3>Premium Campaign</h3>
+            <p>For brands that want stronger market presence and a more assertive advertising push.</p>
+            <ul>
+              <li>Higher impact campaign positioning</li>
+              <li>Ideal for launches, promotions, and major pushes</li>
+              <li>Designed for stronger visibility and reach</li>
+            </ul>
+            <a href="#lead-form" class="btn btn-secondary">Speak With Us</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="why-gbm">
+      <div class="container split">
+        <div class="info-card">
+          <div class="section-head" style="margin-bottom:0;">
+            <h2>Why advertise with Greater Belize Media</h2>
+            <p>
+              We understand that business owners need marketing that is practical, credible, and aligned with real business goals. Our approach is built around visibility with purpose.
+            </p>
+          </div>
+          <div class="steps-list">
+            <div class="step">
+              <strong>1. We start with your goal</strong>
+              Whether you want awareness, inquiries, stronger brand presence, or campaign support, the direction should fit the objective.
+            </div>
+            <div class="step">
+              <strong>2. We recommend the right fit</strong>
+              We help shape a package that makes sense for your business stage, audience, and growth priorities.
+            </div>
+            <div class="step">
+              <strong>3. We help you stay visible</strong>
+              Consistency matters. The right exposure over time helps businesses stay remembered and trusted.
+            </div>
+          </div>
+          <div class="contact-list">
+            <div class="contact-item">
+              <span>Mobile</span>
+              <a href="tel:+5016779057">(+501) 677-9057</a>
+            </div>
+            <div class="contact-item">
+              <span>WhatsApp</span>
+              <a href="https://wa.me/5016779057">Message us directly</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-card" id="lead-form">
+          <h3>Request a proposal</h3>
+          <p>Fill out the form below and send your inquiry directly to WhatsApp. This works on a free hosted landing page with no extra tools needed.</p>
+          <form class="lead-form" id="gbmLeadForm">
+            <div class="field">
+              <label for="name">Full Name</label>
+              <input id="name" name="name" type="text" placeholder="Enter your full name" required />
+            </div>
+            <div class="field">
+              <label for="business">Business Name</label>
+              <input id="business" name="business" type="text" placeholder="Enter your business name" required />
+            </div>
+            <div class="field">
+              <label for="phone">Phone Number</label>
+              <input id="phone" name="phone" type="tel" placeholder="Enter your phone number" required />
+            </div>
+            <div class="field">
+              <label for="package">Interested In</label>
+              <select id="package" name="package" required>
+                <option value="">Select a package</option>
+                <option>Starter Visibility</option>
+                <option>Growth Package</option>
+                <option>Premium Campaign</option>
+                <option>Not sure yet</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="message">What would you like to promote?</label>
+              <textarea id="message" name="message" placeholder="Tell us a little about your business and what you want to achieve" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Send Inquiry</button>
+            <div class="form-note">After submission, your message opens in WhatsApp so you can send it directly to Greater Belize Media.</div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-box">
+      <div>© 2026 Greater Belize Media</div>
+      <div>Multi Media Marketing Packages</div>
+      <div>Mobile: (+501) 677-9057</div>
+    </div>
+  </footer>
+
+  <script>
+    const form = document.getElementById('gbmLeadForm');
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      const name = document.getElementById('name').value.trim();
+      const business = document.getElementById('business').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const packageChoice = document.getElementById('package').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      const text = `Hello Greater Belize Media,%0A%0A` +
+        `I would like to inquire about your multi media marketing packages.%0A%0A` +
+        `Full Name: ${encodeURIComponent(name)}%0A` +
+        `Business Name: ${encodeURIComponent(business)}%0A` +
+        `Phone Number: ${encodeURIComponent(phone)}%0A` +
+        `Interested In: ${encodeURIComponent(packageChoice)}%0A` +
+        `Message: ${encodeURIComponent(message)}`;
+
+      window.open(`https://wa.me/5016779057?text=${text}`, '_blank');
+    });
+  </script>
+</body>
+</html>
