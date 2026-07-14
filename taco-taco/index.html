@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!--
+    ==========================================================================
+    TACO TACO — restaurant landing page
+    Ordering runs entirely through the "Taco Taco Assist" AI employee.
+
+    HOW TO FINISH THIS SITE (find & replace the [[TOKENS]] below):
+      [[RESTAURANT_NAME]]  -> the business name (defaults to "Taco Taco")
+      [[TAGLINE]]          -> short one-line pitch
+      [[MENU]]             -> real menu categories, items and prices
+      [[HOURS]]            -> opening hours
+      [[ADDRESS]]          -> street address (also update the map link)
+      [[PHONE]]            -> phone number (footer)
+      [[PHOTO_1..6]]       -> gallery photos (swap the placeholder blocks)
+
+    HOW TO ADD THE AI (Taco Taco Assist):
+      Scroll to the section marked "PASTE TACO TACO ASSIST EMBED CODE HERE".
+      Full instructions are in the comment there.
+    ==========================================================================
+  -->
+  <title>Taco Taco | Order with Taco Taco Assist</title>
+  <style>
+    :root {
+      --bg: #fff8f0;
+      --surface: rgba(255,255,255,0.92);
+      --surface-strong: #ffffff;
+      --text: #2a1a12;
+      --muted: #7c5a45;
+      --tomato: #e23b2e;         /* primary brand red */
+      --tomato-dark: #b8241a;
+      --tomato-soft: rgba(226,59,46,0.12);
+      --sun: #f7b500;            /* sunny yellow */
+      --sun-soft: rgba(247,181,0,0.16);
+      --lime: #4faa3a;           /* lime green */
+      --lime-soft: rgba(79,170,58,0.14);
+      --charcoal: #2a1a12;
+      --border: rgba(42,26,18,0.12);
+      --shadow: 0 24px 80px rgba(42,26,18,0.14);
+      --radius: 24px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: Inter, "Segoe UI", Arial, Helvetica, sans-serif;
+      color: var(--text);
+      line-height: 1.6;
+      background:
+        radial-gradient(circle at top left, rgba(226,59,46,0.14), transparent 24%),
+        radial-gradient(circle at top right, rgba(247,181,0,0.20), transparent 26%),
+        linear-gradient(180deg, #fff3e4 0%, #fff9f2 56%, #fff1e6 100%);
+    }
+
+    a { color: inherit; }
+    img { display: block; max-width: 100%; }
+
+    .container {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(14px);
+      background: rgba(255,248,240,0.88);
+      border-bottom: 1px solid rgba(42,26,18,0.08);
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      min-height: 84px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 56px;
+      height: 56px;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      font-size: 1.9rem;
+      border-radius: 18px;
+      background: linear-gradient(135deg, var(--sun) 0%, var(--tomato) 100%);
+      box-shadow: 0 10px 24px rgba(226,59,46,0.28);
+    }
+
+    .brand-copy { display: flex; flex-direction: column; min-width: 0; }
+
+    .brand-title {
+      font-size: 1.2rem;
+      font-weight: 900;
+      letter-spacing: 0.01em;
+      line-height: 1.1;
+      color: var(--tomato-dark);
+    }
+
+    .brand-subtitle {
+      font-size: 0.86rem;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .nav-links a:hover { color: var(--tomato-dark); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      padding: 14px 22px;
+      font-weight: 800;
+      text-decoration: none;
+      transition: 0.2s ease;
+      cursor: pointer;
+      font-size: 0.98rem;
+      font-family: inherit;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--tomato) 0%, #f2603a 100%);
+      color: white;
+      box-shadow: 0 12px 28px rgba(226,59,46,0.26);
+    }
+
+    .btn-primary:hover { filter: brightness(1.04); }
+
+    .btn-secondary {
+      background: white;
+      color: var(--tomato-dark);
+      border-color: rgba(226,59,46,0.20);
+    }
+
+    .btn-secondary:hover { background: #fff5ef; }
+
+    .btn-sun {
+      background: linear-gradient(135deg, var(--sun) 0%, #ffcb3d 100%);
+      color: #5c4600;
+      box-shadow: 0 12px 28px rgba(247,181,0,0.28);
+    }
+
+    .btn-ai::before { content: "🌮"; font-size: 1.1em; }
+
+    .hero { padding: 60px 0 42px; }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .hero-copy-wrap { padding: 10px 0; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 14px;
+      border-radius: 999px;
+      background: var(--lime-soft);
+      border: 1px solid rgba(79,170,58,0.2);
+      color: #2f6d22;
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0 0 18px;
+      font-size: clamp(2.55rem, 5.5vw, 4.8rem);
+      line-height: 0.98;
+      letter-spacing: -0.03em;
+      max-width: 12ch;
+      color: var(--tomato-dark);
+    }
+
+    .hero-copy {
+      margin: 0 0 26px;
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 60ch;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .hero-proof { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    .hero-proof span {
+      background: rgba(255,255,255,0.85);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 8px 12px;
+      color: var(--muted);
+      font-size: 0.94rem;
+      font-weight: 600;
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 30px;
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,255,255,0.9)),
+        linear-gradient(135deg, rgba(226,59,46,0.1), rgba(247,181,0,0.12));
+    }
+
+    .panel::after {
+      content: "";
+      position: absolute;
+      inset: auto -40px -40px auto;
+      width: 190px;
+      height: 190px;
+      background: radial-gradient(circle, rgba(247,181,0,0.22), transparent 65%);
+      pointer-events: none;
+    }
+
+    .panel-tag {
+      display: inline-block;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--tomato-soft);
+      color: var(--tomato-dark);
+      font-size: 0.82rem;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+
+    .panel h3 {
+      margin: 0 0 10px;
+      font-size: 1.42rem;
+      color: var(--tomato-dark);
+    }
+
+    .panel p { margin: 0 0 20px; color: var(--muted); }
+
+    .ai-steps { display: grid; gap: 12px; }
+
+    .ai-step {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      border-radius: 16px;
+      border: 1px solid rgba(42,26,18,0.08);
+      padding: 14px 16px;
+      background: rgba(255,255,255,0.78);
+    }
+
+    .ai-step .num {
+      flex-shrink: 0;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      color: white;
+      background: linear-gradient(135deg, var(--tomato) 0%, var(--sun) 100%);
+      font-size: 0.9rem;
+    }
+
+    .ai-step strong { color: var(--tomato-dark); }
+
+    .section { padding: 26px 0 74px; }
+
+    .section-head { max-width: 760px; margin-bottom: 28px; }
+
+    .section h2 {
+      margin: 0 0 12px;
+      font-size: clamp(1.95rem, 3vw, 2.9rem);
+      line-height: 1.06;
+      color: var(--tomato-dark);
+    }
+
+    .section-head p { margin: 0; color: var(--muted); font-size: 1.03rem; }
+
+    /* ---- Menu ---- */
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .menu-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 26px;
+    }
+
+    .menu-card h3 {
+      margin: 0 0 6px;
+      font-size: 1.35rem;
+      color: var(--tomato-dark);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .menu-card .cat-note { margin: 0 0 16px; color: var(--muted); font-size: 0.95rem; }
+
+    .menu-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px dashed rgba(42,26,18,0.14);
+    }
+
+    .menu-item:last-of-type { border-bottom: none; }
+
+    .menu-item .mi-name { font-weight: 700; }
+    .menu-item .mi-desc { display: block; font-weight: 400; color: var(--muted); font-size: 0.9rem; margin-top: 2px; }
+    .menu-item .mi-price { font-weight: 900; color: var(--lime); white-space: nowrap; }
+
+    .menu-cta {
+      margin-top: 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .menu-cta .hint { color: var(--muted); font-size: 0.92rem; font-weight: 600; }
+
+    /* ---- Hours & Location ---- */
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .info-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 28px;
+    }
+
+    .info-card h3 { margin: 0 0 16px; font-size: 1.3rem; color: var(--tomato-dark); }
+
+    .hours-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(42,26,18,0.08);
+    }
+
+    .hours-row:last-child { border-bottom: none; }
+    .hours-row .day { font-weight: 700; }
+    .hours-row .time { color: var(--muted); }
+
+    .address-block { font-size: 1.05rem; margin: 0 0 18px; }
+    .address-block strong { color: var(--tomato-dark); }
+
+    /* ---- Gallery ---- */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .photo {
+      aspect-ratio: 4 / 3;
+      border-radius: 20px;
+      border: 2px dashed rgba(226,59,46,0.35);
+      background:
+        linear-gradient(135deg, rgba(247,181,0,0.14), rgba(226,59,46,0.1));
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: var(--tomato-dark);
+      font-weight: 800;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .photo span { display: block; }
+    .photo .emoji { font-size: 2.2rem; margin-bottom: 6px; }
+    .photo .label { font-size: 0.86rem; opacity: 0.8; font-weight: 700; }
+    /* When you add a real photo, replace the block's inner content with
+       <img src="your-photo.jpg" alt="..."> and remove the dashed border via
+       style="border:none". */
+    .photo img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* ---- AI assistant zone ---- */
+    .ai-zone {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,255,255,0.9)),
+        linear-gradient(135deg, rgba(226,59,46,0.14), rgba(247,181,0,0.16));
+      border: 1px solid rgba(226,59,46,0.2);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 40px;
+      text-align: center;
+    }
+
+    .ai-zone h2 { color: var(--tomato-dark); margin: 0 0 12px; }
+    .ai-zone p { color: var(--muted); max-width: 60ch; margin: 0 auto 24px; font-size: 1.05rem; }
+
+    .ai-embed-slot {
+      margin: 26px auto 0;
+      max-width: 640px;
+      min-height: 120px;
+      border-radius: 18px;
+      border: 2px dashed rgba(79,170,58,0.4);
+      background: rgba(255,255,255,0.6);
+      display: grid;
+      place-items: center;
+      padding: 22px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    /* ---- Floating order button ---- */
+    .float-order {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 50;
+      box-shadow: 0 16px 40px rgba(226,59,46,0.4);
+    }
+
+    footer { padding: 0 0 40px; }
+
+    .footer-box {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+      padding-top: 24px;
+      border-top: 1px solid rgba(42,26,18,0.08);
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .footer-box a { color: var(--tomato-dark); text-decoration: none; font-weight: 700; }
+
+    @media (max-width: 980px) {
+      .hero-grid, .menu-grid, .split, .gallery { grid-template-columns: 1fr; }
+      h1 { max-width: none; }
+    }
+
+    @media (max-width: 760px) {
+      nav { min-height: auto; padding: 16px 0; }
+      .nav-links a:not(.btn) { display: none; }
+      .hero { padding-top: 34px; }
+      .hero-actions { flex-direction: column; }
+      .hero-actions .btn { width: 100%; }
+      .gallery { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <div class="brand">
+          <div class="brand-mark">🌮</div>
+          <div class="brand-copy">
+            <div class="brand-title">[[RESTAURANT_NAME]]</div>
+            <div class="brand-subtitle">Fresh tacos, ordered by AI</div>
+          </div>
+        </div>
+        <div class="nav-links">
+          <a href="#menu">Menu</a>
+          <a href="#hours">Hours &amp; Location</a>
+          <a href="#gallery">Gallery</a>
+          <a href="#order" class="btn btn-primary btn-ai">Order with Taco Taco Assist</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- ===================== HERO ===================== -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy-wrap">
+          <div class="eyebrow">🤖 Now taking orders through Taco Taco Assist</div>
+          <h1>Tacos, made easy.</h1>
+          <p class="hero-copy">
+            [[TAGLINE]] Welcome to [[RESTAURANT_NAME]]. Skip the wait and the phone
+            tag — just chat with <strong>Taco Taco Assist</strong>, our AI employee,
+            and place your order in seconds. It knows the whole menu and it is ready 24/7.
+          </p>
+          <div class="hero-actions">
+            <a href="#order" class="btn btn-primary btn-ai">Order with Taco Taco Assist</a>
+            <a href="#menu" class="btn btn-secondary">View the Menu</a>
+          </div>
+          <div class="hero-proof">
+            <span>🌮 Fresh, made-to-order</span>
+            <span>💬 Order by chat</span>
+            <span>⚡ Fast &amp; friendly</span>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-tag">Meet Taco Taco Assist</div>
+          <h3>Your personal taco ordering assistant.</h3>
+          <p>Ordering takes three quick taps. No app to download — just start a chat.</p>
+          <div class="ai-steps">
+            <div class="ai-step">
+              <div class="num">1</div>
+              <div><strong>Open the chat</strong><br>Tap any "Order with Taco Taco Assist" button.</div>
+            </div>
+            <div class="ai-step">
+              <div class="num">2</div>
+              <div><strong>Tell it what you want</strong><br>Ask for tacos, sides, drinks — or ask for a recommendation.</div>
+            </div>
+            <div class="ai-step">
+              <div class="num">3</div>
+              <div><strong>Confirm &amp; done</strong><br>Taco Taco Assist wraps up your order in seconds.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== MENU ===================== -->
+    <section class="section" id="menu">
+      <div class="container">
+        <div class="section-head">
+          <h2>The Menu</h2>
+          <p>
+            Here is a taste of what we serve. <!-- [[MENU]] -->
+            Replace the sample items below with your real menu and prices, then let
+            <strong>Taco Taco Assist</strong> handle the ordering.
+          </p>
+        </div>
+
+        <div class="menu-grid">
+          <!-- Category card (duplicate as needed) -->
+          <div class="menu-card">
+            <h3>🌮 Tacos</h3>
+            <p class="cat-note">Served on warm handmade tortillas.</p>
+            <div class="menu-item">
+              <div>
+                <span class="mi-name">[[TACO_1_NAME]]</span>
+                <span class="mi-desc">[[TACO_1_DESCRIPTION]]</span>
+              </div>
+              <div class="mi-price">$[[PRICE]]</div>
+            </div>
+            <div class="menu-item">
+              <div>
+                <span class="mi-name">[[TACO_2_NAME]]</span>
+                <span class="mi-desc">[[TACO_2_DESCRIPTION]]</span>
+              </div>
+              <div class="mi-price">$[[PRICE]]</div>
+            </div>
+            <div class="menu-item">
+              <div>
+                <span class="mi-name">[[TACO_3_NAME]]</span>
+                <span class="mi-desc">[[TACO_3_DESCRIPTION]]</span>
+              </div>
+              <div class="mi-price">$[[PRICE]]</div>
+            </div>
+          </div>
+
+          <div class="menu-card">
+            <h3>🥑 Sides</h3>
+            <p class="cat-note">The perfect companions.</p>
+            <div class="menu-item">
+              <div>
+                <span class="mi-name">[[SIDE_1_NAME]]</span>
+                <span class="mi-desc">[[SIDE_1_DESCRIPTION]]</span>
+              </div>
+              <div class="mi-price">$[[PRICE]]</div>
+            </div>
+            <div class="menu-item">
+              <div>
+                <span class="mi-name">[[SIDE_2_NAME]]</span>
+                <span class="mi-desc">[[SIDE_2_DESCRIPTION]]</span>
+              </div>
+              <div class="mi-price">$[[PRICE]]</div>
+            </div>
+          </div>
+
+          <div class="menu-card">
+            <h3>🥤 Drinks</h3>
+            <p class="cat-note">Cold and refreshing.</p>
+            <div class="menu-item">
+              <div>
+                <span class="mi-name">[[DRINK_1_NAME]]</span>
+                <span class="mi-desc">[[DRINK_1_DESCRIPTION]]</span>
+              </div>
+              <div class="mi-price">$[[PRICE]]</div>
+            </div>
+            <div class="menu-item">
+              <div>
+                <span class="mi-name">[[DRINK_2_NAME]]</span>
+                <span class="mi-desc">[[DRINK_2_DESCRIPTION]]</span>
+              </div>
+              <div class="mi-price">$[[PRICE]]</div>
+            </div>
+          </div>
+
+          <div class="menu-card">
+            <h3>⭐ Combos</h3>
+            <p class="cat-note">Best value — a full meal.</p>
+            <div class="menu-item">
+              <div>
+                <span class="mi-name">[[COMBO_1_NAME]]</span>
+                <span class="mi-desc">[[COMBO_1_DESCRIPTION]]</span>
+              </div>
+              <div class="mi-price">$[[PRICE]]</div>
+            </div>
+            <div class="menu-item">
+              <div>
+                <span class="mi-name">[[COMBO_2_NAME]]</span>
+                <span class="mi-desc">[[COMBO_2_DESCRIPTION]]</span>
+              </div>
+              <div class="mi-price">$[[PRICE]]</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-cta">
+          <a href="#order" class="btn btn-primary btn-ai">Order this with Taco Taco Assist</a>
+          <span class="hint">Ready to eat? Let our AI take your order.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== HOURS & LOCATION ===================== -->
+    <section class="section" id="hours">
+      <div class="container">
+        <div class="section-head">
+          <h2>Hours &amp; Location</h2>
+          <p>Come see us, or order ahead any time with Taco Taco Assist.</p>
+        </div>
+        <div class="split">
+          <div class="info-card">
+            <h3>🕒 Opening Hours</h3>
+            <!-- [[HOURS]] Replace the days/times below with your real hours. -->
+            <div class="hours-row"><span class="day">Monday</span><span class="time">[[HOURS_MON]]</span></div>
+            <div class="hours-row"><span class="day">Tuesday</span><span class="time">[[HOURS_TUE]]</span></div>
+            <div class="hours-row"><span class="day">Wednesday</span><span class="time">[[HOURS_WED]]</span></div>
+            <div class="hours-row"><span class="day">Thursday</span><span class="time">[[HOURS_THU]]</span></div>
+            <div class="hours-row"><span class="day">Friday</span><span class="time">[[HOURS_FRI]]</span></div>
+            <div class="hours-row"><span class="day">Saturday</span><span class="time">[[HOURS_SAT]]</span></div>
+            <div class="hours-row"><span class="day">Sunday</span><span class="time">[[HOURS_SUN]]</span></div>
+          </div>
+          <div class="info-card">
+            <h3>📍 Find Us</h3>
+            <p class="address-block">
+              <strong>[[RESTAURANT_NAME]]</strong><br>
+              [[ADDRESS]]
+            </p>
+            <!-- Update the map link: replace the address in the URL below. -->
+            <a class="btn btn-secondary" href="https://www.google.com/maps/search/?api=1&query=[[ADDRESS_URL_ENCODED]]" target="_blank" rel="noopener">Open in Google Maps</a>
+            <div style="margin-top:18px;">
+              <a href="#order" class="btn btn-sun btn-ai">Order ahead now</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== GALLERY ===================== -->
+    <section class="section" id="gallery">
+      <div class="container">
+        <div class="section-head">
+          <h2>Gallery</h2>
+          <p>A look at what is coming out of our kitchen. Swap these placeholders for your real photos.</p>
+        </div>
+        <div class="gallery">
+          <!-- To use a real photo: replace the inner <span> blocks with
+               <img src="photo1.jpg" alt="Taco photo"> and remove the dashed border. -->
+          <div class="photo"><div><span class="emoji">🌮</span><span class="label">[[PHOTO_1]]</span></div></div>
+          <div class="photo"><div><span class="emoji">🌯</span><span class="label">[[PHOTO_2]]</span></div></div>
+          <div class="photo"><div><span class="emoji">🌶️</span><span class="label">[[PHOTO_3]]</span></div></div>
+          <div class="photo"><div><span class="emoji">🥑</span><span class="label">[[PHOTO_4]]</span></div></div>
+          <div class="photo"><div><span class="emoji">🧀</span><span class="label">[[PHOTO_5]]</span></div></div>
+          <div class="photo"><div><span class="emoji">🥤</span><span class="label">[[PHOTO_6]]</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== AI ORDER ZONE ===================== -->
+    <section class="section" id="order">
+      <div class="container">
+        <div class="ai-zone">
+          <h2>Order with Taco Taco Assist 🌮</h2>
+          <p>
+            Taco Taco Assist is our AI employee — it knows the full menu, answers
+            questions, and takes your order start to finish. Tap the button to start
+            a chat, or use the assistant below.
+          </p>
+          <a href="#" id="tacoAssistLaunch" class="btn btn-primary btn-ai" style="font-size:1.1rem; padding:18px 30px;">Start my order</a>
+
+          <!--
+            ======================================================================
+            PASTE TACO TACO ASSIST EMBED CODE HERE
+            ----------------------------------------------------------------------
+            Drop your AI assistant's embed code inside the <div id="taco-assist-embed">
+            below, then delete the grey placeholder note.
+
+            THREE COMMON CASES:
+
+            1) FLOATING CHAT WIDGET (most chat/AI builders — e.g. a <script> tag):
+               Paste the <script> here. It usually adds its own floating bubble.
+               To make the buttons on this page open it, see the JS at the very
+               bottom of this file (look for "tacoAssistLaunch") and follow the
+               one-line instructions there.
+
+            2) INLINE IFRAME (the assistant lives in a box on the page):
+               Paste something like:
+               <iframe src="https://your-assistant-url" style="width:100%;height:560px;border:none;border-radius:16px;"></iframe>
+
+            3) LINK-OUT (the assistant opens on another page):
+               Change the "Start my order" button above from href="#" to your
+               assistant's URL, and remove the box below.
+            ======================================================================
+          -->
+          <div id="taco-assist-embed">
+            <!-- [[AI_EMBED]] -->
+            <div class="ai-embed-slot">
+              🤖 <strong style="margin:0 6px;">Taco Taco Assist goes here.</strong>
+              Paste your AI embed code in this section (see the comment in the source), and this note disappears.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Always-visible floating order button -->
+  <a href="#order" class="btn btn-primary btn-ai float-order">Order</a>
+
+  <footer>
+    <div class="container footer-box">
+      <div>© 2026 [[RESTAURANT_NAME]]</div>
+      <div>Order any time with Taco Taco Assist</div>
+      <div>Phone: <a href="tel:[[PHONE]]">[[PHONE]]</a></div>
+      <div>Site by <a href="https://greaterbelizemedia.github.io" target="_blank" rel="noopener">Greater Belize Media</a></div>
+    </div>
+  </footer>
+
+  <script>
+    // The "Start my order" and order buttons.
+    // By default they scroll to the AI section. If your embedded assistant
+    // exposes a function to open its chat window, call it here instead.
+    //
+    // EXAMPLE (uncomment and adapt to your provider):
+    //   document.getElementById('tacoAssistLaunch').addEventListener('click', function (e) {
+    //     e.preventDefault();
+    //     window.TacoAssist && window.TacoAssist.open();   // <-- your widget's open function
+    //   });
+    //
+    // Until then, the launch button just focuses the assistant area:
+    (function () {
+      var launch = document.getElementById('tacoAssistLaunch');
+      if (launch) {
+        launch.addEventListener('click', function (e) {
+          e.preventDefault();
+          var embed = document.getElementById('taco-assist-embed');
+          if (embed) embed.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
