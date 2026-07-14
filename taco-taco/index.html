@@ -277,9 +277,10 @@ section.blk{padding:56px 0}
 .assist-dialog{position:relative;z-index:1;width:min(440px,100%);height:min(680px,88vh);background:var(--paper);
  border-radius:20px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 30px 80px rgba(0,0,0,.45)}
 .assist-dialog iframe{flex:1;width:100%;border:0;background:#fff}
-/* open: dim full-screen overlay with centered dialog; tap backdrop to close */
+/* open: dim full-screen overlay; dialog centered on mobile, right-aligned on desktop; tap backdrop to close */
 #assistant:target ~ .assist-wrap{display:flex;position:fixed;inset:0;z-index:100;align-items:center;
  justify-content:center;padding:16px;background:rgba(20,12,8,.55)}
+@media(min-width:768px){#assistant:target ~ .assist-wrap{justify-content:flex-end;padding-right:28px}}
 #assistant:target ~ .chat-launch{display:none}
 
 /* ---------- back to top (anchor, no JS) ---------- */
