@@ -274,12 +274,14 @@ section.blk{padding:56px 0}
 .assist-anchor{position:fixed;top:0;left:0;width:0;height:0;overflow:hidden}
 .assist-wrap{display:none}
 .assist-backdrop{position:absolute;inset:0;cursor:pointer}
-.assist-dialog{position:relative;z-index:1;width:min(440px,100%);height:min(720px,92vh);background:var(--paper);
- border-radius:20px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 30px 80px rgba(0,0,0,.45)}
-.assist-bar{display:flex;align-items:center;justify-content:flex-end;gap:8px;padding:10px 12px;background:var(--yellow)}
-.assist-btn{font-weight:800;color:var(--green-dd);text-transform:uppercase;font-size:.8rem;letter-spacing:.3px;
- background:rgba(0,0,0,.1);padding:7px 13px;border-radius:999px}
-.assist-btn:hover{background:rgba(0,0,0,.18)}
+.assist-stage{position:relative;z-index:1;width:min(440px,100%);height:min(660px,84vh)}
+.assist-dialog{width:100%;height:100%;background:var(--paper);border-radius:20px;overflow:hidden;
+ display:flex;flex-direction:column;box-shadow:0 30px 80px rgba(0,0,0,.45)}
+/* controls float just above the dialog (in the stage, which is not clipped) */
+.assist-ctl{position:absolute;top:0;right:0;transform:translateY(calc(-100% - 8px));display:flex;gap:8px;z-index:2}
+.assist-btn{font-weight:800;color:var(--green-dd);text-transform:uppercase;font-size:.78rem;letter-spacing:.3px;
+ background:rgba(255,255,255,.92);padding:8px 14px;border-radius:999px;box-shadow:0 6px 16px rgba(0,0,0,.25)}
+.assist-btn:hover{background:#fff}
 .assist-dialog iframe{flex:1;width:100%;border:0;background:#fff}
 .assist-mini{display:none;align-items:center;gap:8px;background:var(--red);color:#fff;font-weight:800;
  text-transform:uppercase;letter-spacing:.3px;font-size:.9rem;padding:14px 20px;border-radius:999px;
@@ -292,15 +294,15 @@ section.blk{padding:56px 0}
 /* MINIMIZED */
 #assist-min:target ~ .assist-wrap{display:block;position:fixed;inset:auto 20px 20px auto;z-index:100;width:auto}
 #assist-min:target ~ .assist-wrap .assist-backdrop{display:none}
-#assist-min:target ~ .assist-wrap .assist-dialog{display:none}
+#assist-min:target ~ .assist-wrap .assist-stage{display:none}
 #assist-min:target ~ .assist-wrap .assist-mini{display:inline-flex}
 #assist-min:target ~ .chat-launch{display:none}
 
 /* ---------- back to top (anchor, no JS) ---------- */
-.to-top{position:fixed;left:20px;bottom:20px;z-index:60;padding:12px 15px;border-radius:999px;white-space:nowrap;
- background:var(--green);color:#fff;border:2px solid #fff;font-size:.72rem;font-weight:800;
+.to-top{position:fixed;left:20px;bottom:20px;z-index:60;width:48px;height:48px;border-radius:50%;
+ background:var(--green);color:#fff;border:2px solid #fff;font-size:.8rem;font-weight:800;
  text-transform:uppercase;letter-spacing:.3px;
- box-shadow:0 12px 28px rgba(47,125,51,.4);display:inline-flex;align-items:center;text-decoration:none}
+ box-shadow:0 12px 28px rgba(47,125,51,.4);display:grid;place-items:center;text-decoration:none}
 .to-top:hover{background:var(--green-d);color:#fff}
 
 /* ---------- chat widget ---------- */
@@ -621,7 +623,7 @@ footer{background:var(--green-dd);color:#fff;padding:44px 0 28px}
 </footer>
 
 <!-- ===== BACK TO TOP ===== -->
-<a class="to-top" href="#top" aria-label="Back to top">Bk to top</a>
+<a class="to-top" href="#top" aria-label="Back to top">Top</a>
 
 <!-- Taco Taco Assist: no-JS popup with full / minimized / closed states via :target.
      Order buttons -> #assistant (full). Minimize -> #assist-min. Close -> #!.
@@ -635,12 +637,14 @@ footer{background:var(--green-dd);color:#fff;padding:44px 0 28px}
 </a>
 <div class="assist-wrap" role="dialog" aria-label="Taco Taco Assist">
  <a href="#!" class="assist-backdrop" aria-label="Close"></a>
- <div class="assist-dialog">
-  <div class="assist-bar">
+ <div class="assist-stage">
+  <div class="assist-ctl">
    <a href="#assist-min" class="assist-btn">Minimize</a>
    <a href="#!" class="assist-btn">Close</a>
   </div>
-  <iframe src="https://www.chatbase.co/chatbot-iframe/goJ6R0Hw-bYT3iEd4kaKE" title="Taco Taco Assist" allow="microphone"></iframe>
+  <div class="assist-dialog">
+   <iframe src="https://www.chatbase.co/chatbot-iframe/goJ6R0Hw-bYT3iEd4kaKE" title="Taco Taco Assist" allow="microphone"></iframe>
+  </div>
  </div>
  <a href="#assistant" class="assist-mini">Chat with Taco Taco Assist</a>
 </div>
