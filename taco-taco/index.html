@@ -185,18 +185,18 @@ nav{display:flex;align-items:center;justify-content:space-between;gap:16px;min-h
  .fav:nth-child(5) .fav-img{animation-duration:12.5s;animation-delay:-3.5s}
  .fav:nth-child(6) .fav-img{animation-duration:13.5s;animation-delay:-9s}
  .logo-badge{animation:logoIn .7s .1s both,logoWiggle 3.4s ease-in-out 1.1s infinite}
- /* backdrop stays present during the hold so the hero isn't blank */
+ /* faint TACO TACO backdrop stays during the hold so the stage isn't fully blank */
  .stage-type{opacity:0;animation:fadeIn 1.1s .25s both,driftType 9s ease-in-out 1.4s infinite}
- .blob{opacity:0;animation:fadeIn .8s .15s both,blobPulse 7s ease-in-out 1s infinite}
- /* food photos: hold ~6s, then burst in and settle into the float */
- .product-wrap{animation:explodeIn 1s 6s both}
- .product{animation:floaty 6s ease-in-out 6.9s infinite}
- .spin-badge{opacity:0;animation:explodeIn 1s 6.15s both}
+ /* color blob + food photos: hold ~4s, then burst in together and settle into the float */
+ .blob{opacity:0;animation:explodeIn 1s 4s both,blobPulse 7s ease-in-out 5s infinite}
+ .product-wrap{animation:explodeIn 1s 4s both}
+ .product{animation:floaty 6s ease-in-out 4.9s infinite}
+ .spin-badge{opacity:0;animation:explodeIn 1s 4.15s both}
  .spin-badge .ring{animation:spin 18s linear infinite}
- .side-badge{opacity:0;animation:explodeIn 1s 6.3s both}
- .side-badge.two{animation:explodeIn 1s 6.45s both}
- .side-badge img{animation:floaty 5.5s ease-in-out 7.1s infinite}
- .side-badge.two img{animation:floaty 6.2s ease-in-out 7.25s infinite}
+ .side-badge{opacity:0;animation:explodeIn 1s 4.3s both}
+ .side-badge.two{animation:explodeIn 1s 4.45s both}
+ .side-badge img{animation:floaty 5.5s ease-in-out 5.1s infinite}
+ .side-badge.two img{animation:floaty 6.2s ease-in-out 5.25s infinite}
  .h-eyebrow{animation:riseIn .7s .55s both}
  .h-title{animation:riseIn .7s .68s both}
  .h-sub{animation:riseIn .7s .8s both}
@@ -268,7 +268,7 @@ section.blk{padding:56px 0}
  border:3px solid var(--green);margin:0 auto 14px;box-shadow:0 8px 18px rgba(0,0,0,.18)}
 .order-card h2{font-family:var(--font-display);text-transform:uppercase;color:var(--green-d);
  font-size:clamp(1.7rem,3.4vw,2.5rem);margin:0 0 10px}
-.order-card p{color:var(--muted);max-width:56ch;margin:0 auto 24px;font-size:1.08rem}
+.order-card p{color:var(--muted);max-width:56ch;margin:0 auto 24px;font-size:1.08rem;text-align:justify}
 .order-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:720px;margin:26px auto 0;text-align:left}
 .ostep{display:flex;gap:12px;align-items:flex-start;background:var(--cream2);border:1px solid var(--border);
  border-radius:14px;padding:14px 16px}
