@@ -868,6 +868,22 @@ html.js.has-items #basket-bar{display:flex}
    if(bs){addMsg('bot','Hi! I can see your basket so far: '+bs+'. Would you like to add anything else, or should I go ahead and take this order? You can ask me anything, or type finished when you are ready.');}
    else{addMsg('bot','Hi! Welcome to Taco Taco Mexican Style Food. I can help you build an order, answer questions, and take it from start to finish. What can I get for you today?');}}}
 
+ // The assistant reports the updated order as a hidden @@ORDER=[...]@@ block; apply it to
+ // the real basket and strip it from the visible reply. Defensive: leave basket unchanged
+ // on any missing block or parse error.
+ function applyOrderSync(text){
+  var i=text.indexOf('@@ORDER=');
+  if(i<0)return text;
+  var arr=(text.slice(i+8).match(/\[[\s\S]*?\]/)||[])[0];
+  if(arr){try{var items=JSON.parse(arr);
+   if(Array.isArray(items)){
+    basket=items.map(function(o){var p=Number(o.p)||0;
+     return {name:String(o.n||'').trim(),meat:o.m?String(o.m).trim():'',price:p,label:'$'+p,qty:Math.max(1,Number(o.q)||1)};})
+     .filter(function(it){return it.name;});
+    renderBar();renderPanel();
+   }}catch(e){}}
+  return text.slice(0,i).trim();   // drop everything from @@ORDER= onward
+ }
  // Items ride to the AI as context on every turn, so the order button just states intent
  // (single source of truth for both the button and free chat).
  function orderText(){return "I would like to place this order. Please confirm it and let me know the options for pickup, dine in, or delivery.";}
@@ -876,14 +892,16 @@ html.js.has-items #basket-bar{display:flex}
   var typing=addMsg('bot typing','Taco Taco Assist is typing...');
   input.disabled=true;
   var payload=convo.map(function(m){return {role:m.role,content:m.content};});
-  var bs=basketSummary();
-  if(bs){for(var i=payload.length-1;i>=0;i--){if(payload[i].role==='user'){
-   payload[i].content='[The customer\'s current basket is: '+bs+'. Take this into account and help complete the order.]\n\n'+payload[i].content;break;}}}
+  var ctx='[SYSTEM: This is a website order with a live basket. Current basket: '+(basketSummary()||'empty')+
+   '. If the customer adds, removes, or changes items, reflect it. At the very end of EVERY reply append ONE line of machine data in EXACTLY this format (the customer never sees it): '+
+   '@@ORDER=[{"n":"Item name","m":"Meat or empty string","q":1,"p":18}]@@ listing the FULL updated order, prices as BZD numbers only. Put nothing after that line.]';
+  for(var i=payload.length-1;i>=0;i--){if(payload[i].role==='user'){payload[i].content=ctx+'\n\n'+payload[i].content;break;}}
   fetch('/.netlify/functions/order',{method:'POST',headers:{'Content-Type':'application/json'},
    body:JSON.stringify({messages:payload,conversationId:CID})})
   .then(function(r){return r.json();})
   .then(function(data){typing.remove();
    var reply=(data&&(data.text||data.reply))||"Sorry, I could not reach Taco Taco just now. Please try again in a moment.";
+   reply=applyOrderSync(reply);   // let the assistant's edits update the real basket
    convo.push({role:'assistant',content:reply});saveState();addMsg('bot',reply);})
   .catch(function(){typing.remove();addMsg('bot',"Sorry, something went wrong. Please try again in a moment.");})
   .then(function(){input.disabled=false;input.focus();});
