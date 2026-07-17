@@ -313,10 +313,10 @@ section.blk{padding:56px 0}
 html.has-items .chat-launch,html.chat-active .chat-launch,html.assist-min .chat-launch{display:none}
 /* minimized reopen pill (sits where Order Now was) */
 .oc-reopen{position:fixed;right:20px;bottom:20px;z-index:60;display:none;align-items:center;gap:9px;
- background:var(--green-d);color:#fff;border:2px solid #fff;cursor:pointer;padding:10px 18px 10px 10px;
+ background:var(--red);color:#fff;border:2px solid #fff;cursor:pointer;padding:10px 18px 10px 10px;
  border-radius:999px;font-weight:800;font-family:inherit;font-size:.95rem;text-decoration:none;
- text-transform:uppercase;letter-spacing:.4px;box-shadow:0 14px 34px rgba(44,33,24,.35)}
-.oc-reopen:hover{background:var(--green)}
+ text-transform:uppercase;letter-spacing:.4px;box-shadow:0 14px 34px rgba(212,58,43,.45)}
+.oc-reopen:hover{background:var(--red-d)}
 .oc-reopen .cl-av{width:34px;height:34px;border-radius:50%;background-size:cover;background-position:center;border:2px solid #fff}
 html.assist-min .oc-reopen{display:flex}
 #oc-min{cursor:pointer;border:0;background:rgba(255,255,255,.18);color:#fff;font-weight:700;
@@ -409,14 +409,16 @@ html.js .mi-controls{display:flex}
 .add-btn:active{transform:scale(.94)}
 .add-btn.added{background:var(--red)}
 
-#basket-bar{display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:20px;z-index:70;
- background:var(--green-d);color:#fff;border-radius:999px;padding:9px 10px 9px 20px;gap:16px;
- align-items:center;box-shadow:0 16px 36px rgba(0,0,0,.32);border:2px solid #fff}
+#basket-bar{display:none;position:fixed;right:20px;bottom:20px;z-index:70;
+ background:var(--green-d);color:#fff;border-radius:999px;padding:7px 8px 7px 17px;gap:11px;
+ align-items:center;box-shadow:0 14px 34px rgba(44,33,24,.35);border:2px solid #fff}
 html.js.has-items #basket-bar{display:flex}
-#basket-bar .bb-count{font-weight:700;font-size:.9rem}
-#basket-bar .bb-total{font-family:var(--font-display);font-weight:800;font-size:1rem}
+/* when the minimized Assist pill is on screen, stack the basket just above it */
+html.assist-min #basket-bar{bottom:78px}
+#basket-bar .bb-count{font-weight:700;font-size:.8rem}
+#basket-bar .bb-total{font-family:var(--font-display);font-weight:800;font-size:.92rem}
 #bb-view{cursor:pointer;border:0;background:var(--yellow);color:var(--green-dd);font-family:var(--font-display);
- text-transform:uppercase;font-size:.74rem;letter-spacing:.5px;font-weight:800;padding:8px 15px;border-radius:999px}
+ text-transform:uppercase;font-size:.7rem;letter-spacing:.4px;font-weight:800;padding:7px 13px;border-radius:999px}
 #bb-view:hover{background:var(--yellow-d)}
 
 #basket-panel,#order-chat{display:none;position:fixed;inset:0;z-index:115;background:rgba(20,12,8,.55)}
@@ -471,7 +473,6 @@ html.js.has-items #basket-bar{display:flex}
 #oc-send{cursor:pointer;border:0;background:var(--green);color:#fff;font-family:var(--font-display);
  text-transform:uppercase;font-weight:800;font-size:.76rem;letter-spacing:.5px;padding:0 18px;border-radius:999px}
 #oc-send:hover{background:var(--green-d)}
-@media(max-width:560px){#basket-bar{bottom:80px}}
 </style>
 </head>
 <body>
@@ -845,6 +846,7 @@ html.js.has-items #basket-bar{display:flex}
    H.classList.add('assist-min');}}catch(e){}}
  function newOrder(){convo=[];msgs.innerHTML='';try{sessionStorage.removeItem(SKEY);}catch(e){}
   CID='ord-'+Date.now()+'-'+Math.random().toString(36).slice(2,8);
+  basket=[];renderBar();renderPanel();          // keep the basket in sync with the AI reset
   H.classList.remove('assist-min');}
 
  function openChat(){chat.classList.add('open');H.classList.add('chat-active');H.classList.remove('assist-min');input.focus();}
