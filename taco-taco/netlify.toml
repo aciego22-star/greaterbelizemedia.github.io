@@ -1,0 +1,15 @@
+# Netlify config for the Taco Taco site (deploy this folder on its own, e.g. via
+# the Netlify CLI, so it stays isolated from your other Netlify sites).
+#
+#   Publish:   this folder (serves index.html at the site root)
+#   Functions: ./functions  (the order relay -> /.netlify/functions/order)
+#
+# Set the secret in Netlify (never in the repo):
+#   netlify env:set CHATBASE_API_KEY "your-chatbase-secret-key"
+
+[build]
+  publish = "."
+  functions = "functions"
+
+[functions]
+  node_bundler = "esbuild"
