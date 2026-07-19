@@ -332,6 +332,8 @@ html.assist-min .oc-reopen{display:flex}
  padding:9px;cursor:pointer;text-decoration:underline;font-family:inherit}
 .oc-new:hover{color:var(--ink)}
 .oc-msg strong{font-weight:800}
+.oc-msg a{color:var(--green-d);font-weight:800;text-decoration:underline;word-break:break-word}
+.oc-msg a:hover{color:var(--green)}
 .chat-panel{position:fixed;right:20px;bottom:20px;z-index:61;width:min(370px,calc(100vw - 32px));
  max-height:min(620px,calc(100vh - 40px));background:var(--paper);border-radius:22px;overflow:hidden;
  box-shadow:0 30px 80px rgba(0,0,0,.4);display:none;flex-direction:column;border:1px solid var(--border)}
@@ -837,7 +839,12 @@ html.js.has-items #basket-bar{display:flex}
  // Render assistant replies with light markdown (bold) and clean dashes; escape first.
  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
  function fmt(t){t=String(t).replace(/[—–]/g,'-');t=esc(t);
-  return t.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/\*/g,'').replace(/\n/g,'<br>');}
+  t=t.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/\*/g,'');
+  // make links (e.g. the WhatsApp handoff link) tappable; keep trailing punctuation outside
+  t=t.replace(/(https?:\/\/[^\s<]+)/g,function(m){var tail=(m.match(/[.,!?)\]]+$/)||[''])[0];
+   if(tail)m=m.slice(0,m.length-tail.length);
+   return '<a href="'+m+'" target="_blank" rel="noopener">'+m+'</a>'+tail;});
+  return t.replace(/\n/g,'<br>');}
  function addMsg(role,text){var d=document.createElement('div');d.className='oc-msg '+role;
   if(role.indexOf('bot')>-1){d.innerHTML=fmt(text);}else{d.textContent=text;}
   msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;return d;}
