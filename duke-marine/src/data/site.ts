@@ -11,38 +11,43 @@
 export const site = {
   name: 'Duke Marine',
   legalName: 'Duke Marine',
-  tagline: 'Belize’s marine & fishing supply headquarters',
+  tagline: 'Fishing. Diving. Boat Supplies.',
+  slogan: 'For all your marine needs.',
   description:
-    'Duke Marine is Belize’s trusted source for marine and fishing supplies — outboard parts, tackle, safety gear and commercial provisioning for anglers, captains, resorts and fleets.',
-  // Update before deploy; used for canonical URLs, sitemap and social cards.
-  url: 'https://www.dukemarine.com',
-  // PLACEHOLDER contact details — swap for the real ones.
-  phoneDisplay: '(+501) 000-0000',
-  phoneHref: '+5010000000',
-  whatsapp: '5010000000',
-  email: 'info@dukemarine.com',
-  salesEmail: 'sales@dukemarine.com',
+    'Duke Marine is Belize’s one-stop shop for marine parts, fishing and diving supplies — sales, parts and service for anglers, divers, captains, resorts and fleets. On the Philip Goldson Highway, Belize City.',
+  // Domain matches the business email (rduke@dukemarinebz.com). Update if the
+  // final domain differs. Powers canonical URLs, sitemap and social cards.
+  url: 'https://www.dukemarinebz.com',
+  phoneDisplay: '(+501) 223-0319',
+  phoneHref: '+5012230319',
+  // NOTE: confirm the WhatsApp number — 223-0319 is the shop line; if WhatsApp
+  // is a separate mobile, update this to that number (digits only, with 501).
+  whatsapp: '5012230319',
+  email: 'rduke@dukemarinebz.com',
+  salesEmail: 'dukemarine@btl.net',
   address: {
-    line1: 'Marine Parade',
+    line1: 'Mile 4½ Philip Goldson Highway',
     line2: '',
     city: 'Belize City',
     region: 'Belize District',
     country: 'Belize',
-    // Approx. Belize City coords — update to the exact storefront.
-    lat: 17.4979,
-    lng: -88.1962,
-    mapQuery: 'Belize City, Belize',
+    // Approx. coords for Mile 4.5 Philip Goldson Hwy — refine to the exact spot.
+    lat: 17.5312,
+    lng: -88.2405,
+    mapQuery: 'Duke Marine, Philip Goldson Highway, Belize City, Belize',
   },
   hours: [
-    { day: 'Monday – Friday', time: '7:30 AM – 6:00 PM' },
-    { day: 'Saturday', time: '7:30 AM – 4:00 PM' },
+    { day: 'Monday – Friday', time: '8:00 AM – 5:00 PM' },
+    { day: 'Saturday', time: '8:00 AM – 12:00 PM' },
     { day: 'Sunday', time: 'Closed' },
   ],
-  founded: 1998,
+  // Google rating snapshot — refresh periodically.
+  rating: 4.3,
+  reviews: 44,
   social: {
-    facebook: 'https://facebook.com/',
-    instagram: 'https://instagram.com/',
-    youtube: 'https://youtube.com/',
+    facebook: 'https://www.facebook.com/dukemarine.bz',
+    instagram: 'https://www.instagram.com/dukemarine.bz',
+    youtube: '',
   },
 } as const;
 
@@ -51,7 +56,7 @@ export type NavItem = { label: string; href: string; children?: NavChild[] };
 
 export const nav: NavItem[] = [
   {
-    label: 'Marine Supplies',
+    label: 'Marine',
     href: '/marine-supplies',
     children: [
       { label: 'Outboard Motors & Parts', href: '/marine-supplies#outboards', desc: 'Engines, props, service parts' },
@@ -63,7 +68,7 @@ export const nav: NavItem[] = [
     ],
   },
   {
-    label: 'Fishing Supplies',
+    label: 'Fishing',
     href: '/fishing-supplies',
     children: [
       { label: 'Rods & Reels', href: '/fishing-supplies#rods', desc: 'Spinning, conventional, fly' },
@@ -72,6 +77,18 @@ export const nav: NavItem[] = [
       { label: 'Line & Braid', href: '/fishing-supplies#line', desc: 'Mono, fluoro, braid' },
       { label: 'Coolers & Storage', href: '/fishing-supplies#coolers', desc: 'Ice chests, bags' },
       { label: 'Apparel & Sun Gear', href: '/fishing-supplies#apparel', desc: 'Performance wear' },
+    ],
+  },
+  {
+    label: 'Diving',
+    href: '/diving-supplies',
+    children: [
+      { label: 'Regulators & BCDs', href: '/diving-supplies#regulators', desc: 'Breathe & buoyancy' },
+      { label: 'Masks, Fins & Snorkels', href: '/diving-supplies#masks', desc: 'Snorkel & scuba' },
+      { label: 'Wetsuits & Exposure', href: '/diving-supplies#wetsuits', desc: 'Suits, boots, gloves' },
+      { label: 'Tanks & Accessories', href: '/diving-supplies#tanks', desc: 'Cylinders, gauges' },
+      { label: 'Spearfishing', href: '/diving-supplies#spearfishing', desc: 'Guns, pole spears' },
+      { label: 'Dive Safety', href: '/diving-supplies#safety', desc: 'SMBs, lights, knives' },
     ],
   },
   { label: 'Brands', href: '/brands' },

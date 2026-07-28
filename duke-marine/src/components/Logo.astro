@@ -1,8 +1,8 @@
 ---
 /**
- * Placeholder brand logo (SVG wordmark + anchor/compass mark).
- * Replace with the client's real logo file when supplied.
- * Colours inherit from context so it reads on light & dark surfaces.
+ * Duke Marine brand lockup: the real anchor badge + wordmark.
+ * The badge (public/media/logo.jpg) carries the brand; the wordmark keeps
+ * the name crisp at small sizes and on any background.
  */
 interface Props {
   class?: string;
@@ -12,24 +12,19 @@ const { class: cls = '', compact = false } = Astro.props;
 ---
 
 <a href="/" class:list={['logo', cls]} aria-label="Duke Marine — home">
-  <span class="logo__mark" aria-hidden="true">
-    <svg viewBox="0 0 48 48" width="42" height="42" fill="none">
-      <circle cx="24" cy="24" r="22" stroke="currentColor" stroke-width="2" opacity="0.25" />
-      <path
-        d="M24 9v30M15 20h18M24 39c-6 0-11-4.5-11-11m11 11c6 0 11-4.5 11-11"
-        stroke="currentColor"
-        stroke-width="2.4"
-        stroke-linecap="round"
-      />
-      <circle cx="24" cy="12" r="3.4" stroke="currentColor" stroke-width="2.4" />
-      <path d="M24 4 30 10 24 12 18 10Z" fill="var(--gold, #f2a41c)" opacity="0.9" />
-    </svg>
-  </span>
+  <img
+    src="/media/logo.jpg"
+    alt="Duke Marine"
+    class="logo__badge"
+    width="46"
+    height="46"
+    loading="eager"
+  />
   {
     !compact && (
       <span class="logo__type">
-        <strong>DUKE</strong>
-        <span>MARINE</span>
+        <strong>DUKE&nbsp;MARINE</strong>
+        <span>Marine Parts · Sales · Service</span>
       </span>
     )
   }
@@ -39,33 +34,38 @@ const { class: cls = '', compact = false } = Astro.props;
   .logo {
     display: inline-flex;
     align-items: center;
-    gap: 0.7rem;
+    gap: 0.65rem;
     color: inherit;
   }
-  .logo__mark {
-    color: var(--accent, #16b6b0);
-    display: grid;
-    place-items: center;
+  .logo__badge {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12);
     transition: transform var(--dur) var(--ease-out);
   }
-  .logo:hover .logo__mark {
-    transform: rotate(-8deg);
+  .logo:hover .logo__badge {
+    transform: rotate(-6deg) scale(1.04);
   }
   .logo__type {
     display: flex;
     flex-direction: column;
-    line-height: 0.92;
+    line-height: 1.05;
     font-family: var(--font-display);
-    letter-spacing: 0.16em;
   }
   .logo__type strong {
-    font-size: 1.12rem;
+    font-size: 1.06rem;
     font-weight: 800;
+    letter-spacing: 0.08em;
+    color: var(--gold, #e6b83f);
   }
   .logo__type span {
-    font-size: 0.72rem;
+    font-size: 0.62rem;
     font-weight: 600;
-    color: var(--gold, #f2a41c);
-    letter-spacing: 0.34em;
+    color: currentColor;
+    opacity: 0.72;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
   }
 </style>

@@ -10,9 +10,9 @@ export type TeamMember = {
 
 export const team: TeamMember[] = [
   {
-    name: 'A. Duke',
+    name: 'R. Duke',
     role: 'Founder & Managing Director',
-    bio: 'Grew up on the water and built Duke Marine into Belize’s go-to chandlery — still on the floor most mornings talking rigging and repowers.',
+    bio: 'Grew up on the water and built Duke Marine into Belize’s go-to marine store — still on the floor most mornings talking rigging, tackle and dive gear.',
   },
   {
     name: 'M. Castillo',

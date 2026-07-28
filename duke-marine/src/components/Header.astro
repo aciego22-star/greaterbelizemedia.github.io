@@ -281,6 +281,18 @@ const isActive = (href: string) =>
     transition: transform var(--dur), opacity var(--dur);
   }
 
+  @media (max-width: 1180px) {
+    .nav__list {
+      gap: 0.1rem;
+    }
+    .nav__link {
+      padding-inline: 0.65rem;
+    }
+    .nav__phone {
+      display: none;
+    }
+  }
+
   @media (max-width: 980px) {
     .nav-toggle {
       display: flex;
@@ -354,6 +366,7 @@ const isActive = (href: string) =>
       border-top: 1px solid rgba(255, 255, 255, 0.14);
     }
     .nav__phone {
+      display: inline-flex;
       justify-content: center;
       font-size: 1rem;
     }

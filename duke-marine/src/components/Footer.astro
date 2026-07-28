@@ -1,7 +1,7 @@
 ---
 import Logo from './Logo.astro';
 import Icon from './Icon.astro';
-import { site, nav } from '../data/site';
+import { site } from '../data/site';
 ---
 
 <footer class="footer on-dark">
@@ -15,13 +15,14 @@ import { site, nav } from '../data/site';
     <div class="footer__brand">
       <Logo />
       <p class="footer__mission">
-        {site.tagline}. Trusted by anglers, captains, resorts and commercial
-        fleets across Belize since {site.founded}.
+        {site.description}
       </p>
       <div class="footer__social">
         <a href={site.social.facebook} aria-label="Facebook" class="social"><Icon name="facebook" size={20} /></a>
         <a href={site.social.instagram} aria-label="Instagram" class="social"><Icon name="instagram" size={20} /></a>
-        <a href={site.social.youtube} aria-label="YouTube" class="social"><Icon name="youtube" size={20} /></a>
+        {site.social.youtube && (
+          <a href={site.social.youtube} aria-label="YouTube" class="social"><Icon name="youtube" size={20} /></a>
+        )}
         <a href={`https://wa.me/${site.whatsapp}`} aria-label="WhatsApp" class="social"><Icon name="whatsapp" size={20} /></a>
       </div>
     </div>
@@ -32,6 +33,7 @@ import { site, nav } from '../data/site';
         <ul role="list">
           <li><a href="/marine-supplies">Marine Supplies</a></li>
           <li><a href="/fishing-supplies">Fishing Supplies</a></li>
+          <li><a href="/diving-supplies">Diving Supplies</a></li>
           <li><a href="/brands">Brands We Carry</a></li>
           <li><a href="/commercial">Commercial &amp; Wholesale</a></li>
           <li><a href="/services">Services</a></li>

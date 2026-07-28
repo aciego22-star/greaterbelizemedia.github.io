@@ -1,7 +1,6 @@
 ---
 import OceanCanvas from './OceanCanvas.astro';
 import Icon from './Icon.astro';
-import { site } from '../data/site';
 
 // To use a real background video, pass its path to OceanCanvas:
 //   <OceanCanvas videoSrc="/media/hero.mp4" videoWebm="/media/hero.webm" poster="/media/hero-poster.jpg" />
@@ -13,27 +12,27 @@ import { site } from '../data/site';
   <div class="container hero__inner">
     <div class="hero__content">
       <span class="hero__eyebrow" data-reveal>
-        <Icon name="anchor" size={16} /> Belize · Est. {site.founded}
+        <Icon name="anchor" size={16} /> Belize City · Marine Parts · Sales · Service
       </span>
       <h1 class="hero__title">
-        <span data-reveal>Everything for</span>
-        <span data-reveal data-reveal-delay="90">the <em>water</em> &amp; the</span>
-        <span data-reveal data-reveal-delay="180"><span class="text-gradient">catch.</span></span>
+        <span data-reveal>Fishing.</span>
+        <span data-reveal data-reveal-delay="90">Diving.</span>
+        <span data-reveal data-reveal-delay="180"><span class="text-gradient">Boat supplies.</span></span>
       </h1>
       <p class="hero__lead" data-reveal data-reveal-delay="260">
-        Duke Marine is Belize’s trusted marine &amp; fishing supply headquarters —
-        outboards and rigging, tackle and gear, and commercial provisioning for
-        anglers, captains, resorts and fleets.
+        For all your marine needs. Duke Marine is Belize’s one-stop shop for
+        marine parts, fishing and diving supplies — sales, parts and service,
+        from the flats to the reef.
       </p>
       <div class="hero__actions" data-reveal data-reveal-delay="340">
-        <a href="/marine-supplies" class="btn btn--gold btn--lg">Shop Marine <Icon name="arrow" size={18} /></a>
-        <a href="/fishing-supplies" class="btn btn--ghost btn--lg">Shop Fishing <Icon name="fish" size={18} /></a>
+        <a href="/marine-supplies" class="btn btn--gold btn--lg">Shop the range <Icon name="arrow" size={18} /></a>
+        <a href="/contact#quote" class="btn btn--ghost btn--lg">Request a quote</a>
       </div>
 
       <div class="hero__trust" data-reveal data-reveal-delay="420">
-        <span class="hero__trust-label">Trusted brands including</span>
+        <span class="hero__trust-label">Brands we carry include</span>
         <div class="hero__trust-brands">
-          {['Mercury', 'Yamaha', 'Garmin', 'Shimano', 'Penn', 'Costa'].map((b) => (
+          {['Yamaha', 'Calcutta', 'BOSS Audio', 'Pettit', 'Shimano', 'Penn'].map((b) => (
             <span>{b}</span>
           ))}
         </div>
@@ -44,22 +43,22 @@ import { site } from '../data/site';
       <div class="hero__card hero__card--1" data-parallax="0.05">
         <span class="hero__card-icon"><Icon name="boat" size={22} /></span>
         <div>
-          <strong>Outboards &amp; repower</strong>
+          <strong>Outboards &amp; parts</strong>
           <span>Rigged &amp; tested in-house</span>
         </div>
       </div>
       <div class="hero__card hero__card--2" data-parallax="0.1">
         <span class="hero__card-icon"><Icon name="rod" size={22} /></span>
         <div>
-          <strong>Flats to blue water</strong>
-          <span>Tackle for every target</span>
+          <strong>Rods, reels &amp; tackle</strong>
+          <span>Flats to blue water</span>
         </div>
       </div>
       <div class="hero__card hero__card--3" data-parallax="0.08">
-        <span class="hero__card-icon"><Icon name="truck" size={22} /></span>
+        <span class="hero__card-icon"><Icon name="compass" size={22} /></span>
         <div>
-          <strong>Commercial supply</strong>
-          <span>Fleet &amp; wholesale accounts</span>
+          <strong>Scuba &amp; spearfishing</strong>
+          <span>Reef-ready dive gear</span>
         </div>
       </div>
     </aside>

@@ -32,8 +32,12 @@ const jsonLd = {
   url: site.url,
   telephone: site.phoneDisplay,
   email: site.email,
-  foundingDate: String(site.founded),
   image: socialImage,
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: site.rating,
+    reviewCount: site.reviews,
+  },
   address: {
     '@type': 'PostalAddress',
     streetAddress: site.address.line1,

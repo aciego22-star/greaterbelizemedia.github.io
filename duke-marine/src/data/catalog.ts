@@ -113,6 +113,57 @@ export const fishingCategories: Category[] = [
   },
 ];
 
+export const divingCategories: Category[] = [
+  {
+    id: 'regulators',
+    name: 'Regulators & BCDs',
+    blurb:
+      'Regulators, octopuses and buoyancy compensators to breathe easy and stay balanced at depth.',
+    icon: 'gps',
+    examples: ['Regulators', 'Octopus / alt-air', 'BCDs', 'Dive computers', 'Consoles'],
+  },
+  {
+    id: 'masks',
+    name: 'Masks, Fins & Snorkels',
+    blurb:
+      'Snorkel and scuba masks, fins and snorkels for divers, spearos and reef swimmers.',
+    icon: 'compass',
+    examples: ['Dive masks', 'Snorkels', 'Open & closed-heel fins', 'Mask straps', 'Anti-fog'],
+  },
+  {
+    id: 'wetsuits',
+    name: 'Wetsuits & Exposure',
+    blurb:
+      'Wetsuits, rash guards, boots and gloves to keep you comfortable on long dives.',
+    icon: 'shield',
+    examples: ['Wetsuits', 'Rash guards', 'Dive boots', 'Gloves', 'Hoods'],
+  },
+  {
+    id: 'tanks',
+    name: 'Tanks & Accessories',
+    blurb:
+      'Cylinders, gauges, weights and the hardware that keeps your kit dive-ready.',
+    icon: 'anchor',
+    examples: ['Cylinders', 'Tank bands', 'Weights', 'Gauges', 'O-rings & tools'],
+  },
+  {
+    id: 'spearfishing',
+    name: 'Spearfishing',
+    blurb:
+      'Spearguns, pole spears and rigging for free-dive and scuba spearfishing on the reef.',
+    icon: 'fish',
+    examples: ['Spearguns', 'Pole spears', 'Shafts & tips', 'Float lines', 'Reels'],
+  },
+  {
+    id: 'safety',
+    name: 'Dive Safety',
+    blurb:
+      'SMBs, lights, knives and signalling gear so every dive ends the way it should.',
+    icon: 'shield',
+    examples: ['Surface markers (SMBs)', 'Dive lights', 'Dive knives', 'Whistles', 'Reels & spools'],
+  },
+];
+
 export const departments = {
   marine: {
     id: 'marine',
@@ -128,9 +179,23 @@ export const departments = {
     tagline: 'Tackle & gear for flats, reef and blue-water anglers',
     categories: fishingCategories,
   },
+  diving: {
+    id: 'diving',
+    title: 'Diving Supplies',
+    href: '/diving-supplies',
+    tagline: 'Scuba, free-dive & spearfishing gear for Belize’s reef',
+    categories: divingCategories,
+  },
 } as const;
 
-export function categoryName(dept: 'marine' | 'fishing', id: string): string {
-  const list = dept === 'marine' ? marineCategories : fishingCategories;
-  return list.find((c) => c.id === id)?.name ?? id;
+export type DepartmentId = keyof typeof departments;
+
+const categoryLists: Record<DepartmentId, Category[]> = {
+  marine: marineCategories,
+  fishing: fishingCategories,
+  diving: divingCategories,
+};
+
+export function categoryName(dept: DepartmentId, id: string): string {
+  return categoryLists[dept].find((c) => c.id === id)?.name ?? id;
 }

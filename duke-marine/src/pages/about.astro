@@ -17,22 +17,16 @@ const values = [
   { icon: 'anchor', title: 'Here for the long haul', text: 'We stock the parts and service to keep you running for seasons, not just the day of the sale.' },
 ];
 
-const milestones = [
-  { year: '1998', text: 'Duke Marine opens its doors as a small chandlery serving Belize City’s boaters.' },
-  { year: '2006', text: 'Adds a full fishing department — tackle, rods and reels for flats and blue water.' },
-  { year: '2014', text: 'Opens an in-house marine service bench for outboard rigging and repower.' },
-  { year: 'Today', text: 'Belize’s go-to marine & fishing supply, trusted by guides, resorts and fleets nationwide.' },
-];
 ---
 
 <BaseLayout
   title="About Us"
-  description="Duke Marine has supplied Belize’s boaters and anglers since 1998 — a family-run marine & fishing chandlery built on real expertise and service."
+  description="Duke Marine is Belize’s one-stop shop for marine parts, fishing and diving supplies — a family-run store on the Philip Goldson Highway built on real expertise and service."
 >
   <PageHero
     eyebrow="Our story"
     title="Built on the water, for the water"
-    lead="Duke Marine has been Belize’s marine & fishing supply headquarters since 1998 — family-run, expertise-led, and part of the community we serve."
+    lead="Duke Marine is Belize’s one-stop shop for marine parts, fishing and diving supplies — family-run, expertise-led, and part of the community we serve."
     crumbs={[{ label: 'About' }]}
   />
 
@@ -40,21 +34,30 @@ const milestones = [
   <section class="section">
     <div class="container story">
       <div class="story__media" data-reveal>
-        <Media seed="story" icon="anchor" ratio="4 / 5" tone="deep" pattern="topo" label="Duke Marine, Belize" />
+        <img src="/media/poster-sunset.png" alt="A Duke Marine skiff at sunset off Belize" class="story__img" loading="lazy" />
       </div>
       <div class="story__text" data-reveal data-reveal-delay="100">
-        <span class="eyebrow">Since {site.founded}</span>
-        <h2>A chandlery that grew up with Belize’s boating community</h2>
+        <span class="eyebrow">Marine Parts · Sales · Service</span>
+        <h2>Your one-stop shop for life on the water</h2>
         <div class="prose stack" style="--flow: 1.1rem">
-          <p>Duke Marine started as a small shop with a simple promise: stock the gear Belizean boaters actually need, and stand behind every sale. More than two decades later, that promise hasn’t changed.</p>
-          <p>Today we carry thousands of marine and fishing lines under one roof — outboards and rigging, electronics and safety gear, rods, reels and tackle — backed by an in-house service bench and a team that runs these waters themselves.</p>
-          <p>From the weekend angler to the commercial fleet, we’re proud to be the shop Belize’s captains, guides and resorts rely on to keep moving.</p>
+          <p>Duke Marine is built on a simple promise: stock the gear Belizean boaters actually need, and stand behind every sale. From a busy shop on the Philip Goldson Highway, that’s exactly what we do.</p>
+          <p>We carry marine parts, fishing tackle and diving supplies under one roof — outboards and rigging, electronics and safety gear, rods, reels and tackle, masks, regulators and spearguns — backed by an in-house service bench and a team that runs these waters themselves.</p>
+          <p>From the weekend angler to the commercial fleet, we’re proud to be the shop Belize’s captains, guides, divers and resorts rely on to keep moving.</p>
         </div>
         <div class="story__sign">
           <strong>The Duke Marine family</strong>
-          <span>Belize City, Belize</span>
+          <span>Philip Goldson Highway · Belize City, Belize</span>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- Brand quote -->
+  <section class="quoteband on-dark">
+    <div class="container quoteband__inner" data-reveal>
+      <Icon name="quote" size={40} class="quoteband__mark" />
+      <p class="quoteband__text">Where the tide slows, the soul finds its way.</p>
+      <span class="quoteband__sub">Fishing. Diving. Boat Supplies.</span>
     </div>
   </section>
 
@@ -73,24 +76,6 @@ const milestones = [
           ))
         }
       </div>
-    </div>
-  </section>
-
-  <!-- Timeline -->
-  <section class="section">
-    <div class="container">
-      <SectionHeader eyebrow="Our journey" title="From one shop to Belize’s supply HQ" />
-      <ol class="timeline" role="list">
-        {
-          milestones.map((m, i) => (
-            <li class="tl" data-reveal data-reveal-delay={i * 80}>
-              <span class="tl__year">{m.year}</span>
-              <span class="tl__dot" aria-hidden="true"></span>
-              <p class="tl__text">{m.text}</p>
-            </li>
-          ))
-        }
-      </ol>
     </div>
   </section>
 
@@ -136,6 +121,43 @@ const milestones = [
     border-radius: var(--radius-xl);
     overflow: hidden;
     box-shadow: var(--shadow-lg);
+  }
+  .story__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+  }
+
+  .quoteband {
+    background: var(--grad-deep);
+    color: var(--text-invert);
+    text-align: center;
+    padding-block: clamp(3rem, 7vw, 5.5rem);
+  }
+  .quoteband__inner {
+    max-width: 800px;
+  }
+  .quoteband__mark {
+    color: var(--gold);
+    opacity: 0.5;
+    margin: 0 auto 1rem;
+  }
+  .quoteband__text {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.6rem, 4vw, 2.6rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+  .quoteband__sub {
+    display: block;
+    margin-top: 1.1rem;
+    color: var(--gold);
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: 0.02em;
   }
   .story__text h2 {
     margin: 0.7rem 0 1.3rem;

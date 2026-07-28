@@ -7,10 +7,12 @@
  *
  * TODO (client): replace with real products, brands, prices and photos.
  */
+export type Department = 'marine' | 'fishing' | 'diving';
+
 export type Product = {
   slug: string;
   name: string;
-  department: 'marine' | 'fishing';
+  department: Department;
   category: string;
   brand?: string;
   blurb: string;
@@ -30,7 +32,7 @@ export const products: Product[] = [
     name: 'Coastal 115 HP Four-Stroke Outboard',
     department: 'marine',
     category: 'outboards',
-    brand: 'Mercury',
+    brand: 'Yamaha',
     blurb: 'Reliable four-stroke power for skiffs and centre-consoles, with quiet, fuel-efficient cruising.',
     description:
       'A workhorse repower option for Belizean skiffs and pangas. Smooth four-stroke performance, excellent fuel economy and easy starts — set up, rigged and tested by our in-house technicians before it leaves the shop.',
@@ -101,20 +103,37 @@ export const products: Product[] = [
   },
   {
     slug: 'antifouling-paint-gal',
-    name: 'Antifouling Bottom Paint — Gallon',
+    name: 'Pettit Trinidad Antifouling Paint — Gallon',
     department: 'marine',
     category: 'maintenance',
-    brand: 'Interlux',
-    blurb: 'Hard-wearing ablative antifouling that keeps hulls clean through Caribbean fouling seasons.',
+    brand: 'Pettit',
+    blurb: 'Hard-wearing antifouling that keeps hulls clean through Caribbean fouling seasons.',
     priceFrom: 260,
     unit: 'per gallon',
     specs: [
       { label: 'Coverage', value: '~400 sq ft' },
-      { label: 'Type', value: 'Ablative' },
+      { label: 'Type', value: 'Hard / ablative' },
       { label: 'Colors', value: 'Blue / Black / Red' },
     ],
     icon: 'sparkle',
     seed: 'paint1',
+    featured: true,
+  },
+  {
+    slug: 'marine-stereo-bluetooth',
+    name: 'Bluetooth Marine Stereo & Speakers',
+    department: 'marine',
+    category: 'electronics',
+    brand: 'BOSS Audio',
+    blurb: 'Weatherproof marine head unit and speakers built to take sun, spray and salt.',
+    priceFrom: 320,
+    unit: 'per set',
+    specs: [
+      { label: 'Connectivity', value: 'Bluetooth / USB' },
+      { label: 'Rating', value: 'Weatherproof' },
+    ],
+    icon: 'gps',
+    seed: 'stereo1',
   },
   {
     slug: 'galvanized-anchor-kit',
@@ -243,7 +262,7 @@ export const products: Product[] = [
     name: 'Roto-Molded Cooler — 45 QT',
     department: 'fishing',
     category: 'coolers',
-    brand: 'Pelican',
+    brand: 'Calcutta',
     blurb: 'Bear-tough, long-ice-retention cooler that doubles as a casting platform.',
     priceFrom: 610,
     unit: 'each',
@@ -271,18 +290,87 @@ export const products: Product[] = [
     name: 'Polarized Fishing Sunglasses',
     department: 'fishing',
     category: 'apparel',
-    brand: 'Costa',
+    brand: 'Calcutta',
     blurb: 'Glare-cutting polarized lenses that help you spot fish on the flats and reef edges.',
-    priceFrom: 240,
+    priceFrom: 90,
     unit: 'each',
     icon: 'compass',
     seed: 'glasses1',
+  },
+
+  // ---- Diving -----------------------------------------------------------
+  {
+    slug: 'scuba-regulator-set',
+    name: 'Scuba Regulator & Octopus Set',
+    department: 'diving',
+    category: 'regulators',
+    blurb: 'Balanced first and second stage with alternate air — serviced and ready for reef diving.',
+    description:
+      'A dependable regulator setup for Belize’s reef and wall dives. Comes with an alternate-air (octopus) second stage. We can service and pressure-test before you dive.',
+    priceFrom: 950,
+    unit: 'per set',
+    specs: [
+      { label: 'Stages', value: '1st + 2nd + octo' },
+      { label: 'Ports', value: 'Balanced' },
+    ],
+    icon: 'gps',
+    seed: 'reg1',
+    featured: true,
+  },
+  {
+    slug: 'dive-mask-fin-snorkel',
+    name: 'Mask, Fin & Snorkel Set',
+    department: 'diving',
+    category: 'masks',
+    blurb: 'Low-volume mask, open-heel fins and dry snorkel — a complete set for scuba or free-diving.',
+    priceFrom: 220,
+    unit: 'per set',
+    icon: 'compass',
+    seed: 'mask1',
+  },
+  {
+    slug: 'shorty-wetsuit-3mm',
+    name: '3mm Shorty Wetsuit',
+    department: 'diving',
+    category: 'wetsuits',
+    blurb: 'Lightweight 3mm neoprene that’s ideal for warm Caribbean water and long reef dives.',
+    priceFrom: 280,
+    unit: 'each',
+    specs: [
+      { label: 'Thickness', value: '3 mm' },
+      { label: 'Sizes', value: 'S – XXL' },
+    ],
+    icon: 'shield',
+    seed: 'wetsuit1',
+  },
+  {
+    slug: 'reef-speargun',
+    name: 'Reef Speargun',
+    department: 'diving',
+    category: 'spearfishing',
+    blurb: 'Balanced speargun for free-dive and scuba spearfishing on Belize’s reef and flats.',
+    priceFrom: 340,
+    unit: 'each',
+    icon: 'fish',
+    seed: 'spear1',
+    featured: true,
+  },
+  {
+    slug: 'surface-marker-buoy',
+    name: 'Surface Marker Buoy (SMB) & Reel',
+    department: 'diving',
+    category: 'safety',
+    blurb: 'High-visibility SMB with finger reel to signal boats and mark your ascent.',
+    priceFrom: 120,
+    unit: 'per set',
+    icon: 'shield',
+    seed: 'smb1',
   },
 ];
 
 export const featuredProducts = products.filter((p) => p.featured);
 
-export function productsByDepartment(dept: 'marine' | 'fishing') {
+export function productsByDepartment(dept: Department) {
   return products.filter((p) => p.department === dept);
 }
 

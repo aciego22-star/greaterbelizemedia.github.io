@@ -22,8 +22,8 @@
     <circle cx="46" cy="24" r="6" fill="none" stroke="#16b6b0" stroke-width="4"/>
     <path d="M46 6l11 11-11 4-11-4Z" fill="#f2a41c"/>
   </g>
-  <text x="210" y="215" font-family="Sora, Arial, sans-serif" font-size="30" letter-spacing="8" fill="#f2a41c" font-weight="700">MARINE &amp; FISHING SUPPLY</text>
+  <text x="210" y="215" font-family="Sora, Arial, sans-serif" font-size="28" letter-spacing="7" fill="#e6b83f" font-weight="700">MARINE PARTS · SALES · SERVICE</text>
   <text x="96" y="330" font-family="Sora, Arial, sans-serif" font-size="96" fill="#eaf4f4" font-weight="800">Duke Marine</text>
-  <text x="96" y="405" font-family="Inter, Arial, sans-serif" font-size="34" fill="#a9c4d1">Belize’s marine &amp; fishing supply headquarters</text>
+  <text x="96" y="405" font-family="Inter, Arial, sans-serif" font-size="34" fill="#a9c4d1">Fishing. Diving. Boat Supplies. — Belize City</text>
   <rect x="96" y="450" width="230" height="8" rx="4" fill="url(#acc)"/>
 </svg>

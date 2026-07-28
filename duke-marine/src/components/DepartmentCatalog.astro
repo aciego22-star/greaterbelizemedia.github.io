@@ -5,16 +5,29 @@ import ProductCard from './ProductCard.astro';
 import Media from './Media.astro';
 import Icon from './Icon.astro';
 import CtaBanner from './CtaBanner.astro';
-import { departments } from '../data/catalog';
+import { departments, type DepartmentId } from '../data/catalog';
 import { productsByDepartment } from '../data/products';
 
 interface Props {
-  dept: 'marine' | 'fishing';
+  dept: DepartmentId;
 }
 const { dept } = Astro.props;
 const d = departments[dept];
 const items = productsByDepartment(dept);
-const other = dept === 'marine' ? departments.fishing : departments.marine;
+const others = (Object.keys(departments) as DepartmentId[])
+  .filter((id) => id !== dept)
+  .map((id) => departments[id]);
+
+const iconFor: Record<DepartmentId, string> = {
+  marine: 'boat',
+  fishing: 'fish',
+  diving: 'compass',
+};
+const toneFor: Record<DepartmentId, 'current' | 'brass' | 'deep'> = {
+  marine: 'current',
+  fishing: 'brass',
+  diving: 'deep',
+};
 
 // group products by category id for anchored sections
 const byCategory = d.categories.map((c) => ({
@@ -24,7 +37,7 @@ const byCategory = d.categories.map((c) => ({
 ---
 
 <PageHero
-  eyebrow={dept === 'marine' ? 'Marine Supplies' : 'Fishing Supplies'}
+  eyebrow="Shop the range"
   title={d.title}
   lead={d.tagline}
   crumbs={[{ label: d.title }]}
@@ -78,20 +91,26 @@ const byCategory = d.categories.map((c) => ({
   </div>
 </section>
 
-<!-- Cross-sell to other department -->
+<!-- Cross-sell to the other departments -->
 <section class="section">
   <div class="container">
-    <a href={other.href} class="crossell" data-reveal>
-      <div class="crossell__media">
-        <Media seed={other.id} icon={other.id === 'marine' ? 'boat' : 'fish'} ratio="21 / 9" tone={other.id === 'marine' ? 'current' : 'brass'} />
-      </div>
-      <div class="crossell__body">
-        <span class="eyebrow">Also at Duke Marine</span>
-        <h2>{other.title}</h2>
-        <p class="lead">{other.tagline}</p>
-        <span class="link-arrow">Explore {other.title} <Icon name="arrow" size={18} /></span>
-      </div>
-    </a>
+    <span class="eyebrow crossell__eyebrow" data-reveal>Also at Duke Marine</span>
+    <div class="crossell-grid">
+      {
+        others.map((o, i) => (
+          <a href={o.href} class="crossell" data-reveal data-reveal-delay={i * 90}>
+            <div class="crossell__media">
+              <Media seed={o.id} icon={iconFor[o.id]} ratio="16 / 10" tone={toneFor[o.id]} />
+            </div>
+            <div class="crossell__body">
+              <h3>{o.title}</h3>
+              <p>{o.tagline}</p>
+              <span class="link-arrow">Explore <Icon name="arrow" size={16} /></span>
+            </div>
+          </a>
+        ))
+      }
+    </div>
   </div>
 </section>
 
@@ -156,45 +175,54 @@ const byCategory = d.categories.map((c) => ({
     color: var(--accent-strong);
   }
 
-  .crossell {
+  .crossell__eyebrow {
+    display: block;
+    margin-bottom: 1.4rem;
+  }
+  .crossell-grid {
     display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    align-items: center;
-    gap: clamp(1.5rem, 4vw, 3rem);
-    padding: 1.4rem;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.6rem;
+  }
+  .crossell {
+    display: flex;
+    flex-direction: column;
     background: var(--grad-deep);
     color: var(--text-invert);
     border-radius: var(--radius-xl);
     overflow: hidden;
+    box-shadow: var(--shadow-sm);
     transition: transform var(--dur) var(--ease-out), box-shadow var(--dur);
   }
   .crossell:hover {
-    transform: translateY(-5px);
+    transform: translateY(-6px);
     box-shadow: var(--shadow-lg);
   }
   .crossell__media {
-    border-radius: var(--radius-lg);
     overflow: hidden;
   }
+  .crossell__media :global(.media) {
+    transition: transform var(--dur-slow) var(--ease-out);
+  }
+  .crossell:hover .crossell__media :global(.media) {
+    transform: scale(1.05);
+  }
   .crossell__body {
-    padding: 1rem 1.5rem 1.5rem 0.5rem;
+    padding: 1.4rem 1.6rem 1.6rem;
   }
-  .crossell__body h2 {
-    margin-top: 0.6rem;
+  .crossell__body h3 {
+    font-size: 1.4rem;
   }
-  .crossell__body .lead {
-    margin: 0.6rem 0 1.2rem;
+  .crossell__body p {
+    margin: 0.4rem 0 1rem;
     color: #cfe4e6;
   }
   .crossell__body .link-arrow {
     color: var(--c-current-bright);
   }
-  @media (max-width: 760px) {
-    .crossell {
+  @media (max-width: 680px) {
+    .crossell-grid {
       grid-template-columns: 1fr;
-    }
-    .crossell__body {
-      padding: 0.5rem 1rem 1.2rem;
     }
   }
 </style>

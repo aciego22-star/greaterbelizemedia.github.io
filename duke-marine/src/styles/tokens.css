@@ -6,16 +6,16 @@
    ========================================================================= */
 
 :root {
-  /* ---- Brand palette -------------------------------------------------- */
-  --c-abyss: #050f18;        /* near-black ocean depth */
-  --c-navy: #071f30;         /* primary dark surface */
-  --c-navy-700: #0a2c44;
-  --c-navy-600: #0f3a58;
-  --c-marine: #12547a;       /* mid ocean blue */
-  --c-current: #16b6b0;      /* aqua accent (primary accent) */
-  --c-current-bright: #2fe0d3;
-  --c-brass: #f2a41c;        /* signal gold / buoy */
-  --c-brass-soft: #ffc45a;
+  /* ---- Brand palette (matched to the Duke Marine navy + gold logo) ---- */
+  --c-abyss: #06162c;        /* near-black ocean depth */
+  --c-navy: #0c2340;         /* primary brand navy (logo background) */
+  --c-navy-700: #123056;
+  --c-navy-600: #183a62;
+  --c-marine: #1c5a86;       /* mid ocean blue */
+  --c-current: #18b3c7;      /* aqua accent (secondary accent) */
+  --c-current-bright: #34dbe8;
+  --c-brass: #e6b83f;        /* Duke Marine gold (primary accent) */
+  --c-brass-soft: #f4d277;
   --c-coral: #ff6b5e;        /* warm alert accent (sparingly) */
 
   --c-sand: #f6f1e7;         /* warm off-white */

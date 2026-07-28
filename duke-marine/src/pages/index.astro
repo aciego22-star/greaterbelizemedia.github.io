@@ -11,10 +11,17 @@ import Testimonials from '../components/Testimonials.astro';
 import VideoSection from '../components/VideoSection.astro';
 import CtaBanner from '../components/CtaBanner.astro';
 import Reveal from '../components/Reveal.astro';
-import { departments } from '../data/catalog';
+import { departments, type DepartmentId } from '../data/catalog';
 import { featuredProducts } from '../data/products';
 import { featuredBrands } from '../data/brands';
 import { site } from '../data/site';
+
+const deptIcon: Record<DepartmentId, string> = { marine: 'boat', fishing: 'fish', diving: 'compass' };
+const deptTone: Record<DepartmentId, 'current' | 'brass' | 'deep'> = {
+  marine: 'current',
+  fishing: 'brass',
+  diving: 'deep',
+};
 
 const whyPoints = [
   {
@@ -47,9 +54,9 @@ const whyPoints = [
   <section id="departments" class="section">
     <div class="container">
       <SectionHeader
-        eyebrow="Two departments, one dock"
-        title="Marine &amp; fishing, <span class='text-gradient'>under one roof</span>"
-        lead="Whether you’re repowering a skiff or chasing permit on the flats, everything you need is on the shelves."
+        eyebrow="Three departments, one dock"
+        title="Marine, fishing &amp; diving, <span class='text-gradient'>under one roof</span>"
+        lead="Whether you’re repowering a skiff, chasing permit on the flats or gearing up for the reef, everything you need is on the shelves."
       />
       <div class="depts">
         {
@@ -58,9 +65,9 @@ const whyPoints = [
               <div class="dept__media">
                 <Media
                   seed={d.id}
-                  icon={d.id === 'marine' ? 'boat' : 'fish'}
+                  icon={deptIcon[d.id]}
                   ratio="16 / 10"
-                  tone={d.id === 'marine' ? 'current' : 'brass'}
+                  tone={deptTone[d.id]}
                   label={d.title}
                 />
               </div>
@@ -161,7 +168,7 @@ const whyPoints = [
           <a href="/about" class="btn btn--ghost">Our story <Icon name="arrow" size={18} /></a>
         </div>
         <Reveal class="vsplit__video" delay={120}>
-          <VideoSection seed="brand-video" label="Watch: inside Duke Marine" />
+          <VideoSection seed="brand-video" poster="/media/banner-marina.jpg" label="Watch: inside Duke Marine" />
         </Reveal>
       </div>
     </div>
@@ -232,8 +239,13 @@ const whyPoints = [
   /* Departments */
   .depts {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
     gap: 1.6rem;
+  }
+  @media (max-width: 980px) {
+    .depts {
+      grid-template-columns: 1fr 1fr;
+    }
   }
   .dept {
     display: flex;
