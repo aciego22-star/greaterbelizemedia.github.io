@@ -16,21 +16,21 @@ const fmt = (d: Date) =>
 ---
 
 <BaseLayout
-  title="News & Events"
-  description="News, guides and seasonal advice from Duke Marine — Belize’s marine & fishing supply headquarters."
+  title="Blog"
+  description="The Duke Marine blog — guides, new arrivals and seasonal advice from Belize’s marine, fishing & diving supply shop."
 >
   <PageHero
-    eyebrow="News & Events"
+    eyebrow="Blog"
     title="From the shop &amp; the water"
     lead="Seasonal guides, new arrivals and advice from the Duke Marine team."
-    crumbs={[{ label: 'News' }]}
+    crumbs={[{ label: 'Blog' }]}
   />
 
   <section class="section">
     <div class="container">
       {
         featured && (
-          <a href={`/news/${featured.id}`} class="feat" data-reveal>
+          <a href={`/blog/${featured.id}`} class="feat" data-reveal>
             <div class="feat__media">
               <Media seed={featured.data.seed || featured.id} icon="waves" ratio="16 / 10" tone="current" label={featured.data.category} />
             </div>
@@ -51,7 +51,7 @@ const fmt = (d: Date) =>
         rest.length > 0 && (
           <div class="posts">
             {rest.map((post, i) => (
-              <a href={`/news/${post.id}`} class="post" data-reveal data-reveal-delay={(i % 3) * 70}>
+              <a href={`/blog/${post.id}`} class="post" data-reveal data-reveal-delay={(i % 3) * 70}>
                 <div class="post__media">
                   <Media seed={post.data.seed || post.id} icon="waves" ratio="16 / 9" pattern="topo" />
                 </div>

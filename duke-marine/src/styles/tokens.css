@@ -39,7 +39,7 @@
   --border-strong: #c7bba4;
 
   /* ---- Typography ----------------------------------------------------- */
-  --font-display: 'Sora', 'Segoe UI', system-ui, sans-serif;
+  --font-display: 'Fredoka', 'Segoe UI', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
   --fs-hero: clamp(2.75rem, 7vw, 6rem);

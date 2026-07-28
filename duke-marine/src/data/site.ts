@@ -20,9 +20,7 @@ export const site = {
   url: 'https://www.dukemarinebz.com',
   phoneDisplay: '(+501) 223-0319',
   phoneHref: '+5012230319',
-  // NOTE: confirm the WhatsApp number — 223-0319 is the shop line; if WhatsApp
-  // is a separate mobile, update this to that number (digits only, with 501).
-  whatsapp: '5012230319',
+  whatsapp: '5016287395',
   email: 'rduke@dukemarinebz.com',
   salesEmail: 'dukemarine@btl.net',
   address: {
@@ -99,7 +97,8 @@ export const nav: NavItem[] = [
     href: '/about',
     children: [
       { label: 'About Duke Marine', href: '/about', desc: 'Our story & leadership' },
-      { label: 'News & Events', href: '/news', desc: 'Latest from the shop' },
+      { label: 'Gallery & Video', href: '/gallery', desc: 'Photos & video from the shop' },
+      { label: 'Blog', href: '/blog', desc: 'Guides & news from the crew' },
       { label: 'Careers', href: '/careers', desc: 'Join the crew' },
       { label: 'Contact', href: '/contact', desc: 'Visit or message us' },
     ],

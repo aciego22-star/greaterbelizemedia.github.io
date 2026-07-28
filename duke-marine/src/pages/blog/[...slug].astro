@@ -31,7 +31,7 @@ const fmt = (d: Date) =>
         <nav class="crumbs" aria-label="Breadcrumb">
           <a href="/">Home</a>
           <Icon name="chevron" size={14} class="crumbs__sep" />
-          <a href="/news">News</a>
+          <a href="/blog">Blog</a>
           <Icon name="chevron" size={14} class="crumbs__sep" />
           <span aria-current="page">{post.data.category}</span>
         </nav>
@@ -52,7 +52,7 @@ const fmt = (d: Date) =>
         <Content />
       </div>
       <div class="article__back">
-        <a href="/news" class="link-arrow"><Icon name="arrow" size={16} class="flip" /> Back to all news</a>
+        <a href="/blog" class="link-arrow"><Icon name="arrow" size={16} class="flip" /> Back to all posts</a>
       </div>
     </div>
   </article>
@@ -64,7 +64,7 @@ const fmt = (d: Date) =>
           <h2 class="article__more-title" data-reveal>Keep reading</h2>
           <div class="article__more">
             {more.map((p, i) => (
-              <a href={`/news/${p.id}`} class="mpost" data-reveal data-reveal-delay={i * 80}>
+              <a href={`/blog/${p.id}`} class="mpost" data-reveal data-reveal-delay={i * 80}>
                 <div class="mpost__media">
                   <Media seed={p.data.seed || p.id} icon="waves" ratio="16 / 9" pattern="topo" />
                 </div>

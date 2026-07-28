@@ -16,6 +16,8 @@ import { featuredProducts } from '../data/products';
 import { featuredBrands } from '../data/brands';
 import { site } from '../data/site';
 
+const mapEmbed = `https://www.google.com/maps?q=${encodeURIComponent(site.address.mapQuery)}&output=embed`;
+
 const deptIcon: Record<DepartmentId, string> = { marine: 'boat', fishing: 'fish', diving: 'compass' };
 const deptTone: Record<DepartmentId, 'current' | 'brass' | 'deep'> = {
   marine: 'current',
@@ -213,6 +215,7 @@ const whyPoints = [
           <ul role="list" class="visit__list">
             <li><Icon name="pin" size={20} /> <span>{site.address.line1}, {site.address.city}, {site.address.country}</span></li>
             <li><Icon name="phone" size={20} /> <a href={`tel:${site.phoneHref}`}>{site.phoneDisplay}</a></li>
+            <li><Icon name="whatsapp" size={20} /> <a href={`https://wa.me/${site.whatsapp}`}>WhatsApp us</a></li>
             <li><Icon name="mail" size={20} /> <a href={`mailto:${site.email}`}>{site.email}</a></li>
           </ul>
           <div class="visit__hours">
@@ -226,7 +229,12 @@ const whyPoints = [
           <a href="/contact" class="btn btn--gold">Get directions &amp; contact <Icon name="arrow" size={18} /></a>
         </div>
         <Reveal class="visit__map" delay={120}>
-          <Media seed="map" icon="pin" ratio="4 / 3" tone="deep" pattern="grid" label={site.address.city} />
+          <iframe
+            title="Map to Duke Marine"
+            src={mapEmbed}
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
         </Reveal>
       </div>
     </div>
@@ -404,6 +412,21 @@ const whyPoints = [
   .visit__list :global(svg) {
     color: var(--accent-strong);
     flex: none;
+  }
+  .visit__map {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    min-height: 340px;
+  }
+  .visit__map iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 340px;
+    border: 0;
+    filter: grayscale(0.12);
   }
   .visit__hours {
     display: grid;
