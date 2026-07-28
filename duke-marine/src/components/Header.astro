@@ -11,6 +11,9 @@ const { solid = false } = Astro.props;
 const path = Astro.url.pathname;
 const isActive = (href: string) =>
   href === '/' ? path === '/' : path.startsWith(href.split('#')[0]);
+
+// Mobile quick-nav strip: Home + the top-level headings (always visible on mobile)
+const stripItems = [{ label: 'Home', href: '/' }, ...nav.map((n) => ({ label: n.label, href: n.href }))];
 ---
 
 <a href="#main" class="skip-link">Skip to content</a>
@@ -76,16 +79,23 @@ const isActive = (href: string) =>
       </div>
     </nav>
 
-    <button
-      class="nav-toggle"
-      data-nav-toggle
-      aria-label="Toggle navigation"
-      aria-expanded="false"
-      aria-controls="primary-nav"
-    >
-      <span></span><span></span><span></span>
-    </button>
+    <a href={primaryCta.href} class="btn btn--gold btn--sm hd-quote">{primaryCta.label}</a>
   </div>
+
+  <nav class="hd-strip" aria-label="Sections">
+    <div class="hd-strip__inner container container-wide">
+      {
+        stripItems.map((s) => (
+          <a
+            href={s.href}
+            class:list={['hd-strip__link', { 'is-current': isActive(s.href) }]}
+          >
+            {s.label}
+          </a>
+        ))
+      }
+    </div>
+  </nav>
 </header>
 
 <style>
@@ -281,6 +291,47 @@ const isActive = (href: string) =>
     transition: transform var(--dur), opacity var(--dur);
   }
 
+  /* Mobile quick-nav strip (hidden on desktop) */
+  .hd-quote {
+    display: none;
+  }
+  .hd-strip {
+    display: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .hd-strip__inner {
+    display: flex;
+    gap: 0.3rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+    padding-block: 0.5rem;
+    scroll-snap-type: x proximity;
+  }
+  .hd-strip__inner::-webkit-scrollbar {
+    display: none;
+  }
+  .hd-strip__link {
+    flex: none;
+    scroll-snap-align: start;
+    padding: 0.42rem 0.85rem;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #d3e6e8;
+    white-space: nowrap;
+    transition: background var(--dur-fast), color var(--dur-fast);
+  }
+  .hd-strip__link.is-current {
+    background: var(--gold);
+    color: var(--c-navy);
+  }
+  .hd-strip__link:not(.is-current):active {
+    background: rgba(255, 255, 255, 0.14);
+  }
+
   @media (max-width: 1180px) {
     .nav__list {
       gap: 0.1rem;
@@ -294,84 +345,23 @@ const isActive = (href: string) =>
   }
 
   @media (max-width: 980px) {
-    .nav-toggle {
-      display: flex;
+    /* Header is always solid navy on mobile so the strip stays legible */
+    .header,
+    .header.is-hidden {
+      background: color-mix(in srgb, var(--c-navy) 94%, transparent);
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06), var(--shadow);
+      transform: none;
     }
     .nav {
-      position: fixed;
-      inset: 0 0 0 auto;
-      width: min(420px, 100%);
-      flex-direction: column;
-      align-items: stretch;
-      justify-content: flex-start;
-      gap: 0;
-      padding: calc(var(--header-h) + 1.5rem) 1.5rem 2rem;
-      background: var(--grad-deep);
-      transform: translateX(100%);
-      transition: transform var(--dur) var(--ease-out);
-      overflow-y: auto;
-    }
-    .nav.is-open {
-      transform: translateX(0);
-      box-shadow: var(--shadow-lg);
-    }
-    .nav__list {
-      flex-direction: column;
-      align-items: stretch;
-      gap: 0.15rem;
-    }
-    .nav__link {
-      width: 100%;
-      justify-content: space-between;
-      padding: 0.9rem 1rem;
-      font-size: 1.05rem;
-    }
-    .mega {
-      position: static;
-      width: 100%;
-      transform: none;
-      opacity: 1;
-      visibility: visible;
-      pointer-events: auto;
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height var(--dur) var(--ease-out);
-    }
-    .nav__item[data-mega].is-open .mega {
-      max-height: 620px;
-    }
-    .mega__inner {
-      grid-template-columns: 1fr;
-      background: transparent;
-      box-shadow: none;
-      border: 0;
-      color: var(--text-invert);
-      padding: 0.25rem 0.5rem 0.75rem;
-    }
-    .mega__link:hover {
-      background: rgba(255, 255, 255, 0.08);
-    }
-    .mega__desc {
-      color: rgba(233, 244, 244, 0.6);
-    }
-    .mega__feature {
       display: none;
     }
-    .nav__cta {
-      flex-direction: column;
-      align-items: stretch;
-      gap: 0.9rem;
-      margin-top: 1.5rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.14);
-    }
-    .nav__phone {
+    .hd-quote {
       display: inline-flex;
-      justify-content: center;
-      font-size: 1rem;
     }
-    .nav__cta .btn {
-      width: 100%;
+    .hd-strip {
+      display: block;
     }
   }
 </style>

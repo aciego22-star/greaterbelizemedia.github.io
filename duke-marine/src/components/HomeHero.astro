@@ -9,6 +9,7 @@ import Icon from './Icon.astro';
  */
 const slides = [
   { src: '/media/hero-2.jpg', pos: 'center 42%', label: 'On the water' },
+  { src: '/media/hero-4.jpg', pos: 'center 30%', label: 'Below the surface, adventure has no limits' },
   { src: '/media/hero-1.jpg', pos: 'center 22%', label: 'Where the tide slows' },
   { src: '/media/hero-3.jpg', pos: 'center center', label: 'For all your marine needs' },
 ];
@@ -149,6 +150,37 @@ const slides = [
     background: var(--gold);
     width: 46px;
   }
+  /* Mobile: let the photo read at a glance — shorter hero, lighter overlay */
+  @media (max-width: 640px) {
+    .hero {
+      min-height: 76svh;
+      padding-top: calc(var(--header-h) + 3.4rem);
+      padding-bottom: 1.8rem;
+    }
+    .hero__scrim {
+      background: linear-gradient(
+        180deg,
+        rgba(6, 22, 44, 0.5) 0%,
+        rgba(6, 22, 44, 0.12) 28%,
+        rgba(6, 22, 44, 0.28) 55%,
+        rgba(6, 22, 44, 0.72) 100%
+      );
+    }
+    .hero__tag {
+      font-size: clamp(1.85rem, 8.5vw, 2.5rem);
+      margin-top: 0.8rem;
+    }
+    .hero__lead {
+      display: none;
+    }
+    .hero__actions {
+      margin-top: 1.3rem;
+    }
+    .hero__dots {
+      margin-top: 1.4rem;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .hero__slide.is-active {
       transform: none;

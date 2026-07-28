@@ -18,25 +18,25 @@
   --c-brass-soft: #f4d277;
   --c-coral: #ff6b5e;        /* warm alert accent (sparingly) */
 
-  --c-sand: #f6f1e7;         /* warm off-white */
-  --c-sand-200: #ede5d6;
+  --c-sand: #ffffff;         /* snow white (clean, professional) */
+  --c-sand-200: #eef1f5;     /* very light cool grey */
   --c-paper: #ffffff;
   --c-ink: #0b1d2a;          /* text on light */
   --c-ink-soft: #3b566a;
   --c-muted: #64809440;
 
   /* ---- Semantic surfaces (light default) ------------------------------ */
-  --bg: var(--c-sand);
+  --bg: #ffffff;             /* snow-white page background */
   --bg-elevated: var(--c-paper);
-  --bg-inset: #efe8db;
+  --bg-inset: #f4f6f8;       /* subtle cool-grey band for alternating sections */
   --text: var(--c-ink);
   --text-soft: var(--c-ink-soft);
   --text-invert: #eaf4f4;
   --accent: var(--c-current);
   --accent-strong: #0e8f8a;
   --gold: var(--c-brass);
-  --border: #d9cfbe;
-  --border-strong: #c7bba4;
+  --border: #e6e9ee;         /* cool light-grey hairline */
+  --border-strong: #d3d9e2;
 
   /* ---- Typography ----------------------------------------------------- */
   --font-display: 'Fredoka', 'Segoe UI', system-ui, sans-serif;
