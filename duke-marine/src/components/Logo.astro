@@ -1,0 +1,71 @@
+---
+/**
+ * Placeholder brand logo (SVG wordmark + anchor/compass mark).
+ * Replace with the client's real logo file when supplied.
+ * Colours inherit from context so it reads on light & dark surfaces.
+ */
+interface Props {
+  class?: string;
+  compact?: boolean;
+}
+const { class: cls = '', compact = false } = Astro.props;
+---
+
+<a href="/" class:list={['logo', cls]} aria-label="Duke Marine — home">
+  <span class="logo__mark" aria-hidden="true">
+    <svg viewBox="0 0 48 48" width="42" height="42" fill="none">
+      <circle cx="24" cy="24" r="22" stroke="currentColor" stroke-width="2" opacity="0.25" />
+      <path
+        d="M24 9v30M15 20h18M24 39c-6 0-11-4.5-11-11m11 11c6 0 11-4.5 11-11"
+        stroke="currentColor"
+        stroke-width="2.4"
+        stroke-linecap="round"
+      />
+      <circle cx="24" cy="12" r="3.4" stroke="currentColor" stroke-width="2.4" />
+      <path d="M24 4 30 10 24 12 18 10Z" fill="var(--gold, #f2a41c)" opacity="0.9" />
+    </svg>
+  </span>
+  {
+    !compact && (
+      <span class="logo__type">
+        <strong>DUKE</strong>
+        <span>MARINE</span>
+      </span>
+    )
+  }
+</a>
+
+<style>
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    color: inherit;
+  }
+  .logo__mark {
+    color: var(--accent, #16b6b0);
+    display: grid;
+    place-items: center;
+    transition: transform var(--dur) var(--ease-out);
+  }
+  .logo:hover .logo__mark {
+    transform: rotate(-8deg);
+  }
+  .logo__type {
+    display: flex;
+    flex-direction: column;
+    line-height: 0.92;
+    font-family: var(--font-display);
+    letter-spacing: 0.16em;
+  }
+  .logo__type strong {
+    font-size: 1.12rem;
+    font-weight: 800;
+  }
+  .logo__type span {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--gold, #f2a41c);
+    letter-spacing: 0.34em;
+  }
+</style>

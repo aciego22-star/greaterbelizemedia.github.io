@@ -1,0 +1,287 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import Media from '../components/Media.astro';
+import Icon from '../components/Icon.astro';
+import StatStrip from '../components/StatStrip.astro';
+import Reveal from '../components/Reveal.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import { team } from '../data/team';
+import { site } from '../data/site';
+
+const values = [
+  { icon: 'compass', title: 'Real expertise', text: 'We’re boaters and anglers first. The advice across the counter comes from time on the water, not a script.' },
+  { icon: 'shield', title: 'Do it right', text: 'Every outboard, prop and reel is set up and tested before it leaves. We’d rather do it once, properly.' },
+  { icon: 'users', title: 'Look after our own', text: 'From weekend anglers to commercial fleets, we treat every customer like a neighbour — because they are.' },
+  { icon: 'anchor', title: 'Here for the long haul', text: 'We stock the parts and service to keep you running for seasons, not just the day of the sale.' },
+];
+
+const milestones = [
+  { year: '1998', text: 'Duke Marine opens its doors as a small chandlery serving Belize City’s boaters.' },
+  { year: '2006', text: 'Adds a full fishing department — tackle, rods and reels for flats and blue water.' },
+  { year: '2014', text: 'Opens an in-house marine service bench for outboard rigging and repower.' },
+  { year: 'Today', text: 'Belize’s go-to marine & fishing supply, trusted by guides, resorts and fleets nationwide.' },
+];
+---
+
+<BaseLayout
+  title="About Us"
+  description="Duke Marine has supplied Belize’s boaters and anglers since 1998 — a family-run marine & fishing chandlery built on real expertise and service."
+>
+  <PageHero
+    eyebrow="Our story"
+    title="Built on the water, for the water"
+    lead="Duke Marine has been Belize’s marine & fishing supply headquarters since 1998 — family-run, expertise-led, and part of the community we serve."
+    crumbs={[{ label: 'About' }]}
+  />
+
+  <!-- Story -->
+  <section class="section">
+    <div class="container story">
+      <div class="story__media" data-reveal>
+        <Media seed="story" icon="anchor" ratio="4 / 5" tone="deep" pattern="topo" label="Duke Marine, Belize" />
+      </div>
+      <div class="story__text" data-reveal data-reveal-delay="100">
+        <span class="eyebrow">Since {site.founded}</span>
+        <h2>A chandlery that grew up with Belize’s boating community</h2>
+        <div class="prose stack" style="--flow: 1.1rem">
+          <p>Duke Marine started as a small shop with a simple promise: stock the gear Belizean boaters actually need, and stand behind every sale. More than two decades later, that promise hasn’t changed.</p>
+          <p>Today we carry thousands of marine and fishing lines under one roof — outboards and rigging, electronics and safety gear, rods, reels and tackle — backed by an in-house service bench and a team that runs these waters themselves.</p>
+          <p>From the weekend angler to the commercial fleet, we’re proud to be the shop Belize’s captains, guides and resorts rely on to keep moving.</p>
+        </div>
+        <div class="story__sign">
+          <strong>The Duke Marine family</strong>
+          <span>Belize City, Belize</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Values -->
+  <section class="section on-dark values">
+    <div class="container">
+      <SectionHeader eyebrow="What we stand for" title="Our values" align="center" />
+      <div class="values__grid">
+        {
+          values.map((v, i) => (
+            <Reveal class="value" delay={i * 80}>
+              <span class="value__icon"><Icon name={v.icon} size={24} /></span>
+              <h3>{v.title}</h3>
+              <p>{v.text}</p>
+            </Reveal>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Timeline -->
+  <section class="section">
+    <div class="container">
+      <SectionHeader eyebrow="Our journey" title="From one shop to Belize’s supply HQ" />
+      <ol class="timeline" role="list">
+        {
+          milestones.map((m, i) => (
+            <li class="tl" data-reveal data-reveal-delay={i * 80}>
+              <span class="tl__year">{m.year}</span>
+              <span class="tl__dot" aria-hidden="true"></span>
+              <p class="tl__text">{m.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="section-tight" style="background: var(--bg-inset)">
+    <div class="container">
+      <StatStrip />
+    </div>
+  </section>
+
+  <!-- Leadership -->
+  <section class="section">
+    <div class="container">
+      <SectionHeader eyebrow="The crew" title="Leadership &amp; team" lead="Real people who know boats and fishing — and who’ll still be here next season." />
+      <div class="team">
+        {
+          team.map((m, i) => (
+            <article class="member" data-reveal data-reveal-delay={(i % 4) * 70}>
+              <div class="member__photo">
+                <Media seed={`team-${m.name}`} icon="users" ratio="1 / 1" tone="current" pattern="grid" />
+              </div>
+              <h3>{m.name}</h3>
+              <span class="member__role">{m.role}</span>
+              <p>{m.bio}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CtaBanner title="Come say hello" text="Stop by the shop or reach out — we’re always happy to talk gear, rigging and fishing." />
+</BaseLayout>
+
+<style>
+  .story {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: center;
+  }
+  .story__media {
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+  }
+  .story__text h2 {
+    margin: 0.7rem 0 1.3rem;
+  }
+  .story__sign {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1.8rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--border);
+  }
+  .story__sign strong {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+  }
+  .story__sign span {
+    color: var(--text-soft);
+    font-size: 0.9rem;
+  }
+
+  .values {
+    background: var(--grad-deep);
+    color: var(--text-invert);
+  }
+  .values__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.3rem;
+  }
+  .value {
+    padding: 1.7rem 1.5rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    transition: transform var(--dur) var(--ease-out), background var(--dur);
+  }
+  .value:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.07);
+  }
+  .value__icon {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: var(--grad-current);
+    color: var(--c-navy);
+    margin-bottom: 1rem;
+  }
+  .value h3 {
+    font-size: 1.12rem;
+  }
+  .value p {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-soft);
+  }
+
+  .timeline {
+    display: grid;
+    gap: 0;
+    max-width: 780px;
+    margin: 0 auto;
+  }
+  .tl {
+    display: grid;
+    grid-template-columns: 90px 40px 1fr;
+    align-items: start;
+    gap: 1rem;
+    padding-bottom: 2.2rem;
+  }
+  .tl__year {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.15rem;
+    color: var(--accent-strong);
+    text-align: right;
+    padding-top: 0.1rem;
+  }
+  .tl__dot {
+    position: relative;
+    justify-self: center;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--c-current);
+    box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 20%, transparent);
+    margin-top: 0.35rem;
+  }
+  .tl:not(:last-child) .tl__dot::after {
+    content: '';
+    position: absolute;
+    top: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: calc(100% + 2.2rem);
+    background: var(--border-strong);
+  }
+  .tl__text {
+    padding-top: 0.15rem;
+    color: var(--text-soft);
+  }
+
+  .team {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+  .member__photo {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: 1rem;
+  }
+  .member h3 {
+    font-size: 1.15rem;
+  }
+  .member__role {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--accent-strong);
+    margin: 0.2rem 0 0.5rem;
+  }
+  .member p {
+    font-size: 0.88rem;
+    color: var(--text-soft);
+  }
+
+  @media (max-width: 860px) {
+    .story {
+      grid-template-columns: 1fr;
+    }
+    .values__grid,
+    .team {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 520px) {
+    .values__grid,
+    .team {
+      grid-template-columns: 1fr;
+    }
+    .tl {
+      grid-template-columns: 64px 30px 1fr;
+    }
+  }
+</style>

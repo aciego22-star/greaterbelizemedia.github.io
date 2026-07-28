@@ -1,0 +1,240 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import OceanCanvas from '../../components/OceanCanvas.astro';
+import Media from '../../components/Media.astro';
+import Icon from '../../components/Icon.astro';
+import CtaBanner from '../../components/CtaBanner.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('news');
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const all = (await getCollection('news')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+const more = all.filter((p) => p.id !== post.id).slice(0, 2);
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<BaseLayout title={post.data.title} description={post.data.excerpt}>
+  <article class="article">
+    <header class="article__hero on-dark">
+      <OceanCanvas />
+      <div class="container article__head">
+        <nav class="crumbs" aria-label="Breadcrumb">
+          <a href="/">Home</a>
+          <Icon name="chevron" size={14} class="crumbs__sep" />
+          <a href="/news">News</a>
+          <Icon name="chevron" size={14} class="crumbs__sep" />
+          <span aria-current="page">{post.data.category}</span>
+        </nav>
+        <span class="article__cat">{post.data.category}</span>
+        <h1 data-reveal>{post.data.title}</h1>
+        <p class="article__byline" data-reveal data-reveal-delay="80">
+          <Icon name="anchor" size={16} /> {post.data.author} · {fmt(post.data.date)}
+        </p>
+      </div>
+    </header>
+
+    <div class="article__cover container">
+      <Media seed={post.data.seed || post.id} icon="waves" ratio="21 / 9" tone="current" />
+    </div>
+
+    <div class="container article__body">
+      <div class="prose article__prose">
+        <Content />
+      </div>
+      <div class="article__back">
+        <a href="/news" class="link-arrow"><Icon name="arrow" size={16} class="flip" /> Back to all news</a>
+      </div>
+    </div>
+  </article>
+
+  {
+    more.length > 0 && (
+      <section class="section-tight" style="background: var(--bg-inset)">
+        <div class="container">
+          <h2 class="article__more-title" data-reveal>Keep reading</h2>
+          <div class="article__more">
+            {more.map((p, i) => (
+              <a href={`/news/${p.id}`} class="mpost" data-reveal data-reveal-delay={i * 80}>
+                <div class="mpost__media">
+                  <Media seed={p.data.seed || p.id} icon="waves" ratio="16 / 9" pattern="topo" />
+                </div>
+                <div class="mpost__body">
+                  <span class="mpost__cat">{p.data.category}</span>
+                  <h3>{p.data.title}</h3>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <CtaBanner />
+</BaseLayout>
+
+<style>
+  .article__hero {
+    position: relative;
+    overflow: hidden;
+    color: var(--text-invert);
+    padding-top: calc(var(--header-h) + 3rem);
+    padding-bottom: 3rem;
+  }
+  .article__head {
+    max-width: 800px;
+  }
+  .crumbs {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.6rem;
+    font-size: 0.82rem;
+    color: var(--text-soft);
+  }
+  .crumbs a:hover {
+    color: var(--c-current-bright);
+  }
+  .crumbs__sep {
+    transform: rotate(-90deg);
+    opacity: 0.5;
+  }
+  .crumbs [aria-current] {
+    color: var(--c-current-bright);
+  }
+  .article__cat {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    border-radius: var(--radius-pill);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: var(--c-current-bright);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    margin-bottom: 1rem;
+  }
+  .article__hero h1 {
+    font-size: clamp(1.9rem, 4.5vw, 3.2rem);
+  }
+  .article__byline {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.2rem;
+    color: #a9c4d1;
+    font-size: 0.9rem;
+  }
+  .article__cover {
+    margin-top: -2rem;
+    position: relative;
+    z-index: 2;
+  }
+  .article__cover :global(.media) {
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+  }
+  .article__body {
+    max-width: 760px;
+    padding-block: clamp(2.5rem, 6vw, 4.5rem);
+  }
+  .article__prose {
+    max-width: none;
+    font-size: 1.06rem;
+    line-height: 1.75;
+    color: var(--text);
+  }
+  .article__prose :global(h2) {
+    margin: 2.2rem 0 0.8rem;
+    font-size: 1.5rem;
+  }
+  .article__prose :global(h3) {
+    margin: 1.8rem 0 0.6rem;
+  }
+  .article__prose :global(p) {
+    margin-bottom: 1.1rem;
+    color: var(--text-soft);
+  }
+  .article__prose :global(ul),
+  .article__prose :global(ol) {
+    margin: 0 0 1.3rem 1.2rem;
+    display: grid;
+    gap: 0.5rem;
+    color: var(--text-soft);
+  }
+  .article__prose :global(blockquote) {
+    margin: 1.6rem 0;
+    padding: 1.1rem 1.5rem;
+    border-left: 4px solid var(--accent);
+    background: var(--bg-inset);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    font-size: 1.05rem;
+    color: var(--text);
+  }
+  .article__prose :global(strong) {
+    color: var(--text);
+  }
+  .article__back {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .article__back :global(.flip) {
+    transform: rotate(180deg);
+  }
+
+  .article__more-title {
+    margin-bottom: 1.8rem;
+  }
+  .article__more {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  .mpost {
+    display: flex;
+    gap: 1.2rem;
+    align-items: center;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    padding-right: 1.2rem;
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--dur) var(--ease-out), box-shadow var(--dur);
+  }
+  .mpost:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow);
+  }
+  .mpost__media {
+    width: 140px;
+    flex: none;
+  }
+  .mpost__cat {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--accent-strong);
+  }
+  .mpost__body h3 {
+    margin-top: 0.3rem;
+    font-size: 1.05rem;
+  }
+  @media (max-width: 680px) {
+    .article__more {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

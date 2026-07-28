@@ -1,0 +1,200 @@
+---
+import PageHero from './PageHero.astro';
+import CategoryCard from './CategoryCard.astro';
+import ProductCard from './ProductCard.astro';
+import Media from './Media.astro';
+import Icon from './Icon.astro';
+import CtaBanner from './CtaBanner.astro';
+import { departments } from '../data/catalog';
+import { productsByDepartment } from '../data/products';
+
+interface Props {
+  dept: 'marine' | 'fishing';
+}
+const { dept } = Astro.props;
+const d = departments[dept];
+const items = productsByDepartment(dept);
+const other = dept === 'marine' ? departments.fishing : departments.marine;
+
+// group products by category id for anchored sections
+const byCategory = d.categories.map((c) => ({
+  category: c,
+  products: items.filter((p) => p.category === c.id),
+}));
+---
+
+<PageHero
+  eyebrow={dept === 'marine' ? 'Marine Supplies' : 'Fishing Supplies'}
+  title={d.title}
+  lead={d.tagline}
+  crumbs={[{ label: d.title }]}
+>
+  <div class="dhero__actions" data-reveal data-reveal-delay="180">
+    <a href="#categories" class="btn btn--gold">Browse categories <Icon name="arrow" size={18} /></a>
+    <a href="/contact#quote" class="btn btn--ghost">Request a quote</a>
+  </div>
+</PageHero>
+
+<!-- Categories -->
+<section id="categories" class="section">
+  <div class="container">
+    <div class="grid auto-fit" style="--min: 260px">
+      {d.categories.map((c, i) => <CategoryCard category={c} href={`#${c.id}`} delay={i * 60} />)}
+    </div>
+  </div>
+</section>
+
+<!-- Product listing grouped by category (anchored) -->
+<section class="section section-tight" style="background: var(--bg-inset)">
+  <div class="container">
+    {
+      byCategory.map(({ category, products }) => (
+        <div class="catgroup" id={category.id}>
+          <div class="catgroup__head" data-reveal>
+            <div>
+              <span class="eyebrow"><Icon name={category.icon} size={16} /> {category.name}</span>
+              <p class="catgroup__blurb">{category.blurb}</p>
+            </div>
+            <a href="/contact#quote" class="btn btn--ghost btn--sm">Ask about {category.name.split(' ')[0].toLowerCase()} <Icon name="arrow" size={15} /></a>
+          </div>
+          {products.length > 0 ? (
+            <div class="grid auto-fit" style="--min: 250px">
+              {products.map((p, i) => <ProductCard product={p} delay={(i % 4) * 60} />)}
+            </div>
+          ) : (
+            <div class="catgroup__empty" data-reveal>
+              <p><b>In stock &amp; special order.</b> We carry a full range of {category.name.toLowerCase()} — including {category.examples.slice(0, 3).join(', ')} and more.</p>
+              <a href="/contact#quote" class="link-arrow">Ask us what’s available <Icon name="arrow" size={16} /></a>
+            </div>
+          )}
+        </div>
+      ))
+    }
+
+    <p class="catnote" data-reveal>
+      <Icon name="tag" size={18} /> Don’t see it? We special-order from our full range —
+      <a href="/contact">just ask</a>.
+    </p>
+  </div>
+</section>
+
+<!-- Cross-sell to other department -->
+<section class="section">
+  <div class="container">
+    <a href={other.href} class="crossell" data-reveal>
+      <div class="crossell__media">
+        <Media seed={other.id} icon={other.id === 'marine' ? 'boat' : 'fish'} ratio="21 / 9" tone={other.id === 'marine' ? 'current' : 'brass'} />
+      </div>
+      <div class="crossell__body">
+        <span class="eyebrow">Also at Duke Marine</span>
+        <h2>{other.title}</h2>
+        <p class="lead">{other.tagline}</p>
+        <span class="link-arrow">Explore {other.title} <Icon name="arrow" size={18} /></span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<CtaBanner />
+
+<style>
+  .dhero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem;
+    margin-top: 2rem;
+  }
+  .catgroup {
+    scroll-margin-top: 100px;
+    padding-block: clamp(1.8rem, 4vw, 3rem);
+    border-bottom: 1px solid var(--border);
+  }
+  .catgroup:last-of-type {
+    border-bottom: 0;
+  }
+  .catgroup__head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.6rem;
+  }
+  .catgroup__blurb {
+    margin-top: 0.6rem;
+    max-width: 60ch;
+    color: var(--text-soft);
+  }
+  .catgroup__empty {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    padding: 1.6rem 1.8rem;
+    background: var(--bg-elevated);
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius-lg);
+  }
+  .catgroup__empty p {
+    color: var(--text-soft);
+    max-width: 62ch;
+  }
+  .catnote {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-top: 2.5rem;
+    color: var(--text-soft);
+  }
+  .catnote a {
+    color: var(--accent-strong);
+    font-weight: 600;
+  }
+  .catnote :global(svg) {
+    color: var(--accent-strong);
+  }
+
+  .crossell {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    align-items: center;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    padding: 1.4rem;
+    background: var(--grad-deep);
+    color: var(--text-invert);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    transition: transform var(--dur) var(--ease-out), box-shadow var(--dur);
+  }
+  .crossell:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+  }
+  .crossell__media {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .crossell__body {
+    padding: 1rem 1.5rem 1.5rem 0.5rem;
+  }
+  .crossell__body h2 {
+    margin-top: 0.6rem;
+  }
+  .crossell__body .lead {
+    margin: 0.6rem 0 1.2rem;
+    color: #cfe4e6;
+  }
+  .crossell__body .link-arrow {
+    color: var(--c-current-bright);
+  }
+  @media (max-width: 760px) {
+    .crossell {
+      grid-template-columns: 1fr;
+    }
+    .crossell__body {
+      padding: 0.5rem 1rem 1.2rem;
+    }
+  }
+</style>

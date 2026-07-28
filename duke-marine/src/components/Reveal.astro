@@ -1,0 +1,16 @@
+---
+/**
+ * Thin wrapper that adds scroll-reveal to its children.
+ * The animation itself is driven by [data-reveal] in global.css + main.ts.
+ */
+interface Props {
+  as?: string;
+  delay?: number;
+  class?: string;
+}
+const { as: Tag = 'div', delay = 0, class: cls = '' } = Astro.props;
+---
+
+<Tag class={cls} data-reveal data-reveal-delay={delay}>
+  <slot />
+</Tag>

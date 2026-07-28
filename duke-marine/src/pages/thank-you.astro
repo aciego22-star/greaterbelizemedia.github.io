@@ -1,0 +1,101 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import OceanCanvas from '../components/OceanCanvas.astro';
+import Icon from '../components/Icon.astro';
+import { site } from '../data/site';
+---
+
+<BaseLayout
+  title="Thank you"
+  description="Thanks for contacting Duke Marine — we’ll be in touch shortly."
+  noindex={true}
+>
+  <section class="ty on-dark">
+    <OceanCanvas />
+    <div class="container ty__inner" data-reveal>
+      <span class="ty__check"><Icon name="check" size={44} /></span>
+      <h1>Message received — thank you!</h1>
+      <p class="lead">
+        Thanks for reaching out to Duke Marine. A member of our team will get back
+        to you shortly, usually within one business day.
+      </p>
+      <p class="ty__meta">Need us sooner? Call or WhatsApp us directly.</p>
+      <div class="ty__actions">
+        <a href="/" class="btn btn--gold btn--lg">Back to home <Icon name="arrow" size={18} /></a>
+        <a href={`https://wa.me/${site.whatsapp}`} class="btn btn--ghost btn--lg">
+          <Icon name="whatsapp" size={18} /> WhatsApp us
+        </a>
+      </div>
+      <div class="ty__links">
+        <a href="/marine-supplies">Marine Supplies</a>
+        <a href="/fishing-supplies">Fishing Supplies</a>
+        <a href="/news">Latest news</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .ty {
+    position: relative;
+    min-height: 82vh;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: var(--text-invert);
+    overflow: hidden;
+    padding-top: calc(var(--header-h) + 3rem);
+    padding-bottom: 4rem;
+  }
+  .ty__inner {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+  .ty__check {
+    display: grid;
+    place-items: center;
+    width: 92px;
+    height: 92px;
+    margin: 0 auto 1.8rem;
+    border-radius: 50%;
+    background: var(--grad-current);
+    color: var(--c-navy);
+    box-shadow: var(--shadow-glow);
+  }
+  .ty h1 {
+    font-size: var(--fs-h1);
+  }
+  .ty .lead {
+    margin-top: 1.2rem;
+    color: #d3e6e8;
+  }
+  .ty__meta {
+    margin-top: 1rem;
+    color: var(--c-current-bright);
+    font-weight: 600;
+  }
+  .ty__actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  .ty__links {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+    padding-top: 1.8rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+  }
+  .ty__links a {
+    color: #a9c4d1;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+  .ty__links a:hover {
+    color: #fff;
+  }
+</style>

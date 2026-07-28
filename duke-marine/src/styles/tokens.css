@@ -1,0 +1,115 @@
+/* =========================================================================
+   Duke Marine — Design Tokens
+   A distinctive nautical brand system: deep ocean navy, aqua current,
+   brass/signal gold, and warm sand. Swap the brand hues here to re-skin
+   the entire site.
+   ========================================================================= */
+
+:root {
+  /* ---- Brand palette -------------------------------------------------- */
+  --c-abyss: #050f18;        /* near-black ocean depth */
+  --c-navy: #071f30;         /* primary dark surface */
+  --c-navy-700: #0a2c44;
+  --c-navy-600: #0f3a58;
+  --c-marine: #12547a;       /* mid ocean blue */
+  --c-current: #16b6b0;      /* aqua accent (primary accent) */
+  --c-current-bright: #2fe0d3;
+  --c-brass: #f2a41c;        /* signal gold / buoy */
+  --c-brass-soft: #ffc45a;
+  --c-coral: #ff6b5e;        /* warm alert accent (sparingly) */
+
+  --c-sand: #f6f1e7;         /* warm off-white */
+  --c-sand-200: #ede5d6;
+  --c-paper: #ffffff;
+  --c-ink: #0b1d2a;          /* text on light */
+  --c-ink-soft: #3b566a;
+  --c-muted: #64809440;
+
+  /* ---- Semantic surfaces (light default) ------------------------------ */
+  --bg: var(--c-sand);
+  --bg-elevated: var(--c-paper);
+  --bg-inset: #efe8db;
+  --text: var(--c-ink);
+  --text-soft: var(--c-ink-soft);
+  --text-invert: #eaf4f4;
+  --accent: var(--c-current);
+  --accent-strong: #0e8f8a;
+  --gold: var(--c-brass);
+  --border: #d9cfbe;
+  --border-strong: #c7bba4;
+
+  /* ---- Typography ----------------------------------------------------- */
+  --font-display: 'Sora', 'Segoe UI', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  --fs-hero: clamp(2.75rem, 7vw, 6rem);
+  --fs-h1: clamp(2.25rem, 5vw, 4rem);
+  --fs-h2: clamp(1.75rem, 3.4vw, 2.9rem);
+  --fs-h3: clamp(1.3rem, 2vw, 1.7rem);
+  --fs-lead: clamp(1.05rem, 1.4vw, 1.3rem);
+  --fs-body: 1rem;
+  --fs-sm: 0.875rem;
+  --fs-xs: 0.75rem;
+
+  --lh-tight: 1.05;
+  --lh-snug: 1.25;
+  --lh-body: 1.65;
+
+  --tracking-eyebrow: 0.22em;
+
+  /* ---- Space & layout ------------------------------------------------- */
+  --maxw: 1240px;
+  --maxw-wide: 1440px;
+  --maxw-prose: 68ch;
+  --gutter: clamp(1.15rem, 4vw, 3rem);
+  --section-y: clamp(4rem, 9vw, 8.5rem);
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+
+  /* ---- Radius & lines ------------------------------------------------- */
+  --radius-sm: 8px;
+  --radius: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 34px;
+  --radius-pill: 999px;
+
+  /* ---- Elevation ------------------------------------------------------ */
+  --shadow-sm: 0 1px 2px rgba(7, 31, 48, 0.08);
+  --shadow: 0 14px 40px -18px rgba(7, 31, 48, 0.35);
+  --shadow-lg: 0 40px 90px -40px rgba(7, 31, 48, 0.55);
+  --shadow-glow: 0 0 0 1px rgba(22, 182, 176, 0.35), 0 20px 60px -25px rgba(22, 182, 176, 0.45);
+
+  /* ---- Motion --------------------------------------------------------- */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 0.18s;
+  --dur: 0.4s;
+  --dur-slow: 0.8s;
+
+  /* ---- Gradients ------------------------------------------------------ */
+  --grad-deep: radial-gradient(120% 120% at 15% 10%, #0c3350 0%, #071f30 45%, #050f18 100%);
+  --grad-current: linear-gradient(120deg, var(--c-current) 0%, var(--c-marine) 100%);
+  --grad-brass: linear-gradient(120deg, var(--c-brass-soft) 0%, var(--c-brass) 100%);
+  --grad-sheen: linear-gradient(120deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0) 100%);
+
+  --header-h: 76px;
+}
+
+/* Dark sections reuse these mapped tokens via .on-dark */
+.on-dark {
+  --bg: var(--c-navy);
+  --bg-elevated: var(--c-navy-700);
+  --bg-inset: var(--c-navy-600);
+  --text: #eaf4f4;
+  --text-soft: #a9c4d1;
+  --border: rgba(233, 244, 244, 0.14);
+  --border-strong: rgba(233, 244, 244, 0.28);
+  color: var(--text);
+}

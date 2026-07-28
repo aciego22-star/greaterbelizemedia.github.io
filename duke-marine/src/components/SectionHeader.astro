@@ -1,0 +1,62 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  lead?: string;
+  linkHref?: string;
+  linkLabel?: string;
+  align?: 'left' | 'center';
+}
+const { eyebrow, title, lead, linkHref, linkLabel, align = 'left' } = Astro.props;
+---
+
+<header class:list={['shead', `shead--${align}`]}>
+  <div class="shead__text" data-reveal>
+    {eyebrow && <span class="eyebrow">{eyebrow}</span>}
+    <h2 set:html={title} />
+    {lead && <p class="lead">{lead}</p>}
+  </div>
+  {
+    linkHref && (
+      <a href={linkHref} class="btn btn--ghost btn--sm shead__link" data-reveal>
+        {linkLabel} <Icon name="arrow" size={16} />
+      </a>
+    )
+  }
+</header>
+
+<style>
+  .shead {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: clamp(2rem, 4vw, 3.2rem);
+  }
+  .shead--center {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .shead__text h2 {
+    margin-top: 0.7rem;
+  }
+  .shead--center .shead__text {
+    max-width: 60ch;
+  }
+  .shead__text .lead {
+    margin-top: 0.8rem;
+    max-width: 58ch;
+  }
+  .shead__link {
+    flex: none;
+  }
+  @media (max-width: 640px) {
+    .shead {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>

@@ -1,0 +1,81 @@
+---
+interface Stat {
+  value: number;
+  suffix?: string;
+  prefix?: string;
+  decimals?: number;
+  label: string;
+}
+interface Props {
+  stats?: Stat[];
+  class?: string;
+}
+const {
+  stats = [
+    { value: 27, suffix: '+', label: 'Years serving Belize’s boaters' },
+    { value: 4000, suffix: '+', label: 'Marine & fishing SKUs stocked' },
+    { value: 60, suffix: '+', label: 'Trusted brands carried' },
+    { value: 100, suffix: '%', label: 'Gear rigged & tested in-house' },
+  ],
+  class: cls = '',
+} = Astro.props;
+---
+
+<div class:list={['stats', cls]}>
+  {
+    stats.map((s, i) => (
+      <div class="stat" data-reveal data-reveal-delay={i * 90}>
+        <div
+          class="stat__value"
+          data-count={s.value}
+          data-suffix={s.suffix || ''}
+          data-prefix={s.prefix || ''}
+          data-decimals={s.decimals || 0}
+        >
+          {s.prefix || ''}
+          {s.value}
+          {s.suffix || ''}
+        </div>
+        <div class="stat__label">{s.label}</div>
+      </div>
+    ))
+  }
+</div>
+
+<style>
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+  .stat {
+    padding: 1.6rem 1.4rem;
+    text-align: center;
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--c-navy) 4%, var(--bg-elevated));
+    border: 1px solid var(--border);
+  }
+  .on-dark .stat {
+    background: rgba(255, 255, 255, 0.04);
+  }
+  .stat__value {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1;
+    background: var(--grad-current);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .stat__label {
+    margin-top: 0.6rem;
+    font-size: 0.86rem;
+    color: var(--text-soft);
+  }
+  @media (max-width: 760px) {
+    .stats {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

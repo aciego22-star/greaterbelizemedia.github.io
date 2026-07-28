@@ -1,0 +1,212 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import NetlifyForm from '../components/NetlifyForm.astro';
+import Reveal from '../components/Reveal.astro';
+import { site } from '../data/site';
+
+const mapEmbed = `https://www.google.com/maps?q=${encodeURIComponent(site.address.mapQuery)}&output=embed`;
+---
+
+<BaseLayout
+  title="Contact"
+  description="Visit Duke Marine in Belize City, or reach us by phone, WhatsApp or email. Request a quote for marine and fishing supplies or commercial provisioning."
+>
+  <PageHero
+    eyebrow="Contact"
+    title="Let’s talk gear"
+    lead="Visit the shop, request a quote, or reach us any way that’s easy. We’re here through the week and happy to help."
+    crumbs={[{ label: 'Contact' }]}
+  />
+
+  <!-- Contact methods -->
+  <section class="section-tight">
+    <div class="container">
+      <div class="methods">
+        <Reveal class="method" delay={0}>
+          <span class="method__icon"><Icon name="pin" size={24} /></span>
+          <h3>Visit</h3>
+          <p>{site.address.line1}<br />{site.address.city}, {site.address.country}</p>
+        </Reveal>
+        <Reveal class="method" delay={70}>
+          <span class="method__icon"><Icon name="phone" size={24} /></span>
+          <h3>Call</h3>
+          <p><a href={`tel:${site.phoneHref}`}>{site.phoneDisplay}</a></p>
+        </Reveal>
+        <Reveal class="method" delay={140}>
+          <span class="method__icon"><Icon name="whatsapp" size={24} /></span>
+          <h3>WhatsApp</h3>
+          <p><a href={`https://wa.me/${site.whatsapp}`}>Message us</a></p>
+        </Reveal>
+        <Reveal class="method" delay={210}>
+          <span class="method__icon"><Icon name="mail" size={24} /></span>
+          <h3>Email</h3>
+          <p><a href={`mailto:${site.email}`}>{site.email}</a></p>
+        </Reveal>
+      </div>
+    </div>
+  </section>
+
+  <!-- Form + hours/map -->
+  <section id="quote" class="section" style="padding-top: 0">
+    <div class="container contact">
+      <div class="contact__form card" data-reveal>
+        <span class="eyebrow">Send a message</span>
+        <h2>Request a quote or ask a question</h2>
+        <p class="contact__lead">Tell us what you’re after — a product, a repower, or a commercial order — and we’ll get back to you, usually within one business day.</p>
+        <NetlifyForm name="contact" variant="quote" submitLabel="Send enquiry" />
+      </div>
+
+      <aside class="contact__side">
+        <Reveal class="contact__hours card" delay={80}>
+          <h3><Icon name="clock" size={20} /> Opening hours</h3>
+          <ul role="list">
+            {
+              site.hours.map((h) => (
+                <li>
+                  <span>{h.day}</span>
+                  <b class:list={{ 'is-closed': h.time === 'Closed' }}>{h.time}</b>
+                </li>
+              ))
+            }
+          </ul>
+        </Reveal>
+        <Reveal class="contact__map" delay={140}>
+          <iframe
+            title="Map to Duke Marine"
+            src={mapEmbed}
+            width="100%"
+            height="100%"
+            style="border:0"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </Reveal>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .methods {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.2rem;
+  }
+  .method {
+    padding: 1.6rem;
+    text-align: center;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--dur) var(--ease-out), box-shadow var(--dur);
+  }
+  .method:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow);
+  }
+  .method__icon {
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 0.9rem;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--accent) 14%, transparent);
+    color: var(--accent-strong);
+  }
+  .method h3 {
+    font-size: 1.05rem;
+  }
+  .method p {
+    margin-top: 0.4rem;
+    color: var(--text-soft);
+    font-size: 0.92rem;
+  }
+  .method a:hover {
+    color: var(--accent-strong);
+  }
+
+  .contact {
+    display: grid;
+    grid-template-columns: 1.3fr 0.85fr;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: start;
+  }
+  .contact__form {
+    padding: 2rem;
+    scroll-margin-top: 100px;
+  }
+  .contact__form h2 {
+    margin: 0.7rem 0 0.7rem;
+  }
+  .contact__lead {
+    color: var(--text-soft);
+    margin-bottom: 1.8rem;
+  }
+  .contact__side {
+    display: grid;
+    gap: 1.3rem;
+  }
+  .contact__hours {
+    padding: 1.6rem 1.8rem;
+  }
+  .contact__hours h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+  .contact__hours h3 :global(svg) {
+    color: var(--accent-strong);
+  }
+  .contact__hours ul {
+    display: grid;
+    gap: 0.6rem;
+  }
+  .contact__hours li {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.92rem;
+  }
+  .contact__hours li:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+  .contact__hours span {
+    color: var(--text-soft);
+  }
+  .contact__hours b {
+    font-family: var(--font-display);
+  }
+  .contact__hours .is-closed {
+    color: var(--c-coral);
+  }
+  .contact__map {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    min-height: 300px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+  }
+  .contact__map iframe {
+    display: block;
+    min-height: 300px;
+    filter: grayscale(0.15);
+  }
+
+  @media (max-width: 860px) {
+    .methods {
+      grid-template-columns: 1fr 1fr;
+    }
+    .contact {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,97 @@
+---
+import Icon from './Icon.astro';
+import type { Category } from '../data/catalog';
+
+interface Props {
+  category: Category;
+  href: string;
+  delay?: number;
+}
+const { category, href, delay = 0 } = Astro.props;
+---
+
+<a href={href} class="cat" data-reveal data-reveal-delay={delay}>
+  <span class="cat__icon"><Icon name={category.icon} size={26} /></span>
+  <h3 class="cat__title">{category.name}</h3>
+  <p class="cat__blurb">{category.blurb}</p>
+  <ul class="cat__tags" role="list">
+    {category.examples.slice(0, 4).map((ex) => <li>{ex}</li>)}
+  </ul>
+  <span class="cat__link link-arrow">Browse <Icon name="arrow" size={16} /></span>
+</a>
+
+<style>
+  .cat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 1.6rem 1.5rem 1.4rem;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+    transition: transform var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out),
+      border-color var(--dur);
+  }
+  .cat::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 4px;
+    background: var(--grad-current);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--dur) var(--ease-out);
+  }
+  .cat:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow);
+    border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+  }
+  .cat:hover::before {
+    transform: scaleX(1);
+  }
+  .cat__icon {
+    display: grid;
+    place-items: center;
+    width: 54px;
+    height: 54px;
+    border-radius: 15px;
+    background: color-mix(in srgb, var(--accent) 14%, transparent);
+    color: var(--accent-strong);
+    margin-bottom: 0.3rem;
+    transition: transform var(--dur) var(--ease-out), background var(--dur);
+  }
+  .cat:hover .cat__icon {
+    transform: rotate(-6deg) scale(1.05);
+    background: var(--accent);
+    color: #fff;
+  }
+  .cat__title {
+    font-size: 1.15rem;
+  }
+  .cat__blurb {
+    font-size: 0.9rem;
+    color: var(--text-soft);
+    flex: 1;
+  }
+  .cat__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin: 0.3rem 0 0.7rem;
+  }
+  .cat__tags li {
+    font-size: 0.72rem;
+    font-weight: 500;
+    padding: 0.22rem 0.6rem;
+    border-radius: var(--radius-pill);
+    background: var(--bg-inset);
+    color: var(--text-soft);
+  }
+  .cat__link {
+    font-size: 0.9rem;
+  }
+</style>

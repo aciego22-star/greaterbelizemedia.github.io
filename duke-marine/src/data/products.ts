@@ -1,0 +1,291 @@
+/**
+ * Product catalog (placeholder data).
+ * ---------------------------------------------------------------------------
+ * Add, remove or edit entries here — each becomes a catalog card and its own
+ * detail page at /products/<slug>. Prices are indicative "from" figures in BZD
+ * and can be omitted. `department` + `category` must match src/data/catalog.ts.
+ *
+ * TODO (client): replace with real products, brands, prices and photos.
+ */
+export type Product = {
+  slug: string;
+  name: string;
+  department: 'marine' | 'fishing';
+  category: string;
+  brand?: string;
+  blurb: string;
+  description?: string;
+  priceFrom?: number;
+  unit?: string;
+  specs?: { label: string; value: string }[];
+  icon: string;
+  seed?: string;
+  featured?: boolean;
+};
+
+export const products: Product[] = [
+  // ---- Marine -----------------------------------------------------------
+  {
+    slug: 'coastal-115-outboard',
+    name: 'Coastal 115 HP Four-Stroke Outboard',
+    department: 'marine',
+    category: 'outboards',
+    brand: 'Mercury',
+    blurb: 'Reliable four-stroke power for skiffs and centre-consoles, with quiet, fuel-efficient cruising.',
+    description:
+      'A workhorse repower option for Belizean skiffs and pangas. Smooth four-stroke performance, excellent fuel economy and easy starts — set up, rigged and tested by our in-house technicians before it leaves the shop.',
+    priceFrom: 24500,
+    unit: 'from / engine',
+    specs: [
+      { label: 'Power', value: '115 HP' },
+      { label: 'Type', value: '4-stroke EFI' },
+      { label: 'Shaft', value: '20" / 25"' },
+      { label: 'Warranty', value: '3 years' },
+    ],
+    icon: 'boat',
+    seed: 'outboard1',
+    featured: true,
+  },
+  {
+    slug: 'stainless-prop-13x19',
+    name: 'Stainless Propeller 13" × 19P',
+    department: 'marine',
+    category: 'outboards',
+    brand: 'Solas',
+    blurb: 'Balanced stainless prop for better hole-shot and top-end on mid-size outboards.',
+    priceFrom: 720,
+    unit: 'each',
+    specs: [
+      { label: 'Diameter', value: '13 in' },
+      { label: 'Pitch', value: '19 in' },
+      { label: 'Blades', value: '3' },
+    ],
+    icon: 'compass',
+    seed: 'prop1',
+  },
+  {
+    slug: 'chartplotter-7-touch',
+    name: '7" Touchscreen Chartplotter / Fishfinder',
+    department: 'marine',
+    category: 'electronics',
+    brand: 'Garmin',
+    blurb: 'Combo GPS and CHIRP sonar with bright, glove-friendly touchscreen and Belize coastal charts.',
+    description:
+      'Find the fish and find your way home. High-visibility 7" touchscreen, CHIRP sonar, and preloaded coastal charting — a favourite for guides working the flats and reef.',
+    priceFrom: 1980,
+    unit: 'each',
+    specs: [
+      { label: 'Display', value: '7" touch' },
+      { label: 'Sonar', value: 'CHIRP' },
+      { label: 'GPS', value: '10 Hz' },
+    ],
+    icon: 'gps',
+    seed: 'plotter1',
+    featured: true,
+  },
+  {
+    slug: 'offshore-life-jacket',
+    name: 'Offshore Life Jacket (Type I PFD)',
+    department: 'marine',
+    category: 'safety',
+    brand: 'Mustang',
+    blurb: 'High-buoyancy, high-visibility PFD rated for offshore conditions and long exposure.',
+    priceFrom: 130,
+    unit: 'each',
+    specs: [
+      { label: 'Type', value: 'I — Offshore' },
+      { label: 'Sizes', value: 'Adult / Child' },
+    ],
+    icon: 'shield',
+    seed: 'pfd1',
+  },
+  {
+    slug: 'antifouling-paint-gal',
+    name: 'Antifouling Bottom Paint — Gallon',
+    department: 'marine',
+    category: 'maintenance',
+    brand: 'Interlux',
+    blurb: 'Hard-wearing ablative antifouling that keeps hulls clean through Caribbean fouling seasons.',
+    priceFrom: 260,
+    unit: 'per gallon',
+    specs: [
+      { label: 'Coverage', value: '~400 sq ft' },
+      { label: 'Type', value: 'Ablative' },
+      { label: 'Colors', value: 'Blue / Black / Red' },
+    ],
+    icon: 'sparkle',
+    seed: 'paint1',
+  },
+  {
+    slug: 'galvanized-anchor-kit',
+    name: 'Galvanized Anchor & Rode Kit',
+    department: 'marine',
+    category: 'anchoring',
+    brand: 'Duke Marine',
+    blurb: 'Complete anchoring kit — anchor, chain, rope and shackles, sized and spliced in-store.',
+    priceFrom: 340,
+    unit: 'per kit',
+    specs: [
+      { label: 'Anchor', value: '13 lb galvanized' },
+      { label: 'Chain', value: '6 ft, 5/16"' },
+      { label: 'Rode', value: '150 ft, 1/2"' },
+    ],
+    icon: 'anchor',
+    seed: 'anchor1',
+    featured: true,
+  },
+  {
+    slug: 'stainless-cleat-set',
+    name: 'Stainless Steel Cleat Set',
+    department: 'marine',
+    category: 'hardware',
+    brand: 'Sea-Dog',
+    blurb: '316 stainless cleats that resist Caribbean salt — sold singly or as a rigging set.',
+    priceFrom: 45,
+    unit: 'each',
+    icon: 'wrench',
+    seed: 'cleat1',
+  },
+  {
+    slug: 'dual-purpose-battery',
+    name: 'Dual-Purpose Marine Battery',
+    department: 'marine',
+    category: 'electronics',
+    brand: 'Interstate',
+    blurb: 'Starting and deep-cycle in one — dependable cranking plus reserve for electronics.',
+    priceFrom: 420,
+    unit: 'each',
+    icon: 'gps',
+    seed: 'battery1',
+  },
+
+  // ---- Fishing ----------------------------------------------------------
+  {
+    slug: 'flats-spinning-combo',
+    name: 'Flats Spinning Rod & Reel Combo',
+    department: 'fishing',
+    category: 'rods',
+    brand: 'Shimano',
+    blurb: 'Light, corrosion-tough spinning combo tuned for bonefish, permit and snook on the flats.',
+    description:
+      'Built for Belize’s world-class flats. A sealed, saltwater-ready reel on a fast-action rod — balanced, spooled and ready to fish when you walk out the door.',
+    priceFrom: 560,
+    unit: 'combo',
+    specs: [
+      { label: 'Reel size', value: '4000' },
+      { label: 'Rod', value: "7'0\" medium-fast" },
+      { label: 'Line', value: 'Up to 20 lb' },
+    ],
+    icon: 'rod',
+    seed: 'combo1',
+    featured: true,
+  },
+  {
+    slug: 'offshore-conventional-reel',
+    name: 'Offshore Conventional Reel',
+    department: 'fishing',
+    category: 'rods',
+    brand: 'Penn',
+    blurb: 'Sealed drag and big line capacity for trolling and bottom fishing the blue water.',
+    priceFrom: 780,
+    unit: 'each',
+    specs: [
+      { label: 'Drag', value: '30 lb sealed' },
+      { label: 'Bearings', value: '6 stainless' },
+    ],
+    icon: 'fish',
+    seed: 'reel1',
+    featured: true,
+  },
+  {
+    slug: 'braided-line-spool',
+    name: 'Braided Line — Bulk Spool',
+    department: 'fishing',
+    category: 'line',
+    brand: 'PowerPro',
+    blurb: 'Thin-diameter, high-strength braid spooled to your reel on our in-store line station.',
+    priceFrom: 90,
+    unit: 'per spool',
+    specs: [
+      { label: 'Strength', value: '10–80 lb' },
+      { label: 'Colors', value: 'Moss / Blue / Hi-Vis' },
+    ],
+    icon: 'compass',
+    seed: 'braid1',
+  },
+  {
+    slug: 'tackle-terminal-kit',
+    name: 'Reef & Flats Terminal Tackle Kit',
+    department: 'fishing',
+    category: 'tackle',
+    brand: 'Mustad',
+    blurb: 'Curated hooks, leaders, swivels and weights for reef and flats fishing in one box.',
+    priceFrom: 65,
+    unit: 'per kit',
+    icon: 'anchor',
+    seed: 'tackle1',
+  },
+  {
+    slug: 'soft-plastic-lure-pack',
+    name: 'Soft Plastic Lure Variety Pack',
+    department: 'fishing',
+    category: 'lures',
+    brand: 'Z-Man',
+    blurb: 'Durable soft plastics in proven local colors for snook, tarpon and jacks.',
+    priceFrom: 28,
+    unit: 'per pack',
+    icon: 'fish',
+    seed: 'lure1',
+    featured: true,
+  },
+  {
+    slug: 'rotomolded-cooler-45',
+    name: 'Roto-Molded Cooler — 45 QT',
+    department: 'fishing',
+    category: 'coolers',
+    brand: 'Pelican',
+    blurb: 'Bear-tough, long-ice-retention cooler that doubles as a casting platform.',
+    priceFrom: 610,
+    unit: 'each',
+    specs: [
+      { label: 'Capacity', value: '45 QT' },
+      { label: 'Ice retention', value: 'Up to 7 days' },
+    ],
+    icon: 'truck',
+    seed: 'cooler1',
+  },
+  {
+    slug: 'performance-sun-shirt',
+    name: 'UPF 50+ Performance Sun Shirt',
+    department: 'fishing',
+    category: 'apparel',
+    brand: 'Pelagic',
+    blurb: 'Breathable, quick-dry long-sleeve with UPF 50+ protection for all-day sun on the water.',
+    priceFrom: 75,
+    unit: 'each',
+    icon: 'star',
+    seed: 'shirt1',
+  },
+  {
+    slug: 'polarized-fishing-sunglasses',
+    name: 'Polarized Fishing Sunglasses',
+    department: 'fishing',
+    category: 'apparel',
+    brand: 'Costa',
+    blurb: 'Glare-cutting polarized lenses that help you spot fish on the flats and reef edges.',
+    priceFrom: 240,
+    unit: 'each',
+    icon: 'compass',
+    seed: 'glasses1',
+  },
+];
+
+export const featuredProducts = products.filter((p) => p.featured);
+
+export function productsByDepartment(dept: 'marine' | 'fishing') {
+  return products.filter((p) => p.department === dept);
+}
+
+export function getProduct(slug: string) {
+  return products.find((p) => p.slug === slug);
+}

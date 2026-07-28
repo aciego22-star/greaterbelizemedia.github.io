@@ -1,0 +1,254 @@
+---
+import OceanCanvas from './OceanCanvas.astro';
+import Icon from './Icon.astro';
+import { site } from '../data/site';
+
+// To use a real background video, pass its path to OceanCanvas:
+//   <OceanCanvas videoSrc="/media/hero.mp4" videoWebm="/media/hero.webm" poster="/media/hero-poster.jpg" />
+---
+
+<section class="hero on-dark">
+  <OceanCanvas class="hero__bg" />
+
+  <div class="container hero__inner">
+    <div class="hero__content">
+      <span class="hero__eyebrow" data-reveal>
+        <Icon name="anchor" size={16} /> Belize · Est. {site.founded}
+      </span>
+      <h1 class="hero__title">
+        <span data-reveal>Everything for</span>
+        <span data-reveal data-reveal-delay="90">the <em>water</em> &amp; the</span>
+        <span data-reveal data-reveal-delay="180"><span class="text-gradient">catch.</span></span>
+      </h1>
+      <p class="hero__lead" data-reveal data-reveal-delay="260">
+        Duke Marine is Belize’s trusted marine &amp; fishing supply headquarters —
+        outboards and rigging, tackle and gear, and commercial provisioning for
+        anglers, captains, resorts and fleets.
+      </p>
+      <div class="hero__actions" data-reveal data-reveal-delay="340">
+        <a href="/marine-supplies" class="btn btn--gold btn--lg">Shop Marine <Icon name="arrow" size={18} /></a>
+        <a href="/fishing-supplies" class="btn btn--ghost btn--lg">Shop Fishing <Icon name="fish" size={18} /></a>
+      </div>
+
+      <div class="hero__trust" data-reveal data-reveal-delay="420">
+        <span class="hero__trust-label">Trusted brands including</span>
+        <div class="hero__trust-brands">
+          {['Mercury', 'Yamaha', 'Garmin', 'Shimano', 'Penn', 'Costa'].map((b) => (
+            <span>{b}</span>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <aside class="hero__cards" aria-hidden="true">
+      <div class="hero__card hero__card--1" data-parallax="0.05">
+        <span class="hero__card-icon"><Icon name="boat" size={22} /></span>
+        <div>
+          <strong>Outboards &amp; repower</strong>
+          <span>Rigged &amp; tested in-house</span>
+        </div>
+      </div>
+      <div class="hero__card hero__card--2" data-parallax="0.1">
+        <span class="hero__card-icon"><Icon name="rod" size={22} /></span>
+        <div>
+          <strong>Flats to blue water</strong>
+          <span>Tackle for every target</span>
+        </div>
+      </div>
+      <div class="hero__card hero__card--3" data-parallax="0.08">
+        <span class="hero__card-icon"><Icon name="truck" size={22} /></span>
+        <div>
+          <strong>Commercial supply</strong>
+          <span>Fleet &amp; wholesale accounts</span>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <a href="#departments" class="hero__scroll" aria-label="Scroll to explore">
+    <span class="hero__scroll-dot"></span>
+    <span>Explore</span>
+  </a>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    padding-top: calc(var(--header-h) + 2rem);
+    padding-bottom: 4rem;
+    color: var(--text-invert);
+    overflow: hidden;
+  }
+  .hero__inner {
+    display: grid;
+    grid-template-columns: 1.35fr 0.9fr;
+    align-items: center;
+    gap: 2rem;
+    width: 100%;
+  }
+  .hero__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    padding: 0.4rem 0.9rem;
+    border-radius: var(--radius-pill);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: var(--c-current-bright);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+  }
+  .hero__title {
+    margin-top: 1.3rem;
+    font-size: var(--fs-hero);
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+  }
+  .hero__title span {
+    display: block;
+  }
+  .hero__title em {
+    font-style: normal;
+    color: var(--c-brass-soft);
+  }
+  .hero__lead {
+    margin-top: 1.5rem;
+    max-width: 52ch;
+    font-size: var(--fs-lead);
+    color: #d3e6e8;
+  }
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem;
+    margin-top: 2rem;
+  }
+  .hero__trust {
+    margin-top: 2.6rem;
+    padding-top: 1.6rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .hero__trust-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #9fbcc4;
+  }
+  .hero__trust-brands {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.3rem;
+    margin-top: 0.8rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: #cfe0e2;
+    opacity: 0.85;
+  }
+
+  /* Floating cards */
+  .hero__cards {
+    position: relative;
+    height: 100%;
+    min-height: 340px;
+  }
+  .hero__card {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 1rem 1.2rem;
+    background: rgba(9, 32, 48, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: var(--radius);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-lg);
+    white-space: nowrap;
+    animation: floaty 6s ease-in-out infinite;
+  }
+  .hero__card strong {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 0.98rem;
+  }
+  .hero__card span {
+    font-size: 0.8rem;
+    color: #a9c4d1;
+  }
+  .hero__card-icon {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--grad-current);
+    color: var(--c-navy);
+    flex: none;
+  }
+  .hero__card--1 { top: 8%; right: 6%; animation-delay: 0s; }
+  .hero__card--2 { top: 44%; right: 22%; animation-delay: 1.2s; }
+  .hero__card--3 { bottom: 8%; right: 2%; animation-delay: 2.4s; }
+
+  @keyframes floaty {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+
+  .hero__scroll {
+    position: absolute;
+    bottom: 1.6rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #9fbcc4;
+  }
+  .hero__scroll-dot {
+    width: 26px;
+    height: 42px;
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    border-radius: 14px;
+    position: relative;
+  }
+  .hero__scroll-dot::after {
+    content: '';
+    position: absolute;
+    top: 7px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 8px;
+    border-radius: 2px;
+    background: var(--c-current-bright);
+    animation: scrolldot 1.8s ease-in-out infinite;
+  }
+  @keyframes scrolldot {
+    0% { opacity: 0; transform: translate(-50%, 0); }
+    40% { opacity: 1; }
+    100% { opacity: 0; transform: translate(-50%, 14px); }
+  }
+
+  @media (max-width: 980px) {
+    .hero__cards {
+      display: none;
+    }
+    .hero__inner {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero__card { animation: none; }
+    .hero__scroll-dot::after { animation: none; }
+  }
+</style>

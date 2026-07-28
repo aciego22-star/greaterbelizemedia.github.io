@@ -1,0 +1,364 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { nav, primaryCta, site } from '../data/site';
+
+interface Props {
+  solid?: boolean;
+}
+const { solid = false } = Astro.props;
+
+const path = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === '/' ? path === '/' : path.startsWith(href.split('#')[0]);
+---
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<header class:list={['header', { 'is-solid': solid }]} data-header>
+  <div class="header__bar container container-wide">
+    <Logo />
+
+    <nav class="nav" data-nav aria-label="Primary">
+      <ul class="nav__list" role="list">
+        {
+          nav.map((item) =>
+            item.children ? (
+              <li class="nav__item" data-mega>
+                <button
+                  class:list={['nav__link', 'nav__link--has-menu', { 'is-current': isActive(item.href) }]}
+                  data-mega-toggle
+                  aria-expanded="false"
+                >
+                  {item.label}
+                  <Icon name="chevron" size={16} class="nav__caret" />
+                </button>
+                <div class="mega" role="menu">
+                  <div class="mega__inner">
+                    <div class="mega__links">
+                      {item.children.map((child) => (
+                        <a href={child.href} class="mega__link" role="menuitem">
+                          <span class="mega__label">{child.label}</span>
+                          {child.desc && <span class="mega__desc">{child.desc}</span>}
+                        </a>
+                      ))}
+                    </div>
+                    <a href={item.href} class="mega__feature">
+                      <span class="eyebrow">Browse all</span>
+                      <span class="mega__feature-title">{item.label}</span>
+                      <span class="link-arrow">
+                        View catalog <Icon name="arrow" size={18} />
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </li>
+            ) : (
+              <li class="nav__item">
+                <a
+                  href={item.href}
+                  class:list={['nav__link', { 'is-current': isActive(item.href) }]}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ),
+          )
+        }
+      </ul>
+
+      <div class="nav__cta">
+        <a href={`tel:${site.phoneHref}`} class="nav__phone">
+          <Icon name="phone" size={18} />
+          <span>{site.phoneDisplay}</span>
+        </a>
+        <a href={primaryCta.href} class="btn btn--gold btn--sm">{primaryCta.label}</a>
+      </div>
+    </nav>
+
+    <button
+      class="nav-toggle"
+      data-nav-toggle
+      aria-label="Toggle navigation"
+      aria-expanded="false"
+      aria-controls="primary-nav"
+    >
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 100;
+    transition: transform var(--dur) var(--ease-out),
+      background var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
+  }
+  .header.is-hidden {
+    transform: translateY(-105%);
+  }
+  .header__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    height: var(--header-h);
+    color: var(--text-invert);
+  }
+  .header.is-scrolled,
+  .header.is-solid {
+    background: color-mix(in srgb, var(--c-navy) 88%, transparent);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06), var(--shadow);
+  }
+  .header.is-scrolled .header__bar {
+    height: 64px;
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-left: auto;
+  }
+  .nav__list {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin: 0;
+  }
+  .nav__item {
+    position: relative;
+  }
+  .nav__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3em;
+    padding: 0.55rem 0.85rem;
+    border: 0;
+    background: none;
+    color: inherit;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 0.95rem;
+    border-radius: var(--radius-pill);
+    transition: color var(--dur-fast), background var(--dur-fast);
+  }
+  .nav__link:hover,
+  .nav__link.is-current {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  .nav__caret {
+    transition: transform var(--dur);
+    opacity: 0.7;
+  }
+
+  /* Mega-menu */
+  .mega {
+    position: absolute;
+    top: calc(100% + 14px);
+    left: 50%;
+    transform: translate(-50%, 10px);
+    width: min(560px, 88vw);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity var(--dur), transform var(--dur), visibility var(--dur);
+    z-index: 20;
+  }
+  .mega::before {
+    content: '';
+    position: absolute;
+    top: -14px;
+    left: 0;
+    right: 0;
+    height: 14px;
+  }
+  .nav__item[data-mega]:hover .mega,
+  .nav__item[data-mega]:focus-within .mega,
+  .nav__item[data-mega].is-open .mega {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translate(-50%, 0);
+  }
+  .nav__item[data-mega]:hover .nav__caret {
+    transform: rotate(180deg);
+  }
+  .mega__inner {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 0.5rem;
+    padding: 0.7rem;
+    background: var(--c-paper);
+    color: var(--c-ink);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border);
+  }
+  .mega__links {
+    display: grid;
+    gap: 0.15rem;
+  }
+  .mega__link {
+    display: grid;
+    padding: 0.6rem 0.8rem;
+    border-radius: var(--radius);
+    transition: background var(--dur-fast);
+  }
+  .mega__link:hover {
+    background: var(--bg-inset);
+  }
+  .mega__label {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  .mega__desc {
+    font-size: 0.78rem;
+    color: var(--text-soft);
+  }
+  .mega__feature {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 0.6rem;
+    padding: 1.1rem;
+    border-radius: var(--radius);
+    background: var(--grad-deep);
+    color: var(--text-invert);
+  }
+  .mega__feature-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.35rem;
+    line-height: 1.1;
+  }
+  .mega__feature .link-arrow {
+    color: var(--c-current-bright);
+  }
+
+  .nav__cta {
+    display: flex;
+    align-items: center;
+    gap: 1.1rem;
+  }
+  .nav__phone {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--c-current-bright);
+    white-space: nowrap;
+  }
+  .nav__phone:hover {
+    color: #fff;
+  }
+
+  .nav-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    width: 46px;
+    height: 46px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+  }
+  .nav-toggle span {
+    width: 20px;
+    height: 2px;
+    background: currentColor;
+    border-radius: 2px;
+    transition: transform var(--dur), opacity var(--dur);
+  }
+
+  @media (max-width: 980px) {
+    .nav-toggle {
+      display: flex;
+    }
+    .nav {
+      position: fixed;
+      inset: 0 0 0 auto;
+      width: min(420px, 100%);
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: flex-start;
+      gap: 0;
+      padding: calc(var(--header-h) + 1.5rem) 1.5rem 2rem;
+      background: var(--grad-deep);
+      transform: translateX(100%);
+      transition: transform var(--dur) var(--ease-out);
+      overflow-y: auto;
+    }
+    .nav.is-open {
+      transform: translateX(0);
+      box-shadow: var(--shadow-lg);
+    }
+    .nav__list {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.15rem;
+    }
+    .nav__link {
+      width: 100%;
+      justify-content: space-between;
+      padding: 0.9rem 1rem;
+      font-size: 1.05rem;
+    }
+    .mega {
+      position: static;
+      width: 100%;
+      transform: none;
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height var(--dur) var(--ease-out);
+    }
+    .nav__item[data-mega].is-open .mega {
+      max-height: 620px;
+    }
+    .mega__inner {
+      grid-template-columns: 1fr;
+      background: transparent;
+      box-shadow: none;
+      border: 0;
+      color: var(--text-invert);
+      padding: 0.25rem 0.5rem 0.75rem;
+    }
+    .mega__link:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+    .mega__desc {
+      color: rgba(233, 244, 244, 0.6);
+    }
+    .mega__feature {
+      display: none;
+    }
+    .nav__cta {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.9rem;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.14);
+    }
+    .nav__phone {
+      justify-content: center;
+      font-size: 1rem;
+    }
+    .nav__cta .btn {
+      width: 100%;
+    }
+  }
+</style>

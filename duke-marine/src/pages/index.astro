@@ -1,0 +1,434 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HomeHero from '../components/HomeHero.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import CategoryCard from '../components/CategoryCard.astro';
+import ProductCard from '../components/ProductCard.astro';
+import Media from '../components/Media.astro';
+import Icon from '../components/Icon.astro';
+import StatStrip from '../components/StatStrip.astro';
+import Testimonials from '../components/Testimonials.astro';
+import VideoSection from '../components/VideoSection.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import Reveal from '../components/Reveal.astro';
+import { departments } from '../data/catalog';
+import { featuredProducts } from '../data/products';
+import { featuredBrands } from '../data/brands';
+import { site } from '../data/site';
+
+const whyPoints = [
+  {
+    icon: 'wrench',
+    title: 'Rigged & tested in-house',
+    text: 'Outboards, props and reels are set up and tested by our own technicians before they leave the shop.',
+  },
+  {
+    icon: 'compass',
+    title: 'Advice from people who fish',
+    text: 'Our team runs these waters. We match gear to Belize’s flats, reef and blue water — not a catalog.',
+  },
+  {
+    icon: 'truck',
+    title: 'Commercial & fleet supply',
+    text: 'Wholesale pricing, standing orders and delivery for resorts, guides, co-ops and tour fleets.',
+  },
+  {
+    icon: 'shield',
+    title: 'Safety you can trust',
+    text: 'Certified life-saving and signalling gear kept in stock and in date, all season long.',
+  },
+];
+---
+
+<BaseLayout>
+  <HomeHero />
+
+  <!-- Departments split -->
+  <section id="departments" class="section">
+    <div class="container">
+      <SectionHeader
+        eyebrow="Two departments, one dock"
+        title="Marine &amp; fishing, <span class='text-gradient'>under one roof</span>"
+        lead="Whether you’re repowering a skiff or chasing permit on the flats, everything you need is on the shelves."
+      />
+      <div class="depts">
+        {
+          Object.values(departments).map((d, i) => (
+            <a href={d.href} class="dept" data-reveal data-reveal-delay={i * 120}>
+              <div class="dept__media">
+                <Media
+                  seed={d.id}
+                  icon={d.id === 'marine' ? 'boat' : 'fish'}
+                  ratio="16 / 10"
+                  tone={d.id === 'marine' ? 'current' : 'brass'}
+                  label={d.title}
+                />
+              </div>
+              <div class="dept__body">
+                <h3>{d.title}</h3>
+                <p>{d.tagline}</p>
+                <ul role="list" class="dept__cats">
+                  {d.categories.slice(0, 4).map((c) => (
+                    <li><Icon name="check" size={15} /> {c.name}</li>
+                  ))}
+                </ul>
+                <span class="link-arrow">Explore {d.title} <Icon name="arrow" size={16} /></span>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured categories (marine) -->
+  <section class="section section-tight" style="background: var(--bg-inset)">
+    <div class="container">
+      <SectionHeader
+        eyebrow="Shop by category"
+        title="Popular categories"
+        linkHref="/marine-supplies"
+        linkLabel="All marine supplies"
+      />
+      <div class="grid auto-fit" style="--min: 250px">
+        {
+          departments.marine.categories.map((c, i) => (
+            <CategoryCard category={c} href={`/marine-supplies#${c.id}`} delay={i * 70} />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured products -->
+  <section class="section">
+    <div class="container">
+      <SectionHeader
+        eyebrow="Fresh on the shelves"
+        title="Featured gear"
+        lead="A snapshot of what’s moving right now. Prices are indicative — ask us for the best on volume."
+        linkHref="/fishing-supplies"
+        linkLabel="Browse fishing"
+      />
+      <div class="grid auto-fit" style="--min: 250px">
+        {featuredProducts.slice(0, 6).map((p, i) => <ProductCard product={p} delay={i * 70} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Duke Marine + stats -->
+  <section class="section on-dark why">
+    <div class="container">
+      <div class="why__top">
+        <SectionHeader
+          eyebrow="Why Duke Marine"
+          title="The shop Belize’s <span class='text-gold'>boaters trust</span>"
+          lead="Since 1998 we’ve kept skiffs running, guides rigged and fleets supplied — with real expertise behind the counter."
+        />
+      </div>
+      <div class="why__grid">
+        {
+          whyPoints.map((p, i) => (
+            <Reveal class="why__card" delay={i * 90}>
+              <span class="why__icon"><Icon name={p.icon} size={24} /></span>
+              <h3>{p.title}</h3>
+              <p>{p.text}</p>
+            </Reveal>
+          ))
+        }
+      </div>
+      <div class="why__stats">
+        <StatStrip />
+      </div>
+    </div>
+  </section>
+
+  <!-- Brand video -->
+  <section class="section">
+    <div class="container">
+      <div class="vsplit">
+        <div class="vsplit__text">
+          <SectionHeader
+            eyebrow="Inside the shop"
+            title="More than a store — <span class='text-gradient'>a crew</span>"
+            lead="Take a look at how we rig outboards, spool reels and get Belize’s boaters back on the water."
+          />
+          <ul role="list" class="vsplit__list">
+            <li><Icon name="check" size={18} /> In-house marine service &amp; rigging bench</li>
+            <li><Icon name="check" size={18} /> Line-spooling &amp; reel service station</li>
+            <li><Icon name="check" size={18} /> Special orders &amp; commercial provisioning</li>
+          </ul>
+          <a href="/about" class="btn btn--ghost">Our story <Icon name="arrow" size={18} /></a>
+        </div>
+        <Reveal class="vsplit__video" delay={120}>
+          <VideoSection seed="brand-video" label="Watch: inside Duke Marine" />
+        </Reveal>
+      </div>
+    </div>
+  </section>
+
+  <!-- Brands strip -->
+  <section class="section-tight" style="background: var(--bg-inset)">
+    <div class="container">
+      <SectionHeader
+        eyebrow="Brands we carry"
+        title="Gear from names you know"
+        linkHref="/brands"
+        linkLabel="All brands"
+        align="center"
+      />
+      <div class="brandstrip" data-reveal>
+        {featuredBrands.map((b) => <span class="brandstrip__item">{b.name}</span>)}
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="section">
+    <div class="container">
+      <SectionHeader
+        eyebrow="From the water"
+        title="What our customers say"
+        align="center"
+      />
+      <Testimonials />
+    </div>
+  </section>
+
+  <!-- Visit / hours -->
+  <section class="section-tight visit">
+    <div class="container">
+      <div class="visit__grid">
+        <div class="visit__info" data-reveal>
+          <span class="eyebrow">Find us</span>
+          <h2>Visit the shop</h2>
+          <p class="lead">Come talk gear with the team, or reach us any way that’s easy.</p>
+          <ul role="list" class="visit__list">
+            <li><Icon name="pin" size={20} /> <span>{site.address.line1}, {site.address.city}, {site.address.country}</span></li>
+            <li><Icon name="phone" size={20} /> <a href={`tel:${site.phoneHref}`}>{site.phoneDisplay}</a></li>
+            <li><Icon name="mail" size={20} /> <a href={`mailto:${site.email}`}>{site.email}</a></li>
+          </ul>
+          <div class="visit__hours">
+            {site.hours.map((h) => (
+              <div class="visit__hour">
+                <span>{h.day}</span>
+                <b>{h.time}</b>
+              </div>
+            ))}
+          </div>
+          <a href="/contact" class="btn btn--gold">Get directions &amp; contact <Icon name="arrow" size={18} /></a>
+        </div>
+        <Reveal class="visit__map" delay={120}>
+          <Media seed="map" icon="pin" ratio="4 / 3" tone="deep" pattern="grid" label={site.address.city} />
+        </Reveal>
+      </div>
+    </div>
+  </section>
+
+  <CtaBanner />
+</BaseLayout>
+
+<style>
+  /* Departments */
+  .depts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.6rem;
+  }
+  .dept {
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
+  }
+  .dept:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-lg);
+  }
+  .dept__media {
+    overflow: hidden;
+  }
+  .dept__media :global(.media) {
+    transition: transform var(--dur-slow) var(--ease-out);
+  }
+  .dept:hover .dept__media :global(.media) {
+    transform: scale(1.06);
+  }
+  .dept__body {
+    padding: 1.8rem 1.8rem 2rem;
+  }
+  .dept__body h3 {
+    font-size: 1.6rem;
+  }
+  .dept__body > p {
+    margin-top: 0.5rem;
+    color: var(--text-soft);
+  }
+  .dept__cats {
+    display: grid;
+    gap: 0.5rem;
+    margin: 1.3rem 0 1.5rem;
+  }
+  .dept__cats li {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.92rem;
+    color: var(--text);
+  }
+  .dept__cats :global(svg) {
+    color: var(--accent-strong);
+    flex: none;
+  }
+
+  /* Why */
+  .why {
+    background: var(--grad-deep);
+    color: var(--text-invert);
+  }
+  .why__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.3rem;
+    margin-bottom: 3.5rem;
+  }
+  .why__card {
+    padding: 1.7rem 1.5rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    transition: transform var(--dur) var(--ease-out), background var(--dur);
+  }
+  .why__card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.07);
+  }
+  .why__icon {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: var(--grad-current);
+    color: var(--c-navy);
+    margin-bottom: 1rem;
+  }
+  .why__card h3 {
+    font-size: 1.15rem;
+  }
+  .why__card p {
+    margin-top: 0.5rem;
+    font-size: 0.92rem;
+    color: var(--text-soft);
+  }
+
+  /* Video split */
+  .vsplit {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    align-items: center;
+    gap: clamp(2rem, 5vw, 4rem);
+  }
+  .vsplit__list {
+    display: grid;
+    gap: 0.7rem;
+    margin: 0 0 1.8rem;
+  }
+  .vsplit__list li {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 500;
+  }
+  .vsplit__list :global(svg) {
+    color: var(--accent-strong);
+    flex: none;
+  }
+
+  /* Brand strip */
+  .brandstrip {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.8rem;
+  }
+  .brandstrip__item {
+    padding: 0.7rem 1.4rem;
+    border-radius: var(--radius-pill);
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--text-soft);
+    transition: transform var(--dur), color var(--dur), border-color var(--dur);
+  }
+  .brandstrip__item:hover {
+    transform: translateY(-3px);
+    color: var(--accent-strong);
+    border-color: var(--accent);
+  }
+
+  /* Visit */
+  .visit__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: clamp(2rem, 5vw, 4rem);
+  }
+  .visit__list {
+    display: grid;
+    gap: 0.9rem;
+    margin: 1.5rem 0;
+  }
+  .visit__list li {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+  }
+  .visit__list :global(svg) {
+    color: var(--accent-strong);
+    flex: none;
+  }
+  .visit__hours {
+    display: grid;
+    gap: 0.4rem;
+    padding: 1.2rem 1.4rem;
+    background: var(--bg-inset);
+    border-radius: var(--radius);
+    margin-bottom: 1.6rem;
+  }
+  .visit__hour {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: 0.92rem;
+  }
+  .visit__hour span {
+    color: var(--text-soft);
+  }
+
+  @media (max-width: 860px) {
+    .depts {
+      grid-template-columns: 1fr;
+    }
+    .why__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .vsplit,
+    .visit__grid {
+      grid-template-columns: 1fr;
+    }
+    .vsplit__text {
+      order: 1;
+    }
+  }
+  @media (max-width: 520px) {
+    .why__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

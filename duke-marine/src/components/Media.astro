@@ -1,0 +1,160 @@
+---
+/**
+ * Placeholder media tile — a designed duotone gradient with a nautical
+ * pattern and optional icon/label. Stands in for real photography so the
+ * layout looks finished; swap for <img>/<Image> when client photos arrive.
+ *
+ * Each `seed` yields a stable hue so tiles feel varied but cohesive.
+ */
+import Icon from './Icon.astro';
+
+interface Props {
+  seed?: string;
+  icon?: string;
+  label?: string;
+  ratio?: string; // e.g. "4 / 3", "16 / 9", "1 / 1"
+  tone?: 'deep' | 'current' | 'brass' | 'auto';
+  class?: string;
+  pattern?: 'waves' | 'topo' | 'grid';
+}
+
+const {
+  seed = 'duke',
+  icon,
+  label,
+  ratio = '4 / 3',
+  tone = 'auto',
+  class: cls = '',
+  pattern = 'waves',
+} = Astro.props;
+
+// Deterministic hue from seed
+function hueFrom(str: string): number {
+  let h = 0;
+  for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) % 360;
+  return h;
+}
+
+const palettes = {
+  deep: ['#0c3350', '#050f18'],
+  current: ['#16b6b0', '#0d3b54'],
+  brass: ['#f2a41c', '#12547a'],
+} as const;
+
+let colors: readonly [string, string];
+if (tone === 'auto') {
+  const h = hueFrom(seed);
+  const light = `hsl(${h} 55% 32%)`;
+  const dark = `hsl(${(h + 28) % 360} 60% 12%)`;
+  colors = [light, dark];
+} else {
+  colors = palettes[tone];
+}
+
+const uid = `m-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<div
+  class:list={['media', cls]}
+  style={`--ratio:${ratio};--c1:${colors[0]};--c2:${colors[1]};`}
+  role="img"
+  aria-label={label || 'Duke Marine imagery'}
+>
+  <svg class="media__pattern" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs>
+      <radialGradient id={`${uid}-g`} cx="25%" cy="20%" r="110%">
+        <stop offset="0%" stop-color="var(--c1)" />
+        <stop offset="100%" stop-color="var(--c2)" />
+      </radialGradient>
+    </defs>
+    <rect width="400" height="300" fill={`url(#${uid}-g)`} />
+    {
+      pattern === 'waves' && (
+        <g fill="none" stroke="#ffffff" stroke-width="1.4" opacity="0.16">
+          <path d="M-20 90c40 14 80 22 120 18s80-22 120-22 80 14 120 14 80-8 120-14" />
+          <path d="M-20 150c40 14 80 22 120 18s80-22 120-22 80 14 120 14 80-8 120-14" />
+          <path d="M-20 210c40 14 80 22 120 18s80-22 120-22 80 14 120 14 80-8 120-14" />
+        </g>
+      )
+    }
+    {
+      pattern === 'topo' && (
+        <g fill="none" stroke="#ffffff" stroke-width="1.2" opacity="0.14">
+          <ellipse cx="140" cy="150" rx="70" ry="50" />
+          <ellipse cx="140" cy="150" rx="110" ry="80" />
+          <ellipse cx="140" cy="150" rx="150" ry="112" />
+          <ellipse cx="140" cy="150" rx="190" ry="145" />
+        </g>
+      )
+    }
+    {
+      pattern === 'grid' && (
+        <g stroke="#ffffff" stroke-width="1" opacity="0.1">
+          {Array.from({ length: 9 }).map((_, i) => (
+            <line x1={i * 50} y1="0" x2={i * 50} y2="300" />
+          ))}
+          {Array.from({ length: 7 }).map((_, i) => (
+            <line x1="0" y1={i * 50} x2="400" y2={i * 50} />
+          ))}
+        </g>
+      )
+    }
+    <circle cx="330" cy="70" r="46" fill="#ffffff" opacity="0.05" />
+  </svg>
+
+  {
+    icon && (
+      <span class="media__icon" aria-hidden="true">
+        <Icon name={icon} size={34} />
+      </span>
+    )
+  }
+  {label && <span class="media__label">{label}</span>}
+</div>
+
+<style>
+  .media {
+    position: relative;
+    aspect-ratio: var(--ratio);
+    width: 100%;
+    border-radius: inherit;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--c1), var(--c2));
+    display: grid;
+    place-items: center;
+    isolation: isolate;
+  }
+  .media__pattern {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+  .media__icon {
+    display: grid;
+    place-items: center;
+    width: 66px;
+    height: 66px;
+    border-radius: 50%;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.12);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+  }
+  .media__label {
+    position: absolute;
+    left: 1rem;
+    bottom: 0.9rem;
+    padding: 0.3rem 0.7rem;
+    border-radius: var(--radius-pill);
+    background: rgba(5, 15, 24, 0.55);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+  }
+</style>

@@ -1,0 +1,187 @@
+---
+/**
+ * Reusable Netlify-powered form (works with zero backend once deployed to
+ * Netlify). Because Astro output is static HTML, Netlify auto-detects these
+ * at build time. Submissions appear in the Netlify dashboard.
+ *
+ * variant controls which extra fields show.
+ */
+import Icon from './Icon.astro';
+
+interface Props {
+  name: string;
+  variant?: 'contact' | 'quote' | 'commercial' | 'careers';
+  submitLabel?: string;
+}
+const { name, variant = 'contact', submitLabel = 'Send message' } = Astro.props;
+
+const showCompany = variant === 'commercial' || variant === 'quote';
+const showInterest = variant === 'quote' || variant === 'contact';
+const showRole = variant === 'careers';
+const showVessel = variant === 'quote';
+---
+
+<form
+  class="nform"
+  name={name}
+  method="POST"
+  data-netlify="true"
+  netlify-honeypot="bot-field"
+  action="/thank-you"
+>
+  <input type="hidden" name="form-name" value={name} />
+  <p class="nform__hp">
+    <label>Don’t fill this out if you’re human: <input name="bot-field" /></label>
+  </p>
+
+  <div class="nform__grid">
+    <label class="field">
+      <span class="field__label">Full name <b>*</b></span>
+      <input type="text" name="name" required autocomplete="name" placeholder="Your name" />
+    </label>
+
+    <label class="field">
+      <span class="field__label">Email <b>*</b></span>
+      <input type="email" name="email" required autocomplete="email" placeholder="you@email.com" />
+    </label>
+
+    <label class="field">
+      <span class="field__label">Phone / WhatsApp</span>
+      <input type="tel" name="phone" autocomplete="tel" placeholder="(+501) 000-0000" />
+    </label>
+
+    {
+      showCompany && (
+        <label class="field">
+          <span class="field__label">Business / vessel name</span>
+          <input type="text" name="company" placeholder="Company, lodge, fleet…" />
+        </label>
+      )
+    }
+
+    {
+      showRole && (
+        <label class="field">
+          <span class="field__label">Role you’re applying for</span>
+          <input type="text" name="role" placeholder="e.g. Sales, Marine Technician" />
+        </label>
+      )
+    }
+
+    {
+      showInterest && (
+        <label class="field">
+          <span class="field__label">I’m interested in</span>
+          <select name="interest">
+            <option value="">Select…</option>
+            <option>Marine supplies</option>
+            <option>Fishing supplies</option>
+            <option>Outboard / repower</option>
+            <option>Commercial / wholesale</option>
+            <option>Service &amp; rigging</option>
+            <option>Something else</option>
+          </select>
+        </label>
+      )
+    }
+
+    {
+      showVessel && (
+        <label class="field">
+          <span class="field__label">Vessel / engine details</span>
+          <input type="text" name="vessel" placeholder="Make, length, engine…" />
+        </label>
+      )
+    }
+  </div>
+
+  <label class="field">
+    <span class="field__label">{showRole ? 'Tell us about yourself' : 'How can we help?'} <b>*</b></span>
+    <textarea name="message" rows="5" required placeholder="A few details help us help you faster…"></textarea>
+  </label>
+
+  <div class="nform__foot">
+    <p class="nform__note">
+      <Icon name="shield" size={16} /> We’ll only use your details to reply to this enquiry.
+    </p>
+    <button type="submit" class="btn btn--gold">{submitLabel} <Icon name="arrow" size={18} /></button>
+  </div>
+</form>
+
+<style>
+  .nform {
+    display: grid;
+    gap: 1.2rem;
+  }
+  .nform__hp {
+    position: absolute;
+    left: -9999px;
+  }
+  .nform__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+  }
+  .field {
+    display: grid;
+    gap: 0.4rem;
+  }
+  .field__label {
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .field__label b {
+    color: var(--c-coral);
+  }
+  .field input,
+  .field select,
+  .field textarea {
+    width: 100%;
+    padding: 0.8rem 0.95rem;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    background: var(--bg-elevated);
+    color: var(--text);
+    font-size: 0.95rem;
+    transition: border-color var(--dur-fast), box-shadow var(--dur-fast);
+  }
+  .field textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
+  }
+  .field input::placeholder,
+  .field textarea::placeholder {
+    color: color-mix(in srgb, var(--text-soft) 75%, transparent);
+  }
+  .nform__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .nform__note {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    font-size: 0.82rem;
+    color: var(--text-soft);
+  }
+  @media (max-width: 620px) {
+    .nform__grid {
+      grid-template-columns: 1fr;
+    }
+    .nform__foot .btn {
+      width: 100%;
+    }
+  }
+</style>

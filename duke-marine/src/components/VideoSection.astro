@@ -1,0 +1,137 @@
+---
+/**
+ * Embedded video block with a click-to-play facade (no third-party script,
+ * no autoplay cost). Provide a self-hosted `src` (mp4) or a YouTube/Vimeo
+ * `embed` URL. Until real footage is supplied it shows a designed poster.
+ */
+import Media from './Media.astro';
+import Icon from './Icon.astro';
+
+interface Props {
+  src?: string; // self-hosted mp4
+  embed?: string; // youtube/vimeo embed url
+  poster?: string; // image url
+  seed?: string;
+  label?: string;
+  ratio?: string;
+}
+const { src, embed, poster, seed = 'video', label = 'Watch the story', ratio = '16 / 9' } =
+  Astro.props;
+const hasVideo = Boolean(src || embed);
+---
+
+<div class="videobox" style={`--ratio:${ratio}`} data-video={hasVideo ? '' : undefined}>
+  <div class="videobox__poster" data-video-poster>
+    {
+      poster ? (
+        <img src={poster} alt="" class="videobox__img" loading="lazy" />
+      ) : (
+        <Media seed={seed} ratio={ratio} tone="deep" pattern="topo" />
+      )
+    }
+    <button class="videobox__play" data-video-play aria-label={label} {...(!hasVideo ? { disabled: true } : {})}>
+      <span class="videobox__ring"></span>
+      <Icon name="play" size={26} />
+    </button>
+    <span class="videobox__label">{hasVideo ? label : 'Brand video coming soon'}</span>
+  </div>
+
+  {src && <template data-video-tpl>{`<video class="videobox__el" controls autoplay playsinline src="${src}"></video>`}</template>}
+  {embed && (
+    <template data-video-tpl>{`<iframe class="videobox__el" src="${embed}${embed.includes('?') ? '&' : '?'}autoplay=1" title="${label}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>`}</template>
+  )}
+</div>
+
+<style>
+  .videobox {
+    position: relative;
+    aspect-ratio: var(--ratio);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    background: var(--c-navy);
+  }
+  .videobox__poster {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+  }
+  .videobox__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .videobox__play {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 84px;
+    height: 84px;
+    border: none;
+    border-radius: 50%;
+    background: var(--c-current);
+    color: var(--c-navy);
+    transition: transform var(--dur) var(--ease-out), background var(--dur);
+  }
+  .videobox__play[disabled] {
+    cursor: default;
+    background: rgba(255, 255, 255, 0.85);
+  }
+  .videobox__play:not([disabled]):hover {
+    transform: scale(1.08);
+  }
+  .videobox__ring {
+    position: absolute;
+    inset: -10px;
+    border-radius: 50%;
+    border: 2px solid var(--c-current);
+    opacity: 0.6;
+    animation: ring 2.4s ease-out infinite;
+  }
+  @keyframes ring {
+    0% { transform: scale(0.9); opacity: 0.6; }
+    100% { transform: scale(1.5); opacity: 0; }
+  }
+  .videobox__label {
+    position: absolute;
+    bottom: 1.1rem;
+    left: 0;
+    right: 0;
+    text-align: center;
+    z-index: 2;
+    color: #fff;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+  }
+  .videobox :global(.videobox__el) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    object-fit: cover;
+    z-index: 3;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .videobox__ring { animation: none; }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-video]').forEach((box) => {
+    const btn = box.querySelector<HTMLButtonElement>('[data-video-play]');
+    const tpl = box.querySelector<HTMLTemplateElement>('[data-video-tpl]');
+    const poster = box.querySelector<HTMLElement>('[data-video-poster]');
+    if (!btn || !tpl || !poster) return;
+    btn.addEventListener('click', () => {
+      poster.style.display = 'none';
+      box.insertAdjacentHTML('beforeend', tpl.innerHTML);
+    });
+  });
+</script>

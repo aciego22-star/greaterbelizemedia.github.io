@@ -1,0 +1,140 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import { brands } from '../data/brands';
+
+const marine = brands.filter((b) => b.departments.includes('marine'));
+const fishing = brands.filter((b) => b.departments.includes('fishing'));
+const groups = [
+  { title: 'Marine & boating brands', items: marine, icon: 'boat' },
+  { title: 'Fishing & angling brands', items: fishing, icon: 'fish' },
+];
+---
+
+<BaseLayout
+  title="Brands We Carry"
+  description="Duke Marine stocks the marine and fishing brands Belize’s boaters trust — from outboards and electronics to reels, line and eyewear."
+>
+  <PageHero
+    eyebrow="Brands"
+    title="Names you know, gear you trust"
+    lead="We stock the brands that hold up to Caribbean salt, sun and hard use — and we can special-order the rest."
+    crumbs={[{ label: 'Brands' }]}
+  />
+
+  {
+    groups.map((g) => (
+      <section class="section section-tight">
+        <div class="container">
+          <header class="brands__head" data-reveal>
+            <span class="eyebrow"><Icon name={g.icon} size={16} /> {g.title}</span>
+          </header>
+          <div class="brands__grid">
+            {g.items.map((b, i) => (
+              <article class="bcard" data-reveal data-reveal-delay={(i % 4) * 60}>
+                <div class="bcard__logo" aria-hidden="true">{b.name.charAt(0)}</div>
+                <div class="bcard__body">
+                  <h3>{b.name}</h3>
+                  <span class="bcard__cat">{b.category}</span>
+                  <p>{b.blurb}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+    ))
+  }
+
+  <section class="section-tight">
+    <div class="container">
+      <div class="brands__note card" data-reveal>
+        <Icon name="sparkle" size={28} />
+        <div>
+          <h3>Looking for a specific brand?</h3>
+          <p>If we don’t stock it, we’ll do our best to source it. Tell us what you need and we’ll track it down.</p>
+        </div>
+        <a href="/contact" class="btn btn--gold">Ask us <Icon name="arrow" size={18} /></a>
+      </div>
+    </div>
+  </section>
+
+  <CtaBanner title="Can’t find your brand?" text="Send us your list — from outboards to reels — and our team will confirm availability and pricing." />
+</BaseLayout>
+
+<style>
+  .brands__head {
+    margin-bottom: 1.6rem;
+  }
+  .brands__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
+    gap: 1.2rem;
+  }
+  .bcard {
+    display: flex;
+    align-items: center;
+    gap: 1.1rem;
+    padding: 1.3rem;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--dur) var(--ease-out), box-shadow var(--dur), border-color var(--dur);
+  }
+  .bcard:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow);
+    border-color: var(--accent);
+  }
+  .bcard__logo {
+    display: grid;
+    place-items: center;
+    width: 58px;
+    height: 58px;
+    flex: none;
+    border-radius: 14px;
+    background: var(--grad-deep);
+    color: var(--c-current-bright);
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.6rem;
+  }
+  .bcard__body h3 {
+    font-size: 1.1rem;
+  }
+  .bcard__cat {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--accent-strong);
+    margin: 0.15rem 0 0.3rem;
+  }
+  .bcard__body p {
+    font-size: 0.85rem;
+    color: var(--text-soft);
+  }
+  .brands__note {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.8rem 2rem;
+    flex-wrap: wrap;
+  }
+  .brands__note :global(svg) {
+    color: var(--gold);
+    flex: none;
+  }
+  .brands__note div {
+    flex: 1;
+    min-width: 240px;
+  }
+  .brands__note p {
+    margin-top: 0.3rem;
+    color: var(--text-soft);
+  }
+</style>
