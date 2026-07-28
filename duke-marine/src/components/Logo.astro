@@ -25,6 +25,7 @@ const { class: cls = '', compact = false } = Astro.props;
       <span class="logo__type">
         <strong>DUKE&nbsp;MARINE</strong>
         <span>Marine Parts · Sales · Service</span>
+        <span class="logo__tag2">Fishing · Diving · Boat Supplies</span>
       </span>
     )
   }
@@ -61,11 +62,15 @@ const { class: cls = '', compact = false } = Astro.props;
     color: var(--gold, #e6b83f);
   }
   .logo__type span {
-    font-size: 0.62rem;
+    font-size: 0.58rem;
     font-weight: 600;
     color: currentColor;
     opacity: 0.72;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
+  }
+  .logo__tag2 {
+    color: var(--gold, #e6b83f) !important;
+    opacity: 0.95 !important;
   }
 </style>

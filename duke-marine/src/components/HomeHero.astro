@@ -1,43 +1,34 @@
 ---
-import Icon from './Icon.astro';
-
 /**
- * Full-bleed hero slideshow — cross-fades the client's brand photos every 7s.
- * Order/focus tuned so each image's key area stays in view. Respects
- * prefers-reduced-motion (shows the first slide, no auto-advance).
+ * Full-image hero slideshow — cross-fades the client's brand photos every 7s.
+ * Each slide shows the WHOLE image (contain) in any orientation, over a blurred
+ * fill of itself so there are no empty bars. Respects prefers-reduced-motion.
  * Swap/add images in public/media and edit the `slides` array below.
  */
 const slides = [
-  { src: '/media/hero-2.jpg', pos: 'center 42%', label: 'On the water' },
-  { src: '/media/hero-4.jpg', pos: 'center 30%', label: 'Below the surface, adventure has no limits' },
-  { src: '/media/hero-1.jpg', pos: 'center 22%', label: 'Where the tide slows' },
-  { src: '/media/hero-3.jpg', pos: 'center center', label: 'For all your marine needs' },
+  { src: '/media/hero-2.jpg', label: 'Fishing and diving gear from Duke Marine' },
+  { src: '/media/hero-4.jpg', label: 'Below the surface, adventure has no limits' },
+  { src: '/media/hero-1.jpg', label: 'Where the tide slows, the soul finds its way' },
+  { src: '/media/hero-3.jpg', label: 'Duke Marine — for all your marine needs' },
 ];
 ---
 
 <section class="hero on-dark">
+  <h1 class="visually-hidden">Duke Marine — marine, fishing &amp; diving supplies in Belize City</h1>
+
   <div class="hero__slides" data-hero-slides aria-label="Duke Marine">
     {
       slides.map((s, i) => (
-        <div
-          class:list={['hero__slide', { 'is-active': i === 0 }]}
-          style={`background-image:url(${s.src});background-position:${s.pos}`}
-          role="img"
-          aria-label={s.label}
-        />
+        <div class:list={['hero__slide', { 'is-active': i === 0 }]} role="img" aria-label={s.label}>
+          <div class="hero__slide-blur" style={`background-image:url(${s.src})`}></div>
+          <div class="hero__slide-img" style={`background-image:url(${s.src})`}></div>
+        </div>
       ))
     }
   </div>
   <div class="hero__scrim"></div>
 
   <div class="container hero__inner">
-    <span class="hero__eyebrow"><Icon name="anchor" size={16} /> Belize City · Marine Parts · Sales · Service</span>
-    <h1 class="hero__tag">Fishing. Diving. Boat supplies.</h1>
-    <p class="hero__lead">For all your marine needs — Belize’s one-stop shop for marine parts, fishing and diving supplies.</p>
-    <div class="hero__actions">
-      <a href="/marine-supplies" class="btn btn--gold btn--lg">Shop the range <Icon name="arrow" size={18} /></a>
-      <a href="/contact#quote" class="btn btn--ghost btn--lg">Request a quote</a>
-    </div>
     <div class="hero__dots" data-hero-dots role="tablist" aria-label="Choose slide">
       {slides.map((_, i) => (
         <button class:list={['hero__dot', { 'is-active': i === 0 }]} aria-label={`Slide ${i + 1}`}></button>
@@ -49,14 +40,14 @@ const slides = [
 <style>
   .hero {
     position: relative;
-    min-height: 100svh;
+    min-height: 88svh;
     display: flex;
     align-items: flex-end;
-    padding-top: calc(var(--header-h) + 2rem);
-    padding-bottom: clamp(2.5rem, 6vw, 5rem);
+    padding-top: calc(var(--header-h) + 1.5rem);
+    padding-bottom: clamp(1.5rem, 3vw, 2.5rem);
     color: var(--text-invert);
     overflow: hidden;
-    background: var(--grad-deep);
+    background: var(--c-navy);
   }
   .hero__slides {
     position: absolute;
@@ -66,82 +57,61 @@ const slides = [
   .hero__slide {
     position: absolute;
     inset: 0;
-    background-size: cover;
-    background-repeat: no-repeat;
     opacity: 0;
-    transform: scale(1.04);
     transition: opacity 1.4s var(--ease-out);
   }
   .hero__slide.is-active {
     opacity: 1;
-    transform: scale(1);
-    transition: opacity 1.4s var(--ease-out), transform 8s linear;
   }
+  /* blurred fill (no empty bars) */
+  .hero__slide-blur {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(28px) brightness(0.55);
+    transform: scale(1.12);
+  }
+  /* the full image, shown whole in any orientation */
+  .hero__slide-img {
+    position: absolute;
+    inset: 0;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  /* subtle top scrim so the (transparent) desktop nav stays legible */
   .hero__scrim {
     position: absolute;
     inset: 0;
     z-index: 1;
+    pointer-events: none;
     background: linear-gradient(
       180deg,
-      rgba(6, 22, 44, 0.72) 0%,
-      rgba(6, 22, 44, 0.28) 34%,
-      rgba(6, 22, 44, 0.35) 60%,
-      rgba(6, 22, 44, 0.82) 100%
+      rgba(6, 22, 44, 0.65) 0%,
+      rgba(6, 22, 44, 0.1) 22%,
+      rgba(6, 22, 44, 0) 45%
     );
   }
   .hero__inner {
     position: relative;
     z-index: 2;
     width: 100%;
-  }
-  .hero__eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5em;
-    padding: 0.4rem 0.9rem;
-    border-radius: var(--radius-pill);
-    background: rgba(6, 22, 44, 0.45);
-    border: 1px solid rgba(255, 255, 255, 0.22);
-    color: #fff;
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 0.8rem;
-    letter-spacing: 0.04em;
-    -webkit-backdrop-filter: blur(6px);
-    backdrop-filter: blur(6px);
-  }
-  .hero__tag {
-    margin-top: 1.1rem;
-    font-size: clamp(2.3rem, 5.6vw, 4.4rem);
-    line-height: 1.02;
-    letter-spacing: -0.01em;
-    text-shadow: 0 2px 24px rgba(6, 22, 44, 0.6);
-    max-width: 16ch;
-  }
-  .hero__lead {
-    margin-top: 1.1rem;
-    max-width: 46ch;
-    font-size: var(--fs-lead);
-    color: #eaf4f4;
-    text-shadow: 0 1px 14px rgba(6, 22, 44, 0.7);
-  }
-  .hero__actions {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.9rem;
-    margin-top: 1.8rem;
+    justify-content: center;
   }
   .hero__dots {
     display: flex;
     gap: 0.6rem;
-    margin-top: 2rem;
   }
   .hero__dot {
     width: 34px;
     height: 5px;
     border: 0;
     border-radius: var(--radius-pill);
-    background: rgba(255, 255, 255, 0.35);
+    background: rgba(255, 255, 255, 0.45);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
     cursor: pointer;
     padding: 0;
     transition: background 0.3s, width 0.3s;
@@ -150,40 +120,19 @@ const slides = [
     background: var(--gold);
     width: 46px;
   }
-  /* Mobile: let the photo read at a glance — shorter hero, lighter overlay */
+
   @media (max-width: 640px) {
     .hero {
-      min-height: 76svh;
-      padding-top: calc(var(--header-h) + 3.4rem);
-      padding-bottom: 1.8rem;
+      min-height: 72svh;
+      padding-top: calc(var(--header-h) + 3.6rem);
     }
-    .hero__scrim {
-      background: linear-gradient(
-        180deg,
-        rgba(6, 22, 44, 0.5) 0%,
-        rgba(6, 22, 44, 0.12) 28%,
-        rgba(6, 22, 44, 0.28) 55%,
-        rgba(6, 22, 44, 0.72) 100%
-      );
-    }
-    .hero__tag {
-      font-size: clamp(1.85rem, 8.5vw, 2.5rem);
-      margin-top: 0.8rem;
-    }
-    .hero__lead {
-      display: none;
-    }
-    .hero__actions {
-      margin-top: 1.3rem;
-    }
-    .hero__dots {
-      margin-top: 1.4rem;
+    .hero__slide-blur {
+      filter: blur(22px) brightness(0.55);
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero__slide.is-active {
-      transform: none;
+    .hero__slide {
       transition: opacity 0.01s;
     }
   }
