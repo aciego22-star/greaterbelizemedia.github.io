@@ -1,5 +1,5 @@
 /* =========================================================================
-   Duke Marine — Design Tokens
+   Duke Marine, Design Tokens
    A distinctive nautical brand system: deep ocean navy, aqua current,
    brass/signal gold, and warm sand. Swap the brand hues here to re-skin
    the entire site.
@@ -39,7 +39,7 @@
   --border-strong: #d3d9e2;
 
   /* ---- Typography ----------------------------------------------------- */
-  --font-display: 'Fredoka', 'Segoe UI', system-ui, sans-serif;
+  --font-display: 'Montserrat', 'Segoe UI', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
   --fs-hero: clamp(2.75rem, 7vw, 6rem);

@@ -1,7 +1,7 @@
 /**
  * Product catalog (placeholder data).
  * ---------------------------------------------------------------------------
- * Add, remove or edit entries here — each becomes a catalog card and its own
+ * Add, remove or edit entries here, each becomes a catalog card and its own
  * detail page at /products/<slug>. Prices are indicative "from" figures in BZD
  * and can be omitted. `department` + `category` must match src/data/catalog.ts.
  *
@@ -35,7 +35,7 @@ export const products: Product[] = [
     brand: 'Yamaha',
     blurb: 'Reliable four-stroke power for skiffs and centre-consoles, with quiet, fuel-efficient cruising.',
     description:
-      'A workhorse repower option for Belizean skiffs and pangas. Smooth four-stroke performance, excellent fuel economy and easy starts — set up, rigged and tested by our in-house technicians before it leaves the shop.',
+      'A workhorse repower option for Belizean skiffs and pangas. Smooth four-stroke performance, excellent fuel economy and easy starts, set up, rigged and tested by our in-house technicians before it leaves the shop.',
     priceFrom: 24500,
     unit: 'from / engine',
     specs: [
@@ -73,7 +73,7 @@ export const products: Product[] = [
     brand: 'Garmin',
     blurb: 'Combo GPS and CHIRP sonar with bright, glove-friendly touchscreen and Belize coastal charts.',
     description:
-      'Find the fish and find your way home. High-visibility 7" touchscreen, CHIRP sonar, and preloaded coastal charting — a favourite for guides working the flats and reef.',
+      'Find the fish and find your way home. High-visibility 7" touchscreen, CHIRP sonar, and preloaded coastal charting, a favourite for guides working the flats and reef.',
     priceFrom: 1980,
     unit: 'each',
     specs: [
@@ -95,7 +95,7 @@ export const products: Product[] = [
     priceFrom: 130,
     unit: 'each',
     specs: [
-      { label: 'Type', value: 'I — Offshore' },
+      { label: 'Type', value: 'I, Offshore' },
       { label: 'Sizes', value: 'Adult / Child' },
     ],
     icon: 'shield',
@@ -103,7 +103,7 @@ export const products: Product[] = [
   },
   {
     slug: 'antifouling-paint-gal',
-    name: 'Pettit Trinidad Antifouling Paint — Gallon',
+    name: 'Pettit Trinidad Antifouling Paint, Gallon',
     department: 'marine',
     category: 'maintenance',
     brand: 'Pettit',
@@ -141,7 +141,7 @@ export const products: Product[] = [
     department: 'marine',
     category: 'anchoring',
     brand: 'Duke Marine',
-    blurb: 'Complete anchoring kit — anchor, chain, rope and shackles, sized and spliced in-store.',
+    blurb: 'Complete anchoring kit, anchor, chain, rope and shackles, sized and spliced in-store.',
     priceFrom: 340,
     unit: 'per kit',
     specs: [
@@ -159,7 +159,7 @@ export const products: Product[] = [
     department: 'marine',
     category: 'hardware',
     brand: 'Sea-Dog',
-    blurb: '316 stainless cleats that resist Caribbean salt — sold singly or as a rigging set.',
+    blurb: '316 stainless cleats that resist Caribbean salt, sold singly or as a rigging set.',
     priceFrom: 45,
     unit: 'each',
     icon: 'wrench',
@@ -171,7 +171,7 @@ export const products: Product[] = [
     department: 'marine',
     category: 'electronics',
     brand: 'Interstate',
-    blurb: 'Starting and deep-cycle in one — dependable cranking plus reserve for electronics.',
+    blurb: 'Starting and deep-cycle in one, dependable cranking plus reserve for electronics.',
     priceFrom: 420,
     unit: 'each',
     icon: 'gps',
@@ -187,7 +187,7 @@ export const products: Product[] = [
     brand: 'Shimano',
     blurb: 'Light, corrosion-tough spinning combo tuned for bonefish, permit and snook on the flats.',
     description:
-      'Built for Belize’s world-class flats. A sealed, saltwater-ready reel on a fast-action rod — balanced, spooled and ready to fish when you walk out the door.',
+      'Built for Belize’s world-class flats. A sealed, saltwater-ready reel on a fast-action rod, balanced, spooled and ready to fish when you walk out the door.',
     priceFrom: 560,
     unit: 'combo',
     specs: [
@@ -218,7 +218,7 @@ export const products: Product[] = [
   },
   {
     slug: 'braided-line-spool',
-    name: 'Braided Line — Bulk Spool',
+    name: 'Braided Line, Bulk Spool',
     department: 'fishing',
     category: 'line',
     brand: 'PowerPro',
@@ -226,7 +226,7 @@ export const products: Product[] = [
     priceFrom: 90,
     unit: 'per spool',
     specs: [
-      { label: 'Strength', value: '10–80 lb' },
+      { label: 'Strength', value: '10-80 lb' },
       { label: 'Colors', value: 'Moss / Blue / Hi-Vis' },
     ],
     icon: 'compass',
@@ -259,7 +259,7 @@ export const products: Product[] = [
   },
   {
     slug: 'rotomolded-cooler-45',
-    name: 'Roto-Molded Cooler — 45 QT',
+    name: 'Roto-Molded Cooler, 45 QT',
     department: 'fishing',
     category: 'coolers',
     brand: 'Calcutta',
@@ -304,7 +304,7 @@ export const products: Product[] = [
     name: 'Scuba Regulator & Octopus Set',
     department: 'diving',
     category: 'regulators',
-    blurb: 'Balanced first and second stage with alternate air — serviced and ready for reef diving.',
+    blurb: 'Balanced first and second stage with alternate air, serviced and ready for reef diving.',
     description:
       'A dependable regulator setup for Belize’s reef and wall dives. Comes with an alternate-air (octopus) second stage. We can service and pressure-test before you dive.',
     priceFrom: 950,
@@ -322,7 +322,7 @@ export const products: Product[] = [
     name: 'Mask, Fin & Snorkel Set',
     department: 'diving',
     category: 'masks',
-    blurb: 'Low-volume mask, open-heel fins and dry snorkel — a complete set for scuba or free-diving.',
+    blurb: 'Low-volume mask, open-heel fins and dry snorkel, a complete set for scuba or free-diving.',
     priceFrom: 220,
     unit: 'per set',
     icon: 'compass',
@@ -338,7 +338,7 @@ export const products: Product[] = [
     unit: 'each',
     specs: [
       { label: 'Thickness', value: '3 mm' },
-      { label: 'Sizes', value: 'S – XXL' },
+      { label: 'Sizes', value: 'S - XXL' },
     ],
     icon: 'shield',
     seed: 'wetsuit1',

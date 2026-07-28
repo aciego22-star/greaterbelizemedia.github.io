@@ -17,7 +17,7 @@ export const testimonials: Testimonial[] = [
   },
   {
     quote:
-      'The only shop I trust for tackle. They actually fish, so the advice is real — matched me to the right leader and lures for permit.',
+      'The only shop I trust for tackle. They actually fish, so the advice is real, matched me to the right leader and lures for permit.',
     name: 'Flats Guide',
     role: 'Ambergris Caye',
   },

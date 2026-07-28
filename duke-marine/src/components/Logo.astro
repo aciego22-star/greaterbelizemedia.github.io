@@ -11,7 +11,7 @@ interface Props {
 const { class: cls = '', compact = false } = Astro.props;
 ---
 
-<a href="/" class:list={['logo', cls]} aria-label="Duke Marine — home">
+<a href="/" class:list={['logo', cls]} aria-label="Duke Marine, home">
   <img
     src="/media/logo.jpg"
     alt="Duke Marine"
@@ -64,13 +64,9 @@ const { class: cls = '', compact = false } = Astro.props;
   .logo__type span {
     font-size: 0.58rem;
     font-weight: 600;
-    color: currentColor;
-    opacity: 0.72;
+    color: #ffffff;
+    opacity: 0.92;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-  }
-  .logo__tag2 {
-    color: var(--gold, #e6b83f) !important;
-    opacity: 0.95 !important;
   }
 </style>

@@ -115,7 +115,7 @@ const stripItems = [{ label: 'Home', href: '/' }, ...nav.map((n) => ({ label: n.
     justify-content: space-between;
     gap: 1.5rem;
     height: var(--header-h);
-    color: var(--text-invert);
+    color: #ffffff;
   }
   .header.is-scrolled,
   .header.is-solid {
@@ -263,11 +263,12 @@ const stripItems = [{ label: 'Home', href: '/' }, ...nav.map((n) => ({ label: n.
     font-family: var(--font-display);
     font-weight: 600;
     font-size: 0.9rem;
-    color: var(--c-current-bright);
+    color: #ffffff;
     white-space: nowrap;
   }
   .nav__phone:hover {
     color: #fff;
+    opacity: 0.85;
   }
 
   .nav-toggle {
@@ -320,13 +321,13 @@ const stripItems = [{ label: 'Home', href: '/' }, ...nav.map((n) => ({ label: n.
     font-family: var(--font-display);
     font-weight: 600;
     font-size: 0.9rem;
-    color: #d3e6e8;
+    color: #ffffff;
     white-space: nowrap;
     transition: background var(--dur-fast), color var(--dur-fast);
   }
   .hd-strip__link.is-current {
-    background: var(--gold);
-    color: var(--c-navy);
+    background: rgba(255, 255, 255, 0.18);
+    color: #ffffff;
   }
   .hd-strip__link:not(.is-current):active {
     background: rgba(255, 255, 255, 0.14);

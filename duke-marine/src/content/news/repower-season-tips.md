@@ -1,14 +1,14 @@
 ---
 title: 'Repower Season: 5 Things to Check Before You Buy an Outboard'
 date: 2026-05-14
-excerpt: 'Thinking about a new outboard before the busy season? Our service manager shares what to sort out first — from transom height to propping.'
+excerpt: 'Thinking about a new outboard before the busy season? Our service manager shares what to sort out first, from transom height to propping.'
 category: 'Guides'
 author: 'Duke Marine Service Team'
 seed: 'news-repower'
 ---
 
 Repowering a skiff or panga is one of the best investments you can make in your
-time on the water — but a little planning goes a long way. Before you commit to a
+time on the water, but a little planning goes a long way. Before you commit to a
 new outboard, our service bench recommends checking these five things.
 
 ## 1. Transom height & shaft length

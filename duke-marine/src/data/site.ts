@@ -14,7 +14,7 @@ export const site = {
   tagline: 'Fishing. Diving. Boat Supplies.',
   slogan: 'For all your marine needs.',
   description:
-    'Duke Marine is Belize’s one-stop shop for marine parts, fishing and diving supplies — sales, parts and service for anglers, divers, captains, resorts and fleets. On the Philip Goldson Highway, Belize City.',
+    'Duke Marine is Belize’s one-stop shop for marine parts, fishing and diving supplies, sales, parts and service for anglers, divers, captains, resorts and fleets. On the Philip Goldson Highway, Belize City.',
   // Domain matches the business email (rduke@dukemarinebz.com). Update if the
   // final domain differs. Powers canonical URLs, sitemap and social cards.
   url: 'https://www.dukemarinebz.com',
@@ -29,17 +29,17 @@ export const site = {
     city: 'Belize City',
     region: 'Belize District',
     country: 'Belize',
-    // Approx. coords for Mile 4.5 Philip Goldson Hwy — refine to the exact spot.
+    // Approx. coords for Mile 4.5 Philip Goldson Hwy, refine to the exact spot.
     lat: 17.5312,
     lng: -88.2405,
     mapQuery: 'Duke Marine, Philip Goldson Highway, Belize City, Belize',
   },
   hours: [
-    { day: 'Monday – Friday', time: '8:00 AM – 5:00 PM' },
-    { day: 'Saturday', time: '8:00 AM – 12:00 PM' },
+    { day: 'Monday - Friday', time: '8:00 AM - 5:00 PM' },
+    { day: 'Saturday', time: '8:00 AM - 12:00 PM' },
     { day: 'Sunday', time: 'Closed' },
   ],
-  // Google rating snapshot — refresh periodically.
+  // Google rating snapshot, refresh periodically.
   rating: 4.3,
   reviews: 44,
   social: {

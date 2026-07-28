@@ -1,14 +1,14 @@
 ---
 title: 'Hurricane Season Checklist for Boat Owners in Belize'
 date: 2026-06-20
-excerpt: 'A practical, printable checklist to prepare your vessel and gear before the storms — safety equipment, ground tackle, and documentation.'
+excerpt: 'A practical, printable checklist to prepare your vessel and gear before the storms, safety equipment, ground tackle, and documentation.'
 category: 'Safety'
 author: 'Duke Marine'
 seed: 'news-storm'
 ---
 
 Storm season is a fact of life on the Belizean coast. A few hours of preparation
-now can save your vessel — and your season. Use this checklist and stop by if you
+now can save your vessel, and your season. Use this checklist and stop by if you
 need to top up any gear.
 
 ## Safety & signalling
@@ -30,4 +30,4 @@ need to top up any gear.
 - Keep registration and insurance documents somewhere dry and portable.
 
 Need to restock before the next system forms? We keep safety and anchoring gear in
-stock all season — come see us early, before the rush.
+stock all season, come see us early, before the rush.

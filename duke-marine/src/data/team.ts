@@ -12,7 +12,7 @@ export const team: TeamMember[] = [
   {
     name: 'R. Duke',
     role: 'Founder & Managing Director',
-    bio: 'Grew up on the water and built Duke Marine into Belize’s go-to marine store — still on the floor most mornings talking rigging, tackle and dive gear.',
+    bio: 'Grew up on the water and built Duke Marine into Belize’s go-to marine store, still on the floor most mornings talking rigging, tackle and dive gear.',
   },
   {
     name: 'M. Castillo',
@@ -22,7 +22,7 @@ export const team: TeamMember[] = [
   {
     name: 'R. Nunez',
     role: 'Marine Service Manager',
-    bio: 'Runs the rigging and outboard service bench — every engine and prop is set up and tested before it leaves the shop.',
+    bio: 'Runs the rigging and outboard service bench, every engine and prop is set up and tested before it leaves the shop.',
   },
   {
     name: 'T. Flores',

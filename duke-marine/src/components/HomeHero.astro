@@ -1,6 +1,6 @@
 ---
 /**
- * Full-image hero slideshow — cross-fades the client's brand photos every 7s.
+ * Full-image hero slideshow, cross-fades the client's brand photos every 7s.
  * Each slide shows the WHOLE image (contain) in any orientation, over a blurred
  * fill of itself so there are no empty bars. Respects prefers-reduced-motion.
  * Swap/add images in public/media and edit the `slides` array below.
@@ -9,12 +9,12 @@ const slides = [
   { src: '/media/hero-2.jpg', label: 'Fishing and diving gear from Duke Marine' },
   { src: '/media/hero-4.jpg', label: 'Below the surface, adventure has no limits' },
   { src: '/media/hero-1.jpg', label: 'Where the tide slows, the soul finds its way' },
-  { src: '/media/hero-3.jpg', label: 'Duke Marine — for all your marine needs' },
+  { src: '/media/hero-3.jpg', label: 'Duke Marine, for all your marine needs' },
 ];
 ---
 
 <section class="hero on-dark">
-  <h1 class="visually-hidden">Duke Marine — marine, fishing &amp; diving supplies in Belize City</h1>
+  <h1 class="visually-hidden">Duke Marine, marine, fishing &amp; diving supplies in Belize City</h1>
 
   <div class="hero__slides" data-hero-slides aria-label="Duke Marine">
     {
@@ -27,14 +27,6 @@ const slides = [
     }
   </div>
   <div class="hero__scrim"></div>
-
-  <div class="container hero__inner">
-    <div class="hero__dots" data-hero-dots role="tablist" aria-label="Choose slide">
-      {slides.map((_, i) => (
-        <button class:list={['hero__dot', { 'is-active': i === 0 }]} aria-label={`Slide ${i + 1}`}></button>
-      ))}
-    </div>
-  </div>
 </section>
 
 <style>
@@ -94,33 +86,6 @@ const slides = [
       rgba(6, 22, 44, 0) 45%
     );
   }
-  .hero__inner {
-    position: relative;
-    z-index: 2;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-  }
-  .hero__dots {
-    display: flex;
-    gap: 0.6rem;
-  }
-  .hero__dot {
-    width: 34px;
-    height: 5px;
-    border: 0;
-    border-radius: var(--radius-pill);
-    background: rgba(255, 255, 255, 0.45);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
-    cursor: pointer;
-    padding: 0;
-    transition: background 0.3s, width 0.3s;
-  }
-  .hero__dot.is-active {
-    background: var(--gold);
-    width: 46px;
-  }
-
   @media (max-width: 640px) {
     .hero {
       min-height: 72svh;
@@ -142,31 +107,19 @@ const slides = [
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   document.querySelectorAll<HTMLElement>('[data-hero-slides]').forEach((wrap) => {
     const slides = [...wrap.querySelectorAll<HTMLElement>('.hero__slide')];
-    const dots = [
-      ...(wrap.parentElement?.querySelectorAll<HTMLButtonElement>('[data-hero-dots] .hero__dot') ?? []),
-    ];
-    if (slides.length < 2) return;
+    if (slides.length < 2 || reduce) return;
     let i = 0;
     let timer = 0;
-    const go = (n: number) => {
+    const go = () => {
       slides[i].classList.remove('is-active');
-      dots[i]?.classList.remove('is-active');
-      i = (n + slides.length) % slides.length;
+      i = (i + 1) % slides.length;
       slides[i].classList.add('is-active');
-      dots[i]?.classList.add('is-active');
     };
     const start = () => {
-      if (reduce) return;
       stop();
-      timer = window.setInterval(() => go(i + 1), 7000);
+      timer = window.setInterval(go, 7000);
     };
     const stop = () => timer && window.clearInterval(timer);
-    dots.forEach((d, n) =>
-      d.addEventListener('click', () => {
-        go(n);
-        start();
-      }),
-    );
     document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()));
     start();
   });

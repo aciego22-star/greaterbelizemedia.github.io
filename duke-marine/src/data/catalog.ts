@@ -1,5 +1,5 @@
 /**
- * Catalog taxonomy — the category structure shown on the department pages and
+ * Catalog taxonomy, the category structure shown on the department pages and
  * used to group products. Edit labels/blurbs freely; `id` values are the
  * anchor targets and must match product `category` fields + nav hrefs.
  */
@@ -24,7 +24,7 @@ export const marineCategories: Category[] = [
     id: 'hardware',
     name: 'Boat Hardware & Rigging',
     blurb:
-      'Stainless cleats, rails, hinges, steering and control cables — the fittings that hold a vessel together.',
+      'Stainless cleats, rails, hinges, steering and control cables, the fittings that hold a vessel together.',
     icon: 'wrench',
     examples: ['Cleats & rails', 'Steering systems', 'Control cables', 'Fasteners', 'Bilge pumps'],
   },
@@ -40,7 +40,7 @@ export const marineCategories: Category[] = [
     id: 'safety',
     name: 'Safety & Life-Saving',
     blurb:
-      'Everything you need to pass inspection and get home — life jackets, flares, extinguishers and first aid.',
+      'Everything you need to pass inspection and get home, life jackets, flares, extinguishers and first aid.',
     icon: 'shield',
     examples: ['Life jackets (PFDs)', 'Flares & signals', 'Fire extinguishers', 'EPIRBs', 'First aid'],
   },
@@ -75,7 +75,7 @@ export const fishingCategories: Category[] = [
     id: 'tackle',
     name: 'Tackle & Terminal',
     blurb:
-      'Hooks, leaders, swivels, weights and rigs — the terminal tackle that turns bites into catches.',
+      'Hooks, leaders, swivels, weights and rigs, the terminal tackle that turns bites into catches.',
     icon: 'anchor',
     examples: ['Hooks', 'Leaders & wire', 'Swivels & snaps', 'Sinkers', 'Rig kits'],
   },

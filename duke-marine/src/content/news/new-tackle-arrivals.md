@@ -1,7 +1,7 @@
 ---
 title: 'Fresh Tackle Just Landed for Flats & Reef Season'
 date: 2026-06-02
-excerpt: 'New rods, reels and terminal tackle are on the shelves — here’s what our fishing team is most excited about this season.'
+excerpt: 'New rods, reels and terminal tackle are on the shelves, here’s what our fishing team is most excited about this season.'
 category: 'New Arrivals'
 author: 'Duke Marine Fishing Department'
 seed: 'news-tackle'

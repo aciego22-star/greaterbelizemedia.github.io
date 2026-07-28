@@ -1,5 +1,5 @@
 /**
- * Duke Marine — client interactions & motion.
+ * Duke Marine, client interactions & motion.
  * Vanilla, dependency-free, and fully respects prefers-reduced-motion.
  * ---------------------------------------------------------------------------
  *  • Scroll-reveal via IntersectionObserver

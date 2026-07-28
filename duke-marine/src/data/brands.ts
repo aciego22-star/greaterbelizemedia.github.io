@@ -3,7 +3,7 @@
  * ---------------------------------------------------------------------------
  * The first block are brands confirmed from Duke Marine's own material
  * (Yamaha, Calcutta, BOSS Audio, Pettit). The remainder are common
- * category leaders shown as representative — please confirm/trim to the
+ * category leaders shown as representative, please confirm/trim to the
  * real line-up, and add any that are missing.
  */
 export type Brand = {
@@ -21,7 +21,7 @@ export const brands: Brand[] = [
   { name: 'BOSS Audio', category: 'Marine Electronics', blurb: 'Weatherproof marine stereos & speakers.', departments: ['marine'], featured: true },
   { name: 'Pettit', category: 'Paint & Coatings', blurb: 'Trinidad antifouling & marine finishes.', departments: ['marine'], featured: true },
 
-  // Representative — confirm with the shop
+  // Representative, confirm with the shop
   { name: 'Garmin', category: 'Navigation', blurb: 'GPS, sonar & chartplotters.', departments: ['marine'] },
   { name: 'Sea-Dog', category: 'Hardware', blurb: 'Stainless boat hardware.', departments: ['marine'] },
   { name: 'Solas', category: 'Propellers', blurb: 'Stainless & aluminium props.', departments: ['marine'] },
