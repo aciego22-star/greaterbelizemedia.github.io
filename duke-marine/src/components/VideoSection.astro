@@ -14,9 +14,17 @@ interface Props {
   seed?: string;
   label?: string;
   ratio?: string;
+  showLabel?: boolean; // show the caption under the play button
 }
-const { src, embed, poster, seed = 'video', label = 'Watch the story', ratio = '16 / 9' } =
-  Astro.props;
+const {
+  src,
+  embed,
+  poster,
+  seed = 'video',
+  label = 'Watch the story',
+  ratio = '16 / 9',
+  showLabel = true,
+} = Astro.props;
 const hasVideo = Boolean(src || embed);
 ---
 
@@ -33,7 +41,11 @@ const hasVideo = Boolean(src || embed);
       <span class="videobox__ring"></span>
       <Icon name="play" size={26} />
     </button>
-    <span class="videobox__label">{hasVideo ? label : 'Brand video coming soon'}</span>
+    {
+      (showLabel || !hasVideo) && (
+        <span class="videobox__label">{hasVideo ? label : 'Brand video coming soon'}</span>
+      )
+    }
   </div>
 
   {src && <template data-video-tpl>{`<video class="videobox__el" controls autoplay playsinline src="${src}"></video>`}</template>}
