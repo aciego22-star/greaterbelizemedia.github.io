@@ -1,10 +1,9 @@
 ---
 /**
  * Full-image hero slideshow, cross-fades the client's brand photos every 7s.
- * On desktop each slide shows the WHOLE image (contain) over a blurred fill of
- * itself so there are no empty bars. On phones the image fills the frame edge to
- * edge (cover) so wide images aren't reduced to a small band. Respects
- * prefers-reduced-motion. Swap/add images in public/media and edit `slides`.
+ * Each slide shows the WHOLE image (contain) in any orientation, over a blurred
+ * fill of itself so there are no empty bars. Respects prefers-reduced-motion.
+ * Swap/add images in public/media and edit the `slides` array below.
  */
 const slides = [
   { src: '/media/hero-2.jpg', label: 'Fishing and diving gear from Duke Marine' },
@@ -91,10 +90,6 @@ const slides = [
     .hero {
       min-height: 72svh;
       padding-top: calc(var(--header-h) + 3.6rem);
-    }
-    /* Fill the phone screen edge-to-edge (wide images no longer show as a band). */
-    .hero__slide-img {
-      background-size: cover;
     }
     .hero__slide-blur {
       filter: blur(22px) brightness(0.55);
