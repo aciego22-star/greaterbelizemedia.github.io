@@ -22,7 +22,7 @@ export const team: TeamMember[] = [
   {
     name: 'R. Nunez',
     role: 'Marine Service Manager',
-    bio: 'Runs the rigging and outboard service bench, every engine and prop is set up and tested before it leaves the shop.',
+    bio: 'Runs the rigging and service bench, every reel and rig is set up and tested before it leaves the shop.',
   },
   {
     name: 'T. Flores',

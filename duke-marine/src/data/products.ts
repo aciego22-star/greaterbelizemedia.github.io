@@ -17,6 +17,9 @@ export type Product = {
   brand?: string;
   blurb: string;
   description?: string;
+  /** Optional real product photo in public/media/products/. Falls back to a designed placeholder. */
+  image?: string;
+  /** Pricing is intentionally NOT displayed anywhere; kept optional so data need not change. */
   priceFrom?: number;
   unit?: string;
   specs?: { label: string; value: string }[];
@@ -27,44 +30,6 @@ export type Product = {
 
 export const products: Product[] = [
   // ---- Marine -----------------------------------------------------------
-  {
-    slug: 'coastal-115-outboard',
-    name: 'Coastal 115 HP Four-Stroke Outboard',
-    department: 'marine',
-    category: 'outboards',
-    brand: 'Yamaha',
-    blurb: 'Reliable four-stroke power for skiffs and centre-consoles, with quiet, fuel-efficient cruising.',
-    description:
-      'A workhorse repower option for Belizean skiffs and pangas. Smooth four-stroke performance, excellent fuel economy and easy starts, set up, rigged and tested by our in-house technicians before it leaves the shop.',
-    priceFrom: 24500,
-    unit: 'from / engine',
-    specs: [
-      { label: 'Power', value: '115 HP' },
-      { label: 'Type', value: '4-stroke EFI' },
-      { label: 'Shaft', value: '20" / 25"' },
-      { label: 'Warranty', value: '3 years' },
-    ],
-    icon: 'boat',
-    seed: 'outboard1',
-    featured: true,
-  },
-  {
-    slug: 'stainless-prop-13x19',
-    name: 'Stainless Propeller 13" × 19P',
-    department: 'marine',
-    category: 'outboards',
-    brand: 'Solas',
-    blurb: 'Balanced stainless prop for better hole-shot and top-end on mid-size outboards.',
-    priceFrom: 720,
-    unit: 'each',
-    specs: [
-      { label: 'Diameter', value: '13 in' },
-      { label: 'Pitch', value: '19 in' },
-      { label: 'Blades', value: '3' },
-    ],
-    icon: 'compass',
-    seed: 'prop1',
-  },
   {
     slug: 'chartplotter-7-touch',
     name: '7" Touchscreen Chartplotter / Fishfinder',

@@ -2,7 +2,7 @@
  * Brands carried.
  * ---------------------------------------------------------------------------
  * The first block are brands confirmed from Duke Marine's own material
- * (Yamaha, Calcutta, BOSS Audio, Pettit). The remainder are common
+ * (Calcutta, BOSS Audio, Pettit). The remainder are common
  * category leaders shown as representative, please confirm/trim to the
  * real line-up, and add any that are missing.
  */
@@ -16,7 +16,6 @@ export type Brand = {
 
 export const brands: Brand[] = [
   // Confirmed
-  { name: 'Yamaha', category: 'Outboard Motors', blurb: 'Outboards, parts & oils.', departments: ['marine'], featured: true },
   { name: 'Calcutta', category: 'Fishing & Eyewear', blurb: 'Reels, coolers, apparel & polarized eyewear.', departments: ['fishing'], featured: true },
   { name: 'BOSS Audio', category: 'Marine Electronics', blurb: 'Weatherproof marine stereos & speakers.', departments: ['marine'], featured: true },
   { name: 'Pettit', category: 'Paint & Coatings', blurb: 'Trinidad antifouling & marine finishes.', departments: ['marine'], featured: true },

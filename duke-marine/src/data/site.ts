@@ -57,7 +57,6 @@ export const nav: NavItem[] = [
     label: 'Marine',
     href: '/marine-supplies',
     children: [
-      { label: 'Outboard Motors & Parts', href: '/marine-supplies#outboards', desc: 'Engines, props, service parts' },
       { label: 'Boat Hardware & Rigging', href: '/marine-supplies#hardware', desc: 'Cleats, rails, fittings' },
       { label: 'Electronics & Navigation', href: '/marine-supplies#electronics', desc: 'GPS, sounders, VHF' },
       { label: 'Safety & Life-Saving', href: '/marine-supplies#safety', desc: 'PFDs, flares, extinguishers' },

@@ -11,7 +11,7 @@ export type Testimonial = {
 export const testimonials: Testimonial[] = [
   {
     quote:
-      'Duke Marine repowered our lodge skiff and had us back on the water in days. The rigging was clean and the engine ran perfect from the first start.',
+      'Duke Marine kitted out our lodge skiff and had us back on the water in days. The gear was spot on and everything worked from day one.',
     name: 'Fishing Lodge Owner',
     role: 'Placencia',
   },

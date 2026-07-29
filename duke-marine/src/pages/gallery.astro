@@ -3,24 +3,23 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import SectionHeader from '../components/SectionHeader.astro';
 import VideoSection from '../components/VideoSection.astro';
-import Media from '../components/Media.astro';
 import Icon from '../components/Icon.astro';
 import CtaBanner from '../components/CtaBanner.astro';
 
 // Real photos supplied by the client. Add more to public/media and list here.
 const photos = [
-  { src: '/media/hero-2.jpg', alt: 'Fishing and diving gear from Duke Marine', span: 'wide', pos: 'center 45%' },
-  { src: '/media/hero-1.jpg', alt: 'Duke Marine, where the tide slows', span: 'tall', pos: 'center 20%' },
-  { src: '/media/banner-marina.jpg', alt: 'Duke Marine on the Belize City waterfront', span: '', pos: 'center' },
-  { src: '/media/poster-sunset.png', alt: 'A Duke Marine skiff at sunset', span: 'tall', pos: 'center' },
-  { src: '/media/hero-3.jpg', alt: 'For all your marine needs, Duke Marine', span: 'wide', pos: 'center' },
+  { src: '/media/gallery-2.jpg', alt: 'Fishing, diving and marine gear at Duke Marine', span: 'wide', pos: 'center' },
+  { src: '/media/gallery-1.jpg', alt: 'Gear on the shelves at Duke Marine', span: '', pos: 'center' },
+  { src: '/media/gallery-3.jpg', alt: 'Inside the Duke Marine shop, Belize City', span: 'tall', pos: 'center' },
+  { src: '/media/gallery-4.jpg', alt: 'Marine and fishing supplies at Duke Marine', span: '', pos: 'center' },
+  { src: '/media/gallery-5.jpg', alt: 'For all your marine needs, Duke Marine', span: 'wide', pos: 'center' },
 ];
 
-// Placeholder tiles round out the grid until more photos arrive.
-const fillers = [
-  { seed: 'g-outboard', icon: 'boat', tone: 'current' as const, label: 'Outboards & rigging' },
-  { seed: 'g-tackle', icon: 'rod', tone: 'brass' as const, label: 'Rods, reels & tackle' },
-  { seed: 'g-dive', icon: 'compass', tone: 'deep' as const, label: 'Dive gear' },
+// Client YouTube Shorts, shown as click-to-play thumbnails (vertical 9:16).
+const videos = [
+  { id: 'BP_keqKlThg', label: 'Duke Marine' },
+  { id: 'bIZUxUjjW00', label: 'Duke Marine' },
+  { id: '6NAgBH6EkHc', label: 'Duke Marine' },
 ];
 ---
 
@@ -46,13 +45,6 @@ const fillers = [
             </figure>
           ))
         }
-        {
-          fillers.map((f, i) => (
-            <figure class="gal__cell" data-reveal data-reveal-delay={(i % 3) * 70}>
-              <Media seed={f.seed} icon={f.icon} tone={f.tone} ratio="4 / 3" label={f.label} />
-            </figure>
-          ))
-        }
       </div>
     </div>
   </section>
@@ -66,8 +58,16 @@ const fillers = [
         lead="Product walk-throughs, brand stories and how-tos. Drop us your clips and we’ll feature them here."
       />
       <div class="vids">
-        <VideoSection seed="brand-video" poster="/media/banner-marina.jpg" label="Watch: inside Duke Marine" />
-        <VideoSection seed="repower-video" poster="/media/poster-sunset.png" label="Watch: outboard rigging" />
+        {
+          videos.map((v) => (
+            <VideoSection
+              embed={`https://www.youtube.com/embed/${v.id}`}
+              poster={`https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`}
+              label={v.label}
+              ratio="9 / 16"
+            />
+          ))
+        }
       </div>
       <p class="galnote" data-reveal>
         <Icon name="play" size={18} /> Have photos or video of your Duke Marine gear in action?
@@ -83,7 +83,8 @@ const fillers = [
   .gal {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-auto-rows: 210px;
+    grid-auto-rows: 220px;
+    grid-auto-flow: dense;
     gap: 1rem;
   }
   .gal__cell {
@@ -112,8 +113,10 @@ const fillers = [
 
   .vids {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
     gap: 1.6rem;
+    max-width: 900px;
+    margin: 0 auto;
   }
   .galnote {
     display: flex;
@@ -142,8 +145,11 @@ const fillers = [
     .gal__cell.tall {
       grid-row: span 1;
     }
+  }
+  @media (max-width: 560px) {
     .vids {
       grid-template-columns: 1fr;
+      max-width: 320px;
     }
   }
 </style>

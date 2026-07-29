@@ -18,7 +18,13 @@ const { product, reveal = true, delay = 0 } = Astro.props;
   data-reveal-delay={delay}
 >
   <a href={`/products/${product.slug}`} class="pcard__media" tabindex="-1" aria-hidden="true">
-    <Media seed={product.seed || product.slug} icon={product.icon} ratio="4 / 3" />
+    {
+      product.image ? (
+        <img class="pcard__photo" src={product.image} alt="" loading="lazy" />
+      ) : (
+        <Media seed={product.seed || product.slug} icon={product.icon} ratio="4 / 3" />
+      )
+    }
     {product.brand && <span class="pcard__brand">{product.brand}</span>}
   </a>
   <div class="pcard__body">
@@ -27,16 +33,6 @@ const { product, reveal = true, delay = 0 } = Astro.props;
     </h3>
     <p class="pcard__blurb">{product.blurb}</p>
     <div class="pcard__foot">
-      {
-        product.priceFrom ? (
-          <span class="pcard__price">
-            <span class="pcard__price-cur">BZD</span> ${product.priceFrom.toLocaleString()}
-            {product.unit && <span class="pcard__unit">{product.unit}</span>}
-          </span>
-        ) : (
-          <span class="pcard__price pcard__price--ask">Ask in-store</span>
-        )
-      }
       <span class="pcard__cta">
         Details <Icon name="arrow" size={16} />
       </span>
@@ -69,7 +65,15 @@ const { product, reveal = true, delay = 0 } = Astro.props;
   .pcard__media :global(.media) {
     transition: transform var(--dur-slow) var(--ease-out);
   }
-  .pcard:hover .pcard__media :global(.media) {
+  .pcard__photo {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    transition: transform var(--dur-slow) var(--ease-out);
+  }
+  .pcard:hover .pcard__media :global(.media),
+  .pcard:hover .pcard__photo {
     transform: scale(1.05);
   }
   .pcard__brand {
@@ -113,32 +117,11 @@ const { product, reveal = true, delay = 0 } = Astro.props;
   .pcard__foot {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
     gap: 0.5rem;
     margin-top: 0.4rem;
     padding-top: 0.9rem;
     border-top: 1px solid var(--border);
-  }
-  .pcard__price {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 1.05rem;
-    color: var(--text);
-  }
-  .pcard__price-cur {
-    font-size: 0.68rem;
-    color: var(--text-soft);
-    font-weight: 600;
-  }
-  .pcard__unit {
-    display: block;
-    font-size: 0.68rem;
-    font-weight: 500;
-    color: var(--text-soft);
-  }
-  .pcard__price--ask {
-    font-size: 0.95rem;
-    color: var(--accent-strong);
   }
   .pcard__cta {
     display: inline-flex;

@@ -13,14 +13,6 @@ export type Category = {
 
 export const marineCategories: Category[] = [
   {
-    id: 'outboards',
-    name: 'Outboard Motors & Parts',
-    blurb:
-      'New and repower outboards plus the propellers, impellers, filters and service parts to keep them running.',
-    icon: 'boat',
-    examples: ['Outboard engines', 'Propellers', 'Water pumps', 'Fuel systems', 'Service kits'],
-  },
-  {
     id: 'hardware',
     name: 'Boat Hardware & Rigging',
     blurb:

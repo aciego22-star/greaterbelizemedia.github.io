@@ -38,7 +38,13 @@ const waMsg = encodeURIComponent(`Hi Duke Marine, I'm interested in the ${produc
 
       <div class="pdp__grid">
         <div class="pdp__media" data-reveal>
-          <Media seed={product.seed || product.slug} icon={product.icon} ratio="4 / 3" />
+          {
+            product.image ? (
+              <img class="pdp__photo" src={product.image} alt={product.name} />
+            ) : (
+              <Media seed={product.seed || product.slug} icon={product.icon} ratio="4 / 3" />
+            )
+          }
         </div>
 
         <div class="pdp__info" data-reveal data-reveal-delay="80">
@@ -50,19 +56,6 @@ const waMsg = encodeURIComponent(`Hi Duke Marine, I'm interested in the ${produc
           <p class="lead">{product.blurb}</p>
 
           {product.description && <p class="pdp__desc">{product.description}</p>}
-
-          {
-            product.priceFrom ? (
-              <div class="pdp__price">
-                <span class="pdp__price-cur">BZD</span>
-                <span class="pdp__price-num">${product.priceFrom.toLocaleString()}</span>
-                {product.unit && <span class="pdp__price-unit">{product.unit}</span>}
-              </div>
-            ) : (
-              <div class="pdp__price pdp__price--ask">Ask in-store for pricing</div>
-            )
-          }
-          <p class="pdp__pricenote">Indicative pricing, contact us for the latest and for volume discounts.</p>
 
           {
             product.specs && (
@@ -150,6 +143,12 @@ const waMsg = encodeURIComponent(`Hi Duke Marine, I'm interested in the ${produc
     overflow: hidden;
     box-shadow: var(--shadow-lg);
   }
+  .pdp__photo {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
   .pdp__tags {
     display: flex;
     gap: 0.5rem;
@@ -169,38 +168,8 @@ const waMsg = encodeURIComponent(`Hi Duke Marine, I'm interested in the ${produc
     margin-top: 1rem;
     color: var(--text-soft);
   }
-  .pdp__price {
-    display: flex;
-    align-items: baseline;
-    gap: 0.4rem;
-    margin-top: 1.5rem;
-    font-family: var(--font-display);
-  }
-  .pdp__price-cur {
-    font-size: 0.9rem;
-    color: var(--text-soft);
-    font-weight: 600;
-  }
-  .pdp__price-num {
-    font-size: 2.2rem;
-    font-weight: 800;
-    color: var(--text);
-  }
-  .pdp__price-unit {
-    font-size: 0.9rem;
-    color: var(--text-soft);
-  }
-  .pdp__price--ask {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--accent-strong);
-  }
-  .pdp__pricenote {
-    font-size: 0.8rem;
-    color: var(--text-soft);
-    margin-top: 0.3rem;
-  }
   .pdp__specs {
+    margin-top: 1.6rem;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0.6rem;
