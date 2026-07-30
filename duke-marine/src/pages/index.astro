@@ -13,7 +13,10 @@ import CtaBanner from '../components/CtaBanner.astro';
 import Reveal from '../components/Reveal.astro';
 import { departments, type DepartmentId } from '../data/catalog';
 import { featuredProducts } from '../data/products';
-import { featuredBrands } from '../data/brands';
+import { brands } from '../data/brands';
+
+// Home shows 4 brand logos at a time and rotates through all of them.
+const brandData = brands.map((b) => ({ logo: b.logo, name: b.name, dark: !!b.dark }));
 import { site } from '../data/site';
 
 const mapEmbed = `https://www.google.com/maps?q=${encodeURIComponent(site.address.mapQuery)}&output=embed`;
@@ -184,13 +187,13 @@ const whyPoints = [
         title="Gear from names you know"
         align="center"
       />
-      <div class="brandlogos" data-reveal>
+      <div class="brandlogos" data-reveal data-brandlogos>
         {
-          featuredBrands.map((b) => (
+          brands.slice(0, 4).map((b) => (
             <a
               href="/brands"
               class:list={['brandlogos__item', { 'brandlogos__item--dark': b.dark }]}
-              aria-label={`${b.name}, learn more`}
+              aria-label="Trusted brands, learn more"
             >
               <img src={b.logo} alt={`${b.name} logo`} loading="lazy" />
             </a>
@@ -388,17 +391,20 @@ const whyPoints = [
     flex-wrap: wrap;
     justify-content: center;
     gap: 1rem;
+    transition: opacity 0.45s var(--ease-out);
+  }
+  .brandlogos.is-swapping {
+    opacity: 0;
   }
   .brandlogos__item {
-    display: grid;
-    place-items: center;
+    position: relative;
     width: 170px;
     height: 92px;
-    padding: 0.9rem 1.1rem;
     border-radius: var(--radius);
     background: #fff;
     border: 1px solid var(--border);
     box-shadow: var(--shadow-sm);
+    overflow: hidden;
     transition: transform var(--dur) var(--ease-out), box-shadow var(--dur), border-color var(--dur);
   }
   .brandlogos__item--dark {
@@ -406,9 +412,13 @@ const whyPoints = [
     border-color: color-mix(in srgb, #fff 12%, transparent);
   }
   .brandlogos__item img {
-    max-width: 100%;
-    max-height: 100%;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
+    padding: 14px 18px;
+    box-sizing: border-box;
   }
   .brandlogos__item:hover {
     transform: translateY(-4px);
@@ -496,3 +506,40 @@ const whyPoints = [
     }
   }
 </style>
+
+<script define:vars={{ brandData }}>
+  // Home brands: show 4 logos, cross-fade to the next 4 every 8s.
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll('[data-brandlogos]').forEach((row) => {
+    const slots = [...row.querySelectorAll('.brandlogos__item')];
+    const per = slots.length;
+    if (!per) return;
+    const groups = [];
+    for (let i = 0; i < brandData.length; i += per) groups.push(brandData.slice(i, i + per));
+    if (groups.length < 2 || reduce) return;
+    let g = 0;
+    const render = (idx) => {
+      const grp = groups[idx];
+      slots.forEach((slot, i) => {
+        const b = grp[i];
+        const img = slot.querySelector('img');
+        if (!b) {
+          slot.style.visibility = 'hidden';
+          return;
+        }
+        slot.style.visibility = '';
+        img.src = b.logo;
+        img.alt = b.name + ' logo';
+        slot.classList.toggle('brandlogos__item--dark', !!b.dark);
+      });
+    };
+    setInterval(() => {
+      row.classList.add('is-swapping');
+      setTimeout(() => {
+        g = (g + 1) % groups.length;
+        render(g);
+        row.classList.remove('is-swapping');
+      }, 460);
+    }, 8000);
+  });
+</script>
