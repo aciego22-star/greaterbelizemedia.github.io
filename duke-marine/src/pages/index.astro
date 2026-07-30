@@ -182,12 +182,25 @@ const whyPoints = [
       <SectionHeader
         eyebrow="Brands we carry"
         title="Gear from names you know"
-        linkHref="/brands"
-        linkLabel="All brands"
         align="center"
       />
-      <div class="brandstrip" data-reveal>
-        {featuredBrands.map((b) => <span class="brandstrip__item">{b.name}</span>)}
+      <div class="brandlogos" data-reveal>
+        {
+          featuredBrands.map((b) => (
+            <a
+              href="/brands"
+              class:list={['brandlogos__item', { 'brandlogos__item--dark': b.dark }]}
+              aria-label={`${b.name}, learn more`}
+            >
+              <img src={b.logo} alt={`${b.name} logo`} loading="lazy" />
+            </a>
+          ))
+        }
+      </div>
+      <div class="brandcta" data-reveal data-reveal-delay="80">
+        <a href="/brands" class="btn btn--gold">
+          Click to learn more about these trustworthy brands <Icon name="arrow" size={18} />
+        </a>
       </div>
     </div>
   </section>
@@ -369,27 +382,43 @@ const whyPoints = [
     flex: none;
   }
 
-  /* Brand strip */
-  .brandstrip {
+  /* Brand logos */
+  .brandlogos {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 0.8rem;
+    gap: 1rem;
   }
-  .brandstrip__item {
-    padding: 0.7rem 1.4rem;
-    border-radius: var(--radius-pill);
-    background: var(--bg-elevated);
+  .brandlogos__item {
+    display: grid;
+    place-items: center;
+    width: 170px;
+    height: 92px;
+    padding: 0.9rem 1.1rem;
+    border-radius: var(--radius);
+    background: #fff;
     border: 1px solid var(--border);
-    font-family: var(--font-display);
-    font-weight: 700;
-    color: var(--text-soft);
-    transition: transform var(--dur), color var(--dur), border-color var(--dur);
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--dur) var(--ease-out), box-shadow var(--dur), border-color var(--dur);
   }
-  .brandstrip__item:hover {
-    transform: translateY(-3px);
-    color: var(--accent-strong);
+  .brandlogos__item--dark {
+    background: var(--c-navy);
+    border-color: color-mix(in srgb, #fff 12%, transparent);
+  }
+  .brandlogos__item img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+  .brandlogos__item:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow);
     border-color: var(--accent);
+  }
+  .brandcta {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.6rem;
   }
 
   /* Visit */

@@ -4,49 +4,39 @@ import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
 import CtaBanner from '../components/CtaBanner.astro';
 import { brands } from '../data/brands';
-
-const marine = brands.filter((b) => b.departments.includes('marine'));
-const fishing = brands.filter((b) => b.departments.includes('fishing'));
-const groups = [
-  { title: 'Marine & boating brands', items: marine, icon: 'boat' },
-  { title: 'Fishing & angling brands', items: fishing, icon: 'fish' },
-];
 ---
 
 <BaseLayout
   title="Brands We Carry"
-  description="Duke Marine stocks the marine and fishing brands Belize’s boaters trust, from electronics and safety gear to reels, line and eyewear."
+  description="Duke Marine stocks the marine and fishing brands Belize’s boaters trust, Penn, Awlgrip, Pettit, Rule, Ritchie, Nomad Design, Seachoice and Marpac, with the rest available to special-order."
 >
   <PageHero
     eyebrow="Brands"
     title="Names you know, gear you trust"
-    lead="We stock the brands that hold up to Caribbean salt, sun and hard use, and we can special-order the rest."
+    lead="These are the brands we stand behind, chosen because they hold up to Caribbean salt, sun and hard use. Here’s who they are and what they do best."
     crumbs={[{ label: 'Brands' }]}
   />
 
-  {
-    groups.map((g) => (
-      <section class="section section-tight">
-        <div class="container">
-          <header class="brands__head" data-reveal>
-            <span class="eyebrow"><Icon name={g.icon} size={16} /> {g.title}</span>
-          </header>
-          <div class="brands__grid">
-            {g.items.map((b, i) => (
-              <article class="bcard" data-reveal data-reveal-delay={(i % 4) * 60}>
-                <div class="bcard__logo" aria-hidden="true">{b.name.charAt(0)}</div>
-                <div class="bcard__body">
-                  <h3>{b.name}</h3>
-                  <span class="bcard__cat">{b.category}</span>
-                  <p>{b.blurb}</p>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-    ))
-  }
+  <section class="section">
+    <div class="container">
+      <div class="brands-list">
+        {
+          brands.map((b, i) => (
+            <article class="brow" data-reveal data-reveal-delay={(i % 4) * 70} style={`--i:${i}`}>
+              <div class:list={['brow__logo', { 'brow__logo--dark': b.dark }]}>
+                <img src={b.logo} alt={`${b.name} logo`} loading="lazy" />
+              </div>
+              <div class="brow__body">
+                <span class="brow__cat">{b.category}</span>
+                <h3>{b.name}</h3>
+                <p>{b.blurb}</p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
 
   <section class="section-tight">
     <div class="container">
@@ -61,63 +51,94 @@ const groups = [
     </div>
   </section>
 
-  <CtaBanner title="Can’t find your brand?" text="Send us your list, from electronics to reels, and our team will confirm availability." />
+  <CtaBanner title="Can’t find your brand?" text="Send us your list, from reels and compasses to paint and pumps, and our team will confirm availability." />
 </BaseLayout>
 
 <style>
-  .brands__head {
-    margin-bottom: 1.6rem;
-  }
-  .brands__grid {
+  .brands-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
-    gap: 1.2rem;
-  }
-  .bcard {
-    display: flex;
-    align-items: center;
     gap: 1.1rem;
-    padding: 1.3rem;
+    max-width: 920px;
+    margin: 0 auto;
+  }
+  .brow {
+    display: grid;
+    grid-template-columns: 210px 1fr;
+    gap: 1.8rem;
+    align-items: center;
+    padding: 1.4rem 1.6rem;
     background: var(--bg-elevated);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-sm);
-    transition: transform var(--dur) var(--ease-out), box-shadow var(--dur), border-color var(--dur);
   }
-  .bcard:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow);
-    border-color: var(--accent);
-  }
-  .bcard__logo {
+  .brow__logo {
     display: grid;
     place-items: center;
-    width: 58px;
-    height: 58px;
-    flex: none;
-    border-radius: 14px;
-    background: var(--grad-deep);
-    color: var(--c-current-bright);
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: 1.6rem;
+    height: 116px;
+    padding: 1.1rem 1.3rem;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
   }
-  .bcard__body h3 {
-    font-size: 1.1rem;
+  .brow__logo--dark {
+    background: var(--c-navy);
+    border-color: color-mix(in srgb, #fff 12%, transparent);
   }
-  .bcard__cat {
+  .brow__logo img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+  .brow__cat {
     display: inline-block;
+    font-family: var(--font-display);
     font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
+    font-weight: 700;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
     color: var(--accent-strong);
-    margin: 0.15rem 0 0.3rem;
   }
-  .bcard__body p {
-    font-size: 0.85rem;
+  .brow__body h3 {
+    font-size: 1.35rem;
+    margin: 0.2rem 0 0.45rem;
+  }
+  .brow__body p {
     color: var(--text-soft);
+    font-size: 0.95rem;
+    max-width: 60ch;
   }
+
+  /* Looping cascade — a highlight travels down the line and repeats ~every 10s. */
+  @media (prefers-reduced-motion: no-preference) {
+    .brow {
+      animation: browWave 10s ease-in-out infinite;
+      animation-delay: calc(var(--i) * 0.8s);
+    }
+    .brow__logo {
+      animation: browLogo 10s ease-in-out infinite;
+      animation-delay: calc(var(--i) * 0.8s);
+    }
+  }
+  @keyframes browWave {
+    0%, 13%, 100% {
+      box-shadow: var(--shadow-sm);
+      border-color: var(--border);
+    }
+    4.5% {
+      box-shadow: 0 16px 38px color-mix(in srgb, var(--accent) 32%, transparent);
+      border-color: var(--accent);
+    }
+  }
+  @keyframes browLogo {
+    0%, 13%, 100% {
+      transform: none;
+    }
+    4.5% {
+      transform: scale(1.05);
+    }
+  }
+
   .brands__note {
     display: flex;
     align-items: center;
@@ -136,5 +157,19 @@ const groups = [
   .brands__note p {
     margin-top: 0.3rem;
     color: var(--text-soft);
+  }
+
+  @media (max-width: 620px) {
+    .brow {
+      grid-template-columns: 1fr;
+      gap: 1.1rem;
+      text-align: center;
+    }
+    .brow__logo {
+      height: 100px;
+    }
+    .brow__body p {
+      margin-inline: auto;
+    }
   }
 </style>
