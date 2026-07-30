@@ -8,7 +8,9 @@
 const slides = [
   { src: '/media/hero-2.jpg', label: 'Fishing and diving gear from Duke Marine' },
   { src: '/media/hero-4.jpg', label: 'Below the surface, adventure has no limits' },
+  { src: '/media/hero-6.jpg', label: 'The right part, the right service, every time' },
   { src: '/media/hero-1.jpg', label: 'Where the tide slows, the soul finds its way' },
+  { src: '/media/hero-5.jpg', label: 'Duke Marine Product Database, coming soon' },
   { src: '/media/hero-3.jpg', label: 'Duke Marine, for all your marine needs' },
 ];
 ---
@@ -86,9 +88,16 @@ const slides = [
       rgba(6, 22, 44, 0) 45%
     );
   }
+  /* On mobile the header is opaque (bar + quick-nav strip). Drop the sharp
+     poster below the header so its top (the DUKE MARINE wordmark) is never
+     hidden; the blurred fill stays full-bleed behind the header. */
+  @media (max-width: 980px) {
+    .hero__slide-img {
+      top: calc(var(--header-h) + 3.25rem);
+    }
+  }
   @media (max-width: 640px) {
     .hero {
-      min-height: 72svh;
       padding-top: calc(var(--header-h) + 3.6rem);
     }
     .hero__slide-blur {
