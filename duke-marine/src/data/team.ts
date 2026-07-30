@@ -16,8 +16,8 @@ export const team: TeamMember[] = [
   },
   {
     name: 'M. Castillo',
-    role: 'Operations & Commercial Sales',
-    bio: 'Leads wholesale and fleet accounts, keeping resorts, guides and co-ops supplied and on schedule.',
+    role: 'Operations & Sales',
+    bio: 'Keeps the shelves stocked and the counter moving, helping anglers, captains and dive guides find the right gear fast.',
   },
   {
     name: 'R. Nunez',

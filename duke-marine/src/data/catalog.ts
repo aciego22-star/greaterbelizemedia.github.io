@@ -48,7 +48,7 @@ export const marineCategories: Category[] = [
     id: 'anchoring',
     name: 'Anchoring & Dock Lines',
     blurb:
-      'Anchors, chain, rope, fenders and dock hardware sized for skiffs to commercial vessels.',
+      'Anchors, chain, rope, fenders and dock hardware sized for skiffs to larger vessels.',
     icon: 'anchor',
     examples: ['Anchors', 'Chain & rode', 'Dock lines', 'Fenders', 'Buoys'],
   },

@@ -14,7 +14,7 @@ export const site = {
   tagline: 'Fishing. Diving. Boat Supplies.',
   slogan: 'For all your marine needs.',
   description:
-    'Duke Marine is Belize’s one-stop shop for marine parts, fishing and diving supplies, sales, parts and service for anglers, divers, captains, resorts and fleets. On the Philip Goldson Highway, Belize City.',
+    'Duke Marine is Belize’s one-stop shop for marine parts, fishing and diving supplies, sales, parts and service for anglers, divers, captains and resorts. On the Philip Goldson Highway, Belize City.',
   // Domain matches the business email (rduke@dukemarinebz.com). Update if the
   // final domain differs. Powers canonical URLs, sitemap and social cards.
   url: 'https://www.dukemarinebz.com',
@@ -43,7 +43,7 @@ export const site = {
   rating: 4.3,
   reviews: 44,
   social: {
-    facebook: 'https://www.facebook.com/dukemarine.bz',
+    facebook: 'https://www.facebook.com/share/1Ayxu9FrNn/?mibextid=wwXIfr',
     instagram: 'https://www.instagram.com/dukemarine.bz',
     youtube: '',
   },
@@ -89,7 +89,7 @@ export const nav: NavItem[] = [
     ],
   },
   { label: 'Brands', href: '/brands' },
-  { label: 'Commercial', href: '/commercial' },
+  { label: 'Blog', href: '/blog' },
   { label: 'Services', href: '/services' },
   {
     label: 'Company',
@@ -97,7 +97,6 @@ export const nav: NavItem[] = [
     children: [
       { label: 'About Duke Marine', href: '/about', desc: 'Our story & leadership' },
       { label: 'Gallery & Video', href: '/gallery', desc: 'Photos & video from the shop' },
-      { label: 'Blog', href: '/blog', desc: 'Guides & news from the crew' },
       { label: 'Careers', href: '/careers', desc: 'Join the crew' },
       { label: 'Contact', href: '/contact', desc: 'Visit or message us' },
     ],

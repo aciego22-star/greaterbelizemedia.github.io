@@ -69,4 +69,17 @@ const { class: cls = '', compact = false } = Astro.props;
     letter-spacing: 0.1em;
     text-transform: uppercase;
   }
+  /* Decongest the header on mobile: keep the badge + wordmark, drop the taglines. */
+  @media (max-width: 980px) {
+    .logo {
+      gap: 0.55rem;
+    }
+    .logo__type span {
+      display: none;
+    }
+    .logo__type strong {
+      font-size: 1.15rem;
+      letter-spacing: 0.06em;
+    }
+  }
 </style>

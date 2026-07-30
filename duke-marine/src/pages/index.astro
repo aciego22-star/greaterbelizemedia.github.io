@@ -14,6 +14,7 @@ import Reveal from '../components/Reveal.astro';
 import { departments, type DepartmentId } from '../data/catalog';
 import { featuredProducts } from '../data/products';
 import { brands } from '../data/brands';
+import { galleryPhotos } from '../data/gallery';
 
 // Home shows 4 brand logos at a time and rotates through all of them.
 const brandData = brands.map((b) => ({ logo: b.logo, name: b.name, dark: !!b.dark }));
@@ -40,9 +41,9 @@ const whyPoints = [
     text: 'Our team runs these waters. We match gear to Belize’s flats, reef and blue water, not a catalog.',
   },
   {
-    icon: 'truck',
-    title: 'Commercial & fleet supply',
-    text: 'Wholesale pricing, standing orders and delivery for resorts, guides, co-ops and tour fleets.',
+    icon: 'tag',
+    title: 'Special orders & sourcing',
+    text: 'If it’s not on the shelf, we’ll track it down. Tell us the make and model and we’ll source the part or gear you need.',
   },
   {
     icon: 'shield',
@@ -135,7 +136,7 @@ const whyPoints = [
         <SectionHeader
           eyebrow="Why Duke Marine"
           title="The shop Belize’s <span class='text-gold'>boaters trust</span>"
-          lead="Since 1998 we’ve kept skiffs running, guides rigged and fleets supplied, with real expertise behind the counter."
+          lead="Since 1998 we’ve kept skiffs running, guides rigged and anglers on the water, with real expertise behind the counter."
         />
       </div>
       <div class="why__grid">
@@ -155,27 +156,32 @@ const whyPoints = [
     </div>
   </section>
 
-  <!-- Brand video -->
+  <!-- Gallery teaser -->
   <section class="section">
     <div class="container">
-      <div class="vsplit">
-        <div class="vsplit__text">
-          <SectionHeader
-            eyebrow="Inside the shop"
-            title="More than a store, <span class='text-gradient'>a crew</span>"
-            lead="Take a look at how we rig gear, spool reels and get Belize’s boaters back on the water."
-          />
-          <ul role="list" class="vsplit__list">
-            <li><Icon name="check" size={18} /> In-house marine service &amp; rigging bench</li>
-            <li><Icon name="check" size={18} /> Line-spooling &amp; reel service station</li>
-            <li><Icon name="check" size={18} /> Special orders &amp; commercial provisioning</li>
-          </ul>
-          <a href="/about" class="btn btn--ghost">Our story <Icon name="arrow" size={18} /></a>
+      <SectionHeader
+        eyebrow="Gallery & Video"
+        title="Straight from the <span class='text-gradient'>shop</span>"
+        lead="Real gear, real boats, real Belize. A peek at what’s on the shelves and out on the water."
+        align="center"
+      />
+      <a href="/gallery" class="gteaser" data-reveal aria-label="See the full Duke Marine gallery and video">
+        <div class="gteaser__imgs" data-galrot>
+          {
+            galleryPhotos.slice(0, 4).map((p) => (
+              <span class="gteaser__cell">
+                <img src={p.src} alt={p.alt} loading="lazy" />
+              </span>
+            ))
+          }
         </div>
-        <Reveal class="vsplit__video" delay={120}>
-          <VideoSection seed="brand-video" poster="/media/banner-marina.jpg" label="Watch: inside Duke Marine" />
-        </Reveal>
-      </div>
+        <div class="gteaser__video">
+          <img src="/media/banner-marina.jpg" alt="" class="gteaser__vthumb" loading="lazy" />
+          <span class="gteaser__play"><Icon name="play" size={30} /></span>
+          <span class="gteaser__cap">See what’s happening on the shelves and with Duke Marine</span>
+        </div>
+        <span class="gteaser__more">Open the full gallery &amp; video <Icon name="arrow" size={18} /></span>
+      </a>
     </div>
   </section>
 
@@ -431,6 +437,113 @@ const whyPoints = [
     margin-top: 1.6rem;
   }
 
+  /* Gallery teaser */
+  .gteaser {
+    display: block;
+    max-width: 960px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .gteaser__imgs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.8rem;
+    transition: opacity 0.45s var(--ease-out);
+  }
+  .gteaser__imgs.is-swapping {
+    opacity: 0;
+  }
+  .gteaser__cell {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    background: var(--c-navy);
+  }
+  .gteaser__cell img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--dur-slow) var(--ease-out);
+  }
+  .gteaser:hover .gteaser__cell img {
+    transform: scale(1.05);
+  }
+  .gteaser__video {
+    position: relative;
+    margin-top: 0.9rem;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    aspect-ratio: 16 / 7;
+    box-shadow: var(--shadow);
+  }
+  .gteaser__vthumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .gteaser__video::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(6, 22, 44, 0.15), rgba(6, 22, 44, 0.65));
+  }
+  .gteaser__play {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 74px;
+    height: 74px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--c-current);
+    color: var(--c-navy);
+    z-index: 2;
+    box-shadow: 0 8px 24px rgba(6, 22, 44, 0.4);
+    transition: transform var(--dur) var(--ease-out);
+  }
+  .gteaser:hover .gteaser__play {
+    transform: scale(1.08);
+  }
+  .gteaser__cap {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 1rem;
+    z-index: 2;
+    text-align: center;
+    color: #fff;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(0.9rem, 2.4vw, 1.05rem);
+    padding-inline: 1rem;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.55);
+  }
+  .gteaser__more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    margin-top: 1.1rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--accent-strong);
+  }
+  .gteaser:hover .gteaser__more :global(svg) {
+    transform: translateX(3px);
+  }
+  @media (max-width: 620px) {
+    .gteaser__imgs {
+      grid-template-columns: 1fr 1fr;
+    }
+    .gteaser__video {
+      aspect-ratio: 16 / 10;
+    }
+  }
+
   /* Visit */
   .visit__grid {
     display: grid;
@@ -539,6 +652,29 @@ const whyPoints = [
         g = (g + 1) % groups.length;
         render(g);
         row.classList.remove('is-swapping');
+      }, 460);
+    }, 8000);
+  });
+</script>
+
+<script define:vars={{ galPhotos: galleryPhotos }}>
+  // Home gallery teaser: 4 photos, cross-fade to the next 4 every 8s (wraps through all).
+  const reduceG = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll('[data-galrot]').forEach((grid) => {
+    const cells = [...grid.querySelectorAll('img')];
+    const n = cells.length;
+    if (galPhotos.length <= n || reduceG) return;
+    let off = 0;
+    setInterval(() => {
+      grid.classList.add('is-swapping');
+      setTimeout(() => {
+        off = (off + n) % galPhotos.length;
+        cells.forEach((img, i) => {
+          const p = galPhotos[(off + i) % galPhotos.length];
+          img.src = p.src;
+          img.alt = p.alt;
+        });
+        grid.classList.remove('is-swapping');
       }, 460);
     }, 8000);
   });

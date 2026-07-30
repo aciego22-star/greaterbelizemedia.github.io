@@ -10,12 +10,12 @@ import Icon from './Icon.astro';
 
 interface Props {
   name: string;
-  variant?: 'contact' | 'quote' | 'commercial' | 'careers';
+  variant?: 'contact' | 'quote' | 'careers';
   submitLabel?: string;
 }
 const { name, variant = 'contact', submitLabel = 'Send message' } = Astro.props;
 
-const showCompany = variant === 'commercial' || variant === 'quote';
+const showCompany = variant === 'quote';
 const showInterest = variant === 'quote' || variant === 'contact';
 const showRole = variant === 'careers';
 const showVessel = variant === 'quote';
@@ -54,7 +54,7 @@ const showVessel = variant === 'quote';
       showCompany && (
         <label class="field">
           <span class="field__label">Business / vessel name</span>
-          <input type="text" name="company" placeholder="Company, lodge, fleet…" />
+          <input type="text" name="company" placeholder="Company or lodge (optional)" />
         </label>
       )
     }
@@ -76,7 +76,7 @@ const showVessel = variant === 'quote';
             <option value="">Select…</option>
             <option>Marine supplies</option>
             <option>Fishing supplies</option>
-            <option>Commercial / wholesale</option>
+            <option>Diving supplies</option>
             <option>Service &amp; rigging</option>
             <option>Something else</option>
           </select>

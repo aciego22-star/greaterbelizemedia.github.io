@@ -5,27 +5,7 @@ import SectionHeader from '../components/SectionHeader.astro';
 import VideoSection from '../components/VideoSection.astro';
 import Icon from '../components/Icon.astro';
 import CtaBanner from '../components/CtaBanner.astro';
-
-// Real photos supplied by the client. Add more to public/media and list here.
-const photos = [
-  { src: '/media/gallery-2.jpg', alt: 'Fishing, diving and marine gear at Duke Marine' },
-  { src: '/media/gallery-6.jpg', alt: 'Marine paints and coatings, AwlGrip and Pettit, at Duke Marine' },
-  { src: '/media/gallery-1.jpg', alt: 'Cast nets and gear on the shelves at Duke Marine' },
-  { src: '/media/gallery-7.jpg', alt: 'Stainless boat hardware, locks and fittings at Duke Marine' },
-  { src: '/media/gallery-10.jpg', alt: 'Paint prep, brushes, tape and sandpaper at Duke Marine' },
-  { src: '/media/gallery-3.jpg', alt: 'Rope and rode on the reel inside the Duke Marine shop' },
-  { src: '/media/gallery-9.jpg', alt: 'Bilge pumps and livewell pumps at Duke Marine' },
-  { src: '/media/gallery-5.jpg', alt: 'For all your marine needs, Duke Marine, Belize City' },
-  { src: '/media/gallery-8.jpg', alt: 'Navigation lights and marine electrical at Duke Marine' },
-  { src: '/media/gallery-4.jpg', alt: 'Marine and fishing supplies stocked at Duke Marine' },
-];
-
-// Client YouTube Shorts, shown as click-to-play thumbnails (vertical 9:16).
-const videos = [
-  { id: 'BP_keqKlThg', label: 'Duke Marine' },
-  { id: 'bIZUxUjjW00', label: 'Duke Marine' },
-  { id: '6NAgBH6EkHc', label: 'Duke Marine' },
-];
+import { galleryPhotos as photos, galleryVideos as videos } from '../data/gallery';
 ---
 
 <BaseLayout

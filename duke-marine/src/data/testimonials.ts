@@ -23,7 +23,7 @@ export const testimonials: Testimonial[] = [
   },
   {
     quote:
-      'We supply our whole tour fleet through Duke Marine. Reliable stock, fair wholesale pricing, and they deliver. That keeps our boats running.',
+      'We gear up our tour boats at Duke Marine. Reliable stock, fair pricing and a team that actually knows the gear. That keeps our boats running.',
     name: 'Tour Operations Manager',
     role: 'Belize City',
   },

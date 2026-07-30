@@ -79,7 +79,7 @@ const stripItems = [{ label: 'Home', href: '/' }, ...nav.map((n) => ({ label: n.
       </div>
     </nav>
 
-    <a href={primaryCta.href} class="btn btn--gold btn--sm hd-quote">{primaryCta.label}</a>
+    <a href={primaryCta.href} class="btn btn--gold btn--sm hd-quote" aria-label={primaryCta.label}>Quote</a>
   </div>
 
   <nav class="hd-strip" aria-label="Sections">

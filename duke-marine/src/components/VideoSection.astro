@@ -28,7 +28,14 @@ const {
 const hasVideo = Boolean(src || embed);
 ---
 
-<div class="videobox" style={`--ratio:${ratio}`} data-video={hasVideo ? '' : undefined}>
+<div
+  class="videobox"
+  style={`--ratio:${ratio}`}
+  data-video={hasVideo ? '' : undefined}
+  data-embed={embed || undefined}
+  data-src={src || undefined}
+  data-label={label}
+>
   <div class="videobox__poster" data-video-poster>
     {
       poster ? (
@@ -48,10 +55,6 @@ const hasVideo = Boolean(src || embed);
     }
   </div>
 
-  {src && <template data-video-tpl>{`<video class="videobox__el" controls autoplay playsinline src="${src}"></video>`}</template>}
-  {embed && (
-    <template data-video-tpl>{`<iframe class="videobox__el" src="${embed}${embed.includes('?') ? '&' : '?'}autoplay=1" title="${label}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>`}</template>
-  )}
 </div>
 
 <style>
@@ -137,13 +140,37 @@ const hasVideo = Boolean(src || embed);
 
 <script>
   document.querySelectorAll<HTMLElement>('[data-video]').forEach((box) => {
-    const btn = box.querySelector<HTMLButtonElement>('[data-video-play]');
-    const tpl = box.querySelector<HTMLTemplateElement>('[data-video-tpl]');
     const poster = box.querySelector<HTMLElement>('[data-video-poster]');
-    if (!btn || !tpl || !poster) return;
-    btn.addEventListener('click', () => {
+    if (!poster) return;
+    const play = () => {
+      if (box.dataset.played) return;
+      box.dataset.played = '1';
+      const embed = box.dataset.embed;
+      const src = box.dataset.src;
+      let el: HTMLIFrameElement | HTMLVideoElement | null = null;
+      if (embed) {
+        const iframe = document.createElement('iframe');
+        iframe.className = 'videobox__el';
+        iframe.src = embed + (embed.includes('?') ? '&' : '?') + 'autoplay=1&playsinline=1&rel=0';
+        iframe.title = box.dataset.label || 'Video';
+        iframe.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture; encrypted-media');
+        iframe.allowFullscreen = true;
+        el = iframe;
+      } else if (src) {
+        const video = document.createElement('video');
+        video.className = 'videobox__el';
+        video.src = src;
+        video.controls = true;
+        video.autoplay = true;
+        video.playsInline = true;
+        el = video;
+      }
+      if (!el) return;
       poster.style.display = 'none';
-      box.insertAdjacentHTML('beforeend', tpl.innerHTML);
-    });
+      box.appendChild(el);
+    };
+    // Tapping anywhere on the thumbnail (not just the play button) starts it.
+    poster.style.cursor = 'pointer';
+    poster.addEventListener('click', play);
   });
 </script>
