@@ -57,11 +57,12 @@ export const nav: NavItem[] = [
     label: 'Marine',
     href: '/marine-supplies',
     children: [
-      { label: 'Boat Hardware & Rigging', href: '/marine-supplies#hardware', desc: 'Cleats, rails, fittings' },
-      { label: 'Electronics & Navigation', href: '/marine-supplies#electronics', desc: 'GPS, sounders, VHF' },
-      { label: 'Safety & Life-Saving', href: '/marine-supplies#safety', desc: 'PFDs, flares, extinguishers' },
-      { label: 'Paint & Maintenance', href: '/marine-supplies#maintenance', desc: 'Anti-foul, resins, care' },
-      { label: 'Anchoring & Dock Lines', href: '/marine-supplies#anchoring', desc: 'Anchors, rode, fenders' },
+      { label: 'Anchors & Rode', href: '/marine-supplies#anchors', desc: 'Anchors, chain, swivels' },
+      { label: 'Rope, Fenders & Dock Lines', href: '/marine-supplies#dock', desc: 'Rope, fenders, buoys' },
+      { label: 'Electrical & Lighting', href: '/marine-supplies#electrical', desc: 'Panels, switches, LEDs' },
+      { label: 'Stainless Hardware & Rigging', href: '/marine-supplies#hardware', desc: 'Cleats, chocks, fasteners' },
+      { label: 'Bimini & Canvas', href: '/marine-supplies#bimini', desc: 'Tops, fittings, hardware' },
+      { label: 'Trailer Parts', href: '/marine-supplies#trailer', desc: 'Rollers, jacks, lights' },
     ],
   },
   {

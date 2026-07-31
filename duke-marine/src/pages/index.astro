@@ -28,6 +28,11 @@ const deptTone: Record<DepartmentId, 'current' | 'brass' | 'deep'> = {
   fishing: 'brass',
   diving: 'deep',
 };
+// Real department photos (Marine is stocked with real product shots; Fishing &
+// Diving keep their designed tiles until their photos are supplied).
+const deptImage: Partial<Record<DepartmentId, string>> = {
+  marine: '/media/products/minn-kota-endura-36.jpg',
+};
 
 const whyPoints = [
   {
@@ -69,13 +74,22 @@ const whyPoints = [
           Object.values(departments).map((d, i) => (
             <a href={d.href} class="dept" data-reveal data-reveal-delay={i * 120}>
               <div class="dept__media">
-                <Media
-                  seed={d.id}
-                  icon={deptIcon[d.id]}
-                  ratio="16 / 10"
-                  tone={deptTone[d.id]}
-                  label={d.title}
-                />
+                {
+                  deptImage[d.id] ? (
+                    <span class="dept__photo">
+                      <img src={deptImage[d.id]} alt={d.title} loading="lazy" />
+                      <span class="dept__photo-label">{d.title}</span>
+                    </span>
+                  ) : (
+                    <Media
+                      seed={d.id}
+                      icon={deptIcon[d.id]}
+                      ratio="16 / 10"
+                      tone={deptTone[d.id]}
+                      label={d.title}
+                    />
+                  )
+                }
               </div>
               <div class="dept__body">
                 <h3>{d.title}</h3>
@@ -120,8 +134,8 @@ const whyPoints = [
         eyebrow="Fresh on the shelves"
         title="Featured gear"
         lead="A snapshot of what’s on the shelves right now. Come in or message us for what you need."
-        linkHref="/fishing-supplies"
-        linkLabel="Browse fishing"
+        linkHref="/marine-supplies"
+        linkLabel="All marine supplies"
       />
       <div class="grid auto-fit" style="--min: 250px">
         {featuredProducts.slice(0, 6).map((p, i) => <ProductCard product={p} delay={i * 70} />)}
@@ -299,6 +313,37 @@ const whyPoints = [
   }
   .dept:hover .dept__media :global(.media) {
     transform: scale(1.06);
+  }
+  .dept__photo {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 10;
+    background: #fff;
+    overflow: hidden;
+  }
+  .dept__photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 1.2rem;
+    box-sizing: border-box;
+    transition: transform var(--dur-slow) var(--ease-out);
+  }
+  .dept:hover .dept__photo img {
+    transform: scale(1.06);
+  }
+  .dept__photo-label {
+    position: absolute;
+    left: 1rem;
+    bottom: 1rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: var(--radius-pill);
+    background: var(--c-navy);
+    color: #fff;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 0.02em;
   }
   .dept__body {
     padding: 1.8rem 1.8rem 2rem;

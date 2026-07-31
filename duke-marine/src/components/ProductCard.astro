@@ -69,7 +69,8 @@ const { product, reveal = true, delay = 0 } = Astro.props;
     display: block;
     width: 100%;
     aspect-ratio: 4 / 3;
-    object-fit: cover;
+    object-fit: contain;
+    background: #fff;
     transition: transform var(--dur-slow) var(--ease-out);
   }
   .pcard:hover .pcard__media :global(.media),

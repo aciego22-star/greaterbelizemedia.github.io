@@ -9,48 +9,100 @@ export type Category = {
   blurb: string;
   icon: string;
   examples: string[];
+  /** Optional real category photo in public/media/products/. Falls back to a designed placeholder. */
+  image?: string;
 };
 
 export const marineCategories: Category[] = [
   {
-    id: 'hardware',
-    name: 'Boat Hardware & Rigging',
+    id: 'anchors',
+    name: 'Anchors & Rode',
     blurb:
-      'Stainless cleats, rails, hinges, steering and control cables, the fittings that hold a vessel together.',
-    icon: 'wrench',
-    examples: ['Cleats & rails', 'Steering systems', 'Control cables', 'Fasteners', 'Bilge pumps'],
+      'Anchors, chain, swivels and rode sized to hold your boat in Belize sand and grass.',
+    icon: 'anchor',
+    examples: ['Fluke & claw anchors', 'Anchor chain', 'Galvanized swivels', 'Mushroom anchors'],
+    image: '/media/products/danforth-hooker-anchor.jpg',
   },
   {
-    id: 'electronics',
-    name: 'Electronics & Navigation',
+    id: 'dock',
+    name: 'Rope, Fenders & Dock Lines',
     blurb:
-      'Chartplotters, fishfinders, VHF radios and stereo systems from the brands captains trust.',
+      'Dock and mooring gear that takes the daily grind of tying up in salt water.',
+    icon: 'waves',
+    examples: ['Braided & twisted rope', 'Dock lines', 'Fenders', 'Mooring buoys'],
+    image: '/media/products/polyform-buoys.jpg',
+  },
+  {
+    id: 'bilge',
+    name: 'Bilge Pumps & Plumbing',
+    blurb:
+      'Keep the water where it belongs with dependable Rule pumps and bilge gear.',
+    icon: 'sparkle',
+    examples: ['Rule bilge pumps', 'Float switches', 'Bilge absorbents', 'Hose & fittings'],
+    image: '/media/products/2000gph-rule-bilge-pump.jpg',
+  },
+  {
+    id: 'electrical',
+    name: 'Electrical & Lighting',
+    blurb:
+      'Marine-grade switching, wiring and lighting wired to survive spray and sun.',
     icon: 'gps',
-    examples: ['GPS / chartplotters', 'Fishfinders', 'VHF radios', 'Batteries', 'Marine audio'],
+    examples: ['Switch panels', 'Battery switches', 'LED nav lights', 'Marine wire'],
+    image: '/media/products/6-gang-rocker-switch-panel.jpg',
+  },
+  {
+    id: 'hardware',
+    name: 'Stainless Hardware & Rigging',
+    blurb:
+      '316 stainless cleats, chocks, hinges and fasteners that shrug off Caribbean salt.',
+    icon: 'wrench',
+    examples: ['Cleats & chocks', 'Bow eyes', 'Hinges', 'Bolts & screws'],
+    image: '/media/products/12-cleat-ss.jpg',
+  },
+  {
+    id: 'bimini',
+    name: 'Bimini & Canvas',
+    blurb:
+      'Bimini frames, fittings and canvas to put shade over your center console.',
+    icon: 'boat',
+    examples: ['Bimini tops', 'Rail bases & fittings', 'Deck hinges', 'Jaw slides & caps'],
+    image: '/media/products/carver-bimini-top.jpg',
+  },
+  {
+    id: 'trailer',
+    name: 'Trailer Parts',
+    blurb:
+      'Rollers, jacks, lights and hardware to get your boat to the ramp and back.',
+    icon: 'truck',
+    examples: ['Keel & bow rollers', 'Trailer jacks', 'Submersible lights', 'Winch straps'],
+    image: '/media/products/fold-up-trailer-jack.jpg',
+  },
+  {
+    id: 'fiberglass',
+    name: 'Fiberglass & Repair',
+    blurb:
+      'Resin, matting and core for repairs and layups that last in the tropics.',
+    icon: 'tag',
+    examples: ['Resin', 'Chopped-strand mat', 'Woven roving', 'Structural core'],
+    image: '/media/products/roving.jpg',
+  },
+  {
+    id: 'propulsion',
+    name: 'Propellers & Power',
+    blurb:
+      'Props, trolling motors and running gear to keep you moving on the water.',
+    icon: 'compass',
+    examples: ['Propellers', 'Trolling motors', 'Cutlass bearings', 'Prop hardware'],
+    image: '/media/products/minn-kota-endura-36.jpg',
   },
   {
     id: 'safety',
     name: 'Safety & Life-Saving',
     blurb:
-      'Everything you need to pass inspection and get home, life jackets, flares, extinguishers and first aid.',
+      'Coast Guard-style safety gear to pass inspection and get everyone home.',
     icon: 'shield',
-    examples: ['Life jackets (PFDs)', 'Flares & signals', 'Fire extinguishers', 'EPIRBs', 'First aid'],
-  },
-  {
-    id: 'maintenance',
-    name: 'Paint & Maintenance',
-    blurb:
-      'Antifouling paint, resins, sealants and cleaners to protect your investment against sun and salt.',
-    icon: 'sparkle',
-    examples: ['Antifouling paint', 'Epoxy & resin', 'Sealants', 'Waxes & cleaners', 'Zincs / anodes'],
-  },
-  {
-    id: 'anchoring',
-    name: 'Anchoring & Dock Lines',
-    blurb:
-      'Anchors, chain, rope, fenders and dock hardware sized for skiffs to larger vessels.',
-    icon: 'anchor',
-    examples: ['Anchors', 'Chain & rode', 'Dock lines', 'Fenders', 'Buoys'],
+    examples: ['Life vests (PFDs)', 'Fire extinguishers', 'Air horns', 'Life rings'],
+    image: '/media/products/type-ii-life-vest.jpg',
   },
 ];
 
