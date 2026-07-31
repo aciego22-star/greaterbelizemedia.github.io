@@ -21,6 +21,7 @@ export const site = {
   phoneDisplay: '(+501) 223-0319',
   phoneHref: '+5012230319',
   whatsapp: '5016287395',
+  whatsappDisplay: '(+501) 628-7395',
   email: 'rduke@dukemarinebz.com',
   salesEmail: 'dukemarine@btl.net',
   address: {

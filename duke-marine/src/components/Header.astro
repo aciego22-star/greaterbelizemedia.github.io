@@ -71,10 +71,22 @@ const stripItems = [{ label: 'Home', href: '/' }, ...nav.map((n) => ({ label: n.
       </ul>
 
       <div class="nav__cta">
-        <a href={`tel:${site.phoneHref}`} class="nav__phone">
-          <Icon name="phone" size={18} />
-          <span>{site.phoneDisplay}</span>
-        </a>
+        <div class="nav__contact">
+          <a href={`tel:${site.phoneHref}`} class="nav__phone">
+            <Icon name="phone" size={17} />
+            <span>{site.phoneDisplay}</span>
+          </a>
+          <a
+            href={`https://wa.me/${site.whatsapp}`}
+            class="nav__wa"
+            target="_blank"
+            rel="noopener"
+            aria-label={`WhatsApp ${site.whatsappDisplay}`}
+          >
+            <Icon name="whatsapp" size={17} />
+            <span>{site.whatsappDisplay}</span>
+          </a>
+        </div>
         <a href={primaryCta.href} class="btn btn--gold btn--sm">{primaryCta.label}</a>
       </div>
     </nav>
@@ -256,17 +268,37 @@ const stripItems = [{ label: 'Home', href: '/' }, ...nav.map((n) => ({ label: n.
     align-items: center;
     gap: 1.1rem;
   }
-  .nav__phone {
+  .nav__contact {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.25rem;
+  }
+  .nav__phone,
+  .nav__wa {
     display: inline-flex;
     align-items: center;
-    gap: 0.5em;
+    gap: 0.45em;
     font-family: var(--font-display);
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.82rem;
+    line-height: 1;
     color: #ffffff;
     white-space: nowrap;
+    transition: opacity var(--dur-fast);
   }
-  .nav__phone:hover {
+  .nav__phone :global(svg),
+  .nav__wa :global(svg) {
+    display: block;
+    flex: none;
+    width: 15px;
+    height: 15px;
+  }
+  .nav__wa :global(svg) {
+    color: #25d366;
+  }
+  .nav__phone:hover,
+  .nav__wa:hover {
     color: #fff;
     opacity: 0.85;
   }
@@ -340,7 +372,7 @@ const stripItems = [{ label: 'Home', href: '/' }, ...nav.map((n) => ({ label: n.
     .nav__link {
       padding-inline: 0.65rem;
     }
-    .nav__phone {
+    .nav__contact {
       display: none;
     }
   }
