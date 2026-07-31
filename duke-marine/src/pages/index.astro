@@ -28,10 +28,12 @@ const deptTone: Record<DepartmentId, 'current' | 'brass' | 'deep'> = {
   fishing: 'brass',
   diving: 'deep',
 };
-// Real department photos (Marine is stocked with real product shots; Fishing &
-// Diving keep their designed tiles until their photos are supplied).
-const deptImage: Partial<Record<DepartmentId, string>> = {
-  marine: '/media/products/minn-kota-endura-36.jpg',
+// Real department photos. Marine shows a product shot (contain on white);
+// Fishing & Diving use authentic client lifestyle photography (cover fill).
+const deptImage: Partial<Record<DepartmentId, { src: string; fill?: boolean }>> = {
+  marine: { src: '/media/products/minn-kota-endura-36.jpg' },
+  fishing: { src: '/media/life/kingfish-lift.jpg', fill: true },
+  diving: { src: '/media/life/reef-flats.jpg', fill: true },
 };
 
 const whyPoints = [
@@ -76,8 +78,8 @@ const whyPoints = [
               <div class="dept__media">
                 {
                   deptImage[d.id] ? (
-                    <span class="dept__photo">
-                      <img src={deptImage[d.id]} alt={d.title} loading="lazy" />
+                    <span class:list={['dept__photo', { 'dept__photo--fill': deptImage[d.id]!.fill }]}>
+                      <img src={deptImage[d.id]!.src} alt={d.title} loading="lazy" />
                       <span class="dept__photo-label">{d.title}</span>
                     </span>
                   ) : (
@@ -190,9 +192,9 @@ const whyPoints = [
           }
         </div>
         <div class="gteaser__video">
-          <img src="/media/banner-marina.jpg" alt="" class="gteaser__vthumb" loading="lazy" />
+          <img src="/media/life/boat-wake.jpg" alt="" class="gteaser__vthumb" loading="lazy" />
           <span class="gteaser__play"><Icon name="play" size={30} /></span>
-          <span class="gteaser__cap">See what’s happening on the shelves and with Duke Marine</span>
+          <span class="gteaser__cap">A day on the water, and what’s new on the shelves, with Duke Marine</span>
         </div>
         <span class="gteaser__more">Open the full gallery &amp; video <Icon name="arrow" size={18} /></span>
       </a>
@@ -328,6 +330,14 @@ const whyPoints = [
     padding: 1.2rem;
     box-sizing: border-box;
     transition: transform var(--dur-slow) var(--ease-out);
+  }
+  /* Lifestyle photos fill the tile edge-to-edge (no white padding). */
+  .dept__photo--fill {
+    background: var(--c-navy);
+  }
+  .dept__photo--fill img {
+    object-fit: cover;
+    padding: 0;
   }
   .dept:hover .dept__photo img {
     transform: scale(1.06);

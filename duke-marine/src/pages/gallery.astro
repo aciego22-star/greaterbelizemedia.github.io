@@ -5,53 +5,68 @@ import SectionHeader from '../components/SectionHeader.astro';
 import VideoSection from '../components/VideoSection.astro';
 import Icon from '../components/Icon.astro';
 import CtaBanner from '../components/CtaBanner.astro';
-import { galleryPhotos as photos, galleryVideos as videos } from '../data/gallery';
+import { galleryGroups, dayOnTheWaterVideos, galleryVideos } from '../data/gallery';
 ---
 
 <BaseLayout
   title="Gallery & Video"
-  description="Photos and video from Duke Marine, gear, boats and the crew in Belize City. Marine, fishing and diving supplies, sales and service."
+  description="Photos and video from Duke Marine, real fishing trips, boats, catches and the Belize coastline, plus gear on the shelves in Belize City."
 >
   <PageHero
     eyebrow="Gallery & Video"
-    title="Straight from the shop"
-    lead="Real gear, real boats, real Belize. A look at what’s on the shelves and out on the water."
+    title="Straight from the shop, and out on the water"
+    lead="Real gear, real boats, real Belize. A look at the life behind Duke Marine, on the water and on the shelves."
     crumbs={[{ label: 'Gallery' }]}
   />
 
-  <!-- Photo gallery -->
-  <section class="section">
+  <!-- A Day on the Water (featured video) -->
+  <section class="section" id="a-day-on-the-water">
     <div class="container">
-      <div class="gal">
+      <SectionHeader
+        eyebrow="Watch"
+        title="A Day on the Water"
+        lead="Real trips off Belize City, boats leaving the dock, trolling the blue water and fish coming over the rail. Tap a clip to play."
+      />
+      <div class="vids vids--four">
         {
-          photos.map((p, i) => (
-            <figure class="gal__cell" data-reveal data-reveal-delay={(i % 4) * 60}>
-              <img src={p.src} alt={p.alt} loading="lazy" />
-            </figure>
+          dayOnTheWaterVideos.map((v) => (
+            <VideoSection src={v.src} poster={v.poster} label={v.label} ratio={v.ratio} showLabel={true} />
           ))
         }
       </div>
     </div>
   </section>
 
-  <!-- Video -->
+  <!-- Themed photo galleries -->
+  {
+    galleryGroups.map((group, gi) => (
+      <section class:list={['section', { 'section-tight': gi > 0 }]} style={gi % 2 === 1 ? 'background: var(--bg-inset)' : undefined}>
+        <div class="container">
+          <SectionHeader title={group.title} lead={group.blurb} />
+          <div class="gal">
+            {group.photos.map((p, i) => (
+              <figure class="gal__cell" data-reveal data-reveal-delay={(i % 4) * 60}>
+                <img src={p.src} alt={p.alt} loading="lazy" />
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
+    ))
+  }
+
+  <!-- More from Duke Marine (social clips) -->
   <section class="section-tight" style="background: var(--bg-inset)">
     <div class="container">
       <SectionHeader
-        eyebrow="Watch"
-        title="Video from Duke Marine"
-        lead="Product walk-throughs, brand stories and how-tos. Drop us your clips and we’ll feature them here."
+        eyebrow="More"
+        title="More from Duke Marine"
+        lead="Short clips from the shop and the crew. Drop us your own and we’ll feature them here."
       />
       <div class="vids">
         {
-          videos.map((v) => (
-            <VideoSection
-              embed={`https://www.youtube.com/embed/${v.id}`}
-              poster={`https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`}
-              label={v.label}
-              showLabel={false}
-              ratio="9 / 16"
-            />
+          galleryVideos.map((v) => (
+            <VideoSection embed={v.embed} poster={v.poster} label={v.label} showLabel={false} ratio={v.ratio} />
           ))
         }
       </div>
@@ -96,6 +111,10 @@ import { galleryPhotos as photos, galleryVideos as videos } from '../data/galler
     max-width: 900px;
     margin: 0 auto;
   }
+  .vids--four {
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 1000px;
+  }
   .galnote {
     display: flex;
     align-items: center;
@@ -117,10 +136,18 @@ import { galleryPhotos as photos, galleryVideos as videos } from '../data/galler
     .gal {
       column-count: 3;
     }
+    .vids--four {
+      grid-template-columns: repeat(3, 1fr);
+      max-width: 760px;
+    }
   }
   @media (max-width: 760px) {
     .gal {
       column-count: 2;
+    }
+    .vids--four {
+      grid-template-columns: repeat(2, 1fr);
+      max-width: 460px;
     }
   }
   @media (max-width: 560px) {
