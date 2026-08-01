@@ -35,8 +35,7 @@ export const site = {
     lng: -88.2405,
     mapQuery: 'Duke Marine, Philip Goldson Highway, Belize City, Belize',
   },
-  // Hours supplied by the client. Confirm with Duke Marine before final
-  // production launch; these are not Google-verified.
+  // Business hours.
   hours: [
     { day: 'Monday - Friday', time: '8:00 AM - 4:30 PM' },
     { day: 'Saturday', time: '8:30 AM - 1:00 PM' },

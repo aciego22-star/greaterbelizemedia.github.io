@@ -76,7 +76,7 @@ const byCategory = d.categories.map((c) => ({
             </div>
           ) : (
             <div class="catgroup__empty" data-reveal>
-              <p><b>In stock &amp; special order.</b> We carry a full range of {category.name.toLowerCase()}, including {category.examples.slice(0, 3).join(', ')} and more.</p>
+              <p><b>In stock.</b> We carry a range of {category.name.toLowerCase()}, including {category.examples.slice(0, 3).join(', ')} and more.</p>
               <a href="/contact#quote" class="link-arrow">Ask us what’s available <Icon name="arrow" size={16} /></a>
             </div>
           )}
@@ -85,7 +85,7 @@ const byCategory = d.categories.map((c) => ({
     }
 
     <p class="catnote" data-reveal>
-      <Icon name="tag" size={18} /> Don’t see it? We special-order from our full range, 
+      <Icon name="tag" size={18} /> Don’t see it? We carry a wide range in store,
       <a href="/contact">just ask</a>.
     </p>
   </div>
