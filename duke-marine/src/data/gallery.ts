@@ -75,17 +75,18 @@ export const galleryPhotos: GalleryPhoto[] = [
   { src: '/media/gallery-2.jpg', alt: 'Fishing, diving and marine gear at Duke Marine' },
 ];
 
-// "A Day on the Water" — the client's real footage (self-hosted, portrait 9:16).
+// "A Day on the Water" — the client's real footage, hosted on YouTube for fast
+// playback (click-to-play, portrait 9:16). Posters are our own lifestyle photos.
 export const dayOnTheWaterVideos: GalleryVideo[] = [
-  { src: '/media/videos/dotw-1.mp4', poster: '/media/life/trolling-spread.jpg', ratio: '9 / 16', label: 'On the troll' },
-  { src: '/media/videos/dotw-2.mp4', poster: '/media/life/boat-wake.jpg', ratio: '9 / 16', label: 'Heading out' },
-  { src: '/media/videos/dotw-3.mov', poster: '/media/life/wahoo-catch.jpg', ratio: '9 / 16', label: 'Fish on' },
-  { src: '/media/videos/dotw-4.mov', poster: '/media/life/reef-flats.jpg', ratio: '9 / 16', label: 'Belize water' },
+  { embed: 'https://www.youtube.com/embed/Vllw40_7H3g', poster: '/media/life/trolling-spread.jpg', ratio: '9 / 16', label: 'On the troll' },
+  { embed: 'https://www.youtube.com/embed/wcL6BxQ24to', poster: '/media/life/boat-wake.jpg', ratio: '9 / 16', label: 'Heading out' },
+  { embed: 'https://www.youtube.com/embed/dZq65TuTg04', poster: '/media/life/wahoo-catch.jpg', ratio: '9 / 16', label: 'Fish on' },
+  { embed: 'https://www.youtube.com/embed/o09Yo6Evgt8', poster: '/media/life/reef-flats.jpg', ratio: '9 / 16', label: 'Belize water' },
 ];
 
 // Client YouTube Shorts, shown as click-to-play thumbnails (vertical 9:16).
 export const galleryVideos: GalleryVideo[] = [
-  { embed: 'https://www.youtube.com/embed/BP_keqKlThg', poster: 'https://i.ytimg.com/vi/BP_keqKlThg/hqdefault.jpg', ratio: '9 / 16', label: 'Duke Marine' },
-  { embed: 'https://www.youtube.com/embed/bIZUxUjjW00', poster: 'https://i.ytimg.com/vi/bIZUxUjjW00/hqdefault.jpg', ratio: '9 / 16', label: 'Duke Marine' },
-  { embed: 'https://www.youtube.com/embed/6NAgBH6EkHc', poster: 'https://i.ytimg.com/vi/6NAgBH6EkHc/hqdefault.jpg', ratio: '9 / 16', label: 'Duke Marine' },
+  { embed: 'https://www.youtube.com/embed/u1-oGMSuL7k', poster: 'https://i.ytimg.com/vi/u1-oGMSuL7k/hqdefault.jpg', ratio: '9 / 16', label: 'Duke Marine' },
+  { embed: 'https://www.youtube.com/embed/r07EHoUJTeM', poster: 'https://i.ytimg.com/vi/r07EHoUJTeM/hqdefault.jpg', ratio: '9 / 16', label: 'Duke Marine' },
+  { embed: 'https://www.youtube.com/embed/xZG5a3C8uHU', poster: 'https://i.ytimg.com/vi/xZG5a3C8uHU/hqdefault.jpg', ratio: '9 / 16', label: 'Duke Marine' },
 ];

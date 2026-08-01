@@ -30,7 +30,7 @@ import { galleryGroups, dayOnTheWaterVideos, galleryVideos } from '../data/galle
       <div class="vids vids--four">
         {
           dayOnTheWaterVideos.map((v) => (
-            <VideoSection src={v.src} poster={v.poster} label={v.label} ratio={v.ratio} showLabel={true} />
+            <VideoSection embed={v.embed} poster={v.poster} label={v.label} ratio={v.ratio} showLabel={true} />
           ))
         }
       </div>
