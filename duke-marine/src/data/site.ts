@@ -14,16 +14,16 @@ export const site = {
   tagline: 'Fishing. Diving. Boat Supplies.',
   slogan: 'For all your marine needs.',
   description:
-    'Duke Marine is Belize’s one-stop shop for marine parts, fishing and diving supplies, sales, parts and service for anglers, divers, captains and resorts. On the Philip Goldson Highway, Belize City.',
-  // Domain matches the business email (rduke@dukemarinebz.com). Update if the
-  // final domain differs. Powers canonical URLs, sitemap and social cards.
+    'Duke Marine is Belize’s one-stop shop for marine parts, fishing and diving supplies for anglers, divers and boat owners. On the Philip Goldson Highway, Belize City.',
+  // Powers canonical URLs, sitemap and social cards. Update if the final web
+  // domain differs (the customer-facing email is a BTL address, below).
   url: 'https://www.dukemarinebz.com',
   phoneDisplay: '(+501) 223-0319',
   phoneHref: '+5012230319',
   whatsapp: '5016287395',
   whatsappDisplay: '(+501) 628-7395',
-  email: 'rduke@dukemarinebz.com',
-  salesEmail: 'dukemarine@btl.net',
+  // Only approved customer-facing email.
+  email: 'dukemarine@btl.net',
   address: {
     line1: 'Mile 4½ Philip Goldson Highway',
     line2: '',
@@ -35,14 +35,13 @@ export const site = {
     lng: -88.2405,
     mapQuery: 'Duke Marine, Philip Goldson Highway, Belize City, Belize',
   },
+  // PROVISIONAL hours — confirm with Duke Marine before final production launch.
+  // These are not Google-verified.
   hours: [
     { day: 'Monday - Friday', time: '8:00 AM - 5:00 PM' },
     { day: 'Saturday', time: '8:00 AM - 12:00 PM' },
     { day: 'Sunday', time: 'Closed' },
   ],
-  // Google rating snapshot, refresh periodically.
-  rating: 4.3,
-  reviews: 44,
   social: {
     facebook: 'https://www.facebook.com/share/1Ayxu9FrNn/?mibextid=wwXIfr',
     instagram: 'https://www.instagram.com/dukemarine.bz',
@@ -54,6 +53,7 @@ export type NavChild = { label: string; href: string; desc?: string };
 export type NavItem = { label: string; href: string; children?: NavChild[] };
 
 export const nav: NavItem[] = [
+  { label: 'About', href: '/about' },
   {
     label: 'Marine',
     href: '/marine-supplies',
@@ -91,18 +91,9 @@ export const nav: NavItem[] = [
     ],
   },
   { label: 'Brands', href: '/brands' },
+  { label: 'Gallery', href: '/gallery' },
   { label: 'Blog', href: '/blog' },
   { label: 'Services', href: '/services' },
-  {
-    label: 'Company',
-    href: '/about',
-    children: [
-      { label: 'About Duke Marine', href: '/about', desc: 'Our story & leadership' },
-      { label: 'Gallery & Video', href: '/gallery', desc: 'Photos & video from the shop' },
-      { label: 'Careers', href: '/careers', desc: 'Join the crew' },
-      { label: 'Contact', href: '/contact', desc: 'Visit or message us' },
-    ],
-  },
 ];
 
 export const primaryCta = { label: 'Request a Quote', href: '/contact#quote' };

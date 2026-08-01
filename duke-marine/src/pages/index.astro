@@ -7,7 +7,6 @@ import ProductCard from '../components/ProductCard.astro';
 import Media from '../components/Media.astro';
 import Icon from '../components/Icon.astro';
 import StatStrip from '../components/StatStrip.astro';
-import Testimonials from '../components/Testimonials.astro';
 import VideoSection from '../components/VideoSection.astro';
 import CtaBanner from '../components/CtaBanner.astro';
 import Reveal from '../components/Reveal.astro';
@@ -38,25 +37,34 @@ const deptImage: Partial<Record<DepartmentId, { src: string; fill?: boolean }>> 
 
 const whyPoints = [
   {
-    icon: 'wrench',
-    title: 'Rigged & tested in-house',
-    text: 'Reels, rigs and gear are set up and tested by our own technicians before they leave the shop.',
+    icon: 'anchor',
+    title: 'Trusted since 1991',
+    text: 'Belize’s first marine store, and one of the country’s most trusted names in marine, fishing and diving supplies.',
   },
   {
     icon: 'compass',
-    title: 'Advice from people who fish',
-    text: 'Our team runs these waters. We match gear to Belize’s flats, reef and blue water, not a catalog.',
+    title: 'Knowledgeable product guidance',
+    text: 'Tell us about your boat, gear or project and we’ll help you find the right product for Belize’s waters.',
   },
   {
     icon: 'tag',
     title: 'Special orders & sourcing',
-    text: 'If it’s not on the shelf, we’ll track it down. Tell us the make and model and we’ll source the part or gear you need.',
+    text: 'If it’s not on the shelf, we can help source it. Tell us the make and model and we’ll look into availability.',
   },
   {
     icon: 'shield',
-    title: 'Safety you can trust',
-    text: 'Certified life-saving and signalling gear kept in stock and in date, all season long.',
+    title: 'Safety gear in stock',
+    text: 'Life-saving and signalling equipment kept in stock for anglers, divers and boat owners.',
   },
+];
+
+// Factual, defensible reasons (replaces invented testimonials).
+const reasons = [
+  { icon: 'clock', text: 'Established in 1991' },
+  { icon: 'boat', text: 'Marine, fishing and diving products under one roof' },
+  { icon: 'pin', text: 'Convenient Belize City location' },
+  { icon: 'tag', text: 'Broad product selection' },
+  { icon: 'whatsapp', text: 'Direct assistance by phone, email and WhatsApp' },
 ];
 ---
 
@@ -152,7 +160,7 @@ const whyPoints = [
         <SectionHeader
           eyebrow="Why Duke Marine"
           title="The shop Belize’s <span class='text-gold'>boaters trust</span>"
-          lead="Since 1998 we’ve kept skiffs running, guides rigged and anglers on the water, with real expertise behind the counter."
+          lead="Since 1991, Belize’s boaters, anglers and divers have trusted Duke Marine for quality marine, fishing and diving supplies and honest product advice."
         />
       </div>
       <div class="why__grid">
@@ -194,7 +202,7 @@ const whyPoints = [
         <div class="gteaser__video">
           <img src="/media/life/boat-wake.jpg" alt="" class="gteaser__vthumb" loading="lazy" />
           <span class="gteaser__play"><Icon name="play" size={30} /></span>
-          <span class="gteaser__cap">A day on the water, and what’s new on the shelves, with Duke Marine</span>
+          <span class="gteaser__cap">Fishing, boating and life on Belize’s waters, shared with Duke Marine</span>
         </div>
         <span class="gteaser__more">Open the full gallery &amp; video <Icon name="arrow" size={18} /></span>
       </a>
@@ -230,15 +238,24 @@ const whyPoints = [
     </div>
   </section>
 
-  <!-- Testimonials -->
+  <!-- Why customers choose Duke Marine -->
   <section class="section">
     <div class="container">
       <SectionHeader
-        eyebrow="From the water"
-        title="What our customers say"
+        eyebrow="The Duke Marine difference"
+        title="Why Customers Choose Duke Marine"
         align="center"
       />
-      <Testimonials />
+      <ul class="reasons" role="list">
+        {
+          reasons.map((r, i) => (
+            <Reveal class="reason" delay={(i % 5) * 70}>
+              <span class="reason__icon"><Icon name={r.icon} size={22} /></span>
+              <span class="reason__text">{r.text}</span>
+            </Reveal>
+          ))
+        }
+      </ul>
     </div>
   </section>
 
@@ -490,6 +507,40 @@ const whyPoints = [
     display: flex;
     justify-content: center;
     margin-top: 1.6rem;
+  }
+
+  /* Why customers choose us */
+  .reasons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: 1rem;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .reason {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 1.1rem 1.3rem;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+  }
+  .reason__icon {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--accent) 14%, transparent);
+    color: var(--accent-strong);
+  }
+  .reason__text {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.95rem;
   }
 
   /* Gallery teaser */

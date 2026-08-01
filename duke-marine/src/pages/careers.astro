@@ -1,130 +1,61 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
-import SectionHeader from '../components/SectionHeader.astro';
 import Icon from '../components/Icon.astro';
-import NetlifyForm from '../components/NetlifyForm.astro';
 import Reveal from '../components/Reveal.astro';
+import { site } from '../data/site';
 
-const perks = [
-  { icon: 'compass', title: 'Learn the trade', text: 'Hands-on training in marine service, tackle and customer care from people who know the water.' },
-  { icon: 'users', title: 'A real crew', text: 'A close-knit, respectful team that looks after each other and our customers.' },
-  { icon: 'star', title: 'Grow with us', text: 'Room to move up as the shop grows, we promote from within wherever we can.' },
-  { icon: 'anchor', title: 'Do work that matters', text: 'Keep Belize’s boaters, anglers and dive guides safely on the water.' },
-];
-
-const openings = [
-  { title: 'Retail Sales Associate', type: 'Full-time · Belize City', desc: 'Help customers find the right marine and fishing gear, and keep the floor stocked and sharp.' },
-  { title: 'Marine Service Technician', type: 'Full-time · Belize City', desc: 'Service and rig reels, gear and boat hardware on our in-house bench.' },
-  { title: 'Counter & Special Orders Clerk', type: 'Full-time · Belize City', desc: 'Help customers at the counter and track down special-order parts and gear.' },
-];
+const applyMailto = `mailto:${site.email}?subject=Retail%20Sales%20Associate%20Application`;
 ---
 
 <BaseLayout
   title="Careers"
-  description="Join the Duke Marine crew. We’re Belize’s marine & fishing supply headquarters, hiring sales and service roles in Belize City."
+  description="Duke Marine is accepting applications for a Retail Sales Associate in Belize City. Email your CV to dukemarine@btl.net."
 >
   <PageHero
     eyebrow="Careers"
-    title="Join the crew"
-    lead="We’re always looking for people who love the water and take pride in doing things right. If that’s you, let’s talk."
+    title="Join the Duke Marine Team"
+    lead="Duke Marine is currently accepting applications for a Retail Sales Associate in Belize City."
     crumbs={[{ label: 'Careers' }]}
-  >
-    <div class="chero__actions" data-reveal data-reveal-delay="180">
-      <a href="#apply" class="btn btn--gold">Apply now <Icon name="arrow" size={18} /></a>
-    </div>
-  </PageHero>
+  />
 
-  <!-- Why work here -->
+  <!-- Open position -->
   <section class="section">
     <div class="container">
-      <SectionHeader eyebrow="Why Duke Marine" title="A place to build a career, not just a job" />
-      <div class="perks">
-        {
-          perks.map((p, i) => (
-            <Reveal class="perk" delay={(i % 4) * 70}>
-              <span class="perk__icon"><Icon name={p.icon} size={24} /></span>
-              <h3>{p.title}</h3>
-              <p>{p.text}</p>
-            </Reveal>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <!-- Openings -->
-  <section class="section-tight" style="background: var(--bg-inset)">
-    <div class="container">
-      <SectionHeader eyebrow="Open positions" title="Current openings" lead="Don’t see the right fit? We still want to hear from good people, apply below and tell us what you do." />
       <div class="jobs">
-        {
-          openings.map((o, i) => (
-            <Reveal class="job" delay={i * 70}>
-              <div>
-                <h3>{o.title}</h3>
-                <span class="job__type"><Icon name="pin" size={15} /> {o.type}</span>
-                <p>{o.desc}</p>
-              </div>
-              <a href="#apply" class="btn btn--ghost btn--sm">Apply <Icon name="arrow" size={15} /></a>
-            </Reveal>
-          ))
-        }
+        <Reveal class="job">
+          <div>
+            <h3>Retail Sales Associate</h3>
+            <span class="job__type"><Icon name="pin" size={15} /> Belize City</span>
+            <p>Help customers identify suitable marine, fishing and diving products, maintain an organized sales floor, support stock presentation and provide professional customer service.</p>
+          </div>
+          <a href="#apply" class="btn btn--ghost btn--sm">How to apply <Icon name="arrow" size={15} /></a>
+        </Reveal>
       </div>
     </div>
   </section>
 
-  <!-- Apply form -->
-  <section id="apply" class="section">
-    <div class="container apply">
-      <div class="apply__intro" data-reveal>
+  <!-- Apply -->
+  <section id="apply" class="section-tight" style="background: var(--bg-inset)">
+    <div class="container">
+      <div class="apply card" data-reveal>
         <span class="eyebrow">Apply</span>
-        <h2>Tell us about yourself</h2>
-        <p class="lead">Send us your details and a note about your experience. We read every application and reply to those that fit.</p>
-        <p class="apply__hint"><Icon name="mail" size={16} /> Prefer email? Attach your CV and send it to <a href="mailto:info@dukemarine.com">info@dukemarine.com</a>.</p>
-      </div>
-      <div class="apply__form card" data-reveal data-reveal-delay="100">
-        <NetlifyForm name="careers" variant="careers" submitLabel="Submit application" />
+        <h2>Apply for the Retail Sales Associate Position</h2>
+        <p class="apply__copy">
+          Interested applicants may email their CV and a short introduction to
+          <a href={`mailto:${site.email}`}>{site.email}</a>. Please use
+          “Retail Sales Associate Application” as the email subject.
+        </p>
+        <div class="apply__actions">
+          <a href={applyMailto} class="btn btn--gold"><Icon name="mail" size={18} /> Email Your Application</a>
+          <a href="/contact" class="btn btn--ghost">Contact Duke Marine <Icon name="arrow" size={18} /></a>
+        </div>
       </div>
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  .chero__actions {
-    margin-top: 2rem;
-  }
-  .perks {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.3rem;
-  }
-  .perk {
-    padding: 1.6rem 1.4rem;
-    background: var(--bg-elevated);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-sm);
-  }
-  .perk__icon {
-    display: grid;
-    place-items: center;
-    width: 50px;
-    height: 50px;
-    border-radius: 14px;
-    background: color-mix(in srgb, var(--accent) 14%, transparent);
-    color: var(--accent-strong);
-    margin-bottom: 0.9rem;
-  }
-  .perk h3 {
-    font-size: 1.1rem;
-  }
-  .perk p {
-    margin-top: 0.4rem;
-    font-size: 0.9rem;
-    color: var(--text-soft);
-  }
-
   .jobs {
     display: grid;
     gap: 1rem;
@@ -160,55 +91,45 @@ const openings = [
   .job p {
     color: var(--text-soft);
     font-size: 0.92rem;
-    max-width: 60ch;
+    max-width: 62ch;
   }
   .job .btn {
     flex: none;
   }
 
   .apply {
-    display: grid;
-    grid-template-columns: 0.85fr 1.15fr;
-    gap: clamp(2rem, 5vw, 4rem);
-    align-items: start;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 2rem 2.2rem;
+    text-align: center;
   }
-  .apply__intro h2 {
-    margin: 0.7rem 0 1rem;
+  .apply h2 {
+    margin: 0.6rem 0 1rem;
   }
-  .apply__hint {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-top: 1.4rem;
-    font-size: 0.9rem;
+  .apply__copy {
     color: var(--text-soft);
+    max-width: 56ch;
+    margin: 0 auto 1.6rem;
   }
-  .apply__hint a {
+  .apply__copy a {
     color: var(--accent-strong);
     font-weight: 600;
   }
-  .apply__hint :global(svg) {
-    color: var(--accent-strong);
-  }
-  .apply__form {
-    padding: 1.8rem;
+  .apply__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem;
+    justify-content: center;
   }
 
-  @media (max-width: 820px) {
-    .perks {
-      grid-template-columns: 1fr 1fr;
-    }
+  @media (max-width: 620px) {
     .job {
       flex-direction: column;
       align-items: flex-start;
     }
-    .apply {
-      grid-template-columns: 1fr;
-    }
-  }
-  @media (max-width: 480px) {
-    .perks {
-      grid-template-columns: 1fr;
+    .apply__actions .btn {
+      width: 100%;
+      justify-content: center;
     }
   }
 </style>

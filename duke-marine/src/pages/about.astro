@@ -2,31 +2,27 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import SectionHeader from '../components/SectionHeader.astro';
-import Media from '../components/Media.astro';
 import Icon from '../components/Icon.astro';
-import StatStrip from '../components/StatStrip.astro';
 import Reveal from '../components/Reveal.astro';
 import CtaBanner from '../components/CtaBanner.astro';
-import { team } from '../data/team';
-import { site } from '../data/site';
 
-const values = [
-  { icon: 'compass', title: 'Real expertise', text: 'We’re boaters and anglers first. The advice across the counter comes from time on the water, not a script.' },
-  { icon: 'shield', title: 'Do it right', text: 'Every reel, rig and part is set up and tested before it leaves. We’d rather do it once, properly.' },
-  { icon: 'users', title: 'Look after our own', text: 'From weekend anglers to captains and dive guides, we treat every customer like a neighbour, because they are.' },
-  { icon: 'anchor', title: 'Here for the long haul', text: 'We stock the parts and service to keep you running for seasons, not just the day of the sale.' },
+// Verified heritage facts only (client-confirmed).
+const heritage = [
+  { icon: 'clock', label: 'Established 1991' },
+  { icon: 'users', label: 'Founded by Paul & Ruth Duke' },
+  { icon: 'anchor', label: 'Belize’s First Marine Store' },
+  { icon: 'boat', label: 'Marine, Fishing & Diving Supplies' },
 ];
-
 ---
 
 <BaseLayout
   title="About Us"
-  description="Duke Marine is Belize’s one-stop shop for marine parts, fishing and diving supplies, a family-run store on the Philip Goldson Highway built on real expertise and service."
+  description="Duke Marine has served Belize’s boating, fishing and diving community since 1991, founded by Paul and Ruth Duke as Belize’s first dedicated marine store."
 >
   <PageHero
-    eyebrow="Our story"
-    title="Built on the water, for the water"
-    lead="Duke Marine is Belize’s one-stop shop for marine parts, fishing and diving supplies, family-run, expertise-led, and part of the community we serve."
+    eyebrow="Our Story"
+    title="Built on Experience. Trusted for Generations."
+    lead="Serving Belize’s boating, fishing and diving community since 1991."
     crumbs={[{ label: 'About' }]}
   />
 
@@ -34,18 +30,25 @@ const values = [
   <section class="section">
     <div class="container story">
       <div class="story__media" data-reveal>
-        <img src="/media/poster-sunset.png" alt="A Duke Marine skiff at sunset off Belize" class="story__img" loading="lazy" />
+        <img
+          src="/media/gallery-6.jpg"
+          alt="Stocked aisles of marine, fishing and diving supplies at Duke Marine, Belize City"
+          class="story__img"
+          loading="lazy"
+        />
       </div>
       <div class="story__text" data-reveal data-reveal-delay="100">
         <span class="eyebrow">Marine Parts · Sales · Service</span>
-        <h2>Your one-stop shop for life on the water</h2>
+        <h2>Trusted for generations on Belize’s water</h2>
         <div class="prose stack" style="--flow: 1.1rem">
-          <p>Duke Marine is built on a simple promise: stock the gear Belizean boaters actually need, and stand behind every sale. From a busy shop on the Philip Goldson Highway, that’s exactly what we do.</p>
-          <p>We carry marine parts, fishing tackle and diving supplies under one roof, boat hardware and rigging, electronics and safety gear, rods, reels and tackle, masks, regulators and spearguns, backed by an in-house service bench and a team that runs these waters themselves.</p>
-          <p>From the weekend angler to the seasoned captain, we’re proud to be the shop Belize’s boaters, guides, divers and resorts rely on to keep moving.</p>
+          <p>Duke Marine has proudly served Belize’s boating, fishing and diving community since 1991, when Paul and Ruth Duke opened what would become Belize’s first dedicated marine store.</p>
+          <p>What began as a family business built on honest advice, dependable products and exceptional customer service has grown into one of the country’s most trusted names in marine supplies. For more than three decades, commercial fishermen, tour operators, boat owners, divers and recreational anglers have relied on Duke Marine for quality equipment and knowledgeable service.</p>
+          <p>While the marine industry has evolved, our philosophy has remained the same. We believe every customer deserves reliable products, practical guidance and a team committed to helping them find what they need.</p>
+          <p>Today, Duke Marine continues that tradition while embracing the future. From expanding our product range to preparing a searchable online marine-parts catalogue, we remain committed to making it easier for customers to find the right equipment and confidently return to the water.</p>
+          <p>Whether you are preparing for a day offshore, maintaining a vessel, stocking a tour operation or planning your next dive, Duke Marine is here to help, just as we have been since 1991.</p>
         </div>
         <div class="story__sign">
-          <strong>The Duke Marine family</strong>
+          <strong>Today, the Duke Marine tradition continues with Louisa Duke and Janice Leslie.</strong>
           <span>Philip Goldson Highway · Belize City, Belize</span>
         </div>
       </div>
@@ -61,17 +64,16 @@ const values = [
     </div>
   </section>
 
-  <!-- Values -->
-  <section class="section on-dark values">
+  <!-- Heritage strip (verified facts only) -->
+  <section class="section-tight" style="background: var(--bg-inset)">
     <div class="container">
-      <SectionHeader eyebrow="What we stand for" title="Our values" align="center" />
-      <div class="values__grid">
+      <SectionHeader eyebrow="Our heritage" title="More than three decades on the water" align="center" />
+      <div class="heritage">
         {
-          values.map((v, i) => (
-            <Reveal class="value" delay={i * 80}>
-              <span class="value__icon"><Icon name={v.icon} size={24} /></span>
-              <h3>{v.title}</h3>
-              <p>{v.text}</p>
+          heritage.map((h, i) => (
+            <Reveal class="heritage__item" delay={i * 80}>
+              <span class="heritage__icon"><Icon name={h.icon} size={24} /></span>
+              <span class="heritage__label">{h.label}</span>
             </Reveal>
           ))
         }
@@ -79,35 +81,7 @@ const values = [
     </div>
   </section>
 
-  <!-- Stats -->
-  <section class="section-tight" style="background: var(--bg-inset)">
-    <div class="container">
-      <StatStrip />
-    </div>
-  </section>
-
-  <!-- Leadership -->
-  <section class="section">
-    <div class="container">
-      <SectionHeader eyebrow="The crew" title="Leadership &amp; team" lead="Real people who know boats and fishing, and who’ll still be here next season." />
-      <div class="team">
-        {
-          team.map((m, i) => (
-            <article class="member" data-reveal data-reveal-delay={(i % 4) * 70}>
-              <div class="member__photo">
-                <Media seed={`team-${m.name}`} icon="users" ratio="1 / 1" tone="current" pattern="grid" />
-              </div>
-              <h3>{m.name}</h3>
-              <span class="member__role">{m.role}</span>
-              <p>{m.bio}</p>
-            </article>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <CtaBanner title="Come say hello" text="Stop by the shop or reach out, we’re always happy to talk gear, rigging and fishing." />
+  <CtaBanner title="Come say hello" text="Stop by the shop on the Philip Goldson Highway, or reach us by phone, email or WhatsApp. We’re always happy to help you find the right gear." />
 </BaseLayout>
 
 <style>
@@ -128,6 +102,26 @@ const values = [
     height: 100%;
     aspect-ratio: 4 / 5;
     object-fit: cover;
+  }
+  .story__text h2 {
+    margin: 0.7rem 0 1.3rem;
+  }
+  .story__sign {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    margin-top: 1.8rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--border);
+  }
+  .story__sign strong {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    line-height: 1.35;
+  }
+  .story__sign span {
+    color: var(--text-soft);
+    font-size: 0.9rem;
   }
 
   .quoteband {
@@ -159,151 +153,50 @@ const values = [
     font-weight: 600;
     letter-spacing: 0.02em;
   }
-  .story__text h2 {
-    margin: 0.7rem 0 1.3rem;
-  }
-  .story__sign {
-    display: flex;
-    flex-direction: column;
-    margin-top: 1.8rem;
-    padding-top: 1.4rem;
-    border-top: 1px solid var(--border);
-  }
-  .story__sign strong {
-    font-family: var(--font-display);
-    font-size: 1.1rem;
-  }
-  .story__sign span {
-    color: var(--text-soft);
-    font-size: 0.9rem;
-  }
 
-  .values {
-    background: var(--grad-deep);
-    color: var(--text-invert);
-  }
-  .values__grid {
+  .heritage {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 1.3rem;
   }
-  .value {
-    padding: 1.7rem 1.5rem;
-    background: rgba(255, 255, 255, 0.04);
+  .heritage__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.8rem;
+    padding: 1.7rem 1.3rem;
+    background: var(--bg-elevated);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
-    transition: transform var(--dur) var(--ease-out), background var(--dur);
+    box-shadow: var(--shadow-sm);
   }
-  .value:hover {
-    transform: translateY(-5px);
-    background: rgba(255, 255, 255, 0.07);
-  }
-  .value__icon {
+  .heritage__icon {
     display: grid;
     place-items: center;
     width: 52px;
     height: 52px;
     border-radius: 14px;
-    background: var(--grad-current);
-    color: var(--c-navy);
-    margin-bottom: 1rem;
+    background: color-mix(in srgb, var(--accent) 14%, transparent);
+    color: var(--accent-strong);
   }
-  .value h3 {
-    font-size: 1.12rem;
-  }
-  .value p {
-    margin-top: 0.5rem;
-    font-size: 0.9rem;
-    color: var(--text-soft);
-  }
-
-  .timeline {
-    display: grid;
-    gap: 0;
-    max-width: 780px;
-    margin: 0 auto;
-  }
-  .tl {
-    display: grid;
-    grid-template-columns: 90px 40px 1fr;
-    align-items: start;
-    gap: 1rem;
-    padding-bottom: 2.2rem;
-  }
-  .tl__year {
+  .heritage__label {
     font-family: var(--font-display);
-    font-weight: 800;
-    font-size: 1.15rem;
-    color: var(--accent-strong);
-    text-align: right;
-    padding-top: 0.1rem;
-  }
-  .tl__dot {
-    position: relative;
-    justify-self: center;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: var(--c-current);
-    box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 20%, transparent);
-    margin-top: 0.35rem;
-  }
-  .tl:not(:last-child) .tl__dot::after {
-    content: '';
-    position: absolute;
-    top: 18px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 2px;
-    height: calc(100% + 2.2rem);
-    background: var(--border-strong);
-  }
-  .tl__text {
-    padding-top: 0.15rem;
-    color: var(--text-soft);
-  }
-
-  .team {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
-  }
-  .member__photo {
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    margin-bottom: 1rem;
-  }
-  .member h3 {
-    font-size: 1.15rem;
-  }
-  .member__role {
-    display: block;
-    font-size: 0.82rem;
     font-weight: 600;
-    color: var(--accent-strong);
-    margin: 0.2rem 0 0.5rem;
-  }
-  .member p {
-    font-size: 0.88rem;
-    color: var(--text-soft);
+    font-size: 0.98rem;
   }
 
   @media (max-width: 860px) {
     .story {
       grid-template-columns: 1fr;
     }
-    .values__grid,
-    .team {
+    .heritage {
       grid-template-columns: 1fr 1fr;
     }
   }
-  @media (max-width: 520px) {
-    .values__grid,
-    .team {
+  @media (max-width: 460px) {
+    .heritage {
       grid-template-columns: 1fr;
-    }
-    .tl {
-      grid-template-columns: 64px 30px 1fr;
     }
   }
 </style>

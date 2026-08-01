@@ -53,22 +53,22 @@ works here, and that local knowledge is worth more than any catalog.
 ## How Duke Marine sets you up
 
 That is where we come in. Duke Marine is Belize City's one-stop shop for fishing,
-diving and marine supplies, and we fish these waters ourselves. Come see us
-before your trip and we will help you dial in the right setup:
+diving and marine supplies. Come see us before your trip and we will help you
+find the right gear for the water you plan to fish:
 
-- **Flats gear** balanced and spooled, from bonefish and permit rods to the
-  leaders, tippet and flies that work on local fish.
+- **Flats gear**, from bonefish and permit rods to the leaders, tippet and flies
+  that work on local fish.
 - **Inshore and offshore combos** for the reef and the blue water, sealed and
   ready for saltwater.
-- **Line spooling** at our in-store station, so you leave with fresh braid, mono
-  or fluorocarbon matched to your reel.
-- **Reel service and rigging** on our in-house bench, so nothing lets you down
-  on the water.
+- **Line and terminal tackle**, fresh braid, mono and fluorocarbon and the hooks,
+  leaders and swivels to match your setup.
+- **Marine, safety and diving supplies** so you and the boat are ready before you
+  leave the dock.
 - **Trusted brands** like Penn, Nomad Design and more, chosen because they hold
   up to Caribbean salt and sun.
 
 If you are traveling to Belize to fish, or you live here and want to fish it
 better, stop by the shop on the Philip Goldson Highway or send us a message. Tell
-us what you are chasing and the water you plan to fish, and we will make sure you
-walk out with the right gear and honest advice. Belize gives you the fishing.
-Duke Marine helps you make the most of every cast.
+us what you are chasing and the water you plan to fish, and we will help you find
+the right gear and give you honest advice. Belize gives you the fishing. Duke
+Marine helps you make the most of every cast.

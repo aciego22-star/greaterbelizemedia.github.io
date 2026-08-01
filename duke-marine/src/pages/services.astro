@@ -8,47 +8,59 @@ import CtaBanner from '../components/CtaBanner.astro';
 
 const services = [
   {
-    icon: 'rod',
-    title: 'Reel service & line spooling',
-    text: 'Bring your reels in for service, or spool fresh braid, mono or fluorocarbon at our in-store line station, matched to your setup.',
-    points: ['Reel servicing', 'Braid & mono spooling', 'Setup advice'],
+    icon: 'compass',
+    title: 'Product guidance',
+    text: 'Not sure what you need? Tell us about your boat, gear or project and we’ll help you find the right marine, fishing or diving product.',
+    points: ['Marine, fishing & diving', 'Honest recommendations', 'By phone, email or in store'],
+  },
+  {
+    icon: 'mail',
+    title: 'Product enquiries',
+    text: 'Ask about stock, availability or product details before you visit or place an order.',
+    points: ['Stock & availability', 'Product details', 'Quick replies'],
   },
   {
     icon: 'tag',
+    title: 'Quotations',
+    text: 'Tell us the product, brand or model and we’ll put together a quote by email or WhatsApp.',
+    points: ['By email or WhatsApp', 'Product, brand or model', 'No obligation'],
+  },
+  {
+    icon: 'truck',
     title: 'Special orders',
-    text: 'If it’s not on the shelf, we’ll source it. Tell us the make and model and we’ll track down parts and gear from our full range.',
-    points: ['Parts sourcing', 'Brand requests', 'Order tracking'],
+    text: 'If it’s not on the shelf, we can help source it. Tell us the make and model and we’ll look into availability.',
+    points: ['Parts & gear sourcing', 'Brand requests', 'Availability check'],
   },
   {
-    icon: 'shield',
-    title: 'Safety gear & compliance',
-    text: 'We help you meet inspection requirements with in-date life-saving and signalling equipment, and advice on what you need aboard.',
-    points: ['PFDs & flares', 'Extinguishers', 'Compliance advice'],
+    icon: 'whatsapp',
+    title: 'WhatsApp assistance',
+    text: 'Message Duke Marine on WhatsApp with a product name, model or photo and we’ll help you find it.',
+    points: ['Send a photo', 'Ask a question', 'Fast response'],
   },
   {
-    icon: 'compass',
-    title: 'Gear advice & fitting',
-    text: 'Not sure what fits? Our team helps match electronics, tackle and safety gear to your vessel and the water you run.',
-    points: ['Fitment checks', 'Electronics advice', 'Tackle matching'],
+    icon: 'pin',
+    title: 'In-store shopping',
+    text: 'Visit the shop on the Philip Goldson Highway to browse marine, fishing and diving supplies in person.',
+    points: ['Browse in person', 'Mile 4½, Belize City', 'Marine · Fishing · Diving'],
   },
 ];
 
 const steps = [
-  { n: '01', title: 'Tell us what you need', text: 'Call, message or drop in with your vessel, engine or gear details.' },
-  { n: '02', title: 'We spec & quote', text: 'Our team recommends the right parts or gear and gives you clear pricing.' },
-  { n: '03', title: 'We set it up', text: 'Rigging, spooling and testing happen in-house before anything leaves.' },
-  { n: '04', title: 'Back on the water', text: 'Pick it up ready to go, and we’re here for parts and service after.' },
+  { n: '01', title: 'Tell us what you need', text: 'Call, message or drop in with the product, part or gear you’re after.' },
+  { n: '02', title: 'We check & quote', text: 'We confirm availability and give you clear pricing by email or WhatsApp.' },
+  { n: '03', title: 'We source it if needed', text: 'If it’s not in stock, we look into sourcing it through our suppliers.' },
+  { n: '04', title: 'Pick it up', text: 'Collect it in store, ready to go, and we’re here for anything you need after.' },
 ];
 ---
 
 <BaseLayout
   title="Services"
-  description="Duke Marine offers reel service and line spooling, special orders, gear fitting and safety compliance in Belize City."
+  description="Duke Marine offers product guidance, enquiries, quotations, special orders and WhatsApp assistance for marine, fishing and diving supplies in Belize City."
 >
   <PageHero
     eyebrow="Services"
-    title="More than a counter, a service bench"
-    lead="We don’t just sell the gear; we set it up, service it and keep you supplied. Here’s how we help."
+    title="How Duke Marine helps"
+    lead="From product guidance to quotes and special orders, here’s how we help you find the right marine, fishing and diving gear."
     crumbs={[{ label: 'Services' }]}
   />
 
@@ -90,7 +102,7 @@ const steps = [
     </div>
   </section>
 
-  <CtaBanner title="Need something set up?" text="Tell us about your vessel, engine or gear and we’ll take it from there." />
+  <CtaBanner title="Need help finding a part?" text="Tell us the product, brand or model and we’ll help you find it, by email, WhatsApp or in store." />
 </BaseLayout>
 
 <style>

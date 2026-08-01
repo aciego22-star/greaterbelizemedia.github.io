@@ -34,11 +34,11 @@ const jsonLd = {
   telephone: site.phoneDisplay,
   email: site.email,
   image: socialImage,
-  aggregateRating: {
-    '@type': 'AggregateRating',
-    ratingValue: site.rating,
-    reviewCount: site.reviews,
-  },
+  foundingDate: '1991',
+  founder: [
+    { '@type': 'Person', name: 'Paul Duke' },
+    { '@type': 'Person', name: 'Ruth Duke' },
+  ],
   address: {
     '@type': 'PostalAddress',
     streetAddress: site.address.line1,

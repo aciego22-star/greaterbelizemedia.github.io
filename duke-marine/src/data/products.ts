@@ -769,7 +769,7 @@ export const products: Product[] = [
     brand: 'Shimano',
     blurb: 'Light, corrosion-tough spinning combo tuned for bonefish, permit and snook on the flats.',
     description:
-      'Built for Belize’s world-class flats. A sealed, saltwater-ready reel on a fast-action rod, balanced, spooled and ready to fish when you walk out the door.',
+      'Built for Belize’s world-class flats. A sealed, saltwater-ready reel on a fast-action rod, balanced for bonefish, permit and snook.',
     priceFrom: 560,
     unit: 'combo',
     specs: [
@@ -804,7 +804,7 @@ export const products: Product[] = [
     department: 'fishing',
     category: 'line',
     brand: 'PowerPro',
-    blurb: 'Thin-diameter, high-strength braid spooled to your reel on our in-store line station.',
+    blurb: 'Thin-diameter, high-strength braid in the strengths and colors that match your reels.',
     priceFrom: 90,
     unit: 'per spool',
     specs: [
@@ -886,9 +886,9 @@ export const products: Product[] = [
     name: 'Scuba Regulator & Octopus Set',
     department: 'diving',
     category: 'regulators',
-    blurb: 'Balanced first and second stage with alternate air, serviced and ready for reef diving.',
+    blurb: 'Balanced first and second stage with alternate air, ready for reef diving.',
     description:
-      'A dependable regulator setup for Belize’s reef and wall dives. Comes with an alternate-air (octopus) second stage. We can service and pressure-test before you dive.',
+      'A dependable regulator setup for Belize’s reef and wall dives. Comes with an alternate-air (octopus) second stage.',
     priceFrom: 950,
     unit: 'per set',
     specs: [

@@ -35,7 +35,7 @@ import { site } from '../data/site';
           <li><a href="/marine-supplies">Marine Supplies</a></li>
           <li><a href="/fishing-supplies">Fishing Supplies</a></li>
           <li><a href="/diving-supplies">Diving Supplies</a></li>
-          <li><a href="/brands">Brands We Carry</a></li>
+          <li><a href="/brands">Brands</a></li>
           <li><a href="/blog">Blog</a></li>
           <li><a href="/services">Services</a></li>
         </ul>
@@ -45,7 +45,6 @@ import { site } from '../data/site';
         <ul role="list">
           <li><a href="/about">About Us</a></li>
           <li><a href="/gallery">Gallery &amp; Video</a></li>
-          <li><a href="/blog">Blog</a></li>
           <li><a href="/careers">Careers</a></li>
           <li><a href="/contact">Contact</a></li>
         </ul>
@@ -67,7 +66,11 @@ import { site } from '../data/site';
           </li>
           <li>
             <Icon name="clock" size={18} />
-            <span>{site.hours[0].day}: {site.hours[0].time}</span>
+            <span class="footer__hours">
+              {site.hours.map((h) => (
+                <span class="footer__hourline">{h.day}: {h.time}</span>
+              ))}
+            </span>
           </li>
         </ul>
       </div>
@@ -75,9 +78,9 @@ import { site } from '../data/site';
   </div>
 
   <div class="footer__bottom container container-wide">
-    <p>© <span data-year>2026</span> {site.legalName}. All rights reserved.</p>
+    <p class="footer__copyright">© <span data-year>2026</span> {site.legalName}. All rights reserved.</p>
     <p class="footer__credit">
-      Developed by <a href="https://austereautomations.com" target="_blank" rel="noopener">austereautomations.com</a>
+      Developed by <a href="https://austereautomations.com/" target="_blank" rel="noopener noreferrer">Austere Automations</a>
     </p>
   </div>
 </footer>
@@ -170,20 +173,43 @@ import { site } from '../data/site';
   }
   .footer__bottom {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    flex-wrap: wrap;
+    text-align: center;
+    gap: 0.5rem;
     padding-block: 1.5rem;
     border-top: 1px solid var(--border);
     font-size: 0.85rem;
     color: #ffffff;
   }
-  .footer__credit a {
+  .footer__copyright {
     color: #ffffff;
   }
+  /* Developer credit: centered, Duke Marine gold, refined. */
+  .footer__credit {
+    width: 100%;
+    text-align: center;
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--gold);
+  }
+  .footer__credit a {
+    color: var(--gold);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    transition: opacity var(--dur);
+  }
   .footer__credit a:hover {
-    color: #fff;
+    opacity: 0.82;
+  }
+  .footer__hours {
+    display: grid;
+    gap: 0.2rem;
+  }
+  .footer__hourline {
+    display: block;
   }
 
   @media (max-width: 860px) {

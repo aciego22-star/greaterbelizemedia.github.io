@@ -2,7 +2,6 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
-import NetlifyForm from '../components/NetlifyForm.astro';
 import Reveal from '../components/Reveal.astro';
 import { site } from '../data/site';
 
@@ -48,14 +47,18 @@ const mapEmbed = `https://www.google.com/maps?q=${encodeURIComponent(site.addres
     </div>
   </section>
 
-  <!-- Form + hours/map -->
+  <!-- Request a quote + hours/map -->
   <section id="quote" class="section" style="padding-top: 0">
     <div class="container contact">
       <div class="contact__form card" data-reveal>
-        <span class="eyebrow">Send a message</span>
+        <span class="eyebrow">Request a Quote</span>
         <h2>Request a quote or ask a question</h2>
-        <p class="contact__lead">Tell us what you’re after, a product, a part or a service, and we’ll get back to you, usually within one business day.</p>
-        <NetlifyForm name="contact" variant="quote" submitLabel="Send enquiry" />
+        <p class="contact__lead">Tell Duke Marine what product, part or equipment you need by email or WhatsApp. Include the product name, brand, model or a photograph where possible.</p>
+        <div class="contact__actions">
+          <a href={`https://wa.me/${site.whatsapp}`} class="btn btn--gold" target="_blank" rel="noopener"><Icon name="whatsapp" size={18} /> Request by WhatsApp</a>
+          <a href={`mailto:${site.email}?subject=Quote%20Request`} class="btn btn--ghost"><Icon name="mail" size={18} /> Request by Email</a>
+          <a href={`tel:${site.phoneHref}`} class="btn btn--ghost"><Icon name="phone" size={18} /> Call Duke Marine</a>
+        </div>
       </div>
 
       <aside class="contact__side">
@@ -145,6 +148,21 @@ const mapEmbed = `https://www.google.com/maps?q=${encodeURIComponent(site.addres
   .contact__lead {
     color: var(--text-soft);
     margin-bottom: 1.8rem;
+  }
+  .contact__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+  }
+  .contact__actions .btn {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+  @media (max-width: 520px) {
+    .contact__actions .btn {
+      width: 100%;
+      flex: 1 1 100%;
+    }
   }
   .contact__side {
     display: grid;

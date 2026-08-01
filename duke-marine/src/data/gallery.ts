@@ -17,7 +17,7 @@ export type GalleryVideo = {
 export const galleryGroups: GalleryGroup[] = [
   {
     title: 'On the Water',
-    blurb: 'Rigged, fueled and running, trolling spreads and open water off Belize City.',
+    blurb: 'Trolling spreads and open water off Belize City.',
     photos: [
       { src: '/media/life/rods-ready.jpg', alt: 'A full spread of trolling rods and reels rigged and ready on the boat' },
       { src: '/media/life/trolling-spread.jpg', alt: 'Trolling rods set in the holders as the boat runs across open water' },
@@ -27,7 +27,7 @@ export const galleryGroups: GalleryGroup[] = [
   },
   {
     title: 'Big Catches',
-    blurb: 'Wahoo, kingfish and more, brought over the rail by our crew and customers.',
+    blurb: 'Customer catches and memorable days on Belize’s waters, shared by members of the Duke Marine community.',
     photos: [
       { src: '/media/life/wahoo-catch.jpg', alt: 'Angler on the boat holding up a big wahoo caught off Belize' },
       { src: '/media/life/kingfish-lift.jpg', alt: 'Angler lifting a large kingfish aboard after the fight' },
