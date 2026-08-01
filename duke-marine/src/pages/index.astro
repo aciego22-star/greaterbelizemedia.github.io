@@ -249,10 +249,10 @@ const reasons = [
       <ul class="reasons" role="list">
         {
           reasons.map((r, i) => (
-            <Reveal class="reason" delay={(i % 5) * 70}>
+            <li class="reason" data-reveal data-reveal-delay={(i % 5) * 70}>
               <span class="reason__icon"><Icon name={r.icon} size={22} /></span>
               <span class="reason__text">{r.text}</span>
-            </Reveal>
+            </li>
           ))
         }
       </ul>
@@ -283,14 +283,14 @@ const reasons = [
           </div>
           <a href="/contact" class="btn btn--gold">Get directions &amp; contact <Icon name="arrow" size={18} /></a>
         </div>
-        <Reveal class="visit__map" delay={120}>
+        <div class="visit__map" data-reveal data-reveal-delay={120}>
           <iframe
             title="Map to Duke Marine"
             src={mapEmbed}
             loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"
           ></iframe>
-        </Reveal>
+        </div>
       </div>
     </div>
   </section>
@@ -520,6 +520,8 @@ const reasons = [
   .reason {
     display: flex;
     align-items: center;
+    justify-content: center;
+    text-align: center;
     gap: 0.9rem;
     padding: 1.1rem 1.3rem;
     background: var(--bg-elevated);
@@ -717,6 +719,19 @@ const reasons = [
     }
     .vsplit__text {
       order: 1;
+    }
+    .visit__info {
+      text-align: center;
+    }
+    .visit__list {
+      justify-items: center;
+    }
+    .visit__list li {
+      justify-content: center;
+    }
+    .visit__map {
+      width: 100%;
+      margin-inline: auto;
     }
   }
   @media (max-width: 520px) {

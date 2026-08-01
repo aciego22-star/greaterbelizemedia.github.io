@@ -6,6 +6,7 @@ import Reveal from '../components/Reveal.astro';
 import { site } from '../data/site';
 
 const mapEmbed = `https://www.google.com/maps?q=${encodeURIComponent(site.address.mapQuery)}&output=embed`;
+const mapDirections = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(site.address.mapQuery)}`;
 ---
 
 <BaseLayout
@@ -23,26 +24,26 @@ const mapEmbed = `https://www.google.com/maps?q=${encodeURIComponent(site.addres
   <section class="section-tight">
     <div class="container">
       <div class="methods">
-        <Reveal class="method" delay={0}>
+        <a class="method" href={mapDirections} target="_blank" rel="noopener" data-reveal data-reveal-delay={0}>
           <span class="method__icon"><Icon name="pin" size={24} /></span>
           <h3>Visit</h3>
           <p>{site.address.line1}<br />{site.address.city}, {site.address.country}</p>
-        </Reveal>
-        <Reveal class="method" delay={70}>
+        </a>
+        <a class="method" href={`tel:${site.phoneHref}`} data-reveal data-reveal-delay={70}>
           <span class="method__icon"><Icon name="phone" size={24} /></span>
           <h3>Call</h3>
-          <p><a href={`tel:${site.phoneHref}`}>{site.phoneDisplay}</a></p>
-        </Reveal>
-        <Reveal class="method" delay={140}>
+          <p>{site.phoneDisplay}</p>
+        </a>
+        <a class="method" href={`https://wa.me/${site.whatsapp}`} target="_blank" rel="noopener" data-reveal data-reveal-delay={140}>
           <span class="method__icon"><Icon name="whatsapp" size={24} /></span>
           <h3>WhatsApp</h3>
-          <p><a href={`https://wa.me/${site.whatsapp}`}>Message us</a></p>
-        </Reveal>
-        <Reveal class="method" delay={210}>
+          <p>Message us</p>
+        </a>
+        <a class="method" href={`mailto:${site.email}`} data-reveal data-reveal-delay={210}>
           <span class="method__icon"><Icon name="mail" size={24} /></span>
           <h3>Email</h3>
-          <p><a href={`mailto:${site.email}`}>{site.email}</a></p>
-        </Reveal>
+          <p>{site.email}</p>
+        </a>
       </div>
     </div>
   </section>
@@ -98,17 +99,24 @@ const mapEmbed = `https://www.google.com/maps?q=${encodeURIComponent(site.addres
     gap: 1.2rem;
   }
   .method {
+    display: block;
     padding: 1.6rem;
     text-align: center;
+    color: inherit;
     background: var(--bg-elevated);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-sm);
-    transition: transform var(--dur) var(--ease-out), box-shadow var(--dur);
+    cursor: pointer;
+    transition: transform var(--dur) var(--ease-out), box-shadow var(--dur), border-color var(--dur);
   }
   .method:hover {
     transform: translateY(-5px);
     box-shadow: var(--shadow);
+    border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+  }
+  .method:hover h3 {
+    color: var(--accent-strong);
   }
   .method__icon {
     display: grid;
@@ -127,9 +135,6 @@ const mapEmbed = `https://www.google.com/maps?q=${encodeURIComponent(site.addres
     margin-top: 0.4rem;
     color: var(--text-soft);
     font-size: 0.92rem;
-  }
-  .method a:hover {
-    color: var(--accent-strong);
   }
 
   .contact {
