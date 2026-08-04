@@ -85,6 +85,19 @@ const slides = [
       rgba(6, 22, 44, 0) 46%
     );
   }
+  /* Desktop: fill the whole hero edge-to-edge with the same poster (cover, no
+     side bars), inside a bounded height so it never runs past the fold. Mobile
+     keeps the whole poster visible (contain) below. */
+  @media (min-width: 981px) {
+    .hero {
+      min-height: 0;
+      height: min(88svh, 860px);
+    }
+    .hero__slide-img {
+      background-size: cover;
+      background-position: center 38%;
+    }
+  }
   /* On mobile the header is opaque (bar + quick-nav strip). Drop the sharp
      poster below the header so its top (the DUKE MARINE wordmark) is never
      hidden; the blurred fill stays full-bleed behind the header. */
