@@ -16,7 +16,9 @@ import { brands } from '../data/brands';
 import { galleryPhotos } from '../data/gallery';
 
 // Home shows 4 brand logos at a time and rotates through all of them.
-const brandData = brands.map((b) => ({ logo: b.logo, name: b.name, dark: !!b.dark }));
+// Penn is shown on the Brands page only, not in the homepage brand rotation.
+const homeBrands = brands.filter((b) => b.slug !== 'penn');
+const brandData = homeBrands.map((b) => ({ logo: b.logo, name: b.name, dark: !!b.dark }));
 import { site } from '../data/site';
 
 const mapEmbed = `https://www.google.com/maps?q=${encodeURIComponent(site.address.mapQuery)}&output=embed`;
@@ -219,7 +221,7 @@ const reasons = [
       />
       <div class="brandlogos" data-reveal data-brandlogos>
         {
-          brands.slice(0, 4).map((b) => (
+          homeBrands.slice(0, 4).map((b) => (
             <a
               href="/brands"
               class:list={['brandlogos__item', { 'brandlogos__item--dark': b.dark }]}
