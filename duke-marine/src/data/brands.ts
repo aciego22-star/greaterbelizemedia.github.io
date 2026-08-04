@@ -22,16 +22,6 @@ export type Brand = {
 
 export const brands: Brand[] = [
   {
-    name: 'Penn',
-    slug: 'penn',
-    logo: '/media/brands/penn.png',
-    category: 'Fishing reels & rods',
-    blurb:
-      'A saltwater legend since 1932. From the offshore International and Fathom to the inshore Slammer and Spinfisher, Penn builds the sealed, hard-charging reels that stand up to Belize’s reef and blue water.',
-    departments: ['fishing'],
-    featured: true,
-  },
-  {
     name: 'Nomad Design',
     slug: 'nomad-design',
     logo: '/media/brands/nomad-design.png',

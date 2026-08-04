@@ -28,6 +28,12 @@ const toneFor: Record<DepartmentId, 'current' | 'brass' | 'deep'> = {
   fishing: 'brass',
   diving: 'deep',
 };
+// Authentic client lifestyle photo behind each department header.
+const heroImageFor: Record<DepartmentId, { src: string; pos?: string }> = {
+  marine: { src: '/media/life/boat-wake.jpg', pos: 'center 40%' },
+  fishing: { src: '/media/life/trolling-spread.jpg', pos: 'center 45%' },
+  diving: { src: '/media/life/reef-flats.jpg', pos: 'center 55%' },
+};
 
 // group products by category id for anchored sections
 const byCategory = d.categories.map((c) => ({
@@ -41,6 +47,9 @@ const byCategory = d.categories.map((c) => ({
   title={d.title}
   lead={d.tagline}
   crumbs={[{ label: d.title }]}
+  image={heroImageFor[dept].src}
+  imageAlt={`${d.title} at Duke Marine, Belize City`}
+  imagePosition={heroImageFor[dept].pos}
 >
   <div class="dhero__actions" data-reveal data-reveal-delay="180">
     <a href="#categories" class="btn btn--gold">Browse categories <Icon name="arrow" size={18} /></a>

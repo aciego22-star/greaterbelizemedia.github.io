@@ -111,100 +111,94 @@ export const fishingCategories: Category[] = [
     id: 'rods',
     name: 'Rods & Reels',
     blurb:
-      'Spinning, conventional and fly combos built for flats, reef and blue-water fishing in Belize.',
+      'Spinning and conventional reels, rods and rod-and-reel combos for flats, reef and blue-water fishing in Belize.',
     icon: 'rod',
-    examples: ['Spinning reels', 'Conventional reels', 'Fly reels', 'Rods & combos', 'Rod holders'],
+    examples: ['Spinning reels', 'Conventional reels', 'Rods', 'Rod & reel combos'],
+    image: '/media/fishing/spinning-reel.jpg',
+  },
+  {
+    id: 'line',
+    name: 'Line & Leader',
+    blurb:
+      'Monofilament and braided fishing line plus wire leader in the strengths anglers rely on.',
+    icon: 'compass',
+    examples: ['Monofilament', 'Braided line', 'Wire leader'],
+    image: '/media/fishing/braided-line.jpg',
   },
   {
     id: 'tackle',
     name: 'Tackle & Terminal',
     blurb:
-      'Hooks, leaders, swivels, weights and rigs, the terminal tackle that turns bites into catches.',
+      'Hooks, swivels, sinkers and terminal tackle, the bits that turn bites into catches.',
     icon: 'anchor',
-    examples: ['Hooks', 'Leaders & wire', 'Swivels & snaps', 'Sinkers', 'Rig kits'],
+    examples: ['Hooks', 'Swivels', 'Sinkers', 'Leaders'],
+    image: '/media/fishing/swivels.jpg',
   },
   {
     id: 'lures',
-    name: 'Lures & Bait',
+    name: 'Lures',
     blurb:
-      'Soft plastics, hard baits, jigs and fresh, frozen and live bait for every target species.',
+      'Hard baits, minnows and trolling lures in proven colours for local target species.',
     icon: 'fish',
-    examples: ['Soft plastics', 'Hard baits', 'Jigs & spoons', 'Flies', 'Live & frozen bait'],
+    examples: ['Minnow lures', 'Trolling lures', 'Skirts'],
+    image: '/media/fishing/lure-firetiger.jpg',
   },
   {
-    id: 'line',
-    name: 'Line & Braid',
+    id: 'nets',
+    name: 'Cast Nets',
     blurb:
-      'Monofilament, fluorocarbon and braid in the strengths and colors that match your reels.',
-    icon: 'compass',
-    examples: ['Braid', 'Monofilament', 'Fluorocarbon', 'Fly line', 'Backing'],
+      'Cast nets for catching fresh bait, in the mesh sizes and weights that work Belize’s flats.',
+    icon: 'waves',
+    examples: ['Cast nets', 'Bait nets'],
+    image: '/media/fishing/cast-net.jpg',
   },
   {
-    id: 'coolers',
-    name: 'Coolers & Storage',
+    id: 'accessories',
+    name: 'Tackle Boxes & Accessories',
     blurb:
-      'Heavy-duty coolers, dry bags and tackle storage that survive the sun, salt and long runs.',
-    icon: 'truck',
-    examples: ['Hard coolers', 'Soft coolers', 'Dry bags', 'Tackle boxes', 'Bait wells'],
-  },
-  {
-    id: 'apparel',
-    name: 'Apparel & Sun Gear',
-    blurb:
-      'Performance shirts, gloves, buffs and polarized eyewear to fish comfortably all day.',
-    icon: 'star',
-    examples: ['Performance shirts', 'Sun gloves', 'Buffs & hats', 'Polarized sunglasses', 'Footwear'],
+      'Tackle boxes, gaff hooks and the accessories that keep your gear organised and ready.',
+    icon: 'tag',
+    examples: ['Tackle boxes', 'Gaff hooks'],
+    image: '/media/fishing/tackle-box.jpg',
   },
 ];
 
 export const divingCategories: Category[] = [
   {
-    id: 'regulators',
-    name: 'Regulators & BCDs',
-    blurb:
-      'Regulators, octopuses and buoyancy compensators to breathe easy and stay balanced at depth.',
-    icon: 'gps',
-    examples: ['Regulators', 'Octopus / alt-air', 'BCDs', 'Dive computers', 'Consoles'],
-  },
-  {
     id: 'masks',
-    name: 'Masks, Fins & Snorkels',
+    name: 'Masks & Snorkels',
     blurb:
-      'Snorkel and scuba masks, fins and snorkels for divers, spearos and reef swimmers.',
+      'Dive and snorkel masks and mask-and-snorkel sets, including full-face snorkel masks.',
     icon: 'compass',
-    examples: ['Dive masks', 'Snorkels', 'Open & closed-heel fins', 'Mask straps', 'Anti-fog'],
+    examples: ['Dive masks', 'Snorkels', 'Mask & snorkel sets', 'Full-face masks'],
+    image: '/media/diving/mask-snorkel-set.jpg',
   },
   {
-    id: 'wetsuits',
-    name: 'Wetsuits & Exposure',
+    id: 'fins',
+    name: 'Fins & Footwear',
     blurb:
-      'Wetsuits, rash guards, boots and gloves to keep you comfortable on long dives.',
-    icon: 'shield',
-    examples: ['Wetsuits', 'Rash guards', 'Dive boots', 'Gloves', 'Hoods'],
-  },
-  {
-    id: 'tanks',
-    name: 'Tanks & Accessories',
-    blurb:
-      'Cylinders, gauges, weights and the hardware that keeps your kit dive-ready.',
-    icon: 'anchor',
-    examples: ['Cylinders', 'Tank bands', 'Weights', 'Gauges', 'O-rings & tools'],
+      'Fins and dive booties for free-diving, spearfishing and reef swimming.',
+    icon: 'boat',
+    examples: ['Fins', 'Dive booties'],
+    image: '/media/diving/fins.jpg',
   },
   {
     id: 'spearfishing',
-    name: 'Spearfishing',
+    name: 'Spearfishing Equipment',
     blurb:
-      'Spearguns, pole spears and rigging for free-dive and scuba spearfishing on the reef.',
+      'Band-powered spearguns, barbed poles and shafts for free-dive spearfishing on the reef.',
     icon: 'fish',
-    examples: ['Spearguns', 'Pole spears', 'Shafts & tips', 'Float lines', 'Reels'],
+    examples: ['Spearguns', 'Barbed poles', 'Shafts'],
+    image: '/media/diving/speargun.jpg',
   },
   {
-    id: 'safety',
-    name: 'Dive Safety',
+    id: 'parts',
+    name: 'Replacement Parts & Accessories',
     blurb:
-      'SMBs, lights, knives and signalling gear so every dive ends the way it should.',
-    icon: 'shield',
-    examples: ['Surface markers (SMBs)', 'Dive lights', 'Dive knives', 'Whistles', 'Reels & spools'],
+      'Speargun bands, barbs and replacement surgical tubing to keep your gear reef-ready.',
+    icon: 'wrench',
+    examples: ['Speargun bands', 'Barbs', 'Surgical tubing'],
+    image: '/media/diving/speargun-band.jpg',
   },
 ];
 
@@ -227,7 +221,7 @@ export const departments = {
     id: 'diving',
     title: 'Diving Supplies',
     href: '/diving-supplies',
-    tagline: 'Scuba, free-dive & spearfishing gear for Belize’s reef',
+    tagline: 'Snorkelling, free-dive & spearfishing gear for Belize’s reef',
     categories: divingCategories,
   },
 } as const;

@@ -32,7 +32,7 @@ const deptTone: Record<DepartmentId, 'current' | 'brass' | 'deep'> = {
 const deptImage: Partial<Record<DepartmentId, { src: string; fill?: boolean }>> = {
   marine: { src: '/media/products/minn-kota-endura-36.jpg' },
   fishing: { src: '/media/life/kingfish-lift.jpg', fill: true },
-  diving: { src: '/media/life/reef-flats.jpg', fill: true },
+  diving: { src: '/media/diving/fins.jpg' },
 };
 
 const whyPoints = [
@@ -166,11 +166,11 @@ const reasons = [
       <div class="why__grid">
         {
           whyPoints.map((p, i) => (
-            <Reveal class="why__card" delay={i * 90}>
+            <div class="why__card" data-reveal data-reveal-delay={i * 90}>
               <span class="why__icon"><Icon name={p.icon} size={24} /></span>
               <h3>{p.title}</h3>
               <p>{p.text}</p>
-            </Reveal>
+            </div>
           ))
         }
       </div>
@@ -411,6 +411,10 @@ const reasons = [
     margin-bottom: 3.5rem;
   }
   .why__card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
     padding: 1.7rem 1.5rem;
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid var(--border);
@@ -429,7 +433,7 @@ const reasons = [
     border-radius: 14px;
     background: var(--grad-current);
     color: var(--c-navy);
-    margin-bottom: 1rem;
+    margin: 0 auto 1rem;
   }
   .why__card h3 {
     font-size: 1.15rem;

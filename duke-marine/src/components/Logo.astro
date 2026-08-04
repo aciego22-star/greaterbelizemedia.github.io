@@ -52,22 +52,29 @@ const { class: cls = '', compact = false } = Astro.props;
   .logo__type {
     display: flex;
     flex-direction: column;
-    line-height: 1.05;
+    gap: 0.16rem;
+    line-height: 1.1;
     font-family: var(--font-display);
   }
   .logo__type strong {
-    font-size: 1.06rem;
+    font-size: 1.08rem;
     font-weight: 800;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.09em;
     color: var(--gold, #e6b83f);
+    margin-bottom: 0.12rem;
   }
   .logo__type span {
-    font-size: 0.58rem;
+    font-size: 0.62rem;
     font-weight: 600;
     color: #ffffff;
-    opacity: 0.92;
-    letter-spacing: 0.1em;
+    opacity: 0.9;
+    letter-spacing: 0.16em;
+    line-height: 1.25;
     text-transform: uppercase;
+  }
+  .logo__tag2 {
+    opacity: 0.72 !important;
+    letter-spacing: 0.14em !important;
   }
   /* Decongest the header on mobile: keep the badge + wordmark, drop the taglines. */
   @media (max-width: 980px) {

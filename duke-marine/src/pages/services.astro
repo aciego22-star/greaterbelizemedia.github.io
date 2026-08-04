@@ -56,6 +56,9 @@ const steps = [
     title="How Duke Marine helps"
     lead="From product guidance to quotes and WhatsApp assistance, here’s how we help you find the right marine, fishing and diving gear."
     crumbs={[{ label: 'Services' }]}
+    image="/media/life/rods-ready.jpg"
+    imageAlt="Fishing rods rigged and ready on a Belize boat"
+    imagePosition="center 45%"
   />
 
   <!-- Services grid -->
@@ -64,14 +67,14 @@ const steps = [
       <div class="svc">
         {
           services.map((s, i) => (
-            <Reveal class="svc__card" delay={(i % 3) * 80}>
+            <div class="svc__card" data-reveal data-reveal-delay={(i % 3) * 80}>
               <span class="svc__icon"><Icon name={s.icon} size={26} /></span>
               <h3>{s.title}</h3>
               <p>{s.text}</p>
               <ul role="list" class="svc__points">
                 {s.points.map((p) => <li><Icon name="check" size={15} /> {p}</li>)}
               </ul>
-            </Reveal>
+            </div>
           ))
         }
       </div>
@@ -85,11 +88,11 @@ const steps = [
       <div class="steps">
         {
           steps.map((s, i) => (
-            <Reveal class="step" delay={i * 80}>
+            <div class="step" data-reveal data-reveal-delay={i * 80}>
               <span class="step__n">{s.n}</span>
               <h3>{s.title}</h3>
               <p>{s.text}</p>
-            </Reveal>
+            </div>
           ))
         }
       </div>
@@ -106,6 +109,10 @@ const steps = [
     gap: 1.4rem;
   }
   .svc__card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
     padding: 1.8rem 1.6rem;
     background: var(--bg-elevated);
     border: 1px solid var(--border);
@@ -126,7 +133,7 @@ const steps = [
     border-radius: 15px;
     background: color-mix(in srgb, var(--accent) 14%, transparent);
     color: var(--accent-strong);
-    margin-bottom: 1rem;
+    margin: 0 auto 1rem;
     transition: transform var(--dur), background var(--dur), color var(--dur);
   }
   .svc__card:hover .svc__icon {
@@ -148,10 +155,12 @@ const steps = [
     margin-top: 1.1rem;
     padding-top: 1.1rem;
     border-top: 1px solid var(--border);
+    width: 100%;
   }
   .svc__points li {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
     font-size: 0.85rem;
   }
@@ -168,6 +177,7 @@ const steps = [
   }
   .step {
     position: relative;
+    text-align: center;
     padding: 1.7rem 1.4rem;
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid var(--border);

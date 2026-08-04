@@ -1,7 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import OceanCanvas from '../../components/OceanCanvas.astro';
 import Media from '../../components/Media.astro';
 import Icon from '../../components/Icon.astro';
 import CtaBanner from '../../components/CtaBanner.astro';
@@ -26,7 +25,10 @@ const fmt = (d: Date) =>
 <BaseLayout title={post.data.title} description={post.data.excerpt}>
   <article class="article">
     <header class="article__hero on-dark">
-      <OceanCanvas />
+      <div class="article__bg" aria-hidden="true">
+        <img src="/media/life/trolling-spread.jpg" alt="" loading="eager" />
+        <span class="article__scrim"></span>
+      </div>
       <div class="container article__head">
         <nav class="crumbs" aria-label="Breadcrumb">
           <a href="/">Home</a>
@@ -44,7 +46,12 @@ const fmt = (d: Date) =>
     </header>
 
     <div class="article__cover container">
-      <Media seed={post.data.seed || post.id} icon="waves" ratio="21 / 9" tone="current" />
+      <img
+        src="/media/life/wahoo-catch.jpg"
+        alt="A wahoo landed on a fishing trip off Belize"
+        class="article__cover-img"
+        loading="lazy"
+      />
     </div>
 
     <div class="container article__body">
@@ -90,9 +97,36 @@ const fmt = (d: Date) =>
     color: var(--text-invert);
     padding-top: calc(var(--header-h) + 3rem);
     padding-bottom: 3rem;
+    background: var(--c-navy);
+  }
+  .article__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+  .article__bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 40%;
+  }
+  .article__scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(100deg, rgba(7, 22, 40, 0.92) 0%, rgba(7, 22, 40, 0.78) 45%, rgba(7, 22, 40, 0.6) 100%);
   }
   .article__head {
+    position: relative;
+    z-index: 1;
     max-width: 800px;
+  }
+  .article__cover-img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 21 / 9;
+    object-fit: cover;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
   }
   .crumbs {
     display: flex;

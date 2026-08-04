@@ -7,12 +7,26 @@ interface Props {
   title: string;
   lead?: string;
   crumbs?: { label: string; href?: string }[];
+  /** Real header photo in public/media. Falls back to the animated ocean canvas. */
+  image?: string;
+  imageAlt?: string;
+  /** Focal point for the header photo, e.g. "center", "50% 35%". */
+  imagePosition?: string;
 }
-const { eyebrow, title, lead, crumbs = [] } = Astro.props;
+const { eyebrow, title, lead, crumbs = [], image, imageAlt = '', imagePosition = 'center' } = Astro.props;
 ---
 
 <section class="page-hero on-dark">
-  <OceanCanvas />
+  {
+    image ? (
+      <div class="page-hero__bg" aria-hidden={imageAlt ? undefined : 'true'}>
+        <img src={image} alt={imageAlt} loading="eager" style={`object-position:${imagePosition}`} />
+        <span class="page-hero__scrim"></span>
+      </div>
+    ) : (
+      <OceanCanvas />
+    )
+  }
   <div class="container page-hero__inner">
     {
       crumbs.length > 0 && (
@@ -41,8 +55,32 @@ const { eyebrow, title, lead, crumbs = [] } = Astro.props;
     padding-bottom: clamp(3rem, 7vw, 6rem);
     color: var(--text-invert);
     overflow: hidden;
+    background: var(--c-navy);
+  }
+  .page-hero__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+  .page-hero__bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .page-hero__scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      100deg,
+      rgba(7, 22, 40, 0.9) 0%,
+      rgba(7, 22, 40, 0.78) 42%,
+      rgba(7, 22, 40, 0.55) 100%
+    );
   }
   .page-hero__inner {
+    position: relative;
+    z-index: 1;
     max-width: 900px;
   }
   .crumbs {

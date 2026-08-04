@@ -3,7 +3,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import SectionHeader from '../components/SectionHeader.astro';
 import Icon from '../components/Icon.astro';
-import Reveal from '../components/Reveal.astro';
 import CtaBanner from '../components/CtaBanner.astro';
 
 // Verified heritage facts only (client-confirmed).
@@ -24,6 +23,9 @@ const heritage = [
     title="Built on Experience. Trusted for Generations."
     lead="Serving Belize’s boating, fishing and diving community since 1991."
     crumbs={[{ label: 'About' }]}
+    image="/media/life/caye-approach.jpg"
+    imageAlt="Approaching a caye across Belize’s waters"
+    imagePosition="center 55%"
   />
 
   <!-- Story -->
@@ -31,8 +33,8 @@ const heritage = [
     <div class="container story">
       <div class="story__media" data-reveal>
         <img
-          src="/media/gallery-6.jpg"
-          alt="Stocked aisles of marine, fishing and diving supplies at Duke Marine, Belize City"
+          src="/media/gallery-1.jpg"
+          alt="A display of Duke Marine fishing, diving and boating gear laid out in Belize City"
           class="story__img"
           loading="lazy"
         />
@@ -45,10 +47,10 @@ const heritage = [
           <p>What began as a family business built on honest advice, dependable products and exceptional customer service has grown into one of the country’s most trusted names in marine supplies. For more than three decades, commercial fishermen, tour operators, boat owners, divers and recreational anglers have relied on Duke Marine for quality equipment and knowledgeable service.</p>
           <p>While the marine industry has evolved, our philosophy has remained the same. We believe every customer deserves reliable products, practical guidance and a team committed to helping them find what they need.</p>
           <p>Today, Duke Marine continues that tradition while embracing the future. From expanding our product range to preparing a searchable online marine-parts catalogue, we remain committed to making it easier for customers to find the right equipment and confidently return to the water.</p>
-          <p>Whether you are preparing for a day offshore, maintaining a vessel, stocking a tour operation or planning your next dive, Duke Marine is here to help, just as we have been since 1991.</p>
+          <p>Whether you are preparing for a day offshore with the right <a href="/fishing-supplies">fishing supplies</a>, maintaining a vessel with <a href="/marine-supplies">marine parts and supplies</a>, stocking a tour operation or planning your next dive with our <a href="/diving-supplies">diving supplies</a>, Duke Marine is here to help, just as we have been since 1991.</p>
         </div>
         <div class="story__sign">
-          <strong>Today, the Duke Marine tradition continues with Louisa Duke and Janice Leslie.</strong>
+          <strong>A family-owned Belizean business, proudly serving the marine community since 1991.</strong>
           <span>Philip Goldson Highway · Belize City, Belize</span>
         </div>
       </div>
@@ -59,8 +61,8 @@ const heritage = [
   <section class="quoteband on-dark">
     <div class="container quoteband__inner" data-reveal>
       <Icon name="quote" size={40} class="quoteband__mark" />
-      <p class="quoteband__text">Where the tide slows, the soul finds its way.</p>
-      <span class="quoteband__sub">Fishing. Diving. Boat Supplies.</span>
+      <p class="quoteband__text">Family-run since 1991, trusted on Belize’s water for generations.</p>
+      <span class="quoteband__sub">Marine · Fishing · Diving Supplies</span>
     </div>
   </section>
 
@@ -71,10 +73,10 @@ const heritage = [
       <div class="heritage">
         {
           heritage.map((h, i) => (
-            <Reveal class="heritage__item" delay={i * 80}>
+            <div class="heritage__item" data-reveal data-reveal-delay={i * 80}>
               <span class="heritage__icon"><Icon name={h.icon} size={24} /></span>
               <span class="heritage__label">{h.label}</span>
-            </Reveal>
+            </div>
           ))
         }
       </div>
