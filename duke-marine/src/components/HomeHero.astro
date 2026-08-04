@@ -8,9 +8,14 @@
 // Each slide has a portrait poster (mobile) and a dedicated landscape banner
 // (desktop). Mobile shows the portrait via contain+blur; desktop shows the whole
 // landscape banner (no crop) below the header. Swap/add images in public/media.
+// A slide with `href` renders as a clickable link (whole slide navigates);
+// slides without `href` are decorative images.
 const slides = [
   { src: '/media/hero-catch.jpg', desktop: '/media/hero-catch-desktop.jpg', label: 'Built for the catch, fishing, diving and boat supplies' },
   { src: '/media/hero-dive.jpg', desktop: '/media/hero-dive-desktop.jpg', label: 'Every great dive starts with the right gear' },
+  // Mobile poster falls back to the wide banner (shown whole via contain+blur)
+  // until the dedicated portrait `hero-careers.jpg` is supplied; swap `src` then.
+  { src: '/media/hero-careers-desktop.jpg', desktop: '/media/hero-careers-desktop.jpg', href: '/careers', label: 'Careers at Duke Marine. Explore current employment opportunities.' },
 ];
 ---
 
@@ -19,13 +24,25 @@ const slides = [
 
   <div class="hero__slides" data-hero-slides aria-label="Duke Marine">
     {
-      slides.map((s, i) => (
-        <div class:list={['hero__slide', { 'is-active': i === 0 }]} role="img" aria-label={s.label}>
-          <div class="hero__slide-blur" style={`background-image:url(${s.src})`}></div>
-          <div class="hero__slide-img" style={`background-image:url(${s.src})`}></div>
-          <div class="hero__slide-desk" style={`background-image:url(${s.desktop})`}></div>
-        </div>
-      ))
+      slides.map((s, i) =>
+        s.href ? (
+          <a
+            class:list={['hero__slide', { 'is-active': i === 0 }]}
+            href={s.href}
+            aria-label={s.label}
+          >
+            <div class="hero__slide-blur" style={`background-image:url(${s.src})`}></div>
+            <div class="hero__slide-img" style={`background-image:url(${s.src})`}></div>
+            <div class="hero__slide-desk" style={`background-image:url(${s.desktop})`}></div>
+          </a>
+        ) : (
+          <div class:list={['hero__slide', { 'is-active': i === 0 }]} role="img" aria-label={s.label}>
+            <div class="hero__slide-blur" style={`background-image:url(${s.src})`}></div>
+            <div class="hero__slide-img" style={`background-image:url(${s.src})`}></div>
+            <div class="hero__slide-desk" style={`background-image:url(${s.desktop})`}></div>
+          </div>
+        ),
+      )
     }
   </div>
   <div class="hero__scrim"></div>
@@ -56,6 +73,17 @@ const slides = [
   }
   .hero__slide.is-active {
     opacity: 1;
+  }
+  /* a clickable slide (e.g. Careers) fills the frame and shows no link chrome */
+  a.hero__slide {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+  /* visible focus state for keyboard users (pointer clicks stay clean) */
+  a.hero__slide:focus-visible {
+    outline: 3px solid var(--gold, #e6b83f);
+    outline-offset: -3px;
   }
   /* blurred fill (no empty bars) */
   .hero__slide-blur {
