@@ -57,7 +57,7 @@ export const nav: NavItem[] = [
     label: 'Marine',
     href: '/marine-supplies',
     children: [
-      { label: 'Anchors & Rode', href: '/marine-supplies#anchors', desc: 'Anchors, chain, swivels' },
+      { label: 'Anchors & Rope', href: '/marine-supplies#anchors', desc: 'Anchors, chain, swivels' },
       { label: 'Rope, Fenders & Dock Lines', href: '/marine-supplies#dock', desc: 'Rope, fenders, buoys' },
       { label: 'Electrical & Lighting', href: '/marine-supplies#electrical', desc: 'Panels, switches, LEDs' },
       { label: 'Stainless Hardware & Rigging', href: '/marine-supplies#hardware', desc: 'Cleats, chocks, fasteners' },

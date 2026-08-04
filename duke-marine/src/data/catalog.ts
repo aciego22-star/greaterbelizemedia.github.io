@@ -16,9 +16,9 @@ export type Category = {
 export const marineCategories: Category[] = [
   {
     id: 'anchors',
-    name: 'Anchors & Rode',
+    name: 'Anchors & Rope',
     blurb:
-      'Anchors, chain, swivels and rode sized to hold your boat in Belize sand and grass.',
+      'Anchors, chain, swivels and rope sized to hold your boat in Belize sand and grass.',
     icon: 'anchor',
     examples: ['Fluke & claw anchors', 'Anchor chain', 'Galvanized swivels', 'Mushroom anchors'],
     image: '/media/products/danforth-hooker-anchor.jpg',

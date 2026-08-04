@@ -2,20 +2,19 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
-import Reveal from '../components/Reveal.astro';
 import { site } from '../data/site';
 
-const applyMailto = `mailto:${site.email}?subject=Retail%20Sales%20Associate%20Application`;
+const applyMailto = `mailto:${site.email}?subject=Employment%20Application`;
 ---
 
 <BaseLayout
   title="Careers"
-  description="Duke Marine is accepting applications for a Retail Sales Associate in Belize City. Email your CV to dukemarine@btl.net."
+  description="Duke Marine is accepting applications for a Retail Sales Associate and a Marine Yard & Maintenance Assistant in Belize City. Email your CV to dukemarine@btl.net."
 >
   <PageHero
     eyebrow="Careers"
     title="Join the Duke Marine Team"
-    lead="Duke Marine is currently accepting applications for a Retail Sales Associate in Belize City."
+    lead="Duke Marine is currently accepting applications for open positions in Belize City."
     crumbs={[{ label: 'Careers' }]}
   />
 
@@ -23,14 +22,22 @@ const applyMailto = `mailto:${site.email}?subject=Retail%20Sales%20Associate%20A
   <section class="section">
     <div class="container">
       <div class="jobs">
-        <Reveal class="job">
+        <div class="job" data-reveal>
           <div>
             <h3>Retail Sales Associate</h3>
             <span class="job__type"><Icon name="pin" size={15} /> Belize City</span>
             <p>Help customers identify suitable marine, fishing and diving products, maintain an organized sales floor, support stock presentation and provide professional customer service.</p>
           </div>
           <a href="#apply" class="btn btn--ghost btn--sm">How to apply <Icon name="arrow" size={15} /></a>
-        </Reveal>
+        </div>
+        <div class="job" data-reveal data-reveal-delay={80}>
+          <div>
+            <h3>Marine Yard &amp; Maintenance Assistant</h3>
+            <span class="job__type"><Icon name="pin" size={15} /> Belize City</span>
+            <p>Support the daily upkeep of the store, warehouse, and yard by maintaining a clean, organized, and safe environment. Assist with receiving and moving inventory, preparing customer orders, handling general maintenance tasks, and supporting the team with day-to-day operational activities to ensure the business runs efficiently.</p>
+          </div>
+          <a href="#apply" class="btn btn--ghost btn--sm">How to apply <Icon name="arrow" size={15} /></a>
+        </div>
       </div>
     </div>
   </section>
@@ -40,11 +47,11 @@ const applyMailto = `mailto:${site.email}?subject=Retail%20Sales%20Associate%20A
     <div class="container">
       <div class="apply card" data-reveal>
         <span class="eyebrow">Apply</span>
-        <h2>Apply for the Retail Sales Associate Position</h2>
+        <h2>Apply to Join the Duke Marine Team</h2>
         <p class="apply__copy">
           Interested applicants may email their CV and a short introduction to
-          <a href={`mailto:${site.email}`}>{site.email}</a>. Please use
-          “Retail Sales Associate Application” as the email subject.
+          <a href={`mailto:${site.email}`}>{site.email}</a>. Please note the
+          position you are applying for in the email subject.
         </p>
         <div class="apply__actions">
           <a href={applyMailto} class="btn btn--gold"><Icon name="mail" size={18} /> Email Your Application</a>

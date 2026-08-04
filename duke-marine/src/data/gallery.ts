@@ -54,7 +54,7 @@ export const galleryGroups: GalleryGroup[] = [
       { src: '/media/gallery-1.jpg', alt: 'Cast nets and gear on the shelves at Duke Marine' },
       { src: '/media/gallery-7.jpg', alt: 'Stainless boat hardware, locks and fittings at Duke Marine' },
       { src: '/media/gallery-10.jpg', alt: 'Paint prep, brushes, tape and sandpaper at Duke Marine' },
-      { src: '/media/gallery-3.jpg', alt: 'Rope and rode on the reel inside the Duke Marine shop' },
+      { src: '/media/gallery-3.jpg', alt: 'Rope on the reel inside the Duke Marine shop' },
       { src: '/media/gallery-9.jpg', alt: 'Bilge pumps and livewell pumps at Duke Marine' },
       { src: '/media/gallery-5.jpg', alt: 'For all your marine needs, Duke Marine, Belize City' },
       { src: '/media/gallery-8.jpg', alt: 'Navigation lights and marine electrical at Duke Marine' },
