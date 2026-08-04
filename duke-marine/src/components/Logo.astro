@@ -24,7 +24,8 @@ const { class: cls = '', compact = false } = Astro.props;
     !compact && (
       <span class="logo__type">
         <strong>DUKE&nbsp;MARINE</strong>
-        <span class="logo__tag">Marine Parts · Sales · Service · Fishing · Diving · Boat Supplies</span>
+        <span class="logo__tag">Marine Parts · Sales · Service</span>
+        <span class="logo__tag">Fishing · Diving · Boat Supplies</span>
       </span>
     )
   }
@@ -51,23 +52,23 @@ const { class: cls = '', compact = false } = Astro.props;
   .logo__type {
     display: flex;
     flex-direction: column;
-    gap: 0.16rem;
-    line-height: 1.1;
+    gap: 0.1rem;
+    line-height: 1.05;
     font-family: var(--font-display);
   }
   .logo__type strong {
-    font-size: 1.08rem;
+    font-size: 1.02rem;
     font-weight: 800;
-    letter-spacing: 0.09em;
+    letter-spacing: 0.07em;
     color: var(--gold, #e6b83f);
-    margin-bottom: 0.12rem;
+    margin-bottom: 0.1rem;
   }
   .logo__tag {
-    font-size: 0.6rem;
+    font-size: 0.53rem;
     font-weight: 600;
     color: #ffffff;
-    opacity: 0.82;
-    letter-spacing: 0.13em;
+    opacity: 0.8;
+    letter-spacing: 0.07em;
     line-height: 1.2;
     text-transform: uppercase;
     white-space: nowrap;
