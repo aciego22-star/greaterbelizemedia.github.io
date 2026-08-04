@@ -24,8 +24,7 @@ const { class: cls = '', compact = false } = Astro.props;
     !compact && (
       <span class="logo__type">
         <strong>DUKE&nbsp;MARINE</strong>
-        <span>Marine Parts · Sales · Service</span>
-        <span class="logo__tag2">Fishing · Diving · Boat Supplies</span>
+        <span class="logo__tag">Marine Parts · Sales · Service · Fishing · Diving · Boat Supplies</span>
       </span>
     )
   }
@@ -63,18 +62,15 @@ const { class: cls = '', compact = false } = Astro.props;
     color: var(--gold, #e6b83f);
     margin-bottom: 0.12rem;
   }
-  .logo__type span {
-    font-size: 0.62rem;
+  .logo__tag {
+    font-size: 0.6rem;
     font-weight: 600;
     color: #ffffff;
-    opacity: 0.9;
-    letter-spacing: 0.16em;
-    line-height: 1.25;
+    opacity: 0.82;
+    letter-spacing: 0.13em;
+    line-height: 1.2;
     text-transform: uppercase;
-  }
-  .logo__tag2 {
-    opacity: 0.72 !important;
-    letter-spacing: 0.14em !important;
+    white-space: nowrap;
   }
   /* Decongest the header on mobile: keep the badge + wordmark, drop the taglines. */
   @media (max-width: 980px) {

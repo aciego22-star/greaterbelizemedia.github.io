@@ -147,18 +147,8 @@ function initNav() {
     );
   }
 
-  // Mega-menu: click on mobile, hover on desktop (CSS handles hover).
-  document
-    .querySelectorAll<HTMLButtonElement>('[data-mega-toggle]')
-    .forEach((btn) => {
-      btn.addEventListener('click', (e) => {
-        if (window.matchMedia('(min-width: 981px)').matches) return;
-        e.preventDefault();
-        const parent = btn.closest('[data-mega]');
-        const open = parent?.classList.toggle('is-open');
-        btn.setAttribute('aria-expanded', String(!!open));
-      });
-    });
+  // Mega-menu opens on hover/focus (CSS). The top-level item is a link that
+  // navigates straight to the department page, so no JS toggle is needed.
 
   // Close menus on Escape
   document.addEventListener('keydown', (e) => {

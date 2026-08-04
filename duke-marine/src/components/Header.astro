@@ -14,6 +14,13 @@ const isActive = (href: string) =>
 
 // Mobile quick-nav strip: Home + the top-level headings (always visible on mobile)
 const stripItems = [{ label: 'Home', href: '/' }, ...nav.map((n) => ({ label: n.label, href: n.href }))];
+
+// Real photo behind each mega-menu feature panel.
+const featureImg: Record<string, string> = {
+  Marine: '/media/life/boat-wake.jpg',
+  Fishing: '/media/life/trolling-spread.jpg',
+  Diving: '/media/life/reef-flats.jpg',
+};
 ---
 
 <a href="#main" class="skip-link">Skip to content</a>
@@ -28,14 +35,13 @@ const stripItems = [{ label: 'Home', href: '/' }, ...nav.map((n) => ({ label: n.
           nav.map((item) =>
             item.children ? (
               <li class="nav__item" data-mega>
-                <button
+                <a
+                  href={item.href}
                   class:list={['nav__link', 'nav__link--has-menu', { 'is-current': isActive(item.href) }]}
-                  data-mega-toggle
-                  aria-expanded="false"
                 >
                   {item.label}
                   <Icon name="chevron" size={16} class="nav__caret" />
-                </button>
+                </a>
                 <div class="mega" role="menu">
                   <div class="mega__inner">
                     <div class="mega__links">
@@ -46,7 +52,11 @@ const stripItems = [{ label: 'Home', href: '/' }, ...nav.map((n) => ({ label: n.
                         </a>
                       ))}
                     </div>
-                    <a href={item.href} class="mega__feature">
+                    <a
+                      href={item.href}
+                      class="mega__feature"
+                      style={featureImg[item.label] ? `background-image: linear-gradient(180deg, rgba(7,22,40,.35), rgba(7,22,40,.86)), url(${featureImg[item.label]})` : undefined}
+                    >
                       <span class="eyebrow">Browse all</span>
                       <span class="mega__feature-title">{item.label}</span>
                       <span class="link-arrow">
@@ -249,8 +259,12 @@ const stripItems = [{ label: 'Home', href: '/' }, ...nav.map((n) => ({ label: n.
     justify-content: space-between;
     gap: 0.6rem;
     padding: 1.1rem;
+    min-height: 150px;
     border-radius: var(--radius);
     background: var(--grad-deep);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     color: var(--text-invert);
   }
   .mega__feature-title {
