@@ -13,9 +13,7 @@
 const slides = [
   { src: '/media/hero-catch.jpg', desktop: '/media/hero-catch-desktop.jpg', label: 'Built for the catch, fishing, diving and boat supplies' },
   { src: '/media/hero-dive.jpg', desktop: '/media/hero-dive-desktop.jpg', label: 'Every great dive starts with the right gear' },
-  // Mobile poster falls back to the wide banner (shown whole via contain+blur)
-  // until the dedicated portrait `hero-careers.jpg` is supplied; swap `src` then.
-  { src: '/media/hero-careers-desktop.jpg', desktop: '/media/hero-careers-desktop.jpg', href: '/careers', label: 'Careers at Duke Marine. Explore current employment opportunities.' },
+  { src: '/media/hero-careers.jpg', desktop: '/media/hero-careers-desktop.jpg', href: '/careers', label: 'Careers at Duke Marine. Explore current employment opportunities.' },
 ];
 ---
 
@@ -69,10 +67,14 @@ const slides = [
     position: absolute;
     inset: 0;
     opacity: 0;
+    /* only the visible slide receives clicks/taps, so a stacked link slide
+       never intercepts pointer events meant for the slide on screen */
+    pointer-events: none;
     transition: opacity 1.4s var(--ease-out);
   }
   .hero__slide.is-active {
     opacity: 1;
+    pointer-events: auto;
   }
   /* a clickable slide (e.g. Careers) fills the frame and shows no link chrome */
   a.hero__slide {
