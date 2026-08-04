@@ -5,10 +5,13 @@
  * fill of itself so there are no empty bars. Respects prefers-reduced-motion.
  * Swap/add images in public/media and edit the `slides` array below.
  */
+// Each slide has a portrait poster (mobile) and a dedicated landscape banner
+// (desktop). Mobile shows the portrait via contain+blur; desktop shows the whole
+// landscape banner (no crop) below the header. Swap/add images in public/media.
 const slides = [
-  { src: '/media/hero-catch.jpg', label: 'Built for the catch, fishing, diving and boat supplies' },
-  { src: '/media/hero-dive.jpg', label: 'Every great dive starts with the right gear' },
-  { src: '/media/hero-database.jpg', label: 'Belize’s largest marine products database, launching soon' },
+  { src: '/media/hero-catch.jpg', desktop: '/media/hero-catch-desktop.jpg', label: 'Built for the catch, fishing, diving and boat supplies' },
+  { src: '/media/hero-dive.jpg', desktop: '/media/hero-dive-desktop.jpg', label: 'Every great dive starts with the right gear' },
+  { src: '/media/hero-database.jpg', desktop: '/media/hero-database-desktop.jpg', label: 'Belize’s largest marine products database, launching soon' },
 ];
 ---
 
@@ -21,6 +24,7 @@ const slides = [
         <div class:list={['hero__slide', { 'is-active': i === 0 }]} role="img" aria-label={s.label}>
           <div class="hero__slide-blur" style={`background-image:url(${s.src})`}></div>
           <div class="hero__slide-img" style={`background-image:url(${s.src})`}></div>
+          <div class="hero__slide-desk" style={`background-image:url(${s.desktop})`}></div>
         </div>
       ))
     }
@@ -72,6 +76,10 @@ const slides = [
     background-position: center;
     background-repeat: no-repeat;
   }
+  /* desktop-only landscape banner layer (hidden on mobile) */
+  .hero__slide-desk {
+    display: none;
+  }
   /* subtle top scrim so the (transparent) desktop nav stays legible */
   .hero__scrim {
     position: absolute;
@@ -85,17 +93,40 @@ const slides = [
       rgba(6, 22, 44, 0) 46%
     );
   }
-  /* Desktop: fill the whole hero edge-to-edge with the same poster (cover, no
-     side bars), inside a bounded height so it never runs past the fold. Mobile
-     keeps the whole poster visible (contain) below. */
+  /* Desktop: show the dedicated LANDSCAPE banner whole (no crop, no side bars),
+     seated in the area right below the header. The hero reserves the header
+     height on top (its navy fills behind the fixed, transparent header); the
+     slides box takes the banner's native aspect so the full poster is always
+     visible. Mobile is untouched (portrait poster, contain + blur). */
   @media (min-width: 981px) {
     .hero {
+      display: block;
       min-height: 0;
-      height: min(88svh, 860px);
+      height: auto;
+      align-items: initial;
+      padding-top: var(--header-h);
+      padding-bottom: 0;
     }
+    .hero__slides {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1672 / 941;
+    }
+    .hero__slide-blur,
     .hero__slide-img {
+      display: none;
+    }
+    .hero__slide-desk {
+      display: block;
+      position: absolute;
+      inset: 0;
       background-size: cover;
-      background-position: center 38%;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    /* banner carries its own branding; drop the nav scrim so it stays clean */
+    .hero__scrim {
+      display: none;
     }
   }
   /* On mobile the header is opaque (bar + quick-nav strip). Drop the sharp
