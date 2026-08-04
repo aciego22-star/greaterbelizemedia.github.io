@@ -2,7 +2,6 @@
 import PageHero from './PageHero.astro';
 import CategoryCard from './CategoryCard.astro';
 import ProductCard from './ProductCard.astro';
-import Media from './Media.astro';
 import Icon from './Icon.astro';
 import CtaBanner from './CtaBanner.astro';
 import { departments, type DepartmentId } from '../data/catalog';
@@ -18,16 +17,6 @@ const others = (Object.keys(departments) as DepartmentId[])
   .filter((id) => id !== dept)
   .map((id) => departments[id]);
 
-const iconFor: Record<DepartmentId, string> = {
-  marine: 'boat',
-  fishing: 'fish',
-  diving: 'compass',
-};
-const toneFor: Record<DepartmentId, 'current' | 'brass' | 'deep'> = {
-  marine: 'current',
-  fishing: 'brass',
-  diving: 'deep',
-};
 // Authentic client lifestyle photo behind each department header.
 const heroImageFor: Record<DepartmentId, { src: string; pos?: string }> = {
   marine: { src: '/media/life/boat-wake.jpg', pos: 'center 40%' },
@@ -109,7 +98,13 @@ const byCategory = d.categories.map((c) => ({
         others.map((o, i) => (
           <a href={o.href} class="crossell" data-reveal data-reveal-delay={i * 90}>
             <div class="crossell__media">
-              <Media seed={o.id} icon={iconFor[o.id]} ratio="16 / 10" tone={toneFor[o.id]} />
+              <img
+                src={heroImageFor[o.id].src}
+                alt={`${o.title} at Duke Marine, Belize City`}
+                class="crossell__img"
+                loading="lazy"
+                style={heroImageFor[o.id].pos ? `object-position:${heroImageFor[o.id].pos}` : undefined}
+              />
             </div>
             <div class="crossell__body">
               <h3>{o.title}</h3>
@@ -210,10 +205,14 @@ const byCategory = d.categories.map((c) => ({
   .crossell__media {
     overflow: hidden;
   }
-  .crossell__media :global(.media) {
+  .crossell__img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
     transition: transform var(--dur-slow) var(--ease-out);
   }
-  .crossell:hover .crossell__media :global(.media) {
+  .crossell:hover .crossell__img {
     transform: scale(1.05);
   }
   .crossell__body {
