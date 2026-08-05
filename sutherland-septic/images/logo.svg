@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Sutherland Septic Services logo">
+  <defs>
+    <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0d6b3d"/>
+      <stop offset="0.55" stop-color="#18a15f"/>
+      <stop offset="1" stop-color="#2ec37a"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="60" height="60" rx="17" fill="url(#lg)"/>
+  <rect x="2" y="2" width="60" height="60" rx="17" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1.5"/>
+  <!-- Vacuum tank truck mark -->
+  <g fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M14 26h20v13H14z"/>
+    <path d="M34 30h6.5l5 5v4H34z"/>
+    <circle cx="20" cy="43" r="3.4"/>
+    <circle cx="40" cy="43" r="3.4"/>
+  </g>
+  <!-- Droplet accent -->
+  <path d="M24 14c3.4 3.2 5 5.6 5 7.6a5 5 0 0 1-10 0c0-2 1.6-4.4 5-7.6z" fill="#ffffff"/>
+</svg>

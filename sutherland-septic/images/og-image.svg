@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Sutherland Septic Services">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#06331d"/>
+      <stop offset="0.5" stop-color="#0d6b3d"/>
+      <stop offset="1" stop-color="#18a15f"/>
+    </linearGradient>
+    <linearGradient id="mark" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2ec37a"/>
+      <stop offset="1" stop-color="#8ff0bf"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="1050" cy="120" r="260" fill="#2ec37a" opacity="0.16"/>
+  <circle cx="120" cy="560" r="220" fill="#18a15f" opacity="0.18"/>
+
+  <g transform="translate(90 150)">
+    <rect width="96" height="96" rx="26" fill="url(#mark)"/>
+    <g fill="none" stroke="#06331d" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" transform="translate(20 30)">
+      <path d="M6 8h30v20H6z"/>
+      <path d="M36 13h10l7 7v8H36z"/>
+      <circle cx="15" cy="32" r="5"/>
+      <circle cx="45" cy="32" r="5"/>
+    </g>
+  </g>
+
+  <text x="210" y="212" font-family="'Sora',Arial,sans-serif" font-weight="800" font-size="52" fill="#ffffff">Sutherland Septic Services</text>
+  <text x="212" y="262" font-family="Arial,sans-serif" font-weight="600" font-size="26" fill="#bff3d5" letter-spacing="1">Belize City · Available 24 Hours · 614-6462</text>
+
+  <text x="90" y="410" font-family="'Sora',Arial,sans-serif" font-weight="800" font-size="76" fill="#ffffff">Belize's Trusted</text>
+  <text x="90" y="490" font-family="'Sora',Arial,sans-serif" font-weight="800" font-size="76" fill="#8ff0bf">Septic Professionals</text>
+  <text x="92" y="552" font-family="Arial,sans-serif" font-style="italic" font-size="30" fill="rgba(255,255,255,0.85)">"You Dump It. We Pump It."</text>
+</svg>
