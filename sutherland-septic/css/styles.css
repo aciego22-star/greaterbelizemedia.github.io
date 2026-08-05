@@ -294,9 +294,9 @@ ul { margin: 0; padding: 0; list-style: none; }
 }
 .hero-media {
   position: absolute; inset: 0; z-index: 0;
-  background-size: cover; background-position: center;
-  /* Swap the truck photo here: replace images/hero-truck.svg with images/hero-truck.jpg */
-  background-image: url("../images/hero-truck.svg");
+  background-size: cover; background-position: center 40%;
+  /* Cover photo (IMG_0251). Swap this file to change the home hero. */
+  background-image: url("../images/hero.jpg");
 }
 .hero-media::after {
   content: "";
@@ -363,7 +363,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 .page-hero {
   position: relative; color: #fff; overflow: hidden; background: var(--grad-dark);
 }
-.page-hero .hero-media { background-image: url("../images/hero-truck.svg"); }
+.page-hero .hero-media { background-image: url("../images/fleet-profile.jpg"); background-position: center 45%; }
 .page-hero-inner {
   position: relative; z-index: 2; padding: clamp(88px, 14vh, 150px) 0 clamp(56px, 8vh, 90px);
   max-width: 780px;
