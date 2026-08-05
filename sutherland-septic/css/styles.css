@@ -207,10 +207,10 @@ ul { margin: 0; padding: 0; list-style: none; }
   align-items: center;
   justify-content: space-between;
   gap: 20px;
-  min-height: 76px;
+  min-height: 82px;
 }
 .brand { display: inline-flex; align-items: center; gap: 12px; }
-.brand-logo { height: 46px; width: auto; }
+.brand-logo { height: 56px; width: auto; border-radius: 9px; }
 .brand-name {
   font-family: "Sora", sans-serif;
   font-weight: 800;
@@ -598,11 +598,15 @@ ul { margin: 0; padding: 0; list-style: none; }
 /* ------- Footer ------- */
 .site-footer { background: var(--ink); color: rgba(255,255,255,0.72); padding: 66px 0 0; }
 .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.2fr; gap: 40px; padding-bottom: 46px; }
+.site-footer .brand-logo { height: 64px; background: #fff; padding: 8px; border-radius: 14px; box-shadow: var(--shadow-sm); }
+.mobile-menu .brand-logo { height: 48px; }
+.footer-brand .brand { align-items: center; gap: 14px; }
 .footer-brand .brand-name { color: #fff; }
 .footer-brand .brand-name > span:not(.brand-tag) { color: var(--green-400); }
 .footer-brand .brand-tag { color: rgba(255,255,255,0.5); }
 .footer-about { margin: 16px 0; font-size: 0.95rem; max-width: 320px; }
-.footer-slogan { color: var(--green-300); font-style: italic; font-weight: 500; }
+.footer-slogan { color: var(--green-300); font-style: italic; font-weight: 500; margin-bottom: 4px; }
+.footer-slogan.alt { color: rgba(255,255,255,0.55); font-size: 0.9rem; }
 .footer-col h4 { color: #fff; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 18px; }
 .footer-col ul { display: grid; gap: 11px; }
 .footer-col a, .footer-contact li { font-size: 0.95rem; color: rgba(255,255,255,0.72); }
@@ -777,6 +781,8 @@ ul { margin: 0; padding: 0; list-style: none; }
   aspect-ratio: 4 / 3; background: var(--grad-dark);
 }
 .about-media img { width: 100%; height: 100%; object-fit: cover; }
+.about-media.logo-showcase { background: #fff; display: grid; place-items: center; padding: 22px; }
+.about-media.logo-showcase img { width: auto; height: 100%; object-fit: contain; }
 .value-list { display: grid; gap: 14px; margin-top: 8px; }
 .value-list li { display: flex; gap: 14px; align-items: flex-start; }
 .value-list .v-check {

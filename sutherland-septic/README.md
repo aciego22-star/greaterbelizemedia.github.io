@@ -27,9 +27,12 @@ and all icons in a single sprite at `images/icons.svg`.
 Everything below is styled with on-brand placeholders so the site looks complete today.
 Swap them for the real files whenever you're ready — nothing else needs to change.
 
-### 1. Logo
-Replace **`images/logo.svg`** (and `images/favicon.svg`) with the real logo.
-Keep the same filename, or update the `<img src="images/logo.svg">` in each page header/footer.
+### 1. Logo — ✅ installed
+The real logo is in place at **`images/logo-full.jpg`** — shown in the header (as a badge
+beside the wordmark), as a white chip in the footer, and framed large on the About page.
+To update it, replace that file (keep the name) or swap the `<img src="images/logo-full.jpg">`
+references. The lightweight `images/favicon.svg` / `og-image.svg` still drive the browser tab
+and social preview — regenerate those from the real logo when you have a square/landscape crop.
 
 ### 2. Hero + truck photos
 - The hero background is set in one place: `css/styles.css`, the `.hero-media` rule.
