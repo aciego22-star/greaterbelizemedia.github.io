@@ -6,7 +6,7 @@ import sitemap from '@astrojs/sitemap';
 // Netlify will also inject the correct URL, but a real value here powers
 // canonical URLs, sitemap and social share tags.
 export default defineConfig({
-  site: 'https://www.dukemarine.com',
+  site: 'https://dukemarinebz.com',
   output: 'static',
   integrations: [sitemap()],
   build: {

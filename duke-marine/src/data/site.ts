@@ -17,7 +17,7 @@ export const site = {
     'Duke Marine is Belize’s one-stop shop for marine parts, fishing and diving supplies for anglers, divers and boat owners. On the Philip Goldson Highway, Belize City.',
   // Powers canonical URLs, sitemap and social cards. Update if the final web
   // domain differs (the customer-facing email is a BTL address, below).
-  url: 'https://www.dukemarinebz.com',
+  url: 'https://dukemarinebz.com',
   phoneDisplay: '(+501) 223-0319',
   phoneHref: '+5012230319',
   whatsapp: '5016287395',
