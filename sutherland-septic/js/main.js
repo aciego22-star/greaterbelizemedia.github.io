@@ -134,10 +134,7 @@
     if (!trigger) return;
     trigger.addEventListener("click", function () {
       var id = wrap.getAttribute("data-yt");
-      if (!id || id === "REPLACE_ID") {
-        alert("This video slot is ready — add your YouTube link and the video will play right here.");
-        return;
-      }
+      if (!id || id === "REPLACE_ID") return;
       var iframe = doc.createElement("iframe");
       iframe.setAttribute("src", "https://www.youtube-nocookie.com/embed/" + id + "?autoplay=1&rel=0");
       iframe.setAttribute("title", "Sutherland Septic Services video");
