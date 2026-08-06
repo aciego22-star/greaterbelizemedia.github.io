@@ -53,7 +53,7 @@
     <a href="contact.html" class="m-link">Contact <svg class="icon"><use href="images/icons.svg#arrow-right"></use></svg></a>
     <div class="mobile-menu-cta">
       <a href="contact.html" class="btn btn-primary btn-block">Request Service</a>
-      <a href="https://wa.me/5016146462" class="btn btn-whatsapp btn-block"><svg class="icon"><use href="images/icons.svg#whatsapp"></use></svg> WhatsApp</a>
+      <button class="btn btn-dark btn-block" data-roland><svg class="icon"><use href="images/icons.svg#chat"></use></svg> Talk to Roland</button>
       <a href="tel:+5016146462" class="btn btn-dark btn-block"><svg class="icon"><use href="images/icons.svg#phone"></use></svg> Call 614-6462</a>
     </div>
   </aside>
@@ -148,10 +148,10 @@
       </div>
       <div class="video-grid">
         <!-- Replace data-yt="REPLACE_ID" with your YouTube video ID (the part after v= in the URL) -->
-        <div class="video-embed reveal" data-yt="REPLACE_ID">
+        <div class="video-embed reveal" data-yt="OSQ4rc52Hrg">
           <div class="video-placeholder">
             <span class="play-btn"><svg class="icon"><use href="images/icons.svg#play"></use></svg></span>
-            <span>Work Video 1, add your YouTube link</span>
+            <span>Sutherland Septic on the job</span>
           </div>
         </div>
         <div class="video-embed reveal reveal-d1" data-yt="REPLACE_ID">
@@ -172,8 +172,7 @@
         <p>Put our team to work on your property, day or night, we're ready.</p>
         <div class="cta-actions">
           <a href="contact.html" class="btn btn-white btn-lg">Request Service</a>
-          <a href="https://wa.me/5016146462" class="btn btn-dark btn-lg"><svg class="icon"><use href="images/icons.svg#whatsapp"></use></svg> WhatsApp</a>
-          <button class="btn btn-ghost btn-lg" data-roland><svg class="icon"><use href="images/icons.svg#chat"></use></svg> Chat with Roland</button>
+          <button class="btn btn-ghost btn-lg" data-roland><svg class="icon"><use href="images/icons.svg#chat"></use></svg> Talk to Roland</button>
         </div>
       </div>
     </div>
@@ -197,7 +196,6 @@
         </ul></div>
         <div class="footer-col"><h4>Get In Touch</h4><ul class="footer-contact">
           <li><svg class="icon"><use href="images/icons.svg#phone"></use></svg> <a href="tel:+5016146462">614-6462</a></li>
-          <li><svg class="icon"><use href="images/icons.svg#whatsapp"></use></svg> <a href="https://wa.me/5016146462">WhatsApp Us</a></li>
           <li><svg class="icon"><use href="images/icons.svg#pin"></use></svg> 7501 Mangrove Street, Fabers Road Extension, Belize City</li>
           <li><svg class="icon"><use href="images/icons.svg#clock"></use></svg> Open 24 Hours</li>
         </ul></div>
@@ -210,9 +208,14 @@
   </footer>
 
   <div class="floaters">
-    <button class="fab fab-roland" data-roland aria-label="Chat with Roland"><span class="fab-label">Chat with Roland</span><svg class="icon"><use href="images/icons.svg#chat"></use></svg></button>
-    <a class="fab fab-whatsapp" href="https://wa.me/5016146462" aria-label="WhatsApp us"><span class="fab-label">WhatsApp</span><svg class="icon"><use href="images/icons.svg#whatsapp"></use></svg></a>
-    <a class="fab fab-call" href="tel:+5016146462" aria-label="Call now"><span class="fab-label">Call 614-6462</span><svg class="icon"><use href="images/icons.svg#phone"></use></svg></a>
+    <a class="fab fab-call" href="tel:+5016146462" aria-label="Call 614-6462">
+      <span class="fab-label">Call 614-6462</span>
+      <svg class="icon"><use href="images/icons.svg#phone"></use></svg>
+    </a>
+    <button class="roland-fab" data-roland aria-label="Tap to Roland">
+      <span class="roland-fab-face"><img src="images/logo-full.jpg" alt="" /></span>
+      <span class="roland-fab-text">Tap to Roland</span>
+    </button>
   </div>
 
   <script src="js/main.js"></script>
