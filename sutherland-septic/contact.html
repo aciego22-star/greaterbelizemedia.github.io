@@ -30,6 +30,7 @@
         <a href="about.html">About</a>
         <a href="services.html">Services</a>
         <a href="gallery.html">Gallery</a>
+        <a href="roland.html">Roland AI</a>
         <a href="contact.html" class="active">Contact</a>
       </nav>
       <div class="nav-actions">
@@ -50,11 +51,13 @@
     <a href="about.html" class="m-link">About <svg class="icon"><use href="images/icons.svg#arrow-right"></use></svg></a>
     <a href="services.html" class="m-link">Services <svg class="icon"><use href="images/icons.svg#arrow-right"></use></svg></a>
     <a href="gallery.html" class="m-link">Gallery <svg class="icon"><use href="images/icons.svg#arrow-right"></use></svg></a>
+    <a href="roland.html" class="m-link">Roland AI <svg class="icon"><use href="images/icons.svg#arrow-right"></use></svg></a>
     <a href="contact.html" class="m-link">Contact <svg class="icon"><use href="images/icons.svg#arrow-right"></use></svg></a>
     <div class="mobile-menu-cta">
       <a href="contact.html" class="btn btn-primary btn-block">Request Service</a>
       <button class="btn btn-dark btn-block" data-roland><svg class="icon"><use href="images/icons.svg#chat"></use></svg> Talk to Roland AI</button>
       <a href="tel:+5016146462" class="btn btn-dark btn-block"><svg class="icon"><use href="images/icons.svg#phone"></use></svg> Call 614-6462</a>
+      <a href="https://wa.me/5016146462" class="btn btn-whatsapp btn-block"><svg class="icon"><use href="images/icons.svg#whatsapp"></use></svg> WhatsApp Us</a>
     </div>
   </aside>
 
@@ -107,62 +110,26 @@
         </div>
       </div>
 
-      <!-- Right: form -->
+      <!-- Right: direct conversion paths (no forms) -->
       <div class="reveal reveal-d1">
         <div class="form-card">
-          <span class="eyebrow"><svg class="icon"><use href="images/icons.svg#chat"></use></svg> Request Service</span>
-          <h2 style="font-size:1.8rem;">Tell Us What's Going On</h2>
-          <p style="color:var(--muted); margin-bottom:22px;">Fill in a few details and our team will get right back to you. For emergencies, please call <a href="tel:+5016146462" style="color:var(--green-700); font-weight:700;">614-6462</a>.</p>
+          <span class="eyebrow"><svg class="icon"><use href="images/icons.svg#chat"></use></svg> Book a Service</span>
+          <h2 style="font-size:1.8rem;">Reach Us Your Way</h2>
+          <p style="color:var(--muted); margin-bottom:26px;">No forms to fill out. Pick whichever channel suits you, every one of them reaches our team directly, 24 hours a day.</p>
 
-          <!-- Netlify-ready form: works automatically once deployed to Netlify -->
-          <form name="service-request" method="POST" data-netlify="true" netlify-honeypot="bot-field" enctype="multipart/form-data">
-            <input type="hidden" name="form-name" value="service-request" />
-            <p class="sr-only" aria-hidden="true"><label>Don't fill this out: <input name="bot-field" /></label></p>
-
-            <div class="field">
-              <label for="name">Name <span class="req">*</span></label>
-              <input type="text" id="name" name="name" placeholder="Your full name" required />
-            </div>
-            <div class="field-row">
-              <div class="field">
-                <label for="phone">Phone <span class="req">*</span></label>
-                <input type="tel" id="phone" name="phone" placeholder="614-6462" required />
-              </div>
-              <div class="field">
-                <label for="type">Service Needed</label>
-                <select id="type" name="service_type">
-                  <option>Residential Pumping</option>
-                  <option>Commercial Service</option>
-                  <option>Emergency Service</option>
-                  <option>System Cleaning</option>
-                  <option>Preventative Maintenance</option>
-                  <option>Inspection</option>
-                  <option>Not sure, please advise</option>
-                </select>
-              </div>
-            </div>
-            <div class="field">
-              <label for="address">Address</label>
-              <input type="text" id="address" name="address" placeholder="Where is the property?" />
-            </div>
-            <div class="field">
-              <label for="issue">Describe your issue <span class="req">*</span></label>
-              <textarea id="issue" name="issue" placeholder="Tell us what you're experiencing, backups, slow drains, routine pumping, etc." required></textarea>
-            </div>
-            <div class="field">
-              <label>Upload photos <span style="color:var(--muted-light); font-weight:500;">(optional)</span></label>
-              <label class="file-drop" for="photos">
-                <svg class="icon"><use href="images/icons.svg#upload"></use></svg>
-                <strong id="file-label">Tap to add photos of the issue</strong>
-                <small>Photos help our team come prepared</small>
-              </label>
-              <input type="file" id="photos" name="photos" accept="image/*" multiple hidden />
-            </div>
-            <button type="submit" class="btn btn-primary btn-lg btn-block">
-              Submit Request <svg class="icon"><use href="images/icons.svg#arrow-right"></use></svg>
+          <div style="display:grid; gap:14px;">
+            <button class="btn btn-primary btn-lg btn-block" data-roland>
+              <svg class="icon"><use href="images/icons.svg#chat"></use></svg> Book with Roland AI
             </button>
-            <p class="form-note">Prefer to talk now? Call <a href="tel:+5016146462">614-6462</a> or <a href="https://wa.me/5016146462">message us on WhatsApp</a>, available 24 hours.</p>
-          </form>
+            <a href="https://wa.me/5016146462" class="btn btn-whatsapp btn-lg btn-block">
+              <svg class="icon"><use href="images/icons.svg#whatsapp"></use></svg> WhatsApp Us
+            </a>
+            <a href="tel:+5016146462" class="btn btn-dark btn-lg btn-block">
+              <svg class="icon"><use href="images/icons.svg#phone"></use></svg> Call 614-6462
+            </a>
+          </div>
+
+          <p class="form-note" style="margin-top:20px;">Roland AI takes your details, answers your septic questions and alerts our team immediately, day or night. <a href="roland.html" style="color:var(--green-700); font-weight:700;">Meet Roland AI</a></p>
         </div>
       </div>
     </div>
@@ -179,7 +146,7 @@
           <p class="footer-slogan alt">"#1 inna d #2 business"</p>
         </div>
         <div class="footer-col"><h4>Company</h4><ul>
-          <li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li><li><a href="services.html">Services</a></li><li><a href="gallery.html">Gallery</a></li><li><a href="contact.html">Contact</a></li>
+          <li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li><li><a href="services.html">Services</a></li><li><a href="gallery.html">Gallery</a></li><li><a href="roland.html">Roland AI</a></li><li><a href="contact.html">Contact</a></li>
         </ul></div>
         <div class="footer-col"><h4>Services</h4><ul>
           <li><a href="services.html#residential">Residential Pumping</a></li><li><a href="services.html#commercial">Commercial Services</a></li><li><a href="services.html#emergency">Emergency Service</a></li><li><a href="services.html#cleaning">System Cleaning</a></li><li><a href="services.html#inspections">Inspections</a></li>
@@ -198,9 +165,9 @@
   </footer>
 
   <div class="floaters">
-    <button class="roland-fab" data-roland aria-label="Talk to Roland AI">
+    <button class="roland-fab" data-roland aria-label="Book with Roland AI">
       <span class="roland-fab-face"><img src="images/logo-full.jpg" alt="" /></span>
-      <span class="roland-fab-text">Talk to Roland AI</span>
+      <span class="roland-fab-text">Book with Roland AI</span>
     </button>
   </div>
 
