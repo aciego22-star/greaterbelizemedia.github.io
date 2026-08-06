@@ -305,13 +305,15 @@ ul { margin: 0; padding: 0; list-style: none; }
     linear-gradient(180deg, rgba(6,25,15,0.40) 0%, rgba(6,25,15,0.16) 45%, rgba(6,25,15,0.60) 100%),
     linear-gradient(100deg, rgba(6,40,24,0.72) 2%, rgba(6,40,24,0.12) 58%, rgba(6,40,24,0) 84%);
 }
-/* Rotating hero slides (crossfade) */
+/* Hero slide layers (rotation-capable; currently a single image) */
 .hero-slide {
   position: absolute; inset: 0;
   background-size: cover; background-position: center 42%;
   opacity: 0; transition: opacity 1.1s ease-in-out;
 }
 .hero-slide.is-active { opacity: 1; }
+/* Desktop home hero image (mobile swaps to the portrait shot below) */
+.hero .hero-slide { background-image: url("../images/hero.jpg"); }
 
 .hero-inner {
   position: relative; z-index: 2;
@@ -855,21 +857,18 @@ ul { margin: 0; padding: 0; list-style: none; }
   .hero-actions .btn { flex: 1 1 auto; }
   .footer-bottom { justify-content: center; text-align: center; }
 
-  /* Stacked hero: full uncropped photo on top, wording below on the gradient */
-  .hero { background: var(--grad-dark); }
-  .hero .hero-media {
-    position: relative; inset: auto;
-    width: 100%; aspect-ratio: 16 / 9;
+  /* Mobile hero: portrait photo fills the hero box at its natural aspect
+     ratio, so the ENTIRE picture is visible; original green tint applies;
+     wording overlays the lower portion. tank-top.jpg is 1282x2266. */
+  .hero {
+    aspect-ratio: 1282 / 2266;
+    display: flex; align-items: flex-end;
   }
   .hero .hero-slide {
-    background-size: contain;
-    background-repeat: no-repeat;
+    background-image: url("../images/tank-top.jpg");
     background-position: center;
   }
-  .hero .hero-media::after {
-    background: linear-gradient(180deg, rgba(6,40,24,0.16), rgba(6,40,24,0.22));
-  }
-  .hero .hero-inner { padding: 30px 0 50px; }
+  .hero .hero-inner { padding: 0 0 100px; }
   .hero .scroll-cue { display: none; }
 }
 @media (max-width: 480px) {
