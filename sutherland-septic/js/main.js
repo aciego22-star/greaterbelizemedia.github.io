@@ -147,4 +147,18 @@
       wrap.appendChild(iframe);
     });
   });
+
+  /* ---- Hero photo rotation (crossfade every 8s) ---- */
+  var heroRotate = doc.querySelector("[data-hero-rotate]");
+  if (heroRotate) {
+    var slides = heroRotate.querySelectorAll(".hero-slide");
+    if (slides.length > 1) {
+      var current = 0;
+      setInterval(function () {
+        slides[current].classList.remove("is-active");
+        current = (current + 1) % slides.length;
+        slides[current].classList.add("is-active");
+      }, 8000);
+    }
+  }
 })();
