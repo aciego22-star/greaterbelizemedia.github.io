@@ -655,7 +655,10 @@ ul { margin: 0; padding: 0; list-style: none; }
 }
 
 /* ------- Footer ------- */
-.site-footer { background: var(--ink); color: rgba(255,255,255,0.72); padding: 66px 0 0; }
+/* Bottom padding reserves a strip for the floating buttons (Roland pill on
+   the right, back-to-top on the left) so they can never cover the copyright
+   or the "Developed by Austere Automations" credit at the very bottom. */
+.site-footer { background: var(--ink); color: rgba(255,255,255,0.72); padding: 66px 0 104px; }
 .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.2fr; gap: 40px; padding-bottom: 46px; }
 .site-footer .brand-logo { height: 64px; background: #fff; padding: 8px; border-radius: 14px; box-shadow: var(--shadow-sm); }
 .mobile-menu .brand-logo { height: 48px; }
@@ -701,7 +704,22 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 /* ------- Floating action: Roland AI pill (right), pinned on scroll ------- */
 .floaters { position: fixed; left: 0; right: 0; bottom: 0; z-index: 90; pointer-events: none; }
-.floaters > * { pointer-events: auto; position: fixed; bottom: var(--fab-bottom, 20px); }
+.floaters > * { pointer-events: auto; position: fixed; bottom: 20px; }
+
+/* Back-to-top button (bottom-left corner) */
+.to-top {
+  left: 18px;
+  width: 50px; height: 50px; border-radius: 50%;
+  border: none; cursor: pointer;
+  background: var(--ink); color: #fff;
+  display: inline-flex; align-items: center; justify-content: center;
+  box-shadow: 0 12px 28px rgba(4,20,12,0.34);
+  opacity: 0; visibility: hidden; transform: translateY(10px);
+  transition: opacity 0.3s var(--ease), transform 0.3s var(--ease), background 0.2s;
+}
+.to-top.show { opacity: 1; visibility: visible; transform: none; }
+.to-top:hover { background: var(--green-700); }
+.to-top .icon { width: 22px; height: 22px; transform: rotate(-90deg); }
 
 /* Roland floating pill */
 .roland-fab {

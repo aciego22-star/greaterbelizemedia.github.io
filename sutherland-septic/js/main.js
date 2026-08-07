@@ -192,23 +192,21 @@
     });
   });
 
-  /* ---- Park the floating Roland pill above the footer credit ----
-     The fixed pill would otherwise cover the copyright + "Developed by
-     Austere Automations" credit at the bottom of the page. When the footer's
-     bottom bar scrolls into view, lift the pill so it rests in the blank space
-     just above it, keeping the credit visible and clickable. ------------- */
-  var floaters = doc.querySelector(".floaters");
-  var footerBar = doc.querySelector(".footer-bottom");
-  if (floaters && footerBar) {
-    var FAB_BASE = 20, FAB_GAP = 18;
-    function parkFab() {
-      var r = footerBar.getBoundingClientRect();
-      var raise = window.innerHeight - r.top + FAB_GAP;
-      floaters.style.setProperty("--fab-bottom", (raise > FAB_BASE ? raise : FAB_BASE) + "px");
-    }
-    window.addEventListener("scroll", parkFab, { passive: true });
-    window.addEventListener("resize", parkFab);
-    parkFab();
+  /* ---- Back-to-top button (bottom-left) ----
+     Appears once the visitor has scrolled down; smooth-scrolls to the top.
+     The footer reserves a bottom strip (CSS) so this and the Roland pill
+     never cover the copyright / "Developed by Austere Automations" credit. */
+  var toTop = doc.querySelector(".to-top");
+  if (toTop) {
+    var toggleToTop = function () {
+      if (window.scrollY > 480) toTop.classList.add("show");
+      else toTop.classList.remove("show");
+    };
+    window.addEventListener("scroll", toggleToTop, { passive: true });
+    toggleToTop();
+    toTop.addEventListener("click", function () {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
   }
 
   /* ---- Hero photo rotation (crossfade every 8s) ---- */
