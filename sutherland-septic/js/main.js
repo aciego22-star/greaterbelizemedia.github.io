@@ -192,6 +192,25 @@
     });
   });
 
+  /* ---- Park the floating Roland pill above the footer credit ----
+     The fixed pill would otherwise cover the copyright + "Developed by
+     Austere Automations" credit at the bottom of the page. When the footer's
+     bottom bar scrolls into view, lift the pill so it rests in the blank space
+     just above it, keeping the credit visible and clickable. ------------- */
+  var floaters = doc.querySelector(".floaters");
+  var footerBar = doc.querySelector(".footer-bottom");
+  if (floaters && footerBar) {
+    var FAB_BASE = 20, FAB_GAP = 18;
+    function parkFab() {
+      var r = footerBar.getBoundingClientRect();
+      var raise = window.innerHeight - r.top + FAB_GAP;
+      floaters.style.setProperty("--fab-bottom", (raise > FAB_BASE ? raise : FAB_BASE) + "px");
+    }
+    window.addEventListener("scroll", parkFab, { passive: true });
+    window.addEventListener("resize", parkFab);
+    parkFab();
+  }
+
   /* ---- Hero photo rotation (crossfade every 8s) ---- */
   var heroRotate = doc.querySelector("[data-hero-rotate]");
   if (heroRotate) {
