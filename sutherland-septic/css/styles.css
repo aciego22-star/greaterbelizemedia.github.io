@@ -681,6 +681,23 @@ ul { margin: 0; padding: 0; list-style: none; }
 }
 .footer-bottom a { color: rgba(255,255,255,0.7); }
 .footer-bottom a:hover { color: #fff; }
+.footer-bottom .dev-credit { color: var(--green-400); font-weight: 700; }
+.footer-bottom .dev-credit:hover { color: var(--green-300); text-decoration: underline; }
+
+/* Language chips (Roland page) */
+.lang-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 22px; }
+.lang-chips span {
+  padding: 10px 18px; border-radius: var(--radius-pill);
+  background: #fff; border: 1px solid var(--line);
+  font-weight: 700; color: var(--green-700); box-shadow: var(--shadow-xs);
+}
+
+/* Privacy note (Roland page) */
+.privacy-note {
+  max-width: 640px; margin: 0 auto; text-align: center;
+  color: var(--muted); font-size: 0.95rem;
+}
+.privacy-note strong { color: var(--ink); }
 
 /* ------- Floating action: Roland AI pill (right), pinned on scroll ------- */
 .floaters { position: fixed; left: 0; right: 0; bottom: 0; z-index: 90; pointer-events: none; }
