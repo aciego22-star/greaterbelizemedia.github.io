@@ -1009,3 +1009,43 @@ a.info-row:hover .ir-link { text-decoration: underline; }
 /* Second hero slide (8s crossfade with slide 1) — same image on desktop and
    mobile; declared last so it overrides the mobile slide-image swap above. */
 .hero .hero-slide-2 { background-image: url("../images/truck-sunset.jpg"); background-position: center; }
+
+/* ============================================================
+   Touch reliability — single-tap activation
+   ------------------------------------------------------------
+   1) touch-action: manipulation removes the tap delay / double-tap-zoom
+      reservation so taps register immediately.
+   2) On touch devices (hover: none) the :hover TRANSFORM lifts are
+      neutralised. Without this, iOS treats the first tap as "hover"
+      (the element lifts) and only activates on the second tap. Paint-only
+      hover changes (colour, shadow) are left intact — they don't block
+      the first tap. The Roland pill's bob animation and footer parking are
+      unaffected (they don't rely on :hover).
+   ============================================================ */
+a, button, [role="button"], [data-roland], .btn, .nav-toggle,
+.info-row, .gallery-item, .video-placeholder, .filter-btn, .m-link,
+.roland-fab, .roland-modal-close {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(18,135,78,0.14);
+}
+
+@media (hover: none) {
+  .btn:hover,
+  .roland-fab:hover,
+  .roland-modal-close:hover,
+  .feature-card:hover,
+  .feature-card:hover::before,
+  .feature-card:hover .feature-ico,
+  .service-card:hover,
+  .service-card:hover .service-media img,
+  .service-link:hover .icon,
+  .faq-card:hover,
+  .faq-card:hover .learn-more .icon,
+  .info-row:hover,
+  a.info-row:hover,
+  .gallery-item:hover,
+  .gallery-item:hover img,
+  .video-placeholder:hover .play-btn {
+    transform: none;
+  }
+}
