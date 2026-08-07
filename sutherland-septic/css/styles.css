@@ -711,14 +711,15 @@ ul { margin: 0; padding: 0; list-style: none; }
   left: 18px;
   width: 50px; height: 50px; border-radius: 50%;
   border: none; cursor: pointer;
-  background: var(--ink); color: #fff;
+  background: var(--grad); color: #fff;
   display: inline-flex; align-items: center; justify-content: center;
-  box-shadow: 0 12px 28px rgba(4,20,12,0.34);
+  box-shadow: 0 14px 30px rgba(18,135,78,0.42);
   opacity: 0; visibility: hidden; transform: translateY(10px);
-  transition: opacity 0.3s var(--ease), transform 0.3s var(--ease), background 0.2s;
+  transition: opacity 0.3s var(--ease), transform 0.3s var(--ease), box-shadow 0.25s;
 }
 .to-top.show { opacity: 1; visibility: visible; transform: none; }
-.to-top:hover { background: var(--green-700); }
+.to-top:hover { box-shadow: 0 20px 40px rgba(18,135,78,0.52); }
+/* arrow-right glyph rotated to point up */
 .to-top .icon { width: 22px; height: 22px; transform: rotate(-90deg); }
 
 /* Roland floating pill */
