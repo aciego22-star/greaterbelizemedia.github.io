@@ -817,7 +817,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 .gallery-item.is-hidden { display: none; }
 
 /* Video embeds */
-.video-grid { display: grid; grid-template-columns: min(100%, 760px); justify-content: center; gap: 22px; }
+.video-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
 .video-embed {
   position: relative; border-radius: var(--radius); overflow: hidden;
   box-shadow: var(--shadow-sm); background: var(--grad-dark); aspect-ratio: 16 / 9;
@@ -958,3 +958,7 @@ ul { margin: 0; padding: 0; list-style: none; }
   .gallery-filters .filter-btn:first-child { grid-column: 1 / -1; }
   .cta-actions .btn, .hero-actions .btn { width: 100%; }
 }
+
+/* Second hero slide (8s crossfade with slide 1) — same image on desktop and
+   mobile; declared last so it overrides the mobile slide-image swap above. */
+.hero .hero-slide-2 { background-image: url("../images/truck-sunset.jpg"); background-position: center; }
