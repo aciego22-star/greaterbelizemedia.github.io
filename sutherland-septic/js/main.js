@@ -43,7 +43,7 @@
     });
   }
   doc.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") closeMenu();
+    if (e.key === "Escape") { closeMenu(); closeRoland(); }
   });
 
   /* ---- Scroll reveal ---- */
@@ -80,36 +80,83 @@
     });
   }
 
-  /* ---- Roland launcher ----
-     When the real Roland chat embed is added, this opens it.
-     Wiring guide (single place to change):
-       1. Paste the provider's widget <script> before </body> on each page.
-       2. Replace the body of openRoland() below with the provider's open call,
-          e.g. window.RolandChat.open();  or  window.__roland.toggle();
+  /* ---- Roland launcher (Chatbase embed) ----
+     Every [data-roland] trigger + the floating FAB open the real Roland chat
+     in a modal. The Chatbase widget renders its own UI (green header, avatar,
+     greeting, prompt chips, mic/send bar), so the modal adds only a container
+     and a close control. To swap chatbots, change ROLAND_EMBED below.
   ------------------------------------------------------------- */
-  window.openRoland = function () {
-    // Try common embedded-widget global hooks first.
-    try {
-      if (window.RolandChat && typeof window.RolandChat.open === "function") { window.RolandChat.open(); return; }
-      if (window.$crisp) { window.$crisp.push(["do", "chat:open"]); return; }
-      if (window.Tawk_API && typeof window.Tawk_API.maximize === "function") { window.Tawk_API.maximize(); return; }
-    } catch (e) { /* fall through to fallback */ }
+  var ROLAND_EMBED = "https://www.chatbase.co/chatbot-iframe/3oMacSm0TBYNQ0AsnucmU";
+  var rolandModal = null;
+  var rolandLastFocus = null;
 
-    // Fallback until the embed is wired in: reassure the visitor and route to WhatsApp.
-    var wa = "https://wa.me/5016146462?text=" +
-      encodeURIComponent("Hi Roland, I'd like help with a septic service request.");
-    var ok = window.confirm(
-      "Roland, your 24-hour service assistant, is being connected.\n\n" +
-      "Press OK to continue the conversation on WhatsApp, or Cancel to call us at 614-6462."
-    );
-    if (ok) window.open(wa, "_blank", "noopener");
-    else window.location.href = "tel:+5016146462";
-  };
+  function buildRolandModal() {
+    var overlay = doc.createElement("div");
+    overlay.className = "roland-modal";
+    overlay.setAttribute("role", "dialog");
+    overlay.setAttribute("aria-modal", "true");
+    overlay.setAttribute("aria-label", "Chat with Roland AI");
+
+    var inner = doc.createElement("div");
+    inner.className = "roland-modal-inner";
+
+    var closeBtn = doc.createElement("button");
+    closeBtn.className = "roland-modal-close";
+    closeBtn.setAttribute("type", "button");
+    closeBtn.setAttribute("aria-label", "Close Roland AI chat");
+    closeBtn.innerHTML = '<svg class="icon" aria-hidden="true"><use href="images/icons.svg#close"></use></svg>';
+    closeBtn.addEventListener("click", closeRoland);
+
+    var card = doc.createElement("div");
+    card.className = "roland-modal-card";
+
+    // iframe built lazily on first open (below), appended into card
+    inner.appendChild(closeBtn);
+    inner.appendChild(card);
+    overlay.appendChild(inner);
+
+    // click on the backdrop (outside the chat) closes
+    overlay.addEventListener("click", function (e) {
+      if (e.target === overlay || e.target === inner) closeRoland();
+    });
+
+    doc.body.appendChild(overlay);
+    rolandModal = { overlay: overlay, card: card, close: closeBtn, loaded: false };
+    return rolandModal;
+  }
+
+  function openRoland() {
+    var m = rolandModal || buildRolandModal();
+    if (!m.loaded) {
+      var iframe = doc.createElement("iframe");
+      iframe.className = "roland-frame";
+      iframe.setAttribute("src", ROLAND_EMBED);
+      iframe.setAttribute("title", "Roland AI — Sutherland Septic Services");
+      iframe.setAttribute("allow", "microphone");
+      iframe.setAttribute("loading", "lazy");
+      m.card.appendChild(iframe);
+      m.loaded = true;
+    }
+    rolandLastFocus = doc.activeElement;
+    m.overlay.classList.add("open");
+    doc.body.style.overflow = "hidden";
+    m.close.focus();
+  }
+
+  function closeRoland() {
+    if (!rolandModal || !rolandModal.overlay.classList.contains("open")) return;
+    rolandModal.overlay.classList.remove("open");
+    doc.body.style.overflow = "";
+    if (rolandLastFocus && typeof rolandLastFocus.focus === "function") rolandLastFocus.focus();
+  }
+
+  window.openRoland = openRoland;
 
   doc.querySelectorAll("[data-roland]").forEach(function (el) {
     el.addEventListener("click", function (e) {
       e.preventDefault();
-      window.openRoland();
+      closeMenu();
+      openRoland();
     });
   });
 

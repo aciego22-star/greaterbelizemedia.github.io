@@ -58,11 +58,12 @@ Example: `https://www.youtube.com/watch?v=**dQw4w9WgXcQ**` → `data-yt="dQw4w9W
 Videos load only when clicked (fast page loads).
 
 ### 5. Roland (chat assistant)
-Roland's buttons all call one function: `openRoland()` in `js/main.js`.
-1. Paste your provider's chat-widget `<script>` before `</body>` on each page.
-2. In `openRoland()`, replace the fallback with the provider's open call
-   (e.g. `window.RolandChat.open();`). Common widgets (Crisp, Tawk.to) are auto-detected.
-Until then, the buttons gracefully route visitors to WhatsApp / phone.
+Roland's buttons all call one function: `openRoland()` in `js/main.js`, which pops
+up the live Roland chatbot in a modal. Roland is wired to the **Chatbase** embed
+`3oMacSm0TBYNQ0AsnucmU`; the widget renders its own UI (green header, avatar,
+greeting, prompt chips, mic/send bar) exactly as customers already know it.
+To swap chatbots, change the `ROLAND_EMBED` iframe URL near the top of the Roland
+launcher block in `js/main.js`. The chat loads only when a visitor first opens it.
 
 ### 6. Google Map
 The Contact page map already points at the business address. To use the exact pin from the
