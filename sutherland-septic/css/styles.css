@@ -811,6 +811,8 @@ ul { margin: 0; padding: 0; list-style: none; }
 .info-row h4 { margin: 0 0 4px; font-size: 1.02rem; }
 .info-row p, .info-row a { margin: 0; color: var(--muted); font-size: 0.96rem; }
 .info-row a:hover { color: var(--green-700); }
+.info-row a.ir-link { color: var(--green-700); font-weight: 700; }
+.info-row a.ir-link:hover { text-decoration: underline; }
 .info-row .badge-24 { display: inline-block; margin-top: 6px; background: var(--mint); color: var(--green-700); font-weight: 700; font-size: 0.78rem; padding: 3px 10px; border-radius: 999px; }
 
 .map-embed {
