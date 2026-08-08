@@ -1030,6 +1030,27 @@ a.info-row:hover .ir-link { text-decoration: underline; }
 .hero .hero-slide-2 { background-image: url("../images/truck-sunset.jpg"); background-position: center; }
 
 /* ============================================================
+   Inner-page hero art — portrait photos on mobile (default),
+   landscape photos on desktop where a wide banner needs them.
+   Mobile values below are identical to the previous inline styles,
+   so phones are unchanged; desktop swaps in landscape shots.
+   ============================================================ */
+.page-hero .hero-media.hero-about    { background-image: url("../images/transfer-trucks.jpg"); background-position: center 48%; }
+.page-hero .hero-media.hero-services { background-image: url("../images/pumping-action.jpg");  background-position: center 42%; }
+.page-hero .hero-media.hero-gallery  { background-image: url("../images/gravel-road.jpg");     background-position: center 55%; }
+
+@media (min-width: 761px) {
+  .page-hero .hero-media.hero-about    { background-image: url("../images/fleet-profile.jpg");   background-position: center 52%; }
+  .page-hero .hero-media.hero-services { background-image: url("../images/pumping-home.jpg");     background-position: center 58%; }
+  .page-hero .hero-media.hero-gallery  { background-image: url("../images/green-truck-site.jpg"); background-position: center 52%; }
+
+  /* Crisp cropped mascot avatar in the Roland pill on desktop; the mobile
+     <img src="logo-full.jpg"> is left exactly as-is. */
+  .roland-fab-face img { display: none; }
+  .roland-fab-face { background: url("../images/roland-avatar.jpg") center/cover no-repeat, #fff; }
+}
+
+/* ============================================================
    Touch reliability — single-tap activation
    ------------------------------------------------------------
    1) touch-action: manipulation removes the tap delay / double-tap-zoom
