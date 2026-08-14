@@ -113,7 +113,7 @@ window.ICB = window.ICB || {};
     }
     (l.whatsapps || []).forEach(function (w) {
       out += '<a class="msg-action msg-action--wa" href="' + esc(waHref(w.wa)) + '"' + extAttrs() + ">" + ICB.art.waIcon() +
-        "<span>WhatsApp " + (w.label ? esc(w.label) + " " : "") + esc(w.display) + "</span>" + extNote("wa.me") + "</a>";
+        "<span>WhatsApp" + (w.label ? " " + esc(w.label) : "") + "</span>" + extNote("wa.me") + "</a>";
     });
     if (l.email) {
       out += '<a class="msg-action" href="mailto:' + esc(l.email) + '">' + ICB.art.glyph("mail") +

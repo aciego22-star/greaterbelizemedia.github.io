@@ -254,7 +254,7 @@ ICB.views = ICB.views || {};
 
       return '' +
         '<section class="page-hero on-dark" aria-labelledby="contact-title">' +
-          '<div class="page-hero-art art-panel" aria-hidden="true">' + ICB.art.panel("hero") + "</div>" +
+          '<div class="page-hero-art art-panel" data-img-slot="contact-hero" aria-hidden="true">' + ICB.art.panel("hero") + "</div>" +
           '<div class="shell page-hero-inner">' +
             '<span class="eyebrow">Contact</span>' +
             '<h1 id="contact-title">Talk to ICB.</h1>' +

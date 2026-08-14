@@ -37,7 +37,7 @@ ICB.views = ICB.views || {};
 
       return '' +
         '<section class="page-hero on-dark" aria-labelledby="res-title">' +
-          '<div class="page-hero-art art-panel" aria-hidden="true">' + ICB.art.panel("poster") + "</div>" +
+          '<div class="page-hero-art art-panel" data-img-slot="resources-hero" aria-hidden="true">' + ICB.art.panel("poster") + "</div>" +
           '<div class="shell page-hero-inner">' +
             '<span class="eyebrow">ICB Resource Centre</span>' +
             '<h1 id="res-title">Consumer Resources.</h1>' +

@@ -29,7 +29,7 @@ ICB.views = ICB.views || {};
 
       return '' +
         '<section class="page-hero on-dark" aria-labelledby="loc-title">' +
-          '<div class="page-hero-art art-panel" aria-hidden="true">' + ICB.art.panel("hero-nation") + "</div>" +
+          '<div class="page-hero-art art-panel" data-img-slot="locations-hero" aria-hidden="true">' + ICB.art.panel("hero-nation") + "</div>" +
           '<div class="shell page-hero-inner">' +
             '<span class="eyebrow">Nationwide</span>' +
             '<h1 id="loc-title">Find ICB near you.</h1>' +
@@ -44,7 +44,10 @@ ICB.views = ICB.views || {};
               '<div class="chip-row" role="group" aria-label="Filter by district">' + chips + "</div>" +
               '<div class="loc-tools-row">' +
                 '<p class="loc-count" aria-live="polite" data-loc-count></p>' +
-                '<button type="button" class="btn btn-sm btn-outline" data-wa-directory>' + ICB.art.waIcon() + "<span>Chat on WhatsApp</span></button>" +
+                '<div class="btn-row">' +
+                  '<button type="button" class="btn btn-sm btn-outline" data-call-directory>' + ICB.art.glyph("phone") + "<span>Call a branch</span></button>" +
+                  '<button type="button" class="btn btn-sm btn-outline" data-wa-directory>' + ICB.art.waIcon() + "<span>Chat on WhatsApp</span></button>" +
+                "</div>" +
               "</div>" +
             "</div>" +
             '<div class="loc-layout">' +

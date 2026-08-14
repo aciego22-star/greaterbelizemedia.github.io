@@ -353,8 +353,10 @@ ICB.views = ICB.views || {};
   }
 
   /* Real ICB imagery: the supplied headquarters photograph and frames from
-     ICB's own Life Happens Fast campaign film. */
-  var GALLERY = [
+     ICB's own Life Happens Fast campaign film. Shared with the Gallery
+     page (js/views/gallery.js); add approved photographs here and both
+     surfaces pick them up without any layout change. */
+  ICB.GALLERY_ITEMS = [
     { src: "assets/img/icb-hq.webp", caption: "ICB Headquarters, Belize City", alt: "Aerial view of the Insurance Corporation of Belize headquarters" },
     { src: "assets/img/gallery/hq-street.jpg", caption: "The ICB building, Belize City", alt: "Street view of the ICB headquarters building" },
     { src: "assets/img/gallery/service.jpg", caption: "Service you can sit down with", alt: "A customer completing paperwork at an ICB desk" },
@@ -367,7 +369,7 @@ ICB.views = ICB.views || {};
 
   function gallery() {
     var R = ICB.render;
-    var items = GALLERY.map(function (g, i) {
+    var items = ICB.GALLERY_ITEMS.slice(0, 6).map(function (g, i) {
       return '<figure class="gallery-item rv' + (g.light ? " gallery-item--light" : "") + '">' +
         '<button type="button" class="g-open" data-lightbox="' + i + '" aria-label="View larger: ' + R.esc(g.caption) + '">' +
           '<img src="' + R.esc(g.src) + '" alt="' + R.esc(g.alt) + '" loading="lazy">' +
@@ -389,16 +391,25 @@ ICB.views = ICB.views || {};
             id: "gallery-title"
           }) +
           '<div class="gallery">' + items + "</div>" +
+          '<div class="btn-row" style="margin-top: var(--sp-6); justify-content: center;">' +
+            '<a class="btn btn-outline" href="#/gallery">See the full gallery</a>' +
+          "</div>" +
         "</div>" +
       "</section>";
   }
 
-  function initLightbox(mount) {
+  /* Shared lightbox: used by the homepage gallery and the Gallery page. */
+  var lbOverlay = null, lbCloser = null;
+  ICB.closeLightbox = function () { if (lbCloser) lbCloser(); };
+  ICB.initLightbox = function (mount) {
     var R = ICB.render;
+    // The router reuses one <main>, so bind the delegated handler once.
+    if (mount.__icbLightboxBound) return;
+    mount.__icbLightboxBound = true;
     mount.addEventListener("click", function (e) {
       var btn = e.target.closest("[data-lightbox]");
       if (!btn) return;
-      var g = GALLERY[parseInt(btn.getAttribute("data-lightbox"), 10)];
+      var g = ICB.GALLERY_ITEMS[parseInt(btn.getAttribute("data-lightbox"), 10)];
       if (!g) return;
       var overlay = document.createElement("div");
       overlay.className = "lightbox-overlay";
@@ -410,12 +421,16 @@ ICB.views = ICB.views || {};
         "</figure>";
       document.body.appendChild(overlay);
       document.body.style.overflow = "hidden";
-      function close() {
+      lbOverlay = overlay;
+      function close(keepFocus) {
         overlay.remove();
+        lbOverlay = null;
+        lbCloser = null;
         document.body.style.overflow = "";
         document.removeEventListener("keydown", onKey);
-        btn.focus();
+        if (keepFocus !== false && btn.isConnected) btn.focus();
       }
+      lbCloser = function () { close(false); };
       function onKey(ev) { if (ev.key === "Escape") close(); }
       overlay.addEventListener("click", function (ev) {
         if (ev.target === overlay || ev.target.closest("[data-lb-close]")) close();
@@ -423,7 +438,7 @@ ICB.views = ICB.views || {};
       document.addEventListener("keydown", onKey);
       overlay.querySelector("[data-lb-close]").focus();
     });
-  }
+  };
 
   function resourcesTeaser() {
     return '' +
@@ -499,7 +514,7 @@ ICB.views = ICB.views || {};
     },
     mounted: function (mount) {
       initSlider(mount);
-      initLightbox(mount);
+      ICB.initLightbox(mount);
       ICB.render.initQuiz(mount);
       var play = mount.querySelector("[data-story-play]");
       var note = mount.querySelector("[data-story-note]");

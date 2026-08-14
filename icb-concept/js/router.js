@@ -82,7 +82,8 @@ ICB.views = ICB.views || {};
     scrollAfterRender(ctx.anchor);
     if (announcer) announcer.textContent = (title || "Page") + " loaded";
 
-    // Close any open sheets on navigation.
+    // Close any open sheets or overlays on navigation.
+    if (ICB.closeLightbox) ICB.closeLightbox();
     document.dispatchEvent(new CustomEvent("icb:navigated"));
   }
 

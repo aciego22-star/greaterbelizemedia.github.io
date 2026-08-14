@@ -52,6 +52,7 @@ ICB.DATA.site = {
     { id: "insurance", label: "Insurance", href: "#/insurance" },
     { id: "claims", label: "Claims", href: "#/claims" },
     { id: "locations", label: "Locations", href: "#/locations" },
+    { id: "gallery", label: "Gallery", href: "#/gallery" },
     { id: "business", label: "Business", href: "#/business" },
     { id: "about", label: "About", href: "#/about" },
     { id: "resources", label: "Resources", href: "#/resources" },
@@ -88,6 +89,7 @@ ICB.DATA.site = {
           { label: "About ICB", href: "#/about" },
           { label: "Business Insurance", href: "#/business" },
           { label: "Locations", href: "#/locations" },
+          { label: "Gallery", href: "#/gallery" },
           { label: "Resource Centre", href: "#/resources" },
           { label: "Contact", href: "#/contact" }
         ]

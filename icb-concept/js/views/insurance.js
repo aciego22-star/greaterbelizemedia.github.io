@@ -17,7 +17,7 @@ ICB.views = ICB.views || {};
 
       return '' +
         '<section class="page-hero on-dark" aria-labelledby="ins-title">' +
-          '<div class="page-hero-art art-panel" aria-hidden="true">' + ICB.art.panel("hero-breadth") + "</div>" +
+          '<div class="page-hero-art art-panel" data-img-slot="insurance-hero" aria-hidden="true">' + ICB.art.panel("hero-breadth") + "</div>" +
           '<div class="shell page-hero-inner">' +
             '<span class="eyebrow">Insurance</span>' +
             '<h1 id="ins-title">Find the right cover.</h1>' +

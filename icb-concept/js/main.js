@@ -138,7 +138,7 @@ window.ICB = window.ICB || {};
     var site = ICB.DATA.site;
     document.getElementById("quick-bar-mount").innerHTML =
       '<nav class="quick-bar" aria-label="Quick actions"><ul>' +
-        '<li><a href="tel:' + R.esc(site.corporate.phoneTel) + '">' + ICB.art.glyph("phone") + "<span>Call</span></a></li>" +
+        '<li><button type="button" data-call-directory>' + ICB.art.glyph("phone") + "<span>Call</span></button></li>" +
         '<li><button type="button" data-wa-directory>' + ICB.art.waIcon() + "<span>WhatsApp</span></button></li>" +
         '<li><a href="#/locations">' + ICB.art.glyph("marker") + "<span>Branches</span></a></li>" +
         '<li><a href="#/contact">' + ICB.art.glyph("mail") + "<span>Enquire</span></a></li>" +

@@ -20,7 +20,6 @@ window.ICB = window.ICB || {};
         ICB.art.waIcon("roundel") +
         '<span class="wa-row-main">' +
           '<span class="wa-row-name">' + R.esc(name) + "</span>" +
-          '<span class="wa-row-num">' + R.esc(w.display) + "</span>" +
         "</span>" +
         '<span class="wa-row-cta">Chat on WhatsApp</span>' +
         R.extNote("wa.me") +
@@ -91,6 +90,8 @@ window.ICB = window.ICB || {};
     var closeBtn = overlay.querySelector("[data-wa-close]");
     if (closeBtn) closeBtn.focus();
   }
+
+  document.addEventListener("icb:navigated", function () { close(); });
 
   document.addEventListener("click", function (e) {
     var trigger = e.target.closest("[data-wa-directory]");
