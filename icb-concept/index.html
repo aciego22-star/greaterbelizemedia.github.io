@@ -6,7 +6,7 @@
   <title>ICB Concept Experience</title>
   <meta name="description" content="A next-generation digital experience concept for Insurance Corporation of Belize Ltd. Prepared by Austere Automations for private review.">
   <meta name="robots" content="noindex, nofollow">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230E2A4A'/%3E%3Cpath d='M16 5.5l7.5 3v7c0 4.6-3 8.6-7.5 10.5C11.5 24.1 8.5 20.1 8.5 15.5v-7z' fill='none' stroke='%23C29A3B' stroke-width='1.6'/%3E%3Ccircle cx='16' cy='15' r='2.4' fill='%23E6C87E'/%3E%3C/svg%3E">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23121214'/%3E%3Crect x='6' y='22' width='20' height='3' fill='%23CE1126'/%3E%3Ctext x='16' y='19' text-anchor='middle' font-family='Arial, sans-serif' font-size='11' font-weight='700' fill='%23F5F4F2'%3EICB%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="css/fonts.css">
   <link rel="stylesheet" href="css/site.css">
 </head>
@@ -16,19 +16,14 @@
 
   <header class="site-header" id="site-header">
     <div class="shell header-inner">
+      <!-- Text wordmark: placeholder lockup for the official ICB logo asset.
+           The official logo replaces this element unchanged when supplied. -->
       <a class="brand" href="#/" aria-label="Insurance Corporation of Belize, home">
-        <!-- PLACEHOLDER MARK. Replace with the official ICB logo asset before any
-             client-facing use beyond this concept review. -->
-        <svg class="brand-mark" viewBox="0 0 44 44" aria-hidden="true" focusable="false">
-          <rect x="1" y="1" width="42" height="42" rx="9" fill="var(--c-brand)"/>
-          <path d="M22 7.5l10.5 4.2v9.3c0 6.4-4.2 12-10.5 14.6C15.7 33 11.5 27.4 11.5 21v-9.3z"
-                fill="none" stroke="var(--c-accent-soft)" stroke-width="1.7"/>
-          <text x="22" y="25.5" text-anchor="middle" font-family="'Source Serif 4', Georgia, serif"
-                font-size="11.5" font-weight="700" fill="#FFFFFF" letter-spacing="0.5">ICB</text>
-        </svg>
-        <span class="brand-text">
-          <span class="brand-name">Insurance Corporation</span>
-          <span class="brand-sub">of Belize Ltd.</span>
+        <span class="brand-icb" aria-hidden="true">ICB</span>
+        <span class="brand-sep" aria-hidden="true"></span>
+        <span class="brand-lines" aria-hidden="true">
+          <span>Insurance Corporation</span>
+          <span>of Belize Ltd.</span>
         </span>
       </a>
 
@@ -45,10 +40,7 @@
       </nav>
 
       <div class="header-actions">
-        <button type="button" class="btn btn-ghost btn-ask" data-ask-launcher>
-          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" class="glyph"><path d="M12 3.5c4.7 0 8.5 3.2 8.5 7.2 0 4-3.8 7.2-8.5 7.2-.9 0-1.8-.1-2.6-.4L5 19.5l.9-3.3c-1.5-1.3-2.4-3.3-2.4-5.5 0-4 3.8-7.2 8.5-7.2z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><circle cx="8.6" cy="10.7" r="1" fill="currentColor"/><circle cx="12" cy="10.7" r="1" fill="currentColor"/><circle cx="15.4" cy="10.7" r="1" fill="currentColor"/></svg>
-          <span>Ask ICB</span>
-        </button>
+        <a class="btn btn-ghost btn-cover" href="#/claims">Make a claim</a>
         <a class="btn btn-primary btn-cover" href="#/insurance">Get Covered</a>
         <button type="button" class="menu-toggle" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle>
           <span class="visually-hidden">Menu</span>
@@ -64,7 +56,6 @@
   <footer class="site-footer" id="site-footer"></footer>
 
   <div id="quick-bar-mount"></div>
-  <div id="ask-icb-mount"></div>
 
   <noscript>
     <div class="noscript-note">This concept preview requires JavaScript. To reach Insurance Corporation of Belize today, call +501 224-5328 or email icb@icbinsurance.com.</div>
@@ -76,7 +67,6 @@
   <script src="js/data/locations.js"></script>
   <script src="js/data/resources.js"></script>
   <script src="js/data/contact-flows.js"></script>
-  <script src="js/data/ask-icb.js"></script>
   <script src="js/data/images.js"></script>
   <script src="js/art.js"></script>
   <script src="js/render.js"></script>
@@ -89,8 +79,6 @@
   <script src="js/views/about.js"></script>
   <script src="js/views/resources.js"></script>
   <script src="js/views/contact.js"></script>
-  <script src="js/ask-engine.js"></script>
-  <script src="js/ask-icb.js"></script>
   <script src="js/router.js"></script>
   <script src="js/main.js"></script>
 </body>

@@ -278,6 +278,7 @@ ICB.views = ICB.views || {};
                   '<a class="msg-action" href="mailto:' + R.esc(site.corporate.email) + '">' + ICB.art.glyph("mail") + "<span>" + R.esc(site.corporate.email) + "</span></a>" +
                   '<a class="msg-action" href="#/locations">' + ICB.art.glyph("marker") + "<span>Every branch and agency</span></a>" +
                 "</div>" +
+                ICB.render.assistBadge(true) +
               "</aside>" +
             "</div>" +
           "</div>" +

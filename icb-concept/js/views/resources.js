@@ -72,8 +72,8 @@ ICB.views = ICB.views || {};
           '<div class="shell">' +
             R.band({
               eyebrow: "Still curious?",
-              title: "Ask ICB, or ask a person.",
-              body: "Use Ask ICB for quick directions around this site, or contact the team for anything about your own cover.",
+              title: "A question deserves a person.",
+              body: "For anything about your own cover, the ICB team is a call, a message or a branch visit away.",
               motif: "heritage",
               actions: [
                 { label: "Contact ICB", href: "#/contact" },

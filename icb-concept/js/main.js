@@ -114,8 +114,10 @@ window.ICB = window.ICB || {};
       '<div class="shell">' +
         '<div class="footer-grid">' +
           '<div class="footer-brand">' +
-            '<span class="brand-text"><span class="brand-name">' + R.esc(site.org.fullName) + '</span>' +
-            '<span class="brand-sub">' + R.esc(site.org.heritageLine) + "</span></span>" +
+            '<span class="brand" aria-hidden="true">' +
+              '<span class="brand-icb">ICB</span><span class="brand-sep"></span>' +
+              '<span class="brand-lines"><span>Insurance Corporation</span><span>of Belize Ltd.</span></span>' +
+            "</span>" +
             "<p>" + R.esc(f.tagline) + "</p>" +
             '<div class="footer-col"><address>' +
               R.esc(site.corporate.address) + ", " + R.esc(site.corporate.poBox) + "<br>" +
@@ -141,7 +143,7 @@ window.ICB = window.ICB || {};
         '<li><a href="tel:' + R.esc(site.corporate.phoneTel) + '">' + ICB.art.glyph("phone") + "<span>Call</span></a></li>" +
         '<li><button type="button" data-wa-chooser>' + ICB.art.glyph("whatsapp") + "<span>WhatsApp</span></button></li>" +
         '<li><a href="#/locations">' + ICB.art.glyph("marker") + "<span>Branches</span></a></li>" +
-        '<li><button type="button" data-ask-launcher>' + ICB.art.glyph("chat") + "<span>Ask ICB</span></button></li>" +
+        '<li><a href="#/contact">' + ICB.art.glyph("mail") + "<span>Enquire</span></a></li>" +
       "</ul></nav>";
   }
 
@@ -192,7 +194,6 @@ window.ICB = window.ICB || {};
     initMenu();
     renderFooter();
     renderQuickBar();
-    if (ICB.ask && ICB.ask.init) ICB.ask.init();
     ICB.router.init();
     ICB.reveal(document);
   }

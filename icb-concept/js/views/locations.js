@@ -24,12 +24,12 @@ ICB.views = ICB.views || {};
         var town = l.town.split(",")[0];
         var label = seenTowns[town] ? null : town;
         seenTowns[town] = true;
-        return { id: l.id, x: l.map.x, y: l.map.y, label: label, labelSide: (l.map.x > 200 ? "left" : "right") };
+        return { id: l.id, x: l.map.x, y: l.map.y, label: label, labelSide: (l.map.x > 150 ? "left" : "right") };
       });
 
       return '' +
         '<section class="page-hero on-dark" aria-labelledby="loc-title">' +
-          '<div class="page-hero-art art-panel" aria-hidden="true">' + ICB.art.panel("belize") + "</div>" +
+          '<div class="page-hero-art art-panel" aria-hidden="true">' + ICB.art.panel("hero-nation") + "</div>" +
           '<div class="shell page-hero-inner">' +
             '<span class="eyebrow">Nationwide</span>' +
             '<h1 id="loc-title">Find ICB near you.</h1>' +

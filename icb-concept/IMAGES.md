@@ -15,7 +15,11 @@ appear broken. Each slot is ready to receive approved ICB photography.
 
 | Slot id | Location | Recommended subject |
 | --- | --- | --- |
-| `home-hero` | Homepage hero | Belizean coast or landscape at golden hour; calm, wide, room for text on the left |
+| `hero-1` | Hero slide 1 | Belizean home or family scene at golden hour; calm, room for text on the left |
+| `hero-2` | Hero slide 2 | An open Belizean highway or clear road ahead |
+| `hero-3` | Hero slide 3 | Belizean life and business breadth; market, street, harbour |
+| `hero-4` | Hero slide 4 | National scale: aerial coast, districts, the country itself |
+| `home-hero` | (reserved) | Belizean coast or landscape at golden hour |
 | `story-poster` | The ICB Story video poster | A dignified frame from the future ICB film, or archival ICB imagery |
 | `gallery-corozal` | ICB Across Belize | Corozal District: bay front, sugar country, northern life |
 | `gallery-orange-walk` | ICB Across Belize | Orange Walk District: town, farms, working vehicles |

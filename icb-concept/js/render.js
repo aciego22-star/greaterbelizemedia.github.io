@@ -52,7 +52,7 @@ window.ICB = window.ICB || {};
           '<p class="card-desc">' + esc(p.short) + "</p>" +
           '<div class="card-links">' +
             '<a href="' + esc(p.route) + '">Learn more</a>' +
-            '<button type="button" data-ask-launcher data-ask-prefill="Tell me about ' + esc(p.name) + '.">Ask about this coverage</button>' +
+            '<a href="#/contact?topic=new-cover&category=' + esc(p.id) + '">Start an enquiry</a>' +
           "</div>" +
         "</div>" +
       "</article>";
@@ -62,7 +62,8 @@ window.ICB = window.ICB || {};
   function actionTile(t) {
     var external = !!t.external;
     var href = esc(t.href);
-    var out = '<a class="action-tile" href="' + href + '"' + (external ? extAttrs() : "") + ">";
+    var accent = t.id === "claim" ? " action-tile--accent" : "";
+    var out = '<a class="action-tile' + accent + '" href="' + href + '"' + (external ? extAttrs() : "") + ">";
     out += ICB.art.glyph(t.glyph);
     out += "<span>" + esc(t.label) + (external ? extNote(hostOf(t.href)) : "") + "</span>";
     if (t.note) out += '<span class="tile-note">' + esc(t.note) + (external ? ' <span aria-hidden="true">&#8599;</span>' : "") + "</span>";
@@ -86,7 +87,6 @@ window.ICB = window.ICB || {};
           '<a class="btn btn-primary btn-sm" href="' + esc(site.external.claimsForms) + '"' + extAttrs() + ">" +
             ICB.art.glyph("download") + "<span>" + esc(c.formLabel) + "</span>" + extNote("icbinsurance.com") + "</a>" +
           '<a class="btn btn-ghost btn-sm" href="#/contact?topic=claim">Contact ICB</a>' +
-          '<button type="button" class="btn btn-ghost btn-sm" data-ask-launcher data-ask-prefill="I need help with a ' + esc(c.name.toLowerCase()) + '.">Ask ICB</button>' +
         "</div>" +
         '<p class="pathway-note">Opens the official form page on icbinsurance.com.</p>' +
       "</article>";
@@ -132,11 +132,11 @@ window.ICB = window.ICB || {};
     if (opts.eyebrow) out += '<span class="eyebrow">' + esc(opts.eyebrow) + "</span>";
     out += "<h2>" + esc(opts.title) + "</h2>";
     if (opts.sub) out += "<p>" + esc(opts.sub) + "</p>";
-    if (opts.rule !== false) out += '<hr class="gold-rule" aria-hidden="true">';
+    if (opts.rule !== false) out += '<hr class="brand-rule" aria-hidden="true">';
     return out + "</div>";
   }
 
-  /* Full-width navy CTA band. */
+  /* Full-width dark CTA band. */
   function band(opts) {
     var out = '<div class="band on-dark rv"' + (opts.slot ? ' data-img-slot="' + esc(opts.slot) + '"' : "") + ">";
     out += '<div class="band-art art-panel" aria-hidden="true">' + ICB.art.panel(opts.motif || "heritage") + "</div>";
@@ -155,6 +155,93 @@ window.ICB = window.ICB || {};
     return out + "</div></div>";
   }
 
+  /* ------------------------------------------------------------------ */
+  /* Guided discovery quiz (shared by home + insurance hub)              */
+  /* ------------------------------------------------------------------ */
+
+  var QUIZ_OPTIONS = [
+    { id: "home", label: "My home", glyph: "house", productId: "property",
+      blurb: "Homeowners and renters are both part of ICB's published property categories." },
+    { id: "vehicle", label: "My vehicle", glyph: "car", productId: "motor",
+      blurb: "From personal vehicles to taxis, buses and heavy-duty equipment." },
+    { id: "business", label: "My business", glyph: "briefcase", special: "business",
+      blurb: "Business protection usually combines property, motor, cargo and liability cover." },
+    { id: "boat", label: "A boat or vessel", glyph: "boat", productId: "marine",
+      blurb: "Marine Hull Insurance, customizable to third party and passenger liability." },
+    { id: "goods", label: "Goods being shipped", glyph: "container", productId: "cargo",
+      blurb: "Warehouse-to-warehouse protection for goods in transit." },
+    { id: "trip", label: "My next trip", glyph: "plane", productId: "travel",
+      blurb: "Travel cover designed around journeys abroad." },
+    { id: "mexico", label: "A drive into Mexico", glyph: "border", productId: "mexican",
+      blurb: "Mexican law requires liability insurance from a Mexico-authorized insurer." },
+    { id: "unsure", label: "I'm not sure", glyph: "question", special: "unsure",
+      blurb: "No problem. The ICB team will point you in the right direction." }
+  ];
+
+  function quizResult(opt) {
+    var out = '<span class="eyebrow">A good place to start</span>';
+    if (opt.special === "business") {
+      out += "<h3>Business insurance</h3><p>" + esc(opt.blurb) + "</p>" +
+        '<div class="btn-row">' +
+        '<a class="btn btn-primary" href="#/business">Explore business insurance</a>' +
+        '<a class="btn btn-ghost" href="#/contact?topic=business">Start a business enquiry</a>' +
+        "</div>";
+    } else if (opt.special === "unsure") {
+      out += "<h3>Talk it through with ICB</h3><p>" + esc(opt.blurb) +
+        " Liability & Miscellaneous also covers needs that do not fit a single box.</p>" +
+        '<div class="btn-row">' +
+        '<a class="btn btn-primary" href="#/contact?topic=new-cover">Start an enquiry</a>' +
+        '<a class="btn btn-ghost" href="#/insurance/liability">Liability &amp; Miscellaneous</a>' +
+        "</div>";
+    } else {
+      var p = ICB.DATA.productById(opt.productId);
+      out += "<h3>" + esc(p.name) + "</h3><p>" + esc(opt.blurb) + "</p>" +
+        '<div class="btn-row">' +
+        '<a class="btn btn-primary" href="' + esc(p.route) + '">Learn about ' + esc(p.name) + "</a>" +
+        '<a class="btn btn-ghost" href="#/contact?topic=new-cover&category=' + esc(p.id) + '">Start an enquiry</a>' +
+        "</div>";
+    }
+    return out;
+  }
+
+  function quiz(headingId) {
+    var opts = QUIZ_OPTIONS.map(function (o) {
+      return '<button type="button" class="quiz-option" data-quiz-option="' + o.id + '" aria-pressed="false">' +
+        ICB.art.glyph(o.glyph) + "<span>" + esc(o.label) + "</span></button>";
+    }).join("");
+    return '<div class="quiz-panel rv">' +
+      '<h2 id="' + esc(headingId || "quiz-title") + '">What are you looking to protect?</h2>' +
+      '<div class="quiz-grid" role="group" aria-label="Choose what you want to protect">' + opts + "</div>" +
+      '<div class="quiz-result" data-quiz-result aria-live="polite"></div>' +
+      "</div>";
+  }
+
+  function initQuiz(mount) {
+    var result = mount.querySelector("[data-quiz-result]");
+    var buttons = mount.querySelectorAll("[data-quiz-option]");
+    Array.prototype.forEach.call(buttons, function (btn) {
+      btn.addEventListener("click", function () {
+        Array.prototype.forEach.call(buttons, function (b) {
+          b.setAttribute("aria-pressed", String(b === btn));
+        });
+        var opt = null;
+        for (var i = 0; i < QUIZ_OPTIONS.length; i++) {
+          if (QUIZ_OPTIONS[i].id === btn.getAttribute("data-quiz-option")) opt = QUIZ_OPTIONS[i];
+        }
+        result.innerHTML = '<div class="quiz-result-inner">' + quizResult(opt) + "</div>";
+        result.classList.add("has-result");
+      });
+    });
+  }
+
+  /* Future digital assistance placeholder: a note, not a chat interface. */
+  function assistBadge(light) {
+    return '<p class="assist-badge' + (light ? " assist-badge--light" : "") + '">' +
+      '<span class="dot" aria-hidden="true"></span>' +
+      '<span>Future digital assistance: this concept is ready for an ICB digital assistant.</span>' +
+      "</p>";
+  }
+
   ICB.render = {
     esc: esc,
     extAttrs: extAttrs,
@@ -168,6 +255,9 @@ window.ICB = window.ICB || {};
     locationCard: locationCard,
     steps: steps,
     sectionHead: sectionHead,
-    band: band
+    band: band,
+    quiz: quiz,
+    initQuiz: initQuiz,
+    assistBadge: assistBadge
   };
 })();

@@ -63,7 +63,7 @@ ICB.views = ICB.views || {};
             '<p class="hero-lead">' + R.esc(p.standfirst) + "</p>" +
             '<div class="btn-row">' +
               '<a class="btn btn-gold" href="#/contact?topic=new-cover&category=' + R.esc(p.id) + '">Start an enquiry</a>' +
-              '<button type="button" class="btn btn-light" data-ask-launcher data-ask-prefill="Tell me about ' + R.esc(p.name) + '.">Ask about this coverage</button>' +
+              '<a class="btn btn-light" href="tel:' + R.esc(ICB.DATA.site.corporate.phoneTel) + '">Call ' + R.esc(ICB.DATA.site.corporate.phoneDisplay) + "</a>" +
             "</div>" +
           "</div>" +
         "</section>" +

@@ -15,6 +15,10 @@ ICB.DATA = ICB.DATA || {};
 
 ICB.DATA.images = {
   slots: {
+    "hero-1":           { src: null, alt: "A Belizean home at dusk" },
+    "hero-2":           { src: null, alt: "A clear road ahead" },
+    "hero-3":           { src: null, alt: "Belizean life and business" },
+    "hero-4":           { src: null, alt: "Belize, from Corozal to Punta Gorda" },
     "home-hero":        { src: null, alt: "Belizean coastline at dusk" },
     "story-poster":     { src: null, alt: "The ICB story film" },
     "gallery-corozal":  { src: null, alt: "Corozal District" },

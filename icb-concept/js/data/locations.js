@@ -3,7 +3,8 @@
    Every address, phone, WhatsApp and email below was taken from ICB's
    current public website. Fields that could not be verified are null and
    the card copy degrades honestly (never invented).
-   map: {x, y} are coordinates inside the Belize map SVG (viewBox 0 0 300 560).
+   map: {x, y} are projected town coordinates inside the accurate
+   Belize map SVG (viewBox 0 0 300 560), derived from real latitude/longitude.
    ========================================================================== */
 window.ICB = window.ICB || {};
 ICB.DATA = ICB.DATA || {};
@@ -22,7 +23,7 @@ ICB.DATA.locations = [
     whatsapp: null,
     email: "icb@icbinsurance.com",
     mapQuery: "Insurance Corporation of Belize, 16 Daly Street, Belize City, Belize",
-    map: { x: 210, y: 198 },
+    map: { x: 176.8, y: 228.6 },
     note: null
   },
   {
@@ -36,7 +37,7 @@ ICB.DATA.locations = [
     whatsapp: null,
     email: null,
     mapQuery: "Insurance Corporation of Belize, 38 Central American Boulevard, Belize City, Belize",
-    map: { x: 206, y: 212 },
+    map: { x: 174.6, y: 231.2 },
     note: null
   },
   {
@@ -50,7 +51,7 @@ ICB.DATA.locations = [
     whatsapp: null,
     email: null,
     mapQuery: "Airport Plaza, Philip Goldson Highway, Ladyville, Belize",
-    map: { x: 200, y: 180 },
+    map: { x: 160.3, y: 219.8 },
     note: null
   },
   {
@@ -64,7 +65,7 @@ ICB.DATA.locations = [
     whatsapp: null,
     email: null,
     mapQuery: "Pescador Drive, San Pedro Town, Ambergris Caye, Belize",
-    map: { x: 252, y: 148 },
+    map: { x: 211.6, y: 160.2 },
     note: "Phone details available through our Corporate Office, +501 224-5328."
   },
   {
@@ -78,7 +79,7 @@ ICB.DATA.locations = [
     whatsapp: null,
     email: null,
     mapQuery: "Insurance Corporation of Belize, 6095 South Ring Road, Belmopan, Belize",
-    map: { x: 152, y: 262 },
+    map: { x: 85.5, y: 270.3 },
     note: null
   },
   {
@@ -92,7 +93,7 @@ ICB.DATA.locations = [
     whatsapp: { display: "+501 613-4138", wa: "5016134138" },
     email: "icb_sanignacio@icbinsurance.com",
     mapQuery: "Insurance Corporation of Belize, San Ignacio Town, Belize",
-    map: { x: 98, y: 272 },
+    map: { x: 38.3, y: 285.7 },
     note: null
   },
   {
@@ -106,7 +107,7 @@ ICB.DATA.locations = [
     whatsapp: null,
     email: null,
     mapQuery: "Insurance Corporation of Belize, 48 Belize Corozal Road, Orange Walk Town, Belize",
-    map: { x: 172, y: 108 },
+    map: { x: 118.0, y: 133.9 },
     note: null
   },
   {
@@ -120,7 +121,7 @@ ICB.DATA.locations = [
     whatsapp: null,
     email: null,
     mapQuery: "Corozal Town, Belize",
-    map: { x: 198, y: 42 },
+    map: { x: 145.4, y: 82.6 },
     note: "Agency partner. Contact details available through our Corporate Office, +501 224-5328."
   },
   {
@@ -134,7 +135,7 @@ ICB.DATA.locations = [
     whatsapp: { display: "+501 614-9682", wa: "5016149682" },
     email: "icb_dangriga@icbinsurance.com",
     mapQuery: "Market Square, Dangriga Town, Belize",
-    map: { x: 182, y: 332 },
+    map: { x: 171.4, y: 316.2 },
     note: null
   },
   {
@@ -148,7 +149,7 @@ ICB.DATA.locations = [
     whatsapp: null,
     email: null,
     mapQuery: "31 Main Middle Street, Punta Gorda Town, Belize",
-    map: { x: 138, y: 502 },
+    map: { x: 79.4, y: 459.3 },
     note: null
   }
 ];

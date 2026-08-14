@@ -73,7 +73,7 @@ ICB.views = ICB.views || {};
             '<p class="hero-lead">From the corner shop to the commercial fleet, ICB has insured Belizean enterprise since 1981. Tell us what you do and we will help you protect it.</p>' +
             '<div class="btn-row">' +
               '<a class="btn btn-gold btn-lg" href="#/contact?topic=business">Talk to ICB about business insurance</a>' +
-              '<button type="button" class="btn btn-light btn-lg" data-ask-launcher data-ask-prefill="I own a small business. What types of insurance does ICB offer?">Ask ICB</button>' +
+              '<a class="btn btn-light btn-lg" href="#/insurance">Explore the categories</a>' +
             "</div>" +
           "</div>" +
         "</section>" +
