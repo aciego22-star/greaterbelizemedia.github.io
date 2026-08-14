@@ -20,7 +20,7 @@ ICB.DATA.images = {
     "hero-3":           { src: null, alt: "Belizean life and business" },
     "hero-4":           { src: null, alt: "Belize, from Corozal to Punta Gorda" },
     "home-hero":        { src: null, alt: "Belizean coastline at dusk" },
-    "story-poster":     { src: null, alt: "The ICB story film" },
+    "story-poster":     { src: "assets/img/video-poster.jpg", alt: "A frame from the ICB Life Happens Fast film" },
     "gallery-corozal":  { src: null, alt: "Corozal District" },
     "gallery-orange-walk": { src: null, alt: "Orange Walk District" },
     "gallery-belize":   { src: null, alt: "Belize District" },

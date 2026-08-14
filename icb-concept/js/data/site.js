@@ -32,12 +32,12 @@ ICB.DATA.site = {
     email: "icb@icbinsurance.com"
   },
 
-  /* Real media supplied for the concept. Set storyVideoAvailable to true
-     after placing the compressed film at assets/video/icb-story.mp4
-     (see README: "Adding the ICB film"). */
+  /* Real media supplied for the concept. The film is the ICB
+     "Life Happens Fast" ad, compressed for web playback. */
   media: {
-    storyVideoAvailable: false,
-    storyVideoSrc: "assets/video/icb-story.mp4"
+    storyVideoAvailable: true,
+    storyVideoSrc: "assets/video/icb-story.mp4",
+    storyVideoPoster: "assets/img/video-poster.jpg"
   },
 
   external: {

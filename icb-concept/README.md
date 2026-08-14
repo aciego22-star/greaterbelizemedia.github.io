@@ -10,8 +10,8 @@ website or an offer of insurance.
 A complete, self-contained front-end prototype in ICB's red, black and
 white identity that reorganizes ICB's published public information
 around customer tasks: Get Covered, Make a Claim, Find a Branch. It runs
-from a static folder with zero external requests (fonts embedded, all
-visuals generated brand artwork), so it works identically on any host,
+from a static folder with zero external requests (fonts embedded, real
+ICB media included locally), so it works identically on any host,
 offline, and from disk.
 
 - `index.html` — single shell; views render client-side with hash routes
@@ -37,23 +37,21 @@ Supplied by the client and integrated in this pass:
   About page).
 - `assets/img/icb-protect-artwork.jpg` — the "Protect Your Investment"
   campaign artwork (hero slide 2).
+- `assets/video/icb-story.mp4` — the "Life Happens Fast" film,
+  compressed for web (hero slide 3, The ICB Story section).
 - The site palette is sampled directly from the logo (red `#D12126`,
   black `#000000`).
 
-### Adding the ICB film
+### The ICB film
 
-The hero's third slide and The ICB Story section are fully wired for the
-corporate film but ship without it (the file was not received). To add it:
-
-1. Compress the ~59s film for web: H.264, 960-1080px wide, roughly
-   700-900 kbps, audio track removed (it plays muted), moov atom at the
-   front (`+faststart`). Target 4 MB or less.
-2. Save it as `assets/video/icb-story.mp4`.
-3. In `js/data/site.js`, set `media.storyVideoAvailable: true`.
-
-The hero slide then autoplays it muted (paused under reduced motion) and
-the story section plays it with controls. Until then both show the
-generated poster treatment and nothing breaks.
+`assets/video/icb-story.mp4` is the supplied "Life Happens Fast" ad
+(1080p, 23.7 MB source) compressed for web playback: H.264 at 1024px
+wide with light AAC audio, moov atom at the front, 3.8 MB total. The
+hero's third slide autoplays it muted and looped (paused under reduced
+motion and while the slide is inactive); The ICB Story section plays it
+with controls and sound. `assets/img/video-poster.jpg` is a frame from
+the film used as the poster. To swap in a new cut, replace the mp4 (and
+poster) and keep the same filenames.
 
 ## WhatsApp directory
 

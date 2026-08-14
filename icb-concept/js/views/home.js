@@ -40,7 +40,6 @@ ICB.views = ICB.views || {};
     },
     {
       kind: "video",
-      src: "assets/video/icb-story.mp4",
       eyebrow: "The ICB Story",
       title: "Four decades of standing with Belize.",
       lead: "More than four decades of protecting Belizean homes, businesses, vehicles and livelihoods.",
@@ -69,7 +68,8 @@ ICB.views = ICB.views || {};
     return '<div class="hero-media" aria-hidden="true">' +
       '<div class="hero-video-poster art-panel">' + ICB.art.panel("poster") + "</div>" +
       (media.storyVideoAvailable
-        ? '<video class="hero-video" muted loop playsinline preload="none" src="' + R.esc(media.storyVideoSrc) + '" tabindex="-1"></video>'
+        ? '<video class="hero-video" muted loop playsinline preload="metadata" src="' + R.esc(media.storyVideoSrc) + '"' +
+          (media.storyVideoPoster ? ' poster="' + R.esc(media.storyVideoPoster) + '"' : "") + ' tabindex="-1"></video>'
         : "") +
       '<div class="hero-scrim"></div></div>';
   }
@@ -335,7 +335,9 @@ ICB.views = ICB.views || {};
           '<figure class="video-frame art-panel rv" data-img-slot="story-poster">' +
             ICB.art.panel("poster") +
             (ICB.DATA.site.media.storyVideoAvailable
-              ? '<video class="story-video" src="' + ICB.render.esc(ICB.DATA.site.media.storyVideoSrc) + '" preload="none" playsinline hidden></video>'
+              ? '<video class="story-video" src="' + ICB.render.esc(ICB.DATA.site.media.storyVideoSrc) + '"' +
+                (ICB.DATA.site.media.storyVideoPoster ? ' poster="' + ICB.render.esc(ICB.DATA.site.media.storyVideoPoster) + '"' : "") +
+                ' preload="none" playsinline hidden></video>'
               : "") +
             '<button type="button" class="play-btn" data-story-play aria-label="Play the ICB story film">' +
               ICB.art.glyph("play") +
@@ -470,8 +472,8 @@ ICB.views = ICB.views || {};
         });
       }
       if (play && note && storyVideo) {
-        // Plays the real ICB film when assets/video/icb-story.mp4 exists;
-        // otherwise the placement note appears and nothing breaks.
+        // Plays the real ICB film; if the source ever fails to load the
+        // placement note appears and nothing breaks.
         play.addEventListener("click", function () {
           play.hidden = true;
           storyVideo.hidden = false;
