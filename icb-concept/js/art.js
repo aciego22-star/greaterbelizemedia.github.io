@@ -676,6 +676,7 @@ window.ICB = window.ICB || {};
         img.src = conf.src;
         img.alt = conf.alt || "";
         img.className = "slot-photo";
+        if (conf.pos) img.style.objectPosition = conf.pos;
         node.appendChild(img);
         requestAnimationFrame(function () { img.classList.add("is-loaded"); });
       };

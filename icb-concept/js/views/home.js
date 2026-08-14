@@ -352,21 +352,29 @@ ICB.views = ICB.views || {};
       "</section>";
   }
 
+  /* Real ICB imagery: the supplied headquarters photograph and frames from
+     ICB's own Life Happens Fast campaign film. */
+  var GALLERY = [
+    { src: "assets/img/icb-hq.webp", caption: "ICB Headquarters, Belize City", alt: "Aerial view of the Insurance Corporation of Belize headquarters" },
+    { src: "assets/img/gallery/hq-street.jpg", caption: "The ICB building, Belize City", alt: "Street view of the ICB headquarters building" },
+    { src: "assets/img/gallery/service.jpg", caption: "Service you can sit down with", alt: "A customer completing paperwork at an ICB desk" },
+    { src: "assets/img/gallery/home.jpg", caption: "At home in Belize", alt: "A couple relaxing in their Belizean living room" },
+    { src: "assets/img/gallery/road.jpg", caption: "On the road", alt: "A couple in their vehicle" },
+    { src: "assets/img/gallery/community.jpg", caption: "In the community", alt: "A couple walking through a Belizean garden path" },
+    { src: "assets/img/gallery/campaign.jpg", caption: "The Life Happens Fast campaign", alt: "ICB Life Happens Fast campaign title card with the ICB mascot", light: true },
+    { src: "assets/img/products/mexican.jpg", caption: "Belize City from above", alt: "Aerial view of the Belize City coastal road" }
+  ];
+
   function gallery() {
     var R = ICB.render;
-    var panels = [
-      { key: "belize", label: "Belize District" },
-      { key: "cayo", label: "Cayo District" },
-      { key: "corozal", label: "Corozal District" },
-      { key: "toledo", label: "Toledo District" },
-      { key: "stann-creek", label: "Stann Creek District" },
-      { key: "orange-walk", label: "Orange Walk District" }
-    ].map(function (d, i) {
-      return '<figure class="gallery-item art-panel rv" data-img-slot="gallery-' + d.key + '">' +
-        ICB.art.panel("d-" + d.key) +
+    var items = GALLERY.map(function (g, i) {
+      return '<figure class="gallery-item rv' + (g.light ? " gallery-item--light" : "") + '">' +
+        '<button type="button" class="g-open" data-lightbox="' + i + '" aria-label="View larger: ' + R.esc(g.caption) + '">' +
+          '<img src="' + R.esc(g.src) + '" alt="' + R.esc(g.alt) + '" loading="lazy">' +
+        "</button>" +
         "<figcaption>" +
           '<span class="g-index" aria-hidden="true">0' + (i + 1) + "</span>" +
-          '<span class="g-name">' + R.esc(d.label) + "</span>" +
+          '<span class="g-name">' + R.esc(g.caption) + "</span>" +
         "</figcaption>" +
         "</figure>";
     }).join("");
@@ -375,14 +383,46 @@ ICB.views = ICB.views || {};
         '<div class="shell">' +
           R.sectionHead({
             eyebrow: "ICB Across Belize",
-            title: "Protecting what matters, across every district.",
-            sub: "Homes, vehicles, businesses and vessels, served through a nationwide network of branches and agency partners. Concept artwork shown; each frame is ready for approved ICB photography.",
+            title: "Protecting what matters, across the country.",
+            sub: "From Corozal to Punta Gorda, ICB serves communities across Belize through a nationwide network of branches and agencies. Imagery from ICB's headquarters and the Life Happens Fast campaign film.",
             center: true,
             id: "gallery-title"
           }) +
-          '<div class="gallery">' + panels + "</div>" +
+          '<div class="gallery">' + items + "</div>" +
         "</div>" +
       "</section>";
+  }
+
+  function initLightbox(mount) {
+    var R = ICB.render;
+    mount.addEventListener("click", function (e) {
+      var btn = e.target.closest("[data-lightbox]");
+      if (!btn) return;
+      var g = GALLERY[parseInt(btn.getAttribute("data-lightbox"), 10)];
+      if (!g) return;
+      var overlay = document.createElement("div");
+      overlay.className = "lightbox-overlay";
+      overlay.innerHTML =
+        '<figure class="lightbox" role="dialog" aria-modal="true" aria-label="' + R.esc(g.caption) + '">' +
+          '<img src="' + R.esc(g.src) + '" alt="' + R.esc(g.alt) + '">' +
+          '<figcaption>' + R.esc(g.caption) + "</figcaption>" +
+          '<button type="button" class="lightbox-close" data-lb-close aria-label="Close image">' + ICB.art.glyph("close") + "</button>" +
+        "</figure>";
+      document.body.appendChild(overlay);
+      document.body.style.overflow = "hidden";
+      function close() {
+        overlay.remove();
+        document.body.style.overflow = "";
+        document.removeEventListener("keydown", onKey);
+        btn.focus();
+      }
+      function onKey(ev) { if (ev.key === "Escape") close(); }
+      overlay.addEventListener("click", function (ev) {
+        if (ev.target === overlay || ev.target.closest("[data-lb-close]")) close();
+      });
+      document.addEventListener("keydown", onKey);
+      overlay.querySelector("[data-lb-close]").focus();
+    });
   }
 
   function resourcesTeaser() {
@@ -459,6 +499,7 @@ ICB.views = ICB.views || {};
     },
     mounted: function (mount) {
       initSlider(mount);
+      initLightbox(mount);
       ICB.render.initQuiz(mount);
       var play = mount.querySelector("[data-story-play]");
       var note = mount.querySelector("[data-story-note]");

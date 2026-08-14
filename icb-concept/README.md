@@ -39,6 +39,9 @@ Supplied by the client and integrated in this pass:
   campaign artwork (hero slide 2).
 - `assets/video/icb-story.mp4` — the "Life Happens Fast" film,
   compressed for web (hero slide 3, The ICB Story section).
+- `assets/img/products/`, `assets/img/gallery/` — real product and
+  gallery imagery: frames from the film and photography cropped from
+  the campaign artwork (see `IMAGES.md` for the full map).
 - The site palette is sampled directly from the logo (red `#D12126`,
   black `#000000`).
 

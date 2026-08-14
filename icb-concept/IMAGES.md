@@ -1,45 +1,42 @@
-# Photography plan
+# Imagery status and plan
 
-The concept ships with crafted brand artwork in every visual slot, so the
-site is complete with zero external image requests and nothing can ever
-appear broken. Each slot is ready to receive approved ICB photography.
+The concept now uses REAL ICB imagery wherever an official asset is
+available: the supplied headquarters photograph, frames extracted from
+ICB's own "Life Happens Fast" campaign film, and photography cropped
+from the "Protect Your Investment" campaign artwork. Generated concept
+artwork remains only where no official ICB visual has been supplied yet.
 
-## How to add a photo
+## Currently real (official ICB material)
 
-1. Place the image in an `assets/img/` folder (or use a hosted URL).
-2. In `js/data/images.js`, set the slot's `src` and adjust `alt`.
-3. Done. The photo fades in over the artwork after it loads successfully;
-   if it ever fails to load, the artwork simply remains and nothing breaks.
+| Placement | Source |
+| --- | --- |
+| Hero slides 1-3 | HQ photograph, Protect Your Investment artwork, the film |
+| Property card + page | Film frame: couple at their Belizean home |
+| Motor card + page | Film frame: couple with their vehicle |
+| Marine Hull card + page | Boat photography from the campaign artwork |
+| Liability card + page | Film frame: handshake with an ICB representative |
+| Mexican Insurance card + page | Film frame: aerial Belize City coastal road |
+| Business feature | Film frame: ICB team member in branded uniform |
+| About page hero | HQ photograph |
+| ICB Across Belize gallery (8 items) | HQ photograph + seven film scenes |
+| Video poster | Frame from the film |
 
-## Slot-by-slot art direction
+## Still using replaceable concept artwork
 
-| Slot id | Location | Recommended subject |
-| --- | --- | --- |
-| `hero-1` | Hero slide 1 | Belizean home or family scene at golden hour; calm, room for text on the left |
-| `hero-2` | Hero slide 2 | An open Belizean highway or clear road ahead |
-| `hero-3` | Hero slide 3 | Belizean life and business breadth; market, street, harbour |
-| `hero-4` | Hero slide 4 | National scale: aerial coast, districts, the country itself |
-| `home-hero` | (reserved) | Belizean coast or landscape at golden hour |
-| `story-poster` | The ICB Story video poster | A dignified frame from the future ICB film, or archival ICB imagery |
-| `gallery-corozal` | ICB Across Belize | Corozal District: bay front, sugar country, northern life |
-| `gallery-orange-walk` | ICB Across Belize | Orange Walk District: town, farms, working vehicles |
-| `gallery-belize` | ICB Across Belize | Belize District: Belize City, harbour, commerce |
-| `gallery-cayo` | ICB Across Belize | Cayo District: Belmopan or San Ignacio, hills, homes |
-| `gallery-stann-creek` | ICB Across Belize | Stann Creek District: Dangriga, coast, fishing |
-| `gallery-toledo` | ICB Across Belize | Toledo District: Punta Gorda, green south |
-| `product-property` | Property page header + card | A Belizean home or small commercial building, warm light |
-| `product-motor` | Motor page header + card | Vehicle on a Belizean highway; avoid crash imagery |
-| `product-marine` | Marine page header + card | Working vessel or skiff on Belizean water |
-| `product-cargo` | Cargo page header + card | Containers, port, or delivery trucks |
-| `product-liability` | Liability page header + card | Belizean business environment, people at work |
-| `product-travel` | Travel page header + card | Airport or journey imagery, aspirational not stocky |
-| `product-mexican` | Mexican Insurance header + card | The northern highway, border crossing direction |
-| `business-band` | Homepage business band + Business page | Belizean entrepreneurs, shopfronts, real operations |
-| `about-band` | About page header | Archival or present-day ICB institutional imagery |
+| Slot | What to supply |
+| --- | --- |
+| `product-cargo` | Cargo/freight imagery (icbinsurance.com/products has one) |
+| `product-travel` | ICB travel campaign creative (official social media) |
+| Gallery | Branch photographs from icbinsurance.com/contact (Southside, Santa Elena, San Pedro, San Ignacio, Corozal Border, Independence, Ladyville and others) |
 
-## Guidelines
+## How to swap in an image
 
-- Prefer authentic Belizean photography over generic stock.
-- Landscape orientation, at least 1600px wide for full-bleed slots.
-- Calm, confident scenes; no accident or disaster shock imagery.
-- People should be aware they are being photographed and approved for use.
+1. Place the file under `assets/img/`.
+2. Point the matching slot's `src` in `js/data/images.js` at it (product
+   and section slots), or add it to the `GALLERY` list in
+   `js/views/home.js` with a short verified caption.
+3. Optional `pos` sets the crop focal point (CSS object-position).
+
+Guidelines: landscape at least 1000px wide for cards, 1400px for
+feature placements; never stretch small images; do not caption an image
+with a branch or event identity unless it is verified.
