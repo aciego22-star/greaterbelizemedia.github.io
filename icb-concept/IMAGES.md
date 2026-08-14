@@ -14,6 +14,8 @@ artwork remains only where no official ICB visual has been supplied yet.
 | Property card + page | Film frame: couple at their Belizean home |
 | Motor card + page | Film frame: couple with their vehicle |
 | Marine Hull card + page | Boat photography from the campaign artwork |
+| Claims page hero | Film frame: customer completing paperwork with ICB |
+| Property / Motor / Liability page insets | Native-scale crops of the campaign artwork panels (home, vehicle, family) |
 | Liability card + page | Film frame: handshake with an ICB representative |
 | Mexican Insurance card + page | Film frame: aerial Belize City coastal road |
 | Business feature | Film frame: ICB team member in branded uniform |

@@ -80,6 +80,10 @@ ICB.views = ICB.views || {};
               '<h3>Good to know</h3>' +
               '<ul class="gtk-list">' + gtk + "</ul>" +
               claims +
+              (p.campaign
+                ? '<figure class="campaign-inset"><img src="' + R.esc(p.campaign.src) + '" alt="' + R.esc(p.campaign.alt) + '" loading="lazy">' +
+                  '<figcaption>From ICB&#39;s Protect Your Investment campaign</figcaption></figure>'
+                : "") +
             "</aside>" +
           "</div>" +
         "</section>" +

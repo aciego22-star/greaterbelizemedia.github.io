@@ -1394,10 +1394,19 @@ button {
   inset: 0;
   z-index: 1;
   background:
-    linear-gradient(78deg, rgba(6, 6, 7, 0.84) 0%, rgba(6, 6, 7, 0.55) 40%, rgba(6, 6, 7, 0.28) 100%);
+    linear-gradient(90deg, rgba(6, 6, 7, 0.93) 0%, rgba(6, 6, 7, 0.88) 38%, rgba(6, 6, 7, 0.42) 72%, rgba(6, 6, 7, 0.3) 100%);
+}
+/* Photography in interior heroes sits to the right of the copy column. */
+.page-hero-art .slot-photo { object-position: 78% center; }
+@media (max-width: 639px) {
+  .page-hero-art::after {
+    background:
+      linear-gradient(0deg, rgba(6, 6, 7, 0.95) 0%, rgba(6, 6, 7, 0.88) 52%, rgba(6, 6, 7, 0.62) 100%);
+  }
 }
 .page-hero-inner {
   position: relative;
+  z-index: 2;
   padding-block: clamp(3rem, 7vw, 5.25rem);
   max-width: 46rem;
 }
@@ -1491,6 +1500,28 @@ button {
 .gtk-list p { margin: 0; font-size: var(--fs-300); color: var(--c-text-soft); }
 .prod-claims { margin-top: var(--sp-6); }
 .prod-claims p { font-size: var(--fs-300); color: var(--c-text-soft); }
+
+/* Official campaign photography, shown at native scale (never stretched). */
+.campaign-inset {
+  margin: var(--sp-6) 0 0;
+  border: 1px solid var(--c-line-soft);
+  border-radius: var(--r-md);
+  background: #FFFFFF;
+  padding: var(--sp-3);
+}
+.campaign-inset img {
+  display: block;
+  max-width: 100%;
+  max-height: 300px;
+  margin-inline: auto;
+  border-radius: var(--r-sm);
+}
+.campaign-inset figcaption {
+  font-size: var(--fs-200);
+  color: var(--c-text-soft);
+  text-align: center;
+  padding-top: var(--sp-2);
+}
 .card-grid--pair { grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr)); }
 
 @media (max-width: 899px) {

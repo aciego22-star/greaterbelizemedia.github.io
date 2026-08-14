@@ -22,7 +22,7 @@ ICB.views = ICB.views || {};
 
       return '' +
         '<section class="page-hero on-dark" aria-labelledby="claims-title">' +
-          '<div class="page-hero-art art-panel" aria-hidden="true">' + ICB.art.panel("claims") + "</div>" +
+          '<div class="page-hero-art art-panel" data-img-slot="claims-hero" aria-hidden="true">' + ICB.art.panel("claims") + "</div>" +
           '<div class="shell page-hero-inner">' +
             '<span class="eyebrow">Claims</span>' +
             '<h1 id="claims-title">When something happens, know what to do next.</h1>' +

@@ -23,6 +23,7 @@ ICB.DATA.products = [
       "Branch teams across the country can look at your property needs in person."
     ],
     status: null,
+    campaign: { src: "assets/img/campaign/home.jpg", alt: "Property photography from ICB's Protect Your Investment campaign" },
     glyph: "house",
     artMotif: "property",
     related: ["motor", "liability"],
@@ -43,6 +44,7 @@ ICB.DATA.products = [
       "If you are ever in an accident, the Claims section explains exactly what to do next."
     ],
     status: null,
+    campaign: { src: "assets/img/campaign/motor-car.jpg", alt: "Vehicle photography from ICB's Protect Your Investment campaign" },
     glyph: "car",
     artMotif: "motor",
     related: ["mexican", "liability"],
@@ -108,6 +110,7 @@ ICB.DATA.products = [
       "Start an enquiry and an ICB representative will guide you to the right product."
     ],
     status: null,
+    campaign: { src: "assets/img/campaign/family.jpg", alt: "Family photography from ICB's Protect Your Investment campaign, representing liability cover" },
     glyph: "scales",
     artMotif: "liability",
     related: ["property", "cargo"],

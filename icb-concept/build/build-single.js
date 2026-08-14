@@ -43,12 +43,16 @@ const MIME = { png: "image/png", jpg: "image/jpeg", jpeg: "image/jpeg", webp: "i
 function inlineAssets(dir, prefix) {
   const abs = path.join(root, dir);
   if (!fs.existsSync(abs)) return;
-  for (const f of fs.readdirSync(abs)) {
-    const ext = f.split(".").pop().toLowerCase();
+  for (const entry of fs.readdirSync(abs, { withFileTypes: true })) {
+    if (entry.isDirectory()) {
+      inlineAssets(path.join(dir, entry.name), prefix + entry.name + "/");
+      continue;
+    }
+    const ext = entry.name.split(".").pop().toLowerCase();
     if (!MIME[ext]) continue;
-    const rel = prefix + f;
+    const rel = prefix + entry.name;
     if (!result.includes(rel)) continue;
-    const data = fs.readFileSync(path.join(abs, f));
+    const data = fs.readFileSync(path.join(abs, entry.name));
     const uri = "data:" + MIME[ext] + ";base64," + data.toString("base64");
     result = result.split(rel).join(uri);
     console.log("inlined", rel, Math.round(data.length / 1024) + "KB");

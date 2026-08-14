@@ -40,6 +40,8 @@ ICB.DATA.images = {
 
     "business-band":    { src: "assets/img/business-team.jpg", pos: "center 35%",
                           alt: "An ICB team member at work, from the Life Happens Fast film" },
+    "claims-hero":      { src: "assets/img/gallery/service.jpg", pos: "center 30%",
+                          alt: "A customer completing paperwork at an ICB desk, from the Life Happens Fast film" },
     "about-band":       { src: "assets/img/icb-hq.webp", alt: "Insurance Corporation of Belize headquarters in Belize City" }
   }
 };
