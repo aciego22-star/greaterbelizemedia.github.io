@@ -7,22 +7,22 @@
    grounded by institutional black sections; red behaves like light
    (rules, signals, glows, one CTA at a time), never like paint.
    ----------------------------------------------------------------------------
-   PROVISIONAL PALETTE. Anchored on ICB's red / black / white identity;
-   exact hex values to be matched to official ICB brand assets before
-   presentation sign-off. All colors resolve through the semantic aliases
-   below, so the final swap is a one-block edit.
+   PALETTE: derived directly from the official ICB logo (red sampled at
+   #D12126, black #000000). Confirm against ICB brand guidelines before
+   final sign-off; the semantic aliases below make any adjustment a
+   one-block edit.
    ========================================================================== */
 
 :root {
-  /* Red scale */
-  --red-700: #8F0E1C;
-  --red-600: #B01120;
-  --red-500: #CE1126;
-  --red-450: #D2293A;
-  --red-400: #E5484D;
-  --red-300: #F0616B;
-  --red-100: #F6DADD;
-  --red-050: #FBF0F1;
+  /* Red scale (anchored on the logo red #D12126) */
+  --red-700: #8F1114;
+  --red-600: #B4171C;
+  --red-500: #D12126;
+  --red-450: #DA3A3E;
+  --red-400: #E5504E;
+  --red-300: #F0716E;
+  --red-100: #F8D9DA;
+  --red-050: #FCF0F0;
 
   /* Black / charcoal ladder (warm neutral, never blue) */
   --black-950: #0B0B0C;
@@ -332,8 +332,7 @@ button {
   min-height: var(--header-h);
 }
 
-/* Text wordmark: a placeholder lockup for the official ICB logo asset.
-   Deliberately typographic; not an invented mark. */
+/* Brand lockup: the official ICB logo plus the company name. */
 .brand {
   display: inline-flex;
   align-items: center;
@@ -341,17 +340,10 @@ button {
   color: var(--c-brand);
   margin-right: auto;
 }
-.brand-icb {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.5rem;
-  letter-spacing: 0.03em;
-  color: var(--c-brand);
-  line-height: 1;
-}
+.brand-logo { height: 46px; width: auto; flex: none; }
 .brand-sep {
   width: 2px;
-  height: 30px;
+  height: 34px;
   background: var(--c-accent);
   margin: 0 12px;
   flex: none;
@@ -477,8 +469,22 @@ button {
   padding-bottom: var(--sp-8);
   border-bottom: 1px solid var(--c-dark-line);
 }
-.footer-brand .brand-icb { color: var(--c-text-inverse); }
-.footer-brand .brand-lines span { color: var(--c-text-inverse-soft); }
+.footer-logo-plate {
+  display: inline-flex;
+  background: #FFFFFF;
+  border-radius: var(--r-md);
+  padding: 10px 12px;
+}
+.footer-logo-plate img { height: 54px; width: auto; }
+.footer-brand .brand-lines { margin-top: var(--sp-3); display: flex; flex-direction: column; }
+.footer-brand .brand-lines span {
+  font-size: 0.656rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-text-inverse-soft);
+  line-height: 1.5;
+}
 .footer-brand > p { color: var(--c-text-inverse-soft); font-size: var(--fs-300); margin-top: var(--sp-4); }
 .footer-col h3 {
   color: var(--c-text-inverse);
@@ -539,16 +545,66 @@ button {
   z-index: 1;
 }
 
-.hero-slide-art.art-panel { position: absolute; inset: 0; }
-.hero-slide-art svg {
+/* Real media layers */
+.hero-media { position: absolute; inset: 0; overflow: hidden; }
+.hero-media img, .hero-media video {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
-  transform: scale(1.05);
+  object-fit: cover;
+  object-position: center 38%;
+  transform: scale(1.045);
 }
-.hero-slide.is-active .hero-slide-art svg {
+.hero-slide.is-active .hero-media img,
+.hero-slide.is-active .hero-media video {
   transform: scale(1);
   transition: transform 7000ms linear;
 }
+.hero-media--contain { background: #F7F5F4; }
+.hero-media--contain img {
+  object-fit: contain;
+  object-position: right center;
+  transform: none;
+}
+.hero-slide.is-active .hero-media--contain img { transform: none; transition: none; }
+
+.hero-video-poster { position: absolute; inset: 0; }
+.hero-video-poster svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.hero-video { opacity: 0; transition: opacity 500ms var(--ease); }
+.hero-video.is-playing { opacity: 1; }
+
+/* Restrained overlays: gradients only, never boxes over the media. */
+.hero-scrim {
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(78deg, rgba(6, 6, 7, 0.84) 0%, rgba(6, 6, 7, 0.6) 34%, rgba(6, 6, 7, 0) 64%),
+    linear-gradient(0deg, rgba(6, 6, 7, 0.62) 0%, rgba(6, 6, 7, 0) 40%);
+}
+.hero-slide h2, .hero-slide .hero-lead { text-shadow: 0 1px 14px rgba(6, 6, 7, 0.45); }
+.hero-scrim--light {
+  background:
+    linear-gradient(90deg, rgba(247, 245, 244, 0.97) 0%, rgba(247, 245, 244, 0.9) 34%, rgba(247, 245, 244, 0) 62%),
+    linear-gradient(0deg, rgba(247, 245, 244, 0.9) 0%, rgba(247, 245, 244, 0) 30%);
+}
+
+/* Light slide: dark copy on the pale artwork ground */
+.hero-slide.hero-slide--light .eyebrow { color: var(--c-accent-ink); }
+.hero-slide.hero-slide--light h2 { color: var(--c-brand); text-shadow: none; }
+.hero-slide.hero-slide--light .hero-lead { color: var(--c-text-soft); text-shadow: none; }
+
+/* Controls adapt when the active slide is light */
+.hero-slider.is-light-active .hero-progress .bar { background: rgba(22, 22, 24, 0.22); }
+.hero-slider.is-light-active .hero-progress button.is-done .bar { background: rgba(22, 22, 24, 0.45); }
+.hero-slider.is-light-active .hero-count { color: var(--c-text-soft); }
+.hero-slider.is-light-active .hero-arrows button {
+  border-color: rgba(22, 22, 24, 0.35);
+  color: var(--c-brand);
+}
+.hero-slider.is-light-active .hero-arrows button:hover {
+  background: rgba(22, 22, 24, 0.06);
+  border-color: rgba(22, 22, 24, 0.6);
+}
+.hero-slider.is-light-active .hero-arrows button:focus-visible,
+.hero-slider.is-light-active .hero-progress button:focus-visible { outline-color: var(--c-brand); }
 
 .hero-slide-copy {
   position: relative;
@@ -1003,6 +1059,15 @@ button {
 }
 @media (max-width: 639px) {
   .video-frame { aspect-ratio: 4 / 3; }
+}
+.story-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+  background: #0B0B0C;
 }
 .video-caption {
   position: absolute;
@@ -1546,7 +1611,18 @@ select.input {
 /* ============================ Locations ============================ */
 
 .loc-tools { margin-bottom: var(--sp-6); }
-.loc-count { font-size: var(--fs-300); color: var(--c-text-soft); margin-top: var(--sp-3); }
+.loc-tools-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  margin-top: var(--sp-3);
+}
+.loc-count { font-size: var(--fs-300); color: var(--c-text-soft); margin: 0; }
+.method-icon--wa { border: none; }
+.method-icon--wa .wa-roundel { width: 40px; height: 40px; }
+.method-row { text-align: left; }
 .loc-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 330px;
@@ -1817,7 +1893,9 @@ select.input {
   }
   .rv { opacity: 1; transform: none; }
   .assist-badge .dot { animation: none; opacity: 1; }
-  .hero-slide-art svg, .hero-slide.is-active .hero-slide-art svg { transform: none; transition: none; }
+  .hero-media img, .hero-media video,
+  .hero-slide.is-active .hero-media img,
+  .hero-slide.is-active .hero-media video { transform: none; transition: none; }
   .hero-progress button[aria-current="true"] .bar::after { animation: none; transform: scaleX(1); }
 }
 
@@ -1856,29 +1934,106 @@ select.input {
 .quick-bar .glyph { width: 22px; height: 22px; color: var(--c-brand); }
 .quick-bar a:hover, .quick-bar button:hover { color: var(--c-brand); background: var(--c-tint); }
 
-/* ============================ Mini dialog (WhatsApp chooser) ============================ */
+/* ============================ WhatsApp ICB directory ============================ */
 
-.mini-dialog-overlay {
+.wa-overlay {
   position: fixed;
   inset: 0;
   z-index: 170;
-  background: rgba(6, 6, 7, 0.55);
+  background: rgba(6, 6, 7, 0.6);
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
-  padding: var(--sp-4);
+  padding: clamp(0px, 2vw, 24px);
 }
-.mini-dialog {
+.wa-dialog {
   background: var(--c-surface);
   border-radius: var(--r-lg);
   box-shadow: var(--shadow-sheet);
-  width: min(420px, 100%);
-  padding: var(--sp-5);
-  margin-bottom: env(safe-area-inset-bottom);
+  width: min(560px, 100%);
+  max-height: min(760px, 100dvh - 2 * clamp(0px, 2vw, 24px));
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
-.mini-dialog h2 { font-size: var(--fs-500); font-family: var(--font-sans); font-weight: 700; }
-.mini-dialog .msg-actions { margin-top: var(--sp-4); }
-.mini-dialog .msg-action { width: 100%; }
+@media (max-width: 639px) {
+  .wa-overlay { padding: 0; align-items: flex-end; }
+  .wa-dialog {
+    border-radius: var(--r-lg) var(--r-lg) 0 0;
+    max-height: 92dvh;
+  }
+}
+.wa-head {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-4) var(--sp-5);
+  border-bottom: 1px solid var(--c-line-soft);
+  background: var(--c-surface);
+  flex: none;
+}
+.wa-head-icon { width: 40px; height: 40px; flex: none; }
+.wa-head-text { flex: 1; line-height: 1.3; min-width: 0; }
+.wa-head-text strong { display: block; font-family: var(--font-display); font-size: 1.15rem; color: var(--c-brand); }
+.wa-head-text span { font-size: var(--fs-300); color: var(--c-text-soft); }
+.wa-close {
+  flex: none;
+  width: 44px; height: 44px;
+  border-radius: var(--r-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--c-text-soft);
+}
+.wa-close:hover { background: var(--c-tint); color: var(--c-brand); }
+.wa-close .glyph { width: 20px; height: 20px; }
+
+.wa-body {
+  overflow-y: auto;
+  padding: var(--sp-3) var(--sp-5) calc(var(--sp-5) + env(safe-area-inset-bottom));
+  overscroll-behavior: contain;
+}
+.wa-group { padding-top: var(--sp-4); }
+.wa-group h3 {
+  font-family: var(--font-sans);
+  font-size: var(--fs-200);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-accent-ink);
+  margin-bottom: var(--sp-2);
+}
+.wa-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3);
+  margin: 0 calc(-1 * var(--sp-3));
+  border-radius: var(--r-md);
+  text-decoration: none;
+  color: var(--c-text);
+  min-height: 60px;
+}
+.wa-row:hover, .wa-row:focus-visible { background: var(--c-tint); color: var(--c-text); }
+.wa-row .wa-roundel { width: 38px; height: 38px; flex: none; }
+.wa-row-main { flex: 1; min-width: 0; line-height: 1.3; }
+.wa-row-name { display: block; font-weight: 600; color: var(--c-brand); }
+.wa-row-num { display: block; font-size: var(--fs-300); color: var(--c-text-soft); font-variant-numeric: tabular-nums; }
+.wa-row-cta {
+  flex: none;
+  font-size: var(--fs-200);
+  font-weight: 700;
+  color: #1DA851;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+@media (max-width: 419px) {
+  .wa-row-cta { display: none; }
+}
+
+/* WhatsApp accents outside the directory */
+.msg-action--wa .glyph, .msg-action--wa svg { width: 18px; height: 18px; }
+.wa-roundel { display: block; }
 
 /* ============================ Responsive chrome ============================ */
 
@@ -1906,5 +2061,6 @@ select.input {
 
 @media (max-width: 479px) {
   .brand-lines { display: none; }
-  .brand-sep { height: 24px; margin: 0 0 0 10px; }
+  .brand-sep { display: none; }
+  .brand-logo { height: 40px; }
 }

@@ -10,62 +10,85 @@ ICB.views = ICB.views || {};
 (function () {
   "use strict";
 
+  /* Three real ICB media slides: headquarters photograph, the
+     "Protect Your Investment" campaign artwork, and the ICB film. */
   var SLIDES = [
     {
+      kind: "photo",
+      src: "assets/img/icb-hq.webp",
+      alt: "Insurance Corporation of Belize headquarters in Belize City",
       eyebrow: "Insurance Corporation of Belize Ltd.",
       title: "Protecting Belize since 1981.",
       lead: "Insurance for the things you’ve built, the people you care about, and the road ahead.",
-      motif: "hero-home",
-      slot: "hero-1",
       actions: [
         { label: "Get covered", href: "#/insurance", primary: true },
         { label: "Make a claim", href: "#/claims" }
       ]
     },
     {
-      eyebrow: "Simpler by design",
-      title: "Insurance made easier to navigate.",
-      lead: "From choosing cover to settling a claim, every step is clear, guided and human.",
-      motif: "hero-path",
-      slot: "hero-2",
+      kind: "artwork",
+      light: true,
+      src: "assets/img/icb-protect-artwork.jpg",
+      alt: "ICB Protect Your Investment campaign artwork: liabilities, motor, marine and property",
+      eyebrow: "Protect your investment",
+      title: "By land, sea or air, ICB is there.",
+      lead: "Liabilities, motor, marine and property cover for the life you have built.",
       actions: [
-        { label: "See how claims work", href: "#/claims", primary: true },
-        { label: "Explore cover", href: "#/insurance" }
+        { label: "Explore insurance", href: "#/insurance", primary: true },
+        { label: "Start an enquiry", href: "#/contact?topic=new-cover", ghost: true }
       ]
     },
     {
-      eyebrow: "For every stage",
-      title: "For individuals, families and businesses.",
-      lead: "Seven lines of cover, from a first car to a nationwide fleet, arranged around real Belizean life.",
-      motif: "hero-breadth",
-      slot: "hero-3",
+      kind: "video",
+      src: "assets/video/icb-story.mp4",
+      eyebrow: "The ICB Story",
+      title: "Four decades of standing with Belize.",
+      lead: "More than four decades of protecting Belizean homes, businesses, vehicles and livelihoods.",
       actions: [
-        { label: "Browse insurance", href: "#/insurance", primary: true },
-        { label: "Talk to ICB", href: "#/contact" }
-      ]
-    },
-    {
-      eyebrow: "Nationwide service",
-      title: "Wherever you are, ICB is near.",
-      lead: "Branches and agency partners from Corozal to Punta Gorda, with one standard of service.",
-      motif: "hero-nation",
-      slot: "hero-4",
-      actions: [
-        { label: "Find a branch", href: "#/locations", primary: true },
-        { label: "Contact ICB", href: "#/contact" }
+        { label: "Get covered", href: "#/insurance", primary: true },
+        { label: "About ICB", href: "#/about" }
       ]
     }
   ];
+
+  function slideMedia(s) {
+    var R = ICB.render;
+    if (s.kind === "photo") {
+      return '<div class="hero-media" aria-hidden="true"><img src="' + R.esc(s.src) + '" alt="">' +
+        '<div class="hero-scrim"></div></div>';
+    }
+    if (s.kind === "artwork") {
+      return '<div class="hero-media hero-media--contain" aria-hidden="true"><img src="' + R.esc(s.src) + '" alt="">' +
+        '<div class="hero-scrim hero-scrim--light"></div></div>';
+    }
+    /* Video slide: generated poster art beneath; the film fades over it
+       once it plays. The video element renders only when the compressed
+       film is in place (site.js media.storyVideoAvailable), so a missing
+       file never produces a failed request. */
+    var media = ICB.DATA.site.media;
+    return '<div class="hero-media" aria-hidden="true">' +
+      '<div class="hero-video-poster art-panel">' + ICB.art.panel("poster") + "</div>" +
+      (media.storyVideoAvailable
+        ? '<video class="hero-video" muted loop playsinline preload="none" src="' + R.esc(media.storyVideoSrc) + '" tabindex="-1"></video>'
+        : "") +
+      '<div class="hero-scrim"></div></div>';
+  }
 
   function heroSlider() {
     var R = ICB.render;
     var slides = SLIDES.map(function (s, i) {
       var btns = s.actions.map(function (a) {
-        return '<a class="btn btn-lg ' + (a.primary ? "btn-gold" : "btn-light") + '" href="' + R.esc(a.href) + '">' + R.esc(a.label) + "</a>";
+        var cls = s.light
+          ? (a.primary ? "btn-primary" : "btn-outline")
+          : (a.primary ? "btn-gold" : "btn-light");
+        return '<a class="btn btn-lg ' + cls + '" href="' + R.esc(a.href) + '">' + R.esc(a.label) + "</a>";
       }).join("");
-      return '<article class="hero-slide' + (i === 0 ? " is-active" : "") + '" role="group" aria-roledescription="slide"' +
-        ' aria-label="' + (i + 1) + ' of ' + SLIDES.length + '" data-slide="' + i + '"' + (i === 0 ? "" : ' aria-hidden="true"') + ">" +
-        '<div class="hero-slide-art art-panel" data-img-slot="' + R.esc(s.slot) + '" aria-hidden="true">' + ICB.art.panel(s.motif) + "</div>" +
+      return '<article class="hero-slide' + (i === 0 ? " is-active" : "") + (s.light ? " hero-slide--light" : "") +
+        '" role="group" aria-roledescription="slide"' +
+        ' aria-label="' + (i + 1) + ' of ' + SLIDES.length + '" data-slide="' + i + '"' +
+        (s.light ? ' data-light="1"' : "") + (i === 0 ? "" : ' aria-hidden="true"') + ">" +
+        slideMedia(s) +
+        (s.alt ? '<span class="visually-hidden">' + R.esc(s.alt) + "</span>" : "") +
         '<div class="shell"><div class="hero-slide-copy">' +
           '<span class="eyebrow hs-rise">' + R.esc(s.eyebrow) + "</span>" +
           '<h2 class="hs-rise">' + R.esc(s.title) + "</h2>" +
@@ -118,7 +141,18 @@ ICB.views = ICB.views || {};
           if (active) a.removeAttribute("tabindex");
           else a.setAttribute("tabindex", "-1");
         });
+        var video = s.querySelector(".hero-video");
+        if (video) {
+          if (active && !reduced) {
+            video.play().then(function () {
+              video.classList.add("is-playing");
+            }).catch(function () { /* poster art remains */ });
+          } else {
+            video.pause();
+          }
+        }
       });
+      root.classList.toggle("is-light-active", slides[idx].hasAttribute("data-light"));
       Array.prototype.forEach.call(bars, function (b, i) {
         if (i === idx) b.setAttribute("aria-current", "true");
         else b.removeAttribute("aria-current");
@@ -300,7 +334,10 @@ ICB.views = ICB.views || {};
           }) +
           '<figure class="video-frame art-panel rv" data-img-slot="story-poster">' +
             ICB.art.panel("poster") +
-            '<button type="button" class="play-btn" data-story-play aria-label="About the ICB story film placement">' +
+            (ICB.DATA.site.media.storyVideoAvailable
+              ? '<video class="story-video" src="' + ICB.render.esc(ICB.DATA.site.media.storyVideoSrc) + '" preload="none" playsinline hidden></video>'
+              : "") +
+            '<button type="button" class="play-btn" data-story-play aria-label="Play the ICB story film">' +
               ICB.art.glyph("play") +
             "</button>" +
             '<p class="video-note" data-story-note hidden>Film placement. Final footage to be supplied by ICB.</p>' +
@@ -382,10 +419,10 @@ ICB.views = ICB.views || {};
                 '<span class="method-icon">' + ICB.art.glyph("phone") + "</span>" +
                 '<span><span class="m-label">Call ' + R.esc(site.corporate.phoneDisplay) + "</span>" +
                 '<span class="m-sub">Corporate Office, Belize City</span></span></a>' +
-              '<a class="method-row" href="https://wa.me/5016134138"' + R.extAttrs() + ">" +
-                '<span class="method-icon">' + ICB.art.glyph("whatsapp") + "</span>" +
-                '<span><span class="m-label">WhatsApp chat' + R.extNote("wa.me") + "</span>" +
-                '<span class="m-sub">San Ignacio +501 613-4138, Dangriga +501 614-9682</span></span></a>' +
+              '<button type="button" class="method-row" data-wa-directory>' +
+                '<span class="method-icon method-icon--wa">' + ICB.art.waIcon("roundel") + "</span>" +
+                '<span><span class="m-label">WhatsApp ICB</span>' +
+                '<span class="m-sub">Every branch, grouped by district</span></span></button>' +
               '<a class="method-row" href="mailto:' + R.esc(site.corporate.email) + '">' +
                 '<span class="method-icon">' + ICB.art.glyph("mail") + "</span>" +
                 '<span><span class="m-label">' + R.esc(site.corporate.email) + "</span>" +
@@ -423,12 +460,33 @@ ICB.views = ICB.views || {};
       ICB.render.initQuiz(mount);
       var play = mount.querySelector("[data-story-play]");
       var note = mount.querySelector("[data-story-note]");
-      if (play && note) {
+      var storyVideo = mount.querySelector(".story-video");
+      if (play && note && !storyVideo) {
         play.addEventListener("click", function () {
           note.hidden = false;
           play.hidden = true;
           note.setAttribute("tabindex", "-1");
           note.focus();
+        });
+      }
+      if (play && note && storyVideo) {
+        // Plays the real ICB film when assets/video/icb-story.mp4 exists;
+        // otherwise the placement note appears and nothing breaks.
+        play.addEventListener("click", function () {
+          play.hidden = true;
+          storyVideo.hidden = false;
+          storyVideo.controls = true;
+          var fail = function () {
+            storyVideo.hidden = true;
+            note.hidden = false;
+            note.setAttribute("tabindex", "-1");
+            note.focus();
+          };
+          storyVideo.addEventListener("error", fail, { once: true });
+          storyVideo.play().catch(function () {
+            if (!storyVideo.error) return;
+            fail();
+          });
         });
       }
     }

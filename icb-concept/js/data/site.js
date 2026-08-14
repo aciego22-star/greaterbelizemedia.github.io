@@ -32,6 +32,14 @@ ICB.DATA.site = {
     email: "icb@icbinsurance.com"
   },
 
+  /* Real media supplied for the concept. Set storyVideoAvailable to true
+     after placing the compressed film at assets/video/icb-story.mp4
+     (see README: "Adding the ICB film"). */
+  media: {
+    storyVideoAvailable: false,
+    storyVideoSrc: "assets/video/icb-story.mp4"
+  },
+
   external: {
     // Official ICB claims page. Replace with direct PDF links when supplied by ICB.
     claimsForms: "https://www.icbinsurance.com/claims",

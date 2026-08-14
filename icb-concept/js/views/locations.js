@@ -42,7 +42,10 @@ ICB.views = ICB.views || {};
             '<h2 id="loc-browse-title" class="visually-hidden">Browse locations</h2>' +
             '<div class="loc-tools rv">' +
               '<div class="chip-row" role="group" aria-label="Filter by district">' + chips + "</div>" +
-              '<p class="loc-count" aria-live="polite" data-loc-count></p>' +
+              '<div class="loc-tools-row">' +
+                '<p class="loc-count" aria-live="polite" data-loc-count></p>' +
+                '<button type="button" class="btn btn-sm btn-outline" data-wa-directory>' + ICB.art.waIcon() + "<span>Chat on WhatsApp</span></button>" +
+              "</div>" +
             "</div>" +
             '<div class="loc-layout">' +
               '<div class="loc-list" data-loc-list>' + cards + "</div>" +

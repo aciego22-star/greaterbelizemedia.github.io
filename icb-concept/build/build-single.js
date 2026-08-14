@@ -34,7 +34,28 @@ function inline(source) {
   return out;
 }
 
-const result = inline(html);
+let result = inline(html);
+
+/* Inline real assets (images and, when present, the video) as data URIs so
+   the single file needs no companion folder. Asset paths are unique strings
+   throughout the bundle, so a global replace is safe. */
+const MIME = { png: "image/png", jpg: "image/jpeg", jpeg: "image/jpeg", webp: "image/webp", mp4: "video/mp4" };
+function inlineAssets(dir, prefix) {
+  const abs = path.join(root, dir);
+  if (!fs.existsSync(abs)) return;
+  for (const f of fs.readdirSync(abs)) {
+    const ext = f.split(".").pop().toLowerCase();
+    if (!MIME[ext]) continue;
+    const rel = prefix + f;
+    if (!result.includes(rel)) continue;
+    const data = fs.readFileSync(path.join(abs, f));
+    const uri = "data:" + MIME[ext] + ";base64," + data.toString("base64");
+    result = result.split(rel).join(uri);
+    console.log("inlined", rel, Math.round(data.length / 1024) + "KB");
+  }
+}
+inlineAssets("assets/img", "assets/img/");
+inlineAssets("assets/video", "assets/video/");
 const leftoverLinks = result.match(/<link rel="stylesheet"[^>]*>/g);
 const leftoverScripts = result.match(/<script src=/g);
 if (leftoverLinks || leftoverScripts) {

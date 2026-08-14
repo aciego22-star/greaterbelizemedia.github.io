@@ -275,6 +275,7 @@ ICB.views = ICB.views || {};
                   R.esc(site.corporate.city) + ", Belize</address>" +
                 '<div class="msg-actions">' +
                   '<a class="msg-action" href="tel:' + R.esc(site.corporate.phoneTel) + '">' + ICB.art.glyph("phone") + "<span>" + R.esc(site.corporate.phoneDisplay) + "</span></a>" +
+                  '<button type="button" class="msg-action msg-action--wa" data-wa-directory>' + ICB.art.waIcon() + "<span>WhatsApp ICB</span></button>" +
                   '<a class="msg-action" href="mailto:' + R.esc(site.corporate.email) + '">' + ICB.art.glyph("mail") + "<span>" + R.esc(site.corporate.email) + "</span></a>" +
                   '<a class="msg-action" href="#/locations">' + ICB.art.glyph("marker") + "<span>Every branch and agency</span></a>" +
                 "</div>" +

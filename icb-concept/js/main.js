@@ -114,10 +114,8 @@ window.ICB = window.ICB || {};
       '<div class="shell">' +
         '<div class="footer-grid">' +
           '<div class="footer-brand">' +
-            '<span class="brand" aria-hidden="true">' +
-              '<span class="brand-icb">ICB</span><span class="brand-sep"></span>' +
-              '<span class="brand-lines"><span>Insurance Corporation</span><span>of Belize Ltd.</span></span>' +
-            "</span>" +
+            '<span class="footer-logo-plate"><img src="assets/img/icb-logo.png" alt="Insurance Corporation of Belize Ltd. logo"></span>' +
+            '<span class="brand-lines" aria-hidden="true"><span>Insurance Corporation</span><span>of Belize Ltd.</span></span>' +
             "<p>" + R.esc(f.tagline) + "</p>" +
             '<div class="footer-col"><address>' +
               R.esc(site.corporate.address) + ", " + R.esc(site.corporate.poBox) + "<br>" +
@@ -141,52 +139,13 @@ window.ICB = window.ICB || {};
     document.getElementById("quick-bar-mount").innerHTML =
       '<nav class="quick-bar" aria-label="Quick actions"><ul>' +
         '<li><a href="tel:' + R.esc(site.corporate.phoneTel) + '">' + ICB.art.glyph("phone") + "<span>Call</span></a></li>" +
-        '<li><button type="button" data-wa-chooser>' + ICB.art.glyph("whatsapp") + "<span>WhatsApp</span></button></li>" +
+        '<li><button type="button" data-wa-directory>' + ICB.art.waIcon() + "<span>WhatsApp</span></button></li>" +
         '<li><a href="#/locations">' + ICB.art.glyph("marker") + "<span>Branches</span></a></li>" +
         '<li><a href="#/contact">' + ICB.art.glyph("mail") + "<span>Enquire</span></a></li>" +
       "</ul></nav>";
   }
 
-  /* WhatsApp chooser: only the published WhatsApp lines. */
-  function openWaChooser(returnFocusTo) {
-    var lines = ICB.DATA.whatsappLines();
-    var overlay = document.createElement("div");
-    overlay.className = "mini-dialog-overlay";
-    overlay.innerHTML =
-      '<div class="mini-dialog" role="dialog" aria-modal="true" aria-labelledby="wa-title">' +
-        '<h2 id="wa-title">WhatsApp chat with ICB</h2>' +
-        '<p class="loc-note">These branches currently publish WhatsApp lines.</p>' +
-        '<div class="msg-actions">' +
-          lines.map(function (l) {
-            return '<a class="msg-action" href="https://wa.me/' + R.esc(l.whatsapp.wa) + '"' + R.extAttrs() + ">" +
-              ICB.art.glyph("whatsapp") + "<span>" + R.esc(l.name) + ", " + R.esc(l.whatsapp.display) + "</span>" + R.extNote("wa.me") + "</a>";
-          }).join("") +
-          '<button type="button" class="msg-action" data-wa-close>' + ICB.art.glyph("close") + "<span>Close</span></button>" +
-        "</div>" +
-      "</div>";
-    document.body.appendChild(overlay);
-
-    function close() {
-      overlay.remove();
-      document.removeEventListener("keydown", onKey);
-      if (returnFocusTo) returnFocusTo.focus();
-    }
-    function onKey(e) { if (e.key === "Escape") close(); }
-    overlay.addEventListener("click", function (e) {
-      if (e.target === overlay || e.target.closest("[data-wa-close]")) close();
-      else if (e.target.closest("a")) close();
-    });
-    document.addEventListener("keydown", onKey);
-    var first = overlay.querySelector("a, button");
-    if (first) first.focus();
-  }
-
   /* -------------------- Boot -------------------- */
-
-  document.addEventListener("click", function (e) {
-    var wa = e.target.closest("[data-wa-chooser]");
-    if (wa) openWaChooser(wa);
-  });
 
   function boot() {
     R = ICB.render;

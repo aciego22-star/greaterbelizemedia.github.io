@@ -35,6 +35,6 @@ ICB.DATA.images = {
     "product-travel":   { src: null, alt: "Travel abroad" },
     "product-mexican":  { src: null, alt: "The road north" },
     "business-band":    { src: null, alt: "Belizean business owners at work" },
-    "about-band":       { src: null, alt: "ICB through the years" }
+    "about-band":       { src: "assets/img/icb-hq.webp", alt: "Insurance Corporation of Belize headquarters in Belize City" }
   }
 };

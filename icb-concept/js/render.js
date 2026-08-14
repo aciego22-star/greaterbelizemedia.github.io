@@ -15,7 +15,14 @@ window.ICB = window.ICB || {};
   }
 
   function extAttrs() {
-    return ' target="_blank" rel="noopener"';
+    return ' target="_blank" rel="noopener noreferrer"';
+  }
+
+  /* Canonical WhatsApp chat link: digits-only wa.me URL with a short,
+     neutral prefilled greeting the visitor is free to replace. */
+  var WA_PREFILL = encodeURIComponent("Hello ICB, I am contacting you through your website.");
+  function waHref(waDigits) {
+    return "https://wa.me/" + String(waDigits).replace(/\D/g, "") + "?text=" + WA_PREFILL;
   }
 
   function extNote(host) {
@@ -104,10 +111,10 @@ window.ICB = window.ICB || {};
       out += '<a class="msg-action" href="tel:' + esc(l.phones[i].tel) + '">' + ICB.art.glyph("phone") +
         "<span>Call " + esc(l.phones[i].display) + "</span></a>";
     }
-    if (l.whatsapp) {
-      out += '<a class="msg-action" href="https://wa.me/' + esc(l.whatsapp.wa) + '"' + extAttrs() + ">" + ICB.art.glyph("whatsapp") +
-        "<span>WhatsApp " + esc(l.whatsapp.display) + "</span>" + extNote("wa.me") + "</a>";
-    }
+    (l.whatsapps || []).forEach(function (w) {
+      out += '<a class="msg-action msg-action--wa" href="' + esc(waHref(w.wa)) + '"' + extAttrs() + ">" + ICB.art.waIcon() +
+        "<span>WhatsApp " + (w.label ? esc(w.label) + " " : "") + esc(w.display) + "</span>" + extNote("wa.me") + "</a>";
+    });
     if (l.email) {
       out += '<a class="msg-action" href="mailto:' + esc(l.email) + '">' + ICB.art.glyph("mail") +
         "<span>" + esc(l.email) + "</span></a>";
@@ -244,6 +251,7 @@ window.ICB = window.ICB || {};
 
   ICB.render = {
     esc: esc,
+    waHref: waHref,
     extAttrs: extAttrs,
     extNote: extNote,
     extIcon: extIcon,
