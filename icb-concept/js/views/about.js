@@ -7,21 +7,25 @@ ICB.views = ICB.views || {};
 (function () {
   "use strict";
 
+  /* Verified institutional story only. No invented milestones.
+     INTERNAL TODO (not client-facing): this timeline is built to take more
+     entries. Ask ICB for dated milestones after engagement and add them
+     here; the layout does not change. */
   var MILESTONES = [
     {
       year: "1981",
       title: "Founded in Belize",
-      body: "Insurance Corporation of Belize is founded by Mr. Erdulfo 'Dufy' Nunez, built on hard work and sound business practices."
+      body: "Insurance Corporation of Belize is founded by Mr. Erdulfo 'Dufy' Nunez."
     },
     {
       year: "Growth",
-      title: "From a small operation to a national name",
-      body: "Over the decades, ICB grows into one of the largest and most trusted insurance providers in Belize."
+      title: "From two people to a national name",
+      body: "ICB grows from a small two-person operation into one of the largest and most trusted insurance providers in Belize."
     },
     {
       year: "Today",
       title: "From Corozal to Punta Gorda",
-      body: "A nationwide network of branches and agency partners keeps friendly, personal service close to every policyholder."
+      body: "A nationwide network of branches and agencies keeps ICB close to its customers."
     }
   ];
 
@@ -45,7 +49,7 @@ ICB.views = ICB.views || {};
           '<div class="page-hero-art art-panel" data-img-slot="about-band" aria-hidden="true">' + ICB.art.panel("heritage") + "</div>" +
           '<div class="shell page-hero-inner">' +
             '<span class="eyebrow">About ICB</span>' +
-            '<h1 id="about-title">Belize is our home.</h1>' +
+            '<h1 id="about-title">' + R.esc(site.org.homeLine) + "</h1>" +
             '<p class="hero-lead">' + R.esc(site.org.story) + "</p>" +
           "</div>" +
         "</section>" +
@@ -58,7 +62,6 @@ ICB.views = ICB.views || {};
               id: "story-title"
             }) +
             '<ol class="milestones">' + ms + "</ol>" +
-            '<p class="concept-flag" style="margin-top: var(--sp-6);">Additional milestones to be provided by ICB.</p>' +
           "</div>" +
         "</section>" +
 
@@ -86,8 +89,8 @@ ICB.views = ICB.views || {};
         '<section class="section" aria-label="Explore insurance">' +
           '<div class="shell">' +
             R.band({
-              eyebrow: "Four decades strong",
-              title: "The next chapter includes you.",
+              eyebrow: "Since 1981",
+              title: site.org.positiveDifference,
               body: "Explore the cover ICB offers today, or walk into any branch and say hello.",
               motif: "heritage",
               actions: [

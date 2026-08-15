@@ -1,9 +1,12 @@
 /* ============================================================================
    Gallery view — ICB Across Belize.
-   Real ICB imagery: the headquarters photograph and scenes from ICB's own
-   Life Happens Fast campaign film. Built so approved branch, staff and
-   institutional photographs can be added to ICB.GALLERY_ITEMS without any
-   layout change.
+
+   Branches come first: this page exists to show ICB's real physical
+   presence across the country. Campaign stills from ICB's own film sit in
+   their own section below, and the film itself has a dedicated media area.
+
+   Content and slots live in js/data/gallery.js. Adding an official branch
+   photograph there lights up its tile with no layout change.
    ========================================================================== */
 window.ICB = window.ICB || {};
 ICB.views = ICB.views || {};
@@ -15,17 +18,6 @@ ICB.views = ICB.views || {};
     title: "Gallery | ICB Across Belize",
     render: function () {
       var R = ICB.render;
-      var items = ICB.GALLERY_ITEMS.map(function (g, i) {
-        return '<figure class="gallery-item rv' + (g.light ? " gallery-item--light" : "") + '">' +
-          '<button type="button" class="g-open" data-lightbox="' + i + '" aria-label="View larger: ' + R.esc(g.caption) + '">' +
-            '<img src="' + R.esc(g.src) + '" alt="' + R.esc(g.alt) + '" loading="lazy">' +
-          "</button>" +
-          "<figcaption>" +
-            '<span class="g-index" aria-hidden="true">' + (i < 9 ? "0" : "") + (i + 1) + "</span>" +
-            '<span class="g-name">' + R.esc(g.caption) + "</span>" +
-          "</figcaption>" +
-          "</figure>";
-      }).join("");
 
       return '' +
         '<section class="page-hero on-dark" aria-labelledby="gal-title">' +
@@ -37,11 +29,34 @@ ICB.views = ICB.views || {};
           "</div>" +
         "</section>" +
 
-        '<section class="section" aria-labelledby="gal-grid-title">' +
+        '<section class="section" aria-labelledby="gal-branches-title">' +
           '<div class="shell">' +
-            '<h2 id="gal-grid-title" class="visually-hidden">Photographs</h2>' +
-            '<div class="gallery">' + items + "</div>" +
-            '<p class="concept-flag" style="margin-top: var(--sp-6);">Imagery from ICB’s headquarters and the Life Happens Fast campaign film. Approved branch, staff and event photography can be added here.</p>' +
+            R.sectionHead({
+              eyebrow: "The network",
+              title: "Branches and agencies.",
+              id: "gal-branches-title"
+            }) +
+            '<div class="gallery gallery--branches">' + R.branchGallery() + "</div>" +
+            '<div class="btn-row" style="margin-top: var(--sp-6);">' +
+              '<a class="btn btn-outline" href="#/locations">See every location</a>' +
+            "</div>" +
+          "</div>" +
+        "</section>" +
+
+        R.motionSection({
+          tint: true,
+          title: "Life Happens Fast.",
+          sub: "ICB's campaign film, shot in Belize."
+        }) +
+
+        '<section class="section" aria-labelledby="gal-campaign-title">' +
+          '<div class="shell">' +
+            R.sectionHead({
+              eyebrow: "From the campaign",
+              title: "Scenes from the ICB film.",
+              id: "gal-campaign-title"
+            }) +
+            '<div class="gallery">' + R.campaignGallery() + "</div>" +
           "</div>" +
         "</section>" +
 
@@ -62,6 +77,7 @@ ICB.views = ICB.views || {};
     },
     mounted: function (mount) {
       ICB.initLightbox(mount);
+      ICB.initFeaturedVideo(mount);
     }
   };
 })();

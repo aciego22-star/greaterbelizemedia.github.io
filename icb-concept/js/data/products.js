@@ -1,8 +1,17 @@
 /* ============================================================================
-   ICB.DATA.products — the seven published ICB insurance categories.
-   Category names and subcategories reflect ICB's current public website.
-   No policy terms, premiums, limits or exclusions are stated anywhere;
-   copy stays descriptive and routes people to ICB representatives.
+   ICB.DATA.products — ICB's published insurance categories.
+
+   CONTENT RULE: category names, subcategories and product descriptions on
+   this page come from ICB's own published material. Nothing here states
+   policy terms, premiums, limits, exclusions or legal requirements that
+   ICB does not publish itself. Supporting copy is UX guidance only and
+   routes people to an ICB representative.
+
+   INTERNAL TODO (not client-facing):
+   - Confirm the full published vessel and transit lists with ICB.
+   - Confirm Travel Insurance status before launch; sales are currently
+     suspended on ICB's Travel Insurance site.
+   - Confirm the ANA Seguros pathway URLs for Mexican Insurance.
    ========================================================================== */
 window.ICB = window.ICB || {};
 ICB.DATA = ICB.DATA || {};
@@ -13,13 +22,13 @@ ICB.DATA.products = [
     route: "#/insurance/property",
     name: "Property Insurance",
     kicker: "Homes, businesses and the places that matter",
-    short: "Cover for the buildings and contents you have worked for, from family homes to commercial premises.",
-    standfirst: "The home you have built, the shop you open every morning, the premises your company depends on. Property cover is arranged around the way you live and work.",
-    covers: ["Homeowners", "Renters", "Small business", "Commercial property"],
-    audience: "For homeowners, renters, entrepreneurs and established businesses across Belize.",
+    short: "Cover for homes, rented homes, small business premises and commercial property.",
+    standfirst: "The home you have built, the shop you open every morning, the premises your company depends on. ICB offers property cover for homeowners, renters, small businesses and commercial property.",
+    covers: ["Home Owners", "Small Business", "Commercial", "Renters"],
+    audience: "For homeowners, renters, small businesses and commercial property owners across Belize.",
     goodToKnow: [
       "An ICB representative reviews your needs with you before any cover is arranged.",
-      "Belize's hurricane season makes preparation part of protection. Practical guidance is available in the Resource Centre.",
+      "Hurricane and fire preparation information is available in the Resource Centre.",
       "Branch teams across the country can look at your property needs in person."
     ],
     status: null,
@@ -34,14 +43,16 @@ ICB.DATA.products = [
     route: "#/insurance/motor",
     name: "Motor Insurance",
     kicker: "For every vehicle on Belizean roads",
-    short: "From the family car to taxis, buses and heavy-duty equipment, cover arranged around how you drive.",
-    standfirst: "Whether you drive to work, drive for work, or keep a fleet moving, motor cover is arranged around the vehicle and the way it is used.",
-    covers: ["Personal vehicles", "Commercial vehicles", "Taxis and buses", "Heavy-duty vehicles"],
-    audience: "For private drivers, commercial operators, taxi and bus operators, and heavy equipment owners.",
+    short: "Liability Only, Collision and Upsets, and Comprehensive cover for personal and commercial vehicles.",
+    standfirst: "ICB offers Liability Only, Collision and Upsets, and Comprehensive motor insurance, available for personal vehicles, commercial vehicles, taxis and buses, and heavy duty vehicles.",
+    covers: ["Liability Only", "Collision and Upsets", "Comprehensive"],
+    coversLabel: "Types of cover",
+    availableFor: ["Personal Vehicles", "Commercial Vehicles", "Taxis & Buses", "Heavy Duty Vehicles"],
+    audience: "For private drivers, commercial operators, taxi and bus operators, and heavy duty vehicle owners.",
     goodToKnow: [
-      "Tell ICB how the vehicle is used. Private, commercial and passenger use are looked at differently.",
-      "If you are planning to drive into Mexico, ask about Mexican Insurance before you travel.",
-      "If you are ever in an accident, the Claims section explains exactly what to do next."
+      "Tell ICB how the vehicle is used. Personal, commercial and passenger use are looked at differently.",
+      "Driving into Mexico? ICB offers Mexican Insurance through ANA Seguros.",
+      "If you are ever in an accident, the Claims section links to the official form."
     ],
     status: null,
     campaign: { src: "assets/img/campaign/motor-car.jpg", alt: "Vehicle photography from ICB's Protect Your Investment campaign" },
@@ -55,16 +66,16 @@ ICB.DATA.products = [
     route: "#/insurance/marine",
     name: "Marine Hull Insurance",
     kicker: "For the vessels that work and play on our waters",
-    // Verbatim description from the current ICB website:
+    /* Verbatim description from ICB's published material: */
     short: "Protects against physical loss or damage to the insured property, and can be customized to cover third party and passenger liability.",
     standfirst: "Marine Hull Insurance protects against physical loss or damage to the insured property, and can be customized to cover third party and passenger liability.",
-    covers: ["Fishing vessels", "Passenger and tour vessels", "Pleasure craft", "Working vessels"],
-    coversNote: "Vessel categories to be finalized with ICB from the published list.",
-    audience: "For fishermen, tour operators, water taxi operators and private boat owners.",
+    covers: ["Barges", "Tug Boats", "Dredgers", "Water Taxis", "Fishing Vessels", "Yachts", "Personal Vessels"],
+    coversLabel: "Vessels covered",
+    audience: "For vessel owners and operators across Belize.",
     goodToKnow: [
-      "Cover can be tailored to how the vessel is used, including third party and passenger liability.",
-      "Vessels used commercially are looked at differently from pleasure craft, so mention how yours works.",
-      "Coastal and island branches, including San Pedro and Dangriga, know marine customers well."
+      "Cover can be customized to include third party and passenger liability.",
+      "Tell ICB how the vessel is used when you enquire.",
+      "Coastal and island branches, including San Pedro and Dangriga, serve marine customers."
     ],
     status: null,
     glyph: "boat",
@@ -77,15 +88,15 @@ ICB.DATA.products = [
     route: "#/insurance/cargo",
     name: "Cargo Insurance",
     kicker: "For goods on the move",
-    // Verbatim description from the current ICB website:
+    /* Verbatim description from ICB's published material: */
     short: "Protects against physical loss or damages to the insured property while in transit from warehouse to warehouse.",
     standfirst: "Cargo Insurance protects against physical loss or damages to the insured property while in transit from warehouse to warehouse.",
-    covers: ["Goods moved by road", "Goods moved by sea", "Goods moved by air", "Import and export shipments"],
-    coversNote: "Transit modes to be finalized with ICB from the published list.",
-    audience: "For importers, exporters, distributors and any business that moves goods.",
+    covers: ["Air Transit", "Land Transit", "Marine Transit", "Domestic Transit", "Overseas Transit"],
+    coversLabel: "Transit covered",
+    audience: "For importers, exporters, distributors and businesses that move goods.",
     goodToKnow: [
-      "Cover follows the goods from warehouse to warehouse, not just one leg of the journey.",
-      "Describe the route and the goods when you enquire. It helps ICB point you to the right arrangement.",
+      "Cover follows the goods from warehouse to warehouse.",
+      "Describe the route and the goods when you enquire.",
       "Businesses that also own vehicles or vessels can look at motor and marine cover alongside cargo."
     ],
     status: null,
@@ -98,19 +109,18 @@ ICB.DATA.products = [
     id: "liability",
     route: "#/insurance/liability",
     name: "Liability & Miscellaneous",
-    kicker: "Specialty protection, arranged to fit",
-    short: "Liability and specialty covers for responsibilities that do not fit a single box.",
-    standfirst: "Some risks are about responsibility rather than property. Liability and miscellaneous covers are arranged around the situations your life or business creates.",
-    covers: ["Commercial liability", "Contractors all risk", "Other specialty covers on request"],
-    coversNote: "Product list to be finalized with ICB from the published categories.",
-    audience: "For businesses, contractors and individuals with responsibilities to protect.",
+    kicker: "Specialty cover for wider responsibilities",
+    short: "Money Insurance, Personal Accident, Tour Operators Liability, General Liability and Contractors All Risk.",
+    standfirst: "Some risks are about responsibility rather than property. ICB offers a range of liability and miscellaneous products for businesses, contractors and individuals.",
+    covers: ["Money Insurance", "Personal Accident", "Tour Operators Liability", "General Liability", "Contractors All Risk"],
+    audience: "For businesses, contractors, tour operators and individuals.",
     goodToKnow: [
-      "These covers are individually arranged, so a conversation with ICB is the natural first step.",
-      "Contractors and event operators often combine liability cover with property or motor cover.",
-      "Start an enquiry and an ICB representative will guide you to the right product."
+      "These products are arranged individually, so a conversation with ICB is the natural first step.",
+      "Tour operators and contractors can combine liability cover with property or motor cover.",
+      "Request information and an ICB representative will guide you."
     ],
     status: null,
-    campaign: { src: "assets/img/campaign/family.jpg", alt: "Family photography from ICB's Protect Your Investment campaign, representing liability cover" },
+    campaign: { src: "assets/img/campaign/family.jpg", alt: "Family photography from ICB's Protect Your Investment campaign" },
     glyph: "scales",
     artMotif: "liability",
     related: ["property", "cargo"],
@@ -120,44 +130,52 @@ ICB.DATA.products = [
     id: "travel",
     route: "#/insurance/travel",
     name: "Travel Insurance",
-    kicker: "Support for the journeys you take",
-    short: "Cover designed around trips abroad, for the moments away from home.",
-    standfirst: "Trips abroad go better with support behind them. Travel cover is designed around your journey.",
-    covers: ["Individual travellers", "Families travelling together"],
-    coversNote: "Traveller categories to be confirmed with ICB.",
-    audience: "For Belizeans travelling abroad for work, study or holiday.",
+    kicker: "Current status",
+    short: "Sales of ICB Travel Insurance are currently temporarily suspended.",
+    standfirst: "Sales of ICB Travel Insurance are currently temporarily suspended.",
+    covers: [],
+    audience: null,
     goodToKnow: [
-      "Contact ICB before your trip so cover can be arranged in good time.",
-      "Bring your travel dates and destinations when you enquire."
+      "The Corporate Office and every ICB branch can share the current Travel Insurance information.",
+      "Travel Insurance is also listed in the Resource Centre alongside ICB's other published material."
     ],
+    /* Sales suspended: no enquiry CTA that implies cover can be arranged. */
+    suspended: true,
     status: {
       tone: "notice",
-      text: "Availability note: travel insurance sales are currently suspended. Contact ICB for the latest information."
+      text: "Existing customers who require support with a Travel Insurance claim can contact ICB for the published support information. ICB will publish current information when there is an update."
     },
     glyph: "plane",
     artMotif: "travel",
-    related: ["mexican", "property"],
+    related: ["property", "motor"],
     claimPathways: []
   },
   {
     id: "mexican",
     route: "#/insurance/mexican",
     name: "Mexican Insurance",
-    kicker: "For the drive across the northern border",
-    short: "Mexican law requires liability insurance issued by a Mexico-authorized insurer. Arrange it before you travel.",
-    standfirst: "Driving into Mexico? Mexican law requires liability insurance issued by an insurer authorized in Mexico. ICB can help you arrange it before you travel.",
-    covers: ["Private vehicles entering Mexico", "Trips of different durations"],
-    coversNote: "Coverage options to be confirmed with ICB.",
-    audience: "For Belizean drivers crossing into Mexico for shopping, family visits, business or holiday.",
+    kicker: "Driving into Mexico?",
+    short: "Access ICB's Mexican Insurance options through ANA Seguros.",
+    standfirst: "Driving into Mexico? Access ICB's Mexican Insurance options through ANA Seguros.",
+    covers: [],
+    audience: "For drivers travelling from Belize into Mexico.",
     goodToKnow: [
-      "A policy issued outside Mexico is not accepted as proof of financial responsibility on Mexican roads.",
-      "Northern branches, including Corozal and Orange Walk, are on the route to the border.",
-      "Bring your vehicle details and travel dates when you enquire."
+      "ICB's Mexican Insurance is provided through ANA Seguros.",
+      "Northern branches, including Corozal and the Corozal Border Branch, serve drivers heading to the border."
+    ],
+    /* ANA Seguros pathways published on ICB's Mexican Insurance page.
+       INTERNAL TODO: confirm the direct URLs with ICB; these route to the
+       ICB page that carries them today. */
+    anaPathways: [
+      { label: "Buy Now", key: "mexican" },
+      { label: "View Coverage", key: "mexican" },
+      { label: "Claims", key: "mexican" },
+      { label: "FAQs", key: "mexican" }
     ],
     status: null,
     glyph: "border",
     artMotif: "mexican",
-    related: ["motor", "travel"],
+    related: ["motor", "liability"],
     claimPathways: []
   }
 ];

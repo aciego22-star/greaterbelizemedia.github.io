@@ -1,7 +1,7 @@
 /* ============================================================================
    Home view — the executive demo surface.
    Rotating hero, task-first action bar, categories, guided discovery,
-   claims feature, nationwide, business feature, The ICB Story, the
+   claims feature, nationwide, business feature, ICB in Motion, the
    ICB Across Belize gallery, resources, contact band.
    ========================================================================== */
 window.ICB = window.ICB || {};
@@ -21,7 +21,7 @@ ICB.views = ICB.views || {};
       title: "Protecting Belize since 1981.",
       lead: "Insurance for the things you’ve built, the people you care about, and the road ahead.",
       actions: [
-        { label: "Get covered", href: "#/insurance", primary: true },
+        { label: "Explore insurance", href: "#/insurance", primary: true },
         { label: "Make a claim", href: "#/claims" }
       ]
     },
@@ -35,7 +35,7 @@ ICB.views = ICB.views || {};
       lead: "Liabilities, motor, marine and property cover for the life you have built.",
       actions: [
         { label: "Explore insurance", href: "#/insurance", primary: true },
-        { label: "Start an enquiry", href: "#/contact?topic=new-cover", ghost: true }
+        { label: "Request information", href: "#/contact?topic=new-cover", ghost: true }
       ]
     },
     {
@@ -44,7 +44,7 @@ ICB.views = ICB.views || {};
       title: "Four decades of standing with Belize.",
       lead: "More than four decades of protecting Belizean homes, businesses, vehicles and livelihoods.",
       actions: [
-        { label: "Get covered", href: "#/insurance", primary: true },
+        { label: "Explore insurance", href: "#/insurance", primary: true },
         { label: "About ICB", href: "#/about" }
       ]
     }
@@ -254,7 +254,7 @@ ICB.views = ICB.views || {};
             '<div class="rv">' +
               '<hr class="claims-rule" aria-hidden="true">' +
               '<h2 id="claims-feature-title">When something happens, know what to do next.</h2>' +
-              '<p class="lead">Clear pathways, official forms and a team that keeps you informed. The moment you need us is the moment we are built for.</p>' +
+              '<p class="lead">Clear pathways, official ICB forms and a claims team that keeps you informed. The moment you need us is the moment we are built for.</p>' +
               '<div class="btn-row" style="margin-top: var(--sp-5);">' +
                 '<a class="btn btn-gold" href="#/claims">How claims work</a>' +
                 '<a class="btn btn-light" href="#/claims">Find your claim form</a>' +
@@ -264,7 +264,7 @@ ICB.views = ICB.views || {};
                 '<ul class="values-list">' + values + "</ul>" +
               "</div>" +
             "</div>" +
-            '<ol class="crail" aria-label="The four first steps of a claim">' + rail + "</ol>" +
+            '<ol class="crail" aria-label="Four steps to reach the ICB claims team">' + rail + "</ol>" +
           "</div>" +
         "</div>" +
       "</section>";
@@ -307,7 +307,7 @@ ICB.views = ICB.views || {};
           '<div class="rv">' +
             '<span class="eyebrow">Business insurance</span>' +
             '<h2 id="biz-title">Protection for the business you have built.</h2>' +
-            "<p>From the corner shop to the commercial fleet, ICB has insured Belizean enterprise since 1981. Premises, vehicles, cargo and liability, arranged around the way your business actually runs.</p>" +
+            "<p>ICB offers insurance options for Belizean businesses across property, vehicles, cargo, marine and liability needs.</p>" +
             '<div class="stat-chips">' +
               '<span class="stat-chip"><span class="num">7</span><span class="lbl">Lines of cover</span></span>' +
               '<span class="stat-chip"><span class="num">6</span><span class="lbl">Districts served</span></span>' +
@@ -322,81 +322,72 @@ ICB.views = ICB.views || {};
       "</section>";
   }
 
-  function story() {
-    return '' +
-      '<section class="section" aria-labelledby="story-title">' +
-        '<div class="shell">' +
-          ICB.render.sectionHead({
-            eyebrow: "The ICB Story",
-            title: "Four decades of standing with Belize.",
-            sub: "More than four decades of protecting Belizean homes, businesses, vehicles and livelihoods.",
-            id: "story-title"
-          }) +
-          '<figure class="video-frame art-panel rv" data-img-slot="story-poster">' +
-            ICB.art.panel("poster") +
-            (ICB.DATA.site.media.storyVideoAvailable
-              ? '<video class="story-video" src="' + ICB.render.esc(ICB.DATA.site.media.storyVideoSrc) + '"' +
-                (ICB.DATA.site.media.storyVideoPoster ? ' poster="' + ICB.render.esc(ICB.DATA.site.media.storyVideoPoster) + '"' : "") +
-                ' preload="none" playsinline hidden></video>'
-              : "") +
-            '<button type="button" class="play-btn" data-story-play aria-label="Play the ICB story film">' +
-              ICB.art.glyph("play") +
-            "</button>" +
-            '<p class="video-note" data-story-note hidden>Film placement. Final footage to be supplied by ICB.</p>' +
-            '<figcaption class="video-caption">' +
-              '<span class="eyebrow">Founded in 1981</span>' +
-              '<span class="video-line">' + ICB.render.esc(ICB.DATA.site.org.story) + "</span>" +
-            "</figcaption>" +
-          "</figure>" +
-        "</div>" +
-      "</section>";
+  /* ICB in Motion: the campaign film, in its own media area. */
+  function motion() {
+    return ICB.render.motionSection({
+      title: "Life Happens Fast.",
+      sub: "ICB's campaign film, shot in Belize."
+    });
   }
 
-  /* Real ICB imagery: the supplied headquarters photograph and frames from
-     ICB's own Life Happens Fast campaign film. Shared with the Gallery
-     page (js/views/gallery.js); add approved photographs here and both
-     surfaces pick them up without any layout change. */
-  ICB.GALLERY_ITEMS = [
-    { src: "assets/img/icb-hq.webp", caption: "ICB Headquarters, Belize City", alt: "Aerial view of the Insurance Corporation of Belize headquarters" },
-    { src: "assets/img/gallery/hq-street.jpg", caption: "The ICB building, Belize City", alt: "Street view of the ICB headquarters building" },
-    { src: "assets/img/gallery/service.jpg", caption: "Service you can sit down with", alt: "A customer completing paperwork at an ICB desk" },
-    { src: "assets/img/gallery/home.jpg", caption: "At home in Belize", alt: "A couple relaxing in their Belizean living room" },
-    { src: "assets/img/gallery/road.jpg", caption: "On the road", alt: "A couple in their vehicle" },
-    { src: "assets/img/gallery/community.jpg", caption: "In the community", alt: "A couple walking through a Belizean garden path" },
-    { src: "assets/img/gallery/campaign.jpg", caption: "The Life Happens Fast campaign", alt: "ICB Life Happens Fast campaign title card with the ICB mascot", light: true },
-    { src: "assets/img/products/mexican.jpg", caption: "Belize City from above", alt: "Aerial view of the Belize City coastal road" }
-  ];
-
+  /* ICB Across Belize: branches first. The gallery data and the lightbox
+     list live in js/data/gallery.js, shared with the Gallery page. */
   function gallery() {
     var R = ICB.render;
-    var items = ICB.GALLERY_ITEMS.slice(0, 6).map(function (g, i) {
-      return '<figure class="gallery-item rv' + (g.light ? " gallery-item--light" : "") + '">' +
-        '<button type="button" class="g-open" data-lightbox="' + i + '" aria-label="View larger: ' + R.esc(g.caption) + '">' +
-          '<img src="' + R.esc(g.src) + '" alt="' + R.esc(g.alt) + '" loading="lazy">' +
-        "</button>" +
-        "<figcaption>" +
-          '<span class="g-index" aria-hidden="true">0' + (i + 1) + "</span>" +
-          '<span class="g-name">' + R.esc(g.caption) + "</span>" +
-        "</figcaption>" +
-        "</figure>";
-    }).join("");
     return '' +
-      '<section class="section" aria-labelledby="gallery-title">' +
+      '<section class="section section--tint" aria-labelledby="gallery-title">' +
         '<div class="shell">' +
           R.sectionHead({
             eyebrow: "ICB Across Belize",
-            title: "Protecting what matters, across the country.",
-            sub: "From Corozal to Punta Gorda, ICB serves communities across Belize through a nationwide network of branches and agencies. Imagery from ICB's headquarters and the Life Happens Fast campaign film.",
+            title: "A branch in your part of the country.",
+            sub: "From Corozal to Punta Gorda, ICB serves communities across Belize through a nationwide network of branches and agencies.",
             center: true,
             id: "gallery-title"
           }) +
-          '<div class="gallery">' + items + "</div>" +
+          '<div class="gallery gallery--branches">' + R.branchGallery(6) + "</div>" +
           '<div class="btn-row" style="margin-top: var(--sp-6); justify-content: center;">' +
             '<a class="btn btn-outline" href="#/gallery">See the full gallery</a>' +
           "</div>" +
         "</div>" +
       "</section>";
   }
+
+  /* Shared featured-video player: used by the homepage and the Gallery
+     page. Playback is click-to-start; if the source ever fails, a neutral
+     note appears and nothing breaks. */
+  ICB.initFeaturedVideo = function (mount) {
+    var play = mount.querySelector("[data-story-play]");
+    var note = mount.querySelector("[data-story-note]");
+    var video = mount.querySelector(".story-video");
+    if (!play || !note) return;
+
+    if (!video) {
+      play.addEventListener("click", function () {
+        play.hidden = true;
+        note.hidden = false;
+        note.setAttribute("tabindex", "-1");
+        note.focus();
+      });
+      return;
+    }
+
+    play.addEventListener("click", function () {
+      play.hidden = true;
+      video.hidden = false;
+      video.controls = true;
+      var fail = function () {
+        video.hidden = true;
+        note.hidden = false;
+        note.setAttribute("tabindex", "-1");
+        note.focus();
+      };
+      video.addEventListener("error", fail, { once: true });
+      video.play().catch(function () {
+        if (!video.error) return;
+        fail();
+      });
+    });
+  };
 
   /* Shared lightbox: used by the homepage gallery and the Gallery page. */
   var lbOverlay = null, lbCloser = null;
@@ -492,12 +483,12 @@ ICB.views = ICB.views || {};
             R.assistBadge() +
           "</div>" +
           '<div class="contact-band-card rv">' +
-            "<h3>Start an enquiry</h3>" +
+            "<h3>Send ICB a message</h3>" +
             "<address>" + R.esc(site.corporate.label) + "<br>" +
               R.esc(site.corporate.address) + ", " + R.esc(site.corporate.poBox) + "<br>" +
               R.esc(site.corporate.city) + ", Belize</address>" +
             '<div class="btn-row">' +
-              '<a class="btn btn-gold" href="#/contact">Start an enquiry</a>' +
+              '<a class="btn btn-gold" href="#/contact">Send a message</a>' +
               '<a class="btn btn-light" href="#/locations">Find a branch</a>' +
             "</div>" +
           "</div>" +
@@ -509,44 +500,14 @@ ICB.views = ICB.views || {};
     title: "ICB | Protecting Belize since 1981",
     render: function () {
       return heroSlider() + actionBar() + categories() + guidedDiscovery() +
-        claimsFeature() + nationwide() + bizFeature() + story() + gallery() +
+        claimsFeature() + nationwide() + bizFeature() + motion() + gallery() +
         resourcesTeaser() + contactBand();
     },
     mounted: function (mount) {
       initSlider(mount);
       ICB.initLightbox(mount);
       ICB.render.initQuiz(mount);
-      var play = mount.querySelector("[data-story-play]");
-      var note = mount.querySelector("[data-story-note]");
-      var storyVideo = mount.querySelector(".story-video");
-      if (play && note && !storyVideo) {
-        play.addEventListener("click", function () {
-          note.hidden = false;
-          play.hidden = true;
-          note.setAttribute("tabindex", "-1");
-          note.focus();
-        });
-      }
-      if (play && note && storyVideo) {
-        // Plays the real ICB film; if the source ever fails to load the
-        // placement note appears and nothing breaks.
-        play.addEventListener("click", function () {
-          play.hidden = true;
-          storyVideo.hidden = false;
-          storyVideo.controls = true;
-          var fail = function () {
-            storyVideo.hidden = true;
-            note.hidden = false;
-            note.setAttribute("tabindex", "-1");
-            note.focus();
-          };
-          storyVideo.addEventListener("error", fail, { once: true });
-          storyVideo.play().catch(function () {
-            if (!storyVideo.error) return;
-            fail();
-          });
-        });
-      }
+      ICB.initFeaturedVideo(mount);
     }
   };
 })();

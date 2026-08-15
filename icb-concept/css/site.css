@@ -1155,11 +1155,59 @@ button {
   text-align: center;
 }
 
-/* Gallery: editorial mosaic */
+/* ICB in Motion: featured film beside the areas the section will carry. */
+.motion-layout {
+  display: grid;
+  grid-template-columns: 1.55fr 0.85fr;
+  gap: var(--sp-6);
+  align-items: start;
+}
+.motion-side h3 {
+  font-family: var(--font-sans);
+  font-size: var(--fs-200);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-accent-ink);
+  margin-bottom: var(--sp-4);
+}
+.motion-cats { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-3); }
+.motion-cat {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  border: 1px solid var(--c-line-soft);
+  border-radius: var(--r-md);
+  background: var(--c-surface);
+}
+.motion-cat-icon {
+  flex: none;
+  width: 40px; height: 40px;
+  border-radius: var(--r-sm);
+  background: var(--c-tint);
+  color: var(--c-cta);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.motion-cat-icon .glyph { width: 20px; height: 20px; }
+.motion-cat-text { display: flex; flex-direction: column; line-height: 1.35; min-width: 0; }
+.motion-cat-text strong { font-size: var(--fs-300); color: var(--c-brand); }
+.motion-cat-text span { font-size: var(--fs-200); color: var(--c-text-soft); }
+
+@media (max-width: 899px) {
+  .motion-layout { grid-template-columns: 1fr; }
+}
+
+/* Gallery: editorial mosaic. Auto-fill keeps the rhythm intact for any
+   number of tiles, so branch photographs can be added without touching
+   the layout. */
 .gallery {
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-auto-rows: 88px;
+  grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
+  grid-auto-rows: 190px;
+  grid-auto-flow: dense;
   gap: 20px;
 }
 .gallery-item {
@@ -1167,15 +1215,18 @@ button {
   margin: 0;
   border-radius: var(--r-md);
   overflow: hidden;
+  background: var(--c-ink-900);
 }
-.gallery-item:nth-child(1) { grid-column: 1 / span 7; grid-row: span 4; }
-.gallery-item:nth-child(2) { grid-column: 8 / span 5; grid-row: span 2; }
-.gallery-item:nth-child(3) { grid-column: 8 / span 5; grid-row: span 2; }
-.gallery-item:nth-child(4) { grid-column: 1 / span 4; grid-row: span 3; }
-.gallery-item:nth-child(5) { grid-column: 5 / span 4; grid-row: span 3; }
-.gallery-item:nth-child(6) { grid-column: 9 / span 4; grid-row: span 3; }
-.gallery-item:nth-child(7) { grid-column: 1 / span 6; grid-row: span 3; }
-.gallery-item:nth-child(8) { grid-column: 7 / span 6; grid-row: span 3; }
+.gallery-item:nth-child(6n+1) { grid-column: span 2; grid-row: span 2; }
+
+/* Branch grid: a directory, so tiles stay even and only the lead
+   photograph runs wide. Keeps its rhythm at any number of branches. */
+.gallery--branches {
+  grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr));
+  grid-auto-rows: 215px;
+}
+.gallery--branches .gallery-item { grid-column: span 1; grid-row: span 1; }
+.gallery--branches .gallery-item:first-child { grid-column: span 2; }
 
 .gallery-item .g-open {
   position: absolute;
@@ -1252,17 +1303,11 @@ button {
   inset: auto 0 0 0;
   z-index: 2;
   padding: 44px 16px 14px;
-  background: linear-gradient(0deg, rgba(6, 6, 7, 0.55), transparent 75%);
+  background: linear-gradient(0deg, rgba(6, 6, 7, 0.72), transparent 78%);
   display: flex;
-  align-items: baseline;
-  gap: 10px;
-}
-.gallery-item .g-index {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 0.75rem;
-  letter-spacing: 0.14em;
-  color: var(--c-accent-soft);
+  flex-direction: column;
+  gap: 2px;
+  pointer-events: none;
 }
 .gallery-item .g-name {
   font-family: var(--font-sans);
@@ -1272,16 +1317,79 @@ button {
   text-transform: uppercase;
   color: var(--inv);
 }
-
-@media (max-width: 999px) and (min-width: 640px) {
-  .gallery { grid-template-columns: 1fr 1fr; grid-auto-rows: 150px; }
-  .gallery-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
-  .gallery-item:nth-child(n+2) { grid-column: span 1; grid-row: span 1; }
+.gallery-item .g-sub {
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: var(--c-accent-soft);
 }
+
+/* Location plate: the designed tile a branch shows until its official
+   photograph is supplied. Built from the verified branch record. */
+.gallery-item--plate { background: var(--c-ink-900); }
+.g-plate {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  cursor: pointer;
+  background:
+    radial-gradient(120% 90% at 50% 0%, rgba(209, 33, 38, 0.30), transparent 62%),
+    linear-gradient(180deg, #17171A, #0B0B0C);
+  transition: background-color var(--t-fast) var(--ease);
+}
+.g-plate::after {
+  content: "";
+  position: absolute;
+  inset: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: var(--r-sm);
+  pointer-events: none;
+}
+.gallery-item--plate:hover .g-plate { background-color: rgba(209, 33, 38, 0.10); }
+.g-plate:focus-visible { outline: 2px solid var(--c-accent); outline-offset: -6px; }
+.g-plate-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: var(--sp-5) var(--sp-4) 46px;
+  text-align: center;
+}
+.g-plate-mark {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: var(--c-accent-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.g-plate-mark .glyph { width: 20px; height: 20px; }
+.g-plate-name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.0625rem;
+  line-height: 1.25;
+  color: var(--inv);
+  max-width: 15rem;
+}
+.g-plate-type {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--c-text-inverse-soft);
+}
+.gallery-item--plate figcaption { background: linear-gradient(0deg, rgba(6, 6, 7, 0.85), transparent 78%); }
+
 @media (max-width: 639px) {
-  .gallery { grid-template-columns: 1fr; grid-auto-rows: unset; }
-  .gallery-item { grid-column: 1 !important; grid-row: auto !important; height: 210px; }
-  .gallery-item:nth-child(1) { height: 260px; }
+  .gallery { grid-auto-rows: 210px; }
+  .gallery-item:nth-child(6n+1) { grid-column: span 1; }
+  .gallery--branches .gallery-item:first-child { grid-column: span 1; }
 }
 
 /* Resources teaser */
@@ -1486,10 +1594,39 @@ button {
   gap: var(--sp-8);
   align-items: start;
 }
-.prod-covers { margin-top: var(--sp-4); }
+.prod-covers { margin-top: var(--sp-3); }
 .prod-covers li { color: var(--c-brand); }
 .prod-covers .glyph { color: var(--c-accent-ink); }
 .prod-grid .concept-flag { margin-top: var(--sp-4); }
+.prod-list-label {
+  font-family: var(--font-sans);
+  font-size: var(--fs-200);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-accent-ink);
+  margin: var(--sp-6) 0 0;
+}
+.prod-list-label:first-of-type { margin-top: var(--sp-5); }
+
+/* ANA Seguros pathways (Mexican Insurance). */
+.ana-block {
+  margin-top: var(--sp-6);
+  padding: var(--sp-5);
+  border: 1px solid var(--c-line-soft);
+  border-radius: var(--r-lg);
+  background: var(--c-tint);
+}
+.ana-block h3 {
+  font-family: var(--font-sans);
+  font-size: var(--fs-300);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-accent-ink);
+  margin-bottom: var(--sp-4);
+}
+.ana-block .pathway-note { margin-top: var(--sp-3); }
 .prod-side {
   background: var(--c-surface);
   border: 1px solid var(--c-line-soft);
@@ -1532,11 +1669,31 @@ button {
   text-align: center;
   padding-top: var(--sp-2);
 }
+/* Published product names inside a business segment card. */
+.biz-items {
+  list-style: none;
+  margin: 0 0 var(--sp-4);
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.biz-items li {
+  font-size: var(--fs-200);
+  font-weight: 600;
+  color: var(--c-accent-ink);
+  background: var(--c-tint);
+  border: 1px solid var(--c-line-soft);
+  border-radius: 999px;
+  padding: 3px 10px;
+}
+
 .card-grid--pair { grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr)); }
 
 @media (max-width: 899px) {
   .prod-grid { grid-template-columns: 1fr; gap: var(--sp-6); }
 }
+.prod-grid--single { grid-template-columns: 1fr; max-width: 56rem; }
 
 /* ============================ Bands ============================ */
 
@@ -1743,16 +1900,7 @@ select.input {
   display: flex; align-items: center; justify-content: center;
 }
 .pathway-glyph .glyph { width: 22px; height: 22px; }
-.pathway-lead { color: var(--c-text-soft); font-size: var(--fs-300); }
-.pathway-helpful h4 {
-  font-size: var(--fs-200);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--c-accent-ink);
-  margin-bottom: var(--sp-2);
-}
-.pathway-helpful ul { font-size: var(--fs-300); color: var(--c-text-soft); margin-bottom: var(--sp-4); }
-.pathway-helpful li { margin-bottom: 0.3rem; }
+.pathway-lead { color: var(--c-text-soft); font-size: var(--fs-300); margin-bottom: var(--sp-4); }
 .pathway-actions { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-top: auto; }
 .pathway-note { font-size: var(--fs-200); color: var(--c-text-soft); margin-top: var(--sp-3); }
 
@@ -1888,7 +2036,7 @@ select.input {
 
 .official-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(250px, 100%), 1fr));
   gap: var(--sp-4);
 }
 .official-card {
@@ -1906,6 +2054,28 @@ select.input {
 .official-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); border-color: #CFCCCA; color: var(--c-text); }
 .official-card strong { color: var(--c-cta); display: inline-flex; align-items: center; gap: 0.4rem; }
 .official-card span { font-size: var(--fs-300); color: var(--c-text-soft); }
+.official-card .official-glyph {
+  flex: none;
+  width: 42px; height: 42px;
+  border-radius: var(--r-sm);
+  background: var(--c-tint);
+  color: var(--c-cta);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--sp-1);
+}
+.official-card .official-glyph .glyph { width: 21px; height: 21px; }
+
+/* Reserved slot: clearly an empty space, never a document. */
+.official-card--slot {
+  background: transparent;
+  border-style: dashed;
+  border-color: var(--c-line);
+  justify-content: center;
+}
+.official-card--slot strong { color: var(--c-text-soft); }
+.official-card--slot span { color: var(--c-text-soft); opacity: 0.8; }
 
 /* ============================ Contact page ============================ */
 
@@ -2264,12 +2434,30 @@ select.input {
 }
 .call-row:hover .call-row-icon { background: var(--red-050); border-color: var(--c-cta); }
 .call-row-icon .glyph { width: 18px; height: 18px; }
+/* The Corporate Office line offered where a branch publishes none of its
+   own. Quieter than a direct branch line so the two never look alike. */
+.msg-action--corp {
+  color: var(--c-text-soft);
+  border-style: dashed;
+}
+.msg-action--corp .glyph { opacity: 0.7; }
+
 .call-note {
   margin-top: var(--sp-5);
   padding-top: var(--sp-4);
   border-top: 1px solid var(--c-line-soft);
 }
+.call-note h3 {
+  font-family: var(--font-sans);
+  font-size: var(--fs-200);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-accent-ink);
+  margin-bottom: var(--sp-2);
+}
 .call-note p { font-size: var(--fs-300); color: var(--c-text-soft); margin-bottom: var(--sp-3); }
+.call-note-actions { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
 
 /* ============================ Responsive chrome ============================ */
 

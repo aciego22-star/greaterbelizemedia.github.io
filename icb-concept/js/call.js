@@ -29,9 +29,10 @@ window.ICB = window.ICB || {};
   function directoryHtml() {
     var R = ICB.render;
     var withPhones = ICB.DATA.locations.filter(function (l) { return l.phones && l.phones.length; });
-    var waOnly = ICB.DATA.locations.filter(function (l) {
-      return (!l.phones || !l.phones.length) && l.whatsapps && l.whatsapps.length;
-    });
+    /* Every location ICB does not publish a direct line for. They are still
+       reachable: some on WhatsApp, all through the Corporate Office. */
+    var noLine = ICB.DATA.locations.filter(function (l) { return !l.phones || !l.phones.length; });
+    var anyWa = noLine.some(function (l) { return l.whatsapps && l.whatsapps.length; });
 
     var groups = ICB.DATA.districts.map(function (d) {
       var locs = withPhones.filter(function (l) { return l.district === d; });
@@ -42,12 +43,20 @@ window.ICB = window.ICB || {};
       "</section>";
     }).join("");
 
-    var waNote = waOnly.length
+    var co = ICB.DATA.site.corporate;
+    var waNote = noLine.length
       ? '<div class="call-note">' +
-          "<p>" + R.esc(waOnly.map(function (l) { return l.name; }).join(", ")) +
-          " publish a WhatsApp line rather than a landline.</p>" +
-          '<button type="button" class="btn btn-sm btn-outline" data-wa-directory>' +
-            ICB.art.waIcon() + "<span>Open the WhatsApp directory</span></button>" +
+          "<h3>Other locations</h3>" +
+          "<p>" + R.esc(noLine.map(function (l) { return l.name; }).join(", ")) +
+          ". The Corporate Office can connect you with any of these.</p>" +
+          '<div class="call-note-actions">' +
+            '<a class="btn btn-sm btn-primary" href="tel:' + R.esc(co.phoneTel) + '">' +
+              ICB.art.glyph("phone") + "<span>Call " + R.esc(co.phoneDisplay) + "</span></a>" +
+            (anyWa
+              ? '<button type="button" class="btn btn-sm btn-outline" data-wa-directory>' +
+                  ICB.art.waIcon() + "<span>WhatsApp directory</span></button>"
+              : "") +
+          "</div>" +
         "</div>"
       : "";
 

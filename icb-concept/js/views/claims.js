@@ -1,6 +1,7 @@
 /* ============================================================================
-   Claims view — pathways, official forms, five-step guide.
-   Administrative guidance only: no liability assessment, no promises.
+   Claims view — pathways, official forms, and the route to ICB's claims
+   team. Administrative guidance only: no liability assessment, no claim
+   requirements, no promises.
    ========================================================================== */
 window.ICB = window.ICB || {};
 ICB.views = ICB.views || {};
@@ -26,7 +27,7 @@ ICB.views = ICB.views || {};
           '<div class="shell page-hero-inner">' +
             '<span class="eyebrow">Claims</span>' +
             '<h1 id="claims-title">When something happens, know what to do next.</h1>' +
-            '<p class="hero-lead">Choose your claim type, download the official form, and reach the right ICB team. We will guide you from there.</p>' +
+            '<p class="hero-lead">Choose your claim type, open the official ICB claim form, and reach the ICB claims team. They will guide you through the applicable next steps.</p>' +
             '<ul class="values-strip" aria-label="ICB claims service values">' + values + "</ul>" +
           "</div>" +
         "</section>" +
@@ -46,8 +47,9 @@ ICB.views = ICB.views || {};
         '<section class="section section--tint" aria-labelledby="steps-title">' +
           '<div class="shell">' +
             R.sectionHead({
-              eyebrow: "What to expect",
-              title: "Five clear steps, start to finish.",
+              eyebrow: "How to begin",
+              title: "Four steps to reach the claims team.",
+              sub: "ICB's claims team explains what a specific claim requires.",
               id: "steps-title"
             }) +
             R.steps(data.steps) +

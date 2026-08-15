@@ -1,21 +1,29 @@
 /* ============================================================================
-   ICB.DATA.claims — claim pathways and process guide.
-   The five claim types mirror the downloadable forms published on ICB's
-   current website. formUrl points at the official ICB claims page; replace
-   with direct PDF links when supplied by ICB.
-   Copy never assesses liability, promises approval or estimates settlement.
+   ICB.DATA.claims — claim forms and the administrative pathway to them.
+
+   CONTENT RULE: the claim types below mirror the claim forms ICB publishes
+   on its own website, and the service values are ICB's own published
+   claims values. Nothing here states what documents, evidence, reports or
+   settlement steps a claim requires. Those instructions belong to ICB and
+   are given by an ICB claims representative.
+
+   INTERNAL TODO (not client-facing):
+   - Replace formUrl with direct PDF links per claim type once ICB supplies
+     them; today every button opens ICB's published claims forms page.
+   - Confirm the published form titles read exactly as listed here.
    ========================================================================== */
 window.ICB = window.ICB || {};
 ICB.DATA = ICB.DATA || {};
 
 ICB.DATA.claims = {
-  // Verbatim service values from the current ICB website:
-  values: "Clear and consistent communication. Empathy to claimants. Excellent follow through and follow up. Fair and accurate settlements.",
+  /* Verbatim service values published by ICB: */
+  values: "Clear and consistent communication. Empathy to claimants. Excellent follow through and follow up. Fair and accurate settlements. Prompt and final resolutions.",
   valuesList: [
     "Clear and consistent communication",
     "Empathy to claimants",
     "Excellent follow through and follow up",
-    "Fair and accurate settlements"
+    "Fair and accurate settlements",
+    "Prompt and final resolutions"
   ],
 
   pathways: [
@@ -23,15 +31,8 @@ ICB.DATA.claims = {
       id: "motor",
       anchor: "motor",
       name: "Motor claim",
-      formLabel: "Motor Accident Form",
-      lead: "For damage or loss involving a vehicle insured with ICB.",
-      helpful: [
-        "Your policy details",
-        "The date, time and place of the incident",
-        "Photos of the scene and damage, if safe to take",
-        "A police report, where applicable",
-        "Details of any other vehicles or people involved"
-      ],
+      formLabel: "Insured Motor Accident Form",
+      lead: "For an ICB policyholder reporting an accident involving an insured vehicle.",
       glyph: "car"
     },
     {
@@ -39,13 +40,7 @@ ICB.DATA.claims = {
       anchor: "third-party",
       name: "Motor claim as a third party",
       formLabel: "Claimant Motor Accident Form",
-      lead: "For claimants involved in an accident with a vehicle insured by ICB.",
-      helpful: [
-        "The date, time and place of the accident",
-        "Details of the ICB-insured vehicle, if known",
-        "Photos of the scene and damage, if safe to take",
-        "A police report, where applicable"
-      ],
+      lead: "For a claimant involved in an accident with a vehicle insured by ICB.",
       glyph: "people"
     },
     {
@@ -53,13 +48,7 @@ ICB.DATA.claims = {
       anchor: "property",
       name: "Property claim",
       formLabel: "Property Claim Form",
-      lead: "For damage or loss at an insured home or business property.",
-      helpful: [
-        "Your policy details",
-        "When the damage or loss was discovered",
-        "Photos of the affected areas, if safe to take",
-        "A list of damaged or missing items, as best you can"
-      ],
+      lead: "For loss or damage at a property insured with ICB.",
       glyph: "house"
     },
     {
@@ -67,13 +56,7 @@ ICB.DATA.claims = {
       anchor: "marine",
       name: "Marine claim",
       formLabel: "Marine Claim Form",
-      lead: "For loss or damage involving an insured vessel.",
-      helpful: [
-        "Your policy details",
-        "The date, place and circumstances of the incident",
-        "Photos of the vessel and damage, if safe to take",
-        "Details of any other vessels or people involved"
-      ],
+      lead: "For loss or damage involving a vessel insured with ICB.",
       glyph: "boat"
     },
     {
@@ -81,42 +64,33 @@ ICB.DATA.claims = {
       anchor: "hurricane",
       name: "Hurricane claim",
       formLabel: "Hurricane Claim Form",
-      lead: "For property damage caused by a hurricane or named storm.",
-      helpful: [
-        "Your policy details",
-        "Photos of the damage, once it is safe to move around",
-        "Reasonable steps taken to prevent further damage",
-        "A list of affected areas and items, as best you can"
-      ],
+      lead: "For property loss or damage following a hurricane.",
       glyph: "storm"
     }
   ],
 
+  /* Administrative pathway only. It describes how to reach ICB's claims
+     team, not what a claim requires or how it is settled. */
   steps: [
     {
       n: 1,
-      title: "Make sure everyone is safe",
-      body: "People come first. If anyone is injured or in danger, contact emergency services before anything else."
+      title: "Identify your claim type",
+      body: "Choose the pathway that matches your situation."
     },
     {
       n: 2,
-      title: "Tell ICB as soon as you can",
-      body: "Call, visit a branch or send a message. Early contact helps the claims team guide you from the start."
+      title: "Access the relevant official ICB claim form",
+      body: "Each pathway links to the claim forms published by ICB."
     },
     {
       n: 3,
-      title: "Complete the official claim form",
-      body: "Download the form for your claim type and fill it in carefully. Your branch can help if anything is unclear."
+      title: "Contact ICB or your preferred branch",
+      body: "Reach the Corporate Office or the branch closest to you."
     },
     {
       n: 4,
-      title: "ICB reviews and keeps you informed",
-      body: "The claims team works with clear and consistent communication and follows up with you throughout."
-    },
-    {
-      n: 5,
-      title: "Continue according to ICB's process",
-      body: "Your claims representative will explain each next step until the claim is resolved fairly and accurately."
+      title: "The claims team will guide you through the applicable next steps",
+      body: "An ICB claims representative explains what happens from there."
     }
   ]
 };

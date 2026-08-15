@@ -1,12 +1,26 @@
 /* ============================================================================
    Product detail view — one renderer for all seven published categories.
    Copy is descriptive; next steps route to enquiry, phone or branches.
+
+   Two categories behave differently, and the renderer respects that:
+   - suspended (Travel): no enquiry action anywhere on the page.
+   - anaPathways (Mexican): ICB directs people to ANA Seguros, so the page
+     leads with those pathways rather than an ICB enquiry.
    ========================================================================== */
 window.ICB = window.ICB || {};
 ICB.views = ICB.views || {};
 
 (function () {
   "use strict";
+
+  function labelledList(label, items, R) {
+    if (!items || !items.length) return "";
+    var li = items.map(function (c) {
+      return '<li class="rv">' + ICB.art.glyph("check") + "<span>" + R.esc(c) + "</span></li>";
+    }).join("");
+    return '<h3 class="prod-list-label">' + R.esc(label) + "</h3>" +
+      '<ul class="values-list prod-covers">' + li + "</ul>";
+  }
 
   ICB.views.product = {
     title: function (ctx) {
@@ -15,12 +29,12 @@ ICB.views = ICB.views || {};
     },
     render: function (ctx) {
       var R = ICB.render;
+      var site = ICB.DATA.site;
       var p = ICB.DATA.productById(ctx.productId);
       if (!p) return ICB.views.notfound.render();
 
-      var covers = p.covers.map(function (c) {
-        return '<li class="rv">' + ICB.art.glyph("check") + "<span>" + R.esc(c) + "</span></li>";
-      }).join("");
+      var suspended = !!p.suspended;
+      var anaUrl = site.external.mexicanInsurance;
 
       var gtk = p.goodToKnow.map(function (g) {
         return '<li class="rv"><p>' + R.esc(g) + "</p></li>";
@@ -34,7 +48,7 @@ ICB.views = ICB.views || {};
             "<span>" + R.esc(c.name) + "</span></a>" : "";
         }).join("");
         claims = '<div class="prod-claims rv"><h3>If something happens</h3>' +
-          "<p>Clear pathways and official forms are ready when you need them.</p>" +
+          "<p>The official ICB claim forms and the route to the claims team are one click away.</p>" +
           '<div class="msg-actions">' + claims + "</div></div>";
       }
 
@@ -47,9 +61,54 @@ ICB.views = ICB.views || {};
         ? '<div class="notice rv"><p><strong>Please note.</strong> ' + R.esc(p.status.text) + "</p></div>"
         : "";
 
-      var coversNote = p.coversNote
-        ? '<p class="concept-flag">' + R.esc(p.coversNote) + "</p>"
-        : "";
+      /* ANA Seguros pathways, exactly as ICB presents them. */
+      var ana = "";
+      if (p.anaPathways && p.anaPathways.length) {
+        var btns = p.anaPathways.map(function (a, i) {
+          return '<a class="btn btn-sm ' + (i === 0 ? "btn-primary" : "btn-ghost") + '" href="' +
+            R.esc(anaUrl) + '" target="_blank" rel="noopener noreferrer">' + R.esc(a.label) + "</a>";
+        }).join("");
+        ana = '<div class="ana-block rv">' +
+          "<h3>Through ANA Seguros</h3>" +
+          '<div class="btn-row">' + btns + "</div>" +
+          '<p class="pathway-note">Opens ICB&#39;s Mexican Insurance page on icbinsurance.com.</p>' +
+        "</div>";
+      }
+
+      /* Hero actions. */
+      var heroActions;
+      if (suspended) {
+        heroActions =
+          '<a class="btn btn-gold" href="#/contact?topic=other&category=' + R.esc(p.id) + '">Contact ICB</a>' +
+          '<a class="btn btn-light" href="tel:' + R.esc(site.corporate.phoneTel) + '">Call ' + R.esc(site.corporate.phoneDisplay) + "</a>";
+      } else if (ana) {
+        heroActions =
+          '<a class="btn btn-gold" href="' + R.esc(anaUrl) + '" target="_blank" rel="noopener noreferrer">Buy Now</a>' +
+          '<a class="btn btn-light" href="tel:' + R.esc(site.corporate.phoneTel) + '">Call ' + R.esc(site.corporate.phoneDisplay) + "</a>";
+      } else {
+        heroActions =
+          '<a class="btn btn-gold" href="#/contact?topic=new-cover&category=' + R.esc(p.id) + '">Request information</a>' +
+          '<a class="btn btn-light" href="tel:' + R.esc(site.corporate.phoneTel) + '">Call ' + R.esc(site.corporate.phoneDisplay) + "</a>";
+      }
+
+      /* Next-step band. */
+      var bandActions = [];
+      if (!suspended && !ana) bandActions.push({ label: "Request information", href: "#/contact?topic=new-cover&category=" + p.id });
+      if (ana) bandActions.push({ label: "Go to ANA Seguros pathways", href: anaUrl, external: true });
+      if (suspended) bandActions.push({ label: "Contact ICB", href: "#/contact?topic=other&category=" + p.id });
+      bandActions.push({ label: "Call " + site.corporate.phoneDisplay, href: "tel:" + site.corporate.phoneTel });
+      bandActions.push({ label: "Visit a branch", href: "#/locations" });
+
+      var bandTitle = suspended
+        ? "Contact ICB about " + p.name + "."
+        : "Talk to ICB about " + p.name + ".";
+      var bandBody = suspended
+        ? "Call, send a message, or walk into any branch and the ICB team will share the current information."
+        : "Call, send a message, or walk into any branch and an ICB representative will take it from there.";
+
+      var whoHeading = suspended ? "Current status" : "Who this is for";
+      /* Nothing to list means no reason for a two-column grid. */
+      var single = !p.covers.length && !p.availableFor && !ana;
 
       return '' +
         '<section class="page-hero on-dark" aria-labelledby="prod-title">' +
@@ -61,23 +120,22 @@ ICB.views = ICB.views || {};
             '<span class="eyebrow">' + R.esc(p.kicker) + "</span>" +
             '<h1 id="prod-title">' + R.esc(p.name) + "</h1>" +
             '<p class="hero-lead">' + R.esc(p.standfirst) + "</p>" +
-            '<div class="btn-row">' +
-              '<a class="btn btn-gold" href="#/contact?topic=new-cover&category=' + R.esc(p.id) + '">Start an enquiry</a>' +
-              '<a class="btn btn-light" href="tel:' + R.esc(ICB.DATA.site.corporate.phoneTel) + '">Call ' + R.esc(ICB.DATA.site.corporate.phoneDisplay) + "</a>" +
-            "</div>" +
+            '<div class="btn-row">' + heroActions + "</div>" +
           "</div>" +
         "</section>" +
 
         '<section class="section" aria-labelledby="who-title">' +
-          '<div class="shell prod-grid">' +
+          '<div class="shell prod-grid' + (single ? " prod-grid--single" : "") + '">' +
             "<div>" +
-              (statusNote ? statusNote : "") +
-              '<h2 id="who-title">Who this is for</h2>' +
-              '<p>' + R.esc(p.audience) + "</p>" +
-              '<ul class="values-list prod-covers">' + covers + "</ul>" + coversNote +
+              '<h2 id="who-title">' + R.esc(whoHeading) + "</h2>" +
+              statusNote +
+              (p.audience ? "<p>" + R.esc(p.audience) + "</p>" : "") +
+              labelledList(p.coversLabel || "What ICB offers", p.covers, R) +
+              labelledList("Available for", p.availableFor, R) +
+              ana +
             "</div>" +
             '<aside class="prod-side rv">' +
-              '<h3>Good to know</h3>' +
+              "<h3>Good to know</h3>" +
               '<ul class="gtk-list">' + gtk + "</ul>" +
               claims +
               (p.campaign
@@ -92,14 +150,10 @@ ICB.views = ICB.views || {};
           '<div class="shell">' +
             R.band({
               eyebrow: "Take the next step",
-              title: "Talk to ICB about " + p.name.toLowerCase() + ".",
-              body: "No forms to fight with. Start an enquiry, call, or walk into any branch and our team will guide you.",
+              title: bandTitle,
+              body: bandBody,
               motif: "heritage",
-              actions: [
-                { label: "Start an enquiry", href: "#/contact?topic=new-cover&category=" + p.id },
-                { label: "Call " + ICB.DATA.site.corporate.phoneDisplay, href: "tel:" + ICB.DATA.site.corporate.phoneTel },
-                { label: "Visit a branch", href: "#/locations" }
-              ]
+              actions: bandActions
             }) +
           "</div>" +
         "</section>" +

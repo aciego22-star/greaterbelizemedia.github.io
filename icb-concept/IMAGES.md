@@ -1,10 +1,11 @@
 # Imagery status and plan
 
-The concept now uses REAL ICB imagery wherever an official asset is
-available: the supplied headquarters photograph, frames extracted from
-ICB's own "Life Happens Fast" campaign film, and photography cropped
-from the "Protect Your Investment" campaign artwork. Generated concept
-artwork remains only where no official ICB visual has been supplied yet.
+The concept uses REAL ICB imagery wherever an official asset exists: the
+supplied headquarters photographs, frames from ICB's own "Life Happens
+Fast" campaign film, photography cropped from the "Protect Your
+Investment" campaign artwork, and the supplied border, airport and port
+photographs. Generated concept artwork remains only where no official ICB
+visual has been supplied.
 
 ## Currently real (official ICB material)
 
@@ -15,36 +16,63 @@ artwork remains only where no official ICB visual has been supplied yet.
 | Motor card + page | Film frame: couple with their vehicle |
 | Marine Hull card + page | Boat photography from the campaign artwork |
 | Claims page hero | Film frame: customer completing paperwork with ICB |
-| Property / Motor / Liability page insets | Native-scale crops of the campaign artwork panels (home, vehicle, family) |
+| Property / Motor / Liability page insets | Native-scale crops of the campaign artwork panels |
 | Liability card + page | Film frame: handshake with an ICB representative |
-| Travel card + page | Supplied ICB campaign image: traveller at the departure gate |
-| Cargo card + page | Supplied ICB campaign image: container ship, port and freight trucks |
-| Mexican Insurance card + page | Supplied photograph: Aduana Mexico at Subteniente Lopez, the Belize and Mexico border |
+| Travel card + page | Supplied image: traveller at the departure gate |
+| Cargo card + page | Supplied image: container ship, port and freight trucks |
+| Mexican Insurance card + page | Supplied photograph: Aduana Mexico at Subteniente Lopez |
 | Insurance / Resources / Contact / Locations page heroes | Film frames and the HQ building |
 | Business feature | Film frame: ICB team member in branded uniform |
 | About page hero | HQ photograph |
-| ICB Across Belize gallery (8 items) | HQ photograph + seven film scenes |
-| Video poster | Frame from the film |
+| ICB in Motion featured video | The compressed campaign film + poster frame |
+| Branch gallery (2 of 10 tiles) | HQ photograph and the Daly Street Corporate Office |
+| Campaign gallery (6 tiles) | Scenes from the film and the campaign title card |
 
-## Still to supply
+## Still to supply: branch photography
 
-| Slot | What to supply |
+The branch gallery is the priority. Eight tiles currently render a
+designed location plate built from the verified branch record, and each
+upgrades to a photograph the moment a file is dropped in:
+
+| Tile | File to supply |
 | --- | --- |
-| Gallery and location cards | Branch photographs from icbinsurance.com/contact (Southside, Santa Elena, San Pedro, San Ignacio, Corozal Border, Independence, Ladyville and others), plus staff, event and community photography |
+| Belize City Southside Branch | `assets/img/branches/southside.jpg` |
+| Ladyville Branch | `assets/img/branches/ladyville.jpg` |
+| San Pedro Branch | `assets/img/branches/san-pedro.jpg` |
+| Corozal Border Branch | `assets/img/branches/corozal-border.jpg` |
+| San Narciso Branch | `assets/img/branches/san-narciso.jpg` |
+| Santa Elena Branch | `assets/img/branches/santa-elena.jpg` |
+| San Ignacio Branch | `assets/img/branches/san-ignacio.jpg` |
+| Independence Branch | `assets/img/branches/independence.jpg` |
 
-Gallery images live in one list, `ICB.GALLERY_ITEMS` at the top of
-`js/views/home.js`, shared by the homepage section (first six) and the
-Gallery page (all). Add `{ src, caption, alt }` entries and both
-surfaces pick them up with no layout change.
+These are the branch photographs published in ICB's own contact gallery.
+They could not be fetched from this environment (outbound requests to
+icbinsurance.com are blocked here), so they need to be supplied directly.
+
+Staff, event and community photography is also welcome; it goes in a
+second row of the same grid with no layout change.
 
 ## How to swap in an image
 
-1. Place the file under `assets/img/`.
-2. Point the matching slot's `src` in `js/data/images.js` at it (product
-   and section slots), or add it to the `GALLERY` list in
-   `js/views/home.js` with a short verified caption.
-3. Optional `pos` sets the crop focal point (CSS object-position).
+1. Place the file under `assets/img/branches/` (or `assets/img/` for
+   section slots).
+2. **Branch gallery:** set `src` on the matching entry in
+   `js/data/gallery.js`. The caption, district and type come from
+   `js/data/locations.js`, so they always match the branch record.
+3. **Product and section slots:** point the matching slot's `src` in
+   `js/data/images.js` at the file. Optional `pos` sets the crop focal
+   point (CSS `object-position`).
+4. **Campaign stills:** add `{ src, caption, alt }` to
+   `ICB.DATA.gallery.campaign`.
 
-Guidelines: landscape at least 1000px wide for cards, 1400px for
-feature placements; never stretch small images; do not caption an image
+## Video
+
+`ICB.DATA.gallery.video` drives the ICB in Motion area. The featured film
+plays from `assets/video/icb-story.mp4`. The three category tiles beside
+it describe what the section is built to carry next; they contain no
+invented videos. When ICB supplies another film, add it as a second
+featured entry.
+
+Guidelines: landscape at least 1000px wide for gallery tiles, 1400px for
+feature placements; never stretch small images; never caption an image
 with a branch or event identity unless it is verified.

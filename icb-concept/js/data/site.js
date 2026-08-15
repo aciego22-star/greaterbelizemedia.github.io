@@ -18,7 +18,11 @@ ICB.DATA.site = {
     heritageLine: "Protecting Belize since 1981.",
     // Verbatim from the current ICB website:
     serviceQuote: "We are always here for you, from Corozal to Punta Gorda. Contact our friendly staff and let us take care of you.",
-    story: "Founded in 1981 by Mr. Erdulfo 'Dufy' Nunez, ICB has grown from a small operation into one of the largest and most trusted insurance providers in Belize."
+    story: "Founded in 1981 by Mr. Erdulfo 'Dufy' Nunez, ICB has grown from a small two-person operation into one of the largest and most trusted insurance providers in Belize.",
+    /* Established ICB brand lines. Used sparingly, never stacked. */
+    positiveDifference: "Making a positive difference in a changing Belize.",
+    journeyLine: "At every step of your life's journey, ICB is there for you.",
+    homeLine: "Belize is our home."
   },
 
   corporate: {
@@ -45,6 +49,10 @@ ICB.DATA.site = {
     claimsForms: "https://www.icbinsurance.com/claims",
     consumerResources: "https://www.icbinsurance.com/consumer-resourses",
     payments: "https://billing.icbinsurance.com",
+    /* ICB's Mexican Insurance page, which carries the ANA Seguros
+       pathways. INTERNAL TODO: swap in the direct ANA Seguros links
+       (Buy Now, View Coverage, Claims, FAQs) once ICB supplies them. */
+    mexicanInsurance: "https://www.icbinsurance.com/mexican-insurance",
     website: "https://www.icbinsurance.com"
   },
 
@@ -60,7 +68,7 @@ ICB.DATA.site = {
   ],
 
   taskRoutes: [
-    { id: "cover", label: "I need insurance", short: "Get covered", href: "#/insurance", glyph: "shield" },
+    { id: "cover", label: "I need insurance", short: "Insurance", href: "#/insurance", glyph: "shield" },
     { id: "claim", label: "I need to make a claim", short: "Make a claim", href: "#/claims", glyph: "document" },
     { id: "policyholder", label: "I'm an existing policyholder", short: "Pay my premium", href: "https://billing.icbinsurance.com", external: true, note: "Opens ICB's payment portal", glyph: "card" },
     { id: "branch", label: "I need a branch", short: "Find a branch", href: "#/locations", glyph: "marker" },

@@ -1,11 +1,29 @@
 /* ============================================================================
-   Resource Centre view — consumer education plus official documents.
+   Resource Centre view — official ICB material only.
+   Nothing here presents newly written insurance education as ICB guidance.
    ========================================================================== */
 window.ICB = window.ICB || {};
 ICB.views = ICB.views || {};
 
 (function () {
   "use strict";
+
+  function externalCard(o, R, ext) {
+    var href = ext[o.hrefKey];
+    return '<a class="official-card rv" href="' + R.esc(href) + '"' + R.extAttrs() + ">" +
+      '<span class="official-glyph">' + ICB.art.glyph(o.glyph) + "</span>" +
+      "<strong>" + R.esc(o.label) + " " + R.extIcon() + "</strong>" +
+      "<span>" + R.esc(o.description) + "</span>" + R.extNote(R.hostOf(href)) +
+    "</a>";
+  }
+
+  function siteCard(o, R) {
+    return '<a class="official-card rv" href="' + R.esc(o.route) + '">' +
+      '<span class="official-glyph">' + ICB.art.glyph(o.glyph) + "</span>" +
+      "<strong>" + R.esc(o.label) + "</strong>" +
+      "<span>" + R.esc(o.description) + "</span>" +
+    "</a>";
+  }
 
   ICB.views.resources = {
     title: "Resource Centre | ICB",
@@ -14,26 +32,14 @@ ICB.views = ICB.views || {};
       var data = ICB.DATA.resources;
       var ext = ICB.DATA.site.external;
 
-      var guides = data.guides.map(function (g) {
-        return '<details class="acc rv" data-acc="' + R.esc(g.id) + '">' +
-          "<summary>" +
-            '<svg viewBox="0 0 24 24" class="acc-chevron" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>' +
-            "<span>" + R.esc(g.title) + "</span>" +
-            '<span class="badge">' + R.esc(g.tag) + "</span>" +
-          "</summary>" +
-          '<div class="acc-body">' +
-            g.body.map(function (p) { return "<p>" + R.esc(p) + "</p>"; }).join("") +
-          "</div>" +
-        "</details>";
-      }).join("");
+      var official = data.official.map(function (o) { return externalCard(o, R, ext); }).join("");
+      var safety = data.safety.map(function (o) { return externalCard(o, R, ext); }).join("");
+      var onSite = data.onSite.map(function (o) { return siteCard(o, R); }).join("");
 
-      var official = data.official.map(function (o) {
-        var href = ext[o.hrefKey];
-        return '<a class="official-card rv" href="' + R.esc(href) + '"' + R.extAttrs() + ">" +
-          "<strong>" + R.esc(o.label) + " " + R.extIcon() + "</strong>" +
-          "<span>" + R.esc(o.description) + "</span>" + R.extNote(R.hostOf(href)) +
-        "</a>";
-      }).join("");
+      var slot = '<div class="official-card official-card--slot rv" aria-hidden="true">' +
+        "<strong>" + R.esc(data.placeholder.label) + "</strong>" +
+        "<span>" + R.esc(data.placeholder.description) + "</span>" +
+      "</div>";
 
       return '' +
         '<section class="page-hero on-dark" aria-labelledby="res-title">' +
@@ -41,14 +47,14 @@ ICB.views = ICB.views || {};
           '<div class="shell page-hero-inner">' +
             '<span class="eyebrow">ICB Resource Centre</span>' +
             '<h1 id="res-title">Consumer Resources.</h1>' +
-            '<p class="hero-lead">Plain answers to common insurance questions, together with the official forms and documents from icbinsurance.com.</p>' +
+            '<p class="hero-lead">The forms, portals and safety material ICB publishes, gathered in one place.</p>' +
           "</div>" +
         "</section>" +
 
         '<section class="section" aria-labelledby="official-title">' +
           '<div class="shell">' +
             R.sectionHead({
-              eyebrow: "Official documents",
+              eyebrow: "Official ICB documents",
               title: "Forms and portals, straight from ICB.",
               id: "official-title"
             }) +
@@ -56,19 +62,30 @@ ICB.views = ICB.views || {};
           "</div>" +
         "</section>" +
 
-        '<section class="section section--tint" aria-labelledby="guides-title">' +
+        '<section class="section section--tint" aria-labelledby="safety-title">' +
           '<div class="shell">' +
             R.sectionHead({
-              eyebrow: "Good to know",
-              title: "Insurance, in plain language.",
-              sub: "General consumer information for Belize. For guidance about your own policy, contact ICB.",
-              id: "guides-title"
+              eyebrow: "Safety material",
+              title: "Preparation ICB publishes.",
+              sub: "Hurricane season and fire prevention information from icbinsurance.com.",
+              id: "safety-title"
             }) +
-            '<div class="acc-list">' + guides + "</div>" +
+            '<div class="official-grid">' + safety + slot + "</div>" +
           "</div>" +
         "</section>" +
 
-        '<section class="section" aria-label="Ask a question">' +
+        '<section class="section" aria-labelledby="onsite-title">' +
+          '<div class="shell">' +
+            R.sectionHead({
+              eyebrow: "On this site",
+              title: "Where to go next.",
+              id: "onsite-title"
+            }) +
+            '<div class="official-grid">' + onSite + "</div>" +
+          "</div>" +
+        "</section>" +
+
+        '<section class="section section--flush-top" aria-label="Ask a question">' +
           '<div class="shell">' +
             R.band({
               eyebrow: "Still curious?",

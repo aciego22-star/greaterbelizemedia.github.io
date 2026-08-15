@@ -36,7 +36,7 @@ ICB.views = ICB.views || {};
           "</div>" +
         "</section>" +
 
-        '<section class="section section--flush-top" aria-label="Start an enquiry">' +
+        '<section class="section section--flush-top" aria-label="Request information">' +
           '<div class="shell">' +
             R.band({
               eyebrow: "Here to help",
@@ -44,7 +44,7 @@ ICB.views = ICB.views || {};
               body: ICB.DATA.site.org.serviceQuote,
               motif: "heritage",
               actions: [
-                { label: "Start an enquiry", href: "#/contact?topic=new-cover" },
+                { label: "Request information", href: "#/contact?topic=new-cover" },
                 { label: "Call " + ICB.DATA.site.corporate.phoneDisplay, href: "tel:" + ICB.DATA.site.corporate.phoneTel }
               ]
             }) +

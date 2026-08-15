@@ -9,7 +9,7 @@ website or an offer of insurance.
 
 A complete, self-contained front-end prototype in ICB's red, black and
 white identity that reorganizes ICB's published public information
-around customer tasks: Get Covered, Make a Claim, Find a Branch. It runs
+around customer tasks: Explore Insurance, Make a Claim, Find a Branch. It runs
 from a static folder with zero external requests (fonts embedded, real
 ICB media included locally), so it works identically on any host,
 offline, and from disk.
@@ -38,7 +38,7 @@ Supplied by the client and integrated in this pass:
 - `assets/img/icb-protect-artwork.jpg` — the "Protect Your Investment"
   campaign artwork (hero slide 2).
 - `assets/video/icb-story.mp4` — the "Life Happens Fast" film,
-  compressed for web (hero slide 3, The ICB Story section).
+  compressed for web (hero slide 3, the ICB in Motion area).
 - `assets/img/products/`, `assets/img/gallery/` — real product and
   gallery imagery: frames from the film and photography cropped from
   the campaign artwork (see `IMAGES.md` for the full map).
@@ -51,7 +51,7 @@ Supplied by the client and integrated in this pass:
 (1080p, 23.7 MB source) compressed for web playback: H.264 at 1024px
 wide with light AAC audio, moov atom at the front, 3.8 MB total. The
 hero's third slide autoplays it muted and looped (paused under reduced
-motion and while the slide is inactive); The ICB Story section plays it
+motion and while the slide is inactive); the ICB in Motion area plays it
 with controls and sound. `assets/img/video-poster.jpg` is a frame from
 the film used as the poster. To swap in a new cut, replace the mp4 (and
 poster) and keep the same filenames.
@@ -67,34 +67,63 @@ greeting, opened with `target="_blank" rel="noopener noreferrer"`. The
 the mobile quick bar all read from that single dataset. Locations without
 a supplied WhatsApp number show no WhatsApp button.
 
-## Data provenance and placeholders
+## Content rules
 
-Every branch address, phone number, WhatsApp line, email, product
-category and claims form name was taken from ICB's current public
-website. Where a detail could not be verified, the interface says so
-plainly (for example, the San Pedro branch phone routes through the
-corporate office) instead of inventing anything. Search the data files
-for "TBC" and "to be confirmed" before any official use.
+Every public-facing sentence in this concept is one of three things:
+verified ICB information, a safe modern paraphrase of verified ICB
+information, or plain UX copy that makes no substantive insurance claim.
+Nothing states policy terms, premiums, limits, exclusions, claim
+requirements or legal requirements that ICB does not publish itself.
 
-Details to revisit with ICB before the concept goes further:
+Product categories and subcategories, the claims service values and the
+five claim form names are ICB's published lists, used verbatim. The
+claims pathway is administrative only: identify the claim type, open the
+official form, contact ICB, and the claims team explains the applicable
+next steps. It deliberately does not describe documents, reports,
+evidence or settlement.
 
-- **Claims forms.** "Download form" actions open ICB's official claims
-  page. When direct PDF URLs are available, set them per pathway in
-  `js/data/claims.js` (`external.claimsForms` in `js/data/site.js`
-  holds the shared default).
-- **Travel insurance.** The availability notice reflects ICB's current
-  published suspension of travel insurance sales; update the `status`
-  field in `js/data/products.js` when that changes.
-- **Photography.** Every visual panel is generated concept artwork and
-  doubles as a slot for approved ICB photography (`IMAGES.md`).
+Development notes live in code comments, never on the page. Search the
+data files for `INTERNAL TODO` for the full list. The open items are:
+
+- **Claims forms.** Form buttons open ICB's official claims page. Set
+  direct PDF URLs per pathway in `js/data/claims.js` when ICB supplies
+  them (`external.claimsForms` in `js/data/site.js` holds the default).
+- **Travel Insurance.** The page reflects ICB's current published
+  suspension of sales, and carries no action implying cover can be
+  arranged. Clear `suspended` in `js/data/products.js` if that changes.
+- **Mexican Insurance.** The ANA Seguros pathways (Buy Now, View
+  Coverage, Claims, FAQs) all route to ICB's Mexican Insurance page
+  until ICB supplies the direct ANA URLs.
+- **Branch details.** Several branches have no published landline,
+  street address or email reachable from here. Those cards offer the
+  Corporate Office line, clearly labelled as the Corporate Office, and
+  `js/data/locations.js` lists exactly which records need reconciling
+  against ICB's contact page.
+- **San Juan Village.** ICB's social presence indicates service there.
+  No contact details are published, so it is deliberately absent from
+  the public dataset and noted for confirmation instead.
+- **Resource Centre.** The seven consumer-education articles written for
+  the first draft were removed. They were not ICB material. The section
+  now signposts only what ICB publishes, with one clearly marked slot
+  for guides ICB writes and approves later.
+- **Branch photography.** Eight branch tiles render a designed location
+  plate until official photographs are supplied (`IMAGES.md`).
+
+## Locations
+
+`js/data/locations.js` is the single source of truth for all 19 branches,
+agencies and the Corporate Office, and it feeds the branch finder, the
+map, the WhatsApp directory, the call directory, the contact flow, the
+mobile quick actions and the gallery captions. Every published location
+is listed whether or not it has a WhatsApp line; WhatsApp availability
+never decides whether a location exists.
 
 ## Future digital assistance
 
-This draft deliberately contains no chat interface. A small "future
-digital assistance" note appears in the contact areas; the data files
-(`js/data/*.js`) already structure products, claims, locations and
-resources so a future ICB digital assistant can be built on the same
-content when the website concept is approved.
+This draft contains no chat interface and makes no claim about one, since
+ICB has not announced an assistant. The data files (`js/data/*.js`)
+structure products, claims, locations and resources so one can be built
+on the same content if ICB decides to.
 
 ## The contact form
 

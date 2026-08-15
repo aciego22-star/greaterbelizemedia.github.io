@@ -1,17 +1,36 @@
 /* ============================================================================
-   ICB.DATA.locations — branch and agency network. SINGLE SOURCE OF TRUTH
-   for every branch contact used by the branch finder, the WhatsApp
-   directory, the contact pages and mobile quick actions.
+   ICB.DATA.locations — the complete branch and agency network.
+   SINGLE SOURCE OF TRUTH for every location used by the branch finder, the
+   map, the WhatsApp directory, the call directory, the contact flow and
+   mobile quick actions.
 
-   Addresses, landlines and emails come from ICB's current public website.
-   WhatsApp lines are the verified numbers supplied for this concept
-   (client-provided directory, all districts). Locations with no supplied
-   WhatsApp number show no WhatsApp action; nothing is invented.
+   RULES
+   - Every published ICB branch and agency appears here. WhatsApp
+     availability does NOT decide whether a location exists.
+   - Locations with a verified WhatsApp line get the wa.me action.
+     Locations without one get no WhatsApp action.
+   - Addresses, landlines and emails shown are the ones ICB publishes.
+     Nothing is invented. Where ICB does not publish a direct line,
+     corporateLine: true offers the Corporate Office number, correctly
+     labelled as the Corporate Office.
+
+   INTERNAL TODO (not client-facing):
+   - Reconcile against ICB's current Contact page and telephone directory
+     for the branches still missing a published landline, street address
+     or email: Corozal Border, Corozal, San Pedro, Santa Elena (Cayo),
+     Benque Viejo Border, Benque Viejo Agency, Independence, Caye Caulker,
+     San Estevan, Seine Bight, San Narciso.
+   - SAN JUAN VILLAGE: ICB's social presence indicates service to San Juan
+     Village. No address, landline or WhatsApp line is published for it, so
+     it is deliberately NOT listed publicly. Confirm the location type and
+     contact details with ICB, then add an entry here.
+   - Confirm whether Benque Viejo Border Branch and Benque Viejo Agency are
+     two distinct locations or one location published under two names.
 
    whatsapps: array of { label?, display, wa } — wa is DIGITS ONLY and is
    used to build https://wa.me/<wa> links.
-   map: {x, y} are projected town coordinates inside the accurate
-   Belize map SVG (viewBox 0 0 300 560), derived from real latitude/longitude.
+   map: {x, y} are projected town coordinates inside the accurate Belize
+   map SVG (viewBox 0 0 300 560), derived from real latitude/longitude.
    ========================================================================== */
 window.ICB = window.ICB || {};
 ICB.DATA = ICB.DATA || {};
@@ -27,13 +46,14 @@ ICB.DATA.locations = [
     type: "Branch",
     district: "Corozal",
     town: "Santa Elena Border, Corozal",
-    address: "Northern Border, Corozal District",
+    address: "Northern Border, Santa Elena, Corozal District",
     phones: [],
+    corporateLine: true,
     whatsapps: [{ display: "+501 613-0919", wa: "5016130919" }],
     email: null,
-    mapQuery: "Santa Elena Border, Corozal, Belize",
+    mapQuery: "Santa Elena Border Crossing, Corozal, Belize",
     map: { x: 146.2, y: 68.1 },
-    note: "Reach this branch directly on WhatsApp. Full address available from our Corporate Office."
+    note: null
   },
   {
     id: "corozal",
@@ -41,13 +61,29 @@ ICB.DATA.locations = [
     type: "Branch",
     district: "Corozal",
     town: "Corozal Town",
-    address: "Corozal Town",
+    address: "Corozal Town, Corozal District",
     phones: [],
+    corporateLine: true,
     whatsapps: [{ display: "+501 613-4627", wa: "5016134627" }],
     email: null,
-    mapQuery: "Corozal Town, Belize",
+    mapQuery: "Insurance Corporation of Belize, Corozal Town, Belize",
     map: { x: 145.4, y: 82.6 },
-    note: "Reach this branch directly on WhatsApp. Full address available from our Corporate Office."
+    note: null
+  },
+  {
+    id: "san-narciso",
+    name: "San Narciso Branch",
+    type: "Branch",
+    district: "Corozal",
+    town: "San Narciso Village",
+    address: "San Narciso Village, Corozal District",
+    phones: [],
+    corporateLine: true,
+    whatsapps: [],
+    email: null,
+    mapQuery: "San Narciso Village, Corozal District, Belize",
+    map: { x: 130.6, y: 95.6 },
+    note: null
   },
 
   /* ---------------------------- Orange Walk ---------------------------- */
@@ -63,6 +99,21 @@ ICB.DATA.locations = [
     email: null,
     mapQuery: "Insurance Corporation of Belize, 48 Belize Corozal Road, Orange Walk Town, Belize",
     map: { x: 118.0, y: 133.9 },
+    note: null
+  },
+  {
+    id: "san-estevan",
+    name: "San Estevan Agency",
+    type: "Agency",
+    district: "Orange Walk",
+    town: "San Estevan Village",
+    address: "San Estevan Village, Orange Walk District",
+    phones: [],
+    corporateLine: true,
+    whatsapps: [],
+    email: null,
+    mapQuery: "San Estevan Village, Orange Walk District, Belize",
+    map: { x: 128.0, y: 139.3 },
     note: null
   },
 
@@ -120,6 +171,7 @@ ICB.DATA.locations = [
     town: "San Pedro, Ambergris Caye",
     address: "Pescador Drive, San Pedro Town, Ambergris Caye",
     phones: [],
+    corporateLine: true,
     whatsapps: [{ display: "+501 610-2941", wa: "5016102941" }],
     email: null,
     mapQuery: "Pescador Drive, San Pedro Town, Ambergris Caye, Belize",
@@ -132,16 +184,31 @@ ICB.DATA.locations = [
     type: "Agency",
     district: "Belize",
     town: "Caye Caulker",
-    address: "Caye Caulker Village",
+    address: "Caye Caulker Village, Belize District",
     phones: [],
+    corporateLine: true,
     whatsapps: [{ display: "+501 626-4748", wa: "5016264748" }],
     email: null,
     mapQuery: "Caye Caulker, Belize",
     map: { x: 202.3, y: 189.6 },
-    note: "Agency partner. Reach this location directly on WhatsApp."
+    note: null
   },
 
   /* ------------------------------- Cayo -------------------------------- */
+  {
+    id: "belmopan",
+    name: "Belmopan City Branch",
+    type: "Branch",
+    district: "Cayo",
+    town: "Belmopan",
+    address: "#6095 South Ring Road, Belmopan City",
+    phones: [{ display: "+501 822-0473", tel: "+5018220473" }],
+    whatsapps: [{ display: "+501 610-9178", wa: "5016109178" }],
+    email: null,
+    mapQuery: "Insurance Corporation of Belize, 6095 South Ring Road, Belmopan, Belize",
+    map: { x: 85.5, y: 270.3 },
+    note: null
+  },
   {
     id: "santa-elena",
     name: "Santa Elena Branch",
@@ -150,11 +217,12 @@ ICB.DATA.locations = [
     town: "Santa Elena, Cayo",
     address: "Santa Elena Town, Cayo District",
     phones: [],
+    corporateLine: true,
     whatsapps: [{ display: "+501 614-0437", wa: "5016140437" }],
     email: null,
-    mapQuery: "Santa Elena Town, Cayo, Belize",
+    mapQuery: "Insurance Corporation of Belize, Santa Elena, Cayo, Belize",
     map: { x: 44.0, y: 282.4 },
-    note: "Reach this branch directly on WhatsApp. Full address available from our Corporate Office."
+    note: null
   },
   {
     id: "san-ignacio",
@@ -171,32 +239,34 @@ ICB.DATA.locations = [
     note: null
   },
   {
-    id: "belmopan",
-    name: "Belmopan City Branch",
-    type: "Branch",
-    district: "Cayo",
-    town: "Belmopan",
-    address: "#6095 South Ring Road, Belmopan City",
-    phones: [{ display: "+501 822-0473", tel: "+5018220473" }],
-    whatsapps: [{ display: "+501 610-9178", wa: "5016109178" }],
-    email: null,
-    mapQuery: "Insurance Corporation of Belize, 6095 South Ring Road, Belmopan, Belize",
-    map: { x: 85.5, y: 270.3 },
-    note: null
-  },
-  {
-    id: "benque-viejo",
+    id: "benque-viejo-border",
     name: "Benque Viejo Border Branch",
     type: "Branch",
     district: "Cayo",
     town: "Benque Viejo del Carmen",
-    address: "Western Border, Benque Viejo del Carmen",
+    address: "Western Border, Benque Viejo del Carmen, Cayo District",
     phones: [],
+    corporateLine: true,
     whatsapps: [{ display: "+501 613-0548", wa: "5016130548" }],
     email: null,
-    mapQuery: "Benque Viejo del Carmen, Belize",
+    mapQuery: "Western Border Crossing, Benque Viejo del Carmen, Belize",
+    map: { x: 24.2, y: 296.8 },
+    note: null
+  },
+  {
+    id: "benque-viejo",
+    name: "Benque Viejo Agency",
+    type: "Agency",
+    district: "Cayo",
+    town: "Benque Viejo del Carmen",
+    address: "Benque Viejo del Carmen, Cayo District",
+    phones: [],
+    corporateLine: true,
+    whatsapps: [],
+    email: null,
+    mapQuery: "Benque Viejo del Carmen, Cayo District, Belize",
     map: { x: 27.7, y: 299.0 },
-    note: "Reach this branch directly on WhatsApp. Full address available from our Corporate Office."
+    note: null
   },
 
   /* ---------------------------- Stann Creek ---------------------------- */
@@ -215,6 +285,21 @@ ICB.DATA.locations = [
     note: null
   },
   {
+    id: "seine-bight",
+    name: "Seine Bight Agency",
+    type: "Agency",
+    district: "Stann Creek",
+    town: "Seine Bight Village",
+    address: "Seine Bight Village, Placencia Peninsula, Stann Creek District",
+    phones: [],
+    corporateLine: true,
+    whatsapps: [],
+    email: null,
+    mapQuery: "Seine Bight Village, Stann Creek District, Belize",
+    map: { x: 149.0, y: 374.4 },
+    note: null
+  },
+  {
     id: "independence",
     name: "Independence Branch",
     type: "Branch",
@@ -222,11 +307,12 @@ ICB.DATA.locations = [
     town: "Independence Village",
     address: "Independence Village, Stann Creek District",
     phones: [],
+    corporateLine: true,
     whatsapps: [{ display: "+501 615-6951", wa: "5016156951" }],
     email: null,
-    mapQuery: "Independence Village, Stann Creek, Belize",
+    mapQuery: "Insurance Corporation of Belize, Independence Village, Belize",
     map: { x: 142.4, y: 388.0 },
-    note: "Reach this branch directly on WhatsApp. Full address available from our Corporate Office."
+    note: null
   },
 
   /* ------------------------------ Toledo ------------------------------- */
@@ -253,7 +339,12 @@ ICB.DATA.locationById = function (id) {
   return null;
 };
 
-/* Locations with verified WhatsApp lines (all of them, in data order). */
+/* Locations with verified WhatsApp lines, in data order. */
 ICB.DATA.whatsappLines = function () {
   return ICB.DATA.locations.filter(function (l) { return l.whatsapps && l.whatsapps.length; });
+};
+
+/* Locations with a published direct landline, in data order. */
+ICB.DATA.phoneLines = function () {
+  return ICB.DATA.locations.filter(function (l) { return l.phones && l.phones.length; });
 };

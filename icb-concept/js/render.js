@@ -48,8 +48,12 @@ window.ICB = window.ICB || {};
     return out + "</a>";
   }
 
-  /* Product category card. */
+  /* Product category card. Categories with suspended sales carry no
+     enquiry link, so nothing implies cover can be arranged today. */
   function productCard(p) {
+    var second = p.suspended
+      ? '<a href="#/contact?topic=other&category=' + esc(p.id) + '">Contact ICB</a>'
+      : '<a href="#/contact?topic=new-cover&category=' + esc(p.id) + '">Request information</a>';
     return '' +
       '<article class="card rv" data-product-card="' + esc(p.id) + '">' +
         '<div class="card-art art-panel" data-img-slot="product-' + esc(p.id) + '">' + ICB.art.panel(p.artMotif) + "</div>" +
@@ -59,7 +63,7 @@ window.ICB = window.ICB || {};
           '<p class="card-desc">' + esc(p.short) + "</p>" +
           '<div class="card-links">' +
             '<a href="' + esc(p.route) + '">Learn more</a>' +
-            '<a href="#/contact?topic=new-cover&category=' + esc(p.id) + '">Start an enquiry</a>' +
+            second +
           "</div>" +
         "</div>" +
       "</article>";
@@ -87,9 +91,6 @@ window.ICB = window.ICB || {};
           "<h3>" + esc(c.name) + "</h3>" +
         "</div>" +
         '<p class="pathway-lead">' + esc(c.lead) + "</p>" +
-        '<div class="pathway-helpful"><h4>Commonly helpful to have</h4><ul>' +
-          c.helpful.map(function (h) { return "<li>" + esc(h) + "</li>"; }).join("") +
-        "</ul></div>" +
         '<div class="pathway-actions">' +
           '<a class="btn btn-primary btn-sm" href="' + esc(site.external.claimsForms) + '"' + extAttrs() + ">" +
             ICB.art.glyph("download") + "<span>" + esc(c.formLabel) + "</span>" + extNote("icbinsurance.com") + "</a>" +
@@ -110,6 +111,13 @@ window.ICB = window.ICB || {};
     for (var i = 0; i < l.phones.length; i++) {
       out += '<a class="msg-action" href="tel:' + esc(l.phones[i].tel) + '">' + ICB.art.glyph("phone") +
         "<span>Call " + esc(l.phones[i].display) + "</span></a>";
+    }
+    /* No direct line published for this location, so the Corporate Office
+       number is offered and clearly labelled as the Corporate Office. */
+    if (!l.phones.length && l.corporateLine) {
+      var co = ICB.DATA.site.corporate;
+      out += '<a class="msg-action msg-action--corp" href="tel:' + esc(co.phoneTel) + '">' + ICB.art.glyph("phone") +
+        "<span>Corporate Office " + esc(co.phoneDisplay) + "</span></a>";
     }
     (l.whatsapps || []).forEach(function (w) {
       out += '<a class="msg-action msg-action--wa" href="' + esc(waHref(w.wa)) + '"' + extAttrs() + ">" + ICB.art.waIcon() +
@@ -197,7 +205,7 @@ window.ICB = window.ICB || {};
       out += "<h3>Talk it through with ICB</h3><p>" + esc(opt.blurb) +
         " Liability & Miscellaneous also covers needs that do not fit a single box.</p>" +
         '<div class="btn-row">' +
-        '<a class="btn btn-primary" href="#/contact?topic=new-cover">Start an enquiry</a>' +
+        '<a class="btn btn-primary" href="#/contact?topic=new-cover">Request information</a>' +
         '<a class="btn btn-ghost" href="#/insurance/liability">Liability &amp; Miscellaneous</a>' +
         "</div>";
     } else {
@@ -205,7 +213,7 @@ window.ICB = window.ICB || {};
       out += "<h3>" + esc(p.name) + "</h3><p>" + esc(opt.blurb) + "</p>" +
         '<div class="btn-row">' +
         '<a class="btn btn-primary" href="' + esc(p.route) + '">Learn about ' + esc(p.name) + "</a>" +
-        '<a class="btn btn-ghost" href="#/contact?topic=new-cover&category=' + esc(p.id) + '">Start an enquiry</a>' +
+        '<a class="btn btn-ghost" href="#/contact?topic=new-cover&category=' + esc(p.id) + '">Request information</a>' +
         "</div>";
     }
     return out;
@@ -242,16 +250,126 @@ window.ICB = window.ICB || {};
   }
 
   /* Future digital assistance placeholder: a note, not a chat interface. */
-  function assistBadge(light) {
-    return '<p class="assist-badge' + (light ? " assist-badge--light" : "") + '">' +
-      '<span class="dot" aria-hidden="true"></span>' +
-      '<span>Future digital assistance: this concept is ready for an ICB digital assistant.</span>' +
-      "</p>";
+  /* The interface is built to host an ICB digital assistant later. Nothing
+     is shown to visitors about it, because ICB has not announced one.
+     INTERNAL TODO (not client-facing): when ICB approves an assistant,
+     render its entry point here. */
+  function assistBadge() { return ""; }
+
+  /* ------------------------------ Gallery ------------------------------ */
+
+  /* One tile in the branch gallery. A tile with a photograph opens the
+     lightbox. A tile without one renders a designed location plate built
+     from the verified branch record, and links to that branch on the
+     Locations page. Nothing is captioned with an unverified identity. */
+  function branchTile(b, photoIndex) {
+    var cls = "gallery-item rv" + (b.light ? " gallery-item--light" : "");
+    var cap = '<figcaption>' +
+        '<span class="g-name">' + esc(b.caption) + "</span>" +
+        (b.sub ? '<span class="g-sub">' + esc(b.sub) + "</span>" : "") +
+      "</figcaption>";
+
+    if (b.src) {
+      return '<figure class="' + cls + '">' +
+        '<button type="button" class="g-open" data-lightbox="' + photoIndex + '" aria-label="View larger: ' + esc(b.caption) + '">' +
+          '<img src="' + esc(b.src) + '" alt="' + esc(b.alt) + '" loading="lazy">' +
+        "</button>" + cap +
+      "</figure>";
+    }
+
+    /* The plate carries the identity itself, so it needs no caption bar. */
+    return '<figure class="' + cls + ' gallery-item--plate">' +
+      '<a class="g-open g-plate" href="#/locations" aria-label="' + esc(b.caption) + ', see it on the Locations page">' +
+        '<span class="g-plate-inner">' +
+          '<span class="g-plate-mark">' + ICB.art.glyph("marker") + "</span>" +
+          '<span class="g-plate-name">' + esc(b.caption) + "</span>" +
+          (b.sub ? '<span class="g-plate-type">' + esc(b.sub) + "</span>" : "") +
+        "</span>" +
+      "</a>" +
+    "</figure>";
+  }
+
+  /* Branch gallery grid. limit trims it for the homepage teaser. */
+  function branchGallery(limit) {
+    var all = ICB.DATA.galleryBranches();
+    var list = limit ? all.slice(0, limit) : all;
+    var photoIndex = -1;
+    return list.map(function (b) {
+      if (b.src) photoIndex += 1;
+      return branchTile(b, photoIndex);
+    }).join("");
+  }
+
+  /* Campaign stills grid. offset keeps lightbox indexes aligned with
+     ICB.GALLERY_ITEMS, where branch photographs come first. */
+  function campaignGallery() {
+    var offset = ICB.DATA.gallery.branches.filter(function (b) { return b.src; }).length;
+    return ICB.DATA.gallery.campaign.map(function (c, i) {
+      return '<figure class="gallery-item rv' + (c.light ? " gallery-item--light" : "") + '">' +
+        '<button type="button" class="g-open" data-lightbox="' + (offset + i) + '" aria-label="View larger: ' + esc(c.caption) + '">' +
+          '<img src="' + esc(c.src) + '" alt="' + esc(c.alt) + '" loading="lazy">' +
+        "</button>" +
+        '<figcaption><span class="g-name">' + esc(c.caption) + "</span></figcaption>" +
+      "</figure>";
+    }).join("");
+  }
+
+  /* ICB in Motion: the featured film plus the areas the section is built
+     to carry next. No invented videos. */
+  function motionSection(opts) {
+    opts = opts || {};
+    var media = ICB.DATA.site.media;
+    var v = ICB.DATA.gallery.video;
+
+    var cats = v.categories.map(function (c) {
+      return '<li class="motion-cat rv">' +
+        '<span class="motion-cat-icon">' + ICB.art.glyph(c.glyph) + "</span>" +
+        '<span class="motion-cat-text"><strong>' + esc(c.label) + "</strong>" +
+        "<span>" + esc(c.note) + "</span></span>" +
+      "</li>";
+    }).join("");
+
+    return '' +
+      '<section class="section' + (opts.tint ? " section--tint" : "") + '" aria-labelledby="motion-title">' +
+        '<div class="shell">' +
+          sectionHead({
+            eyebrow: "ICB in Motion",
+            title: opts.title || "Featured video.",
+            sub: opts.sub || null,
+            id: "motion-title"
+          }) +
+          '<div class="motion-layout">' +
+            '<figure class="video-frame art-panel rv" data-img-slot="story-poster">' +
+              ICB.art.panel("poster") +
+              (media.storyVideoAvailable
+                ? '<video class="story-video" src="' + esc(media.storyVideoSrc) + '"' +
+                  (media.storyVideoPoster ? ' poster="' + esc(media.storyVideoPoster) + '"' : "") +
+                  ' preload="none" playsinline hidden></video>'
+                : "") +
+              '<button type="button" class="play-btn" data-story-play aria-label="Play the ICB film ' + esc(v.featured.title) + '">' +
+                ICB.art.glyph("play") +
+              "</button>" +
+              '<p class="video-note" data-story-note hidden>This film could not be played in this browser.</p>' +
+              '<figcaption class="video-caption">' +
+                '<span class="eyebrow">' + esc(v.featured.kicker) + "</span>" +
+                '<span class="video-line">' + esc(v.featured.title) + "</span>" +
+              "</figcaption>" +
+            "</figure>" +
+            '<aside class="motion-side">' +
+              "<h3>More from ICB</h3>" +
+              '<ul class="motion-cats">' + cats + "</ul>" +
+            "</aside>" +
+          "</div>" +
+        "</div>" +
+      "</section>";
   }
 
   ICB.render = {
     esc: esc,
     waHref: waHref,
+    branchGallery: branchGallery,
+    campaignGallery: campaignGallery,
+    motionSection: motionSection,
     extAttrs: extAttrs,
     extNote: extNote,
     extIcon: extIcon,
