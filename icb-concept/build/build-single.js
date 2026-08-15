@@ -36,18 +36,26 @@ function inline(source) {
 
 let result = inline(html);
 
-/* Inline real assets (images and video) as data URIs so the single file
-   needs no companion folder. Asset paths are unique strings throughout the
-   bundle, so a global replace is safe.
+/* Assets become one ICB.ASSETS map of data URIs rather than being pasted
+   into every reference. Two reasons:
 
-   Video is the one place where the preview and the deployed site differ.
-   assets/video holds the site encodes (1280x720). Base64 adds a third
-   again to every byte, and preview surfaces cap a single document at
-   16MB, so when build/preview holds a lighter encode of the same film it
-   is substituted here. The deployed folder and ZIP always ship the
-   full-quality files. */
+   1. Size. The English film is used twice (hero slide and film card), and
+      the logo three times. Substituting inline stored each copy again;
+      the map stores every asset exactly once.
+   2. Speed. Views emit data-asset="assets/..." and ICB.hydrateAssets
+      assigns the URL as a property after the markup is in the DOM. With
+      inline substitution, every navigation to the homepage handed the
+      HTML parser about ten megabytes of base64, which is what made the
+      preview feel slow to click through.
+
+   Video is the one place the preview and the deployed site differ:
+   assets/video holds the site encodes (1280x720), and base64 adds a third
+   again to every byte against a 16MB single-document cap, so a lighter
+   encode from build/preview is substituted when present. The deployed
+   folder and ZIP always ship the full-quality files. */
 const MIME = { png: "image/png", jpg: "image/jpeg", jpeg: "image/jpeg", webp: "image/webp", mp4: "video/mp4" };
 const PREVIEW_DIR = path.join(root, "build", "preview");
+const assets = {};
 
 function sourceFor(dir, name) {
   if (dir === "assets/video") {
@@ -57,12 +65,12 @@ function sourceFor(dir, name) {
   return { file: path.join(root, dir, name), note: "" };
 }
 
-function inlineAssets(dir, prefix) {
+function collectAssets(dir, prefix) {
   const abs = path.join(root, dir);
   if (!fs.existsSync(abs)) return;
   for (const entry of fs.readdirSync(abs, { withFileTypes: true })) {
     if (entry.isDirectory()) {
-      inlineAssets(path.join(dir, entry.name), prefix + entry.name + "/");
+      collectAssets(path.join(dir, entry.name), prefix + entry.name + "/");
       continue;
     }
     const ext = entry.name.split(".").pop().toLowerCase();
@@ -71,13 +79,38 @@ function inlineAssets(dir, prefix) {
     if (!result.includes(rel)) continue;
     const src = sourceFor(dir, entry.name);
     const data = fs.readFileSync(src.file);
-    const uri = "data:" + MIME[ext] + ";base64," + data.toString("base64");
-    result = result.split(rel).join(uri);
-    console.log("inlined", rel, Math.round(data.length / 1024) + "KB" + src.note);
+    assets[rel] = "data:" + MIME[ext] + ";base64," + data.toString("base64");
+    console.log("bundled", rel, Math.round(data.length / 1024) + "KB" + src.note);
   }
 }
-inlineAssets("assets/img", "assets/img/");
-inlineAssets("assets/video", "assets/video/");
+collectAssets("assets/img", "assets/img/");
+collectAssets("assets/video", "assets/video/");
+
+/* The map is seeded in js/assets.js, ahead of every data file and view,
+   so ICB.ASSETS is populated before anything renders. Base64 cannot
+   contain "</script", so no escaping is needed. */
+const SEED = "ICB.ASSETS = ICB.ASSETS || {};";
+if (!result.includes(SEED)) {
+  console.error("Build error: the ICB.ASSETS seed line is missing. Did js/assets.js change?");
+  process.exit(1);
+}
+result = result.replace(SEED, "ICB.ASSETS = " + JSON.stringify(assets) + ";");
+
+/* Static <head> references (the favicon) are plain attributes, not
+   data-asset slots, so they are substituted directly. There is one of
+   each, so no duplication is introduced. */
+result = result.replace(/(href|content)="(assets\/[^"]+)"/g, (m, attr, rel) =>
+  assets[rel] ? `${attr}="${assets[rel]}"` : m);
+
+/* Every asset path the bundle asks for must be a key in the map,
+   otherwise the single file would reach for a companion folder. */
+const wanted = new Set((result.match(/assets\/[\w./-]+\.(?:png|jpe?g|webp|mp4)/g) || []));
+const missing = [...wanted].filter(p => !(p in assets));
+if (missing.length) {
+  console.error("Build error: referenced but not bundled:", missing.slice(0, 10));
+  process.exit(1);
+}
+
 const leftoverLinks = result.match(/<link rel="stylesheet"[^>]*>/g);
 const leftoverScripts = result.match(/<script src=/g);
 if (leftoverLinks || leftoverScripts) {

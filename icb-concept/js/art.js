@@ -673,7 +673,7 @@ window.ICB = window.ICB || {};
       var probe = new Image();
       probe.onload = function () {
         var img = document.createElement("img");
-        img.src = conf.src;
+        img.src = ICB.assetUrl(conf.src);
         img.alt = conf.alt || "";
         img.className = "slot-photo";
         if (conf.pos) img.style.objectPosition = conf.pos;
@@ -681,7 +681,7 @@ window.ICB = window.ICB || {};
         requestAnimationFrame(function () { img.classList.add("is-loaded"); });
       };
       // On failure nothing happens: the artwork simply remains.
-      probe.src = conf.src;
+      probe.src = ICB.assetUrl(conf.src);
     });
   }
 

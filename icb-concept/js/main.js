@@ -114,7 +114,7 @@ window.ICB = window.ICB || {};
       '<div class="shell">' +
         '<div class="footer-grid">' +
           '<div class="footer-brand">' +
-            '<span class="footer-logo-plate"><img src="assets/img/icb-logo.png" alt="Insurance Corporation of Belize Ltd. logo"></span>' +
+            '<span class="footer-logo-plate"><img data-asset="assets/img/icb-logo.png" alt="Insurance Corporation of Belize Ltd. logo"></span>' +
             '<span class="brand-lines" aria-hidden="true"><span>Insurance Corporation</span><span>of Belize Ltd.</span></span>' +
             "<p>" + R.esc(f.tagline) + "</p>" +
             '<div class="footer-col"><address>' +
@@ -153,6 +153,8 @@ window.ICB = window.ICB || {};
     initMenu();
     renderFooter();
     renderQuickBar();
+    // Header and footer logos are data-asset slots like everything else.
+    ICB.hydrateAssets(document);
     ICB.router.init();
     ICB.reveal(document);
   }

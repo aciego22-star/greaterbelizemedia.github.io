@@ -53,11 +53,11 @@ ICB.views = ICB.views || {};
   function slideMedia(s) {
     var R = ICB.render;
     if (s.kind === "photo") {
-      return '<div class="hero-media" aria-hidden="true"><img src="' + R.esc(s.src) + '" alt="">' +
+      return '<div class="hero-media" aria-hidden="true"><img data-asset="' + R.esc(s.src) + '" alt="">' +
         '<div class="hero-scrim"></div></div>';
     }
     if (s.kind === "artwork") {
-      return '<div class="hero-media hero-media--contain" aria-hidden="true"><img src="' + R.esc(s.src) + '" alt="">' +
+      return '<div class="hero-media hero-media--contain" aria-hidden="true"><img data-asset="' + R.esc(s.src) + '" alt="">' +
         '<div class="hero-scrim hero-scrim--light"></div></div>';
     }
     /* Video slide: generated poster art beneath; the film fades over it
@@ -69,8 +69,8 @@ ICB.views = ICB.views || {};
     return '<div class="hero-media" aria-hidden="true">' +
       '<div class="hero-video-poster art-panel">' + ICB.art.panel("poster") + "</div>" +
       (media.heroVideoAvailable
-        ? '<video class="hero-video" muted loop playsinline preload="metadata" src="' + R.esc(media.heroVideoSrc) + '"' +
-          (media.heroVideoPoster ? ' poster="' + R.esc(media.heroVideoPoster) + '"' : "") + ' tabindex="-1"></video>'
+        ? '<video class="hero-video" muted loop playsinline preload="metadata" data-asset-defer data-asset="' + R.esc(media.heroVideoSrc) + '"' +
+          (media.heroVideoPoster ? ' data-asset-poster="' + R.esc(media.heroVideoPoster) + '"' : "") + ' tabindex="-1"></video>'
         : "") +
       '<div class="hero-scrim"></div></div>';
   }
@@ -145,6 +145,8 @@ ICB.views = ICB.views || {};
         var video = s.querySelector(".hero-video");
         if (video) {
           if (active && !reduced) {
+            // Resolve the source the first time this slide comes up.
+            if (video.hasAttribute("data-asset")) ICB.hydrateAssets(s, true);
             video.play().then(function () {
               video.classList.add("is-playing");
             }).catch(function () { /* poster art remains */ });
@@ -374,6 +376,8 @@ ICB.views = ICB.views || {};
       });
 
       play.addEventListener("click", function () {
+        // Resolve the film source on demand, not on every navigation.
+        if (video.hasAttribute("data-asset")) ICB.hydrateAssets(fig, true);
         var fail = function () {
           fig.classList.remove("is-playing");
           video.hidden = true;
@@ -411,7 +415,7 @@ ICB.views = ICB.views || {};
       overlay.className = "lightbox-overlay";
       overlay.innerHTML =
         '<figure class="lightbox" role="dialog" aria-modal="true" aria-label="' + R.esc(g.caption) + '">' +
-          '<img src="' + R.esc(g.src) + '" alt="' + R.esc(g.alt) + '">' +
+          '<img data-asset="' + R.esc(g.src) + '" alt="' + R.esc(g.alt) + '">' +
           '<figcaption>' + R.esc(g.caption) + "</figcaption>" +
           '<button type="button" class="lightbox-close" data-lb-close aria-label="Close image">' + ICB.art.glyph("close") + "</button>" +
         "</figure>";

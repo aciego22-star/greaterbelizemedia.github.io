@@ -272,7 +272,7 @@ window.ICB = window.ICB || {};
     if (b.src) {
       return '<figure class="' + cls + '">' +
         '<button type="button" class="g-open" data-lightbox="' + photoIndex + '" aria-label="View larger: ' + esc(b.caption) + '">' +
-          '<img src="' + esc(b.src) + '" alt="' + esc(b.alt) + '" loading="lazy">' +
+          '<img data-asset="' + esc(b.src) + '" alt="' + esc(b.alt) + '" loading="lazy">' +
         "</button>" + cap +
       "</figure>";
     }
@@ -307,7 +307,7 @@ window.ICB = window.ICB || {};
     return ICB.DATA.gallery.campaign.map(function (c, i) {
       return '<figure class="gallery-item rv' + (c.light ? " gallery-item--light" : "") + '">' +
         '<button type="button" class="g-open" data-lightbox="' + (offset + i) + '" aria-label="View larger: ' + esc(c.caption) + '">' +
-          '<img src="' + esc(c.src) + '" alt="' + esc(c.alt) + '" loading="lazy">' +
+          '<img data-asset="' + esc(c.src) + '" alt="' + esc(c.alt) + '" loading="lazy">' +
         "</button>" +
         '<figcaption><span class="g-name">' + esc(c.caption) + "</span></figcaption>" +
       "</figure>";
@@ -320,8 +320,8 @@ window.ICB = window.ICB || {};
     return '' +
       '<figure class="film rv" data-film lang="' + esc(f.lang) + '">' +
         '<div class="film-frame">' +
-          '<img class="film-poster" src="' + esc(f.poster) + '" alt="" loading="lazy">' +
-          '<video class="film-video" src="' + esc(f.src) + '" poster="' + esc(f.poster) + '"' +
+          '<img class="film-poster" data-asset="' + esc(f.poster) + '" alt="" loading="lazy">' +
+          '<video class="film-video" data-asset-defer data-asset="' + esc(f.src) + '" data-asset-poster="' + esc(f.poster) + '"' +
             ' preload="none" playsinline controls hidden' +
             ' aria-label="' + esc(f.altTitle || f.title) + '"></video>' +
           '<button type="button" class="play-btn" data-film-play' +

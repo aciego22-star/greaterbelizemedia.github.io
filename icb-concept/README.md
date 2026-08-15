@@ -23,9 +23,42 @@ offline, and from disk.
   (outline derived from 1:1m open coastline data, ODbL)
 - `js/views/*.js` — one module per page; the homepage hero is a
   rotating three-slide real-media carousel with autoplay, pause and swipe
+- `js/assets.js` — asset resolver: views emit `data-asset="assets/..."`
+  and it hydrates real `src`/`poster` properties after mount
 - `build/build-single.js` — optional one-file build (`dist/`)
 
 See `DEPLOY.md` for hosting and `IMAGES.md` for the photography plan.
+
+## Weight on the wire
+
+The repository is large because it carries two campaign films, but total
+repository size is not page weight. A first-time visitor to the homepage
+downloads about 1.7 MB, and about 0.9 MB for any interior page. Moving
+between pages after that costs between 2 KB and 57 KB, because the shell,
+the fonts and the CSS are already cached and only new photography is
+fetched.
+
+The films are `preload="none"` and never autoplay with sound, so their
+16 MB is downloaded only by a visitor who presses play, and even then
+`+faststart` means playback begins before the file finishes arriving.
+
+## Assets and the preview build
+
+Views never write an asset URL into their HTML string. They emit
+`data-asset="assets/..."` and `js/assets.js` hydrates it into a real
+`src` after the markup is in the DOM, resolving through `ICB.ASSETS`.
+
+In the deployed folder that map is empty, so a slot resolves to its own
+path and the browser fetches the file normally. In the single-file
+preview `build/build-single.js` fills the map with base64 data URIs. This
+matters for two reasons: each asset is stored once no matter how many
+places use it, and multi-megabyte strings never pass through the HTML
+parser on navigation. Film and hero video sources carry
+`data-asset-defer` on top of that, so they resolve only when something
+plays.
+
+Without this the preview re-parsed roughly ten megabytes of base64 every
+time you clicked a menu item.
 
 ## Real ICB assets
 

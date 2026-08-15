@@ -71,6 +71,9 @@ ICB.views = ICB.views || {};
 
     var view = ICB.views[match.view] || ICB.views.notfound;
     mount.innerHTML = view.render(ctx) || "";
+    // Resolve data-asset slots before mounted(): the hero slider calls
+    // play() on its film as soon as it initialises.
+    ICB.hydrateAssets(mount);
 
     var title = typeof view.title === "function" ? view.title(ctx) : view.title;
     document.title = title || "ICB Concept Experience";
