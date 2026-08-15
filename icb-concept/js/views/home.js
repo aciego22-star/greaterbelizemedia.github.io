@@ -89,7 +89,6 @@ ICB.views = ICB.views || {};
       kind: "video",
       eyebrow: "ICB in Motion",
       title: "Life Happens Fast.",
-      lead: "ICB\u2019s campaign film, shot in Belize.",
       actions: [
         { label: "Explore insurance", href: "#/insurance", primary: true },
         { label: "About ICB", href: "#/about" }
@@ -111,14 +110,16 @@ ICB.views = ICB.views || {};
         '<div class="hero-scrim hero-scrim--light"></div></div>';
     }
 
-    /* Brand lockup. A <picture> picks the composition that suits the
-       shape of the viewport: the banner above 768px, the vertical poster
-       below it. Both are contained, so neither is ever cropped or
-       stretched, and the wordmark stays legible at both sizes. */
+    /* Brand lockup. A <picture> picks the composition that suits the shape
+       of the viewport, which is about proportion rather than device: the
+       banner from 561px up, where the hero box is wide enough to carry a
+       landscape lockup, and the vertical poster on phones. Both are
+       contained, so neither is ever cropped or stretched, and the
+       wordmark stays legible at both sizes. */
     if (s.kind === "brand") {
       return '<div class="hero-media hero-media--brand" aria-hidden="true">' +
         "<picture>" +
-          '<source media="(min-width: 769px)" data-asset-srcset="' + R.esc(s.srcWide) + '">' +
+          '<source media="(min-width: 561px)" data-asset-srcset="' + R.esc(s.srcWide) + '">' +
           '<img data-asset="' + R.esc(s.srcTall) + '" alt="">' +
         "</picture>" +
       "</div>";
@@ -145,7 +146,10 @@ ICB.views = ICB.views || {};
       '<div class="hero-scrim" aria-hidden="true"></div>' +
       (media.heroVideoAvailable
         ? '<button type="button" class="hero-sound" data-hero-sound aria-pressed="false"' +
-            ' aria-label="Turn on sound for the ICB film">' + ICB.art.glyph("sound-off") + "</button>" +
+            ' aria-label="Turn on sound for the ICB film">' +
+            '<span class="s-off">' + ICB.art.glyph("sound-off") + "</span>" +
+            '<span class="s-on">' + ICB.art.glyph("sound-on") + "</span>" +
+          "</button>" +
           '<span class="hero-sound-hint" data-hero-hint aria-hidden="true">Tap for sound</span>'
         : "") +
       '<button type="button" class="play-btn hero-play" data-hero-play hidden' +
@@ -235,11 +239,14 @@ ICB.views = ICB.views || {};
       var btn = slide.querySelector("[data-hero-sound]");
       var hint = slide.querySelector("[data-hero-hint]");
       if (!btn) return;
+      /* Only the state changes. Rewriting innerHTML here would detach the
+         very element a click is being dispatched on, and the surface
+         handler below would then fail to recognise it as a control and
+         toggle the sound straight back. */
       btn.setAttribute("aria-pressed", String(on));
       btn.setAttribute("aria-label", on
         ? "Turn off sound for the ICB film"
         : "Turn on sound for the ICB film");
-      btn.innerHTML = ICB.art.glyph(on ? "sound-on" : "sound-off");
       // The prompt is only useful until the visitor has answered it.
       if (hint) hint.hidden = on || soundWanted;
     }
@@ -332,15 +339,30 @@ ICB.views = ICB.views || {};
         });
       }
 
+      function toggleSound() {
+        var turningOn = !sound || sound.getAttribute("aria-pressed") !== "true";
+        applySound(slide, video, turningOn);
+        var hint = slide.querySelector("[data-hero-hint]");
+        if (hint) hint.hidden = true;
+        if (turningOn && video.paused) startFilm(slide);
+      }
+
       if (sound) {
-        sound.addEventListener("click", function () {
-          var turningOn = sound.getAttribute("aria-pressed") !== "true";
-          applySound(slide, video, turningOn);
-          if (turningOn) {
-            var hint = slide.querySelector("[data-hero-hint]");
-            if (hint) hint.hidden = true;
-            if (video.paused) startFilm(slide);
-          }
+        sound.addEventListener("click", function (e) {
+          e.stopPropagation();
+          toggleSound();
+        });
+      }
+
+      /* The speaker button is a small target on a phone. The whole film
+         surface toggles sound as well, so a tap anywhere on the picture
+         works. Anything genuinely interactive on top of it keeps its own
+         behaviour. */
+      var surface = slide.querySelector(".hero-media--film");
+      if (surface) {
+        surface.addEventListener("click", function (e) {
+          if (e.target.closest("a, button")) return;
+          toggleSound();
         });
       }
 

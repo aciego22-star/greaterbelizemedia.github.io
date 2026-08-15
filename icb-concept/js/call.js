@@ -1,9 +1,14 @@
 /* ============================================================================
    Call ICB — the nationwide telephone directory.
-   Built from ICB.DATA.locations (single source of truth). Every location
-   with a published landline is listed with its number as a tel: link;
-   locations that publish only a WhatsApp line are offered the WhatsApp
-   directory instead. Open with any element carrying [data-call-directory].
+   Built from ICB.DATA.locations (single source of truth).
+
+   A branch's WhatsApp line is a telephone number, so it is listed here as
+   a tel: link alongside any landline. Where a location has both, the
+   landline and the mobile are labelled so it is obvious which is which.
+   Only the handful of locations ICB publishes no number for at all fall
+   back to the Corporate Office.
+
+   Open with any element carrying [data-call-directory].
    ========================================================================== */
 window.ICB = window.ICB || {};
 
@@ -12,30 +17,63 @@ window.ICB = window.ICB || {};
 
   var overlay = null, opener = null;
 
+  /* Every callable number a location publishes: landlines first, then the
+     WhatsApp lines, which are ordinary mobile numbers and dial normally.
+     Digits only for the tel: href, exactly as the wa.me links are built. */
+  function numbersFor(location) {
+    var out = [];
+    var phones = location.phones || [];
+    var mobiles = location.whatsapps || [];
+    var both = phones.length && mobiles.length;
+
+    phones.forEach(function (ph, i) {
+      out.push({
+        label: both || phones.length > 1
+          ? "Landline" + (phones.length > 1 ? " " + (i + 1) : "")
+          : null,
+        display: ph.display,
+        tel: ph.tel
+      });
+    });
+    mobiles.forEach(function (w, i) {
+      out.push({
+        label: mobiles.length > 1
+          ? "Mobile " + (i + 1)
+          : (both ? "Mobile" : null),
+        display: w.display,
+        tel: "+" + String(w.wa).replace(/\D/g, "")
+      });
+    });
+    return out;
+  }
+
   function rowsFor(location) {
     var R = ICB.render;
-    return location.phones.map(function (ph, i) {
-      var name = location.name + (location.phones.length > 1 ? " (Line " + (i + 1) + ")" : "");
-      return '<a class="call-row" href="tel:' + R.esc(ph.tel) + '">' +
+    return numbersFor(location).map(function (n) {
+      return '<a class="call-row" href="tel:' + R.esc(n.tel) + '">' +
         '<span class="call-row-main">' +
-          '<span class="call-row-name">' + R.esc(name) + "</span>" +
-          '<span class="call-row-num">' + R.esc(ph.display) + "</span>" +
+          '<span class="call-row-name">' + R.esc(location.name) +
+            (n.label ? ' <span class="call-row-tag">' + R.esc(n.label) + "</span>" : "") +
+          "</span>" +
+          '<span class="call-row-num">' + R.esc(n.display) + "</span>" +
         "</span>" +
         '<span class="call-row-icon">' + ICB.art.glyph("phone") + "</span>" +
       "</a>";
     }).join("");
   }
 
+  function hasNumber(l) {
+    return numbersFor(l).length > 0;
+  }
+
   function directoryHtml() {
     var R = ICB.render;
-    var withPhones = ICB.DATA.locations.filter(function (l) { return l.phones && l.phones.length; });
-    /* Every location ICB does not publish a direct line for. They are still
-       reachable: some on WhatsApp, all through the Corporate Office. */
-    var noLine = ICB.DATA.locations.filter(function (l) { return !l.phones || !l.phones.length; });
-    var anyWa = noLine.some(function (l) { return l.whatsapps && l.whatsapps.length; });
+    var callable = ICB.DATA.locations.filter(hasNumber);
+    /* The few locations ICB publishes no number for at all. */
+    var noLine = ICB.DATA.locations.filter(function (l) { return !hasNumber(l); });
 
     var groups = ICB.DATA.districts.map(function (d) {
-      var locs = withPhones.filter(function (l) { return l.district === d; });
+      var locs = callable.filter(function (l) { return l.district === d; });
       if (!locs.length) return "";
       return '<section class="call-group" aria-label="' + R.esc(d) + ' District">' +
         "<h3>" + R.esc(d) + "</h3>" +
@@ -44,20 +82,23 @@ window.ICB = window.ICB || {};
     }).join("");
 
     var co = ICB.DATA.site.corporate;
+    /* These few are listed in the same row style, dialling the Corporate
+       Office, so the directory reads as one list rather than a list plus
+       a paragraph of names. */
     var waNote = noLine.length
-      ? '<div class="call-note">' +
-          "<h3>Other locations</h3>" +
-          "<p>" + R.esc(noLine.map(function (l) { return l.name; }).join(", ")) +
-          ". The Corporate Office can connect you with any of these.</p>" +
-          '<div class="call-note-actions">' +
-            '<a class="btn btn-sm btn-primary" href="tel:' + R.esc(co.phoneTel) + '">' +
-              ICB.art.glyph("phone") + "<span>Call " + R.esc(co.phoneDisplay) + "</span></a>" +
-            (anyWa
-              ? '<button type="button" class="btn btn-sm btn-outline" data-wa-directory>' +
-                  ICB.art.waIcon() + "<span>WhatsApp directory</span></button>"
-              : "") +
-          "</div>" +
-        "</div>"
+      ? '<section class="call-group call-group--via" aria-label="Locations reached through the Corporate Office">' +
+          "<h3>Through the Corporate Office</h3>" +
+          noLine.map(function (l) {
+            return '<a class="call-row" href="tel:' + R.esc(co.phoneTel) + '">' +
+              '<span class="call-row-main">' +
+                '<span class="call-row-name">' + R.esc(l.name) +
+                  ' <span class="call-row-tag">Corporate Office</span></span>' +
+                '<span class="call-row-num">' + R.esc(co.phoneDisplay) + "</span>" +
+              "</span>" +
+              '<span class="call-row-icon">' + ICB.art.glyph("phone") + "</span>" +
+            "</a>";
+          }).join("") +
+        "</section>"
       : "";
 
     return '' +

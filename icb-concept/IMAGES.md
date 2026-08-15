@@ -86,8 +86,16 @@ Two supplied compositions, chosen by a `<picture>` element:
 
 | Viewport | File | Source |
 | --- | --- | --- |
-| 769px and up | `assets/img/brands/nce-wide.webp` | 1672x941 banner, resized to 1600x900 |
-| below 769px | `assets/img/brands/nce-tall.webp` | 941x1672 poster, resized to 900x1599 |
+| 561px and up | `assets/img/brands/nce-wide.webp` | 1672x941 banner, resized to 1600x900 |
+| below 561px | `assets/img/brands/nce-tall.webp` | 941x1672 poster, trimmed of 113px of empty ground at the top and 56px at the foot, resized to 900x1438 |
+
+The breakpoint is about proportion, not device: from 561px the hero box
+is wide enough to carry a landscape lockup. The vertical poster is
+trimmed because the supplied file carries empty ground above the mascot
+and below the sweep; removing most of it takes the aspect from 0.563 to
+0.626 and lets a phone show the lockup meaningfully larger. Measured
+share of viewport width: 55% at 1440px, 92% at 834px, 97% at 768px, 84%
+on a short phone, 100% on a tall one.
 
 Both are `object-fit: contain`, so neither is cropped or stretched at any
 size, and the bottom inset keeps the slider chrome clear of the artwork.

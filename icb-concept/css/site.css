@@ -596,7 +596,7 @@ button {
 /* --- Film slide -------------------------------------------------------
    Poster first, video only once the visitor asks for it. Nothing here
    is muted and nothing autoplays. */
-.hero-media--film { background: #0B0B0C; }
+.hero-media--film { background: #0B0B0C; cursor: pointer; }
 .hero-film-poster {
   position: absolute;
   inset: 0;
@@ -637,6 +637,10 @@ button {
   transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
 }
 .hero-sound .glyph { width: 21px; height: 21px; }
+.hero-sound .s-off, .hero-sound .s-on { display: flex; }
+.hero-sound .s-on { display: none; }
+.hero-sound[aria-pressed="true"] .s-off { display: none; }
+.hero-sound[aria-pressed="true"] .s-on { display: flex; }
 .hero-sound[hidden] { display: none; }
 .hero-sound[aria-pressed="true"] { background: var(--c-cta); border-color: transparent; }
 @media (hover: hover) and (pointer: fine) {
@@ -855,7 +859,8 @@ button {
   /* The vertical composition is almost exactly the hero's own aspect, so
      containing it costs almost no space and keeps the whole lockup,
      including its red and black sweep, intact. */
-  .hero-media--brand img { padding: var(--sp-2) var(--sp-2) 72px; }
+  /* Below 769px the slider chrome sits lower, so less needs reserving. */
+  .hero-media--brand img { padding: var(--sp-3) var(--sp-3) 64px; }
   .hero-slide--light .hero-media--contain img { object-fit: contain; object-position: center center; }
   .hero-slide--light .hero-scrim--light { display: none; }
   .hero-slide--light { background: var(--c-bg); }
@@ -867,6 +872,14 @@ button {
   .card-glyph { width: 40px; height: 40px; margin-top: calc(-1 * (var(--sp-4) + 20px)); }
   .card-desc { font-size: 0.875rem; }
   .card-body h3 { font-size: 1.2rem; }
+}
+
+/* Phones get the vertical lockup, trimmed of its empty ground so it can
+   run close to edge to edge while still being contained. Containing
+   matters here: covering cropped a quarter of it on a short phone, which
+   ate into the sweep at the foot of the artwork. */
+@media (max-width: 560px) {
+  .hero-media--brand img { padding: 0 0 60px; }
 }
 
 /* ============================ Action bar ============================ */
@@ -2593,6 +2606,21 @@ select.input {
 .call-row-name { display: block; font-weight: 600; color: var(--c-brand); }
 .call-row:hover .call-row-name { color: var(--c-cta); }
 .call-row-num { display: block; font-size: var(--fs-300); color: var(--c-text-soft); font-variant-numeric: tabular-nums; }
+/* Tells a landline from a mobile where a location publishes both. */
+.call-row-tag {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-text-soft);
+  background: var(--c-tint);
+  border-radius: 999px;
+  padding: 2px 7px;
+  margin-left: 6px;
+  vertical-align: 1px;
+  white-space: nowrap;
+}
+.call-group--via .call-row-name { color: var(--c-text); }
 .call-row-icon {
   flex: none;
   width: 40px; height: 40px;

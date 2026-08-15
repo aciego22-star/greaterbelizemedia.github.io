@@ -86,9 +86,10 @@ Supplied by the client and integrated in this pass:
 
 The hero's fourth slide plays the film as ambient motion the moment the
 slide comes up. No browser will start a video with audio unprompted, so
-it opens muted and a sound control sits in the corner: one tap is the
-gesture that unlocks audio, and the choice is remembered for the session
-so later visits to the slide start with sound already on. Looping is
+it opens muted and sound is one tap away: the whole picture is a toggle,
+not just the speaker button in the corner, and the choice is remembered
+for the session so later visits to the slide start with sound already
+on. Looping is
 dropped once the sound is on, and the carousel is held so the film is not
 slid away mid-sentence. Leaving the slide stops it, so audio never
 carries under another slide. If a browser refuses even muted playback, a

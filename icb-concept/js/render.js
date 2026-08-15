@@ -113,9 +113,15 @@ window.ICB = window.ICB || {};
       out += '<a class="msg-action" href="tel:' + esc(l.phones[i].tel) + '">' + ICB.art.glyph("phone") +
         "<span>Call " + esc(l.phones[i].display) + "</span></a>";
     }
-    /* No direct line published for this location, so the Corporate Office
-       number is offered and clearly labelled as the Corporate Office. */
-    if (!l.phones.length && l.corporateLine) {
+    /* A WhatsApp line is a mobile number, so it is offered as a call too. */
+    (l.whatsapps || []).forEach(function (w) {
+      var digits = String(w.wa).replace(/\D/g, "");
+      out += '<a class="msg-action" href="tel:+' + esc(digits) + '">' + ICB.art.glyph("phone") +
+        "<span>Call " + esc(w.display) + "</span></a>";
+    });
+    /* Only where ICB publishes no number of any kind does the Corporate
+       Office stand in, clearly labelled as such. */
+    if (!l.phones.length && !(l.whatsapps || []).length && l.corporateLine) {
       var co = ICB.DATA.site.corporate;
       out += '<a class="msg-action msg-action--corp" href="tel:' + esc(co.phoneTel) + '">' + ICB.art.glyph("phone") +
         "<span>Corporate Office " + esc(co.phoneDisplay) + "</span></a>";
