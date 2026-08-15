@@ -17,21 +17,19 @@ artwork remains only where no official ICB visual has been supplied yet.
 | Claims page hero | Film frame: customer completing paperwork with ICB |
 | Property / Motor / Liability page insets | Native-scale crops of the campaign artwork panels (home, vehicle, family) |
 | Liability card + page | Film frame: handshake with an ICB representative |
-| Travel card + page | Film frame: aerial Belize City coast |
-| Cargo card + page | Film frame: Belize City waterfront road (goods by road and sea) |
+| Travel card + page | Supplied ICB campaign image: traveller at the departure gate |
+| Cargo card + page | Supplied ICB campaign image: container ship, port and freight trucks |
+| Mexican Insurance card + page | Supplied photograph: Aduana Mexico at Subteniente Lopez, the Belize and Mexico border |
 | Insurance / Resources / Contact / Locations page heroes | Film frames and the HQ building |
 | Business feature | Film frame: ICB team member in branded uniform |
 | About page hero | HQ photograph |
 | ICB Across Belize gallery (8 items) | HQ photograph + seven film scenes |
 | Video poster | Frame from the film |
 
-## Interim imagery to replace when official files arrive
+## Still to supply
 
 | Slot | What to supply |
 | --- | --- |
-| `product-mexican` | A photograph of the Belize and Mexico border crossing. Currently shows a driving scene from the film as an interim. |
-| `product-cargo` | Official cargo/freight imagery from icbinsurance.com/products |
-| `product-travel` | ICB travel campaign creative from the official social channels |
 | Gallery and location cards | Branch photographs from icbinsurance.com/contact (Southside, Santa Elena, San Pedro, San Ignacio, Corozal Border, Independence, Ladyville and others), plus staff, event and community photography |
 
 Gallery images live in one list, `ICB.GALLERY_ITEMS` at the top of

@@ -708,13 +708,13 @@ button {
 .hero-arrows button:hover { background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.6); }
 .hero-arrows .glyph { width: 20px; height: 20px; }
 
-@media (max-width: 639px) {
+@media (max-width: 768px) {
   /* The media leads on mobile: taller hero, compact bottom-anchored copy,
-     no section overlap covering the photograph. */
-  .hero-slider { min-height: clamp(560px, 86svh, 680px); }
+     and the hero is a complete section with nothing overlapping it. */
+  .hero-slider { min-height: clamp(580px, 88svh, 720px); }
   .hero-slide { align-items: flex-end; }
   .hero-slide-copy {
-    padding-top: 0;
+    padding-top: var(--sp-6);
     padding-bottom: 92px;
     max-width: 100%;
   }
@@ -738,9 +738,6 @@ button {
   .hero-slide--light .hero-slide-copy { padding-bottom: 96px; }
   .hero-count { display: none; }
   .hero-controls { bottom: 18px; }
-  /* The hero finishes before the next section begins: no overlap. */
-  .action-bar { margin-top: 0; }
-  .action-panel { border-radius: 0; border-left: 0; border-right: 0; box-shadow: none; }
   /* Compact cards: strong image, tight copy. */
   .card-body { padding: var(--sp-4); }
   .card-glyph { width: 40px; height: 40px; margin-top: calc(-1 * (var(--sp-4) + 20px)); }
@@ -750,7 +747,13 @@ button {
 
 /* ============================ Action bar ============================ */
 
-.action-bar { position: relative; z-index: 5; margin-top: clamp(-3.5rem, -6vw, -2.5rem); }
+/* The overlapping card treatment is a desktop/large-tablet flourish only.
+   Below 769px the hero is a complete, independent section and this panel
+   follows it in normal document flow with clear breathing room. */
+.action-bar { position: relative; z-index: 5; margin-top: var(--sp-5); }
+@media (min-width: 769px) {
+  .action-bar { margin-top: clamp(-3.5rem, -6vw, -2.5rem); }
+}
 .action-panel {
   background: var(--c-surface);
   border: 1px solid var(--c-line-soft);
