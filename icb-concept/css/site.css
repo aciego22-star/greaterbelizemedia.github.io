@@ -655,8 +655,8 @@ button {
 .hero-progress { display: flex; gap: 10px; align-items: center; }
 .hero-progress button {
   position: relative;
-  width: 44px;
-  height: 32px;
+  width: 36px;
+  height: 28px;
   display: flex;
   align-items: center;
 }
@@ -700,9 +700,10 @@ button {
   font-variant-numeric: tabular-nums;
 }
 
-.hero-arrows { display: flex; gap: 8px; margin-left: auto; }
+.hero-arrows { display: flex; gap: 10px; margin-left: auto; }
 .hero-arrows button {
-  width: 44px; height: 44px;
+  position: relative;
+  width: 36px; height: 36px;
   border: 1px solid rgba(255, 255, 255, 0.35);
   border-radius: var(--r-sm);
   color: var(--inv);
@@ -712,7 +713,17 @@ button {
   transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
 }
 .hero-arrows button:hover { background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.6); }
-.hero-arrows .glyph { width: 20px; height: 20px; }
+.hero-arrows .glyph { width: 17px; height: 17px; }
+/* Smaller to look at, still a comfortable target: the hit area reaches
+   past the visible edge. */
+.hero-arrows button::after,
+.hero-progress button::after {
+  content: "";
+  position: absolute;
+  /* Vertical reach is free; horizontal stays inside the gap so one
+     control never steals its neighbour's taps. */
+  inset: -10px -4px;
+}
 
 @media (max-width: 768px) {
   /* The media leads on mobile: taller hero, compact bottom-anchored copy,
@@ -813,7 +824,6 @@ button {
               border-color var(--t-fast) var(--ease);
 }
 .action-tile:hover {
-  transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
   border-color: var(--c-tint-deep);
   color: var(--c-brand);
@@ -853,7 +863,6 @@ button {
               border-color var(--t-fast) var(--ease);
 }
 .card:hover, .card:focus-within {
-  transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
   border-color: #CFCCCA;
 }
@@ -1136,7 +1145,6 @@ button {
 .play-btn:hover {
   background: var(--c-accent);
   border-color: transparent;
-  transform: translate(-50%, -50%) scale(1.03);
 }
 .play-btn .glyph { width: 30px; height: 30px; margin-left: 4px; }
 .video-note {
@@ -1246,7 +1254,7 @@ button {
   object-fit: cover;
   transition: transform var(--t-slow) var(--ease);
 }
-.gallery-item:hover .g-open img { transform: scale(1.03); }
+
 .gallery-item .g-open:focus-visible { outline: 2px solid var(--c-cta); outline-offset: -3px; }
 .gallery-item--light .g-open img { object-fit: contain; background: #FBF7F6; }
 .gallery-item--light figcaption { background: linear-gradient(0deg, rgba(6, 6, 7, 0.35), transparent 75%); }
@@ -1573,7 +1581,7 @@ button {
               background-color var(--t-fast) var(--ease),
               transform var(--t-fast) var(--ease);
 }
-.quiz-option:hover { border-color: #CFCCCA; transform: translateY(-2px); }
+.quiz-option:hover { border-color: #CFCCCA; }
 .quiz-option:hover .tile-chip { background: var(--red-050); border-color: var(--c-cta); color: var(--c-cta); }
 .quiz-option[aria-pressed="true"] {
   border-color: var(--c-cta);
@@ -2060,7 +2068,7 @@ select.input {
   color: var(--c-text);
   transition: transform var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
 }
-.official-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); border-color: #CFCCCA; color: var(--c-text); }
+.official-card:hover { box-shadow: var(--shadow-lg); border-color: #CFCCCA; color: var(--c-text); }
 .official-card strong { color: var(--c-cta); display: inline-flex; align-items: center; gap: 0.4rem; }
 .official-card span { font-size: var(--fs-300); color: var(--c-text-soft); }
 .official-card .official-glyph {
@@ -2160,7 +2168,7 @@ select.input {
   text-align: left;
   transition: border-color var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
 }
-.topic-option:hover { border-color: #CFCCCA; transform: translateY(-2px); }
+.topic-option:hover { border-color: #CFCCCA; }
 .topic-option strong { color: var(--c-brand); }
 .topic-option span { font-size: var(--fs-300); color: var(--c-text-soft); }
 
@@ -2541,3 +2549,83 @@ select.input {
   .brand-sep { display: none; }
   .brand-logo { height: 40px; }
 }
+
+
+/* ======================= Pointer and touch behaviour =======================
+
+   Two things make a control need a second tap on a phone.
+
+   1. A hover style that MOVES the element. Touch browsers apply :hover on
+      the first tap; if that shifts the element, it slides out from under
+      the finger between touchstart and touchend and the click is thrown
+      away. Every movement-based hover is therefore neutralised wherever
+      hover is not a real capability. Colour and shadow changes are
+      harmless and stay.
+
+   2. The legacy tap delay, where the browser waits to see whether a tap
+      is the start of a double-tap-to-zoom. touch-action: manipulation
+      opts every control out of that wait.                              */
+
+/* Lift on hover, but only where hovering is a real capability. On touch
+   these rules are never applied, so nothing can shift out from under a
+   finger mid-tap. */
+@media (hover: hover) and (pointer: fine) {
+  .action-tile:hover,
+  .card:hover,
+  .card:focus-within,
+  .quiz-option:hover,
+  .official-card:hover,
+  .topic-option:hover { transform: translateY(-2px); }
+  .gallery-item:hover .g-open img { transform: scale(1.03); }
+  .play-btn:hover { transform: translate(-50%, -50%) scale(1.03); }
+}
+
+a,
+button,
+summary,
+label,
+select,
+[role="button"],
+.action-tile,
+.quiz-option,
+.topic-option,
+.official-card,
+.msg-action,
+.chip,
+.g-open,
+.call-row,
+.wa-row,
+.method-row {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(209, 33, 38, 0.14);
+}
+
+/* Hit areas. Text links inside cards and the footer were as short as
+   17px, which is fine to read and awkward to hit. The padding grows the
+   target without moving the text off its baseline grid. */
+.card-links a,
+.footer-col a,
+.footer-brand address a,
+.crumbs a,
+.acc summary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+}
+@media (pointer: coarse), (max-width: 719px) {
+  .card-links a,
+  .footer-col a,
+  .footer-brand address a,
+  .crumbs a { min-height: 44px; }
+  .footer-col li { margin-bottom: 0; }
+}
+
+/* A pressed state every input type can see, so a tap always registers
+   visibly even before the next view paints. */
+.btn:active,
+.action-tile:active,
+.quiz-option:active,
+.topic-option:active,
+.official-card:active,
+.msg-action:active,
+.chip:active { filter: brightness(0.96); }

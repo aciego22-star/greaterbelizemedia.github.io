@@ -177,6 +177,16 @@ ICB.views = ICB.views || {};
 
     root.addEventListener("mouseenter", function () { root.classList.add("is-paused"); });
     root.addEventListener("mouseleave", function () { root.classList.remove("is-paused"); });
+    /* A finger on the hero has to pause it too. Without this the slide
+       could advance between touchstart and touchend, so the tap landed on
+       a button that had just moved and the visitor had to tap again. */
+    root.addEventListener("pointerdown", function () { root.classList.add("is-paused"); }, { passive: true });
+    var release = function () {
+      // Give the tap time to resolve before the clock restarts.
+      setTimeout(function () { root.classList.remove("is-paused"); }, 400);
+    };
+    root.addEventListener("pointerup", release, { passive: true });
+    root.addEventListener("pointercancel", release, { passive: true });
     root.addEventListener("focusin", function () { root.classList.add("is-paused"); });
     root.addEventListener("focusout", function (e) {
       if (!root.contains(e.relatedTarget)) root.classList.remove("is-paused");
@@ -193,14 +203,20 @@ ICB.views = ICB.views || {};
       });
     });
 
-    // Touch swipe.
-    var startX = null;
-    root.addEventListener("pointerdown", function (e) { startX = e.clientX; }, { passive: true });
+    /* Touch swipe. Only a deliberate horizontal drag counts: a tap that
+       drifts a few pixels still reaches the button underneath. */
+    var startX = null, startY = null;
+    root.addEventListener("pointerdown", function (e) {
+      startX = e.clientX;
+      startY = e.clientY;
+    }, { passive: true });
     root.addEventListener("pointerup", function (e) {
       if (startX == null) return;
       var dx = e.clientX - startX;
-      if (Math.abs(dx) > 44) setSlide(idx + (dx < 0 ? 1 : -1), true);
-      startX = null;
+      var dy = e.clientY - startY;
+      startX = startY = null;
+      if (Math.abs(dx) < 48 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+      setSlide(idx + (dx < 0 ? 1 : -1), true);
     }, { passive: true });
 
     setSlide(0);
