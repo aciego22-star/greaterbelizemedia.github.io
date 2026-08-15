@@ -84,11 +84,15 @@ Supplied by the client and integrated in this pass:
 
 ### The hero film
 
-The hero's fourth slide does not autoplay and is never muted. It shows a
-poster frame behind a play control; pressing that control is the user
-gesture browsers require for audible playback, so the film starts with
-sound and full controls. While it plays the carousel is held, and moving
-to another slide stops and rewinds it so audio never carries over.
+The hero's fourth slide plays the film as ambient motion the moment the
+slide comes up. No browser will start a video with audio unprompted, so
+it opens muted and a sound control sits in the corner: one tap is the
+gesture that unlocks audio, and the choice is remembered for the session
+so later visits to the slide start with sound already on. Looping is
+dropped once the sound is on, and the carousel is held so the film is not
+slid away mid-sentence. Leaving the slide stops it, so audio never
+carries under another slide. If a browser refuses even muted playback, a
+play button appears as a fallback.
 
 ### The ICB films
 

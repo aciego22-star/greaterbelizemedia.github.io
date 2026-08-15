@@ -89,7 +89,7 @@ ICB.views = ICB.views || {};
       kind: "video",
       eyebrow: "ICB in Motion",
       title: "Life Happens Fast.",
-      lead: "ICB\u2019s campaign film, shot in Belize. Press play to watch it with sound.",
+      lead: "ICB\u2019s campaign film, shot in Belize.",
       actions: [
         { label: "Explore insurance", href: "#/insurance", primary: true },
         { label: "About ICB", href: "#/about" }
@@ -124,20 +124,32 @@ ICB.views = ICB.views || {};
       "</div>";
     }
 
-    /* Film slide. No autoplay and nothing muted: the poster stands in
-       until the visitor presses play, and playback then starts with sound
-       and full controls. Browsers only permit audible playback from a
-       real gesture, which is exactly what the play button provides. */
+    /* Film slide.
+
+       The film runs as ambient motion the moment its slide comes up, the
+       way it did before. No browser will start a video with sound
+       unprompted, so it begins muted, and a sound control sits in the
+       corner: one tap is the gesture the browser needs, and audio is
+       permitted from that point on. Once a visitor has asked for sound,
+       later visits to the slide start with it already on.
+
+       If even muted playback is refused, the poster stays and a play
+       button appears as a fallback. */
     return '<div class="hero-media hero-media--film">' +
       '<img class="hero-film-poster" data-asset="' + R.esc(media.heroVideoPoster) + '" alt="" aria-hidden="true">' +
       (media.heroVideoAvailable
-        ? '<video class="hero-video" playsinline preload="none" data-asset-defer' +
+        ? '<video class="hero-video" muted loop playsinline preload="metadata" data-asset-defer' +
           ' data-asset="' + R.esc(media.heroVideoSrc) + '"' +
-          ' data-asset-poster="' + R.esc(media.heroVideoPoster) + '" hidden></video>'
+          ' data-asset-poster="' + R.esc(media.heroVideoPoster) + '" tabindex="-1"></video>'
         : "") +
       '<div class="hero-scrim" aria-hidden="true"></div>' +
-      '<button type="button" class="play-btn hero-play" data-hero-play' +
-        ' aria-label="Play the ICB film Life Happens Fast, with sound">' +
+      (media.heroVideoAvailable
+        ? '<button type="button" class="hero-sound" data-hero-sound aria-pressed="false"' +
+            ' aria-label="Turn on sound for the ICB film">' + ICB.art.glyph("sound-off") + "</button>" +
+          '<span class="hero-sound-hint" data-hero-hint aria-hidden="true">Tap for sound</span>'
+        : "") +
+      '<button type="button" class="play-btn hero-play" data-hero-play hidden' +
+        ' aria-label="Play the ICB film Life Happens Fast">' +
         ICB.art.glyph("play") +
       "</button>" +
       '<p class="video-note" data-hero-note hidden>This film could not be played in this browser.</p>' +
@@ -204,74 +216,140 @@ ICB.views = ICB.views || {};
     if (manual) root.classList.add("is-manual");
 
     /* ----------------------------------------------------------------
-       The hero film: user-initiated, with sound.
+       The hero film.
 
-       No autoplay and no muted attribute anywhere. Browsers only allow
-       audible playback in response to a real gesture, so the poster
-       stands in until the visitor presses play; that press is the
-       gesture, so the film starts unmuted with controls. While it plays
-       the carousel is held, otherwise the slide would move on and the
-       audio would carry over the next one.
+       It plays by itself as ambient motion when its slide is up, exactly
+       as it did before. Browsers refuse to start a video with audio
+       unprompted, so it opens muted and a sound control sits in the
+       corner; tapping it is the gesture that unlocks audio. That choice
+       is remembered for the session, so once sound is on, coming back to
+       the slide starts it with sound already playing.
+
+       Looping suits ambient motion but not a film someone is listening
+       to, so loop is dropped while the sound is on, and the carousel is
+       held so the slide cannot move on mid-sentence.
        ---------------------------------------------------------------- */
-    function stopFilm(slide) {
+    var soundWanted = false;
+
+    function setSoundUi(slide, on) {
+      var btn = slide.querySelector("[data-hero-sound]");
+      var hint = slide.querySelector("[data-hero-hint]");
+      if (!btn) return;
+      btn.setAttribute("aria-pressed", String(on));
+      btn.setAttribute("aria-label", on
+        ? "Turn off sound for the ICB film"
+        : "Turn on sound for the ICB film");
+      btn.innerHTML = ICB.art.glyph(on ? "sound-on" : "sound-off");
+      // The prompt is only useful until the visitor has answered it.
+      if (hint) hint.hidden = on || soundWanted;
+    }
+
+    function applySound(slide, video, on) {
+      soundWanted = on;
+      video.muted = !on;
+      video.volume = 1;
+      video.loop = !on;
+      root.classList.toggle("is-film-holding", on);
+      if (on) {
+        manual = true;
+        root.classList.add("is-manual");
+      }
+      setSoundUi(slide, on);
+    }
+
+    function startFilm(slide) {
       var video = slide.querySelector(".hero-video");
       var play = slide.querySelector("[data-hero-play]");
+      var note = slide.querySelector("[data-hero-note]");
+      if (!video) return;
+
+      if (video.hasAttribute("data-asset")) ICB.hydrateAssets(slide, true);
+      video.muted = !soundWanted;
+      video.volume = 1;
+      video.loop = !soundWanted;
+      setSoundUi(slide, soundWanted);
+
+      video.play().then(function () {
+        video.classList.add("is-playing");
+        if (play) play.hidden = true;
+        if (note) note.hidden = true;
+        root.classList.toggle("is-film-holding", soundWanted);
+      }).catch(function () {
+        /* Audio was refused. Fall back to silent ambient playback, which
+           every browser allows, and leave the sound control offering the
+           upgrade. */
+        if (!video.muted) {
+          applySound(slide, video, false);
+          video.play().then(function () {
+            video.classList.add("is-playing");
+            if (play) play.hidden = true;
+          }).catch(function () { offerPlayButton(slide, video); });
+          return;
+        }
+        offerPlayButton(slide, video);
+      });
+    }
+
+    function offerPlayButton(slide, video) {
+      // Even muted playback was refused, so ask for it explicitly.
+      var play = slide.querySelector("[data-hero-play]");
+      var note = slide.querySelector("[data-hero-note]");
+      video.classList.remove("is-playing");
+      if (video.error && note) note.hidden = false;
+      if (play) play.hidden = false;
+    }
+
+    function stopFilm(slide) {
+      var video = slide.querySelector(".hero-video");
       if (!video) return;
       video.pause();
-      video.currentTime = 0;
-      video.hidden = true;
-      video.removeAttribute("controls");
-      slide.classList.remove("is-film-playing");
-      if (play) play.hidden = false;
+      video.classList.remove("is-playing");
       root.classList.remove("is-film-holding");
     }
 
     function initFilmSlide(slide) {
       var video = slide.querySelector(".hero-video");
       var play = slide.querySelector("[data-hero-play]");
+      var sound = slide.querySelector("[data-hero-sound]");
       var note = slide.querySelector("[data-hero-note]");
-      if (!play) return;
 
       if (!video) {
-        play.addEventListener("click", function () {
-          play.hidden = true;
-          if (note) note.hidden = false;
-        });
+        if (play) {
+          play.hidden = false;
+          play.addEventListener("click", function () {
+            play.hidden = true;
+            if (note) note.hidden = false;
+          });
+        }
         return;
       }
 
-      play.addEventListener("click", function () {
-        // The source is only fetched now, on demand.
-        if (video.hasAttribute("data-asset")) ICB.hydrateAssets(slide, true);
-        video.muted = false;
-        video.volume = 1;
-        video.controls = true;
-        video.hidden = false;
-        if (note) note.hidden = true;
-        play.hidden = true;
-        slide.classList.add("is-film-playing");
-        // Hold the carousel for as long as the film is on screen.
-        root.classList.add("is-film-holding");
-        manual = true;
-        root.classList.add("is-manual");
+      if (play) {
+        play.addEventListener("click", function () {
+          // A real gesture, so this attempt may carry sound.
+          applySound(slide, video, true);
+          startFilm(slide);
+        });
+      }
 
-        video.addEventListener("error", function () {
-          stopFilm(slide);
-          if (note) note.hidden = false;
-        }, { once: true });
-
-        video.play().catch(function () {
-          /* Only a genuine media failure counts. A rejected promise with
-             no error object means the browser declined this attempt, and
-             the visible controls let the visitor try again directly. */
-          if (video.error) {
-            stopFilm(slide);
-            if (note) note.hidden = false;
+      if (sound) {
+        sound.addEventListener("click", function () {
+          var turningOn = sound.getAttribute("aria-pressed") !== "true";
+          applySound(slide, video, turningOn);
+          if (turningOn) {
+            var hint = slide.querySelector("[data-hero-hint]");
+            if (hint) hint.hidden = true;
+            if (video.paused) startFilm(slide);
           }
         });
-      });
+      }
 
-      video.addEventListener("ended", function () { stopFilm(slide); });
+      video.addEventListener("ended", function () {
+        // Only reachable with sound on, where looping is switched off.
+        applySound(slide, video, false);
+        video.currentTime = 0;
+        video.play().catch(function () {});
+      });
     }
 
     function setSlide(n, byUser) {
@@ -285,11 +363,13 @@ ICB.views = ICB.views || {};
           if (active) a.removeAttribute("tabindex");
           else a.setAttribute("tabindex", "-1");
         });
-        /* The film never plays by itself. Sliding away from it stops
-           playback and puts the poster back, so audio can never continue
-           under another slide. */
+        /* Ambient again: arriving on the slide starts the film, leaving
+           it stops it so audio never carries under another slide. */
         var video = s.querySelector(".hero-video");
-        if (video && !active && !video.paused) stopFilm(s);
+        if (video) {
+          if (active && !reduced) startFilm(s);
+          else if (!active) stopFilm(s);
+        }
       });
       root.classList.toggle("is-light-active", slides[idx].hasAttribute("data-light"));
       Array.prototype.forEach.call(bars, function (b, i) {
@@ -356,7 +436,7 @@ ICB.views = ICB.views || {};
     }, { passive: true });
 
     Array.prototype.forEach.call(slides, function (slide) {
-      if (slide.querySelector("[data-hero-play]")) initFilmSlide(slide);
+      if (slide.querySelector(".hero-media--film")) initFilmSlide(slide);
     });
 
     // Always opens on slide 1 of the declared lineup, every fresh load.

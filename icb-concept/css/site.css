@@ -608,26 +608,60 @@ button {
   position: absolute;
   inset: 0;
   width: 100%; height: 100%;
-  object-fit: contain;
+  object-fit: cover;
+  object-position: center 38%;
   background: #0B0B0C;
-  z-index: 3;
+  opacity: 0;
+  transition: opacity 600ms var(--ease);
 }
+.hero-video.is-playing { opacity: 1; }
 .hero-video[hidden] { display: none; }
-/* While the film plays it owns the slide: poster, scrim and copy step
-   back so the picture and its controls are unobstructed. */
-.hero-slide.is-film-playing .hero-film-poster,
-.hero-slide.is-film-playing .hero-scrim { opacity: 0; }
-.hero-slide.is-film-playing .hero-slide-copy { opacity: 0; pointer-events: none; }
-.hero-slide.is-film-playing .hero-film-poster,
-.hero-slide.is-film-playing .hero-scrim,
-.hero-slide.is-film-playing .hero-slide-copy { transition: opacity var(--t-fast) var(--ease); }
-.hero-play { z-index: 4; }
-/* On desktop the copy column owns the left, so the play control moves
-   into the clear half rather than sitting on the text. */
-@media (min-width: 769px) {
-  .hero-play { left: 66%; }
+
+/* Sound control. The film runs as ambient motion, muted, because that is
+   the only way a browser will start it unprompted. One tap turns the
+   sound on, which is a gesture, so audio is permitted from then on. */
+.hero-sound {
+  position: absolute;
+  top: clamp(14px, 2.5vw, 24px);
+  right: clamp(14px, 2.5vw, 24px);
+  z-index: 4;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: rgba(18, 18, 20, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+  transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
 }
-/* The film holds the carousel: the progress clock stops until it ends. */
+.hero-sound .glyph { width: 21px; height: 21px; }
+.hero-sound[hidden] { display: none; }
+.hero-sound[aria-pressed="true"] { background: var(--c-cta); border-color: transparent; }
+@media (hover: hover) and (pointer: fine) {
+  .hero-sound:hover { background: var(--c-cta); border-color: transparent; }
+}
+/* A label the first time, so the control is not just a mystery icon. */
+.hero-sound-hint {
+  position: absolute;
+  top: calc(clamp(14px, 2.5vw, 24px) + 54px);
+  right: clamp(14px, 2.5vw, 24px);
+  z-index: 4;
+  font-size: var(--fs-200);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--c-text-inverse);
+  background: rgba(18, 18, 20, 0.55);
+  border-radius: var(--r-sm);
+  padding: 5px 10px;
+  backdrop-filter: blur(4px);
+  pointer-events: none;
+}
+.hero-sound-hint[hidden] { display: none; }
+
+.hero-play { z-index: 4; }
+/* With sound on, the carousel waits rather than sliding the film away. */
 .hero-slider.is-film-holding .hero-progress button .bar::after { animation-play-state: paused; }
 
 /* Restrained overlays: gradients only, never boxes over the media. */
@@ -1220,6 +1254,9 @@ button {
   border-color: transparent;
 }
 .play-btn .glyph { width: 30px; height: 30px; margin-left: 4px; }
+/* display:flex above outranks the user-agent [hidden] rule, so without
+   this the button stays on screen after playback starts. */
+.play-btn[hidden] { display: none; }
 .video-note {
   position: absolute;
   top: 50%; left: 50%;
