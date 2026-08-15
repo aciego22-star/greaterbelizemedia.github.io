@@ -49,8 +49,12 @@ window.ICB = window.ICB || {};
   }
 
   /* Product category card. Categories with suspended sales carry no
-     enquiry link, so nothing implies cover can be arranged today. */
+     enquiry link and no "learn more" invitation, so nothing on the card
+     implies cover can be arranged today. */
   function productCard(p) {
+    var first = p.suspended
+      ? '<a href="' + esc(p.route) + '">View current information</a>'
+      : '<a href="' + esc(p.route) + '">Learn more</a>';
     var second = p.suspended
       ? '<a href="#/contact?topic=other&category=' + esc(p.id) + '">Contact ICB</a>'
       : '<a href="#/contact?topic=new-cover&category=' + esc(p.id) + '">Request information</a>';
@@ -62,7 +66,7 @@ window.ICB = window.ICB || {};
           "<h3><a href=\"" + esc(p.route) + '">' + esc(p.name) + "</a></h3>" +
           '<p class="card-desc">' + esc(p.short) + "</p>" +
           '<div class="card-links">' +
-            '<a href="' + esc(p.route) + '">Learn more</a>' +
+            first +
             second +
           "</div>" +
         "</div>" +
@@ -181,21 +185,28 @@ window.ICB = window.ICB || {};
   /* Guided discovery quiz (shared by home + insurance hub)              */
   /* ------------------------------------------------------------------ */
 
+  /* Every blurb here either restates ICB's own published description of a
+     category or is plain navigational copy. None of them state policy
+     terms, legal requirements or what a visitor should buy. */
   var QUIZ_OPTIONS = [
     { id: "home", label: "My home", glyph: "house", productId: "property",
       blurb: "Homeowners and renters are both part of ICB's published property categories." },
     { id: "vehicle", label: "My vehicle", glyph: "car", productId: "motor",
       blurb: "From personal vehicles to taxis, buses and heavy-duty equipment." },
     { id: "business", label: "My business", glyph: "briefcase", special: "business",
-      blurb: "Business protection usually combines property, motor, cargo and liability cover." },
+      blurb: "ICB publishes insurance categories for businesses across Belize." },
     { id: "boat", label: "A boat or vessel", glyph: "boat", productId: "marine",
       blurb: "Marine Hull Insurance, customizable to third party and passenger liability." },
     { id: "goods", label: "Goods being shipped", glyph: "container", productId: "cargo",
       blurb: "Warehouse-to-warehouse protection for goods in transit." },
+    /* Sales are suspended, so this result says so rather than presenting
+       Travel Insurance as something to arrange. */
     { id: "trip", label: "My next trip", glyph: "plane", productId: "travel",
-      blurb: "Travel cover designed around journeys abroad." },
+      blurb: "Sales of ICB Travel Insurance are currently temporarily suspended." },
+    /* No legal assertions about driving in Mexico: ICB presents this line
+       entirely through ANA Seguros. */
     { id: "mexico", label: "A drive into Mexico", glyph: "border", productId: "mexican",
-      blurb: "Mexican law requires liability insurance from a Mexico-authorized insurer." },
+      blurb: "ICB's Mexican Insurance is provided through ANA Seguros." },
     { id: "unsure", label: "I'm not sure", glyph: "question", special: "unsure",
       blurb: "No problem. The ICB team will point you in the right direction." }
   ];
@@ -210,13 +221,24 @@ window.ICB = window.ICB || {};
         "</div>";
     } else if (opt.special === "unsure") {
       out += "<h3>Talk it through with ICB</h3><p>" + esc(opt.blurb) +
-        " Liability & Miscellaneous also covers needs that do not fit a single box.</p>" +
+        " Liability &amp; Miscellaneous is ICB's published category for specialty cover.</p>" +
         '<div class="btn-row">' +
         '<a class="btn btn-primary" href="#/contact?topic=new-cover">Request information</a>' +
         '<a class="btn btn-ghost" href="#/insurance/liability">Liability &amp; Miscellaneous</a>' +
         "</div>";
     } else {
       var p = ICB.DATA.productById(opt.productId);
+      /* A suspended category gets the current-status route only. No
+         enquiry CTA, nothing that reads as "arrange this today". */
+      if (p.suspended) {
+        out = '<span class="eyebrow">Current status</span>' +
+          "<h3>" + esc(p.name) + "</h3><p>" + esc(opt.blurb) + "</p>" +
+          '<div class="btn-row">' +
+          '<a class="btn btn-primary" href="' + esc(p.route) + '">View current information</a>' +
+          '<a class="btn btn-ghost" href="#/contact?topic=other&category=' + esc(p.id) + '">Contact ICB</a>' +
+          "</div>";
+        return out;
+      }
       out += "<h3>" + esc(p.name) + "</h3><p>" + esc(opt.blurb) + "</p>" +
         '<div class="btn-row">' +
         '<a class="btn btn-primary" href="' + esc(p.route) + '">Learn about ' + esc(p.name) + "</a>" +

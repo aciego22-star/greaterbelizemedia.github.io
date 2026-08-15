@@ -13,13 +13,21 @@
      Nothing is invented. Where ICB does not publish a direct line,
      corporateLine: true offers the Corporate Office number, correctly
      labelled as the Corporate Office.
+   - active: false keeps a record in this dataset for reference without
+     presenting it publicly as an operating location. Everything that
+     faces a visitor reads ICB.DATA.activeLocations(), never the raw
+     array, so one flag governs the branch finder, the map, the call
+     directory, the WhatsApp directory and the contact form.
 
    INTERNAL TODO (not client-facing):
    - Reconcile against ICB's current Contact page and telephone directory
      for the branches still missing a published landline, street address
      or email: Corozal Border, Corozal, San Pedro, Santa Elena (Cayo),
      Benque Viejo Border, Benque Viejo Agency, Independence, Caye Caulker,
-     San Estevan, Seine Bight, San Narciso.
+     San Estevan, Seine Bight.
+   - SAN NARCISO: held at active: false. It is not presented as an
+     operating branch anywhere public. Confirm its status, type and
+     contact details with ICB, then set active: true.
    - SAN JUAN VILLAGE: ICB's social presence indicates service to San Juan
      Village. No address, landline or WhatsApp line is published for it, so
      it is deliberately NOT listed publicly. Confirm the location type and
@@ -70,9 +78,12 @@ ICB.DATA.locations = [
     map: { x: 145.4, y: 82.6 },
     note: null
   },
+  /* HELD BACK, NOT PUBLIC. ICB's current operating status for San Narciso
+     is not verified from here, so it is not offered as a branch a visitor
+     can travel to or call. The record stays for reference only. */
   {
     id: "san-narciso",
-    name: "San Narciso Branch",
+    name: "San Narciso",
     type: "Branch",
     district: "Corozal",
     town: "San Narciso Village",
@@ -83,7 +94,8 @@ ICB.DATA.locations = [
     email: null,
     mapQuery: "San Narciso Village, Corozal District, Belize",
     map: { x: 130.6, y: 95.6 },
-    note: null
+    note: null,
+    active: false
   },
 
   /* ---------------------------- Orange Walk ---------------------------- */
@@ -339,12 +351,19 @@ ICB.DATA.locationById = function (id) {
   return null;
 };
 
+/* THE public list. Everything a visitor can see is built from this, so a
+   record held back for confirmation cannot leak into one surface while
+   being absent from another. */
+ICB.DATA.activeLocations = function () {
+  return ICB.DATA.locations.filter(function (l) { return l.active !== false; });
+};
+
 /* Locations with verified WhatsApp lines, in data order. */
 ICB.DATA.whatsappLines = function () {
-  return ICB.DATA.locations.filter(function (l) { return l.whatsapps && l.whatsapps.length; });
+  return ICB.DATA.activeLocations().filter(function (l) { return l.whatsapps && l.whatsapps.length; });
 };
 
 /* Locations with a published direct landline, in data order. */
 ICB.DATA.phoneLines = function () {
-  return ICB.DATA.locations.filter(function (l) { return l.phones && l.phones.length; });
+  return ICB.DATA.activeLocations().filter(function (l) { return l.phones && l.phones.length; });
 };

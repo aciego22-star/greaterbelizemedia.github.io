@@ -51,8 +51,9 @@ ICB.DATA.contactFlows = {
         { id: "message", label: "How can we help with your policy?", type: "textarea", required: true,
           help: "Please do not include policy numbers or payment details in this concept form." }
       ],
-      sideNote: "Need to pay a premium? ICB's payment portal is available online.",
-      sideAction: { label: "Open the payment portal", hrefKey: "payments", external: true }
+      /* Points at the portal without describing what can be done there. */
+      sideNote: "ICB publishes a payment portal online.",
+      sideAction: { label: "Open payment portal", hrefKey: "payments", external: true }
     },
     {
       id: "claim",

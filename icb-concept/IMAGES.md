@@ -26,11 +26,11 @@ visual has been supplied.
 | About page hero | HQ photograph |
 | ICB in Motion featured video | The compressed campaign film + poster frame |
 | Hero slide 3 | Nationwide Cash Express, two supplied compositions |
-| Branch gallery (2 of 10 tiles) | HQ photograph and the Daly Street Corporate Office |
+| Branch gallery (2 of 12 tiles) | HQ photograph and the Daly Street Corporate Office |
 
 ## Still to supply: branch photography
 
-The branch gallery is the priority. Eight tiles currently render a
+The branch gallery is the priority. Ten tiles currently render a
 designed location plate built from the verified branch record, and each
 upgrades to a photograph the moment a file is dropped in:
 
@@ -40,14 +40,24 @@ upgrades to a photograph the moment a file is dropped in:
 | Ladyville Branch | `assets/img/branches/ladyville.jpg` |
 | San Pedro Branch | `assets/img/branches/san-pedro.jpg` |
 | Corozal Border Branch | `assets/img/branches/corozal-border.jpg` |
-| San Narciso Branch | `assets/img/branches/san-narciso.jpg` |
 | Santa Elena Branch | `assets/img/branches/santa-elena.jpg` |
 | San Ignacio Branch | `assets/img/branches/san-ignacio.jpg` |
 | Independence Branch | `assets/img/branches/independence.jpg` |
+| Belmopan City Branch | `assets/img/branches/belmopan.jpg` |
+| Dangriga Branch | `assets/img/branches/dangriga.jpg` |
 
-These are the branch photographs published in ICB's own contact gallery.
-They could not be fetched from this environment (outbound requests to
-icbinsurance.com are blocked here), so they need to be supplied directly.
+Most of these are the branch photographs published in ICB's own contact
+gallery. They could not be fetched from this environment (outbound
+requests to icbinsurance.com are blocked here), so they need to be
+supplied directly.
+
+**San Narciso** is a special case. Its record is held at `active: false`
+in `js/data/locations.js` because ICB's current operating status for it
+is not verified, so it does not appear in the branch finder, the map, the
+call directory or the WhatsApp directory. A supplied photograph will
+render in the gallery, captioned "San Narciso, Corozal District" rather
+than as a branch. Set `active: true` once ICB confirms it and every
+surface picks it up at once.
 
 Staff, event and community photography is also welcome; it goes in a
 second row of the same grid with no layout change.

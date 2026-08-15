@@ -17,10 +17,10 @@ ICB.views = ICB.views || {};
         return '<button type="button" class="chip" data-district-chip="' + R.esc(d) + '" aria-pressed="' + (i === 0 ? "true" : "false") + '">' + R.esc(d) + "</button>";
       }).join("");
 
-      var cards = ICB.DATA.locations.map(R.locationCard).join("");
+      var cards = ICB.DATA.activeLocations().map(R.locationCard).join("");
 
       var seenTowns = {};
-      var markers = ICB.DATA.locations.map(function (l) {
+      var markers = ICB.DATA.activeLocations().map(function (l) {
         var town = l.town.split(",")[0];
         var label = seenTowns[town] ? null : town;
         seenTowns[town] = true;

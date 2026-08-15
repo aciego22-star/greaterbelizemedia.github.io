@@ -33,7 +33,9 @@ ICB.DATA.resources = {
     },
     {
       label: "ICB payment portal",
-      description: "Pay your premium online through ICB's billing portal.",
+      /* Names the destination only. What a policyholder can do inside the
+         portal is not published, so the concept does not describe it. */
+      description: "Access ICB payment services at the official ICB payment portal.",
       hrefKey: "payments",
       glyph: "card"
     },
@@ -90,8 +92,11 @@ ICB.DATA.resources = {
     }
   ],
 
-  /* Reserved slot. Nothing is presented as ICB guidance until ICB
-     approves it. */
+  /* INTERNAL, NOT RENDERED. A reserved slot in the safety grid for
+     consumer guides ICB writes and approves. It used to paint an empty
+     card describing itself, which is a note to the build team rather than
+     something a visitor should read, so views/resources.js no longer
+     renders it. Approved guides can be appended to safety[] directly. */
   placeholder: {
     label: "More consumer guides can be added here",
     description: "This space is ready for consumer guides once ICB writes and approves them."

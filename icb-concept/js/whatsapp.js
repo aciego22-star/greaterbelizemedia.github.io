@@ -44,7 +44,9 @@ window.ICB = window.ICB || {};
           ICB.art.waIcon("roundel", "wa-roundel wa-head-icon") +
           '<div class="wa-head-text">' +
             '<strong id="wa-dir-title">WhatsApp ICB</strong>' +
-            "<span>Choose an ICB location to continue on WhatsApp.</span>" +
+            /* Not every ICB location publishes a WhatsApp line, and the
+               wording must not suggest otherwise. */
+            "<span>Choose a WhatsApp-enabled ICB location.</span>" +
           "</div>" +
           '<button type="button" class="wa-close" data-wa-close aria-label="Close WhatsApp directory">' +
             ICB.art.glyph("close") +

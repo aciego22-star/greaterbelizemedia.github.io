@@ -126,7 +126,10 @@ window.ICB = window.ICB || {};
           "</div>" + cols +
         "</div>" +
         '<div class="footer-base">' +
-          "<span>&copy; " + new Date().getFullYear() + " " + R.esc(f.legal) + " Concept draft; content pending ICB review.</span>" +
+          /* The build-status note that used to sit here ("content pending
+             ICB review") was a message to us, not to a visitor. The
+             concept is still attributed, in the note beside this line. */
+          "<span>&copy; " + new Date().getFullYear() + " " + R.esc(f.legal) + "</span>" +
           '<span class="footer-note">' + R.esc(f.conceptNote) + "</span>" +
         "</div>" +
       "</div>";

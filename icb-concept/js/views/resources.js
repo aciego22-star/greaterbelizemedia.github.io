@@ -36,10 +36,10 @@ ICB.views = ICB.views || {};
       var safety = data.safety.map(function (o) { return externalCard(o, R, ext); }).join("");
       var onSite = data.onSite.map(function (o) { return siteCard(o, R); }).join("");
 
-      var slot = '<div class="official-card official-card--slot rv" aria-hidden="true">' +
-        "<strong>" + R.esc(data.placeholder.label) + "</strong>" +
-        "<span>" + R.esc(data.placeholder.description) + "</span>" +
-      "</div>";
+      /* The reserved slot for future consumer guides is no longer painted.
+         An empty card describing what could go there is a note to the
+         build team, and a visitor should not be reading those. The slot
+         is documented in ICB.DATA.resources.placeholder instead. */
 
       return '' +
         '<section class="page-hero on-dark" aria-labelledby="res-title">' +
@@ -70,7 +70,7 @@ ICB.views = ICB.views || {};
               sub: "Hurricane season and fire prevention information from icbinsurance.com.",
               id: "safety-title"
             }) +
-            '<div class="official-grid">' + safety + slot + "</div>" +
+            '<div class="official-grid official-grid--pair">' + safety + "</div>" +
           "</div>" +
         "</section>" +
 

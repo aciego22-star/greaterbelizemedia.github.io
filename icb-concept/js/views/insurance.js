@@ -31,7 +31,9 @@ ICB.views = ICB.views || {};
 
         '<section class="section section--flush-top" aria-labelledby="all-cat-title">' +
           '<div class="shell">' +
-            R.sectionHead({ eyebrow: "All categories", title: "Seven lines of cover, one team.", id: "all-cat-title" }) +
+            /* No count in the heading: ICB's published category list is what
+               it is, and a number in the copy dates the moment it changes. */
+            R.sectionHead({ eyebrow: "All categories", title: "Explore ICB insurance.", sub: "Insurance options for individuals and businesses.", id: "all-cat-title" }) +
             '<div class="card-grid">' + cards + "</div>" +
           "</div>" +
         "</section>" +

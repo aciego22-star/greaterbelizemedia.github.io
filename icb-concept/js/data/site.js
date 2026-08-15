@@ -49,11 +49,17 @@ ICB.DATA.site = {
     // Official ICB claims page. Replace with direct PDF links when supplied by ICB.
     claimsForms: "https://www.icbinsurance.com/claims",
     consumerResources: "https://www.icbinsurance.com/consumer-resourses",
+    /* ICB's payment portal. The concept links to it and names it; it does
+       NOT describe a customer payment workflow, because the steps a
+       policyholder takes there are not verified from here.
+       INTERNAL TODO: ICB also publishes a separate service at
+       https://kiosk.icbinsurance.com/ . Its purpose and audience need to
+       be confirmed with ICB before either is described in public copy. */
     payments: "https://billing.icbinsurance.com",
     /* ICB's Mexican Insurance page, which carries the ANA Seguros
        pathways. INTERNAL TODO: swap in the direct ANA Seguros links
        (Buy Now, View Coverage, Claims, FAQs) once ICB supplies them. */
-    mexicanInsurance: "https://www.icbinsurance.com/mexican-insurance",
+    mexicanInsurance: "https://www.icbinsurance.com/micro-insurance",
     website: "https://www.icbinsurance.com"
   },
 
@@ -71,7 +77,8 @@ ICB.DATA.site = {
   taskRoutes: [
     { id: "cover", label: "I need insurance", short: "Insurance", href: "#/insurance", glyph: "shield" },
     { id: "claim", label: "I need to file a claim", short: "File a claim", href: "#/claims", glyph: "document" },
-    { id: "policyholder", label: "I'm an existing policyholder", short: "Pay my premium", href: "https://billing.icbinsurance.com", external: true, note: "Opens ICB's payment portal", glyph: "card" },
+    /* Names the portal, does not describe what can be done inside it. */
+    { id: "policyholder", label: "I'm an existing policyholder", short: "ICB payment portal", href: "https://billing.icbinsurance.com", external: true, note: "Opens the ICB payment portal", glyph: "card" },
     { id: "branch", label: "I need a branch", short: "Find a branch", href: "#/locations", glyph: "marker" },
     { id: "business", label: "I'm looking for business coverage", short: "Business insurance", href: "#/business", glyph: "briefcase" },
     { id: "question", label: "I have a question", short: "Talk to ICB", href: "#/contact", glyph: "chat" }
@@ -108,7 +115,7 @@ ICB.DATA.site = {
         links: [
           { label: "How claims work", href: "#/claims" },
           { label: "Official claims forms", href: "https://www.icbinsurance.com/claims", external: true },
-          { label: "Pay my premium", href: "https://billing.icbinsurance.com", external: true },
+          { label: "ICB payment portal", href: "https://billing.icbinsurance.com", external: true },
           { label: "Consumer resources", href: "#/resources" }
         ]
       }

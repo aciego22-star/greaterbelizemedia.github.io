@@ -68,9 +68,9 @@ window.ICB = window.ICB || {};
 
   function directoryHtml() {
     var R = ICB.render;
-    var callable = ICB.DATA.locations.filter(hasNumber);
+    var callable = ICB.DATA.activeLocations().filter(hasNumber);
     /* The few locations ICB publishes no number for at all. */
-    var noLine = ICB.DATA.locations.filter(function (l) { return !hasNumber(l); });
+    var noLine = ICB.DATA.activeLocations().filter(function (l) { return !hasNumber(l); });
 
     var groups = ICB.DATA.districts.map(function (d) {
       var locs = callable.filter(function (l) { return l.district === d; });

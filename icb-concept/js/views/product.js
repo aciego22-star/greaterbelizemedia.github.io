@@ -1,5 +1,5 @@
 /* ============================================================================
-   Product detail view — one renderer for all seven published categories.
+   Product detail view — one renderer for every published category.
    Copy is descriptive; next steps route to enquiry, phone or branches.
 
    Two categories behave differently, and the renderer respects that:
@@ -160,7 +160,10 @@ ICB.views = ICB.views || {};
 
         '<section class="section section--flush-top" aria-labelledby="rel-title">' +
           '<div class="shell">' +
-            R.sectionHead({ eyebrow: "Related", title: "People often look at these together.", id: "rel-title" }) +
+            /* A neutral signpost. ICB does not publish guidance on which
+               categories are bought together, so the concept does not
+               suggest combinations. */
+            R.sectionHead({ eyebrow: "Related", title: "Other ICB insurance categories.", id: "rel-title" }) +
             '<div class="card-grid card-grid--pair">' + related + "</div>" +
           "</div>" +
         "</section>";

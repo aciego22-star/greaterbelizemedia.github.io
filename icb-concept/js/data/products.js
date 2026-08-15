@@ -72,10 +72,12 @@ ICB.DATA.products = [
     covers: ["Barges", "Tug Boats", "Dredgers", "Water Taxis", "Fishing Vessels", "Yachts", "Personal Vessels"],
     coversLabel: "Vessels covered",
     audience: "For vessel owners and operators across Belize.",
+    /* No branch-specialty claims here. Which branches handle which line of
+       cover is not published by ICB, so the copy says "any ICB location". */
     goodToKnow: [
       "Cover can be customized to include third party and passenger liability.",
       "Tell ICB how the vessel is used when you enquire.",
-      "Coastal and island branches, including San Pedro and Dangriga, serve marine customers."
+      "Any ICB location can put you in touch about Marine Hull Insurance."
     ],
     status: null,
     glyph: "boat",
@@ -97,7 +99,7 @@ ICB.DATA.products = [
     goodToKnow: [
       "Cover follows the goods from warehouse to warehouse.",
       "Describe the route and the goods when you enquire.",
-      "Businesses that also own vehicles or vessels can look at motor and marine cover alongside cargo."
+      "An ICB representative can go through the details with you."
     ],
     status: null,
     glyph: "container",
@@ -116,7 +118,7 @@ ICB.DATA.products = [
     audience: "For businesses, contractors, tour operators and individuals.",
     goodToKnow: [
       "These products are arranged individually, so a conversation with ICB is the natural first step.",
-      "Tour operators and contractors can combine liability cover with property or motor cover.",
+      "Tell ICB about the work you do when you enquire.",
       "Request information and an ICB representative will guide you."
     ],
     status: null,
@@ -159,9 +161,11 @@ ICB.DATA.products = [
     standfirst: "Driving into Mexico? Access ICB's Mexican Insurance options through ANA Seguros.",
     covers: [],
     audience: "For drivers travelling from Belize into Mexico.",
+    /* ICB presents this line entirely through ANA Seguros, so the page
+       makes no independent statements about it. */
     goodToKnow: [
       "ICB's Mexican Insurance is provided through ANA Seguros.",
-      "Northern branches, including Corozal and the Corozal Border Branch, serve drivers heading to the border."
+      "The pathways below are the ones ICB publishes: Buy Now, View Coverage, Claims and FAQs."
     ],
     /* ANA Seguros pathways published on ICB's Mexican Insurance page.
        INTERNAL TODO: confirm the direct URLs with ICB; these route to the

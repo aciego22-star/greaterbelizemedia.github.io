@@ -15,11 +15,20 @@
    branch record, and upgrade to a photograph the moment a file is dropped
    in and src is set. No layout change is needed.
 
+   A location held at active: false in ICB.DATA.locations only appears here
+   if a real photograph exists for it. A designed plate would be an
+   assertion that the place is an operating branch, and that is exactly
+   what the flag is withholding; a photograph is just a photograph, and it
+   is captioned as a place, not as a branch.
+
    INTERNAL TODO (not client-facing):
    - Collect the branch photographs published in ICB's own contact gallery
-     (Southside Belize City, Santa Elena, San Pedro, San Narciso, San
-     Ignacio, Corozal Border, Independence, Ladyville) and set src on the
-     matching entries below. Files go in assets/img/branches/.
+     (Southside Belize City, Santa Elena, San Pedro, San Ignacio, Corozal
+     Border, Independence, Ladyville) and set src on the matching entries
+     below. Files go in assets/img/branches/.
+   - San Narciso: a supplied photograph will render, captioned as a place
+     in Corozal District. Its branch status stays unstated until ICB
+     confirms it.
    - Ask ICB for staff, event and community photography for a second row.
    ========================================================================== */
 window.ICB = window.ICB || {};
@@ -44,10 +53,21 @@ ICB.DATA.gallery = {
     { locationId: "ladyville",             src: null },
     { locationId: "san-pedro",             src: null },
     { locationId: "corozal-border",        src: null },
-    { locationId: "san-narciso",           src: null },
+    {
+      locationId: "san-narciso",
+      src: null,
+      caption: "San Narciso, Corozal District",
+      alt: "San Narciso Village, Corozal District"
+    },
     { locationId: "santa-elena",           src: null },
     { locationId: "san-ignacio",           src: null },
-    { locationId: "independence",          src: null }
+    { locationId: "independence",          src: null },
+    /* Two more verified branches, each with a published address and
+       landline. They keep the grid's last row full now that San Narciso
+       is held back, and they take a photograph the same way the others
+       do. */
+    { locationId: "belmopan",              src: null },
+    { locationId: "dangriga",              src: null }
   ],
 
   /* ICB in Motion. Both films are the supplied ICB campaign material,
@@ -85,9 +105,14 @@ ICB.DATA.gallery = {
   }
 };
 
-/* Resolve a branch entry against the verified location record. */
+/* Resolve a branch entry against the verified location record. A record
+   held back for confirmation contributes a tile only when there is a
+   photograph to show. */
 ICB.DATA.galleryBranches = function () {
-  return ICB.DATA.gallery.branches.map(function (b) {
+  return ICB.DATA.gallery.branches.filter(function (b) {
+    var loc = ICB.DATA.locationById(b.locationId);
+    return b.src || !loc || loc.active !== false;
+  }).map(function (b) {
     var loc = ICB.DATA.locationById(b.locationId) || {};
     return {
       locationId: b.locationId,

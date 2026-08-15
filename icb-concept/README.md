@@ -156,11 +156,21 @@ data files for `INTERNAL TODO` for the full list. The open items are:
 - **San Juan Village.** ICB's social presence indicates service there.
   No contact details are published, so it is deliberately absent from
   the public dataset and noted for confirmation instead.
+- **Payment portal.** The concept links to and names ICB's payment
+  portal. It does not describe what a policyholder can do inside it,
+  because that workflow is not published. ICB also runs a separate
+  service at `kiosk.icbinsurance.com`; its purpose and audience need
+  confirming before either is described in public copy.
 - **Resource Centre.** The seven consumer-education articles written for
   the first draft were removed. They were not ICB material. The section
-  now signposts only what ICB publishes, with one clearly marked slot
-  for guides ICB writes and approves later.
-- **Branch photography.** Eight branch tiles render a designed location
+  now signposts only what ICB publishes. A slot for guides ICB writes
+  and approves later is reserved in the data and is no longer painted on
+  the page, because an empty card describing itself is a note to the
+  build team rather than something a visitor should read.
+- **San Narciso.** Held at `active: false` pending ICB confirmation of
+  its operating status, so it is absent from the branch finder, the map,
+  the call directory and the WhatsApp directory. See Locations below.
+- **Branch photography.** Ten branch tiles render a designed location
   plate until official photographs are supplied (`IMAGES.md`).
 
 ## Locations
@@ -171,6 +181,20 @@ map, the WhatsApp directory, the call directory, the contact flow, the
 mobile quick actions and the gallery captions. Every published location
 is listed whether or not it has a WhatsApp line; WhatsApp availability
 never decides whether a location exists.
+
+Everything a visitor can see reads `ICB.DATA.activeLocations()`, never
+the raw array. A record carrying `active: false` stays in the dataset for
+reference but appears on no public surface, so a location held back for
+confirmation cannot leak into one screen while being absent from another.
+San Narciso is the one record held that way today; set `active: true`
+once ICB confirms it and every surface picks it up at once. The gallery
+is the single exception, and only in one direction: a held-back location
+contributes a tile solely when a real photograph exists for it, captioned
+as a place rather than as a branch.
+
+The WhatsApp directory says "Choose a WhatsApp-enabled ICB location",
+because not every ICB location publishes a WhatsApp line and the wording
+must not suggest otherwise.
 
 ## Future digital assistance
 

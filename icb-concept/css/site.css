@@ -2179,6 +2179,10 @@ select.input {
   grid-template-columns: repeat(auto-fill, minmax(min(250px, 100%), 1fr));
   gap: var(--sp-4);
 }
+/* Two cards in an auto-fill grid leave a hole where a third would sit.
+   auto-fit collapses the empty track instead, so a short row spreads
+   across the width. Rows of three or more are unaffected. */
+.official-grid--pair { grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr)); }
 .official-card {
   display: flex;
   flex-direction: column;
@@ -2206,16 +2210,6 @@ select.input {
   margin-bottom: var(--sp-1);
 }
 .official-card .official-glyph .glyph { width: 21px; height: 21px; }
-
-/* Reserved slot: clearly an empty space, never a document. */
-.official-card--slot {
-  background: transparent;
-  border-style: dashed;
-  border-color: var(--c-line);
-  justify-content: center;
-}
-.official-card--slot strong { color: var(--c-text-soft); }
-.official-card--slot span { color: var(--c-text-soft); opacity: 0.8; }
 
 /* ============================ Contact page ============================ */
 

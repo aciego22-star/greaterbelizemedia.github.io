@@ -484,7 +484,7 @@ ICB.views = ICB.views || {};
           ICB.render.sectionHead({
             eyebrow: "Insurance",
             title: "Cover for the life you have built.",
-            sub: "Seven lines of insurance for homes, vehicles, vessels, cargo, business and travel. Start where you are.",
+            sub: "Insurance options for individuals and businesses. Start where you are.",
             id: "cat-title"
           }) +
           '<div class="card-grid">' + cards + "</div>" +
@@ -533,7 +533,7 @@ ICB.views = ICB.views || {};
   }
 
   function nationwide() {
-    var markers = ICB.DATA.locations.map(function (l) {
+    var markers = ICB.DATA.activeLocations().map(function (l) {
       return { id: l.id, x: l.map.x, y: l.map.y };
     });
     return '' +
@@ -570,10 +570,14 @@ ICB.views = ICB.views || {};
             '<span class="eyebrow">Business insurance</span>' +
             '<h2 id="biz-title">Protection for the business you have built.</h2>' +
             "<p>ICB offers insurance options for Belizean businesses across property, vehicles, cargo, marine and liability needs.</p>" +
+            /* Two figures, both of them checkable: the districts ICB has
+               locations in, counted from the location dataset, and the
+               founding year. The old "7 lines of cover" chip was a count
+               of ICB's published categories, and a number like that is
+               wrong the day the list changes. */
             '<div class="stat-chips">' +
-              '<span class="stat-chip"><span class="num">7</span><span class="lbl">Lines of cover</span></span>' +
-              '<span class="stat-chip"><span class="num">6</span><span class="lbl">Districts served</span></span>' +
-              '<span class="stat-chip"><span class="num">1981</span><span class="lbl">Serving Belize since</span></span>' +
+              '<span class="stat-chip"><span class="num">' + ICB.DATA.districts.length + '</span><span class="lbl">Districts served</span></span>' +
+              '<span class="stat-chip"><span class="num">' + ICB.DATA.site.org.founded + '</span><span class="lbl">Serving Belize since</span></span>' +
             "</div>" +
             '<div class="btn-row">' +
               '<a class="btn btn-primary" href="#/business">Explore business insurance</a>' +
@@ -707,7 +711,7 @@ ICB.views = ICB.views || {};
             ICB.render.sectionHead({
               eyebrow: "Resource Centre",
               title: "Know your cover.",
-              sub: "Plain answers to common questions about insurance in Belize, plus the official forms and documents.",
+              sub: "Official forms, safety information and useful ICB resources in one place.",
               rule: false,
               id: "res-teaser-title"
             }) +

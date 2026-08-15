@@ -33,7 +33,7 @@ ICB.views = ICB.views || {};
       return ICB.DATA.claims.pathways.map(function (c) { return { value: c.id, label: c.name }; });
     }
     if (field.optionsFrom === "locations") {
-      return ICB.DATA.locations.map(function (l) { return { value: l.id, label: l.name + ", " + l.town }; });
+      return ICB.DATA.activeLocations().map(function (l) { return { value: l.id, label: l.name + ", " + l.town }; });
     }
     return field.options || [];
   }
