@@ -29,10 +29,18 @@ ICB.assetUrl = function (p) {
    deferred keeps every navigation cheap. */
 ICB.hydrateAssets = function (root, force) {
   var scope = root || document;
-  var nodes = scope.querySelectorAll("[data-asset], [data-asset-poster]");
+  var nodes = scope.querySelectorAll("[data-asset], [data-asset-poster], [data-asset-srcset]");
   for (var i = 0; i < nodes.length; i++) {
     var el = nodes[i];
     if (!force && el.hasAttribute("data-asset-defer")) continue;
+    /* <source> inside a <picture> resolves first, so the browser has the
+       whole candidate set before the <img> gets its fallback src and
+       starts fetching. */
+    var srcset = el.getAttribute("data-asset-srcset");
+    if (srcset) {
+      el.srcset = ICB.assetUrl(srcset);
+      el.removeAttribute("data-asset-srcset");
+    }
     var src = el.getAttribute("data-asset");
     if (src) {
       el.src = ICB.assetUrl(src);

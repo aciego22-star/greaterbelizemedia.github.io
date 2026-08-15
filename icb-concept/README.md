@@ -72,22 +72,31 @@ Supplied by the client and integrated in this pass:
   campaign artwork (hero slide 2).
 - `assets/video/icb-life-happens-fast.mp4` and
   `icb-life-happens-fast-es.mp4` — ICB's campaign film in English and
-  Spanish, compressed for web (ICB in Motion; the English cut also runs
-  muted on hero slide 3).
+  Spanish, compressed for web (ICB in Motion, and the English cut on the
+  hero's fourth slide).
+- `assets/img/brands/nce-wide.webp` and `nce-tall.webp` — the two
+  supplied Nationwide Cash Express compositions, banner and vertical.
 - `assets/img/products/`, `assets/img/gallery/` — real product and
   gallery imagery: frames from the film and photography cropped from
   the campaign artwork (see `IMAGES.md` for the full map).
 - The site palette is sampled directly from the logo (red `#D12126`,
   black `#000000`).
 
+### The hero film
+
+The hero's fourth slide does not autoplay and is never muted. It shows a
+poster frame behind a play control; pressing that control is the user
+gesture browsers require for audible playback, so the film starts with
+sound and full controls. While it plays the carousel is held, and moving
+to another slide stops and rewinds it so audio never carries over.
+
 ### The ICB films
 
 Both supplied 1080p cuts are compressed for web playback at 1280x720,
 two-pass ~800 kb/s H.264 with AAC stereo at 128 kb/s, full length, moov
 atom at the front. ICB in Motion plays them with controls and sound, one
-at a time, and nothing downloads until a visitor presses play. The hero's
-third slide runs the English cut muted and looped as ambient motion
-(paused under reduced motion and while the slide is inactive).
+at a time, and nothing downloads until a visitor presses play. The hero
+uses the same model rather than autoplaying anything.
 
 Titles come from the films themselves: the English cut closes on "Life
 Happens Fast / Protect Yourself With ICB", the Spanish cut on "La Vida

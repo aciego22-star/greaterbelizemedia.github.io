@@ -571,10 +571,64 @@ button {
 }
 .hero-slide.is-active .hero-media--contain img { transform: none; transition: none; }
 
-.hero-video-poster { position: absolute; inset: 0; }
-.hero-video-poster svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-.hero-video { opacity: 0; transition: opacity 500ms var(--ease); }
-.hero-video.is-playing { opacity: 1; }
+/* --- Brand lockup slide (Nationwide Cash Express) ---------------------
+   The supplied artwork is a finished composition, so it is contained,
+   never cropped, and centred on its own pale ground. The <picture> in
+   the markup swaps the banner for the vertical poster below 769px. */
+/* The ground matches the artwork's own background, so the contained
+   lockup reads as the whole slide rather than a pasted-in box. */
+.hero-media--brand { background: #FEFEFE; }
+.hero-media--brand picture { display: contents; }
+.hero-media--brand img {
+  object-fit: contain;
+  /* Centred in the space left once the slider chrome is accounted for,
+     so a tall tablet viewport does not leave the lockup stranded at the
+     top of the slide. */
+  object-position: center;
+  transform: none;
+  padding: clamp(16px, 3vw, 40px) clamp(16px, 4vw, 64px) clamp(104px, 14vh, 128px);
+}
+.hero-slide.is-active .hero-media--brand img { transform: none; transition: none; }
+
+/* Nothing is laid over the lockup, so the slide needs no copy column. */
+.hero-slide--brand { align-items: stretch; }
+
+/* --- Film slide -------------------------------------------------------
+   Poster first, video only once the visitor asks for it. Nothing here
+   is muted and nothing autoplays. */
+.hero-media--film { background: #0B0B0C; }
+.hero-film-poster {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center 38%;
+}
+.hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: contain;
+  background: #0B0B0C;
+  z-index: 3;
+}
+.hero-video[hidden] { display: none; }
+/* While the film plays it owns the slide: poster, scrim and copy step
+   back so the picture and its controls are unobstructed. */
+.hero-slide.is-film-playing .hero-film-poster,
+.hero-slide.is-film-playing .hero-scrim { opacity: 0; }
+.hero-slide.is-film-playing .hero-slide-copy { opacity: 0; pointer-events: none; }
+.hero-slide.is-film-playing .hero-film-poster,
+.hero-slide.is-film-playing .hero-scrim,
+.hero-slide.is-film-playing .hero-slide-copy { transition: opacity var(--t-fast) var(--ease); }
+.hero-play { z-index: 4; }
+/* On desktop the copy column owns the left, so the play control moves
+   into the clear half rather than sitting on the text. */
+@media (min-width: 769px) {
+  .hero-play { left: 66%; }
+}
+/* The film holds the carousel: the progress clock stops until it ends. */
+.hero-slider.is-film-holding .hero-progress button .bar::after { animation-play-state: paused; }
 
 /* Restrained overlays: gradients only, never boxes over the media. */
 .hero-scrim {
@@ -611,6 +665,19 @@ button {
 }
 .hero-slider.is-light-active .hero-arrows button:focus-visible,
 .hero-slider.is-light-active .hero-progress button:focus-visible { outline-color: var(--c-brand); }
+
+/* The brand slide's artwork already carries its name and line, so those
+   stay in the document for screen readers and the slide label while only
+   the action row is painted. */
+.hero-slide-copy--quiet {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
 
 .hero-slide-copy {
   position: relative;
@@ -749,6 +816,12 @@ button {
   /* Artwork slide on mobile: the poster gets the top half on its own, the
      copy sits beneath it. Nothing overlaps the artwork. */
   .hero-slide--light .hero-media--contain { inset: 0 0 52% 0; }
+  /* The brand slide's vertical composition needs the full height; only
+     the action row and the slider chrome sit below it. */
+  /* The vertical composition is almost exactly the hero's own aspect, so
+     containing it costs almost no space and keeps the whole lockup,
+     including its red and black sweep, intact. */
+  .hero-media--brand img { padding: var(--sp-2) var(--sp-2) 72px; }
   .hero-slide--light .hero-media--contain img { object-fit: contain; object-position: center center; }
   .hero-slide--light .hero-scrim--light { display: none; }
   .hero-slide--light { background: var(--c-bg); }

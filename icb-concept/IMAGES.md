@@ -25,6 +25,7 @@ visual has been supplied.
 | Business feature | Film frame: ICB team member in branded uniform |
 | About page hero | HQ photograph |
 | ICB in Motion featured video | The compressed campaign film + poster frame |
+| Hero slide 3 | Nationwide Cash Express, two supplied compositions |
 | Branch gallery (2 of 10 tiles) | HQ photograph and the Daly Street Corporate Office |
 
 ## Still to supply: branch photography
@@ -65,6 +66,35 @@ The gallery carries branch photography only. Campaign stills were
 removed from it: the films themselves live in ICB in Motion, and film
 frames still serve the product cards and page heroes through
 `js/data/images.js`.
+
+## Hero lineup
+
+The order is fixed and lives in one place, the `SLIDES` array at the top
+of `js/views/home.js`:
+
+1. ICB headquarters photograph
+2. "By land, sea or air, ICB is there" campaign artwork
+3. Nationwide Cash Express brand lockup
+4. The ICB film
+
+`initSlider` always opens on index 0 and nothing persists a position, so
+a fresh load always presents that sequence.
+
+### Nationwide Cash Express
+
+Two supplied compositions, chosen by a `<picture>` element:
+
+| Viewport | File | Source |
+| --- | --- | --- |
+| 769px and up | `assets/img/brands/nce-wide.webp` | 1672x941 banner, resized to 1600x900 |
+| below 769px | `assets/img/brands/nce-tall.webp` | 941x1672 poster, resized to 900x1599 |
+
+Both are `object-fit: contain`, so neither is cropped or stretched at any
+size, and the bottom inset keeps the slider chrome clear of the artwork.
+The slide carries no overlaid headline or button: the lockup already
+states the brand name and its line, and anything laid over it would
+either cover the mascot or collide with the controls. The eyebrow and
+title stay in the document for screen readers and the slide label.
 
 ## Video
 

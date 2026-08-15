@@ -10,8 +10,29 @@ ICB.views = ICB.views || {};
 (function () {
   "use strict";
 
-  /* Three real ICB media slides: headquarters photograph, the
-     "Protect Your Investment" campaign artwork, and the ICB film. */
+  /* ==========================================================================
+     HERO MEDIA LINEUP
+
+     The order below IS the order shown, and it is fixed. The array is the
+     single source of truth: heroSlider() maps it in place, initSlider()
+     always opens on index 0, and nothing shuffles or resumes a previous
+     position. A fresh load therefore always presents:
+
+       1. ICB headquarters photograph
+       2. "By land, sea or air, ICB is there" campaign artwork
+       3. Nationwide Cash Express brand lockup
+       4. The ICB film
+
+     After that the carousel may cycle, and the visitor may jump around;
+     only the opening sequence is guaranteed.
+
+     Slide kinds
+       photo   full-bleed photograph behind a dark scrim
+       artwork light slide, artwork contained, copy beside it
+       brand   light slide, a finished lockup shown whole with no copy
+               competing against it (see artCarriesCopy)
+       video   poster and a play control; never autoplays (see initFilmSlide)
+     ========================================================================== */
   var SLIDES = [
     {
       kind: "photo",
@@ -19,7 +40,7 @@ ICB.views = ICB.views || {};
       alt: "Insurance Corporation of Belize headquarters in Belize City",
       eyebrow: "Insurance Corporation of Belize Ltd.",
       title: "Protecting Belize since 1981.",
-      lead: "Insurance for the things you’ve built, the people you care about, and the road ahead.",
+      lead: "Insurance for the things you\u2019ve built, the people you care about, and the road ahead.",
       actions: [
         { label: "Explore insurance", href: "#/insurance", primary: true },
         { label: "File a claim", href: "#/claims" }
@@ -39,10 +60,36 @@ ICB.views = ICB.views || {};
       ]
     },
     {
+      /* Nationwide Cash Express. Two supplied compositions, each already a
+         finished lockup with mascot, wordmark and tagline. Overlaying our
+         own headline would fight them, so artCarriesCopy keeps the eyebrow
+         and title in the document for screen readers and the slide label
+         while painting neither, and the artwork is shown whole at both
+         sizes.
+
+         INTERNAL TODO (not client-facing): confirm with ICB and Nationwide
+         Cash Express what this slide should say and where it should link.
+         It currently makes no claim beyond the artwork's own wording and
+         routes to ICB's contact page. */
+      kind: "brand",
+      light: true,
+      artCarriesCopy: true,
+      srcWide: "assets/img/brands/nce-wide.webp",
+      srcTall: "assets/img/brands/nce-tall.webp",
+      alt: "Nationwide Cash Express: the mascot holding a Belize one hundred dollar note, beside the Nationwide Cash Express wordmark and the line Send Money Across Belize",
+      eyebrow: "Nationwide Cash Express",
+      title: "Send money across Belize.",
+      /* No action row. The lockup fills the slide, and an overlaid button
+         would either sit on the artwork or collide with the slider
+         chrome at some widths. Every action stays one row below in the
+         header and the "What can we help you with?" panel. */
+      actions: []
+    },
+    {
       kind: "video",
-      eyebrow: "The ICB Story",
-      title: "Four decades of standing with Belize.",
-      lead: "More than four decades of protecting Belizean homes, businesses, vehicles and livelihoods.",
+      eyebrow: "ICB in Motion",
+      title: "Life Happens Fast.",
+      lead: "ICB\u2019s campaign film, shot in Belize. Press play to watch it with sound.",
       actions: [
         { label: "Explore insurance", href: "#/insurance", primary: true },
         { label: "About ICB", href: "#/about" }
@@ -52,27 +99,49 @@ ICB.views = ICB.views || {};
 
   function slideMedia(s) {
     var R = ICB.render;
+    var media = ICB.DATA.site.media;
+
     if (s.kind === "photo") {
       return '<div class="hero-media" aria-hidden="true"><img data-asset="' + R.esc(s.src) + '" alt="">' +
         '<div class="hero-scrim"></div></div>';
     }
+
     if (s.kind === "artwork") {
       return '<div class="hero-media hero-media--contain" aria-hidden="true"><img data-asset="' + R.esc(s.src) + '" alt="">' +
         '<div class="hero-scrim hero-scrim--light"></div></div>';
     }
-    /* Video slide: generated poster art beneath; the film fades over it
-       once it plays. Ambient only, so it is muted and looped. The
-       element renders only when the compressed film is in place
-       (site.js media.heroVideoAvailable), so a missing file never
-       produces a failed request. */
-    var media = ICB.DATA.site.media;
-    return '<div class="hero-media" aria-hidden="true">' +
-      '<div class="hero-video-poster art-panel">' + ICB.art.panel("poster") + "</div>" +
+
+    /* Brand lockup. A <picture> picks the composition that suits the
+       shape of the viewport: the banner above 768px, the vertical poster
+       below it. Both are contained, so neither is ever cropped or
+       stretched, and the wordmark stays legible at both sizes. */
+    if (s.kind === "brand") {
+      return '<div class="hero-media hero-media--brand" aria-hidden="true">' +
+        "<picture>" +
+          '<source media="(min-width: 769px)" data-asset-srcset="' + R.esc(s.srcWide) + '">' +
+          '<img data-asset="' + R.esc(s.srcTall) + '" alt="">' +
+        "</picture>" +
+      "</div>";
+    }
+
+    /* Film slide. No autoplay and nothing muted: the poster stands in
+       until the visitor presses play, and playback then starts with sound
+       and full controls. Browsers only permit audible playback from a
+       real gesture, which is exactly what the play button provides. */
+    return '<div class="hero-media hero-media--film">' +
+      '<img class="hero-film-poster" data-asset="' + R.esc(media.heroVideoPoster) + '" alt="" aria-hidden="true">' +
       (media.heroVideoAvailable
-        ? '<video class="hero-video" muted loop playsinline preload="metadata" data-asset-defer data-asset="' + R.esc(media.heroVideoSrc) + '"' +
-          (media.heroVideoPoster ? ' data-asset-poster="' + R.esc(media.heroVideoPoster) + '"' : "") + ' tabindex="-1"></video>'
+        ? '<video class="hero-video" playsinline preload="none" data-asset-defer' +
+          ' data-asset="' + R.esc(media.heroVideoSrc) + '"' +
+          ' data-asset-poster="' + R.esc(media.heroVideoPoster) + '" hidden></video>'
         : "") +
-      '<div class="hero-scrim"></div></div>';
+      '<div class="hero-scrim" aria-hidden="true"></div>' +
+      '<button type="button" class="play-btn hero-play" data-hero-play' +
+        ' aria-label="Play the ICB film Life Happens Fast, with sound">' +
+        ICB.art.glyph("play") +
+      "</button>" +
+      '<p class="video-note" data-hero-note hidden>This film could not be played in this browser.</p>' +
+    "</div>";
   }
 
   function heroSlider() {
@@ -84,16 +153,19 @@ ICB.views = ICB.views || {};
           : (a.primary ? "btn-gold" : "btn-light");
         return '<a class="btn btn-lg ' + cls + '" href="' + R.esc(a.href) + '">' + R.esc(a.label) + "</a>";
       }).join("");
-      return '<article class="hero-slide' + (i === 0 ? " is-active" : "") + (s.light ? " hero-slide--light" : "") +
+      return '<article class="hero-slide hero-slide--' + s.kind + (i === 0 ? " is-active" : "") + (s.light ? " hero-slide--light" : "") +
         '" role="group" aria-roledescription="slide"' +
         ' aria-label="' + (i + 1) + ' of ' + SLIDES.length + '" data-slide="' + i + '"' +
         (s.light ? ' data-light="1"' : "") + (i === 0 ? "" : ' aria-hidden="true"') + ">" +
         slideMedia(s) +
         (s.alt ? '<span class="visually-hidden">' + R.esc(s.alt) + "</span>" : "") +
-        '<div class="shell"><div class="hero-slide-copy">' +
+        /* artCarriesCopy: the artwork already states the brand and its
+           line, so the words stay in the document for assistive tech but
+           are not painted over the lockup. */
+        '<div class="shell"><div class="hero-slide-copy' + (s.artCarriesCopy ? " hero-slide-copy--quiet" : "") + '">' +
           '<span class="eyebrow hs-rise">' + R.esc(s.eyebrow) + "</span>" +
           '<h2 class="hs-rise">' + R.esc(s.title) + "</h2>" +
-          '<p class="hero-lead hs-rise">' + R.esc(s.lead) + "</p>" +
+          (s.lead ? '<p class="hero-lead hs-rise">' + R.esc(s.lead) + "</p>" : "") +
           '<div class="btn-row hs-rise">' + btns + "</div>" +
         "</div></div>" +
       "</article>";
@@ -131,6 +203,77 @@ ICB.views = ICB.views || {};
     var manual = reduced;
     if (manual) root.classList.add("is-manual");
 
+    /* ----------------------------------------------------------------
+       The hero film: user-initiated, with sound.
+
+       No autoplay and no muted attribute anywhere. Browsers only allow
+       audible playback in response to a real gesture, so the poster
+       stands in until the visitor presses play; that press is the
+       gesture, so the film starts unmuted with controls. While it plays
+       the carousel is held, otherwise the slide would move on and the
+       audio would carry over the next one.
+       ---------------------------------------------------------------- */
+    function stopFilm(slide) {
+      var video = slide.querySelector(".hero-video");
+      var play = slide.querySelector("[data-hero-play]");
+      if (!video) return;
+      video.pause();
+      video.currentTime = 0;
+      video.hidden = true;
+      video.removeAttribute("controls");
+      slide.classList.remove("is-film-playing");
+      if (play) play.hidden = false;
+      root.classList.remove("is-film-holding");
+    }
+
+    function initFilmSlide(slide) {
+      var video = slide.querySelector(".hero-video");
+      var play = slide.querySelector("[data-hero-play]");
+      var note = slide.querySelector("[data-hero-note]");
+      if (!play) return;
+
+      if (!video) {
+        play.addEventListener("click", function () {
+          play.hidden = true;
+          if (note) note.hidden = false;
+        });
+        return;
+      }
+
+      play.addEventListener("click", function () {
+        // The source is only fetched now, on demand.
+        if (video.hasAttribute("data-asset")) ICB.hydrateAssets(slide, true);
+        video.muted = false;
+        video.volume = 1;
+        video.controls = true;
+        video.hidden = false;
+        if (note) note.hidden = true;
+        play.hidden = true;
+        slide.classList.add("is-film-playing");
+        // Hold the carousel for as long as the film is on screen.
+        root.classList.add("is-film-holding");
+        manual = true;
+        root.classList.add("is-manual");
+
+        video.addEventListener("error", function () {
+          stopFilm(slide);
+          if (note) note.hidden = false;
+        }, { once: true });
+
+        video.play().catch(function () {
+          /* Only a genuine media failure counts. A rejected promise with
+             no error object means the browser declined this attempt, and
+             the visible controls let the visitor try again directly. */
+          if (video.error) {
+            stopFilm(slide);
+            if (note) note.hidden = false;
+          }
+        });
+      });
+
+      video.addEventListener("ended", function () { stopFilm(slide); });
+    }
+
     function setSlide(n, byUser) {
       idx = (n + slides.length) % slides.length;
       Array.prototype.forEach.call(slides, function (s, i) {
@@ -142,18 +285,11 @@ ICB.views = ICB.views || {};
           if (active) a.removeAttribute("tabindex");
           else a.setAttribute("tabindex", "-1");
         });
+        /* The film never plays by itself. Sliding away from it stops
+           playback and puts the poster back, so audio can never continue
+           under another slide. */
         var video = s.querySelector(".hero-video");
-        if (video) {
-          if (active && !reduced) {
-            // Resolve the source the first time this slide comes up.
-            if (video.hasAttribute("data-asset")) ICB.hydrateAssets(s, true);
-            video.play().then(function () {
-              video.classList.add("is-playing");
-            }).catch(function () { /* poster art remains */ });
-          } else {
-            video.pause();
-          }
-        }
+        if (video && !active && !video.paused) stopFilm(s);
       });
       root.classList.toggle("is-light-active", slides[idx].hasAttribute("data-light"));
       Array.prototype.forEach.call(bars, function (b, i) {
@@ -219,6 +355,11 @@ ICB.views = ICB.views || {};
       setSlide(idx + (dx < 0 ? 1 : -1), true);
     }, { passive: true });
 
+    Array.prototype.forEach.call(slides, function (slide) {
+      if (slide.querySelector("[data-hero-play]")) initFilmSlide(slide);
+    });
+
+    // Always opens on slide 1 of the declared lineup, every fresh load.
     setSlide(0);
   }
 
