@@ -152,6 +152,29 @@ window.ICB = window.ICB || {};
     }).join("") + "</ol>";
   }
 
+  /* Breadcrumb. Up-navigation, not back-navigation: it always leads to
+     the same place regardless of how the reader arrived, which is the
+     more predictable of the two and the reason this concept carries no
+     history back button of its own. Every interior page has one, so
+     there is always a visible route home even where the browser's own
+     chrome is hidden, as it is inside a preview frame.
+
+     The last entry is the current page and is not a link. Lives in the
+     dark page hero, hence the --dark variant. */
+  function crumbs(trail) {
+    var items = trail.map(function (c, i) {
+      return i === trail.length - 1
+        ? '<li aria-current="page">' + esc(c.label) + "</li>"
+        : '<li><a href="' + esc(c.href) + '">' + esc(c.label) + "</a></li>";
+    }).join("");
+    return '<nav class="crumbs crumbs--dark" aria-label="Breadcrumb"><ol>' + items + "</ol></nav>";
+  }
+
+  /* An interior page one level below the homepage. */
+  function crumbsHome(label) {
+    return crumbs([{ label: "Home", href: "#/" }, { label: label }]);
+  }
+
   /* Section heading block. */
   function sectionHead(opts) {
     var out = '<div class="section-head' + (opts.center ? " section-head--center" : "") + (opts.rv === false ? "" : " rv") + '">';
@@ -407,6 +430,8 @@ window.ICB = window.ICB || {};
     waHref: waHref,
     branchGallery: branchGallery,
     motionSection: motionSection,
+    crumbs: crumbs,
+    crumbsHome: crumbsHome,
     extAttrs: extAttrs,
     extNote: extNote,
     extIcon: extIcon,

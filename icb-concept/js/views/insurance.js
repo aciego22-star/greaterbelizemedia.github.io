@@ -19,6 +19,7 @@ ICB.views = ICB.views || {};
         '<section class="page-hero on-dark" aria-labelledby="ins-title">' +
           '<div class="page-hero-art art-panel" data-img-slot="insurance-hero" aria-hidden="true">' + ICB.art.panel("hero-breadth") + "</div>" +
           '<div class="shell page-hero-inner">' +
+            R.crumbsHome("Insurance") +
             '<span class="eyebrow">Insurance</span>' +
             '<h1 id="ins-title">Find the right cover.</h1>' +
             '<p class="hero-lead">Start with what you want to protect and we will point you in the right direction. An ICB representative takes it from there.</p>' +

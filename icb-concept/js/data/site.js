@@ -63,7 +63,13 @@ ICB.DATA.site = {
     website: "https://www.icbinsurance.com"
   },
 
+  /* Read by the mobile menu. The desktop bar in index.html mirrors this
+     list minus Home: up there the logo sits inches away and is always
+     visible, so the word would be redundant. In the menu it is not, since
+     someone scanning a list of destinations should find one that says
+     where the front door is. */
   nav: [
+    { id: "home", label: "Home", href: "#/" },
     { id: "insurance", label: "Insurance", href: "#/insurance" },
     { id: "claims", label: "Claims", href: "#/claims" },
     { id: "locations", label: "Locations", href: "#/locations" },

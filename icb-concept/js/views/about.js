@@ -48,6 +48,7 @@ ICB.views = ICB.views || {};
         '<section class="page-hero on-dark" aria-labelledby="about-title">' +
           '<div class="page-hero-art art-panel" data-img-slot="about-band" aria-hidden="true">' + ICB.art.panel("heritage") + "</div>" +
           '<div class="shell page-hero-inner">' +
+            R.crumbsHome("About") +
             '<span class="eyebrow">About ICB</span>' +
             '<h1 id="about-title">' + R.esc(site.org.homeLine) + "</h1>" +
             '<p class="hero-lead">' + R.esc(site.org.story) + "</p>" +

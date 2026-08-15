@@ -22,6 +22,7 @@ ICB.views = ICB.views || {};
         '<section class="page-hero on-dark" aria-labelledby="gal-title">' +
           '<div class="page-hero-art art-panel" data-img-slot="gallery-hero" aria-hidden="true">' + ICB.art.panel("heritage") + "</div>" +
           '<div class="shell page-hero-inner">' +
+            R.crumbsHome("Gallery") +
             '<span class="eyebrow">ICB Across Belize</span>' +
             '<h1 id="gal-title">Protecting what matters, across the country.</h1>' +
             '<p class="hero-lead">From Corozal to Punta Gorda, ICB serves communities across Belize through a nationwide network of branches and agencies.</p>' +

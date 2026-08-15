@@ -121,6 +121,49 @@ greeting, opened with `target="_blank" rel="noopener noreferrer"`. The
 the mobile quick bar all read from that single dataset. Locations without
 a supplied WhatsApp number show no WhatsApp button.
 
+## Getting around
+
+There is deliberately no back button of our own. Routes are hash routes,
+so the phone's own back already works: edge-swipe on iOS, the gesture or
+hardware key on Android, and the browser's arrow on a desktop. A second
+back control would duplicate a working one and could disagree with it,
+and it cannot know whether going back would leave the site altogether.
+
+Three things make that native back feel right, and give a way home where
+the browser's own chrome is hidden, as it is inside a preview frame:
+
+- **Scroll memory.** `js/router.js` stamps every history entry with a key
+  and files the scroll position against it on the way out, so back and
+  forward return the reader to where they were rather than to the top of
+  the page. A link click pushes an entry carrying no stamp, which is how
+  a fresh navigation is told apart from a back: fresh opens at the top.
+  Two things this depends on and neither is obvious. The browser's own
+  `scrollRestoration` is set to `manual`, because otherwise it tries to
+  restore a single-document app and fights us. And every jump goes
+  through `jumpTo`, which turns off the document's `scroll-behavior:
+  smooth` for the instant it takes to move: `scrollTo`'s `behavior:
+  "auto"` does NOT mean instant, it means "whatever the CSS says", so
+  without that the page glides instead of arriving.
+- **A breadcrumb on every interior page**, one rung for a section and two
+  for a product. Up-navigation, not back-navigation: it leads to the same
+  place regardless of how the reader arrived. `ICB.render.crumbs` builds
+  it, `crumbsHome` the common single-rung case.
+- **Home in the mobile menu**, first in the list. The desktop bar does
+  not carry it because the logo sits inches away and is always visible;
+  in a list of destinations the word earns its place.
+
+Positions are re-applied for a few frames after render rather than set
+once. Images, films and map art get their size after the markup lands, so
+a position computed in that first instant can be short by the time
+everything has weight; an anchor on the claims page was measured moving
+62px after the jump. The re-apply stops the moment the reader touches the
+page, and abandons if another navigation starts.
+
+A link to the page you are already on changes no hash, so no navigation
+fires. Those taps are caught and answered by returning to the top, which
+is what tapping Home does everywhere else. Without it, someone at the
+foot of the homepage tapping Home would see nothing happen at all.
+
 ## Content rules
 
 Every public-facing sentence in this concept is one of three things:

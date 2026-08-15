@@ -1911,7 +1911,11 @@ button {
 /* ============================ Breadcrumb ============================ */
 
 .crumbs { font-size: var(--fs-300); color: var(--c-text-soft); margin-bottom: var(--sp-4); }
-.crumbs ol { list-style: none; display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0; padding: 0; }
+.crumbs ol { list-style: none; display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; margin: 0; padding: 0; }
+/* Crumb links are grown to a 44px touch target and centre their text in
+   it. The current page is not a link, so without this its text would sit
+   at the top of the same row and read as misaligned against the rest. */
+.crumbs li { display: inline-flex; align-items: center; }
 .crumbs li + li::before { content: "/"; margin-right: 0.4rem; color: var(--c-line); }
 .crumbs a { color: var(--c-text-soft); text-decoration: none; }
 .crumbs a:hover { color: var(--c-cta); text-decoration: underline; }

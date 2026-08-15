@@ -114,9 +114,12 @@ ICB.views = ICB.views || {};
         '<section class="page-hero on-dark" aria-labelledby="prod-title">' +
           '<div class="page-hero-art art-panel" data-img-slot="product-' + R.esc(p.id) + '" aria-hidden="true">' + ICB.art.panel(p.artMotif) + "</div>" +
           '<div class="shell page-hero-inner">' +
-            '<nav class="crumbs crumbs--dark" aria-label="Breadcrumb"><ol>' +
-              '<li><a href="#/insurance">Insurance</a></li><li aria-current="page">' + R.esc(p.name) + "</li>" +
-            "</ol></nav>" +
+            /* Two levels down, so the trail carries both rungs. */
+            R.crumbs([
+              { label: "Home", href: "#/" },
+              { label: "Insurance", href: "#/insurance" },
+              { label: p.name }
+            ]) +
             '<span class="eyebrow">' + R.esc(p.kicker) + "</span>" +
             '<h1 id="prod-title">' + R.esc(p.name) + "</h1>" +
             '<p class="hero-lead">' + R.esc(p.standfirst) + "</p>" +

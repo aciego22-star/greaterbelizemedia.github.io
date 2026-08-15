@@ -45,6 +45,7 @@ ICB.views = ICB.views || {};
         '<section class="page-hero on-dark" aria-labelledby="res-title">' +
           '<div class="page-hero-art art-panel" data-img-slot="resources-hero" aria-hidden="true">' + ICB.art.panel("poster") + "</div>" +
           '<div class="shell page-hero-inner">' +
+            R.crumbsHome("Resources") +
             '<span class="eyebrow">ICB Resource Centre</span>' +
             '<h1 id="res-title">Consumer Resources.</h1>' +
             '<p class="hero-lead">The forms, portals and safety material ICB publishes, gathered in one place.</p>' +

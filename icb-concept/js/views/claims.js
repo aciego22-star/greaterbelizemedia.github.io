@@ -25,6 +25,7 @@ ICB.views = ICB.views || {};
         '<section class="page-hero on-dark" aria-labelledby="claims-title">' +
           '<div class="page-hero-art art-panel" data-img-slot="claims-hero" aria-hidden="true">' + ICB.art.panel("claims") + "</div>" +
           '<div class="shell page-hero-inner">' +
+            R.crumbsHome("Claims") +
             '<span class="eyebrow">Claims</span>' +
             '<h1 id="claims-title">When something happens, know what to do next.</h1>' +
             '<p class="hero-lead">Choose your claim type, open the official ICB claim form, and reach the ICB claims team. They will guide you through the applicable next steps.</p>' +
