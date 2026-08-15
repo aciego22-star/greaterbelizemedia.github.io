@@ -385,6 +385,8 @@ button {
 }
 
 .header-actions { display: flex; align-items: center; gap: var(--sp-2); }
+/* One action in the header, so it never needs to wrap. */
+.btn-cover { white-space: nowrap; }
 
 .menu-toggle {
   display: none;
@@ -751,12 +753,12 @@ button {
 
 /* ============================ Action bar ============================ */
 
-/* The overlapping card treatment is a desktop/large-tablet flourish only.
-   Below 769px the hero is a complete, independent section and this panel
-   follows it in normal document flow with clear breathing room. */
+/* The hero is a complete, independent section at every width. The panel
+   follows it in normal document flow with clear breathing room, and
+   never rides up over the photograph. */
 .action-bar { position: relative; z-index: 5; margin-top: var(--sp-5); }
 @media (min-width: 769px) {
-  .action-bar { margin-top: clamp(-3.5rem, -6vw, -2.5rem); }
+  .action-bar { margin-top: var(--sp-7); }
 }
 .action-panel {
   background: var(--c-surface);
@@ -2230,13 +2232,13 @@ select.input {
    lifted clear of the mobile quick bar. */
 .to-top {
   position: fixed;
-  right: clamp(14px, 3vw, 28px);
+  left: clamp(14px, 3vw, 28px);
   bottom: clamp(14px, 3vw, 28px);
   z-index: 90;
   width: 48px; height: 48px;
   border-radius: 50%;
-  background: var(--c-brand);
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: var(--c-cta);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   color: var(--inv);
   display: flex;
   align-items: center;
@@ -2258,7 +2260,7 @@ select.input {
               transform var(--t-fast) var(--ease),
               background-color var(--t-fast) var(--ease);
 }
-.to-top:hover { background: var(--c-cta); }
+.to-top:hover { background: var(--red-700); }
 .to-top:focus-visible { outline: 2px solid var(--c-cta); outline-offset: 3px; }
 .to-top .glyph { width: 21px; height: 21px; }
 /* The quick bar owns the bottom edge below 720px, so ride above it. */

@@ -22,7 +22,7 @@ ICB.views = ICB.views || {};
       lead: "Insurance for the things you’ve built, the people you care about, and the road ahead.",
       actions: [
         { label: "Explore insurance", href: "#/insurance", primary: true },
-        { label: "Make a claim", href: "#/claims" }
+        { label: "File a claim", href: "#/claims" }
       ]
     },
     {

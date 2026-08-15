@@ -70,7 +70,7 @@ ICB.DATA.site = {
 
   taskRoutes: [
     { id: "cover", label: "I need insurance", short: "Insurance", href: "#/insurance", glyph: "shield" },
-    { id: "claim", label: "I need to make a claim", short: "Make a claim", href: "#/claims", glyph: "document" },
+    { id: "claim", label: "I need to file a claim", short: "File a claim", href: "#/claims", glyph: "document" },
     { id: "policyholder", label: "I'm an existing policyholder", short: "Pay my premium", href: "https://billing.icbinsurance.com", external: true, note: "Opens ICB's payment portal", glyph: "card" },
     { id: "branch", label: "I need a branch", short: "Find a branch", href: "#/locations", glyph: "marker" },
     { id: "business", label: "I'm looking for business coverage", short: "Business insurance", href: "#/business", glyph: "briefcase" },
