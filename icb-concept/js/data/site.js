@@ -36,12 +36,13 @@ ICB.DATA.site = {
     email: "icb@icbinsurance.com"
   },
 
-  /* Real media supplied for the concept. The film is the ICB
-     "Life Happens Fast" ad, compressed for web playback. */
+  /* The hero's third slide plays the English campaign film muted and
+     looped as ambient motion. The films themselves, with sound and
+     controls, live in ICB.DATA.gallery.video. */
   media: {
-    storyVideoAvailable: true,
-    storyVideoSrc: "assets/video/icb-story.mp4",
-    storyVideoPoster: "assets/img/video-poster.jpg"
+    heroVideoAvailable: true,
+    heroVideoSrc: "assets/video/icb-life-happens-fast.mp4",
+    heroVideoPoster: "assets/img/video/life-happens-fast.jpg"
   },
 
   external: {

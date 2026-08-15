@@ -67,11 +67,35 @@ second row of the same grid with no layout change.
 
 ## Video
 
-`ICB.DATA.gallery.video` drives the ICB in Motion area. The featured film
-plays from `assets/video/icb-story.mp4`. The three category tiles beside
-it describe what the section is built to carry next; they contain no
-invented videos. When ICB supplies another film, add it as a second
-featured entry.
+`ICB.DATA.gallery.video.films` drives the ICB in Motion area. Both ICB
+campaign films are in place, each with its own poster, language badge and
+player:
+
+| Film | File | Length |
+| --- | --- | --- |
+| Life Happens Fast (English) | `assets/video/icb-life-happens-fast.mp4` | 52.8s |
+| La Vida Pasa Rapido (Spanish) | `assets/video/icb-life-happens-fast-es.mp4` | 55.7s |
+
+Both titles are ICB's own, read from each film's closing card. Encoding:
+H.264 High at 1280x720, two-pass ~800 kb/s, AAC stereo 128 kb/s, full
+length, `+faststart` so the moov atom sits ahead of the media and
+playback can begin before the file finishes downloading. Films are
+`preload="none"`, so nothing downloads until a visitor presses play, and
+only one plays at a time.
+
+`build/preview/` holds a lighter 720x404 encode of each film with the
+same duration and stereo sound. Base64 inflates every byte by a third and
+the single-file preview is capped at 16MB, so `build/build-single.js`
+substitutes those automatically. The deployed folder and the ZIP always
+ship the full-quality files. The build fails loudly if the single file
+would exceed the cap.
+
+To add a third film, drop the mp4 in `assets/video/`, a poster in
+`assets/img/video/`, and append an entry to `films`. The grid takes it
+with no layout change.
+
+The hero's third slide plays the English film muted and looped as ambient
+motion only; the films with sound live in ICB in Motion.
 
 Guidelines: landscape at least 1000px wide for gallery tiles, 1400px for
 feature placements; never stretch small images; never caption an image

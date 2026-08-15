@@ -45,8 +45,8 @@ ICB.views = ICB.views || {};
 
         R.motionSection({
           tint: true,
-          title: "Life Happens Fast.",
-          sub: "ICB's campaign film, shot in Belize."
+          title: "The ICB films.",
+          sub: "ICB's campaign film, in English and Spanish."
         }) +
 
         '<section class="section" aria-labelledby="gal-campaign-title">' +
@@ -77,7 +77,7 @@ ICB.views = ICB.views || {};
     },
     mounted: function (mount) {
       ICB.initLightbox(mount);
-      ICB.initFeaturedVideo(mount);
+      ICB.initFilms(mount);
     }
   };
 })();

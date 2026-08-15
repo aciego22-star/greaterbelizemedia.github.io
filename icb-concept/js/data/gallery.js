@@ -64,19 +64,37 @@ ICB.DATA.gallery = {
     { src: "assets/img/gallery/campaign.jpg", caption: "Life Happens Fast",       alt: "ICB Life Happens Fast campaign title card", light: true }
   ],
 
+  /* ICB in Motion. Both films are the supplied ICB campaign material,
+     compressed for the web at 1280x720 with stereo sound, full length,
+     and the moov atom at the front so playback starts immediately.
+
+     Both titles are ICB's own: the English film closes on "Life Happens
+     Fast / Protect Yourself With ICB" and the Spanish film closes on
+     "La Vida Pasa Rápido / Protégete Con ICB". Neither is a translation
+     written for this concept. */
   video: {
-    featured: {
-      title: "Life Happens Fast",
-      kicker: "ICB campaign film",
-      blurb: "ICB's campaign film, shot in Belize."
-    },
-    /* Future-ready areas. No invented videos: these describe the kinds of
-       media the section is built to carry, and each becomes a player the
-       moment ICB supplies a file. */
-    categories: [
-      { label: "Campaigns",    glyph: "play",     note: "New ICB campaign films" },
-      { label: "Community",    glyph: "people",   note: "Community and branch activity" },
-      { label: "Announcements",glyph: "document", note: "Company and product announcements" }
+    films: [
+      {
+        id: "lhf-en",
+        title: "Life Happens Fast",
+        kicker: "ICB campaign film",
+        lang: "en",
+        langLabel: "English",
+        blurb: "Protect yourself with ICB. Filmed in Belize.",
+        src: "assets/video/icb-life-happens-fast.mp4",
+        poster: "assets/img/video/life-happens-fast.jpg"
+      },
+      {
+        id: "lhf-es",
+        title: "La Vida Pasa Rápido",
+        kicker: "Anuncio de ICB",
+        lang: "es",
+        langLabel: "Español",
+        blurb: "Protégete con ICB. Filmado en Belice.",
+        altTitle: "La Vida Pasa Rapido, the Spanish ICB campaign film",
+        src: "assets/video/icb-life-happens-fast-es.mp4",
+        poster: "assets/img/video/life-happens-fast-es.jpg"
+      }
     ]
   }
 };

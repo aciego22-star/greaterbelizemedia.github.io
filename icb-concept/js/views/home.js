@@ -61,15 +61,16 @@ ICB.views = ICB.views || {};
         '<div class="hero-scrim hero-scrim--light"></div></div>';
     }
     /* Video slide: generated poster art beneath; the film fades over it
-       once it plays. The video element renders only when the compressed
-       film is in place (site.js media.storyVideoAvailable), so a missing
-       file never produces a failed request. */
+       once it plays. Ambient only, so it is muted and looped. The
+       element renders only when the compressed film is in place
+       (site.js media.heroVideoAvailable), so a missing file never
+       produces a failed request. */
     var media = ICB.DATA.site.media;
     return '<div class="hero-media" aria-hidden="true">' +
       '<div class="hero-video-poster art-panel">' + ICB.art.panel("poster") + "</div>" +
-      (media.storyVideoAvailable
-        ? '<video class="hero-video" muted loop playsinline preload="metadata" src="' + R.esc(media.storyVideoSrc) + '"' +
-          (media.storyVideoPoster ? ' poster="' + R.esc(media.storyVideoPoster) + '"' : "") + ' tabindex="-1"></video>'
+      (media.heroVideoAvailable
+        ? '<video class="hero-video" muted loop playsinline preload="metadata" src="' + R.esc(media.heroVideoSrc) + '"' +
+          (media.heroVideoPoster ? ' poster="' + R.esc(media.heroVideoPoster) + '"' : "") + ' tabindex="-1"></video>'
         : "") +
       '<div class="hero-scrim"></div></div>';
   }
@@ -325,8 +326,8 @@ ICB.views = ICB.views || {};
   /* ICB in Motion: the campaign film, in its own media area. */
   function motion() {
     return ICB.render.motionSection({
-      title: "Life Happens Fast.",
-      sub: "ICB's campaign film, shot in Belize."
+      title: "The ICB films.",
+      sub: "ICB's campaign film, in English and Spanish."
     });
   }
 
@@ -352,39 +353,43 @@ ICB.views = ICB.views || {};
       "</section>";
   }
 
-  /* Shared featured-video player: used by the homepage and the Gallery
-     page. Playback is click-to-start; if the source ever fails, a neutral
-     note appears and nothing breaks. */
-  ICB.initFeaturedVideo = function (mount) {
-    var play = mount.querySelector("[data-story-play]");
-    var note = mount.querySelector("[data-story-note]");
-    var video = mount.querySelector(".story-video");
-    if (!play || !note) return;
+  /* Shared film players: used by the homepage and the Gallery page.
+     Click to play with sound. Only one film plays at a time, so the two
+     never talk over each other. If a source fails, a neutral note
+     appears and nothing breaks. */
+  ICB.initFilms = function (mount) {
+    var figures = mount.querySelectorAll("[data-film]");
+    if (!figures.length) return;
+    var videos = [];
 
-    if (!video) {
-      play.addEventListener("click", function () {
-        play.hidden = true;
-        note.hidden = false;
-        note.setAttribute("tabindex", "-1");
-        note.focus();
+    Array.prototype.forEach.call(figures, function (fig) {
+      var play = fig.querySelector("[data-film-play]");
+      var note = fig.querySelector("[data-film-note]");
+      var video = fig.querySelector(".film-video");
+      if (!play || !note || !video) return;
+      videos.push(video);
+
+      video.addEventListener("play", function () {
+        videos.forEach(function (other) { if (other !== video) other.pause(); });
       });
-      return;
-    }
 
-    play.addEventListener("click", function () {
-      play.hidden = true;
-      video.hidden = false;
-      video.controls = true;
-      var fail = function () {
-        video.hidden = true;
-        note.hidden = false;
-        note.setAttribute("tabindex", "-1");
-        note.focus();
-      };
-      video.addEventListener("error", fail, { once: true });
-      video.play().catch(function () {
-        if (!video.error) return;
-        fail();
+      play.addEventListener("click", function () {
+        var fail = function () {
+          fig.classList.remove("is-playing");
+          video.hidden = true;
+          play.hidden = false;
+          note.hidden = false;
+        };
+        fig.classList.add("is-playing");
+        play.hidden = true;
+        video.hidden = false;
+        note.hidden = true;
+        video.addEventListener("error", fail, { once: true });
+        video.play().catch(function () {
+          /* A blocked autoplay gesture is fine: the controls are already
+             there. Only a genuine decode or network error is a failure. */
+          if (video.error) fail();
+        });
       });
     });
   };
@@ -507,7 +512,7 @@ ICB.views = ICB.views || {};
       initSlider(mount);
       ICB.initLightbox(mount);
       ICB.render.initQuiz(mount);
-      ICB.initFeaturedVideo(mount);
+      ICB.initFilms(mount);
     }
   };
 })();

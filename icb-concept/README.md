@@ -37,24 +37,31 @@ Supplied by the client and integrated in this pass:
   About page).
 - `assets/img/icb-protect-artwork.jpg` — the "Protect Your Investment"
   campaign artwork (hero slide 2).
-- `assets/video/icb-story.mp4` — the "Life Happens Fast" film,
-  compressed for web (hero slide 3, the ICB in Motion area).
+- `assets/video/icb-life-happens-fast.mp4` and
+  `icb-life-happens-fast-es.mp4` — ICB's campaign film in English and
+  Spanish, compressed for web (ICB in Motion; the English cut also runs
+  muted on hero slide 3).
 - `assets/img/products/`, `assets/img/gallery/` — real product and
   gallery imagery: frames from the film and photography cropped from
   the campaign artwork (see `IMAGES.md` for the full map).
 - The site palette is sampled directly from the logo (red `#D12126`,
   black `#000000`).
 
-### The ICB film
+### The ICB films
 
-`assets/video/icb-story.mp4` is the supplied "Life Happens Fast" ad
-(1080p, 23.7 MB source) compressed for web playback: H.264 at 1024px
-wide with light AAC audio, moov atom at the front, 3.8 MB total. The
-hero's third slide autoplays it muted and looped (paused under reduced
-motion and while the slide is inactive); the ICB in Motion area plays it
-with controls and sound. `assets/img/video-poster.jpg` is a frame from
-the film used as the poster. To swap in a new cut, replace the mp4 (and
-poster) and keep the same filenames.
+Both supplied 1080p cuts are compressed for web playback at 1280x720,
+two-pass ~800 kb/s H.264 with AAC stereo at 128 kb/s, full length, moov
+atom at the front. ICB in Motion plays them with controls and sound, one
+at a time, and nothing downloads until a visitor presses play. The hero's
+third slide runs the English cut muted and looped as ambient motion
+(paused under reduced motion and while the slide is inactive).
+
+Titles come from the films themselves: the English cut closes on "Life
+Happens Fast / Protect Yourself With ICB", the Spanish cut on "La Vida
+Pasa Rapido / Protegete Con ICB".
+
+`build/preview/` carries a lighter encode of each film used only by the
+single-file preview build, which is size-capped. See `IMAGES.md`.
 
 ## WhatsApp directory
 

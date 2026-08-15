@@ -546,7 +546,9 @@ button {
 }
 
 /* Real media layers */
-.hero-media { position: absolute; inset: 0; overflow: hidden; }
+/* The 1px overhang stops the slider's own ground showing through as a
+   hairline when a fractional viewport height rounds the slide short. */
+.hero-media { position: absolute; inset: 0 0 -1px 0; overflow: hidden; }
 .hero-media img, .hero-media video {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
@@ -591,7 +593,9 @@ button {
 .hero-slide.hero-slide--light h2 { color: var(--c-brand); text-shadow: none; }
 .hero-slide.hero-slide--light .hero-lead { color: var(--c-text-soft); text-shadow: none; }
 
-/* Controls adapt when the active slide is light */
+/* Controls adapt when the active slide is light. The slider's ground
+   flips with them, so no dark edge can frame the artwork. */
+.hero-slider.is-light-active { background: var(--paper); border-bottom-color: transparent; }
 .hero-slider.is-light-active .hero-progress .bar { background: rgba(22, 22, 24, 0.22); }
 .hero-slider.is-light-active .hero-progress button.is-done .bar { background: rgba(22, 22, 24, 0.45); }
 .hero-slider.is-light-active .hero-count { color: var(--c-text-soft); }
@@ -1083,44 +1087,12 @@ button {
   .biz-art { aspect-ratio: 16 / 10; }
 }
 
-/* Video / story */
-.video-frame {
-  position: relative;
-  border-radius: var(--r-lg);
-  overflow: hidden;
-  aspect-ratio: 16 / 9;
-  margin: 0;
-  box-shadow: var(--shadow-lg);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-@media (max-width: 639px) {
-  .video-frame { aspect-ratio: 4 / 3; }
-}
-.story-video {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 1;
-  background: #0B0B0C;
-}
-.video-caption {
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  z-index: 2;
-  background: rgba(6, 6, 7, 0.72);
-  backdrop-filter: blur(6px);
-  padding: var(--sp-4) var(--sp-5);
-  color: var(--c-text-inverse);
-}
-.video-caption .eyebrow { color: var(--c-accent-soft); margin-bottom: var(--sp-1); }
-.video-line { display: block; max-width: 44rem; font-size: var(--fs-300); color: var(--c-text-inverse-soft); }
+/* Film player chrome, shared by the ICB in Motion cards. */
 .play-btn {
   position: absolute;
-  top: 44%; left: 50%;
+  top: 50%; left: 50%;
   transform: translate(-50%, -50%);
-  width: 88px; height: 88px;
+  width: 78px; height: 78px;
   border-radius: 50%;
   background: rgba(18, 18, 20, 0.55);
   border: 2px solid var(--inv);
@@ -1132,22 +1104,22 @@ button {
   transition: background-color var(--t-fast) var(--ease),
               border-color var(--t-fast) var(--ease),
               transform var(--t-fast) var(--ease);
-  z-index: 2;
+  z-index: 3;
 }
 .play-btn:hover {
   background: var(--c-accent);
   border-color: transparent;
   transform: translate(-50%, -50%) scale(1.03);
 }
-.play-btn .glyph { width: 32px; height: 32px; margin-left: 5px; }
+.play-btn .glyph { width: 30px; height: 30px; margin-left: 4px; }
 .video-note {
   position: absolute;
-  top: 44%; left: 50%;
+  top: 50%; left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 2;
+  z-index: 3;
   background: rgba(6, 6, 7, 0.85);
   color: var(--c-text-inverse);
-  border: 1px solid rgba(206, 17, 38, 0.55);
+  border: 1px solid rgba(209, 33, 38, 0.55);
   border-radius: var(--r-sm);
   padding: 0.7rem 1.1rem;
   font-size: var(--fs-300);
@@ -1155,50 +1127,54 @@ button {
   text-align: center;
 }
 
-/* ICB in Motion: featured film beside the areas the section will carry. */
-.motion-layout {
+/* ICB in Motion: the ICB films, side by side, each a real player. */
+.film-grid {
   display: grid;
-  grid-template-columns: 1.55fr 0.85fr;
+  grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr));
   gap: var(--sp-6);
-  align-items: start;
 }
-.motion-side h3 {
-  font-family: var(--font-sans);
-  font-size: var(--fs-200);
+.film { margin: 0; }
+.film-frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: #0B0B0C;
+  box-shadow: var(--shadow-lg);
+}
+.film-poster,
+.film-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.film-video { z-index: 1; background: #0B0B0C; }
+/* display:block above would beat the UA [hidden] rule, so restate it. */
+.film-video[hidden] { display: none; }
+.film.is-playing .film-poster { opacity: 0; }
+.film-lang {
+  position: absolute;
+  top: 12px; left: 12px;
+  z-index: 2;
+  font-size: 0.6875rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--c-accent-ink);
-  margin-bottom: var(--sp-4);
+  color: var(--inv);
+  background: rgba(6, 6, 7, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  padding: 4px 10px;
+  backdrop-filter: blur(4px);
 }
-.motion-cats { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-3); }
-.motion-cat {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-3);
-  padding: var(--sp-4);
-  border: 1px solid var(--c-line-soft);
-  border-radius: var(--r-md);
-  background: var(--c-surface);
-}
-.motion-cat-icon {
-  flex: none;
-  width: 40px; height: 40px;
-  border-radius: var(--r-sm);
-  background: var(--c-tint);
-  color: var(--c-cta);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.motion-cat-icon .glyph { width: 20px; height: 20px; }
-.motion-cat-text { display: flex; flex-direction: column; line-height: 1.35; min-width: 0; }
-.motion-cat-text strong { font-size: var(--fs-300); color: var(--c-brand); }
-.motion-cat-text span { font-size: var(--fs-200); color: var(--c-text-soft); }
-
-@media (max-width: 899px) {
-  .motion-layout { grid-template-columns: 1fr; }
-}
+.film.is-playing .film-lang { display: none; }
+.film-cap { padding-top: var(--sp-4); }
+.film-cap .eyebrow { margin-bottom: var(--sp-1); }
+.film-cap h3 { font-size: var(--fs-600); margin-bottom: var(--sp-2); }
+.film-cap p { font-size: var(--fs-300); color: var(--c-text-soft); margin: 0; }
 
 /* Gallery: editorial mosaic. Auto-fill keeps the rhythm intact for any
    number of tiles, so branch photographs can be added without touching

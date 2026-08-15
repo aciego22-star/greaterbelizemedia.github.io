@@ -314,52 +314,44 @@ window.ICB = window.ICB || {};
     }).join("");
   }
 
-  /* ICB in Motion: the featured film plus the areas the section is built
-     to carry next. No invented videos. */
+  /* ICB in Motion: the ICB films, each a real player with sound.
+     Click to play; nothing downloads until the visitor asks for it. */
+  function filmCard(f, i) {
+    return '' +
+      '<figure class="film rv" data-film lang="' + esc(f.lang) + '">' +
+        '<div class="film-frame">' +
+          '<img class="film-poster" src="' + esc(f.poster) + '" alt="" loading="lazy">' +
+          '<video class="film-video" src="' + esc(f.src) + '" poster="' + esc(f.poster) + '"' +
+            ' preload="none" playsinline controls hidden' +
+            ' aria-label="' + esc(f.altTitle || f.title) + '"></video>' +
+          '<button type="button" class="play-btn" data-film-play' +
+            ' aria-label="Play ' + esc(f.altTitle || f.title) + ', with sound">' +
+            ICB.art.glyph("play") +
+          "</button>" +
+          '<p class="video-note" data-film-note hidden>This film could not be played in this browser.</p>' +
+          '<span class="film-lang" aria-hidden="true">' + esc(f.langLabel) + "</span>" +
+        "</div>" +
+        '<figcaption class="film-cap">' +
+          '<span class="eyebrow">' + esc(f.kicker) + "</span>" +
+          "<h3>" + esc(f.title) + "</h3>" +
+          "<p>" + esc(f.blurb) + "</p>" +
+        "</figcaption>" +
+      "</figure>";
+  }
+
   function motionSection(opts) {
     opts = opts || {};
-    var media = ICB.DATA.site.media;
-    var v = ICB.DATA.gallery.video;
-
-    var cats = v.categories.map(function (c) {
-      return '<li class="motion-cat rv">' +
-        '<span class="motion-cat-icon">' + ICB.art.glyph(c.glyph) + "</span>" +
-        '<span class="motion-cat-text"><strong>' + esc(c.label) + "</strong>" +
-        "<span>" + esc(c.note) + "</span></span>" +
-      "</li>";
-    }).join("");
-
+    var films = ICB.DATA.gallery.video.films;
     return '' +
       '<section class="section' + (opts.tint ? " section--tint" : "") + '" aria-labelledby="motion-title">' +
         '<div class="shell">' +
           sectionHead({
             eyebrow: "ICB in Motion",
-            title: opts.title || "Featured video.",
+            title: opts.title || "The ICB films.",
             sub: opts.sub || null,
             id: "motion-title"
           }) +
-          '<div class="motion-layout">' +
-            '<figure class="video-frame art-panel rv" data-img-slot="story-poster">' +
-              ICB.art.panel("poster") +
-              (media.storyVideoAvailable
-                ? '<video class="story-video" src="' + esc(media.storyVideoSrc) + '"' +
-                  (media.storyVideoPoster ? ' poster="' + esc(media.storyVideoPoster) + '"' : "") +
-                  ' preload="none" playsinline hidden></video>'
-                : "") +
-              '<button type="button" class="play-btn" data-story-play aria-label="Play the ICB film ' + esc(v.featured.title) + '">' +
-                ICB.art.glyph("play") +
-              "</button>" +
-              '<p class="video-note" data-story-note hidden>This film could not be played in this browser.</p>' +
-              '<figcaption class="video-caption">' +
-                '<span class="eyebrow">' + esc(v.featured.kicker) + "</span>" +
-                '<span class="video-line">' + esc(v.featured.title) + "</span>" +
-              "</figcaption>" +
-            "</figure>" +
-            '<aside class="motion-side">' +
-              "<h3>More from ICB</h3>" +
-              '<ul class="motion-cats">' + cats + "</ul>" +
-            "</aside>" +
-          "</div>" +
+          '<div class="film-grid">' + films.map(filmCard).join("") + "</div>" +
         "</div>" +
       "</section>";
   }

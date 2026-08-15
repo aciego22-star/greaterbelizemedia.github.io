@@ -22,7 +22,6 @@ ICB.DATA.images = {
     "hero-2":           { src: null, alt: "Protect Your Investment campaign artwork" },
     "hero-3":           { src: null, alt: "The ICB story film" },
     "home-hero":        { src: null, alt: "Belizean coastline at dusk" },
-    "story-poster":     { src: "assets/img/video-poster.jpg", alt: "A frame from the ICB Life Happens Fast film" },
 
     /* Product imagery: real ICB campaign material */
     "product-property": { src: "assets/img/products/property.jpg", pos: "center 42%",
