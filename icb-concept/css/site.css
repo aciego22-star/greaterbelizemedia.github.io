@@ -1723,6 +1723,19 @@ button {
   border-top: 1px solid var(--c-line-soft);
   padding-top: var(--sp-5);
 }
+/* The page scrolls to meet the answer (revealResult in js/render.js);
+   this is the answer arriving, so the movement resolves into something
+   rather than just stopping. */
+@keyframes quiz-arrive {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+.quiz-result.has-result .quiz-result-inner {
+  animation: quiz-arrive var(--t-slow) var(--ease) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .quiz-result.has-result .quiz-result-inner { animation: none; }
+}
 .quiz-result-inner h3 { margin-bottom: var(--sp-2); }
 .quiz-result-inner .btn-row { margin-top: var(--sp-4); }
 

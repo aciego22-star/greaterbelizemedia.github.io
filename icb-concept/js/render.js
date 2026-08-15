@@ -261,6 +261,34 @@ window.ICB = window.ICB || {};
       "</div>";
   }
 
+  /* The answer renders underneath the tiles. On a phone the tile grid is
+     four rows tall, so the answer arrives off screen and a tap reads as
+     nothing having happened. Bring it into view: below the sticky header,
+     clear of the fixed quick bar, and only when it is not already
+     comfortably on screen, so a second tap on a desktop does not yank the
+     page around for no reason. */
+  function revealResult(el) {
+    var header = document.querySelector(".site-header");
+    var bar = document.querySelector(".quick-bar");
+    var barShown = bar && getComputedStyle(bar).display !== "none";
+    var headroom = header ? header.getBoundingClientRect().height : 0;
+    var floor = window.innerHeight - (barShown ? bar.getBoundingClientRect().height : 0);
+    var box = el.getBoundingClientRect();
+    var pad = 16;
+
+    if (box.top >= headroom + pad && box.bottom <= floor - pad) return;
+
+    /* Anchored by its top, so a panel taller than the space left still
+       starts where the reader is looking. */
+    var top = Math.max(0, (window.pageYOffset || 0) + box.top - headroom - pad);
+    var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    try {
+      window.scrollTo({ top: top, behavior: still ? "auto" : "smooth" });
+    } catch (e) {
+      window.scrollTo(0, top);   // older engines: no options object
+    }
+  }
+
   function initQuiz(mount) {
     var result = mount.querySelector("[data-quiz-result]");
     var buttons = mount.querySelectorAll("[data-quiz-option]");
@@ -275,6 +303,8 @@ window.ICB = window.ICB || {};
         }
         result.innerHTML = '<div class="quiz-result-inner">' + quizResult(opt) + "</div>";
         result.classList.add("has-result");
+        // One frame, so the new panel is laid out before it is measured.
+        requestAnimationFrame(function () { revealResult(result); });
       });
     });
   }
