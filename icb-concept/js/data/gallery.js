@@ -2,8 +2,8 @@
    ICB.DATA.gallery — ICB Across Belize.
 
    The gallery exists to show ICB's REAL PHYSICAL PRESENCE across the
-   country, so branches come first and campaign stills are a separate
-   section further down.
+   country, so it carries branches and nothing else. The campaign films
+   have their own media area (video, below).
 
    branches[]: one entry per ICB location that ICB publishes a photograph
    of, keyed to locationId in ICB.DATA.locations so the caption, district
@@ -21,8 +21,6 @@
      Ignacio, Corozal Border, Independence, Ladyville) and set src on the
      matching entries below. Files go in assets/img/branches/.
    - Ask ICB for staff, event and community photography for a second row.
-   - Confirm the campaign film's public title before it is credited on a
-     live site. The supplied file is named "Life Happens Fast".
    ========================================================================== */
 window.ICB = window.ICB || {};
 ICB.DATA = ICB.DATA || {};
@@ -50,18 +48,6 @@ ICB.DATA.gallery = {
     { locationId: "santa-elena",           src: null },
     { locationId: "san-ignacio",           src: null },
     { locationId: "independence",          src: null }
-  ],
-
-  /* Stills from ICB's own campaign film and campaign artwork. These are
-     ICB material, but they are not branch photography, so they live in
-     their own section. */
-  campaign: [
-    { src: "assets/img/gallery/service.jpg",  caption: "At the ICB desk",        alt: "A customer completing paperwork at an ICB desk" },
-    { src: "assets/img/gallery/home.jpg",     caption: "At home in Belize",       alt: "A couple relaxing in their Belizean living room" },
-    { src: "assets/img/gallery/road.jpg",     caption: "On the road",             alt: "A couple in their vehicle" },
-    { src: "assets/img/gallery/community.jpg",caption: "In the community",        alt: "A couple walking a garden path in Belize" },
-    { src: "assets/img/gallery/together.jpg", caption: "Side by side",            alt: "An ICB representative with customers" },
-    { src: "assets/img/gallery/campaign.jpg", caption: "Life Happens Fast",       alt: "ICB Life Happens Fast campaign title card", light: true }
   ],
 
   /* ICB in Motion. Both films are the supplied ICB campaign material,
@@ -115,8 +101,8 @@ ICB.DATA.galleryBranches = function () {
   });
 };
 
-/* Flat list of every real photograph, in display order. This is what the
-   lightbox indexes into. */
+/* Flat list of every branch photograph, in display order. This is what
+   the lightbox indexes into. */
 ICB.GALLERY_ITEMS = [];
 (function () {
   var out = [];
@@ -125,6 +111,5 @@ ICB.GALLERY_ITEMS = [];
     var loc = ICB.DATA.locationById(b.locationId) || {};
     out.push({ src: b.src, caption: b.caption || loc.name || "", alt: b.alt || "", light: !!b.light });
   });
-  ICB.DATA.gallery.campaign.forEach(function (c) { out.push(c); });
   ICB.GALLERY_ITEMS = out;
 })();

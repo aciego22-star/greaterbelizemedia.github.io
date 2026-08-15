@@ -145,6 +145,45 @@ window.ICB = window.ICB || {};
       "</ul></nav>";
   }
 
+  /* -------------------- Back to top -------------------- */
+
+  /* Appears once the reader is well past the fold. Sits above the mobile
+     quick bar so it never covers a call or WhatsApp action. */
+  function initBackToTop() {
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "to-top";
+    btn.setAttribute("aria-label", "Back to top");
+    btn.innerHTML = ICB.art.glyph("arrow-up");
+    document.body.appendChild(btn);
+
+    var shown = false;
+    var ticking = false;
+    function update() {
+      var should = window.scrollY > window.innerHeight * 0.9;
+      if (should !== shown) {
+        shown = should;
+        btn.classList.toggle("is-visible", shown);
+      }
+      ticking = false;
+    }
+    window.addEventListener("scroll", function () {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(update);
+    }, { passive: true });
+
+    btn.addEventListener("click", function () {
+      var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
+      // Send focus somewhere sensible for keyboard and screen reader users.
+      var main = document.getElementById("main");
+      if (main) main.focus({ preventScroll: true });
+    });
+
+    update();
+  }
+
   /* -------------------- Boot -------------------- */
 
   function boot() {
@@ -153,6 +192,7 @@ window.ICB = window.ICB || {};
     initMenu();
     renderFooter();
     renderQuickBar();
+    initBackToTop();
     // Header and footer logos are data-asset slots like everything else.
     ICB.hydrateAssets(document);
     ICB.router.init();

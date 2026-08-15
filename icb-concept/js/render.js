@@ -69,14 +69,15 @@ window.ICB = window.ICB || {};
       "</article>";
   }
 
-  /* Task tile (home action bar + mobile menu). */
+  /* Task tile (home action bar + mobile menu). The glyph sits centred in
+     its own chip so a row of tiles reads as one considered set. */
   function actionTile(t) {
     var external = !!t.external;
     var href = esc(t.href);
     var accent = t.id === "claim" ? " action-tile--accent" : "";
     var out = '<a class="action-tile' + accent + '" href="' + href + '"' + (external ? extAttrs() : "") + ">";
-    out += ICB.art.glyph(t.glyph);
-    out += "<span>" + esc(t.label) + (external ? extNote(hostOf(t.href)) : "") + "</span>";
+    out += '<span class="tile-chip">' + ICB.art.glyph(t.glyph) + "</span>";
+    out += '<span class="tile-label">' + esc(t.label) + (external ? extNote(hostOf(t.href)) : "") + "</span>";
     if (t.note) out += '<span class="tile-note">' + esc(t.note) + (external ? ' <span aria-hidden="true">&#8599;</span>' : "") + "</span>";
     return out + "</a>";
   }
@@ -222,7 +223,8 @@ window.ICB = window.ICB || {};
   function quiz(headingId) {
     var opts = QUIZ_OPTIONS.map(function (o) {
       return '<button type="button" class="quiz-option" data-quiz-option="' + o.id + '" aria-pressed="false">' +
-        ICB.art.glyph(o.glyph) + "<span>" + esc(o.label) + "</span></button>";
+        '<span class="tile-chip">' + ICB.art.glyph(o.glyph) + "</span>" +
+        '<span class="tile-label">' + esc(o.label) + "</span></button>";
     }).join("");
     return '<div class="quiz-panel rv">' +
       '<h2 id="' + esc(headingId || "quiz-title") + '">What are you looking to protect?</h2>' +
@@ -300,20 +302,6 @@ window.ICB = window.ICB || {};
     }).join("");
   }
 
-  /* Campaign stills grid. offset keeps lightbox indexes aligned with
-     ICB.GALLERY_ITEMS, where branch photographs come first. */
-  function campaignGallery() {
-    var offset = ICB.DATA.gallery.branches.filter(function (b) { return b.src; }).length;
-    return ICB.DATA.gallery.campaign.map(function (c, i) {
-      return '<figure class="gallery-item rv' + (c.light ? " gallery-item--light" : "") + '">' +
-        '<button type="button" class="g-open" data-lightbox="' + (offset + i) + '" aria-label="View larger: ' + esc(c.caption) + '">' +
-          '<img data-asset="' + esc(c.src) + '" alt="' + esc(c.alt) + '" loading="lazy">' +
-        "</button>" +
-        '<figcaption><span class="g-name">' + esc(c.caption) + "</span></figcaption>" +
-      "</figure>";
-    }).join("");
-  }
-
   /* ICB in Motion: the ICB films, each a real player with sound.
      Click to play; nothing downloads until the visitor asks for it. */
   function filmCard(f, i) {
@@ -360,7 +348,6 @@ window.ICB = window.ICB || {};
     esc: esc,
     waHref: waHref,
     branchGallery: branchGallery,
-    campaignGallery: campaignGallery,
     motionSection: motionSection,
     extAttrs: extAttrs,
     extNote: extNote,

@@ -771,11 +771,32 @@ button {
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: var(--sp-3);
 }
+/* Shared icon chip. Centring the glyph in its own disc gives a row of
+   tiles one optical baseline, whatever the glyph's own proportions. */
+.tile-chip {
+  flex: none;
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  background: var(--c-tint);
+  border: 1px solid var(--c-line-soft);
+  color: var(--c-brand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--t-fast) var(--ease),
+              border-color var(--t-fast) var(--ease),
+              color var(--t-fast) var(--ease);
+}
+.tile-chip .glyph { width: 23px; height: 23px; }
+.tile-label { display: block; }
+
 .action-tile {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  text-align: center;
   gap: var(--sp-3);
-  padding: var(--sp-4);
+  padding: var(--sp-5) var(--sp-3);
   border: 1px solid var(--c-line-soft);
   border-radius: var(--r-md);
   background: var(--c-bg);
@@ -784,20 +805,24 @@ button {
   font-size: var(--fs-300);
   line-height: 1.35;
   text-decoration: none;
-  min-height: 108px;
+  min-height: 132px;
   transition: transform var(--t-fast) var(--ease),
               box-shadow var(--t-fast) var(--ease),
               border-color var(--t-fast) var(--ease);
 }
-.action-tile .glyph { width: 26px; height: 26px; color: var(--c-brand); }
 .action-tile:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
   border-color: var(--c-tint-deep);
   color: var(--c-brand);
 }
+.action-tile:hover .tile-chip {
+  background: var(--red-050);
+  border-color: var(--c-cta);
+  color: var(--c-cta);
+}
 .action-tile--accent { border-top: 2px solid var(--c-accent); }
-.action-tile--accent .glyph { color: var(--c-cta); }
+.action-tile--accent .tile-chip { color: var(--c-cta); border-color: var(--c-accent); }
 .action-tile .tile-note {
   margin-top: auto;
   font-weight: 400;
@@ -1529,30 +1554,36 @@ button {
 .quiz-option {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: flex-start;
   gap: var(--sp-3);
-  min-height: 96px;
-  padding: var(--sp-4);
+  min-height: 124px;
+  padding: var(--sp-5) var(--sp-3);
   border: 1px solid var(--c-line-soft);
   border-radius: var(--r-md);
   background: var(--c-bg);
   font-weight: 600;
   font-size: var(--fs-300);
-  text-align: left;
+  line-height: 1.35;
+  text-align: center;
   color: var(--c-text);
   transition: border-color var(--t-fast) var(--ease),
               background-color var(--t-fast) var(--ease),
               transform var(--t-fast) var(--ease);
 }
-.quiz-option .glyph { width: 24px; height: 24px; color: var(--c-brand); }
 .quiz-option:hover { border-color: #CFCCCA; transform: translateY(-2px); }
+.quiz-option:hover .tile-chip { background: var(--red-050); border-color: var(--c-cta); color: var(--c-cta); }
 .quiz-option[aria-pressed="true"] {
   border-color: var(--c-cta);
   background: var(--red-050);
   color: var(--c-brand);
   box-shadow: inset 0 0 0 1px var(--c-cta);
 }
-.quiz-option[aria-pressed="true"] .glyph { color: var(--c-cta); }
+.quiz-option[aria-pressed="true"] .tile-chip {
+  background: var(--c-cta);
+  border-color: var(--c-cta);
+  color: #fff;
+}
 .quiz-result { margin-top: 0; }
 .quiz-result.has-result { margin-top: var(--sp-6); }
 .quiz-result-inner {
@@ -2194,6 +2225,50 @@ select.input {
 }
 
 /* ============================ Mobile quick bar ============================ */
+
+/* Back to top. Hidden until the reader is a screen or so down, and
+   lifted clear of the mobile quick bar. */
+.to-top {
+  position: fixed;
+  right: clamp(14px, 3vw, 28px);
+  bottom: clamp(14px, 3vw, 28px);
+  z-index: 90;
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: var(--c-brand);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: var(--inv);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(10, 10, 11, 0.28);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity var(--t-fast) var(--ease),
+              transform var(--t-fast) var(--ease),
+              background-color var(--t-fast) var(--ease),
+              visibility 0s linear var(--t-fast);
+}
+.to-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition: opacity var(--t-fast) var(--ease),
+              transform var(--t-fast) var(--ease),
+              background-color var(--t-fast) var(--ease);
+}
+.to-top:hover { background: var(--c-cta); }
+.to-top:focus-visible { outline: 2px solid var(--c-cta); outline-offset: 3px; }
+.to-top .glyph { width: 21px; height: 21px; }
+/* The quick bar owns the bottom edge below 720px, so ride above it. */
+@media (max-width: 719px) {
+  .to-top { bottom: calc(var(--quickbar-h) + 14px + env(safe-area-inset-bottom)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .to-top { transition: opacity var(--t-fast) var(--ease), visibility 0s; transform: none; }
+  .to-top.is-visible { transform: none; }
+}
 
 .quick-bar {
   position: fixed;

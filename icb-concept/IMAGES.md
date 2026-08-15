@@ -26,7 +26,6 @@ visual has been supplied.
 | About page hero | HQ photograph |
 | ICB in Motion featured video | The compressed campaign film + poster frame |
 | Branch gallery (2 of 10 tiles) | HQ photograph and the Daly Street Corporate Office |
-| Campaign gallery (6 tiles) | Scenes from the film and the campaign title card |
 
 ## Still to supply: branch photography
 
@@ -62,8 +61,10 @@ second row of the same grid with no layout change.
 3. **Product and section slots:** point the matching slot's `src` in
    `js/data/images.js` at the file. Optional `pos` sets the crop focal
    point (CSS `object-position`).
-4. **Campaign stills:** add `{ src, caption, alt }` to
-   `ICB.DATA.gallery.campaign`.
+The gallery carries branch photography only. Campaign stills were
+removed from it: the films themselves live in ICB in Motion, and film
+frames still serve the product cards and page heroes through
+`js/data/images.js`.
 
 ## Video
 

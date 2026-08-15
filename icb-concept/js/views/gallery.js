@@ -1,9 +1,8 @@
 /* ============================================================================
    Gallery view — ICB Across Belize.
 
-   Branches come first: this page exists to show ICB's real physical
-   presence across the country. Campaign stills from ICB's own film sit in
-   their own section below, and the film itself has a dedicated media area.
+   Branches only: this page exists to show ICB's real physical presence
+   across the country. The campaign films have their own media area.
 
    Content and slots live in js/data/gallery.js. Adding an official branch
    photograph there lights up its tile with no layout change.
@@ -48,17 +47,6 @@ ICB.views = ICB.views || {};
           title: "The ICB films.",
           sub: "ICB's campaign film, in English and Spanish."
         }) +
-
-        '<section class="section" aria-labelledby="gal-campaign-title">' +
-          '<div class="shell">' +
-            R.sectionHead({
-              eyebrow: "From the campaign",
-              title: "Scenes from the ICB film.",
-              id: "gal-campaign-title"
-            }) +
-            '<div class="gallery">' + R.campaignGallery() + "</div>" +
-          "</div>" +
-        "</section>" +
 
         '<section class="section section--flush-top" aria-label="Visit ICB">' +
           '<div class="shell">' +
