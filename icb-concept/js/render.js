@@ -50,14 +50,21 @@ window.ICB = window.ICB || {};
 
   /* Product category card. Categories with suspended sales carry no
      enquiry link and no "learn more" invitation, so nothing on the card
-     implies cover can be arranged today. */
+     implies cover can be arranged today. A quotable category asks for a
+     quote and carries itself into the enquiry, so the product is never
+     chosen twice. */
   function productCard(p) {
     var first = p.suspended
       ? '<a href="' + esc(p.route) + '">View current information</a>'
       : '<a href="' + esc(p.route) + '">Learn more</a>';
-    var second = p.suspended
-      ? '<a href="#/contact?topic=other&category=' + esc(p.id) + '">Contact ICB</a>'
-      : '<a href="#/contact?topic=new-cover&category=' + esc(p.id) + '">Request information</a>';
+    var second;
+    if (p.suspended) {
+      second = '<a href="#/contact?topic=other&category=' + esc(p.id) + '">Contact ICB</a>';
+    } else if (p.quote === true) {
+      second = '<a href="' + esc(ICB.DATA.quoteHref(p.id)) + '">Request a quote</a>';
+    } else {
+      second = '<a href="#/contact?topic=other&category=' + esc(p.id) + '">Contact ICB</a>';
+    }
     return '' +
       '<article class="card rv" data-product-card="' + esc(p.id) + '">' +
         '<div class="card-art art-panel" data-img-slot="product-' + esc(p.id) + '">' + ICB.art.panel(p.artMotif) + "</div>" +
@@ -220,8 +227,10 @@ window.ICB = window.ICB || {};
       blurb: "ICB publishes insurance categories for businesses across Belize." },
     { id: "boat", label: "A boat or vessel", glyph: "boat", productId: "marine",
       blurb: "Marine Hull Insurance, customizable to third party and passenger liability." },
-    { id: "goods", label: "Goods being shipped", glyph: "container", productId: "cargo",
+    { id: "goods", label: "Goods in transit", glyph: "container", productId: "cargo",
       blurb: "Warehouse-to-warehouse protection for goods in transit." },
+    { id: "commercial-liability", label: "Commercial liability", glyph: "scales", productId: "liability",
+      blurb: "Liability and miscellaneous products arranged around specific business exposures." },
     /* Sales are suspended, so this result says so rather than presenting
        Travel Insurance as something to arrange. */
     { id: "trip", label: "My next trip", glyph: "plane", productId: "travel",
@@ -234,19 +243,24 @@ window.ICB = window.ICB || {};
       blurb: "No problem. The ICB team will point you in the right direction." }
   ];
 
+  /* The note under a quote action, so a result never reads as a price. */
+  function quoteNote() {
+    return '<p class="quiz-note">' + esc(ICB.DATA.quoteNote) + "</p>";
+  }
+
   function quizResult(opt) {
     var out = '<span class="eyebrow">A good place to start</span>';
     if (opt.special === "business") {
       out += "<h3>Business insurance</h3><p>" + esc(opt.blurb) + "</p>" +
         '<div class="btn-row">' +
         '<a class="btn btn-primary" href="#/business">Explore business insurance</a>' +
-        '<a class="btn btn-ghost" href="#/contact?topic=business">Start a business enquiry</a>' +
-        "</div>";
+        '<a class="btn btn-ghost" href="#/contact?topic=business">Request a quote</a>' +
+        "</div>" + quoteNote();
     } else if (opt.special === "unsure") {
       out += "<h3>Talk it through with ICB</h3><p>" + esc(opt.blurb) +
         " Liability &amp; Miscellaneous is ICB's published category for specialty cover.</p>" +
         '<div class="btn-row">' +
-        '<a class="btn btn-primary" href="#/contact?topic=new-cover">Request information</a>' +
+        '<a class="btn btn-primary" href="#/contact?topic=new-cover">Talk to ICB</a>' +
         '<a class="btn btn-ghost" href="#/insurance/liability">Liability &amp; Miscellaneous</a>' +
         "</div>";
     } else {
@@ -254,19 +268,24 @@ window.ICB = window.ICB || {};
       /* A suspended category gets the current-status route only. No
          enquiry CTA, nothing that reads as "arrange this today". */
       if (p.suspended) {
-        out = '<span class="eyebrow">Current status</span>' +
+        return '<span class="eyebrow">Current status</span>' +
           "<h3>" + esc(p.name) + "</h3><p>" + esc(opt.blurb) + "</p>" +
           '<div class="btn-row">' +
           '<a class="btn btn-primary" href="' + esc(p.route) + '">View current information</a>' +
           '<a class="btn btn-ghost" href="#/contact?topic=other&category=' + esc(p.id) + '">Contact ICB</a>' +
           "</div>";
-        return out;
       }
+      /* A quotable category leads with the quote and carries itself into
+         the enquiry. Anything else keeps a plain contact route. */
+      var second = p.quote === true
+        ? '<a class="btn btn-primary" href="' + esc(ICB.DATA.quoteHref(p.id)) + '">Request a quote</a>'
+        : '<a class="btn btn-primary" href="#/contact?topic=other&category=' + esc(p.id) + '">Contact ICB</a>';
       out += "<h3>" + esc(p.name) + "</h3><p>" + esc(opt.blurb) + "</p>" +
         '<div class="btn-row">' +
-        '<a class="btn btn-primary" href="' + esc(p.route) + '">Learn about ' + esc(p.name) + "</a>" +
-        '<a class="btn btn-ghost" href="#/contact?topic=new-cover&category=' + esc(p.id) + '">Request information</a>' +
-        "</div>";
+        second +
+        '<a class="btn btn-ghost" href="' + esc(p.route) + '">Learn about ' + esc(p.name) + "</a>" +
+        "</div>" +
+        (p.quote === true ? quoteNote() : "");
     }
     return out;
   }

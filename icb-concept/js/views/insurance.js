@@ -39,15 +39,18 @@ ICB.views = ICB.views || {};
           "</div>" +
         "</section>" +
 
-        '<section class="section section--flush-top" aria-label="Request information">' +
+        '<section class="section section--flush-top" aria-label="Request a quote">' +
           '<div class="shell">' +
             R.band({
               eyebrow: "Here to help",
               title: "Not sure where to start? Our team will guide you.",
-              body: ICB.DATA.site.org.serviceQuote,
+              /* The quote note rather than the service quote: this band
+                 now carries a quote action, so it should say what that
+                 does and does not mean. */
+              body: ICB.DATA.quoteNote,
               motif: "heritage",
               actions: [
-                { label: "Request information", href: "#/contact?topic=new-cover" },
+                { label: "Request a quote", href: ICB.DATA.quoteHref() },
                 { label: "Call " + ICB.DATA.site.corporate.phoneDisplay, href: "tel:" + ICB.DATA.site.corporate.phoneTel }
               ]
             }) +

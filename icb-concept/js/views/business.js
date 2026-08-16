@@ -87,7 +87,7 @@ ICB.views = ICB.views || {};
             '<h1 id="biz-title">Protection for the business you have built.</h1>' +
             '<p class="hero-lead">ICB offers insurance options for Belizean businesses across property, vehicles, cargo, marine and liability needs. Tell us what you do and an ICB representative will take it from there.</p>' +
             '<div class="btn-row">' +
-              '<a class="btn btn-gold btn-lg" href="#/contact?topic=business">Talk to ICB about business insurance</a>' +
+              '<a class="btn btn-gold btn-lg" href="#/contact?topic=business">Request a quote</a>' +
               '<a class="btn btn-light btn-lg" href="#/insurance">Explore the categories</a>' +
             "</div>" +
           "</div>" +
@@ -112,15 +112,15 @@ ICB.views = ICB.views || {};
           "</div>" +
         "</section>" +
 
-        '<section class="section" aria-label="Start a business enquiry">' +
+        '<section class="section" aria-label="Request a quote">' +
           '<div class="shell">' +
             R.band({
               eyebrow: "Ready when you are",
-              title: "Start a business enquiry today.",
-              body: "Send a few details and the right ICB team follows up. Or call and talk it through directly.",
+              title: "Ready to talk about business cover?",
+              body: ICB.DATA.quoteNote,
               motif: "business",
               actions: [
-                { label: "Start a business enquiry", href: "#/contact?topic=business" },
+                { label: "Request a quote", href: "#/contact?topic=business" },
                 { label: "Call " + ICB.DATA.site.corporate.phoneDisplay, href: "tel:" + ICB.DATA.site.corporate.phoneTel }
               ]
             }) +

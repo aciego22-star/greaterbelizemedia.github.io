@@ -56,7 +56,7 @@ ICB.views = ICB.views || {};
       lead: "Liabilities, motor, marine and property cover for the life you have built.",
       actions: [
         { label: "Explore insurance", href: "#/insurance", primary: true },
-        { label: "Request information", href: "#/contact?topic=new-cover", ghost: true }
+        { label: "Request a quote", href: "#/contact?topic=new-cover", ghost: true }
       ]
     },
     {
@@ -596,7 +596,7 @@ ICB.views = ICB.views || {};
             "</div>" +
             '<div class="btn-row">' +
               '<a class="btn btn-primary" href="#/business">Explore business insurance</a>' +
-              '<a class="btn btn-ghost" href="#/contact?topic=business">Talk to ICB about business cover</a>' +
+              '<a class="btn btn-ghost" href="#/contact?topic=business">Request a quote</a>' +
             "</div>" +
           "</div>" +
         "</div>" +

@@ -217,6 +217,53 @@ The location plates were raised at the same time. Eight of them share a
 grid with real photographs, and at near black they read as holes in it
 rather than as tiles waiting for a picture.
 
+## Product pages: what a "Learn more" page owes the reader
+
+Someone who clicks Learn more has asked to understand the product, so
+each product page answers five questions in order before it asks for
+anything: what is this insurance, what can it help protect, what options
+does ICB publish, who may find it relevant, and what to do next.
+
+Sections are driven entirely by what a category carries in
+`js/data/products.js` (`intro`, `whyInsure`, `coverageOptions`,
+`extensions`, `partner`, `forWho`, `useful`). A category with little to
+say renders a short page rather than a page of empty headings. Property
+and Motor are the richest because ICB publishes the most about them.
+
+**Published figures.** Where ICB publishes an amount it is reproduced
+exactly and always as a ceiling: "up to", "protection level". A limit is
+the most a policy may respond with, never an amount anyone is promised,
+and the copy must not blur the two. The Motor flyer's figures are locked
+into the content audit so they cannot drift.
+
+The Motor flyer's options (Third-Party Act, Third-Party Act Plus,
+Liability Levels 1-4, Comprehensive) are presented SEPARATELY from the
+website's Liability Only / Collision and Upsets / Comprehensive list.
+How the two relate is not published, and guessing would be an invention
+about what someone is buying.
+
+## Request a quote
+
+`quote: true` on a product means ICB can quote it today. Everything that
+offers a quote reads from `ICB.DATA.quotableProducts()` and links through
+`ICB.DATA.quoteHref(id)`, so a category coming off sale is one flag
+rather than a hunt through the views.
+
+It is a request, not a quotation. Nothing is priced, approved or bound,
+and `ICB.DATA.quoteNote` sits under every quote action saying so. The
+content audit bans the wording that would imply otherwise: instant
+quotes, guaranteed prices, approval, "get covered now".
+
+The href carries the category, and the enquiry form reads it, so a
+visitor who clicked Request a quote on Motor never gets asked what they
+want to insure. The New Insurance Enquiry lists only quotable categories:
+offering Travel there would invite an enquiry for a suspended product.
+
+Travel carries `quote: false` while sales are suspended and has no quote
+route anywhere. Mexican Insurance also carries `quote: false`: ICB
+arranges it through ANA Seguros, so the page leads with ANA's published
+pathways rather than an ICB quote.
+
 ## Content rules
 
 Every public-facing sentence in this concept is one of three things:
