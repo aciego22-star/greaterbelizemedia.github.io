@@ -186,6 +186,37 @@ moves, so `mouseenter` never fires and this class of bug is invisible
 unless the test moves the mouse onto the hero first. `hero-autoplay.js`
 does exactly that.
 
+## Photographic heroes: how dark to go
+
+Interior page heroes carry a photograph behind white copy, and the scrim
+that makes the copy legible is the thing that decides how much of the
+photograph a visitor ever sees. It was set far too heavy, most of all on
+a phone, where nothing was lighter than 62% black.
+
+Two changes, and the order matters. First the copy: the crumbs and the
+lead were soft grey over a photograph, and dim text is what forced the
+scrim to be heavy, because the scrim had to drag the picture down to meet
+it. They are near-white now with a local text-shadow, which carries its
+own contrast without touching the image. Only then could the scrim be
+lightened, from 0.93/0.88/0.42/0.30 to 0.86/0.74/0.30/0.14 across, and on
+a phone from 0.95/0.88/0.62 to 0.90/0.74/0.34.
+
+Measured rather than eyeballed, in `scratchpad/check/legibility.js`,
+across ten pages at both sizes. Two numbers per hero: mean luminance (how
+much photograph is visible) and the worst contrast of any text against
+the backdrop directly behind it, using each element's own computed colour
+rather than assuming white. Result: desktop heroes went from 43 to 57
+mean luminance, phones from 29 to 46, and the worst contrast anywhere is
+5.1:1 against a 4.5:1 floor. The suite holds both ends, so a future
+adjustment cannot quietly darken them again or push legibility under.
+
+The homepage carousel is deliberately untouched. It has its own scrim,
+tuned against different artwork, and it was not the problem.
+
+The location plates were raised at the same time. Eight of them share a
+grid with real photographs, and at near black they read as holes in it
+rather than as tiles waiting for a picture.
+
 ## Content rules
 
 Every public-facing sentence in this concept is one of three things:

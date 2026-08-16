@@ -1487,7 +1487,10 @@ button {
 
 /* Location plate: the designed tile a branch shows until its official
    photograph is supplied. Built from the verified branch record. */
-.gallery-item--plate { background: var(--c-ink-900); }
+/* Lighter than the near-black these used to be: eight of them sit in one
+   grid next to real photographs, and at #0B0B0C they read as holes in it
+   rather than as tiles waiting for a picture. */
+.gallery-item--plate { background: #1F1F24; }
 .g-plate {
   position: absolute;
   inset: 0;
@@ -1497,8 +1500,8 @@ button {
   text-decoration: none;
   cursor: pointer;
   background:
-    radial-gradient(120% 90% at 50% 0%, rgba(209, 33, 38, 0.30), transparent 62%),
-    linear-gradient(180deg, #17171A, #0B0B0C);
+    radial-gradient(120% 90% at 50% 0%, rgba(209, 33, 38, 0.34), transparent 64%),
+    linear-gradient(180deg, #2E2E34, #1A1A1E);
   transition: background-color var(--t-fast) var(--ease);
 }
 .g-plate::after {
@@ -1509,7 +1512,7 @@ button {
   border-radius: var(--r-sm);
   pointer-events: none;
 }
-.gallery-item--plate:hover .g-plate { background-color: rgba(209, 33, 38, 0.10); }
+.gallery-item--plate:hover .g-plate { background-color: rgba(209, 33, 38, 0.14); }
 .g-plate:focus-visible { outline: 2px solid var(--c-accent); outline-offset: -6px; }
 .g-plate-inner {
   position: relative;
@@ -1680,14 +1683,14 @@ button {
   inset: 0;
   z-index: 2;
   background:
-    linear-gradient(90deg, rgba(6, 6, 7, 0.93) 0%, rgba(6, 6, 7, 0.88) 38%, rgba(6, 6, 7, 0.42) 72%, rgba(6, 6, 7, 0.3) 100%);
+    linear-gradient(90deg, rgba(6, 6, 7, 0.86) 0%, rgba(6, 6, 7, 0.74) 36%, rgba(6, 6, 7, 0.30) 70%, rgba(6, 6, 7, 0.14) 100%);
 }
 /* Photography in interior heroes sits to the right of the copy column. */
 .page-hero-art .slot-photo { object-position: 78% center; }
 @media (max-width: 639px) {
   .page-hero-art::after {
     background:
-      linear-gradient(0deg, rgba(6, 6, 7, 0.95) 0%, rgba(6, 6, 7, 0.88) 52%, rgba(6, 6, 7, 0.62) 100%);
+      linear-gradient(0deg, rgba(6, 6, 7, 0.90) 0%, rgba(6, 6, 7, 0.74) 48%, rgba(6, 6, 7, 0.34) 100%);
   }
 }
 .page-hero-inner {
@@ -1697,11 +1700,16 @@ button {
   max-width: 46rem;
 }
 .page-hero h1 { color: var(--c-text-inverse); }
-.page-hero .hero-lead { margin-bottom: var(--sp-5); }
+/* Over a photograph, soft grey is the wrong secondary colour: it was the
+   thing forcing the scrim to be so heavy, because the scrim had to drag
+   the picture down to meet dim text. Bright copy with a local shadow
+   carries its own contrast, so the photograph underneath can breathe. */
+.page-hero .hero-lead { margin-bottom: var(--sp-5); color: var(--c-text-inverse); }
+.page-hero .crumbs,
+.page-hero .eyebrow,
+.page-hero h1,
+.page-hero .hero-lead { text-shadow: 0 1px 12px rgba(6, 6, 7, 0.55); }
 .page-hero .btn-row:last-child { margin-bottom: 0; }
-.crumbs--dark, .crumbs--dark a { color: var(--c-text-inverse-soft); }
-.crumbs--dark a:hover { color: var(--c-text-inverse); }
-.crumbs--dark li + li::before { color: rgba(255,255,255,0.35); }
 
 /* ============================ Guided discovery quiz ============================ */
 
@@ -1953,6 +1961,16 @@ button {
 .crumbs li + li::before { content: "/"; margin-right: 0.4rem; color: var(--c-line); }
 .crumbs a { color: var(--c-text-soft); text-decoration: none; }
 .crumbs a:hover { color: var(--c-cta); text-decoration: underline; }
+
+/* The dark variant, for crumbs sitting in a photographic page hero. This
+   MUST come after the light rules above: both are single-class selectors,
+   so the later one wins, and when this block sat earlier in the file the
+   base colour overrode it and every breadcrumb rendered dark grey on a
+   dark hero at about 1.4:1. */
+.crumbs--dark, .crumbs--dark a { color: rgba(255, 255, 255, 0.88); }
+.crumbs--dark a:hover { color: var(--c-text-inverse); text-decoration: underline; }
+.crumbs--dark li + li::before { color: rgba(255, 255, 255, 0.38); }
+.crumbs--dark [aria-current="page"] { color: var(--c-text-inverse); }
 
 /* ============================ Steps ============================ */
 
