@@ -130,7 +130,14 @@ window.ICB = window.ICB || {};
              ICB review") was a message to us, not to a visitor. The
              concept is still attributed, in the note beside this line. */
           "<span>&copy; " + new Date().getFullYear() + " " + R.esc(f.legal) + "</span>" +
-          '<span class="footer-note">' + R.esc(f.conceptNote) + "</span>" +
+          /* Only the studio name is the link, and it carries the same
+             new-tab treatment and screen-reader note as every other
+             outbound link on the site. */
+          '<span class="footer-note">' + R.esc(f.conceptNote) +
+            '<a class="footer-credit" href="' + R.esc(f.conceptHref) + '"' + R.extAttrs() + ">" +
+              R.esc(f.conceptLead) + R.extNote(R.hostOf(f.conceptHref)) +
+            "</a>" +
+          "</span>" +
         "</div>" +
       "</div>";
   }

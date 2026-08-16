@@ -127,6 +127,11 @@ ICB.DATA.site = {
       }
     ],
     legal: "Insurance Corporation of Belize Ltd.",
-    conceptNote: "Concept experience by Austere Automations"
+    /* The agency credit. conceptLead names the studio and is the linked
+       part; the rest of the sentence stays plain text, so the line reads
+       as attribution rather than as an advert. */
+    conceptNote: "Concept experience by ",
+    conceptLead: "Austere Automations",
+    conceptHref: "https://austereautomations.com/website-development-belize"
   }
 };

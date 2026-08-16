@@ -164,6 +164,28 @@ fires. Those taps are caught and answered by returning to the top, which
 is what tapping Home does everywhere else. Without it, someone at the
 foot of the homepage tapping Home would see nothing happen at all.
 
+## The hero carousel
+
+Autoplay is driven by the active progress bar's CSS fill animation: when
+it completes, the slider advances, and pausing the animation pauses the
+clock. It holds for a hidden tab, for a pointer held down on the picture
+(so a slide cannot move out from under a tap), for keyboard focus inside
+the hero, and while the cursor is over the controls. Choosing a slide by
+hand switches autoplay off for good, and reduced motion never starts it.
+
+Hovering the picture itself does NOT pause it. It used to, and on a
+desktop that quietly switched autoplay off altogether: the hero fills the
+top of the window, so a resting cursor is usually on it, and once the
+pointer stopped moving the carousel stayed paused. It looked broken on
+desktop while working on a phone, which has no hover. Hovering the
+controls still pauses, which is the part worth keeping, since that is a
+small deliberate target rather than the whole picture.
+
+Worth knowing for future tests: a headless pointer sits at 0,0 and never
+moves, so `mouseenter` never fires and this class of bug is invisible
+unless the test moves the mouse onto the hero first. `hero-autoplay.js`
+does exactly that.
+
 ## Content rules
 
 Every public-facing sentence in this concept is one of three things:

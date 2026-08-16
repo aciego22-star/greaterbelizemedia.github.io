@@ -413,8 +413,23 @@ ICB.views = ICB.views || {};
       if (e.animationName === "hp-fill") setSlide(idx + 1);
     });
 
-    root.addEventListener("mouseenter", function () { root.classList.add("is-paused"); });
-    root.addEventListener("mouseleave", function () { root.classList.remove("is-paused"); });
+    /* Hovering the hero does NOT pause it.
+
+       It used to, and on a desktop that quietly switched autoplay off:
+       the hero fills the top of the window, so the cursor is resting on
+       it more often than not, and once the pointer stopped moving the
+       carousel stayed paused for good. It looked broken on desktop while
+       working on a phone, which has no hover at all.
+
+       Hovering the CONTROLS still pauses, which is the part worth
+       keeping: it holds the slide still for someone reaching for an
+       arrow or a bar, and that is a small deliberate target rather than
+       the whole picture. */
+    var controls = root.querySelector(".hero-controls");
+    if (controls) {
+      controls.addEventListener("mouseenter", function () { root.classList.add("is-paused"); });
+      controls.addEventListener("mouseleave", function () { root.classList.remove("is-paused"); });
+    }
     /* A finger on the hero has to pause it too. Without this the slide
        could advance between touchstart and touchend, so the tap landed on
        a button that had just moved and the visitor had to tap again. */

@@ -518,6 +518,25 @@ button {
   font-size: var(--fs-300);
 }
 .footer-note { color: rgba(245, 244, 242, 0.45); font-size: var(--fs-200); letter-spacing: 0.04em; }
+/* The studio credit. Reads as part of the line until you go near it, so
+   the attribution stays quiet on a page about ICB. Sized to a proper
+   touch target like every other footer link. */
+.footer-credit {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  color: rgba(245, 244, 242, 0.62);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(245, 244, 242, 0.22);
+}
+.footer-credit:hover,
+.footer-credit:focus-visible {
+  color: var(--c-text-inverse);
+  border-bottom-color: currentColor;
+}
+@media (pointer: coarse), (max-width: 719px) {
+  .footer-credit { min-height: 44px; }
+}
 
 /* ============================ Hero slider ============================ */
 
