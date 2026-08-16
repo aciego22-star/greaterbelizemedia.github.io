@@ -49,7 +49,17 @@ ICB.DATA.gallery = {
       caption: "ICB Corporate Office, Daly Street",
       alt: "Street view of the ICB Corporate Office building on Daly Street, Belize City"
     },
-    { locationId: "belize-city-southside", src: null },
+    /* INTERNAL TODO (not client-facing): the sign in this photograph
+       reads "26A-C Central America Blvd", while the branch record in
+       js/data/locations.js carries "#38 Central American Boulevard".
+       One of the two is out of date. Confirm the current address with
+       ICB; the card caption is unaffected either way, since it comes
+       from the branch record rather than from the image. */
+    {
+      locationId: "belize-city-southside",
+      src: "assets/img/branches/southside.jpg",
+      alt: "The Insurance Corporation of Belize branch office on Central America Boulevard, Belize City"
+    },
     { locationId: "ladyville",             src: null },
     { locationId: "san-pedro",             src: null },
     { locationId: "corozal-border",        src: null },

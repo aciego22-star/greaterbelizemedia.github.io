@@ -698,6 +698,11 @@ ICB.views = ICB.views || {};
           '<button type="button" class="lightbox-close" data-lb-close aria-label="Close image">' + ICB.art.glyph("close") + "</button>" +
         "</figure>";
       document.body.appendChild(overlay);
+      /* The overlay is a child of body, not of the view mount, so neither
+         the boot pass nor the router's per-view pass ever reaches it. It
+         has to resolve its own data-asset or the frame opens empty, which
+         is exactly what it was doing. */
+      ICB.hydrateAssets(overlay, true);
       document.body.style.overflow = "hidden";
       lbOverlay = overlay;
       function close(keepFocus) {

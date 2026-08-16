@@ -679,24 +679,90 @@ window.ICB = window.ICB || {};
   /* Photo slot enhancer (dormant until images.js provides sources)      */
   /* ------------------------------------------------------------------ */
 
+  /* Build one photo for a slot. Resolves nothing and shows nothing until
+     the file has actually loaded, so a missing image leaves the artwork
+     in place rather than a gap. */
+  function slotPhoto(node, conf, src, onReady) {
+    var probe = new Image();
+    probe.onload = function () {
+      var img = document.createElement("img");
+      img.src = ICB.assetUrl(src);
+      img.alt = conf.alt || "";
+      img.className = "slot-photo";
+      if (conf.pos) img.style.objectPosition = conf.pos;
+      node.appendChild(img);
+      requestAnimationFrame(function () { onReady(img); });
+    };
+    // On failure nothing happens: the artwork simply remains.
+    probe.src = ICB.assetUrl(src);
+  }
+
+  /* A slot carrying several photographs cycles through them on its own.
+     No controls: it is a backdrop behind a heading, not something to
+     operate, and a control here would invite a click that goes nowhere.
+
+     Each photograph is an ordinary .slot-photo, so they stack and
+     crossfade with the styling already in place. The incoming one is
+     brought to the front first, so the outgoing one fades away beneath
+     it and the artwork underneath never flashes through.
+
+     It stops when the tab is hidden, never starts under reduced motion,
+     and ends itself once the node leaves the document, which is how it
+     is cleaned up: views are replaced wholesale on navigation and there
+     is no unmount hook to hang a teardown on. */
+  function rotateSlot(node, conf) {
+    var every = typeof conf.rotate === "number" ? conf.rotate : 5000;
+    var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var shots = [];
+    var shown = 0;
+
+    conf.srcs.forEach(function (src, i) {
+      slotPhoto(node, conf, src, function (img) {
+        img.classList.add("slot-photo--rotating");
+        shots[i] = img;
+        // The first to arrive is the one on screen.
+        if (!shots.some(function (s) { return s && s.classList.contains("is-loaded"); })) {
+          shown = i;
+          img.classList.add("is-loaded", "is-front");
+        }
+      });
+    });
+
+    if (still) return;
+
+    var timer = setInterval(function () {
+      if (!node.isConnected) { clearInterval(timer); return; }
+      if (document.hidden) return;
+      var ready = shots.filter(Boolean);
+      if (ready.length < 2) return;
+      var from = shots[shown];
+      var next = shown;
+      // Step to the next photograph that has actually loaded.
+      for (var i = 1; i <= shots.length; i++) {
+        var candidate = (shown + i) % shots.length;
+        if (shots[candidate]) { next = candidate; break; }
+      }
+      if (next === shown) return;
+      var to = shots[next];
+      to.classList.add("is-front");
+      to.classList.add("is-loaded");
+      if (from && from !== to) {
+        from.classList.remove("is-front");
+        from.classList.remove("is-loaded");
+      }
+      shown = next;
+    }, every);
+  }
+
   function enhance(root) {
     var slots = (ICB.DATA.images && ICB.DATA.images.slots) || {};
     var nodes = (root || document).querySelectorAll("[data-img-slot]");
     Array.prototype.forEach.call(nodes, function (node) {
       var conf = slots[node.getAttribute("data-img-slot")];
-      if (!conf || !conf.src || node.querySelector(".slot-photo")) return;
-      var probe = new Image();
-      probe.onload = function () {
-        var img = document.createElement("img");
-        img.src = ICB.assetUrl(conf.src);
-        img.alt = conf.alt || "";
-        img.className = "slot-photo";
-        if (conf.pos) img.style.objectPosition = conf.pos;
-        node.appendChild(img);
-        requestAnimationFrame(function () { img.classList.add("is-loaded"); });
-      };
-      // On failure nothing happens: the artwork simply remains.
-      probe.src = ICB.assetUrl(conf.src);
+      if (!conf || node.querySelector(".slot-photo")) return;
+      if (conf.srcs && conf.srcs.length) { rotateSlot(node, conf); return; }
+      if (!conf.src) return;
+      slotPhoto(node, conf, conf.src, function (img) { img.classList.add("is-loaded"); });
     });
   }
 

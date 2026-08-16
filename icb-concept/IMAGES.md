@@ -21,22 +21,24 @@ visual has been supplied.
 | Travel card + page | Supplied image: traveller at the departure gate |
 | Cargo card + page | Supplied image: container ship, port and freight trucks |
 | Mexican Insurance card + page | Supplied photograph: Aduana Mexico at Subteniente Lopez |
-| Insurance / Resources / Contact / Locations page heroes | Film frames and the HQ building |
+| Contact / Locations page heroes | Film frame and the HQ building |
 | Business feature | Film frame: ICB team member in branded uniform |
 | About page hero | HQ photograph |
 | ICB in Motion featured video | The compressed campaign film + poster frame |
 | Hero slide 3 | Nationwide Cash Express, two supplied compositions |
-| Branch gallery (2 of 12 tiles) | HQ photograph and the Daly Street Corporate Office |
+| Branch gallery (3 of 12 tiles) | HQ photograph, the Daly Street Corporate Office, the Southside branch |
+| Insurance page hero | Supplied photograph of an ICB office building |
+| Resources page hero | Supplied photograph: the curved red facade against the sky |
+| Gallery page hero | Three supplied ICB buildings, cycling on a five second timer |
 
 ## Still to supply: branch photography
 
-The branch gallery is the priority. Ten tiles currently render a
+The branch gallery is the priority. Nine tiles currently render a
 designed location plate built from the verified branch record, and each
 upgrades to a photograph the moment a file is dropped in:
 
 | Tile | File to supply |
 | --- | --- |
-| Belize City Southside Branch | `assets/img/branches/southside.jpg` |
 | Ladyville Branch | `assets/img/branches/ladyville.jpg` |
 | San Pedro Branch | `assets/img/branches/san-pedro.jpg` |
 | Corozal Border Branch | `assets/img/branches/corozal-border.jpg` |
@@ -61,6 +63,26 @@ surface picks it up at once.
 
 Staff, event and community photography is also welcome; it goes in a
 second row of the same grid with no layout change.
+
+## The Gallery page hero
+
+Its slot in `js/data/images.js` carries `srcs` (three files) and
+`rotate: 5000` instead of a single `src`, and `rotateSlot` in `js/art.js`
+cycles them. There are no controls: it is a backdrop behind a heading,
+not something to operate. It never starts under reduced motion, holds
+while the tab is hidden, and ends itself once the page is navigated away
+from.
+
+Two of the three files are the ones already used by the Insurance hero
+and the Southside gallery tile. The single-file build keys its asset map
+by path, so reusing a path adds nothing to the preview's size.
+
+Any slot can be made to rotate the same way. If you do, check the copy
+over it: the scrim in `.page-hero-art::after` sits above the photographs
+but below the copy, and bright daylight photographs need it. There is a
+measured contrast check in the verification suite rather than a
+by-eye one, because an earlier attempt at this looked correct in the
+markup and unreadable on screen.
 
 ## How to swap in an image
 

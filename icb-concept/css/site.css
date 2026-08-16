@@ -1064,6 +1064,15 @@ button {
   transition: opacity 400ms var(--ease);
 }
 .slot-photo.is-loaded { opacity: 1; }
+/* A slot that cycles through several photographs. The incoming one is
+   raised above the outgoing one, so the crossfade never lets the artwork
+   underneath show through, and the fade is slower than a one-off load
+   because this one is watched rather than merely noticed. */
+.slot-photo--rotating { transition-duration: 1100ms; }
+.slot-photo.is-front { z-index: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .slot-photo--rotating { transition-duration: 1ms; }
+}
 
 /* ============================ Belize map ============================ */
 
@@ -1657,13 +1666,19 @@ button {
   color: var(--c-text-inverse);
   overflow: hidden;
 }
-.page-hero-art.art-panel { position: absolute; inset: 0; }
-/* Legibility scrim: sits above any real photo that fades into the hero slot. */
+/* z-index here is load-bearing: it gives the art panel its own stacking
+   context, so the photographs and the scrim inside it order themselves
+   against each other and the whole panel still sits below the copy. Drop
+   it and the scrim competes with .page-hero-inner instead, and paints
+   over the heading. */
+.page-hero-art.art-panel { position: absolute; inset: 0; z-index: 0; }
+/* Legibility scrim: above any real photo that fades into the hero slot,
+   including the raised front photograph of a rotating one. */
 .page-hero-art::after {
   content: "";
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 2;
   background:
     linear-gradient(90deg, rgba(6, 6, 7, 0.93) 0%, rgba(6, 6, 7, 0.88) 38%, rgba(6, 6, 7, 0.42) 72%, rgba(6, 6, 7, 0.3) 100%);
 }
