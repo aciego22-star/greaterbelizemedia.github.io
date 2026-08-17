@@ -1,153 +1,156 @@
-# NATFISH V1 internal notes
+# NATFISH website internal notes
 
 **Internal only. Not linked from any page and not to be shared with the client.**
 
-Concept build for the Tuesday meeting with Miss Denise. Preview URL once pushed:
-`https://greaterbelizemedia.github.io/natfish/`
+Seven-page concept build. No canonical or Open Graph URL is set anywhere, so nothing ties the site to a
+preview domain until a real one is approved.
 
 ---
 
-## 1. Confirm before production
+## 1. CLIENT CONFIRMATION REQUIRED
 
-### Blocking, needed before anything goes live
+Nothing in this list is stated on a public page. Each item is either omitted or written as
+"confirmed directly with NATFISH".
 
-| # | Item | Current V1 value | Where it appears |
-|---|---|---|---|
-| 1 | **WhatsApp number** | Defaults to the office line `+501 227-3165`, which may not be WhatsApp-registered | `assets/js/natfish.js`, `WHATSAPP_NUMBER` |
-| 2 | Exact street address | `Angel Lane, Belize City` with no street number | Footer, contact band, `contact.html` |
-| 3 | Telephone | `+501 227-3165` (public directory) | Header, footer, contact band, `contact.html` |
-| 4 | Email | `natfish@btl.net` (public directory) | Footer, contact band, both forms |
-| 5 | Use of "NATFISH" as the public digital name | Used prominently as the wordmark | Every page |
-| 6 | Official logo and legal-name styling | Placeholder wordmark, see section 3 | Header and footer |
+### Blocking before launch
 
-**Item 1 is the one to raise first.** The brief lists any WhatsApp number as unverified, so none was
-invented. The success panel offers Email and WhatsApp. Three options:
-
-- Miss Denise gives a real WhatsApp number, change `WHATSAPP_NUMBER` in `assets/js/natfish.js`. One line.
-- Demo as-is, knowing the landline may not open a WhatsApp chat.
-- Set `WHATSAPP_NUMBER = ""` and the WhatsApp button hides itself. No other change needed.
-
-### Also to confirm
-
-- All current products and product formats.
-- Local versus export product availability.
-- Current export markets.
-- Food-safety certifications and the exact wording permitted.
-- Whether the electronic traceability system is still active, and how to describe it publicly.
-- Current membership count.
-- Active receiving locations, branches and outlets.
-- Current management contact and content approver.
-- Whether `nationalfisherscoop.com` is still in use.
-- All owned photographs, logos, brochures and video.
-
----
-
-## 2. Tuesday discovery questions
-
-1. What seafood products and product formats does National currently sell?
-2. Which products are sold locally and which are exported?
-3. Which countries or buyer markets are currently active?
-4. What certifications, licences or food-safety standards may we publish?
-5. Is the electronic traceability system still active? If so, how should it be described publicly?
-6. What is the current membership count?
-7. Which receiving locations, branches or outlets are currently active?
-8. Please confirm the official address, telephone, email and any WhatsApp numbers.
-9. Do you still use the old nationalfisherscoop.com domain?
-10. Who will approve website content and imagery?
-11. What information do you require from a serious wholesale or export buyer?
-12. Do you prefer the full institutional name, NATFISH, or both?
-13. What photographs, brochures, event images or videos can National supply?
-
----
-
-## 3. What is deliberately placeholder
-
-| Asset | Status | Replacement path |
+| # | Item | Status in the build |
 |---|---|---|
-| Logo | Proposed wordmark: an `N` with a wave, drawn as inline SVG | Swap the `<svg class="logo__mark">` block in each page's header and footer |
-| All photography | Concept images from the supplied pack, not owned by the cooperative | Drop new files into `assets/img/` using the same names |
-| Featured video | Public Ocean Link documentary, credited on screen as third-party concept media | Change `data-video` on the `.video` element |
-| News items | Three publicly sourced items, each with a visible source link | Replace with cooperative announcements |
+| 1 | **WhatsApp number** | `+501 610-8859` is a **temporary concept routing number**. It appears only inside the `wa.me` link on `contact.html`, never as displayed text. |
+| 2 | Exact street address | `Angel Lane, Belize City` shown with no street number |
+| 3 | Telephone | `+501 227-3165` from the public directory, labelled a telephone line and **never** as WhatsApp |
+| 4 | Email | `natfish@btl.net` from the public directory |
+| 5 | Use of "NATFISH" as the public digital name | Used as the primary wordmark throughout |
 
-### How the forms actually behave
+**Item 1 is the first thing to replace.** Search `assets/js` and `contact.html` for `5016108859`. The
+code comment sitting beside the link reads:
 
-On **every** host, including Netlify, the forms validate in the browser and then hand the enquiry off
-to the visitor's email client or WhatsApp. **Nothing is captured server-side and no enquiry is stored
-anywhere.** If the visitor abandons the handoff, the enquiry is lost, so the telephone and email links
-remain the reliable contact route.
+> TEMPORARY CONCEPT WHATSAPP NUMBER — REPLACE WITH CLIENT-CONFIRMED NATFISH NUMBER BEFORE PUBLIC LAUNCH.
 
-An earlier draft of this file claimed Netlify would capture submissions automatically. That was wrong.
-The script calls `preventDefault()` on submit, so the native POST that Netlify Forms relies on never
-fires. The `data-netlify` attribute was removed for the same reason: Netlify would have registered a
-form in the dashboard that sat at zero submissions forever and read as broken.
+### Deliberately absent from the site
 
-To turn on real capture later, three changes are needed:
+Asked for, not published, because nothing in the research supports them:
 
-1. Restore `method="post" data-netlify="true"` on the `<form>`.
-2. Add `<input type="hidden" name="form-name" value="buyer-enquiry">` inside it.
-3. In `assets/js/natfish.js`, before showing the success panel, `fetch("/", { method: "POST", body:
-   new URLSearchParams(new FormData(form)) })` and swallow any error.
+- Member numbers, employee numbers, staff or management names.
+- Facilities, receiving locations, branches, outlets or processing capacity.
+- Any product beyond lobster and conch. Everything else reads "availability upon enquiry".
+- Prices, packaging, grades, sizes, minimum order quantities, guaranteed availability.
+- Export markets or destination countries.
+- Certifications, food-safety standards or permitted claim wording.
+- Cold storage, freight, shipping, logistics or any operational service.
+- Whether the electronic traceability system is currently active. The site says NATFISH **has
+  participated in** traceability initiatives, which the sources support, and nothing about today.
 
-The `name` attributes on every field are already correct for that step.
+### Questions for the client
 
----
-
-## 4. Image 2 was cropped, and why
-
-`natfish_image_02.jpg` (the storefront) carried three blocks of fabricated data:
-
-- `TEL: 665-2458`, which **contradicts the verified 227-3165**
-- A fixed opening-hours board
-- A five-species "FRESH CATCH" list (grouper, snapper, lobster, shrimp, conch)
-
-Publishing any of it would breach the accuracy guardrails on product lists and facility hours, and the
-wrong phone number is the first thing Miss Denise would have spotted. Blurring the three regions was
-tried first and read as redaction, so the image is instead **cropped to the façade band above them**
-(top 335px of 787). The legal-name lettering survives and is an asset. The full frame is not deployed.
-
-Regenerate with `tools/process-images.py` if the source pack is ever reprocessed.
+1. Which seafood products and formats does NATFISH currently sell?
+2. Which are sold locally and which are exported? Which markets are active?
+3. What certifications or standards may we publish, and in what words?
+4. Is the electronic traceability system still active, and how should it be described?
+5. Which receiving locations, branches or outlets are active?
+6. Confirm address, telephone, email and the correct WhatsApp number.
+7. Who approves website content and imagery?
+8. What photographs, brochures, event images or video can NATFISH supply?
+9. Is the old nationalfisherscoop.com domain still in use?
+10. What information does NATFISH need from a serious wholesale or export buyer?
 
 ---
 
-## 5. Accuracy guardrails held in the copy
+## 2. Logo
 
-Nothing on the site states any of the following, and none should be added without written confirmation:
+Source artwork: the supplied transparent PNG, 1774x861 after trimming. Never recoloured, never
+filtered, alpha preserved. Regenerate with `python3 tools/process-logo.py <source.png>`.
 
-- A current member count, export-country count or certification count.
-- Specific export markets. The trade section says National is *represented* through trade promotion,
-  which is what BELTRAIDE material supports, and stops there.
-- That any certification is current.
-- That all products are sustainably certified or fully traceable. `responsible.html` closes with an
-  explicit section stating what the page does **not** claim.
-- Any product list beyond lobster, conch and "other seafood products, contact for availability".
-- Prices, packaging, grades, sizes, minimum order quantities or availability.
-- Any management or staff name, quote, testimonial or biography.
+| Asset | Where it is used |
+|---|---|
+| `natfish-logo.png` (+`@2x`) | Full logo, mark and wordmark and legal name. Footer light panel and the About page identity panel. |
+| `natfish-logo-mark.png` (+`@2x`) | Compact lockup, mark and NATFISH wordmark. Site header on all seven pages. |
+| `natfish-icon.png`, `favicon.png` | Square crop of the circular mark. Favicon and touch icon. |
 
-Traceability wording is held at "has participated in electronic catch-documentation and traceability
-initiatives". Responsible-fisheries wording is held at "has participated in Belize's spiny lobster
-Fishery Improvement Project". Both are sourced on the page.
+**Why two lockups.** The two legal-name lines occupy 6.1% of the artwork's height. At any sticky-header
+size they render under 5px tall and cannot be read, so putting the full logo in the header would show
+the legal name without making it legible. The header therefore carries the compact lockup, and the full
+logo runs large in the footer and on About where the legal name genuinely reads. The legal name is also
+present as selectable text in the footer, page copy and every `<title>`, so it never depends on the
+image alone.
+
+In the dark footer the full logo sits on a white panel rather than being inverted or recoloured.
 
 ---
 
-## 6. Build notes
+## 3. Imagery
 
-Static HTML, no build step, no framework, no external fonts or scripts. Hosts on GitHub Pages, Netlify
-or any static host by copying the folder.
+All photography is concept imagery, not client-owned. Alt text describes only what is visible and never
+asserts that a person, vessel, facility or piece of equipment belongs to NATFISH.
+
+- The **Gallery** captions every photograph "Concept image used for the website presentation".
+- **About** and **Responsible Fisheries** carry a short note under their image-led sections, since those
+  are where the worker, processing-room and traceability shots appear.
+- Pages carrying only seascape or product photography do not repeat the disclaimer.
+
+**The fabricated storefront image has been removed entirely.** Its signage showed a phone number
+contradicting the verified `227-3165`, invented opening hours, and a five-species catch list. The asset
+files are deleted and nothing references it.
+
+**Video.** The Ocean Link documentary is third-party material, credited on screen as such on the Gallery
+page. It is not presented as NATFISH-owned production, and it loads only when the visitor clicks play.
+
+---
+
+## 4. Forms and enquiries
+
+There are **no forms anywhere on the site**. Buyer enquiries are handled by two links on
+`contact.html#buyer-enquiry`:
+
+- **Send an Email** opens a `mailto:` to `natfish@btl.net` with the subject `NATFISH Buyer Enquiry` and
+  a prefilled, fully editable body.
+- **Enquire on WhatsApp** opens `wa.me` with a prefilled, editable message.
+
+Nothing is captured server-side and no enquiry is stored anywhere. If a visitor abandons the handoff the
+enquiry is lost, so the telephone and email links remain the reliable route. Enabling Netlify Forms
+later would mean reintroducing a real `<form>`, a hidden `form-name` input and a background POST.
+
+---
+
+## 5. Page architecture
 
 ```
-natfish/
-  index.html cooperative.html seafood.html responsible.html
-  buyers.html news.html contact.html
-  assets/css/natfish.css      one stylesheet, design tokens at the top
-  assets/js/natfish.js        one script, config constants at the top
-  assets/img/                 WebP + JPEG at 800w and 1400w
-  tools/process-images.py     regenerates the image set from the source pack
+index.html               Home, gateway with a rotating hero
+about.html               About NATFISH
+seafood-services.html    Seafood & Services
+responsible.html         Responsible Fisheries
+news.html                What's New at NATFISH
+gallery.html             Gallery, photos and video
+contact.html             Contact & Buyer Enquiries  (#buyer-enquiry)
 ```
 
-The seven pages were generated from a shared template so the header, footer and nav stay identical.
-**They are plain static HTML now and should be edited directly.** Note that a change to the header,
-footer or nav has to be repeated across all seven files.
+`netlify.toml` 301-redirects the three retired V1 URLs: `/cooperative.html` to `/about.html`,
+`/seafood.html` to `/seafood-services.html`, and `/buyers.html` to `/contact.html#buyer-enquiry`.
 
-Verified in Chromium at 320, 375, 390, 393, 414, 430, 1366, 1440 and 1920 px: no horizontal overflow,
-no console errors, no failed requests, one `h1` per page, every internal link and anchor resolves.
-Keyboard paths checked for the menu, both forms, the gallery lightbox and the video.
+The rotating hero advances every 7 seconds, offers previous / pause / next plus slide dots, supports
+swipe and arrow keys, announces manual changes to screen readers, pauses on a hidden tab, and **stops
+permanently once the visitor touches any control**. Under `prefers-reduced-motion` it does not rotate at
+all and the controls still work.
+
+---
+
+## 6. Build
+
+Static HTML, no build step, no framework, no external fonts or scripts. Hosts anywhere that serves
+files.
+
+```
+tools/process-logo.py       regenerates the three logo lockups from the source artwork
+tools/process-images.py     regenerates the photography set (WebP + JPEG, 800w + 1400w)
+tools/bundle-preview.py     builds the single-file preview
+tools/make-netlify-zip.sh   builds the deployable zip, excluding this file and tools/
+```
+
+The seven pages were generated from a shared template so header, footer and nav stay identical. They are
+plain static HTML now and should be edited directly; a change to the header, footer or nav has to be
+repeated across all seven files.
+
+Verified in Chromium at 320, 360, 375, 390, 393, 414, 430, 768, 1024, 1100, 1140, 1141, 1200, 1240,
+1241, 1366, 1440 and 1920 px: no horizontal overflow, no console errors, no failed requests, one `h1`
+per page, every internal link and anchor resolving, no `<form>` element and no preview-domain URL on any
+page. Carousel, lightbox, video facade, keyboard focus order and both enquiry links tested.

@@ -6,6 +6,26 @@
 [build]
   publish = "."
 
+# The V1 used a different page structure. These keep any link that was already
+# shared pointing at the right place.
+[[redirects]]
+  from = "/cooperative.html"
+  to = "/about.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/seafood.html"
+  to = "/seafood-services.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/buyers.html"
+  to = "/contact.html#buyer-enquiry"
+  status = 301
+  force = true
+
 # Image and stylesheet filenames are stable, so they cache hard. HTML must not,
 # or a redeploy would leave visitors on the previous version.
 [[headers]]

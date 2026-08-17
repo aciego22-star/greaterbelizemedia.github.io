@@ -22,11 +22,11 @@ OUT = ROOT / "natfish-preview.html"
 
 PAGES = [
     ("index", "index.html"),
-    ("cooperative", "cooperative.html"),
-    ("seafood", "seafood.html"),
+    ("about", "about.html"),
+    ("seafood-services", "seafood-services.html"),
     ("responsible", "responsible.html"),
-    ("buyers", "buyers.html"),
     ("news", "news.html"),
+    ("gallery", "gallery.html"),
     ("contact", "contact.html"),
 ]
 
@@ -110,11 +110,34 @@ HYDRATE_JS = """
 """
 
 
+PNG_RE = re.compile(r'<img\b[^>]*\ssrc="assets/img/([\w@.-]+\.png)"[^>]*>')
+
+
+def inline_png(html):
+    """Inline the logo images, which are plain <img> tags rather than <picture>.
+
+    Missing this leaves two live requests to assets/img in the bundle, and the
+    artifact CSP blocks them, so the published preview loses its logo.
+    """
+
+    def swap(match):
+        tag = match.group(0)
+        name = match.group(1)
+        raw = (ROOT / "assets" / "img" / name).read_bytes()
+        uri = "data:image/png;base64," + base64.b64encode(raw).decode()
+        tag = re.sub(r'\s+srcset="[^"]*"', "", tag)
+        tag = re.sub(r'\s+sizes="[^"]*"', "", tag)
+        return re.sub(r'\ssrc="[^"]*"', f' src="{uri}"', tag, count=1)
+
+    return PNG_RE.sub(swap, html)
+
+
 # ---------------------------------------------------------------- links --
 
 def route_links(html):
     """Turn page links into hash routes. In-page anchors are left alone."""
-    return re.sub(r'href="([a-z]+)\.html"', r'href="#/\1"', html)
+    return re.sub(r'href="([a-z-]+)\.html(#[a-z-]+)?"',
+                  lambda m: 'href="#/' + m.group(1) + (m.group(2) or '') + '"', html)
 
 
 # ------------------------------------------------------------------ ids --
@@ -198,16 +221,28 @@ ROUTER_JS = """
     window.scrollTo(0, 0);
   }
 
+  /* A route may carry an in-page anchor: #/contact#buyer-enquiry */
   function current() {
     var h = window.location.hash;
-    return h.indexOf("#/") === 0 ? h.slice(2) : "index";
+    if (h.indexOf("#/") !== 0) return { slug: "index", anchor: null };
+    var parts = h.slice(2).split("#");
+    return { slug: parts[0], anchor: parts[1] || null };
+  }
+
+  function go() {
+    var route = current();
+    show(route.slug);
+    if (route.anchor) {
+      var target = document.getElementById(route.anchor);
+      if (target) target.scrollIntoView();
+    }
   }
 
   window.addEventListener("hashchange", function () {
-    if (window.location.hash.indexOf("#/") === 0) show(current());
+    if (window.location.hash.indexOf("#/") === 0) go();
   });
 
-  show(current());
+  go();
 })();
 """
 
@@ -220,8 +255,7 @@ def main():
     # One shared header, footer and lightbox lifted from the homepage.
     header = between(index, '<header class="site-header">', "</header>")
     footer = between(index, '<footer class="site-footer">', "</footer>")
-    lightbox = between(index, '<div class="lightbox" id="lightbox"', "</div>\n")
-    lightbox = between(index, '<div class="lightbox" id="lightbox"',
+    lightbox = between(read("gallery.html"), '<div class="lightbox" id="lightbox"',
                        "</figure>\n  </div>")
 
     css = read("assets/css/natfish.css")
@@ -242,7 +276,7 @@ def main():
 
     routes = []
     for slug, body in pages:
-        body = route_links(inline_images(body))
+        body = route_links(inline_png(inline_images(body)))
         routes.append(f'<div data-route="{slug}">{body}</div>')
 
     # json.dumps, not manual quoting: the legal name carries an apostrophe that
@@ -257,11 +291,11 @@ def main():
         "<title>NATFISH V1</title>",
         f"<style>\n{css}\n{ROUTER_CSS}</style>",
         '<a class="skip-link" href="#main">Skip to main content</a>',
-        route_links(header),
+        route_links(inline_png(header)),
         '<main id="main">',
         "\n".join(routes),
         "</main>",
-        route_links(footer),
+        route_links(inline_png(footer)),
         lightbox,
         f"<script>\n{hydrate}\n{js}\n{router}</script>",
         "",

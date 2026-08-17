@@ -22,11 +22,11 @@ trap 'rm -rf "$STAGE"' EXIT
 # single-file artifact bundle, which is a 1.7 MB duplicate of the whole site.
 PAGES=(
   index.html
-  cooperative.html
-  seafood.html
+  about.html
+  seafood-services.html
   responsible.html
-  buyers.html
   news.html
+  gallery.html
   contact.html
 )
 

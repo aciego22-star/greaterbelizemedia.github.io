@@ -5,18 +5,6 @@
 (function () {
   "use strict";
 
-  /* ---------------------------------------------------------- config -- */
-
-  /* Enquiry destination. Confirm both with the client before production.
-     See INTERNAL-NOTES.md. */
-  var ENQUIRY_EMAIL = "natfish@btl.net";
-
-  /* WhatsApp destination, digits only, country code first.
-     NOT CONFIRMED: this is the verified office line (+501 227-3165), which may
-     not be registered on WhatsApp. Replace with the number Miss Denise
-     confirms, or set to "" to hide the WhatsApp option entirely. */
-  var WHATSAPP_NUMBER = "5012273165";
-
   var docEl = document.documentElement;
   docEl.classList.remove("no-js");
 
@@ -130,6 +118,145 @@
     }
   }
 
+  /* -------------------------------------------------------- carousel -- */
+  /* Rotating hero. The headline is fixed and only the backdrop changes, so
+     nothing reflows as slides advance. */
+
+  var ROTATE_MS = 7000;
+
+  Array.prototype.forEach.call(
+    document.querySelectorAll("[data-carousel]"),
+    function (root) {
+      var slides = root.querySelectorAll(".hero__slide");
+      var dots = root.querySelectorAll("[data-carousel-to]");
+      var toggle = root.querySelector("[data-carousel-toggle]");
+      var status = root.querySelector("[data-carousel-status]");
+      if (slides.length < 2) return;
+
+      var reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+      var index = 0;
+      var timer = null;
+      /* Once the visitor takes control the carousel does not resume on its
+         own. Auto-rotation restarting under someone's hands is hostile. */
+      var surrendered = reduced.matches;
+
+      var render = function (announce) {
+        Array.prototype.forEach.call(slides, function (el, i) {
+          el.classList.toggle("is-active", i === index);
+        });
+        Array.prototype.forEach.call(dots, function (el, i) {
+          el.classList.toggle("is-active", i === index);
+          el.setAttribute("aria-current", i === index ? "true" : "false");
+        });
+        /* Announced only for deliberate changes; narrating an automatic
+           rotation every seven seconds would be noise. */
+        if (announce && status) {
+          status.textContent =
+            "Slide " + (index + 1) + " of " + slides.length + ".";
+        }
+      };
+
+      var stop = function () {
+        if (timer) {
+          window.clearInterval(timer);
+          timer = null;
+        }
+        if (toggle) {
+          toggle.setAttribute("aria-pressed", "true");
+          toggle.setAttribute("aria-label", "Play slideshow");
+        }
+      };
+
+      var start = function () {
+        if (surrendered || timer) return;
+        timer = window.setInterval(function () {
+          index = (index + 1) % slides.length;
+          render(false);
+        }, ROTATE_MS);
+        if (toggle) {
+          toggle.setAttribute("aria-pressed", "false");
+          toggle.setAttribute("aria-label", "Pause slideshow");
+        }
+      };
+
+      var goTo = function (next) {
+        index = (next + slides.length) % slides.length;
+        surrendered = true;
+        stop();
+        render(true);
+      };
+
+      var prev = root.querySelector("[data-carousel-prev]");
+      var next = root.querySelector("[data-carousel-next]");
+      if (prev) prev.addEventListener("click", function () { goTo(index - 1); });
+      if (next) next.addEventListener("click", function () { goTo(index + 1); });
+
+      Array.prototype.forEach.call(dots, function (dot, i) {
+        dot.addEventListener("click", function () { goTo(i); });
+      });
+
+      if (toggle) {
+        toggle.addEventListener("click", function () {
+          if (timer) {
+            surrendered = true;
+            stop();
+          } else {
+            surrendered = false;
+            start();
+          }
+        });
+      }
+
+      root.addEventListener("keydown", function (event) {
+        if (event.key === "ArrowLeft") {
+          event.preventDefault();
+          goTo(index - 1);
+        } else if (event.key === "ArrowRight") {
+          event.preventDefault();
+          goTo(index + 1);
+        }
+      });
+
+      /* Swipe. Horizontal intent only, so vertical scrolling is untouched. */
+      var startX = null;
+      var startY = null;
+      var viewport = root.querySelector("[data-carousel-viewport]") || root;
+
+      viewport.addEventListener("touchstart", function (event) {
+        startX = event.changedTouches[0].clientX;
+        startY = event.changedTouches[0].clientY;
+      }, { passive: true });
+
+      viewport.addEventListener("touchend", function (event) {
+        if (startX === null) return;
+        var dx = event.changedTouches[0].clientX - startX;
+        var dy = event.changedTouches[0].clientY - startY;
+        if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) {
+          goTo(dx < 0 ? index + 1 : index - 1);
+        }
+        startX = null;
+        startY = null;
+      }, { passive: true });
+
+      /* Nothing rotates behind a hidden tab. */
+      document.addEventListener("visibilitychange", function () {
+        if (document.hidden) {
+          if (timer) window.clearInterval(timer);
+          timer = null;
+        } else if (!surrendered) {
+          start();
+        }
+      });
+
+      render(false);
+      if (reduced.matches) {
+        stop();
+      } else {
+        start();
+      }
+    }
+  );
+
   /* ---------------------------------------------------- video facade -- */
   /* Nothing third-party loads until the visitor asks for it. */
 
@@ -157,133 +284,6 @@
         wrap.appendChild(frame);
         frame.focus();
       });
-    }
-  );
-
-  /* ------------------------------------------------------------ forms -- */
-
-  var validators = {
-    email: function (value) {
-      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value);
-    }
-  };
-
-  var validateField = function (field) {
-    var input = field.querySelector("input, select, textarea");
-    if (!input) return true;
-
-    var value = (input.value || "").trim();
-    var valid = true;
-
-    if (input.required && !value) {
-      valid = false;
-    } else if (value && input.type === "email" && !validators.email(value)) {
-      valid = false;
-    }
-
-    field.classList.toggle("is-invalid", !valid);
-    input.setAttribute("aria-invalid", valid ? "false" : "true");
-    return valid;
-  };
-
-  /* Builds the readable enquiry body sent by email or WhatsApp. */
-  var buildMessage = function (form) {
-    var lines = [];
-    Array.prototype.forEach.call(
-      form.querySelectorAll(".field"),
-      function (field) {
-        var input = field.querySelector("input, select, textarea");
-        var label = field.querySelector("label");
-        if (!input || !label) return;
-
-        var value = (input.value || "").trim();
-        if (!value) return;
-
-        var name = label.textContent.replace(/\s*\(optional\)\s*/i, "").trim();
-        lines.push(name + ": " + value);
-      }
-    );
-    return lines.join("\n");
-  };
-
-  Array.prototype.forEach.call(
-    document.querySelectorAll("form[data-enquiry]"),
-    function (form) {
-      var panel = document.querySelector(
-        '[data-success-for="' + form.id + '"]'
-      );
-      var subject = form.getAttribute("data-subject") || "Website enquiry";
-
-      /* Clear the error state as soon as the visitor fixes the field. */
-      form.addEventListener("input", function (event) {
-        var field = event.target.closest(".field");
-        if (field && field.classList.contains("is-invalid")) {
-          validateField(field);
-        }
-      });
-
-      form.addEventListener("submit", function (event) {
-        event.preventDefault();
-
-        var fields = form.querySelectorAll(".field");
-        var firstInvalid = null;
-
-        Array.prototype.forEach.call(fields, function (field) {
-          if (!validateField(field) && !firstInvalid) firstInvalid = field;
-        });
-
-        if (firstInvalid) {
-          var input = firstInvalid.querySelector("input, select, textarea");
-          if (input) input.focus();
-          return;
-        }
-
-        if (!panel) return;
-
-        var body = buildMessage(form);
-
-        var mailLink = panel.querySelector("[data-route='email']");
-        if (mailLink) {
-          mailLink.href =
-            "mailto:" +
-            ENQUIRY_EMAIL +
-            "?subject=" +
-            encodeURIComponent(subject) +
-            "&body=" +
-            encodeURIComponent(body);
-        }
-
-        var waLink = panel.querySelector("[data-route='whatsapp']");
-        if (waLink) {
-          if (WHATSAPP_NUMBER) {
-            waLink.href =
-              "https://wa.me/" +
-              WHATSAPP_NUMBER +
-              "?text=" +
-              encodeURIComponent(subject + "\n\n" + body);
-          } else {
-            waLink.hidden = true;
-          }
-        }
-
-        form.hidden = true;
-        panel.classList.add("is-visible");
-        panel.setAttribute("tabindex", "-1");
-        panel.focus();
-      });
-
-      /* Allow the visitor to return to the form and edit it. */
-      if (panel) {
-        var restart = panel.querySelector("[data-restart]");
-        if (restart) {
-          restart.addEventListener("click", function () {
-            panel.classList.remove("is-visible");
-            form.hidden = false;
-            var first = form.querySelector("input, select, textarea");
-            if (first) first.focus();
-          });
-        }
-      }
     }
   );
 
