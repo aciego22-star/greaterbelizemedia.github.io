@@ -16,6 +16,13 @@
 
   <link rel="icon" type="image/png" href="assets/img/favicon.png">
   <link rel="apple-touch-icon" href="assets/img/natfish-icon.png">
+
+  <!-- Self-hosted Bitter and Source Sans 3. The latin subsets are preloaded
+       because they carry the headline and the first paragraph; font-display
+       swap means the fallback shows immediately and nothing is ever invisible. -->
+  <link rel="preload" href="assets/fonts/bitter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/source-sans-3-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/fonts.css">
   <link rel="stylesheet" href="assets/css/natfish.css">
 </head>
 <body>
@@ -58,37 +65,26 @@
 
   <main id="main">
 
-    <section class="hero hero--carousel" data-carousel
-             aria-roledescription="carousel" aria-label="NATFISH">
-      <div class="hero__media" data-carousel-viewport>
-        <div class="hero__slide is-active" role="group"
-               aria-roledescription="slide" aria-label="1 of 3: Fishers hauling lobster traps at sunrise">
-            <picture>
-          <source type="image/webp" srcset="assets/img/img01-800.webp 800w, assets/img/img01-1400.webp 1400w" sizes="100vw">
-          <img src="assets/img/img01-1400.jpg" srcset="assets/img/img01-800.jpg 800w, assets/img/img01-1400.jpg 1400w" sizes="100vw" width="1400" height="787" alt="Fishers hauling lobster traps at sunrise" loading="eager" fetchpriority="high">
-        </picture>
-          </div><div class="hero__slide" role="group"
-               aria-roledescription="slide" aria-label="2 of 3: A morning conch harvest aboard a skiff">
-            <picture>
-          <source type="image/webp" srcset="assets/img/img03-800.webp 800w, assets/img/img03-1400.webp 1400w" sizes="100vw">
-          <img src="assets/img/img03-1400.jpg" srcset="assets/img/img03-800.jpg 800w, assets/img/img03-1400.jpg 1400w" sizes="100vw" width="1400" height="787" alt="A morning conch harvest aboard a skiff" loading="lazy" decoding="async">
-        </picture>
-          </div><div class="hero__slide" role="group"
-               aria-roledescription="slide" aria-label="3 of 3: A skiff on the Belize City waterfront">
-            <picture>
-          <source type="image/webp" srcset="assets/img/img10-800.webp 800w, assets/img/img10-1400.webp 1400w" sizes="100vw">
-          <img src="assets/img/img10-1400.jpg" srcset="assets/img/img10-800.jpg 800w, assets/img/img10-1400.jpg 1400w" sizes="100vw" width="1400" height="787" alt="A skiff on the Belize City waterfront" loading="lazy" decoding="async">
-        </picture>
-          </div>
+    <div class="identity-ribbon">
+      <div class="container identity-ribbon__inner">
+        <p class="identity-ribbon__name">National Fishermen Producers' Co-operative Society Ltd.</p>
+        <p class="identity-ribbon__meta">
+          <span>Belize</span>
+          <span class="identity-ribbon__sep" aria-hidden="true"></span>
+          <span>Established 1966</span>
+        </p>
       </div>
+    </div>
 
-      <div class="container hero__inner">
+    <section class="hero" data-carousel aria-label="NATFISH">
+      <div class="hero__panel">
         <div class="hero__content">
-          <p class="hero__identity">National Fishermen Producers' Co-operative Society Ltd.</p>
+          <p class="hero__eyebrow">Belizean fisher-owned cooperative</p>
           <h1>From Belize's waters to the world.</h1>
           <p class="hero__copy">
-            A Belizean fishers' cooperative connecting fishing communities,
-            quality seafood and markets at home and abroad.
+            A cooperative owned by the fishers who make it up, connecting
+            fishing communities, quality seafood and markets at home and
+            abroad.
           </p>
           <div class="hero__actions">
             <a class="btn btn--primary" href="seafood-services.html">Seafood &amp; Services</a>
@@ -97,14 +93,32 @@
         </div>
       </div>
 
+      <div class="hero__media" data-carousel-viewport>
+        <div class="hero__slide is-active">
+            <picture>
+          <source type="image/webp" srcset="assets/img/img01-800.webp 800w, assets/img/img01-1400.webp 1400w" sizes="(max-width: 900px) 100vw, 60vw">
+          <img style="object-position:58% 52%" src="assets/img/img01-1400.jpg" srcset="assets/img/img01-800.jpg 800w, assets/img/img01-1400.jpg 1400w" sizes="(max-width: 900px) 100vw, 60vw" width="1400" height="787" alt="Fishers hauling lobster traps at sunrise" loading="eager" fetchpriority="high">
+        </picture>
+          </div><div class="hero__slide">
+            <picture>
+          <source type="image/webp" srcset="assets/img/img03-800.webp 800w, assets/img/img03-1400.webp 1400w" sizes="(max-width: 900px) 100vw, 60vw">
+          <img style="object-position:62% 46%" src="assets/img/img03-1400.jpg" srcset="assets/img/img03-800.jpg 800w, assets/img/img03-1400.jpg 1400w" sizes="(max-width: 900px) 100vw, 60vw" width="1400" height="787" alt="A morning conch harvest aboard a skiff" loading="lazy" decoding="async">
+        </picture>
+          </div><div class="hero__slide">
+            <picture>
+          <source type="image/webp" srcset="assets/img/img10-800.webp 800w, assets/img/img10-1400.webp 1400w" sizes="(max-width: 900px) 100vw, 60vw">
+          <img style="object-position:50% 58%" src="assets/img/img10-1400.jpg" srcset="assets/img/img10-800.jpg 800w, assets/img/img10-1400.jpg 1400w" sizes="(max-width: 900px) 100vw, 60vw" width="1400" height="787" alt="A skiff on the Belize City waterfront" loading="lazy" decoding="async">
+        </picture>
+          </div>
+      </div>
     </section>
 
     <div class="trust">
       <div class="container">
         <ul class="trust__list">
-          <li class="trust__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5 20 6v6c0 4.6-3.2 8.3-8 9.5-4.8-1.2-8-4.9-8-9.5V6z"></path></svg> Established 1966</li>
-          <li class="trust__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"></circle><path d="M2 20a7 7 0 0 1 14 0"></path><path d="M16.5 5.6a3 3 0 0 1 0 4.8M19 3.4a6 6 0 0 1 0 9.2"></path></svg> Belizean Fishers' Cooperative</li>
-          <li class="trust__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> Belize City</li>
+          <li class="trust__item"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.7"/><circle class="ico__accent" cx="12" cy="12" r="5.5"/><path class="ico__accent" d="M8.9 12.5q1.55-1.45 3.1 0t3.1 0"/><path d="M12 3.3V1.9M12 22.1v-1.4M3.3 12H1.9M22.1 12h-1.4M5.85 5.85 4.86 4.86M19.14 19.14l-.99-.99M18.15 5.85l.99-.99M4.86 19.14l.99-.99"/></svg> Established 1966</li>
+          <li class="trust__item"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 16.9h17l-2 3.3a2 2 0 0 1-1.7 1H7.2a2 2 0 0 1-1.7-1z"/><circle cx="9.4" cy="7.6" r="1.7"/><circle cx="15.3" cy="9.3" r="1.5"/><path d="M6.9 14.6c0-2 1.1-3.6 2.5-3.6s2.5 1.6 2.5 3.6M13.2 14.6c0-1.8.94-3.1 2.1-3.1s2.1 1.3 2.1 3.1"/><path class="ico__accent" d="M2 14.2h20"/></svg> Belizean Fishers' Cooperative</li>
+          <li class="trust__item"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 2.6a4.9 4.9 0 0 0-4.9 4.9c0 3.5 4.9 8 4.9 8s4.9-4.5 4.9-8A4.9 4.9 0 0 0 12 2.6z"/><circle cx="12" cy="7.4" r="1.8"/><path class="ico__accent" d="M2.4 19.4q2.4-1.8 4.8 0t4.8 0t4.8 0t4.8 0"/></svg> Belize City</li>
         </ul>
       </div>
     </div>
@@ -134,10 +148,11 @@
 
     <section class="section section--sand" aria-labelledby="home-seafood-h">
       <div class="container">
-        <div class="section-head section-head--center reveal">
+        <div class="section-head section-head--rule reveal">
+          <svg class="rule-wave" viewBox="0 0 118 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M1 4q7.4-3.6 14.8 0t14.8 0t14.8 0t14.8 0"/><path d="M76 4h41" opacity=".45"/></svg>
           <span class="eyebrow">Seafood &amp; Services</span>
           <h2 id="home-seafood-h">Seafood from Belizean waters</h2>
-          <p class="lede" style="margin-inline:auto">
+          <p class="lede">
             Lobster and conch are longstanding products associated with the
             cooperative's fishing, processing and market activity. Availability
             is confirmed directly with NATFISH.
@@ -195,7 +210,7 @@
           </div>
           <div class="reveal">
             <span class="eyebrow">Responsible Fisheries</span>
-            <h2 id="home-resp-h">Careful handling and good information</h2>
+            <h2 class="h-icon" id="home-resp-h"><svg class="ico h-icon__mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2.4 13.9c2.4-2.9 5.4-4.4 7.8-4.4s5 1.5 6.6 4.4c-1.6 2.9-4.2 4.4-6.6 4.4s-5.4-1.5-7.8-4.4z"/><circle cx="6.9" cy="13" r=".95"/><path d="m16.8 13.9 3.5-2.4v4.8z"/><path class="ico__accent" d="M14.6 7.4c0-2.4 2-4.4 4.6-4.4 0 2.4-2 4.4-4.6 4.4z"/><path class="ico__accent" d="M2.4 21.2q2.4-1.7 4.8 0t4.8 0t4.8 0t4.8 0"/></svg> Careful handling and good information</h2>
             <p class="lede">
               NATFISH has participated in electronic catch-documentation and
               traceability initiatives, and in Belize's spiny lobster Fishery
@@ -212,7 +227,7 @@
         <div class="section-head section-head--split reveal">
           <div>
             <span class="eyebrow">What&rsquo;s New</span>
-            <h2 id="home-news-h">Latest updates</h2>
+            <h2 class="h-icon" id="home-news-h"><svg class="ico h-icon__mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.4 6a1.8 1.8 0 0 1 1.8-1.8h11.4A1.8 1.8 0 0 1 18.4 6v11.8a2 2 0 0 0 2 2H5.4a2 2 0 0 1-2-2z"/><path d="M6.4 8.2h8M6.4 11.2h8"/><path class="ico__accent" d="M6.4 14.9q1.95-1.5 3.9 0t3.9 0"/></svg> Latest updates</h2>
           </div>
           <a class="arrow-link" href="news.html">All updates</a>
         </div>
@@ -260,7 +275,7 @@
         <div class="section-head section-head--split reveal">
           <div>
             <span class="eyebrow">Gallery</span>
-            <h2 id="home-gallery-h">The work, the water and the product</h2>
+            <h2 class="h-icon" id="home-gallery-h"><svg class="ico h-icon__mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3.2" y="4.6" width="17.6" height="14.8" rx="2"/><path d="M9.6 11.6h5.2l-1 2h-3.2z"/><path d="M12.2 11.6V8.4"/><path class="ico__accent" d="M6 15.9q2-1.5 4 0t4 0t4 0"/></svg> The work, the water and the product</h2>
           </div>
           <a class="arrow-link" href="gallery.html">View the gallery</a>
         </div>
@@ -309,9 +324,9 @@
             <p class="note" style="margin:0">Provisional details, pending confirmation.</p>
           </div>
           <ul class="contact-strip__list reveal">
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"></path><circle cx="12" cy="10" r="3"></circle></svg><a href="https://www.google.com/maps/search/?api=1&query=Angel+Lane%2C+Belize+City%2C+Belize" target="_blank" rel="noopener noreferrer">Angel Lane, Belize City, Belize</a></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.4 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"></path></svg><a href="tel:+5012273165">+501 227-3165</a></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m2 7 10 6 10-6"></path></svg><a href="mailto:natfish@btl.net">natfish@btl.net</a></li>
+            <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 2.6a4.9 4.9 0 0 0-4.9 4.9c0 3.5 4.9 8 4.9 8s4.9-4.5 4.9-8A4.9 4.9 0 0 0 12 2.6z"/><circle cx="12" cy="7.4" r="1.8"/><path class="ico__accent" d="M2.4 19.4q2.4-1.8 4.8 0t4.8 0t4.8 0t4.8 0"/></svg><a href="https://www.google.com/maps/search/?api=1&query=Angel+Lane%2C+Belize+City%2C+Belize" target="_blank" rel="noopener noreferrer">Angel Lane, Belize City, Belize</a></li>
+            <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21.4 16.9v2.8a1.9 1.9 0 0 1-2.1 1.9 18.9 18.9 0 0 1-8.2-2.9 18.6 18.6 0 0 1-5.7-5.7A18.9 18.9 0 0 1 2.5 4.7 1.9 1.9 0 0 1 4.4 2.6h2.8a1.9 1.9 0 0 1 1.9 1.6c.12.95.35 1.87.68 2.75a1.9 1.9 0 0 1-.43 2L8.2 10.1a15.2 15.2 0 0 0 5.7 5.7l1.15-1.15a1.9 1.9 0 0 1 2-.43c.88.33 1.8.56 2.75.68a1.9 1.9 0 0 1 1.6 1.95z"/></svg><a href="tel:+5012273165">+501 227-3165</a></li>
+            <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.6" y="4.8" width="18.8" height="14.4" rx="2"/><path d="m2.6 7.4 8.36 5.2a2 2 0 0 0 2.08 0l8.36-5.2"/></svg><a href="mailto:natfish@btl.net">natfish@btl.net</a></li>
           </ul>
           <div class="reveal">
             <a class="btn btn--primary" href="contact.html#buyer-enquiry">Buyer Enquiry</a>

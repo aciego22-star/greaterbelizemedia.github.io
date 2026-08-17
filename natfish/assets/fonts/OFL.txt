@@ -1,0 +1,4 @@
+Bitter and Source Sans 3 are licensed under the SIL Open Font License, Version 1.1.
+Bitter: https://github.com/solmatas/BitterPro
+Source Sans 3: https://github.com/adobe-fonts/source-sans
+Full licence: https://openfontlicense.org

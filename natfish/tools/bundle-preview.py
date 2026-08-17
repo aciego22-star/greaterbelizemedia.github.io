@@ -258,7 +258,19 @@ def main():
     lightbox = between(read("gallery.html"), '<div class="lightbox" id="lightbox"',
                        "</figure>\n  </div>")
 
-    css = read("assets/css/natfish.css")
+    # Inline the webfonts as data URIs. A relative ../fonts/ URL cannot resolve
+    # in a single-file artifact, and without this the preview silently drops to
+    # the Georgia fallback while the real site shows Bitter.
+    font_css = read("assets/css/fonts.css")
+
+    def embed_font(match):
+        name = match.group(1)
+        raw = (ROOT / "assets" / "fonts" / name).read_bytes()
+        uri = "data:font/woff2;base64," + base64.b64encode(raw).decode()
+        return f'url("{uri}")'
+
+    font_css = re.sub(r'url\("\.\./fonts/([\w.-]+)"\)', embed_font, font_css)
+    css = font_css + "\n" + read("assets/css/natfish.css")
     js = read("assets/js/natfish.js")
 
     titles = {}

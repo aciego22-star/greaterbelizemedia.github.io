@@ -32,7 +32,7 @@ PAGES=(
 
 cp -- "${PAGES[@]}" netlify.toml "$STAGE/"
 mkdir -p "$STAGE/assets"
-cp -R assets/css assets/js assets/img "$STAGE/assets/"
+cp -R assets/css assets/js assets/img assets/fonts "$STAGE/assets/"
 
 rm -f "$OUT"
 ( cd "$STAGE" && zip -qr -X "$OLDPWD/$OUT" . )

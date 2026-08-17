@@ -16,6 +16,13 @@
 
   <link rel="icon" type="image/png" href="assets/img/favicon.png">
   <link rel="apple-touch-icon" href="assets/img/natfish-icon.png">
+
+  <!-- Self-hosted Bitter and Source Sans 3. The latin subsets are preloaded
+       because they carry the headline and the first paragraph; font-display
+       swap means the fallback shows immediately and nothing is ever invisible. -->
+  <link rel="preload" href="assets/fonts/bitter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/source-sans-3-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/fonts.css">
   <link rel="stylesheet" href="assets/css/natfish.css">
 </head>
 <body>
@@ -86,6 +93,7 @@
           <div class="reveal">
             <span class="eyebrow">History</span>
             <h2>Registered on 29 April 1966</h2>
+            <p class="stat-line">29 April 1966.</p>
             <p>
               The Society and its by-laws were registered on 29 April 1966. From
               that point National Fishermen has operated as a fisher-owned
@@ -174,7 +182,7 @@
         </picture></div>
           <div class="reveal">
             <span class="eyebrow">The fishermen behind NATFISH</span>
-            <h2 id="about-fishers-h">Behind every product is a fishing community</h2>
+            <h2 class="h-icon" id="about-fishers-h"><svg class="ico h-icon__mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.6 17.2h16.8l-1.9 3.1a1.9 1.9 0 0 1-1.6.9H7.1a1.9 1.9 0 0 1-1.6-.9z"/><circle cx="7.6" cy="5.9" r="1.7"/><path d="M4.9 13.4c0-2.3 1.2-4.1 2.7-4.1s2.7 1.8 2.7 4.1"/><path class="ico__accent" d="M12.6 7.9h8.2v6.2h-8.2zM12.6 11h8.2M16.7 7.9v6.2M12.6 7.9l8.2 6.2M20.8 7.9l-8.2 6.2"/></svg> Behind every product is a fishing community</h2>
             <p class="lede">
               NATFISH was built around the cooperative model, creating a
               collective structure through which Belizean fishers can connect

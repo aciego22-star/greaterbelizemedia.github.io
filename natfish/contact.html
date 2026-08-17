@@ -16,6 +16,13 @@
 
   <link rel="icon" type="image/png" href="assets/img/favicon.png">
   <link rel="apple-touch-icon" href="assets/img/natfish-icon.png">
+
+  <!-- Self-hosted Bitter and Source Sans 3. The latin subsets are preloaded
+       because they carry the headline and the first paragraph; font-display
+       swap means the fallback shows immediately and nothing is ever invisible. -->
+  <link rel="preload" href="assets/fonts/bitter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/source-sans-3-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/fonts.css">
   <link rel="stylesheet" href="assets/css/natfish.css">
 </head>
 <body>
@@ -83,7 +90,7 @@
 
             <div class="enquiry__actions">
               <a class="btn btn--primary" href="mailto:natfish@btl.net?subject=NATFISH%20Buyer%20Enquiry&amp;body=Hello%20NATFISH%2C%0A%0AI%20would%20like%20to%20enquire%20about%20purchasing%20seafood.%0A%0AName%3A%0ACompany%3A%0ACountry%20or%20location%3A%0AProduct%20or%20species%20required%3A%0AApproximate%20quantity%3A%0APreferred%20timeframe%3A%0APackaging%20or%20preparation%20requirements%3A%0ADestination%20or%20delivery%20location%3A%0ATelephone%20or%20WhatsApp%3A%0AAdditional%20information%3A%0A%0AThank%20you.">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m2 7 10 6 10-6"></path></svg> Send an Email
+                <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.6" y="4.8" width="18.8" height="14.4" rx="2"/><path d="m2.6 7.4 8.36 5.2a2 2 0 0 0 2.08 0l8.36-5.2"/></svg> Send an Email
               </a>
               <!-- TEMPORARY CONCEPT WHATSAPP NUMBER — REPLACE WITH CLIENT-CONFIRMED
                    NATFISH NUMBER BEFORE PUBLIC LAUNCH. +501 610-8859 is a routing
@@ -91,7 +98,7 @@
                    anywhere as a NATFISH telephone number. -->
               <a class="btn btn--whatsapp" href="https://wa.me/5016108859?text=Hello%20NATFISH.%20I%20would%20like%20to%20make%20a%20seafood%20enquiry.%0A%0AName%3A%0ACompany%3A%0ALocation%3A%0AProduct%20or%20species%20required%3A%0AApproximate%20quantity%3A%0APreferred%20timeframe%3A%0AAdditional%20information%3A"
                  target="_blank" rel="noopener noreferrer">
-                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm5.8 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5-4.5-.2-.2-1.2-1.6-1.2-3s.7-2.1 1-2.4c.3-.3.6-.4.8-.4h.6c.2 0 .4 0 .7.5l.9 2.1c.1.2.1.4 0 .6l-.4.6-.3.3c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.7-.1l.9-1c.2-.2.4-.2.6-.1l2 1c.3.1.5.2.5.3.1.2.1.7-.1 1.4z"></path></svg> Enquire on WhatsApp
+                <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.4 20.6 4.7 16.7A8.6 8.6 0 1 1 8 20.1z"/><path d="M9 8.6c.3 0 .5.1.6.4l.7 1.6c.1.2.1.4 0 .5l-.6.8c-.1.2-.1.4 0 .5a8 8 0 0 0 3 3c.2.1.4.1.5 0l.8-.6c.1-.1.3-.2.5-.1l1.6.7c.3.1.4.3.4.6 0 1.1-.9 2-2 2a8 8 0 0 1-7.4-7.4c0-1.1.9-2 2-2z"/></svg> Enquire on WhatsApp
               </a>
             </div>
             <p class="note">
@@ -102,15 +109,15 @@
           <aside class="enquiry__checklist reveal" aria-labelledby="checklist-h">
             <h3 id="checklist-h">What to include in your enquiry</h3>
             <ul class="checklist">
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12.5 5.5 5.5L20 7"></path></svg><span>Your name and company</span></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12.5 5.5 5.5L20 7"></path></svg><span>Your country or location</span></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12.5 5.5 5.5L20 7"></path></svg><span>The seafood product or species required</span></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12.5 5.5 5.5L20 7"></path></svg><span>Approximate quantity</span></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12.5 5.5 5.5L20 7"></path></svg><span>Preferred timeframe</span></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12.5 5.5 5.5L20 7"></path></svg><span>Packaging or preparation requirements, if applicable</span></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12.5 5.5 5.5L20 7"></path></svg><span>Destination or delivery location</span></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12.5 5.5 5.5L20 7"></path></svg><span>Telephone or WhatsApp number</span></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12.5 5.5 5.5L20 7"></path></svg><span>Any additional information NATFISH should know</span></li>
+            <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m4.5 12.6 5.2 5.2L19.5 7.4"/></svg><span>Your name and company</span></li>
+            <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m4.5 12.6 5.2 5.2L19.5 7.4"/></svg><span>Your country or location</span></li>
+            <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m4.5 12.6 5.2 5.2L19.5 7.4"/></svg><span>The seafood product or species required</span></li>
+            <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m4.5 12.6 5.2 5.2L19.5 7.4"/></svg><span>Approximate quantity</span></li>
+            <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m4.5 12.6 5.2 5.2L19.5 7.4"/></svg><span>Preferred timeframe</span></li>
+            <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m4.5 12.6 5.2 5.2L19.5 7.4"/></svg><span>Packaging or preparation requirements, if applicable</span></li>
+            <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m4.5 12.6 5.2 5.2L19.5 7.4"/></svg><span>Destination or delivery location</span></li>
+            <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m4.5 12.6 5.2 5.2L19.5 7.4"/></svg><span>Telephone or WhatsApp number</span></li>
+            <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m4.5 12.6 5.2 5.2L19.5 7.4"/></svg><span>Any additional information NATFISH should know</span></li>
             </ul>
           </aside>
         </div>
@@ -130,19 +137,19 @@
 
         <div class="grid grid--3">
           <div class="contact-card reveal">
-            <span class="contact-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></span>
+            <span class="contact-card__icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 2.6a4.9 4.9 0 0 0-4.9 4.9c0 3.5 4.9 8 4.9 8s4.9-4.5 4.9-8A4.9 4.9 0 0 0 12 2.6z"/><circle cx="12" cy="7.4" r="1.8"/><path class="ico__accent" d="M2.4 19.4q2.4-1.8 4.8 0t4.8 0t4.8 0t4.8 0"/></svg></span>
             <h3>Visit</h3>
             <p>Angel Lane, Belize City, Belize</p>
             <a class="arrow-link" href="https://www.google.com/maps/search/?api=1&query=Angel+Lane%2C+Belize+City%2C+Belize" target="_blank" rel="noopener noreferrer">Open in Google Maps</a>
           </div>
           <div class="contact-card reveal">
-            <span class="contact-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.4 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"></path></svg></span>
+            <span class="contact-card__icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21.4 16.9v2.8a1.9 1.9 0 0 1-2.1 1.9 18.9 18.9 0 0 1-8.2-2.9 18.6 18.6 0 0 1-5.7-5.7A18.9 18.9 0 0 1 2.5 4.7 1.9 1.9 0 0 1 4.4 2.6h2.8a1.9 1.9 0 0 1 1.9 1.6c.12.95.35 1.87.68 2.75a1.9 1.9 0 0 1-.43 2L8.2 10.1a15.2 15.2 0 0 0 5.7 5.7l1.15-1.15a1.9 1.9 0 0 1 2-.43c.88.33 1.8.56 2.75.68a1.9 1.9 0 0 1 1.6 1.95z"/></svg></span>
             <h3>Call</h3>
             <p>+501 227-3165</p>
             <a class="arrow-link" href="tel:+5012273165">Call NATFISH</a>
           </div>
           <div class="contact-card reveal">
-            <span class="contact-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m2 7 10 6 10-6"></path></svg></span>
+            <span class="contact-card__icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.6" y="4.8" width="18.8" height="14.4" rx="2"/><path d="m2.6 7.4 8.36 5.2a2 2 0 0 0 2.08 0l8.36-5.2"/></svg></span>
             <h3>Email</h3>
             <p>natfish@btl.net</p>
             <a class="arrow-link" href="mailto:natfish@btl.net">Email NATFISH</a>

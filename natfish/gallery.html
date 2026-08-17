@@ -16,6 +16,13 @@
 
   <link rel="icon" type="image/png" href="assets/img/favicon.png">
   <link rel="apple-touch-icon" href="assets/img/natfish-icon.png">
+
+  <!-- Self-hosted Bitter and Source Sans 3. The latin subsets are preloaded
+       because they carry the headline and the first paragraph; font-display
+       swap means the fallback shows immediately and nothing is ever invisible. -->
+  <link rel="preload" href="assets/fonts/bitter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/source-sans-3-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/fonts.css">
   <link rel="stylesheet" href="assets/css/natfish.css">
 </head>
 <body>
@@ -81,7 +88,8 @@
         <h2 id="gal-photos-h" class="visually-hidden">Photographs</h2>
         <div class="gallery reveal">
           <figure class="gallery__figure gallery__figure--wide">
-            <button class="gallery__item" type="button">
+            <button class="gallery__item" type="button"
+                    aria-label="View larger: Fishers hauling lobster traps at sunrise">
               <picture>
           <source type="image/webp" srcset="assets/img/img01-800.webp 800w, assets/img/img01-1400.webp 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
           <img src="assets/img/img01-1400.jpg" srcset="assets/img/img01-800.jpg 800w, assets/img/img01-1400.jpg 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw" width="1400" height="787" alt="Two fishers working with lobster traps aboard a small open skiff on calm Caribbean water at sunrise." loading="lazy" decoding="async" data-full="assets/img/img01-1400.jpg">
@@ -90,7 +98,8 @@
             <figcaption>Fishers hauling lobster traps at sunrise. Concept image used for the website presentation.</figcaption>
           </figure>
           <figure class="gallery__figure">
-            <button class="gallery__item" type="button">
+            <button class="gallery__item" type="button"
+                    aria-label="View larger: Grading seafood in a processing room">
               <picture>
           <source type="image/webp" srcset="assets/img/img06-800.webp 800w, assets/img/img06-1400.webp 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
           <img src="assets/img/img06-1400.jpg" srcset="assets/img/img06-800.jpg 800w, assets/img/img06-1400.jpg 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw" width="1400" height="787" alt="Workers in hairnets, masks and gloves grading shrimp, fish and lobster in a clean processing room." loading="lazy" decoding="async" data-full="assets/img/img06-1400.jpg">
@@ -99,7 +108,8 @@
             <figcaption>Grading seafood in a processing room. Concept image used for the website presentation.</figcaption>
           </figure>
           <figure class="gallery__figure">
-            <button class="gallery__item" type="button">
+            <button class="gallery__item" type="button"
+                    aria-label="View larger: Caribbean spiny lobster on ice">
               <picture>
           <source type="image/webp" srcset="assets/img/img04-800.webp 800w, assets/img/img04-1400.webp 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
           <img src="assets/img/img04-1400.jpg" srcset="assets/img/img04-800.jpg 800w, assets/img/img04-1400.jpg 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw" width="1400" height="787" alt="Three Caribbean spiny lobsters presented whole on crushed ice." loading="lazy" decoding="async" data-full="assets/img/img04-1400.jpg">
@@ -108,7 +118,8 @@
             <figcaption>Caribbean spiny lobster on ice. Concept image used for the website presentation.</figcaption>
           </figure>
           <figure class="gallery__figure">
-            <button class="gallery__item" type="button">
+            <button class="gallery__item" type="button"
+                    aria-label="View larger: A morning conch harvest aboard a skiff">
               <picture>
           <source type="image/webp" srcset="assets/img/img03-800.webp 800w, assets/img/img03-1400.webp 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
           <img src="assets/img/img03-1400.jpg" srcset="assets/img/img03-800.jpg 800w, assets/img/img03-1400.jpg 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw" width="1400" height="787" alt="A fisher seated in a skiff on turquoise water with a morning harvest of queen conch aboard." loading="lazy" decoding="async" data-full="assets/img/img03-1400.jpg">
@@ -117,7 +128,8 @@
             <figcaption>A morning conch harvest aboard a skiff. Concept image used for the website presentation.</figcaption>
           </figure>
           <figure class="gallery__figure">
-            <button class="gallery__item" type="button">
+            <button class="gallery__item" type="button"
+                    aria-label="View larger: Cleaned conch meat during handling">
               <picture>
           <source type="image/webp" srcset="assets/img/img05-800.webp 800w, assets/img/img05-1400.webp 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
           <img src="assets/img/img05-1400.jpg" srcset="assets/img/img05-800.jpg 800w, assets/img/img05-1400.jpg 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw" width="1400" height="787" alt="Close-up of cleaned conch meat laid out on a stainless steel table during handling." loading="lazy" decoding="async" data-full="assets/img/img05-1400.jpg">
@@ -126,7 +138,8 @@
             <figcaption>Cleaned conch meat during handling. Concept image used for the website presentation.</figcaption>
           </figure>
           <figure class="gallery__figure gallery__figure--wide">
-            <button class="gallery__item" type="button">
+            <button class="gallery__item" type="button"
+                    aria-label="View larger: A skiff on the Belize City waterfront">
               <picture>
           <source type="image/webp" srcset="assets/img/img10-800.webp 800w, assets/img/img10-1400.webp 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
           <img src="assets/img/img10-1400.jpg" srcset="assets/img/img10-800.jpg 800w, assets/img/img10-1400.jpg 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw" width="1400" height="787" alt="A fishing skiff heading up the waterway past moored boats and the Belize City waterfront." loading="lazy" decoding="async" data-full="assets/img/img10-1400.jpg">
@@ -135,7 +148,8 @@
             <figcaption>A skiff on the Belize City waterfront. Concept image used for the website presentation.</figcaption>
           </figure>
           <figure class="gallery__figure">
-            <button class="gallery__item" type="button">
+            <button class="gallery__item" type="button"
+                    aria-label="View larger: Recording catch information dockside">
               <picture>
           <source type="image/webp" srcset="assets/img/img07-800.webp 800w, assets/img/img07-1400.webp 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
           <img src="assets/img/img07-1400.jpg" srcset="assets/img/img07-800.jpg 800w, assets/img/img07-1400.jpg 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw" width="1400" height="787" alt="A worker at a dockside table entering catch information on a tablet beside tagged fish and lobster." loading="lazy" decoding="async" data-full="assets/img/img07-1400.jpg">
@@ -144,7 +158,8 @@
             <figcaption>Recording catch information dockside. Concept image used for the website presentation.</figcaption>
           </figure>
           <figure class="gallery__figure">
-            <button class="gallery__item" type="button">
+            <button class="gallery__item" type="button"
+                    aria-label="View larger: A packed export box of Belizean seafood">
               <picture>
           <source type="image/webp" srcset="assets/img/img08-800.webp 800w, assets/img/img08-1400.webp 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
           <img src="assets/img/img08-1400.jpg" srcset="assets/img/img08-800.jpg 800w, assets/img/img08-1400.jpg 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw" width="1400" height="787" alt="A lined export box packed with snapper, fillets, scallops and spiny lobster on ice at a dock." loading="lazy" decoding="async" data-full="assets/img/img08-1400.jpg">
@@ -153,7 +168,8 @@
             <figcaption>A packed export box of Belizean seafood. Concept image used for the website presentation.</figcaption>
           </figure>
           <figure class="gallery__figure gallery__figure--wide">
-            <button class="gallery__item" type="button">
+            <button class="gallery__item" type="button"
+                    aria-label="View larger: Belizean lobster, conch and reef fish">
               <picture>
           <source type="image/webp" srcset="assets/img/img09-800.webp 800w, assets/img/img09-1400.webp 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
           <img src="assets/img/img09-1400.jpg" srcset="assets/img/img09-800.jpg 800w, assets/img/img09-1400.jpg 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw" width="1400" height="787" alt="A spread of Belizean seafood including spiny lobster, queen conch, snapper and reef fish on ice by the sea." loading="lazy" decoding="async" data-full="assets/img/img09-1400.jpg">
@@ -182,7 +198,7 @@
           <source type="image/webp" srcset="assets/img/img10-800.webp 800w, assets/img/img10-1400.webp 1400w" sizes="(max-width: 900px) 96vw, 880px">
           <img src="assets/img/img10-1400.jpg" srcset="assets/img/img10-800.jpg 800w, assets/img/img10-1400.jpg 1400w" sizes="(max-width: 900px) 96vw, 880px" width="1400" height="787" alt="" loading="lazy" decoding="async">
         </picture>
-            <span class="video__play"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.2v13.6a1 1 0 0 0 1.5.86l11-6.8a1 1 0 0 0 0-1.72l-11-6.8A1 1 0 0 0 8 5.2z"></path></svg></span>
+            <span class="video__play"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8.4 5.1v13.8a.9.9 0 0 0 1.36.77l11.1-6.9a.9.9 0 0 0 0-1.54L9.76 4.34A.9.9 0 0 0 8.4 5.1z" fill="currentColor" stroke="none"/></svg></span>
             <span class="video__label">The National Fishermen Cooperative of Belize</span>
           </button>
         </div>

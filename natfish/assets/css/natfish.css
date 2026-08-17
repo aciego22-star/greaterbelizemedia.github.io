@@ -34,8 +34,11 @@
   --radius: 14px;
   --radius-lg: 22px;
 
-  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif;
+  /* Bitter is a slab serif: sturdy and editorial, and it reads as a working
+     institution rather than a hospitality brand. Source Sans 3 carries every
+     word a visitor actually reads. Both self-hosted, see css/fonts.css. */
+  --font-display: "Bitter", Georgia, "Times New Roman", serif;
+  --font-body: "Source Sans 3", "Segoe UI", Arial, sans-serif;
 
   --container: 1200px;
   --gutter: clamp(1.15rem, 4vw, 2.5rem);
@@ -60,9 +63,11 @@ html {
 
 body {
   margin: 0;
-  font-family: var(--font);
-  font-size: 1.0625rem;
-  line-height: 1.65;
+  font-family: var(--font-body);
+  /* Source Sans 3 runs a touch smaller than the old system stack at the same
+     px, so the base size and measure are nudged up to compensate. */
+  font-size: 1.09rem;
+  line-height: 1.62;
   color: var(--ink);
   background: var(--white);
   overflow-x: hidden;
@@ -81,30 +86,43 @@ img {
   height: auto;
 }
 
+/* Slab serifs carry more ink per character than the old grotesque, so the
+   tracking is far less negative and the leading is a little looser than the
+   sans-serif settings these replaced. */
 h1,
 h2,
 h3,
 h4 {
   margin: 0 0 0.5em;
-  line-height: 1.12;
-  letter-spacing: -0.018em;
+  font-family: var(--font-display);
   font-weight: 700;
+  line-height: 1.18;
+  letter-spacing: -0.008em;
   color: var(--navy-800);
   text-wrap: balance;
 }
 
 h1 {
-  font-size: clamp(2.1rem, 5.6vw, 3.9rem);
-  letter-spacing: -0.028em;
+  font-size: clamp(2.05rem, 4.9vw, 3.4rem);
+  line-height: 1.1;
+  letter-spacing: -0.014em;
 }
 
 h2 {
-  font-size: clamp(1.65rem, 3.7vw, 2.65rem);
+  font-size: clamp(1.55rem, 3.2vw, 2.3rem);
+  line-height: 1.16;
+  letter-spacing: -0.011em;
 }
 
 h3 {
-  font-size: clamp(1.2rem, 2vw, 1.45rem);
-  letter-spacing: -0.01em;
+  font-size: clamp(1.12rem, 1.75vw, 1.3rem);
+  font-weight: 650;
+  line-height: 1.32;
+  letter-spacing: -0.004em;
+}
+
+h4 {
+  font-weight: 650;
 }
 
 p {
@@ -234,9 +252,10 @@ strong {
 .eyebrow {
   display: block;
   margin-bottom: 0.85rem;
-  font-size: 0.775rem;
-  font-weight: 700;
-  letter-spacing: 0.17em;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--teal-600);
 }
@@ -280,12 +299,12 @@ strong {
   gap: 0.55rem;
   min-height: 50px;
   padding: 0.8rem 1.65rem;
-  border: 2px solid transparent;
-  border-radius: 999px;
-  font: inherit;
+  border: 1.5px solid transparent;
+  border-radius: 7px;
+  font-family: var(--font-body);
   font-size: 0.95rem;
-  font-weight: 650;
-  letter-spacing: 0.015em;
+  font-weight: 600;
+  letter-spacing: 0.005em;
   text-decoration: none;
   cursor: pointer;
   transition: transform 0.18s ease, background-color 0.18s ease,
@@ -293,7 +312,7 @@ strong {
 }
 
 .btn:hover {
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 }
 
 .btn:active {
@@ -353,7 +372,7 @@ strong {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  font-weight: 650;
+  font-weight: 600;
   font-size: 0.95rem;
   text-decoration: none;
   color: var(--teal-700);
@@ -453,8 +472,8 @@ strong {
 .nav__link {
   display: inline-block;
   padding: 0.45rem 0.1rem;
-  font-size: 0.925rem;
-  font-weight: 550;
+  font-size: 0.94rem;
+  font-weight: 600;
   text-decoration: none;
   color: var(--ink);
   white-space: nowrap;
@@ -643,119 +662,148 @@ body.nav-open {
 
 /* --------------------------------------------------------------- hero -- */
 
+/* Split editorial hero. The photographs are the strongest asset in this build,
+   so they get their own unobstructed panel instead of being darkened into
+   wallpaper behind the headline. No scrim, no text over the image. */
 .hero {
-  position: relative;
-  display: flex;
-  align-items: center;
-  min-height: clamp(560px, 82vh, 780px);
-  padding-block: clamp(3rem, 8vw, 5rem);
-  background: var(--navy-900);
-  overflow: hidden;
+  display: grid;
+  grid-template-columns: 40% 60%;
+  align-items: stretch;
+  background: var(--navy-800);
 }
 
-.hero__media,
-.hero__media img {
+.hero > * {
+  min-width: 0;
+}
+
+.hero__panel {
+  display: flex;
+  align-items: center;
+  background:
+    radial-gradient(120% 90% at 8% 4%, rgba(34, 167, 188, 0.22), transparent 62%),
+    linear-gradient(168deg, var(--navy-800) 0%, var(--navy-900) 100%);
+  padding: clamp(2.75rem, 5vw, 5rem) clamp(1.5rem, 3.2vw, 3.5rem);
+}
+
+.hero__content {
+  width: 100%;
+  max-width: 34rem;
+  margin-left: auto;
+}
+
+.hero__eyebrow {
+  margin-bottom: 1rem;
+  font-size: 0.79rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--turq-300);
+}
+
+.hero h1 {
+  font-size: clamp(1.95rem, 3.3vw, 2.85rem);
+  color: var(--white);
+  line-height: 1.13;
+  letter-spacing: -0.016em;
+  margin-bottom: 1.1rem;
+}
+
+.hero__copy {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: clamp(1.02rem, 1.4vw, 1.13rem);
+  margin-bottom: 2rem;
+  max-width: 36ch;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.hero__actions .btn {
+  white-space: nowrap;
+  padding-block: 0.6rem;
+}
+
+/* The image panel: full colour, no overlay. */
+.hero__media {
+  position: relative;
+  overflow: hidden;
+  background: var(--navy-900);
+  min-height: clamp(420px, 60vh, 660px);
+}
+
+.hero__slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+}
+
+.hero__slide.is-active {
+  opacity: 1;
+}
+
+.hero__slide picture,
+.hero__slide img {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
 }
 
-.hero__media img {
+/* object-position is set per slide inline, so each photograph keeps its own
+   subject in frame rather than sharing one crop. */
+.hero__slide img {
   object-fit: cover;
-  object-position: center 58%;
 }
 
-/* Scrim is left-weighted on desktop so the boat and sunrise stay clear. */
-.hero__media::after {
+/* A thin turquoise seam where the panel meets the photograph. */
+.hero__media::before {
   content: "";
   position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(96deg, rgba(3, 25, 42, 0.9) 0%, rgba(3, 25, 42, 0.72) 32%,
-      rgba(3, 25, 42, 0.22) 62%, rgba(3, 25, 42, 0.05) 100%),
-    linear-gradient(180deg, rgba(3, 25, 42, 0.42) 0%, transparent 34%);
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  z-index: 2;
+  background: linear-gradient(180deg, var(--turq-500), rgba(34, 167, 188, 0.15));
 }
 
-.hero__inner {
-  position: relative;
-  z-index: 1;
-  /* The only in-flow child of .hero, so it takes the whole row. The carousel
-     control strip used to sit beside it as a static flex sibling and crushed
-     the copy to 144px. */
-  flex: 1 1 100%;
-  width: 100%;
-  min-width: 0;
-}
-
-/* Wide enough to hold the headline on three lines and the two CTAs on one
-   row, while still sitting inside the left-weighted scrim. */
-.hero__content {
-  max-width: min(640px, 100%);
-}
-
-.hero h1 {
-  color: var(--white);
-  text-transform: uppercase;
-  letter-spacing: -0.02em;
-  margin-bottom: 1.25rem;
-  text-shadow: 0 2px 24px rgba(3, 25, 42, 0.4);
-}
-
-.hero__identity {
-  font-size: clamp(0.95rem, 1.4vw, 1.05rem);
-  font-weight: 650;
-  color: var(--turq-300);
-  margin-bottom: 0.9rem;
-}
-
-.hero__copy {
-  color: rgba(255, 255, 255, 0.88);
-  font-size: clamp(1.02rem, 1.5vw, 1.15rem);
-  margin-bottom: 2rem;
-  max-width: 46ch;
-}
-
-.hero__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.85rem;
-}
-
-@media (max-width: 780px) {
+@media (max-width: 900px) {
+  /* Stacked: photograph first at full width, then the navy panel. Nothing is
+     printed over the image on mobile. */
   .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .hero__media {
+    order: -1;
     min-height: 0;
-    align-items: flex-end;
-    padding-top: clamp(11rem, 42vw, 16rem);
-    padding-bottom: clamp(2.5rem, 8vw, 3.5rem);
+    height: clamp(250px, 46vw, 360px);
   }
 
-  /* Bottom-weighted on mobile so the boat stays visible above the copy. */
-  .hero__media::after {
-    background: linear-gradient(
-      180deg,
-      rgba(3, 25, 42, 0.5) 0%,
-      rgba(3, 25, 42, 0.28) 30%,
-      rgba(3, 25, 42, 0.86) 68%,
-      rgba(3, 25, 42, 0.96) 100%
-    );
-  }
-
-  .hero__media img {
-    object-position: center 38%;
+  .hero__media::before {
+    left: 0;
+    right: 0;
+    top: auto;
+    bottom: 0;
+    width: auto;
+    height: 3px;
+    background: linear-gradient(90deg, var(--turq-500), rgba(34, 167, 188, 0.15));
   }
 
   .hero__content {
     max-width: none;
+    margin-left: 0;
   }
 
-  /* A comfortable 28-34 character measure instead of a narrow column. */
   .hero__copy {
     max-width: 34ch;
   }
 }
 
-/* Stack the hero CTAs rather than letting their labels wrap. */
 @media (max-width: 480px) {
   .hero__actions {
     flex-direction: column;
@@ -763,11 +811,59 @@ body.nav-open {
   }
 }
 
-/* Padding, not min-height, was driving these to 55px. Trimmed so the hero
-   CTAs land at the 50px touch target rather than reading as oversized pills. */
-.hero__actions .btn {
-  white-space: nowrap;
-  padding-block: 0.6rem;
+/* ------------------------------------------------- identity ribbon -- */
+/* The registered name as a registry line, not hero copy. */
+
+.identity-ribbon {
+  background: var(--navy-900);
+  border-top: 1px solid rgba(34, 167, 188, 0.35);
+  border-bottom: 1px solid rgba(217, 80, 58, 0.4);
+}
+
+.identity-ribbon__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.3rem 1.75rem;
+  padding-block: 0.85rem;
+}
+
+.identity-ribbon__name {
+  margin: 0;
+  font-size: clamp(0.82rem, 1.35vw, 0.97rem);
+  font-weight: 600;
+  letter-spacing: 0.055em;
+  color: var(--white);
+}
+
+.identity-ribbon__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin: 0;
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--turq-300);
+}
+
+.identity-ribbon__sep {
+  width: 22px;
+  height: 1px;
+  background: var(--coral);
+  opacity: 0.85;
+}
+
+@media (max-width: 620px) {
+  .identity-ribbon__inner {
+    justify-content: flex-start;
+  }
+
+  .identity-ribbon__name {
+    letter-spacing: 0.03em;
+  }
 }
 
 /* Page hero used on inner pages. */
@@ -837,9 +933,10 @@ body.nav-open {
   align-items: center;
   gap: 0.6rem;
   margin: 0;
-  font-size: 0.875rem;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
   font-weight: 600;
-  letter-spacing: 0.09em;
+  letter-spacing: 0.075em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.9);
 }
@@ -1020,9 +1117,10 @@ body.nav-open {
 
 .flow__label {
   display: block;
-  font-size: clamp(0.85rem, 1.5vw, 1.02rem);
-  font-weight: 750;
-  letter-spacing: 0.06em;
+  font-family: var(--font-body);
+  font-size: clamp(0.86rem, 1.5vw, 1rem);
+  font-weight: 700;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--navy-800);
   line-height: 1.25;
@@ -2398,4 +2496,167 @@ body.nav-open {
   .gallery-preview:hover img {
     transform: none;
   }
+}
+
+/* ==========================================================================
+   Icon system and editorial de-templating
+   ========================================================================== */
+
+/* One family: 24px viewBox, 1.85 stroke, navy from currentColor, turquoise on
+   accented paths, coral kept for the rare highlight. */
+.ico {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.ico__accent {
+  stroke: var(--turq-500);
+}
+
+.ico__coral {
+  stroke: var(--coral);
+}
+
+/* On navy the accent needs to lift off the ground. */
+.section--navy .ico__accent,
+.identity-ribbon .ico__accent,
+.contact-band .ico__accent,
+.site-footer .ico__accent {
+  stroke: var(--turq-300);
+}
+
+/* Feature icons sit on an open baseline rule rather than in yet another
+   rounded square. The repeated icon-in-a-tile is the single most template-like
+   pattern in the previous build. */
+.pillar__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: auto;
+  height: auto;
+  margin-bottom: 1rem;
+  padding-bottom: 0.85rem;
+  border-radius: 0;
+  background: none;
+  border-bottom: 2px solid rgba(34, 167, 188, 0.5);
+  color: var(--turq-300);
+}
+
+.pillar__icon .ico {
+  width: 30px;
+  height: 30px;
+}
+
+.contact-card__icon {
+  display: inline-flex;
+  width: auto;
+  height: auto;
+  margin-bottom: 0.9rem;
+  padding-bottom: 0.75rem;
+  border-radius: 0;
+  background: none;
+  border-bottom: 2px solid rgba(14, 124, 139, 0.35);
+  color: var(--teal-600);
+}
+
+.contact-card__icon .ico {
+  width: 26px;
+  height: 26px;
+}
+
+/* A species mark set beside its own heading. */
+.h-icon {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.h-icon__mark {
+  width: 30px;
+  height: 30px;
+  color: var(--teal-600);
+  flex-shrink: 0;
+}
+
+/* Icons in running lists inherit the text colour and sit on the first line. */
+.contact-list .ico,
+.contact-strip__list .ico,
+.trust__item .ico,
+.checklist .ico {
+  width: 19px;
+  height: 19px;
+}
+
+.checklist .ico {
+  margin-top: 0.2rem;
+  color: var(--teal-600);
+}
+
+.btn .ico {
+  width: 18px;
+  height: 18px;
+}
+
+/* --------------------------------------------------- editorial rhythm -- */
+
+/* A rope-and-wave rule, used sparingly to break the run of identical
+   section headings. */
+.rule-wave {
+  display: block;
+  width: 118px;
+  height: 8px;
+  margin: 0 0 1.25rem;
+  color: var(--turq-500);
+}
+
+.section-head--center .rule-wave {
+  margin-inline: auto;
+}
+
+.section--navy .rule-wave {
+  color: var(--turq-300);
+}
+
+/* Editorial heads: left-aligned with a hairline above, so not every section
+   opens with the same centred stack. */
+.section-head--rule {
+  padding-top: 1.4rem;
+  border-top: 2px solid var(--navy-800);
+}
+
+.section--navy .section-head--rule {
+  border-top-color: var(--turq-300);
+}
+
+.section-head--rule .eyebrow {
+  margin-bottom: 0.7rem;
+}
+
+/* Bitter carries the numerals in the timeline and the flow, which is where the
+   display face earns its keep. */
+.timeline__year,
+.flow__num {
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+
+.timeline__year {
+  font-size: 1.02rem;
+  letter-spacing: 0.01em;
+  text-transform: none;
+}
+
+/* Pull quote / significant date, set in the display face. */
+.stat-line {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.35rem, 2.6vw, 1.9rem);
+  line-height: 1.25;
+  color: var(--navy-800);
+  letter-spacing: -0.012em;
+}
+
+.section--navy .stat-line {
+  color: var(--white);
 }
