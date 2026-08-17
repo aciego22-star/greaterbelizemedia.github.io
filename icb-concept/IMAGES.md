@@ -79,6 +79,19 @@ it, which is the role a PNG would have played. A lossless PNG of a
 photograph this size is around 3MB against 118-177KB for the JPEG, and
 the single-file preview has a 16MB ceiling, so the fallback is a JPEG.
 
+## The Bee badge
+
+`assets/img/icb-bee-{128,256}.{webp,png}` is the supplied ICB bee badge,
+the mark for the Talk to Bee launcher. The artwork arrives as a circle in
+a square of white; the red ring measures 1173x1175 centred at (625, 610),
+so the frame is cropped square to that centre with four pixels of margin.
+The badge then fills its crop edge to edge and the launcher's round clip
+lands just outside the ring rather than shaving it.
+
+The 256px file is what is served into a 46px slot, which is what keeps the
+mascot crisp on a phone. It is used only by the launcher and by the panel
+cover; the header, footer and favicon keep the plain ICB mark.
+
 ## Corozal Border Branch
 
 `assets/img/branches/corozal-border.*` is the supplied frame at its own

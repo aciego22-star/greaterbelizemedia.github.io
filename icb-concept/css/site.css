@@ -100,6 +100,9 @@
   /* Chrome */
   --header-h: 72px;
   --quickbar-h: 62px;
+  /* Talk to Bee. Shared so the footer's clearance and the pill itself
+     cannot drift apart. */
+  --bee-pill-h: 56px;
 }
 
 /* ============================ Reset / base ============================ */
@@ -478,7 +481,7 @@ button {
    keeps from the edge, twice, so the credit ends up above it rather than
    just level with it. */
 .site-footer {
-  --bee-clearance: calc(53px + 2 * clamp(14px, 3vw, 28px));
+  --bee-clearance: calc(var(--bee-pill-h) + 2 * clamp(14px, 3vw, 28px));
   background: var(--c-brand-deep);
   color: var(--c-text-inverse-soft);
   padding: var(--sp-10) 0 calc(var(--sp-6) + var(--bee-clearance));
@@ -3457,8 +3460,8 @@ select,
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  min-height: 52px;
-  padding: 0.35rem 1.15rem 0.35rem 0.35rem;
+  min-height: var(--bee-pill-h);
+  padding: 0.35rem 1.2rem 0.35rem 0.35rem;
   border: 0;
   border-radius: 999px;
   background: var(--c-cta);
@@ -3483,7 +3486,7 @@ select,
    reads on the red pill. */
 .bee-mark {
   flex: none;
-  width: 42px; height: 42px;
+  width: 46px; height: 46px;
   border-radius: 50%;
   background: #FFFFFF;
   display: flex;
@@ -3491,7 +3494,8 @@ select,
   justify-content: center;
   overflow: hidden;
 }
-.bee-mark img { width: 30px; height: auto; display: block; }
+.bee-mark picture, .bee-mark img { display: block; width: 100%; height: 100%; }
+.bee-mark img { object-fit: cover; }
 
 .bee-label { white-space: nowrap; }
 
@@ -3534,14 +3538,16 @@ select,
 .bee-note[hidden] { display: none; }
 .bee-note p { color: var(--c-text-inverse-soft); font-size: var(--fs-300); margin: 0; }
 .bee-note-mark {
-  width: 54px; height: 54px;
+  width: 60px; height: 60px;
   border-radius: 50%;
   background: #FFFFFF;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;   /* the badge is square; the plate is what rounds it */
 }
-.bee-note-mark img { width: 38px; height: auto; display: block; }
+.bee-note-mark picture, .bee-note-mark img { display: block; width: 100%; height: 100%; }
+.bee-note-mark img { object-fit: cover; }
 .bee-note [hidden] { display: none; }
 .bee-panel { position: relative; }
 

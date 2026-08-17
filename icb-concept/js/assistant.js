@@ -37,6 +37,17 @@ window.ICB = window.ICB || {};
 
   function esc(s) { return ICB.render.esc(s); }
 
+  /* The ICB bee badge, supplied as the mark for this launcher. It arrives
+     as a circle already, ring and all, so it fills its plate edge to edge
+     and the plate's round clip lands just outside the ring. Served at
+     256px for a 42px slot, which is what keeps it crisp on a phone. */
+  function badge(cls) {
+    return '<span class="' + cls + '" aria-hidden="true"><picture>' +
+      '<source type="image/webp" data-asset-srcset="assets/img/icb-bee-256.webp">' +
+      '<img data-asset="assets/img/icb-bee-256.png" alt="" width="256" height="256">' +
+      "</picture></span>";
+  }
+
   /* The single-file preview carries every asset as a data URI, which is
      the one place ICB.ASSETS is populated. It is also the one place an
      outside request is refused outright, so the panel can say so straight
@@ -55,9 +66,7 @@ window.ICB = window.ICB || {};
            broken-frame placeholder, a white rectangle with a torn-page
            icon, which reads as a broken feature rather than a slow one. */
         '<div class="bee-note" data-bee-note aria-live="polite" hidden>' +
-          '<span class="bee-note-mark" aria-hidden="true">' +
-            '<img data-asset="assets/img/icb-logo.png" alt="" width="480" height="490">' +
-          "</span>" +
+          badge("bee-note-mark") +
           '<p data-bee-note-text></p>' +
           '<a class="btn btn-primary btn-sm" data-bee-note-link href="' + SRC + '"' +
             ' target="_blank" rel="noopener noreferrer" hidden>' +
@@ -67,9 +76,7 @@ window.ICB = window.ICB || {};
       "</div>" +
       '<button type="button" class="bee-pill" data-bee-toggle' +
         ' aria-expanded="false" aria-controls="bee-panel">' +
-        '<span class="bee-mark" aria-hidden="true">' +
-          '<img data-asset="assets/img/icb-logo.png" alt="" width="480" height="490">' +
-        "</span>" +
+        badge("bee-mark") +
         '<span class="bee-label" data-bee-label>' + esc(ICB.s("assistantOpen")) + "</span>" +
         '<span class="bee-x" aria-hidden="true">' +
           '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"' +
