@@ -4,6 +4,33 @@ The site is a fully self-contained static folder. No build step, no
 server, and no external requests until someone taps Talk to Bee. Any
 static host can serve it.
 
+## Two builds, with and without the assistant
+
+    node build/build-variants.js
+
+writes `dist/with-bee/` and `dist/no-bee/`, both from the same source
+minutes apart, differing in exactly one thing. Drag either folder onto
+Netlify as its own site and ICB can compare them side by side.
+
+Do NOT use Netlify's deploy history for this. Rolling back to an older
+deploy also rolls back the boat photograph, the Gallery banner, the
+Spanish and the mobile fixes, so the client would be looking at two
+different sites and drawing conclusions about the wrong difference. And on
+a deploy page in the Netlify dashboard, "Open production deploy" opens
+whatever is live now, not the deploy you are looking at; the "Permalink"
+link is the one that opens that specific build.
+
+The removal is a subtraction and nothing else: the script tag, the mount
+point, `js/assistant.js`, the bee badge and the Talk to Bee stylesheet
+section come out, and no file is rewritten to compensate. Two things make
+that possible, and they are worth keeping if either is ever refactored:
+`js/main.js` starts the assistant only if it is present, and the footer
+reserves room for the launcher through `.has-bee`, a class
+`js/assistant.js` puts on the document itself.
+
+`scratchpad/check/variants.js` walks every route of both builds in both
+languages and fails if anything except the assistant differs.
+
 ## Talk to Bee
 
 The assistant is Chatbase, embedded exactly as supplied:

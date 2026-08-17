@@ -484,9 +484,14 @@ button {
   --bee-clearance: calc(var(--bee-pill-h) + 2 * clamp(14px, 3vw, 28px));
   background: var(--c-brand-deep);
   color: var(--c-text-inverse-soft);
-  padding: var(--sp-10) 0 calc(var(--sp-6) + var(--bee-clearance));
+  padding: var(--sp-10) 0 var(--sp-6);
   border-top: 3px solid var(--c-accent);
 }
+/* Only when there is a launcher to clear. js/assistant.js puts the class
+   on the document when it starts, so the build that ships without the
+   assistant reserves no space for one and needs no stylesheet of its own. */
+.has-bee .site-footer { padding-bottom: calc(var(--sp-6) + var(--bee-clearance)); }
+
 .footer-grid {
   display: grid;
   grid-template-columns: 1.4fr repeat(3, 1fr);

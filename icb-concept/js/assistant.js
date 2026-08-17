@@ -200,6 +200,11 @@ window.ICB = window.ICB || {};
     init: function () {
       root = document.getElementById("assistant-mount");
       if (!root) return;
+      /* Anything that has to make room for the launcher keys off this
+         rather than assuming it is there. The build that ships without
+         the assistant then needs no stylesheet of its own: no script, no
+         class, no reserved space. */
+      document.documentElement.classList.add("has-bee");
       root.className = "bee";
       root.innerHTML = markup();
 

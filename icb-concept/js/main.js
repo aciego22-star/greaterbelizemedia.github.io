@@ -295,7 +295,8 @@ window.ICB = window.ICB || {};
     initLangSwitch();
     ICB.renderChrome();
     initBackToTop();
-    ICB.assistant.init();
+    // Absent in the build that ships without the assistant.
+    if (ICB.assistant) ICB.assistant.init();
     ICB.router.init();
     ICB.reveal(document);
   }
