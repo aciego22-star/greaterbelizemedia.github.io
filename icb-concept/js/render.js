@@ -27,11 +27,18 @@ window.ICB = window.ICB || {};
   }
 
   /* Canonical WhatsApp chat link: digits-only wa.me URL with a short,
-     neutral prefilled greeting the visitor is free to replace. */
-  var WA_PREFILL = "Hello ICB, I am contacting you through your website.";
+     neutral prefilled greeting the visitor is free to replace.
+
+     The greeting goes in the language the visitor is reading, since it is
+     what a branch will receive from them. Callers may hand in either a
+     plain string or an { en, es } pair. */
+  var WA_PREFILL = {
+    en: "Hello ICB, I am contacting you through your website.",
+    es: "Hola ICB, le escribo desde su sitio web."
+  };
   function waHref(waDigits, prefill) {
     return "https://wa.me/" + String(waDigits).replace(/\D/g, "") +
-      "?text=" + encodeURIComponent(prefill || WA_PREFILL);
+      "?text=" + encodeURIComponent(ICB.i18n.t(prefill || WA_PREFILL));
   }
 
   function extNote(host) {

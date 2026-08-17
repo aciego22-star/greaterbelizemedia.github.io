@@ -333,12 +333,16 @@ button {
 }
 
 /* Brand lockup: the official ICB logo plus the company name. */
+/* flex: none, so the lockup keeps its own width and the nav gives up
+   space first. Without it the flex row was squeezing the brand until the
+   company name ran underneath the language switch. */
 .brand {
   display: inline-flex;
   align-items: center;
   text-decoration: none;
   color: var(--c-brand);
   margin-right: auto;
+  flex: none;
 }
 .brand-logo { height: 46px; width: auto; flex: none; }
 .brand-sep {
@@ -352,13 +356,19 @@ button {
   display: flex;
   flex-direction: column;
   line-height: 1.35;
+  flex: none;
 }
+/* Two lines, always. The company name is set in two deliberate lines, and
+   once the language switch joined the header the flex row began squeezing
+   this box until each of those lines wrapped again and the lockup grew to
+   four. It never wraps on its own now; the nav gives up its space first. */
 .brand-lines span {
   font-size: 0.656rem;
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--c-text-soft);
+  white-space: nowrap;
 }
 
 .site-nav ul {
@@ -2933,6 +2943,31 @@ select.input {
   .mobile-menu { display: none; }
 }
 
+/* The desktop header, made to fit rather than to overrun.
+
+   It carries the logo lockup, the language switch, eight nav items and a
+   cover button, and Spanish labels are longer than their English
+   counterparts: Ubicaciones for Locations, Reclamos for Claims. The row
+   was overflowing between 1024 and 1048 and again above 1260, in both
+   languages, so the sizing is fluid across the whole desktop range
+   instead of being fixed at a size that only suits the widest screens.
+
+   Below 1260 the cover button also steps aside. It is a second door to
+   the same page the first nav item opens, so losing it costs nothing,
+   and the ~150px it returns is what lets eight items sit comfortably at
+   a laptop width. */
+@media (min-width: 1024px) {
+  .header-inner { gap: clamp(0.7rem, 1.5vw, 1.5rem); }
+  .site-nav ul { gap: clamp(0rem, 0.35vw, 0.6rem); }
+  .site-nav a {
+    padding: 0.45rem clamp(0.28rem, 0.7vw, 0.65rem);
+    font-size: clamp(0.82rem, 0.95vw, 0.95rem);
+  }
+}
+@media (min-width: 1024px) and (max-width: 1259px) {
+  .btn-cover { display: none; }
+}
+
 @media (max-width: 719px) {
   :root { --header-h: 60px; }
   .quick-bar { display: block; }
@@ -3203,7 +3238,7 @@ select,
    Spanish-speaking community, so this is not a flag tucked in a footer:
    it sits where someone looks first and states the language they are
    currently reading. Two languages need a toggle, not a menu. */
-.lang-switch { display: flex; align-items: center; margin-left: var(--sp-3); }
+.lang-switch { display: flex; align-items: center; margin-left: var(--sp-3); flex: none; }
 .lang-btn {
   display: inline-flex;
   align-items: center;
