@@ -264,6 +264,54 @@ route anywhere. Mexican Insurance also carries `quote: false`: ICB
 arranges it through ANA Seguros, so the page leads with ANA's published
 pathways rather than an ICB quote.
 
+## Payments: ICB is paid by bank transfer
+
+ICB does not take payments on its website. Earlier drafts of this concept
+linked an external billing host and mentioned a kiosk service; both were
+wrong and every trace of them is gone, including the external `payments`
+key that used to sit in `site.external`.
+
+`#/payments` explains the real process: transfer through your own bank,
+screenshot the confirmation, send it to your branch on WhatsApp, ICB
+verifies before documents are issued. The page is deliberately incapable
+of looking like a checkout. No amount field, no card field, no login, no
+upload, no success state; the only control on it copies an account
+number, and the verification suite fails if a form element appears.
+
+Two honesty constraints worth keeping:
+
+- A page cannot attach the customer's screenshot to WhatsApp, so the copy
+  tells them to attach it themselves rather than letting them assume the
+  link carried it.
+- A page cannot reliably open a banking app or know whether it is
+  installed, so no custom URL scheme is invented. iOS and Android
+  visitors get the verified store page, which opens the app when it is
+  already there; desktop leads with online banking.
+
+Account numbers live in `js/data/payments.js` and are retyped
+independently in `scratchpad/check/payments.js`, so the two have to agree
+digit by digit or the suite fails. They are what a customer will type
+into their bank.
+
+The payment-confirmation directory is NOT a second list. It comes from
+`ICB.DATA.receiptLines()`, which reads a `receipt` flag on the WhatsApp
+lines in the location dataset, so a branch cannot be shown as taking
+receipts on one screen and not another. Fifteen lines carry it. Caye
+Caulker, Benque Town Board and San Juan do not: they have WhatsApp, but
+ICB has not said those lines receive payment confirmations. Email is
+offered for help only, never as a receipt channel.
+
+## Not every WhatsApp number takes calls
+
+`callable` on a WhatsApp line defaults to true, because a branch mobile
+normally dials as well as it messages. Set it FALSE where ICB publishes
+the number as WhatsApp only. The line then stays on every WhatsApp
+surface and disappears from every calling one, and the location falls
+back to the Corporate Office for calls, labelled as the Corporate Office.
+San Juan Agency is the current case. A call button on a number that takes
+no calls is a dead end, and assuming otherwise is the kind of guess this
+project does not make.
+
 ## Content rules
 
 Every public-facing sentence in this concept is one of three things:
@@ -299,11 +347,6 @@ data files for `INTERNAL TODO` for the full list. The open items are:
 - **San Juan Village.** ICB's social presence indicates service there.
   No contact details are published, so it is deliberately absent from
   the public dataset and noted for confirmation instead.
-- **Payment portal.** The concept links to and names ICB's payment
-  portal. It does not describe what a policyholder can do inside it,
-  because that workflow is not published. ICB also runs a separate
-  service at `kiosk.icbinsurance.com`; its purpose and audience need
-  confirming before either is described in public copy.
 - **Resource Centre.** The seven consumer-education articles written for
   the first draft were removed. They were not ICB material. The section
   now signposts only what ICB publishes. A slot for guides ICB writes

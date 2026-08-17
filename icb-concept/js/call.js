@@ -2,11 +2,16 @@
    Call ICB — the nationwide telephone directory.
    Built from ICB.DATA.locations (single source of truth).
 
-   A branch's WhatsApp line is a telephone number, so it is listed here as
-   a tel: link alongside any landline. Where a location has both, the
-   landline and the mobile are labelled so it is obvious which is which.
-   Only the handful of locations ICB publishes no number for at all fall
-   back to the Corporate Office.
+   A branch's WhatsApp line is usually an ordinary mobile number, so it is
+   listed here as a tel: link alongside any landline. Where a location has
+   both, the landline and the mobile are labelled so it is obvious which
+   is which.
+
+   USUALLY, not always. A line ICB publishes as WhatsApp only carries
+   callable: false and is skipped here entirely. Offering a voice call on
+   a number that does not take one sends someone to a dead end, so the
+   location falls back to the Corporate Office like any other location
+   without a callable number, clearly labelled as the Corporate Office.
 
    Open with any element carrying [data-call-directory].
    ========================================================================== */
@@ -23,7 +28,7 @@ window.ICB = window.ICB || {};
   function numbersFor(location) {
     var out = [];
     var phones = location.phones || [];
-    var mobiles = location.whatsapps || [];
+    var mobiles = ICB.DATA.callableWhatsapps(location);
     var both = phones.length && mobiles.length;
 
     phones.forEach(function (ph, i) {

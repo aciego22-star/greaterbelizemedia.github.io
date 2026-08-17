@@ -51,9 +51,9 @@ ICB.DATA.contactFlows = {
         { id: "message", label: "How can we help with your policy?", type: "textarea", required: true,
           help: "Please do not include policy numbers or payment details in this concept form." }
       ],
-      /* Points at the portal without describing what can be done there. */
-      sideNote: "ICB publishes a payment portal online.",
-      sideAction: { label: "Open payment portal", hrefKey: "payments", external: true }
+      /* Payment is by bank transfer, not through this website. */
+      sideNote: "Paying a premium? ICB is paid by bank transfer.",
+      sideAction: { label: "View payment instructions", href: "#/payments" }
     },
     {
       id: "claim",

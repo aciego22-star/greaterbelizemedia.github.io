@@ -32,7 +32,12 @@ ICB.views = ICB.views || {};
       var data = ICB.DATA.resources;
       var ext = ICB.DATA.site.external;
 
-      var official = data.official.map(function (o) { return externalCard(o, R, ext); }).join("");
+      /* An entry may point off-site (hrefKey) or at a page of this site
+         (route). Payment instructions are internal now, so the card type
+         follows the destination rather than the section it sits in. */
+      var official = data.official.map(function (o) {
+        return o.route ? siteCard(o, R) : externalCard(o, R, ext);
+      }).join("");
       var safety = data.safety.map(function (o) { return externalCard(o, R, ext); }).join("");
       var onSite = data.onSite.map(function (o) { return siteCard(o, R); }).join("");
 

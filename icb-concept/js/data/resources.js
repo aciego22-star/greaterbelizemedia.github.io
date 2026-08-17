@@ -32,11 +32,9 @@ ICB.DATA.resources = {
       glyph: "document"
     },
     {
-      label: "ICB payment portal",
-      /* Names the destination only. What a policyholder can do inside the
-         portal is not published, so the concept does not describe it. */
-      description: "Access ICB payment services at the official ICB payment portal.",
-      hrefKey: "payments",
+      label: "Bank payment information",
+      description: "ICB's bank accounts, and how to send your payment confirmation to your branch.",
+      route: "#/payments",
       glyph: "card"
     },
     {

@@ -3030,3 +3030,169 @@ select,
 .official-card:active,
 .msg-action:active,
 .chip:active { filter: brightness(0.96); }
+
+/* ============================ Make a payment ============================ */
+
+/* ICB is paid by bank transfer, so this page explains a process that
+   happens in the visitor's own bank and then on WhatsApp. Nothing here
+   is a form: the only control is a copy button. Styling follows suit,
+   reading as reference material rather than as a checkout. */
+
+.bank-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  gap: var(--sp-4);
+}
+.bank-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  background: var(--c-surface);
+  border: 1px solid var(--c-line-soft);
+  border-top: 3px solid var(--c-cta);
+  border-radius: var(--r-md);
+  padding: var(--sp-5);
+}
+.bank-card h3 { margin: 0; font-size: var(--fs-500); }
+.bank-meta { margin: 0; }
+.bank-meta div { display: flex; flex-wrap: wrap; gap: 0.35rem var(--sp-3); }
+.bank-meta dt { margin: 0; font-size: var(--fs-300); color: var(--c-text-soft); }
+.bank-meta dd { margin: 0; font-size: var(--fs-300); color: var(--c-brand); font-weight: 600; }
+
+/* The account number is the thing a visitor is going to retype into a
+   banking app, so it gets tabular figures, room to breathe, and stays
+   selectable by hand for anyone who does not trust a copy button. */
+.bank-acct {
+  display: grid;
+  gap: var(--sp-2);
+  padding: var(--sp-4);
+  background: var(--c-tint);
+  border-radius: var(--r-sm);
+}
+.bank-acct-label {
+  font-family: var(--font-sans);
+  font-size: var(--fs-200);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-accent-ink);
+}
+.bank-acct-num {
+  font-family: var(--font-sans);
+  font-size: clamp(1.25rem, 3.4vw, 1.5rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+  color: var(--c-brand);
+  user-select: all;
+  word-break: break-all;
+}
+.bank-copy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.5rem var(--sp-4);
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-sm);
+  background: var(--c-surface);
+  color: var(--c-cta);
+  font-family: var(--font-sans);
+  font-size: var(--fs-300);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+.bank-copy .glyph { width: 17px; height: 17px; }
+.bank-copy:hover { border-color: var(--c-cta); background: var(--c-tint); }
+/* Feedback both ways. A tap that does nothing visible reads as broken,
+   and where the clipboard is blocked the button says what to do instead. */
+.bank-copy.is-copied { background: var(--c-cta); border-color: var(--c-cta); color: #fff; }
+.bank-copy.is-failed { border-color: var(--c-line); color: var(--c-text-soft); }
+.bank-actions { margin: 0; }
+.bank-stores { margin: 0; font-size: var(--fs-300); color: var(--c-text-soft); }
+.bank-stores a { color: var(--c-cta); }
+.bank-foot {
+  margin: var(--sp-5) 0 0;
+  font-size: var(--fs-300);
+  color: var(--c-text-soft);
+}
+
+/* A link cannot attach the customer's screenshot, so the page says so
+   rather than letting anyone assume it was sent. */
+.receipt-attach {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  max-width: 46rem;
+  margin: 0 0 var(--sp-5);
+  padding: var(--sp-4) var(--sp-5);
+  background: var(--c-surface);
+  border: 1px solid var(--c-line-soft);
+  border-left: 3px solid var(--c-cta);
+  border-radius: var(--r-md);
+  font-size: var(--fs-300);
+  color: var(--c-brand);
+}
+.receipt-attach .glyph { width: 18px; height: 18px; color: var(--c-cta); flex: none; margin-top: 2px; }
+
+/* The receipt directory reuses the WhatsApp row, on a light page rather
+   than inside the dark modal. */
+/* Columns rather than a grid. District groups are wildly different
+   lengths (Belize has five lines, Toledo has one), and in a row-based
+   grid the tallest group in each row leaves the others trailing
+   whitespace. Columns let the groups pack against each other. */
+.receipt-dir {
+  columns: 3 258px;
+  column-gap: var(--sp-6);
+}
+.receipt-dir .wa-group {
+  padding-top: 0;
+  display: block;
+  break-inside: avoid;
+  margin-bottom: var(--sp-5);
+}
+.receipt-dir .wa-group h3 {
+  font-family: var(--font-sans);
+  font-size: var(--fs-200);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-accent-ink);
+  margin: 0 0 var(--sp-2);
+}
+.receipt-dir .wa-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  min-height: 56px;
+  padding: 0.6rem var(--sp-3);
+  border-radius: var(--r-sm);
+  border: 1px solid var(--c-line-soft);
+  background: var(--c-surface);
+  color: var(--c-brand);
+  text-decoration: none;
+  margin-bottom: var(--sp-2);
+}
+.receipt-dir .wa-row:hover { border-color: var(--c-cta); background: var(--c-tint); }
+.receipt-dir .wa-row-main { flex: 1 1 auto; min-width: 0; }
+.receipt-dir .wa-row-name { font-weight: 600; font-size: var(--fs-300); }
+.receipt-dir .wa-row-cta {
+  flex: none;
+  font-size: var(--fs-200);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c-cta);
+}
+.pay-help-note { margin: var(--sp-4) 0 0; font-size: var(--fs-300); color: var(--c-text-soft); }
+
+/* Small buttons are still buttons on a phone. */
+@media (pointer: coarse), (max-width: 719px) {
+  .bank-actions .btn { min-height: 44px; }
+}
+@media (max-width: 640px) {
+  .bank-card { padding: var(--sp-4); }
+  .receipt-dir .wa-row-cta { display: none; }
+}

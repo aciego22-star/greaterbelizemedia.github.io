@@ -20,9 +20,10 @@ window.ICB = window.ICB || {};
 
   /* Canonical WhatsApp chat link: digits-only wa.me URL with a short,
      neutral prefilled greeting the visitor is free to replace. */
-  var WA_PREFILL = encodeURIComponent("Hello ICB, I am contacting you through your website.");
-  function waHref(waDigits) {
-    return "https://wa.me/" + String(waDigits).replace(/\D/g, "") + "?text=" + WA_PREFILL;
+  var WA_PREFILL = "Hello ICB, I am contacting you through your website.";
+  function waHref(waDigits, prefill) {
+    return "https://wa.me/" + String(waDigits).replace(/\D/g, "") +
+      "?text=" + encodeURIComponent(prefill || WA_PREFILL);
   }
 
   function extNote(host) {
@@ -124,15 +125,19 @@ window.ICB = window.ICB || {};
       out += '<a class="msg-action" href="tel:' + esc(l.phones[i].tel) + '">' + ICB.art.glyph("phone") +
         "<span>Call " + esc(l.phones[i].display) + "</span></a>";
     }
-    /* A WhatsApp line is a mobile number, so it is offered as a call too. */
-    (l.whatsapps || []).forEach(function (w) {
+    /* A WhatsApp line is usually a mobile number, so it is offered as a
+       call too. Not one ICB publishes as WhatsApp only: callable: false
+       keeps it off every calling surface, because a call button on a
+       number that takes no calls is a dead end. */
+    var callable = ICB.DATA.callableWhatsapps(l);
+    callable.forEach(function (w) {
       var digits = String(w.wa).replace(/\D/g, "");
       out += '<a class="msg-action" href="tel:+' + esc(digits) + '">' + ICB.art.glyph("phone") +
         "<span>Call " + esc(w.display) + "</span></a>";
     });
-    /* Only where ICB publishes no number of any kind does the Corporate
+    /* Only where ICB publishes no callable number does the Corporate
        Office stand in, clearly labelled as such. */
-    if (!l.phones.length && !(l.whatsapps || []).length && l.corporateLine) {
+    if (!l.phones.length && !callable.length && l.corporateLine) {
       var co = ICB.DATA.site.corporate;
       out += '<a class="msg-action msg-action--corp" href="tel:' + esc(co.phoneTel) + '">' + ICB.art.glyph("phone") +
         "<span>Corporate Office " + esc(co.phoneDisplay) + "</span></a>";
