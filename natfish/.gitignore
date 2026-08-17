@@ -1,0 +1,6 @@
+# Build outputs. Both are regenerated from the committed sources:
+#   python3 tools/bundle-preview.py   -> natfish-preview.html
+#   bash tools/make-netlify-zip.sh    -> natfish-netlify.zip
+# They are large duplicates of files already tracked here, so they stay out.
+natfish-preview.html
+natfish-netlify.zip

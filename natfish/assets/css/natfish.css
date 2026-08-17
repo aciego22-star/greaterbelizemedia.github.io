@@ -439,13 +439,22 @@ strong {
   color: var(--navy-800);
 }
 
+/* Wide enough to break onto two lines rather than four. */
 .logo__formal {
   font-size: 0.6rem;
-  letter-spacing: 0.045em;
+  letter-spacing: 0.04em;
   color: var(--ink-soft);
   text-transform: uppercase;
   font-weight: 600;
-  max-width: 24ch;
+  max-width: 31ch;
+}
+
+/* Between the drawer breakpoint and a roomy laptop the nav needs the space
+   more than the formal name does. */
+@media (min-width: 1141px) and (max-width: 1240px) {
+  .logo__formal {
+    display: none;
+  }
 }
 
 .site-footer .logo__name {
@@ -565,7 +574,7 @@ strong {
   transform: rotate(-45deg);
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1140px) {
   .nav-toggle {
     display: inline-flex;
     position: relative;
@@ -627,7 +636,7 @@ strong {
   }
 }
 
-@media (min-width: 1001px) {
+@media (min-width: 1141px) {
   .nav__cta {
     display: none;
   }

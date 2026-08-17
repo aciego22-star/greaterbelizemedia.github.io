@@ -69,9 +69,26 @@ invented. The success panel offers Email and WhatsApp. Three options:
 | Featured video | Public Ocean Link documentary, credited on screen as third-party concept media | Change `data-video` on the `.video` element |
 | News items | Three publicly sourced items, each with a visible source link | Replace with cooperative announcements |
 
-The forms carry `name` attributes and `data-netlify="true"`. On GitHub Pages they validate and hand off
-to email or WhatsApp. Deployed to Netlify instead, submissions are captured server-side with no markup
-change.
+### How the forms actually behave
+
+On **every** host, including Netlify, the forms validate in the browser and then hand the enquiry off
+to the visitor's email client or WhatsApp. **Nothing is captured server-side and no enquiry is stored
+anywhere.** If the visitor abandons the handoff, the enquiry is lost, so the telephone and email links
+remain the reliable contact route.
+
+An earlier draft of this file claimed Netlify would capture submissions automatically. That was wrong.
+The script calls `preventDefault()` on submit, so the native POST that Netlify Forms relies on never
+fires. The `data-netlify` attribute was removed for the same reason: Netlify would have registered a
+form in the dashboard that sat at zero submissions forever and read as broken.
+
+To turn on real capture later, three changes are needed:
+
+1. Restore `method="post" data-netlify="true"` on the `<form>`.
+2. Add `<input type="hidden" name="form-name" value="buyer-enquiry">` inside it.
+3. In `assets/js/natfish.js`, before showing the success panel, `fetch("/", { method: "POST", body:
+   new URLSearchParams(new FormData(form)) })` and swallow any error.
+
+The `name` attributes on every field are already correct for that step.
 
 ---
 

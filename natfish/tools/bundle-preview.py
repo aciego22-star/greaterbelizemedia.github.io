@@ -1,0 +1,282 @@
+#!/usr/bin/env python3
+"""Bundle the NATFISH site into one self-contained HTML file.
+
+The preview is published as a hosted artifact, which renders a single file under
+a strict content-security policy. Nothing external can load, so the CSS, the
+script and every image are inlined and the seven pages become hash routes.
+
+Run from the natfish/ folder:
+    python3 tools/bundle-preview.py
+
+Output: natfish-preview.html
+"""
+import base64
+import html as html_mod
+import json
+import pathlib
+import re
+from collections import Counter
+
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+OUT = ROOT / "natfish-preview.html"
+
+PAGES = [
+    ("index", "index.html"),
+    ("cooperative", "cooperative.html"),
+    ("seafood", "seafood.html"),
+    ("responsible", "responsible.html"),
+    ("buyers", "buyers.html"),
+    ("news", "news.html"),
+    ("contact", "contact.html"),
+]
+
+
+def read(rel):
+    return (ROOT / rel).read_text(encoding="utf-8")
+
+
+def between(html, start, end):
+    """Inclusive slice from the first `start` to the first `end` after it."""
+    i = html.index(start)
+    j = html.index(end, i) + len(end)
+    return html[i:j]
+
+
+# --------------------------------------------------------------- images --
+
+_IMG_CACHE = {}
+
+
+def data_uri(stem):
+    """The 1400w WebP as a base64 data URI.
+
+    WebP only, no JPEG fallback: anything that can open the artifact can decode
+    WebP, and carrying both would double the payload for nothing.
+    """
+    if stem not in _IMG_CACHE:
+        raw = (ROOT / "assets" / "img" / f"{stem}-1400.webp").read_bytes()
+        _IMG_CACHE[stem] = "data:image/webp;base64," + base64.b64encode(raw).decode()
+    return _IMG_CACHE[stem]
+
+
+PICTURE_RE = re.compile(
+    r"<picture>\s*<source[^>]*>\s*(<img\b[^>]*>)\s*</picture>", re.S
+)
+STEM_RE = re.compile(r"assets/img/(img\d+)-1400\.jpg")
+
+
+def inline_images(html):
+    """Collapse each <picture> to one <img> keyed to a shared image table.
+
+    The data URI is NOT written into the tag. Ten images appear across roughly
+    thirty slots, so inlining each occurrence produced a 7.5 MB file. Each image
+    is stored once in a lookup and the src is hydrated on load instead, which
+    brings the same pixels in at about a quarter of the size.
+    """
+
+    def swap(match):
+        tag = match.group(1)
+        stem = STEM_RE.search(tag)
+        if not stem:
+            return match.group(0)
+        key = stem.group(1)
+        data_uri(key)  # register it in the table
+
+        # The responsive attributes are meaningless once there is one source.
+        tag = re.sub(r'\s+srcset="[^"]*"', "", tag)
+        tag = re.sub(r'\s+sizes="[^"]*"', "", tag)
+        tag = re.sub(r'\ssrc="[^"]*"', f' data-img="{key}"', tag, count=1)
+        # The lightbox reads data-full at click time; flag it for hydration.
+        tag = re.sub(r'\sdata-full="[^"]*"', " data-full-img", tag)
+        return tag
+
+    return PICTURE_RE.sub(swap, html)
+
+
+HYDRATE_JS = """
+/* Preview bundle: fill in the image sources from the shared table. */
+(function () {
+  var IMAGES = __IMAGES__;
+  Array.prototype.forEach.call(
+    document.querySelectorAll("[data-img]"),
+    function (el) {
+      var uri = IMAGES[el.getAttribute("data-img")];
+      if (!uri) return;
+      el.src = uri;
+      if (el.hasAttribute("data-full-img")) el.setAttribute("data-full", uri);
+    }
+  );
+})();
+"""
+
+
+# ---------------------------------------------------------------- links --
+
+def route_links(html):
+    """Turn page links into hash routes. In-page anchors are left alone."""
+    return re.sub(r'href="([a-z]+)\.html"', r'href="#/\1"', html)
+
+
+# ------------------------------------------------------------------ ids --
+
+ID_RE = re.compile(r'\sid="([^"]+)"')
+
+
+def uniquify_ids(pages):
+    """Suffix any id that appears on more than one page with its route slug.
+
+    The shared contact band puts id="contact" on five pages. Nothing links to
+    it, but duplicate ids are invalid and would confuse the lightbox and form
+    lookups once every page shares one document.
+    """
+    counts = Counter()
+    for _slug, html in pages:
+        counts.update(set(ID_RE.findall(html)))
+    dupes = {i for i, n in counts.items() if n > 1}
+    if not dupes:
+        return pages, dupes
+
+    out = []
+    for slug, html in pages:
+        for old in sorted(dupes):
+            if f'id="{old}"' not in html:
+                continue
+            new = f"{old}--{slug}"
+            html = html.replace(f'id="{old}"', f'id="{new}"')
+            # Rewrite every reference that could point at it, page-scoped.
+            for attr in ("href=\"#", "for=\"", "aria-controls=\"",
+                         "data-success-for=\"", "aria-labelledby=\""):
+                html = html.replace(f'{attr}{old}"', f'{attr}{new}"')
+        out.append((slug, html))
+    return out, dupes
+
+
+# --------------------------------------------------------------- router --
+
+ROUTER_CSS = """
+/* Preview bundle: the seven pages live in one document as hash routes. */
+[data-route] { display: none; }
+[data-route].is-active { display: block; }
+"""
+
+ROUTER_JS = """
+/* Preview bundle router. Only hashes beginning "#/" are routes, so in-page
+   anchors such as #main and #seafood still behave normally. */
+(function () {
+  var routes = document.querySelectorAll("[data-route]");
+  var titles = __TITLES__;
+
+  function show(slug) {
+    var matched = false;
+    Array.prototype.forEach.call(routes, function (el) {
+      var on = el.getAttribute("data-route") === slug;
+      el.classList.toggle("is-active", on);
+      if (on) matched = true;
+    });
+    if (!matched) return show("index");
+
+    document.title = titles[slug] || titles.index;
+
+    Array.prototype.forEach.call(
+      document.querySelectorAll(".nav__link"),
+      function (a) {
+        if (a.getAttribute("href") === "#/" + slug) {
+          a.setAttribute("aria-current", "page");
+        } else {
+          a.removeAttribute("aria-current");
+        }
+      }
+    );
+
+    /* Elements inside a display:none route never trigger the observer, so the
+       reveal state is set directly when a route becomes visible. */
+    Array.prototype.forEach.call(
+      document.querySelectorAll("[data-route].is-active .reveal"),
+      function (el) { el.classList.add("is-visible"); }
+    );
+
+    window.scrollTo(0, 0);
+  }
+
+  function current() {
+    var h = window.location.hash;
+    return h.indexOf("#/") === 0 ? h.slice(2) : "index";
+  }
+
+  window.addEventListener("hashchange", function () {
+    if (window.location.hash.indexOf("#/") === 0) show(current());
+  });
+
+  show(current());
+})();
+"""
+
+
+# ----------------------------------------------------------------- main --
+
+def main():
+    index = read("index.html")
+
+    # One shared header, footer and lightbox lifted from the homepage.
+    header = between(index, '<header class="site-header">', "</header>")
+    footer = between(index, '<footer class="site-footer">', "</footer>")
+    lightbox = between(index, '<div class="lightbox" id="lightbox"', "</div>\n")
+    lightbox = between(index, '<div class="lightbox" id="lightbox"',
+                       "</figure>\n  </div>")
+
+    css = read("assets/css/natfish.css")
+    js = read("assets/js/natfish.js")
+
+    titles = {}
+    pages = []
+    for slug, filename in PAGES:
+        html = read(filename)
+        # Unescaped, because this is assigned to document.title as plain text.
+        raw_title = re.search(r"<title>(.*?)</title>", html, re.S).group(1).strip()
+        titles[slug] = html_mod.unescape(raw_title)
+        body = between(html, '<main id="main">', "</main>")
+        body = body[len('<main id="main">'):-len("</main>")]
+        pages.append((slug, body))
+
+    pages, dupes = uniquify_ids(pages)
+
+    routes = []
+    for slug, body in pages:
+        body = route_links(inline_images(body))
+        routes.append(f'<div data-route="{slug}">{body}</div>')
+
+    # json.dumps, not manual quoting: the legal name carries an apostrophe that
+    # naive quote swapping turns into a string terminator.
+    router = ROUTER_JS.replace("__TITLES__", json.dumps(titles))
+    hydrate = HYDRATE_JS.replace("__IMAGES__", json.dumps(_IMG_CACHE))
+
+    # A short static title so the artifact gallery shows a name rather than the
+    # full legal name. The router replaces it with each page's real title as
+    # soon as it runs, so the browser tab stays correct.
+    doc = "\n".join([
+        "<title>NATFISH V1</title>",
+        f"<style>\n{css}\n{ROUTER_CSS}</style>",
+        '<a class="skip-link" href="#main">Skip to main content</a>',
+        route_links(header),
+        '<main id="main">',
+        "\n".join(routes),
+        "</main>",
+        route_links(footer),
+        lightbox,
+        f"<script>\n{hydrate}\n{js}\n{router}</script>",
+        "",
+    ])
+
+    OUT.write_text(doc, encoding="utf-8")
+
+    kb = OUT.stat().st_size / 1024
+    print(f"{OUT.name}: {kb:,.0f} KB ({kb/1024:.2f} MB)")
+    print(f"routes: {', '.join(s for s, _ in PAGES)}")
+    print(f"images inlined: {len(_IMG_CACHE)}")
+    print(f"ids uniquified: {', '.join(sorted(dupes)) or 'none'}")
+    if kb > 16 * 1024:
+        raise SystemExit("ERROR: over the 16 MB artifact limit")
+
+
+if __name__ == "__main__":
+    main()
