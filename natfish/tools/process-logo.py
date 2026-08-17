@@ -22,9 +22,17 @@ from PIL import Image
 
 OUT = pathlib.Path(__file__).resolve().parent.parent / "assets" / "img"
 
-# Measured against the supplied 1774x887 artwork, as fractions of its height so
-# the crops survive a different export size.
-WORDMARK_BOTTOM = 0.640   # just under the NATFISH wordmark, above the red rule
+# Measured against the trimmed 1708x861 artwork, as fractions so the geometry
+# survives a different export size.
+#
+# The compact lockup is made by ERASING the legal-name lines, not by cropping a
+# horizontal strip. Cropping cut through the wave ring, the hand and the sleeve
+# and left the emblem looking unfinished. Column profiling of every band below
+# the wordmark shows emblem ink stops by x=671 while the red rule and both text
+# lines start at x>=712, so clearing everything right of x=700 and below y=570
+# removes the text and leaves the emblem completely intact.
+LEGAL_LEFT = 700 / 1708   # left edge of the clear region
+LEGAL_TOP = 570 / 861     # top edge, just under the NATFISH wordmark
 MARK_RIGHT = 0.395        # right edge of the circular lobster mark
 
 
@@ -54,11 +62,18 @@ def main():
     print("full logo (footer panel, About page):")
     save(full, "natfish-logo", [520, 1040])
 
-    # Compact lockup: everything above the red rule, so the mark and the
-    # NATFISH wordmark survive and the unreadable legal lines are left off.
+    # Compact lockup: the complete emblem plus the NATFISH wordmark, with only
+    # the legal-name lines and their rule erased. Nothing is cropped away.
     print("compact lockup (header):")
-    compact = trim(full.crop((0, 0, full.width, round(full.height * WORDMARK_BOTTOM))))
-    save(compact, "natfish-logo-mark", [340, 680])
+    compact = full.copy()
+    clear = Image.new("RGBA", (
+        compact.width - round(compact.width * LEGAL_LEFT),
+        compact.height - round(compact.height * LEGAL_TOP),
+    ), (0, 0, 0, 0))
+    compact.paste(clear, (round(compact.width * LEGAL_LEFT),
+                          round(compact.height * LEGAL_TOP)))
+    compact = trim(compact)
+    save(compact, "natfish-logo-mark", [360, 720])
 
     # Square icon from the circular mark alone. The brief rules out using the
     # complete horizontal logo as a favicon.

@@ -119,8 +119,8 @@
   }
 
   /* -------------------------------------------------------- carousel -- */
-  /* Rotating hero. The headline is fixed and only the backdrop changes, so
-     nothing reflows as slides advance. */
+  /* Rotating hero backdrop. There is no visible control interface: the
+     headline, copy and CTAs stay fixed and only the image cross-fades. */
 
   var ROTATE_MS = 7000;
 
@@ -128,32 +128,16 @@
     document.querySelectorAll("[data-carousel]"),
     function (root) {
       var slides = root.querySelectorAll(".hero__slide");
-      var dots = root.querySelectorAll("[data-carousel-to]");
-      var toggle = root.querySelector("[data-carousel-toggle]");
-      var status = root.querySelector("[data-carousel-status]");
       if (slides.length < 2) return;
 
       var reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
       var index = 0;
       var timer = null;
-      /* Once the visitor takes control the carousel does not resume on its
-         own. Auto-rotation restarting under someone's hands is hostile. */
-      var surrendered = reduced.matches;
 
-      var render = function (announce) {
+      var render = function () {
         Array.prototype.forEach.call(slides, function (el, i) {
           el.classList.toggle("is-active", i === index);
         });
-        Array.prototype.forEach.call(dots, function (el, i) {
-          el.classList.toggle("is-active", i === index);
-          el.setAttribute("aria-current", i === index ? "true" : "false");
-        });
-        /* Announced only for deliberate changes; narrating an automatic
-           rotation every seven seconds would be noise. */
-        if (announce && status) {
-          status.textContent =
-            "Slide " + (index + 1) + " of " + slides.length + ".";
-        }
       };
 
       var stop = function () {
@@ -161,63 +145,23 @@
           window.clearInterval(timer);
           timer = null;
         }
-        if (toggle) {
-          toggle.setAttribute("aria-pressed", "true");
-          toggle.setAttribute("aria-label", "Play slideshow");
-        }
       };
 
       var start = function () {
-        if (surrendered || timer) return;
+        if (timer || reduced.matches) return;
         timer = window.setInterval(function () {
           index = (index + 1) % slides.length;
-          render(false);
+          render();
         }, ROTATE_MS);
-        if (toggle) {
-          toggle.setAttribute("aria-pressed", "false");
-          toggle.setAttribute("aria-label", "Pause slideshow");
-        }
       };
 
       var goTo = function (next) {
         index = (next + slides.length) % slides.length;
-        surrendered = true;
-        stop();
-        render(true);
+        render();
       };
 
-      var prev = root.querySelector("[data-carousel-prev]");
-      var next = root.querySelector("[data-carousel-next]");
-      if (prev) prev.addEventListener("click", function () { goTo(index - 1); });
-      if (next) next.addEventListener("click", function () { goTo(index + 1); });
-
-      Array.prototype.forEach.call(dots, function (dot, i) {
-        dot.addEventListener("click", function () { goTo(i); });
-      });
-
-      if (toggle) {
-        toggle.addEventListener("click", function () {
-          if (timer) {
-            surrendered = true;
-            stop();
-          } else {
-            surrendered = false;
-            start();
-          }
-        });
-      }
-
-      root.addEventListener("keydown", function (event) {
-        if (event.key === "ArrowLeft") {
-          event.preventDefault();
-          goTo(index - 1);
-        } else if (event.key === "ArrowRight") {
-          event.preventDefault();
-          goTo(index + 1);
-        }
-      });
-
-      /* Swipe. Horizontal intent only, so vertical scrolling is untouched. */
+      /* Swipe stays available, but only for clearly horizontal intent so
+         vertical scrolling is never intercepted. Listeners are passive. */
       var startX = null;
       var startY = null;
       var viewport = root.querySelector("[data-carousel-viewport]") || root;
@@ -232,7 +176,9 @@
         var dx = event.changedTouches[0].clientX - startX;
         var dy = event.changedTouches[0].clientY - startY;
         if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) {
+          stop();
           goTo(dx < 0 ? index + 1 : index - 1);
+          start();
         }
         startX = null;
         startY = null;
@@ -241,19 +187,15 @@
       /* Nothing rotates behind a hidden tab. */
       document.addEventListener("visibilitychange", function () {
         if (document.hidden) {
-          if (timer) window.clearInterval(timer);
-          timer = null;
-        } else if (!surrendered) {
+          stop();
+        } else {
           start();
         }
       });
 
-      render(false);
-      if (reduced.matches) {
-        stop();
-      } else {
-        start();
-      }
+      /* Reduced motion holds on the first slide. */
+      render();
+      start();
     }
   );
 
