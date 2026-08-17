@@ -40,13 +40,13 @@ ICB.DATA.gallery = {
     {
       locationId: "corporate",
       src: "assets/img/icb-hq.webp",
-      caption: "ICB Headquarters, Belize City",
+      caption: { en: "ICB Headquarters, Belize City", es: "Sede de ICB, Ciudad de Belice" },
       alt: "The Insurance Corporation of Belize headquarters in Belize City"
     },
     {
       locationId: "corporate",
       src: "assets/img/gallery/hq-street.jpg",
-      caption: "ICB Corporate Office, Daly Street",
+      caption: { en: "ICB Corporate Office, Daly Street", es: "Oficina Corporativa de ICB, Daly Street" },
       alt: "Street view of the ICB Corporate Office building on Daly Street, Belize City"
     },
     /* INTERNAL TODO (not client-facing): the sign in this photograph
@@ -66,7 +66,7 @@ ICB.DATA.gallery = {
     {
       locationId: "san-narciso",
       src: null,
-      caption: "San Narciso, Corozal District",
+      caption: { en: "San Narciso, Corozal District", es: "San Narciso, distrito de Corozal" },
       alt: "San Narciso Village, Corozal District"
     },
     { locationId: "santa-elena",           src: null },
@@ -93,10 +93,10 @@ ICB.DATA.gallery = {
       {
         id: "lhf-en",
         title: "Life Happens Fast",
-        kicker: "ICB campaign film",
+        kicker: { en: "ICB campaign film", es: "Video de campaña de ICB" },
         lang: "en",
         langLabel: "English",
-        blurb: "Protect yourself with ICB. Filmed in Belize.",
+        blurb: { en: "Protect yourself with ICB. Filmed in Belize.", es: "Protéjase con ICB. Filmado en Belice." },
         src: "assets/video/icb-life-happens-fast.mp4",
         poster: "assets/img/video/life-happens-fast.jpg"
       },
@@ -106,7 +106,7 @@ ICB.DATA.gallery = {
         kicker: "Anuncio de ICB",
         lang: "es",
         langLabel: "Español",
-        blurb: "Protégete con ICB. Filmado en Belice.",
+        blurb: { en: "Protégete con ICB. Filmed in Belize.", es: "Protégete con ICB. Filmado en Belice." },
         altTitle: "La Vida Pasa Rapido, the Spanish ICB campaign film",
         src: "assets/video/icb-life-happens-fast-es.mp4",
         poster: "assets/img/video/life-happens-fast-es.jpg"

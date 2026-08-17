@@ -3196,3 +3196,43 @@ select,
   .bank-card { padding: var(--sp-4); }
   .receipt-dir .wa-row-cta { display: none; }
 }
+
+/* ============================ Language switch ============================ */
+
+/* Small, beside the logo, on every screen size. ICB serves a large
+   Spanish-speaking community, so this is not a flag tucked in a footer:
+   it sits where someone looks first and states the language they are
+   currently reading. Two languages need a toggle, not a menu. */
+.lang-switch { display: flex; align-items: center; margin-left: var(--sp-3); }
+.lang-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  min-height: 38px;
+  padding: 0.3rem 0.55rem;
+  border: 1px solid var(--c-line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--c-text-soft);
+  font-family: var(--font-sans);
+  font-size: var(--fs-200);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease), background var(--t-fast) var(--ease);
+}
+.lang-btn:hover { color: var(--c-cta); border-color: var(--c-cta); background: var(--c-tint); }
+.lang-btn:focus-visible { outline: 2px solid var(--c-cta); outline-offset: 2px; }
+.lang-caret { display: flex; }
+.lang-caret svg { width: 13px; height: 13px; }
+
+/* On a phone it sits between the logo and the menu button, so it stays
+   compact and the header still fits at 320px. */
+@media (max-width: 719px) {
+  .lang-switch { margin-left: auto; margin-right: var(--sp-2); }
+  .lang-btn { min-height: 44px; padding: 0.3rem 0.5rem; font-size: 0.72rem; }
+}
+@media (max-width: 360px) {
+  .lang-btn { padding: 0.3rem 0.4rem; letter-spacing: 0.02em; }
+}

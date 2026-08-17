@@ -15,14 +15,17 @@ ICB.DATA.site = {
     legalName: "Insurance Corporation of Belize Ltd.",
     founded: 1981,
     founder: "Mr. Erdulfo 'Dufy' Nunez",
-    heritageLine: "Protecting Belize since 1981.",
+    heritageLine: { en: "Protecting Belize since 1981.", es: "Protegiendo a Belice desde 1981." },
     // Verbatim from the current ICB website:
-    serviceQuote: "We are always here for you, from Corozal to Punta Gorda. Contact our friendly staff and let us take care of you.",
-    story: "Founded in 1981 by Mr. Erdulfo 'Dufy' Nunez, ICB has grown from a small two-person operation into one of the largest and most trusted insurance providers in Belize.",
+    serviceQuote: { en: "We are always here for you, from Corozal to Punta Gorda. Contact our friendly staff and let us take care of you.", es: "Siempre estamos aquí para usted, desde Corozal hasta Punta Gorda. Comuníquese con nuestro personal y con gusto le atenderemos." },
+    story: { en: "Founded in 1981 by Mr. Erdulfo 'Dufy' Nunez, ICB has grown from a small two-person operation into one of the largest and most trusted insurance providers in Belize.", es: "Fundada en 1981 por el Sr. Erdulfo 'Dufy' Nunez, ICB pasó de ser una operación de dos personas a una de las aseguradoras más grandes y de mayor confianza de Belice." },
     /* Established ICB brand lines. Used sparingly, never stacked. */
+    /* ICB's own slogan, on their signage in English. Left in English in
+       both languages: translating a company's slogan without approval
+       puts words in their mouth, and this one is painted on a wall. */
     positiveDifference: "Making a positive difference in a changing Belize.",
-    journeyLine: "At every step of your life's journey, ICB is there for you.",
-    homeLine: "Belize is our home."
+    journeyLine: { en: "At every step of your life's journey, ICB is there for you.", es: "En cada paso de su vida, ICB está con usted." },
+    homeLine: { en: "Belize is our home.", es: "Belice es nuestro hogar." }
   },
 
   corporate: {
@@ -66,33 +69,33 @@ ICB.DATA.site = {
      someone scanning a list of destinations should find one that says
      where the front door is. */
   nav: [
-    { id: "home", label: "Home", href: "#/" },
-    { id: "insurance", label: "Insurance", href: "#/insurance" },
-    { id: "claims", label: "Claims", href: "#/claims" },
-    { id: "locations", label: "Locations", href: "#/locations" },
-    { id: "gallery", label: "Gallery", href: "#/gallery" },
-    { id: "business", label: "Business", href: "#/business" },
-    { id: "about", label: "About", href: "#/about" },
-    { id: "resources", label: "Resources", href: "#/resources" },
-    { id: "contact", label: "Contact", href: "#/contact" }
+    { id: "home", label: { en: "Home", es: "Inicio" }, href: "#/" },
+    { id: "insurance", label: { en: "Insurance", es: "Seguros" }, href: "#/insurance" },
+    { id: "claims", label: { en: "Claims", es: "Reclamos" }, href: "#/claims" },
+    { id: "locations", label: { en: "Locations", es: "Ubicaciones" }, href: "#/locations" },
+    { id: "gallery", label: { en: "Gallery", es: "Galería" }, href: "#/gallery" },
+    { id: "business", label: { en: "Business", es: "Empresas" }, href: "#/business" },
+    { id: "about", label: { en: "About", es: "Nosotros" }, href: "#/about" },
+    { id: "resources", label: { en: "Resources", es: "Recursos" }, href: "#/resources" },
+    { id: "contact", label: { en: "Contact", es: "Contacto" }, href: "#/contact" }
   ],
 
   taskRoutes: [
-    { id: "cover", label: "I need insurance", short: "Insurance", href: "#/insurance", glyph: "shield" },
-    { id: "claim", label: "I need to file a claim", short: "File a claim", href: "#/claims", glyph: "document" },
+    { id: "cover", label: { en: "I need insurance", es: "Necesito un seguro" }, short: { en: "Insurance", es: "Seguros" }, href: "#/insurance", glyph: "shield" },
+    { id: "claim", label: { en: "I need to file a claim", es: "Necesito presentar un reclamo" }, short: { en: "File a claim", es: "Presentar un reclamo" }, href: "#/claims", glyph: "document" },
     /* Internal route. ICB does not take payments on its website, so this
        goes to the bank-transfer instructions rather than off-site. */
-    { id: "payment", label: "I need to make a payment", short: "Make a payment", href: "#/payments", note: "Bank transfer instructions", glyph: "card" },
-    { id: "branch", label: "I need a branch", short: "Find a branch", href: "#/locations", glyph: "marker" },
-    { id: "business", label: "I'm looking for business coverage", short: "Business insurance", href: "#/business", glyph: "briefcase" },
-    { id: "question", label: "I have a question", short: "Talk to ICB", href: "#/contact", glyph: "chat" }
+    { id: "payment", label: { en: "I need to make a payment", es: "Necesito hacer un pago" }, short: { en: "Make a payment", es: "Hacer un pago" }, href: "#/payments", note: { en: "Bank transfer instructions", es: "Instrucciones de transferencia bancaria" }, glyph: "card" },
+    { id: "branch", label: { en: "I need a branch", es: "Necesito una sucursal" }, short: { en: "Find a branch", es: "Buscar una sucursal" }, href: "#/locations", glyph: "marker" },
+    { id: "business", label: { en: "I'm looking for business coverage", es: "Busco cobertura para mi empresa" }, short: { en: "Business insurance", es: "Seguros para empresas" }, href: "#/business", glyph: "briefcase" },
+    { id: "question", label: { en: "I have a question", es: "Tengo una pregunta" }, short: { en: "Talk to ICB", es: "Hablar con ICB" }, href: "#/contact", glyph: "chat" }
   ],
 
   footer: {
-    tagline: "Insurance for the things you've built, the people you care about, and the road ahead.",
+    tagline: { en: "Insurance for the things you've built, the people you care about, and the road ahead.", es: "Seguros para lo que ha construido, para quienes le importan y para el camino por delante." },
     columns: [
       {
-        heading: "Insurance",
+        heading: { en: "Insurance", es: "Seguros" },
         links: [
           { label: "Property Insurance", href: "#/insurance/property" },
           { label: "Motor Insurance", href: "#/insurance/motor" },
@@ -104,23 +107,23 @@ ICB.DATA.site = {
         ]
       },
       {
-        heading: "Company",
+        heading: { en: "Company", es: "La empresa" },
         links: [
-          { label: "About ICB", href: "#/about" },
-          { label: "Business Insurance", href: "#/business" },
-          { label: "Locations", href: "#/locations" },
-          { label: "Gallery", href: "#/gallery" },
-          { label: "Resource Centre", href: "#/resources" },
-          { label: "Contact", href: "#/contact" }
+          { label: { en: "About ICB", es: "Sobre ICB" }, href: "#/about" },
+          { label: { en: "Business Insurance", es: "Seguros para empresas" }, href: "#/business" },
+          { label: { en: "Locations", es: "Ubicaciones" }, href: "#/locations" },
+          { label: { en: "Gallery", es: "Galería" }, href: "#/gallery" },
+          { label: { en: "Resource Centre", es: "Centro de recursos" }, href: "#/resources" },
+          { label: { en: "Contact", es: "Contacto" }, href: "#/contact" }
         ]
       },
       {
-        heading: "Claims & Support",
+        heading: { en: "Claims & Support", es: "Reclamos y ayuda" },
         links: [
-          { label: "How claims work", href: "#/claims" },
-          { label: "Official claims forms", href: "https://www.icbinsurance.com/claims", external: true },
-          { label: "How to pay ICB", href: "#/payments" },
-          { label: "Consumer resources", href: "#/resources" }
+          { label: { en: "How claims work", es: "Cómo funcionan los reclamos" }, href: "#/claims" },
+          { label: { en: "Official claims forms", es: "Formularios oficiales de reclamo" }, href: "https://www.icbinsurance.com/claims", external: true },
+          { label: { en: "How to pay ICB", es: "Cómo pagarle a ICB" }, href: "#/payments" },
+          { label: { en: "Consumer resources", es: "Recursos para el cliente" }, href: "#/resources" }
         ]
       }
     ],
@@ -128,7 +131,7 @@ ICB.DATA.site = {
     /* The agency credit. conceptLead names the studio and is the linked
        part; the rest of the sentence stays plain text, so the line reads
        as attribution rather than as an advert. */
-    conceptNote: "Concept experience by ",
+    conceptNote: { en: "Concept experience by ", es: "Concepto creado por " },
     conceptLead: "Austere Automations",
     conceptHref: "https://austereautomations.com/website-development-belize"
   }

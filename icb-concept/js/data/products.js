@@ -50,16 +50,16 @@ ICB.DATA.products = [
     id: "property",
     route: "#/insurance/property",
     name: "Property Insurance",
-    kicker: "Homes, businesses and the places that matter",
-    short: "Cover for homes, rented homes, small business premises and commercial property.",
-    standfirst: "Protecting the property you have built, bought or depend on.",
+    kicker: { en: "Homes, businesses and the places that matter", es: "Hogares, negocios y los lugares que importan" },
+    short: { en: "Cover for homes, rented homes, small business premises and commercial property.", es: "Cobertura para viviendas, viviendas alquiladas, locales de pequeños negocios y propiedad comercial." },
+    standfirst: { en: "Protecting the property you have built, bought or depend on.", es: "Protegiendo la propiedad que ha construido, comprado o de la que depende." },
     quote: true,
 
     intro: {
-      title: "What Property Insurance is for.",
+      title: { en: "What Property Insurance is for.", es: "Para qué sirve Property Insurance." },
       body: [
-        "Property can represent one of the most significant investments a person or business makes. ICB's Property Insurance options are designed to help protect against insured loss or damage, whether the property is a home, rental residence, small business or commercial operation.",
-        "ICB provides Property Insurance options for Home Owners, Small Business, Commercial properties and Renters, with additional protection available depending on the policy selected."
+        { en: "Property can represent one of the most significant investments a person or business makes. ICB's Property Insurance options are designed to help protect against insured loss or damage, whether the property is a home, rental residence, small business or commercial operation.", es: "Una propiedad puede ser una de las inversiones más importantes que hace una persona o una empresa. Las opciones de Property Insurance de ICB están diseñadas para ayudar a proteger contra pérdidas o daños asegurados, ya se trate de una vivienda, una residencia de alquiler, un pequeño negocio o una operación comercial." },
+        { en: "ICB provides Property Insurance options for Home Owners, Small Business, Commercial properties and Renters, with additional protection available depending on the policy selected.", es: "ICB ofrece opciones de Property Insurance para Home Owners, Small Business, Commercial y Renters, con protección adicional disponible según la póliza que se elija." }
       ]
     },
 
@@ -67,34 +67,34 @@ ICB.DATA.products = [
        ICB's; the one-line explanations are plain-language paraphrase and
        claim nothing beyond the name. */
     coverageOptions: {
-      title: "Homeowners Insurance.",
-      sub: "Owning a home is one of life's biggest investments. ICB's Homeowners Insurance is designed to help protect against unexpected setbacks, including insured damage to the property or loss of belongings caused by covered events.",
+      title: { en: "Homeowners Insurance.", es: "Homeowners Insurance." },
+      sub: { en: "Owning a home is one of life's biggest investments. ICB's Homeowners Insurance is designed to help protect against unexpected setbacks, including insured damage to the property or loss of belongings caused by covered events.", es: "Tener casa propia es una de las mayores inversiones de la vida. Homeowners Insurance de ICB está diseñado para ayudar a protegerle ante imprevistos, incluidos los daños asegurados a la propiedad o la pérdida de pertenencias por eventos cubiertos." },
       items: [
         {
           name: "Fire, Lightning & Explosion Coverage",
-          blurb: "Protection centred on specified fire, lightning and explosion risks."
+          blurb: { en: "Protection centred on specified fire, lightning and explosion risks.", es: "Protección centrada en riesgos especificados de incendio, rayo y explosión." }
         },
         {
           name: "Fire & Perils Including Major Catastrophic Events",
-          blurb: "Broader property protection incorporating additional insured perils and major catastrophic events, subject to the selected policy."
+          blurb: { en: "Broader property protection incorporating additional insured perils and major catastrophic events, subject to the selected policy.", es: "Protección más amplia que incorpora riesgos asegurados adicionales y eventos catastróficos mayores, según la póliza que se elija." }
         },
         {
           name: "Householder's All-Risk Protection",
-          blurb: "Broader protection for eligible household contents and belongings, subject to policy terms.",
+          blurb: { en: "Broader protection for eligible household contents and belongings, subject to policy terms.", es: "Protección más amplia para el contenido del hogar y las pertenencias elegibles, según los términos de la póliza." },
           /* "All risk" is a product name, not a promise. Saying so plainly
              is the honest reading of it. */
-          note: "The name describes the breadth of the option, not cover for every possible event."
+          note: { en: "The name describes the breadth of the option, not cover for every possible event.", es: "El nombre describe la amplitud de la opción, no cobertura para todo evento posible." }
         }
       ],
       after: [
-        "Depending on the protection selected, homeowners may also be able to include liability protection where accidental injury or property damage occurs on the premises, as well as additional protection such as burglary cover.",
-        "Homeowners protection can also extend to household contents such as furniture, appliances and electronics, subject to the policy selected."
+        { en: "Depending on the protection selected, homeowners may also be able to include liability protection where accidental injury or property damage occurs on the premises, as well as additional protection such as burglary cover.", es: "Según la protección que se elija, también puede ser posible incluir protección de responsabilidad civil por lesiones accidentales o daños a la propiedad ocurridos en el inmueble, así como protección adicional como cobertura contra robo." },
+        { en: "Homeowners protection can also extend to household contents such as furniture, appliances and electronics, subject to the policy selected.", es: "La protección de Homeowners también puede extenderse al contenido del hogar, como muebles, electrodomésticos y equipos electrónicos, según la póliza que se elija." }
       ]
     },
 
     /* ICB's published Property categories, unchanged. */
     covers: ["Home Owners", "Small Business", "Commercial", "Renters"],
-    coversLabel: "Property categories ICB publishes",
+    coversLabel: { en: "Property categories ICB publishes", es: "Categorías de propiedad que publica ICB" },
     categoryNotes: [
       { name: "Home Owners", note: "Protection options for the home you own and live in." },
       { name: "Small Business", note: "Property protection for eligible small-business premises and assets." },
@@ -105,40 +105,40 @@ ICB.DATA.products = [
     /* Named in ICB's material as available additions. Framed as available,
        never as included, which is the distinction that matters here. */
     extensions: {
-      title: "Additional protection ICB identifies",
-      sub: "Availability depends on the policy selected. None of these is automatically included.",
+      title: { en: "Additional protection ICB identifies", es: "Protección adicional que identifica ICB" },
+      sub: { en: "Availability depends on the policy selected. None of these is automatically included.", es: "La disponibilidad depende de la póliza que se elija. Ninguna se incluye de forma automática." },
       items: [
-        "Liability to the Public",
-        "Compensation for death of the Insured",
-        "Business Interruption",
-        "Additional expenses for accommodation",
-        "Loss of rent"
+        { en: "Liability to the Public", es: "Liability to the Public (responsabilidad ante terceros)" },
+        { en: "Compensation for death of the Insured", es: "Compensation for death of the Insured (compensación por fallecimiento del asegurado)" },
+        { en: "Business Interruption", es: "Business Interruption (interrupción del negocio)" },
+        { en: "Additional expenses for accommodation", es: "Gastos adicionales de alojamiento" },
+        { en: "Loss of rent", es: "Pérdida de alquiler" }
       ]
     },
 
     forWho: {
-      title: "Who may find it relevant?",
+      title: { en: "Who may find it relevant?", es: "¿A quién le puede servir?" },
       items: [
-        "Homeowners protecting the place they live and what is in it.",
-        "Renters looking to cover eligible personal belongings.",
-        "Small businesses protecting premises, stock and equipment.",
-        "Commercial property owners with larger or multi-site exposures."
+        { en: "Homeowners protecting the place they live and what is in it.", es: "Propietarios que protegen su vivienda y lo que hay en ella." },
+        { en: "Renters looking to cover eligible personal belongings.", es: "Inquilinos que buscan cubrir sus pertenencias elegibles." },
+        { en: "Small businesses protecting premises, stock and equipment.", es: "Pequeños negocios que protegen local, inventario y equipo." },
+        { en: "Commercial property owners with larger or multi-site exposures.", es: "Propietarios de inmuebles comerciales con exposiciones mayores o en varias sedes." }
       ]
     },
 
     useful: {
-      title: "Know the value of your property.",
+      title: { en: "Know the value of your property.", es: "Conozca el valor de su propiedad." },
       body: [
-        "ICB recommends obtaining a current property appraisal so that the level of coverage can reflect the value of the home.",
-        "When considering the property's value, remember permanent or external features such as patios, pools, fences, docks and other structures that may form part of the property."
+        { en: "ICB recommends obtaining a current property appraisal so that the level of coverage can reflect the value of the home.", es: "ICB recomienda obtener un avalúo actualizado de la propiedad para que el nivel de cobertura refleje el valor de la vivienda." },
+        { en: "When considering the property's value, remember permanent or external features such as patios, pools, fences, docks and other structures that may form part of the property.", es: "Al considerar el valor de la propiedad, recuerde los elementos permanentes o exteriores como patios, piscinas, cercas, muelles y otras estructuras que puedan formar parte de la propiedad." }
       ]
     },
 
-    audience: "For homeowners, renters, small businesses and commercial property owners across Belize.",
+    audience: { en: "For homeowners, renters, small businesses and commercial property owners across Belize.", es: "Para propietarios, inquilinos, pequeños negocios y dueños de propiedad comercial en todo Belice." },
     goodToKnow: [
-      "An ICB representative reviews your needs with you before any cover is arranged.",
-      "Hurricane and fire preparation information is available in the Resource Centre.",
-      "Branch teams across the country can look at your property needs in person."
+      { en: "An ICB representative reviews your needs with you before any cover is arranged.", es: "Un representante de ICB revisa sus necesidades con usted antes de contratar cualquier cobertura." },
+      { en: "Hurricane and fire preparation information is available in the Resource Centre.", es: "En el Centro de recursos hay información sobre preparación ante huracanes e incendios." },
+      { en: "Branch teams across the country can look at your property needs in person.", es: "Los equipos de las sucursales de todo el país pueden ver sus necesidades en persona." }
     ],
     status: null,
     campaign: { src: "assets/img/campaign/home.jpg", alt: "Property photography from ICB's Protect Your Investment campaign" },
