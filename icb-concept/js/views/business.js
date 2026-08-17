@@ -8,41 +8,45 @@ ICB.views = ICB.views || {};
 (function () {
   "use strict";
 
+  /* Copy that belongs to this view only, written in both languages
+     where it is used. See ICB.T in js/i18n.js. */
+  var T = ICB.T;
+
   /* Every item listed here is one of ICB's published products. Nothing on
      this page describes a package, bundle or term that ICB does not
      publish itself. */
   var SEGMENTS = [
     {
-      title: "Premises and property",
-      body: "For shops, offices, warehouses and commercial buildings.",
+      title: { en: "Premises and property", es: "Local y propiedad" },
+      body: { en: "For shops, offices, warehouses and commercial buildings.", es: "Para tiendas, oficinas, bodegas y edificios comerciales." },
       items: ["Small Business", "Commercial"],
       glyph: "house",
       links: [{ label: "Property Insurance", href: "#/insurance/property" }]
     },
     {
-      title: "Vehicles and fleets",
-      body: "Motor cover is available for the vehicles a business runs.",
-      items: ["Commercial Vehicles", "Taxis & Buses", "Heavy Duty Vehicles"],
+      title: { en: "Vehicles and fleets", es: "Vehículos y flotas" },
+      body: { en: "Motor cover is available for the vehicles a business runs.", es: "Hay cobertura Motor para los vehículos que opera un negocio." },
+      items: [{ en: "Commercial Vehicles", es: "Vehículos comerciales" }, { en: "Taxis & Buses", es: "Taxis y autobuses" }, { en: "Heavy Duty Vehicles", es: "Vehículos de carga pesada" }],
       glyph: "car",
       links: [{ label: "Motor Insurance", href: "#/insurance/motor" }]
     },
     {
-      title: "Goods in transit",
-      body: "Cargo Insurance covers goods in transit from warehouse to warehouse.",
-      items: ["Air Transit", "Land Transit", "Marine Transit", "Domestic Transit", "Overseas Transit"],
+      title: { en: "Goods in transit", es: "Mercancía en tránsito" },
+      body: { en: "Cargo Insurance covers goods in transit from warehouse to warehouse.", es: "Cargo Insurance cubre la mercancía en tránsito de bodega a bodega." },
+      items: [{ en: "Air Transit", es: "Tránsito aéreo" }, { en: "Land Transit", es: "Tránsito terrestre" }, { en: "Marine Transit", es: "Tránsito marítimo" }, { en: "Domestic Transit", es: "Tránsito nacional" }, { en: "Overseas Transit", es: "Tránsito al extranjero" }],
       glyph: "container",
       links: [{ label: "Cargo Insurance", href: "#/insurance/cargo" }]
     },
     {
-      title: "Vessels",
-      body: "Marine Hull Insurance can be customized to cover third party and passenger liability.",
-      items: ["Barges", "Tug Boats", "Dredgers", "Water Taxis", "Fishing Vessels"],
+      title: { en: "Vessels", es: "Embarcaciones" },
+      body: { en: "Marine Hull Insurance can be customized to cover third party and passenger liability.", es: "Marine Hull Insurance puede personalizarse para cubrir responsabilidad ante terceros y pasajeros." },
+      items: [{ en: "Barges", es: "Barcazas" }, { en: "Tug Boats", es: "Remolcadores" }, { en: "Dredgers", es: "Dragas" }, { en: "Water Taxis", es: "Taxis acuáticos" }, { en: "Fishing Vessels", es: "Embarcaciones de pesca" }],
       glyph: "boat",
       links: [{ label: "Marine Hull Insurance", href: "#/insurance/marine" }]
     },
     {
-      title: "Liability and specialty",
-      body: "Liability and miscellaneous products for businesses and contractors.",
+      title: { en: "Liability and specialty", es: "Responsabilidad civil y especialidades" },
+      body: { en: "Liability and miscellaneous products for businesses and contractors.", es: "Productos de responsabilidad civil y otros para negocios y contratistas." },
       items: ["General Liability", "Tour Operators Liability", "Contractors All Risk", "Money Insurance", "Personal Accident"],
       glyph: "scales",
       links: [{ label: "Liability & Miscellaneous", href: "#/insurance/liability" }]
@@ -52,14 +56,14 @@ ICB.views = ICB.views || {};
   /* Administrative pathway to an ICB representative. It does not describe
      underwriting, terms or what any product will cost. */
   var PROCESS = [
-    { n: 1, title: "Tell ICB about the business", body: "A sentence or two about what you do and what you want protected is enough to start." },
-    { n: 2, title: "Meet an ICB representative", body: "At a branch or over the phone, whichever suits you." },
-    { n: 3, title: "Review the options together", body: "Your representative walks you through the categories that apply." },
-    { n: 4, title: "Keep your branch close", body: "Branches across the country stay available as the business changes." }
+    { n: 1, title: { en: "Tell ICB about the business", es: "Cuéntele a ICB sobre el negocio" }, body: { en: "A sentence or two about what you do and what you want protected is enough to start.", es: "Con una o dos frases sobre lo que hace y lo que quiere proteger basta para empezar." } },
+    { n: 2, title: { en: "Meet an ICB representative", es: "Reúnase con un representante de ICB" }, body: { en: "At a branch or over the phone, whichever suits you.", es: "En una sucursal o por teléfono, como le convenga." } },
+    { n: 3, title: { en: "Review the options together", es: "Revisen juntos las opciones" }, body: { en: "Your representative walks you through the categories that apply.", es: "Su representante le explica las categorías que aplican." } },
+    { n: 4, title: { en: "Keep your branch close", es: "Tenga su sucursal cerca" }, body: { en: "Branches across the country stay available as the business changes.", es: "Las sucursales de todo el país siguen disponibles conforme cambia el negocio." } }
   ];
 
   ICB.views.business = {
-    title: "Business Insurance | ICB",
+    title: { en: "Business Insurance | ICB", es: "Seguros para empresas | ICB" },
     render: function () {
       var R = ICB.render;
 
@@ -82,13 +86,13 @@ ICB.views = ICB.views || {};
         '<section class="page-hero on-dark" aria-labelledby="biz-title">' +
           '<div class="page-hero-art art-panel" data-img-slot="business-band" aria-hidden="true">' + ICB.art.panel("business") + "</div>" +
           '<div class="shell page-hero-inner">' +
-            R.crumbsHome("Business") +
-            '<span class="eyebrow">Business insurance</span>' +
-            '<h1 id="biz-title">Protection for the business you have built.</h1>' +
-            '<p class="hero-lead">ICB offers insurance options for Belizean businesses across property, vehicles, cargo, marine and liability needs. Tell us what you do and an ICB representative will take it from there.</p>' +
+            R.crumbsHome({ en: "Business", es: "Empresas" }) +
+            '<span class="eyebrow">' + T("Business insurance", "Seguros para empresas") + '</span>' +
+            '<h1 id="biz-title">' + T("Protection for the business you have built.", "Protección para el negocio que ha construido.") + '</h1>' +
+            '<p class="hero-lead">' + T("ICB offers insurance options for Belizean businesses across property, vehicles, cargo, marine and liability needs. Tell us what you do and an ICB representative will take it from there.", "ICB ofrece opciones de seguro para negocios beliceños en propiedad, vehículos, carga, embarcaciones y responsabilidad civil. Cuéntenos a qué se dedica y un representante de ICB sigue desde ahí.") + '</p>' +
             '<div class="btn-row">' +
-              '<a class="btn btn-gold btn-lg" href="#/contact?topic=business">Request a quote</a>' +
-              '<a class="btn btn-light btn-lg" href="#/insurance">Explore the categories</a>' +
+              '<a class="btn btn-gold btn-lg" href="#/contact?topic=business">' + T("Request a quote", "Solicitar una cotización") + '</a>' +
+              '<a class="btn btn-light btn-lg" href="#/insurance">' + T("Explore the categories", "Ver las categorías") + '</a>' +
             "</div>" +
           "</div>" +
         "</section>" +
@@ -96,9 +100,9 @@ ICB.views = ICB.views || {};
         '<section class="section" aria-labelledby="seg-title">' +
           '<div class="shell">' +
             R.sectionHead({
-              eyebrow: "Built around your operation",
-              title: "Cover for every side of the business.",
-              sub: "These are ICB's published categories. Your ICB representative helps you see which ones apply.",
+              eyebrow: { en: "Built around your operation", es: "Pensado para su operación" },
+              title: { en: "Cover for every side of the business.", es: "Cobertura para cada lado del negocio." },
+              sub: { en: "These are ICB's published categories. Your ICB representative helps you see which ones apply.", es: "Estas son las categorías que ICB publica. Su representante de ICB le ayuda a ver cuáles aplican." },
               id: "seg-title"
             }) +
             '<div class="card-grid">' + segs + "</div>" +
@@ -107,21 +111,21 @@ ICB.views = ICB.views || {};
 
         '<section class="section section--tint" aria-labelledby="process-title">' +
           '<div class="shell">' +
-            R.sectionHead({ eyebrow: "How it starts", title: "Four steps to a conversation.", id: "process-title" }) +
+            R.sectionHead({ eyebrow: { en: "How it starts", es: "Cómo comienza" }, title: { en: "Four steps to a conversation.", es: "Cuatro pasos hacia una conversación." }, id: "process-title" }) +
             R.steps(PROCESS) +
           "</div>" +
         "</section>" +
 
-        '<section class="section" aria-label="Request a quote">' +
+        '<section class="section" aria-label="' + T("Request a quote", "Solicitar una cotizacion") + '">' +
           '<div class="shell">' +
             R.band({
-              eyebrow: "Ready when you are",
-              title: "Ready to talk about business cover?",
+              eyebrow: { en: "Ready when you are", es: "Cuando usted quiera" },
+              title: { en: "Ready to talk about business cover?", es: "¿Listo para hablar de cobertura para su negocio?" },
               body: ICB.DATA.quoteNote,
               motif: "business",
               actions: [
-                { label: "Request a quote", href: "#/contact?topic=business" },
-                { label: "Call " + ICB.DATA.site.corporate.phoneDisplay, href: "tel:" + ICB.DATA.site.corporate.phoneTel }
+                { label: { en: "Request a quote", es: "Solicitar una cotización" }, href: "#/contact?topic=business" },
+                { label: ICB.s("callN", { n: ICB.DATA.site.corporate.phoneDisplay }), href: "tel:" + ICB.DATA.site.corporate.phoneTel }
               ]
             }) +
           "</div>" +

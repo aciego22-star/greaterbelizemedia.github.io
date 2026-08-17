@@ -17,54 +17,54 @@ ICB.DATA = ICB.DATA || {};
 
 ICB.DATA.claims = {
   /* Verbatim service values published by ICB: */
-  values: "Clear and consistent communication. Empathy to claimants. Excellent follow through and follow up. Fair and accurate settlements. Prompt and final resolutions.",
+  values: { en: "Clear and consistent communication. Empathy to claimants. Excellent follow through and follow up. Fair and accurate settlements. Prompt and final resolutions.", es: "Comunicación clara y constante. Empatía con los reclamantes. Excelente seguimiento. Liquidaciones justas y exactas. Resoluciones rápidas y definitivas." },
   valuesList: [
-    "Clear and consistent communication",
-    "Empathy to claimants",
-    "Excellent follow through and follow up",
-    "Fair and accurate settlements",
-    "Prompt and final resolutions"
+    { en: "Clear and consistent communication", es: "Comunicación clara y constante" },
+    { en: "Empathy to claimants", es: "Empatía con los reclamantes" },
+    { en: "Excellent follow through and follow up", es: "Excelente seguimiento" },
+    { en: "Fair and accurate settlements", es: "Liquidaciones justas y exactas" },
+    { en: "Prompt and final resolutions", es: "Resoluciones rápidas y definitivas" }
   ],
 
   pathways: [
     {
       id: "motor",
       anchor: "motor",
-      name: "Motor claim",
+      name: { en: "Motor claim", es: "Reclamo de vehículo" },
       formLabel: "Insured Motor Accident Form",
-      lead: "For an ICB policyholder reporting an accident involving an insured vehicle.",
+      lead: { en: "For an ICB policyholder reporting an accident involving an insured vehicle.", es: "Para un asegurado de ICB que reporta un accidente con un vehículo asegurado." },
       glyph: "car"
     },
     {
       id: "motor-third-party",
       anchor: "third-party",
-      name: "Motor claim as a third party",
+      name: { en: "Motor claim as a third party", es: "Reclamo de vehículo como tercero" },
       formLabel: "Claimant Motor Accident Form",
-      lead: "For a claimant involved in an accident with a vehicle insured by ICB.",
+      lead: { en: "For a claimant involved in an accident with a vehicle insured by ICB.", es: "Para un reclamante involucrado en un accidente con un vehículo asegurado por ICB." },
       glyph: "people"
     },
     {
       id: "property",
       anchor: "property",
-      name: "Property claim",
+      name: { en: "Property claim", es: "Reclamo de propiedad" },
       formLabel: "Property Claim Form",
-      lead: "For loss or damage at a property insured with ICB.",
+      lead: { en: "For loss or damage at a property insured with ICB.", es: "Por pérdida o daño en una propiedad asegurada con ICB." },
       glyph: "house"
     },
     {
       id: "marine",
       anchor: "marine",
-      name: "Marine claim",
+      name: { en: "Marine claim", es: "Reclamo marítimo" },
       formLabel: "Marine Claim Form",
-      lead: "For loss or damage involving a vessel insured with ICB.",
+      lead: { en: "For loss or damage involving a vessel insured with ICB.", es: "Por pérdida o daño de una embarcación asegurada con ICB." },
       glyph: "boat"
     },
     {
       id: "hurricane",
       anchor: "hurricane",
-      name: "Hurricane claim",
+      name: { en: "Hurricane claim", es: "Reclamo por huracán" },
       formLabel: "Hurricane Claim Form",
-      lead: "For property loss or damage following a hurricane.",
+      lead: { en: "For property loss or damage following a hurricane.", es: "Por pérdida o daño a la propiedad después de un huracán." },
       glyph: "storm"
     }
   ],
@@ -74,23 +74,23 @@ ICB.DATA.claims = {
   steps: [
     {
       n: 1,
-      title: "Identify your claim type",
-      body: "Choose the pathway that matches your situation."
+      title: { en: "Identify your claim type", es: "Identifique su tipo de reclamo" },
+      body: { en: "Choose the pathway that matches your situation.", es: "Elija la vía que corresponda a su situación." }
     },
     {
       n: 2,
-      title: "Access the relevant official ICB claim form",
-      body: "Each pathway links to the claim forms published by ICB."
+      title: { en: "Access the relevant official ICB claim form", es: "Acceda al formulario oficial de reclamo de ICB" },
+      body: { en: "Each pathway links to the claim forms published by ICB.", es: "Cada vía enlaza a los formularios de reclamo publicados por ICB." }
     },
     {
       n: 3,
-      title: "Contact ICB or your preferred branch",
-      body: "Reach the Corporate Office or the branch closest to you."
+      title: { en: "Contact ICB or your preferred branch", es: "Comuníquese con ICB o con su sucursal preferida" },
+      body: { en: "Reach the Corporate Office or the branch closest to you.", es: "Contacte la Oficina Corporativa o la sucursal más cercana a usted." }
     },
     {
       n: 4,
-      title: "The claims team will guide you through the applicable next steps",
-      body: "An ICB claims representative explains what happens from there."
+      title: { en: "The claims team will guide you through the applicable next steps", es: "El equipo de reclamos le guiará en los pasos que correspondan" },
+      body: { en: "An ICB claims representative explains what happens from there.", es: "Un representante de reclamos de ICB le explica qué sigue a partir de ahí." }
     }
   ]
 };

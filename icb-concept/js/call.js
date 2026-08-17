@@ -20,6 +20,10 @@ window.ICB = window.ICB || {};
 (function () {
   "use strict";
 
+  /* Copy that belongs to this view only, written in both languages
+     where it is used. See ICB.T in js/i18n.js. */
+  var T = ICB.T;
+
   var overlay = null, opener = null;
 
   /* Every callable number a location publishes: landlines first, then the
@@ -34,7 +38,7 @@ window.ICB = window.ICB || {};
     phones.forEach(function (ph, i) {
       out.push({
         label: both || phones.length > 1
-          ? "Landline" + (phones.length > 1 ? " " + (i + 1) : "")
+          ? (phones.length > 1 ? ICB.s("landlineN", { n: i + 1 }) : ICB.s("landline"))
           : null,
         display: ph.display,
         tel: ph.tel
@@ -43,8 +47,8 @@ window.ICB = window.ICB || {};
     mobiles.forEach(function (w, i) {
       out.push({
         label: mobiles.length > 1
-          ? "Mobile " + (i + 1)
-          : (both ? "Mobile" : null),
+          ? ICB.s("mobileN", { n: i + 1 })
+          : (both ? ICB.s("mobile") : null),
         display: w.display,
         tel: "+" + String(w.wa).replace(/\D/g, "")
       });
@@ -80,7 +84,7 @@ window.ICB = window.ICB || {};
     var groups = ICB.DATA.districts.map(function (d) {
       var locs = callable.filter(function (l) { return l.district === d; });
       if (!locs.length) return "";
-      return '<section class="call-group" aria-label="' + R.esc(d) + ' District">' +
+      return '<section class="call-group" aria-label="' + R.esc(ICB.s("district", { d: d })) + '">' +
         "<h3>" + R.esc(d) + "</h3>" +
         locs.map(rowsFor).join("") +
       "</section>";
@@ -91,13 +95,13 @@ window.ICB = window.ICB || {};
        Office, so the directory reads as one list rather than a list plus
        a paragraph of names. */
     var waNote = noLine.length
-      ? '<section class="call-group call-group--via" aria-label="Locations reached through the Corporate Office">' +
-          "<h3>Through the Corporate Office</h3>" +
+      ? '<section class="call-group call-group--via" aria-label="' + R.esc(ICB.s("throughCorporate")) + '">' +
+          "<h3>" + R.esc(ICB.s("throughCorporate")) + "</h3>" +
           noLine.map(function (l) {
             return '<a class="call-row" href="tel:' + R.esc(co.phoneTel) + '">' +
               '<span class="call-row-main">' +
                 '<span class="call-row-name">' + R.esc(l.name) +
-                  ' <span class="call-row-tag">Corporate Office</span></span>' +
+                  ' <span class="call-row-tag">' + R.esc(ICB.s("locTypeCorporateOffice")) + "</span></span>" +
                 '<span class="call-row-num">' + R.esc(co.phoneDisplay) + "</span>" +
               "</span>" +
               '<span class="call-row-icon">' + ICB.art.glyph("phone") + "</span>" +
@@ -111,10 +115,10 @@ window.ICB = window.ICB || {};
         '<header class="call-head">' +
           '<span class="call-head-icon">' + ICB.art.glyph("phone") + "</span>" +
           '<div class="call-head-text">' +
-            '<strong id="call-dir-title">Call ICB</strong>' +
-            "<span>Choose a location to call.</span>" +
+            '<strong id="call-dir-title">' + R.esc(ICB.s("callICB")) + "</strong>" +
+            "<span>" + R.esc(ICB.s("callChoose")) + "</span>" +
           "</div>" +
-          '<button type="button" class="wa-close" data-call-close aria-label="Close the call directory">' +
+          '<button type="button" class="wa-close" data-call-close aria-label="' + R.esc(ICB.s("callClose")) + '">' +
             ICB.art.glyph("close") +
           "</button>" +
         "</header>" +

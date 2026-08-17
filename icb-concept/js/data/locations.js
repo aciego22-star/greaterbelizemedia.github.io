@@ -150,8 +150,8 @@ ICB.DATA.locations = [
     address: "16 Daly Street, P.O. Box 519, Belize City",
     phones: [{ display: "+501 224-5328", tel: "+5012245328" }, { display: "+501 224-5329", tel: "+5012245329" }],
     whatsapps: [
-      { label: "Line 1", display: "+501 613-0693", wa: "5016130693", receipt: true },
-      { label: "Line 2", display: "+501 613-0645", wa: "5016130645", receipt: true }
+      { label: { en: "Line 1", es: "Línea 1" }, display: "+501 613-0693", wa: "5016130693", receipt: true },
+      { label: { en: "Line 2", es: "Línea 2" }, display: "+501 613-0645", wa: "5016130645", receipt: true }
     ],
     email: "icb@icbinsurance.com",
     mapQuery: "Insurance Corporation of Belize, 16 Daly Street, Belize City, Belize",

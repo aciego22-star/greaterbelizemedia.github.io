@@ -8,6 +8,10 @@ ICB.views = ICB.views || {};
 (function () {
   "use strict";
 
+  /* Copy that belongs to this view only, written in both languages
+     where it is used. See ICB.T in js/i18n.js. */
+  var T = ICB.T;
+
   function externalCard(o, R, ext) {
     var href = ext[o.hrefKey];
     return '<a class="official-card rv" href="' + R.esc(href) + '"' + R.extAttrs() + ">" +
@@ -26,7 +30,7 @@ ICB.views = ICB.views || {};
   }
 
   ICB.views.resources = {
-    title: "Resource Centre | ICB",
+    title: { en: "Resource Centre | ICB", es: "Centro de recursos | ICB" },
     render: function () {
       var R = ICB.render;
       var data = ICB.DATA.resources;
@@ -50,18 +54,18 @@ ICB.views = ICB.views || {};
         '<section class="page-hero on-dark" aria-labelledby="res-title">' +
           '<div class="page-hero-art art-panel" data-img-slot="resources-hero" aria-hidden="true">' + ICB.art.panel("poster") + "</div>" +
           '<div class="shell page-hero-inner">' +
-            R.crumbsHome("Resources") +
-            '<span class="eyebrow">ICB Resource Centre</span>' +
-            '<h1 id="res-title">Consumer Resources.</h1>' +
-            '<p class="hero-lead">The forms, portals and safety material ICB publishes, gathered in one place.</p>' +
+            R.crumbsHome({ en: "Resources", es: "Recursos" }) +
+            '<span class="eyebrow">' + T("ICB Resource Centre", "Centro de recursos de ICB") + '</span>' +
+            '<h1 id="res-title">' + T("Consumer Resources.", "Recursos para el consumidor.") + '</h1>' +
+            '<p class="hero-lead">' + T("The forms, portals and safety material ICB publishes, gathered in one place.", "Los formularios, portales y material de seguridad que publica ICB, reunidos en un solo lugar.") + '</p>' +
           "</div>" +
         "</section>" +
 
         '<section class="section" aria-labelledby="official-title">' +
           '<div class="shell">' +
             R.sectionHead({
-              eyebrow: "Official ICB documents",
-              title: "Forms and portals, straight from ICB.",
+              eyebrow: { en: "Official ICB documents", es: "Documentos oficiales de ICB" },
+              title: { en: "Forms and portals, straight from ICB.", es: "Formularios y portales, directamente de ICB." },
               id: "official-title"
             }) +
             '<div class="official-grid">' + official + "</div>" +
@@ -71,9 +75,9 @@ ICB.views = ICB.views || {};
         '<section class="section section--tint" aria-labelledby="safety-title">' +
           '<div class="shell">' +
             R.sectionHead({
-              eyebrow: "Safety material",
-              title: "Preparation ICB publishes.",
-              sub: "Hurricane season and fire prevention information from icbinsurance.com.",
+              eyebrow: { en: "Safety material", es: "Material de seguridad" },
+              title: { en: "Preparation ICB publishes.", es: "Preparación que publica ICB." },
+              sub: { en: "Hurricane season and fire prevention information from icbinsurance.com.", es: "Información sobre temporada de huracanes y prevención de incendios, de icbinsurance.com." },
               id: "safety-title"
             }) +
             '<div class="official-grid official-grid--pair">' + safety + "</div>" +
@@ -83,24 +87,24 @@ ICB.views = ICB.views || {};
         '<section class="section" aria-labelledby="onsite-title">' +
           '<div class="shell">' +
             R.sectionHead({
-              eyebrow: "On this site",
-              title: "Where to go next.",
+              eyebrow: { en: "On this site", es: "En este sitio" },
+              title: { en: "Where to go next.", es: "Adónde ir después." },
               id: "onsite-title"
             }) +
             '<div class="official-grid">' + onSite + "</div>" +
           "</div>" +
         "</section>" +
 
-        '<section class="section section--flush-top" aria-label="Ask a question">' +
+        '<section class="section section--flush-top" aria-label="' + T("Ask a question", "Hacer una pregunta") + '">' +
           '<div class="shell">' +
             R.band({
-              eyebrow: "Still curious?",
-              title: "A question deserves a person.",
-              body: "For anything about your own cover, the ICB team is a call, a message or a branch visit away.",
+              eyebrow: { en: "Still curious?", es: "¿Le queda una duda?" },
+              title: { en: "A question deserves a person.", es: "Una pregunta merece una persona." },
+              body: { en: "For anything about your own cover, the ICB team is a call, a message or a branch visit away.", es: "Para cualquier cosa sobre su propia cobertura, el equipo de ICB está a una llamada, un mensaje o una visita de distancia." },
               motif: "heritage",
               actions: [
-                { label: "Contact ICB", href: "#/contact" },
-                { label: "Call " + ICB.DATA.site.corporate.phoneDisplay, href: "tel:" + ICB.DATA.site.corporate.phoneTel }
+                { label: { en: "Contact ICB", es: "Comunicarse con ICB" }, href: "#/contact" },
+                { label: ICB.s("callN", { n: ICB.DATA.site.corporate.phoneDisplay }), href: "tel:" + ICB.DATA.site.corporate.phoneTel }
               ]
             }) +
           "</div>" +

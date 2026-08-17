@@ -10,6 +10,10 @@ ICB.views = ICB.views || {};
 (function () {
   "use strict";
 
+  /* Copy that belongs to this view only, written in both languages
+     where it is used. See ICB.T in js/i18n.js. */
+  var T = ICB.T;
+
   /* ==========================================================================
      HERO MEDIA LINEUP
 
@@ -37,26 +41,26 @@ ICB.views = ICB.views || {};
     {
       kind: "photo",
       src: "assets/img/icb-hq.webp",
-      alt: "Insurance Corporation of Belize headquarters in Belize City",
+      alt: { en: "Insurance Corporation of Belize headquarters in Belize City", es: "Sede de Insurance Corporation of Belize en Ciudad de Belice" },
       eyebrow: "Insurance Corporation of Belize Ltd.",
-      title: "Protecting Belize since 1981.",
-      lead: "Insurance for the things you\u2019ve built, the people you care about, and the road ahead.",
+      title: { en: "Protecting Belize since 1981.", es: "Protegiendo a Belice desde 1981." },
+      lead: { en: "Insurance for the things you\u2019ve built, the people you care about, and the road ahead.", es: "Seguros para lo que ha construido, para quienes le importan y para el camino por delante." },
       actions: [
-        { label: "Explore insurance", href: "#/insurance", primary: true },
-        { label: "File a claim", href: "#/claims" }
+        { label: { en: "Explore insurance", es: "Ver seguros" }, href: "#/insurance", primary: true },
+        { label: { en: "File a claim", es: "Presentar un reclamo" }, href: "#/claims" }
       ]
     },
     {
       kind: "artwork",
       light: true,
       src: "assets/img/icb-protect-artwork.jpg",
-      alt: "ICB Protect Your Investment campaign artwork: liabilities, motor, marine and property",
-      eyebrow: "Protect your investment",
-      title: "By land, sea or air, ICB is there.",
-      lead: "Liabilities, motor, marine and property cover for the life you have built.",
+      alt: { en: "ICB Protect Your Investment campaign artwork: liabilities, motor, marine and property", es: "Arte de la campaña Protect Your Investment de ICB: responsabilidad civil, vehículos, embarcaciones y propiedad" },
+      eyebrow: { en: "Protect your investment", es: "Proteja su inversión" },
+      title: { en: "By land, sea or air, ICB is there.", es: "Por tierra, mar o aire, ICB está ahí." },
+      lead: { en: "Liabilities, motor, marine and property cover for the life you have built.", es: "Cobertura de responsabilidad civil, vehículos, embarcaciones y propiedad para la vida que ha construido." },
       actions: [
-        { label: "Explore insurance", href: "#/insurance", primary: true },
-        { label: "Request a quote", href: "#/contact?topic=new-cover", ghost: true }
+        { label: { en: "Explore insurance", es: "Ver seguros" }, href: "#/insurance", primary: true },
+        { label: { en: "Request a quote", es: "Solicitar una cotización" }, href: "#/contact?topic=new-cover", ghost: true }
       ]
     },
     {
@@ -76,9 +80,9 @@ ICB.views = ICB.views || {};
       artCarriesCopy: true,
       srcWide: "assets/img/brands/nce-wide.webp",
       srcTall: "assets/img/brands/nce-tall.webp",
-      alt: "Nationwide Cash Express: the mascot holding a Belize one hundred dollar note, beside the Nationwide Cash Express wordmark and the line Send Money Across Belize",
+      alt: { en: "Nationwide Cash Express: the mascot holding a Belize one hundred dollar note, beside the Nationwide Cash Express wordmark and the line Send Money Across Belize", es: "Nationwide Cash Express: la mascota sosteniendo un billete de cien dólares beliceños, junto al logotipo de Nationwide Cash Express y la línea Send Money Across Belize" },
       eyebrow: "Nationwide Cash Express",
-      title: "Send money across Belize.",
+      title: { en: "Send money across Belize.", es: "Envíe dinero por todo Belice." },
       /* No action row. The lockup fills the slide, and an overlaid button
          would either sit on the artwork or collide with the slider
          chrome at some widths. Every action stays one row below in the
@@ -87,11 +91,11 @@ ICB.views = ICB.views || {};
     },
     {
       kind: "video",
-      eyebrow: "ICB in Motion",
+      eyebrow: { en: "ICB in Motion", es: "ICB en Movimiento" },
       title: "Life Happens Fast.",
       actions: [
-        { label: "Explore insurance", href: "#/insurance", primary: true },
-        { label: "About ICB", href: "#/about" }
+        { label: { en: "Explore insurance", es: "Ver seguros" }, href: "#/insurance", primary: true },
+        { label: { en: "About ICB", es: "Acerca de ICB" }, href: "#/about" }
       ]
     }
   ];
@@ -146,17 +150,17 @@ ICB.views = ICB.views || {};
       '<div class="hero-scrim" aria-hidden="true"></div>' +
       (media.heroVideoAvailable
         ? '<button type="button" class="hero-sound" data-hero-sound aria-pressed="false"' +
-            ' aria-label="Turn on sound for the ICB film">' +
+            ' aria-label="' + R.esc(ICB.s("soundOn")) + '">' +
             '<span class="s-off">' + ICB.art.glyph("sound-off") + "</span>" +
             '<span class="s-on">' + ICB.art.glyph("sound-on") + "</span>" +
           "</button>" +
-          '<span class="hero-sound-hint" data-hero-hint aria-hidden="true">Tap for sound</span>'
+          '<span class="hero-sound-hint" data-hero-hint aria-hidden="true">' + R.esc(ICB.s("tapForSound")) + "</span>"
         : "") +
       '<button type="button" class="play-btn hero-play" data-hero-play hidden' +
-        ' aria-label="Play the ICB film Life Happens Fast">' +
+        ' aria-label="' + R.esc(ICB.s("playICBFilm")) + '">' +
         ICB.art.glyph("play") +
       "</button>" +
-      '<p class="video-note" data-hero-note hidden>This film could not be played in this browser.</p>' +
+      '<p class="video-note" data-hero-note hidden>' + R.esc(ICB.s("filmUnavailable")) + "</p>" +
     "</div>";
   }
 
@@ -171,7 +175,7 @@ ICB.views = ICB.views || {};
       }).join("");
       return '<article class="hero-slide hero-slide--' + s.kind + (i === 0 ? " is-active" : "") + (s.light ? " hero-slide--light" : "") +
         '" role="group" aria-roledescription="slide"' +
-        ' aria-label="' + (i + 1) + ' of ' + SLIDES.length + '" data-slide="' + i + '"' +
+        ' aria-label="' + R.esc(T((i + 1) + " of " + SLIDES.length, (i + 1) + " de " + SLIDES.length)) + '" data-slide="' + i + '"' +
         (s.light ? ' data-light="1"' : "") + (i === 0 ? "" : ' aria-hidden="true"') + ">" +
         slideMedia(s) +
         (s.alt ? '<span class="visually-hidden">' + R.esc(s.alt) + "</span>" : "") +
@@ -189,20 +193,21 @@ ICB.views = ICB.views || {};
 
     var bars = SLIDES.map(function (s, i) {
       return '<button type="button" data-slide-to="' + i + '"' + (i === 0 ? ' aria-current="true"' : "") +
-        ' aria-label="Go to slide ' + (i + 1) + ' of ' + SLIDES.length + ": " + R.esc(s.title) + '">' +
+        ' aria-label="' + R.esc(ICB.s("goToSlide", { n: (i + 1) + T(" of ", " de ") + SLIDES.length }) + ": " + ICB.t(s.title)) + '">' +
         '<span class="bar" aria-hidden="true"></span></button>';
     }).join("");
 
     return '' +
-      '<section class="hero-slider on-dark" role="region" aria-roledescription="carousel" aria-label="ICB highlights" data-hero-slider>' +
-        '<h1 class="visually-hidden">Insurance Corporation of Belize. Protecting Belize since 1981.</h1>' +
+      '<section class="hero-slider on-dark" role="region" aria-roledescription="carousel" aria-label="' + R.esc(T("ICB highlights", "Destacados de ICB")) + '" data-hero-slider>' +
+        '<h1 class="visually-hidden">' + R.esc(T("Insurance Corporation of Belize. Protecting Belize since 1981.",
+          "Insurance Corporation of Belize. Protegiendo a Belice desde 1981.")) + "</h1>" +
         slides +
         '<div class="hero-controls"><div class="shell hero-controls-inner">' +
-          '<div class="hero-progress" role="group" aria-label="Slides">' + bars + "</div>" +
+          '<div class="hero-progress" role="group" aria-label="' + R.esc(T("Slides", "Diapositivas")) + '">' + bars + "</div>" +
           '<span class="hero-count" aria-hidden="true" data-hero-count>01 / 0' + SLIDES.length + "</span>" +
           '<div class="hero-arrows">' +
-            '<button type="button" data-hero-prev aria-label="Previous slide">' + ICB.art.glyph("chev-left") + "</button>" +
-            '<button type="button" data-hero-next aria-label="Next slide">' + ICB.art.glyph("chev-right") + "</button>" +
+            '<button type="button" data-hero-prev aria-label="' + R.esc(ICB.s("prevSlide")) + '">' + ICB.art.glyph("chev-left") + "</button>" +
+            '<button type="button" data-hero-next aria-label="' + R.esc(ICB.s("nextSlide")) + '">' + ICB.art.glyph("chev-right") + "</button>" +
           "</div>" +
         "</div></div>" +
       "</section>";
@@ -244,9 +249,7 @@ ICB.views = ICB.views || {};
          handler below would then fail to recognise it as a control and
          toggle the sound straight back. */
       btn.setAttribute("aria-pressed", String(on));
-      btn.setAttribute("aria-label", on
-        ? "Turn off sound for the ICB film"
-        : "Turn on sound for the ICB film");
+      btn.setAttribute("aria-label", ICB.s(on ? "soundOff" : "soundOn"));
       // The prompt is only useful until the visitor has answered it.
       if (hint) hint.hidden = on || soundWanted;
     }
@@ -485,7 +488,7 @@ ICB.views = ICB.views || {};
     return '' +
       '<section class="action-bar" aria-labelledby="action-title">' +
         '<div class="shell"><div class="action-panel rv">' +
-          '<h2 id="action-title">What can we help you with?</h2>' +
+          '<h2 id="action-title">' + ICB.render.esc(T("What can we help you with?", "¿En qué le podemos ayudar?")) + "</h2>" +
           '<div class="action-grid">' + tiles + "</div>" +
         "</div></div>" +
       "</section>";
@@ -497,9 +500,9 @@ ICB.views = ICB.views || {};
       '<section class="section" aria-labelledby="cat-title">' +
         '<div class="shell">' +
           ICB.render.sectionHead({
-            eyebrow: "Insurance",
-            title: "Cover for the life you have built.",
-            sub: "Insurance options for individuals and businesses. Start where you are.",
+            eyebrow: { en: "Insurance", es: "Seguros" },
+            title: { en: "Cover for the life you have built.", es: "Cobertura para la vida que ha construido." },
+            sub: { en: "Insurance options for individuals and businesses. Start where you are.", es: "Opciones de seguro para personas y empresas. Empiece donde está." },
             id: "cat-title"
           }) +
           '<div class="card-grid">' + cards + "</div>" +
@@ -530,18 +533,19 @@ ICB.views = ICB.views || {};
           '<div class="claims-feature-grid">' +
             '<div class="rv">' +
               '<hr class="claims-rule" aria-hidden="true">' +
-              '<h2 id="claims-feature-title">When something happens, know what to do next.</h2>' +
-              '<p class="lead">Clear pathways, official ICB forms and a claims team that keeps you informed. The moment you need us is the moment we are built for.</p>' +
+              '<h2 id="claims-feature-title">' + R.esc(T("When something happens, know what to do next.", "Cuando algo pasa, sepa qué hacer.")) + "</h2>" +
+              '<p class="lead">' + R.esc(T("Clear pathways, official ICB forms and a claims team that keeps you informed. The moment you need us is the moment we are built for.",
+                "Vías claras, formularios oficiales de ICB y un equipo de reclamos que le mantiene informado. El momento en que nos necesita es para el que estamos hechos.")) + "</p>" +
               '<div class="btn-row" style="margin-top: var(--sp-5);">' +
-                '<a class="btn btn-gold" href="#/claims">How claims work</a>' +
-                '<a class="btn btn-light" href="#/claims">Find your claim form</a>' +
+                '<a class="btn btn-gold" href="#/claims">' + R.esc(T("How claims work", "Cómo funcionan los reclamos")) + "</a>" +
+                '<a class="btn btn-light" href="#/claims">' + R.esc(T("Find your claim form", "Encuentre su formulario de reclamo")) + "</a>" +
               "</div>" +
               '<div class="values-panel rv" style="margin-top: var(--sp-6);">' +
-                "<h3>The ICB claims service is built on</h3>" +
+                "<h3>" + R.esc(T("The ICB claims service is built on", "El servicio de reclamos de ICB se basa en")) + "</h3>" +
                 '<ul class="values-list">' + values + "</ul>" +
               "</div>" +
             "</div>" +
-            '<ol class="crail" aria-label="Four steps to reach the ICB claims team">' + rail + "</ol>" +
+            '<ol class="crail" aria-label="' + R.esc(T("Four steps to reach the ICB claims team", "Cuatro pasos para llegar al equipo de reclamos de ICB")) + '">' + rail + "</ol>" +
           "</div>" +
         "</div>" +
       "</section>";
@@ -556,18 +560,18 @@ ICB.views = ICB.views || {};
         '<div class="shell home-nation">' +
           '<div>' +
             ICB.render.sectionHead({
-              eyebrow: "Nationwide",
-              title: "From Corozal to Punta Gorda.",
+              eyebrow: { en: "Nationwide", es: "En todo el país" },
+              title: { en: "From Corozal to Punta Gorda.", es: "De Corozal a Punta Gorda." },
               sub: ICB.DATA.site.org.serviceQuote,
               id: "nation-title"
             }) +
             '<div class="btn-row rv">' +
-              '<a class="btn btn-primary" href="#/locations">Find ICB near you</a>' +
-              '<a class="btn btn-ghost" href="#/contact?topic=branch-info">Branch information</a>' +
+              '<a class="btn btn-primary" href="#/locations">' + ICB.render.esc(T("Find ICB near you", "Encuentre ICB cerca de usted")) + "</a>" +
+              '<a class="btn btn-ghost" href="#/contact?topic=branch-info">' + ICB.render.esc(T("Branch information", "Información de sucursales")) + "</a>" +
             "</div>" +
           "</div>" +
           '<div class="home-nation-map rv">' +
-            ICB.art.belizeMap({ markers: markers, labels: false, mini: true, ariaLabel: "Map of Belize with ICB branch and agency locations marked" }) +
+            ICB.art.belizeMap({ markers: markers, labels: false, mini: true, ariaLabel: ICB.s("mapLabel") }) +
           "</div>" +
         "</div>" +
       "</section>";
@@ -582,21 +586,24 @@ ICB.views = ICB.views || {};
             '<div class="biz-art art-panel" data-img-slot="business-band" aria-hidden="true">' + ICB.art.panel("business") + "</div>" +
           "</div>" +
           '<div class="rv">' +
-            '<span class="eyebrow">Business insurance</span>' +
-            '<h2 id="biz-title">Protection for the business you have built.</h2>' +
-            "<p>ICB offers insurance options for Belizean businesses across property, vehicles, cargo, marine and liability needs.</p>" +
+            '<span class="eyebrow">' + R.esc(T("Business insurance", "Seguros para empresas")) + "</span>" +
+            '<h2 id="biz-title">' + R.esc(T("Protection for the business you have built.", "Protección para el negocio que ha construido.")) + "</h2>" +
+            "<p>" + R.esc(T("ICB offers insurance options for Belizean businesses across property, vehicles, cargo, marine and liability needs.",
+              "ICB ofrece opciones de seguro para negocios beliceños en propiedad, vehículos, carga, embarcaciones y responsabilidad civil.")) + "</p>" +
             /* Two figures, both of them checkable: the districts ICB has
                locations in, counted from the location dataset, and the
                founding year. The old "7 lines of cover" chip was a count
                of ICB's published categories, and a number like that is
                wrong the day the list changes. */
             '<div class="stat-chips">' +
-              '<span class="stat-chip"><span class="num">' + ICB.DATA.districts.length + '</span><span class="lbl">Districts served</span></span>' +
-              '<span class="stat-chip"><span class="num">' + ICB.DATA.site.org.founded + '</span><span class="lbl">Serving Belize since</span></span>' +
+              '<span class="stat-chip"><span class="num">' + ICB.DATA.districts.length + '</span><span class="lbl">' +
+                R.esc(T("Districts served", "Distritos atendidos")) + "</span></span>" +
+              '<span class="stat-chip"><span class="num">' + ICB.DATA.site.org.founded + '</span><span class="lbl">' +
+                R.esc(T("Serving Belize since", "Al servicio de Belice desde")) + "</span></span>" +
             "</div>" +
             '<div class="btn-row">' +
-              '<a class="btn btn-primary" href="#/business">Explore business insurance</a>' +
-              '<a class="btn btn-ghost" href="#/contact?topic=business">Request a quote</a>' +
+              '<a class="btn btn-primary" href="#/business">' + R.esc(ICB.s("exploreBusiness")) + "</a>" +
+              '<a class="btn btn-ghost" href="#/contact?topic=business">' + R.esc(ICB.s("requestQuote")) + "</a>" +
             "</div>" +
           "</div>" +
         "</div>" +
@@ -606,8 +613,8 @@ ICB.views = ICB.views || {};
   /* ICB in Motion: the campaign film, in its own media area. */
   function motion() {
     return ICB.render.motionSection({
-      title: "The ICB films.",
-      sub: "ICB's campaign film, in English and Spanish."
+      title: { en: "The ICB films.", es: "Los videos de ICB." },
+      sub: { en: "ICB's campaign film, in English and Spanish.", es: "El video de campaña de ICB, en inglés y en español." }
     });
   }
 
@@ -619,15 +626,15 @@ ICB.views = ICB.views || {};
       '<section class="section section--tint" aria-labelledby="gallery-title">' +
         '<div class="shell">' +
           R.sectionHead({
-            eyebrow: "ICB Across Belize",
-            title: "A branch in your part of the country.",
-            sub: "From Corozal to Punta Gorda, ICB serves communities across Belize through a nationwide network of branches and agencies.",
+            eyebrow: { en: "ICB Across Belize", es: "ICB en todo Belice" },
+            title: { en: "A branch in your part of the country.", es: "Una sucursal en su zona del país." },
+            sub: { en: "From Corozal to Punta Gorda, ICB serves communities across Belize through a nationwide network of branches and agencies.", es: "De Corozal a Punta Gorda, ICB atiende a las comunidades de Belice a través de una red nacional de sucursales y agencias." },
             center: true,
             id: "gallery-title"
           }) +
           '<div class="gallery gallery--branches">' + R.branchGallery(6) + "</div>" +
           '<div class="btn-row" style="margin-top: var(--sp-6); justify-content: center;">' +
-            '<a class="btn btn-outline" href="#/gallery">See the full gallery</a>' +
+            '<a class="btn btn-outline" href="#/gallery">' + R.esc(T("See the full gallery", "Ver la galería completa")) + "</a>" +
           "</div>" +
         "</div>" +
       "</section>";
@@ -695,7 +702,7 @@ ICB.views = ICB.views || {};
         '<figure class="lightbox" role="dialog" aria-modal="true" aria-label="' + R.esc(g.caption) + '">' +
           '<img data-asset="' + R.esc(g.src) + '" alt="' + R.esc(g.alt) + '">' +
           '<figcaption>' + R.esc(g.caption) + "</figcaption>" +
-          '<button type="button" class="lightbox-close" data-lb-close aria-label="Close image">' + ICB.art.glyph("close") + "</button>" +
+          '<button type="button" class="lightbox-close" data-lb-close aria-label="' + R.esc(ICB.s("closeImage")) + '">' + ICB.art.glyph("close") + "</button>" +
         "</figure>";
       document.body.appendChild(overlay);
       /* The overlay is a child of body, not of the view mount, so neither
@@ -729,15 +736,15 @@ ICB.views = ICB.views || {};
         '<div class="shell home-resources rv">' +
           '<div>' +
             ICB.render.sectionHead({
-              eyebrow: "Resource Centre",
-              title: "Know your cover.",
-              sub: "Official forms, safety information and useful ICB resources in one place.",
+              eyebrow: { en: "Resource Centre", es: "Centro de recursos" },
+              title: { en: "Know your cover.", es: "Conozca su cobertura." },
+              sub: { en: "Official forms, safety information and useful ICB resources in one place.", es: "Formularios oficiales, información de seguridad y recursos útiles de ICB en un solo lugar." },
               rule: false,
               id: "res-teaser-title"
             }) +
           "</div>" +
           '<div class="btn-row">' +
-            '<a class="btn btn-outline" href="#/resources">Visit the Resource Centre</a>' +
+            '<a class="btn btn-outline" href="#/resources">' + ICB.render.esc(T("Visit the Resource Centre", "Visitar el Centro de recursos")) + "</a>" +
           "</div>" +
         "</div>" +
       "</section>";
@@ -751,37 +758,37 @@ ICB.views = ICB.views || {};
         '<div class="contact-band-art" aria-hidden="true">' + ICB.art.panel("contact") + "</div>" +
         '<div class="shell"><div class="contact-band-grid">' +
           '<div class="rv">' +
-            '<span class="eyebrow">Contact ICB</span>' +
-            '<h2 id="contact-band-title">Talk to a person, not a process.</h2>' +
+            '<span class="eyebrow">' + R.esc(ICB.s("contactICB")) + "</span>" +
+            '<h2 id="contact-band-title">' + R.esc(T("Talk to a person, not a process.", "Hable con una persona, no con un proceso.")) + "</h2>" +
             "<p>" + R.esc(site.org.serviceQuote) + "</p>" +
             '<div class="method-rows">' +
               '<a class="method-row" href="tel:' + R.esc(site.corporate.phoneTel) + '">' +
                 '<span class="method-icon">' + ICB.art.glyph("phone") + "</span>" +
-                '<span><span class="m-label">Call ' + R.esc(site.corporate.phoneDisplay) + "</span>" +
-                '<span class="m-sub">Corporate Office, Belize City</span></span></a>' +
+                '<span><span class="m-label">' + R.esc(ICB.s("callN", { n: site.corporate.phoneDisplay })) + "</span>" +
+                '<span class="m-sub">' + R.esc(T("Corporate Office, Belize City", "Oficina Corporativa, Ciudad de Belice")) + "</span></span></a>" +
               '<button type="button" class="method-row" data-wa-directory>' +
                 '<span class="method-icon method-icon--wa">' + ICB.art.waIcon("roundel") + "</span>" +
-                '<span><span class="m-label">WhatsApp ICB</span>' +
-                '<span class="m-sub">Every branch, grouped by district</span></span></button>' +
+                '<span><span class="m-label">' + R.esc(ICB.s("whatsappICB")) + "</span>" +
+                '<span class="m-sub">' + R.esc(T("Every branch, grouped by district", "Todas las sucursales, agrupadas por distrito")) + "</span></span></button>" +
               '<a class="method-row" href="mailto:' + R.esc(site.corporate.email) + '">' +
                 '<span class="method-icon">' + ICB.art.glyph("mail") + "</span>" +
                 '<span><span class="m-label">' + R.esc(site.corporate.email) + "</span>" +
-                '<span class="m-sub">General enquiries</span></span></a>' +
+                '<span class="m-sub">' + R.esc(T("General enquiries", "Consultas generales")) + "</span></span></a>" +
               '<a class="method-row" href="#/locations">' +
                 '<span class="method-icon">' + ICB.art.glyph("marker") + "</span>" +
-                '<span><span class="m-label">Walk into a branch</span>' +
-                '<span class="m-sub">Branches and agency partners nationwide</span></span></a>' +
+                '<span><span class="m-label">' + R.esc(T("Walk into a branch", "Pase por una sucursal")) + "</span>" +
+                '<span class="m-sub">' + R.esc(T("Branches and agency partners nationwide", "Sucursales y agencias en todo el país")) + "</span></span></a>" +
             "</div>" +
             R.assistBadge() +
           "</div>" +
           '<div class="contact-band-card rv">' +
-            "<h3>Send ICB a message</h3>" +
+            "<h3>" + R.esc(T("Send ICB a message", "Envíe un mensaje a ICB")) + "</h3>" +
             "<address>" + R.esc(site.corporate.label) + "<br>" +
               R.esc(site.corporate.address) + ", " + R.esc(site.corporate.poBox) + "<br>" +
-              R.esc(site.corporate.city) + ", Belize</address>" +
+              R.esc(site.corporate.city) + ", " + R.esc(ICB.s("belize")) + "</address>" +
             '<div class="btn-row">' +
-              '<a class="btn btn-gold" href="#/contact">Send a message</a>' +
-              '<a class="btn btn-light" href="#/locations">Find a branch</a>' +
+              '<a class="btn btn-gold" href="#/contact">' + R.esc(T("Send a message", "Enviar un mensaje")) + "</a>" +
+              '<a class="btn btn-light" href="#/locations">' + R.esc(T("Find a branch", "Encontrar una sucursal")) + "</a>" +
             "</div>" +
           "</div>" +
         "</div></div>" +
@@ -789,7 +796,7 @@ ICB.views = ICB.views || {};
   }
 
   ICB.views.home = {
-    title: "ICB | Protecting Belize since 1981",
+    title: { en: "ICB | Protecting Belize since 1981", es: "ICB | Protegiendo a Belice desde 1981" },
     render: function () {
       return heroSlider() + actionBar() + categories() + guidedDiscovery() +
         claimsFeature() + nationwide() + bizFeature() + motion() + gallery() +

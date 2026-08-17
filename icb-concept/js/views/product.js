@@ -29,6 +29,10 @@ ICB.views = ICB.views || {};
 (function () {
   "use strict";
 
+  /* Copy that belongs to this view only, written in both languages
+     where it is used. See ICB.T in js/i18n.js. */
+  var T = ICB.T;
+
   function labelledList(label, items, R) {
     if (!items || !items.length) return "";
     var li = items.map(function (c) {
@@ -93,7 +97,7 @@ ICB.views = ICB.views || {};
     }).join("");
     return '<section class="section section--tint" aria-labelledby="cov-title">' +
       '<div class="shell">' +
-        R.sectionHead({ eyebrow: "Coverage options", title: block.title, sub: block.sub || null, id: "cov-title" }) +
+        R.sectionHead({ eyebrow: ICB.s("coverageOptions"), title: block.title, sub: block.sub || null, id: "cov-title" }) +
         '<div class="cov-grid">' + block.items.map(function (i) { return coverageCard(i, R); }).join("") + "</div>" +
         (after ? '<div class="prod-prose prod-prose--after rv">' + after + "</div>" : "") +
       "</div>" +
@@ -111,7 +115,7 @@ ICB.views = ICB.views || {};
       '<div class="shell">' +
         '<div class="prod-who">' +
           '<div class="rv">' +
-            '<span class="eyebrow">Relevance</span>' +
+            '<span class="eyebrow">' + ICB.s("relevance") + "</span>" +
             '<h2 id="who-for-title">' + R.esc(block.title) + "</h2>" +
             (block.body ? "<p>" + R.esc(block.body) + "</p>" : "") +
           "</div>" +
@@ -162,7 +166,7 @@ ICB.views = ICB.views || {};
   ICB.views.product = {
     title: function (ctx) {
       var p = ICB.DATA.productById(ctx.productId);
-      return (p ? p.name : "Insurance") + " | ICB";
+      return (p ? p.name : ICB.t({ en: "Insurance", es: "Seguros" })) + " | ICB";
     },
     render: function (ctx) {
       var R = ICB.render;
@@ -186,8 +190,8 @@ ICB.views = ICB.views || {};
           return c ? '<a class="msg-action" href="#/claims@' + R.esc(c.anchor) + '">' + ICB.art.glyph(c.glyph) +
             "<span>" + R.esc(c.name) + "</span></a>" : "";
         }).join("");
-        claims = '<div class="prod-claims rv"><h3>If something happens</h3>' +
-          "<p>The official ICB claim forms and the route to the claims team are one click away.</p>" +
+        claims = '<div class="prod-claims rv"><h3>' + R.esc(ICB.s("ifSomethingHappens")) + "</h3>" +
+          "<p>" + R.esc(ICB.s("claimFormsNote")) + "</p>" +
           '<div class="msg-actions">' + claims + "</div></div>";
       }
 
@@ -197,7 +201,7 @@ ICB.views = ICB.views || {};
       }).join("");
 
       var statusNote = p.status
-        ? '<div class="notice rv"><p><strong>Please note.</strong> ' + R.esc(p.status.text) + "</p></div>"
+        ? '<div class="notice rv"><p><strong>' + R.esc(ICB.s("pleaseNote")) + "</strong> " + R.esc(p.status.text) + "</p></div>"
         : "";
 
       /* ANA Seguros pathways, exactly as ICB presents them. */
@@ -208,9 +212,9 @@ ICB.views = ICB.views || {};
             R.esc(anaUrl) + '" target="_blank" rel="noopener noreferrer">' + R.esc(a.label) + "</a>";
         }).join("");
         ana = '<div class="ana-block rv">' +
-          "<h3>Through ANA Seguros</h3>" +
+          "<h3>" + R.esc(ICB.s("throughANA")) + "</h3>" +
           '<div class="btn-row">' + btns + "</div>" +
-          '<p class="pathway-note">Opens ICB&#39;s Mexican Insurance page on icbinsurance.com.</p>' +
+          '<p class="pathway-note">' + R.esc(ICB.s("anaNote")) + "</p>" +
         "</div>";
       }
 
@@ -218,39 +222,42 @@ ICB.views = ICB.views || {};
       var heroActions;
       if (suspended) {
         heroActions =
-          '<a class="btn btn-gold" href="#/contact?topic=other&category=' + R.esc(p.id) + '">Contact ICB</a>' +
-          '<a class="btn btn-light" href="tel:' + R.esc(site.corporate.phoneTel) + '">Call ' + R.esc(site.corporate.phoneDisplay) + "</a>";
+          '<a class="btn btn-gold" href="#/contact?topic=other&category=' + R.esc(p.id) + '">' + R.esc(ICB.s("contactICB")) + "</a>" +
+          '<a class="btn btn-light" href="tel:' + R.esc(site.corporate.phoneTel) + '">' + R.esc(ICB.s("callN", { n: site.corporate.phoneDisplay })) + "</a>";
       } else if (ana) {
         heroActions =
-          '<a class="btn btn-gold" href="' + R.esc(anaUrl) + '" target="_blank" rel="noopener noreferrer">Buy Now</a>' +
-          '<a class="btn btn-light" href="tel:' + R.esc(site.corporate.phoneTel) + '">Call ' + R.esc(site.corporate.phoneDisplay) + "</a>";
+          '<a class="btn btn-gold" href="' + R.esc(anaUrl) + '" target="_blank" rel="noopener noreferrer">' + R.esc(ICB.s("buyNow")) + "</a>" +
+          '<a class="btn btn-light" href="tel:' + R.esc(site.corporate.phoneTel) + '">' + R.esc(ICB.s("callN", { n: site.corporate.phoneDisplay })) + "</a>";
       } else {
         heroActions =
-          '<a class="btn btn-gold" href="' + R.esc(quoteHref) + '">Request a quote</a>' +
-          '<a class="btn btn-light" href="tel:' + R.esc(site.corporate.phoneTel) + '">Call ' + R.esc(site.corporate.phoneDisplay) + "</a>";
+          '<a class="btn btn-gold" href="' + R.esc(quoteHref) + '">' + R.esc(ICB.s("requestQuote")) + "</a>" +
+          '<a class="btn btn-light" href="tel:' + R.esc(site.corporate.phoneTel) + '">' + R.esc(ICB.s("callN", { n: site.corporate.phoneDisplay })) + "</a>";
       }
 
       /* Next-step band. */
       var bandActions = [];
-      if (quotable) bandActions.push({ label: "Request a quote", href: quoteHref });
-      if (ana) bandActions.push({ label: "Go to ANA Seguros pathways", href: anaUrl, external: true });
-      if (suspended) bandActions.push({ label: "Contact ICB", href: "#/contact?topic=other&category=" + p.id });
-      if (!quotable && !ana && !suspended) bandActions.push({ label: "Contact ICB", href: "#/contact?topic=other&category=" + p.id });
-      bandActions.push({ label: "Call " + site.corporate.phoneDisplay, href: "tel:" + site.corporate.phoneTel });
-      bandActions.push({ label: "Visit a branch", href: "#/locations" });
+      if (quotable) bandActions.push({ label: ICB.s("requestQuote"), href: quoteHref });
+      if (ana) bandActions.push({ label: ICB.s("goToANA"), href: anaUrl, external: true });
+      if (suspended) bandActions.push({ label: ICB.s("contactICB"), href: "#/contact?topic=other&category=" + p.id });
+      if (!quotable && !ana && !suspended) bandActions.push({ label: ICB.s("contactICB"), href: "#/contact?topic=other&category=" + p.id });
+      bandActions.push({ label: ICB.s("callN", { n: site.corporate.phoneDisplay }), href: "tel:" + site.corporate.phoneTel });
+      bandActions.push({ label: ICB.s("visitABranch"), href: "#/locations" });
 
+      /* ICB's product names stay in English inside a Spanish sentence,
+         so the sentence is a slotted string rather than a translation of
+         the whole line. */
       var bandTitle = suspended
-        ? "Contact ICB about " + p.name + "."
+        ? ICB.s("contactAboutProduct", { product: p.name })
         : quotable
-          ? "Ready to talk about " + p.name + "?"
-          : "Talk to ICB about " + p.name + ".";
+          ? ICB.s("readyToTalk", { product: p.name })
+          : ICB.s("talkAboutProduct", { product: p.name });
       var bandBody = suspended
-        ? "Call, send a message, or walk into any branch and the ICB team will share the current information."
+        ? ICB.s("suspendedBandBody")
         : quotable
           ? ICB.DATA.quoteNote
-          : "Call, send a message, or walk into any branch and an ICB representative will take it from there.";
+          : ICB.s("plainBandBody");
 
-      var whoHeading = suspended ? "Current status" : "What ICB publishes";
+      var whoHeading = ICB.s(suspended ? "currentStatus" : "whatICBPublishes");
       /* Nothing to list means no reason for a two-column grid. */
       var single = !p.covers.length && !p.availableFor && !ana;
 
@@ -264,8 +271,8 @@ ICB.views = ICB.views || {};
           '<div class="shell page-hero-inner">' +
             /* Two levels down, so the trail carries both rungs. */
             R.crumbs([
-              { label: "Home", href: "#/" },
-              { label: "Insurance", href: "#/insurance" },
+              { label: ICB.s("home"), href: "#/" },
+              { label: { en: "Insurance", es: "Seguros" }, href: "#/insurance" },
               { label: p.name }
             ]) +
             '<span class="eyebrow">' + R.esc(p.kicker) + "</span>" +
@@ -289,17 +296,17 @@ ICB.views = ICB.views || {};
                 '<h2 id="who-title">' + R.esc(whoHeading) + "</h2>" +
                 statusNote +
                 (p.audience ? "<p>" + R.esc(p.audience) + "</p>" : "") +
-                labelledList(p.coversLabel || "What ICB offers", p.covers, R) +
-                labelledList("Available for", p.availableFor, R) +
+                labelledList(p.coversLabel || ICB.s("whatICBOffers"), p.covers, R) +
+                labelledList(ICB.s("availableFor"), p.availableFor, R) +
                 ana +
               "</div>" +
               '<aside class="prod-side rv">' +
-                "<h3>Good to know</h3>" +
+                "<h3>" + R.esc(ICB.s("goodToKnow")) + "</h3>" +
                 '<ul class="gtk-list">' + gtk + "</ul>" +
                 claims +
                 (p.campaign
                   ? '<figure class="campaign-inset"><img data-asset="' + R.esc(p.campaign.src) + '" alt="' + R.esc(p.campaign.alt) + '" loading="lazy">' +
-                    '<figcaption>From ICB&#39;s Protect Your Investment campaign</figcaption></figure>'
+                    '<figcaption>' + R.esc(ICB.s("campaignCaption")) + "</figcaption></figure>"
                   : "") +
               "</aside>" +
             "</div>" +
@@ -309,10 +316,10 @@ ICB.views = ICB.views || {};
         forWhoSection(p.forWho, R) +
         usefulSection(p.useful, R) +
 
-        '<section class="section section--flush-top" aria-label="Next steps">' +
+        '<section class="section section--flush-top" aria-label="' + T("Next steps", "Siguientes pasos") + '">' +
           '<div class="shell">' +
             R.band({
-              eyebrow: "Take the next step",
+              eyebrow: ICB.s("nextStepEyebrow"),
               title: bandTitle,
               body: bandBody,
               motif: "heritage",
@@ -326,7 +333,7 @@ ICB.views = ICB.views || {};
             /* A neutral signpost. ICB does not publish guidance on which
                categories are bought together, so the concept does not
                suggest combinations. */
-            R.sectionHead({ eyebrow: "Related", title: "Other ICB insurance categories.", id: "rel-title" }) +
+            R.sectionHead({ eyebrow: ICB.s("relatedEyebrow"), title: ICB.s("relatedTitle"), id: "rel-title" }) +
             '<div class="card-grid card-grid--pair">' + related + "</div>" +
           "</div>" +
         "</section>";

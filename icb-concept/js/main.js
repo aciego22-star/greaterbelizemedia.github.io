@@ -267,7 +267,18 @@ window.ICB = window.ICB || {};
   /* Everything outside the routed view. Re-run on a language change, so
      the header, menu, footer and quick bar restate themselves without a
      reload. */
+  /* The two labels that live in index.html rather than in a renderer.
+     They are the first and last things a keyboard or screen reader user
+     meets, so they restate themselves with everything else. */
+  function renderStaticLabels() {
+    var skip = document.querySelector(".skip-link");
+    if (skip) skip.textContent = ICB.s("skipToContent");
+    var menu = document.querySelector("[data-menu-toggle] .visually-hidden");
+    if (menu) menu.textContent = ICB.s("menu");
+  }
+
   ICB.renderChrome = function () {
+    renderStaticLabels();
     renderLangSwitch();
     renderNav();
     renderMenu();

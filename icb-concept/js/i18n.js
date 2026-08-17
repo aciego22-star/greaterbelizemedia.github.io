@@ -177,4 +177,16 @@ window.ICB = window.ICB || {};
      in a template than ICB.i18n.t("..."). */
   ICB.t = t;
   ICB.s = s;
+
+  /* A sentence written in both languages at the point of use.
+
+     Most translated copy lives in the data files as an { en, es } pair,
+     and the dictionary in js/data/strings.js carries the labels that
+     repeat. What is left is prose that belongs to one view and appears
+     nowhere else: a page heading, a lead paragraph. Lifting those into a
+     dictionary would put the English and the Spanish in one file and the
+     markup that uses them in another, which is how a heading gets changed
+     in one language and not the other. So they stay in the template, both
+     languages side by side, and T() resolves the pair. */
+  ICB.T = function (en, es) { return t({ en: en, es: es }); };
 })();

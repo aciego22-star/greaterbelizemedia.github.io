@@ -19,6 +19,10 @@ ICB.views = ICB.views || {};
 (function () {
   "use strict";
 
+  /* Copy that belongs to this view only, written in both languages
+     where it is used. See ICB.T in js/i18n.js. */
+  var T = ICB.T;
+
   /* Only ever used to choose which verified store link to lead with. */
   function platform() {
     var ua = navigator.userAgent || "";
@@ -38,19 +42,19 @@ ICB.views = ICB.views || {};
          opens the app when it is already installed. */
       actions =
         '<a class="btn btn-primary btn-sm" href="' + R.esc(store) + '"' + ext + ">" +
-          "Open or get the app" + R.extIcon() + R.extNote(R.hostOf(store)) + "</a>" +
+          ICB.s("openOrGetApp") + R.extIcon() + R.extNote(R.hostOf(store)) + "</a>" +
         '<a class="btn btn-ghost btn-sm" href="' + R.esc(bank.online) + '"' + ext + ">" +
-          "Use online banking" + R.extIcon() + R.extNote(R.hostOf(bank.online)) + "</a>";
+          ICB.s("useOnlineBanking") + R.extIcon() + R.extNote(R.hostOf(bank.online)) + "</a>";
     } else {
       /* On a desktop, online banking leads and the store pages stay
          available for whoever is setting a phone up. */
       actions =
         '<a class="btn btn-primary btn-sm" href="' + R.esc(bank.online) + '"' + ext + ">" +
-          "Use online banking" + R.extIcon() + R.extNote(R.hostOf(bank.online)) + "</a>";
+          ICB.s("useOnlineBanking") + R.extIcon() + R.extNote(R.hostOf(bank.online)) + "</a>";
     }
 
     var stores = store ? "" :
-      '<p class="bank-stores">Get the app: ' +
+      '<p class="bank-stores">' + R.esc(ICB.s("getTheApp")) + " " +
         '<a href="' + R.esc(bank.ios) + '"' + ext + ">iOS" + R.extNote("apps.apple.com") + "</a>" +
         '<span aria-hidden="true"> / </span>' +
         '<a href="' + R.esc(bank.android) + '"' + ext + ">Android" + R.extNote("play.google.com") + "</a>" +
@@ -60,14 +64,14 @@ ICB.views = ICB.views || {};
       '<article class="bank-card rv">' +
         "<h3>" + R.esc(bank.name) + "</h3>" +
         '<dl class="bank-meta">' +
-          "<div><dt>Account name</dt><dd>" + R.esc(bank.accountName) + "</dd></div>" +
+          "<div><dt>" + R.esc(ICB.s("accountName")) + "</dt><dd>" + R.esc(bank.accountName) + "</dd></div>" +
         "</dl>" +
         '<div class="bank-acct">' +
-          '<span class="bank-acct-label" id="acct-' + R.esc(bank.id) + '">Account number</span>' +
+          '<span class="bank-acct-label" id="acct-' + R.esc(bank.id) + '">' + R.esc(ICB.s("accountNumber")) + "</span>" +
           '<span class="bank-acct-num" data-account>' + R.esc(bank.account) + "</span>" +
           '<button type="button" class="bank-copy" data-copy="' + R.esc(bank.account) + '"' +
             ' aria-describedby="acct-' + R.esc(bank.id) + '">' +
-            ICB.art.glyph("document") + '<span data-copy-label>Copy account number</span>' +
+            ICB.art.glyph("document") + '<span data-copy-label>' + R.esc(ICB.s("copyAccount")) + "</span>" +
           "</button>" +
         "</div>" +
         '<div class="btn-row bank-actions">' + actions + "</div>" +
@@ -85,25 +89,25 @@ ICB.views = ICB.views || {};
       if (!here.length) return "";
       var rows = here.map(function (r) {
         return r.lines.map(function (w) {
-          var name = r.location.name + (w.label ? " (" + w.label + ")" : "");
+          var name = r.location.name + (w.label ? " (" + ICB.t(w.label) + ")" : "");
           return '<a class="wa-row" href="' + R.esc(R.waHref(w.wa, pay.receipts.prefill)) + '"' + R.extAttrs() + ">" +
             ICB.art.waIcon("roundel") +
             '<span class="wa-row-main">' +
               '<span class="wa-row-name">' + R.esc(name) + "</span>" +
             "</span>" +
-            '<span class="wa-row-cta">Send confirmation</span>' +
+            '<span class="wa-row-cta">' + R.esc(ICB.s("sendConfirmation")) + "</span>" +
             R.extNote("wa.me") +
           "</a>";
         }).join("");
       }).join("");
-      return '<section class="wa-group" aria-label="' + R.esc(d) + ' District"><h3>' + R.esc(d) + "</h3>" + rows + "</section>";
+      return '<section class="wa-group" aria-label="' + R.esc(ICB.s("district", { d: d })) + '"><h3>' + R.esc(d) + "</h3>" + rows + "</section>";
     }).join("");
 
     return '<div class="receipt-dir rv">' + groups + "</div>";
   }
 
   ICB.views.payments = {
-    title: "Make a payment | ICB",
+    title: { en: "Make a payment | ICB", es: "Hacer un pago | ICB" },
     render: function () {
       var R = ICB.render;
       var site = ICB.DATA.site;
@@ -116,8 +120,8 @@ ICB.views = ICB.views || {};
         '<section class="page-hero on-dark" aria-labelledby="pay-title">' +
           '<div class="page-hero-art art-panel" data-img-slot="payments-hero" aria-hidden="true">' + ICB.art.panel("heritage") + "</div>" +
           '<div class="shell page-hero-inner">' +
-            R.crumbsHome("Make a payment") +
-            '<span class="eyebrow">Payments</span>' +
+            R.crumbsHome(ICB.s("makeAPayment")) +
+            '<span class="eyebrow">' + R.esc(ICB.s("payments")) + "</span>" +
             '<h1 id="pay-title">' + R.esc(pay.heading) + "</h1>" +
             '<p class="hero-lead">' + R.esc(pay.standfirst) + "</p>" +
           "</div>" +
@@ -126,7 +130,7 @@ ICB.views = ICB.views || {};
         '<section class="section" aria-labelledby="pay-how-title">' +
           '<div class="shell">' +
             '<div class="prod-prose rv">' +
-              '<h2 id="pay-how-title">How paying ICB works.</h2>' +
+              '<h2 id="pay-how-title">' + R.esc(ICB.s("howPayingWorks")) + "</h2>" +
               pay.intro.map(function (t) { return "<p>" + R.esc(t) + "</p>"; }).join("") +
             "</div>" +
           "</div>" +
@@ -134,7 +138,7 @@ ICB.views = ICB.views || {};
 
         '<section class="section section--tint section--flush-top" aria-labelledby="pay-steps-title">' +
           '<div class="shell">' +
-            R.sectionHead({ eyebrow: "Step by step", title: "Six steps, start to finish.", id: "pay-steps-title" }) +
+            R.sectionHead({ eyebrow: ICB.s("stepByStep"), title: ICB.s("sixSteps"), id: "pay-steps-title" }) +
             R.steps(pay.steps) +
           "</div>" +
         "</section>" +
@@ -142,20 +146,20 @@ ICB.views = ICB.views || {};
         '<section class="section" aria-labelledby="pay-banks-title">' +
           '<div class="shell">' +
             R.sectionHead({
-              eyebrow: "ICB bank accounts",
-              title: "Transfer to any one of these accounts.",
-              sub: "Every account is held in the name " + pay.accountName + ".",
+              eyebrow: ICB.s("icbBankAccounts"),
+              title: ICB.s("transferToAccounts"),
+              sub: ICB.s("accountsHeldAs", { name: pay.accountName }),
               id: "pay-banks-title"
             }) +
             '<div class="bank-grid">' + banks + "</div>" +
-            '<p class="bank-foot rv">The transfer happens in your bank’s app or online banking, not on this page.</p>' +
+            '<p class="bank-foot rv">' + R.esc(ICB.s("transferElsewhere")) + "</p>" +
           "</div>" +
         "</section>" +
 
         '<section class="section section--tint section--flush-top" aria-labelledby="pay-wa-title">' +
           '<div class="shell">' +
             R.sectionHead({
-              eyebrow: "Step 5",
+              eyebrow: ICB.s("stepFive"),
               title: pay.receipts.title,
               sub: pay.receipts.body,
               id: "pay-wa-title"
@@ -165,17 +169,17 @@ ICB.views = ICB.views || {};
           "</div>" +
         "</section>" +
 
-        '<section class="section section--flush-top" aria-label="Help with a payment">' +
+        '<section class="section section--flush-top" aria-label="' + T("Help with a payment", "Ayuda con un pago") + '">' +
           '<div class="shell">' +
             R.band({
-              eyebrow: "Here to help",
+              eyebrow: ICB.s("hereToHelp"),
               title: pay.help.title,
               body: pay.help.body,
               motif: "heritage",
               actions: [
-                { label: "Call " + site.corporate.phoneDisplay, href: "tel:" + site.corporate.phoneTel },
-                { label: "Email " + site.corporate.email, href: "mailto:" + site.corporate.email },
-                { label: "Find your branch", href: "#/locations" }
+                { label: ICB.s("callN", { n: site.corporate.phoneDisplay }), href: "tel:" + site.corporate.phoneTel },
+                { label: ICB.s("emailN", { n: site.corporate.email }), href: "mailto:" + site.corporate.email },
+                { label: ICB.s("findYourBranch"), href: "#/locations" }
               ]
             }) +
             '<p class="pay-help-note rv">' + R.esc(pay.help.emailNote) + "</p>" +
@@ -197,7 +201,7 @@ ICB.views = ICB.views || {};
         btn.setAttribute("data-original", original);
 
         function done(okay) {
-          label.textContent = okay ? "Copied" : "Press and hold to copy";
+          label.textContent = ICB.s(okay ? "copied" : "copyManually");
           btn.classList.toggle("is-copied", okay);
           btn.classList.toggle("is-failed", !okay);
           clearTimeout(btn.__t);

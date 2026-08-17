@@ -10,18 +10,22 @@ window.ICB = window.ICB || {};
 (function () {
   "use strict";
 
+  /* Copy that belongs to this view only, written in both languages
+     where it is used. See ICB.T in js/i18n.js. */
+  var T = ICB.T;
+
   var overlay = null, opener = null;
 
   function rowsFor(location) {
     var R = ICB.render;
     return location.whatsapps.map(function (w) {
-      var name = location.name + (w.label ? " (" + w.label + ")" : "");
+      var name = location.name + (w.label ? " (" + ICB.t(w.label) + ")" : "");
       return '<a class="wa-row" href="' + R.esc(R.waHref(w.wa)) + '"' + R.extAttrs() + ">" +
         ICB.art.waIcon("roundel") +
         '<span class="wa-row-main">' +
           '<span class="wa-row-name">' + R.esc(name) + "</span>" +
         "</span>" +
-        '<span class="wa-row-cta">Chat on WhatsApp</span>' +
+        '<span class="wa-row-cta">' + R.esc(ICB.s("chatOnWhatsApp")) + "</span>" +
         R.extNote("wa.me") +
       "</a>";
     }).join("");
@@ -32,7 +36,7 @@ window.ICB = window.ICB || {};
     var groups = ICB.DATA.districts.map(function (d) {
       var locs = ICB.DATA.whatsappLines().filter(function (l) { return l.district === d; });
       if (!locs.length) return "";
-      return '<section class="wa-group" aria-label="' + R.esc(d) + ' District">' +
+      return '<section class="wa-group" aria-label="' + R.esc(ICB.s("district", { d: d })) + '">' +
         '<h3>' + R.esc(d) + "</h3>" +
         locs.map(rowsFor).join("") +
       "</section>";
@@ -43,12 +47,12 @@ window.ICB = window.ICB || {};
         '<header class="wa-head">' +
           ICB.art.waIcon("roundel", "wa-roundel wa-head-icon") +
           '<div class="wa-head-text">' +
-            '<strong id="wa-dir-title">WhatsApp ICB</strong>' +
+            '<strong id="wa-dir-title">' + R.esc(ICB.s("whatsappICB")) + "</strong>" +
             /* Not every ICB location publishes a WhatsApp line, and the
                wording must not suggest otherwise. */
-            "<span>Choose a WhatsApp-enabled ICB location.</span>" +
+            "<span>" + R.esc(ICB.s("whatsappChoose")) + "</span>" +
           "</div>" +
-          '<button type="button" class="wa-close" data-wa-close aria-label="Close WhatsApp directory">' +
+          '<button type="button" class="wa-close" data-wa-close aria-label="' + R.esc(ICB.s("whatsappClose")) + '">' +
             ICB.art.glyph("close") +
           "</button>" +
         "</header>" +

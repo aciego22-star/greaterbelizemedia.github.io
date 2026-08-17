@@ -9,6 +9,10 @@ ICB.views = ICB.views || {};
 (function () {
   "use strict";
 
+  /* Copy that belongs to this view only, written in both languages
+     where it is used. See ICB.T in js/i18n.js. */
+  var T = ICB.T;
+
   var state = null;
 
   function freshState(query) {
@@ -50,7 +54,7 @@ ICB.views = ICB.views || {};
     var describedBy = field.help ? ' aria-describedby="help-' + field.id + '"' : "";
     var required = field.required ? " required" : "";
     var label = '<label for="f-' + field.id + '">' + R.esc(field.label) +
-      (field.required ? "" : ' <span class="help" style="display:inline">(optional)</span>') + "</label>";
+      (field.required ? "" : ' <span class="help" style="display:inline">(' + R.esc(ICB.s("optional")) + ")</span>") + "</label>";
 
     if (field.type === "select") {
       var opts = fieldOptions(field).map(function (o) {
@@ -58,7 +62,7 @@ ICB.views = ICB.views || {};
       }).join("");
       return '<div class="field">' + label +
         '<select class="input" id="f-' + field.id + '" name="' + field.id + '"' + describedBy + required + ">" +
-        '<option value="">Choose...</option>' + opts + "</select>" + help + "</div>";
+        '<option value="">' + R.esc(T("Choose...", "Elija...")) + "</option>" + opts + "</select>" + help + "</div>";
     }
     if (field.type === "textarea") {
       return '<div class="field">' + label +
@@ -70,7 +74,9 @@ ICB.views = ICB.views || {};
   }
 
   function progress(step) {
-    var labels = ["What is this about?", "Your details", "Review"];
+    var labels = [T("What is this about?", "¿De qué se trata?"),
+                  T("Your details", "Sus datos"),
+                  T("Review", "Revisar")];
     return '<ol class="contact-progress">' + labels.map(function (l, i) {
       var n = i + 1;
       var cur = n === step ? ' aria-current="step"' : "";
@@ -86,7 +92,7 @@ ICB.views = ICB.views || {};
       return '<button type="button" class="topic-option" data-topic="' + t.id + '">' +
         "<strong>" + R.esc(t.label) + "</strong><span>" + R.esc(t.description) + "</span></button>";
     }).join("");
-    return '<h2 id="contact-step-title">How can we help?</h2><p>' + R.esc(flows.intro) + "</p>" +
+    return '<h2 id="contact-step-title">' + R.esc(T("How can we help?", "¿En qué le podemos ayudar?")) + "</h2><p>" + R.esc(flows.intro) + "</p>" +
       '<div class="topic-grid">' + tiles + "</div>";
   }
 
@@ -103,7 +109,7 @@ ICB.views = ICB.views || {};
           return '<a class="msg-action" href="' + R.esc(a.href) + '"' + (ext ? R.extAttrs() : "") + ">" +
             ICB.art.glyph(a.kind === "tel" ? "phone" : "arrow") + "<span>" + R.esc(a.label) + "</span></a>";
         }).join("") + "</div>" +
-        '<div class="form-nav"><button type="button" class="btn btn-ghost" data-step-back>Back</button></div>';
+        '<div class="form-nav"><button type="button" class="btn btn-ghost" data-step-back>' + R.esc(ICB.s("back")) + "</button></div>";
       return out;
     }
 
@@ -114,7 +120,8 @@ ICB.views = ICB.views || {};
     out += '<form data-contact-form novalidate>';
     ICB.DATA.contactFlows.commonFields.forEach(function (f) { out += renderField(f, state.values); });
     (topic.fields || []).forEach(function (f) { out += renderField(f, state.values); });
-    out += '<p class="help">This concept form asks only for routing basics. Please do not include policy numbers or payment details.</p>';
+    out += '<p class="help">' + R.esc(T("This concept form asks only for routing basics. Please do not include policy numbers or payment details.",
+      "Este formulario de concepto solo pide lo básico para dirigir su consulta. Por favor no incluya números de póliza ni datos de pago.")) + "</p>";
 
     if (topic.sideNote) {
       var sa = topic.sideAction;
@@ -125,8 +132,8 @@ ICB.views = ICB.views || {};
     }
 
     out += '<div class="form-nav">' +
-      '<button type="button" class="btn btn-ghost" data-step-back>Back</button>' +
-      '<button type="submit" class="btn btn-primary">Continue to review</button>' +
+      '<button type="button" class="btn btn-ghost" data-step-back>' + R.esc(ICB.s("back")) + "</button>" +
+      '<button type="submit" class="btn btn-primary">' + R.esc(T("Continue to review", "Continuar a la revisión")) + "</button>" +
       "</div></form>";
     return out;
   }
@@ -134,7 +141,7 @@ ICB.views = ICB.views || {};
   function stepThree() {
     var R = ICB.render;
     var topic = topicById(state.topicId);
-    var rows = [["Enquiry type", topic.label]];
+    var rows = [[T("Enquiry type", "Tipo de consulta"), topic.label]];
     var all = ICB.DATA.contactFlows.commonFields.concat(topic.fields || []);
     all.forEach(function (f) {
       var v = state.values[f.id];
@@ -147,11 +154,11 @@ ICB.views = ICB.views || {};
     var dl = rows.map(function (r) {
       return "<div><dt>" + R.esc(r[0]) + "</dt><dd>" + R.esc(r[1]) + "</dd></div>";
     }).join("");
-    return '<h2 id="contact-step-title">Review your enquiry</h2>' +
+    return '<h2 id="contact-step-title">' + R.esc(T("Review your enquiry", "Revise su consulta")) + "</h2>" +
       '<dl class="review-list">' + dl + "</dl>" +
       '<div class="form-nav">' +
-      '<button type="button" class="btn btn-ghost" data-step-back>Back</button>' +
-      '<button type="button" class="btn btn-primary" data-step-submit>Send to ICB</button>' +
+      '<button type="button" class="btn btn-ghost" data-step-back>' + R.esc(ICB.s("back")) + "</button>" +
+      '<button type="button" class="btn btn-primary" data-step-submit>' + R.esc(T("Send to ICB", "Enviar a ICB")) + "</button>" +
       "</div>";
   }
 
@@ -165,7 +172,7 @@ ICB.views = ICB.views || {};
         return '<a class="msg-action" href="' + R.esc(a.href) + '">' +
           ICB.art.glyph(a.kind === "tel" ? "phone" : "mail") + "<span>" + R.esc(a.label) + "</span></a>";
       }).join("") + "</div>" +
-      '<div class="form-nav"><button type="button" class="btn btn-ghost" data-step-restart>Start another enquiry</button></div>' +
+      '<div class="form-nav"><button type="button" class="btn btn-ghost" data-step-restart>' + R.esc(T("Start another enquiry", "Iniciar otra consulta")) + "</button></div>" +
       "</div>";
   }
 
@@ -183,7 +190,9 @@ ICB.views = ICB.views || {};
     panel.innerHTML = panelHtml();
     var live = mount.querySelector("[data-contact-live]");
     if (live) {
-      live.textContent = state.step === 4 ? "Enquiry review complete" : "Step " + state.step + " of 3";
+      live.textContent = state.step === 4
+        ? T("Enquiry review complete", "Revisión de la consulta completa")
+        : T("Step " + state.step + " of 3", "Paso " + state.step + " de 3");
     }
     var title = panel.querySelector("#contact-step-title");
     if (title && state.interacted) { title.setAttribute("tabindex", "-1"); title.focus(); }
@@ -249,7 +258,7 @@ ICB.views = ICB.views || {};
   }
 
   ICB.views.contact = {
-    title: "Contact ICB | Talk to us",
+    title: { en: "Contact ICB | Talk to us", es: "Contacto | Hable con ICB" },
     render: function (ctx) {
       var R = ICB.render;
       var site = ICB.DATA.site;
@@ -261,29 +270,29 @@ ICB.views = ICB.views || {};
         '<section class="page-hero on-dark" aria-labelledby="contact-title">' +
           '<div class="page-hero-art art-panel" data-img-slot="contact-hero" aria-hidden="true">' + ICB.art.panel("hero") + "</div>" +
           '<div class="shell page-hero-inner">' +
-            R.crumbsHome("Contact") +
-            '<span class="eyebrow">Contact</span>' +
-            '<h1 id="contact-title">Talk to ICB.</h1>' +
+            R.crumbsHome({ en: "Contact", es: "Contacto" }) +
+            '<span class="eyebrow">' + T("Contact", "Contacto") + '</span>' +
+            '<h1 id="contact-title">' + T("Talk to ICB.", "Hable con ICB.") + '</h1>' +
             '<p class="hero-lead">' + R.esc(site.org.serviceQuote) + "</p>" +
           "</div>" +
         "</section>" +
 
         '<section class="section" aria-labelledby="contact-form-heading">' +
           '<div class="shell">' +
-            '<h2 id="contact-form-heading" class="visually-hidden">Start an enquiry</h2>' +
+            '<h2 id="contact-form-heading" class="visually-hidden">' + R.esc(T("Start an enquiry", "Iniciar una consulta")) + '</h2>' +
             '<p class="visually-hidden" aria-live="polite" data-contact-live></p>' +
             '<div class="contact-layout">' +
               '<div class="contact-panel rv" data-contact-panel></div>' +
               '<aside class="contact-rail rv">' +
-                "<h2>Reach ICB directly</h2>" +
+                "<h2>" + R.esc(T("Reach ICB directly", "Comuníquese directamente con ICB")) + "</h2>" +
                 "<address>" + R.esc(site.corporate.label) + "<br>" +
                   R.esc(site.corporate.address) + ", " + R.esc(site.corporate.poBox) + "<br>" +
-                  R.esc(site.corporate.city) + ", Belize</address>" +
+                  R.esc(site.corporate.city) + ", " + R.esc(ICB.s("belize")) + "</address>" +
                 '<div class="msg-actions">' +
                   '<a class="msg-action" href="tel:' + R.esc(site.corporate.phoneTel) + '">' + ICB.art.glyph("phone") + "<span>" + R.esc(site.corporate.phoneDisplay) + "</span></a>" +
-                  '<button type="button" class="msg-action msg-action--wa" data-wa-directory>' + ICB.art.waIcon() + "<span>WhatsApp ICB</span></button>" +
+                  '<button type="button" class="msg-action msg-action--wa" data-wa-directory>' + ICB.art.waIcon() + "<span>" + R.esc(ICB.s("whatsappICB")) + "</span></button>" +
                   '<a class="msg-action" href="mailto:' + R.esc(site.corporate.email) + '">' + ICB.art.glyph("mail") + "<span>" + R.esc(site.corporate.email) + "</span></a>" +
-                  '<a class="msg-action" href="#/locations">' + ICB.art.glyph("marker") + "<span>Every branch and agency</span></a>" +
+                  '<a class="msg-action" href="#/locations">' + ICB.art.glyph("marker") + "<span>" + R.esc(T("Every branch and agency", "Todas las sucursales y agencias")) + "</span></a>" +
                 "</div>" +
                 ICB.render.assistBadge(true) +
               "</aside>" +

@@ -9,12 +9,20 @@ ICB.views = ICB.views || {};
 (function () {
   "use strict";
 
+  /* Copy that belongs to this view only, written in both languages
+     where it is used. See ICB.T in js/i18n.js. */
+  var T = ICB.T;
+
   ICB.views.locations = {
-    title: "Locations | ICB",
+    title: { en: "Locations | ICB", es: "Ubicaciones | ICB" },
     render: function () {
       var R = ICB.render;
+      /* The chip's value stays "All" whatever the language: it is what the
+         filter compares against. Only the label is translated, and the
+         district names are place names, so they read the same either way. */
       var chips = ["All"].concat(ICB.DATA.districts).map(function (d, i) {
-        return '<button type="button" class="chip" data-district-chip="' + R.esc(d) + '" aria-pressed="' + (i === 0 ? "true" : "false") + '">' + R.esc(d) + "</button>";
+        var label = d === "All" ? ICB.s("allDistricts") : d;
+        return '<button type="button" class="chip" data-district-chip="' + R.esc(d) + '" aria-pressed="' + (i === 0 ? "true" : "false") + '">' + R.esc(label) + "</button>";
       }).join("");
 
       var cards = ICB.DATA.activeLocations().map(R.locationCard).join("");
@@ -31,46 +39,47 @@ ICB.views = ICB.views || {};
         '<section class="page-hero on-dark" aria-labelledby="loc-title">' +
           '<div class="page-hero-art art-panel" data-img-slot="locations-hero" aria-hidden="true">' + ICB.art.panel("hero-nation") + "</div>" +
           '<div class="shell page-hero-inner">' +
-            R.crumbsHome("Locations") +
-            '<span class="eyebrow">Nationwide</span>' +
-            '<h1 id="loc-title">Find ICB near you.</h1>' +
+            R.crumbsHome({ en: "Locations", es: "Ubicaciones" }) +
+            '<span class="eyebrow">' + T("Nationwide", "En todo el país") + '</span>' +
+            '<h1 id="loc-title">' + T("Find ICB near you.", "Encuentre ICB cerca de usted.") + '</h1>' +
             '<p class="hero-lead">' + R.esc(ICB.DATA.site.org.serviceQuote) + "</p>" +
           "</div>" +
         "</section>" +
 
         '<section class="section" aria-labelledby="loc-browse-title">' +
           '<div class="shell">' +
-            '<h2 id="loc-browse-title" class="visually-hidden">Browse locations</h2>' +
+            '<h2 id="loc-browse-title" class="visually-hidden">' + ICB.s("browseLocations") + '</h2>' +
             '<div class="loc-tools rv">' +
-              '<div class="chip-row" role="group" aria-label="Filter by district">' + chips + "</div>" +
+              '<div class="chip-row" role="group" aria-label="' + ICB.s("filterByDistrict") + '">' + chips + "</div>" +
               '<div class="loc-tools-row">' +
                 '<p class="loc-count" aria-live="polite" data-loc-count></p>' +
                 '<div class="btn-row">' +
-                  '<button type="button" class="btn btn-sm btn-outline" data-call-directory>' + ICB.art.glyph("phone") + "<span>Call a branch</span></button>" +
-                  '<button type="button" class="btn btn-sm btn-outline" data-wa-directory>' + ICB.art.waIcon() + "<span>Chat on WhatsApp</span></button>" +
+                  '<button type="button" class="btn btn-sm btn-outline" data-call-directory>' + ICB.art.glyph("phone") + "<span>" + ICB.s("callABranch") + "</span></button>" +
+                  '<button type="button" class="btn btn-sm btn-outline" data-wa-directory>' + ICB.art.waIcon() + "<span>" + ICB.s("chatOnWhatsApp") + "</span></button>" +
                 "</div>" +
               "</div>" +
             "</div>" +
             '<div class="loc-layout">' +
               '<div class="loc-list" data-loc-list>' + cards + "</div>" +
               '<aside class="loc-map-panel rv">' +
-                "<h2>Belize at a glance</h2>" +
-                ICB.art.belizeMap({ markers: markers, ariaLabel: "Map of Belize with ICB branch and agency locations" }) +
+                "<h2>" + ICB.s("belizeAtAGlance") + "</h2>" +
+                ICB.art.belizeMap({ markers: markers, ariaLabel: ICB.s("mapLabel") }) +
               "</aside>" +
             "</div>" +
           "</div>" +
         "</section>" +
 
-        '<section class="section section--flush-top" aria-label="Contact ICB">' +
+        '<section class="section section--flush-top" aria-label="' + ICB.s("contactICB") + '">' +
           '<div class="shell">' +
             ICB.render.band({
-              eyebrow: "Prefer to talk?",
-              title: "Our corporate office can point you anywhere.",
-              body: "16 Daly Street, Belize City. Call " + ICB.DATA.site.corporate.phoneDisplay + " or email " + ICB.DATA.site.corporate.email + ".",
+              eyebrow: { en: "Prefer to talk?", es: "¿Prefiere hablar?" },
+              title: { en: "Our corporate office can point you anywhere.", es: "Nuestra oficina corporativa le orienta a donde necesite." },
+              body: T("16 Daly Street, Belize City. Call " + ICB.DATA.site.corporate.phoneDisplay + " or email " + ICB.DATA.site.corporate.email + ".",
+                       "16 Daly Street, Ciudad de Belice. Llame al " + ICB.DATA.site.corporate.phoneDisplay + " o escriba a " + ICB.DATA.site.corporate.email + "."),
               motif: "heritage",
               actions: [
-                { label: "Call " + ICB.DATA.site.corporate.phoneDisplay, href: "tel:" + ICB.DATA.site.corporate.phoneTel },
-                { label: "Email ICB", href: "mailto:" + ICB.DATA.site.corporate.email }
+                { label: ICB.s("callN", { n: ICB.DATA.site.corporate.phoneDisplay }), href: "tel:" + ICB.DATA.site.corporate.phoneTel },
+                { label: ICB.s("emailICB"), href: "mailto:" + ICB.DATA.site.corporate.email }
               ]
             }) +
           "</div>" +
@@ -96,8 +105,10 @@ ICB.views = ICB.views || {};
           m.classList.toggle("is-active", active);
           m.classList.toggle("is-dim", dim);
         });
-        count.textContent = shown + (shown === 1 ? " location" : " locations") +
-          (district === "All" ? " across Belize" : " in " + district + " District");
+        var n = ICB.s(shown === 1 ? "locationCountOne" : "locationCount", { n: shown });
+        count.textContent = n + " " + (district === "All"
+          ? ICB.s("acrossBelize")
+          : ICB.s("inDistrict", { district: district }));
       }
 
       Array.prototype.forEach.call(chips, function (chip) {

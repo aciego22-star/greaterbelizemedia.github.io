@@ -26,26 +26,26 @@ ICB.DATA.resources = {
      route is an internal hash route. */
   official: [
     {
-      label: "Claims forms",
-      description: "The Insured Motor Accident, Claimant Motor Accident, Property, Marine and Hurricane forms published by ICB.",
+      label: { en: "Claims forms", es: "Formularios de reclamo" },
+      description: { en: "The Insured Motor Accident, Claimant Motor Accident, Property, Marine and Hurricane forms published by ICB.", es: "Los formularios Insured Motor Accident, Claimant Motor Accident, Property, Marine y Hurricane publicados por ICB." },
       hrefKey: "claimsForms",
       glyph: "document"
     },
     {
-      label: "Bank payment information",
-      description: "ICB's bank accounts, and how to send your payment confirmation to your branch.",
+      label: { en: "Bank payment information", es: "Información de pago bancario" },
+      description: { en: "ICB's bank accounts, and how to send your payment confirmation to your branch.", es: "Las cuentas bancarias de ICB, y cómo enviar su comprobante de pago a su sucursal." },
       route: "#/payments",
       glyph: "card"
     },
     {
-      label: "Consumer resources on icbinsurance.com",
-      description: "ICB's published consumer information, including hurricane and fire preparation material.",
+      label: { en: "Consumer resources on icbinsurance.com", es: "Recursos para el consumidor en icbinsurance.com" },
+      description: { en: "ICB's published consumer information, including hurricane and fire preparation material.", es: "La información para el consumidor publicada por ICB, incluido material de preparación ante huracanes e incendios." },
       hrefKey: "consumerResources",
       glyph: "shield"
     },
     {
-      label: "Mexican Insurance through ANA Seguros",
-      description: "Buy Now, View Coverage, Claims and FAQs, as published by ICB.",
+      label: { en: "Mexican Insurance through ANA Seguros", es: "Mexican Insurance a través de ANA Seguros" },
+      description: { en: "Buy Now, View Coverage, Claims and FAQs, as published by ICB.", es: "Buy Now, View Coverage, Claims y FAQs, tal como los publica ICB." },
       hrefKey: "mexicanInsurance",
       glyph: "border"
     }
@@ -55,14 +55,14 @@ ICB.DATA.resources = {
      resources page until direct URLs are supplied. */
   safety: [
     {
-      label: "Hurricane safety",
-      description: "ICB's hurricane preparation material and the hurricane tracking map.",
+      label: { en: "Hurricane safety", es: "Seguridad ante huracanes" },
+      description: { en: "ICB's hurricane preparation material and the hurricane tracking map.", es: "El material de preparación ante huracanes de ICB y el mapa de seguimiento de huracanes." },
       hrefKey: "consumerResources",
       glyph: "storm"
     },
     {
-      label: "Fire prevention",
-      description: "ICB's fire prevention material.",
+      label: { en: "Fire prevention", es: "Prevención de incendios" },
+      description: { en: "ICB's fire prevention material.", es: "El material de prevención de incendios de ICB." },
       hrefKey: "consumerResources",
       glyph: "shield"
     }
@@ -71,20 +71,20 @@ ICB.DATA.resources = {
   /* Pages of this site that restate published ICB information. */
   onSite: [
     {
-      label: "Travel Insurance: current status",
-      description: "Sales are currently temporarily suspended. Support information for existing customers.",
+      label: { en: "Travel Insurance: current status", es: "Travel Insurance: estado actual" },
+      description: { en: "Sales are currently temporarily suspended. Support information for existing customers.", es: "La venta está temporalmente suspendida. Información de apoyo para clientes actuales." },
       route: "#/insurance/travel",
       glyph: "plane"
     },
     {
-      label: "How claims work",
-      description: "Your claim type, the official ICB form, and how to reach the claims team.",
+      label: { en: "How claims work", es: "Cómo funcionan los reclamos" },
+      description: { en: "Your claim type, the official ICB form, and how to reach the claims team.", es: "Su tipo de reclamo, el formulario oficial de ICB, y cómo contactar al equipo de reclamos." },
       route: "#/claims",
       glyph: "document"
     },
     {
-      label: "Find a branch",
-      description: "Every ICB branch and agency, from Corozal to Punta Gorda.",
+      label: { en: "Find a branch", es: "Encuentre una sucursal" },
+      description: { en: "Every ICB branch and agency, from Corozal to Punta Gorda.", es: "Todas las sucursales y agencias de ICB, de Corozal a Punta Gorda." },
       route: "#/locations",
       glyph: "marker"
     }

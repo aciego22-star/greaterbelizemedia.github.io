@@ -192,7 +192,8 @@ ICB.views = ICB.views || {};
     // play() on its film as soon as it initialises.
     ICB.hydrateAssets(mount);
 
-    var title = typeof view.title === "function" ? view.title(ctx) : view.title;
+    // A view's title may be a plain string or an { en, es } pair.
+    var title = ICB.t(typeof view.title === "function" ? view.title(ctx) : view.title);
     document.title = title || "ICB Concept Experience";
 
     setNav(match.navId);
@@ -200,7 +201,7 @@ ICB.views = ICB.views || {};
     ICB.reveal(mount);
     ICB.art.enhance(mount);
     scrollAfterRender(ctx.anchor, entry.revisited ? scrollMemory[entry.key] : null);
-    if (announcer) announcer.textContent = (title || "Page") + " loaded";
+    if (announcer) announcer.textContent = ICB.s("pageLoaded", { title: title || ICB.s("page") });
 
     // Close any open sheets or overlays on navigation.
     if (ICB.closeLightbox) ICB.closeLightbox();
@@ -208,12 +209,17 @@ ICB.views = ICB.views || {};
   }
 
   ICB.views.notfound = {
-    title: "Page not found | ICB",
+    title: { en: "Page not found | ICB", es: "Página no encontrada | ICB" },
     render: function () {
       return '<section class="section"><div class="shell">' +
-        ICB.render.sectionHead({ eyebrow: "ICB", title: "That page is not here.", sub: "The link may have moved. Everything on this concept site is reachable from the menu.", rv: false }) +
-        '<div class="btn-row"><a class="btn btn-primary" href="#/">Back to the homepage</a>' +
-        '<a class="btn btn-outline" href="#/insurance">Explore insurance</a></div>' +
+        ICB.render.sectionHead({
+          eyebrow: "ICB",
+          title: { en: "That page is not here.", es: "Esta página no está aquí." },
+          sub: { en: "The link may have moved. Everything on this concept site is reachable from the menu.", es: "El enlace pudo haber cambiado. Todo en este sitio de concepto se alcanza desde el menú." },
+          rv: false
+        }) +
+        '<div class="btn-row"><a class="btn btn-primary" href="#/">' + ICB.t({ en: "Back to the homepage", es: "Volver al inicio" }) + "</a>" +
+        '<a class="btn btn-outline" href="#/insurance">' + ICB.t({ en: "Explore insurance", es: "Ver seguros" }) + "</a></div>" +
         "</div></section>";
     }
   };

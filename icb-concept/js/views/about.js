@@ -7,6 +7,10 @@ ICB.views = ICB.views || {};
 (function () {
   "use strict";
 
+  /* Copy that belongs to this view only, written in both languages
+     where it is used. See ICB.T in js/i18n.js. */
+  var T = ICB.T;
+
   /* Verified institutional story only. No invented milestones.
      INTERNAL TODO (not client-facing): this timeline is built to take more
      entries. Ask ICB for dated milestones after engagement and add them
@@ -14,23 +18,23 @@ ICB.views = ICB.views || {};
   var MILESTONES = [
     {
       year: "1981",
-      title: "Founded in Belize",
-      body: "Insurance Corporation of Belize is founded by Mr. Erdulfo 'Dufy' Nunez."
+      title: { en: "Founded in Belize", es: "Fundada en Belice" },
+      body: { en: "Insurance Corporation of Belize is founded by Mr. Erdulfo 'Dufy' Nunez.", es: "Insurance Corporation of Belize es fundada por el Sr. Erdulfo 'Dufy' Nunez." }
     },
     {
-      year: "Growth",
-      title: "From two people to a national name",
-      body: "ICB grows from a small two-person operation into one of the largest and most trusted insurance providers in Belize."
+      year: { en: "Growth", es: "Crecimiento" },
+      title: { en: "From two people to a national name", es: "De dos personas a un nombre nacional" },
+      body: { en: "ICB grows from a small two-person operation into one of the largest and most trusted insurance providers in Belize.", es: "ICB pasa de ser una pequeña operación de dos personas a una de las aseguradoras más grandes y de mayor confianza de Belice." }
     },
     {
-      year: "Today",
-      title: "From Corozal to Punta Gorda",
-      body: "A nationwide network of branches and agencies keeps ICB close to its customers."
+      year: { en: "Today", es: "Hoy" },
+      title: { en: "From Corozal to Punta Gorda", es: "De Corozal a Punta Gorda" },
+      body: { en: "A nationwide network of branches and agencies keeps ICB close to its customers.", es: "Una red nacional de sucursales y agencias mantiene a ICB cerca de sus clientes." }
     }
   ];
 
   ICB.views.about = {
-    title: "About ICB | Insurance Corporation of Belize",
+    title: { en: "About ICB | Insurance Corporation of Belize", es: "Acerca de ICB | Insurance Corporation of Belize" },
     render: function () {
       var R = ICB.render;
       var site = ICB.DATA.site;
@@ -48,8 +52,8 @@ ICB.views = ICB.views || {};
         '<section class="page-hero on-dark" aria-labelledby="about-title">' +
           '<div class="page-hero-art art-panel" data-img-slot="about-band" aria-hidden="true">' + ICB.art.panel("heritage") + "</div>" +
           '<div class="shell page-hero-inner">' +
-            R.crumbsHome("About") +
-            '<span class="eyebrow">About ICB</span>' +
+            R.crumbsHome({ en: "About", es: "Acerca de" }) +
+            '<span class="eyebrow">' + T("About ICB", "Acerca de ICB") + '</span>' +
             '<h1 id="about-title">' + R.esc(site.org.homeLine) + "</h1>" +
             '<p class="hero-lead">' + R.esc(site.org.story) + "</p>" +
           "</div>" +
@@ -58,8 +62,8 @@ ICB.views = ICB.views || {};
         '<section class="section" aria-labelledby="story-title">' +
           '<div class="shell">' +
             R.sectionHead({
-              eyebrow: "Our story",
-              title: "Serving Belize since 1981.",
+              eyebrow: { en: "Our story", es: "Nuestra historia" },
+              title: { en: "Serving Belize since 1981.", es: "Al servicio de Belice desde 1981." },
               id: "story-title"
             }) +
             '<ol class="milestones">' + ms + "</ol>" +
@@ -70,33 +74,33 @@ ICB.views = ICB.views || {};
           '<div class="shell home-claims">' +
             "<div>" +
               R.sectionHead({
-                eyebrow: "How we work",
-                title: "Service you can hold us to.",
+                eyebrow: { en: "How we work", es: "Cómo trabajamos" },
+                title: { en: "Service you can hold us to.", es: "Un servicio del que puede responsabilizarnos." },
                 sub: site.org.serviceQuote,
                 id: "values-title"
               }) +
               '<div class="btn-row rv">' +
-                '<a class="btn btn-primary" href="#/locations">Meet us at a branch</a>' +
-                '<a class="btn btn-ghost" href="#/contact">Contact ICB</a>' +
+                '<a class="btn btn-primary" href="#/locations">' + T("Meet us at a branch", "Visítenos en una sucursal") + '</a>' +
+                '<a class="btn btn-ghost" href="#/contact">' + T("Contact ICB", "Comunicarse con ICB") + '</a>' +
               "</div>" +
             "</div>" +
             '<div class="values-panel rv">' +
-              "<h3>Our claims service commitments</h3>" +
+              "<h3>" + T("Our claims service commitments", "Nuestros compromisos de servicio de reclamos") + "</h3>" +
               '<ul class="values-list">' + values + "</ul>" +
             "</div>" +
           "</div>" +
         "</section>" +
 
-        '<section class="section" aria-label="Explore insurance">' +
+        '<section class="section" aria-label="' + T("Explore insurance", "Ver seguros") + '">' +
           '<div class="shell">' +
             R.band({
-              eyebrow: "Since 1981",
+              eyebrow: { en: "Since 1981", es: "Desde 1981" },
               title: site.org.positiveDifference,
-              body: "Explore the cover ICB offers today, or walk into any branch and say hello.",
+              body: { en: "Explore the cover ICB offers today, or walk into any branch and say hello.", es: "Conozca la cobertura que ICB ofrece hoy, o pase por cualquier sucursal a saludar." },
               motif: "heritage",
               actions: [
-                { label: "Explore insurance", href: "#/insurance" },
-                { label: "Find ICB near you", href: "#/locations" }
+                { label: { en: "Explore insurance", es: "Ver seguros" }, href: "#/insurance" },
+                { label: { en: "Find ICB near you", es: "Encontrar ICB cerca de usted" }, href: "#/locations" }
               ]
             }) +
           "</div>" +
