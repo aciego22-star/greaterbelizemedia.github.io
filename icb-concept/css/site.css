@@ -1756,6 +1756,65 @@ button {
     .page-hero--whole-media .page-hero-art.art-panel { height: 56.3vw; }
   }
 }
+
+/* ---------------------------------------------------------------------
+   The Gallery banner.
+
+   Art direction rather than a responsive size: the photographs are
+   supplied as a 16:9 crop for the desktop banner and the original 4:3
+   below 769px, picked by a media query on the <source>, and the box is
+   given the matching ratio at each breakpoint. Picture and box are then
+   the same shape, so nothing is stretched and object-fit crops nothing;
+   see the gallery-hero slot in js/data/images.js for the sources and for
+   why the ratio is 16:9 rather than 21:9.
+
+   --banner-ratio is the one number to change if ICB ever supply frames
+   wide enough to carry a wider crop without losing the buildings.
+
+   Desktop keeps the copy over the picture, in a grid cell shared with it
+   so the picture sets the height and the heading centres against it. A
+   16:9 banner at 1440 is 810px tall, which would put a heading below the
+   fold if it sat underneath; centred, it is the first thing you read.
+
+   Below 769px the copy moves beneath: a 4:3 box at 390px is 292px tall
+   and the heading, lead and breadcrumb need about 430px, so overlaying
+   them would either overflow the picture or force the box off its ratio.
+   --------------------------------------------------------------------- */
+.page-hero--banner { --banner-ratio: 16 / 9; display: grid; }
+.page-hero--banner .page-hero-art.art-panel {
+  position: relative;
+  inset: auto;
+  grid-area: 1 / 1;
+  width: 100%;
+  aspect-ratio: var(--banner-ratio);
+}
+.page-hero--banner .page-hero-inner {
+  grid-area: 1 / 1;
+  align-self: center;
+  z-index: 2;
+}
+/* contain, not cover. The box is already the shape of the picture, so
+   the two agree and neither crops; contain says so, and if a future
+   source is ever the wrong shape it will show as a margin rather than
+   quietly eating a roofline. */
+.page-hero--banner .page-hero-art .slot-photo {
+  object-fit: contain;
+  object-position: center center;
+}
+
+@media (max-width: 768px) {
+  .page-hero--banner { --banner-ratio: 4 / 3; display: block; }
+  .page-hero--banner .page-hero-art.art-panel { grid-area: auto; }
+  .page-hero--banner .page-hero-inner { grid-area: auto; }
+  /* Nothing sits on the picture down here, so it needs no scrim. */
+  .page-hero--banner .page-hero-art::after { content: none; }
+}
+@supports not (aspect-ratio: 16 / 9) {
+  .page-hero--banner .page-hero-art.art-panel { height: 56.25vw; }
+  @media (max-width: 768px) {
+    .page-hero--banner .page-hero-art.art-panel { height: 75vw; }
+  }
+}
 .page-hero-inner {
   position: relative;
   z-index: 2;

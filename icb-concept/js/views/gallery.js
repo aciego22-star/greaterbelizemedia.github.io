@@ -23,8 +23,15 @@ ICB.views = ICB.views || {};
       var R = ICB.render;
 
       return '' +
-        '<section class="page-hero on-dark" aria-labelledby="gal-title">' +
-          '<div class="page-hero-art art-panel" data-img-slot="gallery-hero" aria-hidden="true">' + ICB.art.panel("heritage") + "</div>" +
+        /* A banner rather than a background: the box takes the shape of
+           the photograph at each breakpoint. See .page-hero--banner.
+
+           Not aria-hidden. The panel used to hold only generated
+           decoration; it now carries two named ICB buildings with alt
+           text of their own, and the generated panel inside it hides
+           itself. */
+        '<section class="page-hero page-hero--banner on-dark" aria-labelledby="gal-title">' +
+          '<div class="page-hero-art art-panel" data-img-slot="gallery-hero">' + ICB.art.panel("heritage") + "</div>" +
           '<div class="shell page-hero-inner">' +
             R.crumbsHome({ en: "Gallery", es: "Galería" }) +
             '<span class="eyebrow">' + T("ICB Across Belize", "ICB en todo Belice") + '</span>' +

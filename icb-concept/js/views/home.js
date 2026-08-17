@@ -700,7 +700,12 @@ ICB.views = ICB.views || {};
       overlay.className = "lightbox-overlay";
       overlay.innerHTML =
         '<figure class="lightbox" role="dialog" aria-modal="true" aria-label="' + R.esc(g.caption) + '">' +
-          '<img data-asset="' + R.esc(g.src) + '" alt="' + R.esc(g.alt) + '">' +
+          ((g.webp && g.webp.length)
+            ? "<picture>" + g.webp.map(function (c) {
+                return '<source type="image/webp" data-asset-srcset="' + R.esc(c.src) + '">';
+              }).join("") +
+              '<img data-asset="' + R.esc(g.src) + '" alt="' + R.esc(g.alt) + '"></picture>'
+            : '<img data-asset="' + R.esc(g.src) + '" alt="' + R.esc(g.alt) + '">') +
           '<figcaption>' + R.esc(g.caption) + "</figcaption>" +
           '<button type="button" class="lightbox-close" data-lb-close aria-label="' + R.esc(ICB.s("closeImage")) + '">' + ICB.art.glyph("close") + "</button>" +
         "</figure>";

@@ -62,7 +62,20 @@ ICB.DATA.gallery = {
     },
     { locationId: "ladyville",             src: null },
     { locationId: "san-pedro",             src: null },
-    { locationId: "corozal-border",        src: null },
+    /* Supplied by the client and identified by them as the Corozal Border
+       Branch. It is the same building as the wide frame used in the
+       Gallery banner. The caption comes from the branch record, as every
+       caption here does, so the name on the tile is the verified one.
+
+       INTERNAL TODO (not client-facing): confirm the identification with
+       ICB. Every other branch photograph on the site is traceable to
+       something ICB published; this one is attributed by the client. */
+    {
+      locationId: "corozal-border",
+      src: "assets/img/branches/corozal-border.jpg",
+      webp: [{ src: "assets/img/branches/corozal-border.webp" }],
+      alt: "The Insurance Corporation of Belize branch building at the northern border, Corozal District"
+    },
     {
       locationId: "san-narciso",
       src: null,
@@ -127,6 +140,7 @@ ICB.DATA.galleryBranches = function () {
     return {
       locationId: b.locationId,
       src: b.src || null,
+      webp: b.webp || null,
       caption: b.caption || loc.name || "",
       sub: loc.district ? loc.district + " District" : "",
       type: loc.type || "",
@@ -144,7 +158,7 @@ ICB.GALLERY_ITEMS = [];
   ICB.DATA.gallery.branches.forEach(function (b) {
     if (!b.src) return;
     var loc = ICB.DATA.locationById(b.locationId) || {};
-    out.push({ src: b.src, caption: b.caption || loc.name || "", alt: b.alt || "", light: !!b.light });
+    out.push({ src: b.src, webp: b.webp || null, caption: b.caption || loc.name || "", alt: b.alt || "", light: !!b.light });
   });
   ICB.GALLERY_ITEMS = out;
 })();

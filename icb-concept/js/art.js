@@ -694,25 +694,44 @@ window.ICB = window.ICB || {};
      rather than a separate probe image. A probe would have to name one
      file, and naming the JPEG would make every visitor fetch the fallback
      they are not going to use. */
-  function slotPhoto(node, conf, src, onReady) {
-    var img = document.createElement("img");
-    img.alt = conf.alt || "";
-    img.className = "slot-photo";
-    if (conf.pos) img.style.objectPosition = conf.pos;
+  /* One <source>, from { media, type, srcset: [{ src, w }], sizes }.
+     Every candidate resolves through ICB.assetUrl on its own, because in
+     the single-file build each path is its own key in the asset map and a
+     whole srcset string would not match one. */
+  function slotSource(spec, fallbackSizes) {
+    var el = document.createElement("source");
+    if (spec.media) el.media = spec.media;
+    if (spec.type) el.type = spec.type;
+    el.srcset = spec.srcset.map(function (c) {
+      return ICB.assetUrl(c.src) + (c.w ? " " + c.w + "w" : "");
+    }).join(", ");
+    var sizes = spec.sizes || fallbackSizes;
+    if (sizes) el.sizes = sizes;
+    return el;
+  }
 
-    // Only the slot's own single source takes the WebP set; a rotating
-    // slot hands in one src per photograph and they are not interchangeable.
+  function slotPhoto(node, conf, shot, onReady) {
+    var img = document.createElement("img");
+    img.alt = shot.alt || conf.alt || "";
+    img.className = "slot-photo";
+    var pos = shot.pos || conf.pos;
+    if (pos) img.style.objectPosition = pos;
+
+    /* sources is the general form and carries art direction: a source
+       with a media query serves a different crop, not merely a different
+       size, which is the only way to give a desktop banner and a phone
+       two shapes of the same photograph. webp is the shorthand for the
+       common case of one crop in two formats. */
+    var specs = shot.sources ||
+      (shot.webp && shot.webp.length ? [{ type: "image/webp", srcset: shot.webp }] : null);
+
     var mount = img;
-    if (conf.webp && conf.webp.length && src === conf.src) {
+    if (specs && specs.length) {
       var picture = document.createElement("picture");
       picture.className = "slot-picture";
-      var source = document.createElement("source");
-      source.type = "image/webp";
-      source.srcset = conf.webp.map(function (c) {
-        return ICB.assetUrl(c.src) + (c.w ? " " + c.w + "w" : "");
-      }).join(", ");
-      if (conf.sizes) source.sizes = conf.sizes;
-      picture.appendChild(source);
+      specs.forEach(function (spec) {
+        picture.appendChild(slotSource(spec, shot.sizes || conf.sizes));
+      });
       picture.appendChild(img);
       mount = picture;
     }
@@ -724,7 +743,7 @@ window.ICB = window.ICB || {};
     });
     // On failure nothing is appended: the artwork simply remains.
     img.addEventListener("error", function () { mount.remove(); });
-    img.src = ICB.assetUrl(src);
+    img.src = ICB.assetUrl(shot.src);
   }
 
   /* A slot carrying several photographs cycles through them on its own.
@@ -746,8 +765,8 @@ window.ICB = window.ICB || {};
     var shots = [];
     var shown = 0;
 
-    conf.srcs.forEach(function (src, i) {
-      slotPhoto(node, conf, src, function (img) {
+    shotsOf(conf).forEach(function (shot, i) {
+      slotPhoto(node, conf, shot, function (img) {
         img.classList.add("slot-photo--rotating");
         shots[i] = img;
         // The first to arrive is the one on screen.
@@ -784,15 +803,34 @@ window.ICB = window.ICB || {};
     }, every);
   }
 
+  /* Every slot shape reduced to a list of picture specs.
+
+     shots is the full form, one entry per photograph, each free to carry
+     its own sources and its own alt text. srcs is the old shorthand for
+     several plain files, and src the shorthand for one; both still work,
+     and a slot that uses them keeps the slot-level alt, webp and pos. */
+  function shotsOf(conf) {
+    if (conf.shots && conf.shots.length) return conf.shots;
+    if (conf.srcs && conf.srcs.length) {
+      return conf.srcs.map(function (src) { return { src: src }; });
+    }
+    return conf.src ? [{ src: conf.src, webp: conf.webp }] : [];
+  }
+
+  function rotates(conf) {
+    return shotsOf(conf).length > 1;
+  }
+
   function enhance(root) {
     var slots = (ICB.DATA.images && ICB.DATA.images.slots) || {};
     var nodes = (root || document).querySelectorAll("[data-img-slot]");
     Array.prototype.forEach.call(nodes, function (node) {
       var conf = slots[node.getAttribute("data-img-slot")];
       if (!conf || node.querySelector(".slot-photo")) return;
-      if (conf.srcs && conf.srcs.length) { rotateSlot(node, conf); return; }
-      if (!conf.src) return;
-      slotPhoto(node, conf, conf.src, function (img) { img.classList.add("is-loaded"); });
+      if (rotates(conf)) { rotateSlot(node, conf); return; }
+      var only = shotsOf(conf)[0];
+      if (!only) return;
+      slotPhoto(node, conf, only, function (img) { img.classList.add("is-loaded"); });
     });
   }
 

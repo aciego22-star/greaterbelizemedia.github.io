@@ -392,9 +392,18 @@ window.ICB = window.ICB || {};
       "</figcaption>";
 
     if (b.src) {
+      /* WebP first where the entry has one, with the file in src as the
+         fallback. Both go through the asset resolver, so the single-file
+         build substitutes each on its own. */
+      var pic = (b.webp && b.webp.length)
+        ? "<picture>" + b.webp.map(function (c) {
+            return '<source type="image/webp" data-asset-srcset="' + esc(c.src) + '">';
+          }).join("") +
+          '<img data-asset="' + esc(b.src) + '" alt="' + esc(b.alt) + '" loading="lazy"></picture>'
+        : '<img data-asset="' + esc(b.src) + '" alt="' + esc(b.alt) + '" loading="lazy">';
       return '<figure class="' + cls + '">' +
         '<button type="button" class="g-open" data-lightbox="' + photoIndex + '" aria-label="' + esc(ICB.s("viewLarger", { caption: ICB.t(b.caption) })) + '">' +
-          '<img data-asset="' + esc(b.src) + '" alt="' + esc(b.alt) + '" loading="lazy">' +
+          pic +
         "</button>" + cap +
       "</figure>";
     }

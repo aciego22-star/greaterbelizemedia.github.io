@@ -66,22 +66,56 @@ ICB.DATA.images = {
     "resources-hero":   { src: "assets/img/heroes/resources.jpg", pos: "center 60%",
                           alt: "The curved red facade of an Insurance Corporation of Belize building against the sky" },
 
-    /* The Gallery hero cycles through three ICB buildings on a five
-       second timer, with no controls: it is a backdrop behind a heading,
-       not something to operate. See rotateSlot in js/art.js.
+    /* The Gallery banner: art direction, not merely a responsive size.
 
-       Two of the three files are the same ones used by the Insurance
-       hero and the Southside gallery tile. That is deliberate: the
-       single-file build keys its asset map by path, so reusing a path
-       costs nothing beyond the one copy already being carried. */
-    "gallery-hero":     { pos: "center center",
-                          rotate: 5000,
-                          srcs: [
-                            "assets/img/heroes/insurance.jpg",
-                            "assets/img/branches/southside.jpg",
-                            "assets/img/gallery/icb-branch-coastal.jpg"
-                          ],
-                          alt: "Insurance Corporation of Belize offices around the country" },
+       A desktop banner and a phone want different SHAPES of the same
+       photograph, so each shot carries a 16:9 crop for 769px and up and
+       the original 4:3 below it, chosen by a media query on the source.
+       The container is given the matching ratio at each breakpoint (see
+       .page-hero--banner), so nothing is stretched and nothing is cropped
+       by object-fit: the picture and the box are the same shape.
+
+       Why 16:9 rather than the 21:9 that was asked for: at 21:9 the
+       Corozal Border building loses either its roofline and the ICB
+       lettering above it or both entrance doors, depending which way the
+       crop is biased, and the Belize City branch loses the foot of its
+       doors. 16:9 is the widest ratio that holds the signage, the
+       roofline and the entrances on both. One number in the stylesheet
+       changes it if ICB supply genuinely wider frames later.
+
+       The third photograph that used to be in this rotation, the curved
+       red facade, is not here: it is shot from below and a 16:9 crop cuts
+       its roof off. It remains the Insurance page hero, where the 4:3 it
+       needs is what it gets. */
+    "gallery-hero":     {
+      pos: "center center",
+      rotate: 5000,
+      shots: [
+        {
+          alt: "The Insurance Corporation of Belize branch on Central America Boulevard, Belize City",
+          src: "assets/img/branches/southside.jpg",
+          sources: [
+            { media: "(min-width: 769px)", type: "image/webp", sizes: "100vw",
+              srcset: [{ src: "assets/img/gallery/banner/southside-16x9-1000.webp", w: 1000 },
+                       { src: "assets/img/gallery/banner/southside-16x9-1435.webp", w: 1435 }] },
+            { media: "(min-width: 769px)",
+              srcset: [{ src: "assets/img/gallery/banner/southside-16x9.jpg" }] }
+          ]
+        },
+        {
+          alt: "The Insurance Corporation of Belize branch at the northern border, Corozal District",
+          src: "assets/img/gallery/icb-branch-coastal.jpg",
+          sources: [
+            { media: "(min-width: 769px)", type: "image/webp", sizes: "100vw",
+              srcset: [{ src: "assets/img/gallery/banner/border-16x9-1000.webp", w: 1000 },
+                       { src: "assets/img/gallery/banner/border-16x9-1440.webp", w: 1440 }] },
+            { media: "(min-width: 769px)",
+              srcset: [{ src: "assets/img/gallery/banner/border-16x9.jpg" }] }
+          ]
+        }
+      ],
+      alt: "Insurance Corporation of Belize offices around the country"
+    },
     "contact-hero":     { src: "assets/img/heroes/contact.jpg", pos: "72% center",
                           alt: "An ICB representative meeting with customers, from the Life Happens Fast film" },
     "locations-hero":   { src: "assets/img/gallery/hq-street.jpg", pos: "72% center",

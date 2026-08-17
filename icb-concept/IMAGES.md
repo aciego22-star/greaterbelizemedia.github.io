@@ -29,7 +29,67 @@ visual has been supplied.
 | Branch gallery (3 of 12 tiles) | HQ photograph, the Daly Street Corporate Office, the Southside branch |
 | Insurance page hero | Supplied photograph of an ICB office building |
 | Resources page hero | Supplied photograph: the curved red facade against the sky |
-| Gallery page hero | Three supplied ICB buildings, cycling on a five second timer |
+| Gallery page banner | Two supplied ICB buildings, art-directed, cycling on a five second timer |
+
+## The Gallery banner: art direction, and why 16:9
+
+`assets/img/gallery/banner/` holds the desktop sources: `southside-16x9`
+and `border-16x9`, each as WebP at two widths with a JPEG of the same crop
+as the fallback. The 4:3 originals in `assets/img/branches/southside.jpg`
+and `assets/img/gallery/icb-branch-coastal.jpg` are untouched and are the
+mobile sources.
+
+The banner is art direction, not a responsive size. Each shot carries a
+`<source media="(min-width: 769px)">` for the 16:9 crop, and the plain
+`<img>` underneath is the original 4:3. The container takes the matching
+ratio at each breakpoint through `--banner-ratio` on
+`.page-hero--banner`, so the picture and its box are the same shape:
+nothing is stretched, and `object-fit: contain` crops nothing because
+there is nothing to crop.
+
+**Why 16:9 rather than the 21:9 that was requested.** Neither supplied
+file was 21:9 to begin with: the Belize City frame is 1489x807 (1.85) and
+the border frame 906x821 (1.10). Reaching 2.33 means cutting height, and
+the numbers do not allow it. The border building occupies about 630px of
+its 1086px frame from roofline to base; a 21:9 window over that frame is
+621px tall, so the building does not fit at any bias, and the crop loses
+either the ICB lettering and the roofline or both entrance doors. The
+Belize City frame at 21:9 loses the foot of its doors. 16:9 gives an
+815px window and holds the signage, the roofline and the entrances on
+both. `scratchpad/check/banner-art.js` asserts that arithmetic alongside
+the rendered geometry, so the decision is checkable rather than a matter
+of taste. `--banner-ratio` is one line if genuinely wider frames arrive.
+
+**Layout.** Desktop keeps the copy over the picture, sharing a grid cell
+with it so the picture sets the height and the heading centres against
+it; a 16:9 banner at 1440 is 810px tall, and a heading underneath that
+would be below the fold. Below 769px the copy sits beneath the picture: a
+4:3 box at 390px is 293px tall and the copy needs about 430px, so
+overlaying it would either overflow the picture or force the box off its
+ratio.
+
+The third photograph that used to be in this rotation, the curved red
+facade, is not in the banner any more. It is shot from below and a 16:9
+crop takes its roof off. It remains the Insurance page hero, where the
+4:3 it needs is what it gets.
+
+**On "retaining the PNG originals".** The supplied files arrived as JPEG,
+not PNG, and each crop ships as WebP with a JPEG of the same crop behind
+it, which is the role a PNG would have played. A lossless PNG of a
+photograph this size is around 3MB against 118-177KB for the JPEG, and
+the single-file preview has a 16MB ceiling, so the fallback is a JPEG.
+
+## Corozal Border Branch
+
+`assets/img/branches/corozal-border.*` is the supplied frame at its own
+ratio, 906x821, WebP with a JPEG behind it. It is the same building as
+the banner's border shot, framed to include the forecourt.
+
+INTERNAL TODO (not client-facing): the identification is the client's.
+Every other branch photograph on the site is traceable to something ICB
+published; confirm with ICB that this building is the Corozal Border
+Branch before the tile is presented as fact. The caption itself comes
+from the branch record, as every caption in the grid does.
 
 ## The Marine Hull hero: a subject that has to be seen whole
 
