@@ -10,7 +10,8 @@ website or an offer of insurance.
 A complete, self-contained front-end prototype in ICB's red, black and
 white identity that reorganizes ICB's published public information
 around customer tasks: Explore Insurance, File a Claim, Find a Branch. It runs
-from a static folder with zero external requests (fonts embedded, real
+from a static folder with zero external requests until someone opens the
+assistant (fonts embedded, real
 ICB media included locally), so it works identically on any host,
 offline, and from disk.
 

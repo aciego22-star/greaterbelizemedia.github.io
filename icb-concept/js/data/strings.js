@@ -35,6 +35,16 @@ ICB.STRINGS = {
     quickActions: "Quick actions",
     exploreInsurance: "Explore Insurance",
     backToTop: "Back to top",
+
+    /* The assistant. Bee is a name, so it stays put; the words around it
+       move like every other label on the site. */
+    assistantOpen: "Talk to Bee",
+    assistantClose: "Close",
+    assistantTitle: "ICB Assist",
+    assistantNewTab: "Open in a new tab",
+    assistantLoading: "Connecting you to ICB Assist.",
+    assistantPreviewNote: "This preview cannot reach outside services, so the assistant does not load here. It runs normally on the published site.",
+    assistantOfflineNote: "The assistant could not be reached just now. You can open it in a new tab, or call ICB on +501 224-5328.",
     belize: "Belize",
     qbCall: "Call",
     qbBranches: "Branches",
@@ -188,6 +198,14 @@ ICB.STRINGS = {
     quickActions: "Acciones rápidas",
     exploreInsurance: "Ver seguros",
     backToTop: "Volver arriba",
+
+    assistantOpen: "Hable con Bee",
+    assistantClose: "Cerrar",
+    assistantTitle: "ICB Assist",
+    assistantNewTab: "Abrir en una pestaña nueva",
+    assistantLoading: "Conectándole con ICB Assist.",
+    assistantPreviewNote: "Esta vista previa no puede conectarse con servicios externos, así que el asistente no carga aquí. Funciona con normalidad en el sitio publicado.",
+    assistantOfflineNote: "No se pudo conectar con el asistente en este momento. Puede abrirlo en una pestaña nueva o llamar a ICB al +501 224-5328.",
     belize: "Belice",
     qbCall: "Llamar",
     qbBranches: "Sucursales",

@@ -468,10 +468,20 @@ button {
 
 /* ============================ Footer ============================ */
 
+/* The extra room at the foot is for the Talk to Bee launcher.
+
+   It is fixed in the bottom right, so it sits on whatever the last line
+   of the page happens to be, and on a phone that is the studio credit:
+   the clickability suite caught the pill covering that link. Buying back
+   the height the pill occupies lets the last line always be scrolled
+   clear of it. --bee-clearance is the pill's height plus the gap it
+   keeps from the edge, twice, so the credit ends up above it rather than
+   just level with it. */
 .site-footer {
+  --bee-clearance: calc(53px + 2 * clamp(14px, 3vw, 28px));
   background: var(--c-brand-deep);
   color: var(--c-text-inverse-soft);
-  padding: var(--sp-10) 0 var(--sp-6);
+  padding: var(--sp-10) 0 calc(var(--sp-6) + var(--bee-clearance));
   border-top: 3px solid var(--c-accent);
 }
 .footer-grid {
@@ -3413,4 +3423,149 @@ select,
 }
 @media (max-width: 360px) {
   .lang-btn { padding: 0.3rem 0.4rem; letter-spacing: 0.02em; }
+}
+
+/* ============================ Talk to Bee ============================ */
+
+/* The assistant launcher and its panel.
+
+   A pill in ICB red in the bottom right on every page, at every size,
+   with the ICB mark on a white plate because the logo is black and red
+   and would disappear on the red. Tapping it opens the panel; tapping it
+   again closes it, which is why the pill stays put and swaps its label
+   rather than being replaced by a floating close button that would land
+   on top of the assistant's own header.
+
+   Bottom RIGHT specifically: back-to-top owns the bottom left and the
+   quick bar owns the bottom edge on a phone, so this is the one corner
+   that was free. It rides above the quick bar at phone widths for the
+   same reason back-to-top does. */
+.bee {
+  position: fixed;
+  right: clamp(14px, 3vw, 28px);
+  bottom: clamp(14px, 3vw, 28px);
+  z-index: 95;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--sp-3);
+  pointer-events: none;
+}
+.bee > * { pointer-events: auto; }
+
+.bee-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 52px;
+  padding: 0.35rem 1.15rem 0.35rem 0.35rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--c-cta);
+  color: var(--inv);
+  font-family: var(--font-display);
+  font-size: var(--fs-300);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(10, 10, 11, 0.32);
+  transition: background-color var(--t-fast) var(--ease),
+              box-shadow var(--t-fast) var(--ease),
+              transform var(--t-fast) var(--ease);
+}
+.bee-pill:hover { background: var(--red-700); }
+.bee-pill:focus-visible { outline: 2px solid var(--c-cta); outline-offset: 3px; }
+@media (hover: hover) and (pointer: fine) {
+  .bee-pill:hover { transform: translateY(-1px); box-shadow: 0 14px 34px rgba(10, 10, 11, 0.38); }
+}
+
+/* The mark sits on white: the ICB logo is black and red, and neither
+   reads on the red pill. */
+.bee-mark {
+  flex: none;
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.bee-mark img { width: 30px; height: auto; display: block; }
+
+.bee-label { white-space: nowrap; }
+
+/* One control, two states: the label reads "Talk to Bee" shut and
+   "Close" open, and the cross only appears with the second. */
+.bee-x { display: none; width: 17px; height: 17px; }
+.bee-x svg { width: 100%; height: 100%; }
+.bee.is-open .bee-x { display: block; }
+
+.bee-panel {
+  width: min(420px, calc(100vw - 2 * clamp(14px, 3vw, 28px)));
+  height: min(700px, calc(100vh - 190px));
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: #000000;
+  box-shadow: 0 24px 60px rgba(10, 10, 11, 0.45);
+  display: flex;
+  flex-direction: column;
+}
+.bee-panel[hidden] { display: none; }
+.bee-frame { flex: 1 1 auto; display: flex; min-height: 0; }
+.bee-frame iframe { width: 100%; height: 100%; border: 0; display: block; }
+
+/* Shown only when the assistant cannot be reached: the sandboxed preview,
+   or a network that cannot get to chatbase.co. An empty white rectangle
+   would read as a broken feature; this says which it is and offers the
+   assistant somewhere it will work. */
+.bee-note {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: var(--sp-4);
+  padding: var(--sp-6);
+  background: var(--c-dark);
+  color: var(--c-text-inverse);
+}
+.bee-note[hidden] { display: none; }
+.bee-note p { color: var(--c-text-inverse-soft); font-size: var(--fs-300); margin: 0; }
+.bee-note-mark {
+  width: 54px; height: 54px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bee-note-mark img { width: 38px; height: auto; display: block; }
+.bee-note [hidden] { display: none; }
+.bee-panel { position: relative; }
+
+/* On a phone the panel takes the screen, minus the header and the quick
+   bar it must not sit under. */
+@media (max-width: 719px) {
+  .bee { bottom: calc(var(--quickbar-h) + 14px + env(safe-area-inset-bottom)); }
+  .bee-panel {
+    width: calc(100vw - 28px);
+    height: calc(100vh - var(--quickbar-h) - var(--header-h) - 90px);
+    min-height: 380px;
+  }
+}
+/* Small phones in landscape have almost no height to give. */
+@media (max-height: 520px) {
+  .bee-panel { height: calc(100vh - 120px); min-height: 240px; }
+}
+
+/* The pill is the only thing that should be tappable behind an open
+   overlay, and it is not: the directories and the mobile menu close the
+   panel on their way in. */
+body.sheet-open .bee { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .bee-pill { transition: background-color var(--t-fast) var(--ease); }
+  .bee-pill:hover { transform: none; }
 }

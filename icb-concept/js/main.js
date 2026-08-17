@@ -295,6 +295,7 @@ window.ICB = window.ICB || {};
     initLangSwitch();
     ICB.renderChrome();
     initBackToTop();
+    ICB.assistant.init();
     ICB.router.init();
     ICB.reveal(document);
   }
