@@ -28,8 +28,29 @@ ICB.DATA.images = {
                           alt: "A couple at the front steps of their Belizean home, from ICB's Life Happens Fast film" },
     "product-motor":    { src: "assets/img/products/motor.jpg", pos: "center 55%",
                           alt: "A couple with their vehicle, from ICB's Life Happens Fast film" },
-    "product-marine":   { src: "assets/img/products/marine.jpg", pos: "center 45%",
-                          alt: "A powerboat, from ICB's Protect Your Investment campaign artwork" },
+    /* The supplied red-and-black motorboat photograph. WebP at three
+       widths with a JPEG of the same frame as the fallback; no crop is
+       baked in, so the hero decides how much of the frame to show and
+       the whole boat is always available to it. The hero is shaped to
+       suit this photograph rather than the other way round: see
+       .page-hero--whole-media in css/site.css and heroPhoto on the
+       marine product.
+
+       No pos: the framing is responsive and lives in the stylesheet.
+
+       The previous crop from ICB's Protect Your Investment artwork is
+       still in the repository, at products/marine.jpg. Its path is
+       deliberately not written in full here: build/build-single.js
+       bundles every asset path it finds anywhere in the built file, and
+       naming this one would carry an unused image into the preview. */
+    "product-marine":   { src: "assets/img/products/marine-boat.jpg",
+                          sizes: "100vw",
+                          webp: [
+                            { src: "assets/img/products/marine-boat-640.webp",  w: 640 },
+                            { src: "assets/img/products/marine-boat-1000.webp", w: 1000 },
+                            { src: "assets/img/products/marine-boat-1600.webp", w: 1600 }
+                          ],
+                          alt: "Red and black motorboat underway in Caribbean waters." },
     "product-cargo":    { src: "assets/img/products/cargo.jpg", pos: "center center",
                           alt: "A container ship, port cranes and freight trucks at a shipping terminal" },
     "product-liability":{ src: "assets/img/products/liability.jpg", pos: "center 38%",

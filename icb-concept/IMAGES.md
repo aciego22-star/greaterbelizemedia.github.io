@@ -14,7 +14,7 @@ visual has been supplied.
 | Hero slides 1-3 | HQ photograph, Protect Your Investment artwork, the film |
 | Property card + page | Film frame: couple at their Belizean home |
 | Motor card + page | Film frame: couple with their vehicle |
-| Marine Hull card + page | Boat photography from the campaign artwork |
+| Marine Hull card + page | Supplied photograph: red and black motorboat underway |
 | Claims page hero | Film frame: customer completing paperwork with ICB |
 | Property / Motor / Liability page insets | Native-scale crops of the campaign artwork panels |
 | Liability card + page | Film frame: handshake with an ICB representative |
@@ -30,6 +30,47 @@ visual has been supplied.
 | Insurance page hero | Supplied photograph of an ICB office building |
 | Resources page hero | Supplied photograph: the curved red facade against the sky |
 | Gallery page hero | Three supplied ICB buildings, cycling on a five second timer |
+
+## The Marine Hull hero: a subject that has to be seen whole
+
+`assets/img/products/marine-boat*` is the supplied red-and-black motorboat
+photograph, 1672x941. It ships as WebP at 640, 1000 and 1600 wide with
+`marine-boat.jpg` at 1600 as the fallback for anything that cannot decode
+WebP, offered through a `<picture>` with `sizes="100vw"`. No crop is baked
+into the files: the whole frame is in each one and the hero decides how
+much of it to show.
+
+A boat is a long horizontal object, and the brief was that the bow,
+canopy, stern and lower black hull all stay in frame. `object-fit: cover`
+alone cannot promise that, because the hero's shape is set by how much
+copy sits in it, not by the picture. So this hero adapts to the
+photograph, through `heroPhoto: "whole"` on the product and
+`.page-hero--whole-media` in the stylesheet:
+
+- **1100px and up.** The panel fills the hero as usual, and a min-height
+  of `min(35.1vw, 620px)` stops the hero ever being wider than about
+  2.85:1. Measured from the pixels, that is the shape at which the top of
+  the canopy and the bottom of the hull are both still inside a centred
+  cover crop; anything wider starts eating the boat. Past about 1760px the
+  cap holds and the crop tightens gently rather than suddenly.
+- **Below 720px.** The hero is portrait, and no crop of a landscape
+  photograph shows a whole boat in a portrait box. The photograph stops
+  being a background and becomes a band across the top of the hero at its
+  own aspect ratio, uncropped and with no scrim over it, with the copy in
+  the dark block beneath. Nothing is zoomed and nothing is lost.
+
+`scratchpad/check/marine-hero.js` measures the boat's bounding box against
+what a cover crop actually shows at fifteen widths, and fails naming the
+part that would be lost.
+
+The earlier crop from ICB's Protect Your Investment artwork is still in the
+repository at `assets/img/products/marine.jpg`, unreferenced, if the
+campaign framing is ever wanted back.
+
+INTERNAL TODO (not client-facing): confirm with ICB whether this
+photograph is theirs to publish. It arrived through the client rather than
+from ICB's own material, and every other photograph on the site is
+traceable to something ICB published.
 
 ## Still to supply: branch photography
 

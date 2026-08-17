@@ -518,32 +518,35 @@ button {
 .footer-col address { font-style: normal; font-size: var(--fs-300); line-height: 1.7; }
 .footer-col address a { color: var(--c-text-inverse-soft); }
 
+/* Copyright line and studio credit, stacked and centred on the base of
+   the footer. They used to sit at opposite ends of a justified row, which
+   read as two unrelated scraps; centred and stacked they read as one
+   closing line. */
 .footer-base {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--sp-3) var(--sp-5);
-  justify-content: space-between;
-  align-items: baseline;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--sp-2);
   padding-top: var(--sp-5);
   font-size: var(--fs-300);
 }
 .footer-note { color: rgba(245, 244, 242, 0.45); font-size: var(--fs-200); letter-spacing: 0.04em; }
-/* The studio credit. Reads as part of the line until you go near it, so
-   the attribution stays quiet on a page about ICB. Sized to a proper
-   touch target like every other footer link. */
+/* The studio credit, in ICB red and with no rule under it. It is a name,
+   not a piece of running text that needs underlining to be found: it is
+   the only coloured thing on a black base, which is signal enough. Still
+   sized to a proper touch target like every other footer link. */
 .footer-credit {
   display: inline-flex;
   align-items: center;
   min-height: 34px;
-  color: rgba(245, 244, 242, 0.62);
+  color: var(--red-400);
+  font-weight: 700;
   text-decoration: none;
-  border-bottom: 1px solid rgba(245, 244, 242, 0.22);
+  border-bottom: 0;
 }
 .footer-credit:hover,
-.footer-credit:focus-visible {
-  color: var(--c-text-inverse);
-  border-bottom-color: currentColor;
-}
+.footer-credit:focus-visible { color: var(--red-300); }
 @media (pointer: coarse), (max-width: 719px) {
   .footer-credit { min-height: 44px; }
 }
@@ -1697,10 +1700,60 @@ button {
 }
 /* Photography in interior heroes sits to the right of the copy column. */
 .page-hero-art .slot-photo { object-position: 78% center; }
+/* A <picture> wrapper has to fill the panel the same way the bare image
+   did, or the photo inside it collapses to nothing. */
+.slot-picture { position: absolute; inset: 0; display: block; }
 @media (max-width: 639px) {
   .page-hero-art::after {
     background:
       linear-gradient(0deg, rgba(6, 6, 7, 0.90) 0%, rgba(6, 6, 7, 0.74) 48%, rgba(6, 6, 7, 0.34) 100%);
+  }
+}
+
+/* ---------------------------------------------------------------------
+   A hero whose photograph has to be seen whole.
+
+   Marine Hull Insurance carries a photograph of a boat, and a boat is a
+   long horizontal object: bow, canopy, stern and the black lower hull all
+   have to stay in frame. object-fit: cover cannot promise that at every
+   shape of hero, because the hero's shape is set by how much copy is in
+   it, so here the hero is shaped around the photograph instead.
+
+   Wide. A min-height stops the hero ever being wider than about 2.85:1.
+   That is the shape at which the top of the canopy and the bottom of the
+   hull are both still inside a centred cover crop of a 16:9 frame;
+   anything wider starts eating the boat. 35.1vw is that ratio, and the
+   620px cap holds it to about 1760px, past which the crop tightens
+   gently rather than suddenly.
+
+   Narrow. Below 720px the hero is portrait, and no crop of a landscape
+   photograph shows a whole boat in a portrait box. So the photograph
+   stops being a background: it becomes a band across the top of the hero
+   at its own aspect ratio, uncropped and unscrimmed, with the copy in the
+   dark block beneath it. Nothing is zoomed and nothing is lost.
+   --------------------------------------------------------------------- */
+.page-hero--whole-media { min-height: min(35.1vw, 620px); display: flex; align-items: center; }
+.page-hero--whole-media .page-hero-inner { width: 100%; }
+/* Centred, not pushed right: at these shapes the full width of the frame
+   is on screen, and the vertical centre is where the boat sits. */
+.page-hero--whole-media .page-hero-art .slot-photo { object-position: center 50%; }
+
+@media (max-width: 719px) {
+  .page-hero--whole-media { min-height: 0; display: block; }
+  .page-hero--whole-media .page-hero-art.art-panel {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    aspect-ratio: 1672 / 941;
+  }
+  /* No copy sits on the band, so it needs no legibility scrim. */
+  .page-hero--whole-media .page-hero-art::after { content: none; }
+}
+/* aspect-ratio is widely supported, but a browser without it would give
+   the in-flow panel no height at all and the band would vanish. */
+@supports not (aspect-ratio: 16 / 9) {
+  @media (max-width: 719px) {
+    .page-hero--whole-media .page-hero-art.art-panel { height: 56.3vw; }
   }
 }
 .page-hero-inner {
@@ -2933,38 +2986,46 @@ select.input {
 
 /* ============================ Responsive chrome ============================ */
 
-@media (max-width: 1023px) {
+/* The bar of eight nav items starts at 1100, not 1024.
+
+   It used to start at 1024, and with the language switch beside the logo
+   there was no longer room for eight Spanish labels there: Ubicaciones,
+   Reclamos and Empresas all run longer than their English counterparts,
+   and the row overran by about 46px. The alternative was 12px nav text
+   with three pixels of padding, which fits and looks squeezed. Below
+   1100 the menu button does the job it already does on a phone, and the
+   header stays the logo, the language and one button. */
+@media (max-width: 1099px) {
   .site-nav { display: none; }
   .menu-toggle { display: flex; }
   .btn-cover { display: none; }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1100px) {
   .mobile-menu { display: none; }
 }
 
 /* The desktop header, made to fit rather than to overrun.
 
    It carries the logo lockup, the language switch, eight nav items and a
-   cover button, and Spanish labels are longer than their English
-   counterparts: Ubicaciones for Locations, Reclamos for Claims. The row
-   was overflowing between 1024 and 1048 and again above 1260, in both
-   languages, so the sizing is fluid across the whole desktop range
-   instead of being fixed at a size that only suits the widest screens.
+   cover button. The row was overflowing at the bottom of the range and
+   again above 1260, in both languages, so the sizing is fluid across the
+   whole desktop range instead of being fixed at a size that only suits
+   the widest screens.
 
-   Below 1260 the cover button also steps aside. It is a second door to
+   Below 1320 the cover button also steps aside. It is a second door to
    the same page the first nav item opens, so losing it costs nothing,
    and the ~150px it returns is what lets eight items sit comfortably at
    a laptop width. */
-@media (min-width: 1024px) {
+@media (min-width: 1100px) {
   .header-inner { gap: clamp(0.7rem, 1.5vw, 1.5rem); }
   .site-nav ul { gap: clamp(0rem, 0.35vw, 0.6rem); }
   .site-nav a {
-    padding: 0.45rem clamp(0.28rem, 0.7vw, 0.65rem);
-    font-size: clamp(0.82rem, 0.95vw, 0.95rem);
+    padding: 0.45rem clamp(0.3rem, 0.7vw, 0.65rem);
+    font-size: clamp(0.83rem, 0.95vw, 0.95rem);
   }
 }
-@media (min-width: 1024px) and (max-width: 1259px) {
+@media (min-width: 1100px) and (max-width: 1319px) {
   .btn-cover { display: none; }
 }
 
@@ -2976,7 +3037,7 @@ select.input {
   .footer-grid { grid-template-columns: 1fr; gap: var(--sp-6); }
 }
 
-@media (min-width: 720px) and (max-width: 1023px) {
+@media (min-width: 720px) and (max-width: 1099px) {
   .footer-grid { grid-template-columns: 1fr 1fr; }
 }
 
@@ -3261,6 +3322,29 @@ select,
 .lang-btn:focus-visible { outline: 2px solid var(--c-cta); outline-offset: 2px; }
 .lang-caret { display: flex; }
 .lang-caret svg { width: 13px; height: 13px; }
+
+/* On a desktop it belongs to the logo, not to the nav.
+
+   .brand used to carry margin-right: auto, which meant the slack in the
+   header row fell between the logo and the switch: the switch drifted
+   with the window and with the language, sitting 27px from the logo at
+   one width and 129px at another, which read as a control floating in
+   the middle of the header rather than one attached to the mark. The
+   auto moves to the switch, so the switch keeps a fixed, small gap from
+   the logo and all the slack falls between it and the nav instead.
+
+   The margin on the nav is the floor under that gap: at the narrowest
+   desktop there is no slack left to distribute, and without it the first
+   nav item would come up against the pill.
+
+   Both margins are fluid for the same reason the nav sizing is: at the
+   narrowest desktop every pixel is spoken for, and a fixed 24px here was
+   enough to push the Spanish header past the right edge at 1024. */
+@media (min-width: 720px) {
+  .brand { margin-right: 0; }
+  .lang-switch { margin-left: clamp(0.7rem, 1.4vw, 1.5rem); margin-right: auto; }
+  .site-nav { margin-left: clamp(0.7rem, 1.4vw, 1.5rem); }
+}
 
 /* On a phone it sits between the logo and the menu button, so it stays
    compact and the header still fits at 320px. */

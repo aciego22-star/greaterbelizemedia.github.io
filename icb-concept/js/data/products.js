@@ -282,6 +282,11 @@ ICB.DATA.products = [
       { en: "Any ICB location can put you in touch about Marine Hull Insurance.", es: "Cualquier oficina de ICB puede ponerle en contacto sobre Marine Hull Insurance." }
     ],
     status: null,
+    /* The hero photograph is a boat seen side on: bow, canopy, stern and
+       the black lower hull all have to stay in frame, and no single crop
+       does that at every shape of hero. "whole" tells the hero to shape
+       itself around the photograph. */
+    heroPhoto: "whole",
     glyph: "boat",
     artMotif: "marine",
     related: ["cargo", "liability"],

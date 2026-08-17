@@ -679,22 +679,52 @@ window.ICB = window.ICB || {};
   /* Photo slot enhancer (dormant until images.js provides sources)      */
   /* ------------------------------------------------------------------ */
 
-  /* Build one photo for a slot. Resolves nothing and shows nothing until
-     the file has actually loaded, so a missing image leaves the artwork
-     in place rather than a gap. */
+  /* Build one photo for a slot. Nothing is shown until the file has
+     actually loaded, so a missing image leaves the artwork in place
+     rather than a gap.
+
+     A slot may also declare webp: [{ src, w }, ...]. Then the photo is a
+     <picture>: the WebP candidates are offered first and the file named
+     in src stays as the fallback for anything that cannot decode them.
+     Each candidate goes through ICB.assetUrl on its own, because in the
+     single-file build every path is its own key in the asset map and a
+     whole srcset string would not match one.
+
+     The element is built for real and its own load event is what decides,
+     rather than a separate probe image. A probe would have to name one
+     file, and naming the JPEG would make every visitor fetch the fallback
+     they are not going to use. */
   function slotPhoto(node, conf, src, onReady) {
-    var probe = new Image();
-    probe.onload = function () {
-      var img = document.createElement("img");
-      img.src = ICB.assetUrl(src);
-      img.alt = conf.alt || "";
-      img.className = "slot-photo";
-      if (conf.pos) img.style.objectPosition = conf.pos;
-      node.appendChild(img);
+    var img = document.createElement("img");
+    img.alt = conf.alt || "";
+    img.className = "slot-photo";
+    if (conf.pos) img.style.objectPosition = conf.pos;
+
+    // Only the slot's own single source takes the WebP set; a rotating
+    // slot hands in one src per photograph and they are not interchangeable.
+    var mount = img;
+    if (conf.webp && conf.webp.length && src === conf.src) {
+      var picture = document.createElement("picture");
+      picture.className = "slot-picture";
+      var source = document.createElement("source");
+      source.type = "image/webp";
+      source.srcset = conf.webp.map(function (c) {
+        return ICB.assetUrl(c.src) + (c.w ? " " + c.w + "w" : "");
+      }).join(", ");
+      if (conf.sizes) source.sizes = conf.sizes;
+      picture.appendChild(source);
+      picture.appendChild(img);
+      mount = picture;
+    }
+
+    img.addEventListener("load", function () {
+      if (mount.isConnected) return;
+      node.appendChild(mount);
       requestAnimationFrame(function () { onReady(img); });
-    };
-    // On failure nothing happens: the artwork simply remains.
-    probe.src = ICB.assetUrl(src);
+    });
+    // On failure nothing is appended: the artwork simply remains.
+    img.addEventListener("error", function () { mount.remove(); });
+    img.src = ICB.assetUrl(src);
   }
 
   /* A slot carrying several photographs cycles through them on its own.

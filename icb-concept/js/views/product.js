@@ -266,8 +266,17 @@ ICB.views = ICB.views || {};
       var hasLists = !!(p.covers.length || p.availableFor || ana || p.audience || statusNote);
 
       return '' +
-        '<section class="page-hero on-dark" aria-labelledby="prod-title">' +
-          '<div class="page-hero-art art-panel" data-img-slot="product-' + R.esc(p.id) + '" aria-hidden="true">' + ICB.art.panel(p.artMotif) + "</div>" +
+        /* heroPhoto: "whole" means the photograph has a subject that must
+           be seen entire rather than cropped to the shape of the hero, so
+           the hero adapts to it. See .page-hero--whole-media.
+
+           The art panel is not aria-hidden. It used to be, back when it
+           held nothing but generated decoration; it now carries real
+           photography with real alt text, and the generated panel inside
+           it hides itself. */
+        '<section class="page-hero on-dark' + (p.heroPhoto === "whole" ? " page-hero--whole-media" : "") +
+          '" aria-labelledby="prod-title">' +
+          '<div class="page-hero-art art-panel" data-img-slot="product-' + R.esc(p.id) + '">' + ICB.art.panel(p.artMotif) + "</div>" +
           '<div class="shell page-hero-inner">' +
             /* Two levels down, so the trail carries both rungs. */
             R.crumbs([
