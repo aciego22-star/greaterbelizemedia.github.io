@@ -84,7 +84,7 @@
 
     /* Reset the drawer if the viewport grows past the breakpoint. */
     window.addEventListener("resize", function () {
-      if (window.innerWidth > 1140 &&
+      if (window.innerWidth > 1279 &&
           toggle.getAttribute("aria-expanded") === "true") {
         setMenu(false);
       }

@@ -3,7 +3,7 @@
 
 The preview is published as a hosted artifact, which renders a single file under
 a strict content-security policy. Nothing external can load, so the CSS, the
-script and every image are inlined and the seven pages become hash routes.
+script and every image are inlined and the eight pages become hash routes.
 
 Run from the natfish/ folder:
     python3 tools/bundle-preview.py
@@ -24,6 +24,7 @@ PAGES = [
     ("index", "index.html"),
     ("about", "about.html"),
     ("seafood-services", "seafood-services.html"),
+    ("seafood-seasons", "seafood-seasons.html"),
     ("responsible", "responsible.html"),
     ("news", "news.html"),
     ("gallery", "gallery.html"),
@@ -177,7 +178,7 @@ def uniquify_ids(pages):
 # --------------------------------------------------------------- router --
 
 ROUTER_CSS = """
-/* Preview bundle: the seven pages live in one document as hash routes. */
+/* Preview bundle: the eight pages live in one document as hash routes. */
 [data-route] { display: none; }
 [data-route].is-active { display: block; }
 """
@@ -271,7 +272,11 @@ def main():
 
     font_css = re.sub(r'url\("\.\./fonts/([\w.-]+)"\)', embed_font, font_css)
     css = font_css + "\n" + read("assets/css/natfish.css")
-    js = read("assets/js/natfish.js")
+    # All four scripts, in load order, so the bundle behaves like the site.
+    js = "\n".join(read("assets/js/" + n) for n in (
+        "natfish-strings.js", "natfish-i18n.js",
+        "natfish-seasons.js", "natfish.js",
+    ))
 
     titles = {}
     pages = []

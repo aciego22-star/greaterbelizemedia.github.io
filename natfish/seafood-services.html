@@ -37,6 +37,23 @@
                alt="NATFISH &ndash; National Fishermen Producers' Co-operative Society Ltd.">
         </a>
 
+      <!-- Language control. Stays between the logo and the hamburger at every
+           width, so it is reachable on a phone without opening the menu. -->
+      <button class="lang-toggle" type="button" data-lang-toggle
+              aria-label="Switch language to Espanol"
+              data-label-en="Switch language to Espanol"
+              data-label-es="Cambiar idioma a English">
+        <span class="lang-toggle__globe" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85"
+               stroke-linecap="round" stroke-linejoin="round" focusable="false">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M3.2 9.4h17.6M3.2 14.6h17.6"/>
+            <path d="M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18z"/>
+          </svg>
+        </span>
+        <span class="lang-toggle__label" data-lang-label>English</span>
+      </button>
+
       <button class="nav-toggle" type="button" aria-expanded="false"
               aria-controls="primary-nav" aria-label="Open menu">
         <span class="nav-toggle__bars"></span>
@@ -47,6 +64,7 @@
             <li><a class="nav__link" href="index.html">Home</a></li>
             <li><a class="nav__link" href="about.html">About NATFISH</a></li>
             <li><a class="nav__link" href="seafood-services.html" aria-current="page">Seafood &amp; Services</a></li>
+            <li><a class="nav__link" href="seafood-seasons.html">Seafood Seasons</a></li>
             <li><a class="nav__link" href="responsible.html">Responsible Fisheries</a></li>
             <li><a class="nav__link" href="news.html">What&rsquo;s New</a></li>
             <li><a class="nav__link" href="gallery.html">Gallery</a></li>
@@ -66,6 +84,7 @@
   <main id="main">
 
     <section class="page-hero">
+      <span class="page-hero__watermark" aria-hidden="true">NATFISH</span>
       <div class="container">
         <p class="breadcrumb"><a href="index.html">Home</a><span>/</span>Seafood &amp; Services</p>
         <span class="eyebrow">Seafood &amp; Services</span>
@@ -80,6 +99,19 @@
         availability change with the season and the fishery. Everything on this
         page is confirmed directly with NATFISH before any commitment is made.
       </p>
+    </div>
+
+    <div class="container">
+      <div class="season-callout reveal">
+        <p>
+          Availability changes with the season and the fishery. View Belize's
+          standard seafood seasons before making an enquiry.
+        </p>
+        <div class="season-callout__actions">
+          <a class="btn btn--primary btn--sm" href="seafood-seasons.html">View Seafood Seasons</a>
+          <a class="btn btn--outline btn--sm" href="contact.html#buyer-enquiry">Ask NATFISH What Is Available</a>
+        </div>
+      </div>
     </div>
 
     <section class="section" aria-labelledby="sf-lobster-h">
@@ -158,7 +190,7 @@
 
     <section class="section section--navy" aria-labelledby="sf-services-h">
       <div class="container">
-        <div class="section-head section-head--rule reveal">
+        <div class="section-head section-head--center reveal">
           <svg class="rule-wave" viewBox="0 0 118 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M1 4q7.4-3.6 14.8 0t14.8 0t14.8 0t14.8 0"/><path d="M76 4h41" opacity=".45"/></svg>
           <span class="eyebrow">Cooperative functions</span>
           <h2 id="sf-services-h">What the cooperative does for its members</h2>
@@ -170,7 +202,7 @@
         </div>
 
         <div class="grid grid--3">
-          <div class="pillar reveal">
+          <div class="pillar pillar--center reveal">
             <span class="pillar__icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.6 17.2h16.8l-1.9 3.1a1.9 1.9 0 0 1-1.6.9H7.1a1.9 1.9 0 0 1-1.6-.9z"/><circle cx="7.6" cy="5.9" r="1.7"/><path d="M4.9 13.4c0-2.3 1.2-4.1 2.7-4.1s2.7 1.8 2.7 4.1"/><path class="ico__accent" d="M12.6 7.9h8.2v6.2h-8.2zM12.6 11h8.2M16.7 7.9v6.2M12.6 7.9l8.2 6.2M20.8 7.9l-8.2 6.2"/></svg></span>
             <h3>Produce and process</h3>
             <p>
@@ -178,7 +210,7 @@
               the handling and preparation that follows a landing.
             </p>
           </div>
-          <div class="pillar reveal">
+          <div class="pillar pillar--center reveal">
             <span class="pillar__icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2.6 12.6h8v6.3a1.6 1.6 0 0 1-1.6 1.6H4.2a1.6 1.6 0 0 1-1.6-1.6z"/><path d="M2.6 15.9h8M6.6 12.6v8"/><path class="ico__accent" d="M12.4 16.4c3.4 0 5-2.3 5-5.2"/><path class="ico__accent" d="m15.2 14.6-2.8 1.8 2 2.5"/><path d="M17.4 2.6a3.6 3.6 0 0 0-3.6 3.6c0 2.6 3.6 5.8 3.6 5.8s3.6-3.2 3.6-5.8a3.6 3.6 0 0 0-3.6-3.6z"/></svg></span>
             <h3>Market and distribute</h3>
             <p>
@@ -186,7 +218,7 @@
               reaching buyers that an individual fisher could not reach alone.
             </p>
           </div>
-          <div class="pillar reveal">
+          <div class="pillar pillar--center reveal">
             <span class="pillar__icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2.8 11.4h11.6v7.6a1.7 1.7 0 0 1-1.7 1.7H4.5a1.7 1.7 0 0 1-1.7-1.7z"/><path d="M2.8 15.1h11.6M8.6 11.4v9.3"/><circle class="ico__accent" cx="17.4" cy="7.2" r="4.4"/><path class="ico__accent" d="m15.5 7.3 1.5 1.5 2.6-2.9"/></svg></span>
             <h3>Sell on members' behalf</h3>
             <p>
@@ -228,7 +260,7 @@
              sizes="300px" width="520" height="262" alt="NATFISH &ndash; National Fishermen Producers' Co-operative Society Ltd.">
           </div>
           <p>
-            National Fishermen Producers' Co-operative Society Ltd.. A Belizean fisher-owned cooperative registered in 1966,
+            National Fishermen Producers' Co-operative Society Ltd. A Belizean fisher-owned cooperative registered in 1966,
             connecting fishing communities, quality seafood and markets at home
             and abroad.
           </p>
@@ -239,6 +271,7 @@
           <ul class="footer-list">
             <li><a href="about.html">About NATFISH</a></li>
             <li><a href="seafood-services.html">Seafood &amp; Services</a></li>
+            <li><a href="seafood-seasons.html">Seafood Seasons</a></li>
             <li><a href="responsible.html">Responsible Fisheries</a></li>
             <li><a href="news.html">What&rsquo;s New</a></li>
             <li><a href="gallery.html">Gallery</a></li>
@@ -263,9 +296,21 @@
         <p>&copy; <span data-year>2026</span> National Fishermen Producers' Co-operative Society Ltd.</p>
         <p>Registered 1966. Belize City, Belize.</p>
       </div>
+
+      <!-- Attribution: centred, secondary to NATFISH, and the studio name is
+           the only clickable part. -->
+      <p class="site-credit">
+        <span data-i18n-text="Website designed and developed by">Website designed and developed by</span>
+        <a href="https://austereautomations.com/" target="_blank" rel="noopener noreferrer">Austere Automations</a>
+      </p>
     </div>
   </footer>
 
+  <p class="visually-hidden" id="lang-status" role="status" aria-live="polite"></p>
+
+  <script src="assets/js/natfish-strings.js"></script>
+  <script src="assets/js/natfish-i18n.js"></script>
+  <script src="assets/js/natfish-seasons.js"></script>
   <script src="assets/js/natfish.js"></script>
 </body>
 </html>

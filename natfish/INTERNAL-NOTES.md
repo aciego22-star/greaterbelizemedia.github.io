@@ -2,7 +2,7 @@
 
 **Internal only. Not linked from any page and not to be shared with the client.**
 
-Seven-page concept build. No canonical or Open Graph URL is set anywhere, so nothing ties the site to a
+Eight-page concept build. No canonical or Open Graph URL is set anywhere, so nothing ties the site to a
 preview domain until a real one is approved.
 
 ---
@@ -64,7 +64,7 @@ filtered, alpha preserved. Regenerate with `python3 tools/process-logo.py <sourc
 | Asset | Where it is used |
 |---|---|
 | `natfish-logo.png` (+`@2x`) | Full logo, mark and wordmark and legal name. Footer light panel and the About page identity panel. |
-| `natfish-logo-mark.png` (+`@2x`) | Compact lockup, mark and NATFISH wordmark. Site header on all seven pages. |
+| `natfish-logo-mark.png` (+`@2x`) | Compact lockup, mark and NATFISH wordmark. Site header on all eight pages. |
 | `natfish-icon.png`, `favicon.png` | Square crop of the circular mark. Favicon and touch icon. |
 
 **Why two lockups.** The two legal-name lines occupy 6.1% of the artwork's height. At any sticky-header
@@ -118,11 +118,74 @@ later would mean reintroducing a real `<form>`, a hidden `form-name` input and a
 index.html               Home, gateway with a rotating hero
 about.html               About NATFISH
 seafood-services.html    Seafood & Services
+seafood-seasons.html     Seafood Seasons (regulatory guide)
 responsible.html         Responsible Fisheries
 news.html                What's New at NATFISH
 gallery.html             Gallery, photos and video
 contact.html             Contact & Buyer Enquiries  (#buyer-enquiry)
 ```
+
+### Seafood Seasons is a regulatory guide, not a catalogue
+
+The page summarises **standing Belize fisheries regulation**. It is not a
+statement of NATFISH stock, and the wording is deliberately constrained so it
+can never be read as one. The permitted status strings are fixed in
+`assets/js/natfish-seasons.js`:
+
+- "Within the standard regulatory season"
+- "Standard closed period"
+- "Subject to national quota and current Fisheries notices" (always shown for
+  conch, including inside the open period, because the quota can close it early)
+- "Contact NATFISH for availability"
+
+**Never** add "in stock", "available now", "order now" or any guarantee of
+availability. No statutory shrimp season exists, so shrimp carries an
+availability-varies note rather than invented dates.
+
+Last regulatory review: **18 August 2026**, sourced from
+<https://fisheries.gov.bz/regulations/>. Re-check that source and update
+`LAST_REVIEW` before each client review; quota closures are announced in-season
+and will not appear here automatically.
+
+**CLIENT CONFIRMATION REQUIRED:** whether NATFISH actually handles Nassau
+grouper, whelks, stone crab or shrimp. The page lists them as national
+regulatory seasons only and never as NATFISH products.
+
+---
+
+## 5a. English and Spanish
+
+A real bilingual system, not a translation widget and not a second site.
+
+| Piece | File |
+|---|---|
+| Runtime | `assets/js/natfish-i18n.js` |
+| Spanish strings (generated) | `assets/js/natfish-strings.js` |
+| Spanish source of truth | `tools/natfish_es.py` |
+| Extract + build | `tools/i18n-extract.py`, `tools/i18n-build.py` |
+
+Strings are keyed by their **own English text**, so a missing translation leaves
+the English standing rather than rendering blank, and extraction can never drift
+out of sync with the markup. Detection order is `?lang=`, then the stored
+choice (`natfish.language` in localStorage), then the browser language, then
+English.
+
+After editing any page copy, re-run:
+
+```
+python3 tools/i18n-build.py     # reports anything without Spanish
+```
+
+**CONCEPT-STAGE TRANSLATION.** The Spanish should receive a final review from a
+Belizean Spanish speaker designated by NATFISH before launch, particularly the
+fisheries vocabulary ("veda", "caracol reina", "cuota nacional"), which should
+be checked against the wording the Belize Fisheries Department itself uses. The
+legal name, "NATFISH" and "Austere Automations" are never translated.
+
+The header switches to the hamburger at **1280px**. That is measured, not
+guessed: Spanish labels make the nav 885px wide against 819px in English, and
+below 1280 the logo, language control, nav and buyer button no longer fit with
+usable spacing.
 
 `netlify.toml` 301-redirects the three retired V1 URLs: `/cooperative.html` to `/about.html`,
 `/seafood.html` to `/seafood-services.html`, and `/buyers.html` to `/contact.html#buyer-enquiry`.

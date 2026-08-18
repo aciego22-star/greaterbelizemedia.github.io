@@ -24,11 +24,22 @@ PAGES=(
   index.html
   about.html
   seafood-services.html
+  seafood-seasons.html
   responsible.html
   news.html
   gallery.html
   contact.html
 )
+
+# Every page in the folder must be listed above, or a new page silently
+# ships missing. This caught seafood-seasons.html once already.
+for f in *.html; do
+  case " ${PAGES[*]} " in
+    *" $f "*) ;;
+    *) [ "$f" = "natfish-preview.html" ] || {
+         echo "ERROR: $f exists but is not in PAGES" >&2; exit 1; } ;;
+  esac
+done
 
 cp -- "${PAGES[@]}" netlify.toml "$STAGE/"
 mkdir -p "$STAGE/assets"

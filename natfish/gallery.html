@@ -37,6 +37,23 @@
                alt="NATFISH &ndash; National Fishermen Producers' Co-operative Society Ltd.">
         </a>
 
+      <!-- Language control. Stays between the logo and the hamburger at every
+           width, so it is reachable on a phone without opening the menu. -->
+      <button class="lang-toggle" type="button" data-lang-toggle
+              aria-label="Switch language to Espanol"
+              data-label-en="Switch language to Espanol"
+              data-label-es="Cambiar idioma a English">
+        <span class="lang-toggle__globe" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85"
+               stroke-linecap="round" stroke-linejoin="round" focusable="false">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M3.2 9.4h17.6M3.2 14.6h17.6"/>
+            <path d="M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18z"/>
+          </svg>
+        </span>
+        <span class="lang-toggle__label" data-lang-label>English</span>
+      </button>
+
       <button class="nav-toggle" type="button" aria-expanded="false"
               aria-controls="primary-nav" aria-label="Open menu">
         <span class="nav-toggle__bars"></span>
@@ -47,6 +64,7 @@
             <li><a class="nav__link" href="index.html">Home</a></li>
             <li><a class="nav__link" href="about.html">About NATFISH</a></li>
             <li><a class="nav__link" href="seafood-services.html">Seafood &amp; Services</a></li>
+            <li><a class="nav__link" href="seafood-seasons.html">Seafood Seasons</a></li>
             <li><a class="nav__link" href="responsible.html">Responsible Fisheries</a></li>
             <li><a class="nav__link" href="news.html">What&rsquo;s New</a></li>
             <li><a class="nav__link" href="gallery.html" aria-current="page">Gallery</a></li>
@@ -66,6 +84,7 @@
   <main id="main">
 
     <section class="page-hero">
+      <span class="page-hero__watermark" aria-hidden="true">NATFISH</span>
       <div class="container">
         <p class="breadcrumb"><a href="index.html">Home</a><span>/</span>Gallery</p>
         <span class="eyebrow">Gallery</span>
@@ -234,7 +253,7 @@
              sizes="300px" width="520" height="262" alt="NATFISH &ndash; National Fishermen Producers' Co-operative Society Ltd.">
           </div>
           <p>
-            National Fishermen Producers' Co-operative Society Ltd.. A Belizean fisher-owned cooperative registered in 1966,
+            National Fishermen Producers' Co-operative Society Ltd. A Belizean fisher-owned cooperative registered in 1966,
             connecting fishing communities, quality seafood and markets at home
             and abroad.
           </p>
@@ -245,6 +264,7 @@
           <ul class="footer-list">
             <li><a href="about.html">About NATFISH</a></li>
             <li><a href="seafood-services.html">Seafood &amp; Services</a></li>
+            <li><a href="seafood-seasons.html">Seafood Seasons</a></li>
             <li><a href="responsible.html">Responsible Fisheries</a></li>
             <li><a href="news.html">What&rsquo;s New</a></li>
             <li><a href="gallery.html">Gallery</a></li>
@@ -269,6 +289,13 @@
         <p>&copy; <span data-year>2026</span> National Fishermen Producers' Co-operative Society Ltd.</p>
         <p>Registered 1966. Belize City, Belize.</p>
       </div>
+
+      <!-- Attribution: centred, secondary to NATFISH, and the studio name is
+           the only clickable part. -->
+      <p class="site-credit">
+        <span data-i18n-text="Website designed and developed by">Website designed and developed by</span>
+        <a href="https://austereautomations.com/" target="_blank" rel="noopener noreferrer">Austere Automations</a>
+      </p>
     </div>
   </footer>
 
@@ -288,6 +315,11 @@
     </figure>
   </div>
 
+  <p class="visually-hidden" id="lang-status" role="status" aria-live="polite"></p>
+
+  <script src="assets/js/natfish-strings.js"></script>
+  <script src="assets/js/natfish-i18n.js"></script>
+  <script src="assets/js/natfish-seasons.js"></script>
   <script src="assets/js/natfish.js"></script>
 </body>
 </html>
