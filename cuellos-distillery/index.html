@@ -190,19 +190,17 @@
                  alt="Trafalgar Gin bottles displayed in a decorative garden cart">
           </div>
 
-          <!-- Slide 4 · CZAR Vodka beach portrait. Desktop: complete bottle over a
-               blurred backdrop. Mobile (<768px): dedicated 4:5 composition, full-bleed cover. -->
-          <div class="carousel__slide carousel__slide--contain carousel__slide--czar" aria-hidden="true">
-            <img class="carousel__bg" src="assets/img/gallery/czar-vodka-beach-portrait-640.webp" alt="" aria-hidden="true" width="640" height="945">
-            <picture>
-              <source media="(max-width: 767px)"
-                      srcset="assets/img/hero/czar-vodka-mobile-hero-v2-640.webp 640w, assets/img/hero/czar-vodka-mobile-hero-v2.webp 900w"
-                      sizes="100vw">
-              <img class="carousel__fg" src="assets/img/gallery/czar-vodka-beach-portrait.webp"
-                   width="1284" height="1896" loading="lazy"
-                   data-i18n-alt="carousel.slide3Alt"
-                   alt="CZAR Vodka bottle photographed on the beach">
-            </picture>
+          <!-- Slide 4 · CZAR Vodka: fills the frame edge-to-edge at every
+               breakpoint (cover). Position keeps the label and base in frame
+               on wide desktop panels; the mobile 4:5 frame matches the shot. -->
+          <div class="carousel__slide carousel__slide--czar" aria-hidden="true">
+            <img src="assets/img/hero/czar-vodka-hero.webp"
+                 srcset="assets/img/hero/czar-vodka-mobile-hero-v2-640.webp 640w, assets/img/hero/czar-vodka-mobile-hero-v2.webp 900w, assets/img/hero/czar-vodka-hero.webp 1122w"
+                 sizes="(max-width: 900px) 100vw, 58vw"
+                 width="1122" height="1402" loading="lazy"
+                 style="object-position:50% 85%"
+                 data-i18n-alt="carousel.slide3Alt"
+                 alt="CZAR Vodka bottle photographed on the beach">
           </div>
 
 
