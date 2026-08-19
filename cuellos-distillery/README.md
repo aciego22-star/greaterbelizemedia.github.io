@@ -1,6 +1,6 @@
-# Cuello's Distillery Ltd. — Website Concept V1.1
+# Cuello's Distillery Ltd. - Website Concept V1.1
 
-**"The Spirit of Orange Walk"** — a nine-page, bilingual (EN/ES), mobile-first concept
+**"The Spirit of Orange Walk"** - a nine-page, bilingual (EN/ES), mobile-first concept
 website for Cuello's Distillery Ltd., Orange Walk Town, Belize.
 Developed by [Austere Automations](https://austereautomations.com/).
 
@@ -14,7 +14,7 @@ Developed by [Austere Automations](https://austereautomations.com/).
 - Home hero is now a **four-slide carousel** (full lineup, Trafalgar Gin,
   CZAR Vodka, brand video slot) with autoplay, swipe, keyboard, dots and a
   pause control. Slide 1 stays visible without JavaScript.
-- The four-product rail became a **nine-product marquee** — a slow,
+- The four-product rail became a **nine-product marquee** - a slow,
   seamless right-to-left showcase of the full range, pausable, keyboard- and
   screen-reader-safe, swipe-friendly on touch, static under reduced motion.
 - **Contact and Trade forms removed.** Both pages now use action panels:
@@ -25,7 +25,7 @@ Developed by [Austere Automations](https://austereautomations.com/).
   claims, invented cocktail recipes and invented news stories were removed
   or neutralized. Cocktails is now "Serving inspiration" with an official-
   recipes-coming-soon panel; News uses neutral photo cards.
-- Placeholder social icons removed — only verified links will be shown.
+- Placeholder social icons removed - only verified links will be shown.
 
 ## Pages
 
@@ -46,16 +46,16 @@ Developed by [Austere Automations](https://austereautomations.com/).
 
 - **Static HTML + shared CSS + modular vanilla JS.** No build step, no
   framework. Fonts (Fraunces + Manrope) self-hosted in `assets/fonts/`.
-- **`assets/js/config.js`** — central configuration: WhatsApp number
-  (PROVISIONAL — see checklist), email, hero-video path.
-- **`assets/js/data.js`** — products, cocktails (empty until official
+- **`assets/js/config.js`** - central configuration: WhatsApp number
+  (PROVISIONAL - see checklist), email, hero-video path.
+- **`assets/js/data.js`** - products, cocktails (empty until official
   recipes arrive), news cards, gallery manifest.
-- **`assets/js/i18n.js`** — every EN/ES string, including the prefilled
+- **`assets/js/i18n.js`** - every EN/ES string, including the prefilled
   WhatsApp/email messages. Language persists across pages via localStorage
   and never resets the age confirmation.
-- **`assets/js/carousel.js`** — hero carousel. **`marquee.js`** — product
-  marquee. **`age-gate.js`** — 18+ gateway. **`gallery.js`**, **`spirits.js`**,
-  **`main.js`** — as labelled.
+- **`assets/js/carousel.js`** - hero carousel. **`marquee.js`** - product
+  marquee. **`age-gate.js`** - 18+ gateway. **`gallery.js`**, **`spirits.js`**,
+  **`main.js`** - as labelled.
 - Header/footer markup is generated identically on each page; if you edit
   one, apply the change to all ten HTML files.
 
@@ -73,10 +73,10 @@ Developed by [Austere Automations](https://austereautomations.com/).
 | Any interface/editorial text, EN or ES | `assets/js/i18n.js` |
 | Colours, spacing, typography | `assets/css/main.css` (`:root` tokens) |
 
-### Hero video (slide 4) — ACTIVE, with sound
+### Hero video (slide 4) - ACTIVE, with sound
 `assets/video/cuello-hero-video.mp4` (46 s, social framing removed, audio
 kept) plays on the fourth hero slide: only while its slide is active, never
-behind the age gate, never looping on its own — it advances the carousel
+behind the age gate, never looping on its own - it advances the carousel
 when it ends. **Sound**: unmuted autoplay is attempted first (the age-gate
 click provides the user gesture most browsers require); if a browser still
 refuses, playback falls back to muted and the on-slide speaker toggle lets
@@ -87,7 +87,7 @@ Poster: `assets/img/gallery/cuello-hero-video-poster.webp`.
 Both supplied videos also appear in the Gallery under the **Videos** filter
 (tap-to-play in the lightbox, stops on close). The hero video carries its
 audio there too; the portrait beach video is silent. The audio is the
-source recording's social-app music — rights must be confirmed (checklist).
+source recording's social-app music - rights must be confirmed (checklist).
 
 ### Adding a gallery video
 1. Place the MP4 in `assets/video/` and a poster image in
@@ -106,12 +106,12 @@ source recording's social-app music — rights must be confirmed (checklist).
 ## Netlify deployment
 
 Drag the contents of this folder (or the release ZIP) onto
-[app.netlify.com/drop](https://app.netlify.com/drop) — `netlify.toml` sets
+[app.netlify.com/drop](https://app.netlify.com/drop) - `netlify.toml` sets
 caching headers; no build command, **no form configuration needed** (the
-site has no forms — enquiries go straight to WhatsApp, email and phone).
+site has no forms - enquiries go straight to WhatsApp, email and phone).
 
 ### Before production launch
-- Confirm the WhatsApp number accepts WhatsApp (see checklist) — until
+- Confirm the WhatsApp number accepts WhatsApp (see checklist) - until
   then the `wa.me` links point at the main-office landline number as a
   provisional concept value.
 - Replace the placeholder domain `https://cuellos-distillery-v1.netlify.app/`
@@ -126,7 +126,7 @@ site has no forms — enquiries go straight to WhatsApp, email and phone).
    (printed on the labels); the three office addresses, phones and email.
 2. **Design/copy treatment** (safe wording): "a longstanding Belizean
    distillery", undated timeline, neutral photo captions.
-3. **Client confirmation required** — everything in
+3. **Client confirmation required** - everything in
    `CLIENT-CONFIRMATION-CHECKLIST.md`. None of it is displayed as fact.
 
 ## Foundation for a future AI Employee

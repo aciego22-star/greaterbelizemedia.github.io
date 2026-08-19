@@ -1,16 +1,16 @@
-# Asset Replacement Guide — Cuello's V1.1
+# Asset Replacement Guide - Cuello's V1.1
 
 Every visual asset, where it appears, and how to replace it. All images are
 WebP; each photo ships in two widths (`name.webp` full, `name-640.webp` small)
-— when replacing, export both. Recommended tooling: any image editor +
+- when replacing, export both. Recommended tooling: any image editor +
 [squoosh.app](https://squoosh.app) (WebP, quality ~80).
 
 **General rule:** keep the same filename and dimensions class and the layout
-adapts automatically — replacement is a file swap, never a rebuild.
+adapts automatically - replacement is a file swap, never a rebuild.
 
 ## Status legend
-- **CLIENT** — supplied by/derived from Cuello's material; confirm rights before launch.
-- **PROVISIONAL** — acceptable for V1 presentation; replace before production launch.
+- **CLIENT** - supplied by/derived from Cuello's material; confirm rights before launch.
+- **PROVISIONAL** - acceptable for V1 presentation; replace before production launch.
 
 ---
 
@@ -26,7 +26,7 @@ adapts automatically — replacement is a file swap, never a rebuild.
 ## Products (`assets/img/products/`, 9 bottles)
 
 All: 900×1350 WebP + 450w thumb, uniform warm-cream backdrop `#F3EBDD`
-(this backdrop is a deliberate card system — do not remove or recolour it).
+(this backdrop is a deliberate card system - do not remove or recolour it).
 Used on: Our Spirits grid + drawer, Home spirit rail (4 featured).
 
 | File | Product |
@@ -65,7 +65,7 @@ Replacement: photograph each bottle straight-on, cap-to-base, on seamless
 
 ## Gallery (`assets/img/gallery/`, source photos)
 
-Used on the Gallery page (filterable) — plus at most one main-page appearance
+Used on the Gallery page (filterable) - plus at most one main-page appearance
 each (site rule: no photo appears more than twice). Aspect ratios are
 preserved in the masonry; focal points are set per item in
 `assets/js/data.js` → `GALLERY[].focal`.
@@ -77,7 +77,7 @@ preserved in the masonry; focal points are set per item in
 `basketball-court-activation` (also News card), `beach-product-lineup`
 (also Home gallery strip), `belizes-best-beach-flags` (also News card),
 `orange-walk-mural-lineup`, `czar-vodka-beach-portrait` (also hero slide 3)
-— all CLIENT (social-media sourced; confirm usage rights and
+- all CLIENT (social-media sourced; confirm usage rights and
 identifiable-person permissions before launch).
 
 To add/remove gallery items: edit `GALLERY` in `assets/js/data.js` (captions +
@@ -86,16 +86,16 @@ alt text in EN and ES, category, focal point). No layout changes needed.
 ## Our Story production photos (`assets/img/story/`)
 
 `distillery-exterior`, `production-line`, `bottling-closeup`,
-`bottling-machinery` — 1280×720, 16:9 frames on Our Story + Gallery
+`bottling-machinery` - 1280×720, 16:9 frames on Our Story + Gallery
 (Distillery filter). Neutral captions only; no capacity/process claims.
-Status: CLIENT (older reference material — confirm they may represent current
+Status: CLIENT (older reference material - confirm they may represent current
 facilities, or reshoot).
 
 ## Hero carousel (`index.html`, V1.1)
 
 | Slide | File | Treatment |
 |---|---|---|
-| 1 | `assets/img/gallery/vintage-product-lineup.webp` | `object-fit: contain` over a blurred copy of itself — the full lineup, Cuello's name and slogan stay completely visible. Never crop. |
+| 1 | `assets/img/gallery/vintage-product-lineup.webp` | `object-fit: contain` over a blurred copy of itself - the full lineup, Cuello's name and slogan stay completely visible. Never crop. |
 | 2 | `assets/img/gallery/trafalgar-gin-garden-display.webp` | `cover`, `object-position: 50% 42%` |
 | 3 | Desktop: `assets/img/gallery/czar-vodka-beach-portrait.webp` · Mobile (<768px): `assets/img/hero/czar-vodka-mobile-hero-v2.webp` | Desktop: complete bottle via `contain` over a blurred backdrop. Mobile: dedicated 4:5 composition, full-bleed `cover` via `<picture>`. |
 | 4 | `assets/video/cuello-hero-video.mp4` | SUPPLIED (46 s, 1280×622, muted, social-app framing cropped out). Shown complete over a blurred poster backdrop; plays only while active; advances the carousel when finished. Poster: `assets/img/gallery/cuello-hero-video-poster.webp`. |
@@ -104,13 +104,13 @@ facilities, or reshoot).
 
 | File | Used on | Spec | Notes |
 |---|---|---|---|
-| `cuello-hero-video.mp4` | Home hero slide 4 (tablet/desktop) · Gallery (Videos) | 46 s, 1280×622, H.264, 30 fps, ~7.5 MB, **with audio** (AAC 96k) | Derived from a supplied social screen recording: black frame cropped out. Audio retained per instruction — music rights unverified, see checklist. Unmuted autoplay attempted; muted fallback + on-slide sound toggle. |
+| `cuello-hero-video.mp4` | Home hero slide 4 (tablet/desktop) · Gallery (Videos) | 46 s, 1280×622, H.264, 30 fps, ~7.5 MB, **with audio** (AAC 96k) | Derived from a supplied social screen recording: black frame cropped out. Audio retained per instruction - music rights unverified, see checklist. Unmuted autoplay attempted; muted fallback + on-slide sound toggle. |
 | `cuello-beach-moments.mp4` | Gallery (Videos) | 33 s, 720×1262 portrait, H.264, 30 fps, ~6.4 MB, **no audio** | Derived from a supplied social screen recording: status bar, reaction rail, captions, account branding and comment bar cropped out; audio stripped. |
 
-| `cuello-hero-video-mobile.mp4` | Home hero slide 4 (phones, <768px) | 46 s, 720×1124 portrait centre-crop at the recording's native resolution, ~6.9 MB, with audio | Sharp full-bleed portrait playback on phones — no upscaling blur. Selected automatically via `config.js → heroVideo.srcMobile`. |
+| `cuello-hero-video-mobile.mp4` | Home hero slide 4 (phones, <768px) | 46 s, 720×1124 portrait centre-crop at the recording's native resolution, ~6.9 MB, with audio | Sharp full-bleed portrait playback on phones - no upscaling blur. Selected automatically via `config.js → heroVideo.srcMobile`. |
 
 Posters: `assets/img/gallery/cuello-hero-video-poster(.webp/-640.webp)` and
-`cuello-beach-moments-poster(.webp/-640.webp)` — extracted stills; replace by
+`cuello-beach-moments-poster(.webp/-640.webp)` - extracted stills; replace by
 re-exporting a frame if a different opening image is preferred.
 
 To replace either video: export H.264 MP4 (faststart), overwrite the file,

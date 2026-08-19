@@ -1,5 +1,5 @@
 /* ============================================================
-   CUELLO'S DISTILLERY LTD. — The Spirit of Orange Walk
+   CUELLO'S DISTILLERY LTD. - The Spirit of Orange Walk
    Design system · V1 concept · Austere Automations
    Fraunces (display) + Manrope (interface) · self-hosted
    ============================================================ */
@@ -641,7 +641,7 @@ p { margin: 0 0 1em; }
   width: min(58vw, 218px);
 }
 /* The roll is driven by JS as a transform on the track (never by
-   scroll position — iOS scroll quirks don't apply). Visitors can drag
+   scroll position - iOS scroll quirks don't apply). Visitors can drag
    it horizontally; vertical page scrolling stays native (pan-y). */
 .marquee.is-animated {
   overflow: hidden;
@@ -1315,7 +1315,7 @@ p { margin: 0 0 1em; }
   object-position: center;
 }
 
-/* Compact glass panel over the artwork's darker central band —
+/* Compact glass panel over the artwork's darker central band -
    the company name above and the bottle lineup below stay visible */
 .age-gate__panel {
   position: relative;

@@ -1,5 +1,5 @@
 /* ============================================================
-   CUELLOS DISTILLERY — Our Spirits page
+   CUELLOS DISTILLERY - Our Spirits page
    Category grids + accessible product drawer.
    Deep links: our-spirits.html#product-id opens the drawer.
    Drawer shows only confirmed information: name, category,

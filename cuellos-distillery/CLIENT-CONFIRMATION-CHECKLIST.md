@@ -1,14 +1,14 @@
-# Client Confirmation Checklist — Cuello's V1.1
+# Client Confirmation Checklist - Cuello's V1.1
 
 Everything that must be confirmed by Cuello's Distillery Ltd. (or verified by
 Austere) **before this concept can replace the production website**. Nothing
 below is presented as fact on the site.
 
-## 1. WhatsApp (PROMINENT — required before launch)
+## 1. WhatsApp (PROMINENT - required before launch)
 - [ ] **Confirm the official Cuello's WhatsApp number.** The site currently
       uses the Orange Walk main-office number **+501 322-2183** as a
       provisional concept value (`assets/js/config.js`). Cuello's must
-      confirm whether this line accepts WhatsApp — if not, supply the
+      confirm whether this line accepts WhatsApp - if not, supply the
       correct WhatsApp business number and update the one config value.
 - [ ] Approve the prefilled WhatsApp and email messages (EN and ES) used on
       Contact, Trade, the product drawer and the footer.
@@ -21,7 +21,7 @@ below is presented as fact on the site.
       Vodka, Gin & Brandy / Liqueurs & Specialty).
 - [ ] Confirm sizes and alcohol percentages per product (currently omitted).
 - [ ] Supply official tasting notes and serving suggestions, if desired
-      (currently omitted — descriptions state only label-visible facts).
+      (currently omitted - descriptions state only label-visible facts).
 - [ ] Confirm every rebuilt bottle image matches current packaging (the
       images are enhanced reconstructions; small label text is concept-level).
 
@@ -40,7 +40,7 @@ below is presented as fact on the site.
 
 ## 5. Company history (Our Story)
 - [ ] Founding year / "Established" year (a banner in the BELIZE-letters
-      photo appears to show one — confirm before publishing anywhere).
+      photo appears to show one - confirm before publishing anywhere).
 - [ ] Timeline milestones and dates.
 - [ ] Approve the phrase "a longstanding Belizean distillery" and the
       client-supplied hero line "A Belizean family tradition in rum and
@@ -55,14 +55,14 @@ below is presented as fact on the site.
 - [ ] Retail / stockist list for the "Where to Buy" framework.
 
 ## 7. Social & media rights
-- [ ] **Confirm social URLs.** Placeholder icons were removed — only
+- [ ] **Confirm social URLs.** Placeholder icons were removed - only
       verified profiles will be linked (footer has a marked slot).
 - [ ] Confirm rights to use all supplied photographs and videos, including
       permissions for identifiable people (dancers, staff, customers).
 - [ ] Confirm usage rights for the two supplied videos (beach bar; beach
       moments), including permissions for the identifiable people in them.
 - [ ] **Music rights (IMPORTANT):** per instruction, the hero video now
-      plays WITH its original audio — the music from the source social
+      plays WITH its original audio - the music from the source social
       recording, which is likely third-party licensed. Confirm the rights
       to use this track on the website, or supply cleared music, before
       production launch. (The portrait beach video remains silent.)
@@ -75,7 +75,7 @@ below is presented as fact on the site.
       notices required for Belize.
 
 ## 9. Language
-- [ ] **Confirm final English and Spanish wording** — full review of
+- [ ] **Confirm final English and Spanish wording** - full review of
       `assets/js/i18n.js` and `assets/js/data.js` by a Belizean Spanish
       speaker, including the prefilled WhatsApp/email messages.
 

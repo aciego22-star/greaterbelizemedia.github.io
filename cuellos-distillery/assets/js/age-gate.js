@@ -1,5 +1,5 @@
 /* ============================================================
-   CUELLO'S DISTILLERY — 18+ Age Gateway
+   CUELLO'S DISTILLERY - 18+ Age Gateway
    Reliable, accessible, mobile-first.
    - Confirmation stored in localStorage ("remember me") or
      sessionStorage (default); in-memory fallback if neither
@@ -105,7 +105,7 @@
     });
 
     gateEl.addEventListener("keydown", function (e) {
-      /* Escape must NOT close the gate — a choice is required. Trap Tab. */
+      /* Escape must NOT close the gate - a choice is required. Trap Tab. */
       if (e.key === "Escape") e.preventDefault();
       if (e.key === "Tab" && window.CuellosTrapFocus) window.CuellosTrapFocus(gateEl, e);
     });

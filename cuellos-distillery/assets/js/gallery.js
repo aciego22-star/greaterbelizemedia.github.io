@@ -1,5 +1,5 @@
 /* ============================================================
-   CUELLO'S DISTILLERY — Gallery
+   CUELLO'S DISTILLERY - Gallery
    Filterable masonry + accessible lightbox for images & video.
    - Videos play only on intentional tap (poster first).
    - Video stops when the lightbox closes.

@@ -1,5 +1,5 @@
 /* ============================================================
-   CUELLOS DISTILLERY — Home hero carousel
+   CUELLOS DISTILLERY - Home hero carousel
    Four slides: lineup, Trafalgar Gin, CZAR Vodka, brand video.
    - Auto-advance every 5 s; keeps moving through the lineup and
      pauses only while pressed/held, via the pause control, or on
@@ -74,7 +74,7 @@
     var srcEl = video.querySelector("source");
     var srcUrl = srcEl ? srcEl.getAttribute("src") : video.getAttribute("src");
     if (!srcUrl || typeof fetch === "undefined") return;
-    if (srcUrl.indexOf("data:") === 0) return; /* inlined video (preview build) — always present */
+    if (srcUrl.indexOf("data:") === 0) return; /* inlined video (preview build) - always present */
     fetch(srcUrl, { method: "HEAD" }).then(function (res) {
       if (!res.ok) dropVideoSlide();
     }).catch(dropVideoSlide);
@@ -103,7 +103,7 @@
     if (p && p.catch) {
       p.catch(function () {
         if (!soundOn) return;
-        /* unmuted autoplay refused — fall back to muted playback */
+        /* unmuted autoplay refused - fall back to muted playback */
         soundOn = false;
         updateSoundBtn();
         video.muted = true;

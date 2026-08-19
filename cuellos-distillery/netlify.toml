@@ -1,4 +1,4 @@
-# Cuello's Distillery Ltd. — V1 concept · Netlify configuration
+# Cuello's Distillery Ltd. - V1 concept · Netlify configuration
 # Static site, no build step. Deploy this folder as the publish root.
 
 [build]

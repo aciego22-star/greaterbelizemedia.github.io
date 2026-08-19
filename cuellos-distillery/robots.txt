@@ -1,4 +1,4 @@
-# Cuello's Distillery Ltd. — V1 concept
+# Cuello's Distillery Ltd. - V1 concept
 # Public content is fully crawlable; the age gate is a client-side
 # overlay and does not hide content from search engines.
 User-agent: *

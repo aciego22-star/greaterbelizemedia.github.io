@@ -1,5 +1,5 @@
 /* ============================================================
-   CUELLOS DISTILLERY — Shared behaviour
+   CUELLOS DISTILLERY - Shared behaviour
    Header, mobile menu, reveals, news cards, WhatsApp/email
    actions, footer utilities.
    ============================================================ */
@@ -172,7 +172,7 @@
   /* ---------- Approved recipes (cocktails page) ----------
      Renders CuellosData.cocktails into #recipe-grid. The list is
      empty until Cuello's supplies official recipes, so nothing
-     shows in the concept — add recipes to data.js to publish. */
+     shows in the concept - add recipes to data.js to publish. */
 
   function renderRecipes() {
     var host = $("#recipe-grid");

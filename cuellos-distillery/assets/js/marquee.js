@@ -1,8 +1,8 @@
 /* ============================================================
-   CUELLOS DISTILLERY — Nine-product marquee (home)
+   CUELLOS DISTILLERY - Nine-product marquee (home)
    The nine cards exist as static HTML (usable without JS as a
    scrollable rail). With JS, the roll is a TRANSFORM on the
-   track driven by requestAnimationFrame — never scroll
+   track driven by requestAnimationFrame - never scroll
    position, so iOS Safari's scroll rounding, momentum and
    sticky-state quirks cannot stop it:
    - glides right-to-left, one full cycle in ~55 s;
@@ -11,7 +11,7 @@
    - dragging or a held press pauses it, and it ALWAYS resumes
      ~1.5 s after the interaction ends;
    - a real mouse hover, the pause/play control and hidden
-     browser tabs also pause it — and it resumes;
+     browser tabs also pause it - and it resumes;
    - the track is duplicated once for a seamless infinite wrap
      (the clone is aria-hidden and untabbable);
    - a drag longer than 8 px suppresses the accidental card
@@ -121,7 +121,7 @@
     });
 
     if (reducedMotion) {
-      /* static scrollable rail — no clone, no motion */
+      /* static scrollable rail - no clone, no motion */
       if (toggleBtn) toggleBtn.closest(".marquee-controls").style.display = "none";
       return;
     }
@@ -130,7 +130,7 @@
     shell.classList.add("is-animated");
     shell.scrollLeft = 0;
 
-    /* drag to browse — pointer capture keeps the gesture even when the
+    /* drag to browse - pointer capture keeps the gesture even when the
        finger wanders; vertical pans stay native via touch-action: pan-y */
     shell.addEventListener("pointerdown", function (e) {
       dragging = true;
@@ -173,7 +173,7 @@
       }
     }, { passive: false });
 
-    /* hover pause is desktop-mouse only — touch hover never sticks */
+    /* hover pause is desktop-mouse only - touch hover never sticks */
     shell.addEventListener("pointerenter", function (e) { if (e.pointerType === "mouse") hoverPaused = true; });
     shell.addEventListener("pointerleave", function (e) { if (e.pointerType === "mouse") hoverPaused = false; });
 

@@ -1,5 +1,5 @@
 /* ============================================================
-   CUELLOS DISTILLERY — Central content data
+   CUELLOS DISTILLERY - Central content data
    Products, cocktails, news and gallery manifests.
    Update this file to change site content; layouts adapt.
    Bilingual fields use { en, es } objects.
@@ -28,8 +28,8 @@ window.CuellosData = (function () {
       category: "rum",
       accent: "#B9954B",
       desc: {
-        en: "Part of the Caribbean Rum Collection — distilled, blended and bottled by Cuello's Distillery Ltd. in Orange Walk Town, Belize.",
-        es: "Parte de la Colección Caribbean Rum — destilado, mezclado y embotellado por Cuello's Distillery Ltd. en Orange Walk Town, Belice."
+        en: "Part of the Caribbean Rum Collection: distilled, blended and bottled by Cuello's Distillery Ltd. in Orange Walk Town, Belize.",
+        es: "Parte de la Colección Caribbean Rum: destilado, mezclado y embotellado por Cuello's Distillery Ltd. en Orange Walk Town, Belice."
       },
       alt: {
         en: "Bottle of Cuello's Caribbean Extra Strong Rum with black and gold label",
@@ -42,8 +42,8 @@ window.CuellosData = (function () {
       category: "clear",
       accent: "#31518F",
       desc: {
-        en: "Cuello's vodka in the blue diamond label — produced in Orange Walk Town, Belize.",
-        es: "El vodka de Cuello's con la etiqueta azul de diamantes — producido en Orange Walk Town, Belice."
+        en: "Cuello's vodka in the blue diamond label: produced in Orange Walk Town, Belize.",
+        es: "El vodka de Cuello's con la etiqueta azul de diamantes: producido en Orange Walk Town, Belice."
       },
       alt: {
         en: "Bottle of CZAR Vodka with blue diamond-grid label",
@@ -56,8 +56,8 @@ window.CuellosData = (function () {
       category: "rum",
       accent: "#3E7A4E",
       desc: {
-        en: "The white presentation of the Caribbean Rum Collection — a product of Belize from Cuello's Distillery Ltd.",
-        es: "La presentación blanca de la Colección Caribbean Rum — un producto de Belice de Cuello's Distillery Ltd."
+        en: "The white presentation of the Caribbean Rum Collection, a product of Belize from Cuello's Distillery Ltd.",
+        es: "La presentación blanca de la Colección Caribbean Rum, un producto de Belice de Cuello's Distillery Ltd."
       },
       alt: {
         en: "Bottle of Cuello's Caribbean White Rum with black, gold and green label",
@@ -70,8 +70,8 @@ window.CuellosData = (function () {
       category: "clear",
       accent: "#2E5E8F",
       desc: {
-        en: "Cuello's gin, labelled London Dry, with a Belizean scene on the label — produced in Orange Walk Town.",
-        es: "La ginebra de Cuello's, etiquetada London Dry, con un paisaje beliceño en la etiqueta — producida en Orange Walk Town."
+        en: "Cuello's gin, labelled London Dry, with a Belizean scene on the label: produced in Orange Walk Town.",
+        es: "La ginebra de Cuello's, etiquetada London Dry, con un paisaje beliceño en la etiqueta: producida en Orange Walk Town."
       },
       alt: {
         en: "Bottle of Trafalgar Gin with blue Belize-scene label",
@@ -84,8 +84,8 @@ window.CuellosData = (function () {
       category: "specialty",
       accent: "#C9A227",
       desc: {
-        en: "A traditional name in the Cuello's cabinet, in its cream and yellow label — produced in Orange Walk Town, Belize.",
-        es: "Un nombre tradicional de la vitrina Cuello's, con su etiqueta crema y amarilla — producido en Orange Walk Town, Belice."
+        en: "A traditional name in the Cuello's cabinet, in its cream and yellow label: produced in Orange Walk Town, Belize.",
+        es: "Un nombre tradicional de la vitrina Cuello's, con su etiqueta crema y amarilla: producido en Orange Walk Town, Belice."
       },
       alt: {
         en: "Bottle of Cuello's Anise with cream and yellow label",
@@ -98,8 +98,8 @@ window.CuellosData = (function () {
       category: "rum",
       accent: "#4FA3C4",
       desc: {
-        en: "The coconut presentation of the Caribbean Rum Collection, in its blue tropical label — a product of Belize.",
-        es: "La presentación de coco de la Colección Caribbean Rum, con su etiqueta azul tropical — un producto de Belice."
+        en: "The coconut presentation of the Caribbean Rum Collection, in its blue tropical label, a product of Belize.",
+        es: "La presentación de coco de la Colección Caribbean Rum, con su etiqueta azul tropical, un producto de Belice."
       },
       alt: {
         en: "Bottle of Cuello's Caribbean Coconut Rum with blue tropical label",
@@ -112,8 +112,8 @@ window.CuellosData = (function () {
       category: "clear",
       accent: "#8A6A2F",
       desc: {
-        en: "Cuello's brandy in the black and gold three-star label — produced in Orange Walk Town, Belize.",
-        es: "El brandy de Cuello's con la etiqueta negra y dorada de tres estrellas — producido en Orange Walk Town, Belice."
+        en: "Cuello's brandy in the black and gold three-star label: produced in Orange Walk Town, Belize.",
+        es: "El brandy de Cuello's con la etiqueta negra y dorada de tres estrellas: producido en Orange Walk Town, Belice."
       },
       alt: {
         en: "Bottle of Imperial Brandy with black and gold three-star label",
@@ -126,8 +126,8 @@ window.CuellosData = (function () {
       category: "specialty",
       accent: "#3E7A4E",
       desc: {
-        en: "A longstanding label in the Cuello's range, in its green-striped bottle — produced in Orange Walk Town, Belize.",
-        es: "Una etiqueta de larga trayectoria en la gama Cuello's, con su botella de franja verde — producida en Orange Walk Town, Belice."
+        en: "A longstanding label in the Cuello's range, in its green-striped bottle: produced in Orange Walk Town, Belize.",
+        es: "Una etiqueta de larga trayectoria en la gama Cuello's, con su botella de franja verde: producida en Orange Walk Town, Belice."
       },
       alt: {
         en: "Green Stripe bottle with diagonal green and white label",
@@ -138,13 +138,13 @@ window.CuellosData = (function () {
       id: "caribbean-gold-rum",
       name: "Caribbean Gold Rum",
       /* Label reads "Caribbean Rum" (gold presentation). Public-facing
-         name pending client confirmation — see checklist. */
+         name pending client confirmation - see checklist. */
       name_pending_confirmation: true,
       category: "rum",
       accent: "#C47828",
       desc: {
-        en: "The amber presentation of the Caribbean Rum Collection, in the classic black and gold label — a product of Belize.",
-        es: "La presentación ámbar de la Colección Caribbean Rum, con la clásica etiqueta negra y dorada — un producto de Belice."
+        en: "The amber presentation of the Caribbean Rum Collection, in the classic black and gold label, a product of Belize.",
+        es: "La presentación ámbar de la Colección Caribbean Rum, con la clásica etiqueta negra y dorada, un producto de Belice."
       },
       alt: {
         en: "Bottle of Cuello's Caribbean Gold Rum with amber liquid and black and gold label",
@@ -165,7 +165,7 @@ window.CuellosData = (function () {
     specialty: { en: "Liqueurs & Specialty", es: "Licores y Especialidades" }
   };
 
-  /* Marquee order (home) — the established lineup */
+  /* Marquee order (home) - the established lineup */
   var MARQUEE_ORDER = [
     "caribbean-coconut-rum",
     "imperial-brandy",
@@ -189,7 +189,7 @@ window.CuellosData = (function () {
   var COCKTAILS = [];
 
   /* ---------- News ----------
-     Neutral photo cards only — titles and captions describe what
+     Neutral photo cards only - titles and captions describe what
      the photographs visibly show. Replace with verified stories
      (add date:{en,es} and excerpt fields) once confirmed.       */
 
@@ -258,7 +258,7 @@ window.CuellosData = (function () {
      Categories: products | distillery | events | community | videos
      To add a video: { id, type:"video", src:"assets/video/file.mp4",
        poster:"assets/img/gallery/poster-name", w, h, category:"videos"
-       or another category, caption:{en,es}, alt:{en,es} } — the
+       or another category, caption:{en,es}, alt:{en,es} } - the
        Videos filter chip appears automatically. Videos never
        autoplay and stop when the lightbox closes.               */
 
