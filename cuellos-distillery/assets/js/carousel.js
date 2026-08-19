@@ -50,6 +50,14 @@
     if (!vSlide) return;
     video = vSlide.querySelector("video");
     if (!video) return;
+    /* phones get the native-resolution portrait crop (full-bleed without
+       upscaling blur); tablet/desktop keep the landscape master */
+    var cfg = window.CuellosConfig && window.CuellosConfig.heroVideo;
+    var srcSwap = video.querySelector("source");
+    if (cfg && cfg.srcMobile && srcSwap && window.matchMedia("(max-width: 767px)").matches &&
+        srcSwap.getAttribute("src").indexOf("data:") !== 0) {
+      srcSwap.setAttribute("src", cfg.srcMobile);
+    }
     video.addEventListener("ended", function () { next(true); });
 
     function dropVideoSlide() {

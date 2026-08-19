@@ -17,7 +17,8 @@ window.CuellosConfig = {
      is in place. The carousel also auto-hides the slide if the file is
      missing, so leaving this true with no file is safe. */
   heroVideo: {
-    src: "assets/video/cuello-hero-video.mp4",
+    src: "assets/video/cuello-hero-video.mp4",          /* landscape — tablet/desktop */
+    srcMobile: "assets/video/cuello-hero-video-mobile.mp4", /* native-resolution portrait crop — phones */
     poster: "assets/img/gallery/cuello-hero-video-poster.webp"
   }
 };

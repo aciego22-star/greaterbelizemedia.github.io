@@ -40,6 +40,10 @@
   var interactingUntil = 0;
   var lastTick = null;
   var rafId = null;
+  /* iOS Safari rounds scrollLeft assignments to whole pixels, so a
+     sub-pixel per-frame increment would round back and never move.
+     Position is accumulated in this float and assigned each frame. */
+  var pos = 0;
 
   function syncAlts() {
     if (!window.CuellosData || !window.CuellosI18N) return;
@@ -86,15 +90,17 @@
 
     var paused = userPaused || hoverPaused || held || document.hidden || interacting();
 
-    if (!paused) {
-      var speed = groupW / CYCLE_SECONDS;
-      shell.scrollLeft += speed * dt;
+    if (paused) {
+      /* track wherever the visitor scrolled to */
+      pos = shell.scrollLeft;
+      return;
     }
-    /* seamless wrap — skip while the visitor is actively dragging */
-    if (!interacting()) {
-      if (shell.scrollLeft >= groupW) shell.scrollLeft -= groupW;
-      else if (shell.scrollLeft < 0) shell.scrollLeft += groupW;
-    }
+    var speed = groupW / CYCLE_SECONDS;
+    pos += speed * dt;
+    /* seamless wrap */
+    if (pos >= groupW) pos -= groupW;
+    else if (pos < 0) pos += groupW;
+    shell.scrollLeft = pos;
   }
 
   function boot() {
