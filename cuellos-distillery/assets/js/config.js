@@ -18,6 +18,6 @@ window.CuellosConfig = {
      missing, so leaving this true with no file is safe. */
   heroVideo: {
     src: "assets/video/cuello-hero-video.mp4",
-    poster: "assets/img/editorial/belize-letters-installation.webp"
+    poster: "assets/img/gallery/cuello-hero-video-poster.webp"
   }
 };

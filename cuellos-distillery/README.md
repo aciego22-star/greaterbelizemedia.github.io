@@ -73,14 +73,17 @@ Developed by [Austere Automations](https://austereautomations.com/).
 | Any interface/editorial text, EN or ES | `assets/js/i18n.js` |
 | Colours, spacing, typography | `assets/css/main.css` (`:root` tokens) |
 
-### Activating the hero video (slide 4)
-Drop the file at **`assets/video/cuello-hero-video.mp4`** (H.264 MP4,
-10–20 s, ≤ 8 MB recommended, no required audio — it plays muted). Nothing
-else to do: the slide auto-appears; until the file exists it removes itself.
-The video plays only while its slide is active, never behind the age gate,
-never loops on its own, and advances the carousel when it ends. To use a
-different poster frame, update `poster=` on the slide-4 `<video>` in
-`index.html`.
+### Hero video (slide 4) — ACTIVE
+`assets/video/cuello-hero-video.mp4` (46 s, muted, social framing removed)
+plays on the fourth hero slide: only while its slide is active, never behind
+the age gate, never looping on its own — it advances the carousel when it
+ends. If the file is ever removed, the slide removes itself automatically.
+Poster: `assets/img/gallery/cuello-hero-video-poster.webp`.
+
+Both supplied videos also appear in the Gallery under the **Videos** filter
+(tap-to-play in the lightbox, no autoplay, stops on close). Audio was
+stripped from both — the source screen recordings carried social-app music
+(see checklist).
 
 ### Adding a gallery video
 1. Place the MP4 in `assets/video/` and a poster image in

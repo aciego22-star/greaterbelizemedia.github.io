@@ -37,20 +37,18 @@
     return (window.CuellosI18N && window.CuellosI18N.t(key)) || fallback;
   }
 
-  /* Remove the video slide if its file is unavailable */
+  /* Remove the video slide if its file is unavailable.
+     Existence is probed with a HEAD request (media-element error
+     events also fire on harmless range-request aborts, so they
+     cannot be trusted for this). A stall guard advances the
+     carousel if the video ever fails to start. */
   function initVideoSlide() {
     var vSlide = root.querySelector('[data-slide-video]');
     if (!vSlide) return;
     video = vSlide.querySelector("video");
     if (!video) return;
-    video.addEventListener("error", dropVideoSlide, true);
-    var src = video.querySelector("source");
-    if (src) src.addEventListener("error", dropVideoSlide);
     video.addEventListener("ended", function () { next(true); });
-    /* probe for the file with a metadata-only load so a missing
-       video removes its slide instead of stalling the rotation */
-    video.preload = "metadata";
-    try { video.load(); } catch (e) { dropVideoSlide(); }
+
     function dropVideoSlide() {
       if (!vSlide.parentNode) return;
       var i = slides.indexOf(vSlide);
@@ -61,6 +59,24 @@
       if (index >= slides.length) show(0);
       armTimer();
     }
+
+    var srcEl = video.querySelector("source");
+    var srcUrl = srcEl ? srcEl.getAttribute("src") : video.getAttribute("src");
+    if (!srcUrl || typeof fetch === "undefined") return;
+    fetch(srcUrl, { method: "HEAD" }).then(function (res) {
+      if (!res.ok) dropVideoSlide();
+    }).catch(dropVideoSlide);
+  }
+
+  var stallTimer = null;
+  function armStallGuard() {
+    clearTimeout(stallTimer);
+    if (!video) return;
+    stallTimer = setTimeout(function () {
+      var vSlide = root.querySelector("[data-slide-video]");
+      var stillActive = vSlide && vSlide.classList.contains("is-active");
+      if (stillActive && video && video.readyState < 2) next(true);
+    }, 6000);
   }
 
   function buildDots() {
@@ -83,7 +99,9 @@
     var gateOpen = document.getElementById("age-gate");
     if (active && !gateOpen && !userPaused && !document.hidden) {
       video.play().catch(function () {});
+      armStallGuard();
     } else {
+      clearTimeout(stallTimer);
       video.pause();
       if (!active) { try { video.currentTime = 0; } catch (e) {} }
     }

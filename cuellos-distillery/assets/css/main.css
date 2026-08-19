@@ -534,6 +534,7 @@ p { margin: 0 0 1em; }
   object-fit: contain;
   z-index: 2;
 }
+.carousel__slide picture { position: static; }
 .carousel__slide--contain { background: var(--molasses); }
 
 .carousel__controls {
@@ -628,29 +629,13 @@ p { margin: 0 0 1em; }
   flex: none;
   width: min(58vw, 218px);
 }
-.marquee.is-animated {
-  overflow: hidden;
-}
-.marquee.is-animated .marquee__track {
-  animation: marquee-roll var(--marquee-dur, 55s) linear infinite;
-}
-.marquee.is-animated.is-paused .marquee__track,
-.marquee.is-animated:hover .marquee__track,
-.marquee.is-animated:focus-within .marquee__track {
-  animation-play-state: paused;
-}
-@keyframes marquee-roll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
+/* Auto-scroll is driven by JS (requestAnimationFrame on scrollLeft),
+   so native touch swiping never fights a CSS animation and the roll
+   resumes after the visitor lets go. */
 .marquee-controls {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 0.6rem;
-}
-@media (prefers-reduced-motion: reduce) {
-  .marquee.is-animated { overflow-x: auto; }
-  .marquee.is-animated .marquee__track { animation: none !important; }
 }
 
 /* Page hero (interior pages) */
@@ -1529,6 +1514,30 @@ p { margin: 0 0 1em; }
   .hero__media { order: -1; min-height: 46vw; }
   .hero__media::after { background: linear-gradient(180deg, rgba(23,17,13,0.15) 0%, var(--molasses) 96%); }
   .hero__panel { padding-top: 1.6rem; }
+}
+
+/* Phones: edge-to-edge 4:5 hero media, centred copy, indicator-only controls */
+@media (max-width: 767px) {
+  .hero__media {
+    width: 100%;
+    min-height: 0;
+    aspect-ratio: 4 / 5;
+    margin: 0;
+    padding: 0;
+    max-width: none;
+  }
+  .hero__media::after { display: none; }
+  .carousel__controls { display: none; }
+  .carousel__dots { bottom: 0.7rem; }
+  .carousel__slide--czar .carousel__fg { object-fit: cover; }
+  .carousel__slide--czar .carousel__bg { display: none; }
+  .hero__panel { text-align: center; align-items: center; }
+  .hero__panel .lede { margin-inline: auto; max-width: 34ch; }
+  .hero__actions { justify-content: center; }
+  .hero__actions .btn { width: auto; min-width: 0; }
+}
+
+@media (max-width: 900px) {
   .split { grid-template-columns: 1fr; }
   .split--media-right .split__media { order: 0; }
   .feature-story { grid-template-columns: 1fr; }

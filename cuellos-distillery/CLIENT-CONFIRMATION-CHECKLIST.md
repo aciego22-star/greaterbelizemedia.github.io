@@ -59,8 +59,11 @@ below is presented as fact on the site.
       verified profiles will be linked (footer has a marked slot).
 - [ ] Confirm rights to use all supplied photographs and videos, including
       permissions for identifiable people (dancers, staff, customers).
-- [ ] Supply the hero video and any gallery videos (specs in
-      ASSET-REPLACEMENT-GUIDE.md) with usage rights.
+- [ ] Confirm usage rights for the two supplied videos (beach bar; beach
+      moments), including permissions for the identifiable people in them.
+- [ ] Audio was removed from both videos because the source screen
+      recordings carried social-app music (likely third-party licensed).
+      Supply cleared audio/music if sound is wanted.
 
 ## 8. Brand & legal
 - [ ] Vector or high-resolution transparent Rums of Belize trademark.

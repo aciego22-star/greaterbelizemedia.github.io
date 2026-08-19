@@ -264,6 +264,22 @@ window.CuellosData = (function () {
 
   var GALLERY = [
     {
+      id: "video-beach-bar", type: "video",
+      src: "assets/video/cuello-hero-video.mp4",
+      poster: "assets/img/gallery/cuello-hero-video-poster",
+      w: 1280, h: 622, category: "videos",
+      caption: { en: "At the beach bar with Cuello's", es: "En el bar de playa con Cuello's" },
+      alt: { en: "Video of friends enjoying Cuello's drinks at an outdoor beach bar", es: "Video de amigos disfrutando bebidas Cuello's en un bar de playa al aire libre" }
+    },
+    {
+      id: "video-beach-moments", type: "video",
+      src: "assets/video/cuello-beach-moments.mp4",
+      poster: "assets/img/gallery/cuello-beach-moments-poster",
+      w: 720, h: 1262, category: "videos",
+      caption: { en: "Beach moments with Cuello's", es: "Momentos de playa con Cuello's" },
+      alt: { en: "Video of a beach day with Cuello's drinks under the palms", es: "Video de un día de playa con bebidas Cuello's bajo las palmeras" }
+    },
+    {
       id: "belize-letters", img: "assets/img/editorial/belize-letters-installation",
       w: 1284, h: 450, category: "events", focal: "50% 60%",
       caption: { en: "The BELIZE letters, dressed by Cuello's", es: "Las letras BELIZE, vestidas por Cuello's" },

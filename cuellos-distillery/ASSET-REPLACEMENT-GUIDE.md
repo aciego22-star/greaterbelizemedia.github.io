@@ -97,14 +97,20 @@ facilities, or reshoot).
 |---|---|---|
 | 1 | `assets/img/gallery/vintage-product-lineup.webp` | `object-fit: contain` over a blurred copy of itself — the full lineup, Cuello's name and slogan stay completely visible. Never crop. |
 | 2 | `assets/img/gallery/trafalgar-gin-garden-display.webp` | `cover`, `object-position: 50% 42%` |
-| 3 | `assets/img/gallery/czar-vodka-beach-portrait.webp` | Portrait shown complete via `contain` over a blurred backdrop |
-| 4 | `assets/video/cuello-hero-video.mp4` | **NOT YET SUPPLIED.** Slide auto-appears when the file exists; poster is the BELIZE-letters image. Plays muted only while active; advances the carousel when finished. |
+| 3 | Desktop: `assets/img/gallery/czar-vodka-beach-portrait.webp` · Mobile (<768px): `assets/img/hero/czar-vodka-mobile-hero-v2.webp` | Desktop: complete bottle via `contain` over a blurred backdrop. Mobile: dedicated 4:5 composition, full-bleed `cover` via `<picture>`. |
+| 4 | `assets/video/cuello-hero-video.mp4` | SUPPLIED (46 s, 1280×622, muted, social-app framing cropped out). Shown complete over a blurred poster backdrop; plays only while active; advances the carousel when finished. Poster: `assets/img/gallery/cuello-hero-video-poster.webp`. |
 
 ## Video (`assets/video/`)
 
-Empty — **hero video and social gallery videos still wanted from Albert/Cuello's**:
+| File | Used on | Spec | Notes |
+|---|---|---|---|
+| `cuello-hero-video.mp4` | Home hero slide 4 · Gallery (Videos) | 46 s, 1280×622, H.264, 30 fps, ~7 MB, **no audio** | Derived from a supplied social screen recording: black frame cropped out, audio stripped (social-app music — rights unverified, see checklist). |
+| `cuello-beach-moments.mp4` | Gallery (Videos) | 33 s, 720×1262 portrait, H.264, 30 fps, ~6.4 MB, **no audio** | Derived from a supplied social screen recording: status bar, reaction rail, captions, account branding and comment bar cropped out; audio stripped. |
 
-| Slot | File to supply | Spec |
-|---|---|---|
-| Home hero (slide 4) | `assets/video/cuello-hero-video.mp4` | 10–20 s, H.264 MP4, ≤ 8 MB, 1280×720+, no required audio (plays muted). Drop the file in — no code change needed. |
-| Gallery videos | `assets/video/*.mp4` + poster WebP | H.264 MP4, each ≤ 20 MB, portrait or landscape. Add to `GALLERY` in `data.js` (README shows the snippet); the "Videos" filter appears automatically. If no poster is supplied, Austere will extract a still frame during integration. |
+Posters: `assets/img/gallery/cuello-hero-video-poster(.webp/-640.webp)` and
+`cuello-beach-moments-poster(.webp/-640.webp)` — extracted stills; replace by
+re-exporting a frame if a different opening image is preferred.
+
+To replace either video: export H.264 MP4 (faststart), overwrite the file,
+and update the poster still. Additional gallery videos: add an MP4 + poster
+and a `GALLERY` entry in `data.js` (snippet in README).
