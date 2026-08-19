@@ -147,13 +147,20 @@
       <div class="hero__media">
         <div class="carousel" data-carousel role="region" aria-roledescription="carousel" data-i18n-aria="carousel.label" aria-label="Cuello's highlights" tabindex="0">
 
-          <!-- Slide 1 · full lineup + slogan (fully visible, never cropped) -->
-          <div class="carousel__slide carousel__slide--contain is-active" aria-hidden="false">
+          <!-- Slide 1 · full lineup + slogan. Mobile (<768px): dedicated vertical
+               poster, full-bleed. Tablet/desktop: original horizontal lineup,
+               fully visible over a blurred backdrop. -->
+          <div class="carousel__slide carousel__slide--contain carousel__slide--lineup is-active" aria-hidden="false">
             <img class="carousel__bg" src="assets/img/gallery/vintage-product-lineup-640.webp" alt="" aria-hidden="true" width="640" height="311">
-            <img class="carousel__fg" src="assets/img/gallery/vintage-product-lineup.webp"
-                 width="1284" height="623" fetchpriority="high"
-                 data-i18n-alt="carousel.slide1Alt"
-                 alt="The full Cuello's product range with the slogan: Where the roads of tradition and quality meet">
+            <picture>
+              <source media="(max-width: 767px)"
+                      srcset="assets/img/hero/lineup-poster-mobile-640.webp 640w, assets/img/hero/lineup-poster-mobile.webp 900w"
+                      sizes="100vw">
+              <img class="carousel__fg" src="assets/img/gallery/vintage-product-lineup.webp"
+                   width="1284" height="623" fetchpriority="high"
+                   data-i18n-alt="carousel.slide1Alt"
+                   alt="The full Cuello's product range with the slogan: Where the roads of tradition and quality meet">
+            </picture>
           </div>
 
           <!-- Slide 2 · Trafalgar Gin garden cart -->
@@ -440,6 +447,7 @@
       </div>
       <div class="location-grid reveal reveal-d2">
         <div class="location-card location-card--hq">
+          <span class="card-medallion" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21h18M5 21V8l7-5 7 5v13" stroke-linejoin="round"/><path d="M9.5 21v-5h5v5M9.5 11h.01M14.5 11h.01" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           <p class="location-card__tag" data-i18n="locations.hqTag">Main Office &amp; Distillery</p>
           <h3 data-i18n="locations.orangeWalk">Orange Walk Town</h3>
           <address>65 Main Street</address>
@@ -448,6 +456,7 @@
           </div>
         </div>
         <div class="location-card">
+          <span class="card-medallion" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 21s-6.5-5.5-6.5-10.5a6.5 6.5 0 0 1 13 0C18.5 15.5 12 21 12 21z" stroke-linejoin="round"/><circle cx="12" cy="10.5" r="2.3"/></svg></span>
           <p class="location-card__tag" data-i18n="locations.officeTag">Office</p>
           <h3 data-i18n="locations.belizeCity">Belize City</h3>
           <address>53 Pickstock Street</address>
@@ -456,6 +465,7 @@
           </div>
         </div>
         <div class="location-card">
+          <span class="card-medallion" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 21s-6.5-5.5-6.5-10.5a6.5 6.5 0 0 1 13 0C18.5 15.5 12 21 12 21z" stroke-linejoin="round"/><circle cx="12" cy="10.5" r="2.3"/></svg></span>
           <p class="location-card__tag" data-i18n="locations.officeTag">Office</p>
           <h3 data-i18n="locations.sanPedro">San Pedro</h3>
           <address>JewFish Street</address>

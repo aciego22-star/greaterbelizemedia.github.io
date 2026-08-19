@@ -1,7 +1,8 @@
 /* ============================================================
    CUELLOS DISTILLERY — Home hero carousel
    Four slides: lineup, Trafalgar Gin, CZAR Vodka, brand video.
-   - Auto-advance every 7 s; pauses on hover, focus-within and
+   - Auto-advance every 5 s; keeps moving through the lineup and
+     pauses only while pressed/held, via the pause control, or on
      hidden browser tabs; manual interaction restarts the timer.
    - Arrow keys, touch swipe, small prev/next controls, dots,
      pause/play toggle. All controls are 44 px touch targets.
@@ -15,7 +16,7 @@
 (function () {
   "use strict";
 
-  var INTERVAL = 7000;
+  var INTERVAL = 5000;
   var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   var root = document.querySelector("[data-carousel]");
@@ -30,7 +31,7 @@
   var index = 0;
   var timer = null;
   var userPaused = false;
-  var hoverPaused = false;
+  var heldPaused = false; /* pressed-and-held */
   var video = null;
   var soundOn = true; /* try sound first; browsers may force a muted fallback */
   var soundBtn = null;
@@ -161,7 +162,7 @@
 
   function armTimer() {
     clearTimeout(timer);
-    if (userPaused || hoverPaused || reducedMotion || document.hidden) return;
+    if (userPaused || heldPaused || reducedMotion || document.hidden) return;
     var gateOpen = document.getElementById("age-gate");
     if (gateOpen) return;
     /* while the video slide is active, its 'ended' event advances instead */
@@ -215,12 +216,10 @@
       if (e.key === "ArrowRight") { next(); }
     });
 
-    /* hover + focus pause */
-    root.addEventListener("mouseenter", function () { hoverPaused = true; clearTimeout(timer); });
-    root.addEventListener("mouseleave", function () { hoverPaused = false; armTimer(); });
-    root.addEventListener("focusin", function () { hoverPaused = true; clearTimeout(timer); });
-    root.addEventListener("focusout", function (e) {
-      if (!root.contains(e.relatedTarget)) { hoverPaused = false; armTimer(); }
+    /* keep rotating unless pressed and held (or explicitly paused) */
+    root.addEventListener("pointerdown", function () { heldPaused = true; clearTimeout(timer); });
+    ["pointerup", "pointercancel"].forEach(function (evt) {
+      root.addEventListener(evt, function () { heldPaused = false; armTimer(); });
     });
 
     /* tab visibility */

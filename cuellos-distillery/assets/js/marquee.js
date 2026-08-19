@@ -9,8 +9,8 @@
    - the track is duplicated once for a seamless infinite wrap
      (the clone is aria-hidden and untabbable, so keyboard and
      screen readers meet each product exactly once);
-   - hover, keyboard focus, the pause/play control and hidden
-     browser tabs pause the roll;
+   - a mouse hover, a held press, the pause/play control and
+     hidden browser tabs pause the roll — everything resumes;
    - one full cycle takes ~55 s;
    - prefers-reduced-motion gets a static scrollable rail.
    No <marquee> element is used.
@@ -20,7 +20,7 @@
   "use strict";
 
   var CYCLE_SECONDS = 55;
-  var RESUME_DELAY = 2000; /* ms after the last user interaction */
+  var RESUME_DELAY = 1500; /* ms after the last user interaction */
 
   var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var shell = document.querySelector("[data-marquee]");
@@ -35,7 +35,8 @@
   }
 
   var userPaused = false;
-  var hoverPaused = false;
+  var hoverPaused = false; /* mouse pointer only — touch never sets this */
+  var held = false;        /* finger/pointer currently down */
   var interactingUntil = 0;
   var lastTick = null;
   var rafId = null;
@@ -83,8 +84,7 @@
     var groupW = group.offsetWidth;
     if (!groupW) return;
 
-    var paused = userPaused || hoverPaused || document.hidden || interacting() ||
-      shell.matches(":hover") || shell.contains(document.activeElement);
+    var paused = userPaused || hoverPaused || held || document.hidden || interacting();
 
     if (!paused) {
       var speed = groupW / CYCLE_SECONDS;
@@ -114,17 +114,22 @@
 
     makeClone();
 
-    /* interaction pauses; the roll resumes RESUME_DELAY after the
-       last touch / drag / wheel / momentum-scroll event */
-    ["touchstart", "touchmove", "pointerdown", "wheel"].forEach(function (evt) {
+    /* interaction pauses; the roll ALWAYS resumes RESUME_DELAY after the
+       last touch / drag / wheel / momentum-scroll event ends */
+    ["touchmove", "wheel"].forEach(function (evt) {
       shell.addEventListener(evt, markInteraction, { passive: true });
     });
+    shell.addEventListener("pointerdown", function () { held = true; markInteraction(); }, { passive: true });
+    ["pointerup", "pointercancel", "pointerleave"].forEach(function (evt) {
+      shell.addEventListener(evt, function () { held = false; markInteraction(); }, { passive: true });
+    });
     shell.addEventListener("scroll", function () {
-      if (interacting()) markInteraction(); /* extend through momentum scrolling */
+      if (interacting() || held) markInteraction(); /* extend through momentum scrolling */
     }, { passive: true });
 
-    shell.addEventListener("mouseenter", function () { hoverPaused = true; });
-    shell.addEventListener("mouseleave", function () { hoverPaused = false; });
+    /* hover pause is desktop-mouse only — emulated/touch hover never sticks it */
+    shell.addEventListener("pointerenter", function (e) { if (e.pointerType === "mouse") hoverPaused = true; });
+    shell.addEventListener("pointerleave", function (e) { if (e.pointerType === "mouse") hoverPaused = false; });
 
     document.addEventListener("cuellos:langchange", function () {
       syncAlts();
