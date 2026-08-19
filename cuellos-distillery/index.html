@@ -190,6 +190,12 @@
                    data-i18n-aria="carousel.videoAlt" aria-label="Cuello's brand video">
               <source src="assets/video/cuello-hero-video.mp4" type="video/mp4">
             </video>
+            <!-- Sound: unmuted autoplay is attempted first; if the browser
+                 refuses, playback falls back to muted and this toggle lights up. -->
+            <button type="button" class="c-btn carousel__sound" data-carousel-sound aria-pressed="true" data-i18n-aria="carousel.soundOff" aria-label="Turn sound off"><span>
+              <svg data-icon-sound-on width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor" stroke="none"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11" stroke-linecap="round"/></svg>
+              <svg data-icon-sound-off width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" style="display:none"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor" stroke="none"/><path d="M16 9l6 6M22 9l-6 6" stroke-linecap="round"/></svg>
+            </span></button>
           </div>
 
           <div class="carousel__dots" role="group" data-i18n-aria="carousel.label" aria-label="Cuello's highlights"></div>

@@ -32,6 +32,8 @@
   var userPaused = false;
   var hoverPaused = false;
   var video = null;
+  var soundOn = true; /* try sound first; browsers may force a muted fallback */
+  var soundBtn = null;
 
   function t(key, fallback) {
     return (window.CuellosI18N && window.CuellosI18N.t(key)) || fallback;
@@ -63,9 +65,42 @@
     var srcEl = video.querySelector("source");
     var srcUrl = srcEl ? srcEl.getAttribute("src") : video.getAttribute("src");
     if (!srcUrl || typeof fetch === "undefined") return;
+    if (srcUrl.indexOf("data:") === 0) return; /* inlined video (preview build) — always present */
     fetch(srcUrl, { method: "HEAD" }).then(function (res) {
       if (!res.ok) dropVideoSlide();
     }).catch(dropVideoSlide);
+  }
+
+  /* ---- Sound: the brand video carries audio. Unmuted autoplay is
+     attempted first (the age-gate click usually counts as the user
+     gesture browsers require); if the browser refuses, playback falls
+     back to muted and the on-slide sound toggle lights up. ---- */
+  function updateSoundBtn() {
+    soundBtn = soundBtn || root.querySelector("[data-carousel-sound]");
+    if (!soundBtn) return;
+    soundBtn.setAttribute("aria-pressed", soundOn ? "true" : "false");
+    soundBtn.setAttribute("data-i18n-aria", soundOn ? "carousel.soundOff" : "carousel.soundOn");
+    soundBtn.setAttribute("aria-label", t(soundOn ? "carousel.soundOff" : "carousel.soundOn", soundOn ? "Turn sound off" : "Turn sound on"));
+    var on = soundBtn.querySelector("[data-icon-sound-on]");
+    var off = soundBtn.querySelector("[data-icon-sound-off]");
+    if (on) on.style.display = soundOn ? "" : "none";
+    if (off) off.style.display = soundOn ? "none" : "";
+  }
+
+  function playVideo() {
+    if (!video) return;
+    video.muted = !soundOn;
+    var p = video.play();
+    if (p && p.catch) {
+      p.catch(function () {
+        if (!soundOn) return;
+        /* unmuted autoplay refused — fall back to muted playback */
+        soundOn = false;
+        updateSoundBtn();
+        video.muted = true;
+        video.play().catch(function () {});
+      });
+    }
   }
 
   var stallTimer = null;
@@ -98,7 +133,7 @@
     var active = vSlide && !vSlide.hidden && vSlide.classList.contains("is-active");
     var gateOpen = document.getElementById("age-gate");
     if (active && !gateOpen && !userPaused && !document.hidden) {
-      video.play().catch(function () {});
+      playVideo();
       armStallGuard();
     } else {
       clearTimeout(stallTimer);
@@ -153,6 +188,18 @@
     show(0);
     setToggleState();
 
+    soundBtn = root.querySelector("[data-carousel-sound]");
+    if (soundBtn) soundBtn.addEventListener("click", function () {
+      soundOn = !soundOn;
+      updateSoundBtn();
+      if (video) {
+        video.muted = !soundOn;
+        var vSlide = root.querySelector("[data-slide-video]");
+        if (soundOn && vSlide && vSlide.classList.contains("is-active") && video.paused) playVideo();
+      }
+    });
+    updateSoundBtn();
+
     if (prevBtn) prevBtn.addEventListener("click", prev);
     if (nextBtn) nextBtn.addEventListener("click", next);
     if (toggleBtn) toggleBtn.addEventListener("click", function () {
@@ -206,7 +253,7 @@
     } else {
       armTimer();
     }
-    document.addEventListener("cuellos:langchange", function () { buildDots(); setToggleState(); });
+    document.addEventListener("cuellos:langchange", function () { buildDots(); setToggleState(); updateSoundBtn(); });
   }
 
   if (document.readyState === "loading") {

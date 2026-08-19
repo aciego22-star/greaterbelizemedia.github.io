@@ -94,6 +94,8 @@
     "carousel.pause": { en: "Pause slideshow", es: "Pausar presentación" },
     "carousel.play": { en: "Play slideshow", es: "Reproducir presentación" },
     "carousel.goto": { en: "Go to slide", es: "Ir a la diapositiva" },
+    "carousel.soundOn": { en: "Turn sound on", es: "Activar sonido" },
+    "carousel.soundOff": { en: "Turn sound off", es: "Silenciar" },
     "carousel.slide1Alt": {
       en: "The full Cuello's product range with the slogan: Where the roads of tradition and quality meet",
       es: "La gama completa de productos Cuello's con el lema: Donde se encuentran los caminos de la tradición y la calidad"

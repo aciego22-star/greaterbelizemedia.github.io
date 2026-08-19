@@ -104,7 +104,7 @@ facilities, or reshoot).
 
 | File | Used on | Spec | Notes |
 |---|---|---|---|
-| `cuello-hero-video.mp4` | Home hero slide 4 · Gallery (Videos) | 46 s, 1280×622, H.264, 30 fps, ~7 MB, **no audio** | Derived from a supplied social screen recording: black frame cropped out, audio stripped (social-app music — rights unverified, see checklist). |
+| `cuello-hero-video.mp4` | Home hero slide 4 · Gallery (Videos) | 46 s, 1280×622, H.264, 30 fps, ~7.5 MB, **with audio** (AAC 96k) | Derived from a supplied social screen recording: black frame cropped out. Audio retained per instruction — music rights unverified, see checklist. Unmuted autoplay attempted; muted fallback + on-slide sound toggle. |
 | `cuello-beach-moments.mp4` | Gallery (Videos) | 33 s, 720×1262 portrait, H.264, 30 fps, ~6.4 MB, **no audio** | Derived from a supplied social screen recording: status bar, reaction rail, captions, account branding and comment bar cropped out; audio stripped. |
 
 Posters: `assets/img/gallery/cuello-hero-video-poster(.webp/-640.webp)` and

@@ -73,17 +73,21 @@ Developed by [Austere Automations](https://austereautomations.com/).
 | Any interface/editorial text, EN or ES | `assets/js/i18n.js` |
 | Colours, spacing, typography | `assets/css/main.css` (`:root` tokens) |
 
-### Hero video (slide 4) — ACTIVE
-`assets/video/cuello-hero-video.mp4` (46 s, muted, social framing removed)
-plays on the fourth hero slide: only while its slide is active, never behind
-the age gate, never looping on its own — it advances the carousel when it
-ends. If the file is ever removed, the slide removes itself automatically.
+### Hero video (slide 4) — ACTIVE, with sound
+`assets/video/cuello-hero-video.mp4` (46 s, social framing removed, audio
+kept) plays on the fourth hero slide: only while its slide is active, never
+behind the age gate, never looping on its own — it advances the carousel
+when it ends. **Sound**: unmuted autoplay is attempted first (the age-gate
+click provides the user gesture most browsers require); if a browser still
+refuses, playback falls back to muted and the on-slide speaker toggle lets
+the visitor turn sound on with one tap. If the file is ever removed, the
+slide removes itself automatically.
 Poster: `assets/img/gallery/cuello-hero-video-poster.webp`.
 
 Both supplied videos also appear in the Gallery under the **Videos** filter
-(tap-to-play in the lightbox, no autoplay, stops on close). Audio was
-stripped from both — the source screen recordings carried social-app music
-(see checklist).
+(tap-to-play in the lightbox, stops on close). The hero video carries its
+audio there too; the portrait beach video is silent. The audio is the
+source recording's social-app music — rights must be confirmed (checklist).
 
 ### Adding a gallery video
 1. Place the MP4 in `assets/video/` and a poster image in

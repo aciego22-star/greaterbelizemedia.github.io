@@ -61,9 +61,11 @@ below is presented as fact on the site.
       permissions for identifiable people (dancers, staff, customers).
 - [ ] Confirm usage rights for the two supplied videos (beach bar; beach
       moments), including permissions for the identifiable people in them.
-- [ ] Audio was removed from both videos because the source screen
-      recordings carried social-app music (likely third-party licensed).
-      Supply cleared audio/music if sound is wanted.
+- [ ] **Music rights (IMPORTANT):** per instruction, the hero video now
+      plays WITH its original audio — the music from the source social
+      recording, which is likely third-party licensed. Confirm the rights
+      to use this track on the website, or supply cleared music, before
+      production launch. (The portrait beach video remains silent.)
 
 ## 8. Brand & legal
 - [ ] Vector or high-resolution transparent Rums of Belize trademark.

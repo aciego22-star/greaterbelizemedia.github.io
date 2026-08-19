@@ -537,6 +537,17 @@ p { margin: 0 0 1em; }
 .carousel__slide picture { position: static; }
 .carousel__slide--contain { background: var(--molasses); }
 
+/* Sound toggle lives inside the video slide, so it appears and
+   accepts taps only while that slide is active (slide opacity and
+   pointer-events already gate it). Kept outside .carousel__controls
+   so it stays available on mobile. */
+.carousel__sound {
+  position: absolute;
+  z-index: 6;
+  left: 0.9rem;
+  bottom: calc(0.9rem + var(--sa-bottom));
+}
+
 .carousel__controls {
   position: absolute;
   z-index: 6;
