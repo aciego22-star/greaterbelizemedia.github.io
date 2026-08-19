@@ -4,11 +4,12 @@
 [build]
   publish = "."
 
-# Long-cache immutable assets; HTML revalidates on every visit.
+# Assets revalidate on every visit (filenames are not fingerprinted, so
+# long immutable caching would keep old JS/CSS alive after a redeploy).
 [[headers]]
   for = "/assets/*"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=0, must-revalidate"
 
 [[headers]]
   for = "/*.html"
