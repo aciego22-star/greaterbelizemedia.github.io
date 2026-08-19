@@ -1,0 +1,23 @@
+# Cuello's Distillery Ltd. — V1 concept · Netlify configuration
+# Static site, no build step. Deploy this folder as the publish root.
+
+[build]
+  publish = "."
+
+# Long-cache immutable assets; HTML revalidates on every visit.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "/"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"

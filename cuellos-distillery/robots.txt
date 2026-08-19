@@ -1,0 +1,8 @@
+# Cuello's Distillery Ltd. — V1 concept
+# Public content is fully crawlable; the age gate is a client-side
+# overlay and does not hide content from search engines.
+User-agent: *
+Allow: /
+Disallow: /assets/img/products-hires/
+
+Sitemap: https://cuellos-distillery-v1.netlify.app/sitemap.xml
