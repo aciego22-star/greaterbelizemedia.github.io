@@ -1287,84 +1287,98 @@ p { margin: 0 0 1em; }
   inset: 0;
   z-index: 400;
   display: none;
-  align-items: center;
   justify-content: center;
+  align-items: flex-start;
   padding: calc(1.2rem + var(--sa-top)) 1.2rem calc(1.2rem + var(--sa-bottom));
-  background:
-    radial-gradient(circle at 78% 20%, rgba(196, 120, 40, 0.2) 0%, rgba(196, 120, 40, 0) 45%),
-    radial-gradient(circle at 15% 85%, rgba(90, 52, 35, 0.5) 0%, rgba(90, 52, 35, 0) 55%),
-    linear-gradient(160deg, #17110D 0%, #241610 55%, #17110D 100%);
+  background: linear-gradient(160deg, #17110D 0%, #241610 55%, #17110D 100%);
   color: var(--cream);
   overflow-y: auto;
 }
 .age-gate.is-open { display: flex; }
 
-.age-gate::before {
-  /* bottle silhouette detail */
-  content: "";
+/* Brand artwork backdrop (landscape >=768px, portrait below) */
+.age-gate__bg {
   position: absolute;
-  right: -40px;
-  bottom: -8%;
-  width: min(38vw, 300px);
-  height: 115%;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 620' fill='rgba(196,120,40,0.09)'%3E%3Cpath d='M84 8h32v18c0 6 2 10 2 10v52c0 14 5 24 12 34 12 17 26 37 26 68v390c0 20-14 32-32 32H76c-18 0-32-12-32-32V190c0-31 14-51 26-68 7-10 12-20 12-34V36s2-4 2-10V8z'/%3E%3C/svg%3E") no-repeat center bottom / contain;
+  inset: 0;
+  z-index: 0;
   pointer-events: none;
 }
+.age-gate__bg img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  /* contain, not cover: the artwork's edges are dark and blend into the
+     backdrop, so the company name and full bottle lineup are always
+     visible at any screen ratio */
+  object-fit: contain;
+  object-position: center;
+}
 
+/* Compact glass panel over the artwork's darker central band —
+   the company name above and the bottle lineup below stay visible */
 .age-gate__panel {
   position: relative;
   z-index: 2;
-  width: min(480px, 100%);
+  width: min(440px, 100%);
   text-align: center;
-  margin: auto;
+  margin: clamp(170px, 36vh, 460px) auto 2rem;
+  background: rgba(19, 13, 10, 0.62);
+  -webkit-backdrop-filter: blur(14px) saturate(1.1);
+  backdrop-filter: blur(14px) saturate(1.1);
+  border: 1px solid rgba(185, 149, 75, 0.38);
+  border-radius: 20px;
+  padding: 1.5rem 1.4rem 1.2rem;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
 }
-.age-gate__mark {
-  width: 92px; height: 92px;
-  margin: 0 auto 1.2rem;
-  border-radius: 50%;
-  background: var(--white);
-  padding: 3px;
-  box-shadow: 0 0 0 2px rgba(185, 149, 75, 0.6), 0 14px 40px rgba(0, 0, 0, 0.5);
+@media (max-width: 767px) {
+  .age-gate__panel {
+    margin-top: clamp(130px, 29vh, 340px);
+    width: min(380px, 100%);
+  }
 }
-.age-gate__mark img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-.age-gate__brand {
-  font-size: 0.66rem; font-weight: 800; letter-spacing: 0.28em;
-  text-transform: uppercase; color: var(--gold);
-  margin-bottom: 0.9rem;
-}
+
 .age-gate h2 {
-  font-size: clamp(1.9rem, 6vw, 2.7rem);
-  margin-bottom: 0.5rem;
+  font-size: clamp(1.5rem, 4.5vw, 1.9rem);
+  margin-bottom: 0.4rem;
 }
-.age-gate__copy { color: var(--cream-ink-muted); max-width: 40ch; margin: 0 auto 1.5rem; }
+.age-gate__copy {
+  color: var(--cream-ink-muted);
+  font-size: 0.92rem;
+  max-width: 36ch;
+  margin: 0 auto 1.1rem;
+}
 
 .age-gate__actions {
   display: flex;
-  flex-direction: column;
-  gap: 0.7rem;
-  align-items: center;
-  margin-bottom: 1.2rem;
+  gap: 0.6rem;
+  justify-content: center;
+  margin-bottom: 0.8rem;
 }
-.age-gate__actions .btn { width: min(300px, 100%); }
+.age-gate__actions .btn { flex: 1; min-width: 0; padding-inline: 1rem; }
+@media (max-width: 359px) {
+  .age-gate__actions { flex-direction: column; }
+}
 
 .age-gate__remember {
   display: inline-flex;
   align-items: center;
-  gap: 0.55rem;
-  font-size: 0.86rem;
+  gap: 0.5rem;
+  font-size: 0.82rem;
   color: var(--cream-ink-muted);
   cursor: pointer;
-  margin-bottom: 1.1rem;
-  min-height: 44px;
+  margin-bottom: 0.7rem;
+  min-height: 38px;
 }
 .age-gate__remember input {
-  width: 19px; height: 19px;
+  width: 18px; height: 18px;
   accent-color: var(--amber);
 }
 .age-gate__fine {
-  font-size: 0.75rem;
+  font-size: 0.68rem;
+  line-height: 1.5;
   color: rgba(243, 235, 221, 0.5);
-  max-width: 46ch;
+  max-width: 44ch;
   margin: 0 auto;
   letter-spacing: 0.02em;
 }

@@ -54,10 +54,16 @@
     el.setAttribute("aria-modal", "true");
     el.setAttribute("aria-labelledby", "age-gate-title");
     el.setAttribute("aria-describedby", "age-gate-copy");
+    /* Brand artwork backdrop: landscape from 768px up, portrait below.
+       The compact glass panel sits over the artwork's darker central
+       band, leaving the company name (top) and the bottle lineup
+       (bottom) visible. */
     el.innerHTML =
+      '<picture class="age-gate__bg" aria-hidden="true">' +
+        '<source media="(min-width: 768px)" srcset="assets/img/brand/age-gate-bg-desktop.webp">' +
+        '<img src="assets/img/brand/age-gate-bg-mobile.webp" alt="">' +
+      '</picture>' +
       '<div class="age-gate__panel">' +
-        '<div class="age-gate__mark"><img src="assets/img/brand/rums-of-belize-mark-480.webp" alt="Rums of Belize — Cuello’s registered trademark" width="92" height="92"></div>' +
-        '<p class="age-gate__brand" data-i18n="gate.brand">' + t("gate.brand") + '</p>' +
         '<h2 id="age-gate-title" data-i18n="gate.title">' + t("gate.title") + '</h2>' +
         '<p id="age-gate-copy" class="age-gate__copy" data-i18n="gate.copy">' + t("gate.copy") + '</p>' +
         '<div class="age-gate__actions">' +
