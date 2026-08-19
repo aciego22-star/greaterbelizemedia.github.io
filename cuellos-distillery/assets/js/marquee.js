@@ -1,17 +1,21 @@
 /* ============================================================
    CUELLOS DISTILLERY — Nine-product marquee (home)
    The nine cards exist as static HTML (usable without JS as a
-   scrollable rail). This script drives a slow right-to-left
-   auto-scroll with requestAnimationFrame on scrollLeft, so:
-   - native touch swiping and manual scrolling never fight the
-     motion — interaction pauses the roll, and it RESUMES a
-     moment after the visitor lets go;
+   scrollable rail). With JS, the roll is a TRANSFORM on the
+   track driven by requestAnimationFrame — never scroll
+   position, so iOS Safari's scroll rounding, momentum and
+   sticky-state quirks cannot stop it:
+   - glides right-to-left, one full cycle in ~55 s;
+   - visitors can drag it horizontally (pointer capture);
+     vertical page scrolling stays native via touch-action:pan-y;
+   - dragging or a held press pauses it, and it ALWAYS resumes
+     ~1.5 s after the interaction ends;
+   - a real mouse hover, the pause/play control and hidden
+     browser tabs also pause it — and it resumes;
    - the track is duplicated once for a seamless infinite wrap
-     (the clone is aria-hidden and untabbable, so keyboard and
-     screen readers meet each product exactly once);
-   - a mouse hover, a held press, the pause/play control and
-     hidden browser tabs pause the roll — everything resumes;
-   - one full cycle takes ~55 s;
+     (the clone is aria-hidden and untabbable);
+   - a drag longer than 8 px suppresses the accidental card
+     click; a tap still opens the product;
    - prefers-reduced-motion gets a static scrollable rail.
    No <marquee> element is used.
    ============================================================ */
@@ -21,6 +25,7 @@
 
   var CYCLE_SECONDS = 55;
   var RESUME_DELAY = 1500; /* ms after the last user interaction */
+  var DRAG_THRESHOLD = 8;  /* px of movement that counts as a drag, not a tap */
 
   var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var shell = document.querySelector("[data-marquee]");
@@ -35,15 +40,16 @@
   }
 
   var userPaused = false;
-  var hoverPaused = false; /* mouse pointer only — touch never sets this */
-  var held = false;        /* finger/pointer currently down */
+  var hoverPaused = false; /* real mouse only */
   var interactingUntil = 0;
   var lastTick = null;
-  var rafId = null;
-  /* iOS Safari rounds scrollLeft assignments to whole pixels, so a
-     sub-pixel per-frame increment would round back and never move.
-     Position is accumulated in this float and assigned each frame. */
-  var pos = 0;
+
+  /* transform offset in px, kept in [0, groupW) */
+  var offset = 0;
+  var dragging = false;
+  var dragStartX = 0;
+  var dragStartOffset = 0;
+  var dragMoved = 0;
 
   function syncAlts() {
     if (!window.CuellosData || !window.CuellosI18N) return;
@@ -79,8 +85,19 @@
   function interacting() { return performance.now() < interactingUntil; }
   function markInteraction() { interactingUntil = performance.now() + RESUME_DELAY; }
 
+  function wrap(v) {
+    var groupW = group.offsetWidth;
+    if (!groupW) return 0;
+    v = v % groupW;
+    return v < 0 ? v + groupW : v;
+  }
+
+  function apply() {
+    track.style.transform = "translate3d(" + (-offset) + "px, 0, 0)";
+  }
+
   function tick(now) {
-    rafId = requestAnimationFrame(tick);
+    requestAnimationFrame(tick);
     if (lastTick === null) { lastTick = now; return; }
     var dt = Math.min((now - lastTick) / 1000, 0.1);
     lastTick = now;
@@ -88,19 +105,10 @@
     var groupW = group.offsetWidth;
     if (!groupW) return;
 
-    var paused = userPaused || hoverPaused || held || document.hidden || interacting();
+    if (userPaused || hoverPaused || dragging || document.hidden || interacting()) return;
 
-    if (paused) {
-      /* track wherever the visitor scrolled to */
-      pos = shell.scrollLeft;
-      return;
-    }
-    var speed = groupW / CYCLE_SECONDS;
-    pos += speed * dt;
-    /* seamless wrap */
-    if (pos >= groupW) pos -= groupW;
-    else if (pos < 0) pos += groupW;
-    shell.scrollLeft = pos;
+    offset = wrap(offset + (groupW / CYCLE_SECONDS) * dt);
+    apply();
   }
 
   function boot() {
@@ -119,21 +127,53 @@
     }
 
     makeClone();
+    shell.classList.add("is-animated");
+    shell.scrollLeft = 0;
 
-    /* interaction pauses; the roll ALWAYS resumes RESUME_DELAY after the
-       last touch / drag / wheel / momentum-scroll event ends */
-    ["touchmove", "wheel"].forEach(function (evt) {
-      shell.addEventListener(evt, markInteraction, { passive: true });
+    /* drag to browse — pointer capture keeps the gesture even when the
+       finger wanders; vertical pans stay native via touch-action: pan-y */
+    shell.addEventListener("pointerdown", function (e) {
+      dragging = true;
+      dragStartX = e.clientX;
+      dragStartOffset = offset;
+      dragMoved = 0;
+      markInteraction();
+      try { shell.setPointerCapture(e.pointerId); } catch (err) {}
     });
-    shell.addEventListener("pointerdown", function () { held = true; markInteraction(); }, { passive: true });
-    ["pointerup", "pointercancel", "pointerleave"].forEach(function (evt) {
-      shell.addEventListener(evt, function () { held = false; markInteraction(); }, { passive: true });
+    shell.addEventListener("pointermove", function (e) {
+      if (!dragging) return;
+      var dx = e.clientX - dragStartX;
+      dragMoved = Math.max(dragMoved, Math.abs(dx));
+      offset = wrap(dragStartOffset - dx);
+      apply();
+      markInteraction();
     });
-    shell.addEventListener("scroll", function () {
-      if (interacting() || held) markInteraction(); /* extend through momentum scrolling */
-    }, { passive: true });
+    ["pointerup", "pointercancel"].forEach(function (evt) {
+      shell.addEventListener(evt, function () {
+        dragging = false;
+        markInteraction();
+      });
+    });
+    /* a real drag must not fire the card link underneath */
+    shell.addEventListener("click", function (e) {
+      if (dragMoved > DRAG_THRESHOLD) {
+        e.preventDefault();
+        e.stopPropagation();
+        dragMoved = 0;
+      }
+    }, true);
 
-    /* hover pause is desktop-mouse only — emulated/touch hover never sticks it */
+    /* horizontal trackpad/wheel browsing */
+    shell.addEventListener("wheel", function (e) {
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+        e.preventDefault();
+        offset = wrap(offset + e.deltaX);
+        apply();
+        markInteraction();
+      }
+    }, { passive: false });
+
+    /* hover pause is desktop-mouse only — touch hover never sticks */
     shell.addEventListener("pointerenter", function (e) { if (e.pointerType === "mouse") hoverPaused = true; });
     shell.addEventListener("pointerleave", function (e) { if (e.pointerType === "mouse") hoverPaused = false; });
 
@@ -144,7 +184,7 @@
       setToggleState();
     });
 
-    rafId = requestAnimationFrame(tick);
+    requestAnimationFrame(tick);
   }
 
   if (document.readyState === "loading") {

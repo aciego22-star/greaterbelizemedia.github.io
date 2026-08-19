@@ -163,7 +163,26 @@
             </picture>
           </div>
 
-          <!-- Slide 2 · Trafalgar Gin garden cart -->
+          <!-- Slide 2 · brand video: full-screen cover on mobile AND desktop.
+               Plays with sound where the browser allows (muted fallback +
+               on-slide speaker toggle); advances the carousel when it ends;
+               never plays behind the age gate. Phones receive a
+               native-resolution portrait crop via config.js. -->
+          <div class="carousel__slide" data-slide-video aria-hidden="true">
+            <video class="carousel__fg" muted playsinline preload="none"
+                   width="1600" height="778"
+                   poster="assets/img/gallery/cuello-hero-video-poster.webp"
+                   data-i18n-aria="carousel.videoAlt" aria-label="Cuello's brand video">
+              <source src="assets/video/cuello-hero-video.mp4" type="video/mp4">
+            </video>
+            <!-- Sound toggle: shown while this slide is active -->
+            <button type="button" class="c-btn carousel__sound" data-carousel-sound aria-pressed="true" data-i18n-aria="carousel.soundOff" aria-label="Turn sound off"><span>
+              <svg data-icon-sound-on width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor" stroke="none"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11" stroke-linecap="round"/></svg>
+              <svg data-icon-sound-off width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" style="display:none"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor" stroke="none"/><path d="M16 9l6 6M22 9l-6 6" stroke-linecap="round"/></svg>
+            </span></button>
+          </div>
+
+          <!-- Slide 3 · Trafalgar Gin garden cart -->
           <div class="carousel__slide" aria-hidden="true">
             <img src="assets/img/gallery/trafalgar-gin-garden-display.webp"
                  width="1284" height="1001" loading="lazy" style="object-position:50% 42%"
@@ -171,7 +190,7 @@
                  alt="Trafalgar Gin bottles displayed in a decorative garden cart">
           </div>
 
-          <!-- Slide 3 · CZAR Vodka beach portrait. Desktop: complete bottle over a
+          <!-- Slide 4 · CZAR Vodka beach portrait. Desktop: complete bottle over a
                blurred backdrop. Mobile (<768px): dedicated 4:5 composition, full-bleed cover. -->
           <div class="carousel__slide carousel__slide--contain carousel__slide--czar" aria-hidden="true">
             <img class="carousel__bg" src="assets/img/gallery/czar-vodka-beach-portrait-640.webp" alt="" aria-hidden="true" width="640" height="945">
@@ -186,24 +205,6 @@
             </picture>
           </div>
 
-          <!-- Slide 4 · brand video (wide 1280x622): shown complete over a blurred
-               poster backdrop; plays muted only while active, advances the carousel
-               when it ends, never plays behind the age gate. -->
-          <div class="carousel__slide carousel__slide--contain" data-slide-video aria-hidden="true">
-            <img class="carousel__bg" src="assets/img/gallery/cuello-hero-video-poster-640.webp" alt="" aria-hidden="true" width="640" height="311">
-            <video class="carousel__fg" muted playsinline preload="none"
-                   width="1280" height="622"
-                   poster="assets/img/gallery/cuello-hero-video-poster.webp"
-                   data-i18n-aria="carousel.videoAlt" aria-label="Cuello's brand video">
-              <source src="assets/video/cuello-hero-video.mp4" type="video/mp4">
-            </video>
-            <!-- Sound: unmuted autoplay is attempted first; if the browser
-                 refuses, playback falls back to muted and this toggle lights up. -->
-            <button type="button" class="c-btn carousel__sound" data-carousel-sound aria-pressed="true" data-i18n-aria="carousel.soundOff" aria-label="Turn sound off"><span>
-              <svg data-icon-sound-on width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor" stroke="none"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11" stroke-linecap="round"/></svg>
-              <svg data-icon-sound-off width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" style="display:none"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor" stroke="none"/><path d="M16 9l6 6M22 9l-6 6" stroke-linecap="round"/></svg>
-            </span></button>
-          </div>
 
           <div class="carousel__dots" role="group" data-i18n-aria="carousel.label" aria-label="Cuello's highlights"></div>
           <div class="carousel__controls">

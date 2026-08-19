@@ -640,9 +640,16 @@ p { margin: 0 0 1em; }
   flex: none;
   width: min(58vw, 218px);
 }
-/* Auto-scroll is driven by JS (requestAnimationFrame on scrollLeft),
-   so native touch swiping never fights a CSS animation and the roll
-   resumes after the visitor lets go. */
+/* The roll is driven by JS as a transform on the track (never by
+   scroll position — iOS scroll quirks don't apply). Visitors can drag
+   it horizontally; vertical page scrolling stays native (pan-y). */
+.marquee.is-animated {
+  overflow: hidden;
+  touch-action: pan-y;
+  cursor: grab;
+}
+.marquee.is-animated:active { cursor: grabbing; }
+.marquee.is-animated .marquee__track { will-change: transform; }
 .marquee-controls {
   display: flex;
   justify-content: flex-end;
