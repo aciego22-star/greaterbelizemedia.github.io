@@ -1,79 +1,82 @@
-# Client Confirmation Checklist — Cuello's V1
+# Client Confirmation Checklist — Cuello's V1.1
 
 Everything that must be confirmed by Cuello's Distillery Ltd. (or verified by
 Austere) **before this concept can replace the production website**. Nothing
-below is presented as fact on the site — unconfirmed values render as
-"To be confirmed" or use safe wording.
+below is presented as fact on the site.
 
-## 1. Company history (Our Story)
-- [ ] Founding year / "Established" year. (A banner in the BELIZE-letters
-      photograph appears to read "Established 19—"; the exact year must be
-      confirmed by the family before it is published anywhere.)
-- [ ] Timeline milestones and dates (the timeline layout is ready; four
-      undated placeholder milestones are currently shown with safe wording).
-- [ ] Founder / family names and any historical photos or label artwork.
-- [ ] Confirmation that the production photos may represent the current facility.
+## 1. WhatsApp (PROMINENT — required before launch)
+- [ ] **Confirm the official Cuello's WhatsApp number.** The site currently
+      uses the Orange Walk main-office number **+501 322-2183** as a
+      provisional concept value (`assets/js/config.js`). Cuello's must
+      confirm whether this line accepts WhatsApp — if not, supply the
+      correct WhatsApp business number and update the one config value.
+- [ ] Approve the prefilled WhatsApp and email messages (EN and ES) used on
+      Contact, Trade, the product drawer and the footer.
 
-## 2. Products (Our Spirits)
-- [ ] Available sizes per product (the old public site listed several products
-      as 750 ml — confirm per product before publishing).
-- [ ] Alcohol percentage per product.
-- [ ] Official product descriptions / tasting notes (current copy is neutral
-      concept wording derived only from the labels).
-- [ ] Confirm every rebuilt bottle image matches current packaging (the images
-      are enhanced reconstructions — small label text is concept-level).
-- [ ] Confirm the display name "Caribbean Gold Rum" for the amber Caribbean
-      Rum presentation (label reads "Caribbean Rum").
-- [ ] Category grouping approval: Caribbean Rum Collection / Vodka, Gin &
-      Brandy / Liqueurs & Specialty Spirits.
+## 2. Products
+- [ ] **Confirm every product's exact public-facing name.**
+- [ ] **Confirm whether the amber rum is presented as "Caribbean Rum" (as
+      the label reads) or "Caribbean Gold Rum" (current display name).**
+- [ ] Confirm product categories/groupings (Caribbean Rum Collection /
+      Vodka, Gin & Brandy / Liqueurs & Specialty).
+- [ ] Confirm sizes and alcohol percentages per product (currently omitted).
+- [ ] Supply official tasting notes and serving suggestions, if desired
+      (currently omitted — descriptions state only label-visible facts).
+- [ ] Confirm every rebuilt bottle image matches current packaging (the
+      images are enhanced reconstructions; small label text is concept-level).
 
-## 3. Cocktails & Recipes
-- [ ] Official Cuello's recipes with measures (current cards are clearly
-      framed concept serves without measures).
-- [ ] Approval of concept serve names (e.g. "Orange Walk Old Fashioned",
-      "Cane Cutter").
+## 3. Cocktails
+- [ ] Supply approved official cocktail recipes (names, ingredients,
+      measures, methods). The page renders them automatically once added to
+      `data.js`; until then it shows "Official recipes coming soon".
 
 ## 4. News & Events
-- [ ] Real announcements to replace the badged sample stories.
-- [ ] Names/dates/details of any events shown in photography before they are
-      described as specific events.
+- [ ] Supply verified headlines, dates, summaries and any event names.
+      Current cards are neutral captions describing only what the
+      photographs show.
+- [ ] Confirm permission to describe the photographed activities (carnival
+      appearance, community booth, court display, beach display) as
+      specific named events.
 
-## 5. Locations & availability
-- [ ] Opening hours for all three offices.
-- [ ] Confirm office addresses & phone numbers are current:
+## 5. Company history (Our Story)
+- [ ] Founding year / "Established" year (a banner in the BELIZE-letters
+      photo appears to show one — confirm before publishing anywhere).
+- [ ] Timeline milestones and dates.
+- [ ] Approve the phrase "a longstanding Belizean distillery" and the
+      client-supplied hero line "A Belizean family tradition in rum and
+      spirits…" (retained from the original creative brief).
+- [ ] Confirm the production photos may represent the current facility.
+
+## 6. Branch & office details
+- [ ] Confirm addresses and phone numbers:
       Orange Walk 65 Main St +501 322-2183 · Belize City 53 Pickstock St
       +501 224-5272 · San Pedro JewFish St +501 670-4235.
+- [ ] Opening hours for all three offices.
 - [ ] Retail / stockist list for the "Where to Buy" framework.
-- [ ] WhatsApp number(s), if Cuello's wants tap-to-WhatsApp actions (none
-      shown in V1 — not invented).
 
-## 6. Trade & Distribution
-- [ ] Who receives trade enquiries (name/email) → configure Netlify Forms
-      notifications (see README).
-- [ ] Any wholesale/distribution terms that may be described publicly.
-
-## 7. Brand & legal
-- [ ] Vector or high-resolution transparent version of the Rums of Belize
-      trademark for final launch.
-- [ ] Usage rights for all social-media-sourced photography, including
+## 7. Social & media rights
+- [ ] **Confirm social URLs.** Placeholder icons were removed — only
+      verified profiles will be linked (footer has a marked slot).
+- [ ] Confirm rights to use all supplied photographs and videos, including
       permissions for identifiable people (dancers, staff, customers).
+- [ ] Supply the hero video and any gallery videos (specs in
+      ASSET-REPLACEMENT-GUIDE.md) with usage rights.
+
+## 8. Brand & legal
+- [ ] Vector or high-resolution transparent Rums of Belize trademark.
 - [ ] Privacy policy and accessibility statement content (footer links are
       placeholders pointing to the Contact page).
-- [ ] Verified social media URLs (Facebook / Instagram / YouTube placeholders
-      are visually present but not linked).
-- [ ] Confirm legal drinking age wording (site uses 18+) and any regulatory
+- [ ] Confirm legal drinking-age wording (site uses 18+) and any regulatory
       notices required for Belize.
 
-## 8. Spanish copy review
-- [ ] Full review of all Spanish content in `assets/js/i18n.js` and
-      `assets/js/data.js` by a Belizean Spanish speaker (regional terminology,
-      tone, product terms — e.g. "licores", "vitrina", "hierbabuena").
+## 9. Language
+- [ ] **Confirm final English and Spanish wording** — full review of
+      `assets/js/i18n.js` and `assets/js/data.js` by a Belizean Spanish
+      speaker, including the prefilled WhatsApp/email messages.
 
-## 9. Technical / launch
-- [ ] Final domain decision → update canonical/OG URLs, `sitemap.xml`,
-      `robots.txt` (currently a placeholder Netlify domain).
-- [ ] Netlify Forms notifications configured and test submissions received.
-- [ ] Hero video and gallery videos from Albert (specs in
-      ASSET-REPLACEMENT-GUIDE.md).
+## 10. Technical / launch
+- [ ] Confirm the production domain → update canonical/OG URLs,
+      `sitemap.xml`, `robots.txt` (currently a placeholder Netlify domain).
+- [ ] Confirm analytics requirements (none installed in the concept).
 - [ ] Production website backup + coordination with the current technical
       provider before any domain transition.

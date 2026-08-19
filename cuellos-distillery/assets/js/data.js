@@ -1,18 +1,25 @@
 /* ============================================================
-   CUELLO'S DISTILLERY — Central content data
+   CUELLOS DISTILLERY — Central content data
    Products, cocktails, news and gallery manifests.
    Update this file to change site content; layouts adapt.
    Bilingual fields use { en, es } objects.
-   NOTE: sizes / ABV / recipes intentionally read "to be
-   confirmed" until verified by Cuello's (see README.md).
+
+   COPY POLICY (V1.1): descriptions state only what is visible
+   on the label or photograph, plus origin. Tasting notes,
+   flavour claims, sizes, strengths, recipes and news stories
+   are intentionally absent until confirmed by Cuello's
+   (see CLIENT-CONFIRMATION-CHECKLIST.md).
    ============================================================ */
 
 window.CuellosData = (function () {
   "use strict";
 
   /* ---------- Products (9) ----------
-     Names follow the publicly listed range. Accent colours are
-     drawn from each label. img paths point to assets/img/products/. */
+     Names follow the publicly listed range. The display name of
+     the amber rum ("Caribbean Gold Rum" vs the label's
+     "Caribbean Rum") requires client confirmation.
+     Accent colours are drawn from each label.
+     Marquee/lineup order is defined by MARQUEE_ORDER below. */
 
   var PRODUCTS = [
     {
@@ -21,14 +28,9 @@ window.CuellosData = (function () {
       category: "rum",
       accent: "#B9954B",
       desc: {
-        en: "The bold end of the cabinet — Cuello's high-strength white rum, distilled, blended and bottled in Orange Walk Town.",
-        es: "El lado audaz de la vitrina — el ron blanco de alta graduación de Cuello's, destilado, mezclado y embotellado en Orange Walk Town."
+        en: "Part of the Caribbean Rum Collection — distilled, blended and bottled by Cuello's Distillery Ltd. in Orange Walk Town, Belize.",
+        es: "Parte de la Colección Caribbean Rum — destilado, mezclado y embotellado por Cuello's Distillery Ltd. en Orange Walk Town, Belice."
       },
-      serve: {
-        en: "Traditionally enjoyed with a generous squeeze of lime.",
-        es: "Tradicionalmente se disfruta con un buen toque de limón."
-      },
-      cocktail: "cane-cutter",
       alt: {
         en: "Bottle of Cuello's Caribbean Extra Strong Rum with black and gold label",
         es: "Botella de Caribbean Extra Strong Rum de Cuello's con etiqueta negra y dorada"
@@ -40,14 +42,9 @@ window.CuellosData = (function () {
       category: "clear",
       accent: "#31518F",
       desc: {
-        en: "A crisp, clear vodka in the recognizable blue diamond label — Belize's own take on a world classic.",
-        es: "Un vodka claro y fresco con la reconocible etiqueta azul de diamantes — la versión beliceña de un clásico mundial."
+        en: "Cuello's vodka in the blue diamond label — produced in Orange Walk Town, Belize.",
+        es: "El vodka de Cuello's con la etiqueta azul de diamantes — producido en Orange Walk Town, Belice."
       },
-      serve: {
-        en: "Serve well chilled, neat or with soda and lime.",
-        es: "Sírvelo bien frío, solo o con soda y limón."
-      },
-      cocktail: "czar-press",
       alt: {
         en: "Bottle of CZAR Vodka with blue diamond-grid label",
         es: "Botella de CZAR Vodka con etiqueta azul de cuadrícula de diamantes"
@@ -59,14 +56,9 @@ window.CuellosData = (function () {
       category: "rum",
       accent: "#3E7A4E",
       desc: {
-        en: "The everyday classic — a clear Belizean white rum made for mixing, from beach bars to family gatherings.",
-        es: "El clásico de todos los días — un ron blanco beliceño hecho para mezclar, de los bares de playa a las reuniones familiares."
+        en: "The white presentation of the Caribbean Rum Collection — a product of Belize from Cuello's Distillery Ltd.",
+        es: "La presentación blanca de la Colección Caribbean Rum — un producto de Belice de Cuello's Distillery Ltd."
       },
-      serve: {
-        en: "The heart of a Belizean mojito-style serve with mint and lime.",
-        es: "El corazón de un estilo mojito beliceño con hierbabuena y limón."
-      },
-      cocktail: "cane-cutter",
       alt: {
         en: "Bottle of Cuello's Caribbean White Rum with black, gold and green label",
         es: "Botella de Caribbean White Rum de Cuello's con etiqueta negra, dorada y verde"
@@ -78,14 +70,9 @@ window.CuellosData = (function () {
       category: "clear",
       accent: "#2E5E8F",
       desc: {
-        en: "A London Dry style gin with a Belizean postcard on the label — bright, juniper-led and ready for tonic.",
-        es: "Una ginebra estilo London Dry con una postal beliceña en la etiqueta — brillante, con enebro y lista para la tónica."
+        en: "Cuello's gin, labelled London Dry, with a Belizean scene on the label — produced in Orange Walk Town.",
+        es: "La ginebra de Cuello's, etiquetada London Dry, con un paisaje beliceño en la etiqueta — producida en Orange Walk Town."
       },
-      serve: {
-        en: "Gin and tonic with cucumber or local citrus.",
-        es: "Gin tonic con pepino o cítricos locales."
-      },
-      cocktail: "trafalgar-tonic",
       alt: {
         en: "Bottle of Trafalgar Gin with blue Belize-scene label",
         es: "Botella de Trafalgar Gin con etiqueta azul de paisaje beliceño"
@@ -97,14 +84,9 @@ window.CuellosData = (function () {
       category: "specialty",
       accent: "#C9A227",
       desc: {
-        en: "A traditional anise-flavoured spirit with deep roots in Belizean homes — a taste passed down through generations.",
-        es: "Un licor tradicional con sabor a anís y raíces profundas en los hogares beliceños — un sabor transmitido por generaciones."
+        en: "A traditional name in the Cuello's cabinet, in its cream and yellow label — produced in Orange Walk Town, Belize.",
+        es: "Un nombre tradicional de la vitrina Cuello's, con su etiqueta crema y amarilla — producido en Orange Walk Town, Belice."
       },
-      serve: {
-        en: "Traditionally sipped neat, or alongside strong coffee.",
-        es: "Tradicionalmente se toma solo, o acompañando un café fuerte."
-      },
-      cocktail: "anise-cafe",
       alt: {
         en: "Bottle of Cuello's Anise with cream and yellow label",
         es: "Botella de Anise de Cuello's con etiqueta crema y amarilla"
@@ -116,14 +98,9 @@ window.CuellosData = (function () {
       category: "rum",
       accent: "#4FA3C4",
       desc: {
-        en: "Tropical and easy-going — coconut rum made for sunset serves on the cayes.",
-        es: "Tropical y relajado — ron de coco hecho para servirse al atardecer en los cayos."
+        en: "The coconut presentation of the Caribbean Rum Collection, in its blue tropical label — a product of Belize.",
+        es: "La presentación de coco de la Colección Caribbean Rum, con su etiqueta azul tropical — un producto de Belice."
       },
-      serve: {
-        en: "Over ice with pineapple — a Belizean beach in a glass.",
-        es: "Con hielo y piña — una playa beliceña en un vaso."
-      },
-      cocktail: "coco-breeze",
       alt: {
         en: "Bottle of Cuello's Caribbean Coconut Rum with blue tropical label",
         es: "Botella de Caribbean Coconut Rum de Cuello's con etiqueta azul tropical"
@@ -135,14 +112,9 @@ window.CuellosData = (function () {
       category: "clear",
       accent: "#8A6A2F",
       desc: {
-        en: "Amber, warming and dressed in black and gold with three stars — the cabinet's after-dinner statement.",
-        es: "Ámbar, cálido y vestido de negro y dorado con tres estrellas — la declaración de sobremesa de la vitrina."
+        en: "Cuello's brandy in the black and gold three-star label — produced in Orange Walk Town, Belize.",
+        es: "El brandy de Cuello's con la etiqueta negra y dorada de tres estrellas — producido en Orange Walk Town, Belice."
       },
-      serve: {
-        en: "Neat in a warm glass, after a good meal.",
-        es: "Solo en copa tibia, después de una buena comida."
-      },
-      cocktail: "orange-walk-old-fashioned",
       alt: {
         en: "Bottle of Imperial Brandy with black and gold three-star label",
         es: "Botella de Imperial Brandy con etiqueta negra y dorada de tres estrellas"
@@ -154,14 +126,9 @@ window.CuellosData = (function () {
       category: "specialty",
       accent: "#3E7A4E",
       desc: {
-        en: "One of the most recognizable labels in the Cuello's family — the green-striped bottle Belizeans know on sight.",
-        es: "Una de las etiquetas más reconocibles de la familia Cuello's — la botella de franja verde que los beliceños reconocen a primera vista."
+        en: "A longstanding label in the Cuello's range, in its green-striped bottle — produced in Orange Walk Town, Belize.",
+        es: "Una etiqueta de larga trayectoria en la gama Cuello's, con su botella de franja verde — producida en Orange Walk Town, Belice."
       },
-      serve: {
-        en: "A traditional favourite, served the way your family always has.",
-        es: "Un favorito tradicional, servido como siempre lo ha hecho tu familia."
-      },
-      cocktail: "cane-cutter",
       alt: {
         en: "Green Stripe bottle with diagonal green and white label",
         es: "Botella Green Stripe con etiqueta diagonal verde y blanca"
@@ -170,17 +137,15 @@ window.CuellosData = (function () {
     {
       id: "caribbean-gold-rum",
       name: "Caribbean Gold Rum",
+      /* Label reads "Caribbean Rum" (gold presentation). Public-facing
+         name pending client confirmation — see checklist. */
+      name_pending_confirmation: true,
       category: "rum",
       accent: "#C47828",
       desc: {
-        en: "The amber presentation of the Caribbean Rum line — golden colour, classic black and gold label.",
-        es: "La presentación ámbar de la línea Caribbean Rum — color dorado y la clásica etiqueta negra y dorada."
+        en: "The amber presentation of the Caribbean Rum Collection, in the classic black and gold label — a product of Belize.",
+        es: "La presentación ámbar de la Colección Caribbean Rum, con la clásica etiqueta negra y dorada — un producto de Belice."
       },
-      serve: {
-        en: "Over ice, or stirred slowly with bitters and orange.",
-        es: "Con hielo, o mezclado lentamente con amargos y naranja."
-      },
-      cocktail: "orange-walk-old-fashioned",
       alt: {
         en: "Bottle of Cuello's Caribbean Gold Rum with amber liquid and black and gold label",
         es: "Botella de Caribbean Gold Rum de Cuello's con líquido ámbar y etiqueta negra y dorada"
@@ -200,102 +165,44 @@ window.CuellosData = (function () {
     specialty: { en: "Liqueurs & Specialty", es: "Licores y Especialidades" }
   };
 
-  /* Featured on the home rail (4, per revised direction) */
-  var FEATURED = ["caribbean-gold-rum", "caribbean-white-rum", "czar-vodka", "caribbean-coconut-rum"];
-
-  /* ---------- Cocktails (concept serves — no invented measures) ---------- */
-
-  var COCKTAILS = [
-    {
-      id: "orange-walk-old-fashioned",
-      name: { en: "Orange Walk Old Fashioned", es: "Old Fashioned de Orange Walk" },
-      spirit: "caribbean-gold-rum",
-      accent: "#C47828",
-      desc: {
-        en: "Caribbean Gold Rum stirred slow with cane sugar, bitters and orange — the heritage serve.",
-        es: "Caribbean Gold Rum mezclado lentamente con azúcar de caña, amargos y naranja — el trago con herencia."
-      },
-      glass: { en: "Rocks glass", es: "Vaso corto" },
-      garnish: { en: "Orange peel", es: "Cáscara de naranja" }
-    },
-    {
-      id: "coco-breeze",
-      name: { en: "Belizean Coco Breeze", es: "Brisa de Coco Beliceña" },
-      spirit: "caribbean-coconut-rum",
-      accent: "#4FA3C4",
-      desc: {
-        en: "Coconut Rum, pineapple and lime over crushed ice — sunset on the cayes, in a glass.",
-        es: "Ron de coco, piña y limón sobre hielo picado — el atardecer de los cayos en un vaso."
-      },
-      glass: { en: "Highball", es: "Vaso alto" },
-      garnish: { en: "Pineapple wedge", es: "Trozo de piña" }
-    },
-    {
-      id: "cane-cutter",
-      name: { en: "Cane Cutter", es: "El Cañero" },
-      spirit: "caribbean-white-rum",
-      accent: "#3E7A4E",
-      desc: {
-        en: "White Rum with mint, lime and cane sugar — a mojito-style tribute to Orange Walk's cane fields.",
-        es: "Ron blanco con hierbabuena, limón y azúcar de caña — un homenaje estilo mojito a los cañaverales de Orange Walk."
-      },
-      glass: { en: "Highball", es: "Vaso alto" },
-      garnish: { en: "Fresh mint", es: "Hierbabuena fresca" }
-    },
-    {
-      id: "czar-press",
-      name: { en: "CZAR Citrus Press", es: "CZAR Citrus Press" },
-      spirit: "czar-vodka",
-      accent: "#31518F",
-      desc: {
-        en: "CZAR Vodka, fresh lime and soda — clean, cold and endlessly repeatable.",
-        es: "CZAR Vodka, limón fresco y soda — limpio, frío e infinitamente repetible."
-      },
-      glass: { en: "Highball", es: "Vaso alto" },
-      garnish: { en: "Lime wheel", es: "Rodaja de limón" }
-    },
-    {
-      id: "trafalgar-tonic",
-      name: { en: "Trafalgar Garden Tonic", es: "Trafalgar Garden Tonic" },
-      spirit: "trafalgar-gin",
-      accent: "#2E5E8F",
-      desc: {
-        en: "Trafalgar Gin lengthened with tonic, cucumber and herbs — bright and botanical.",
-        es: "Trafalgar Gin con tónica, pepino y hierbas — brillante y botánico."
-      },
-      glass: { en: "Copa glass", es: "Copa balón" },
-      garnish: { en: "Cucumber ribbon", es: "Tira de pepino" }
-    },
-    {
-      id: "anise-cafe",
-      name: { en: "Anise Café", es: "Café con Anís" },
-      spirit: "anise",
-      accent: "#C9A227",
-      desc: {
-        en: "Cuello's Anise alongside strong Belizean coffee — a traditional after-dinner pairing.",
-        es: "Anise de Cuello's junto a un café beliceño fuerte — un maridaje tradicional de sobremesa."
-      },
-      glass: { en: "Demitasse & sipper", es: "Taza y copita" },
-      garnish: { en: "Star anise", es: "Anís estrella" }
-    }
+  /* Marquee order (home) — the established lineup */
+  var MARQUEE_ORDER = [
+    "caribbean-coconut-rum",
+    "imperial-brandy",
+    "czar-vodka",
+    "anise",
+    "caribbean-gold-rum",
+    "caribbean-white-rum",
+    "trafalgar-gin",
+    "caribbean-extra-strong-rum",
+    "green-stripe"
   ];
 
-  /* ---------- News (sample stories — clearly badged in UI) ---------- */
+  /* ---------- Cocktails ----------
+     Empty until Cuello's supplies official recipes. The Cocktails
+     page shows a "recipes coming soon" presentation while this
+     list is empty. To publish an approved recipe, add:
+     { id, name:{en,es}, spirit:"product-id", accent:"#hex",
+       ingredients:{en,es}, method:{en,es}, glass:{en,es},
+       garnish:{en,es} }                                        */
+
+  var COCKTAILS = [];
+
+  /* ---------- News ----------
+     Neutral photo cards only — titles and captions describe what
+     the photographs visibly show. Replace with verified stories
+     (add date:{en,es} and excerpt fields) once confirmed.       */
 
   var NEWS = [
     {
-      id: "carnival-season",
+      id: "across-belize",
       featured: true,
       img: "assets/img/editorial/carnival-brand-activation",
       w: 1284, h: 943,
-      category: "news.catCommunity",
-      title: {
-        en: "Colour, music and Cuello's: the brand on the carnival route",
-        es: "Color, música y Cuello's: la marca en la ruta del carnaval"
-      },
-      excerpt: {
-        en: "When Belize celebrates, Cuello's celebrates with it. A look at how the distillery shows up at the country's most vibrant moments — and what's coming next season.",
-        es: "Cuando Belice celebra, Cuello's celebra con él. Una mirada a cómo la destilería se hace presente en los momentos más vibrantes del país — y lo que viene la próxima temporada."
+      title: { en: "Cuello's Across Belize", es: "Cuello's por Todo Belice" },
+      caption: {
+        en: "Carnival dancers in costume at a Cuello's brand activation.",
+        es: "Bailarines de carnaval con trajes en una activación de la marca Cuello's."
       },
       alt: {
         en: "Carnival dancers in vibrant costumes at a Cuello's activation",
@@ -303,53 +210,41 @@ window.CuellosData = (function () {
       }
     },
     {
-      id: "trade-booth",
+      id: "community-booth",
       img: "assets/img/editorial/community-trade-booth",
       w: 1284, h: 1672,
-      category: "news.catTrade",
-      title: {
-        en: "Meet the team: Cuello's on the event circuit",
-        es: "Conoce al equipo: Cuello's en el circuito de eventos"
-      },
-      excerpt: {
-        en: "From trade fairs to community gatherings, the Cuello's booth is where partners and customers meet the family behind the label.",
-        es: "De ferias comerciales a encuentros comunitarios, el stand de Cuello's es donde socios y clientes conocen a la familia detrás de la etiqueta."
+      title: { en: "Cuello's in the Community", es: "Cuello's en la Comunidad" },
+      caption: {
+        en: "A Cuello's booth with branded products at an outdoor gathering.",
+        es: "Un stand de Cuello's con productos de la marca en un evento al aire libre."
       },
       alt: {
-        en: "Cuello's branded booth at a community event",
-        es: "Stand de la marca Cuello's en un evento comunitario"
+        en: "Cuello's branded booth at an outdoor community gathering",
+        es: "Stand de la marca Cuello's en un encuentro comunitario al aire libre"
       }
     },
     {
-      id: "basketball-community",
+      id: "court-showcase",
       img: "assets/img/gallery/basketball-court-activation",
       w: 1194, h: 945,
-      category: "news.catCommunity",
-      title: {
-        en: "Backing the home game: community activations in Orange Walk",
-        es: "Apoyando el juego local: activaciones comunitarias en Orange Walk"
-      },
-      excerpt: {
-        en: "Sport, neighbourhood pride and a hometown brand — how Cuello's stays close to the communities that built it.",
-        es: "Deporte, orgullo de barrio y una marca local — así se mantiene Cuello's cerca de las comunidades que la construyeron."
+      title: { en: "Product Showcase", es: "Vitrina de Productos" },
+      caption: {
+        en: "The Cuello's range displayed courtside at a community venue.",
+        es: "La gama Cuello's exhibida junto a una cancha comunitaria."
       },
       alt: {
-        en: "Cuello's brand activation at a basketball court",
-        es: "Activación de la marca Cuello's en una cancha de baloncesto"
+        en: "Cuello's bottles displayed at a basketball court",
+        es: "Botellas de Cuello's exhibidas en una cancha de baloncesto"
       }
     },
     {
       id: "beach-flags",
       img: "assets/img/gallery/belizes-best-beach-flags",
       w: 1284, h: 1690,
-      category: "news.catEvents",
-      title: {
-        en: "Belize's best, flying high on the beach",
-        es: "Lo mejor de Belice, ondeando en la playa"
-      },
-      excerpt: {
-        en: "Flags up, bottles out — scenes from Cuello's beachside presence on the coast and the cayes.",
-        es: "Banderas arriba, botellas listas — escenas de la presencia de Cuello's en la costa y los cayos."
+      title: { en: "Cuello's on the Coast", es: "Cuello's en la Costa" },
+      caption: {
+        en: "Branded flags flying at a beachside display.",
+        es: "Banderas de la marca ondeando en una exhibición junto a la playa."
       },
       alt: {
         en: "Cuello's flags on a beach display",
@@ -361,9 +256,11 @@ window.CuellosData = (function () {
   /* ---------- Gallery manifest ----------
      focal: CSS object-position to protect the subject.
      Categories: products | distillery | events | community | videos
-     To add a video: { type:"video", src:"assets/video/file.mp4",
-       poster:"assets/img/gallery/poster-name", ... } — the Videos
-       filter appears automatically. */
+     To add a video: { id, type:"video", src:"assets/video/file.mp4",
+       poster:"assets/img/gallery/poster-name", w, h, category:"videos"
+       or another category, caption:{en,es}, alt:{en,es} } — the
+       Videos filter chip appears automatically. Videos never
+       autoplay and stop when the lightbox closes.               */
 
   var GALLERY = [
     {
@@ -377,12 +274,6 @@ window.CuellosData = (function () {
       w: 1284, h: 1001, category: "products", focal: "50% 45%",
       caption: { en: "Trafalgar Gin, garden display", es: "Trafalgar Gin, exhibición en jardín" },
       alt: { en: "Trafalgar Gin bottles displayed among green plants", es: "Botellas de Trafalgar Gin exhibidas entre plantas verdes" }
-    },
-    {
-      id: "vintage-lineup", img: "assets/img/gallery/vintage-product-lineup",
-      w: 1284, h: 623, category: "products", focal: "50% 55%",
-      caption: { en: "The full range, classic lineup", es: "La gama completa, alineación clásica" },
-      alt: { en: "Vintage photograph of the full Cuello's product range", es: "Fotografía clásica de la gama completa de productos Cuello's" }
     },
     {
       id: "flambe", img: "assets/img/gallery/white-rum-flambe",
@@ -411,8 +302,8 @@ window.CuellosData = (function () {
     {
       id: "basketball", img: "assets/img/gallery/basketball-court-activation",
       w: 1194, h: 945, category: "community", focal: "50% 45%",
-      caption: { en: "Community court activation", es: "Activación en cancha comunitaria" },
-      alt: { en: "Cuello's activation at a basketball court", es: "Activación de Cuello's en una cancha de baloncesto" }
+      caption: { en: "Community court display", es: "Exhibición en cancha comunitaria" },
+      alt: { en: "Cuello's display at a basketball court", es: "Exhibición de Cuello's en una cancha de baloncesto" }
     },
     {
       id: "beach-lineup", img: "assets/img/gallery/beach-product-lineup",
@@ -468,7 +359,7 @@ window.CuellosData = (function () {
     products: PRODUCTS,
     categories: CATEGORIES,
     categoryLabel: CATEGORY_LABEL,
-    featured: FEATURED,
+    marqueeOrder: MARQUEE_ORDER,
     cocktails: COCKTAILS,
     news: NEWS,
     gallery: GALLERY,

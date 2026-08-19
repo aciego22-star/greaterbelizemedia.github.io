@@ -1,8 +1,10 @@
 /* ============================================================
    CUELLO'S DISTILLERY — Centralized EN/ES content system
    Every translatable interface string lives here.
-   Spanish copy is concept-level and listed for client review
-   in CLIENT-CONFIRMATION-CHECKLIST.md before launch.
+   Copy policy (V1.1): only client-supplied lines, the slogan,
+   label-visible facts and neutral descriptions of what the
+   photography shows. Unverified claims live in
+   CLIENT-CONFIRMATION-CHECKLIST.md, not on the site.
    ============================================================ */
 
 (function () {
@@ -24,22 +26,16 @@
     "nav.mainLabel": { en: "Primary navigation", es: "Navegación principal" },
 
     /* ---------- Global: common ---------- */
-    "common.brand": { en: "Cuello's Distillery Ltd.", es: "Cuello's Distillery Ltd." },
     "common.brandSub": { en: "Orange Walk · Belize", es: "Orange Walk · Belice" },
-    "common.findUs": { en: "Find Us", es: "Encuéntranos" },
     "common.exploreSpirits": { en: "Explore Our Spirits", es: "Descubre Nuestros Licores" },
     "common.discoverStory": { en: "Discover Our Story", es: "Conoce Nuestra Historia" },
     "common.findNearYou": { en: "Find Cuello's Near You", es: "Encuentra Cuello's Cerca de Ti" },
     "common.viewAll": { en: "View all", es: "Ver todo" },
-    "common.readMore": { en: "Read more", es: "Leer más" },
-    "common.learnMore": { en: "Learn more", es: "Saber más" },
     "common.close": { en: "Close", es: "Cerrar" },
     "common.previous": { en: "Previous", es: "Anterior" },
     "common.next": { en: "Next", es: "Siguiente" },
-    "common.callUs": { en: "Call us", es: "Llámanos" },
-    "common.emailUs": { en: "Email us", es: "Escríbenos" },
     "common.getDirections": { en: "Get directions", es: "Cómo llegar" },
-    "common.tbc": { en: "To be confirmed", es: "Por confirmar" },
+    "common.emailUs": { en: "Email us", es: "Escríbenos" },
     "common.langLabel": { en: "Language", es: "Idioma" },
     "common.skip": { en: "Skip to content", es: "Ir al contenido" },
     "common.slogan": {
@@ -50,7 +46,11 @@
       en: "Please enjoy Cuello's responsibly. For adults 18 years and older.",
       es: "Disfruta Cuello's con responsabilidad. Solo para adultos mayores de 18 años."
     },
-    "common.pausePlay": { en: "Pause or play background media", es: "Pausar o reproducir el video de fondo" },
+
+    /* ---------- Category labels ---------- */
+    "cat.rum": { en: "Caribbean Rum Collection", es: "Colección Caribbean Rum" },
+    "cat.clear": { en: "Vodka, Gin & Brandy", es: "Vodka, Ginebra y Brandy" },
+    "cat.specialty": { en: "Liqueurs & Specialty", es: "Licores y Especialidades" },
 
     /* ---------- Age gate ---------- */
     "gate.brand": { en: "Cuello's Distillery Ltd. · Orange Walk, Belize", es: "Cuello's Distillery Ltd. · Orange Walk, Belice" },
@@ -69,48 +69,64 @@
 
     /* ---------- Footer ---------- */
     "footer.blurb": {
-      en: "A Belizean family tradition in rum and spirits — made in Orange Walk Town and shared across Belize.",
-      es: "Una tradición familiar beliceña en rones y licores — elaborados en Orange Walk Town y compartidos en todo Belice."
+      en: "A Belizean tradition in rum and spirits — distilled, blended and bottled in Orange Walk Town.",
+      es: "Una tradición beliceña en rones y licores — destilados, mezclados y embotellados en Orange Walk Town."
     },
     "footer.explore": { en: "Explore", es: "Explorar" },
-    "footer.visit": { en: "Visit & Contact", es: "Visítanos" },
     "footer.offices": { en: "Our Offices", es: "Nuestras Oficinas" },
     "footer.mainOffice": { en: "Main Office — Orange Walk", es: "Oficina Principal — Orange Walk" },
     "footer.belizeCity": { en: "Belize City Office", es: "Oficina de Belize City" },
     "footer.sanPedro": { en: "San Pedro Office", es: "Oficina de San Pedro" },
-    "footer.social": { en: "Social channels — links coming soon", es: "Redes sociales — enlaces próximamente" },
     "footer.privacy": { en: "Privacy", es: "Privacidad" },
     "footer.accessibility": { en: "Accessibility", es: "Accesibilidad" },
     "footer.ageReset": { en: "Reset age verification", es: "Restablecer verificación de edad" },
     "footer.rights": { en: "All rights reserved.", es: "Todos los derechos reservados." },
+    "footer.whatsapp": { en: "WhatsApp Cuello's", es: "WhatsApp Cuello's" },
 
-    /* ---------- Home ---------- */
+    /* ---------- Home: hero + carousel ---------- */
     "home.eyebrow": { en: "Cuello's Distillery Ltd. · Orange Walk, Belize", es: "Cuello's Distillery Ltd. · Orange Walk, Belice" },
     "home.heroTitle": { en: "The Spirit of Orange Walk", es: "El Espíritu de Orange Walk" },
     "home.heroCopy": {
       en: "A Belizean family tradition in rum and spirits, made with character and shared across generations.",
       es: "Una tradición familiar beliceña en rones y licores, elaborada con carácter y compartida entre generaciones."
     },
-    "home.heroAlt": {
-      en: "Colourful BELIZE letter installation on the seafront, topped with Cuello's bottles and miniature barrels",
-      es: "Instalación de letras BELIZE de colores frente al mar, con botellas de Cuello's y barriles en miniatura"
+    "carousel.label": { en: "Cuello's highlights", es: "Destacados de Cuello's" },
+    "carousel.pause": { en: "Pause slideshow", es: "Pausar presentación" },
+    "carousel.play": { en: "Play slideshow", es: "Reproducir presentación" },
+    "carousel.goto": { en: "Go to slide", es: "Ir a la diapositiva" },
+    "carousel.slide1Alt": {
+      en: "The full Cuello's product range with the slogan: Where the roads of tradition and quality meet",
+      es: "La gama completa de productos Cuello's con el lema: Donde se encuentran los caminos de la tradición y la calidad"
+    },
+    "carousel.slide2Alt": {
+      en: "Trafalgar Gin bottles displayed in a decorative garden cart",
+      es: "Botellas de Trafalgar Gin exhibidas en un carrito decorativo de jardín"
+    },
+    "carousel.slide3Alt": {
+      en: "CZAR Vodka bottle photographed on the beach",
+      es: "Botella de CZAR Vodka fotografiada en la playa"
+    },
+    "carousel.videoAlt": {
+      en: "Cuello's brand video",
+      es: "Video de la marca Cuello's"
     },
 
+    /* ---------- Home: sections ---------- */
     "home.introEyebrow": { en: "An Orange Walk Original", es: "Original de Orange Walk" },
-    "home.introTitle": { en: "Made in Belize, for generations", es: "Hecho en Belice, por generaciones" },
+    "home.introTitle": { en: "Made in Orange Walk, Belize", es: "Hecho en Orange Walk, Belice" },
     "home.introCopy": {
-      en: "From Main Street in Orange Walk Town, Cuello's Distillery has grown into one of Belize's most recognized names in rum and spirits. Distilled, blended and bottled at home — and enjoyed across the country, from family tables to beachfront bars.",
-      es: "Desde Main Street en Orange Walk Town, Cuello's Distillery se ha convertido en uno de los nombres más reconocidos de Belice en rones y licores. Destilados, mezclados y embotellados en casa — y disfrutados en todo el país, de la mesa familiar a los bares frente al mar."
+      en: "Cuello's Distillery Ltd. is a longstanding Belizean distillery on Main Street, Orange Walk Town — where its rums and spirits are distilled, blended and bottled under the Rums of Belize trademark.",
+      es: "Cuello's Distillery Ltd. es una destilería beliceña de larga trayectoria en Main Street, Orange Walk Town — donde sus rones y licores se destilan, mezclan y embotellan bajo la marca Rums of Belize."
     },
-    "home.introPoint1Title": { en: "Family tradition", es: "Tradición familiar" },
+    "home.introPoint1Title": { en: "A longstanding distillery", es: "Una destilería de larga trayectoria" },
     "home.introPoint1Copy": {
-      en: "A longstanding Belizean family company, shaped by experience and an enduring commitment to quality.",
-      es: "Una empresa familiar beliceña de larga trayectoria, formada por la experiencia y un compromiso duradero con la calidad."
+      en: "An established name in Belizean rum and spirits, based in Orange Walk Town.",
+      es: "Un nombre establecido en rones y licores beliceños, con sede en Orange Walk Town."
     },
     "home.introPoint2Title": { en: "Product of Belize", es: "Producto de Belice" },
     "home.introPoint2Copy": {
-      en: "Every bottle carries the Rums of Belize trademark — a mark Belizeans have trusted for generations.",
-      es: "Cada botella lleva la marca registrada Rums of Belize — un sello en el que los beliceños confían desde hace generaciones."
+      en: "Every bottle carries the Rums of Belize trademark — the mark of the ocellated turkey.",
+      es: "Cada botella lleva la marca registrada Rums of Belize — el sello del pavo ocelado."
     },
     "home.introPoint3Title": { en: "Across the country", es: "En todo el país" },
     "home.introPoint3Copy": {
@@ -121,18 +137,20 @@
     "home.spiritsEyebrow": { en: "The Cabinet", es: "La Vitrina" },
     "home.spiritsTitle": { en: "Nine spirits. One tradition.", es: "Nueve licores. Una tradición." },
     "home.spiritsCopy": {
-      en: "Rums, vodka, gin, brandy and traditional specialties — the range that made Cuello's a household name in Belize.",
-      es: "Rones, vodka, ginebra, brandy y especialidades tradicionales — la gama que hizo de Cuello's un nombre conocido en todo Belice."
+      en: "Rums, vodka, gin, brandy and traditional specialties — the full Cuello's range, bottled in Orange Walk Town.",
+      es: "Rones, vodka, ginebra, brandy y especialidades tradicionales — la gama completa de Cuello's, embotellada en Orange Walk Town."
     },
     "home.spiritsCta": { en: "Explore the full collection", es: "Explora la colección completa" },
-    "home.railLabel": { en: "Featured spirits", es: "Licores destacados" },
     "home.viewSpirit": { en: "View details", es: "Ver detalles" },
+    "marquee.label": { en: "All nine Cuello's spirits", es: "Los nueve licores de Cuello's" },
+    "marquee.pause": { en: "Pause product showcase", es: "Pausar la vitrina de productos" },
+    "marquee.play": { en: "Play product showcase", es: "Reproducir la vitrina de productos" },
 
     "home.heritageEyebrow": { en: "Our Story", es: "Nuestra Historia" },
-    "home.heritageTitle": { en: "Tradition you can taste", es: "Tradición que se saborea" },
+    "home.heritageTitle": { en: "Tradition you can see", es: "Tradición a la vista" },
     "home.heritageCopy": {
-      en: "Barrels, bottles and a trademark that has travelled generations. Discover how a family operation in Orange Walk became part of Belizean life.",
-      es: "Barriles, botellas y una marca que ha viajado por generaciones. Descubre cómo una operación familiar en Orange Walk se volvió parte de la vida beliceña."
+      en: "Barrels, bottles and a trademark with deep roots in Orange Walk. Discover the road Cuello's has travelled.",
+      es: "Barriles, botellas y una marca con raíces profundas en Orange Walk. Descubre el camino que Cuello's ha recorrido."
     },
     "home.heritageAlt": {
       en: "Wooden barrel branded Rums of Belize beside miniature Cuello's bottles in warm light",
@@ -142,29 +160,29 @@
     "home.cultureEyebrow": { en: "Culture in Motion", es: "Cultura en Movimiento" },
     "home.cultureTitle": { en: "Part of the celebration", es: "Parte de la celebración" },
     "home.cultureCopy": {
-      en: "From carnival routes to community events, Cuello's shows up where Belize celebrates — with colour, music and national pride.",
-      es: "De las rutas de carnaval a los eventos comunitarios, Cuello's está presente donde Belice celebra — con color, música y orgullo nacional."
+      en: "Colour, music and national pride — scenes from Cuello's brand activations around Belize.",
+      es: "Color, música y orgullo nacional — escenas de las activaciones de la marca Cuello's en Belice."
     },
     "home.cultureAlt": {
       en: "Carnival dancers in vibrant costumes at a Cuello's brand activation",
-      es: "Bailarines de carnaval con trajes vibrantes en una activación de marca de Cuello's"
+      es: "Bailarines de carnaval con trajes vibrantes en una activación de la marca Cuello's"
     },
     "home.cultureCta": { en: "See news & events", es: "Ver noticias y eventos" },
 
     "home.serveEyebrow": { en: "The Serve", es: "Para Servir" },
-    "home.serveTitle": { en: "Made to be mixed", es: "Hecho para mezclar" },
+    "home.serveTitle": { en: "Made to be shared", es: "Hecho para compartir" },
     "home.serveCopy": {
-      en: "White rum over ice, fresh citrus, a Belizean afternoon. Explore serving ideas built around the Cuello's range.",
-      es: "Ron blanco con hielo, cítricos frescos, una tarde beliceña. Explora ideas para servir creadas alrededor de la gama Cuello's."
+      en: "Cuello's spirits photographed in bars and kitchens around Belize — with official serving inspiration on the way.",
+      es: "Los licores Cuello's fotografiados en bares y cocinas de Belice — con inspiración oficial para servir muy pronto."
     },
     "home.serveAlt": {
-      en: "Cocktail with lime and ice beside a bottle of Cuello's Caribbean White Rum",
-      es: "Cóctel con limón y hielo junto a una botella de Caribbean White Rum de Cuello's"
+      en: "Cocktail with lime and ice photographed beside a bottle of Cuello's Caribbean White Rum",
+      es: "Cóctel con limón y hielo fotografiado junto a una botella de Caribbean White Rum de Cuello's"
     },
-    "home.serveCta": { en: "Browse cocktails & recipes", es: "Ver cócteles y recetas" },
+    "home.serveCta": { en: "Cocktails & serving inspiration", es: "Cócteles e inspiración" },
 
     "home.locationsEyebrow": { en: "Where to Find Us", es: "Dónde Encontrarnos" },
-    "home.locationsTitle": { en: "Three offices. One family.", es: "Tres oficinas. Una familia." },
+    "home.locationsTitle": { en: "Three offices across Belize", es: "Tres oficinas en Belice" },
     "home.locationsCopy": {
       en: "Orange Walk Town, Belize City and San Pedro — call ahead or stop by.",
       es: "Orange Walk Town, Belize City y San Pedro — llama o visítanos."
@@ -181,8 +199,8 @@
 
     "home.tradeTitle": { en: "Bring Cuello's to your shelves, bar or table", es: "Lleva Cuello's a tus estantes, bar o mesa" },
     "home.tradeCopy": {
-      en: "Hotels, restaurants, retailers and distributors — start a conversation with our trade team.",
-      es: "Hoteles, restaurantes, minoristas y distribuidores — inicia una conversación con nuestro equipo comercial."
+      en: "Hotels, restaurants, retailers and distributors — start a conversation with Cuello's.",
+      es: "Hoteles, restaurantes, minoristas y distribuidores — inicia una conversación con Cuello's."
     },
     "home.tradeCta": { en: "Trade & distribution", es: "Comercio y distribución" },
     "home.newsEyebrow": { en: "Latest", es: "Lo Último" },
@@ -193,8 +211,8 @@
     "story.eyebrow": { en: "Our Story", es: "Nuestra Historia" },
     "story.title": { en: "From Orange Walk, with character", es: "Desde Orange Walk, con carácter" },
     "story.lede": {
-      en: "Cuello's Distillery Ltd. is a longstanding Belizean family company — a name built over generations on Main Street, Orange Walk Town, and carried across the country one bottle at a time.",
-      es: "Cuello's Distillery Ltd. es una empresa familiar beliceña de larga trayectoria — un nombre construido por generaciones en Main Street, Orange Walk Town, y llevado por todo el país botella a botella."
+      en: "Cuello's Distillery Ltd. is a longstanding Belizean distillery — a name built on Main Street, Orange Walk Town, and carried across the country one bottle at a time.",
+      es: "Cuello's Distillery Ltd. es una destilería beliceña de larga trayectoria — un nombre construido en Main Street, Orange Walk Town, y llevado por todo el país botella a botella."
     },
     "story.heroAlt": {
       en: "Rums of Belize branded barrel with miniature Cuello's bottles",
@@ -202,29 +220,29 @@
     },
 
     "story.rootsEyebrow": { en: "Roots", es: "Raíces" },
-    "story.rootsTitle": { en: "A family, a town, a trade", es: "Una familia, un pueblo, un oficio" },
+    "story.rootsTitle": { en: "A town, a trade", es: "Un pueblo, un oficio" },
     "story.rootsCopy1": {
-      en: "Orange Walk is sugarcane country — the heartland of Belize's sugar industry. It is here, among cane fields and family businesses, that the Cuello name became tied to the craft of rum and spirits.",
-      es: "Orange Walk es tierra de caña de azúcar — el corazón de la industria azucarera de Belice. Es aquí, entre cañaverales y negocios familiares, donde el nombre Cuello quedó ligado al oficio del ron y los licores."
+      en: "Orange Walk is sugarcane country — the heartland of Belize's sugar industry. It is here that the Cuello's name became tied to the craft of rum and spirits.",
+      es: "Orange Walk es tierra de caña de azúcar — el corazón de la industria azucarera de Belice. Es aquí donde el nombre Cuello's quedó ligado al oficio del ron y los licores."
     },
     "story.rootsCopy2": {
-      en: "For generations, the distillery on Main Street has distilled, blended and bottled its spirits at home in Orange Walk Town — a tradition shaped by family, experience and an enduring commitment to quality.",
-      es: "Por generaciones, la destilería de Main Street ha destilado, mezclado y embotellado sus licores en casa, en Orange Walk Town — una tradición formada por la familia, la experiencia y un compromiso duradero con la calidad."
+      en: "The distillery on Main Street distils, blends and bottles its spirits at home in Orange Walk Town — the same address printed on every label.",
+      es: "La destilería de Main Street destila, mezcla y embotella sus licores en casa, en Orange Walk Town — la misma dirección impresa en cada etiqueta."
     },
 
     "story.markEyebrow": { en: "The Trademark", es: "La Marca" },
     "story.markTitle": { en: "The mark of the ocellated turkey", es: "El sello del pavo ocelado" },
     "story.markCopy": {
-      en: "Every genuine Cuello's bottle carries the Rums of Belize trademark — the ocellated turkey, a bird found in the forests of northern Belize. It is a promise on the label: a product of Belize, from a Belizean family.",
-      es: "Cada botella genuina de Cuello's lleva la marca registrada Rums of Belize — el pavo ocelado, un ave de los bosques del norte de Belice. Es una promesa en la etiqueta: un producto de Belice, de una familia beliceña."
+      en: "Every genuine Cuello's bottle carries the Rums of Belize trademark — the ocellated turkey, a bird found in the forests of northern Belize. It is a promise on the label: a product of Belize.",
+      es: "Cada botella genuina de Cuello's lleva la marca registrada Rums of Belize — el pavo ocelado, un ave de los bosques del norte de Belice. Es una promesa en la etiqueta: un producto de Belice."
     },
     "story.markAlt": { en: "Rums of Belize circular trademark with ocellated turkey emblem", es: "Marca registrada circular Rums of Belize con el emblema del pavo ocelado" },
 
     "story.craftEyebrow": { en: "The Craft", es: "El Oficio" },
     "story.craftTitle": { en: "Distilled, blended & bottled at home", es: "Destilado, mezclado y embotellado en casa" },
     "story.craftCopy": {
-      en: "From still to bottling line, Cuello's production happens in Orange Walk Town — the same address printed on every label.",
-      es: "Del alambique a la línea de embotellado, la producción de Cuello's ocurre en Orange Walk Town — la misma dirección impresa en cada etiqueta."
+      en: "From still to bottling line — production reference imagery from the distillery in Orange Walk Town.",
+      es: "Del alambique a la línea de embotellado — imágenes de referencia de la producción en Orange Walk Town."
     },
     "story.craftAlt1": { en: "Exterior of the Cuello's distillery facility", es: "Exterior de las instalaciones de la destilería Cuello's" },
     "story.craftAlt2": { en: "Bottles moving along the Cuello's bottling line", es: "Botellas avanzando por la línea de embotellado de Cuello's" },
@@ -238,39 +256,39 @@
     "story.timelineEyebrow": { en: "The Road So Far", es: "El Camino Recorrido" },
     "story.timelineTitle": { en: "Milestones in the making", es: "Hitos en construcción" },
     "story.timelineIntro": {
-      en: "Exact dates and milestones are being confirmed with the Cuello family for the final version of this page. The road, however, is easy to trace.",
-      es: "Las fechas y los hitos exactos se están confirmando con la familia Cuello para la versión final de esta página. El camino, sin embargo, es fácil de trazar."
+      en: "Exact dates and milestones are being confirmed with Cuello's for the final version of this page. The road, however, is easy to trace.",
+      es: "Las fechas y los hitos exactos se están confirmando con Cuello's para la versión final de esta página. El camino, sin embargo, es fácil de trazar."
     },
     "story.t1Label": { en: "The beginning", es: "El inicio" },
     "story.t1Title": { en: "A distillery takes root in Orange Walk", es: "Una destilería echa raíces en Orange Walk" },
     "story.t1Copy": {
-      en: "In the heart of sugarcane country, the Cuello family begins distilling and bottling spirits on Main Street.",
-      es: "En el corazón de la tierra de la caña, la familia Cuello comienza a destilar y embotellar licores en Main Street."
+      en: "In the heart of sugarcane country, distilling and bottling begins on Main Street.",
+      es: "En el corazón de la tierra de la caña, comienza la destilación y el embotellado en Main Street."
     },
-    "story.t2Label": { en: "Growth", es: "Crecimiento" },
-    "story.t2Title": { en: "A range Belize comes to know by name", es: "Una gama que Belice llega a conocer por nombre" },
+    "story.t2Label": { en: "The range", es: "La gama" },
+    "story.t2Title": { en: "A cabinet Belize comes to know", es: "Una vitrina que Belice llega a conocer" },
     "story.t2Copy": {
-      en: "Caribbean Rum, CZAR Vodka, Trafalgar Gin and more — the cabinet grows to nine spirits under the Rums of Belize trademark.",
-      es: "Caribbean Rum, CZAR Vodka, Trafalgar Gin y más — la vitrina crece hasta nueve licores bajo la marca Rums of Belize."
+      en: "Caribbean Rum, CZAR Vodka, Trafalgar Gin and more — the range grows to nine spirits under the Rums of Belize trademark.",
+      es: "Caribbean Rum, CZAR Vodka, Trafalgar Gin y más — la gama crece hasta nueve licores bajo la marca Rums of Belize."
     },
     "story.t3Label": { en: "Across Belize", es: "Por Todo Belice" },
     "story.t3Title": { en: "Orange Walk, Belize City, San Pedro", es: "Orange Walk, Belize City, San Pedro" },
     "story.t3Copy": {
-      en: "Offices open beyond Orange Walk, bringing Cuello's closer to customers on the coast and the cayes.",
-      es: "Se abren oficinas más allá de Orange Walk, acercando Cuello's a los clientes de la costa y los cayos."
+      en: "Offices open beyond Orange Walk, bringing Cuello's closer to the coast and the cayes.",
+      es: "Se abren oficinas más allá de Orange Walk, acercando Cuello's a la costa y los cayos."
     },
     "story.t4Label": { en: "Today", es: "Hoy" },
     "story.t4Title": { en: "Tradition meets a new generation", es: "La tradición encuentra una nueva generación" },
     "story.t4Copy": {
-      en: "The same labels, the same town, a growing community — and a brand stepping confidently into its next chapter.",
-      es: "Las mismas etiquetas, el mismo pueblo, una comunidad que crece — y una marca que avanza con confianza hacia su próximo capítulo."
+      en: "The same labels, the same town — and a brand stepping confidently into its next chapter.",
+      es: "Las mismas etiquetas, el mismo pueblo — y una marca que avanza con confianza hacia su próximo capítulo."
     },
 
     "story.forwardEyebrow": { en: "Tradition & Progress", es: "Tradición y Progreso" },
     "story.forwardTitle": { en: "Old roads, new travellers", es: "Caminos antiguos, nuevos viajeros" },
     "story.forwardCopy": {
-      en: "Tradition is not standing still — it is knowing what to keep. Cuello's keeps its labels, its town and its standards, while embracing new ways to meet the people who enjoy its spirits: online, at events, and wherever Belize gathers.",
-      es: "La tradición no es quedarse quieto — es saber qué conservar. Cuello's conserva sus etiquetas, su pueblo y sus estándares, mientras adopta nuevas formas de llegar a quienes disfrutan sus licores: en línea, en eventos y dondequiera que Belice se reúna."
+      en: "Tradition is not standing still — it is knowing what to keep. Cuello's keeps its labels, its town and its standards, while embracing new ways to meet the people who enjoy its spirits.",
+      es: "La tradición no es quedarse quieto — es saber qué conservar. Cuello's conserva sus etiquetas, su pueblo y sus estándares, mientras adopta nuevas formas de llegar a quienes disfrutan sus licores."
     },
     "story.closingSlogan": { en: "Where the roads of tradition and quality meet.", es: "Donde se encuentran los caminos de la tradición y la calidad." },
     "story.closingCta": { en: "Meet the spirits this story made", es: "Conoce los licores que esta historia creó" },
@@ -284,67 +302,62 @@
       es: "Nueve licores, destilados, mezclados y embotellados en Orange Walk Town bajo la marca Rums of Belize. Selecciona cualquier botella para ver detalles."
     },
     "spirits.catRum": { en: "Caribbean Rum Collection", es: "Colección Caribbean Rum" },
-    "spirits.catRumCopy": { en: "The rums that made the name — white, gold, coconut and extra strong.", es: "Los rones que hicieron el nombre — blanco, dorado, coco y extra fuerte." },
+    "spirits.catRumCopy": { en: "The rums on the Cuello's label — white, gold, coconut and extra strong.", es: "Los rones de la etiqueta Cuello's — blanco, dorado, coco y extra fuerte." },
     "spirits.catWhite": { en: "Vodka, Gin & Brandy", es: "Vodka, Ginebra y Brandy" },
-    "spirits.catWhiteCopy": { en: "Clear classics and an amber brandy, the versatile side of the cabinet.", es: "Clásicos claros y un brandy ámbar, el lado versátil de la vitrina." },
+    "spirits.catWhiteCopy": { en: "The clear spirits and the brandy of the range.", es: "Los licores claros y el brandy de la gama." },
     "spirits.catSpecial": { en: "Liqueurs & Specialty Spirits", es: "Licores y Especialidades" },
-    "spirits.catSpecialCopy": { en: "Traditional favourites with deep roots in Belizean homes.", es: "Favoritos tradicionales con raíces profundas en los hogares beliceños." },
-    "spirits.specSizes": { en: "Available sizes", es: "Presentaciones" },
-    "spirits.specAbv": { en: "Alcohol content", es: "Contenido de alcohol" },
+    "spirits.catSpecialCopy": { en: "Traditional names from the Cuello's cabinet.", es: "Nombres tradicionales de la vitrina Cuello's." },
     "spirits.specCategory": { en: "Category", es: "Categoría" },
     "spirits.specOrigin": { en: "Origin", es: "Origen" },
     "spirits.originValue": { en: "Orange Walk Town, Belize", es: "Orange Walk Town, Belice" },
-    "spirits.serveIdea": { en: "Suggested serve", es: "Sugerencia para servir" },
+    "spirits.specMark": { en: "Trademark", es: "Marca registrada" },
+    "spirits.markValue": { en: "Rums of Belize", es: "Rums of Belize" },
     "spirits.whereFind": { en: "Where to find it", es: "Dónde encontrarlo" },
     "spirits.whereFindCopy": {
-      en: "Contact any Cuello's office for current availability near you.",
-      es: "Contacta cualquier oficina de Cuello's para conocer la disponibilidad cerca de ti."
+      en: "Contact any Cuello's office for current product information and availability near you.",
+      es: "Contacta cualquier oficina de Cuello's para información de productos y disponibilidad cerca de ti."
     },
     "spirits.tradeCta": { en: "Trade enquiry", es: "Consulta comercial" },
-    "spirits.related": { en: "You may also like", es: "También te puede gustar" },
+    "spirits.related": { en: "More from the cabinet", es: "Más de la vitrina" },
     "spirits.drawerNote": {
-      en: "Product specifications shown are pending final confirmation by Cuello's Distillery Ltd. Bottle imagery is an enhanced V1 product visual.",
-      es: "Las especificaciones mostradas están pendientes de confirmación final por Cuello's Distillery Ltd. Las imágenes de botellas son visuales de producto V1 mejorados."
+      en: "Bottle imagery is an enhanced V1 product visual. Sizes, strengths and further product details are pending confirmation by Cuello's Distillery Ltd.",
+      es: "Las imágenes de botellas son visuales de producto V1 mejorados. Presentaciones, graduación y demás detalles están pendientes de confirmación por Cuello's Distillery Ltd."
     },
     "spirits.openDetails": { en: "View details for", es: "Ver detalles de" },
     "spirits.groupNote": {
-      en: "The range, together — as seen around Belize for generations.",
-      es: "La gama completa — como se ha visto en Belice por generaciones."
+      en: "The range, together — as photographed around Belize.",
+      es: "La gama completa — como se ha fotografiado en Belice."
     },
     "spirits.groupAlt": { en: "Vintage lineup of the full Cuello's product range", es: "Alineación clásica de la gama completa de productos Cuello's" },
 
-    /* ---------- Cocktails ---------- */
+    /* ---------- Cocktails & Serving Inspiration ---------- */
     "cocktails.metaTitle": { en: "Cocktails & Recipes — Cuello's Distillery Ltd.", es: "Cócteles y Recetas — Cuello's Distillery Ltd." },
     "cocktails.eyebrow": { en: "Cocktails & Recipes", es: "Cócteles y Recetas" },
-    "cocktails.title": { en: "Serve it the Belizean way", es: "Sírvelo al estilo beliceño" },
+    "cocktails.title": { en: "Serving inspiration", es: "Inspiración para servir" },
     "cocktails.lede": {
-      en: "Serving ideas built around the Cuello's cabinet — fresh citrus, coconut, cane and character. Official Cuello's recipes are being finalized; these concept serves show what is possible.",
-      es: "Ideas para servir creadas alrededor de la vitrina Cuello's — cítricos frescos, coco, caña y carácter. Las recetas oficiales de Cuello's se están finalizando; estas propuestas muestran lo que es posible."
+      en: "How Cuello's spirits look in the glass — photographed in bars and kitchens around Belize. Official Cuello's recipes are on their way.",
+      es: "Así lucen los licores Cuello's en el vaso — fotografiados en bares y cocinas de Belice. Las recetas oficiales de Cuello's están en camino."
     },
+    "cocktails.soonTitle": { en: "Official Cuello's recipes coming soon", es: "Recetas oficiales de Cuello's muy pronto" },
+    "cocktails.soonCopy": {
+      en: "This page is built and ready for the official Cuello's serves — names, ingredients and methods straight from the distillery. Until then, explore the range and ask us anything about the products.",
+      es: "Esta página está lista para las recetas oficiales de Cuello's — nombres, ingredientes y preparación directamente de la destilería. Mientras tanto, explora la gama y pregúntanos lo que quieras sobre los productos."
+    },
+    "cocktails.soonCta1": { en: "Explore Our Spirits", es: "Descubre Nuestros Licores" },
+    "cocktails.soonCta2": { en: "Ask about a product", es: "Pregunta por un producto" },
     "cocktails.heroAlt": {
-      en: "Cocktail with lime and ice served beside Cuello's Caribbean White Rum",
-      es: "Cóctel con limón y hielo servido junto al Caribbean White Rum de Cuello's"
+      en: "Cocktail with lime and ice photographed beside Cuello's Caribbean White Rum",
+      es: "Cóctel con limón y hielo fotografiado junto al Caribbean White Rum de Cuello's"
     },
-    "cocktails.filterLabel": { en: "Filter by spirit", es: "Filtrar por licor" },
-    "cocktails.filterAll": { en: "All spirits", es: "Todos los licores" },
-    "cocktails.conceptBadge": { en: "Concept serve", es: "Propuesta" },
-    "cocktails.glass": { en: "Glass", es: "Vaso" },
-    "cocktails.garnish": { en: "Garnish", es: "Decoración" },
-    "cocktails.spirit": { en: "Featured spirit", es: "Licor destacado" },
-    "cocktails.useSpirit": { en: "Use this spirit", es: "Usa este licor" },
     "cocktails.flambeEyebrow": { en: "With Fire & Flavour", es: "Con Fuego y Sabor" },
     "cocktails.flambeTitle": { en: "Beyond the glass", es: "Más allá del vaso" },
     "cocktails.flambeCopy": {
-      en: "Belizean kitchens and bars have their own ways with Cuello's — from flambé moments to family recipes. Official serves and measures will be published once confirmed by the distillery.",
-      es: "Las cocinas y los bares beliceños tienen sus propias maneras con Cuello's — de momentos flambeados a recetas familiares. Las medidas y recetas oficiales se publicarán una vez confirmadas por la destilería."
+      en: "Belizean bars and kitchens have their own ways with Cuello's — captured here in a flambé moment with Caribbean White Rum.",
+      es: "Los bares y cocinas beliceños tienen sus propias maneras con Cuello's — capturadas aquí en un momento flambeado con Caribbean White Rum."
     },
     "cocktails.flambeAlt": {
-      en: "Flambé preparation with Cuello's Caribbean White Rum",
-      es: "Preparación flambeada con Caribbean White Rum de Cuello's"
-    },
-    "cocktails.note": {
-      en: "Concept serves are shown without measures. Always follow local guidance on responsible service of alcohol.",
-      es: "Las propuestas se muestran sin medidas. Sigue siempre las pautas locales sobre el servicio responsable de alcohol."
+      en: "Flambé preparation photographed with Cuello's Caribbean White Rum",
+      es: "Preparación flambeada fotografiada con Caribbean White Rum de Cuello's"
     },
 
     /* ---------- News ---------- */
@@ -352,23 +365,13 @@
     "news.eyebrow": { en: "News & Events", es: "Noticias y Eventos" },
     "news.title": { en: "Out and about with Cuello's", es: "De paseo con Cuello's" },
     "news.lede": {
-      en: "Announcements, community activity and appearances across Belize. This section is structured for easy updates — sample stories below show the format.",
-      es: "Anuncios, actividad comunitaria y presencia en todo Belice. Esta sección está estructurada para actualizarse fácilmente — las historias de muestra ilustran el formato."
+      en: "Scenes from Cuello's presence around Belize. Verified announcements and event coverage will be published here.",
+      es: "Escenas de la presencia de Cuello's en Belice. Los anuncios verificados y la cobertura de eventos se publicarán aquí."
     },
     "news.featured": { en: "Featured", es: "Destacado" },
-    "news.sampleBadge": { en: "Sample story", es: "Historia de muestra" },
-    "news.catCommunity": { en: "Community", es: "Comunidad" },
-    "news.catEvents": { en: "Events", es: "Eventos" },
-    "news.catProduct": { en: "Product News", es: "Noticias de Producto" },
-    "news.catTrade": { en: "Trade", es: "Comercio" },
-    "news.dateTBA": { en: "Date to be announced", es: "Fecha por anunciar" },
-    "news.emptyNote": {
-      en: "Real Cuello's announcements will replace these sample stories before launch. The layout, categories and reading experience are final.",
-      es: "Los anuncios reales de Cuello's reemplazarán estas historias de muestra antes del lanzamiento. El diseño, las categorías y la experiencia de lectura son definitivos."
-    },
-    "news.modalNote": {
-      en: "This is a sample article demonstrating the reading layout. Confirmed Cuello's news will appear here.",
-      es: "Este es un artículo de muestra que demuestra el diseño de lectura. Las noticias confirmadas de Cuello's aparecerán aquí."
+    "news.captionNote": {
+      en: "Captions describe what the photographs show. Verified headlines, dates and stories from Cuello's will appear here.",
+      es: "Los pies de foto describen lo que muestran las fotografías. Aquí aparecerán titulares, fechas e historias verificadas de Cuello's."
     },
 
     /* ---------- Gallery ---------- */
@@ -407,12 +410,11 @@
     "locations.orangeWalk": { en: "Orange Walk Town", es: "Orange Walk Town" },
     "locations.belizeCity": { en: "Belize City", es: "Belize City" },
     "locations.sanPedro": { en: "San Pedro", es: "San Pedro" },
-    "locations.hoursLabel": { en: "Opening hours", es: "Horario" },
     "locations.hoursTBC": { en: "Opening hours to be confirmed", es: "Horario por confirmar" },
     "locations.retailTitle": { en: "Looking for Cuello's near you?", es: "¿Buscas Cuello's cerca de ti?" },
     "locations.retailCopy": {
-      en: "Cuello's spirits are enjoyed at shops, bars and restaurants across Belize. A verified list of retail partners is being prepared — in the meantime, any office above can point you to the nearest place to find your bottle.",
-      es: "Los licores Cuello's se disfrutan en tiendas, bares y restaurantes de todo Belice. Se está preparando una lista verificada de puntos de venta — mientras tanto, cualquier oficina puede indicarte el lugar más cercano para encontrar tu botella."
+      en: "Any Cuello's office can point you to product information and availability in your area. A verified list of retail partners is being prepared.",
+      es: "Cualquier oficina de Cuello's puede orientarte sobre productos y disponibilidad en tu zona. Se está preparando una lista verificada de puntos de venta."
     },
     "locations.retailCta": { en: "Ask about availability", es: "Pregunta por disponibilidad" },
     "locations.stockistNote": {
@@ -425,17 +427,13 @@
     "trade.eyebrow": { en: "Trade & Distribution", es: "Comercio y Distribución" },
     "trade.title": { en: "Bring Cuello's to your shelves, bar or table", es: "Lleva Cuello's a tus estantes, bar o mesa" },
     "trade.lede": {
-      en: "This page connects hotels, bars, restaurants, retailers, event organizers and prospective distributors directly with Cuello's Distillery Ltd. Tell us what you need — our team follows up personally.",
-      es: "Esta página conecta hoteles, bares, restaurantes, minoristas, organizadores de eventos y posibles distribuidores directamente con Cuello's Distillery Ltd. Cuéntanos qué necesitas — nuestro equipo da seguimiento personal."
-    },
-    "trade.heroAlt": {
-      en: "Cuello's trade booth at a community event with branded products",
-      es: "Stand comercial de Cuello's en un evento comunitario con productos de la marca"
+      en: "This page connects hotels, bars, restaurants, retailers, event organizers and prospective distributors directly with Cuello's Distillery Ltd.",
+      es: "Esta página conecta hoteles, bares, restaurantes, minoristas, organizadores de eventos y posibles distribuidores directamente con Cuello's Distillery Ltd."
     },
     "trade.p1Title": { en: "Retail stock", es: "Venta minorista" },
-    "trade.p1Copy": { en: "Shops and supermarkets stocking the Cuello's range.", es: "Tiendas y supermercados que ofrecen la gama Cuello's." },
+    "trade.p1Copy": { en: "Shops and supermarkets interested in the Cuello's range.", es: "Tiendas y supermercados interesados en la gama Cuello's." },
     "trade.p2Title": { en: "Hotels & restaurants", es: "Hoteles y restaurantes" },
-    "trade.p2Copy": { en: "Supply for kitchens, minibars and dining programmes.", es: "Suministro para cocinas, minibares y programas gastronómicos." },
+    "trade.p2Copy": { en: "Supply enquiries for kitchens, minibars and dining programmes.", es: "Consultas de suministro para cocinas, minibares y programas gastronómicos." },
     "trade.p3Title": { en: "Bars & cocktail programmes", es: "Bares y coctelería" },
     "trade.p3Copy": { en: "Build a Belizean back bar around nine spirits.", es: "Crea una barra beliceña con nueve licores." },
     "trade.p4Title": { en: "Events", es: "Eventos" },
@@ -444,67 +442,69 @@
     "trade.p5Copy": { en: "Conversations with prospective distribution partners.", es: "Conversaciones con posibles socios de distribución." },
     "trade.p6Title": { en: "Partnerships", es: "Alianzas" },
     "trade.p6Copy": { en: "General commercial partnerships and sponsorship enquiries.", es: "Alianzas comerciales generales y consultas de patrocinio." },
-    "trade.formTitle": { en: "Start a trade conversation", es: "Inicia una conversación comercial" },
-    "trade.formCopy": {
-      en: "A few details and the right person at Cuello's will get back to you.",
-      es: "Unos pocos datos y la persona indicada en Cuello's te responderá."
+    "trade.actionsTitle": { en: "Start a trade conversation", es: "Inicia una conversación comercial" },
+    "trade.actionsIntro": {
+      en: "Message us directly — include your business or organization, your location, the products you are interested in, and your question. The right person at Cuello's will follow up.",
+      es: "Escríbenos directamente — incluye tu empresa u organización, tu ubicación, los productos que te interesan y tu consulta. La persona indicada en Cuello's dará seguimiento."
+    },
+    "trade.waBtn": { en: "WhatsApp Cuello's", es: "WhatsApp Cuello's" },
+    "trade.emailBtn": { en: "Email a trade enquiry", es: "Enviar consulta por correo" },
+    "trade.callBtn": { en: "Call Main Office", es: "Llamar a la Oficina Principal" },
+    "trade.waMessage": {
+      en: "Hello Cuello's Distillery. I am interested in a trade or distribution enquiry.\n\nBusiness or organisation:\nLocation:\nProducts of interest:\nMessage:",
+      es: "Hola Cuello's Distillery. Me interesa una consulta comercial o de distribución.\n\nEmpresa u organización:\nUbicación:\nProductos de interés:\nMensaje:"
+    },
+    "trade.emailSubject": { en: "Trade or Distribution Enquiry", es: "Consulta Comercial o de Distribución" },
+    "trade.emailBody": {
+      en: "Hello Cuello's Distillery,\n\nBusiness or organisation:\nLocation:\nProducts of interest:\nMessage:\n\nThank you.",
+      es: "Hola Cuello's Distillery:\n\nEmpresa u organización:\nUbicación:\nProductos de interés:\nMensaje:\n\nGracias."
     },
     "trade.whyTitle": { en: "Why partners choose Cuello's", es: "Por qué los socios eligen Cuello's" },
     "trade.why1Title": { en: "An established name", es: "Un nombre establecido" },
-    "trade.why1Copy": { en: "Generations of brand recognition across Belize.", es: "Generaciones de reconocimiento de marca en todo Belice." },
+    "trade.why1Copy": { en: "A longstanding Belizean distillery under the Rums of Belize trademark.", es: "Una destilería beliceña de larga trayectoria bajo la marca Rums of Belize." },
     "trade.why2Title": { en: "A full cabinet", es: "Una vitrina completa" },
     "trade.why2Copy": { en: "Nine spirits spanning rum, vodka, gin, brandy and specialties.", es: "Nueve licores entre ron, vodka, ginebra, brandy y especialidades." },
-    "trade.why3Title": { en: "Direct relationships", es: "Relaciones directas" },
-    "trade.why3Copy": { en: "Deal directly with the family company behind the label.", es: "Trata directamente con la empresa familiar detrás de la etiqueta." },
+    "trade.why3Title": { en: "Direct contact", es: "Contacto directo" },
+    "trade.why3Copy": { en: "Reach the distillery directly by WhatsApp, email or phone.", es: "Contacta a la destilería directamente por WhatsApp, correo o teléfono." },
     "trade.lineupAlt": { en: "Cuello's product lineup displayed outdoors", es: "Gama de productos Cuello's exhibida al aire libre" },
+    "trade.heroAlt": { en: "Cuello's booth at an outdoor event with branded products", es: "Stand de Cuello's en un evento al aire libre con productos de la marca" },
 
     /* ---------- Contact ---------- */
     "contact.metaTitle": { en: "Contact — Cuello's Distillery Ltd.", es: "Contacto — Cuello's Distillery Ltd." },
     "contact.eyebrow": { en: "Contact", es: "Contacto" },
     "contact.title": { en: "Talk to Cuello's", es: "Habla con Cuello's" },
     "contact.lede": {
-      en: "Questions, availability, feedback — reach the team directly by phone, email or the form below.",
-      es: "Preguntas, disponibilidad, comentarios — contacta al equipo directamente por teléfono, correo o el formulario."
+      en: "Questions, availability, feedback — reach the team directly. No forms, no waiting.",
+      es: "Preguntas, disponibilidad, comentarios — contacta al equipo directamente. Sin formularios, sin esperas."
     },
     "contact.directTitle": { en: "Reach us directly", es: "Contáctanos directamente" },
-    "contact.formTitle": { en: "Send a message", es: "Envía un mensaje" },
+    "contact.actionsTitle": { en: "Message us in seconds", es: "Escríbenos en segundos" },
+    "contact.actionsIntro": {
+      en: "To help us answer quickly, include:",
+      es: "Para ayudarnos a responder rápido, incluye:"
+    },
+    "contact.include1": { en: "Your name", es: "Tu nombre" },
+    "contact.include2": { en: "Your location", es: "Tu ubicación" },
+    "contact.include3": { en: "The product or service you are asking about", es: "El producto o servicio de tu consulta" },
+    "contact.include4": { en: "Your question, availability request or feedback", es: "Tu pregunta, solicitud de disponibilidad o comentario" },
+    "contact.waBtn": { en: "WhatsApp Cuello's", es: "WhatsApp Cuello's" },
+    "contact.emailBtn": { en: "Email Cuello's", es: "Escribir a Cuello's" },
+    "contact.callBtn": { en: "Call Main Office", es: "Llamar a la Oficina Principal" },
+    "contact.locationsBtn": { en: "View All Locations", es: "Ver Todas las Ubicaciones" },
+    "contact.waMessage": {
+      en: "Hello Cuello's Distillery. I am contacting you through your website and would like assistance with:",
+      es: "Hola Cuello's Distillery. Los contacto desde su sitio web y quisiera ayuda con:"
+    },
+    "contact.emailSubject": { en: "Website Enquiry for Cuello's Distillery", es: "Consulta desde el sitio web de Cuello's Distillery" },
+    "contact.emailBody": {
+      en: "Hello Cuello's Distillery,\n\nName:\nLocation:\nProduct or service:\nMessage:\n\nThank you.",
+      es: "Hola Cuello's Distillery:\n\nNombre:\nUbicación:\nProducto o servicio:\nMensaje:\n\nGracias."
+    },
     "contact.tradeNote": {
-      en: "Business enquiry? Hotels, retailers and distributors get a faster answer through our dedicated trade page.",
-      es: "¿Consulta de negocios? Hoteles, minoristas y distribuidores reciben una respuesta más rápida en nuestra página comercial."
+      en: "Business enquiry? Hotels, retailers and distributors have a dedicated trade page.",
+      es: "¿Consulta de negocios? Hoteles, minoristas y distribuidores tienen una página comercial dedicada."
     },
     "contact.tradeCta": { en: "Go to Trade & Distribution", es: "Ir a Comercio y Distribución" },
-    "contact.socialNote": { en: "Social channels will be linked here once verified.", es: "Las redes sociales se enlazarán aquí una vez verificadas." },
-
-    /* ---------- Forms (shared) ---------- */
-    "form.name": { en: "Name", es: "Nombre" },
-    "form.business": { en: "Business or organization", es: "Empresa u organización" },
-    "form.email": { en: "Email", es: "Correo electrónico" },
-    "form.phone": { en: "Telephone", es: "Teléfono" },
-    "form.location": { en: "Location", es: "Ubicación" },
-    "form.enquiryType": { en: "Type of enquiry", es: "Tipo de consulta" },
-    "form.message": { en: "Message", es: "Mensaje" },
-    "form.select": { en: "Select an option", es: "Selecciona una opción" },
-    "form.optRetail": { en: "Retail stock enquiry", es: "Consulta de venta minorista" },
-    "form.optHotel": { en: "Hotel & restaurant supply", es: "Suministro para hotel y restaurante" },
-    "form.optBar": { en: "Bar & cocktail programme", es: "Bar y coctelería" },
-    "form.optEvents": { en: "Events", es: "Eventos" },
-    "form.optDistribution": { en: "Distribution", es: "Distribución" },
-    "form.optPartnership": { en: "General commercial partnership", es: "Alianza comercial general" },
-    "form.optGeneral": { en: "General enquiry", es: "Consulta general" },
-    "form.optFeedback": { en: "Product feedback", es: "Comentarios sobre productos" },
-    "form.send": { en: "Send message", es: "Enviar mensaje" },
-    "form.sendTrade": { en: "Send trade enquiry", es: "Enviar consulta comercial" },
-    "form.required": { en: "This field is required.", es: "Este campo es obligatorio." },
-    "form.invalidEmail": { en: "Please enter a valid email address.", es: "Por favor ingresa un correo electrónico válido." },
-    "form.success": {
-      en: "Thank you — your message has been submitted. The Cuello's team will be in touch.",
-      es: "Gracias — tu mensaje ha sido enviado. El equipo de Cuello's se pondrá en contacto."
-    },
-    "form.error": {
-      en: "Something went wrong and the form could not be submitted. Please email us directly at",
-      es: "Algo salió mal y el formulario no pudo enviarse. Por favor escríbenos directamente a"
-    },
-    "form.emailFallback": { en: "Or email us directly:", es: "O escríbenos directamente:" },
 
     /* ---------- 404 ---------- */
     "nf.title": { en: "This road doesn't lead anywhere", es: "Este camino no lleva a ningún lado" },
@@ -553,7 +553,6 @@
         if (v !== null) els[j].setAttribute(attrMap[dataAttr], v);
       }
     });
-    /* document title */
     var titleKey = document.body ? document.body.getAttribute("data-title-key") : null;
     if (titleKey && t(titleKey)) document.title = t(titleKey);
   }

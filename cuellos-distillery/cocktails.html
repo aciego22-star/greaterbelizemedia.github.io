@@ -4,18 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Cocktails & Recipes — Cuello's Distillery Ltd.</title>
-  <meta name="description" content="Serving ideas built around Cuello's Belizean spirits — rum, vodka, gin and traditional favourites, served the Belizean way. For adults 18+.">
+  <meta name="description" content="Serving inspiration from the Cuello's range, photographed around Belize. Official Cuello's recipes coming soon. For adults 18+.">
   <!-- Canonical placeholder — update to the final production domain before launch (see README.md) -->
   <link rel="canonical" href="https://cuellos-distillery-v1.netlify.app/cocktails.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Cuello's Distillery Ltd.">
   <meta property="og:title" content="Cocktails & Recipes — Cuello's Distillery Ltd.">
-  <meta property="og:description" content="Serving ideas built around Cuello's Belizean spirits — rum, vodka, gin and traditional favourites, served the Belizean way. For adults 18+.">
+  <meta property="og:description" content="Serving inspiration from the Cuello's range, photographed around Belize. Official Cuello's recipes coming soon. For adults 18+.">
   <meta property="og:url" content="https://cuellos-distillery-v1.netlify.app/cocktails.html">
   <meta property="og:image" content="https://cuellos-distillery-v1.netlify.app/assets/img/brand/og-default.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Cocktails & Recipes — Cuello's Distillery Ltd.">
-  <meta name="twitter:description" content="Serving ideas built around Cuello's Belizean spirits — rum, vodka, gin and traditional favourites, served the Belizean way. For adults 18+.">
+  <meta name="twitter:description" content="Serving inspiration from the Cuello's range, photographed around Belize. Official Cuello's recipes coming soon. For adults 18+.">
   <meta name="twitter:image" content="https://cuellos-distillery-v1.netlify.app/assets/img/brand/og-default.jpg">
   <meta name="theme-color" content="#17110D">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/img/brand/favicon-32.png">
@@ -99,19 +99,35 @@
     </div>
     <div class="wrap page-hero__inner">
       <p class="eyebrow reveal" data-i18n="cocktails.eyebrow">Cocktails &amp; Recipes</p>
-      <h1 class="reveal reveal-d1" data-i18n="cocktails.title">Serve it the Belizean way</h1>
-      <p class="lede reveal reveal-d2" data-i18n="cocktails.lede">Serving ideas built around the Cuello's cabinet — fresh citrus, coconut, cane and character. Official Cuello's recipes are being finalized; these concept serves show what is possible.</p>
+      <h1 class="reveal reveal-d1" data-i18n="cocktails.title">Serving inspiration</h1>
+      <p class="lede reveal reveal-d2" data-i18n="cocktails.lede">How Cuello's spirits look in the glass — photographed in bars and kitchens around Belize. Official Cuello's recipes are on their way.</p>
     </div>
   </section>
 
-  <section class="section section--cream" aria-labelledby="recipes-title">
+  <!-- Serving imagery + recipes-coming-soon panel -->
+  <section class="section section--cream" aria-labelledby="inspiration-heading">
     <div class="wrap">
-      <h2 id="recipes-title" class="visually-hidden" data-i18n="cocktails.eyebrow">Cocktails &amp; Recipes</h2>
-      <div class="chip-row" id="cocktail-filters" role="group" data-i18n-aria="cocktails.filterLabel" aria-label="Filter by spirit"></div>
-      <div class="recipe-grid" id="recipe-grid">
-        <noscript><p>Explore our range of spirits and ask any Cuello's office for serving suggestions: <a href="tel:+5013222183">+501 322-2183</a></p></noscript>
+      <h2 id="inspiration-heading" class="visually-hidden" data-i18n="cocktails.eyebrow">Cocktails &amp; Recipes</h2>
+      <div class="split">
+        <figure class="split__media frame frame--tall reveal" style="margin:0">
+          <img src="assets/img/editorial/white-rum-cocktail.webp"
+               srcset="assets/img/editorial/white-rum-cocktail-640.webp 640w, assets/img/editorial/white-rum-cocktail.webp 1284w"
+               sizes="(max-width: 900px) 92vw, 46vw"
+               width="1284" height="1657" loading="lazy"
+               data-i18n-alt="cocktails.heroAlt"
+               alt="Cocktail with lime and ice photographed beside Cuello's Caribbean White Rum">
+        </figure>
+        <div>
+          <h2 class="reveal" data-i18n="cocktails.soonTitle">Official Cuello's recipes coming soon</h2>
+          <p class="lede reveal reveal-d1" data-i18n="cocktails.soonCopy">This page is built and ready for the official Cuello's serves — names, ingredients and methods straight from the distillery. Until then, explore the range and ask us anything about the products.</p>
+          <div class="reveal reveal-d2" style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:.6rem">
+            <a class="btn btn--dark" href="our-spirits.html" data-i18n="cocktails.soonCta1">Explore Our Spirits</a>
+            <a class="btn btn--ghost" href="contact.html" data-i18n="cocktails.soonCta2">Ask about a product</a>
+          </div>
+        </div>
       </div>
-      <p class="fine-note" style="margin-top:2rem" data-i18n="cocktails.note">Concept serves are shown without measures. Always follow local guidance on responsible service of alcohol.</p>
+      <!-- Approved recipes render here once added to CuellosData.cocktails (data.js) -->
+      <div class="recipe-grid" id="recipe-grid" style="margin-top:2.5rem"></div>
     </div>
   </section>
 
@@ -125,12 +141,12 @@
                sizes="(max-width: 900px) 92vw, 46vw"
                width="1284" height="1016" loading="lazy"
                data-i18n-alt="cocktails.flambeAlt"
-               alt="Flambé preparation with Cuello's Caribbean White Rum">
+               alt="Flambé preparation photographed with Cuello's Caribbean White Rum">
         </figure>
         <div>
           <p class="eyebrow reveal" data-i18n="cocktails.flambeEyebrow">With Fire &amp; Flavour</p>
           <h2 class="reveal reveal-d1" data-i18n="cocktails.flambeTitle">Beyond the glass</h2>
-          <p class="lede reveal reveal-d2" data-i18n="cocktails.flambeCopy">Belizean kitchens and bars have their own ways with Cuello's — from flambé moments to family recipes. Official serves and measures will be published once confirmed by the distillery.</p>
+          <p class="lede reveal reveal-d2" data-i18n="cocktails.flambeCopy">Belizean bars and kitchens have their own ways with Cuello's — captured here in a flambé moment with Caribbean White Rum.</p>
           <a class="text-link reveal reveal-d3" href="our-spirits.html" data-i18n="common.exploreSpirits">Explore Our Spirits</a>
         </div>
       </div>
@@ -157,15 +173,11 @@
             <span class="brand-lockup__sub" data-i18n="common.brandSub">Orange Walk · Belize</span>
           </span>
         </a>
-        <p data-i18n="footer.blurb">A Belizean family tradition in rum and spirits — made in Orange Walk Town and shared across Belize.</p>
+        <p data-i18n="footer.blurb">A Belizean tradition in rum and spirits — distilled, blended and bottled in Orange Walk Town.</p>
         <p style="font-family:var(--font-display);font-style:italic;color:var(--gold);font-size:0.98rem" data-i18n="common.slogan">Where the roads of tradition and quality meet.</p>
-        <div class="footer-social" data-i18n-title="footer.social" title="Social channels — links coming soon">
-          <!-- Social placeholders: replace <span class="soc"> with <a class="soc" href="VERIFIED-URL"> once confirmed -->
-          <span class="soc" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M15 8h3V4.5h-3c-2 0-3.5 1.6-3.5 3.5v3H9V15h2.5v6H15v-6h2.6l.4-4h-3V8.5c0-.3.2-.5.5-.5h-.5z" stroke-linejoin="round"/></svg></span>
-          <span class="soc" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/></svg></span>
-          <span class="soc" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M9.5 8.5v7l6-3.5-6-3.5z" fill="currentColor" stroke="none"/><rect x="2.8" y="5.5" width="18.4" height="13" rx="3.5"/></svg></span>
-        </div>
-        <p class="visually-hidden" data-i18n="footer.social">Social channels — links coming soon</p>
+        <!-- Verified social links go here once confirmed by Cuello's, e.g.
+             <a class="soc" href="https://facebook.com/..." aria-label="Cuello's on Facebook">...</a>
+             Placeholder icons are intentionally not shown (see checklist). -->
       </div>
 
       <nav class="footer-col" aria-labelledby="footer-explore">
@@ -192,6 +204,7 @@
         <ul style="margin-top:0.7rem">
           <li><a href="tel:+5013222183"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a12 12 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z" stroke-linejoin="round"/></svg>+501 322-2183</a></li>
           <li><a href="mailto:mainoffice@cuellosdistilleryltd.bz"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M4 7l8 6 8-6"/></svg>mainoffice@cuellosdistilleryltd.bz</a></li>
+          <li><a data-action="wa-contact" href="https://wa.me/5013222183" target="_blank" rel="noopener noreferrer"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a9.9 9.9 0 0 0-8.5 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm0 1.8a8.2 8.2 0 1 1-4.2 15.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8zm-3 3.7c-.2 0-.5.1-.7.4-.2.3-.9.9-.9 2.1s.9 2.4 1 2.6c.1.2 1.8 2.9 4.5 4 2.2.9 2.7.7 3.2.7.5-.1 1.6-.7 1.8-1.3.2-.6.2-1.2.2-1.3-.1-.1-.2-.2-.5-.3l-1.7-.8c-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.1-.2 0-.4.1-.5l.6-.7c.2-.2.2-.4.1-.6l-.8-1.9c-.2-.4-.4-.4-.6-.4H9z"/></svg><span data-i18n="footer.whatsapp">WhatsApp Cuello's</span></a></li>
         </ul>
       </div>
 
@@ -223,10 +236,10 @@
   </div>
 </footer>
 
+<script src="assets/js/config.js" defer></script>
 <script src="assets/js/i18n.js" defer></script>
 <script src="assets/js/data.js" defer></script>
 <script src="assets/js/age-gate.js" defer></script>
 <script src="assets/js/main.js" defer></script>
-<script src="assets/js/cocktails.js" defer></script>
 </body>
 </html>

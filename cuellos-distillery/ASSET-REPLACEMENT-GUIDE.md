@@ -1,4 +1,4 @@
-# Asset Replacement Guide — Cuello's V1
+# Asset Replacement Guide — Cuello's V1.1
 
 Every visual asset, where it appears, and how to replace it. All images are
 WebP; each photo ships in two widths (`name.webp` full, `name-640.webp` small)
@@ -56,27 +56,29 @@ Replacement: photograph each bottle straight-on, cap-to-base, on seamless
 
 | File | Page · Section | Native size | Desktop crop | Mobile crop | Focal point | Status |
 |---|---|---|---|---|---|---|
-| `belize-letters-installation` | Home · hero | 1284×450 | full-bleed right panel, left edge fades to black | letterboxed above copy panel | centre, keep all letters + bottles | CLIENT |
+| `belize-letters-installation` | Home · video-slide poster; Gallery | 1284×450 | poster for hero slide 4 | poster | centre, keep all letters + bottles | CLIENT |
 | `carnival-brand-activation` | Home · culture; News · featured | 1284×943 | 16:10 frame | 92vw wide | dancers' upper bodies (50% 35%) | CLIENT |
 | `white-rum-cocktail` | Home · serve; Cocktails · hero art | 1284×1657 | 3:4 frame | 92vw tall | glass + bottle centre | CLIENT |
 | `barrel-and-miniatures` | Home · heritage; Our Story · roots | 1284×1653 | 3:4 frame | 92vw tall | barrel brand + bottles (50% 60%) | CLIENT |
 | `san-pedro-storefront` | Locations · hero art + feature | 1182×1698 | 3:4 frame | 92vw tall | storefront signage (50% 35–45%) | CLIENT |
 | `community-trade-booth` | Trade · hero art; News · card | 1284×1672 | hero art fades left | card 16:10 | booth + people (50% 30%) | CLIENT |
 
-## Gallery (`assets/img/gallery/`, 11 photos)
+## Gallery (`assets/img/gallery/`, source photos)
 
 Used on the Gallery page (filterable) — plus at most one main-page appearance
 each (site rule: no photo appears more than twice). Aspect ratios are
 preserved in the masonry; focal points are set per item in
 `assets/js/data.js` → `GALLERY[].focal`.
 
-`trafalgar-gin-garden-display`, `vintage-product-lineup` (also Our Spirits
-group shot), `white-rum-flambe` (also Cocktails), `outdoor-product-lineup`
-(also Trade), `secret-beach-brand-display`, `bar-product-lineup`,
-`basketball-court-activation` (also News card), `beach-product-lineup`,
-`belizes-best-beach-flags` (also News card), `orange-walk-mural-lineup`,
-`czar-vodka-beach-portrait` — all CLIENT (social-media sourced; confirm
-usage rights and identifiable-person permissions before launch).
+`trafalgar-gin-garden-display` (also hero slide 2), `vintage-product-lineup`
+(hero slide 1 + Our Spirits group shot; not in the Gallery grid),
+`white-rum-flambe` (also Cocktails), `outdoor-product-lineup` (also Trade),
+`secret-beach-brand-display`, `bar-product-lineup`,
+`basketball-court-activation` (also News card), `beach-product-lineup`
+(also Home gallery strip), `belizes-best-beach-flags` (also News card),
+`orange-walk-mural-lineup`, `czar-vodka-beach-portrait` (also hero slide 3)
+— all CLIENT (social-media sourced; confirm usage rights and
+identifiable-person permissions before launch).
 
 To add/remove gallery items: edit `GALLERY` in `assets/js/data.js` (captions +
 alt text in EN and ES, category, focal point). No layout changes needed.
@@ -89,11 +91,20 @@ alt text in EN and ES, category, focal point). No layout changes needed.
 Status: CLIENT (older reference material — confirm they may represent current
 facilities, or reshoot).
 
+## Hero carousel (`index.html`, V1.1)
+
+| Slide | File | Treatment |
+|---|---|---|
+| 1 | `assets/img/gallery/vintage-product-lineup.webp` | `object-fit: contain` over a blurred copy of itself — the full lineup, Cuello's name and slogan stay completely visible. Never crop. |
+| 2 | `assets/img/gallery/trafalgar-gin-garden-display.webp` | `cover`, `object-position: 50% 42%` |
+| 3 | `assets/img/gallery/czar-vodka-beach-portrait.webp` | Portrait shown complete via `contain` over a blurred backdrop |
+| 4 | `assets/video/cuello-hero-video.mp4` | **NOT YET SUPPLIED.** Slide auto-appears when the file exists; poster is the BELIZE-letters image. Plays muted only while active; advances the carousel when finished. |
+
 ## Video (`assets/video/`)
 
-Empty in V1 — **hero video and social gallery videos wanted from Albert/Cuello's**:
+Empty — **hero video and social gallery videos still wanted from Albert/Cuello's**:
 
 | Slot | File to supply | Spec |
 |---|---|---|
-| Home hero loop | `assets/video/cuello-hero-video.mp4` | 10–20 s loop, H.264 MP4, ≤ 8 MB, 1280×720+, no required audio (plays muted). Activation steps in README. |
-| Gallery videos | `assets/video/*.mp4` + poster WebP | H.264 MP4, each ≤ 20 MB, portrait or landscape. Add to `GALLERY` in `data.js` (README shows the snippet); "Videos" filter appears automatically. |
+| Home hero (slide 4) | `assets/video/cuello-hero-video.mp4` | 10–20 s, H.264 MP4, ≤ 8 MB, 1280×720+, no required audio (plays muted). Drop the file in — no code change needed. |
+| Gallery videos | `assets/video/*.mp4` + poster WebP | H.264 MP4, each ≤ 20 MB, portrait or landscape. Add to `GALLERY` in `data.js` (README shows the snippet); the "Videos" filter appears automatically. If no poster is supplied, Austere will extract a still frame during integration. |

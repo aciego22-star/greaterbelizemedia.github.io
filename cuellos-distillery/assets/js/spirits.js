@@ -1,7 +1,10 @@
 /* ============================================================
-   CUELLO'S DISTILLERY — Our Spirits page
+   CUELLOS DISTILLERY — Our Spirits page
    Category grids + accessible product drawer.
    Deep links: our-spirits.html#product-id opens the drawer.
+   Drawer shows only confirmed information: name, category,
+   photograph, Rums of Belize identity, origin, and direct
+   contact actions. Sizes/strengths await client confirmation.
    ============================================================ */
 
 (function () {
@@ -56,13 +59,6 @@
 
   /* ---------- Drawer ---------- */
 
-  function cocktailName(id) {
-    for (var i = 0; i < D.cocktails.length; i++) {
-      if (D.cocktails[i].id === id) return D.cocktails[i].name[I.lang];
-    }
-    return null;
-  }
-
   function openDrawer(id, pushHash) {
     var p = D.byId(id);
     if (!p) return;
@@ -71,6 +67,10 @@
     lastFocused = document.activeElement;
 
     var lang = I.lang;
+    var cfg = window.CuellosConfig || {};
+    var waHref = cfg.whatsappNumber
+      ? "https://wa.me/" + cfg.whatsappNumber + "?text=" + encodeURIComponent(I.t("contact.waMessage") + " " + p.name)
+      : null;
     var related = D.products.filter(function (x) {
       return x.category === p.category && x.id !== p.id;
     }).slice(0, 3);
@@ -99,17 +99,14 @@
           '<h2 class="drawer__name">' + p.name + '</h2>' +
           '<p class="drawer__desc">' + p.desc[lang] + '</p>' +
           '<ul class="spec-list">' +
+            '<li><span class="k">' + I.t("spirits.specCategory") + '</span><span class="v">' + D.categoryLabel[p.category][lang] + '</span></li>' +
+            '<li><span class="k">' + I.t("spirits.specMark") + '</span><span class="v">' + I.t("spirits.markValue") + '</span></li>' +
             '<li><span class="k">' + I.t("spirits.specOrigin") + '</span><span class="v">' + I.t("spirits.originValue") + '</span></li>' +
-            '<li><span class="k">' + I.t("spirits.specSizes") + '</span><span class="v">' + I.t("common.tbc") + '</span></li>' +
-            '<li><span class="k">' + I.t("spirits.specAbv") + '</span><span class="v">' + I.t("common.tbc") + '</span></li>' +
-            '<li><span class="k">' + I.t("spirits.serveIdea") + '</span><span class="v">' + p.serve[lang] + '</span></li>' +
-            (p.cocktail && cocktailName(p.cocktail)
-              ? '<li><span class="k">' + I.t("nav.cocktails") + '</span><span class="v"><a class="text-link" style="font-size:.85rem" href="cocktails.html#' + p.cocktail + '">' + cocktailName(p.cocktail) + '</a></span></li>'
-              : '') +
           '</ul>' +
           '<h4 style="margin-bottom:.3rem">' + I.t("spirits.whereFind") + '</h4>' +
           '<p style="color:var(--ink-muted);font-size:.94rem">' + I.t("spirits.whereFindCopy") + '</p>' +
           '<div class="drawer__actions">' +
+            (waHref ? '<a class="btn btn--whatsapp btn--small" href="' + waHref + '" target="_blank" rel="noopener noreferrer">' + I.t("contact.waBtn") + '</a>' : '') +
             '<a class="btn btn--dark btn--small" href="locations.html">' + I.t("nav.locations") + '</a>' +
             '<a class="btn btn--ghost btn--small" href="trade.html">' + I.t("spirits.tradeCta") + '</a>' +
           '</div>' +
@@ -130,7 +127,6 @@
     document.body.appendChild(drawer);
     document.body.classList.add("no-scroll");
 
-    /* force transition */
     requestAnimationFrame(function () { drawer.classList.add("is-open"); });
 
     backdrop.addEventListener("click", function () { closeDrawer(true); });
@@ -177,7 +173,6 @@
   function openFromHash() {
     var hash = window.location.hash.replace("#", "");
     if (hash && D.byId(hash)) {
-      /* open after age gate settles */
       setTimeout(function () { openDrawer(hash, false); }, 150);
     }
   }

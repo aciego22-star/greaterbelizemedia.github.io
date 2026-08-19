@@ -1,7 +1,7 @@
 /* ============================================================
-   CUELLO'S DISTILLERY — Shared behaviour
-   Header, mobile menu, reveals, spirit rail, news rendering,
-   hero media control, footer utilities.
+   CUELLOS DISTILLERY — Shared behaviour
+   Header, mobile menu, reveals, news cards, WhatsApp/email
+   actions, footer utilities.
    ============================================================ */
 
 (function () {
@@ -74,10 +74,7 @@
     });
     mobileMenu.addEventListener("keydown", function (e) {
       if (e.key === "Escape") { closeMenu(); return; }
-      if (e.key === "Tab") {
-        // include the toggle button in the cycle via wrap-around inside the panel
-        trapFocus(mobileMenu, e);
-      }
+      if (e.key === "Tab") trapFocus(mobileMenu, e);
     });
     window.addEventListener("resize", function () {
       if (window.innerWidth > 1100 && mobileMenu.classList.contains("is-open")) closeMenu();
@@ -104,75 +101,42 @@
     items.forEach(function (el) { io.observe(el); });
   }
 
-  /* ---------- Spirit rail (home) ---------- */
+  /* ---------- WhatsApp / email actions ----------
+     One central number lives in assets/js/config.js. Elements:
+     [data-action="wa-contact"] [data-action="wa-trade"]
+     [data-action="mail-contact"] [data-action="mail-trade"]
+     hrefs are rebuilt in the active language.               */
 
-  function productCard(p, opts) {
-    opts = opts || {};
-    var lang = window.CuellosI18N ? window.CuellosI18N.lang : "en";
-    var href = "our-spirits.html#" + p.id;
-    var catLabel = window.CuellosData.categoryLabel[p.category][lang];
-    var hint = window.CuellosI18N ? window.CuellosI18N.t("home.viewSpirit") : "View details";
-    var imgBase = "assets/img/products/" + p.id;
-    return '' +
-      '<a class="product-card" href="' + href + '" style="--accent:' + p.accent + '">' +
-        '<span class="product-card__media">' +
-          '<img src="' + imgBase + '-450.webp" srcset="' + imgBase + '-450.webp 450w, ' + imgBase + '.webp 900w" ' +
-            'sizes="(max-width: 560px) 66vw, 300px" width="450" height="675" ' +
-            (opts.eager ? '' : 'loading="lazy" ') + 'alt="' + p.alt[lang] + '">' +
-          '<span class="product-card__accent" aria-hidden="true"></span>' +
-        '</span>' +
-        '<span class="product-card__body">' +
-          '<span class="product-card__cat">' + catLabel + '</span>' +
-          '<span class="product-card__name">' + p.name + '</span>' +
-          '<span class="product-card__hint">' + hint + ' →</span>' +
-        '</span>' +
-      '</a>';
-  }
-  window.CuellosProductCard = productCard;
-
-  function renderRail() {
-    var rail = $("#spirit-rail");
-    if (!rail || !window.CuellosData) return;
-    rail.innerHTML = window.CuellosData.featured.map(function (id) {
-      return productCard(window.CuellosData.byId(id));
-    }).join("");
-    updateRailButtons();
-  }
-
-  function updateRailButtons() {
-    var rail = $("#spirit-rail");
-    if (!rail) return;
-    var prev = $("[data-rail-prev]");
-    var next = $("[data-rail-next]");
-    if (!prev || !next) return;
-    var max = rail.scrollWidth - rail.clientWidth - 4;
-    prev.disabled = rail.scrollLeft <= 4;
-    next.disabled = rail.scrollLeft >= max;
-  }
-
-  function initRail() {
-    var rail = $("#spirit-rail");
-    if (!rail) return;
-    renderRail();
-    rail.addEventListener("scroll", updateRailButtons, { passive: true });
-    window.addEventListener("resize", updateRailButtons);
-    var step = function () { return Math.min(rail.clientWidth * 0.8, 340); };
-    var prev = $("[data-rail-prev]");
-    var next = $("[data-rail-next]");
-    if (prev) prev.addEventListener("click", function () {
-      rail.scrollBy({ left: -step(), behavior: reducedMotion ? "auto" : "smooth" });
+  function buildActionLinks() {
+    var cfg = window.CuellosConfig;
+    var I = window.CuellosI18N;
+    if (!cfg || !I) return;
+    var map = {
+      "wa-contact": function () {
+        return "https://wa.me/" + cfg.whatsappNumber + "?text=" + encodeURIComponent(I.t("contact.waMessage"));
+      },
+      "wa-trade": function () {
+        return "https://wa.me/" + cfg.whatsappNumber + "?text=" + encodeURIComponent(I.t("trade.waMessage"));
+      },
+      "mail-contact": function () {
+        return "mailto:" + cfg.email + "?subject=" + encodeURIComponent(I.t("contact.emailSubject")) +
+          "&body=" + encodeURIComponent(I.t("contact.emailBody"));
+      },
+      "mail-trade": function () {
+        return "mailto:" + cfg.email + "?subject=" + encodeURIComponent(I.t("trade.emailSubject")) +
+          "&body=" + encodeURIComponent(I.t("trade.emailBody"));
+      }
+    };
+    $$("[data-action]").forEach(function (a) {
+      var kind = a.getAttribute("data-action");
+      if (map[kind]) a.setAttribute("href", map[kind]());
     });
-    if (next) next.addEventListener("click", function () {
-      rail.scrollBy({ left: step(), behavior: reducedMotion ? "auto" : "smooth" });
-    });
-    document.addEventListener("cuellos:langchange", renderRail);
   }
 
-  /* ---------- News rendering (home preview + news page) ---------- */
+  /* ---------- News rendering (neutral photo cards) ---------- */
 
   function newsCard(item) {
     var lang = window.CuellosI18N ? window.CuellosI18N.lang : "en";
-    var t = window.CuellosI18N.t;
     return '' +
       '<article class="news-card reveal">' +
         '<div class="news-card__media"><img src="' + item.img + '-640.webp" ' +
@@ -180,97 +144,52 @@
           'sizes="(max-width: 700px) 92vw, 380px" width="' + item.w + '" height="' + item.h + '" ' +
           'loading="lazy" alt="' + item.alt[lang] + '"></div>' +
         '<div class="news-card__body">' +
-          '<div class="news-card__meta"><span>' + t(item.category) + '</span>' +
-            '<span class="date">' + t("news.dateTBA") + '</span></div>' +
           '<h3>' + item.title[lang] + '</h3>' +
-          '<p>' + item.excerpt[lang] + '</p>' +
-          '<button type="button" class="text-link" data-news-open="' + item.id + '">' +
-            t("common.readMore") + ' <span class="concept-badge">' + t("news.sampleBadge") + '</span></button>' +
+          '<p>' + item.caption[lang] + '</p>' +
         '</div>' +
       '</article>';
   }
 
   function renderNews() {
     if (!window.CuellosData) return;
+    var lang = window.CuellosI18N ? window.CuellosI18N.lang : "en";
     $$("[data-news-grid]").forEach(function (grid) {
       var limit = parseInt(grid.getAttribute("data-limit") || "99", 10);
       var items = window.CuellosData.news.filter(function (n) { return !n.featured; }).slice(0, limit);
       grid.innerHTML = items.map(newsCard).join("");
       $$(".reveal", grid).forEach(function (el) { el.classList.add("is-in"); });
     });
-    /* featured story (news page) follows the active language too */
-    var lang = window.CuellosI18N ? window.CuellosI18N.lang : "en";
     var featured = window.CuellosData.news.filter(function (n) { return n.featured; })[0];
     if (featured) {
       var ft = $("[data-news-featured-title]");
       var fe = $("[data-news-featured-excerpt]");
       if (ft) ft.textContent = featured.title[lang];
-      if (fe) fe.textContent = featured.excerpt[lang];
+      if (fe) fe.textContent = featured.caption[lang];
     }
   }
   window.CuellosRenderNews = renderNews;
 
-  /* Simple accessible modal for sample-article preview */
-  var newsModal = null;
-  function openNewsModal(id) {
-    var item = null;
-    window.CuellosData.news.forEach(function (n) { if (n.id === id) item = n; });
-    if (!item) return;
-    var lang = window.CuellosI18N.lang;
-    var t = window.CuellosI18N.t;
-    closeNewsModal();
-    lastFocused = document.activeElement;
-    newsModal = document.createElement("div");
-    newsModal.className = "lightbox is-open";
-    newsModal.setAttribute("role", "dialog");
-    newsModal.setAttribute("aria-modal", "true");
-    newsModal.setAttribute("aria-label", item.title[lang]);
-    newsModal.innerHTML =
-      '<button type="button" class="lightbox__btn lightbox__close" data-news-close aria-label="' + t("common.close") + '">' +
-        '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>' +
-      '</button>' +
-      '<div class="lightbox__stage"><div style="max-width:640px;background:var(--cream);color:var(--ink);border-radius:16px;padding:2rem;max-height:100%;overflow-y:auto;">' +
-        '<p class="news-card__meta" style="margin-bottom:.5rem"><span style="color:var(--copper);font-weight:800;text-transform:uppercase;font-size:.72rem;letter-spacing:.12em">' + t(item.category) + '</span></p>' +
-        '<h3 style="font-family:var(--font-display);font-size:1.6rem;margin:0 0 .8rem">' + item.title[lang] + '</h3>' +
-        '<p style="color:var(--ink-muted)">' + item.excerpt[lang] + '</p>' +
-        '<p style="font-size:.85rem;border-left:3px solid var(--gold);padding-left:.8rem;color:var(--ink-muted)">' + t("news.modalNote") + '</p>' +
-      '</div></div>';
-    document.body.appendChild(newsModal);
-    document.body.classList.add("no-scroll");
-    newsModal.addEventListener("keydown", function (e) {
-      if (e.key === "Escape") closeNewsModal();
-      if (e.key === "Tab") trapFocus(newsModal, e);
-    });
-    newsModal.addEventListener("click", function (e) {
-      if (e.target === newsModal || e.target.closest("[data-news-close]")) closeNewsModal();
-    });
-    $(".lightbox__close", newsModal).focus();
-  }
-  function closeNewsModal() {
-    if (!newsModal) return;
-    newsModal.remove();
-    newsModal = null;
-    document.body.classList.remove("no-scroll");
-    if (lastFocused) lastFocused.focus();
-  }
+  /* ---------- Approved recipes (cocktails page) ----------
+     Renders CuellosData.cocktails into #recipe-grid. The list is
+     empty until Cuello's supplies official recipes, so nothing
+     shows in the concept — add recipes to data.js to publish. */
 
-  document.addEventListener("click", function (e) {
-    var opener = e.target.closest ? e.target.closest("[data-news-open]") : null;
-    if (opener) openNewsModal(opener.getAttribute("data-news-open"));
-  });
-
-  /* ---------- Hero media pause control ---------- */
-
-  function initHeroMedia() {
-    var btn = $("[data-media-toggle]");
-    var video = $("#hero-video");
-    if (!btn) return;
-    if (!video) { btn.parentElement.style.display = "none"; return; }
-    if (reducedMotion) video.removeAttribute("autoplay");
-    btn.addEventListener("click", function () {
-      if (video.paused) { video.play(); btn.setAttribute("data-state", "playing"); }
-      else { video.pause(); btn.setAttribute("data-state", "paused"); }
-    });
+  function renderRecipes() {
+    var host = $("#recipe-grid");
+    if (!host || !window.CuellosData) return;
+    var lang = window.CuellosI18N ? window.CuellosI18N.lang : "en";
+    host.innerHTML = window.CuellosData.cocktails.map(function (c) {
+      var p = window.CuellosData.byId(c.spirit);
+      return '<article class="recipe-card" id="' + c.id + '" style="--accent:' + (c.accent || "#C47828") + '">' +
+        '<div class="recipe-card__body">' +
+          (p ? '<p class="recipe-card__tag">' + p.name + '</p>' : '') +
+          '<h3>' + c.name[lang] + '</h3>' +
+          (c.ingredients ? '<p class="recipe-card__desc">' + c.ingredients[lang] + '</p>' : '') +
+          (c.method ? '<p class="recipe-card__desc">' + c.method[lang] + '</p>' : '') +
+          (p ? '<a class="text-link" href="our-spirits.html#' + p.id + '">' + p.name + ' →</a>' : '') +
+        '</div>' +
+      '</article>';
+    }).join("");
   }
 
   /* ---------- Footer year + age reset ---------- */
@@ -287,19 +206,21 @@
     }
   }
 
-  /* ---------- Re-render data-driven sections on language change ---------- */
+  /* ---------- Re-render data-driven bits on language change ---------- */
 
   document.addEventListener("cuellos:langchange", function () {
     renderNews();
+    renderRecipes();
+    buildActionLinks();
   });
 
   /* ---------- Boot ---------- */
 
   function boot() {
     initReveals();
-    initRail();
     renderNews();
-    initHeroMedia();
+    renderRecipes();
+    buildActionLinks();
     initFooter();
   }
 
