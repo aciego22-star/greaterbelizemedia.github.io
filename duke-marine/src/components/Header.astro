@@ -205,11 +205,13 @@ const featureImg: Record<string, string> = {
     height: var(--header-h);
     color: #ffffff;
   }
+  /* Solid, not glass. At 88% the page content stayed visible through the bar
+     as it scrolled underneath, which read as photographs and headings running
+     into the header. The header over the home hero is untouched: it has
+     neither class there and stays fully transparent by design. */
   .header.is-scrolled,
   .header.is-solid {
-    background: color-mix(in srgb, var(--c-navy) 88%, transparent);
-    -webkit-backdrop-filter: blur(14px);
-    backdrop-filter: blur(14px);
+    background: var(--c-navy);
     box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06), var(--shadow);
   }
   .header.is-scrolled .header__bar {
