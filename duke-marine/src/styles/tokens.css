@@ -100,6 +100,11 @@
   --grad-sheen: linear-gradient(120deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0) 100%);
 
   --header-h: 76px;
+  /* Height of the mobile category strip; zero where the strip is hidden. */
+  --header-strip-h: 0px;
+  /* Total space the fixed header occupies. Page headers offset by this so
+     content never slides under the bar or the strip. */
+  --header-offset: calc(var(--header-h) + var(--header-strip-h));
 }
 
 /* Dark sections reuse these mapped tokens via .on-dark */

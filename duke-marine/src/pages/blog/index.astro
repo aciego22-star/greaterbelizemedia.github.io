@@ -37,7 +37,7 @@ const fmt = (d: Date) =>
             <div class="feat__media">
               <img
                 src={featured.data.cardImage ?? featured.data.image ?? "/media/life/kingfish-lift.jpg"}
-                alt={featured.data.imageAlt ?? "An angler holding a kingfish on a Belize fishing trip"}
+                alt={(featured.data.cardImage ? featured.data.cardImageAlt : undefined) ?? featured.data.imageAlt ?? "An angler holding a kingfish on a Belize fishing trip"}
                 class="feat__img"
                 style={featured.data.imagePosition ? `object-position:${featured.data.imagePosition}` : undefined}
                 loading="lazy"
@@ -65,7 +65,7 @@ const fmt = (d: Date) =>
                   {post.data.cardImage || post.data.image ? (
                     <img
                       src={post.data.cardImage ?? post.data.image}
-                      alt={post.data.imageAlt ?? ""}
+                      alt={(post.data.cardImage ? post.data.cardImageAlt : undefined) ?? post.data.imageAlt ?? ""}
                       class="post__img"
                       style={post.data.imagePosition ? `object-position:${post.data.imagePosition}` : undefined}
                       loading="lazy"

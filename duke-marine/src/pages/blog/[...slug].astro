@@ -132,7 +132,17 @@ const prevInSeries = seriesPosts.find((p) => (p.data.seriesPart ?? 0) === (part 
             {more.map((p, i) => (
               <a href={`/blog/${p.id}`} class="mpost" data-reveal data-reveal-delay={i * 80}>
                 <div class="mpost__media">
-                  <Media seed={p.data.seed || p.id} icon="waves" ratio="16 / 9" pattern="topo" />
+                  {p.data.cardImage || p.data.image ? (
+                    <img
+                      src={p.data.cardImage ?? p.data.image}
+                      alt={(p.data.cardImage ? p.data.cardImageAlt : undefined) ?? p.data.imageAlt ?? ""}
+                      class="mpost__img"
+                      style={p.data.imagePosition ? `object-position:${p.data.imagePosition}` : undefined}
+                      loading="lazy"
+                    />
+                  ) : (
+                    <Media seed={p.data.seed || p.id} icon="waves" ratio="16 / 9" pattern="topo" />
+                  )}
                 </div>
                 <div class="mpost__body">
                   <span class="mpost__cat">{p.data.category}</span>
@@ -154,7 +164,7 @@ const prevInSeries = seriesPosts.find((p) => (p.data.seriesPart ?? 0) === (part 
     position: relative;
     overflow: hidden;
     color: var(--text-invert);
-    padding-top: calc(var(--header-h) + 3rem);
+    padding-top: calc(var(--header-offset) + 3rem);
     padding-bottom: 3rem;
     background: var(--c-navy);
   }
@@ -330,7 +340,7 @@ const prevInSeries = seriesPosts.find((p) => (p.data.seriesPart ?? 0) === (part 
   .mpost {
     display: flex;
     gap: 1.2rem;
-    align-items: center;
+    align-items: stretch;
     background: var(--bg-elevated);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
@@ -345,9 +355,21 @@ const prevInSeries = seriesPosts.find((p) => (p.data.seriesPart ?? 0) === (part 
     box-shadow: var(--shadow);
   }
 }
+  .mpost__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 110px;
+    object-fit: cover;
+  }
   .mpost__media {
     width: 140px;
     flex: none;
+    display: flex;
+  }
+  .mpost__body {
+    align-self: center;
+    padding-block: 1rem;
   }
   .mpost__cat {
     font-size: 0.75rem;

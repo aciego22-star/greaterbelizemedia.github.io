@@ -21,6 +21,7 @@ const news = defineCollection({
     imagePosition: z.string().optional(),
     /** Optional different image for the blog listing card. */
     cardImage: z.string().optional(),
+    cardImageAlt: z.string().optional(),
     /** Decorative full-bleed image behind the article title. */
     heroImage: z.string().optional(),
     /** SEO overrides; fall back to title and excerpt when omitted. */

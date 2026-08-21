@@ -442,3 +442,11 @@ summary {
     text-decoration-thickness: 2px;
   }
 }
+
+/* The mobile category strip sits below the header bar, so page headers need to
+   clear both. Keeps breadcrumbs and titles from sliding under the header. */
+@media (max-width: 992px) {
+  :root {
+    --header-strip-h: 61px;
+  }
+}
