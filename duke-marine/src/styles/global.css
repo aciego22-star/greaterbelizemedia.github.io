@@ -190,9 +190,11 @@ p {
     box-shadow var(--dur) var(--ease-out), background var(--dur) var(--ease-out);
   will-change: transform;
 }
-.btn:hover {
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-glow);
+}
 }
 .btn:active {
   transform: translateY(0);
@@ -204,8 +206,10 @@ p {
 .btn svg {
   transition: transform var(--dur) var(--ease-out);
 }
-.btn:hover svg {
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover svg {
   transform: translateX(4px);
+}
 }
 
 .btn--gold {
@@ -221,9 +225,11 @@ p {
   --btn-fg: var(--text);
   border-color: var(--border-strong);
 }
-.btn--ghost:hover {
+@media (hover: hover) and (pointer: fine) {
+  .btn--ghost:hover {
   border-color: var(--accent);
   box-shadow: none;
+}
 }
 .on-dark .btn--ghost {
   --btn-fg: var(--text-invert);
@@ -249,8 +255,10 @@ p {
 .on-dark .link-arrow {
   color: var(--c-current-bright);
 }
-.link-arrow:hover {
+@media (hover: hover) and (pointer: fine) {
+  .link-arrow:hover {
   gap: 0.85em;
+}
 }
 
 /* ---- Cards / surfaces ------------------------------------------------- */
@@ -348,5 +356,68 @@ p {
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Post-launch maintenance round 1: one-tap interaction safeguards.
+
+   Hover styling across the site is gated behind
+   `@media (hover: hover) and (pointer: fine)` so touch devices never spend a
+   first tap activating a hover state. These rules cover the remaining
+   touch-reliability concerns: gesture delay, target size and stray overlays.
+--------------------------------------------------------------------------- */
+
+/* Remove the 300ms double-tap-to-zoom delay on interactive controls. */
+a,
+button,
+[role='button'],
+input[type='submit'],
+label[for],
+summary {
+  touch-action: manipulation;
+}
+
+/* Comfortable touch targets. Inline links inside prose keep their natural size
+   so body copy is not disturbed. */
+@media (pointer: coarse) {
+  .btn,
+  button,
+  [role='button'],
+  .nav__link,
+  .hd-strip__link,
+  .social,
+  .to-top,
+  .footer__nav a,
+  .crumbs a {
+    min-height: 44px;
+  }
+  .btn,
+  button,
+  [role='button'] {
+    min-width: 44px;
+  }
+  .social,
+  .to-top {
+    min-width: 44px;
+  }
+}
+
+/* Decorative overlays must never swallow a tap meant for the control beneath. */
+.page-hero__scrim,
+.hero__scrim,
+[aria-hidden='true'][class*='scrim'],
+[class*='__overlay'],
+[class*='--decor'] {
+  pointer-events: none;
+}
+
+/* Keep a clear pressed state on touch, where hover feedback is unavailable. */
+@media (hover: none) {
+  a:active,
+  .btn:active,
+  button:active,
+  [role='button']:active {
+    opacity: 0.82;
   }
 }

@@ -137,9 +137,11 @@ const fmt = (d: Date) =>
     font-size: 0.82rem;
     color: var(--text-soft);
   }
+  @media (hover: hover) and (pointer: fine) {
   .crumbs a:hover {
     color: var(--c-current-bright);
   }
+}
   .crumbs__sep {
     transform: rotate(-90deg);
     opacity: 0.5;
@@ -249,10 +251,12 @@ const fmt = (d: Date) =>
     box-shadow: var(--shadow-sm);
     transition: transform var(--dur) var(--ease-out), box-shadow var(--dur);
   }
+  @media (hover: hover) and (pointer: fine) {
   .mpost:hover {
     transform: translateY(-4px);
     box-shadow: var(--shadow);
   }
+}
   .mpost__media {
     width: 140px;
     flex: none;

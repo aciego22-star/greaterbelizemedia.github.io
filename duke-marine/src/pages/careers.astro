@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
+import { pageHeroes } from '../data/heroes';
 import Icon from '../components/Icon.astro';
 import { site } from '../data/site';
 
@@ -16,6 +17,7 @@ const applyMailto = `mailto:${site.email}?subject=Employment%20Application`;
     title="Join the Duke Marine Team"
     lead="Duke Marine is currently accepting applications for open positions in Belize City."
     crumbs={[{ label: 'Careers' }]}
+    hero={pageHeroes.careers}
   />
 
   <!-- Open position -->
@@ -79,10 +81,12 @@ const applyMailto = `mailto:${site.email}?subject=Employment%20Application`;
     box-shadow: var(--shadow-sm);
     transition: transform var(--dur) var(--ease-out), box-shadow var(--dur);
   }
+  @media (hover: hover) and (pointer: fine) {
   .job:hover {
     transform: translateY(-3px);
     box-shadow: var(--shadow);
   }
+}
   .job h3 {
     font-size: 1.2rem;
   }

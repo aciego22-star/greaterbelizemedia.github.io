@@ -35,13 +35,25 @@ const featureImg: Record<string, string> = {
           nav.map((item) =>
             item.children ? (
               <li class="nav__item" data-mega>
-                <a
-                  href={item.href}
-                  class:list={['nav__link', 'nav__link--has-menu', { 'is-current': isActive(item.href) }]}
-                >
-                  {item.label}
-                  <Icon name="chevron" size={16} class="nav__caret" />
-                </a>
+                <div class="nav__group">
+                  <a
+                    href={item.href}
+                    class:list={['nav__link', 'nav__link--has-menu', { 'is-current': isActive(item.href) }]}
+                  >
+                    {item.label}
+                  </a>
+                  {/* Separate control so touch users navigate on the link and open the
+                      submenu with this button, never needing a second tap. */}
+                  <button
+                    type="button"
+                    class="nav__toggle"
+                    aria-expanded="false"
+                    aria-label={`Show ${item.label} categories`}
+                    data-mega-toggle
+                  >
+                    <Icon name="chevron" size={16} class="nav__caret" />
+                  </button>
+                </div>
                 <div class="mega" role="menu">
                   <div class="mega__inner">
                     <div class="mega__links">
@@ -97,11 +109,16 @@ const featureImg: Record<string, string> = {
             <span>{site.whatsappDisplay}</span>
           </a>
         </div>
-        <a href={primaryCta.href} class="btn btn--gold btn--sm">{primaryCta.label}</a>
+        {/* Compact visible label so the header never wraps or overflows; the
+            full "Request a Quote or Contact" wording is the accessible name and
+            is used verbatim on the full-size calls to action. */}
+        <a href={primaryCta.href} class="btn btn--gold btn--sm nav__quote" aria-label={primaryCta.label}>
+          Quote or Contact
+        </a>
       </div>
     </nav>
 
-    <a href={primaryCta.href} class="btn btn--gold btn--sm hd-quote" aria-label={primaryCta.label}>Quote</a>
+    <a href={primaryCta.href} class="btn btn--gold btn--sm hd-quote" aria-label={primaryCta.label}>Contact</a>
   </div>
 
   <nav class="hd-strip" aria-label="Sections">
@@ -119,6 +136,39 @@ const featureImg: Record<string, string> = {
     </div>
   </nav>
 </header>
+
+<script>
+  // Submenu control for touch and keyboard users. Hover opens the menu only on
+  // devices that truly support hovering (see the hover media query below).
+  document.querySelectorAll('[data-mega-toggle]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('[data-mega]');
+      if (!item) return;
+      const open = item.classList.toggle('is-open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      document.querySelectorAll('[data-mega].is-open').forEach((other) => {
+        if (other !== item) {
+          other.classList.remove('is-open');
+          const b = other.querySelector('[data-mega-toggle]');
+          if (b) b.setAttribute('aria-expanded', 'false');
+        }
+      });
+    });
+  });
+  const closeAllMega = () => {
+    document.querySelectorAll('[data-mega].is-open').forEach((item) => {
+      item.classList.remove('is-open');
+      const b = item.querySelector('[data-mega-toggle]');
+      if (b) b.setAttribute('aria-expanded', 'false');
+    });
+  };
+  document.addEventListener('click', (e) => {
+    if (!(e.target instanceof Element) || !e.target.closest('[data-mega]')) closeAllMega();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeAllMega();
+  });
+</script>
 
 <style>
   .header {
@@ -179,13 +229,41 @@ const featureImg: Record<string, string> = {
     border-radius: var(--radius-pill);
     transition: color var(--dur-fast), background var(--dur-fast);
   }
-  .nav__link:hover,
   .nav__link.is-current {
     background: rgba(255, 255, 255, 0.1);
   }
+
+  @media (hover: hover) and (pointer: fine) {
+  .nav__link:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
   .nav__caret {
     transition: transform var(--dur);
     opacity: 0.7;
+  }
+  .nav__item[data-mega].is-open .nav__caret {
+    transform: rotate(180deg);
+  }
+  /* Link + submenu button sit together as one visual pill group. */
+  .nav__group {
+    display: inline-flex;
+    align-items: center;
+  }
+  .nav__toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    min-height: 32px;
+    margin-inline-start: -0.5rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    touch-action: manipulation;
   }
 
   /* Mega-menu */
@@ -209,7 +287,6 @@ const featureImg: Record<string, string> = {
     right: 0;
     height: 14px;
   }
-  .nav__item[data-mega]:hover .mega,
   .nav__item[data-mega]:focus-within .mega,
   .nav__item[data-mega].is-open .mega {
     opacity: 1;
@@ -217,9 +294,20 @@ const featureImg: Record<string, string> = {
     pointer-events: auto;
     transform: translate(-50%, 0);
   }
+
+  @media (hover: hover) and (pointer: fine) {
+  .nav__item[data-mega]:hover .mega {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translate(-50%, 0);
+  }
+}
+  @media (hover: hover) and (pointer: fine) {
   .nav__item[data-mega]:hover .nav__caret {
     transform: rotate(180deg);
   }
+}
   .mega__inner {
     display: grid;
     grid-template-columns: 1.4fr 1fr;
@@ -241,9 +329,11 @@ const featureImg: Record<string, string> = {
     border-radius: var(--radius);
     transition: background var(--dur-fast);
   }
+  @media (hover: hover) and (pointer: fine) {
   .mega__link:hover {
     background: var(--bg-inset);
   }
+}
   .mega__label {
     font-family: var(--font-display);
     font-weight: 600;
@@ -282,6 +372,10 @@ const featureImg: Record<string, string> = {
     align-items: center;
     gap: 1.1rem;
   }
+  .nav__quote,
+  .hd-quote {
+    white-space: nowrap;
+  }
   .nav__contact {
     display: inline-flex;
     flex-direction: column;
@@ -311,11 +405,13 @@ const featureImg: Record<string, string> = {
   .nav__wa :global(svg) {
     color: #25d366;
   }
+  @media (hover: hover) and (pointer: fine) {
   .nav__phone:hover,
   .nav__wa:hover {
     color: #fff;
     opacity: 0.85;
   }
+}
 
   .nav-toggle {
     display: none;
@@ -379,19 +475,45 @@ const featureImg: Record<string, string> = {
     background: rgba(255, 255, 255, 0.14);
   }
 
-  @media (max-width: 1180px) {
-    .nav__list {
-      gap: 0.1rem;
-    }
-    .nav__link {
-      padding-inline: 0.65rem;
-    }
+  /* The phone + WhatsApp block needs roughly 145px. Keep it only where the
+     navigation and the call to action still fit comfortably beside it. */
+  @media (max-width: 1400px) {
     .nav__contact {
       display: none;
     }
   }
 
-  @media (max-width: 980px) {
+  @media (max-width: 1180px) {
+    .nav__list {
+      gap: 0.05rem;
+    }
+    .nav__link {
+      padding-inline: 0.45rem;
+      font-size: 0.9rem;
+    }
+    .header__bar {
+      gap: 1rem;
+    }
+    .nav__toggle {
+      min-width: 26px;
+      margin-inline-start: -0.35rem;
+    }
+  }
+
+  /* Narrowest band that still uses the desktop navigation. */
+  @media (max-width: 1060px) {
+    .nav__link {
+      padding-inline: 0.3rem;
+    }
+    .nav__cta {
+      gap: 0.7rem;
+    }
+    .nav__quote {
+      padding-inline: 0.85rem;
+    }
+  }
+
+  @media (max-width: 992px) {
     /* Header is always solid navy on mobile so the strip stays legible */
     .header,
     .header.is-hidden {

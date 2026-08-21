@@ -93,4 +93,4 @@ export const nav: NavItem[] = [
   { label: 'Services', href: '/services' },
 ];
 
-export const primaryCta = { label: 'Request a Quote', href: '/contact#quote' };
+export const primaryCta = { label: 'Request a Quote or Contact', href: '/contact#quote' };

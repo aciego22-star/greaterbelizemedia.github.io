@@ -37,6 +37,9 @@ const { class: cls = '', compact = false } = Astro.props;
     align-items: center;
     gap: 0.65rem;
     color: inherit;
+    /* Never let the wordmark be squeezed narrower than its text, which used to
+       make it spill over the first navigation item on mid-width screens. */
+    flex: none;
   }
   .logo__badge {
     width: 46px;
@@ -46,9 +49,11 @@ const { class: cls = '', compact = false } = Astro.props;
     box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12);
     transition: transform var(--dur) var(--ease-out);
   }
+  @media (hover: hover) and (pointer: fine) {
   .logo:hover .logo__badge {
     transform: rotate(-6deg) scale(1.04);
   }
+}
   .logo__type {
     display: flex;
     flex-direction: column;
@@ -73,8 +78,10 @@ const { class: cls = '', compact = false } = Astro.props;
     text-transform: uppercase;
     white-space: nowrap;
   }
-  /* Decongest the header on mobile: keep the badge + wordmark, drop the taglines. */
-  @media (max-width: 980px) {
+  /* Decongest the header: keep the badge + wordmark, drop the taglines until
+     the viewport is wide enough for them to sit beside the navigation without
+     colliding with it. */
+  @media (max-width: 1400px) {
     .logo {
       gap: 0.55rem;
     }

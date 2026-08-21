@@ -26,8 +26,8 @@ const {
       <a href={`https://wa.me/${site.whatsapp}`} class="btn btn--ghost btn--lg">
         <Icon name="whatsapp" size={18} /> WhatsApp us
       </a>
-      <a href={`tel:${site.phoneHref}`} class="cta__phone">
-        <Icon name="phone" size={18} /> {site.phoneDisplay}
+      <a href={`tel:${site.phoneHref}`} class="btn btn--lg btn--call cta__phone">
+        <Icon name="phone" size={18} /> Call {site.phoneDisplay}
       </a>
     </div>
   </div>
@@ -63,14 +63,14 @@ const {
   .cta__actions .btn {
     width: 100%;
   }
+  /* Telephone pill: matches the WhatsApp button's height, padding, radius and
+     type weight, but keeps a lighter outline so WhatsApp stays the stronger
+     action and the call sits beside it as the complementary one. */
   .cta__phone {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5em;
-    font-family: var(--font-display);
-    font-weight: 600;
-    color: var(--c-current-bright);
-    margin-top: 0.3rem;
+    --btn-bg: transparent;
+    --btn-fg: var(--c-current-bright);
+    border-color: rgba(52, 219, 232, 0.45);
+    min-height: 44px;
   }
   @media (max-width: 820px) {
     .cta__inner {
@@ -78,6 +78,9 @@ const {
     }
     .cta__actions {
       align-items: stretch;
+    }
+    .cta__phone {
+      width: 100%;
     }
   }
 </style>

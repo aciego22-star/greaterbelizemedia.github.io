@@ -53,14 +53,18 @@ const { category, href, delay = 0 } = Astro.props;
     transform-origin: left;
     transition: transform var(--dur) var(--ease-out);
   }
+  @media (hover: hover) and (pointer: fine) {
   .cat:hover {
     transform: translateY(-6px);
     box-shadow: var(--shadow);
     border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
   }
+}
+  @media (hover: hover) and (pointer: fine) {
   .cat:hover::before {
     transform: scaleX(1);
   }
+}
   .cat__icon {
     display: grid;
     place-items: center;
@@ -72,11 +76,13 @@ const { category, href, delay = 0 } = Astro.props;
     margin-bottom: 0.3rem;
     transition: transform var(--dur) var(--ease-out), background var(--dur);
   }
+  @media (hover: hover) and (pointer: fine) {
   .cat:hover .cat__icon {
     transform: rotate(-6deg) scale(1.05);
     background: var(--accent);
     color: #fff;
   }
+}
   .cat__photo {
     display: block;
     width: 72px;
@@ -95,10 +101,12 @@ const { category, href, delay = 0 } = Astro.props;
     padding: 6px;
     box-sizing: border-box;
   }
+  @media (hover: hover) and (pointer: fine) {
   .cat:hover .cat__photo {
     transform: scale(1.05);
     box-shadow: var(--shadow-sm);
   }
+}
   .cat__title {
     font-size: 1.15rem;
   }

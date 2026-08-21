@@ -120,11 +120,13 @@ const steps = [
     box-shadow: var(--shadow-sm);
     transition: transform var(--dur) var(--ease-out), box-shadow var(--dur), border-color var(--dur);
   }
+  @media (hover: hover) and (pointer: fine) {
   .svc__card:hover {
     transform: translateY(-6px);
     box-shadow: var(--shadow);
     border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
   }
+}
   .svc__icon {
     display: grid;
     place-items: center;
@@ -136,11 +138,13 @@ const steps = [
     margin: 0 auto 1rem;
     transition: transform var(--dur), background var(--dur), color var(--dur);
   }
+  @media (hover: hover) and (pointer: fine) {
   .svc__card:hover .svc__icon {
     transform: rotate(-6deg);
     background: var(--accent);
     color: #fff;
   }
+}
   .svc__card h3 {
     font-size: 1.2rem;
   }

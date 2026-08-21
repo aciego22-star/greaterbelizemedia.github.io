@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
+import { pageHeroes } from '../data/heroes';
 import SectionHeader from '../components/SectionHeader.astro';
 import VideoSection from '../components/VideoSection.astro';
 import Icon from '../components/Icon.astro';
@@ -17,9 +18,7 @@ import { galleryGroups, dayOnTheWaterVideos, galleryVideos } from '../data/galle
     title="Straight from the shop, and Belize’s waters"
     lead="Gear on our shelves, and fishing, boating and life on Belize’s waters shared by Duke Marine customers and the community."
     crumbs={[{ label: 'Gallery' }]}
-    image="/media/life/sandbar-sail.jpg"
-    imageAlt="Boating on a Belize sandbar under open sky"
-    imagePosition="center 50%"
+    hero={pageHeroes.gallery}
   />
 
   <!-- A Day on the Water (featured video) -->
@@ -103,9 +102,11 @@ import { galleryGroups, dayOnTheWaterVideos, galleryVideos } from '../data/galle
     height: auto;
     transition: transform 0.8s var(--ease-out);
   }
+  @media (hover: hover) and (pointer: fine) {
   .gal__cell:hover img {
     transform: scale(1.06);
   }
+}
 
   .vids {
     display: grid;

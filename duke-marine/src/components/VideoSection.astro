@@ -96,9 +96,11 @@ const hasVideo = Boolean(src || embed);
     cursor: default;
     background: rgba(255, 255, 255, 0.85);
   }
+  @media (hover: hover) and (pointer: fine) {
   .videobox__play:not([disabled]):hover {
     transform: scale(1.08);
   }
+}
   .videobox__ring {
     position: absolute;
     inset: -10px;

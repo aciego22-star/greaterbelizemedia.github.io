@@ -320,19 +320,23 @@ const reasons = [
     box-shadow: var(--shadow-sm);
     transition: transform var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
   }
+  @media (hover: hover) and (pointer: fine) {
   .dept:hover {
     transform: translateY(-8px);
     box-shadow: var(--shadow-lg);
   }
+}
   .dept__media {
     overflow: hidden;
   }
   .dept__media :global(.media) {
     transition: transform var(--dur-slow) var(--ease-out);
   }
+  @media (hover: hover) and (pointer: fine) {
   .dept:hover .dept__media :global(.media) {
     transform: scale(1.06);
   }
+}
   .dept__photo {
     position: relative;
     display: block;
@@ -356,9 +360,11 @@ const reasons = [
     object-fit: cover;
     padding: 0;
   }
+  @media (hover: hover) and (pointer: fine) {
   .dept:hover .dept__photo img {
     transform: scale(1.06);
   }
+}
   .dept__photo-label {
     position: absolute;
     left: 1rem;
@@ -421,10 +427,12 @@ const reasons = [
     border-radius: var(--radius-lg);
     transition: transform var(--dur) var(--ease-out), background var(--dur);
   }
+  @media (hover: hover) and (pointer: fine) {
   .why__card:hover {
     transform: translateY(-5px);
     background: rgba(255, 255, 255, 0.07);
   }
+}
   .why__icon {
     display: grid;
     place-items: center;
@@ -502,11 +510,13 @@ const reasons = [
     padding: 14px 18px;
     box-sizing: border-box;
   }
+  @media (hover: hover) and (pointer: fine) {
   .brandlogos__item:hover {
     transform: translateY(-4px);
     box-shadow: var(--shadow);
     border-color: var(--accent);
   }
+}
   .brandcta {
     display: flex;
     justify-content: center;
@@ -581,9 +591,11 @@ const reasons = [
     object-fit: cover;
     transition: transform var(--dur-slow) var(--ease-out);
   }
+  @media (hover: hover) and (pointer: fine) {
   .gteaser:hover .gteaser__cell img {
     transform: scale(1.05);
   }
+}
   .gteaser__video {
     position: relative;
     margin-top: 0.9rem;
@@ -618,9 +630,11 @@ const reasons = [
     box-shadow: 0 8px 24px rgba(6, 22, 44, 0.4);
     transition: transform var(--dur) var(--ease-out);
   }
+  @media (hover: hover) and (pointer: fine) {
   .gteaser:hover .gteaser__play {
     transform: scale(1.08);
   }
+}
   .gteaser__cap {
     position: absolute;
     left: 0;
@@ -644,9 +658,11 @@ const reasons = [
     font-weight: 600;
     color: var(--accent-strong);
   }
+  @media (hover: hover) and (pointer: fine) {
   .gteaser:hover .gteaser__more :global(svg) {
     transform: translateX(3px);
   }
+}
   @media (max-width: 620px) {
     .gteaser__imgs {
       grid-template-columns: 1fr 1fr;

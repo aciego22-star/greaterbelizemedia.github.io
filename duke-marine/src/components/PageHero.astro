@@ -2,25 +2,71 @@
 import OceanCanvas from './OceanCanvas.astro';
 import Icon from './Icon.astro';
 
+import type { PageHeroImage } from '../data/heroes';
+
 interface Props {
   eyebrow?: string;
   title: string;
   lead?: string;
   crumbs?: { label: string; href?: string }[];
+  /**
+   * Centralized header artwork from src/data/heroes.ts. Individual props below
+   * still work and win over the config, so existing pages are unaffected.
+   */
+  hero?: PageHeroImage;
   /** Real header photo in public/media. Falls back to the animated ocean canvas. */
   image?: string;
   imageAlt?: string;
   /** Focal point for the header photo, e.g. "center", "50% 35%". */
   imagePosition?: string;
+  /** Narrow crop served at 640px and below. */
+  mobileImage?: string;
+  /** Intrinsic size of the desktop source; supplied to reduce layout shift. */
+  imageWidth?: number;
+  imageHeight?: number;
 }
-const { eyebrow, title, lead, crumbs = [], image, imageAlt = '', imagePosition = 'center' } = Astro.props;
+const {
+  eyebrow,
+  title,
+  lead,
+  crumbs = [],
+  hero,
+  image,
+  imageAlt,
+  imagePosition,
+  mobileImage,
+  imageWidth,
+  imageHeight,
+} = Astro.props;
+
+// Explicit props take precedence; otherwise fall back to the shared config.
+const src = image ?? hero?.src;
+const srcMobile = mobileImage ?? hero?.mobileSrc;
+const alt = imageAlt ?? hero?.alt ?? '';
+const position = imagePosition ?? hero?.position ?? 'center';
+const w = imageWidth ?? hero?.width;
+const h = imageHeight ?? hero?.height;
 ---
 
 <section class="page-hero on-dark">
   {
-    image ? (
-      <div class="page-hero__bg" aria-hidden={imageAlt ? undefined : 'true'}>
-        <img src={image} alt={imageAlt} loading="eager" style={`object-position:${imagePosition}`} />
+    src ? (
+      <div class="page-hero__bg" aria-hidden={alt ? undefined : 'true'}>
+        <picture>
+          {srcMobile && <source media="(max-width: 640px)" srcset={srcMobile} />}
+          {/* Header art sits above the fold, so it is loaded with priority
+              rather than lazily. Width/height reserve the box to avoid shift. */}
+          <img
+            src={src}
+            alt={alt}
+            width={w}
+            height={h}
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+            style={`object-position:${position}`}
+          />
+        </picture>
         <span class="page-hero__scrim"></span>
       </div>
     ) : (
@@ -55,7 +101,19 @@ const { eyebrow, title, lead, crumbs = [], image, imageAlt = '', imagePosition =
     padding-bottom: clamp(3rem, 7vw, 6rem);
     color: var(--text-invert);
     overflow: hidden;
+    /* Intentional Duke Marine marine-gradient fallback. It sits beneath the
+       animated ocean canvas, so a header still reads as finished if the
+       animation is unavailable, blocked or reduced by user preference. */
     background: var(--c-navy);
+    background-image:
+      radial-gradient(90% 120% at 12% 0%, rgba(24, 179, 199, 0.28) 0%, rgba(12, 35, 64, 0) 60%),
+      radial-gradient(70% 100% at 100% 100%, rgba(18, 48, 86, 0.9) 0%, rgba(12, 35, 64, 0) 70%),
+      linear-gradient(160deg, #0c2340 0%, #123056 52%, #0a1c33 100%);
+  }
+  .page-hero__bg picture {
+    display: block;
+    width: 100%;
+    height: 100%;
   }
   .page-hero__bg {
     position: absolute;
@@ -92,9 +150,11 @@ const { eyebrow, title, lead, crumbs = [], image, imageAlt = '', imagePosition =
     font-size: 0.82rem;
     color: var(--text-soft);
   }
+  @media (hover: hover) and (pointer: fine) {
   .crumbs a:hover {
     color: var(--c-current-bright);
   }
+}
   .crumbs__sep {
     transform: rotate(-90deg);
     opacity: 0.5;

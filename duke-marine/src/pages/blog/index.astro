@@ -97,10 +97,12 @@ const fmt = (d: Date) =>
     margin-bottom: 3rem;
     transition: transform var(--dur) var(--ease-out), box-shadow var(--dur);
   }
+  @media (hover: hover) and (pointer: fine) {
   .feat:hover {
     transform: translateY(-5px);
     box-shadow: var(--shadow-lg);
   }
+}
   .feat__media {
     border-radius: var(--radius-lg);
     overflow: hidden;
@@ -136,19 +138,23 @@ const fmt = (d: Date) =>
     box-shadow: var(--shadow-sm);
     transition: transform var(--dur) var(--ease-out), box-shadow var(--dur);
   }
+  @media (hover: hover) and (pointer: fine) {
   .post:hover {
     transform: translateY(-6px);
     box-shadow: var(--shadow);
   }
+}
   .post__media {
     overflow: hidden;
   }
   .post__media :global(.media) {
     transition: transform var(--dur-slow) var(--ease-out);
   }
+  @media (hover: hover) and (pointer: fine) {
   .post:hover .post__media :global(.media) {
     transform: scale(1.05);
   }
+}
   .post__body {
     display: flex;
     flex-direction: column;

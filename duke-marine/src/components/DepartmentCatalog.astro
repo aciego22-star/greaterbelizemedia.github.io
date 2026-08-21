@@ -42,7 +42,7 @@ const byCategory = d.categories.map((c) => ({
 >
   <div class="dhero__actions" data-reveal data-reveal-delay="180">
     <a href="#categories" class="btn btn--gold">Browse categories <Icon name="arrow" size={18} /></a>
-    <a href="/contact#quote" class="btn btn--ghost">Request a quote</a>
+    <a href="/contact#quote" class="btn btn--ghost">Request a Quote or Contact</a>
   </div>
 </PageHero>
 
@@ -198,10 +198,12 @@ const byCategory = d.categories.map((c) => ({
     box-shadow: var(--shadow-sm);
     transition: transform var(--dur) var(--ease-out), box-shadow var(--dur);
   }
+  @media (hover: hover) and (pointer: fine) {
   .crossell:hover {
     transform: translateY(-6px);
     box-shadow: var(--shadow-lg);
   }
+}
   .crossell__media {
     overflow: hidden;
   }
@@ -212,9 +214,11 @@ const byCategory = d.categories.map((c) => ({
     object-fit: cover;
     transition: transform var(--dur-slow) var(--ease-out);
   }
+  @media (hover: hover) and (pointer: fine) {
   .crossell:hover .crossell__img {
     transform: scale(1.05);
   }
+}
   .crossell__body {
     padding: 1.4rem 1.6rem 1.6rem;
   }
