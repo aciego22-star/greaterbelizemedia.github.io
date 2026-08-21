@@ -168,6 +168,22 @@ const featureImg: Record<string, string> = {
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeAllMega();
   });
+
+  // The page offset below the fixed header is a CSS token with a sensible
+  // default. Measure the strip once it has rendered so the offset stays right
+  // when a larger text size or a fallback font makes it taller than expected.
+  const strip = document.querySelector('.hd-strip');
+  if (strip) {
+    const syncStrip = () => {
+      const h = strip.offsetHeight;
+      document.documentElement.style.setProperty('--header-strip-h', h ? h + 'px' : '0px');
+    };
+    syncStrip();
+    window.addEventListener('resize', syncStrip);
+    window.addEventListener('orientationchange', syncStrip);
+    if (typeof ResizeObserver === 'function') new ResizeObserver(syncStrip).observe(strip);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncStrip);
+  }
 </script>
 
 <style>
@@ -514,12 +530,16 @@ const featureImg: Record<string, string> = {
   }
 
   @media (max-width: 992px) {
-    /* Header is always solid navy on mobile so the strip stays legible */
+    /* Fully opaque on mobile. The bar plus the strip is a tall band, so even a
+       few percent of transparency let photographs and headings show through it
+       as they scrolled past. */
     .header,
-    .header.is-hidden {
-      background: color-mix(in srgb, var(--c-navy) 94%, transparent);
-      -webkit-backdrop-filter: blur(12px);
-      backdrop-filter: blur(12px);
+    .header.is-hidden,
+    .header.is-scrolled,
+    .header.is-solid {
+      background: var(--c-navy);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
       box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06), var(--shadow);
       transform: none;
     }
