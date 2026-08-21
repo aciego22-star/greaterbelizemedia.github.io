@@ -16,8 +16,8 @@ SITE = "NATFISH"
 
 # The exact registered name supplied by the client for V2. The earlier build
 # carried an apostrophe-and-hyphen spelling of the middle two words, which is
-# not how the cooperative writes its own name.
-LEGAL = "National Fishermen Producers Cooperative Society Ltd."
+# not how the co-operative writes its own name.
+LEGAL = "National Fishermen Producers Co-operative Society Ltd."
 # The legal name already ends in a full stop, so anywhere it is followed by
 # sentence punctuation we use the trimmed form and add a single period.
 LEGAL_NO_DOT = LEGAL.rstrip(".")
@@ -56,10 +56,10 @@ MARKETS = ("the United States, Canada, Mexico, the West Indies, Taiwan "
            "and Australia")
 
 VIDEO_ID = "4FoxQom2WFQ"
-VIDEO_TITLE = "The National Fishermen Cooperative of Belize"
+VIDEO_TITLE = "The National Fishermen Co-operative of Belize"
 VIDEO_SOURCE = "Ocean Link"
 
-SRC_FISHWISE = "https://fishwise.org/dive-deeper/resource/belize-fisheries-the-story-of-the-national-fishermens-cooperative-in-belize/"
+SRC_FISHWISE = "https://fishwise.org/dive-deeper/resource/belize-fisheries-the-story-of-the-national-fishermens-co-operative-in-belize/"
 SRC_FISHERYPROGRESS = "https://fisheryprogress.org/sites/default/files/documents_tasks/FINAL%20REPORT-NFC-INSTITUTIONAL-STRENGTHENING.pdf"
 SRC_FISHSOURCE = "https://www.fishsource.org/fip_page/1184"
 SRC_BELTRAIDE = "https://www.facebook.com/BELTRAIDE/"
@@ -78,7 +78,7 @@ NAV = [
 
 BUYER_CTA = "contact.html#buyer-enquiry"
 
-LOGO_ALT = "NATFISH &ndash; National Fishermen Producers Cooperative Society Ltd."
+LOGO_ALT = "NATFISH &ndash; National Fishermen Producers Co-operative Society Ltd."
 
 # ----------------------------------------------------------------- images --
 # Two tiers, and the distinction is editorial, not technical.
@@ -92,11 +92,21 @@ LOGO_ALT = "NATFISH &ndash; National Fishermen Producers Cooperative Society Ltd
 
 OFFICIAL = "assets/img/official"
 PRODUCTS = "assets/img/products"
+# The three approved homepage hero images. Separate folder because their
+# provenance is different: these are illustrative sea-and-boat photographs from
+# the original concept pack, not photographs the General Manager supplied of
+# NATFISH's own people and rooms. Their alt text follows the concept-imagery
+# rule from the original brief and never asserts that a person, vessel or catch
+# belongs to NATFISH.
+CONCEPT = "assets/img/concept"
 
 # Intrinsic dimensions of the largest derivative, written by
 # tools/process-v2-images.py. Carried into width/height on every <img> so no
 # image can shift the layout while it loads.
 from v2_dims import DIMS  # noqa: E402
+from hero_dims import HERO_DIMS  # noqa: E402
+
+DIMS = {**DIMS, **HERO_DIMS}
 
 RECREATION_NOTE = (
     "Packaging photography on this page was recreated from NATFISH product "
@@ -106,7 +116,7 @@ RECREATION_NOTE = (
 ALT = {
     "01-lobster-packing-team-wide":
         "NATFISH workers in hairnets, masks and aprons preparing lobster along a "
-        "stainless steel bench in the cooperative&rsquo;s processing room.",
+        "stainless steel bench in the co-operative&rsquo;s processing room.",
     "02-lobster-packing-line-portrait":
         "NATFISH workers bagging lobster tails and packing them into cartons at "
         "the end of the processing line.",
@@ -131,6 +141,15 @@ ALT = {
     "10-cold-storage-room":
         "Racked trays inside the NATFISH cold storage room, cold vapour drifting "
         "between the shelves.",
+    "hero-1-fisher-with-conch-catch":
+        "A young fisher sitting in a skiff on clear turquoise water, a morning "
+        "harvest of queen conch piled in the bow beside her.",
+    "hero-2-boat-leaving-harbour":
+        "A small fishing boat heading out of the harbour past moored skiffs and "
+        "the waterfront.",
+    "hero-3-fishers-at-sunrise":
+        "Two fishers working with lobster traps aboard an open skiff on calm "
+        "water at sunrise.",
     "01-belizean-pride-lobster-cases":
         "Cartons of frozen Belizean spiny lobster tails packed for cold storage.",
     "02-belizean-pride-orange-lobster-tails":
@@ -153,6 +172,9 @@ SHORT = {
     "08-lobster-weighing-and-sorting": "Weighing and sorting the catch",
     "09-lobster-processing-table": "Sorting whole spiny lobster",
     "10-cold-storage-room": "The cold storage room",
+    "hero-1-fisher-with-conch-catch": "A morning conch harvest aboard a skiff",
+    "hero-2-boat-leaving-harbour": "Heading out of the harbour",
+    "hero-3-fishers-at-sunrise": "Working the traps at sunrise",
     "01-belizean-pride-lobster-cases": "Frozen lobster tails, cased",
     "02-belizean-pride-orange-lobster-tails": "Cooked lobster tails, bagged",
     "03-belizean-pride-raw-lobster-tails": "Raw lobster tails, bagged",
@@ -172,7 +194,11 @@ FOCUS = {
 
 def img_dir(stem):
     """Authentic photographs live in official/, recreations in products/."""
-    return PRODUCTS if "belizean-pride" in stem or "wild-caught" in stem else OFFICIAL
+    if stem.startswith("hero-"):
+        return CONCEPT
+    if "belizean-pride" in stem or "wild-caught" in stem:
+        return PRODUCTS
+    return OFFICIAL
 
 
 def picture(stem, sizes, css="", *, eager=False, alt=None, full=False,
@@ -230,6 +256,44 @@ LOGO_W, LOGO_H = 1789, 879
 LOGO_SRCSET = ("assets/img/natfish-logo-400.png 400w, "
                "assets/img/natfish-logo-800.png 800w, "
                "assets/img/natfish-logo-1200.png 1200w")
+
+
+HERO_TIERS = (480, 800, 1400)
+HERO_SIZES = "(max-width: 900px) 100vw, 60vw"
+
+
+def hero_picture(stem, index, *, eager):
+    """One carousel slide.
+
+    object-position is not set here. Each slide needs a different crop on a
+    phone than on a desktop, and an inline style cannot carry a media query, so
+    the focal points live in the stylesheet keyed to .hero__slide--N.
+    """
+    w, h = DIMS[stem]
+    d = img_dir(stem)
+    srcset_webp = ", ".join(f"{d}/{stem}-{t}.webp {t}w" for t in HERO_TIERS)
+    srcset_jpg = ", ".join(f"{d}/{stem}-{t}.jpg {t}w" for t in HERO_TIERS)
+    loading = (' loading="eager" fetchpriority="high"' if eager
+               else ' loading="lazy" decoding="async"')
+    return f"""<picture>
+            <source type="image/webp" srcset="{srcset_webp}" sizes="{HERO_SIZES}">
+            <img src="{d}/{stem}-800.jpg" srcset="{srcset_jpg}" sizes="{HERO_SIZES}" width="{w}" height="{h}" alt="{SHORT[stem]}"{loading}>
+          </picture>"""
+
+
+def hero_preload(stem):
+    """Preload only the first slide.
+
+    The other two are lazy: they are behind opacity 0 for at least seven
+    seconds, and preloading all three would put two images the visitor may
+    never see ahead of the fonts and the stylesheet.
+    """
+    d = img_dir(stem)
+    srcset = ", ".join(f"{d}/{stem}-{t}.webp {t}w" for t in HERO_TIERS)
+    return (f'  <link rel="preload" as="image" type="image/webp"\n'
+            f'        href="{d}/{stem}-800.webp"\n'
+            f'        imagesrcset="{srcset}" imagesizes="{HERO_SIZES}"'
+            f' fetchpriority="high">\n')
 
 
 def logo_img(css, sizes):
@@ -319,7 +383,7 @@ def org_jsonld():
 """
 
 
-def head(title, description, og_image="official/og-card"):
+def head(title, description, og_image="official/og-card", preload=""):
     """No canonical and no og:url until a real domain exists.
 
     The V1 build pointed both at the agency's own GitHub Pages domain, which
@@ -355,7 +419,7 @@ def head(title, description, og_image="official/og-card"):
   <link rel="preload" href="assets/fonts/source-sans-3-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/css/fonts.css">
   <link rel="stylesheet" href="assets/css/natfish.css">
-{org_jsonld()}</head>
+{preload}{org_jsonld()}</head>
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
 """
@@ -542,7 +606,7 @@ def footer(with_lightbox=False):
             {logo_full("", 300)}
           </div>
           <p>
-            {LEGAL_NO_DOT}. A member-owned Belizean cooperative registered in
+            {LEGAL_NO_DOT}. A member-owned Belizean co-operative registered in
             Belize City on {FOUNDED_DATE}, purchasing and marketing the produce of
             {MEMBERS} fishers at home and abroad.
           </p>

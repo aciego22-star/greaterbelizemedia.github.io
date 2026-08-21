@@ -3,7 +3,7 @@
 
 CONCEPT-STAGE TRANSLATION. This Spanish should receive a final review from a
 Belizean Spanish speaker designated by NATFISH before the site goes live.
-Fisheries and cooperative vocabulary in particular ("caracol reina", "veda",
+Fisheries and co-operative vocabulary in particular ("caracol reina", "veda",
 "cuota nacional") should be checked against the wording the Belize Fisheries
 Department itself uses.
 
@@ -37,19 +37,19 @@ ES = {
     "Contact & Buyer Enquiries | NATFISH": "Contacto y Consultas de Compra | NATFISH",
 
     # ------------------------------------------------------------ home --
-    "Belizean fisher-owned cooperative": "Cooperativa beliceña propiedad de pescadores",
+    "Belizean fisher-owned co-operative": "Cooperativa beliceña propiedad de pescadores",
     "From Belize's waters to the world.": "De las aguas de Belice al mundo.",
-    "A cooperative owned by the fishers who make it up, connecting fishing communities, quality seafood and markets at home and abroad.":
+    "A co-operative owned by the fishers who make it up, connecting fishing communities, quality seafood and markets at home and abroad.":
         "Una cooperativa propiedad de los pescadores que la integran, que conecta a las comunidades pesqueras, los mariscos de calidad y los mercados nacionales e internacionales.",
     "Established 1966": "Fundada en 1966",
-    "Belizean Fishers' Cooperative": "Cooperativa de pescadores beliceños",
+    "Belizean Fishers' Co-operative": "Cooperativa de pescadores beliceños",
     "Belize City": "Ciudad de Belice",
-    "A cooperative owned by Belizean fishers": "Una cooperativa propiedad de pescadores beliceños",
+    "A co-operative owned by Belizean fishers": "Una cooperativa propiedad de pescadores beliceños",
     "Seafood from Belizean waters": "Mariscos de aguas beliceñas",
-    "Lobster and conch are longstanding products associated with the cooperative's fishing, processing and market activity. Availability is confirmed directly with NATFISH.":
+    "Lobster and conch are longstanding products associated with the co-operative's fishing, processing and market activity. Availability is confirmed directly with NATFISH.":
         "La langosta y el caracol son productos de larga trayectoria asociados a la actividad de pesca, procesamiento y comercialización de la cooperativa. La disponibilidad se confirma directamente con NATFISH.",
     "Lobster": "Langosta",
-    "Caribbean spiny lobster, a longstanding cooperative product.":
+    "Caribbean spiny lobster, a longstanding co-operative product.":
         "Langosta espinosa del Caribe, un producto de larga trayectoria de la cooperativa.",
     "See lobster": "Ver langosta",
     "Conch": "Caracol",
@@ -163,13 +163,13 @@ ES = {
     "Registered on 29 April 1966": "Registrada el 29 de abril de 1966",
     "29 April 1966.": "29 de abril de 1966.",
     "29 April 1966": "29 de abril de 1966",
-    "The Society and its by-laws were registered on 29 April 1966. From that point National Fishermen has operated as a fisher-owned cooperative in Belize, with its members at the centre of the organization.":
+    "The Society and its by-laws were registered on 29 April 1966. From that point National Fishermen has operated as a fisher-owned co-operative in Belize, with its members at the centre of the organization.":
         "La Sociedad y sus estatutos fueron registrados el 29 de abril de 1966. Desde entonces National Fishermen ha operado como una cooperativa beliceña propiedad de sus pescadores, con sus socios en el centro de la organización.",
-    "The cooperative's stated objects include helping members produce, process, market, distribute and sell their products more efficiently. That purpose still describes what the Society does.":
+    "The co-operative's stated objects include helping members produce, process, market, distribute and sell their products more efficiently. That purpose still describes what the Society does.":
         "Los objetivos declarados de la cooperativa incluyen ayudar a los socios a producir, procesar, comercializar, distribuir y vender sus productos de manera más eficiente. Ese propósito sigue describiendo lo que hace la Sociedad.",
     "Registered": "Registrada",
     "Ownership": "Propiedad",
-    "Fisher-owned cooperative": "Cooperativa propiedad de pescadores",
+    "Fisher-owned co-operative": "Cooperativa propiedad de pescadores",
     "Governance": "Gobernanza",
     "Managing committee elected by members": "Comité directivo elegido por los socios",
     "Base": "Sede",
@@ -179,13 +179,13 @@ ES = {
     "and": "y",
     "FisheryProgress institutional strengthening report":
         "Informe de fortalecimiento institucional de FisheryProgress",
-    "The cooperative model": "El modelo cooperativo",
+    "The co-operative model": "El modelo cooperativo",
     "Members own it, and members govern it": "Los socios son dueños y los socios la gobiernan",
     "NATFISH is owned by the fishers who make it up. Members elect a managing committee, and that committee serves as the board overseeing the Society.":
         "NATFISH es propiedad de los pescadores que la integran. Los socios eligen un comité directivo, y ese comité actúa como la junta que supervisa la Sociedad.",
     "Fishers": "Pescadores",
     "Members harvest in Belizean waters": "Los socios pescan en aguas beliceñas",
-    "Cooperative": "Cooperativa",
+    "Co-operative": "Cooperativa",
     "Members combine effort and reach": "Los socios unen esfuerzo y alcance",
     "Processing": "Procesamiento",
     "Handling, grading and preparation": "Manejo, clasificación y preparación",
@@ -193,9 +193,9 @@ ES = {
     "Buyers at home and abroad": "Compradores nacionales e internacionales",
     "The fishermen behind NATFISH": "Los pescadores detrás de NATFISH",
     "Behind every product is a fishing community": "Detrás de cada producto hay una comunidad pesquera",
-    "NATFISH was built around the cooperative model, creating a collective structure through which Belizean fishers can connect their work at sea with processing and market opportunities.":
+    "NATFISH was built around the co-operative model, creating a collective structure through which Belizean fishers can connect their work at sea with processing and market opportunities.":
         "NATFISH se construyó en torno al modelo cooperativo, creando una estructura colectiva mediante la cual los pescadores beliceños pueden conectar su trabajo en el mar con el procesamiento y las oportunidades de mercado.",
-    "A cooperative gives a fisher more than a buyer for the day's catch. It gives a share in the organization, a vote in how it is run, and a route to markets that would otherwise be out of reach.":
+    "A co-operative gives a fisher more than a buyer for the day's catch. It gives a share in the organization, a vote in how it is run, and a route to markets that would otherwise be out of reach.":
         "Una cooperativa le da al pescador más que un comprador para la captura del día. Le da una participación en la organización, un voto sobre cómo se dirige y una ruta hacia mercados que de otro modo estarían fuera de su alcance.",
     "Milestones": "Hitos",
     "Sourced milestones": "Hitos documentados",
@@ -211,13 +211,13 @@ ES = {
     "Spiny lobster Fishery Improvement Project": "Proyecto de Mejora Pesquera de la langosta espinosa",
     "NATFISH has participated in Belize's spiny lobster Fishery Improvement Project alongside sector partners.":
         "NATFISH ha participado en el Proyecto de Mejora Pesquera de la langosta espinosa de Belice junto con socios del sector.",
-    "See what the cooperative brings to market": "Vea lo que la cooperativa lleva al mercado",
-    "Lobster, conch and the cooperative functions that carry a member's catch from the water to a buyer.":
+    "See what the co-operative brings to market": "Vea lo que la cooperativa lleva al mercado",
+    "Lobster, conch and the co-operative functions that carry a member's catch from the water to a buyer.":
         "Langosta, caracol y las funciones cooperativas que llevan la captura de un socio del mar al comprador.",
 
     # ----------------------------------------------- seafood & services --
-    "Seafood, and the cooperative behind it": "Los mariscos, y la cooperativa detrás de ellos",
-    "What NATFISH brings to market, and the cooperative functions that carry a member's catch from the water to a buyer.":
+    "Seafood, and the co-operative behind it": "Los mariscos, y la cooperativa detrás de ellos",
+    "What NATFISH brings to market, and the co-operative functions that carry a member's catch from the water to a buyer.":
         "Lo que NATFISH lleva al mercado, y las funciones cooperativas que trasladan la captura de un socio del mar al comprador.",
     "Please note.": "Tenga en cuenta.",
     "Products, quantities, formats and availability change with the season and the fishery. Everything on this page is confirmed directly with NATFISH before any commitment is made.":
@@ -230,7 +230,7 @@ ES = {
     "Enquire about lobster": "Consultar sobre langosta",
     "Queen conch is a longstanding product associated with NATFISH's fishing, processing and market activity.":
         "El caracol reina es un producto de larga trayectoria asociado a la actividad de pesca, procesamiento y comercialización de NATFISH.",
-    "Conch requires careful cleaning and handling between landing and market. That handling is part of what the cooperative structure was built to support.":
+    "Conch requires careful cleaning and handling between landing and market. That handling is part of what the co-operative structure was built to support.":
         "El caracol requiere limpieza y manejo cuidadosos entre el desembarque y el mercado. Ese manejo es parte de lo que la estructura cooperativa fue creada para respaldar.",
     "Enquire about conch": "Consultar sobre caracol",
     "Other seafood: availability upon enquiry": "Otros mariscos: disponibilidad bajo consulta",
@@ -239,18 +239,18 @@ ES = {
     "Tell the team what you are looking for and they will confirm what is available, in what form, and when.":
         "Dígale al equipo lo que busca y le confirmarán qué hay disponible, en qué presentación y cuándo.",
     "Ask what is available": "Preguntar qué hay disponible",
-    "Cooperative functions": "Funciones de la cooperativa",
-    "What the cooperative does for its members": "Lo que la cooperativa hace por sus socios",
+    "Co-operative functions": "Funciones de la cooperativa",
+    "What the co-operative does for its members": "Lo que la cooperativa hace por sus socios",
     "The Society's stated objects are to help members produce, process, market, distribute and sell their products more efficiently. Those five functions are what NATFISH exists to carry out.":
         "Los objetivos declarados de la Sociedad son ayudar a los socios a producir, procesar, comercializar, distribuir y vender sus productos de manera más eficiente. Esas cinco funciones son la razón de ser de NATFISH.",
     "Produce and process": "Producir y procesar",
-    "Members harvest in Belizean waters, and the cooperative supports the handling and preparation that follows a landing.":
+    "Members harvest in Belizean waters, and the co-operative supports the handling and preparation that follows a landing.":
         "Los socios pescan en aguas beliceñas, y la cooperativa respalda el manejo y la preparación que siguen al desembarque.",
     "Market and distribute": "Comercializar y distribuir",
     "The Society brings members' product to market collectively, reaching buyers that an individual fisher could not reach alone.":
         "La Sociedad lleva el producto de los socios al mercado de forma colectiva, alcanzando compradores que un pescador individual no podría alcanzar solo.",
     "Sell on members' behalf": "Vender en nombre de los socios",
-    "Selling through the cooperative is the mechanism that turns a member's catch into income and keeps the Society running.":
+    "Selling through the co-operative is the mechanism that turns a member's catch into income and keeps the Society running.":
         "Vender a través de la cooperativa es el mecanismo que convierte la captura de un socio en ingresos y mantiene en marcha a la Sociedad.",
     "Tell NATFISH what you need": "Dígale a NATFISH lo que necesita",
     "Send the product, quantity, location and timeframe you are working to, and the team will come back to you on availability.":
@@ -258,7 +258,7 @@ ES = {
 
     # ------------------------------------------- responsible fisheries --
     "Careful handling and better information": "Manejo cuidadoso y mejor información",
-    "How the cooperative works with its product, its records and the wider management of Belize's fisheries.":
+    "How the co-operative works with its product, its records and the wider management of Belize's fisheries.":
         "Cómo trabaja la cooperativa con su producto, sus registros y el manejo más amplio de las pesquerías de Belice.",
     "Quality": "Calidad",
     "Handling that protects the product": "Un manejo que protege el producto",
@@ -270,15 +270,15 @@ ES = {
     "Knowing where the catch came from": "Saber de dónde vino la captura",
     "NATFISH has participated in electronic catch-documentation and traceability initiatives designed to improve operational efficiency and seafood information through the supply chain.":
         "NATFISH ha participado en iniciativas de documentación electrónica de capturas y trazabilidad diseñadas para mejorar la eficiencia operativa y la información sobre los mariscos a lo largo de la cadena de suministro.",
-    "Good catch information helps the cooperative run more efficiently and helps buyers understand what they are purchasing. It is a practical tool as much as a compliance one.":
+    "Good catch information helps the co-operative run more efficiently and helps buyers understand what they are purchasing. It is a practical tool as much as a compliance one.":
         "Una buena información de capturas ayuda a la cooperativa a operar con más eficiencia y ayuda a los compradores a entender lo que están comprando. Es tanto una herramienta práctica como de cumplimiento.",
-    "FishWise, the story of the National Fishermen's Cooperative in Belize":
+    "FishWise, the story of the National Fishermen's Co-operative in Belize":
         "FishWise, la historia de la Cooperativa National Fishermen en Belice",
     "Fishery Improvement": "Mejora pesquera",
     "Part of Belize's fisheries management effort": "Parte del esfuerzo de manejo pesquero de Belice",
     "NATFISH has participated in Belize's spiny lobster Fishery Improvement Project and in broader fisheries-management efforts.":
         "NATFISH ha participado en el Proyecto de Mejora Pesquera de la langosta espinosa de Belice y en esfuerzos más amplios de manejo pesquero.",
-    "A Fishery Improvement Project brings industry, government and non-governmental partners together to work on the same fishery over time. For a cooperative whose members depend on that fishery, the interest is direct.":
+    "A Fishery Improvement Project brings industry, government and non-governmental partners together to work on the same fishery over time. For a co-operative whose members depend on that fishery, the interest is direct.":
         "Un Proyecto de Mejora Pesquera reúne a la industria, el gobierno y socios no gubernamentales para trabajar sobre la misma pesquería a lo largo del tiempo. Para una cooperativa cuyos socios dependen de esa pesquería, el interés es directo.",
     "FishSource, Belize spiny lobster FIP": "FishSource, PMP de la langosta espinosa de Belice",
     "FishSource Belize spiny lobster FIP": "FishSource, PMP de la langosta espinosa de Belice",
@@ -291,7 +291,7 @@ ES = {
 
     # ------------------------------------------------------------ news --
     "What’s New at NATFISH": "Novedades de NATFISH",
-    "Announcements, cooperative updates and fisheries-sector developments. Each item links to the source it came from.":
+    "Announcements, co-operative updates and fisheries-sector developments. Each item links to the source it came from.":
         "Anuncios, novedades de la cooperativa y acontecimientos del sector pesquero. Cada elemento enlaza con la fuente de la que proviene.",
     "Featured update": "Novedad destacada",
     "Trade & Markets": "Comercio y mercados",
@@ -303,7 +303,7 @@ ES = {
     "Sector Activity": "Actividad del sector",
     "National Fishermen active across the 2026 fisheries sector":
         "National Fishermen activa en el sector pesquero de 2026",
-    "Public fisheries-sector activity in 2026 continues to reference National Fishermen as an active cooperative within Belize's fishing community.":
+    "Public fisheries-sector activity in 2026 continues to reference National Fishermen as an active co-operative within Belize's fishing community.":
         "La actividad pública del sector pesquero en 2026 sigue mencionando a National Fishermen como una cooperativa activa dentro de la comunidad pesquera de Belice.",
     "Belize Fisheries Department public updates": "Actualizaciones públicas del Departamento de Pesca de Belice",
     "Traceability and the spiny lobster Fishery Improvement Project":
@@ -313,7 +313,7 @@ ES = {
     "More updates": "Más novedades",
     "Also happening": "También está ocurriendo",
     "About this page.": "Sobre esta página.",
-    "This page carries publicly sourced items only, with no dates, quotes or outcomes added beyond what the source supports. It is built to carry NATFISH announcements, events, public notices and media coverage as the cooperative publishes them.":
+    "This page carries publicly sourced items only, with no dates, quotes or outcomes added beyond what the source supports. It is built to carry NATFISH announcements, events, public notices and media coverage as the co-operative publishes them.":
         "Esta página contiene únicamente elementos de fuentes públicas, sin fechas, citas ni resultados añadidos más allá de lo que respalda la fuente. Está construida para alojar anuncios, eventos, avisos públicos y cobertura mediática de NATFISH conforme la cooperativa los publique.",
     "See the work and the product": "Vea el trabajo y el producto",
     "Open the gallery": "Abrir la galería",
@@ -329,15 +329,15 @@ ES = {
     "Photographs": "Fotografías",
     "Video": "Video",
     "On film": "En video",
-    "Third-party documentary material about the cooperative. NATFISH-owned video will be added here as it is supplied.":
+    "Third-party documentary material about the co-operative. NATFISH-owned video will be added here as it is supplied.":
         "Material documental de terceros sobre la cooperativa. El video propiedad de NATFISH se añadirá aquí conforme se suministre.",
-    "The National Fishermen Cooperative of Belize": "La Cooperativa National Fishermen de Belice",
-    "Play the video: The National Fishermen Cooperative of Belize":
+    "The National Fishermen Co-operative of Belize": "La Cooperativa National Fishermen de Belice",
+    "Play the video: The National Fishermen Co-operative of Belize":
         "Reproducir el video: La Cooperativa National Fishermen de Belice",
     "Courtesy of Ocean Link. This is third-party documentary footage used with attribution. It is not NATFISH-owned production.":
         "Cortesía de Ocean Link. Estas son imágenes documentales de terceros utilizadas con atribución. No son una producción propiedad de NATFISH.",
     "Get in touch with NATFISH": "Póngase en contacto con NATFISH",
-    "For buyer enquiries, cooperative matters or media requests, the team can be reached directly.":
+    "For buyer enquiries, co-operative matters or media requests, the team can be reached directly.":
         "Para consultas de compra, asuntos de la cooperativa o solicitudes de prensa, puede contactar al equipo directamente.",
     "Image viewer": "Visor de imágenes",
     "Close viewer": "Cerrar el visor",
@@ -368,8 +368,8 @@ ES = {
     "Any additional information NATFISH should know":
         "Cualquier información adicional que NATFISH deba conocer",
     "General Contact": "Contacto general",
-    "Reach the cooperative": "Comuníquese con la cooperativa",
-    "For cooperative matters, media requests and general questions. These details are provisional pending confirmation by NATFISH.":
+    "Reach the co-operative": "Comuníquese con la cooperativa",
+    "For co-operative matters, media requests and general questions. These details are provisional pending confirmation by NATFISH.":
         "Para asuntos de la cooperativa, solicitudes de prensa y consultas generales. Estos datos son provisionales, pendientes de confirmación por NATFISH.",
     "Visit": "Visítenos",
     "Open in Google Maps": "Abrir en Google Maps",
@@ -379,7 +379,7 @@ ES = {
     "Email NATFISH": "Escribir a NATFISH",
     "About": "Sobre nosotros",
     "New to NATFISH?": "¿Nuevo en NATFISH?",
-    "A Belizean fisher-owned cooperative registered in 1966, owned by the fishers who make it up.":
+    "A Belizean fisher-owned co-operative registered in 1966, owned by the fishers who make it up.":
         "Una cooperativa beliceña registrada en 1966, propiedad de los pescadores que la integran.",
     "Contact NATFISH": "Contactar a NATFISH",
     "For Buyers": "Para compradores",
@@ -470,8 +470,8 @@ ES = {
 
 ES.update({
     # ----------------------------------------------- identity and facts --
-    "NATFISH – National Fishermen Producers Cooperative Society Ltd.":
-        "NATFISH – National Fishermen Producers Cooperative Society Ltd.",
+    "NATFISH – National Fishermen Producers Co-operative Society Ltd.":
+        "NATFISH – National Fishermen Producers Co-operative Society Ltd.",
     "Member-owned in Belize since 1966":
         "Propiedad de sus socios en Belice desde 1966",
     "Registered 29 April 1966": "Registrada el 29 de abril de 1966",
@@ -480,7 +480,7 @@ ES.update({
         "Registrada en la Ciudad de Belice el 29 de abril de 1966.",
     "The Society and its by-laws were registered on 29 April 1966.":
         "La Sociedad y sus estatutos fueron registrados el 29 de abril de 1966.",
-    "Cooperative registered in Belize City":
+    "Co-operative registered in Belize City":
         "Cooperativa registrada en la Ciudad de Belice",
     "636 Fisher Members": "636 pescadores socios",
     "636 fishers": "636 pescadores",
@@ -523,11 +523,11 @@ ES.update({
         "La Sociedad compra el producto de sus socios",
 
     # ------------------------------------------------------ home page ----
-    "NATFISH Belize | Fisher-Owned Seafood Cooperative Since 1966":
+    "NATFISH Belize | Fisher-Owned Seafood Co-operative Since 1966":
         "NATFISH Belice | Cooperativa de mariscos de pescadores desde 1966",
     "From Belize's waters to markets around the world.":
         "De las aguas de Belice a mercados de todo el mundo.",
-    "A cooperative of 636 Belizean fishers, preparing quality frozen seafood "
+    "A co-operative of 636 Belizean fishers, preparing quality frozen seafood "
     "for local and international markets.":
         "Una cooperativa de 636 pescadores beliceños que prepara mariscos "
         "congelados de calidad para mercados locales e internacionales.",
@@ -536,7 +536,7 @@ ES.update({
     "Care from processing to cold storage":
         "Cuidado desde el proceso hasta el almacenamiento en frío",
     "Four steps between the landing and the container, photographed at the "
-    "cooperative's own facility.":
+    "co-operative's own facility.":
         "Cuatro pasos entre el desembarque y el contenedor, fotografiados en la "
         "planta de la propia cooperativa.",
     "Careful handling": "Manipulación cuidadosa",
@@ -574,7 +574,7 @@ ES.update({
         "productos de langosta congelada de la pesquería de langosta espinosa "
         "de Belice.",
     "Frozen queen conch meat, 85% cleaned, handled and packed at the "
-    "cooperative’s own facility.":
+    "co-operative’s own facility.":
         "Carne de caracol reina congelada, 85% limpia, manipulada y empacada en "
         "la planta de la propia cooperativa.",
     "Lionfish fillet, taken from an invasive species that Belizean fishers help "
@@ -586,7 +586,7 @@ ES.update({
         "Inocuidad alimentaria y manipulación cuidadosa",
     "NATFISH works to operate in accordance with HACCP and U.S. FDA "
     "regulations. Food safety and consumer protection are among the "
-    "cooperative's highest priorities as it supports globally recognized "
+    "co-operative's highest priorities as it supports globally recognized "
     "artisanal fishing.":
         "NATFISH trabaja para operar conforme a las normas HACCP y de la FDA de "
         "Estados Unidos. La inocuidad alimentaria y la protección del "
@@ -596,26 +596,26 @@ ES.update({
         "La gente, el proceso, el producto",
 
     # ---------------------------------------------------------- about ----
-    "About NATFISH | Belizean Fisher-Owned Cooperative Since 1966":
+    "About NATFISH | Belizean Fisher-Owned Co-operative Since 1966":
         "Sobre NATFISH | Cooperativa beliceña de pescadores desde 1966",
     "A member-owned society, registered in 1966":
         "Una sociedad propiedad de sus socios, registrada en 1966",
-    "National Fishermen Producers Cooperative Society Ltd was registered in "
+    "National Fishermen Producers Co-operative Society Ltd was registered in "
     "Belize City on 29 April 1966 and has grown to 636 fisher members. It is "
     "owned by those members and governed by a seven-member Managing Committee "
     "elected from the membership.":
-        "National Fishermen Producers Cooperative Society Ltd fue registrada en "
+        "National Fishermen Producers Co-operative Society Ltd fue registrada en "
         "la Ciudad de Belice el 29 de abril de 1966 y ha crecido hasta 636 "
         "pescadores socios. Es propiedad de esos socios y está dirigida por un "
         "Comité Administrativo de siete miembros electo entre la membresía.",
-    "National Fishermen Producers Cooperative Society Ltd was registered in "
+    "National Fishermen Producers Co-operative Society Ltd was registered in "
     "Belize City on 29 April 1966. What began with a small founding group of "
-    "fishers has grown into a member-owned cooperative of 636 fishers.":
-        "National Fishermen Producers Cooperative Society Ltd fue registrada en "
+    "fishers has grown into a member-owned co-operative of 636 fishers.":
+        "National Fishermen Producers Co-operative Society Ltd fue registrada en "
         "la Ciudad de Belice el 29 de abril de 1966. Lo que comenzó con un "
         "pequeño grupo fundador de pescadores se ha convertido en una "
         "cooperativa de 636 pescadores, propiedad de sus socios.",
-    "The cooperative is owned by its members and governed by a seven-member "
+    "The co-operative is owned by its members and governed by a seven-member "
     "Managing Committee elected from the general membership. Members are not "
     "customers of the Society; they are its owners, and the committee that runs "
     "it answers to them.":
@@ -631,7 +631,7 @@ ES.update({
         "mediante la compra y comercialización de su producto. Su objetivo es "
         "obtener el mejor valor posible en los mercados internacionales y "
         "mejorar los medios de vida de los pescadores que son sus dueños.",
-    "The cooperative supports its members through education in fishery "
+    "The co-operative supports its members through education in fishery "
     "management, and by purchasing and marketing their produce — working to "
     "secure the best possible value in international markets and improve "
     "members' livelihoods.":
@@ -647,18 +647,18 @@ ES.update({
         "junta que supervisa la Sociedad.",
     "The fishers behind NATFISH": "Los pescadores detrás de NATFISH",
     "636 fisher members, and the people who receive, prepare and pack what they "
-    "land. The cooperative is the structure that connects their work at sea to "
+    "land. The co-operative is the structure that connects their work at sea to "
     "a buyer.":
         "636 pescadores socios, y las personas que reciben, preparan y empacan "
         "lo que ellos desembarcan. La cooperativa es la estructura que conecta "
         "su trabajo en el mar con un comprador.",
     "Only milestones NATFISH has confirmed, or that the public record supports, "
-    "are listed. Further history will be added as the cooperative supplies it.":
+    "are listed. Further history will be added as the co-operative supplies it.":
         "Solo se enumeran los hitos que NATFISH ha confirmado o que respalda el "
         "registro público. Se añadirá más historia conforme la cooperativa la "
         "proporcione.",
     "Background sources:": "Fuentes de referencia:",
-    "Frozen spiny lobster, queen conch and lionfish fillet, and the cooperative "
+    "Frozen spiny lobster, queen conch and lionfish fillet, and the co-operative "
     "functions that carry a member's catch to a buyer.":
         "Langosta espinosa congelada, caracol reina y filete de pez león, y las "
         "funciones cooperativas que llevan la captura de un socio hasta un "
@@ -667,7 +667,7 @@ ES.update({
     # ------------------------------------------------ seafood & services --
     "Belizean Lobster, Conch & Lionfish Products | NATFISH":
         "Productos beliceños de langosta, caracol y pez león | NATFISH",
-    "Six products, and the cooperative behind them":
+    "Six products, and the co-operative behind them":
         "Seis productos, y la cooperativa detrás de ellos",
     "Product catalogue": "Catálogo de productos",
     "Frozen seafood from Belizean waters":
@@ -686,7 +686,7 @@ ES.update({
         "Caracol reina congelado, 85% limpio",
     "Lionfish Fillet": "Filete de pez león",
     "Lobster tails, individually bagged and packed into cartons at the "
-    "cooperative's facility.":
+    "co-operative's facility.":
         "Colas de langosta, embolsadas individualmente y empacadas en cajas en "
         "la planta de la cooperativa.",
     "Head meat recovered during lobster processing and frozen for market.":
@@ -760,11 +760,11 @@ ES.update({
     "Inside NATFISH | Belize Seafood Processing Gallery":
         "Dentro de NATFISH | Galería del proceso de mariscos en Belice",
     "An authentic look inside the people, processing, products and cold-storage "
-    "operations of National Fishermen Producers Cooperative Society Ltd. Select "
+    "operations of National Fishermen Producers Co-operative Society Ltd. Select "
     "any photograph to view it larger.":
         "Una mirada auténtica a la gente, el proceso, los productos y las "
         "operaciones de almacenamiento en frío de National Fishermen Producers "
-        "Cooperative Society Ltd. Seleccione cualquier fotografía para verla "
+        "Co-operative Society Ltd. Seleccione cualquier fotografía para verla "
         "más grande.",
     "Photographs supplied by NATFISH": "Fotografías proporcionadas por NATFISH",
     "Product and packaging": "Producto y empaque",
@@ -774,7 +774,7 @@ ES.update({
     "Photo feature": "Reportaje fotográfico",
     "Inside NATFISH: People, Process and Product":
         "Dentro de NATFISH: gente, proceso y producto",
-    "A set of photographs from inside the cooperative's own facility: the "
+    "A set of photographs from inside the co-operative's own facility: the "
     "people who receive and prepare the catch, the steps between landing and "
     "cold storage, and the product that leaves at the end of it.":
         "Un conjunto de fotografías tomadas dentro de la planta de la propia "
@@ -809,7 +809,7 @@ ES.update({
         "enviarlo. El correo se envía a",
     "and WhatsApp opens a chat with +501 611-4831.":
         "y WhatsApp abre un chat con +501 611-4831.",
-    "For cooperative matters, orders, media requests and general questions.":
+    "For co-operative matters, orders, media requests and general questions.":
         "Para asuntos de la cooperativa, pedidos, solicitudes de prensa y "
         "consultas generales.",
     "Primary office": "Oficina principal",
@@ -824,27 +824,27 @@ ES.update({
         "Para asuntos que requieren directamente a la Gerente General:",
     "General enquiries and orders are answered faster at":
         "Las consultas generales y los pedidos se atienden más rápido en",
-    "Questions about the cooperative, its products or a buyer requirement all "
+    "Questions about the co-operative, its products or a buyer requirement all "
     "reach the same team.":
         "Las preguntas sobre la cooperativa, sus productos o un requerimiento "
         "de compra llegan todas al mismo equipo.",
-    "A member-owned Belizean cooperative registered on 29 April 1966, owned by "
+    "A member-owned Belizean co-operative registered on 29 April 1966, owned by "
     "the 636 fishers who make it up.":
         "Una cooperativa beliceña propiedad de sus socios, registrada el 29 de "
         "abril de 1966 y perteneciente a los 636 pescadores que la integran.",
 
     # --------------------------------------------------------- footer ----
-    "National Fishermen Producers Cooperative Society Ltd. A member-owned "
-    "Belizean cooperative registered in Belize City on 29 April 1966, "
+    "National Fishermen Producers Co-operative Society Ltd. A member-owned "
+    "Belizean co-operative registered in Belize City on 29 April 1966, "
     "purchasing and marketing the produce of 636 fishers at home and abroad.":
-        "National Fishermen Producers Cooperative Society Ltd. Una cooperativa "
+        "National Fishermen Producers Co-operative Society Ltd. Una cooperativa "
         "beliceña propiedad de sus socios, registrada en la Ciudad de Belice el "
         "29 de abril de 1966, que compra y comercializa el producto de 636 "
         "pescadores en Belice y en el exterior.",
 
     # ------------------------------------------- alt text and captions ---
     "NATFISH workers in hairnets, masks and aprons preparing lobster along a "
-    "stainless steel bench in the cooperative’s processing room.":
+    "stainless steel bench in the co-operative’s processing room.":
         "Trabajadores de NATFISH con redecillas, mascarillas y delantales "
         "preparando langosta a lo largo de una mesa de acero inoxidable en la "
         "sala de proceso de la cooperativa.",
@@ -941,3 +941,40 @@ for _en, _es in list(ES.items()):
         "Raw lobster tails, bagged", "Frozen queen conch meat",
     ):
         ES[f"View larger: {_en}"] = f"Ver más grande: {_es}"
+
+# The two restored hero captions that had no V1 equivalent. The fisher slide's
+# caption already existed and is reused unchanged.
+ES.update({
+    "Heading out of the harbour": "Saliendo del puerto",
+    "Working the traps at sunrise": "Trabajando las nasas al amanecer",
+    "A small fishing boat heading out of the harbour past moored skiffs and "
+    "the waterfront.":
+        "Una pequeña embarcación pesquera saliendo del puerto, pasando junto a "
+        "botes amarrados y el malecón.",
+    "Two fishers working with lobster traps aboard an open skiff on calm water "
+    "at sunrise.":
+        "Dos pescadores trabajando con nasas para langosta a bordo de un bote "
+        "abierto en aguas tranquilas al amanecer.",
+    "A young fisher sitting in a skiff on clear turquoise water, a morning "
+    "harvest of queen conch piled in the bow beside her.":
+        "Una joven pescadora sentada en un bote sobre aguas turquesas claras, "
+        "con la captura matutina de caracol reina apilada en la proa junto a "
+        "ella.",
+})
+
+# The Operations section added to Seafood & Services, where the wide
+# processing-hall photograph now sits.
+ES.update({
+    "Operations": "Operaciones",
+    "Where the products are prepared": "Donde se preparan los productos",
+    "Every product on this page is received, prepared, weighed, packed and "
+    "frozen at the Co-operative's own facility in Belize City.":
+        "Todos los productos de esta página se reciben, preparan, pesan, "
+        "empacan y congelan en la planta propia de la Cooperativa en la Ciudad "
+        "de Belice.",
+    "That is what a member can rely on: their catch is handled by the Society "
+    "they own, and it leaves under the Society's name.":
+        "Con eso puede contar un socio: su captura la manipula la Sociedad de "
+        "la que es dueño, y sale bajo el nombre de la Sociedad.",
+    "Food safety and handling": "Inocuidad alimentaria y manipulación",
+})

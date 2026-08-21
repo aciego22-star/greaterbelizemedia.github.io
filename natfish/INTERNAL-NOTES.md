@@ -14,7 +14,7 @@ the directory-sourced contact details with client-verified content.
 
 | Area | V1 | V2 |
 |---|---|---|
-| Legal name | apostrophe-and-hyphen spelling | `National Fishermen Producers Cooperative Society Ltd.` |
+| Legal name | apostrophe spelling | `National Fishermen Producers Co-operative Society Ltd.` |
 | Photography | ten generated concept images | ten client photographs + four packaging recreations |
 | Contact | one directory phone, one BTL email, a temporary WhatsApp routing number | three verified numbers, two verified emails, verified street address |
 | Products | "lobster, conch, other on enquiry" | the six-product catalogue |
@@ -93,7 +93,7 @@ Used consistently in page copy, footers, structured data, enquiry drafts and `te
 
 | Field | Value |
 |---|---|
-| Legal name | `National Fishermen Producers Cooperative Society Ltd.` |
+| Legal name | `National Fishermen Producers Co-operative Society Ltd.` |
 | General Manager | Ms. Denise O'Brien, `deniseobrien125@gmail.com` (Contact page only) |
 | Primary office | `+501 227-3165` |
 | Secondary office | `+501 227-8039` |
@@ -150,12 +150,57 @@ on About, where the logo runs at 300-380px.
 auto` resolves against whichever srcset derivative loaded, and integer rounding in the 400px tier
 rendered the box at 2.030:1. Do not remove it.
 
-**NAMING DISCREPANCY - CLIENT DECISION NEEDED.** The approved logo artwork reads
-**"Co-operative"** (hyphenated). The V2 source-of-truth brief specified **"Cooperative"**
-(unhyphenated) for all body copy and told us to remove hyphenated variants. Both spellings are
-therefore live, side by side and visible together on the About page, where the logo sits next to the
-"Legal name" text. The apostrophe after "Producers" is gone from both. Only the client can say which
-hyphenation is correct; nothing has been changed on either side without that answer.
+**Hyphenation: settled.** The approved logo artwork reads "Co-operative", and the client has confirmed
+that the artwork is the source of truth. The whole project now uses
+**National Fishermen Producers Co-operative Society Ltd.** and the word is hyphenated in body copy too,
+so nothing on a page contradicts the logo beside it. "Producers" carries no apostrophe. The QA sweep
+fails on either the unhyphenated formal name or an apostrophe after "Producers".
+
+Spanish is unaffected: "cooperativa" is the Spanish word and is not hyphenated. The English legal name
+stays English inside Spanish copy, hyphen included.
+
+---
+
+## 3b. Homepage hero
+
+Three images, in this order, set by the client:
+
+| # | File | Subject |
+|---|---|---|
+| 1 | `hero-1-fisher-with-conch-catch` | A young fisher in a skiff with a conch catch. **Default slide, and the client's favourite.** |
+| 2 | `hero-2-boat-leaving-harbour` | A boat heading out of the harbour. |
+| 3 | `hero-3-fishers-at-sunrise` | Two fishers at the traps at sunrise. |
+
+They live in `assets/img/concept/`, deliberately apart from `official/`. **These three are from the
+original V1 concept pack, not photographs the General Manager supplied.** That distinction matters and
+is easy to lose: the same pack produced the storefront image that had to be destroyed for carrying a
+fabricated telephone number. Their alt text therefore follows the concept-imagery rule from the
+original brief and never says a person, vessel or catch belongs to NATFISH. The folder name is what
+keeps the next person from reaching for them as if they were documentary.
+
+Regenerate with `python3 tools/process-hero-images.py <v1-image-pack-dir>`.
+
+**No overlay, by design.** The hero is a split layout: the headline, copy and buttons sit on their own
+navy panel beside the photograph on desktop and above it on a phone. Nothing is ever drawn over a face,
+so no darkening gradient is needed and none is applied. Do not add one; it would only make the
+photographs murkier for no readability gain.
+
+**Focal points are per slide and per breakpoint**, in the stylesheet against `.hero__slide--N`. At every
+width the frame is wider than tall but narrower than the 1.78 source, so `cover` crops the horizontal
+axis only and X is the value that decides what survives. Slide 3 gets an extra nudge below 400px to
+keep the sun in shot.
+
+The mobile hero frame is `clamp(300px, 62vw, 380px)`, raised from a 250px floor. Because the crop is
+horizontal, a taller frame scales the photograph up and the subject grows with it: at 390px the fisher
+went from roughly a quarter of the frame to a third. That is what "prominently framed" needed. Lowering
+it again shrinks her.
+
+Rotation is 7s, pauses on hover, on keyboard focus entering the hero and behind a hidden tab, stops on
+a horizontal swipe, and does not run at all under `prefers-reduced-motion`. There are still **no visible
+controls** - the client had them removed in V1 because the control strip broke the mobile hero layout.
+
+Only slide 1 is preloaded and eager; the other two are lazy, since they sit behind `opacity: 0` for at
+least seven seconds.
 
 ---
 

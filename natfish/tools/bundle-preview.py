@@ -68,7 +68,7 @@ def data_uri(rel):
 PICTURE_RE = re.compile(
     r"<picture>\s*<source[^>]*>\s*(<img\b[^>]*>)\s*</picture>", re.S
 )
-STEM_RE = re.compile(r"assets/img/((?:official|products)/[\w-]+?)-\d+\.jpg")
+STEM_RE = re.compile(r"assets/img/((?:official|products|concept)/[\w-]+?)-\d+\.jpg")
 
 
 def inline_images(html):

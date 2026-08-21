@@ -26,7 +26,7 @@ LEAVE_ALONE = re.compile(
     r"nationalfishermen@gmail\.com|deniseobrien125@gmail\.com|"
     r"\+501 227-3165|\+501 227-8039|\+501 611-4831|"
     r"#1 Angel Lane, Belize City, Belize|"
-    r"National Fishermen Producers Cooperative Society Ltd\.?|"
+    r"National Fishermen Producers Co-operative Society Ltd\.?|"
     r"Panulirus argus|Strombus gigas|Pterois volitans|"
     r"English|Espanol|[\d\s.,:/|·&-]*)$"
 )

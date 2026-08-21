@@ -19,8 +19,8 @@ from build_shell import (
     RECREATION_NOTE, SHORT, TEL2_DISPLAY, TEL2_HREF, TEL_DISPLAY, TEL_HREF,
     VIDEO_ID, VIDEO_SOURCE, VIDEO_TITLE, WHATSAPP, SRC_BELTRAIDE,
     SRC_FISHERIES_DEPT, SRC_FISHERYPROGRESS, SRC_FISHSOURCE, SRC_FISHWISE,
-    RULE_WAVE, contact_strip, cta_band, footer, head, header, identity_ribbon,
-    logo_full, page_hero, picture,
+    RULE_WAVE, contact_strip, cta_band, footer, head, header, hero_picture,
+    hero_preload, identity_ribbon, logo_full, page_hero, picture,
 )
 
 OUT = pathlib.Path("/home/user/greaterbelizemedia.github.io/natfish")
@@ -106,7 +106,7 @@ UPDATES = [
         "tag": "Trade &amp; Markets",
         "title": "Belizean seafood featured in 2026 trade promotion",
         "date": "2026",
-        "img": "05-lobster-tail-packing-boxes",
+        "img": "01-belizean-pride-lobster-cases",
         "body": (
             "Current trade-promotion material from BELTRAIDE features seafood "
             "from National Fishermen, keeping Belizean product visible to "
@@ -122,7 +122,7 @@ UPDATES = [
         "img": "01-lobster-packing-team-wide",
         "body": (
             "Public fisheries-sector activity in 2026 continues to reference "
-            "National Fishermen as an active cooperative within Belize's "
+            "National Fishermen as an active co-operative within Belize's "
             "fishing community."
         ),
         "source": "Belize Fisheries Department public updates",
@@ -187,12 +187,12 @@ PROCESS = [
 # scientific names lives on seafood-services.html; this is a gateway, so it
 # names all six without repeating the detail.
 HOME_SEAFOOD = [
-    ("01-belizean-pride-lobster-cases", "Spiny lobster", "lobster",
+    ("03-belizean-pride-raw-lobster-tails", "Spiny lobster", "lobster",
      "Tails, head meat, and whole lobster raw or cooked &mdash; four frozen "
      "lobster products from Belize&rsquo;s spiny lobster fishery."),
     ("04-fresh-conch-processing-closeup", "Queen conch", "conch",
      "Frozen queen conch meat, 85% cleaned, handled and packed at the "
-     "cooperative&rsquo;s own facility."),
+     "co-operative&rsquo;s own facility."),
     (None, "Lionfish", "lionfish",
      "Lionfish fillet, taken from an invasive species that Belizean fishers "
      "help keep in check."),
@@ -213,24 +213,31 @@ def process_step(stem, title, body, n):
           </li>"""
 
 
+# The three client-approved hero images, in the approved order. The fisher with
+# the conch catch leads: she is the client's favourite of the three and the
+# slide the homepage must open on.
+#
+# Focal points are per slide and per breakpoint, set in the stylesheet against
+# .hero__slide--N. At every width the hero frame is wider-than-tall but
+# narrower than the 1.78 source, so `cover` crops the horizontal axis only and
+# the X value is what matters. Chosen so that:
+#   1  the fisher stays right of centre with the conch still in frame at left
+#   2  the departing boat stays centred
+#   3  both fishers and the sun stay in frame at the same time
+HERO_SLIDES = [
+    "hero-1-fisher-with-conch-catch",
+    "hero-2-boat-leaving-harbour",
+    "hero-3-fishers-at-sunrise",
+]
+
+
 def home():
-    # Three authentic photographs, each with its own focal point. One shared
-    # crop pushed the team out of frame on the tall mobile panel.
-    slides = [
-        ("01-lobster-packing-team-wide", "42% 46%"),
-        ("03-lobster-processing-room-wide", "54% 50%"),
-        ("04-fresh-conch-processing-closeup", "50% 54%"),
-    ]
     slide_html = []
-    for i, (stem, focus) in enumerate(slides):
+    for i, stem in enumerate(HERO_SLIDES):
         active = " is-active" if i == 0 else ""
-        img = picture(
-            stem, "(max-width: 900px) 100vw, 60vw",
-            eager=(i == 0), alt=SHORT[stem], focus=focus,
-        )
         slide_html.append(
-            f"""<div class="hero__slide{active}">
-            {img}
+            f"""<div class="hero__slide hero__slide--{i + 1}{active}">
+            {hero_picture(stem, i + 1, eager=(i == 0))}
           </div>"""
         )
 
@@ -256,10 +263,11 @@ def home():
 
     return (
         head(
-            "NATFISH Belize | Fisher-Owned Seafood Cooperative Since 1966",
-            "A member-owned cooperative of 636 Belizean fishers, registered in "
+            "NATFISH Belize | Fisher-Owned Seafood Co-operative Since 1966",
+            "A member-owned co-operative of 636 Belizean fishers, registered in "
             "Belize City in 1966. Frozen spiny lobster, queen conch and lionfish "
             "fillet prepared for local and international markets.",
+            preload=hero_preload(HERO_SLIDES[0]),
         )
         + header("index.html")
         + identity_ribbon()
@@ -270,7 +278,7 @@ def home():
           <p class="hero__eyebrow"><strong>NATFISH</strong> <span class="hero__eyebrow-sep" aria-hidden="true">|</span> Member-owned in Belize since 1966</p>
           <h1>From Belize's waters to markets around the world.</h1>
           <p class="hero__copy">
-            A cooperative of {MEMBERS} Belizean fishers, preparing quality frozen
+            A co-operative of {MEMBERS} Belizean fishers, preparing quality frozen
             seafood for local and international markets.
           </p>
           <div class="hero__actions">
@@ -301,7 +309,7 @@ def home():
         <div class="split">
           <div class="reveal">
             <span class="eyebrow">About NATFISH</span>
-            <h2 id="home-about-h">A cooperative owned by Belizean fishers</h2>
+            <h2 id="home-about-h">A co-operative owned by Belizean fishers</h2>
             <p class="lede">
               {LEGAL_NO_DOT} was registered in Belize City on {FOUNDED_DATE} and
               has grown to {MEMBERS} fisher members. It is owned by those members
@@ -309,7 +317,7 @@ def home():
               the membership.
             </p>
             <p>
-              The cooperative supports its members through education in fishery
+              The co-operative supports its members through education in fishery
               management, and by purchasing and marketing their produce &mdash;
               working to secure the best possible value in international markets
               and improve members' livelihoods.
@@ -331,7 +339,7 @@ def home():
           <h2 id="home-process-h">Care from processing to cold storage</h2>
           <p class="lede">
             Four steps between the landing and the container, photographed at
-            the cooperative's own facility.
+            the co-operative's own facility.
           </p>
         </div>
 
@@ -385,7 +393,7 @@ def home():
       <div class="container">
         <div class="split split--media-right">
           <div class="split__media reveal">
-            {picture("07-lobster-washing-station", "(max-width: 860px) 92vw, 46vw")}
+            {picture("02-lobster-packing-line-portrait", "(max-width: 860px) 92vw, 46vw")}
           </div>
           <div class="reveal">
             <span class="eyebrow">Responsible Fisheries</span>
@@ -393,7 +401,7 @@ def home():
             <p class="lede">
               NATFISH works to operate in accordance with HACCP and U.S. FDA
               regulations. Food safety and consumer protection are among the
-              cooperative's highest priorities as it supports globally
+              co-operative's highest priorities as it supports globally
               recognized artisanal fishing.
             </p>
             <a class="arrow-link" href="responsible.html">Responsible Fisheries</a>
@@ -429,10 +437,9 @@ def home():
         </div>
         <a class="gallery-preview reveal" href="gallery.html"
            aria-label="View the NATFISH gallery">
-          {picture("01-lobster-packing-team-wide", "(max-width: 700px) 46vw, 24vw")}
-          {picture("06-lobster-tail-packing-close", "(max-width: 700px) 46vw, 24vw")}
-          {picture("08-lobster-weighing-and-sorting", "(max-width: 700px) 46vw, 24vw")}
-          {picture("10-cold-storage-room", "(max-width: 700px) 46vw, 24vw")}
+          {picture("06-lobster-tail-packing-close", "(max-width: 700px) 46vw, 31vw")}
+          {picture("02-belizean-pride-orange-lobster-tails", "(max-width: 700px) 46vw, 31vw")}
+          {picture("04-wild-caught-frozen-conch", "(max-width: 700px) 46vw, 31vw")}
         </a>
       </div>
     </section>
@@ -457,7 +464,7 @@ def home():
 def about():
     return (
         head(
-            "About NATFISH | Belizean Fisher-Owned Cooperative Since 1966",
+            "About NATFISH | Belizean Fisher-Owned Co-operative Since 1966",
             f"{LEGAL_NO_DOT} was registered in Belize City on {FOUNDED_DATE} and "
             f"has grown to {MEMBERS} fisher members, governed by a "
             f"{COMMITTEE}-member Managing Committee elected from the membership.",
@@ -492,10 +499,10 @@ def about():
             <p>
               {LEGAL_NO_DOT} was registered in Belize City on {FOUNDED_DATE}.
               What began with a small founding group of fishers has grown into a
-              member-owned cooperative of {MEMBERS} fishers.
+              member-owned co-operative of {MEMBERS} fishers.
             </p>
             <p>
-              The cooperative is owned by its members and governed by a
+              The co-operative is owned by its members and governed by a
               {COMMITTEE}-member Managing Committee elected from the general
               membership. Members are not customers of the Society; they are its
               owners, and the committee that runs it answers to them.
@@ -537,7 +544,7 @@ def about():
     <section class="section section--sand" aria-labelledby="about-model-h">
       <div class="container">
         <div class="section-head reveal">
-          <span class="eyebrow">The cooperative model</span>
+          <span class="eyebrow">The co-operative model</span>
           <h2 id="about-model-h">Members own it, and members govern it</h2>
           <p class="lede">
             NATFISH is owned by the {MEMBERS} fishers who make it up. Members
@@ -554,7 +561,7 @@ def about():
           </li>
           <li class="flow__step">
             <span class="flow__num">02</span>
-            <span class="flow__label">Cooperative</span>
+            <span class="flow__label">Co-operative</span>
             <span class="flow__note">The Society purchases members' produce</span>
           </li>
           <li class="flow__step">
@@ -580,11 +587,11 @@ def about():
             <h2 class="h-icon" id="about-fishers-h">{icon("net", "h-icon__mark")} Behind every product is a fishing community</h2>
             <p class="lede">
               {MEMBERS} fisher members, and the people who receive, prepare and
-              pack what they land. The cooperative is the structure that
+              pack what they land. The co-operative is the structure that
               connects their work at sea to a buyer.
             </p>
             <p>
-              A cooperative gives a fisher more than a buyer for the day's
+              A co-operative gives a fisher more than a buyer for the day's
               catch. It gives a share in the organization, a vote in how it is
               run, and a route to markets that would otherwise be out of reach.
             </p>
@@ -605,14 +612,14 @@ def about():
           <p class="lede">
             Only milestones NATFISH has confirmed, or that the public record
             supports, are listed. Further history will be added as the
-            cooperative supplies it.
+            co-operative supplies it.
           </p>
         </div>
         <ol class="timeline reveal">
           <li>
             <span class="timeline__year">{FOUNDED_DATE.split()[-1]}</span>
             <div>
-              <h3>Cooperative registered in Belize City</h3>
+              <h3>Co-operative registered in Belize City</h3>
               <p>
                 The Society and its by-laws were registered on {FOUNDED_DATE}.
               </p>
@@ -659,9 +666,9 @@ def about():
 """
         + cta_band(
             "Next",
-            "See what the cooperative brings to market",
+            "See what the co-operative brings to market",
             "Frozen spiny lobster, queen conch and lionfish fillet, and the "
-            "cooperative functions that carry a member's catch to a buyer.",
+            "co-operative functions that carry a member's catch to a buyer.",
             [
                 '<a class="btn btn--primary" href="seafood-services.html">Seafood &amp; Services</a>',
                 f'<a class="btn btn--ghost" href="{BUYER_CTA}">Buyer Enquiry</a>',
@@ -688,7 +695,7 @@ CATALOGUE = [
         "icon": "lobster",
         "img": "03-belizean-pride-raw-lobster-tails",
         "body": "Lobster tails, individually bagged and packed into cartons at "
-                "the cooperative's facility.",
+                "the co-operative's facility.",
     },
     {
         "name": "Frozen Lobster Head Meat",
@@ -767,13 +774,13 @@ def seafood_services():
             "Belizean Lobster, Conch &amp; Lionfish Products | NATFISH",
             "Frozen spiny lobster tails, lobster head meat, whole raw and cooked "
             "lobster, queen conch 85% cleaned and lionfish fillet, prepared by a "
-            "Belizean fisher-owned cooperative.",
+            "Belizean fisher-owned co-operative.",
         )
         + header("seafood-services.html")
         + page_hero(
             "Seafood &amp; Services",
-            "Six products, and the cooperative behind them",
-            "What NATFISH brings to market, and the cooperative functions that "
+            "Six products, and the co-operative behind them",
+            "What NATFISH brings to market, and the co-operative functions that "
             "carry a member's catch from the water to a buyer.",
             "Seafood &amp; Services",
         )
@@ -816,12 +823,35 @@ def seafood_services():
       </div>
     </section>
 
+    <section class="section" aria-labelledby="sf-ops-h">
+      <div class="container">
+        <div class="split">
+          <div class="split__media reveal">
+            {picture("03-lobster-processing-room-wide", "(max-width: 860px) 92vw, 46vw")}
+          </div>
+          <div class="reveal">
+            <span class="eyebrow">Operations</span>
+            <h2 class="h-icon" id="sf-ops-h">{icon("handling", "h-icon__mark")} Where the products are prepared</h2>
+            <p class="lede">
+              Every product on this page is received, prepared, weighed, packed
+              and frozen at the Co-operative's own facility in Belize City.
+            </p>
+            <p>
+              That is what a member can rely on: their catch is handled by the
+              Society they own, and it leaves under the Society's name.
+            </p>
+            <a class="arrow-link" href="responsible.html">Food safety and handling</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="section section--navy" aria-labelledby="sf-services-h">
       <div class="container">
         <div class="section-head section-head--center reveal">
           {RULE_WAVE}
-          <span class="eyebrow">Cooperative functions</span>
-          <h2 id="sf-services-h">What the cooperative does for its members</h2>
+          <span class="eyebrow">Co-operative functions</span>
+          <h2 id="sf-services-h">What the co-operative does for its members</h2>
           <p class="lede">
             NATFISH exists to serve the {MEMBERS} fishers who own it: teaching
             fishery management, buying what they land, and marketing it on their
@@ -886,7 +916,7 @@ def responsible():
         + page_hero(
             "Responsible Fisheries",
             "Careful handling and better information",
-            "How the cooperative works with its product, its records and the "
+            "How the co-operative works with its product, its records and the "
             "wider management of Belize's fisheries.",
             "Responsible Fisheries",
         )
@@ -939,13 +969,13 @@ def responsible():
               efficiency and seafood information through the supply chain.
             </p>
             <p>
-              Good catch information helps the cooperative run more efficiently
+              Good catch information helps the co-operative run more efficiently
               and helps buyers understand what they are purchasing. It is a
               practical tool as much as a compliance one.
             </p>
             <p class="note">
               Source:
-              <a href="{SRC_FISHWISE}" target="_blank" rel="noopener noreferrer">FishWise, the story of the National Fishermen's Cooperative in Belize</a>.
+              <a href="{SRC_FISHWISE}" target="_blank" rel="noopener noreferrer">FishWise, the story of the National Fishermen's Co-operative in Belize</a>.
             </p>
           </div>
         </div>
@@ -966,7 +996,7 @@ def responsible():
             <p>
               A Fishery Improvement Project brings industry, government and
               non-governmental partners together to work on the same fishery
-              over time. For a cooperative whose members depend on that fishery,
+              over time. For a co-operative whose members depend on that fishery,
               the interest is direct.
             </p>
             <p class="note">
@@ -1017,14 +1047,14 @@ def news():
     return (
         head(
             "What&rsquo;s New at NATFISH | NATFISH",
-            "Announcements, cooperative updates, fisheries-sector developments "
+            "Announcements, co-operative updates, fisheries-sector developments "
             f"and media coverage relevant to {LEGAL_NO_DOT}.",
         )
         + header("news.html")
         + page_hero(
             "What&rsquo;s New",
             "What&rsquo;s New at NATFISH",
-            "Announcements, cooperative updates and fisheries-sector "
+            "Announcements, co-operative updates and fisheries-sector "
             "developments. Each item links to the source it came from.",
             "What&rsquo;s New",
         )
@@ -1063,7 +1093,7 @@ def news():
             </p>
             <h2 id="news-feature-h">Inside NATFISH: People, Process and Product</h2>
             <p class="lede">
-              A set of photographs from inside the cooperative's own facility:
+              A set of photographs from inside the co-operative's own facility:
               the people who receive and prepare the catch, the steps between
               landing and cold storage, and the product that leaves at the end
               of it.
@@ -1092,7 +1122,7 @@ def news():
           <strong>About this page.</strong> This page carries publicly sourced
           items only, with no dates, quotes or outcomes added beyond what the
           source supports. It is built to carry NATFISH announcements, events,
-          public notices and media coverage as the cooperative publishes them.
+          public notices and media coverage as the co-operative publishes them.
         </p>
       </div>
     </section>
@@ -1311,14 +1341,14 @@ def gallery():
           <span class="eyebrow">Video</span>
           <h2 id="gal-video-h">On film</h2>
           <p class="lede" style="margin-inline:auto">
-            Third-party documentary material about the cooperative. NATFISH-owned
+            Third-party documentary material about the co-operative. NATFISH-owned
             video will be added here as it is supplied.
           </p>
         </div>
 
         <div class="video reveal" data-video="{VIDEO_ID}" data-video-title="{VIDEO_TITLE}">
           <button class="video__poster" type="button" aria-label="Play the video: {VIDEO_TITLE}">
-            {picture("03-lobster-processing-room-wide", "(max-width: 900px) 96vw, 880px", alt="")}
+            {picture("hero-2-boat-leaving-harbour", "(max-width: 900px) 96vw, 880px", alt="")}
             <span class="video__play">{ICON_PLAY}</span>
             <span class="video__label">{VIDEO_TITLE}</span>
           </button>
@@ -1333,7 +1363,7 @@ def gallery():
         + cta_band(
             "Contact",
             "Get in touch with NATFISH",
-            "Questions about the cooperative, its products or a buyer "
+            "Questions about the co-operative, its products or a buyer "
             "requirement all reach the same team.",
             [
                 '<a class="btn btn--primary" href="contact.html">Contact NATFISH</a>',
@@ -1376,7 +1406,7 @@ def contact():
         head(
             "Contact NATFISH | Belize Seafood Buyer Enquiries",
             "Send NATFISH a buyer enquiry by email or WhatsApp, or reach the "
-            f"cooperative at {ADDRESS} by telephone or email.",
+            f"co-operative at {ADDRESS} by telephone or email.",
         )
         + header("contact.html")
         + page_hero(
@@ -1444,9 +1474,9 @@ def contact():
       <div class="container">
         <div class="section-head section-head--center reveal">
           <span class="eyebrow">General Contact</span>
-          <h2 id="general-h">Reach the cooperative</h2>
+          <h2 id="general-h">Reach the co-operative</h2>
           <p class="lede" style="margin-inline:auto">
-            For cooperative matters, orders, media requests and general
+            For co-operative matters, orders, media requests and general
             questions.
           </p>
         </div>
@@ -1507,7 +1537,7 @@ def contact():
         + cta_band(
             "About",
             "New to NATFISH?",
-            f"A member-owned Belizean cooperative registered on {FOUNDED_DATE}, "
+            f"A member-owned Belizean co-operative registered on {FOUNDED_DATE}, "
             f"owned by the {MEMBERS} fishers who make it up.",
             [
                 '<a class="btn btn--primary" href="about.html">About NATFISH</a>',

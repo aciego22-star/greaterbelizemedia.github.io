@@ -1,6 +1,6 @@
 /* ==========================================================================
    NATFISH V2
-   National Fishermen Producers Cooperative Society Ltd.
+   National Fishermen Producers Co-operative Society Ltd.
    No build step, no external dependencies.
    ========================================================================== */
 
@@ -812,7 +812,13 @@ body.nav-open {
   .hero__media {
     order: -1;
     min-height: 0;
-    height: clamp(250px, 46vw, 360px);
+    /* Raised from a 250px floor. `cover` crops the horizontal axis at these
+       ratios, so a taller frame scales the photograph up and the subject grows
+       with it: at 390px the fisher goes from about a quarter of the frame to a
+       third, which is what "prominently framed" needs on a phone. Checked at
+       430, 390 and 360 that the extra side crop still leaves her conch catch,
+       the departing boat, and both fishers with the sunrise in shot. */
+    height: clamp(300px, 62vw, 380px);
   }
 
   .hero__media::before {
@@ -2294,7 +2300,10 @@ body.nav-open {
 /* Homepage gallery teaser: four crops that link through. */
 .gallery-preview {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  /* Three tiles, not four: the homepage has fourteen photographs to place and
+     a four-up teaser could only fill itself by repeating one from the sections
+     above. Three keeps every tile new. */
+  grid-template-columns: repeat(3, 1fr);
   gap: clamp(0.5rem, 1.2vw, 0.9rem);
   border-radius: var(--radius-lg);
   overflow: hidden;
@@ -3647,4 +3656,46 @@ body.nav-open {
      would push the text off the first screen. Cap it. */
   .split__media img.is-portrait { max-height: 460px; }
   .split__media:has(img.is-portrait) { max-width: 380px; }
+}
+
+/* ------------------------------------------- hero focal points --------- */
+/* One crop per slide, and a different one on a phone.
+   At every width the hero frame is wider than it is tall but still narrower
+   than the 1.78 source, so `cover` scales to the frame's height and crops the
+   horizontal axis. The X value is therefore the one that decides what stays in
+   frame; Y is set for completeness and has no effect at these ratios.
+
+   Nothing is overlaid on these photographs. The hero is a split layout: the
+   headline and buttons sit on their own navy panel beside the image on
+   desktop, and above it on a phone. No text or control ever crosses a face,
+   which is why no darkening gradient is needed over the photograph at all. */
+
+/* 1 - the fisher with the conch catch. She sits right of centre and the catch
+   fills the lower left, so the window holds just right of centre: far enough
+   to keep her whole, not so far that the conch is lost. */
+.hero__slide--1 img { object-position: 53% 50%; }
+
+/* 2 - the boat leaving the harbour, which sits centre-left in the frame. */
+.hero__slide--2 img { object-position: 47% 55%; }
+
+/* 3 - two fishers at the traps on the left of frame, the sun low on the right.
+   Slightly right of centre is the one position that keeps both. */
+.hero__slide--3 img { object-position: 54% 50%; }
+
+@media (max-width: 900px) {
+  /* The phone frame is narrower again, so each window tightens on its subject.
+     Verified at 430, 390 and 360: the fisher stays whole with the conch still
+     showing, the departing boat stays centred, and the sunrise stays in frame
+     alongside both fishers. */
+  .hero__slide--1 img { object-position: 56% 50%; }
+  .hero__slide--2 img { object-position: 46% 58%; }
+  .hero__slide--3 img { object-position: 57% 50%; }
+}
+
+/* At 360 the frame is 1.2:1 against a 1.78 source, so a third of the width is
+   cropped. Slide 3 shifts a little further right so the sun stays in shot; the
+   left-hand fisher sits at about a third across and is still clear of the
+   edge. */
+@media (max-width: 400px) {
+  .hero__slide--3 img { object-position: 60% 50%; }
 }

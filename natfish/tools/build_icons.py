@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """The NATFISH icon system.
 
-One family, drawn for this cooperative rather than pulled from a general-purpose
+One family, drawn for this co-operative rather than pulled from a general-purpose
 set. Every icon shares a 24px viewBox, a 1.85 stroke, round caps and joins, and
 takes its primary colour from `currentColor`. Paths marked `ico__accent` render
 in turquoise, and `ico__coral` in coral, so a single element can carry two tones
@@ -40,7 +40,7 @@ FEATURE = {
     # Established 1966: a heritage seal, rope ticks on the rim, wave in the core.
     "seal": """<circle cx="12" cy="12" r="8.7"/><circle class="ico__accent" cx="12" cy="12" r="5.5"/><path class="ico__accent" d="M8.9 12.5q1.55-1.45 3.1 0t3.1 0"/><path d="M12 3.3V1.9M12 22.1v-1.4M3.3 12H1.9M22.1 12h-1.4M5.85 5.85 4.86 4.86M19.14 19.14l-.99-.99M18.15 5.85l.99-.99M4.86 19.14l.99-.99"/>""",
 
-    # Fisher-owned cooperative: a skiff carrying two members.
+    # Fisher-owned co-operative: a skiff carrying two members.
     "boat": """<path d="M3.5 16.9h17l-2 3.3a2 2 0 0 1-1.7 1H7.2a2 2 0 0 1-1.7-1z"/><circle cx="9.4" cy="7.6" r="1.7"/><circle cx="15.3" cy="9.3" r="1.5"/><path d="M6.9 14.6c0-2 1.1-3.6 2.5-3.6s2.5 1.6 2.5 3.6M13.2 14.6c0-1.8.94-3.1 2.1-3.1s2.1 1.3 2.1 3.1"/><path class="ico__accent" d="M2 14.2h20"/>""",
 
     # Belize City: a marker standing on the coast.

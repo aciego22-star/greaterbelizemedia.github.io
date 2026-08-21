@@ -188,9 +188,48 @@
       document.addEventListener("visibilitychange", function () {
         if (document.hidden) {
           stop();
-        } else {
+        } else if (!held) {
           start();
         }
+      });
+
+      /* Rotation pauses while the visitor is engaged with the hero, and picks
+         up again when they leave. `held` tracks pointer and keyboard
+         separately from the tab check above, so returning to the tab does not
+         restart rotation under a hovering cursor. */
+      var hovering = false;
+      var focused = false;
+      var held = false;
+
+      var settle = function () {
+        var next = hovering || focused;
+        if (next === held) return;
+        held = next;
+        if (held) {
+          stop();
+        } else if (!document.hidden) {
+          start();
+        }
+      };
+
+      root.addEventListener("mouseenter", function () {
+        hovering = true;
+        settle();
+      });
+      root.addEventListener("mouseleave", function () {
+        hovering = false;
+        settle();
+      });
+
+      /* focusin/focusout rather than focus/blur: the events that matter come
+         from the CTAs inside the hero, and only these two bubble. */
+      root.addEventListener("focusin", function () {
+        focused = true;
+        settle();
+      });
+      root.addEventListener("focusout", function (event) {
+        focused = root.contains(event.relatedTarget);
+        settle();
       });
 
       /* Reduced motion holds on the first slide. */
