@@ -58,7 +58,7 @@ const fmt = (d: Date) =>
 
       {
         rest.length > 0 && (
-          <div class="posts">
+          <div class:list={["posts", { "posts--few": rest.length < 3 }]}>
             {rest.map((post, i) => (
               <a href={`/blog/${post.id}`} class="post" data-reveal data-reveal-delay={(i % 3) * 70}>
                 <div class="post__media">
@@ -138,6 +138,13 @@ const fmt = (d: Date) =>
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
     gap: 1.6rem;
+  }
+  /* With only one or two articles beside the featured one, a full-width track
+     leaves a lone card stranded at a third of the row. Cap the card width and
+     centre the group so the section stays balanced until the grid fills out. */
+  .posts--few {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 460px));
+    justify-content: center;
   }
   .post {
     display: flex;
