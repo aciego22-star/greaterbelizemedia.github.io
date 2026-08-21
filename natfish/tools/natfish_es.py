@@ -29,18 +29,12 @@ ES = {
     "Switch language to Espanol": "Cambiar idioma a español",
 
     # ---------------------------------------------------------- titles --
-    "NATFISH | National Fishermen Producers' Co-operative Society Ltd.":
-        "NATFISH | National Fishermen Producers' Co-operative Society Ltd.",
-    "About NATFISH | National Fishermen Producers' Co-operative Society Ltd.":
-        "Sobre NATFISH | National Fishermen Producers' Co-operative Society Ltd.",
     "Seafood & Services | NATFISH": "Mariscos y Servicios | NATFISH",
     "Seafood Seasons | NATFISH": "Temporadas de Mariscos | NATFISH",
     "Responsible Fisheries | NATFISH": "Pesca Responsable | NATFISH",
     "What’s New at NATFISH | NATFISH": "Novedades de NATFISH | NATFISH",
     "Gallery | NATFISH": "Galería | NATFISH",
     "Contact & Buyer Enquiries | NATFISH": "Contacto y Consultas de Compra | NATFISH",
-    "NATFISH – National Fishermen Producers' Co-operative Society Ltd.":
-        "NATFISH – National Fishermen Producers' Co-operative Society Ltd.",
 
     # ------------------------------------------------------------ home --
     "Belizean fisher-owned cooperative": "Cooperativa beliceña propiedad de pescadores",
@@ -51,8 +45,6 @@ ES = {
     "Belizean Fishers' Cooperative": "Cooperativa de pescadores beliceños",
     "Belize City": "Ciudad de Belice",
     "A cooperative owned by Belizean fishers": "Una cooperativa propiedad de pescadores beliceños",
-    "Founded in 1966, National Fishermen Producers' Co-operative Society Ltd. is a Belizean fisher-owned cooperative. Its members form the foundation of the organization and elect the managing committee that oversees the Society.":
-        "Fundada en 1966, National Fishermen Producers' Co-operative Society Ltd. es una cooperativa beliceña propiedad de sus pescadores. Sus socios son la base de la organización y eligen al comité directivo que supervisa la Sociedad.",
     "Seafood from Belizean waters": "Mariscos de aguas beliceñas",
     "Lobster and conch are longstanding products associated with the cooperative's fishing, processing and market activity. Availability is confirmed directly with NATFISH.":
         "La langosta y el caracol son productos de larga trayectoria asociados a la actividad de pesca, procesamiento y comercialización de la cooperativa. La disponibilidad se confirma directamente con NATFISH.",
@@ -394,8 +386,6 @@ ES = {
     "Primary": "Principal",
 
     # ---------------------------------------------------------- footer --
-    "National Fishermen Producers' Co-operative Society Ltd. A Belizean fisher-owned cooperative registered in 1966, connecting fishing communities, quality seafood and markets at home and abroad.":
-        "National Fishermen Producers' Co-operative Society Ltd. Una cooperativa beliceña propiedad de sus pescadores, registrada en 1966, que conecta a las comunidades pesqueras, los mariscos de calidad y los mercados nacionales e internacionales.",
     "Registered 1966. Belize City, Belize.": "Registrada en 1966. Ciudad de Belice, Belice.",
     "Website designed and developed by": "Sitio web diseñado y desarrollado por",
 

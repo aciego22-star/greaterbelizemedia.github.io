@@ -45,6 +45,11 @@ cp -- "${PAGES[@]}" netlify.toml "$STAGE/"
 mkdir -p "$STAGE/assets"
 cp -R assets/css assets/js assets/img assets/fonts "$STAGE/assets/"
 
+# The approved logo master is the source the display sizes are generated from,
+# not something any page loads. It stays in the repository and out of the
+# deployment package, which should carry only what the site actually requests.
+rm -f "$STAGE/assets/img/natfish-logo-approved-final.png"
+
 rm -f "$OUT"
 ( cd "$STAGE" && zip -qr -X "$OLDPWD/$OUT" . )
 
@@ -57,3 +62,23 @@ if unzip -l "$OUT" | grep -qiE 'INTERNAL-NOTES|tools/|natfish-preview'; then
   exit 1
 fi
 echo "OK: no internal files in the package"
+
+# The superseded logo lockups must never reappear in a deployment package.
+if unzip -l "$OUT" | grep -qE 'natfish-logo-mark|natfish-logo\.png|natfish-logo@2x|natfish-logo-approved-final'; then
+  echo "ERROR: a superseded or source-only logo asset is in the zip" >&2
+  exit 1
+fi
+echo "OK: only the approved logo derivatives are packaged"
+
+# Every image in the package must be referenced by a page, so no stale asset
+# rides along unnoticed.
+stale=0
+for f in "$STAGE"/assets/img/*.png "$STAGE"/assets/img/*/*.webp; do
+  [ -e "$f" ] || continue
+  name="${f#"$STAGE"/}"
+  if ! grep -qF "$name" "$STAGE"/*.html "$STAGE"/assets/css/*.css 2>/dev/null; then
+    echo "WARNING: $name is packaged but referenced by nothing" >&2
+    stale=$((stale + 1))
+  fi
+done
+[ "$stale" -eq 0 ] && echo "OK: every packaged image is referenced"

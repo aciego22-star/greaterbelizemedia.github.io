@@ -439,15 +439,31 @@ li .arrow-link {
 }
 
 .logo img {
-  width: auto;
   height: 62px;
+  width: auto;
+  /* Pinned to the approved artwork's own 1789:879. Without this, width:auto
+     resolves against whichever srcset derivative happens to be loaded, and
+     integer rounding in the 400px tier made the rendered box 2.030:1 instead
+     of 2.035:1. Declaring the ratio makes the box exact whatever is served,
+     and object-fit keeps the artwork undistorted inside it. */
+  aspect-ratio: 1789 / 879;
+  object-fit: contain;
 }
 
-/* The compact lockup is ~1.97:1, so 50px tall is a 98px-wide box: clear of the
-   46px menu button even at 320px. */
+/* At 2.035:1, 50px tall is a 102px-wide box, which clears the 46px menu button
+   with room to spare even at 320px. */
 @media (max-width: 1279px) {
   .logo img {
     height: 50px;
+  }
+}
+
+/* Below 380px the gutters, the language control and the menu button leave the
+   logo under 100px, and the organization name stops resolving at all. Trading
+   2px of height back keeps the lockup readable without crowding the button. */
+@media (max-width: 379px) {
+  .logo img {
+    height: 46px;
   }
 }
 
@@ -465,6 +481,8 @@ li .arrow-link {
   width: 100%;
   max-width: 300px;
   height: auto;
+  aspect-ratio: 1789 / 879;
+  object-fit: contain;
 }
 
 /* --- primary nav --- */

@@ -1,90 +1,121 @@
 #!/usr/bin/env python3
-"""Derive the NATFISH logo assets from the supplied transparent PNG.
+"""Build the site's logo assets from the client-approved artwork.
 
-Three lockups come out of one piece of artwork, with no recolouring and no
-filters. The alpha channel is preserved exactly as supplied.
+Input: assets/img/natfish-logo-approved-final.png, the final approved logo
+exactly as the client supplied it. Its wordmark reads
 
-  natfish-logo.png        full horizontal logo, mark + wordmark + legal name
-  natfish-logo-mark.png   compact lockup, mark + NATFISH wordmark only
-  natfish-icon.png        square crop of the circular mark, for the favicon
+    NATFISH
+    National Fishermen Producers
+    Co-operative Society Ltd.
 
-Why the compact lockup exists: the two legal-name lines occupy 6.1% of the
-artwork's height, so in a sticky header they render under 5px tall and cannot be
-read. The full logo is used where it is large enough to be legible (footer panel,
-About page) and the compact lockup carries the header.
+with no apostrophe after "Producers".
+
+The artwork is never redrawn, recoloured, stretched or re-proportioned. Two
+mechanical operations are applied, and only these:
+
+1. De-matting. The supplied file is RGB on an opaque white background, but the
+   About page sets its identity panel on sand, where an opaque white rectangle
+   would show as a box around the logo. The white is therefore made
+   transparent by flood-filling inward from the four corners, so only
+   background that is actually connected to the edge is cleared. A global
+   "white becomes transparent" would punch holes through the lobster's pale
+   speckles and the highlights on the hand; this cannot, because those whites
+   are enclosed by darker pixels. The check in verify() fails the build if the
+   cleared area ever strays outside the expected range.
+
+2. A square crop, for the favicon and touch icon only. A browser tab is square
+   and the logo is 2:1, so the full lockup cannot be used there. The crop is
+   the circular emblem with the whole lobster, hand and sleeve inside it,
+   stopping 1px short of the wordmark. The logo itself is never cropped.
 
 Run from the natfish/ folder:
-    python3 tools/process-logo.py path/to/logo.png
+    python3 tools/process-logo.py
 """
 import pathlib
-import sys
-from PIL import Image
 
-OUT = pathlib.Path(__file__).resolve().parent.parent / "assets" / "img"
+from PIL import Image, ImageDraw
 
-# Measured against the trimmed 1708x861 artwork, as fractions so the geometry
-# survives a different export size.
-#
-# The compact lockup is made by ERASING the legal-name lines, not by cropping a
-# horizontal strip. Cropping cut through the wave ring, the hand and the sleeve
-# and left the emblem looking unfinished. Column profiling of every band below
-# the wordmark shows emblem ink stops by x=671 while the red rule and both text
-# lines start at x>=712, so clearing everything right of x=700 and below y=570
-# removes the text and leaves the emblem completely intact.
-LEGAL_LEFT = 700 / 1708   # left edge of the clear region
-LEGAL_TOP = 570 / 861     # top edge, just under the NATFISH wordmark
-MARK_RIGHT = 0.395        # right edge of the circular lobster mark
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+IMG = ROOT / "assets" / "img"
+MASTER = IMG / "natfish-logo-approved-final.png"
 
+# Display widths for the full lockup. The header renders it around 126px wide
+# and the footer and About panel up to 380px, so 400/800/1200 covers 1x and 2x
+# for every placement without shipping the full 1789px master to a phone.
+TIERS = (400, 800, 1200)
 
-def trim(im):
-    """Drop the transparent margin so layout boxes match the visible art."""
-    box = im.getbbox()
-    return im.crop(box) if box else im
+# Measured on the approved artwork: the wordmark's "N" begins at x=698, so the
+# emblem crop stops at 697. Vertically it is centred on the navy ring, whose
+# ink runs to y=814, with the lobster's antennae reaching above it.
+EMBLEM = (30, 150, 697, 817)
+
+ICON = 180      # apple-touch-icon
+FAVICON = 48
 
 
-def save(im, name, widths):
-    for w in widths:
-        h = round(im.height * w / im.width)
-        out = im.resize((w, h), Image.LANCZOS) if im.width != w else im
-        suffix = "" if w == widths[0] else f"@{round(w / widths[0])}x"
-        path = OUT / f"{name}{suffix}.png"
-        out.save(path, "PNG", optimize=True)
-        print(f"  {path.name:28} {out.width}x{out.height}  {path.stat().st_size/1024:6.1f} KB")
+def dematte(im):
+    """Clear the background-connected white, leaving interior whites alone."""
+    rgba = im.convert("RGBA")
+    w, h = rgba.size
+    # A generous tolerance takes the JPEG-ish halo around the artwork with it;
+    # anything darker than the halo stops the fill.
+    for corner in ((0, 0), (w - 1, 0), (0, h - 1), (w - 1, h - 1)):
+        ImageDraw.floodfill(rgba, corner, (255, 255, 255, 0), thresh=42)
+    return rgba
+
+
+def verify(rgba, label):
+    """Fail loudly if the fill ate into the artwork or barely ran at all."""
+    alpha = rgba.getchannel("A")
+    clear = sum(1 for v in alpha.getdata() if v == 0)
+    total = rgba.width * rgba.height
+    pct = clear / total
+    if not 0.25 < pct < 0.85:
+        raise SystemExit(
+            f"ERROR: {label}: {pct:.1%} of the image was cleared, which is "
+            "outside the expected range. The flood fill has either leaked "
+            "into the artwork or failed to run. Do not ship this."
+        )
+    print(f"  {label}: background cleared over {pct:.1%} of the frame")
+    return pct
 
 
 def main():
-    src = pathlib.Path(sys.argv[1])
-    full = trim(Image.open(src).convert("RGBA"))
-    print(f"source {src.name} -> trimmed {full.width}x{full.height}")
+    if not MASTER.exists():
+        raise SystemExit(f"ERROR: approved artwork not found at {MASTER}")
 
-    OUT.mkdir(parents=True, exist_ok=True)
+    src = Image.open(MASTER)
+    print(f"approved master: {src.width}x{src.height} {src.mode}")
 
-    print("full logo (footer panel, About page):")
-    save(full, "natfish-logo", [520, 1040])
+    logo = dematte(src)
+    verify(logo, "full lockup")
 
-    # Compact lockup: the complete emblem plus the NATFISH wordmark, with only
-    # the legal-name lines and their rule erased. Nothing is cropped away.
-    print("compact lockup (header):")
-    compact = full.copy()
-    clear = Image.new("RGBA", (
-        compact.width - round(compact.width * LEGAL_LEFT),
-        compact.height - round(compact.height * LEGAL_TOP),
-    ), (0, 0, 0, 0))
-    compact.paste(clear, (round(compact.width * LEGAL_LEFT),
-                          round(compact.height * LEGAL_TOP)))
-    compact = trim(compact)
-    save(compact, "natfish-logo-mark", [360, 720])
+    # Full lockup, alpha preserved, aspect ratio never touched.
+    for tier in TIERS:
+        if tier > logo.width:
+            continue
+        h = round(logo.height * tier / logo.width)
+        logo.resize((tier, h), Image.LANCZOS).save(
+            IMG / f"natfish-logo-{tier}.png", optimize=True)
+        print(f"  natfish-logo-{tier}.png  {tier}x{h}")
 
-    # Square icon from the circular mark alone. The brief rules out using the
-    # complete horizontal logo as a favicon.
-    print("icon (favicon):")
-    mark = trim(full.crop((0, 0, round(full.width * MARK_RIGHT), full.height)))
-    side = max(mark.width, mark.height)
-    canvas = Image.new("RGBA", (side, side), (0, 0, 0, 0))
-    canvas.paste(mark, ((side - mark.width) // 2, (side - mark.height) // 2), mark)
-    save(canvas, "natfish-icon", [180])
-    canvas.resize((32, 32), Image.LANCZOS).save(OUT / "favicon.png", "PNG", optimize=True)
-    print(f"  {'favicon.png':28} 32x32")
+    # Square emblem for the icons. Cropped from the de-matted master so the
+    # ring sits on transparency rather than a white tile.
+    emblem = logo.crop(EMBLEM)
+    side = max(emblem.size)
+    square = Image.new("RGBA", (side, side), (255, 255, 255, 0))
+    square.paste(emblem, ((side - emblem.width) // 2, (side - emblem.height) // 2))
+
+    square.resize((ICON, ICON), Image.LANCZOS).save(
+        IMG / "natfish-icon.png", optimize=True)
+    square.resize((FAVICON, FAVICON), Image.LANCZOS).save(
+        IMG / "favicon.png", optimize=True)
+    print(f"  natfish-icon.png  {ICON}x{ICON}")
+    print(f"  favicon.png       {FAVICON}x{FAVICON}")
+
+    # The pages carry these as width/height so the header never reflows.
+    print(f"\nintrinsic ratio {logo.width}/{logo.height} "
+          f"= {logo.width / logo.height:.4f}")
 
 
 if __name__ == "__main__":

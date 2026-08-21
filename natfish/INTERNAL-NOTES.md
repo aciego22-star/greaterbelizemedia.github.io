@@ -106,6 +106,59 @@ the Contact page, tied to her card, so it never becomes the default reply-to for
 
 ---
 
+## 3a. Logo
+
+Source of truth: `assets/img/natfish-logo-approved-final.png`, the client-approved artwork exactly as
+supplied (1789x879, RGB). Regenerate every derivative with:
+
+```
+python3 tools/process-logo.py
+```
+
+| Asset | Where it is used |
+|---|---|
+| `natfish-logo-400/800/1200.png` | The complete lockup, via one srcset. Header on all eight pages, footer panel, About identity panel. |
+| `natfish-icon.png` (180px) | Apple touch icon. Square crop of the circular emblem. |
+| `favicon.png` (48px) | Browser tab. Same crop. |
+
+**One lockup now, not two.** The earlier build carried a compact header lockup with the two
+organization-name lines erased, because at header scale they fall to about 5px. The client has since
+asked for the approved logo whole and unclipped in every placement, so the compact lockup is gone.
+
+**The consequence is worth knowing before the client sees it.** The approved artwork is 2.035:1 with
+three tiers of text. At the header's 62px (50px on a phone, 46px below 380px) the organization-name
+lines render around 5px tall: present, unclipped, correctly proportioned, but not readable. Nothing can
+change that except a taller header or a compact lockup, and the client has ruled out both. The name is
+therefore also carried as **real selectable text** in the footer, in the About identity panel and in
+every `<title>`, so nothing depends on reading it off the image. It is fully legible in the footer and
+on About, where the logo runs at 300-380px.
+
+**Two mechanical operations are applied to the artwork, and only these:**
+
+1. **De-matting.** The supplied file is opaque RGB on white, but the About identity panel is sand, where
+   a white rectangle would box the logo. The white is flood-filled to transparent inward from the four
+   corners, so only background actually connected to the edge is cleared. A global white-to-transparent
+   would punch holes through the lobster's pale speckles; this cannot. `process-logo.py` fails the build
+   if the cleared area falls outside 25-85% of the frame.
+   *Side effect:* the enclosed counters inside letters stay white, so the lockup must sit on a light
+   panel. It already does everywhere.
+2. **A square crop, for the icons only.** A tab is square and the logo is 2:1. The crop is
+   `(30, 150, 697, 817)` - the emblem with the whole lobster, hand and sleeve, stopping 1px short of the
+   wordmark's "N" at x=698. The logo itself is never cropped.
+
+`aspect-ratio: 1789 / 879` is pinned in CSS on both `.logo img` and `.logo-full`. Without it, `width:
+auto` resolves against whichever srcset derivative loaded, and integer rounding in the 400px tier
+rendered the box at 2.030:1. Do not remove it.
+
+**NAMING DISCREPANCY - CLIENT DECISION NEEDED.** The approved logo artwork reads
+**"Co-operative"** (hyphenated). The V2 source-of-truth brief specified **"Cooperative"**
+(unhyphenated) for all body copy and told us to remove hyphenated variants. Both spellings are
+therefore live, side by side and visible together on the About page, where the logo sits next to the
+"Legal name" text. The apostrophe after "Producers" is gone from both. Only the client can say which
+hyphenation is correct; nothing has been changed on either side without that answer.
+
+---
+
 ## 4. Imagery
 
 ```

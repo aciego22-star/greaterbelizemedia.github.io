@@ -137,6 +137,11 @@ def inline_png(html):
     def swap(match):
         tag = match.group(0)
         name = match.group(1)
+        # The logo appears in the header and the footer of every route, so the
+        # bundle carries its data URI twice. It renders at 126px in the header
+        # and at most 300px in the footer, so the 400px tier is the one to
+        # inline; the 800px tier added about 600 KB for pixels nothing shows.
+        name = name.replace("natfish-logo-800.png", "natfish-logo-400.png")
         raw = (ROOT / "assets" / "img" / name).read_bytes()
         uri = "data:image/png;base64," + base64.b64encode(raw).decode()
         tag = re.sub(r'\s+srcset="[^"]*"', "", tag)

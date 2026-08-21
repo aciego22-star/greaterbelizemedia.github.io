@@ -222,27 +222,44 @@ def picture(stem, sizes, css="", *, eager=False, alt=None, full=False,
         </picture>"""
 
 
-def logo_header():
-    """Compact lockup: the circular mark plus the NATFISH wordmark.
+# The client-approved artwork is 1789x879. Carried as a constant so every
+# placement writes the same intrinsic ratio and nothing can reflow while the
+# logo loads.
+LOGO_W, LOGO_H = 1789, 879
 
-    The full logo's legal-name lines are 6.1% of its height, so at header scale
-    they fall under 5px and cannot be read. The complete logo runs large in the
-    footer and on the About page instead, and the legal name is also present as
-    real text in the footer.
+LOGO_SRCSET = ("assets/img/natfish-logo-400.png 400w, "
+               "assets/img/natfish-logo-800.png 800w, "
+               "assets/img/natfish-logo-1200.png 1200w")
+
+
+def logo_img(css, sizes):
+    """The complete approved lockup: emblem, wordmark and organization name.
+
+    One asset for every placement. The earlier build carried a second, compact
+    lockup for the header with the organization name erased, because at header
+    scale those lines fall to about 5px. The client has since asked for the
+    approved logo whole and unclipped everywhere, so the compact lockup is
+    gone and the name is present at every size, small but never cut.
+
+    Legibility never rests on the image alone: the organization name is also
+    real selectable text in the footer, in the About identity panel and in
+    every page title.
     """
+    cls = f' class="{css}"' if css else ""
+    return (f'<img{cls} src="assets/img/natfish-logo-800.png"\n'
+            f'             srcset="{LOGO_SRCSET}"\n'
+            f'             sizes="{sizes}" width="{LOGO_W}" height="{LOGO_H}"\n'
+            f'             alt="{LOGO_ALT}">')
+
+
+def logo_header():
     return f"""<a class="logo" href="index.html">
-          <img src="assets/img/natfish-logo-mark.png"
-               srcset="assets/img/natfish-logo-mark.png 360w, assets/img/natfish-logo-mark@2x.png 720w"
-               sizes="110px" width="360" height="183"
-               alt="{LOGO_ALT}">
+          {logo_img("", "130px")}
         </a>"""
 
 
-def logo_full(css="logo-full", width=520):
-    """The complete horizontal logo, used only where the legal name is legible."""
-    return f"""<img class="{css}" src="assets/img/natfish-logo.png"
-             srcset="assets/img/natfish-logo.png 520w, assets/img/natfish-logo@2x.png 1040w"
-             sizes="{width}px" width="520" height="262" alt="{LOGO_ALT}">"""
+def logo_full(css="logo-full", width=380):
+    return logo_img(css, f"{width}px")
 
 
 def org_jsonld():
