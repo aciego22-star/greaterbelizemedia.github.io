@@ -19,11 +19,15 @@ PAGES = sorted(p for p in ROOT.glob("*.html") if p.name != "natfish-preview.html
 SKIP_TAGS = {"script", "style", "noscript"}
 ATTRS = ("alt", "aria-label", "title", "placeholder")
 
-# Names, addresses and machine values are the same in both languages.
+# Names, addresses and machine values are the same in both languages. The legal
+# name stays English in Spanish too, and so do the Linnaean species names.
 LEAVE_ALONE = re.compile(
-    r"^(NATFISH|Austere Automations|Belize|2026|natfish@btl\.net|"
-    r"\+501 227-3165|Angel Lane, Belize City, Belize|"
-    r"National Fishermen Producers' Co-operative Society Ltd\.?|"
+    r"^(NATFISH|Austere Automations|Belize|Belize City|2026|"
+    r"nationalfishermen@gmail\.com|deniseobrien125@gmail\.com|"
+    r"\+501 227-3165|\+501 227-8039|\+501 611-4831|"
+    r"#1 Angel Lane, Belize City, Belize|"
+    r"National Fishermen Producers Cooperative Society Ltd\.?|"
+    r"Panulirus argus|Strombus gigas|Pterois volitans|"
     r"English|Espanol|[\d\s.,:/|·&-]*)$"
 )
 

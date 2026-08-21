@@ -55,6 +55,13 @@ FEATURE = {
     "lobster": """<ellipse cx="12" cy="9.1" rx="3.5" ry="2.9" fill="currentColor" stroke="none"/><path d="M8.9 12.1h6.2l-.5 2.4H9.4z" fill="currentColor" stroke="none"/><path d="M9.5 14.9h5l-.45 2.3H9.95z" fill="currentColor" stroke="none"/><path d="M10.05 17.6h3.9l-.4 2.2h-3.1z" fill="currentColor" stroke="none"/><path d="M12 19.5 9.1 22.5h5.8z" fill="currentColor" stroke="none"/><path d="M10.2 6.6 6.4 2.3M13.8 6.6 17.6 2.3"/><path d="M8.5 8.1 5.1 7.1M8.4 10.5 5 10.9M15.5 8.1l3.4-1M15.6 10.5l3.4.4"/>""",
 
     # Queen conch: body whorl, inner spiral, shoulder spikes.
+    # Lionfish. The species reads by its spine fan, but a fan alone is just a
+    # starburst: the first attempt at this drew a round body with spines
+    # radiating evenly and came out looking like a spider. So the body carries
+    # the read here -- an elongated profile with a pointed snout and a forked
+    # tail -- and the dorsal spines rise from the back line at a lighter weight,
+    # the way fin rays actually attach, rather than radiating from the centre.
+    "lionfish": """<path d="M20.6 12.1q-2.4 3.1-7.2 3.1-3.6 0-5.9-1.6V10.7q2.3-1.6 5.9-1.6 4.8 0 7.2 3z" fill="currentColor" stroke="none"/><path d="M7.5 10.5 3.5 7.9v8.4l4-2.6z" fill="currentColor" stroke="none"/><path stroke-width="1.5" d="M9.4 10.1 8.1 4.6M11.9 9.3 11.3 3.6M14.4 9.3l.7-5.5M16.7 10.1l2-4.8"/><path stroke-width="1.5" d="M10.6 14.1 9.6 19.1M13.4 15.2l.6 4.9"/><circle class="ico__accent" cx="17.5" cy="11.4" r=".75" fill="currentColor" stroke="none"/>""",
     "conch": """<path d="M5.7 16.4c0-4.7 3.6-8.8 7.7-8.8 2.7 0 4.7 2 4.7 4.6 0 4.7-5.1 7.7-9.4 8.6-2 .4-3-.4-3-1.9z"/><path class="ico__accent" d="M13.3 10.4c1.1.5 1.8 1.4 1.8 2.5 0 1.8-1.5 3.1-3.1 3.8"/><path d="M8.4 9.5 7.3 6.5M11.6 7.7 12 4.6M14.7 8.5l1.9-2.5"/>""",
 
     # Other seafood: a fish above a market crate.

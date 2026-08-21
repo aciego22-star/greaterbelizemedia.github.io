@@ -470,3 +470,484 @@ ES = {
     "FisheryProgress": "FisheryProgress",
     "Next": "Siguiente",
 }
+
+# =========================================================== V2 update ==
+# Strings added or revised for the client-photography and source-of-truth
+# update. The legal name stays in English in both languages, as do the
+# Linnaean species names (Panulirus argus, Strombus gigas, Pterois volitans).
+# Numbers, dates, telephone numbers and email addresses are carried across
+# unchanged.
+
+ES.update({
+    # ----------------------------------------------- identity and facts --
+    "NATFISH – National Fishermen Producers Cooperative Society Ltd.":
+        "NATFISH – National Fishermen Producers Cooperative Society Ltd.",
+    "Member-owned in Belize since 1966":
+        "Propiedad de sus socios en Belice desde 1966",
+    "Registered 29 April 1966": "Registrada el 29 de abril de 1966",
+    "29 April 1966, Belize City": "29 de abril de 1966, Ciudad de Belice",
+    "Registered in Belize City on 29 April 1966.":
+        "Registrada en la Ciudad de Belice el 29 de abril de 1966.",
+    "The Society and its by-laws were registered on 29 April 1966.":
+        "La Sociedad y sus estatutos fueron registrados el 29 de abril de 1966.",
+    "Cooperative registered in Belize City":
+        "Cooperativa registrada en la Ciudad de Belice",
+    "636 Fisher Members": "636 pescadores socios",
+    "636 fishers": "636 pescadores",
+    "Fisher members": "Pescadores socios",
+    "Members": "Socios",
+    "Markets": "Mercados",
+    "Seven": "Siete",
+    "Seven Elected Committee Members":
+        "Siete miembros electos del Comité Administrativo",
+    "Elected Managing Committee members":
+        "Miembros electos del Comité Administrativo",
+    "Seven-member Managing Committee, elected by the membership":
+        "Comité Administrativo de siete miembros, electo por los socios",
+    "Belizean Seafood for International Markets":
+        "Mariscos beliceños para mercados internacionales",
+    "Belizean seafood supplied internationally":
+        "Mariscos beliceños suministrados internacionalmente",
+    "636 members harvest in Belizean waters":
+        "636 socios pescan en aguas beliceñas",
+    "Membership has grown from a small founding group to 636 fishers.":
+        "La membresía ha crecido de un pequeño grupo fundador a 636 pescadores.",
+    "The Managing Committee is selected from the general membership and governs "
+    "the Society on the members' behalf.":
+        "El Comité Administrativo se elige entre los socios y dirige la Sociedad "
+        "en nombre de ellos.",
+    "NATFISH has supplied Belizean seafood to the United States, Canada, "
+    "Mexico, the West Indies, Taiwan and Australia.":
+        "NATFISH ha suministrado mariscos beliceños a Estados Unidos, Canadá, "
+        "México, las Antillas, Taiwán y Australia.",
+    "Through the Society, Belizean seafood has reached buyers in the United "
+    "States, Canada, Mexico, the West Indies, Taiwan and Australia.":
+        "A través de la Sociedad, los mariscos beliceños han llegado a "
+        "compradores en Estados Unidos, Canadá, México, las Antillas, Taiwán y "
+        "Australia.",
+    "Buyers at home and internationally":
+        "Compradores en Belice y en el exterior",
+    "Handling, sorting, packing and cold storage":
+        "Manipulación, clasificación, empaque y almacenamiento en frío",
+    "The Society purchases members' produce":
+        "La Sociedad compra el producto de sus socios",
+
+    # ------------------------------------------------------ home page ----
+    "NATFISH Belize | Fisher-Owned Seafood Cooperative Since 1966":
+        "NATFISH Belice | Cooperativa de mariscos de pescadores desde 1966",
+    "From Belize's waters to markets around the world.":
+        "De las aguas de Belice a mercados de todo el mundo.",
+    "A cooperative of 636 Belizean fishers, preparing quality frozen seafood "
+    "for local and international markets.":
+        "Una cooperativa de 636 pescadores beliceños que prepara mariscos "
+        "congelados de calidad para mercados locales e internacionales.",
+    "Explore Our Seafood": "Conozca nuestros mariscos",
+    "Inside the facility": "Dentro de la planta",
+    "Care from processing to cold storage":
+        "Cuidado desde el proceso hasta el almacenamiento en frío",
+    "Four steps between the landing and the container, photographed at the "
+    "cooperative's own facility.":
+        "Cuatro pasos entre el desembarque y el contenedor, fotografiados en la "
+        "planta de la propia cooperativa.",
+    "Careful handling": "Manipulación cuidadosa",
+    "Landed catch is rinsed and checked at the washing station before it goes "
+    "any further.":
+        "La captura desembarcada se lava y se revisa en la estación de lavado "
+        "antes de continuar.",
+    "Weighing and sorting": "Pesaje y clasificación",
+    "Each lot is weighed and sorted so what leaves the room matches what the "
+    "buyer agreed to.":
+        "Cada lote se pesa y se clasifica para que lo que sale de la sala "
+        "corresponda a lo acordado con el comprador.",
+    "Packing": "Empaque",
+    "Product is bagged and packed into cartons by hand, ready for freezing.":
+        "El producto se embolsa y se empaca a mano en cajas, listo para "
+        "congelar.",
+    "Cold storage": "Almacenamiento en frío",
+    "Packed cartons move into cold storage and stay there until they ship.":
+        "Las cajas empacadas pasan al almacenamiento en frío y permanecen allí "
+        "hasta su embarque.",
+    "Six products from Belizean waters":
+        "Seis productos de aguas beliceñas",
+    "Frozen spiny lobster in four preparations, frozen queen conch and lionfish "
+    "fillet. Availability follows Belize's regulated seasons and is confirmed "
+    "directly with NATFISH.":
+        "Langosta espinosa congelada en cuatro presentaciones, caracol reina "
+        "congelado y filete de pez león. La disponibilidad sigue las temporadas "
+        "reguladas de Belice y se confirma directamente con NATFISH.",
+    "Spiny lobster": "Langosta espinosa",
+    "Queen conch": "Caracol reina",
+    "Lionfish": "Pez león",
+    "Tails, head meat, and whole lobster raw or cooked — four frozen lobster "
+    "products from Belize’s spiny lobster fishery.":
+        "Colas, carne de cabeza y langosta entera cruda o cocida: cuatro "
+        "productos de langosta congelada de la pesquería de langosta espinosa "
+        "de Belice.",
+    "Frozen queen conch meat, 85% cleaned, handled and packed at the "
+    "cooperative’s own facility.":
+        "Carne de caracol reina congelada, 85% limpia, manipulada y empacada en "
+        "la planta de la propia cooperativa.",
+    "Lionfish fillet, taken from an invasive species that Belizean fishers help "
+    "keep in check.":
+        "Filete de pez león, una especie invasora que los pescadores beliceños "
+        "ayudan a mantener bajo control.",
+    "See the products": "Ver los productos",
+    "Food safety and careful handling":
+        "Inocuidad alimentaria y manipulación cuidadosa",
+    "NATFISH works to operate in accordance with HACCP and U.S. FDA "
+    "regulations. Food safety and consumer protection are among the "
+    "cooperative's highest priorities as it supports globally recognized "
+    "artisanal fishing.":
+        "NATFISH trabaja para operar conforme a las normas HACCP y de la FDA de "
+        "Estados Unidos. La inocuidad alimentaria y la protección del "
+        "consumidor están entre las máximas prioridades de la cooperativa, que "
+        "respalda una pesca artesanal reconocida a nivel mundial.",
+    "The people, the process, the product":
+        "La gente, el proceso, el producto",
+
+    # ---------------------------------------------------------- about ----
+    "About NATFISH | Belizean Fisher-Owned Cooperative Since 1966":
+        "Sobre NATFISH | Cooperativa beliceña de pescadores desde 1966",
+    "A member-owned society, registered in 1966":
+        "Una sociedad propiedad de sus socios, registrada en 1966",
+    "National Fishermen Producers Cooperative Society Ltd was registered in "
+    "Belize City on 29 April 1966 and has grown to 636 fisher members. It is "
+    "owned by those members and governed by a seven-member Managing Committee "
+    "elected from the membership.":
+        "National Fishermen Producers Cooperative Society Ltd fue registrada en "
+        "la Ciudad de Belice el 29 de abril de 1966 y ha crecido hasta 636 "
+        "pescadores socios. Es propiedad de esos socios y está dirigida por un "
+        "Comité Administrativo de siete miembros electo entre la membresía.",
+    "National Fishermen Producers Cooperative Society Ltd was registered in "
+    "Belize City on 29 April 1966. What began with a small founding group of "
+    "fishers has grown into a member-owned cooperative of 636 fishers.":
+        "National Fishermen Producers Cooperative Society Ltd fue registrada en "
+        "la Ciudad de Belice el 29 de abril de 1966. Lo que comenzó con un "
+        "pequeño grupo fundador de pescadores se ha convertido en una "
+        "cooperativa de 636 pescadores, propiedad de sus socios.",
+    "The cooperative is owned by its members and governed by a seven-member "
+    "Managing Committee elected from the general membership. Members are not "
+    "customers of the Society; they are its owners, and the committee that runs "
+    "it answers to them.":
+        "La cooperativa es propiedad de sus socios y está dirigida por un "
+        "Comité Administrativo de siete miembros electo entre la membresía "
+        "general. Los socios no son clientes de la Sociedad: son sus dueños, y "
+        "el comité que la dirige responde ante ellos.",
+    "NATFISH supports its members through education in fishery management, and "
+    "by purchasing and marketing their produce. Its aim is to secure the best "
+    "possible value in international markets and to improve the livelihoods of "
+    "the fishers who own it.":
+        "NATFISH apoya a sus socios mediante la formación en manejo pesquero y "
+        "mediante la compra y comercialización de su producto. Su objetivo es "
+        "obtener el mejor valor posible en los mercados internacionales y "
+        "mejorar los medios de vida de los pescadores que son sus dueños.",
+    "The cooperative supports its members through education in fishery "
+    "management, and by purchasing and marketing their produce — working to "
+    "secure the best possible value in international markets and improve "
+    "members' livelihoods.":
+        "La cooperativa apoya a sus socios mediante la formación en manejo "
+        "pesquero y mediante la compra y comercialización de su producto, "
+        "buscando obtener el mejor valor posible en los mercados "
+        "internacionales y mejorar los medios de vida de los socios.",
+    "NATFISH is owned by the 636 fishers who make it up. Members elect a "
+    "seven-member Managing Committee, and that committee serves as the board "
+    "overseeing the Society.":
+        "NATFISH es propiedad de los 636 pescadores que la integran. Los socios "
+        "eligen un Comité Administrativo de siete miembros, que actúa como la "
+        "junta que supervisa la Sociedad.",
+    "The fishers behind NATFISH": "Los pescadores detrás de NATFISH",
+    "636 fisher members, and the people who receive, prepare and pack what they "
+    "land. The cooperative is the structure that connects their work at sea to "
+    "a buyer.":
+        "636 pescadores socios, y las personas que reciben, preparan y empacan "
+        "lo que ellos desembarcan. La cooperativa es la estructura que conecta "
+        "su trabajo en el mar con un comprador.",
+    "Only milestones NATFISH has confirmed, or that the public record supports, "
+    "are listed. Further history will be added as the cooperative supplies it.":
+        "Solo se enumeran los hitos que NATFISH ha confirmado o que respalda el "
+        "registro público. Se añadirá más historia conforme la cooperativa la "
+        "proporcione.",
+    "Background sources:": "Fuentes de referencia:",
+    "Frozen spiny lobster, queen conch and lionfish fillet, and the cooperative "
+    "functions that carry a member's catch to a buyer.":
+        "Langosta espinosa congelada, caracol reina y filete de pez león, y las "
+        "funciones cooperativas que llevan la captura de un socio hasta un "
+        "comprador.",
+
+    # ------------------------------------------------ seafood & services --
+    "Belizean Lobster, Conch & Lionfish Products | NATFISH":
+        "Productos beliceños de langosta, caracol y pez león | NATFISH",
+    "Six products, and the cooperative behind them":
+        "Seis productos, y la cooperativa detrás de ellos",
+    "Product catalogue": "Catálogo de productos",
+    "Frozen seafood from Belizean waters":
+        "Mariscos congelados de aguas beliceñas",
+    "Four spiny lobster preparations, queen conch and lionfish fillet. "
+    "Specifications and current availability are confirmed directly with "
+    "NATFISH.":
+        "Cuatro presentaciones de langosta espinosa, caracol reina y filete de "
+        "pez león. Las especificaciones y la disponibilidad actual se confirman "
+        "directamente con NATFISH.",
+    "Frozen Spiny Lobster Tails": "Colas de langosta espinosa congeladas",
+    "Frozen Lobster Head Meat": "Carne de cabeza de langosta congelada",
+    "Frozen Whole Raw Lobster": "Langosta entera cruda congelada",
+    "Frozen Whole Cooked Lobster": "Langosta entera cocida congelada",
+    "Frozen Queen Conch, 85% Cleaned":
+        "Caracol reina congelado, 85% limpio",
+    "Lionfish Fillet": "Filete de pez león",
+    "Lobster tails, individually bagged and packed into cartons at the "
+    "cooperative's facility.":
+        "Colas de langosta, embolsadas individualmente y empacadas en cajas en "
+        "la planta de la cooperativa.",
+    "Head meat recovered during lobster processing and frozen for market.":
+        "Carne de cabeza recuperada durante el proceso de la langosta y "
+        "congelada para el mercado.",
+    "Whole spiny lobster, frozen raw rather than tailed.":
+        "Langosta espinosa entera, congelada cruda en lugar de descolada.",
+    "Whole spiny lobster, cooked before freezing.":
+        "Langosta espinosa entera, cocida antes de congelar.",
+    "Queen conch meat, cleaned to 85% and frozen for market.":
+        "Carne de caracol reina, limpia al 85% y congelada para el mercado.",
+    "Fillet from an invasive Indo-Pacific species that Belizean fishers help "
+    "keep in check on the reef.":
+        "Filete de una especie invasora del Indo-Pacífico que los pescadores "
+        "beliceños ayudan a mantener bajo control en el arrecife.",
+    "Enquire about this product": "Consultar sobre este producto",
+    "Product availability follows": "La disponibilidad del producto sigue",
+    "Belize’s regulated seasons": "las temporadas reguladas de Belice",
+    "and current supply.": "y el abasto actual.",
+    "to discuss current availability, specifications and buyer requirements.":
+        "para conversar sobre disponibilidad actual, especificaciones y "
+        "requisitos del comprador.",
+    "NATFISH exists to serve the 636 fishers who own it: teaching fishery "
+    "management, buying what they land, and marketing it on their behalf.":
+        "NATFISH existe para servir a los 636 pescadores que son sus dueños: "
+        "enseñando manejo pesquero, comprando lo que desembarcan y "
+        "comercializándolo en su nombre.",
+    "Education in fishery management": "Formación en manejo pesquero",
+    "The Society supports its members with education in fishery management, so "
+    "that the fishery they depend on keeps producing.":
+        "La Sociedad apoya a sus socios con formación en manejo pesquero, para "
+        "que la pesquería de la que dependen siga produciendo.",
+    "Purchasing members' produce": "Compra del producto de los socios",
+    "NATFISH purchases the produce its members land, giving a fisher a reliable "
+    "route for the day's catch.":
+        "NATFISH compra el producto que desembarcan sus socios, dando al "
+        "pescador una salida confiable para la captura del día.",
+    "Marketing on members' behalf": "Comercialización en nombre de los socios",
+    "The Society markets that produce collectively and works to secure the best "
+    "possible value in international markets.":
+        "La Sociedad comercializa ese producto de forma colectiva y trabaja "
+        "para obtener el mejor valor posible en los mercados internacionales.",
+    "Packaging photography on this page was recreated from NATFISH product "
+    "material. It illustrates presentation and format only.":
+        "La fotografía de empaque de esta página fue recreada a partir de "
+        "material de producto de NATFISH. Solo ilustra la presentación y el "
+        "formato.",
+
+    # --------------------------------------------- responsible fisheries --
+    "Food Safety & Responsible Fisheries | NATFISH Belize":
+        "Inocuidad alimentaria y pesca responsable | NATFISH Belice",
+    "Our mission": "Nuestra misión",
+    "To operate in accordance with HACCP and U.S. FDA regulations.":
+        "Operar conforme a las normas HACCP y de la FDA de Estados Unidos.",
+    "Food safety and consumer protection are among our highest priorities as we "
+    "support globally recognized artisanal fishing.":
+        "La inocuidad alimentaria y la protección del consumidor están entre "
+        "nuestras máximas prioridades, al respaldar una pesca artesanal "
+        "reconocida a nivel mundial.",
+    "Working in accordance with a regulation is not the same as holding a "
+    "certificate against it. Certifications, standards and product-specific "
+    "claims should be confirmed directly with NATFISH, which can advise what "
+    "applies to a given product and a given market.":
+        "Operar conforme a una norma no es lo mismo que contar con un "
+        "certificado de esa norma. Las certificaciones, los estándares y las "
+        "declaraciones sobre productos específicos deben confirmarse "
+        "directamente con NATFISH, que puede indicar qué aplica a un producto y "
+        "a un mercado determinados.",
+
+    # -------------------------------------------------------- gallery ----
+    "Inside NATFISH | Belize Seafood Processing Gallery":
+        "Dentro de NATFISH | Galería del proceso de mariscos en Belice",
+    "An authentic look inside the people, processing, products and cold-storage "
+    "operations of National Fishermen Producers Cooperative Society Ltd. Select "
+    "any photograph to view it larger.":
+        "Una mirada auténtica a la gente, el proceso, los productos y las "
+        "operaciones de almacenamiento en frío de National Fishermen Producers "
+        "Cooperative Society Ltd. Seleccione cualquier fotografía para verla "
+        "más grande.",
+    "Photographs supplied by NATFISH": "Fotografías proporcionadas por NATFISH",
+    "Product and packaging": "Producto y empaque",
+    "How the product is packed": "Cómo se empaca el producto",
+
+    # ----------------------------------------------------------- news ----
+    "Photo feature": "Reportaje fotográfico",
+    "Inside NATFISH: People, Process and Product":
+        "Dentro de NATFISH: gente, proceso y producto",
+    "A set of photographs from inside the cooperative's own facility: the "
+    "people who receive and prepare the catch, the steps between landing and "
+    "cold storage, and the product that leaves at the end of it.":
+        "Un conjunto de fotografías tomadas dentro de la planta de la propia "
+        "cooperativa: las personas que reciben y preparan la captura, los pasos "
+        "entre el desembarque y el almacenamiento en frío, y el producto que "
+        "sale al final.",
+    "An evergreen feature, not a dated announcement. The photographs were "
+    "supplied by NATFISH and do not document a specific event.":
+        "Un reportaje permanente, no un anuncio con fecha. Las fotografías "
+        "fueron proporcionadas por NATFISH y no documentan un evento "
+        "específico.",
+
+    # -------------------------------------------------------- contact ----
+    "Contact NATFISH | Belize Seafood Buyer Enquiries":
+        "Contacte a NATFISH | Consultas de compra de mariscos en Belice",
+    "Interested in purchasing seafood or discussing a supply requirement? Tell "
+    "us which product you are looking for, the approximate quantity required, "
+    "your location and your preferred timeframe. NATFISH will review your "
+    "enquiry and contact you to discuss availability and next steps.":
+        "¿Le interesa comprar mariscos o conversar sobre un requerimiento de "
+        "suministro? Indíquenos qué producto busca, la cantidad aproximada que "
+        "necesita, su ubicación y su plazo preferido. NATFISH revisará su "
+        "consulta y se comunicará con usted para conversar sobre disponibilidad "
+        "y próximos pasos.",
+    "Which of the six products you need":
+        "Cuál de los seis productos necesita",
+    "Which product?": "¿Qué producto?",
+    "Name one of these so the team can answer precisely.":
+        "Indique uno de estos para que el equipo pueda responder con precisión.",
+    "Both options open a message you can edit before sending. The email goes to":
+        "Ambas opciones abren un mensaje que usted puede editar antes de "
+        "enviarlo. El correo se envía a",
+    "and WhatsApp opens a chat with +501 611-4831.":
+        "y WhatsApp abre un chat con +501 611-4831.",
+    "For cooperative matters, orders, media requests and general questions.":
+        "Para asuntos de la cooperativa, pedidos, solicitudes de prensa y "
+        "consultas generales.",
+    "Primary office": "Oficina principal",
+    "Secondary office": "Oficina secundaria",
+    "Mobile & WhatsApp": "Celular y WhatsApp",
+    "Office": "Oficina",
+    "General and orders": "General y pedidos",
+    "Management": "Gerencia",
+    "Ms. Denise O’Brien": "Sra. Denise O’Brien",
+    "General Manager": "Gerente General",
+    "For matters that need the General Manager directly:":
+        "Para asuntos que requieren directamente a la Gerente General:",
+    "General enquiries and orders are answered faster at":
+        "Las consultas generales y los pedidos se atienden más rápido en",
+    "Questions about the cooperative, its products or a buyer requirement all "
+    "reach the same team.":
+        "Las preguntas sobre la cooperativa, sus productos o un requerimiento "
+        "de compra llegan todas al mismo equipo.",
+    "A member-owned Belizean cooperative registered on 29 April 1966, owned by "
+    "the 636 fishers who make it up.":
+        "Una cooperativa beliceña propiedad de sus socios, registrada el 29 de "
+        "abril de 1966 y perteneciente a los 636 pescadores que la integran.",
+
+    # --------------------------------------------------------- footer ----
+    "National Fishermen Producers Cooperative Society Ltd. A member-owned "
+    "Belizean cooperative registered in Belize City on 29 April 1966, "
+    "purchasing and marketing the produce of 636 fishers at home and abroad.":
+        "National Fishermen Producers Cooperative Society Ltd. Una cooperativa "
+        "beliceña propiedad de sus socios, registrada en la Ciudad de Belice el "
+        "29 de abril de 1966, que compra y comercializa el producto de 636 "
+        "pescadores en Belice y en el exterior.",
+
+    # ------------------------------------------- alt text and captions ---
+    "NATFISH workers in hairnets, masks and aprons preparing lobster along a "
+    "stainless steel bench in the cooperative’s processing room.":
+        "Trabajadores de NATFISH con redecillas, mascarillas y delantales "
+        "preparando langosta a lo largo de una mesa de acero inoxidable en la "
+        "sala de proceso de la cooperativa.",
+    "NATFISH workers bagging lobster tails and packing them into cartons at the "
+    "end of the processing line.":
+        "Trabajadores de NATFISH embolsando colas de langosta y empacándolas en "
+        "cajas al final de la línea de proceso.",
+    "A wide view of the NATFISH processing hall, with workers at stainless "
+    "benches and packing cartons stacked along the wall.":
+        "Vista amplia de la sala de proceso de NATFISH, con trabajadores en "
+        "mesas de acero inoxidable y cajas de empaque apiladas junto a la "
+        "pared.",
+    "Freshly landed queen conch meat spread across a stainless steel table "
+    "during processing at NATFISH.":
+        "Carne de caracol reina recién desembarcada extendida sobre una mesa de "
+        "acero inoxidable durante el proceso en NATFISH.",
+    "Individually bagged lobster tails being packed into cartons at NATFISH.":
+        "Colas de langosta embolsadas individualmente siendo empacadas en cajas "
+        "en NATFISH.",
+    "A close view of gloved hands placing bagged lobster tails into a carton.":
+        "Vista cercana de manos enguantadas colocando colas de langosta "
+        "embolsadas en una caja.",
+    "NATFISH workers in aprons and gloves rinsing lobster at the stainless "
+    "washing station.":
+        "Trabajadores de NATFISH con delantales y guantes lavando langosta en "
+        "la estación de lavado de acero inoxidable.",
+    "A NATFISH worker weighing lobster on a digital scale beside sorting bins.":
+        "Un trabajador de NATFISH pesando langosta en una balanza digital junto "
+        "a recipientes de clasificación.",
+    "NATFISH workers sorting whole spiny lobster across a stainless processing "
+    "table.":
+        "Trabajadores de NATFISH clasificando langosta espinosa entera sobre "
+        "una mesa de proceso de acero inoxidable.",
+    "Racked trays inside the NATFISH cold storage room, cold vapour drifting "
+    "between the shelves.":
+        "Bandejas en estantes dentro de la cámara de frío de NATFISH, con "
+        "vapor frío entre los anaqueles.",
+    "Cartons of frozen Belizean spiny lobster tails packed for cold storage.":
+        "Cajas de colas de langosta espinosa beliceña congeladas, empacadas "
+        "para almacenamiento en frío.",
+    "A carton of individually bagged cooked spiny lobster tails.":
+        "Una caja de colas de langosta espinosa cocidas, embolsadas "
+        "individualmente.",
+    "A carton of individually bagged raw spiny lobster tails.":
+        "Una caja de colas de langosta espinosa crudas, embolsadas "
+        "individualmente.",
+    "A carton of frozen queen conch meat, bagged for shipping.":
+        "Una caja de carne de caracol reina congelada, embolsada para embarque.",
+
+    # Short captions. The gallery repeats each one with a trailing period, and
+    # the lightbox trigger repeats it again behind "View larger:", so all three
+    # forms are translated rather than left to fall back to English.
+    "The packing team at work": "El equipo de empaque en plena labor",
+    "The packing team at work.": "El equipo de empaque en plena labor.",
+    "Bagging and boxing lobster tails": "Embolsado y encajado de colas de langosta",
+    "Bagging and boxing lobster tails.": "Embolsado y encajado de colas de langosta.",
+    "Inside the processing room": "Dentro de la sala de proceso",
+    "Inside the processing room.": "Dentro de la sala de proceso.",
+    "Queen conch during processing": "Caracol reina durante el proceso",
+    "Queen conch during processing.": "Caracol reina durante el proceso.",
+    "Packing lobster tails into cartons": "Empaque de colas de langosta en cajas",
+    "Packing lobster tails into cartons.": "Empaque de colas de langosta en cajas.",
+    "Bagged tails, carton by carton": "Colas embolsadas, caja por caja",
+    "Bagged tails, carton by carton.": "Colas embolsadas, caja por caja.",
+    "Rinsing at the washing station": "Lavado en la estación de lavado",
+    "Rinsing at the washing station.": "Lavado en la estación de lavado.",
+    "Weighing and sorting the catch": "Pesaje y clasificación de la captura",
+    "Weighing and sorting the catch.": "Pesaje y clasificación de la captura.",
+    "Sorting whole spiny lobster": "Clasificación de langosta espinosa entera",
+    "Sorting whole spiny lobster.": "Clasificación de langosta espinosa entera.",
+    "The cold storage room": "La cámara de frío",
+    "The cold storage room.": "La cámara de frío.",
+    "Frozen lobster tails, cased": "Colas de langosta congeladas, encajadas",
+    "Frozen lobster tails, cased.": "Colas de langosta congeladas, encajadas.",
+    "Cooked lobster tails, bagged": "Colas de langosta cocidas, embolsadas",
+    "Cooked lobster tails, bagged.": "Colas de langosta cocidas, embolsadas.",
+    "Raw lobster tails, bagged": "Colas de langosta crudas, embolsadas",
+    "Raw lobster tails, bagged.": "Colas de langosta crudas, embolsadas.",
+    "Frozen queen conch meat": "Carne de caracol reina congelada",
+    "Frozen queen conch meat.": "Carne de caracol reina congelada.",
+})
+
+# The gallery's "View larger: <caption>" labels are generated, so they are
+# derived here rather than hand-listed, which keeps them from drifting out of
+# step with the captions above.
+for _en, _es in list(ES.items()):
+    if _en in (
+        "The packing team at work", "Bagging and boxing lobster tails",
+        "Inside the processing room", "Queen conch during processing",
+        "Packing lobster tails into cartons", "Bagged tails, carton by carton",
+        "Rinsing at the washing station", "Weighing and sorting the catch",
+        "Sorting whole spiny lobster", "The cold storage room",
+        "Frozen lobster tails, cased", "Cooked lobster tails, bagged",
+        "Raw lobster tails, bagged", "Frozen queen conch meat",
+    ):
+        ES[f"View larger: {_en}"] = f"Ver más grande: {_es}"

@@ -13,17 +13,47 @@ Accuracy tiers used throughout:
 from build_icons import icon
 
 SITE = "NATFISH"
-LEGAL = "National Fishermen Producers' Co-operative Society Ltd."
+
+# The exact registered name supplied by the client for V2. The earlier build
+# carried an apostrophe-and-hyphen spelling of the middle two words, which is
+# not how the cooperative writes its own name.
+LEGAL = "National Fishermen Producers Cooperative Society Ltd."
 # The legal name already ends in a full stop, so anywhere it is followed by
 # sentence punctuation we use the trimmed form and add a single period.
 LEGAL_NO_DOT = LEGAL.rstrip(".")
 
-# Provisional public-directory details, pending client confirmation.
+# ---------------------------------------------------------------- contacts --
+# Client-verified in the V2 update. The V1 build's directory-sourced BTL email
+# address and its temporary concept WhatsApp routing number are both retired,
+# and neither literal value may reappear anywhere in the project.
+
+GM_NAME = "Ms. Denise O&rsquo;Brien"
+GM_TITLE = "General Manager"
+GM_EMAIL = "deniseobrien125@gmail.com"
+
 TEL_DISPLAY = "+501 227-3165"
 TEL_HREF = "+5012273165"
-EMAIL = "natfish@btl.net"
-ADDRESS = "Angel Lane, Belize City, Belize"
-MAPS = "https://www.google.com/maps/search/?api=1&query=Angel+Lane%2C+Belize+City%2C+Belize"
+TEL2_DISPLAY = "+501 227-8039"
+TEL2_HREF = "+5012278039"
+MOBILE_DISPLAY = "+501 611-4831"
+MOBILE_HREF = "+5016114831"
+WHATSAPP = "5016114831"
+
+EMAIL = "nationalfishermen@gmail.com"
+ADDRESS = "#1 Angel Lane, Belize City, Belize"
+MAPS = ("https://www.google.com/maps/search/?api=1&amp;query="
+        "%231+Angel+Lane%2C+Belize+City%2C+Belize")
+
+# ------------------------------------------------------------------ facts --
+# Every figure below was supplied by the client for V2 and is safe to publish.
+# "since 1966" is used in copy rather than a computed age, which would go stale.
+
+FOUNDED_DATE = "29 April 1966"
+FOUNDED_ISO = "1966-04-29"
+MEMBERS = "636"
+COMMITTEE = "seven"
+MARKETS = ("the United States, Canada, Mexico, the West Indies, Taiwan "
+           "and Australia")
 
 VIDEO_ID = "4FoxQom2WFQ"
 VIDEO_TITLE = "The National Fishermen Cooperative of Belize"
@@ -48,59 +78,147 @@ NAV = [
 
 BUYER_CTA = "contact.html#buyer-enquiry"
 
-LOGO_ALT = "NATFISH &ndash; National Fishermen Producers' Co-operative Society Ltd."
+LOGO_ALT = "NATFISH &ndash; National Fishermen Producers Cooperative Society Ltd."
 
-IMG_H = 787
-IMG_W = 1400
+# ----------------------------------------------------------------- images --
+# Two tiers, and the distinction is editorial, not technical.
+#
+# OFFICIAL  ten photographs supplied by the General Manager. These document
+#           NATFISH's own people, rooms and product, so their alt text names
+#           NATFISH directly.
+# PRODUCTS  packaging photographs recreated from an older pamphlet. They are
+#           not a record of a specific day or a named person, so their captions
+#           stay generic and never assert a date, an employee or a shipment.
 
-CONCEPT_NOTE = (
-    "Photography on this page is concept imagery prepared for the website "
-    "presentation. It does not depict identified NATFISH members, staff, "
-    "vessels or facilities."
+OFFICIAL = "assets/img/official"
+PRODUCTS = "assets/img/products"
+
+# Intrinsic dimensions of the largest derivative, written by
+# tools/process-v2-images.py. Carried into width/height on every <img> so no
+# image can shift the layout while it loads.
+from v2_dims import DIMS  # noqa: E402
+
+RECREATION_NOTE = (
+    "Packaging photography on this page was recreated from NATFISH product "
+    "material. It illustrates presentation and format only."
 )
 
-# Alt text describes only what is visible. Nothing is described as a named
-# NATFISH person, vessel, facility or piece of equipment.
 ALT = {
-    "img01": "Two fishers working with lobster traps aboard a small open skiff on calm Caribbean water at sunrise.",
-    "img03": "A fisher seated in a skiff on turquoise water with a morning harvest of queen conch aboard.",
-    "img04": "Three Caribbean spiny lobsters presented whole on crushed ice.",
-    "img05": "Close-up of cleaned conch meat laid out on a stainless steel table during handling.",
-    "img06": "Workers in hairnets, masks and gloves grading shrimp, fish and lobster in a clean processing room.",
-    "img07": "A worker at a dockside table entering catch information on a tablet beside tagged fish and lobster.",
-    "img08": "A lined export box packed with snapper, fillets, scallops and spiny lobster on ice at a dock.",
-    "img09": "A spread of Belizean seafood including spiny lobster, queen conch, snapper and reef fish on ice by the sea.",
-    "img10": "A fishing skiff heading up the waterway past moored boats and the Belize City waterfront.",
+    "01-lobster-packing-team-wide":
+        "NATFISH workers in hairnets, masks and aprons preparing lobster along a "
+        "stainless steel bench in the cooperative&rsquo;s processing room.",
+    "02-lobster-packing-line-portrait":
+        "NATFISH workers bagging lobster tails and packing them into cartons at "
+        "the end of the processing line.",
+    "03-lobster-processing-room-wide":
+        "A wide view of the NATFISH processing hall, with workers at stainless "
+        "benches and packing cartons stacked along the wall.",
+    "04-fresh-conch-processing-closeup":
+        "Freshly landed queen conch meat spread across a stainless steel table "
+        "during processing at NATFISH.",
+    "05-lobster-tail-packing-boxes":
+        "Individually bagged lobster tails being packed into cartons at NATFISH.",
+    "06-lobster-tail-packing-close":
+        "A close view of gloved hands placing bagged lobster tails into a carton.",
+    "07-lobster-washing-station":
+        "NATFISH workers in aprons and gloves rinsing lobster at the stainless "
+        "washing station.",
+    "08-lobster-weighing-and-sorting":
+        "A NATFISH worker weighing lobster on a digital scale beside sorting bins.",
+    "09-lobster-processing-table":
+        "NATFISH workers sorting whole spiny lobster across a stainless "
+        "processing table.",
+    "10-cold-storage-room":
+        "Racked trays inside the NATFISH cold storage room, cold vapour drifting "
+        "between the shelves.",
+    "01-belizean-pride-lobster-cases":
+        "Cartons of frozen Belizean spiny lobster tails packed for cold storage.",
+    "02-belizean-pride-orange-lobster-tails":
+        "A carton of individually bagged cooked spiny lobster tails.",
+    "03-belizean-pride-raw-lobster-tails":
+        "A carton of individually bagged raw spiny lobster tails.",
+    "04-wild-caught-frozen-conch":
+        "A carton of frozen queen conch meat, bagged for shipping.",
 }
 
-# Short labels used by the carousel status region and gallery captions.
+# Short labels for the carousel status region and gallery captions.
 SHORT = {
-    "img01": "Fishers hauling lobster traps at sunrise",
-    "img03": "A morning conch harvest aboard a skiff",
-    "img04": "Caribbean spiny lobster on ice",
-    "img05": "Cleaned conch meat during handling",
-    "img06": "Grading seafood in a processing room",
-    "img07": "Recording catch information dockside",
-    "img08": "A packed export box of Belizean seafood",
-    "img09": "Belizean lobster, conch and reef fish",
-    "img10": "A skiff on the Belize City waterfront",
+    "01-lobster-packing-team-wide": "The packing team at work",
+    "02-lobster-packing-line-portrait": "Bagging and boxing lobster tails",
+    "03-lobster-processing-room-wide": "Inside the processing room",
+    "04-fresh-conch-processing-closeup": "Queen conch during processing",
+    "05-lobster-tail-packing-boxes": "Packing lobster tails into cartons",
+    "06-lobster-tail-packing-close": "Bagged tails, carton by carton",
+    "07-lobster-washing-station": "Rinsing at the washing station",
+    "08-lobster-weighing-and-sorting": "Weighing and sorting the catch",
+    "09-lobster-processing-table": "Sorting whole spiny lobster",
+    "10-cold-storage-room": "The cold storage room",
+    "01-belizean-pride-lobster-cases": "Frozen lobster tails, cased",
+    "02-belizean-pride-orange-lobster-tails": "Cooked lobster tails, bagged",
+    "03-belizean-pride-raw-lobster-tails": "Raw lobster tails, bagged",
+    "04-wild-caught-frozen-conch": "Frozen queen conch meat",
+}
+
+# Photographs whose subject sits away from the frame centre. Rendered as a
+# utility class rather than an inline style so the crop can differ between
+# desktop and mobile in the stylesheet.
+FOCUS = {
+    "01-lobster-packing-team-wide": "focus-left",
+    "03-lobster-processing-room-wide": "focus-centre",
+    "04-fresh-conch-processing-closeup": "focus-centre",
+    "10-cold-storage-room": "focus-top",
 }
 
 
-def picture(stem, sizes, css="", *, eager=False, alt=None, height=IMG_H,
-            full=False):
-    """A responsive <picture> with WebP first and a JPEG fallback."""
+def img_dir(stem):
+    """Authentic photographs live in official/, recreations in products/."""
+    return PRODUCTS if "belizean-pride" in stem or "wild-caught" in stem else OFFICIAL
+
+
+def picture(stem, sizes, css="", *, eager=False, alt=None, full=False,
+            ratio=None, focus=None):
+    """A responsive <picture>: WebP first, JPEG fallback, three width tiers.
+
+    width/height come from the real derivative rather than a shared constant,
+    because the V2 set mixes 1.60 landscape with 0.56 portrait and a single
+    assumed height would reserve the wrong box for most of them.
+
+    `ratio` overrides the aspect-ratio the CSS should hold the frame at, for
+    the few places where a deliberate crop differs from the file's own shape.
+    `focus` sets object-position for a single placement, where the shared
+    FOCUS entry for that image is not the right crop for this particular frame.
+    """
     alt_text = ALT[stem] if alt is None else alt
     loading = (
         ' loading="eager" fetchpriority="high"'
         if eager
         else ' loading="lazy" decoding="async"'
     )
-    cls = f' class="{css}"' if css else ""
-    data_full = f' data-full="assets/img/{stem}-1400.jpg"' if full else ""
+    w, h = DIMS[stem]
+    d = img_dir(stem)
+
+    # Seven of the ten client photographs are portrait. Tagging them lets the
+    # stylesheet give a tall photograph a tall frame instead of cover-cropping
+    # it into a landscape box, and --ratio carries the file's true shape so the
+    # frame can match it exactly rather than settling for one stock ratio.
+    portrait = h > w
+    classes = [c for c in (css, FOCUS.get(stem, ""),
+                           "is-portrait" if portrait else "") if c]
+    cls = f' class="{" ".join(classes)}"' if classes else ""
+    shape = ratio or f"{w} / {h}"
+    decls = [f"--ratio:{shape}"]
+    if focus:
+        # Per-image crop, set here rather than injected into the tag afterwards
+        # so there is only ever one style attribute on the element.
+        decls.append(f"object-position:{focus}")
+    style = f' style="{";".join(decls)}"'
+    # The lightbox reads data-full at click time and shows the image at its
+    # natural proportions, so it points at the largest derivative.
+    data_full = f' data-full="{d}/{stem}-1400.jpg"' if full else ""
+
     return f"""<picture>
-          <source type="image/webp" srcset="assets/img/{stem}-800.webp 800w, assets/img/{stem}-1400.webp 1400w" sizes="{sizes}">
-          <img src="assets/img/{stem}-1400.jpg" srcset="assets/img/{stem}-800.jpg 800w, assets/img/{stem}-1400.jpg 1400w" sizes="{sizes}" width="{IMG_W}" height="{height}" alt="{alt_text}"{cls}{loading}{data_full}>
+          <source type="image/webp" srcset="{d}/{stem}-480.webp 480w, {d}/{stem}-800.webp 800w, {d}/{stem}-1400.webp 1400w" sizes="{sizes}">
+          <img src="{d}/{stem}-800.jpg" srcset="{d}/{stem}-480.jpg 480w, {d}/{stem}-800.jpg 800w, {d}/{stem}-1400.jpg 1400w" sizes="{sizes}" width="{w}" height="{h}" alt="{alt_text}"{cls}{style}{loading}{data_full}>
         </picture>"""
 
 
@@ -127,11 +245,69 @@ def logo_full(css="logo-full", width=520):
              sizes="{width}px" width="520" height="262" alt="{LOGO_ALT}">"""
 
 
-def head(title, description, og_image="img01"):
+def org_jsonld():
+    """Organization data, limited to what the client actually supplied.
+
+    Deliberately absent: aggregateRating, priceRange, hasCredential, makesOffer,
+    openingHours and any volume or capacity figure. None of those were supplied,
+    and structured data is exactly where an unsupported claim does the most
+    damage, because it is machine-read and republished verbatim.
+    """
+    tel = TEL_HREF
+    return f"""  <script type="application/ld+json">
+  {{
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "{LEGAL}",
+    "alternateName": "NATFISH",
+    "foundingDate": "{FOUNDED_ISO}",
+    "foundingLocation": {{
+      "@type": "Place",
+      "name": "Belize City, Belize"
+    }},
+    "address": {{
+      "@type": "PostalAddress",
+      "streetAddress": "#1 Angel Lane",
+      "addressLocality": "Belize City",
+      "addressCountry": "BZ"
+    }},
+    "email": "{EMAIL}",
+    "telephone": "{tel}",
+    "contactPoint": [
+      {{
+        "@type": "ContactPoint",
+        "contactType": "sales",
+        "name": "Primary office",
+        "telephone": "{TEL_HREF}",
+        "email": "{EMAIL}",
+        "availableLanguage": ["en", "es"]
+      }},
+      {{
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "name": "Secondary office",
+        "telephone": "{TEL2_HREF}",
+        "availableLanguage": ["en", "es"]
+      }},
+      {{
+        "@type": "ContactPoint",
+        "contactType": "sales",
+        "name": "Mobile and WhatsApp",
+        "telephone": "{MOBILE_HREF}",
+        "availableLanguage": ["en", "es"]
+      }}
+    ]
+  }}
+  </script>
+"""
+
+
+def head(title, description, og_image="official/og-card"):
     """No canonical and no og:url until a real domain exists.
 
-    The previous build pointed both at the agency's own GitHub Pages domain,
-    which must not be associated with the client site.
+    The V1 build pointed both at the agency's own GitHub Pages domain, which
+    must not be associated with the client site. Open Graph carries a relative
+    image path, which resolves once the site sits on its real host.
     """
     return f"""<!DOCTYPE html>
 <html lang="en" class="no-js">
@@ -146,7 +322,10 @@ def head(title, description, og_image="img01"):
   <meta property="og:site_name" content="NATFISH">
   <meta property="og:title" content="{title}">
   <meta property="og:description" content="{description}">
-  <meta property="og:image" content="assets/img/{og_image}-1400.jpg">
+  <meta property="og:image" content="assets/img/{og_image}.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="{ALT['01-lobster-packing-team-wide']}">
   <meta name="twitter:card" content="summary_large_image">
 
   <link rel="icon" type="image/png" href="assets/img/favicon.png">
@@ -159,7 +338,7 @@ def head(title, description, og_image="img01"):
   <link rel="preload" href="assets/fonts/source-sans-3-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/css/fonts.css">
   <link rel="stylesheet" href="assets/css/natfish.css">
-</head>
+{org_jsonld()}</head>
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
 """
@@ -294,11 +473,12 @@ def contact_strip():
           <div class="reveal">
             <span class="eyebrow">Contact</span>
             <h2 id="contact-strip-h" style="margin-bottom:0.35rem">Talk to NATFISH</h2>
-            <p class="note" style="margin:0">Provisional details, pending confirmation.</p>
+            <p class="note" style="margin:0">{ADDRESS}</p>
           </div>
           <ul class="contact-strip__list reveal">
             <li>{icon("coast")}<a href="{MAPS}" target="_blank" rel="noopener noreferrer">{ADDRESS}</a></li>
             <li>{ICON_PHONE}<a href="tel:{TEL_HREF}">{TEL_DISPLAY}</a></li>
+            <li>{ICON_WA}<a href="tel:{MOBILE_HREF}">{MOBILE_DISPLAY}</a></li>
             <li>{ICON_MAIL}<a href="mailto:{EMAIL}">{EMAIL}</a></li>
           </ul>
           <div class="reveal">
@@ -345,9 +525,9 @@ def footer(with_lightbox=False):
             {logo_full("", 300)}
           </div>
           <p>
-            {LEGAL_NO_DOT}. A Belizean fisher-owned cooperative registered in 1966,
-            connecting fishing communities, quality seafood and markets at home
-            and abroad.
+            {LEGAL_NO_DOT}. A member-owned Belizean cooperative registered in
+            Belize City on {FOUNDED_DATE}, purchasing and marketing the produce of
+            {MEMBERS} fishers at home and abroad.
           </p>
         </div>
 
@@ -360,9 +540,10 @@ def footer(with_lightbox=False):
 
         <div>
           <h4>Contact</h4>
-          <ul class="footer-list">
+          <ul class="footer-list footer-list--contact">
             <li><a href="{MAPS}" target="_blank" rel="noopener noreferrer">{ADDRESS}</a></li>
-            <li><a href="tel:{TEL_HREF}">{TEL_DISPLAY}</a></li>
+            <li><a href="tel:{TEL_HREF}">{TEL_DISPLAY}</a> <span class="footer-tag">Office</span></li>
+            <li><a href="tel:{MOBILE_HREF}">{MOBILE_DISPLAY}</a> <span class="footer-tag">Mobile &amp; WhatsApp</span></li>
             <li><a href="mailto:{EMAIL}">{EMAIL}</a></li>
           </ul>
           <p style="margin-top:1rem">
@@ -373,7 +554,7 @@ def footer(with_lightbox=False):
 
       <div class="footer-bottom">
         <p>&copy; <span data-year>2026</span> {LEGAL_NO_DOT}.</p>
-        <p>Registered 1966. Belize City, Belize.</p>
+        <p>Registered in Belize City on {FOUNDED_DATE}.</p>
       </div>
 
       <!-- Attribution: centred, secondary to NATFISH, and the studio name is

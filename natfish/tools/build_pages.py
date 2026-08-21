@@ -13,11 +13,14 @@ from build_seasons import (
     FISHERIES_SOURCE, LAST_REVIEW, PAGE_NOTE, cards as season_cards,
 )
 from build_shell import (
-    ADDRESS, BUYER_CTA, EMAIL, ICON_ARROW, ICON_MAIL, ICON_PHONE, ICON_PIN,
-    ICON_WA, LEGAL, MAPS, SHORT, TEL_DISPLAY, TEL_HREF, VIDEO_ID, VIDEO_SOURCE,
-    VIDEO_TITLE, SRC_BELTRAIDE, SRC_FISHERIES_DEPT, SRC_FISHERYPROGRESS,
-    SRC_FISHSOURCE, SRC_FISHWISE, RULE_WAVE, concept_note, contact_strip, cta_band,
-    footer, head, header, identity_ribbon, logo_full, page_hero, picture,
+    ADDRESS, ALT, BUYER_CTA, COMMITTEE, EMAIL, FOUNDED_DATE, GM_EMAIL, GM_NAME,
+    GM_TITLE, ICON_ARROW, ICON_MAIL, ICON_PHONE, ICON_PIN, ICON_WA, LEGAL,
+    LEGAL_NO_DOT, MAPS, MARKETS, MEMBERS, MOBILE_DISPLAY, MOBILE_HREF,
+    RECREATION_NOTE, SHORT, TEL2_DISPLAY, TEL2_HREF, TEL_DISPLAY, TEL_HREF,
+    VIDEO_ID, VIDEO_SOURCE, VIDEO_TITLE, WHATSAPP, SRC_BELTRAIDE,
+    SRC_FISHERIES_DEPT, SRC_FISHERYPROGRESS, SRC_FISHSOURCE, SRC_FISHWISE,
+    RULE_WAVE, contact_strip, cta_band, footer, head, header, identity_ribbon,
+    logo_full, page_hero, picture,
 )
 
 OUT = pathlib.Path("/home/user/greaterbelizemedia.github.io/natfish")
@@ -30,8 +33,13 @@ ICON_PLAY = icon("play")
 ICON_CHECK = """<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m4.5 12.6 5.2 5.2L19.5 7.4"/></svg>"""
 
 # ------------------------------------------------------ enquiry links --
+#
+# There is no <form> anywhere on the site. Both buttons hand the visitor a
+# fully editable draft in an app they already trust, which is why the product
+# line is a pick-list rather than a set of fields: a buyer can delete the five
+# that do not apply faster than they can type the one that does.
 
-EMAIL_SUBJECT = "NATFISH Buyer Enquiry"
+EMAIL_SUBJECT = "NATFISH Seafood Buyer Enquiry"
 EMAIL_BODY = """Hello NATFISH,
 
 I would like to enquire about purchasing seafood.
@@ -39,12 +47,20 @@ I would like to enquire about purchasing seafood.
 Name:
 Company:
 Country or location:
-Product or species required:
+Telephone or WhatsApp:
+
+Product required (delete those that do not apply):
+  - Frozen Spiny Lobster Tails
+  - Frozen Lobster Head Meat
+  - Frozen Whole Raw Lobster
+  - Frozen Whole Cooked Lobster
+  - Frozen Queen Conch, 85% Cleaned
+  - Lionfish Fillet
+
 Approximate quantity:
 Preferred timeframe:
 Packaging or preparation requirements:
 Destination or delivery location:
-Telephone or WhatsApp:
 Additional information:
 
 Thank you."""
@@ -54,15 +70,18 @@ WHATSAPP_BODY = """Hello NATFISH. I would like to make a seafood enquiry.
 Name:
 Company:
 Location:
-Product or species required:
+
+Product required (delete those that do not apply):
+  - Frozen Spiny Lobster Tails
+  - Frozen Lobster Head Meat
+  - Frozen Whole Raw Lobster
+  - Frozen Whole Cooked Lobster
+  - Frozen Queen Conch, 85% Cleaned
+  - Lionfish Fillet
+
 Approximate quantity:
 Preferred timeframe:
 Additional information:"""
-
-# TEMPORARY CONCEPT WHATSAPP NUMBER — REPLACE WITH CLIENT-CONFIRMED NATFISH
-# NUMBER BEFORE PUBLIC LAUNCH. Routing number for the concept build only. It is
-# not published anywhere as a NATFISH telephone number.
-WHATSAPP_NUMBER = "5016108859"
 
 
 def mailto_href():
@@ -75,7 +94,7 @@ def mailto_href():
 
 
 def whatsapp_href():
-    return f"https://wa.me/{WHATSAPP_NUMBER}?text={quote(WHATSAPP_BODY, safe='')}"
+    return f"https://wa.me/{WHATSAPP}?text={quote(WHATSAPP_BODY, safe='')}"
 
 
 # ---------------------------------------------------------- news data --
@@ -87,7 +106,7 @@ UPDATES = [
         "tag": "Trade &amp; Markets",
         "title": "Belizean seafood featured in 2026 trade promotion",
         "date": "2026",
-        "img": "img09",
+        "img": "05-lobster-tail-packing-boxes",
         "body": (
             "Current trade-promotion material from BELTRAIDE features seafood "
             "from National Fishermen, keeping Belizean product visible to "
@@ -100,7 +119,7 @@ UPDATES = [
         "tag": "Sector Activity",
         "title": "National Fishermen active across the 2026 fisheries sector",
         "date": "2026",
-        "img": "img10",
+        "img": "01-lobster-packing-team-wide",
         "body": (
             "Public fisheries-sector activity in 2026 continues to reference "
             "National Fishermen as an active cooperative within Belize's "
@@ -113,7 +132,7 @@ UPDATES = [
         "tag": "Responsible Fisheries",
         "title": "Traceability and the spiny lobster Fishery Improvement Project",
         "date": "Ongoing",
-        "img": "img07",
+        "img": "08-lobster-weighing-and-sorting",
         "body": (
             "National Fishermen has participated in electronic catch "
             "documentation and in Belize's spiny lobster Fishery Improvement "
@@ -148,32 +167,99 @@ def update_card(u, *, compact=False):
 
 # ================================================================ home ===
 
+# The four-step handling story. Every image is an authentic client photograph
+# and every one of them is portrait, which is why this renders as a portrait
+# card grid rather than the usual wide band.
+PROCESS = [
+    ("07-lobster-washing-station", "Careful handling",
+     "Landed catch is rinsed and checked at the washing station before it goes "
+     "any further."),
+    ("08-lobster-weighing-and-sorting", "Weighing and sorting",
+     "Each lot is weighed and sorted so what leaves the room matches what the "
+     "buyer agreed to."),
+    ("05-lobster-tail-packing-boxes", "Packing",
+     "Product is bagged and packed into cartons by hand, ready for freezing."),
+    ("10-cold-storage-room", "Cold storage",
+     "Packed cartons move into cold storage and stay there until they ship."),
+]
+
+# The six verified products, grouped for the homepage. The full catalogue with
+# scientific names lives on seafood-services.html; this is a gateway, so it
+# names all six without repeating the detail.
+HOME_SEAFOOD = [
+    ("01-belizean-pride-lobster-cases", "Spiny lobster", "lobster",
+     "Tails, head meat, and whole lobster raw or cooked &mdash; four frozen "
+     "lobster products from Belize&rsquo;s spiny lobster fishery."),
+    ("04-fresh-conch-processing-closeup", "Queen conch", "conch",
+     "Frozen queen conch meat, 85% cleaned, handled and packed at the "
+     "cooperative&rsquo;s own facility."),
+    (None, "Lionfish", "lionfish",
+     "Lionfish fillet, taken from an invasive species that Belizean fishers "
+     "help keep in check."),
+]
+
+
+def process_step(stem, title, body, n):
+    """One portrait card in the handling sequence."""
+    return f"""<li class="step reveal">
+            <div class="step__media">
+              {picture(stem, "(max-width: 640px) 92vw, (max-width: 1024px) 44vw, 23vw", full=True)}
+              <span class="step__n" aria-hidden="true">{n}</span>
+            </div>
+            <div class="step__body">
+              <h3>{title}</h3>
+              <p>{body}</p>
+            </div>
+          </li>"""
+
+
 def home():
-    # Each slide gets its own focal point. One universal crop pushed the
-    # fishers out of frame on the portrait-ish mobile panel.
+    # Three authentic photographs, each with its own focal point. One shared
+    # crop pushed the team out of frame on the tall mobile panel.
     slides = [
-        ("img01", "58% 52%"),   # the two fishers and the traps, right of centre
-        ("img03", "62% 46%"),   # the fisher and the conch pile
-        ("img10", "50% 58%"),   # the skiff heading up the waterway
+        ("01-lobster-packing-team-wide", "42% 46%"),
+        ("03-lobster-processing-room-wide", "54% 50%"),
+        ("04-fresh-conch-processing-closeup", "50% 54%"),
     ]
     slide_html = []
     for i, (stem, focus) in enumerate(slides):
         active = " is-active" if i == 0 else ""
         img = picture(
             stem, "(max-width: 900px) 100vw, 60vw",
-            eager=(i == 0), alt=SHORT[stem],
-        ).replace("<img ", f'<img style="object-position:{focus}" ')
+            eager=(i == 0), alt=SHORT[stem], focus=focus,
+        )
         slide_html.append(
             f"""<div class="hero__slide{active}">
             {img}
           </div>"""
         )
 
+    seafood_cards = []
+    for stem, title, ico, body in HOME_SEAFOOD:
+        if stem:
+            media = f'<div class="card__media">{picture(stem, "(max-width: 640px) 92vw, (max-width: 900px) 46vw, 30vw")}</div>'
+        else:
+            # No authentic lionfish photograph was supplied, and labelling any
+            # other fish as lionfish would be a false caption. The card carries
+            # the species mark instead.
+            media = f"""<div class="card__media card__media--mark">
+              {icon(ico, "card__mark")}
+            </div>"""
+        seafood_cards.append(f"""<article class="card reveal">
+            {media}
+            <div class="card__body">
+              <h3 class="h-icon">{icon(ico, "h-icon__mark")} {title}</h3>
+              <p>{body}</p>
+              <a class="arrow-link" href="seafood-services.html">See the products</a>
+            </div>
+          </article>""")
+
     return (
         head(
-            "NATFISH | National Fishermen Producers' Co-operative Society Ltd.",
-            "A Belizean fisher-owned cooperative registered in 1966, connecting "
-            "fishing communities, quality seafood and markets at home and abroad.",
+            "NATFISH Belize | Fisher-Owned Seafood Cooperative Since 1966",
+            "A member-owned cooperative of 636 Belizean fishers, registered in "
+            "Belize City in 1966. Frozen spiny lobster, queen conch and lionfish "
+            "fillet prepared for local and international markets.",
         )
         + header("index.html")
         + identity_ribbon()
@@ -181,15 +267,14 @@ def home():
     <section class="hero" data-carousel aria-label="NATFISH">
       <div class="hero__panel">
         <div class="hero__content">
-          <p class="hero__eyebrow"><strong>NATFISH</strong> <span class="hero__eyebrow-sep" aria-hidden="true">|</span> Belizean fisher-owned cooperative</p>
-          <h1>From Belize's waters to the world.</h1>
+          <p class="hero__eyebrow"><strong>NATFISH</strong> <span class="hero__eyebrow-sep" aria-hidden="true">|</span> Member-owned in Belize since 1966</p>
+          <h1>From Belize's waters to markets around the world.</h1>
           <p class="hero__copy">
-            A cooperative owned by the fishers who make it up, connecting
-            fishing communities, quality seafood and markets at home and
-            abroad.
+            A cooperative of {MEMBERS} Belizean fishers, preparing quality frozen
+            seafood for local and international markets.
           </p>
           <div class="hero__actions">
-            <a class="btn btn--primary" href="seafood-services.html">Seafood &amp; Services</a>
+            <a class="btn btn--primary" href="seafood-services.html">Explore Our Seafood</a>
             <a class="btn btn--ghost" href="{BUYER_CTA}">Buyer Enquiry</a>
           </div>
         </div>
@@ -202,10 +287,11 @@ def home():
 
     <div class="trust">
       <div class="container">
-        <ul class="trust__list">
-          <li class="trust__item">{icon("seal")} Established 1966</li>
-          <li class="trust__item">{icon("boat")} Belizean Fishers' Cooperative</li>
-          <li class="trust__item">{icon("coast")} Belize City</li>
+        <ul class="trust__list trust__list--four">
+          <li class="trust__item">{icon("seal")} Registered {FOUNDED_DATE}</li>
+          <li class="trust__item">{icon("net")} {MEMBERS} Fisher Members</li>
+          <li class="trust__item">{icon("handling")} {COMMITTEE.title()} Elected Committee Members</li>
+          <li class="trust__item">{icon("route")} Belizean Seafood for International Markets</li>
         </ul>
       </div>
     </div>
@@ -217,66 +303,66 @@ def home():
             <span class="eyebrow">About NATFISH</span>
             <h2 id="home-about-h">A cooperative owned by Belizean fishers</h2>
             <p class="lede">
-              Founded in 1966, {LEGAL} is a Belizean fisher-owned cooperative.
-              Its members form the foundation of the organization and elect the
-              managing committee that oversees the Society.
+              {LEGAL_NO_DOT} was registered in Belize City on {FOUNDED_DATE} and
+              has grown to {MEMBERS} fisher members. It is owned by those members
+              and governed by a {COMMITTEE}-member Managing Committee elected from
+              the membership.
+            </p>
+            <p>
+              The cooperative supports its members through education in fishery
+              management, and by purchasing and marketing their produce &mdash;
+              working to secure the best possible value in international markets
+              and improve members' livelihoods.
             </p>
             <a class="arrow-link" href="about.html">About NATFISH</a>
           </div>
           <div class="split__media reveal">
-            {picture("img03", "(max-width: 860px) 92vw, 46vw")}
+            {picture("03-lobster-processing-room-wide", "(max-width: 860px) 92vw, 46vw")}
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section section--sand" aria-labelledby="home-seafood-h">
+    <section class="section section--sand" aria-labelledby="home-process-h">
+      <div class="container">
+        <div class="section-head section-head--rule reveal">
+          {RULE_WAVE}
+          <span class="eyebrow">Inside the facility</span>
+          <h2 id="home-process-h">Care from processing to cold storage</h2>
+          <p class="lede">
+            Four steps between the landing and the container, photographed at
+            the cooperative's own facility.
+          </p>
+        </div>
+
+        <ol class="steps">
+          {"".join(process_step(stem, t, b, i + 1) for i, (stem, t, b) in enumerate(PROCESS))}
+        </ol>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="home-seafood-h">
       <div class="container">
         <div class="section-head section-head--rule reveal">
           {RULE_WAVE}
           <span class="eyebrow">Seafood &amp; Services</span>
-          <h2 id="home-seafood-h">Seafood from Belizean waters</h2>
+          <h2 id="home-seafood-h">Six products from Belizean waters</h2>
           <p class="lede">
-            Lobster and conch are longstanding products associated with the
-            cooperative's fishing, processing and market activity. Availability
+            Frozen spiny lobster in four preparations, frozen queen conch and
+            lionfish fillet. Availability follows Belize's regulated seasons and
             is confirmed directly with NATFISH.
           </p>
         </div>
 
         <div class="grid grid--3">
-          <article class="card reveal">
-            <div class="card__media">{picture("img04", "(max-width: 640px) 92vw, (max-width: 900px) 46vw, 30vw")}</div>
-            <div class="card__body">
-              <h3>Lobster</h3>
-              <p>Caribbean spiny lobster, a longstanding cooperative product.</p>
-              <a class="arrow-link" href="seafood-services.html">See lobster</a>
-            </div>
-          </article>
-
-          <article class="card reveal">
-            <div class="card__media">{picture("img05", "(max-width: 640px) 92vw, (max-width: 900px) 46vw, 30vw")}</div>
-            <div class="card__body">
-              <h3>Conch</h3>
-              <p>Queen conch, handled and prepared for market.</p>
-              <a class="arrow-link" href="seafood-services.html">See conch</a>
-            </div>
-          </article>
-
-          <article class="card reveal">
-            <div class="card__media">{picture("img09", "(max-width: 640px) 92vw, (max-width: 900px) 46vw, 30vw")}</div>
-            <div class="card__body">
-              <h3>Other products</h3>
-              <p>Availability upon enquiry. The team confirms what is available.</p>
-              <a class="arrow-link" href="seafood-services.html">Seafood &amp; Services</a>
-            </div>
-          </article>
+          {"".join(seafood_cards)}
         </div>
       </div>
     </section>
 
     <section class="season-feature" aria-labelledby="home-seasons-h">
       <div class="season-feature__media">
-        {picture("img04", "(max-width: 900px) 100vw, 52vw").replace("<img ", '<img style="object-position:50% 55%" ')}
+        {picture("09-lobster-processing-table", "(max-width: 900px) 100vw, 52vw", focus="50% 40%")}
       </div>
       <div class="season-feature__panel">
         <div class="season-feature__inner">
@@ -299,15 +385,16 @@ def home():
       <div class="container">
         <div class="split split--media-right">
           <div class="split__media reveal">
-            {picture("img07", "(max-width: 860px) 92vw, 46vw")}
+            {picture("07-lobster-washing-station", "(max-width: 860px) 92vw, 46vw")}
           </div>
           <div class="reveal">
             <span class="eyebrow">Responsible Fisheries</span>
-            <h2 class="h-icon" id="home-resp-h">{icon("steward", "h-icon__mark")} Careful handling and good information</h2>
+            <h2 class="h-icon" id="home-resp-h">{icon("steward", "h-icon__mark")} Food safety and careful handling</h2>
             <p class="lede">
-              NATFISH has participated in electronic catch-documentation and
-              traceability initiatives, and in Belize's spiny lobster Fishery
-              Improvement Project alongside sector partners.
+              NATFISH works to operate in accordance with HACCP and U.S. FDA
+              regulations. Food safety and consumer protection are among the
+              cooperative's highest priorities as it supports globally
+              recognized artisanal fishing.
             </p>
             <a class="arrow-link" href="responsible.html">Responsible Fisheries</a>
           </div>
@@ -336,16 +423,16 @@ def home():
         <div class="section-head section-head--split reveal">
           <div>
             <span class="eyebrow">Gallery</span>
-            <h2 class="h-icon" id="home-gallery-h">{icon("gallery", "h-icon__mark")} The work, the water and the product</h2>
+            <h2 class="h-icon" id="home-gallery-h">{icon("gallery", "h-icon__mark")} The people, the process, the product</h2>
           </div>
           <a class="arrow-link" href="gallery.html">View the gallery</a>
         </div>
         <a class="gallery-preview reveal" href="gallery.html"
            aria-label="View the NATFISH gallery">
-          {picture("img01", "(max-width: 700px) 46vw, 24vw")}
-          {picture("img06", "(max-width: 700px) 46vw, 24vw")}
-          {picture("img08", "(max-width: 700px) 46vw, 24vw")}
-          {picture("img10", "(max-width: 700px) 46vw, 24vw")}
+          {picture("01-lobster-packing-team-wide", "(max-width: 700px) 46vw, 24vw")}
+          {picture("06-lobster-tail-packing-close", "(max-width: 700px) 46vw, 24vw")}
+          {picture("08-lobster-weighing-and-sorting", "(max-width: 700px) 46vw, 24vw")}
+          {picture("10-cold-storage-room", "(max-width: 700px) 46vw, 24vw")}
         </a>
       </div>
     </section>
@@ -370,16 +457,15 @@ def home():
 def about():
     return (
         head(
-            "About NATFISH | National Fishermen Producers' Co-operative Society Ltd.",
-            "National Fishermen Producers' Co-operative Society Ltd. was "
-            "registered on 29 April 1966. A fisher-owned Belizean cooperative "
-            "governed by a managing committee elected by its members.",
-            og_image="img03",
+            "About NATFISH | Belizean Fisher-Owned Cooperative Since 1966",
+            f"{LEGAL_NO_DOT} was registered in Belize City on {FOUNDED_DATE} and "
+            f"has grown to {MEMBERS} fisher members, governed by a "
+            f"{COMMITTEE}-member Managing Committee elected from the membership.",
         )
         + header("about.html")
         + page_hero(
             "About NATFISH",
-            "A fisher-owned society, registered in 1966",
+            "A member-owned society, registered in 1966",
             "NATFISH was built so that Belizean fishers could combine their "
             "effort and reach markets no single fisher could reach alone.",
             "About NATFISH",
@@ -401,45 +487,48 @@ def about():
         <div class="split" style="margin-top:clamp(2.5rem,5vw,4rem)">
           <div class="reveal">
             <span class="eyebrow">History</span>
-            <h2>Registered on 29 April 1966</h2>
-            <p class="stat-line">29 April 1966.</p>
+            <h2>Registered on {FOUNDED_DATE}</h2>
+            <p class="stat-line">{FOUNDED_DATE}.</p>
             <p>
-              The Society and its by-laws were registered on 29 April 1966. From
-              that point National Fishermen has operated as a fisher-owned
-              cooperative in Belize, with its members at the centre of the
-              organization.
+              {LEGAL_NO_DOT} was registered in Belize City on {FOUNDED_DATE}.
+              What began with a small founding group of fishers has grown into a
+              member-owned cooperative of {MEMBERS} fishers.
             </p>
             <p>
-              The cooperative's stated objects include helping members produce,
-              process, market, distribute and sell their products more
-              efficiently. That purpose still describes what the Society does.
+              The cooperative is owned by its members and governed by a
+              {COMMITTEE}-member Managing Committee elected from the general
+              membership. Members are not customers of the Society; they are its
+              owners, and the committee that runs it answers to them.
+            </p>
+            <p>
+              NATFISH supports its members through education in fishery
+              management, and by purchasing and marketing their produce. Its aim
+              is to secure the best possible value in international markets and
+              to improve the livelihoods of the fishers who own it.
             </p>
           </div>
           <div class="reveal">
+            <div class="split__media" style="margin-bottom:1.5rem">
+              {picture("03-lobster-processing-room-wide", "(max-width: 860px) 92vw, 46vw")}
+            </div>
             <ul class="factlist">
               <li>
                 <span class="factlist__key">Registered</span>
-                <span class="factlist__val">29 April 1966</span>
+                <span class="factlist__val">{FOUNDED_DATE}, Belize City</span>
               </li>
               <li>
-                <span class="factlist__key">Ownership</span>
-                <span class="factlist__val">Fisher-owned cooperative</span>
+                <span class="factlist__key">Members</span>
+                <span class="factlist__val">{MEMBERS} fishers</span>
               </li>
               <li>
                 <span class="factlist__key">Governance</span>
-                <span class="factlist__val">Managing committee elected by members</span>
+                <span class="factlist__val">{COMMITTEE.title()}-member Managing Committee, elected by the membership</span>
               </li>
               <li>
                 <span class="factlist__key">Base</span>
-                <span class="factlist__val">Belize City, Belize</span>
+                <span class="factlist__val">{ADDRESS}</span>
               </li>
             </ul>
-            <p class="note" style="margin-top:1rem">
-              Sources:
-              <a href="{SRC_FISHERYPROGRESS}" target="_blank" rel="noopener noreferrer">FisheryProgress institutional strengthening report</a>
-              and
-              <a href="{SRC_FISHWISE}" target="_blank" rel="noopener noreferrer">FishWise</a>.
-            </p>
           </div>
         </div>
       </div>
@@ -451,9 +540,9 @@ def about():
           <span class="eyebrow">The cooperative model</span>
           <h2 id="about-model-h">Members own it, and members govern it</h2>
           <p class="lede">
-            NATFISH is owned by the fishers who make it up. Members elect a
-            managing committee, and that committee serves as the board
-            overseeing the Society.
+            NATFISH is owned by the {MEMBERS} fishers who make it up. Members
+            elect a {COMMITTEE}-member Managing Committee, and that committee
+            serves as the board overseeing the Society.
           </p>
         </div>
 
@@ -461,22 +550,22 @@ def about():
           <li class="flow__step">
             <span class="flow__num">01</span>
             <span class="flow__label">Fishers</span>
-            <span class="flow__note">Members harvest in Belizean waters</span>
+            <span class="flow__note">{MEMBERS} members harvest in Belizean waters</span>
           </li>
           <li class="flow__step">
             <span class="flow__num">02</span>
             <span class="flow__label">Cooperative</span>
-            <span class="flow__note">Members combine effort and reach</span>
+            <span class="flow__note">The Society purchases members' produce</span>
           </li>
           <li class="flow__step">
             <span class="flow__num">03</span>
             <span class="flow__label">Processing</span>
-            <span class="flow__note">Handling, grading and preparation</span>
+            <span class="flow__note">Handling, sorting, packing and cold storage</span>
           </li>
           <li class="flow__step">
             <span class="flow__num">04</span>
             <span class="flow__label">Market</span>
-            <span class="flow__note">Buyers at home and abroad</span>
+            <span class="flow__note">Buyers at home and internationally</span>
           </li>
         </ol>
       </div>
@@ -485,21 +574,24 @@ def about():
     <section class="section" aria-labelledby="about-fishers-h">
       <div class="container">
         <div class="split split--media-right">
-          <div class="split__media reveal">{picture("img01", "(max-width: 860px) 92vw, 46vw")}</div>
+          <div class="split__media reveal">{picture("01-lobster-packing-team-wide", "(max-width: 860px) 92vw, 46vw")}</div>
           <div class="reveal">
-            <span class="eyebrow">The fishermen behind NATFISH</span>
+            <span class="eyebrow">The fishers behind NATFISH</span>
             <h2 class="h-icon" id="about-fishers-h">{icon("net", "h-icon__mark")} Behind every product is a fishing community</h2>
             <p class="lede">
-              NATFISH was built around the cooperative model, creating a
-              collective structure through which Belizean fishers can connect
-              their work at sea with processing and market opportunities.
+              {MEMBERS} fisher members, and the people who receive, prepare and
+              pack what they land. The cooperative is the structure that
+              connects their work at sea to a buyer.
             </p>
             <p>
               A cooperative gives a fisher more than a buyer for the day's
               catch. It gives a share in the organization, a vote in how it is
               run, and a route to markets that would otherwise be out of reach.
             </p>
-            {concept_note()}
+            <p>
+              Through the Society, Belizean seafood has reached buyers in
+              {MARKETS}.
+            </p>
           </div>
         </div>
       </div>
@@ -509,60 +601,67 @@ def about():
       <div class="container container--narrow">
         <div class="section-head reveal">
           <span class="eyebrow">Milestones</span>
-          <h2 id="about-mile-h">Sourced milestones</h2>
+          <h2 id="about-mile-h">Milestones</h2>
           <p class="lede">
-            Only milestones supported by the public record are listed. Further
-            history will be added once NATFISH confirms it.
+            Only milestones NATFISH has confirmed, or that the public record
+            supports, are listed. Further history will be added as the
+            cooperative supplies it.
           </p>
         </div>
         <ol class="timeline reveal">
           <li>
-            <span class="timeline__year">1966</span>
+            <span class="timeline__year">{FOUNDED_DATE.split()[-1]}</span>
             <div>
-              <h3>The Society is registered</h3>
+              <h3>Cooperative registered in Belize City</h3>
               <p>
-                The Society and its by-laws are registered on 29 April 1966.
-              </p>
-              <p class="note">
-                Source: <a href="{SRC_FISHERYPROGRESS}" target="_blank" rel="noopener noreferrer">FisheryProgress</a>
+                The Society and its by-laws were registered on {FOUNDED_DATE}.
               </p>
             </div>
           </li>
           <li>
-            <span class="timeline__year">Ongoing</span>
+            <span class="timeline__year">{MEMBERS}</span>
             <div>
-              <h3>Traceability and catch documentation</h3>
+              <h3>Fisher members</h3>
               <p>
-                NATFISH has participated in electronic catch-documentation and
-                seafood traceability initiatives with fisheries partners.
-              </p>
-              <p class="note">
-                Source: <a href="{SRC_FISHWISE}" target="_blank" rel="noopener noreferrer">FishWise</a>
+                Membership has grown from a small founding group to {MEMBERS}
+                fishers.
               </p>
             </div>
           </li>
           <li>
-            <span class="timeline__year">Ongoing</span>
+            <span class="timeline__year">{COMMITTEE.title()}</span>
             <div>
-              <h3>Spiny lobster Fishery Improvement Project</h3>
+              <h3>Elected Managing Committee members</h3>
               <p>
-                NATFISH has participated in Belize's spiny lobster Fishery
-                Improvement Project alongside sector partners.
+                The Managing Committee is selected from the general membership
+                and governs the Society on the members' behalf.
               </p>
-              <p class="note">
-                Source: <a href="{SRC_FISHSOURCE}" target="_blank" rel="noopener noreferrer">FishSource</a>
+            </div>
+          </li>
+          <li>
+            <span class="timeline__year">Markets</span>
+            <div>
+              <h3>Belizean seafood supplied internationally</h3>
+              <p>
+                NATFISH has supplied Belizean seafood to {MARKETS}.
               </p>
             </div>
           </li>
         </ol>
+        <p class="note" style="margin-top:1.5rem">
+          Background sources:
+          <a href="{SRC_FISHERYPROGRESS}" target="_blank" rel="noopener noreferrer">FisheryProgress institutional strengthening report</a>
+          and
+          <a href="{SRC_FISHWISE}" target="_blank" rel="noopener noreferrer">FishWise</a>.
+        </p>
       </div>
     </section>
 """
         + cta_band(
             "Next",
             "See what the cooperative brings to market",
-            "Lobster, conch and the cooperative functions that carry a member's "
-            "catch from the water to a buyer.",
+            "Frozen spiny lobster, queen conch and lionfish fillet, and the "
+            "cooperative functions that carry a member's catch to a buyer.",
             [
                 '<a class="btn btn--primary" href="seafood-services.html">Seafood &amp; Services</a>',
                 f'<a class="btn btn--ghost" href="{BUYER_CTA}">Buyer Enquiry</a>',
@@ -574,32 +673,111 @@ def about():
 
 # ==================================================== seafood-services ===
 
+# The six verified products, in the order the client supplied them. Scientific
+# names are marked up with <i> and are never translated.
+#
+# The image column is deliberately sparse. Four of the six share the two
+# lobster-tail photographs because those are the only packaging photographs
+# supplied; head meat, whole lobster and lionfish have no photograph of their
+# own, and captioning a different product with their name would be a false
+# label. Those cards carry the species mark instead.
+CATALOGUE = [
+    {
+        "name": "Frozen Spiny Lobster Tails",
+        "sci": "Panulirus argus",
+        "icon": "lobster",
+        "img": "03-belizean-pride-raw-lobster-tails",
+        "body": "Lobster tails, individually bagged and packed into cartons at "
+                "the cooperative's facility.",
+    },
+    {
+        "name": "Frozen Lobster Head Meat",
+        "sci": "Panulirus argus",
+        "icon": "lobster",
+        "img": None,
+        "body": "Head meat recovered during lobster processing and frozen for "
+                "market.",
+    },
+    {
+        "name": "Frozen Whole Raw Lobster",
+        "sci": "Panulirus argus",
+        "icon": "lobster",
+        "img": "09-lobster-processing-table",
+        "body": "Whole spiny lobster, frozen raw rather than tailed.",
+    },
+    {
+        "name": "Frozen Whole Cooked Lobster",
+        "sci": "Panulirus argus",
+        "icon": "lobster",
+        # The one cooked-lobster photograph supplied shows cooked *tails*, not
+        # whole cooked lobster, so it would be a false label here. It runs in
+        # the gallery under its own accurate caption instead.
+        "img": None,
+        "body": "Whole spiny lobster, cooked before freezing.",
+    },
+    {
+        "name": "Frozen Queen Conch, 85% Cleaned",
+        "sci": "Strombus gigas",
+        "icon": "conch",
+        "img": "04-wild-caught-frozen-conch",
+        "body": "Queen conch meat, cleaned to 85% and frozen for market.",
+    },
+    {
+        "name": "Lionfish Fillet",
+        "sci": "Pterois volitans",
+        "icon": "lionfish",
+        "img": None,
+        "body": "Fillet from an invasive Indo-Pacific species that Belizean "
+                "fishers help keep in check on the reef.",
+    },
+]
+
+AVAILABILITY_NOTE = (
+    'Product availability follows <a href="seafood-seasons.html">Belize&rsquo;s '
+    'regulated seasons</a> and current supply. '
+    '<a href="{cta}">Contact NATFISH</a> to discuss current availability, '
+    'specifications and buyer requirements.'
+)
+
+
+def product_card(prod):
+    """One catalogue entry. Photographs are only used where they are truthful."""
+    if prod["img"]:
+        media = f"""<div class="product__media">
+              {picture(prod["img"], "(max-width: 640px) 92vw, (max-width: 1024px) 46vw, 31vw", full=True)}
+            </div>"""
+    else:
+        media = f"""<div class="product__media product__media--mark">
+              {icon(prod["icon"], "product__mark")}
+            </div>"""
+    return f"""<article class="product reveal">
+            {media}
+            <div class="product__body">
+              <h3>{prod["name"]}</h3>
+              <p class="product__sci"><i>{prod["sci"]}</i></p>
+              <p>{prod["body"]}</p>
+              <a class="arrow-link" href="{BUYER_CTA}">Enquire about this product</a>
+            </div>
+          </article>"""
+
+
 def seafood_services():
     return (
         head(
-            "Seafood &amp; Services | NATFISH",
-            "Lobster and conch are longstanding NATFISH products. Other seafood "
-            "is available upon enquiry. Products, quantities and availability "
-            "are confirmed directly with NATFISH.",
-            og_image="img09",
+            "Belizean Lobster, Conch &amp; Lionfish Products | NATFISH",
+            "Frozen spiny lobster tails, lobster head meat, whole raw and cooked "
+            "lobster, queen conch 85% cleaned and lionfish fillet, prepared by a "
+            "Belizean fisher-owned cooperative.",
         )
         + header("seafood-services.html")
         + page_hero(
             "Seafood &amp; Services",
-            "Seafood, and the cooperative behind it",
+            "Six products, and the cooperative behind them",
             "What NATFISH brings to market, and the cooperative functions that "
             "carry a member's catch from the water to a buyer.",
             "Seafood &amp; Services",
         )
         + f"""
-    <div class="container">
-      <p class="notice reveal">
-        <strong>Please note.</strong> Products, quantities, formats and
-        availability change with the season and the fishery. Everything on this
-        page is confirmed directly with NATFISH before any commitment is made.
-      </p>
-    </div>
-
     <div class="container">
       <div class="season-callout reveal">
         <p>
@@ -613,68 +791,28 @@ def seafood_services():
       </div>
     </div>
 
-    <section class="section" aria-labelledby="sf-lobster-h">
+    <section class="section" aria-labelledby="sf-catalogue-h">
       <div class="container">
-        <div class="split">
-          <div class="split__media reveal">{picture("img04", "(max-width: 860px) 92vw, 46vw")}</div>
-          <div class="reveal">
-            <span class="eyebrow">Product</span>
-            <h2 class="h-icon" id="sf-lobster-h">{icon("lobster", "h-icon__mark")} Lobster</h2>
-            <p class="lede">
-              Caribbean spiny lobster is a longstanding product associated with
-              NATFISH's fishing, processing and market activity.
-            </p>
-            <p>
-              Lobster is also the focus of Belize's spiny lobster Fishery
-              Improvement Project, in which NATFISH has participated alongside
-              sector partners.
-            </p>
-            <a class="arrow-link" href="{BUYER_CTA}">Enquire about lobster</a>
-          </div>
+        <div class="section-head section-head--rule reveal">
+          {RULE_WAVE}
+          <span class="eyebrow">Product catalogue</span>
+          <h2 id="sf-catalogue-h">Frozen seafood from Belizean waters</h2>
+          <p class="lede">
+            Four spiny lobster preparations, queen conch and lionfish fillet.
+            Specifications and current availability are confirmed directly with
+            NATFISH.
+          </p>
         </div>
-      </div>
-    </section>
 
-    <section class="section section--sand" aria-labelledby="sf-conch-h">
-      <div class="container">
-        <div class="split split--media-right">
-          <div class="split__media reveal">{picture("img05", "(max-width: 860px) 92vw, 46vw")}</div>
-          <div class="reveal">
-            <span class="eyebrow">Product</span>
-            <h2 class="h-icon" id="sf-conch-h">{icon("conch", "h-icon__mark")} Conch</h2>
-            <p class="lede">
-              Queen conch is a longstanding product associated with NATFISH's
-              fishing, processing and market activity.
-            </p>
-            <p>
-              Conch requires careful cleaning and handling between landing and
-              market. That handling is part of what the cooperative structure
-              was built to support.
-            </p>
-            <a class="arrow-link" href="{BUYER_CTA}">Enquire about conch</a>
-          </div>
+        <div class="products">
+          {"".join(product_card(p) for p in CATALOGUE)}
         </div>
-      </div>
-    </section>
 
-    <section class="section" aria-labelledby="sf-other-h">
-      <div class="container">
-        <div class="split">
-          <div class="split__media reveal">{picture("img09", "(max-width: 860px) 92vw, 46vw")}</div>
-          <div class="reveal">
-            <span class="eyebrow">Product</span>
-            <h2 class="h-icon" id="sf-other-h">{icon("crate-fish", "h-icon__mark")} Other seafood: availability upon enquiry</h2>
-            <p class="lede">
-              NATFISH does not publish a standing species list. Other seafood is
-              available upon enquiry.
-            </p>
-            <p>
-              Tell the team what you are looking for and they will confirm what
-              is available, in what form, and when.
-            </p>
-            <a class="arrow-link" href="{BUYER_CTA}">Ask what is available</a>
-          </div>
-        </div>
+        <p class="notice reveal" style="margin-top:clamp(2rem,4vw,3rem)">
+          {AVAILABILITY_NOTE.format(cta=BUYER_CTA)}
+        </p>
+
+        <p class="note reveal">{RECREATION_NOTE}</p>
       </div>
     </section>
 
@@ -685,43 +823,38 @@ def seafood_services():
           <span class="eyebrow">Cooperative functions</span>
           <h2 id="sf-services-h">What the cooperative does for its members</h2>
           <p class="lede">
-            The Society's stated objects are to help members produce, process,
-            market, distribute and sell their products more efficiently. Those
-            five functions are what NATFISH exists to carry out.
+            NATFISH exists to serve the {MEMBERS} fishers who own it: teaching
+            fishery management, buying what they land, and marketing it on their
+            behalf.
           </p>
         </div>
 
         <div class="grid grid--3">
           <div class="pillar pillar--center reveal">
-            <span class="pillar__icon">{icon("net")}</span>
-            <h3>Produce and process</h3>
+            <span class="pillar__icon">{icon("steward")}</span>
+            <h3>Education in fishery management</h3>
             <p>
-              Members harvest in Belizean waters, and the cooperative supports
-              the handling and preparation that follows a landing.
+              The Society supports its members with education in fishery
+              management, so that the fishery they depend on keeps producing.
+            </p>
+          </div>
+          <div class="pillar pillar--center reveal">
+            <span class="pillar__icon">{icon("net")}</span>
+            <h3>Purchasing members' produce</h3>
+            <p>
+              NATFISH purchases the produce its members land, giving a fisher a
+              reliable route for the day's catch.
             </p>
           </div>
           <div class="pillar pillar--center reveal">
             <span class="pillar__icon">{icon("route")}</span>
-            <h3>Market and distribute</h3>
+            <h3>Marketing on members' behalf</h3>
             <p>
-              The Society brings members' product to market collectively,
-              reaching buyers that an individual fisher could not reach alone.
-            </p>
-          </div>
-          <div class="pillar pillar--center reveal">
-            <span class="pillar__icon">{icon("handling")}</span>
-            <h3>Sell on members' behalf</h3>
-            <p>
-              Selling through the cooperative is the mechanism that turns a
-              member's catch into income and keeps the Society running.
+              The Society markets that produce collectively and works to secure
+              the best possible value in international markets.
             </p>
           </div>
         </div>
-
-        <p class="lede reveal" style="margin-top:2.25rem;text-align:center">
-          Source:
-          <a href="{SRC_FISHERYPROGRESS}" target="_blank" rel="noopener noreferrer">FisheryProgress institutional strengthening report</a>.
-        </p>
       </div>
     </section>
 """
@@ -744,11 +877,10 @@ def seafood_services():
 def responsible():
     return (
         head(
-            "Responsible Fisheries | NATFISH",
-            "Quality handling, participation in electronic catch documentation "
-            "and seafood traceability initiatives, and participation in Belize's "
-            "spiny lobster Fishery Improvement Project.",
-            og_image="img07",
+            "Food Safety &amp; Responsible Fisheries | NATFISH Belize",
+            "NATFISH works to operate in accordance with HACCP and U.S. FDA "
+            "regulations, and has participated in seafood traceability work and "
+            "Belize's spiny lobster Fishery Improvement Project.",
         )
         + header("responsible.html")
         + page_hero(
@@ -759,10 +891,24 @@ def responsible():
             "Responsible Fisheries",
         )
         + f"""
+    <section class="section section--navy" aria-labelledby="rf-mission-h">
+      <div class="container container--narrow">
+        <div class="section-head section-head--center reveal">
+          {RULE_WAVE}
+          <span class="eyebrow">Our mission</span>
+          <h2 id="rf-mission-h">To operate in accordance with HACCP and U.S. FDA regulations.</h2>
+          <p class="lede">
+            Food safety and consumer protection are among our highest priorities
+            as we support globally recognized artisanal fishing.
+          </p>
+        </div>
+      </div>
+    </section>
+
     <section class="section" aria-labelledby="rf-quality-h">
       <div class="container">
         <div class="split">
-          <div class="split__media reveal">{picture("img06", "(max-width: 860px) 92vw, 46vw")}</div>
+          <div class="split__media reveal">{picture("07-lobster-washing-station", "(max-width: 860px) 92vw, 46vw")}</div>
           <div class="reveal">
             <span class="eyebrow">Quality</span>
             <h2 class="h-icon" id="rf-quality-h">{icon("handling", "h-icon__mark")} Handling that protects the product</h2>
@@ -775,7 +921,6 @@ def responsible():
               and the buyer. Consistent handling, grading and cold-chain
               discipline are what let a small fishing nation compete on quality.
             </p>
-            {concept_note()}
           </div>
         </div>
       </div>
@@ -784,7 +929,7 @@ def responsible():
     <section class="section section--sand" aria-labelledby="rf-trace-h">
       <div class="container">
         <div class="split split--media-right">
-          <div class="split__media reveal">{picture("img07", "(max-width: 860px) 92vw, 46vw")}</div>
+          <div class="split__media reveal">{picture("08-lobster-weighing-and-sorting", "(max-width: 860px) 92vw, 46vw")}</div>
           <div class="reveal">
             <span class="eyebrow">Traceability</span>
             <h2 class="h-icon" id="rf-trace-h">{icon("tag", "h-icon__mark")} Knowing where the catch came from</h2>
@@ -810,7 +955,7 @@ def responsible():
     <section class="section" aria-labelledby="rf-fip-h">
       <div class="container">
         <div class="split">
-          <div class="split__media reveal">{picture("img10", "(max-width: 860px) 92vw, 46vw")}</div>
+          <div class="split__media reveal">{picture("10-cold-storage-room", "(max-width: 860px) 92vw, 46vw")}</div>
           <div class="reveal">
             <span class="eyebrow">Fishery Improvement</span>
             <h2 class="h-icon" id="rf-fip-h">{icon("steward", "h-icon__mark")} Part of Belize's fisheries management effort</h2>
@@ -839,9 +984,11 @@ def responsible():
         </p>
 
         <p class="notice reveal" style="margin-top:1rem">
-          <strong>A note on certifications.</strong> Certifications, standards
-          and product-specific claims should be confirmed directly with NATFISH,
-          which can advise what applies to a given product at a given time.
+          <strong>A note on certifications.</strong> Working in accordance with
+          a regulation is not the same as holding a certificate against it.
+          Certifications, standards and product-specific claims should be
+          confirmed directly with NATFISH, which can advise what applies to a
+          given product and a given market.
         </p>
       </div>
     </section>
@@ -871,9 +1018,7 @@ def news():
         head(
             "What&rsquo;s New at NATFISH | NATFISH",
             "Announcements, cooperative updates, fisheries-sector developments "
-            "and media coverage relevant to National Fishermen Producers' "
-            "Co-operative Society Ltd.",
-            og_image="img09",
+            f"and media coverage relevant to {LEGAL_NO_DOT}.",
         )
         + header("news.html")
         + page_hero(
@@ -906,7 +1051,34 @@ def news():
       </div>
     </section>
 
-    <section class="section section--sand" aria-labelledby="news-more-h">
+    <section class="section section--sand" aria-labelledby="news-feature-h">
+      <div class="container">
+        <div class="split split--media-right">
+          <div class="split__media reveal">
+            {picture("02-lobster-packing-line-portrait", "(max-width: 860px) 92vw, 46vw")}
+          </div>
+          <div class="reveal">
+            <p class="update-card__meta">
+              <span class="update-card__tag">Photo feature</span>
+            </p>
+            <h2 id="news-feature-h">Inside NATFISH: People, Process and Product</h2>
+            <p class="lede">
+              A set of photographs from inside the cooperative's own facility:
+              the people who receive and prepare the catch, the steps between
+              landing and cold storage, and the product that leaves at the end
+              of it.
+            </p>
+            <p class="note">
+              An evergreen feature, not a dated announcement. The photographs
+              were supplied by NATFISH and do not document a specific event.
+            </p>
+            <a class="arrow-link" href="gallery.html">View the gallery</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="news-more-h">
       <div class="container">
         <div class="section-head reveal">
           <span class="eyebrow">More updates</span>
@@ -954,7 +1126,6 @@ def seafood_seasons():
             "A plain-language guide to Belize's standard regulated seafood "
             "seasons for lobster, conch, Nassau grouper, whelks and stone crab. "
             "Contact NATFISH to confirm current availability.",
-            og_image="img09",
         )
         + header("seafood-seasons.html")
         + f"""
@@ -980,7 +1151,7 @@ def seafood_seasons():
 
       <div class="hero__media">
         <div class="hero__slide is-active">
-          {picture("img09", "(max-width: 900px) 100vw, 60vw", eager=True).replace("<img ", '<img style="object-position:52% 58%" ')}
+          {picture("04-fresh-conch-processing-closeup", "(max-width: 900px) 100vw, 60vw", eager=True, focus="50% 52%")}
         </div>
       </div>
     </section>
@@ -1043,59 +1214,93 @@ def seafood_seasons():
 
 # ============================================================= gallery ===
 
-GALLERY = [
-    ("img01", "wide"), ("img06", ""), ("img04", ""),
-    ("img03", ""), ("img05", ""), ("img10", "wide"),
-    ("img07", ""), ("img08", ""), ("img09", "wide"),
+# The ten authentic photographs lead, in a sequence that follows the work
+# itself: people, then process, then product, then cold storage. The four
+# packaging photographs follow as a separate, labelled group, because they are
+# recreations and should not be read as part of the documentary set.
+#
+# "wide" spans two columns. Only the three landscape frames get it; forcing a
+# portrait photograph into a wide cell is what produces the letterboxed,
+# filler-bar look the brief rules out.
+GALLERY_AUTHENTIC = [
+    ("01-lobster-packing-team-wide", "wide"),
+    ("09-lobster-processing-table", ""),
+    ("07-lobster-washing-station", ""),
+    ("03-lobster-processing-room-wide", "wide"),
+    ("08-lobster-weighing-and-sorting", ""),
+    ("02-lobster-packing-line-portrait", ""),
+    ("04-fresh-conch-processing-closeup", "wide"),
+    ("05-lobster-tail-packing-boxes", ""),
+    ("06-lobster-tail-packing-close", ""),
+    ("10-cold-storage-room", ""),
+]
+
+GALLERY_PRODUCTS = [
+    ("01-belizean-pride-lobster-cases", "wide"),
+    ("02-belizean-pride-orange-lobster-tails", ""),
+    ("03-belizean-pride-raw-lobster-tails", ""),
+    ("04-wild-caught-frozen-conch", "wide"),
 ]
 
 
-def gallery():
-    items = []
-    for stem, mod in GALLERY:
-        cls = f" gallery__figure--{mod}" if mod else ""
+def gallery_figures(items):
+    out = []
+    for stem, _mod in items:
+        cls = ""
         sizes = "(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw"
-        items.append(
+        out.append(
             f"""<figure class="gallery__figure{cls}">
             <button class="gallery__item" type="button"
                     aria-label="View larger: {SHORT[stem]}">
               {picture(stem, sizes, full=True)}
             </button>
-            <figcaption>{SHORT[stem]}. Concept image used for the website presentation.</figcaption>
+            <figcaption>{SHORT[stem]}.</figcaption>
           </figure>"""
         )
-    photos = "\n          ".join(items)
+    return "\n          ".join(out)
 
+
+def gallery():
     return (
         head(
-            "Gallery | NATFISH",
-            "Photography and video covering Belizean fisheries, seafood "
-            "handling and the waters National Fishermen members work in.",
-            og_image="img01",
+            "Inside NATFISH | Belize Seafood Processing Gallery",
+            "Photographs from inside the NATFISH facility in Belize City: the "
+            "packing team, lobster and conch processing, packing and cold "
+            "storage.",
         )
         + header("gallery.html")
         + page_hero(
             "Gallery",
-            "The work, the water and the product",
-            "Photographs and video from Belize's fisheries. Select any "
-            "photograph to view it larger.",
+            "The people, the process, the product",
+            "An authentic look inside the people, processing, products and "
+            f"cold-storage operations of {LEGAL_NO_DOT}. Select any photograph "
+            "to view it larger.",
             "Gallery",
         )
         + f"""
-    <div class="container">
-      <p class="notice reveal">
-        <strong>About this imagery.</strong> The photographs below are concept
-        images prepared for the website presentation. They do not depict
-        identified NATFISH members, staff, vessels or facilities. Client-owned
-        photography will replace them as it is supplied.
-      </p>
-    </div>
-
     <section class="section" aria-labelledby="gal-photos-h">
       <div class="container">
-        <h2 id="gal-photos-h" class="visually-hidden">Photographs</h2>
+        <div class="section-head section-head--rule reveal">
+          {RULE_WAVE}
+          <span class="eyebrow">Inside the facility</span>
+          <h2 id="gal-photos-h">Photographs supplied by NATFISH</h2>
+        </div>
         <div class="gallery reveal">
-          {photos}
+          {gallery_figures(GALLERY_AUTHENTIC)}
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--sand" aria-labelledby="gal-products-h">
+      <div class="container">
+        <div class="section-head section-head--rule reveal">
+          {RULE_WAVE}
+          <span class="eyebrow">Product and packaging</span>
+          <h2 id="gal-products-h">How the product is packed</h2>
+          <p class="lede">{RECREATION_NOTE}</p>
+        </div>
+        <div class="gallery reveal">
+          {gallery_figures(GALLERY_PRODUCTS)}
         </div>
       </div>
     </section>
@@ -1113,7 +1318,7 @@ def gallery():
 
         <div class="video reveal" data-video="{VIDEO_ID}" data-video-title="{VIDEO_TITLE}">
           <button class="video__poster" type="button" aria-label="Play the video: {VIDEO_TITLE}">
-            {picture("img10", "(max-width: 900px) 96vw, 880px", alt="")}
+            {picture("03-lobster-processing-room-wide", "(max-width: 900px) 96vw, 880px", alt="")}
             <span class="video__play">{ICON_PLAY}</span>
             <span class="video__label">{VIDEO_TITLE}</span>
           </button>
@@ -1128,13 +1333,12 @@ def gallery():
         + cta_band(
             "Contact",
             "Get in touch with NATFISH",
-            "For buyer enquiries, cooperative matters or media requests, the "
-            "team can be reached directly.",
+            "Questions about the cooperative, its products or a buyer "
+            "requirement all reach the same team.",
             [
                 '<a class="btn btn--primary" href="contact.html">Contact NATFISH</a>',
-                f'<a class="btn btn--outline" href="{BUYER_CTA}">Buyer Enquiry</a>',
+                f'<a class="btn btn--ghost" href="{BUYER_CTA}">Buyer Enquiry</a>',
             ],
-            tone="sand",
         )
         + footer(with_lightbox=True)
     )
@@ -1145,7 +1349,7 @@ def gallery():
 CHECKLIST = [
     "Your name and company",
     "Your country or location",
-    "The seafood product or species required",
+    "Which of the six products you need",
     "Approximate quantity",
     "Preferred timeframe",
     "Packaging or preparation requirements, if applicable",
@@ -1154,18 +1358,25 @@ CHECKLIST = [
     "Any additional information NATFISH should know",
 ]
 
+# Named so a buyer can say exactly which product they mean. Both enquiry drafts
+# carry the same six lines, so the pick-list on the page and the pick-list in
+# the message a buyer sends never drift apart.
+PRODUCT_PICKS = [p["name"] for p in CATALOGUE]
+
 
 def contact():
     checks = "\n            ".join(
         f'<li>{ICON_CHECK}<span>{item}</span></li>' for item in CHECKLIST
     )
+    picks = "\n              ".join(
+        f'<li>{name}</li>' for name in PRODUCT_PICKS
+    )
 
     return (
         head(
-            "Contact &amp; Buyer Enquiries | NATFISH",
+            "Contact NATFISH | Belize Seafood Buyer Enquiries",
             "Send NATFISH a buyer enquiry by email or WhatsApp, or reach the "
-            "cooperative in Belize City by telephone or email.",
-            og_image="img08",
+            f"cooperative at {ADDRESS} by telephone or email.",
         )
         + header("contact.html")
         + page_hero(
@@ -1184,7 +1395,7 @@ def contact():
             <h2 id="buyer-h">Purchasing seafood from NATFISH</h2>
             <p class="lede">
               Interested in purchasing seafood or discussing a supply
-              requirement? Tell us what product you are looking for, the
+              requirement? Tell us which product you are looking for, the
               approximate quantity required, your location and your preferred
               timeframe. NATFISH will review your enquiry and contact you to
               discuss availability and next steps.
@@ -1199,17 +1410,15 @@ def contact():
               <a class="btn btn--primary" href="{mailto_href()}">
                 {ICON_MAIL} Send an Email
               </a>
-              <!-- TEMPORARY CONCEPT WHATSAPP NUMBER — REPLACE WITH CLIENT-CONFIRMED
-                   NATFISH NUMBER BEFORE PUBLIC LAUNCH. +501 610-8859 is a routing
-                   number for this concept build only and is not published
-                   anywhere as a NATFISH telephone number. -->
               <a class="btn btn--whatsapp" href="{whatsapp_href()}"
                  target="_blank" rel="noopener noreferrer">
                 {ICON_WA} Enquire on WhatsApp
               </a>
             </div>
             <p class="note">
-              Both options open a message you can edit before sending.
+              Both options open a message you can edit before sending. The email
+              goes to <a href="mailto:{EMAIL}">{EMAIL}</a> and WhatsApp opens a
+              chat with {MOBILE_DISPLAY}.
             </p>
           </div>
 
@@ -1217,6 +1426,14 @@ def contact():
             <h3 id="checklist-h">What to include in your enquiry</h3>
             <ul class="checklist">
             {checks}
+            </ul>
+
+            <h3 id="products-h" style="margin-top:1.75rem">Which product?</h3>
+            <p class="note" style="margin-top:0">
+              Name one of these so the team can answer precisely.
+            </p>
+            <ul class="picklist" aria-labelledby="products-h">
+              {picks}
             </ul>
           </aside>
         </div>
@@ -1228,9 +1445,9 @@ def contact():
         <div class="section-head section-head--center reveal">
           <span class="eyebrow">General Contact</span>
           <h2 id="general-h">Reach the cooperative</h2>
-          <p class="lede">
-            For cooperative matters, media requests and general questions.
-            These details are provisional pending confirmation by NATFISH.
+          <p class="lede" style="margin-inline:auto">
+            For cooperative matters, orders, media requests and general
+            questions.
           </p>
         </div>
 
@@ -1244,14 +1461,44 @@ def contact():
           <div class="contact-card reveal">
             <span class="contact-card__icon">{ICON_PHONE}</span>
             <h3>Call</h3>
-            <p>{TEL_DISPLAY}</p>
-            <a class="arrow-link" href="tel:{TEL_HREF}">Call NATFISH</a>
+            <p>
+              <a href="tel:{TEL_HREF}">{TEL_DISPLAY}</a>
+              <span class="contact-card__tag">Primary office</span>
+            </p>
+            <p>
+              <a href="tel:{TEL2_HREF}">{TEL2_DISPLAY}</a>
+              <span class="contact-card__tag">Secondary office</span>
+            </p>
+            <p>
+              <a href="tel:{MOBILE_HREF}">{MOBILE_DISPLAY}</a>
+              <span class="contact-card__tag">Mobile &amp; WhatsApp</span>
+            </p>
           </div>
           <div class="contact-card reveal">
             <span class="contact-card__icon">{ICON_MAIL}</span>
             <h3>Email</h3>
-            <p>{EMAIL}</p>
+            <p>
+              <a href="mailto:{EMAIL}">{EMAIL}</a>
+              <span class="contact-card__tag">General and orders</span>
+            </p>
             <a class="arrow-link" href="mailto:{EMAIL}">Email NATFISH</a>
+          </div>
+        </div>
+
+        <div class="person-card reveal">
+          <span class="person-card__icon">{icon("handling")}</span>
+          <div class="person-card__body">
+            <span class="eyebrow">Management</span>
+            <h3>{GM_NAME}</h3>
+            <p class="person-card__role">{GM_TITLE}</p>
+            <p>
+              For matters that need the General Manager directly:
+              <a href="mailto:{GM_EMAIL}">{GM_EMAIL}</a>
+            </p>
+            <p class="note" style="margin-bottom:0">
+              General enquiries and orders are answered faster at
+              <a href="mailto:{EMAIL}">{EMAIL}</a>.
+            </p>
           </div>
         </div>
       </div>
@@ -1260,8 +1507,8 @@ def contact():
         + cta_band(
             "About",
             "New to NATFISH?",
-            "A Belizean fisher-owned cooperative registered in 1966, owned by "
-            "the fishers who make it up.",
+            f"A member-owned Belizean cooperative registered on {FOUNDED_DATE}, "
+            f"owned by the {MEMBERS} fishers who make it up.",
             [
                 '<a class="btn btn--primary" href="about.html">About NATFISH</a>',
                 '<a class="btn btn--ghost" href="seafood-services.html">Seafood &amp; Services</a>',

@@ -48,22 +48,27 @@ def between(html, start, end):
 _IMG_CACHE = {}
 
 
-def data_uri(stem):
-    """The 1400w WebP as a base64 data URI.
+def data_uri(rel):
+    """One WebP as a base64 data URI, keyed by its path without the extension.
 
-    WebP only, no JPEG fallback: anything that can open the artifact can decode
-    WebP, and carrying both would double the payload for nothing.
+    The V2 photography lives in two folders (official/ and products/), so the
+    key carries the folder as well as the stem.
+
+    The 800w tier, not 1400w: fourteen photographs at 1400w came to 4.6 MB of
+    base64 and the artifact is viewed in a single scrolling page, where 800w is
+    already past the point of visible difference. WebP only, no JPEG fallback,
+    since anything that can open an artifact can decode WebP.
     """
-    if stem not in _IMG_CACHE:
-        raw = (ROOT / "assets" / "img" / f"{stem}-1400.webp").read_bytes()
-        _IMG_CACHE[stem] = "data:image/webp;base64," + base64.b64encode(raw).decode()
-    return _IMG_CACHE[stem]
+    if rel not in _IMG_CACHE:
+        raw = (ROOT / "assets" / "img" / f"{rel}-800.webp").read_bytes()
+        _IMG_CACHE[rel] = "data:image/webp;base64," + base64.b64encode(raw).decode()
+    return _IMG_CACHE[rel]
 
 
 PICTURE_RE = re.compile(
     r"<picture>\s*<source[^>]*>\s*(<img\b[^>]*>)\s*</picture>", re.S
 )
-STEM_RE = re.compile(r"assets/img/(img\d+)-1400\.jpg")
+STEM_RE = re.compile(r"assets/img/((?:official|products)/[\w-]+?)-\d+\.jpg")
 
 
 def inline_images(html):
@@ -81,6 +86,7 @@ def inline_images(html):
         if not stem:
             return match.group(0)
         key = stem.group(1)
+        # data-img is an attribute value, so a slash in the key is fine.
         data_uri(key)  # register it in the table
 
         # The responsive attributes are meaningless once there is one source.
@@ -89,6 +95,13 @@ def inline_images(html):
         tag = re.sub(r'\ssrc="[^"]*"', f' data-img="{key}"', tag, count=1)
         # The lightbox reads data-full at click time; flag it for hydration.
         tag = re.sub(r'\sdata-full="[^"]*"', " data-full-img", tag)
+        # Lazy loading earns nothing here: every image is already inside the
+        # file as a data URI, so there is no request to defer. It also costs
+        # something, because the eight pages are one document and an image in a
+        # display:none route never enters the viewport to trigger its load.
+        tag = tag.replace(' loading="lazy"', ' loading="eager"')
+        # width/height stay on the tag: they are what stops the single-page
+        # bundle from reflowing as fourteen data URIs decode.
         return tag
 
     return PICTURE_RE.sub(swap, html)

@@ -1,7 +1,7 @@
 /* ==========================================================================
-   NATFISH V1
-   National Fishermen Producers' Co-operative Society Ltd.
-   Concept stylesheet. No build step, no external dependencies.
+   NATFISH V2
+   National Fishermen Producers Cooperative Society Ltd.
+   No build step, no external dependencies.
    ========================================================================== */
 
 :root {
@@ -362,7 +362,7 @@ strong {
 }
 
 .btn--sm {
-  min-height: 42px;
+  min-height: 44px;
   padding: 0.5rem 1.15rem;
   font-size: 0.88rem;
 }
@@ -372,10 +372,23 @@ strong {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
+  /* These stand alone at the end of a section rather than sitting inside a
+     sentence, so they are controls and carry a 44px target. The padding is
+     vertical only, so the text still aligns with the copy above it. */
+  min-height: 44px;
+  padding-block: 0.55rem;
   font-weight: 600;
   font-size: 0.95rem;
   text-decoration: none;
   color: var(--teal-700);
+}
+
+/* Inside running copy an arrow-link is an inline link again, and a 44px line
+   box there would blow the paragraph's rhythm apart. */
+p .arrow-link,
+li .arrow-link {
+  min-height: 0;
+  padding-block: 0;
 }
 
 .arrow-link::after {
@@ -2676,6 +2689,9 @@ body.nav-open {
   align-items: center;
   gap: 0.4rem;
   margin-left: auto;
+  /* 44px minimum: this is a primary control on every page, and at 34px it was
+     the smallest tap target on the site. */
+  min-height: 44px;
   padding: 0.42rem 0.75rem;
   border: 1.5px solid var(--line);
   border-radius: 7px;
@@ -3158,4 +3174,459 @@ body.nav-open {
   .header-cta .btn {
     padding-inline: 1rem;
   }
+}
+
+/* ================================================================= V2 == */
+/* Components added for the client-photography update. The palette, spacing
+   scale and radii all come from the existing tokens; nothing here introduces
+   a second design language. */
+
+/* ------------------------------------------------- focal-point helpers -- */
+/* Seven of the ten client photographs are portrait, so a single centred crop
+   loses the subject on one axis or the other. These set the crop per image and
+   per breakpoint rather than settling for one compromise. */
+
+.focus-left    { object-position: 38% 50%; }
+.focus-centre  { object-position: 50% 50%; }
+.focus-top     { object-position: 50% 28%; }
+
+@media (max-width: 860px) {
+  /* Tall frames on a phone: hold the top third, where the faces and hands are. */
+  .focus-left   { object-position: 44% 38%; }
+  .focus-centre { object-position: 50% 42%; }
+  .focus-top    { object-position: 50% 22%; }
+}
+
+/* ------------------------------------------------------- process steps -- */
+/* Four portrait photographs. They keep a 3:4 frame on every screen; forcing
+   them into a landscape card is what produces the letterboxed look. */
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(1.1rem, 2.2vw, 1.75rem);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: step;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  min-width: 0;
+  margin: 0;
+}
+
+.step__media {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--sand-200);
+  box-shadow: var(--shadow-md);
+}
+
+.step__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* The number sits in the corner, over the darkest part of the frame rather
+   than over a face, and never over the centre where the work is happening. */
+.step__n {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.4rem;
+  height: 2.4rem;
+  padding-inline: 0.55rem;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--white);
+  background: var(--navy-900);
+  border-start-end-radius: var(--radius);
+}
+
+.step__body h3 {
+  font-size: 1.08rem;
+  margin-bottom: 0.35rem;
+}
+
+.step__body p {
+  margin: 0;
+  font-size: 0.94rem;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 1024px) {
+  .steps { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* One clean column on a phone, never a horizontal scroller: every step stays
+   reachable by scrolling the page the way the rest of the site scrolls. */
+@media (max-width: 620px) {
+  .steps { grid-template-columns: 1fr; gap: 1.6rem; }
+
+  .step {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .step__media {
+    flex: 0 0 38%;
+    max-width: 152px;
+  }
+
+  .step__body { padding-top: 0.15rem; }
+}
+
+/* ------------------------------------------------------ trust strip x4 -- */
+/* Four items rather than three. On a phone they become a two-column grid so
+   the longest label still gets a full line instead of wrapping to three. */
+
+.trust__list--four {
+  gap: 0.65rem clamp(1.1rem, 3.4vw, 3rem);
+}
+
+@media (max-width: 720px) {
+  .trust__list--four {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.7rem 1.1rem;
+    justify-items: start;
+  }
+
+  .trust__list--four .trust__item {
+    align-items: flex-start;
+    font-size: 0.84rem;
+    line-height: 1.35;
+  }
+
+  .trust__list--four .ico {
+    margin-top: 0.1rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .trust__list--four { grid-template-columns: 1fr; }
+}
+
+/* ---------------------------------------------------- product catalogue -- */
+
+.products {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(1.1rem, 2.2vw, 1.75rem);
+}
+
+.product {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.product:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.product__media {
+  /* 16:10 rather than 4:3. The packaging photographs are 1.5 to 2.6 wide after
+     the crop that removed their invented label text, and a 4:3 frame cut the
+     carton away from the conch until it read as an unidentifiable mass. */
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--sand-200);
+}
+
+.product__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Three of the six products have no photograph that would be truthful for
+   them, so those cards carry the species mark on a navy panel instead of a
+   borrowed or mislabelled image. The panel keeps the grid even. */
+.product__media--mark {
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(120% 120% at 30% 20%, var(--navy-800) 0%, var(--navy-900) 70%);
+}
+
+.product__mark {
+  width: clamp(72px, 22%, 108px);
+  height: auto;
+  color: var(--turq-300);
+}
+
+.product__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: clamp(1.1rem, 2vw, 1.5rem);
+}
+
+.product__body h3 {
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.product__sci {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--teal-600);
+}
+
+.product__body p:not(.product__sci) {
+  margin: 0.25rem 0 0;
+  font-size: 0.94rem;
+  color: var(--ink-soft);
+}
+
+.product__body .arrow-link {
+  margin-top: auto;
+  padding-top: 0.85rem;
+}
+
+@media (max-width: 1024px) {
+  .products { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 620px) {
+  .products { grid-template-columns: 1fr; }
+}
+
+/* The same mark panel inside the homepage card grid. */
+.card__media--mark {
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(120% 120% at 30% 20%, var(--navy-800) 0%, var(--navy-900) 70%);
+}
+
+.card__mark {
+  width: clamp(64px, 26%, 96px);
+  height: auto;
+  color: var(--turq-300);
+}
+
+/* ------------------------------------------------------- picklist ------- */
+/* The six product names on the contact page, matching the pick-list that the
+   email and WhatsApp drafts carry. */
+
+.picklist {
+  margin: 0.5rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.picklist li {
+  font-size: 0.84rem;
+  line-height: 1.3;
+  padding: 0.34rem 0.68rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--ink-soft);
+}
+
+/* ------------------------------------------------------- person card ---- */
+
+.person-card {
+  display: flex;
+  gap: clamp(1rem, 2.4vw, 1.75rem);
+  align-items: flex-start;
+  margin-top: clamp(1.75rem, 3.5vw, 2.75rem);
+  padding: clamp(1.25rem, 3vw, 2rem);
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-inline-start: 4px solid var(--teal-600);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.person-card__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--sand-100);
+  color: var(--navy-800);
+}
+
+.person-card__icon .ico {
+  width: 26px;
+  height: 26px;
+}
+
+.person-card__body { min-width: 0; }
+
+.person-card__body h3 {
+  margin: 0.2rem 0 0.1rem;
+  font-size: 1.2rem;
+}
+
+.person-card__role {
+  margin: 0 0 0.75rem;
+  font-size: 0.92rem;
+  color: var(--teal-600);
+  font-weight: 600;
+}
+
+.person-card__body p { margin: 0 0 0.5rem; }
+
+/* Long email addresses must not push the card wider than the viewport. */
+.person-card__body a {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 560px) {
+  .person-card { flex-direction: column; gap: 0.9rem; }
+}
+
+/* --------------------------------------------------- contact card tags -- */
+
+.contact-card__tag {
+  display: block;
+  font-size: 0.76rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-top: 0.1rem;
+}
+
+.contact-card p a {
+  overflow-wrap: anywhere;
+}
+
+/* ------------------------------------------------------- footer contact -- */
+
+.footer-list--contact li {
+  line-height: 1.45;
+}
+
+.footer-list--contact a {
+  overflow-wrap: anywhere;
+}
+
+.footer-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  margin-inline-start: 0.3rem;
+}
+
+@media (max-width: 720px) {
+  /* Stacked and centred on a phone, with the label under its number rather
+     than trailing off the end of the line. */
+  .footer-tag {
+    display: block;
+    margin-inline-start: 0;
+  }
+}
+
+/* ---------------------------------------------------- gallery: masonry -- */
+/* Seven of the ten client photographs are portrait and three are 1.6 landscape.
+   In the old fixed 4:3 grid every one of them was cropped to fit, which is
+   exactly what the brief rules out. Columns let each photograph keep its own
+   height, so nothing is cropped, letterboxed or stretched.
+   The `.gallery` grid rules above still apply to the homepage preview strip;
+   only the gallery page's own figures switch to columns. */
+
+.gallery:has(.gallery__figure) {
+  display: block;
+  column-count: 3;
+  column-gap: clamp(0.6rem, 1.2vw, 1rem);
+}
+
+.gallery__figure {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  margin-bottom: clamp(0.6rem, 1.2vw, 1rem);
+}
+
+/* Natural proportions: no aspect-ratio, no cover crop. */
+.gallery__figure .gallery__item {
+  aspect-ratio: auto;
+  display: block;
+}
+
+.gallery__figure .gallery__item img {
+  width: 100%;
+  height: auto;
+  object-fit: fill;
+  display: block;
+}
+
+@media (max-width: 860px) {
+  .gallery:has(.gallery__figure) { column-count: 2; }
+}
+
+@media (max-width: 460px) {
+  .gallery:has(.gallery__figure) { column-count: 1; }
+}
+
+/* Fallback for engines without :has(). Columns are the enhancement; the grid
+   underneath still renders a usable gallery. */
+@supports not selector(:has(*)) {
+  .gallery__figure .gallery__item { aspect-ratio: 4 / 3; }
+  .gallery__figure .gallery__item img { height: 100%; object-fit: cover; }
+}
+
+/* ------------------------------------------- portrait photography ------ */
+/* --ratio carries each file's real shape and .is-portrait marks the tall ones.
+   Cover-cropping a 3:4 photograph into a 4:3 frame throws away half of it,
+   and the client set is mostly portrait, so the frames adapt to the pictures
+   rather than the other way round. */
+
+.split__media img.is-portrait {
+  aspect-ratio: var(--ratio);
+  max-height: 620px;
+  object-fit: cover;
+}
+
+/* A tall photograph beside a text column should not tower over it. */
+.split__media:has(img.is-portrait) {
+  max-width: 480px;
+  margin-inline: auto;
+}
+
+.card__media:has(img.is-portrait),
+.feature-update__media:has(img.is-portrait) {
+  aspect-ratio: 1 / 1;
+}
+
+.update-card__media:has(img.is-portrait) {
+  aspect-ratio: 4 / 3;
+}
+
+@media (max-width: 860px) {
+  /* On a phone the media sits above the copy at full width, so a tall frame
+     would push the text off the first screen. Cap it. */
+  .split__media img.is-portrait { max-height: 460px; }
+  .split__media:has(img.is-portrait) { max-width: 380px; }
 }
