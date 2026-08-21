@@ -315,10 +315,12 @@ def main():
     hydrate = HYDRATE_JS.replace("__IMAGES__", json.dumps(_IMG_CACHE))
 
     # A short static title so the artifact gallery shows a name rather than the
-    # full legal name. The router replaces it with each page's real title as
-    # soon as it runs, so the browser tab stays correct.
+    # full legal name. Deliberately unversioned: the preview is republished to
+    # the same URL for each revision, and a title carrying a version number
+    # goes stale the moment it is. The router replaces it with each page's real
+    # title as soon as it runs, so the browser tab stays correct.
     doc = "\n".join([
-        "<title>NATFISH V1</title>",
+        "<title>NATFISH</title>",
         f"<style>\n{css}\n{ROUTER_CSS}</style>",
         '<a class="skip-link" href="#main">Skip to main content</a>',
         route_links(inline_png(header)),
