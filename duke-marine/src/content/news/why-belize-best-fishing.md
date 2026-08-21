@@ -5,6 +5,11 @@ excerpt: 'From the flats grand slam to the blue water, here is why Belize is a w
 category: 'Guides'
 author: 'Duke Marine'
 seed: 'news-belize-fishing'
+image: '/media/life/wahoo-catch.jpg'
+imageAlt: 'A wahoo landed on a fishing trip off Belize'
+cardImage: '/media/life/kingfish-lift.jpg'
+series: 'Duke Marine On the Water Guide'
+seriesPart: 1
 ---
 
 Ask anglers who have fished around the world where they would go back tomorrow,

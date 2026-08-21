@@ -20,13 +20,48 @@ const more = all.filter((p) => p.id !== post.id).slice(0, 2);
 
 const fmt = (d: Date) =>
   d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+const iso = (d: Date) => d.toISOString();
+
+// Artwork comes from frontmatter, with the original defaults as fallbacks so
+// articles written before these fields existed render exactly as before.
+const heroImage = post.data.heroImage ?? '/media/life/trolling-spread.jpg';
+const cover = post.data.image ?? '/media/life/wahoo-catch.jpg';
+const coverAlt = post.data.imageAlt ?? 'A wahoo landed on a fishing trip off Belize';
+const coverPosition = post.data.imagePosition ?? 'center';
+
+// SEO overrides fall back to the article title and excerpt.
+const seoTitle = post.data.seoTitle ?? post.data.title;
+const metaDescription = post.data.metaDescription ?? post.data.excerpt;
+
+// Series navigation, resolved from the collection rather than hardcoded.
+const seriesName = post.data.series;
+const part = post.data.seriesPart;
+const seriesPosts = seriesName
+  ? all
+      .filter((p) => p.data.series === seriesName)
+      .sort((a, b) => (a.data.seriesPart ?? 0) - (b.data.seriesPart ?? 0))
+  : [];
+const nextInSeries = seriesPosts.find((p) => (p.data.seriesPart ?? 0) === (part ?? 0) + 1);
+const prevInSeries = seriesPosts.find((p) => (p.data.seriesPart ?? 0) === (part ?? 0) - 1);
 ---
 
-<BaseLayout title={post.data.title} description={post.data.excerpt}>
+<BaseLayout
+  title={seoTitle}
+  description={metaDescription}
+  image={cover}
+  ogType="article"
+  article={{
+    publishedTime: iso(post.data.date),
+    author: post.data.author,
+    section: post.data.category,
+    headline: post.data.title,
+    imageUrl: cover,
+  }}
+>
   <article class="article">
     <header class="article__hero on-dark">
       <div class="article__bg" aria-hidden="true">
-        <img src="/media/life/trolling-spread.jpg" alt="" loading="eager" />
+        <img src={heroImage} alt="" loading="eager" />
         <span class="article__scrim"></span>
       </div>
       <div class="container article__head">
@@ -38,6 +73,9 @@ const fmt = (d: Date) =>
           <span aria-current="page">{post.data.category}</span>
         </nav>
         <span class="article__cat">{post.data.category}</span>
+        {seriesName && part && (
+          <span class="article__series" data-reveal>{seriesName}, Part {part}</span>
+        )}
         <h1 data-reveal>{post.data.title}</h1>
         <p class="article__byline" data-reveal data-reveal-delay="80">
           <Icon name="anchor" size={16} /> {post.data.author} · {fmt(post.data.date)}
@@ -47,9 +85,10 @@ const fmt = (d: Date) =>
 
     <div class="article__cover container">
       <img
-        src="/media/life/wahoo-catch.jpg"
-        alt="A wahoo landed on a fishing trip off Belize"
+        src={cover}
+        alt={coverAlt}
         class="article__cover-img"
+        style={`object-position:${coverPosition}`}
         loading="lazy"
       />
     </div>
@@ -58,6 +97,26 @@ const fmt = (d: Date) =>
       <div class="prose article__prose">
         <Content />
       </div>
+      {(nextInSeries || prevInSeries) && (
+        <aside class="article__series-nav" aria-label="Series navigation">
+          {nextInSeries && (
+            <p class="article__series-row">
+              <span class="article__series-label">Continue the Series</span>
+              <a href={`/blog/${nextInSeries.id}`} class="link-arrow">
+                {nextInSeries.data.title} <Icon name="arrow" size={16} />
+              </a>
+            </p>
+          )}
+          {prevInSeries && (
+            <p class="article__series-row">
+              <span class="article__series-label">From the Series</span>
+              <a href={`/blog/${prevInSeries.id}`} class="link-arrow">
+                <Icon name="arrow" size={16} class="flip" /> {prevInSeries.data.title}
+              </a>
+            </p>
+          )}
+        </aside>
+      )}
       <div class="article__back">
         <a href="/blog" class="link-arrow"><Icon name="arrow" size={16} class="flip" /> Back to all posts</a>
       </div>
@@ -119,6 +178,35 @@ const fmt = (d: Date) =>
     position: relative;
     z-index: 1;
     max-width: 800px;
+  }
+  .article__series {
+    display: block;
+    margin-top: 0.85rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--c-brass-soft);
+  }
+  /* Compact series links, deliberately not a banner. */
+  .article__series-nav {
+    max-width: var(--maxw-prose);
+    margin-top: 2.4rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--border);
+    display: grid;
+    gap: 0.9rem;
+  }
+  .article__series-row {
+    display: grid;
+    gap: 0.25rem;
+  }
+  .article__series-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-soft);
   }
   .article__cover-img {
     display: block;

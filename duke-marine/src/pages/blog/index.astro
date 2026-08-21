@@ -36,9 +36,10 @@ const fmt = (d: Date) =>
           <a href={`/blog/${featured.id}`} class="feat" data-reveal>
             <div class="feat__media">
               <img
-                src="/media/life/kingfish-lift.jpg"
-                alt="An angler holding a kingfish on a Belize fishing trip"
+                src={featured.data.cardImage ?? featured.data.image ?? "/media/life/kingfish-lift.jpg"}
+                alt={featured.data.imageAlt ?? "An angler holding a kingfish on a Belize fishing trip"}
                 class="feat__img"
+                style={featured.data.imagePosition ? `object-position:${featured.data.imagePosition}` : undefined}
                 loading="lazy"
               />
             </div>
@@ -61,7 +62,17 @@ const fmt = (d: Date) =>
             {rest.map((post, i) => (
               <a href={`/blog/${post.id}`} class="post" data-reveal data-reveal-delay={(i % 3) * 70}>
                 <div class="post__media">
-                  <Media seed={post.data.seed || post.id} icon="waves" ratio="16 / 9" pattern="topo" />
+                  {post.data.cardImage || post.data.image ? (
+                    <img
+                      src={post.data.cardImage ?? post.data.image}
+                      alt={post.data.imageAlt ?? ""}
+                      class="post__img"
+                      style={post.data.imagePosition ? `object-position:${post.data.imagePosition}` : undefined}
+                      loading="lazy"
+                    />
+                  ) : (
+                    <Media seed={post.data.seed || post.id} icon="waves" ratio="16 / 9" pattern="topo" />
+                  )}
                 </div>
                 <div class="post__body">
                   <span class="post__meta">
@@ -144,6 +155,12 @@ const fmt = (d: Date) =>
     box-shadow: var(--shadow);
   }
 }
+  .post__img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
   .post__media {
     overflow: hidden;
   }

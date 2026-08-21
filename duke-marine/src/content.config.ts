@@ -14,6 +14,21 @@ const news = defineCollection({
     category: z.string().default('News'),
     author: z.string().default('Duke Marine'),
     seed: z.string().optional(),
+    /** Feature image: article cover plus social sharing. */
+    image: z.string().optional(),
+    imageAlt: z.string().optional(),
+    /** Focal point for the cover crop, e.g. "center 52%". */
+    imagePosition: z.string().optional(),
+    /** Optional different image for the blog listing card. */
+    cardImage: z.string().optional(),
+    /** Decorative full-bleed image behind the article title. */
+    heroImage: z.string().optional(),
+    /** SEO overrides; fall back to title and excerpt when omitted. */
+    seoTitle: z.string().optional(),
+    metaDescription: z.string().optional(),
+    /** Editorial series, e.g. "Duke Marine On the Water Guide". */
+    series: z.string().optional(),
+    seriesPart: z.number().optional(),
   }),
 });
 

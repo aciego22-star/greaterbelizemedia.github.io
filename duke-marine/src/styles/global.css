@@ -421,3 +421,24 @@ summary {
     opacity: 0.82;
   }
 }
+
+/* Contextual links inside article bodies. Global anchors inherit colour and drop
+   underlines, so prose links need to be made visible explicitly. */
+.prose a {
+  color: var(--c-navy-700);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  font-weight: 600;
+}
+.prose a:focus-visible {
+  outline: 3px solid var(--c-current);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .prose a:hover {
+    color: var(--c-current);
+    text-decoration-thickness: 2px;
+  }
+}
