@@ -34,7 +34,7 @@ FIELD_MASK = ",".join([
     "nextPageToken",
 ])
 
-MAX_PAGES = 3          # 3 pages x 20 results = at most 60 businesses per run
+MAX_PAGES = 5          # 5 pages x 20 results = at most 100 businesses per run
 PAGE_TOKEN_DELAY = 2   # seconds to wait before using a nextPageToken
 
 
