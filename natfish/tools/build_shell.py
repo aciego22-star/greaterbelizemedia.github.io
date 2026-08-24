@@ -81,7 +81,7 @@ NAV = [
     ("Contact", "contact.html"),
 ]
 
-BUYER_CTA = "contact.html#buyer-enquiry"
+BUYER_CTA = "contact.html#order"
 
 LOGO_ALT = "NATFISH &ndash; National Fishermen Producers Co-operative Society Ltd."
 
@@ -705,7 +705,14 @@ def footer(with_lightbox=False):
 """
 
 
-def page_hero(eyebrow, title, lede, crumb):
+def page_hero(eyebrow, title, lede, crumb, actions=""):
+    """The inner-page banner.
+
+    `actions` renders inside the band rather than as a block underneath it. A
+    call to action stranded on white below the hero reads as a leftover strip,
+    which is exactly the complaint that removed the previous one.
+    """
+    block = f'\n        <div class="page-hero__actions">{actions}</div>' if actions else ""
     return f"""
     <section class="page-hero">
       <span class="page-hero__watermark" aria-hidden="true">NATFISH</span>
@@ -713,7 +720,7 @@ def page_hero(eyebrow, title, lede, crumb):
         <p class="breadcrumb"><a href="index.html">Home</a><span>/</span>{crumb}</p>
         <span class="eyebrow">{eyebrow}</span>
         <h1>{title}</h1>
-        <p class="lede">{lede}</p>
+        <p class="lede">{lede}</p>{block}
       </div>
     </section>
 """

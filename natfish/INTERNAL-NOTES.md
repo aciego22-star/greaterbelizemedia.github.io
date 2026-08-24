@@ -38,6 +38,8 @@ Nothing in this list is stated as fact on a public page.
 | 2 | **Which products are currently sellable** | All six are listed as the catalogue. Confirm none has been discontinued. |
 | 3 | Whether NATFISH handles Nassau grouper, whelks, stone crab or shrimp | Listed on Seafood Seasons as *national regulatory seasons only*, never as NATFISH products. |
 | 4 | Spanish review | See §6. |
+| 5 | **The NATFISH AI activation gate** | The public copy now presents NATFISH AI as an active order-request channel. That is only allowed once the intended embed has been supplied **and** the Chatbase order flow is separately confirmed ready. `AGENT_ID` is still blank and no such confirmation exists, so **the site must not go public yet**. See §3c. |
+| 6 | **A live order test** | None was run. No real order, email, webhook or lead was sent to NATFISH during testing. Every automated test that exercises the assistant stubs Chatbase locally; nothing left the machine. Authorise a test explicitly when you want one. |
 
 ### Deliberately removed from the supplied material
 
@@ -209,15 +211,19 @@ least seven seconds.
 Nine pages now: `natfish-ai.html` joined the set, immediately before Contact in the nav, the mobile
 drawer and the footer.
 
-### The one value still outstanding
+### The values still outstanding
 
-`assets/js/natfish-ai.js`, line ~24:
+`assets/js/natfish-ai.js`, near the top:
 
 ```js
-var AGENT_ID = ""; /* TODO: REPLACE WITH THE NATFISH CHATBASE AGENT ID */
+var AGENT_ID = "";               /* TODO: REPLACE WITH THE NATFISH CHATBASE AGENT ID */
+var PRODUCT_CONTEXT_METHOD = ""; /* TODO: SUPPORTED CHATBASE CONTEXT CALL, IF ANY */
 ```
 
-**That is the only placeholder in the project, and no fake id was invented.** A wrong id fails silently
+`AGENT_ID` is the only one the site needs to function; `PRODUCT_CONTEXT_METHOD` is optional and is
+described under "Passing the chosen product to the agent" below.
+
+**No fake id was invented, and no Chatbase method name was guessed.** A wrong id fails silently
 at runtime and looks exactly like a working one until somebody clicks it, which is precisely the kind
 of defect that reaches a client. While it is blank, every trigger stays a plain link to
 `natfish-ai.html` and nothing is requested from chatbase.co at all.
@@ -292,12 +298,69 @@ Both motions pause on hover and on keyboard focus. Note that Playwright will not
 click a permanently animating element, so the automated tests force the click and
 assert the pause separately.
 
-### What the page must never claim
+### The ordering journey, and the gate in front of it
 
-The copy is deliberate on this. NATFISH AI is described as unable to confirm prices or live inventory,
-accept payment, finalise an order or replace a team member. Online order requests are described only
-as **coming soon**, and the page says in as many words that the feature is not active. No order
-system, webhook, automation or form was built.
+**This supersedes the earlier "coming soon" framing.** NATFISH AI is now presented as an active
+order-request channel: a visitor can start an order from the launcher, from the NATFISH AI page, from
+any of the six product cards on Seafood & Services, and from either path on Contact.
+
+Six strings were removed from the pages **and** their Spanish deleted from `tools/natfish_es.py`, so
+no future edit can quietly reintroduce a translation of copy that must not return:
+
+| # | Removed string |
+|---|---|
+| 1 | "NATFISH AI cannot currently confirm real-time prices or inventory, accept payment, finalize an order or replace confirmation from a NATFISH team member." |
+| 2 | "Online order requests are coming soon" |
+| 3 | "Coming soon, visitors will be able to submit an order request directly through NATFISH AI for NATFISH's confirmed seafood products." |
+| 4 | "This ordering feature is not yet active. NATFISH AI must not claim that an order has been accepted, submitted, routed or confirmed until the required order system is live." |
+| 5 | "NATFISH AI may occasionally provide an incomplete or mistaken response. A NATFISH team member must confirm prices, current availability, product specifications and final order arrangements." |
+| 6 | "For prices, current availability and confirmed orders, a NATFISH team member will assist you." |
+
+What the copy still never does, in either language: state a price, claim a product is in stock, claim
+online payment, name a delivery area, a turnaround, a grade, a weight or a minimum quantity, or imply
+that an order is accepted before the team confirms it. Every route says the team confirms. Shrimp and
+any other unapproved product remain absent.
+
+**THE ACTIVATION GATE IS NOT MET.** Two things are outstanding and the site must not go public until
+both are done:
+
+1. `AGENT_ID` is still blank (below).
+2. Nobody has confirmed that the Chatbase order flow itself is ready. The website now *offers* to take
+   an order request; whether the agent can actually conduct that conversation is a Chatbase-side
+   question, and nothing in this repository can answer it.
+
+No order backend, webhook, automation, email routing, payment step or form was built, and none should
+be: the assistant hands the request to the team, and the team confirms it.
+
+### Passing the chosen product to the agent
+
+Each order button carries `data-ai-product="<product name>"`. What happens to that value is decided by
+one constant in `assets/js/natfish-ai.js`, deliberately blank, sitting beside `AGENT_ID`:
+
+```js
+var PRODUCT_CONTEXT_METHOD = ""; /* TODO: SUPPORTED CHATBASE CONTEXT CALL, IF ANY */
+```
+
+Blank means the product is sent nowhere and the panel simply opens - which is what the shipped site
+does today, and what the tests assert. Filling it in with the name of a context call that the NATFISH
+Chatbase plan actually documents makes the script call
+`chatbase(PRODUCT_CONTEXT_METHOD, { product: "..." })` once, immediately before the panel opens. If
+that call's payload key is not `product`, change it in `sendProductContext`; that is the only other
+place it appears.
+
+No method name was guessed. Two things this must never become, and the test suite checks for both:
+a synthetic message typed into the panel on the visitor's behalf, and any reach into the Chatbase
+iframe (`contentWindow`, `postMessage`, injected key events). Neither is a supported integration and
+both would be putting words in a visitor's mouth.
+
+### Nothing was done inside Chatbase
+
+No Chatbase login, no management API call, no change to the agent's brain, system prompt, training
+data, knowledge base, greeting, suggested questions or language settings; no agent created, cloned,
+deleted, retrained or replaced; no email, Make, Zapier, webhook, payment, inventory or order-routing
+workflow configured; no hidden instruction placed in the HTML, the JavaScript, a query parameter or
+the embed to steer the agent's behaviour; and **no test order submitted to NATFISH**. All of that is
+Bert's, and the items are listed under "One-time Chatbase dashboard settings" above.
 
 ### The preview bundle carries the launcher separately
 
@@ -317,6 +380,10 @@ moves in the shell, that slice has to move with it.
 - **No `robots.txt`.** There was none before, so nothing is blocked and the new page is crawlable.
 - **No privacy policy.** The client's plain-language guidance is on the page and nothing beyond it was
   invented. If a formal policy is approved later, link to it from that section.
+- **No analytics.** There is no Google Analytics, no tag manager and no third-party measurement script
+  anywhere in the site, and there never has been. So "preserve the existing analytics implementation"
+  has nothing to preserve here, and none was invented to satisfy it. If order-journey measurement is
+  wanted, say so and it can be added deliberately.
 
 ### Opening hours
 

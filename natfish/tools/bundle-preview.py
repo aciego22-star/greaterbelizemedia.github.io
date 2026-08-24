@@ -241,7 +241,7 @@ ROUTER_JS = """
     window.scrollTo(0, 0);
   }
 
-  /* A route may carry an in-page anchor: #/contact#buyer-enquiry */
+  /* A route may carry an in-page anchor: #/contact#order */
   function current() {
     var h = window.location.hash;
     if (h.indexOf("#/") !== 0) return { slug: "index", anchor: null };

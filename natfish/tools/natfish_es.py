@@ -1195,3 +1195,257 @@ ES.update({
         "Las opciones de correo y WhatsApp abren un mensaje que usted puede "
         "editar antes de enviarlo. El correo se envía a",
 })
+
+# ---------------------------------------------------------------------------
+# The ordering journey. NATFISH AI is now presented as an active order-request
+# channel, so every string that framed ordering as a future feature, or that
+# listed what the assistant could not do, has been removed from the pages and
+# its Spanish pruned below. The wording here still never states a price, a
+# stock level, a grade, a weight, a minimum or a turnaround: those belong to
+# the team, in both languages.
+# ---------------------------------------------------------------------------
+
+ES.update({
+    # -------------------------------------------------- titles and meta --
+    "NATFISH AI | Ask Questions & Start a Seafood Order":
+        "NATFISH AI | Consulte y solicite un pedido de mariscos",
+    "Contact NATFISH & Start a Seafood Order | Belize City":
+        "Contacte a NATFISH y solicite un pedido de mariscos | Ciudad de Belice",
+
+    # ------------------------------------------- natfish ai: page hero --
+    "Meet NATFISH AI, your digital guide to seafood and orders":
+        "Conozca a NATFISH AI, su guía digital de mariscos y pedidos",
+    "Ask about NATFISH, explore the Co-operative’s approved seafood products "
+    "or start an order request in English or Spanish. NATFISH AI is available "
+    "from any page of the website whenever you need assistance.":
+        "Consulte sobre NATFISH, explore los productos aprobados de la "
+        "Cooperativa o inicie una solicitud de pedido en inglés o español. "
+        "NATFISH AI está disponible desde cualquier página del sitio cuando "
+        "usted lo necesite.",
+    "Start an order with NATFISH AI": "Inicie un pedido con NATFISH AI",
+    "View approved seafood": "Ver los mariscos aprobados",
+
+    # -------------------------------------------- natfish ai: what it does --
+    "What it does": "Qué hace",
+    "What NATFISH AI does": "Qué hace NATFISH AI",
+    "Explore approved seafood": "Explore los mariscos aprobados",
+    "Learn about NATFISH’s approved lobster, queen conch and lionfish "
+    "products.":
+        "Conozca los productos aprobados de NATFISH: langosta, caracol reina y "
+        "pez león.",
+    "Start an order request": "Inicie una solicitud de pedido",
+    "Tell NATFISH AI which approved product you need, the quantity and your "
+    "preferred pickup or fulfilment details.":
+        "Indique a NATFISH AI qué producto aprobado necesita, la cantidad y los "
+        "detalles de retiro o entrega que prefiere.",
+    "Get NATFISH information": "Obtenga información de NATFISH",
+    "Ask about the Co-operative, contact details, location, opening hours and "
+    "other verified information.":
+        "Consulte sobre la Cooperativa, los datos de contacto, la ubicación, el "
+        "horario de oficina y otra información verificada.",
+    "Continue the conversation in the language that is most comfortable for "
+    "you.":
+        "Continúe la conversación en el idioma que le resulte más cómodo.",
+
+    # -------------------------------------------------- natfish ai: steps --
+    "How an order request works": "Cómo funciona una solicitud de pedido",
+    "Choose your seafood": "Elija sus mariscos",
+    "Select from NATFISH’s approved product list and tell NATFISH AI the "
+    "approximate quantity you need.":
+        "Seleccione de la lista de productos aprobados de NATFISH e indique a "
+        "NATFISH AI la cantidad aproximada que necesita.",
+    "Share your details": "Comparta sus datos",
+    "Provide your name, telephone or WhatsApp number, email address and any "
+    "useful pickup or fulfilment notes.":
+        "Proporcione su nombre, su número de teléfono o WhatsApp, su correo "
+        "electrónico y cualquier nota útil sobre el retiro o la entrega.",
+    "The NATFISH team confirms": "El equipo de NATFISH confirma",
+    "Your request is sent to the team, who will confirm availability, pricing "
+    "and the next steps for pickup or fulfilment.":
+        "Su solicitud se envía al equipo, que confirmará la disponibilidad, el "
+        "precio y los siguientes pasos para el retiro o la entrega.",
+    "Starting an order is conversational. NATFISH AI guides you through the "
+    "details, summarizes the request and asks permission before it is shared "
+    "with the team.":
+        "Iniciar un pedido es una conversación. NATFISH AI le guía por los "
+        "detalles, resume la solicitud y pide su permiso antes de compartirla "
+        "con el equipo.",
+
+    # ----------------------------------------------- natfish ai: products --
+    "Approved Products": "Productos Aprobados",
+    "Choose seafood for your order request":
+        "Elija los mariscos para su solicitud de pedido",
+    "Explore NATFISH’s approved seafood products below. When you are ready, "
+    "start a conversation with NATFISH AI and share the product, quantity and "
+    "pickup or fulfilment details for your order request.":
+        "Explore a continuación los productos aprobados de NATFISH. Cuando esté "
+        "listo, inicie una conversación con NATFISH AI e indique el producto, "
+        "la cantidad y los detalles de retiro o entrega de su solicitud.",
+    "Order with NATFISH AI": "Pedir con NATFISH AI",
+    "Start a seafood order": "Iniciar un pedido de mariscos",
+    "Full product descriptions are on":
+        "Las descripciones completas de los productos están en",
+
+    # ------------------------------------------------ natfish ai: privacy --
+    "Your information, handled with care":
+        "Su información, tratada con cuidado",
+    "NATFISH AI is an AI-powered service. It uses the information you provide "
+    "to answer your questions and help prepare your request. When contact or "
+    "order details need to be shared with the NATFISH team, NATFISH AI should "
+    "ask for your permission first.":
+        "NATFISH AI es un servicio basado en inteligencia artificial. Utiliza "
+        "la información que usted proporciona para responder a sus preguntas y "
+        "ayudar a preparar su solicitud. Cuando haga falta compartir datos de "
+        "contacto o de pedido con el equipo de NATFISH, NATFISH AI debe pedirle "
+        "permiso antes.",
+    "Share only the information needed for your enquiry or order request. "
+    "Payment arrangements and final order details are handled with the NATFISH "
+    "team after the request is reviewed.":
+        "Comparta únicamente la información necesaria para su consulta o "
+        "solicitud de pedido. Las condiciones de pago y los detalles finales "
+        "del pedido se tratan con el equipo de NATFISH después de revisar la "
+        "solicitud.",
+    "The visitor is clearly told that NATFISH AI is an AI service.":
+        "Se informa claramente al visitante de que NATFISH AI es un servicio de "
+        "inteligencia artificial.",
+    "Only information relevant to the conversation or request should be "
+    "collected.":
+        "Solo debe recopilarse la información pertinente a la conversación o a "
+        "la solicitud.",
+    "Consent is requested before contact or order details are sent to the "
+    "team.":
+        "Se pide su consentimiento antes de enviar al equipo los datos de "
+        "contacto o de pedido.",
+    "The visitor may contact NATFISH directly instead of using AI.":
+        "El visitante puede contactar a NATFISH directamente en lugar de usar "
+        "la inteligencia artificial.",
+
+    "Ready when you are": "Listo cuando usted lo esté",
+    "Start a seafood order request with NATFISH AI, or reach the team directly "
+    "whenever you would rather speak with someone.":
+        "Inicie una solicitud de pedido de mariscos con NATFISH AI, o contacte "
+        "al equipo directamente cuando prefiera hablar con una persona.",
+    "Contact the NATFISH team": "Contacte al equipo de NATFISH",
+
+    # --------------------------------------------------- contact: the hero --
+    "Contact NATFISH or start a seafood order":
+        "Contacte a NATFISH o inicie un pedido de mariscos",
+    "Start an order request online with NATFISH AI, or reach the team directly "
+    "by email, WhatsApp or telephone. Either route reaches the same people, "
+    "and a NATFISH team member confirms every order.":
+        "Inicie una solicitud de pedido en línea con NATFISH AI, o contacte al "
+        "equipo directamente por correo electrónico, WhatsApp o teléfono. "
+        "Ambas vías llegan a las mismas personas, y un miembro del equipo de "
+        "NATFISH confirma cada pedido.",
+    "Contact the team directly": "Contactar al equipo directamente",
+
+    # ------------------------------------------------- contact: two paths --
+    "Ordering": "Pedidos",
+    "Two ways to start a seafood order request":
+        "Dos formas de iniciar una solicitud de pedido de mariscos",
+    "Both routes reach the same NATFISH team. Choose whichever suits you.":
+        "Ambas vías llegan al mismo equipo de NATFISH. Elija la que prefiera.",
+
+    "Available online": "Disponible en línea",
+    "Order and ask questions with NATFISH AI":
+        "Pida y consulte con NATFISH AI",
+    "NATFISH AI is the Co-operative’s digital employee. Tell it which approved "
+    "product you need and it will walk you through the details, put your order "
+    "request together and pass it to the NATFISH team, who confirm everything "
+    "with you directly.":
+        "NATFISH AI es el empleado digital de la Cooperativa. Indíquele qué "
+        "producto aprobado necesita y le guiará por los detalles, preparará su "
+        "solicitud de pedido y la remitirá al equipo de NATFISH, que confirmará "
+        "todo directamente con usted.",
+    "Have these ready": "Tenga esto a mano",
+    "Which of the six approved products you need":
+        "Cuál de los seis productos aprobados necesita",
+    "The approximate quantity you would like":
+        "La cantidad aproximada que desea",
+    "Your name and telephone or WhatsApp number":
+        "Su nombre y su número de teléfono o WhatsApp",
+    "Your preferred pickup or fulfilment details":
+        "Los detalles de retiro o entrega que prefiere",
+    "How NATFISH AI works": "Cómo funciona NATFISH AI",
+
+    "Speak with a person": "Hable con una persona",
+    "Prefer to contact the team directly?":
+        "¿Prefiere contactar al equipo directamente?",
+    "Email or WhatsApp opens a message you can edit before you send it, "
+    "already laid out with everything the team needs. Telephone reaches the "
+    "office during opening hours.":
+        "El correo electrónico y WhatsApp abren un mensaje que usted puede "
+        "editar antes de enviarlo, ya redactado con todo lo que el equipo "
+        "necesita. El teléfono comunica con la oficina en horario de atención.",
+    "Email the order team": "Escriba al equipo de pedidos",
+    "Message on WhatsApp": "Escribir por WhatsApp",
+    "Call the office": "Llamar a la oficina",
+    "Email goes to": "El correo se envía a",
+    ", WhatsApp opens a chat with +501 611-4831, and the office is open "
+    "Monday to Friday, 8:00 a.m. to 5:00 p.m.":
+        ", WhatsApp abre un chat con +501 611-4831 y la oficina atiende de "
+        "lunes a viernes, de 8:00 a. m. a 5:00 p. m.",
+
+    # ------------------------------------------- contact: what to include --
+    "Your order request": "Su solicitud de pedido",
+    "What to include with your seafood order request":
+        "Qué incluir en su solicitud de pedido de mariscos",
+    "The more of this you can share at the start, the faster a NATFISH team "
+    "member can come back to you with availability and the arrangements for "
+    "your order.":
+        "Cuanto más de esto pueda compartir desde el inicio, más rápido podrá "
+        "un miembro del equipo de NATFISH responderle con la disponibilidad y "
+        "las condiciones de su pedido.",
+    "Start with NATFISH AI": "Empezar con NATFISH AI",
+    "Include where you can": "Incluya lo que pueda",
+    "Your name, and your company if you are buying for one":
+        "Su nombre, y su empresa si compra en nombre de una",
+    "Your preferred timeframe": "El plazo que prefiere",
+    "Email address": "Correo electrónico",
+    "Pickup or fulfilment details": "Detalles de retiro o entrega",
+    "Anything else NATFISH should know":
+        "Cualquier otra cosa que NATFISH deba saber",
+
+    # ------------------------------------------------------ contact: office --
+    "The Office": "La Oficina",
+    "Visit or reach the co-operative": "Visite o contacte a la cooperativa",
+    "For co-operative matters, media requests and general questions.":
+        "Para asuntos de la cooperativa, solicitudes de prensa y consultas "
+        "generales.",
+
+    # ------------------------------------- seafood & services: order action --
+    "Enquire by email or WhatsApp": "Consultar por correo o WhatsApp",
+})
+
+# Accessible names on the per-product order buttons. Built from the product
+# names already translated above so the two can never drift apart, and so a
+# screen-reader user in Spanish hears the same product name that is printed on
+# the button.
+for _p in ("Frozen Spiny Lobster Tails", "Frozen Lobster Head Meat",
+           "Frozen Whole Raw Lobster", "Frozen Whole Cooked Lobster",
+           "Frozen Queen Conch, 85% Cleaned", "Lionfish Fillet"):
+    if _p in ES:
+        ES[f"Start an order for {_p} with NATFISH AI"] = (
+            f"Iniciar un pedido de {ES[_p]} con NATFISH AI"
+        )
+
+# The six restrictive strings the ordering brief supersedes. Their English is
+# gone from every page; their Spanish is deleted here rather than left behind,
+# so no future edit can reintroduce a translation of copy that must not return.
+for _dead in (
+    "NATFISH AI cannot currently confirm real-time prices or inventory, accept "
+    "payment, finalize an order or replace confirmation from a NATFISH team "
+    "member.",
+    "Online order requests are coming soon",
+    "Coming soon, visitors will be able to submit an order request directly "
+    "through NATFISH AI for NATFISH’s confirmed seafood products.",
+    "This ordering feature is not yet active. NATFISH AI must not claim that an "
+    "order has been accepted, submitted, routed or confirmed until the required "
+    "order system is live.",
+    "NATFISH AI may occasionally provide an incomplete or mistaken response. A "
+    "NATFISH team member must confirm prices, current availability, product "
+    "specifications and final order arrangements.",
+    "For prices, current availability and confirmed orders, a NATFISH team "
+    "member will assist you.",
+):
+    ES.pop(_dead, None)

@@ -4263,3 +4263,325 @@ body.nav-open {
 .section--navy .btn--ai {
   color: var(--white);
 }
+
+/* ------------------------------------------------- page hero actions --- */
+/* Calls to action inside the banner, not stranded on white beneath it. */
+
+.page-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.85rem 1.25rem;
+  margin-top: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+.page-hero__actions .arrow-link {
+  color: var(--turq-300);
+}
+
+.page-hero__actions .arrow-link:hover {
+  color: var(--white);
+}
+
+/* ------------------------------------------------ per-product ordering -- */
+/* A product card ends with two actions, not one: start the order here, or
+   take the same product to email or WhatsApp. The order button sits first
+   because it is the route that answers immediately.
+   margin-top:auto on the wrapper is what keeps the buttons on a common
+   baseline across a row of cards whose descriptions differ in length. */
+
+.product__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin-top: auto;
+  padding-top: 1rem;
+}
+
+.product__actions .btn {
+  width: 100%;
+  justify-content: center;
+}
+
+/* Overrides the generic rule above, which would otherwise push the enquiry
+   link to the bottom of the card on its own. */
+.product__body .product__actions .arrow-link {
+  margin-top: 0;
+  padding-top: 0;
+  font-size: 0.88rem;
+}
+
+/* ------------------------------------------------- order pick list ------ */
+/* The approved products on the NATFISH AI page, as a list of rows a visitor
+   can act on one at a time. Deliberately not the card grid from Seafood &
+   Services: this is a chooser, and six photographs here would compete with
+   the single decision the section is asking for. */
+
+.order-list {
+  list-style: none;
+  margin: clamp(1.75rem, 3.5vw, 2.5rem) 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.order-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.25rem;
+  padding: clamp(0.9rem, 2vw, 1.15rem) clamp(1rem, 2.4vw, 1.5rem);
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.order-item:hover {
+  border-color: var(--teal-600);
+  box-shadow: var(--shadow-md);
+}
+
+.order-item__name {
+  min-width: 0;
+  flex: 1 1 16rem;
+}
+
+.order-item__name h3 {
+  margin: 0;
+  font-size: 1.02rem;
+}
+
+.order-item__name .product__sci {
+  margin-top: 0.1rem;
+}
+
+.order-item .btn {
+  flex: 0 0 auto;
+}
+
+.order-list__cta {
+  margin: clamp(1.5rem, 3vw, 2.25rem) 0 0;
+  text-align: center;
+}
+
+@media (max-width: 560px) {
+  .order-item {
+    /* Below this width the button no longer fits beside the name without the
+       label wrapping to two lines, so the row becomes a stack and the button
+       spans it. */
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .order-item .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ------------------------------------------------------ ordering paths -- */
+/* Two routes to the same team. The assistant leads on colour and weight; the
+   human route is quieter but never smaller, because someone who wants a person
+   should not have to look for one. */
+
+.paths {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(1.25rem, 3vw, 2rem);
+  margin-top: clamp(1.75rem, 3.5vw, 2.5rem);
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .paths {
+    grid-template-columns: 1fr;
+  }
+}
+
+.path {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  height: 100%;
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.path h3 {
+  font-size: clamp(1.25rem, 2.4vw, 1.5rem);
+  margin: 0.75rem 0 0.6rem;
+}
+
+.path > p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.98rem;
+}
+
+.path__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+}
+
+.path__icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+/* A label, not a badge of status: "Available online" describes the route, and
+   nothing here claims stock, a price or an accepted order. */
+.path__tag {
+  align-self: flex-start;
+  margin-bottom: 0.9rem;
+  padding: 0.28rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.path__action {
+  margin: clamp(1.25rem, 2.5vw, 1.75rem) 0 0.9rem;
+}
+
+.path__action .btn {
+  width: 100%;
+  justify-content: center;
+}
+
+.path__action--stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.path .note {
+  margin-top: auto;
+  padding-top: 0.35rem;
+  margin-bottom: 0;
+}
+
+.path .arrow-link {
+  margin-top: 0.35rem;
+}
+
+/* -- path one: the assistant ------------------------------------------- */
+
+.path--ai {
+  color: var(--white);
+  border: 1px solid transparent;
+  background:
+    radial-gradient(120% 130% at 15% 0%, var(--navy-800) 0%, var(--navy-900) 68%);
+}
+
+.path--ai h3,
+.path--ai h4 {
+  color: var(--white);
+}
+
+.path--ai > p {
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.path--ai .path__tag {
+  background: var(--turq-300);
+  color: var(--navy-900);
+}
+
+.path--ai .path__icon {
+  background: rgba(34, 167, 188, 0.18);
+  color: var(--turq-300);
+}
+
+.path--ai .arrow-link {
+  color: var(--turq-300);
+}
+
+.path--ai .arrow-link:hover {
+  color: var(--white);
+}
+
+/* The "Have these ready" panel: a lighter plate inside the navy card so the
+   four lines read as a checklist rather than as more body copy. */
+.path__ready {
+  margin-top: clamp(1.25rem, 2.5vw, 1.75rem);
+  padding: clamp(1rem, 2.2vw, 1.35rem);
+  border-radius: var(--radius-md, 12px);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.path__ready h4 {
+  margin: 0 0 0.8rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.path--ai .path__ready .checklist li {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.path--ai .path__ready .checklist svg,
+.path--ai .path__ready .checklist .ico {
+  color: var(--turq-300);
+}
+
+/* -- path two: the team ------------------------------------------------- */
+
+.path--team {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-block-start: 4px solid var(--teal-600);
+}
+
+.path--team .path__tag {
+  background: var(--sand);
+  color: var(--teal-700);
+}
+
+.path--team .path__icon {
+  background: var(--sand);
+  color: var(--teal-700);
+}
+
+/* ------------------------------------------------ two-column checklist -- */
+/* Nine items in a single column made the aside taller than the copy beside
+   it. Two columns above 560px keeps the two halves of the block level. */
+
+/* Multi-column rather than a two-column grid. A grid gives every row the
+   height of its tallest cell, so items that wrap to two lines leave gaps
+   beside the ones that do not; columns pack the nine items tightly and, more
+   importantly, flow top-to-bottom down each column, which is how a list is
+   read. break-inside stops an item being split across the column fold. */
+.checklist--two {
+  columns: 2;
+  column-gap: 1.75rem;
+}
+
+.checklist--two li {
+  break-inside: avoid;
+}
+
+@media (max-width: 620px) {
+  .checklist--two {
+    columns: 1;
+  }
+}
+
+/* The checklist panel is sand by default, which disappears when the section
+   itself is sand. */
+.section--sand .enquiry__checklist {
+  background: var(--white);
+}

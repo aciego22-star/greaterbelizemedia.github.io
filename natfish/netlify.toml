@@ -22,7 +22,7 @@
 
 [[redirects]]
   from = "/buyers.html"
-  to = "/contact.html#buyer-enquiry"
+  to = "/contact.html#order"
   status = 301
   force = true
 

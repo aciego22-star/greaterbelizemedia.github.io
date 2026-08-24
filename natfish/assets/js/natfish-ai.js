@@ -22,6 +22,33 @@
      ===================================================================== */
   var AGENT_ID = ""; /* TODO: REPLACE WITH THE NATFISH CHATBASE AGENT ID */
 
+  /* =====================================================================
+     CONFIGURATION - passing the chosen product to the assistant.
+
+     Every "Order with NATFISH AI" button carries the product it belongs to in
+     data-ai-product. This constant decides what, if anything, is done with
+     that value, and it is deliberately BLANK by default: with no value here
+     the product is never sent anywhere, and the assistant simply opens.
+
+     To turn it on, put the name of the context call that the NATFISH Chatbase
+     plan actually exposes between the quotes - the one from Chatbase's own
+     documentation for this account. It is invoked as
+
+         chatbase(PRODUCT_CONTEXT_METHOD, { product: "Frozen Spiny Lobster Tails" });
+
+     immediately before the panel opens. If the payload key differs from
+     "product" for that call, change it in sendProductContext below; that is
+     the only other place it appears.
+
+     Two things this must never become, both of them out of bounds for this
+     codebase: a synthetic message typed into the panel on the visitor's
+     behalf, and any reach into the Chatbase iframe's DOM. Neither is a
+     supported integration, and both would be putting words in the visitor's
+     mouth. A method name that is not supported is a no-op inside the try
+     below, which is the correct failure: the panel still opens.
+     ===================================================================== */
+  var PRODUCT_CONTEXT_METHOD = ""; /* TODO: SUPPORTED CHATBASE CONTEXT CALL, IF ANY */
+
   var EMBED_SRC = "https://www.chatbase.co/embed.min.js";
   var EMBED_DOMAIN = "www.chatbase.co";
 
@@ -119,6 +146,20 @@
         window.clearInterval(poll);
       }
     }, 250);
+  }
+
+  /* Fired only from a trigger the visitor clicked, only when the constant
+     above has been filled in, and only with the product name that is printed
+     on the button they pressed. Nothing is inferred and nothing is hidden. */
+  function sendProductContext(el) {
+    var product = el && el.getAttribute("data-ai-product");
+    if (!product || !PRODUCT_CONTEXT_METHOD) return;
+    try {
+      window.chatbase(PRODUCT_CONTEXT_METHOD, { product: product });
+    } catch (err) {
+      /* Unsupported call: the panel opens without the context, which is the
+         same experience as leaving the constant blank. */
+    }
   }
 
   function openWidget() {
@@ -239,6 +280,7 @@
     if (state.ready) {
       event.preventDefault();
       dockPill(function () {
+        sendProductContext(el);
         if (!openWidget()) {
           state.failed = true;
           window.location.href = el.getAttribute("href");
@@ -262,18 +304,30 @@
     load();
 
     var waited = 0;
+    var sentContext = false;
     var wait = window.setInterval(function () {
       waited += 200;
       /* Both conditions, not either: the embed has to be ready AND the pill
          has to have arrived. Waiting on readiness alone opened the panel while
          the pill was still gliding, which is the seam this whole sequence
          exists to hide. */
-      if (state.ready && state.docked && openWidget()) {
-        window.clearInterval(wait);
-        state.pending = false;
-        el.removeAttribute("aria-busy");
-        announce("");
-      } else if (state.failed || waited >= OPEN_TIMEOUT_MS) {
+      if (state.ready && state.docked) {
+        /* Once, and inside the branch rather than in the condition: neither a
+           tick that is still waiting nor a retry after a failed open may fire
+           the context call again. */
+        if (!sentContext) {
+          sentContext = true;
+          sendProductContext(el);
+        }
+        if (openWidget()) {
+          window.clearInterval(wait);
+          state.pending = false;
+          el.removeAttribute("aria-busy");
+          announce("");
+          return;
+        }
+      }
+      if (state.failed || waited >= OPEN_TIMEOUT_MS) {
         window.clearInterval(wait);
         state.pending = false;
         el.removeAttribute("aria-busy");
