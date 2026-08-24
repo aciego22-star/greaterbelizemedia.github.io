@@ -1187,3 +1187,11 @@ ES.update({
     "Prefer to speak with someone?": "¿Prefiere hablar con una persona?",
     "Contact the NATFISH team.": "Contacte al equipo de NATFISH.",
 })
+
+# The buyer-enquiry note, reworded when NATFISH AI became a third action.
+ES.update({
+    "The email and WhatsApp options open a message you can edit before "
+    "sending. The email goes to":
+        "Las opciones de correo y WhatsApp abren un mensaje que usted puede "
+        "editar antes de enviarlo. El correo se envía a",
+})

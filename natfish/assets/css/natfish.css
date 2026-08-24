@@ -4195,3 +4195,71 @@ body.nav-open {
 .section--navy .flow__num {
   color: var(--turq-300);
 }
+
+/* ================================ centring pass ======================== */
+
+/* Icons in a card grid are centred. The site had both treatments -- the
+   Seafood & Services pillars used the centred variant while the NATFISH AI
+   cards used the plain one, so the same component read two different ways on
+   two pages. Centred is now the base, because every place .pillar is used it
+   is a card in a symmetric grid. .pillar--center still resolves, so existing
+   markup keeps working. */
+
+.pillar {
+  text-align: center;
+}
+
+.pillar__icon {
+  justify-content: center;
+  align-self: center;
+  margin-inline: auto;
+  /* The rule under the mark is part of the mark, so it centres with it rather
+     than running to the card's left edge. */
+  padding-inline: 1.5rem;
+}
+
+/* The three-step sequence on the NATFISH AI page: the numeral, heading and
+   copy centre together, and the rule above each step spans the column so the
+   numeral sits centred on it. */
+.ai-steps > li {
+  text-align: center;
+}
+
+.ai-steps > li::before {
+  margin-inline: auto;
+}
+
+/* Numbered step cards on the home page keep their corner badge: it sits over
+   the photograph, where centring would put it across the middle of the frame.
+   Their captions centre with everything else. */
+.step__body {
+  text-align: center;
+}
+
+@media (max-width: 620px) {
+  /* Except in the phone layout, where the step is a row -- image beside text --
+     and centred copy in a narrow column beside an image reads badly. */
+  .step__body {
+    text-align: left;
+  }
+}
+
+/* ------------------------------------------------- the assistant button -- */
+/* Distinct from btn--primary so the assistant does not look like a third
+   identical teal button beside Send an Email. Navy-to-teal, matching the
+   floating launcher, so the two read as the same thing in two places. */
+
+.btn--ai {
+  border-color: transparent;
+  background: linear-gradient(135deg, var(--navy-800) 0%, var(--teal-600) 100%);
+  color: var(--white);
+}
+
+.btn--ai:hover {
+  background: linear-gradient(135deg, var(--navy-900) 0%, var(--teal-700) 100%);
+  color: var(--white);
+}
+
+.section--navy .btn--ai {
+  color: var(--white);
+}

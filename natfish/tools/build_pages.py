@@ -1494,23 +1494,12 @@ def natfish_ai():
             "NATFISH AI",
         )
         + f"""
-    <div class="container">
-      <div class="enquiry__actions" style="margin-top:0">
-        {ai_button("Ask NATFISH AI", "contact.html")}
-      </div>
-      <!-- A text link, not a second button: btn--ghost is the dark-background
-           variant and renders white on white here, and the client specified a
-           secondary text link rather than a competing call to action. -->
-      <p class="ai-secondary">
-        Prefer to speak with someone?
-        <a href="contact.html">Contact the NATFISH team.</a>
-      </p>
-      <p class="ai-note">
-        NATFISH AI is an AI system, not a human staff member. Prices, current
-        availability and final order details must be confirmed by the NATFISH
-        team.
-      </p>
-    </div>
+    <!-- The call-to-action cluster that used to sit here has been removed at
+         the client's request. The swimming launcher is on screen at all times,
+         and the page still closes on a full call to action, so a third trigger
+         immediately under the hero was repetition. The "not a human" and
+         "prices confirmed by the team" disclosures both survive further down
+         the page, under the capability cards and in the privacy section. -->
 
     <section class="section" aria-labelledby="ai-what-h">
       <div class="container">
@@ -1725,6 +1714,10 @@ def contact():
             </p>
 
             <div class="enquiry__actions">
+              <!-- The assistant goes first: it is the only route that answers
+                   immediately, and the two human routes below it are unchanged
+                   and still the ones that confirm anything. -->
+              {ai_button("Ask NATFISH AI", "natfish-ai.html", "btn btn--ai")}
               <a class="btn btn--primary" href="{mailto_href()}">
                 {ICON_MAIL} Send an Email
               </a>
@@ -1733,10 +1726,12 @@ def contact():
                 {ICON_WA} Enquire on WhatsApp
               </a>
             </div>
+            <!-- "Both" was correct until the assistant joined these actions;
+                 there are three now, and only two of them hand you a draft. -->
             <p class="note">
-              Both options open a message you can edit before sending. The email
-              goes to <a href="mailto:{EMAIL}">{EMAIL}</a> and WhatsApp opens a
-              chat with {MOBILE_DISPLAY}.
+              The email and WhatsApp options open a message you can edit before
+              sending. The email goes to <a href="mailto:{EMAIL}">{EMAIL}</a> and
+              WhatsApp opens a chat with {MOBILE_DISPLAY}.
             </p>
           </div>
 
