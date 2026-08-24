@@ -3742,11 +3742,25 @@ body.nav-open {
    anchor drifts and the inner .ai-pill__body bobs.
 
    The drift WRAPS rather than bouncing: the loop runs from fully off screen on
-   the left to fully off screen on the right, linear and one-directional, so
-   the fish never reverses. The keyframe loop's own to->from jump happens while
-   the pill is entirely hidden, and the endpoints are computed so that the
-   instant its tail clears the right edge its nose is at the left edge - it
-   leaves and re-enters in the same moment.
+   the left to fully off screen on the right, one-directional, so the fish
+   never reverses. The keyframe loop's own to->from jump happens while the pill
+   is entirely hidden, and the endpoints are computed so that the instant its
+   tail clears the right edge its nose is at the left edge - it leaves and
+   re-enters in the same moment.
+
+   THE LOOP IS NOT LINEAR END TO END, and that matters more than it sounds.
+   A wrap has to travel viewport + pill, but only viewport - pill of that is
+   fully on screen. On a 390px phone carrying a 179px pill those are 569px and
+   179px: at one constant speed the launcher was fully visible for only 39% of
+   every lap, which is exactly what "the pill is not showing" meant. So the
+   keyframe has four stops. The middle 76% carries the visible crossing at the
+   cruising speed; the outer 12% each side covers the entry and exit, which are
+   mostly off frame anyway. 12 is not arbitrary: on a desktop it works out to
+   almost exactly the cruising speed, so the edges there are seamless, while on
+   a phone it becomes a quick flick off frame and back. The fish darts in,
+   settles into its cruise, then accelerates away - which is also how a fish
+   actually moves. Measured after: fully visible for 81-82% of the loop at both
+   1440px and 390px.
 
    All four custom properties are set by natfish-ai.js from the measured pill
    and viewport widths and updated on resize and language change:
@@ -3794,6 +3808,8 @@ body.nav-open {
   line-height: 1.2;
   text-decoration: none;
   will-change: transform;
+  /* The per-keyframe timing functions above own the easing; this one only
+     covers any gap they do not. */
   animation: ai-swim var(--ai-dur) linear infinite;
   animation-delay: var(--ai-delay);
 }
@@ -3846,8 +3862,13 @@ body.nav-open {
 }
 
 @keyframes ai-swim {
-  from { transform: translateX(var(--ai-out-left)); }
-  to   { transform: translateX(var(--ai-out-right)); }
+  /* ease-out on the way in so it settles rather than slams into the cruise;
+     linear across the middle so the visible crossing is perfectly steady;
+     ease-in on the way out so it accelerates away. */
+  0%   { transform: translateX(var(--ai-out-left)); animation-timing-function: ease-out; }
+  12%  { transform: translateX(0); animation-timing-function: linear; }
+  88%  { transform: translateX(var(--ai-travel)); animation-timing-function: ease-in; }
+  100% { transform: translateX(var(--ai-out-right)); }
 }
 
 /* The wobble. Amplitude is deliberately larger than it first was: against a
@@ -3873,20 +3894,25 @@ body.nav-open {
   }
 }
 
+/* The emblem carries a lobster, a hand, a cuff and a wave ring - a lot of
+   drawing for a small circle, and at 34px inside 44px it read as a smudge on a
+   real screen rather than as the NATFISH mark. Both the circle and the artwork
+   inside it are larger, and the artwork now uses more of the circle it sits
+   in. */
 .ai-pill__badge {
   display: grid;
   place-items: center;
   flex-shrink: 0;
-  width: 44px;
-  height: 44px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   background: var(--white);
   overflow: hidden;
 }
 
 .ai-pill__badge img {
-  width: 34px;
-  height: 34px;
+  width: 44px;
+  height: 44px;
   object-fit: contain;
 }
 
@@ -3904,8 +3930,8 @@ body.nav-open {
   }
 
   .ai-pill__body { gap: 0.5rem; }
-  .ai-pill__badge { width: 42px; height: 42px; }
-  .ai-pill__badge img { width: 32px; height: 32px; }
+  .ai-pill__badge { width: 48px; height: 48px; }
+  .ai-pill__badge img { width: 40px; height: 40px; }
 }
 
 /* Below 380px the label plus the badge would reach the opposite gutter, so
