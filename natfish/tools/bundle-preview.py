@@ -231,6 +231,13 @@ ROUTER_JS = """
       }
     );
 
+    /* The bundle shares ONE launcher across all nine routes, but the real
+       natfish-ai.html ships without one - the chat embed is in the page. Match
+       that here, or the preview shows a pill the deployed page does not have
+       (and it sat on top of the embed's caption on a phone). */
+    var pill = document.querySelector(".ai-pill");
+    if (pill) pill.style.display = slug === "natfish-ai" ? "none" : "";
+
     /* Elements inside a display:none route never trigger the observer, so the
        reveal state is set directly when a route becomes visible. */
     Array.prototype.forEach.call(

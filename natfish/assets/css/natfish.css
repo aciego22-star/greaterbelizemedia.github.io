@@ -3741,21 +3741,43 @@ body.nav-open {
    property, and one element cannot run two transform animations, so the outer
    anchor drifts and the inner .ai-pill__body bobs.
 
-   --ai-travel is the exact distance from the left margin to the right margin,
-   set by natfish-ai.js from the measured pill and viewport widths and updated
-   on resize. Computing it rather than guessing is what keeps the pill from
-   sailing past the right edge and creating horizontal overflow.
+   The drift WRAPS rather than bouncing: the loop runs from fully off screen on
+   the left to fully off screen on the right, linear and one-directional, so
+   the fish never reverses. The keyframe loop's own to->from jump happens while
+   the pill is entirely hidden, and the endpoints are computed so that the
+   instant its tail clears the right edge its nose is at the left edge - it
+   leaves and re-enters in the same moment.
 
-   On click the pill docks: it glides to the right and stays there for the rest
-   of the visit, so the chat panel opens from where the pill just came to rest
-   rather than from wherever it happened to be drifting. */
+   All four custom properties are set by natfish-ai.js from the measured pill
+   and viewport widths and updated on resize and language change:
+     --ai-out-left    fully hidden past the left edge (loop start)
+     --ai-out-right   fully hidden past the right edge (loop end)
+     --ai-travel      the resting position at the right margin (docking only)
+     --ai-dur         loop duration, scaled to the distance so the speed is
+                      the same on a phone and a desktop
+     --ai-delay       negative offset placing the pill within the loop: at the
+                      left margin on load, at the right margin on resume
+
+   The pill is position: fixed, which is what makes the off-screen excursion
+   safe: fixed elements never extend the document's scrollable area, so there
+   is no horizontal overflow to create.
+
+   On click the pill docks: it glides to the right margin and the chat panel
+   opens beside it. When the panel is CLOSED the pill swims off again from the
+   docked position - natfish-ai.js re-enters the loop at the matching offset,
+   so it continues rightward, wraps, and carries on. */
 
 .ai-pill {
   position: fixed;
   z-index: 60;                 /* over content, under the header and panel */
   left: max(1rem, env(safe-area-inset-left));
   bottom: max(1rem, env(safe-area-inset-bottom));
-  --ai-travel: 0px;            /* replaced at runtime */
+  /* All replaced at runtime; the zeros mean "hold still until measured". */
+  --ai-travel: 0px;
+  --ai-out-left: 0px;
+  --ai-out-right: 0px;
+  --ai-dur: 60s;
+  --ai-delay: 0s;
   display: inline-flex;
   align-items: center;
   min-height: 56px;            /* comfortably past the 44px minimum */
@@ -3772,7 +3794,8 @@ body.nav-open {
   line-height: 1.2;
   text-decoration: none;
   will-change: transform;
-  animation: ai-swim 26s ease-in-out infinite alternate;
+  animation: ai-swim var(--ai-dur) linear infinite;
+  animation-delay: var(--ai-delay);
 }
 
 .ai-pill__body {
@@ -3806,8 +3829,9 @@ body.nav-open {
 
 /* Docking. .is-docking swaps the animation for a transition so the pill glides
    from wherever it was rather than jumping; .is-docked is the resting place at
-   the right margin. Once docked it stays docked: the panel opens beside it,
-   and a launcher that swam away from an open chat would be absurd. */
+   the right margin. It stays docked only while the panel is open - a launcher
+   that swam away from an open chat would be absurd - and resumes the swim from
+   that spot when the panel closes. */
 .ai-pill.is-docking,
 .ai-pill.is-docking .ai-pill__body {
   animation: none;
@@ -3822,8 +3846,8 @@ body.nav-open {
 }
 
 @keyframes ai-swim {
-  from { transform: translateX(0); }
-  to   { transform: translateX(var(--ai-travel)); }
+  from { transform: translateX(var(--ai-out-left)); }
+  to   { transform: translateX(var(--ai-out-right)); }
 }
 
 @keyframes ai-bob {

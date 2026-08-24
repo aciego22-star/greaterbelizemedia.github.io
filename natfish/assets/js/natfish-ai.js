@@ -187,6 +187,7 @@
       if (!state.open) panel.hidden = true;
     }, 240);
     if (restoreFocus && state.lastTrigger) state.lastTrigger.focus();
+    resumeSwim();
     announce("");
   }
 
@@ -257,32 +258,131 @@
 
   /* ------------------------------------------------- swim and docking -- */
 
-  /* How far the pill may drift before its right edge reaches the right margin.
-     Measured rather than guessed: the label changes width between English and
-     Spanish and the margins change at the small breakpoint, so a hard-coded
-     distance would either cut the swim short or push the pill off screen and
-     create horizontal overflow. */
+  /* Pixels per second of drift. One constant for every screen: the loop's
+     duration is scaled to its distance, so the fish crosses a phone and a
+     desktop at the same unhurried pace instead of sprinting on wide screens. */
+  var SWIM_SPEED = 47;
+
+  /* The swim is a wrap: fully off screen left, across, fully off screen right,
+     and around again, never reversing. Everything is measured rather than
+     guessed - the label changes width between English and Spanish and the
+     margins change at the small breakpoint - and the endpoints are exact so
+     that the instant the tail clears the right edge the nose is at the left
+     edge.
+
+     Geometry, with L = the pill's left offset and W its width:
+       tx = -(W + L)  ->  right edge at the viewport's left edge   (loop start)
+       tx = vw - L    ->  left edge at the viewport's right edge   (loop end)
+       tx = vw - W - 2L -> resting at the right margin             (docking)
+
+     Returns the numbers so callers can place the pill within the loop. */
   function measureTravel(pill) {
     var styles = window.getComputedStyle(pill);
     var left = parseFloat(styles.left) || 0;
     /* getBoundingClientRect reflects the current transform, so the untransformed
        width comes from offsetWidth. */
     var width = pill.offsetWidth;
-    var travel = document.documentElement.clientWidth - width - left * 2;
-    pill.style.setProperty("--ai-travel", Math.max(0, Math.round(travel)) + "px");
+    var vw = document.documentElement.clientWidth;
+
+    var outLeft = -(width + left);
+    var outRight = vw - left;
+    var travel = Math.max(0, vw - width - left * 2);
+    var duration = (outRight - outLeft) / SWIM_SPEED;
+
+    pill.style.setProperty("--ai-out-left", Math.round(outLeft) + "px");
+    pill.style.setProperty("--ai-out-right", Math.round(outRight) + "px");
+    pill.style.setProperty("--ai-travel", Math.round(travel) + "px");
+    pill.style.setProperty("--ai-dur", duration.toFixed(2) + "s");
+
+    return { outLeft: outLeft, outRight: outRight, travel: travel,
+             duration: duration };
+  }
+
+  /* Enter the loop at the point where the pill's translateX equals tx, by way
+     of a negative animation-delay. Used twice: on load, so the pill starts at
+     the left margin instead of materialising off screen; and on resume, so it
+     swims on from the docked position instead of teleporting. */
+  function placeInLoop(pill, m, tx) {
+    var span = m.outRight - m.outLeft;
+    if (span <= 0) return;
+    var fraction = Math.min(1, Math.max(0, (tx - m.outLeft) / span));
+
+    /* Two mechanisms for one job, chosen by whether the swim is already
+       running. A running animation is wound directly with the Web Animations
+       API - a negative delay would be measured from the animation's ORIGINAL
+       start, so after minutes on the page it lands somewhere arbitrary. The
+       delay is only trustworthy for an animation that has not started yet:
+       first paint, and the restart that follows undocking, which is exactly
+       when the style fallback below is the one in effect. */
+    if (typeof pill.getAnimations === "function") {
+      var running = pill.getAnimations().filter(function (a) {
+        return a.animationName === "ai-swim";
+      });
+      if (running.length) {
+        running[0].currentTime = fraction * m.duration * 1000;
+        return;
+      }
+    }
+    pill.style.setProperty("--ai-delay",
+      (-(fraction * m.duration)).toFixed(2) + "s");
+  }
+
+  /* Back to swimming after the panel closes. The docked transform came from
+     the .is-docked class, so removing the classes hands the transform back to
+     the animation, which the delay has already wound to that same spot: no
+     jump, just the next stroke. Under reduced motion the pill has no swim to
+     resume and simply stays at the right margin, which is also where the
+     docked pill rests, so nothing moves either way. */
+  function resumeSwim() {
+    var pill = document.querySelector(".ai-pill");
+    if (!pill || !pill.classList.contains("is-docked")) return;
+    state.docked = false;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      pill.classList.remove("is-docking", "is-docked");
+      return;
+    }
+    var m = measureTravel(pill);
+    placeInLoop(pill, m, m.travel);
+    /* Removing .is-docked restarts the animation (the class had it at none),
+       and a restart is exactly what makes the new delay take effect. */
+    pill.classList.remove("is-docking", "is-docked");
+    pill.style.transform = "";
   }
 
   function watchTravel(pill) {
-    measureTravel(pill);
+    var m = measureTravel(pill);
+    /* Start the visit at the left margin (tx = 0), mid-loop. */
+    placeInLoop(pill, m, 0);
+
+    /* Re-measuring changes the loop's endpoints and duration, which would
+       otherwise fling the pill to a different point of the new loop. Reading
+       its current translateX first and re-entering the new loop there keeps
+       it where the visitor last saw it. While docked there is nothing to
+       re-place: the docked transform reads --ai-travel live. */
+    var remeasure = function () {
+      if (pill.classList.contains("is-docked")) {
+        measureTravel(pill);
+        return;
+      }
+      var matrix = window.getComputedStyle(pill).transform;
+      var tx = 0;
+      if (matrix && matrix !== "none") {
+        var parts = matrix.match(/-?[\d.]+/g);
+        if (parts && parts.length >= 6) tx = parseFloat(parts[4]) || 0;
+      }
+      var next = measureTravel(pill);
+      placeInLoop(pill, next, tx);
+    };
+
     var pending = null;
     window.addEventListener("resize", function () {
       window.clearTimeout(pending);
-      pending = window.setTimeout(function () { measureTravel(pill); }, 120);
+      pending = window.setTimeout(remeasure, 120);
     });
     /* The label is re-rendered when the language changes, which changes the
-       pill's width and therefore its travel. */
+       pill's width and therefore the loop. */
     document.addEventListener("natfish:languagechange", function () {
-      window.setTimeout(function () { measureTravel(pill); }, 0);
+      window.setTimeout(remeasure, 0);
     });
   }
 

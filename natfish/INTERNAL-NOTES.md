@@ -303,33 +303,56 @@ stability check, which is why the automated tests force the click and assert the
 
 ### The launcher's motion
 
-The pill **swims**: a slow horizontal drift from the left margin to the right and
-back, 26s each way, with a 3.4s vertical bob over the top of it. Those are two
-speeds on one property, and one element cannot run two transform animations, so
-the outer anchor drifts and the inner `.ai-pill__body` bobs. Do not collapse them
-back into one element.
+The pill **swims in a wrap**: a slow, linear, one-directional drift from off
+screen left, across the foot of the viewport, off screen right, and around
+again - it never reverses. The loop's endpoints are computed so that the
+instant its tail clears the right edge its nose is at the left edge, so it
+leaves and re-enters in the same moment, with no off-screen dwell. A 3.4s
+vertical bob rides on top; two speeds cannot share one transform, so the outer
+anchor drifts and the inner `.ai-pill__body` bobs. Do not collapse them back
+into one element.
 
-`--ai-travel` is set at runtime by `natfish-ai.js` from the measured pill and
-viewport widths, and re-measured on resize and on language change (the Spanish
-label is wider). Hard-coding it would either cut the swim short or sail the pill
-past the right edge and create horizontal overflow.
+The drift runs at a constant 47px/s on every screen: the loop's duration is
+scaled to its measured distance, so the fish crosses a phone at the same
+unhurried pace as a desktop instead of sprinting on wide screens. All the
+geometry (`--ai-out-left`, `--ai-out-right`, `--ai-travel`, `--ai-dur`,
+`--ai-delay`) is measured by `natfish-ai.js` and re-measured on resize and on
+language change (the Spanish label is wider); on a re-measure the pill's
+current position is read first and re-entered into the new loop, so it stays
+where the visitor last saw it. The off-screen excursion cannot create
+horizontal overflow because the pill is `position: fixed`, which never extends
+the document's scrollable area - asserted in the tests anyway.
 
-On click the pill **docks**: it glides to the right margin over 0.55s, stays
-there for the rest of the visit, and only then does the panel open. The
-sequencing matters and was wrong once: on the very first click the embed is
-still loading, and the code opened as soon as the widget was ready rather than
-waiting for the glide as well, so the panel appeared while the pill was still
-10px short of the margin. Both conditions are now required. The completion is
-tied to `transitionend`, not to a duration that merely matches the transition,
-because the two `requestAnimationFrame` calls that make the glide smooth push
-its real end past any hard-coded 550ms.
+On click the pill **docks**: it glides to the right margin over 0.55s and only
+then does the panel open, tied to `transitionend` rather than a matching
+duration. It stays docked while the panel is open - a launcher that swam away
+from an open chat would be absurd - and when the panel is **closed it swims
+off again from that spot**: the script re-enters the loop at the docked
+offset, so it continues rightward, wraps, and carries on. Two mechanisms place
+it within the loop, chosen by whether the animation is already running: a
+running animation is wound directly with the Web Animations API (a negative
+`animation-delay` is measured from the animation's original start, so after
+minutes on the page it lands somewhere arbitrary), while the delay is used
+only for an animation that has not started yet - first paint, and the restart
+after undocking.
 
-Under `prefers-reduced-motion` there is no swim and no bob: the pill simply
-rests at the right margin, which is where a docked pill ends up anyway.
+One deliberate interaction with focus: Escape closes the panel and returns
+focus to the pill, and a focused pill pauses (a drifting keyboard target is a
+hard target), so after a keyboard close it holds still until focus moves on,
+then swims. After a pointer close it swims immediately.
 
-Both motions pause on hover and on keyboard focus. Note that Playwright will not
-click a permanently animating element, so the automated tests force the click and
-assert the pause separately.
+Under `prefers-reduced-motion` there is no swim and no bob: the pill rests at
+the right margin, docking is a no-op, and closing the panel leaves it resting
+where it already was.
+
+### No launcher on the NATFISH AI page
+
+`natfish-ai.html` ships **without** the floating pill (`footer(with_ai_pill=
+False)`): the chat embed is in the page, so a floating "Ask NATFISH AI" button
+there is a button for the thing the visitor is already looking at - and on a
+phone it sat directly on top of the embed's caption. The preview bundle shares
+one pill across its nine routes, so its router hides it on the natfish-ai
+route to match.
 
 ### The ordering journey, and the gate in front of it
 
@@ -429,6 +452,17 @@ moves in the shell, that slice has to move with it.
   anywhere in the site, and there never has been. So "preserve the existing analytics implementation"
   has nothing to preserve here, and none was invented to satisfy it. If order-journey measurement is
   wanted, say so and it can be added deliberately.
+
+### Two contact-page copy decisions, per the client
+
+- The "What to include with your seafood order request" section offers **one
+  action: Email the order team.** It briefly carried a "Start with NATFISH AI"
+  button as well; the client had it removed because the assistant already
+  leads the ordering section directly above, and this checklist serves
+  whichever route the visitor picked.
+- The "Have these ready" list says **"Your name, telephone number and email
+  address"** - it briefly said WhatsApp; the client had it changed because
+  correspondence about an order may also be sent by email.
 
 ### Opening hours
 

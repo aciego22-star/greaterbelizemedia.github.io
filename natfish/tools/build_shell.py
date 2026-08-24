@@ -617,7 +617,11 @@ def ai_pill():
 """
 
 
-def footer(with_lightbox=False):
+def footer(with_lightbox=False, with_ai_pill=True):
+    """with_ai_pill=False is for natfish-ai.html only: that page carries the
+    chat embed in the page itself, so a floating "Ask NATFISH AI" launcher
+    there is a button for a thing the visitor is already looking at - and on a
+    phone it sat on top of the embed's caption."""
     nav_links = "\n            ".join(
         f'<li><a href="{href}">{label}</a></li>' for label, href in NAV[1:]
     )
@@ -692,7 +696,7 @@ def footer(with_lightbox=False):
       </p>
     </div>
   </footer>
-{ai_pill()}{lightbox}
+{ai_pill() if with_ai_pill else ''}{lightbox}
   <p class="visually-hidden" id="lang-status" role="status" aria-live="polite"></p>
 
   <script src="assets/js/natfish-strings.js"></script>

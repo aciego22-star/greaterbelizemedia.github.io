@@ -1481,3 +1481,10 @@ ES.update({
         "la ventana de chat. Abra el sitio publicado para conversar con "
         "NATFISH AI.",
 })
+
+# The ready-list line was reworded from WhatsApp to email: correspondence about
+# an order may also arrive by email, so that is the detail worth having ready.
+ES.update({
+    "Your name, telephone number and email address":
+        "Su nombre, su número de teléfono y su correo electrónico",
+})

@@ -1660,7 +1660,7 @@ def natfish_ai():
                 '<a class="btn btn--ghost" href="contact.html">Contact the NATFISH team</a>',
             ],
         )
-        + footer()
+        + footer(with_ai_pill=False)
     )
 
 
@@ -1672,7 +1672,7 @@ def natfish_ai():
 READY_LIST = [
     "Which of the six approved products you need",
     "The approximate quantity you would like",
-    "Your name and telephone or WhatsApp number",
+    "Your name, telephone number and email address",
     "Your preferred pickup or fulfilment details",
 ]
 
@@ -1817,8 +1817,11 @@ def contact():
               <a href="seafood-seasons.html">View the Seafood Seasons guide</a>.
             </p>
 
+            <!-- One action, not two: NATFISH AI already leads the ordering
+                 section directly above, and this checklist serves whichever
+                 route the visitor picked - repeating the assistant here made
+                 the section read as another pitch for it. -->
             <div class="enquiry__actions">
-              {ai_button("Start with NATFISH AI", "natfish-ai.html")}
               <a class="btn btn--primary" href="{mailto_href()}">
                 {ICON_MAIL} Email the order team
               </a>
