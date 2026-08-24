@@ -2,7 +2,7 @@
 
 **Internal only. Not linked from any page and not to be shared with the client.**
 
-Eight-page site, V2. No canonical or Open Graph URL is set anywhere, so nothing ties the site to a
+Nine-page site, V2. No canonical or Open Graph URL is set anywhere, so nothing ties the site to a
 preview domain until a real one is approved.
 
 ---
@@ -119,7 +119,7 @@ python3 tools/process-logo.py
 
 | Asset | Where it is used |
 |---|---|
-| `natfish-logo-400/800/1200.png` | The complete lockup, via one srcset. Header on all eight pages, footer panel, About identity panel. |
+| `natfish-logo-400/800/1200.png` | The complete lockup, via one srcset. Header on all nine pages, footer panel, About identity panel. |
 | `natfish-icon.png` (180px) | Apple touch icon. Square crop of the circular emblem. |
 | `favicon.png` (48px) | Browser tab. Same crop. |
 
@@ -197,9 +197,11 @@ horizontal, a taller frame scales the photograph up and the subject grows with i
 went from roughly a quarter of the frame to a third. That is what "prominently framed" needed. Lowering
 it again shrinks her.
 
-Rotation is 7s, pauses on hover, on keyboard focus entering the hero and behind a hidden tab, stops on
-a horizontal swipe, and does not run at all under `prefers-reduced-motion`. There are still **no visible
-controls** - the client had them removed in V1 because the control strip broke the mobile hero layout.
+Rotation is 7s. It pauses on keyboard focus entering the hero and behind a hidden tab, stops on a
+horizontal swipe, and does not run at all under `prefers-reduced-motion`. It deliberately does **not**
+pause on hover any more - see "The hero looked like it rotated every few minutes" in §3c. There are
+still **no visible controls** - the client had them removed in V1 because the control strip broke the
+mobile hero layout.
 
 Only slide 1 is preloaded and eager; the other two are lazy, since they sit behind `opacity: 0` for at
 least seven seconds.
@@ -293,32 +295,54 @@ a browser loads any iframe.
 ### The launcher
 
 One pill, in the shared footer markup rather than injected by script, so it is present at first paint
-and cannot shift the layout. Navy-to-teal, the logo mark in a white circle, 60px tall on desktop and
-57px on a phone, positioned against `env(safe-area-inset-*)`.
+and cannot shift the layout. Navy-to-teal, the logo mark in a white circle, roughly 66px tall on
+desktop and 61px on a phone after the badge was enlarged, positioned against
+`env(safe-area-inset-*)`.
 
-The float is 4px over 3.4s, ease-in-out, alternating. It pauses on hover and on keyboard focus, and is
-switched off entirely under `prefers-reduced-motion`. Nothing about scale, opacity or colour is
-animated. Note that a permanently animating element cannot be clicked by Playwright's default
-stability check, which is why the automated tests force the click and assert the pause separately.
+Its motion is described in full in the next section; this one is only about the element. Nothing about
+scale, opacity or colour is animated. Note that a permanently animating element cannot be clicked by
+Playwright's default stability check, which is why the automated tests force the click and assert the
+pause separately.
 
 ### The launcher's motion
 
 The pill **swims in a wrap**: a slow, linear, one-directional drift from off
 screen left, across the foot of the viewport, off screen right, and around
 again - it never reverses. It cruises at **28px/s** with a **14px** rise and
-fall; both were raised from a faster drift and a 6px bob at the client's
-request, because against a slow crossing a shallow bob is invisible and the
-rise and fall is what reads as swimming rather than sliding. The loop's endpoints are computed so that the
-instant its tail clears the right edge its nose is at the left edge, so it
-leaves and re-enters in the same moment, with no off-screen dwell. A 3.4s
-vertical bob rides on top; two speeds cannot share one transform, so the outer
-anchor drifts and the inner `.ai-pill__body` bobs. Do not collapse them back
-into one element.
+fall over 2.9s; both were raised from a faster drift and a shallower bob at the
+client's request, because against a slow crossing a shallow bob is invisible
+and the rise and fall is what reads as swimming rather than sliding. The loop's
+endpoints are computed so that the instant its tail clears the right edge its
+nose is at the left edge, so it leaves and re-enters in the same moment, with no
+off-screen dwell. Two speeds cannot share one transform, so the outer anchor
+drifts and the inner `.ai-pill__body` bobs. Do not collapse them back into one
+element.
 
-The drift runs at a constant 28px/s on every screen: the loop's duration is
-scaled to its measured distance, so the fish crosses a phone at the same
-unhurried pace as a desktop instead of sprinting on wide screens. That is
-about 20 seconds across a phone and about a minute across a wide desktop. All the
+The drift runs at a constant 28px/s on every screen. What is held at that speed
+is the **visible crossing**, not the whole lap, and that distinction is the fix
+for a real complaint: *"the pill is not showing on desktop nor mobile."*
+
+A wrap has to travel `viewport + pill`, but only `viewport - pill` of that is
+fully on screen. On a 390px phone carrying a 179px pill those are 569px and
+179px. At one constant speed end to end, the launcher was **fully visible for
+only 39% of every lap** - 7.8 seconds out of 20, with 6.2s of it a sliver or
+gone outright. Slowing the swim had stretched each of those dead stretches
+proportionally, which is why it started reading as absent.
+
+So the keyframe has four stops rather than two. The middle 76% carries the
+visible crossing at 28px/s; the outer 12% each side covers the entry and exit,
+which are mostly off frame anyway, with `ease-out` on the way in and `ease-in`
+on the way out. 12% is not arbitrary - on a desktop it works out to almost
+exactly the cruising speed, so the edges there are seamless, while on a phone
+it becomes a quick flick off frame and back.
+
+Measured after the change, at both 1440px and 390px: **fully visible for 81-82%
+of the loop**, gone for 0.6s on a phone and 4.4s of a 57s lap on a desktop.
+
+`placeInLoop` inverts that piecewise keyframe. It is exact across the cruise,
+which is linear and is where both callers actually aim - the left margin at
+first paint and the right margin when the panel closes are precisely the 12%
+and 88% stops. All the
 geometry (`--ai-out-left`, `--ai-out-right`, `--ai-travel`, `--ai-dur`,
 `--ai-delay`) is measured by `natfish-ai.js` and re-measured on resize and on
 language change (the Spanish label is wider); on a re-measure the pill's
@@ -440,6 +464,15 @@ Two deliberate absences, both verified rather than assumed:
   menu closes. A floating chat button sitting on top of a full-screen menu
   would be the odd choice, so this stays as it is.
 - **On natfish-ai.html** there is no pill at all, by request - see below.
+
+### The emblem in the launcher
+
+The NATFISH mark carries a lobster, a hand, a cuff and a wave ring - a lot of
+drawing for a small circle. At 34px inside a 44px badge it read as a smudge
+rather than as the mark, which is what *"the AI is small on the Ask NATFISH"*
+meant. The badge is now 52px with 44px of artwork (48/40 on a phone), so the
+artwork also uses more of the circle it sits in. The pill grows by 8px of width,
+which the loop shape above absorbs easily.
 
 ### No launcher on the NATFISH AI page
 
@@ -692,7 +725,8 @@ seafood-seasons.html     Seafood Seasons (regulatory guide)
 responsible.html         Responsible Fisheries
 news.html                What's New at NATFISH
 gallery.html             Gallery, photos and video
-contact.html             Contact & Buyer Enquiries  (#buyer-enquiry)
+natfish-ai.html          NATFISH AI, with the chat embed in the page
+contact.html             Contact & seafood orders   (#order)
 ```
 
 ### Seafood Seasons is a regulatory guide, not a catalogue
@@ -716,7 +750,7 @@ in-season and will not appear here automatically.
 ### Forms
 
 There are **no forms anywhere on the site.** Buyer enquiries are two links on
-`contact.html#buyer-enquiry`: a `mailto:` to `nationalfishermen@gmail.com` and a `wa.me` link to
+`contact.html#order`: a `mailto:` to `nationalfishermen@gmail.com` and a `wa.me` link to
 `5016114831`, both carrying a prefilled, fully editable draft that includes the six-product pick list.
 Nothing is captured server-side. Enabling Netlify Forms later would mean reintroducing a real
 `<form>`, a hidden `form-name` input and a background POST.
@@ -742,7 +776,7 @@ After editing any page copy, re-run:
 python3 tools/i18n-build.py     # reports anything without Spanish
 ```
 
-Currently **370 Spanish strings, 0 missing.**
+Currently **451 Spanish strings, 0 missing.**
 
 **CONCEPT-STAGE TRANSLATION.** The Spanish should receive a final review from a Belizean Spanish
 speaker designated by NATFISH before launch, particularly the fisheries and cooperative vocabulary
@@ -762,7 +796,7 @@ Static HTML, no build step, no framework, no external fonts or scripts.
 
 ```
 tools/build_shell.py         shared head, header, footer, picture(), contact constants
-tools/build_pages.py         the eight pages; run this after editing either
+tools/build_pages.py         the nine pages; run this after editing either
 tools/build_icons.py         the inline SVG icon family
 tools/build_seasons.py       the Seafood Seasons card data
 tools/process-v2-images.py   regenerates the photography set
@@ -771,11 +805,12 @@ tools/bundle-preview.py      builds the single-file artifact preview
 tools/make-netlify-zip.sh    builds the deployable zip, excluding this file and tools/
 ```
 
-The eight HTML files are generated. **Edit the generators, not the HTML**, or the next
+The nine HTML files are generated. **Edit the generators, not the HTML**, or the next
 `python3 tools/build_pages.py` will overwrite the change.
 
 `netlify.toml` 301-redirects the three retired V1 URLs: `/cooperative.html` to `/about.html`,
-`/seafood.html` to `/seafood-services.html`, and `/buyers.html` to `/contact.html#buyer-enquiry`.
+`/seafood.html` to `/seafood-services.html`, and `/buyers.html` to `/contact.html#order`.
 
-The rotating hero advances every 7 seconds, supports swipe, pauses on a hidden tab, and does not
-rotate at all under `prefers-reduced-motion`. It has no visible controls, by client instruction in V1.
+The rotating hero advances every 7 seconds, supports swipe, pauses on a hidden tab and while the
+keyboard is inside it, and does not rotate at all under `prefers-reduced-motion`. It does **not** pause
+on hover - see §3c. It has no visible controls, by client instruction in V1.
