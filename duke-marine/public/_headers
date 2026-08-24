@@ -1,0 +1,48 @@
+# Netlify headers for Duke Marine.
+#
+# This file lives in public/ so Astro copies it into dist/ on every build. That
+# matters: the site is deployed by dropping the contents of dist/ into Netlify,
+# and netlify.toml sits outside dist/, so Netlify never sees it. Rules kept here
+# ship with the deploy. Keep netlify.toml in step for the day the repository is
+# connected to Netlify for automatic builds.
+
+/*
+  X-Frame-Options: SAMEORIGIN
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+
+# Astro puts a content hash in these filenames, so any change produces a new
+# filename. Nothing can go stale, and they can be cached indefinitely.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Photographs keep their filename when they are replaced, so these must never
+# be cached indefinitely: a returning visitor would keep seeing the old picture.
+# One day of caching, then the browser serves the stored copy immediately while
+# it checks for a newer one in the background.
+/media/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+# Icons change very rarely but are not hashed either, so they get a week.
+/favicon.ico
+  Cache-Control: public, max-age=604800
+/favicon.svg
+  Cache-Control: public, max-age=604800
+/favicon-16.png
+  Cache-Control: public, max-age=604800
+/favicon-32.png
+  Cache-Control: public, max-age=604800
+/favicon-48.png
+  Cache-Control: public, max-age=604800
+/favicon-96.png
+  Cache-Control: public, max-age=604800
+/favicon-192.png
+  Cache-Control: public, max-age=604800
+/favicon-512.png
+  Cache-Control: public, max-age=604800
+/apple-touch-icon.png
+  Cache-Control: public, max-age=604800
+
+# robots.txt and the sitemaps deliberately get no rule here. They keep
+# Netlify's revalidate-every-time default so search engines always read the
+# current version.

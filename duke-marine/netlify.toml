@@ -6,7 +6,13 @@
 [build.environment]
   NODE_VERSION = "20"
 
-# Security & caching headers
+# Security & caching headers.
+#
+# NOTE: these apply only when Netlify builds the site from the repository. The
+# site is currently deployed by dropping the contents of dist/ into Netlify,
+# and this file sits outside dist/, so Netlify does not see it on those
+# deploys. public/_headers carries the same rules into the deploy folder and is
+# what is actually in force today. Change both together.
 [[headers]]
   for = "/*"
   [headers.values]
@@ -14,7 +20,15 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
 
+# Content-hashed filenames: a change always produces a new name.
 [[headers]]
   for = "/_astro/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+
+# Photographs keep their filename when replaced, so never cache them
+# indefinitely or a returning visitor keeps the old picture.
+[[headers]]
+  for = "/media/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400, stale-while-revalidate=604800"
