@@ -19,7 +19,7 @@ from build_shell import (
     RECREATION_NOTE, SHORT, TEL2_DISPLAY, TEL2_HREF, TEL_DISPLAY, TEL_HREF,
     VIDEO_ID, VIDEO_SOURCE, VIDEO_TITLE, WHATSAPP, SRC_BELTRAIDE,
     SRC_FISHERIES_DEPT, SRC_FISHERYPROGRESS, SRC_FISHSOURCE, SRC_FISHWISE,
-    RULE_WAVE, contact_strip, cta_band, footer, head, header, hero_picture,
+    HOURS, RULE_WAVE, contact_strip, cta_band, footer, head, header, hero_picture,
     hero_preload, identity_ribbon, logo_full, page_hero, picture,
 )
 
@@ -30,6 +30,7 @@ OUT = pathlib.Path("/home/user/greaterbelizemedia.github.io/natfish")
 # Feature icons are subject-specific: each one is drawn for the heading it sits
 # beside, and none is reused for a second idea.
 ICON_PLAY = icon("play")
+ICON_CHAT = icon("chat")
 ICON_CHECK = """<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m4.5 12.6 5.2 5.2L19.5 7.4"/></svg>"""
 
 # ------------------------------------------------------ enquiry links --
@@ -1374,6 +1375,293 @@ def gallery():
     )
 
 
+# ========================================================== natfish ai ===
+
+# The four capability cards, in the client's approved order and wording.
+AI_CARDS = [
+    ("net", "Learn about NATFISH",
+     "Ask about the Co-operative&rsquo;s history, member ownership, role, mission "
+     "and service to Belizean fishers."),
+    ("lobster", "Explore our seafood",
+     "Learn about NATFISH&rsquo;s verified seafood products and find the "
+     "appropriate product information before contacting the team."),
+    ("pin", "Find the right contact",
+     "Get the office address, opening hours, telephone numbers, WhatsApp "
+     "information and email addresses."),
+    ("route", "Ask in English or Spanish",
+     "NATFISH AI can assist visitors in English or Spanish, making important "
+     "information easier to access."),
+]
+
+AI_STEPS = [
+    ("Ask a question",
+     "Open NATFISH AI and ask about the Co-operative, its seafood products, "
+     "office hours or contact information."),
+    ("Receive immediate guidance",
+     "NATFISH AI responds using the verified information it has been given."),
+    ("Continue with the team when needed",
+     "For pricing, current availability, specifications or confirmed orders, "
+     "NATFISH AI directs the visitor to the appropriate NATFISH contact."),
+]
+
+
+def ai_button(label, fallback, css="btn btn--primary"):
+    """An "Ask NATFISH AI" trigger.
+
+    Always a real link with a real destination. natfish-ai.js upgrades it to
+    open the chat panel once the widget is ready, and leaves it alone when it
+    is not, so a visitor never meets a control that does nothing.
+    """
+    return (f'<a class="{css}" href="{fallback}" data-ai-open>'
+            f'{ICON_CHAT} {label}</a>')
+
+
+def ai_jsonld():
+    """WebPage plus Service, both pointing at the existing Organization.
+
+    No rating, no offer, no price and no availability: the assistant cannot
+    confirm any of those, and structured data is republished verbatim by
+    machines that will not read the disclaimers on the page.
+    """
+    return f"""  <script type="application/ld+json">
+  {{
+    "@context": "https://schema.org",
+    "@graph": [
+      {{
+        "@type": "WebPage",
+        "name": "NATFISH AI",
+        "description": "NATFISH AI is the digital employee of {LEGAL_NO_DOT}, answering questions about NATFISH seafood products, opening hours, location and contact details.",
+        "inLanguage": ["en", "es"],
+        "about": {{
+          "@type": "Organization",
+          "name": "{LEGAL}",
+          "alternateName": "NATFISH"
+        }}
+      }},
+      {{
+        "@type": "Service",
+        "name": "NATFISH AI",
+        "serviceType": "Automated customer information assistant",
+        "description": "An AI assistant trained on verified NATFISH information. It provides guidance about the Co-operative and its seafood products and directs visitors to the NATFISH team for prices, current availability and confirmed orders.",
+        "availableLanguage": ["en", "es"],
+        "provider": {{
+          "@type": "Organization",
+          "name": "{LEGAL}",
+          "alternateName": "NATFISH"
+        }}
+      }}
+    ]
+  }}
+  </script>
+"""
+
+
+def natfish_ai():
+    cards = "\n          ".join(
+        f"""<div class="pillar reveal">
+            <span class="pillar__icon">{icon(ico)}</span>
+            <h3>{title}</h3>
+            <p>{body}</p>
+          </div>"""
+        for ico, title, body in AI_CARDS
+    )
+    steps = "\n            ".join(
+        f"""<li class="reveal">
+              <h3>{title}</h3>
+              <p>{body}</p>
+            </li>"""
+        for title, body in AI_STEPS
+    )
+    products = "\n              ".join(
+        f'<li>{ICON_CHECK}<span>{prod["name"]}, <i>{prod["sci"]}</i></span></li>'
+        for prod in CATALOGUE
+    )
+
+    return (
+        head(
+            "NATFISH AI | Ask About NATFISH and Belizean Seafood",
+            f"Meet NATFISH AI, the digital employee of {LEGAL_NO_DOT}. Ask about "
+            "our seafood products, history, opening hours and contact "
+            "information.",
+            extra_jsonld=ai_jsonld(),
+        )
+        + header("natfish-ai.html")
+        + page_hero(
+            "Meet our digital employee",
+            "Meet NATFISH AI",
+            "Ask about NATFISH, our verified seafood products, office hours, "
+            "location and the best way to reach our team.",
+            "NATFISH AI",
+        )
+        + f"""
+    <div class="container">
+      <div class="enquiry__actions" style="margin-top:0">
+        {ai_button("Ask NATFISH AI", "contact.html")}
+      </div>
+      <!-- A text link, not a second button: btn--ghost is the dark-background
+           variant and renders white on white here, and the client specified a
+           secondary text link rather than a competing call to action. -->
+      <p class="ai-secondary">
+        Prefer to speak with someone?
+        <a href="contact.html">Contact the NATFISH team.</a>
+      </p>
+      <p class="ai-note">
+        NATFISH AI is an AI system, not a human staff member. Prices, current
+        availability and final order details must be confirmed by the NATFISH
+        team.
+      </p>
+    </div>
+
+    <section class="section" aria-labelledby="ai-what-h">
+      <div class="container">
+        <div class="split">
+          <div class="reveal">
+            <span class="eyebrow">The assistant</span>
+            <h2 id="ai-what-h">What is NATFISH AI?</h2>
+            <p class="lede">
+              NATFISH AI is the digital employee of {LEGAL_NO_DOT}. It has been
+              trained on verified NATFISH information so visitors can receive
+              clear guidance without searching through several pages or waiting
+              for the office to reopen.
+            </p>
+            <p>
+              It is designed to make information easier to find while keeping
+              the NATFISH team available whenever human assistance or
+              confirmation is needed.
+            </p>
+          </div>
+          <div class="split__media reveal">
+            {picture("01-lobster-packing-team-wide", "(max-width: 860px) 92vw, 46vw")}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--sand" aria-labelledby="ai-can-h">
+      <div class="container">
+        <div class="section-head section-head--rule reveal">
+          {RULE_WAVE}
+          <span class="eyebrow">What it covers</span>
+          <h2 id="ai-can-h">What can NATFISH AI help with?</h2>
+        </div>
+
+        <div class="ai-grid">
+          {cards}
+        </div>
+
+        <p class="ai-note reveal" style="margin-top:clamp(1.75rem,3.5vw,2.5rem)">
+          NATFISH AI cannot currently confirm real-time prices or inventory,
+          accept payment, finalize an order or replace confirmation from a
+          NATFISH team member.
+        </p>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="ai-products-h">
+      <div class="container container--narrow">
+        <div class="section-head reveal">
+          <span class="eyebrow">Verified products</span>
+          <h2 id="ai-products-h">The seafood NATFISH AI can tell you about</h2>
+          <p class="lede">
+            These six products are the confirmed NATFISH catalogue. Ask NATFISH
+            AI about any of them, or read the full descriptions on
+            <a href="seafood-services.html">Seafood &amp; Services</a>.
+          </p>
+        </div>
+        <ul class="ai-products reveal">
+              {products}
+        </ul>
+        <p class="note reveal" style="margin-top:1.25rem">
+          Specifications and current availability are confirmed directly with
+          the NATFISH team.
+        </p>
+      </div>
+    </section>
+
+    <section class="section section--navy" aria-labelledby="ai-soon-h">
+      <div class="container container--narrow">
+        <div class="section-head reveal">
+          <span class="eyebrow">The next stage</span>
+          <h2 id="ai-soon-h">Online order requests are coming soon</h2>
+          <p class="lede">
+            Coming soon, visitors will be able to submit an order request
+            directly through NATFISH AI for NATFISH&rsquo;s confirmed seafood
+            products.
+          </p>
+          <p class="lede">
+            The request will be routed to the NATFISH front desk or order team.
+            A team member will then follow up to confirm the product, quantity,
+            current availability and pickup arrangements.
+          </p>
+        </div>
+        <p class="ai-note reveal">
+          This ordering feature is not yet active. NATFISH AI must not claim
+          that an order has been accepted, submitted, routed or confirmed until
+          the required order system is live.
+        </p>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="ai-how-h">
+      <div class="container">
+        <div class="section-head section-head--rule reveal">
+          {RULE_WAVE}
+          <span class="eyebrow">How it works</span>
+          <h2 id="ai-how-h">Three steps</h2>
+        </div>
+        <ol class="ai-steps">
+            {steps}
+        </ol>
+      </div>
+    </section>
+
+    <section class="section section--sand" aria-labelledby="ai-privacy-h">
+      <div class="container container--narrow">
+        <div class="section-head reveal">
+          <span class="eyebrow">Using it well</span>
+          <h2 id="ai-privacy-h">Privacy and responsible use</h2>
+        </div>
+        <div class="ai-privacy reveal">
+          <p>
+            Please share only the information needed for your enquiry. Do not
+            enter payment-card or banking information, passwords, government
+            identification numbers or other sensitive personal information.
+          </p>
+          <p>
+            Messages are processed through the service used to operate NATFISH
+            AI. If you voluntarily provide your name, telephone number, email
+            address or future order-request details, that information may be
+            made available to authorized NATFISH staff so the team can respond
+            and follow up.
+          </p>
+          <p>
+            NATFISH AI may occasionally provide an incomplete or mistaken
+            response. A NATFISH team member must confirm prices, current
+            availability, product specifications and final order arrangements.
+          </p>
+          <p>
+            Visitors who prefer not to use NATFISH AI may contact the team
+            directly by telephone, WhatsApp or email.
+          </p>
+        </div>
+      </div>
+    </section>
+"""
+        + cta_band(
+            "NATFISH AI",
+            "Have a question? Ask NATFISH AI.",
+            "Get immediate guidance about NATFISH and our verified seafood "
+            "products, or contact the team directly when you need human "
+            "assistance.",
+            [
+                ai_button("Ask NATFISH AI", "contact.html"),
+                '<a class="btn btn--ghost" href="contact.html">Contact the NATFISH team</a>',
+            ],
+        )
+        + footer()
+    )
+
+
 # ============================================================= contact ===
 
 CHECKLIST = [
@@ -1481,11 +1769,15 @@ def contact():
           </p>
         </div>
 
-        <div class="grid grid--3">
+        <div class="grid grid--4">
           <div class="contact-card reveal">
             <span class="contact-card__icon">{icon("coast")}</span>
             <h3>Visit</h3>
             <p>{ADDRESS}</p>
+            <p>
+              {HOURS}
+              <span class="contact-card__tag">Office hours</span>
+            </p>
             <a class="arrow-link" href="{MAPS}" target="_blank" rel="noopener noreferrer">Open in Google Maps</a>
           </div>
           <div class="contact-card reveal">
@@ -1512,6 +1804,27 @@ def contact():
               <span class="contact-card__tag">General and orders</span>
             </p>
             <a class="arrow-link" href="mailto:{EMAIL}">Email NATFISH</a>
+          </div>
+
+          <!-- The assistant sits alongside the verified human routes, not
+               ahead of them: the same card at the same size, with one accent
+               edge so it reads as new without competing with the telephone
+               numbers beside it. -->
+          <div class="contact-card contact-card--ai reveal">
+            <span class="contact-card__icon">{ICON_CHAT}</span>
+            <h3>NATFISH AI</h3>
+            <p>
+              Ask about our seafood products, the Co-operative, office hours
+              and contact information.
+            </p>
+            <p class="note">
+              For prices, current availability and confirmed orders, a NATFISH
+              team member will assist you.
+            </p>
+            <p class="contact-card__action">
+              {ai_button("Ask NATFISH AI", "natfish-ai.html", "btn btn--primary btn--sm")}
+            </p>
+            <a class="arrow-link" href="natfish-ai.html">Learn more about NATFISH AI</a>
           </div>
         </div>
 
@@ -1558,6 +1871,7 @@ PAGES = {
     "responsible.html": responsible,
     "news.html": news,
     "gallery.html": gallery,
+    "natfish-ai.html": natfish_ai,
     "contact.html": contact,
 }
 

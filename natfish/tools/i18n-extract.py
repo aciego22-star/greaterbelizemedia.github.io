@@ -22,7 +22,7 @@ ATTRS = ("alt", "aria-label", "title", "placeholder")
 # Names, addresses and machine values are the same in both languages. The legal
 # name stays English in Spanish too, and so do the Linnaean species names.
 LEAVE_ALONE = re.compile(
-    r"^(NATFISH|Austere Automations|Belize|Belize City|2026|"
+    r"^(NATFISH|NATFISH AI|Austere Automations|Belize|Belize City|2026|"
     r"nationalfishermen@gmail\.com|deniseobrien125@gmail\.com|"
     r"\+501 227-3165|\+501 227-8039|\+501 611-4831|"
     r"#1 Angel Lane, Belize City, Belize|"

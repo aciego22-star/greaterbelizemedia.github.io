@@ -978,3 +978,212 @@ ES.update({
         "la que es dueño, y sale bajo el nombre de la Sociedad.",
     "Food safety and handling": "Inocuidad alimentaria y manipulación",
 })
+
+# ============================================================ NATFISH AI ==
+# "NATFISH AI" is a name and is never translated, in either direction. The
+# scientific names and the legal name stay English here too.
+
+ES.update({
+    # ------------------------------------------------ launcher and CTAs --
+    "Ask NATFISH AI": "Pregunte a NATFISH AI",
+    "Open NATFISH AI chat": "Abrir el chat de NATFISH AI",
+    "Learn more about NATFISH AI": "Conozca más sobre NATFISH AI",
+    "Contact the NATFISH team": "Contacte al equipo de NATFISH",
+    "Prefer to speak with someone? Contact the NATFISH team.":
+        "¿Prefiere hablar con una persona? Contacte al equipo de NATFISH.",
+
+    # Status messages from the launcher script.
+    "Opening NATFISH AI.": "Abriendo NATFISH AI.",
+    "NATFISH AI could not be reached. You can contact the team directly "
+    "instead.":
+        "No se pudo conectar con NATFISH AI. Puede contactar al equipo "
+        "directamente.",
+    "NATFISH AI is taking too long to load. Opening the NATFISH AI page "
+    "instead.":
+        "NATFISH AI está tardando demasiado en cargar. Se abrirá la página de "
+        "NATFISH AI.",
+
+    # ---------------------------------------------------------- the page --
+    "NATFISH AI | Ask About NATFISH and Belizean Seafood":
+        "NATFISH AI | Consulte sobre NATFISH y los mariscos beliceños",
+    "Meet our digital employee": "Conozca a nuestro empleado digital",
+    "Meet NATFISH AI": "Conozca a NATFISH AI",
+    "Ask about NATFISH, our verified seafood products, office hours, location "
+    "and the best way to reach our team.":
+        "Consulte sobre NATFISH, nuestros productos verificados, el horario de "
+        "oficina, la ubicación y la mejor forma de comunicarse con nuestro "
+        "equipo.",
+    "NATFISH AI is an AI system, not a human staff member. Prices, current "
+    "availability and final order details must be confirmed by the NATFISH "
+    "team.":
+        "NATFISH AI es un sistema de inteligencia artificial, no un miembro del "
+        "personal. Los precios, la disponibilidad actual y los detalles finales "
+        "de un pedido debe confirmarlos el equipo de NATFISH.",
+
+    "The assistant": "El asistente",
+    "What is NATFISH AI?": "¿Qué es NATFISH AI?",
+    "NATFISH AI is the digital employee of National Fishermen Producers "
+    "Co-operative Society Ltd. It has been trained on verified NATFISH "
+    "information so visitors can receive clear guidance without searching "
+    "through several pages or waiting for the office to reopen.":
+        "NATFISH AI es el empleado digital de National Fishermen Producers "
+        "Co-operative Society Ltd. Ha sido entrenado con información verificada "
+        "de NATFISH para que los visitantes reciban orientación clara sin tener "
+        "que recorrer varias páginas ni esperar a que abra la oficina.",
+    "It is designed to make information easier to find while keeping the "
+    "NATFISH team available whenever human assistance or confirmation is "
+    "needed.":
+        "Está diseñado para facilitar el acceso a la información, manteniendo "
+        "siempre disponible al equipo de NATFISH cuando se necesita atención "
+        "humana o una confirmación.",
+
+    "What it covers": "Qué cubre",
+    "What can NATFISH AI help with?": "¿En qué puede ayudar NATFISH AI?",
+    "Learn about NATFISH": "Conozca NATFISH",
+    "Ask about the Co-operative’s history, member ownership, role, mission and "
+    "service to Belizean fishers.":
+        "Consulte sobre la historia de la Cooperativa, la propiedad de sus "
+        "socios, su función, su misión y su servicio a los pescadores "
+        "beliceños.",
+    "Explore our seafood": "Explore nuestros mariscos",
+    "Learn about NATFISH’s verified seafood products and find the appropriate "
+    "product information before contacting the team.":
+        "Conozca los productos verificados de NATFISH y encuentre la "
+        "información adecuada antes de contactar al equipo.",
+    "Find the right contact": "Encuentre el contacto indicado",
+    "Get the office address, opening hours, telephone numbers, WhatsApp "
+    "information and email addresses.":
+        "Obtenga la dirección de la oficina, el horario, los números de "
+        "teléfono, la información de WhatsApp y las direcciones de correo "
+        "electrónico.",
+    "Ask in English or Spanish": "Consulte en inglés o español",
+    "NATFISH AI can assist visitors in English or Spanish, making important "
+    "information easier to access.":
+        "NATFISH AI puede atender a los visitantes en inglés o español, lo que "
+        "facilita el acceso a información importante.",
+    "NATFISH AI cannot currently confirm real-time prices or inventory, accept "
+    "payment, finalize an order or replace confirmation from a NATFISH team "
+    "member.":
+        "Actualmente NATFISH AI no puede confirmar precios ni inventario en "
+        "tiempo real, aceptar pagos, finalizar un pedido ni sustituir la "
+        "confirmación de un miembro del equipo de NATFISH.",
+
+    "Verified products": "Productos verificados",
+    "The seafood NATFISH AI can tell you about":
+        "Los mariscos sobre los que NATFISH AI puede informarle",
+    "These six products are the confirmed NATFISH catalogue. Ask NATFISH AI "
+    "about any of them, or read the full descriptions on":
+        "Estos seis productos son el catálogo confirmado de NATFISH. Consulte a "
+        "NATFISH AI sobre cualquiera de ellos, o lea las descripciones "
+        "completas en",
+    "Specifications and current availability are confirmed directly with the "
+    "NATFISH team.":
+        "Las especificaciones y la disponibilidad actual se confirman "
+        "directamente con el equipo de NATFISH.",
+
+    "The next stage": "La siguiente etapa",
+    "Online order requests are coming soon":
+        "Próximamente: solicitudes de pedido en línea",
+    "Coming soon, visitors will be able to submit an order request directly "
+    "through NATFISH AI for NATFISH’s confirmed seafood products.":
+        "Próximamente los visitantes podrán enviar una solicitud de pedido "
+        "directamente a través de NATFISH AI para los productos confirmados de "
+        "NATFISH.",
+    "The request will be routed to the NATFISH front desk or order team. A "
+    "team member will then follow up to confirm the product, quantity, current "
+    "availability and pickup arrangements.":
+        "La solicitud se dirigirá a la recepción o al equipo de pedidos de "
+        "NATFISH. Luego un miembro del equipo dará seguimiento para confirmar "
+        "el producto, la cantidad, la disponibilidad actual y las condiciones "
+        "de retiro.",
+    "This ordering feature is not yet active. NATFISH AI must not claim that an "
+    "order has been accepted, submitted, routed or confirmed until the required "
+    "order system is live.":
+        "Esta función de pedidos aún no está activa. NATFISH AI no debe afirmar "
+        "que un pedido ha sido aceptado, enviado, dirigido ni confirmado hasta "
+        "que el sistema de pedidos esté en funcionamiento.",
+
+    "How it works": "Cómo funciona",
+    "Three steps": "Tres pasos",
+    "Ask a question": "Haga una pregunta",
+    "Open NATFISH AI and ask about the Co-operative, its seafood products, "
+    "office hours or contact information.":
+        "Abra NATFISH AI y pregunte sobre la Cooperativa, sus productos, el "
+        "horario de oficina o la información de contacto.",
+    "Receive immediate guidance": "Reciba orientación inmediata",
+    "NATFISH AI responds using the verified information it has been given.":
+        "NATFISH AI responde con la información verificada que se le ha "
+        "proporcionado.",
+    "Continue with the team when needed":
+        "Continúe con el equipo cuando haga falta",
+    "For pricing, current availability, specifications or confirmed orders, "
+    "NATFISH AI directs the visitor to the appropriate NATFISH contact.":
+        "Para precios, disponibilidad actual, especificaciones o pedidos "
+        "confirmados, NATFISH AI dirige al visitante al contacto adecuado de "
+        "NATFISH.",
+
+    "Using it well": "Uso responsable",
+    "Privacy and responsible use": "Privacidad y uso responsable",
+    "Please share only the information needed for your enquiry. Do not enter "
+    "payment-card or banking information, passwords, government identification "
+    "numbers or other sensitive personal information.":
+        "Comparta únicamente la información necesaria para su consulta. No "
+        "ingrese datos de tarjetas de pago o bancarios, contraseñas, números de "
+        "identificación oficial ni otra información personal sensible.",
+    "Messages are processed through the service used to operate NATFISH AI. If "
+    "you voluntarily provide your name, telephone number, email address or "
+    "future order-request details, that information may be made available to "
+    "authorized NATFISH staff so the team can respond and follow up.":
+        "Los mensajes se procesan mediante el servicio con el que opera NATFISH "
+        "AI. Si usted proporciona voluntariamente su nombre, teléfono, correo "
+        "electrónico o los datos de una futura solicitud de pedido, esa "
+        "información podrá ponerse a disposición del personal autorizado de "
+        "NATFISH para que el equipo pueda responder y dar seguimiento.",
+    "NATFISH AI may occasionally provide an incomplete or mistaken response. A "
+    "NATFISH team member must confirm prices, current availability, product "
+    "specifications and final order arrangements.":
+        "NATFISH AI puede dar en ocasiones una respuesta incompleta o "
+        "equivocada. Un miembro del equipo de NATFISH debe confirmar los "
+        "precios, la disponibilidad actual, las especificaciones del producto y "
+        "las condiciones finales del pedido.",
+    "Visitors who prefer not to use NATFISH AI may contact the team directly by "
+    "telephone, WhatsApp or email.":
+        "Quienes prefieran no usar NATFISH AI pueden contactar al equipo "
+        "directamente por teléfono, WhatsApp o correo electrónico.",
+
+    "Have a question? Ask NATFISH AI.":
+        "¿Tiene una pregunta? Pregunte a NATFISH AI.",
+    "Get immediate guidance about NATFISH and our verified seafood products, or "
+    "contact the team directly when you need human assistance.":
+        "Obtenga orientación inmediata sobre NATFISH y nuestros productos "
+        "verificados, o contacte al equipo directamente cuando necesite "
+        "atención humana.",
+
+    # ------------------------------------------------- contact additions --
+    "Ask about our seafood products, the Co-operative, office hours and "
+    "contact information.":
+        "Consulte sobre nuestros productos, la Cooperativa, el horario de "
+        "oficina y la información de contacto.",
+    "For prices, current availability and confirmed orders, a NATFISH team "
+    "member will assist you.":
+        "Para precios, disponibilidad actual y pedidos confirmados, un miembro "
+        "del equipo de NATFISH le atenderá.",
+    "Monday to Friday, 8:00 a.m. to 5:00 p.m.":
+        "De lunes a viernes, de 8:00 a. m. a 5:00 p. m.",
+    "Office hours": "Horario de oficina",
+})
+
+# The product list on the NATFISH AI page renders "<name>, <i>sci</i>", so the
+# extractor sees each name with a trailing comma as its own string. Derived
+# rather than hand-listed so the two forms can never drift apart.
+for _p in ("Frozen Spiny Lobster Tails", "Frozen Lobster Head Meat",
+           "Frozen Whole Raw Lobster", "Frozen Whole Cooked Lobster",
+           "Frozen Queen Conch, 85% Cleaned", "Lionfish Fillet"):
+    if _p in ES:
+        ES[f"{_p},"] = f"{ES[_p]},"
+
+# The hero secondary link, split across a sentence and its anchor.
+ES.update({
+    "Prefer to speak with someone?": "¿Prefiere hablar con una persona?",
+    "Contact the NATFISH team.": "Contacte al equipo de NATFISH.",
+})

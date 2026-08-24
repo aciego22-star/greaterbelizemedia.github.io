@@ -49,6 +49,12 @@
     },
     "email": "nationalfishermen@gmail.com",
     "telephone": "+5012273165",
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      "opens": "08:00",
+      "closes": "17:00"
+    },
     "contactPoint": [
       {
         "@type": "ContactPoint",
@@ -119,6 +125,7 @@
             <li><a class="nav__link" href="responsible.html">Responsible Fisheries</a></li>
             <li><a class="nav__link" href="news.html">What&rsquo;s New</a></li>
             <li><a class="nav__link" href="gallery.html">Gallery</a></li>
+            <li><a class="nav__link" href="natfish-ai.html">NATFISH AI</a></li>
             <li><a class="nav__link" href="contact.html">Contact</a></li>
         </ul>
         <div class="nav__cta">
@@ -521,6 +528,7 @@
             <li><a href="responsible.html">Responsible Fisheries</a></li>
             <li><a href="news.html">What&rsquo;s New</a></li>
             <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="natfish-ai.html">NATFISH AI</a></li>
             <li><a href="contact.html">Contact</a></li>
           </ul>
         </div>
@@ -553,11 +561,21 @@
     </div>
   </footer>
 
+  <a class="ai-pill" href="natfish-ai.html" data-ai-open
+     aria-label="Open NATFISH AI chat">
+    <span class="ai-pill__badge" aria-hidden="true">
+      <img src="assets/img/natfish-icon.png" width="180" height="180" alt="" loading="lazy" decoding="async">
+    </span>
+    <span class="ai-pill__label">Ask NATFISH AI</span>
+  </a>
+  <p class="visually-hidden" id="ai-status" role="status" aria-live="polite"></p>
+
   <p class="visually-hidden" id="lang-status" role="status" aria-live="polite"></p>
 
   <script src="assets/js/natfish-strings.js"></script>
   <script src="assets/js/natfish-i18n.js"></script>
   <script src="assets/js/natfish-seasons.js"></script>
   <script src="assets/js/natfish.js"></script>
+  <script src="assets/js/natfish-ai.js" defer></script>
 </body>
 </html>

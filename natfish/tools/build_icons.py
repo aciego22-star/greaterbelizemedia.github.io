@@ -62,6 +62,10 @@ FEATURE = {
     # tail -- and the dorsal spines rise from the back line at a lighter weight,
     # the way fin rays actually attach, rather than radiating from the centre.
     "lionfish": """<path d="M20.6 12.1q-2.4 3.1-7.2 3.1-3.6 0-5.9-1.6V10.7q2.3-1.6 5.9-1.6 4.8 0 7.2 3z" fill="currentColor" stroke="none"/><path d="M7.5 10.5 3.5 7.9v8.4l4-2.6z" fill="currentColor" stroke="none"/><path stroke-width="1.5" d="M9.4 10.1 8.1 4.6M11.9 9.3 11.3 3.6M14.4 9.3l.7-5.5M16.7 10.1l2-4.8"/><path stroke-width="1.5" d="M10.6 14.1 9.6 19.1M13.4 15.2l.6 4.9"/><circle class="ico__accent" cx="17.5" cy="11.4" r=".75" fill="currentColor" stroke="none"/>""",
+    # Speech bubble for the NATFISH AI triggers. Drawn to the same 1.85
+    # stroke as the rest of the family so it sits beside them without looking
+    # borrowed from an icon set.
+    "chat": """<path d="M21 12.6a7.9 7.9 0 0 1-8.2 7.9 9 9 0 0 1-2.6-.4L4.6 21.4l1.2-3.9A7.6 7.6 0 0 1 3.6 12a7.9 7.9 0 0 1 8.2-7.9A7.9 7.9 0 0 1 21 11.6z"/><path class="ico__accent" d="M8.6 11.9h.01M12.3 11.9h.01M16 11.9h.01" stroke-width="2.6"/>""",
     "conch": """<path d="M5.7 16.4c0-4.7 3.6-8.8 7.7-8.8 2.7 0 4.7 2 4.7 4.6 0 4.7-5.1 7.7-9.4 8.6-2 .4-3-.4-3-1.9z"/><path class="ico__accent" d="M13.3 10.4c1.1.5 1.8 1.4 1.8 2.5 0 1.8-1.5 3.1-3.1 3.8"/><path d="M8.4 9.5 7.3 6.5M11.6 7.7 12 4.6M14.7 8.5l1.9-2.5"/>""",
 
     # Other seafood: a fish above a market crate.

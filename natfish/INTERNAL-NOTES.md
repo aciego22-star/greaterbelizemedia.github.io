@@ -204,6 +204,89 @@ least seven seconds.
 
 ---
 
+## 3c. NATFISH AI
+
+Nine pages now: `natfish-ai.html` joined the set, immediately before Contact in the nav, the mobile
+drawer and the footer.
+
+### The one value still outstanding
+
+`assets/js/natfish-ai.js`, line ~24:
+
+```js
+var AGENT_ID = ""; /* TODO: REPLACE WITH THE NATFISH CHATBASE AGENT ID */
+```
+
+**That is the only placeholder in the project, and no fake id was invented.** A wrong id fails silently
+at runtime and looks exactly like a working one until somebody clicks it, which is precisely the kind
+of defect that reaches a client. While it is blank, every trigger stays a plain link to
+`natfish-ai.html` and nothing is requested from chatbase.co at all.
+
+### One-time Chatbase dashboard settings
+
+| # | Setting | Why |
+|---|---|---|
+| 1 | **Turn the default chat bubble off** | Otherwise Chatbase's own launcher and the NATFISH pill both appear. This cannot be done from the codebase: the bubble lives inside a cross-origin iframe. |
+| 2 | Allow the launch domain | The embed refuses to load on domains that are not on the agent's list. |
+| 3 | Set the initial greeting | "Hi, I am NATFISH AI, the digital employee for National Fishermen Producers Co-operative Society Ltd. How may I assist you today?" |
+| 4 | Set the widget privacy notice | "You are chatting with an AI. Do not share payment, banking, password, ID or other sensitive information. NATFISH confirms prices, availability and orders." |
+| 5 | Confirm the agent answers in Spanish | There is deliberately no second agent and no canned Spanish opener. The agent replies in whichever language it is addressed in. |
+
+### How the triggers work
+
+Every "Ask NATFISH AI" control is a real `<a>` with a real destination, never `href="#"`. The script
+upgrades it in place. That ordering matters: with JavaScript off, with the embed blocked, or before
+the id is supplied, the control still takes the visitor somewhere useful instead of doing nothing.
+
+- The floating pill falls back to `natfish-ai.html`.
+- The buttons on `natfish-ai.html` fall back to `contact.html`, since the visitor is already on the
+  AI page.
+- The contact-page card falls back to `natfish-ai.html`.
+
+A click that lands while the embed is still loading is held, not dropped: the trigger gets
+`aria-busy`, `#ai-status` announces "Opening NATFISH AI", and the panel opens as soon as it can. After
+six seconds it gives up and follows the link. Rapid re-clicks during that window are ignored rather
+than queued.
+
+The embed is requested once per page, and only on first intent: hovering or focusing a trigger, or the
+first pointer or key event anywhere. A visitor who never asks for the assistant never pays for it.
+
+### The launcher
+
+One pill, in the shared footer markup rather than injected by script, so it is present at first paint
+and cannot shift the layout. Navy-to-teal, the logo mark in a white circle, 60px tall on desktop and
+57px on a phone, positioned against `env(safe-area-inset-*)`.
+
+The float is 4px over 3.4s, ease-in-out, alternating. It pauses on hover and on keyboard focus, and is
+switched off entirely under `prefers-reduced-motion`. Nothing about scale, opacity or colour is
+animated. Note that a permanently animating element cannot be clicked by Playwright's default
+stability check, which is why the automated tests force the click and assert the pause separately.
+
+### What the page must never claim
+
+The copy is deliberate on this. NATFISH AI is described as unable to confirm prices or live inventory,
+accept payment, finalise an order or replace a team member. Online order requests are described only
+as **coming soon**, and the page says in as many words that the feature is not active. No order
+system, webhook, automation or form was built.
+
+### Not created, and why
+
+- **No `sitemap.xml`.** A sitemap needs absolute URLs and the launch domain is still unconfirmed. The
+  same reason the site has no `<link rel="canonical">` and no `og:url`. Generate all three together
+  once the domain is settled.
+- **No `robots.txt`.** There was none before, so nothing is blocked and the new page is crawlable.
+- **No privacy policy.** The client's plain-language guidance is on the page and nothing beyond it was
+  invented. If a formal policy is approved later, link to it from that section.
+
+### Opening hours
+
+`Monday to Friday, 8:00 a.m. to 5:00 p.m.` is newly supplied and now appears on the Contact page and
+in `openingHoursSpecification` in the Organization schema. Worth remembering that the fabricated hours
+on the V1 storefront image were one of the reasons that image had to be destroyed; these came from the
+client.
+
+---
+
 ## 4. Imagery
 
 ```

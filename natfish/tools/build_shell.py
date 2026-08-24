@@ -41,6 +41,10 @@ WHATSAPP = "5016114831"
 
 EMAIL = "nationalfishermen@gmail.com"
 ADDRESS = "#1 Angel Lane, Belize City, Belize"
+# Newly supplied by the client. Nothing on the site claimed opening hours
+# before this, deliberately: the fabricated hours on the V1 storefront image
+# were one of the reasons that image had to be destroyed.
+HOURS = "Monday to Friday, 8:00 a.m. to 5:00 p.m."
 MAPS = ("https://www.google.com/maps/search/?api=1&amp;query="
         "%231+Angel+Lane%2C+Belize+City%2C+Belize")
 
@@ -73,6 +77,7 @@ NAV = [
     ("Responsible Fisheries", "responsible.html"),
     ("What&rsquo;s New", "news.html"),
     ("Gallery", "gallery.html"),
+    ("NATFISH AI", "natfish-ai.html"),
     ("Contact", "contact.html"),
 ]
 
@@ -329,8 +334,9 @@ def logo_full(css="logo-full", width=380):
 def org_jsonld():
     """Organization data, limited to what the client actually supplied.
 
-    Deliberately absent: aggregateRating, priceRange, hasCredential, makesOffer,
-    openingHours and any volume or capacity figure. None of those were supplied,
+    Opening hours are included now that the client has supplied them.
+    Deliberately still absent: aggregateRating, priceRange, hasCredential,
+    makesOffer and any volume or capacity figure. None of those were supplied,
     and structured data is exactly where an unsupported claim does the most
     damage, because it is machine-read and republished verbatim.
     """
@@ -354,6 +360,12 @@ def org_jsonld():
     }},
     "email": "{EMAIL}",
     "telephone": "{tel}",
+    "openingHoursSpecification": {{
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      "opens": "08:00",
+      "closes": "17:00"
+    }},
     "contactPoint": [
       {{
         "@type": "ContactPoint",
@@ -383,7 +395,8 @@ def org_jsonld():
 """
 
 
-def head(title, description, og_image="official/og-card", preload=""):
+def head(title, description, og_image="official/og-card", preload="",
+         extra_jsonld=""):
     """No canonical and no og:url until a real domain exists.
 
     The V1 build pointed both at the agency's own GitHub Pages domain, which
@@ -419,7 +432,7 @@ def head(title, description, og_image="official/og-card", preload=""):
   <link rel="preload" href="assets/fonts/source-sans-3-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/css/fonts.css">
   <link rel="stylesheet" href="assets/css/natfish.css">
-{preload}{org_jsonld()}</head>
+{preload}{org_jsonld()}{extra_jsonld}</head>
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
 """
@@ -571,6 +584,33 @@ def contact_strip():
 """
 
 
+AI_PAGE = "natfish-ai.html"
+
+
+def ai_pill():
+    """The site-wide launcher.
+
+    A real link, not a button with href="#". Its href is the NATFISH AI page,
+    so the control still does something useful with JavaScript off, with the
+    Chatbase embed blocked, or before the agent id has been supplied. The
+    script upgrades it in place: once the widget is ready a click opens the
+    chat panel instead of navigating.
+
+    It lives in the footer markup rather than being injected by script, so it
+    is in the document from first paint and cannot cause a layout shift.
+    """
+    return f"""
+  <a class="ai-pill" href="{AI_PAGE}" data-ai-open
+     aria-label="Open NATFISH AI chat">
+    <span class="ai-pill__badge" aria-hidden="true">
+      <img src="assets/img/natfish-icon.png" width="180" height="180" alt="" loading="lazy" decoding="async">
+    </span>
+    <span class="ai-pill__label">Ask NATFISH AI</span>
+  </a>
+  <p class="visually-hidden" id="ai-status" role="status" aria-live="polite"></p>
+"""
+
+
 def footer(with_lightbox=False):
     nav_links = "\n            ".join(
         f'<li><a href="{href}">{label}</a></li>' for label, href in NAV[1:]
@@ -646,13 +686,14 @@ def footer(with_lightbox=False):
       </p>
     </div>
   </footer>
-{lightbox}
+{ai_pill()}{lightbox}
   <p class="visually-hidden" id="lang-status" role="status" aria-live="polite"></p>
 
   <script src="assets/js/natfish-strings.js"></script>
   <script src="assets/js/natfish-i18n.js"></script>
   <script src="assets/js/natfish-seasons.js"></script>
   <script src="assets/js/natfish.js"></script>
+  <script src="assets/js/natfish-ai.js" defer></script>
 </body>
 </html>
 """

@@ -28,6 +28,7 @@ PAGES=(
   responsible.html
   news.html
   gallery.html
+  natfish-ai.html
   contact.html
 )
 

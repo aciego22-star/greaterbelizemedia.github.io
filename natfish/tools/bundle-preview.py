@@ -28,6 +28,7 @@ PAGES = [
     ("responsible", "responsible.html"),
     ("news", "news.html"),
     ("gallery", "gallery.html"),
+    ("natfish-ai", "natfish-ai.html"),
     ("contact", "contact.html"),
 ]
 
@@ -293,7 +294,7 @@ def main():
     # All four scripts, in load order, so the bundle behaves like the site.
     js = "\n".join(read("assets/js/" + n) for n in (
         "natfish-strings.js", "natfish-i18n.js",
-        "natfish-seasons.js", "natfish.js",
+        "natfish-seasons.js", "natfish.js", "natfish-ai.js",
     ))
 
     titles = {}
