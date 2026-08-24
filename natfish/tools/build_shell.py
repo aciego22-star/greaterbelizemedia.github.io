@@ -10,9 +10,48 @@ Accuracy tiers used throughout:
   CLIENT CONFIRMATION REQ.   never written onto a public page, see INTERNAL-NOTES
 """
 
+import hashlib
+import pathlib
+
 from build_icons import icon
 
 SITE = "NATFISH"
+
+# --------------------------------------------------------- cache busting --
+#
+# WHY THIS EXISTS. netlify.toml serves /assets/* with
+# `max-age=31536000, immutable`, and `immutable` means exactly that: the
+# browser is told never to revalidate for a year. With stable filenames, a
+# returning visitor therefore keeps the CSS and JavaScript they first
+# downloaded no matter what is deployed afterwards. The HTML updates (it is
+# max-age=0), but it keeps pointing at the same asset URLs, so the update
+# never lands. That is not hypothetical - it is what made a freshly deployed
+# site look unchanged in one browser and correct in another.
+#
+# A content hash in the query string fixes it without giving up the caching:
+# the URL changes only when the bytes change, so an unchanged asset stays
+# cached for a year and a changed one is a different URL and is fetched.
+#
+# The hash is read from disk AT BUILD TIME, so `python3 tools/build_pages.py`
+# has to be the LAST step after editing any stylesheet or script. Running it
+# first would stamp the previous hash. make-netlify-zip.sh verifies this
+# before packaging and refuses to build a zip with stale hashes.
+
+ASSETS = pathlib.Path(__file__).resolve().parent.parent
+
+
+def asset(rel):
+    """`assets/css/natfish.css` -> `assets/css/natfish.css?v=<8 hex>`.
+
+    A missing file returns the plain path rather than failing the build: the
+    generators must still run on a checkout that has not built its derivatives
+    yet, and a missing stylesheet is a louder failure elsewhere anyway.
+    """
+    path = ASSETS / rel
+    if not path.is_file():
+        return rel
+    digest = hashlib.sha256(path.read_bytes()).hexdigest()[:8]
+    return f"{rel}?v={digest}"
 
 # The exact registered name supplied by the client for V2. The earlier build
 # carried an apostrophe-and-hyphen spelling of the middle two words, which is
@@ -430,8 +469,8 @@ def head(title, description, og_image="official/og-card", preload="",
        swap means the fallback shows immediately and nothing is ever invisible. -->
   <link rel="preload" href="assets/fonts/bitter-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/source-sans-3-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/fonts.css">
-  <link rel="stylesheet" href="assets/css/natfish.css">
+  <link rel="stylesheet" href="{asset('assets/css/fonts.css')}">
+  <link rel="stylesheet" href="{asset('assets/css/natfish.css')}">
 {preload}{org_jsonld()}{extra_jsonld}</head>
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
@@ -699,11 +738,11 @@ def footer(with_lightbox=False, with_ai_pill=True):
 {ai_pill() if with_ai_pill else ''}{lightbox}
   <p class="visually-hidden" id="lang-status" role="status" aria-live="polite"></p>
 
-  <script src="assets/js/natfish-strings.js"></script>
-  <script src="assets/js/natfish-i18n.js"></script>
-  <script src="assets/js/natfish-seasons.js"></script>
-  <script src="assets/js/natfish.js"></script>
-  <script src="assets/js/natfish-ai.js" defer></script>
+  <script src="{asset('assets/js/natfish-strings.js')}"></script>
+  <script src="{asset('assets/js/natfish-i18n.js')}"></script>
+  <script src="{asset('assets/js/natfish-seasons.js')}"></script>
+  <script src="{asset('assets/js/natfish.js')}"></script>
+  <script src="{asset('assets/js/natfish-ai.js')}" defer></script>
 </body>
 </html>
 """

@@ -83,3 +83,30 @@ for f in "$STAGE"/assets/img/*.png "$STAGE"/assets/img/*/*.webp; do
   fi
 done
 [ "$stale" -eq 0 ] && echo "OK: every packaged image is referenced"
+
+# Cache-busting hashes must match the bytes actually being shipped.
+#
+# The stylesheet and scripts are served immutable for a year, so the ?v= hash
+# in the HTML is the ONLY thing that tells a returning browser to fetch a new
+# copy. The hashes are stamped when build_pages.py runs, so editing a
+# stylesheet afterwards and packaging without re-running it would ship an
+# update that no returning visitor ever sees. That failure is silent in
+# testing - a fresh browser looks perfect - so it is checked here.
+bad=0
+for f in "$STAGE"/assets/css/*.css "$STAGE"/assets/js/*.js; do
+  [ -e "$f" ] || continue
+  name="${f#"$STAGE"/}"
+  # Only assets the pages actually link with a hash are checked.
+  want=$(sha256sum "$f" | cut -c1-8)
+  got=$(grep -ho "$(basename "$name")?v=[a-f0-9]\{8\}" "$STAGE"/*.html 2>/dev/null | head -1 | cut -d= -f2)
+  [ -z "$got" ] && continue
+  if [ "$got" != "$want" ]; then
+    echo "ERROR: $name ships hash $got but its content hashes to $want." >&2
+    echo "       Re-run 'python3 tools/build_pages.py' after editing assets." >&2
+    bad=$((bad + 1))
+  fi
+done
+if [ "$bad" -ne 0 ]; then
+  exit 1
+fi
+echo "OK: every cache-busting hash matches the file it points at"

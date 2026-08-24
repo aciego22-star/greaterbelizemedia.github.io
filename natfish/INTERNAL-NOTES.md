@@ -318,31 +318,39 @@ off-screen dwell. Two speeds cannot share one transform, so the outer anchor
 drifts and the inner `.ai-pill__body` bobs. Do not collapse them back into one
 element.
 
-The drift runs at a constant 28px/s on every screen. What is held at that speed
-is the **visible crossing**, not the whole lap, and that distinction is the fix
-for a real complaint: *"the pill is not showing on desktop nor mobile."*
+The drift runs at **one constant 28px/s across the whole lap**, entry and exit
+included, on a two-stop linear keyframe. On a 390px phone that is **20.3
+seconds** from the launcher appearing at the left edge to its nose leaving at
+the right, which is the figure the client timed on their own phone and asked to
+keep exactly: *"I currently count 20 seconds ... Any faster or slower breaks
+it."* Treat 28px/s as a fixed requirement, not a tuning knob.
 
-A wrap has to travel `viewport + pill`, but only `viewport - pill` of that is
-fully on screen. On a 390px phone carrying a 179px pill those are 569px and
-179px. At one constant speed end to end, the launcher was **fully visible for
-only 39% of every lap** - 7.8 seconds out of 20, with 6.2s of it a sliver or
-gone outright. Slowing the swim had stretched each of those dead stretches
-proportionally, which is why it started reading as absent.
+There is a known cost, and it was accepted deliberately. A wrap has to travel
+`viewport + pill`, but only `viewport - pill` of that is fully on screen. On a
+390px phone carrying a 179px pill those are 569px and 179px, so at one even
+speed the launcher is **fully visible for about 37% of each lap** - roughly 7.6
+seconds of the 20, with about 6.3s of it a sliver or off frame. On a 1440px
+desktop the same speed gives a 58s lap that is 77% fully visible.
 
-So the keyframe has four stops rather than two. The middle 76% carries the
-visible crossing at 28px/s; the outer 12% each side covers the entry and exit,
-which are mostly off frame anyway, with `ease-out` on the way in and `ease-in`
-on the way out. 12% is not arbitrary - on a desktop it works out to almost
-exactly the cruising speed, so the edges there are seamless, while on a phone
-it becomes a quick flick off frame and back.
+An earlier revision reduced that dead time with a four-stop keyframe: the middle
+76% of the lap carried the visible crossing at 28px/s while the outer 12% each
+side flicked the launcher off frame and back, taking full visibility to 81-82%.
+It worked, but it changed the cadence the client had timed, so it was reverted
+on request. If the dead stretch is ever raised as a complaint again, that
+piecewise keyframe is the fix - but it cannot be reinstated without asking,
+because the even 20-second crossing is itself an approved decision. `transit.js`
+asserts the 390px lap at 20s +/- 1 and `wrapqa.js` asserts the constant speed,
+so an accidental drift back to the piecewise version fails the suite.
 
-Measured after the change, at both 1440px and 390px: **fully visible for 81-82%
-of the loop**, gone for 0.6s on a phone and 4.4s of a 57s lap on a desktop.
+Note also that the first report of *"the pill is not showing on desktop nor
+mobile"* turned out to be a stale browser cache on the client's side, not the
+dead time - see section 7 on cache busting. The visibility measurements above
+are real, but they were not the cause of that complaint.
 
-`placeInLoop` inverts that piecewise keyframe. It is exact across the cruise,
-which is linear and is where both callers actually aim - the left margin at
-first paint and the right margin when the panel closes are precisely the 12%
-and 88% stops. All the
+`placeInLoop` inverts that two-stop keyframe. Because the whole lap is linear,
+the inversion is a single division and is exact at every offset, which is what
+both callers need - the left margin at first paint and the docked right margin
+when the panel closes. All the
 geometry (`--ai-out-left`, `--ai-out-right`, `--ai-travel`, `--ai-dur`,
 `--ai-delay`) is measured by `natfish-ai.js` and re-measured on resize and on
 language change (the Spanish label is wider); on a re-measure the pill's
@@ -416,8 +424,7 @@ working:
 3. **`100vh` on a phone is the *large* viewport**, ignoring the browser's own
    toolbars, so the top of the sheet - and with it the only close control -
    could sit off the visible screen. Heights now use `dvh` with a `vh`
-   fallback, the close control is a full 44px, and the entire title bar closes
-   the panel.
+   fallback, and the close control is a 52px circle.
 
 One related detail: closing by **tap** no longer sends focus back to the
 launcher. A focused pill deliberately holds still, and on a touch screen
@@ -453,6 +460,32 @@ tab, `prefers-reduced-motion` holding slide one, and the swipe.
 `heroqa.js` had asserted the old behaviour, so that assertion is now inverted;
 `heroqa2.js` additionally measures the real cadence with the cursor parked in
 the middle of the hero at 1440, 1920 and 390, and requires 7.0s +/- 0.9s.
+
+### The panel wears no chrome of its own
+
+Chatbase draws its own header inside the iframe - the agent's name on the left,
+its own menu on the right - and the panel used to add a second bar above it
+carrying our title and a close button. On screen that read as a **doubled
+border**, which is exactly how the client described it.
+
+Our bar is gone. `buildPanel()` now appends the close control and the iframe
+host to the panel directly, and the panel's only visible edge is the single
+1px border on `.ai-panel__body`. What survives is the **big X**, which the
+client asked to keep: a 52px navy circle that floats *above* the panel's
+top-right corner rather than sitting on the chat, so it never lands on
+Chatbase's own menu button. The panel is deliberately **not** `overflow:
+hidden`, because that would clip the button off.
+
+Floating it above the panel makes the panel's height a clearance calculation,
+not a taste decision. The button needs 52px plus a 0.6rem gap above the sheet,
+and the sticky header is 76px on a phone and 88px on a desktop; if the sheet
+grows, its top edge rises and the button walks up into the header. Hence
+`min(660px, calc(100dvh - 16rem))` on desktop and `min(82dvh, 100dvh - 11rem)`
+on a phone. The phone figure was 4rem and failed at **320x568**, where the sheet
+started at y=102 and put the button at y=41 - 36px inside a 77px header.
+`clearance.js` now asserts, at eight viewports from 320x568 to 1920x1080, that
+the button clears the header and is clickable. **Change either height and re-run
+it.**
 
 ### Where the launcher is and is not
 
@@ -807,6 +840,31 @@ tools/make-netlify-zip.sh    builds the deployable zip, excluding this file and 
 
 The nine HTML files are generated. **Edit the generators, not the HTML**, or the next
 `python3 tools/build_pages.py` will overwrite the change.
+
+### Cache busting: why every asset URL carries `?v=`
+
+`netlify.toml` serves `/assets/*` with `max-age=31536000, immutable`. Against
+filenames that never change, that is a promise the browser keeps: a returning
+visitor can hold a year-old stylesheet and simply never see an update. This
+already happened once - a report that the launcher *"is not showing on desktop
+nor mobile"* turned out to be one browser holding an old cache while another,
+fresh browser rendered the new build correctly. Nothing was wrong with the site.
+
+`build_shell.py` now stamps every stylesheet and script with a content hash -
+`asset("assets/css/natfish.css")` returns `assets/css/natfish.css?v=<8 hex>`,
+the first 8 hex characters of the file's own SHA-256.
+
+The URL changes when, and only when, the file's bytes change, so an edited file
+is a cache miss and an unedited one still gets the full year of `immutable`.
+Seven links per page are stamped: two stylesheets and five scripts. Images are
+not - they are added and replaced, not edited in place.
+
+**This only works if the pages are regenerated after an asset edit.** Change the
+CSS without re-running `build_pages.py` and every page points at the old hash,
+which is worse than no hash at all. `make-netlify-zip.sh` therefore recomputes
+each hash from the packaged file, compares it against what the HTML asks for,
+and **exits 1** on any mismatch rather than shipping a stale package. The
+guard's failure path was tested by hand, not just its success path.
 
 `netlify.toml` 301-redirects the three retired V1 URLs: `/cooperative.html` to `/about.html`,
 `/seafood.html` to `/seafood-services.html`, and `/buyers.html` to `/contact.html#order`.
