@@ -1661,7 +1661,7 @@ def natfish_ai():
             NATFISH team after the request is reviewed.
           </p>
           <ul class="checklist">
-            <li>{ICON_CHECK}<span>The visitor is clearly told that NATFISH AI is an AI service.</span></li>
+            <li>{ICON_CHECK}<span>Information you provide is never sold, rented or given away.</span></li>
             <li>{ICON_CHECK}<span>Only information relevant to the conversation or request should be collected.</span></li>
             <li>{ICON_CHECK}<span>Consent is requested before contact or order details are sent to the team.</span></li>
             <li>{ICON_CHECK}<span>The visitor may contact NATFISH directly instead of using AI.</span></li>

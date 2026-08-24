@@ -1488,3 +1488,18 @@ ES.update({
     "Your name, telephone number and email address":
         "Su nombre, su número de teléfono y su correo electrónico",
 })
+
+# The privacy checklist's first line, replaced at the client's request. Note
+# what it deliberately does NOT say: "never shared". Order details ARE shared
+# with the NATFISH team - that is what an order request is - and the very next
+# line in the list governs that sharing with a consent requirement. A blanket
+# "never shared" would have been the one thing on this page that was untrue.
+ES.update({
+    "Information you provide is never sold, rented or given away.":
+        "La información que usted proporciona nunca se vende, se alquila ni se "
+        "cede a terceros.",
+})
+
+# The AI-service disclosure this replaced. It is not lost: the paragraph
+# directly above the list still opens "NATFISH AI is an AI-powered service."
+ES.pop("The visitor is clearly told that NATFISH AI is an AI service.", None)

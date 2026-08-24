@@ -193,33 +193,37 @@
         }
       });
 
-      /* Rotation pauses while the visitor is engaged with the hero, and picks
-         up again when they leave. `held` tracks pointer and keyboard
-         separately from the tab check above, so returning to the tab does not
-         restart rotation under a hovering cursor. */
-      var hovering = false;
+      /* Rotation pauses while the keyboard is inside the hero, and picks up
+         again when it leaves. `held` is tracked separately from the tab check
+         above so that returning to the tab does not restart rotation under a
+         visitor who is still tabbing through the hero's buttons.
+
+         IT DELIBERATELY NO LONGER PAUSES ON HOVER, and that was a real bug.
+         The hero is 1440x540 on a desktop - about 60% of the screen on first
+         paint - so a cursor merely resting over it, which is where a cursor
+         rests while reading, stopped the rotation completely. It advanced only
+         in the moments the pointer happened to be somewhere else, which read
+         as a hero that changed every several minutes rather than every seven
+         seconds.
+
+         Hover-pause earns its place on a carousel the visitor can operate.
+         This one has no controls - they were removed on purpose - and the
+         slides hold nothing but background imagery, with the headline, copy
+         and buttons in a fixed layer above them. There is nothing to hover
+         toward and nothing that moves out from under the pointer, so pausing
+         bought nothing and cost the rotation. */
       var focused = false;
       var held = false;
 
       var settle = function () {
-        var next = hovering || focused;
-        if (next === held) return;
-        held = next;
+        if (focused === held) return;
+        held = focused;
         if (held) {
           stop();
         } else if (!document.hidden) {
           start();
         }
       };
-
-      root.addEventListener("mouseenter", function () {
-        hovering = true;
-        settle();
-      });
-      root.addEventListener("mouseleave", function () {
-        hovering = false;
-        settle();
-      });
 
       /* focusin/focusout rather than focus/blur: the events that matter come
          from the CTAs inside the hero, and only these two bubble. */

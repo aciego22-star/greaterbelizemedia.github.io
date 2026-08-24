@@ -401,6 +401,35 @@ nothing ever moves focus away again, so the fish would have stopped swimming
 for the rest of the visit. Keyboard closes still restore focus, which is what
 a keyboard user needs.
 
+### The hero looked like it rotated every few minutes
+
+**Reported: on desktop the hero images change roughly every seven minutes
+rather than every seven seconds.** Measured, and the interval itself was never
+wrong - `ROTATE_MS` is 7000 and, with the cursor away from the hero, the slides
+advance at a clean 7.0s.
+
+The cause was **pause-on-hover**. The hero measures 1440x540 on a 1440x900
+desktop, about **60% of the screen on first paint**, and `mouseenter` on that
+whole region stopped the timer. A cursor resting anywhere in the top 60% of the
+window - which is exactly where a cursor sits while someone reads, or after
+scrolling - held the rotation indefinitely. It advanced only during the moments
+the pointer happened to be elsewhere, which is precisely the reported symptom.
+
+Hover-pause earns its place on a carousel the visitor can operate. This one has
+none: the visible controls were removed in Phase 4 at the client's request, the
+slides carry nothing but background imagery, and the headline, copy and buttons
+sit in a fixed layer above them. There is nothing to hover toward and nothing
+that moves out from under the pointer, so the pause bought nothing and cost the
+rotation. It is gone.
+
+**Kept:** pause while the keyboard is inside the hero (narrow, and someone
+tabbing the hero's buttons is genuinely engaged), no rotation behind a hidden
+tab, `prefers-reduced-motion` holding slide one, and the swipe.
+
+`heroqa.js` had asserted the old behaviour, so that assertion is now inverted;
+`heroqa2.js` additionally measures the real cadence with the cursor parked in
+the middle of the hero at 1440, 1920 and 390, and requires 7.0s +/- 0.9s.
+
 ### Where the launcher is and is not
 
 Two deliberate absences, both verified rather than assumed:
@@ -536,6 +565,30 @@ row becomes a **column** below 560px a flex-basis is read along the vertical
 axis - so 16rem became a 256px minimum *height*. It is reset to `flex: 0 0
 auto` in the stacked layout. Any flex shorthand carrying a horizontal basis
 needs the same treatment when its container changes direction.
+
+### The privacy checklist's first line
+
+At the client's request the line *"The visitor is clearly told that NATFISH AI
+is an AI service"* was replaced with a statement that information is not sold or
+given away. It now reads:
+
+> **Information you provide is never sold, rented or given away.**
+
+Two deliberate choices in that wording:
+
+- **It does not say "never shared".** The client's note asked for "not shared,
+  sold or given away", but a blanket "never shared" would be the one untrue
+  sentence on the page: order details *are* passed to the NATFISH team, which is
+  the entire point of an order request, and the message itself is processed by
+  the service that operates NATFISH AI. The very next line in the same list
+  already governs that sharing, with a consent requirement - *"Consent is
+  requested before contact or order details are sent to the team."* The two
+  lines together state the whole truth, and neither overclaims. A privacy
+  promise that cannot be kept is a liability, which is the opposite of what was
+  asked for.
+- **The AI disclosure it replaced is not lost.** The paragraph immediately above
+  the list still opens *"NATFISH AI is an AI-powered service."*, so a visitor is
+  still told plainly what they are talking to.
 
 ### Two contact-page copy decisions, per the client
 
