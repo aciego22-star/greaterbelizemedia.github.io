@@ -303,20 +303,12 @@
 
   /* ------------------------------------------------- swim and docking -- */
 
-  /* Pixels per second of the VISIBLE crossing. One constant for every screen:
-     the loop's duration is derived from the crossing distance, so the fish
-     moves at the same unhurried pace on a phone as on a desktop instead of
-     sprinting on wide screens. Measured, that is about 7 seconds to cross a
-     390px phone and about 44 to cross a 1440px desktop - slow enough to be
-     noticed rather than chased. */
+  /* Pixels per second of drift. One constant for every screen: the loop's
+     duration is scaled to its distance, so the fish crosses a phone and a
+     desktop at the same unhurried pace instead of sprinting on wide screens.
+     28px/s is a slow cruise - roughly fifty seconds to cross a phone - which
+     is the point: the launcher should be noticed, not chased. */
   var SWIM_SPEED = 28;
-
-  /* Must match the 12% and 88% stops in the ai-swim keyframe. The middle of
-     the loop is the visible crossing; the two outer slices are the entry and
-     exit, which are mostly off frame. */
-  var CRUISE_START = 0.12;
-  var CRUISE_END = 0.88;
-  var CRUISE_SHARE = CRUISE_END - CRUISE_START;
 
   /* The swim is a wrap: fully off screen left, across, fully off screen right,
      and around again, never reversing. Everything is measured rather than
@@ -342,13 +334,7 @@
     var outLeft = -(width + left);
     var outRight = vw - left;
     var travel = Math.max(0, vw - width - left * 2);
-
-    /* The duration is set by the VISIBLE crossing, not the whole lap. The
-       keyframe gives the middle CRUISE_SHARE of the loop to that crossing, so
-       holding it at SWIM_SPEED is what keeps the pace identical on a phone and
-       a desktop. Sizing against the whole lap instead is what left the pill off
-       frame for most of every lap on a narrow screen. */
-    var duration = (travel / SWIM_SPEED) / CRUISE_SHARE;
+    var duration = (outRight - outLeft) / SWIM_SPEED;
 
     pill.style.setProperty("--ai-out-left", Math.round(outLeft) + "px");
     pill.style.setProperty("--ai-out-right", Math.round(outRight) + "px");
@@ -364,23 +350,9 @@
      the left margin instead of materialising off screen; and on resume, so it
      swims on from the docked position instead of teleporting. */
   function placeInLoop(pill, m, tx) {
-    if (m.travel <= 0 || !m.duration) return;
-
-    /* Invert the keyframe, which is piecewise. Exact across the cruise, which
-       is linear and is where both callers actually aim: the left margin at
-       first paint (tx = 0, the 12% stop) and the right margin when the panel
-       closes (tx = travel, the 88% stop). Positions outside the cruise are
-       clamped to its ends - they only arise from a resize, which is already a
-       discontinuity, and guessing inside an eased segment would be worse than
-       landing on its boundary. */
-    var fraction;
-    if (tx <= 0) {
-      fraction = CRUISE_START;
-    } else if (tx >= m.travel) {
-      fraction = CRUISE_END;
-    } else {
-      fraction = CRUISE_START + CRUISE_SHARE * (tx / m.travel);
-    }
+    var span = m.outRight - m.outLeft;
+    if (span <= 0) return;
+    var fraction = Math.min(1, Math.max(0, (tx - m.outLeft) / span));
 
     /* Two mechanisms for one job, chosen by whether the swim is already
        running. A running animation is wound directly with the Web Animations
