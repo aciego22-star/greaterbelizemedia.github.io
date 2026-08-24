@@ -275,6 +275,12 @@ def main():
     # One shared header, footer and lightbox lifted from the homepage.
     header = between(index, '<header class="site-header">', "</header>")
     footer = between(index, '<footer class="site-footer">', "</footer>")
+    # The floating launcher sits after </footer> in the shared shell, so the
+    # slice above stops just short of it. Missing this shipped a preview whose
+    # stylesheet and script both knew about the pill while the markup was not
+    # there at all, which is exactly as invisible as not building it.
+    pill = between(index, '<a class="ai-pill"', "</a>") + \
+        between(index, '<p class="visually-hidden" id="ai-status"', "</p>")
     lightbox = between(read("gallery.html"), '<div class="lightbox" id="lightbox"',
                        "</figure>\n  </div>")
 
@@ -334,6 +340,7 @@ def main():
         "\n".join(routes),
         "</main>",
         route_links(inline_png(footer)),
+        inline_png(pill),
         lightbox,
         f"<script>\n{hydrate}\n{js}\n{router}</script>",
         "",

@@ -262,12 +262,52 @@ switched off entirely under `prefers-reduced-motion`. Nothing about scale, opaci
 animated. Note that a permanently animating element cannot be clicked by Playwright's default
 stability check, which is why the automated tests force the click and assert the pause separately.
 
+### The launcher's motion
+
+The pill **swims**: a slow horizontal drift from the left margin to the right and
+back, 26s each way, with a 3.4s vertical bob over the top of it. Those are two
+speeds on one property, and one element cannot run two transform animations, so
+the outer anchor drifts and the inner `.ai-pill__body` bobs. Do not collapse them
+back into one element.
+
+`--ai-travel` is set at runtime by `natfish-ai.js` from the measured pill and
+viewport widths, and re-measured on resize and on language change (the Spanish
+label is wider). Hard-coding it would either cut the swim short or sail the pill
+past the right edge and create horizontal overflow.
+
+On click the pill **docks**: it glides to the right margin over 0.55s, stays
+there for the rest of the visit, and only then does the panel open. The
+sequencing matters and was wrong once: on the very first click the embed is
+still loading, and the code opened as soon as the widget was ready rather than
+waiting for the glide as well, so the panel appeared while the pill was still
+10px short of the margin. Both conditions are now required. The completion is
+tied to `transitionend`, not to a duration that merely matches the transition,
+because the two `requestAnimationFrame` calls that make the glide smooth push
+its real end past any hard-coded 550ms.
+
+Under `prefers-reduced-motion` there is no swim and no bob: the pill simply
+rests at the right margin, which is where a docked pill ends up anyway.
+
+Both motions pause on hover and on keyboard focus. Note that Playwright will not
+click a permanently animating element, so the automated tests force the click and
+assert the pause separately.
+
 ### What the page must never claim
 
 The copy is deliberate on this. NATFISH AI is described as unable to confirm prices or live inventory,
 accept payment, finalise an order or replace a team member. Online order requests are described only
 as **coming soon**, and the page says in as many words that the feature is not active. No order
 system, webhook, automation or form was built.
+
+### The preview bundle carries the launcher separately
+
+`tools/bundle-preview.py` lifts the shared footer with
+`between(index, '<footer class="site-footer">', "</footer>")`, and the pill is
+rendered **after** `</footer>`. The first build of the artifact preview therefore
+shipped the pill's CSS and its script with no markup at all: present in three
+files, invisible on screen, and easy to mistake for a styling problem. The
+bundler now lifts the pill and its live region explicitly. If the launcher ever
+moves in the shell, that slice has to move with it.
 
 ### Not created, and why
 
@@ -284,6 +324,44 @@ system, webhook, automation or form was built.
 in `openingHoursSpecification` in the Organization schema. Worth remembering that the fabricated hours
 on the V1 storefront image were one of the reasons that image had to be destroyed; these came from the
 client.
+
+---
+
+## 3d. Alignment and contrast
+
+**One alignment rule, applied everywhere.** A section head is **centred** when the
+content directly beneath it is a symmetric full-width set: a card grid, a step
+sequence, a product catalogue, the gallery. It stays **left** when it introduces a
+split layout (text beside an image) or a column of reading copy. Centred text
+over an asymmetric block reads as a mistake, and centred body prose is genuinely
+harder to read because the eye loses the start of each line.
+
+Thirteen heads moved to centred under that rule. Where a block sits under a
+centred head it is centred as a block (`margin-inline: auto`) while its text
+stays left-aligned - `.ai-privacy` and `.container--narrow .ai-note`.
+
+Page heroes stay left-aligned on purpose: the giant NATFISH watermark occupies
+the right of that band, so left-aligned copy is what balances it.
+
+**Three contrast defects, all found by measuring rather than by eye.** Each came
+from a rule written for one background leaking onto another:
+
+| Where | Was | Cause |
+|---|---|---|
+| The main CTA button on nearly every page | 2.98:1 | `.section--navy a` set turquoise for links on navy, and the button is an anchor, so turquoise text landed on its own teal fill. Now `a:not(.btn)`. |
+| `.btn--ghost` on the Responsible Fisheries sand band | 1.07:1 | The ghost is the light-on-dark variant. It now defaults to dark-on-light, with the white treatment scoped to the grounds that are actually dark. |
+| `.flow__num` on About | 2.87:1 | Turquoise-500 on white at 11px. Two steps darker. |
+
+The same leak had already produced two visible bugs earlier in this work: a
+`.btn--ghost` rendering white-on-white under the NATFISH AI hero, and
+`.pillar p` rendering white-on-sand across the four capability cards, because
+`.pillar` hard-coded `--ink-onDark`. Both components are now background-aware.
+
+`tools/` has no contrast checker of its own; the audit lives in the QA scratch
+scripts. If it is ever rebuilt, two things must be right or it reports dozens of
+phantom failures: it has to composite translucent backgrounds down the ancestor
+stack, and it has to resolve gradient backgrounds (every dark band here is a
+navy gradient, so the darkest navy token is the correct conservative stand-in).
 
 ---
 

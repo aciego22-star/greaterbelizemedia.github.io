@@ -34,7 +34,8 @@
     requested: false,   /* the embed script has been asked for */
     ready: false,       /* chatbase has answered "initialized" */
     failed: false,      /* the script errored, or there is no id */
-    pending: false      /* a click is waiting on the widget right now */
+    pending: false,     /* a click is waiting on the widget right now */
+    docked: false       /* the pill has finished gliding to the right margin */
   };
 
   var statusEl = null;
@@ -129,12 +130,104 @@
     }
   }
 
+  /* ------------------------------------------------- swim and docking -- */
+
+  /* How far the pill may drift before its right edge reaches the right margin.
+     Measured rather than guessed: the label changes width between English and
+     Spanish and the margins change at the small breakpoint, so a hard-coded
+     distance would either cut the swim short or push the pill off screen and
+     create horizontal overflow. */
+  function measureTravel(pill) {
+    var styles = window.getComputedStyle(pill);
+    var left = parseFloat(styles.left) || 0;
+    /* getBoundingClientRect reflects the current transform, so the untransformed
+       width comes from offsetWidth. */
+    var width = pill.offsetWidth;
+    var travel = document.documentElement.clientWidth - width - left * 2;
+    pill.style.setProperty("--ai-travel", Math.max(0, Math.round(travel)) + "px");
+  }
+
+  function watchTravel(pill) {
+    measureTravel(pill);
+    var pending = null;
+    window.addEventListener("resize", function () {
+      window.clearTimeout(pending);
+      pending = window.setTimeout(function () { measureTravel(pill); }, 120);
+    });
+    /* The label is re-rendered when the language changes, which changes the
+       pill's width and therefore its travel. */
+    document.addEventListener("natfish:languagechange", function () {
+      window.setTimeout(function () { measureTravel(pill); }, 0);
+    });
+  }
+
+  /* Glide to the right margin and stay there. Freezing the current transform
+     first is what makes it a glide rather than a jump: without it the element
+     would snap from wherever the swim had reached to the docked position the
+     instant the animation is removed. */
+  function dock(pill, done) {
+    if (pill.classList.contains("is-docked")) {
+      if (done) done();
+      return;
+    }
+    measureTravel(pill);
+    var current = window.getComputedStyle(pill).transform;
+    pill.style.transform = current === "none" ? "translateX(0)" : current;
+    pill.classList.add("is-docking");
+
+    /* Two frames: one for the frozen transform to be committed, one for the
+       transition to have something to animate from. */
+    window.requestAnimationFrame(function () {
+      window.requestAnimationFrame(function () {
+        pill.style.transform = "";
+        pill.classList.add("is-docked");
+        if (done) whenSettled(pill, done);
+      });
+    });
+  }
+
+  /* Wait for the glide to actually finish rather than for a duration that
+     matches it. The two frames above push the transition's end past any
+     hard-coded 550ms, and the panel opening while the pill is still 10px short
+     of the margin is exactly the seam this is meant to avoid. The timeout is
+     only a safety net, for reduced motion and for any browser that does not
+     fire the event. */
+  function whenSettled(pill, done) {
+    var finished = false;
+    var finish = function () {
+      if (finished) return;
+      finished = true;
+      pill.removeEventListener("transitionend", onEnd);
+      done();
+    };
+    var onEnd = function (event) {
+      if (event.propertyName === "transform" && event.target === pill) finish();
+    };
+    pill.addEventListener("transitionend", onEnd);
+    window.setTimeout(finish, 900);
+  }
+
   /* ---------------------------------------------------------- triggers -- */
 
   /* Every trigger is a real link whose href is a sensible destination if the
      widget never arrives. That is why none of them is href="#": with
      JavaScript off, or Chatbase down, the visitor still gets somewhere useful
      instead of a dead control. */
+  /* Any trigger anywhere on the page docks the pill, so the launcher is always
+     at rest beside the panel that just opened. */
+  function dockPill(done) {
+    var pill = document.querySelector(".ai-pill");
+    if (!pill) {
+      state.docked = true;
+      if (done) done();
+      return;
+    }
+    dock(pill, function () {
+      state.docked = true;
+      if (done) done();
+    });
+  }
+
   function onTrigger(event) {
     var el = event.currentTarget;
 
@@ -145,10 +238,12 @@
 
     if (state.ready) {
       event.preventDefault();
-      if (!openWidget()) {
-        state.failed = true;
-        window.location.href = el.getAttribute("href");
-      }
+      dockPill(function () {
+        if (!openWidget()) {
+          state.failed = true;
+          window.location.href = el.getAttribute("href");
+        }
+      });
       return;
     }
 
@@ -163,12 +258,17 @@
     state.pending = true;
     el.setAttribute("aria-busy", "true");
     announce("Opening NATFISH AI.");
+    dockPill();
     load();
 
     var waited = 0;
     var wait = window.setInterval(function () {
       waited += 200;
-      if (state.ready && openWidget()) {
+      /* Both conditions, not either: the embed has to be ready AND the pill
+         has to have arrived. Waiting on readiness alone opened the panel while
+         the pill was still gliding, which is the seam this whole sequence
+         exists to hide. */
+      if (state.ready && state.docked && openWidget()) {
         window.clearInterval(wait);
         state.pending = false;
         el.removeAttribute("aria-busy");
@@ -190,6 +290,9 @@
     if (!triggers.length) return;
 
     statusEl = document.getElementById("ai-status");
+
+    var pill = document.querySelector(".ai-pill");
+    if (pill) watchTravel(pill);
 
     Array.prototype.forEach.call(triggers, function (el) {
       el.addEventListener("click", onTrigger);

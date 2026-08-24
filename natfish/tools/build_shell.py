@@ -593,19 +593,25 @@ def ai_pill():
     A real link, not a button with href="#". Its href is the NATFISH AI page,
     so the control still does something useful with JavaScript off, with the
     Chatbase embed blocked, or before the agent id has been supplied. The
-    script upgrades it in place: once the widget is ready a click opens the
-    chat panel instead of navigating.
+    script upgrades it in place: once the widget is ready a click docks it to
+    the right edge and opens the chat panel instead of navigating.
 
     It lives in the footer markup rather than being injected by script, so it
     is in the document from first paint and cannot cause a layout shift.
+
+    The nested __body span exists for one reason: the pill drifts horizontally
+    and bobs vertically at different speeds, and two animations cannot share
+    the transform property. The outer element swims, the inner one bobs.
     """
     return f"""
   <a class="ai-pill" href="{AI_PAGE}" data-ai-open
      aria-label="Open NATFISH AI chat">
-    <span class="ai-pill__badge" aria-hidden="true">
-      <img src="assets/img/natfish-icon.png" width="180" height="180" alt="" loading="lazy" decoding="async">
+    <span class="ai-pill__body">
+      <span class="ai-pill__badge" aria-hidden="true">
+        <img src="assets/img/natfish-icon.png" width="180" height="180" alt="" loading="lazy" decoding="async">
+      </span>
+      <span class="ai-pill__label">Ask NATFISH AI</span>
     </span>
-    <span class="ai-pill__label">Ask NATFISH AI</span>
   </a>
   <p class="visually-hidden" id="ai-status" role="status" aria-live="polite"></p>
 """

@@ -334,7 +334,7 @@ def home():
 
     <section class="section section--sand" aria-labelledby="home-process-h">
       <div class="container">
-        <div class="section-head section-head--rule reveal">
+        <div class="section-head section-head--rule reveal section-head--center">
           {RULE_WAVE}
           <span class="eyebrow">Inside the facility</span>
           <h2 id="home-process-h">Care from processing to cold storage</h2>
@@ -352,7 +352,7 @@ def home():
 
     <section class="section" aria-labelledby="home-seafood-h">
       <div class="container">
-        <div class="section-head section-head--rule reveal">
+        <div class="section-head section-head--rule reveal section-head--center">
           {RULE_WAVE}
           <span class="eyebrow">Seafood &amp; Services</span>
           <h2 id="home-seafood-h">Six products from Belizean waters</h2>
@@ -544,7 +544,7 @@ def about():
 
     <section class="section section--sand" aria-labelledby="about-model-h">
       <div class="container">
-        <div class="section-head reveal">
+        <div class="section-head reveal section-head--center">
           <span class="eyebrow">The co-operative model</span>
           <h2 id="about-model-h">Members own it, and members govern it</h2>
           <p class="lede">
@@ -607,7 +607,7 @@ def about():
 
     <section class="section section--sand" aria-labelledby="about-mile-h">
       <div class="container container--narrow">
-        <div class="section-head reveal">
+        <div class="section-head reveal section-head--center">
           <span class="eyebrow">Milestones</span>
           <h2 id="about-mile-h">Milestones</h2>
           <p class="lede">
@@ -801,7 +801,7 @@ def seafood_services():
 
     <section class="section" aria-labelledby="sf-catalogue-h">
       <div class="container">
-        <div class="section-head section-head--rule reveal">
+        <div class="section-head section-head--rule reveal section-head--center">
           {RULE_WAVE}
           <span class="eyebrow">Product catalogue</span>
           <h2 id="sf-catalogue-h">Frozen seafood from Belizean waters</h2>
@@ -1111,7 +1111,7 @@ def news():
 
     <section class="section" aria-labelledby="news-more-h">
       <div class="container">
-        <div class="section-head reveal">
+        <div class="section-head reveal section-head--center">
           <span class="eyebrow">More updates</span>
           <h2 id="news-more-h">Also happening</h2>
         </div>
@@ -1311,7 +1311,7 @@ def gallery():
         + f"""
     <section class="section" aria-labelledby="gal-photos-h">
       <div class="container">
-        <div class="section-head section-head--rule reveal">
+        <div class="section-head section-head--rule reveal section-head--center">
           {RULE_WAVE}
           <span class="eyebrow">Inside the facility</span>
           <h2 id="gal-photos-h">Photographs supplied by NATFISH</h2>
@@ -1324,7 +1324,7 @@ def gallery():
 
     <section class="section section--sand" aria-labelledby="gal-products-h">
       <div class="container">
-        <div class="section-head section-head--rule reveal">
+        <div class="section-head section-head--rule reveal section-head--center">
           {RULE_WAVE}
           <span class="eyebrow">Product and packaging</span>
           <h2 id="gal-products-h">How the product is packed</h2>
@@ -1539,7 +1539,7 @@ def natfish_ai():
 
     <section class="section section--sand" aria-labelledby="ai-can-h">
       <div class="container">
-        <div class="section-head section-head--rule reveal">
+        <div class="section-head section-head--rule reveal section-head--center">
           {RULE_WAVE}
           <span class="eyebrow">What it covers</span>
           <h2 id="ai-can-h">What can NATFISH AI help with?</h2>
@@ -1559,7 +1559,7 @@ def natfish_ai():
 
     <section class="section" aria-labelledby="ai-products-h">
       <div class="container container--narrow">
-        <div class="section-head reveal">
+        <div class="section-head reveal section-head--center">
           <span class="eyebrow">Verified products</span>
           <h2 id="ai-products-h">The seafood NATFISH AI can tell you about</h2>
           <p class="lede">
@@ -1580,7 +1580,7 @@ def natfish_ai():
 
     <section class="section section--navy" aria-labelledby="ai-soon-h">
       <div class="container container--narrow">
-        <div class="section-head reveal">
+        <div class="section-head reveal section-head--center">
           <span class="eyebrow">The next stage</span>
           <h2 id="ai-soon-h">Online order requests are coming soon</h2>
           <p class="lede">
@@ -1604,7 +1604,7 @@ def natfish_ai():
 
     <section class="section" aria-labelledby="ai-how-h">
       <div class="container">
-        <div class="section-head section-head--rule reveal">
+        <div class="section-head section-head--rule reveal section-head--center">
           {RULE_WAVE}
           <span class="eyebrow">How it works</span>
           <h2 id="ai-how-h">Three steps</h2>
@@ -1617,7 +1617,7 @@ def natfish_ai():
 
     <section class="section section--sand" aria-labelledby="ai-privacy-h">
       <div class="container container--narrow">
-        <div class="section-head reveal">
+        <div class="section-head reveal section-head--center">
           <span class="eyebrow">Using it well</span>
           <h2 id="ai-privacy-h">Privacy and responsible use</h2>
         </div>
