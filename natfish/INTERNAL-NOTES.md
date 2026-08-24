@@ -305,16 +305,20 @@ stability check, which is why the automated tests force the click and assert the
 
 The pill **swims in a wrap**: a slow, linear, one-directional drift from off
 screen left, across the foot of the viewport, off screen right, and around
-again - it never reverses. The loop's endpoints are computed so that the
+again - it never reverses. It cruises at **28px/s** with a **14px** rise and
+fall; both were raised from a faster drift and a 6px bob at the client's
+request, because against a slow crossing a shallow bob is invisible and the
+rise and fall is what reads as swimming rather than sliding. The loop's endpoints are computed so that the
 instant its tail clears the right edge its nose is at the left edge, so it
 leaves and re-enters in the same moment, with no off-screen dwell. A 3.4s
 vertical bob rides on top; two speeds cannot share one transform, so the outer
 anchor drifts and the inner `.ai-pill__body` bobs. Do not collapse them back
 into one element.
 
-The drift runs at a constant 47px/s on every screen: the loop's duration is
+The drift runs at a constant 28px/s on every screen: the loop's duration is
 scaled to its measured distance, so the fish crosses a phone at the same
-unhurried pace as a desktop instead of sprinting on wide screens. All the
+unhurried pace as a desktop instead of sprinting on wide screens. That is
+about 20 seconds across a phone and about a minute across a wide desktop. All the
 geometry (`--ai-out-left`, `--ai-out-right`, `--ai-travel`, `--ai-dur`,
 `--ai-delay`) is measured by `natfish-ai.js` and re-measured on resize and on
 language change (the Spanish label is wider); on a re-measure the pill's
@@ -344,6 +348,69 @@ then swims. After a pointer close it swims immediately.
 Under `prefers-reduced-motion` there is no swim and no bob: the pill rests at
 the right margin, docking is a no-op, and closing the panel leaves it resting
 where it already was.
+
+### The freeze after the first interaction, and its real cause
+
+**Symptom reported from a phone: after opening NATFISH AI once, the whole site
+stopped responding to taps.** It was reproduced, and it was not the chat - it
+was one missing CSS rule.
+
+`.ai-panel` sets `display: flex`. The browser's own `[hidden]` rule is
+`display: none` at *user-agent* level, so **any** author rule that sets
+`display` on the same element beats it. `panel.hidden = true` therefore did
+nothing at all: once a visitor had opened the assistant even once, the closed
+panel stayed laid out at 88% of the height of a phone screen - invisible at
+`opacity: 0`, and swallowing every tap over that area for the rest of the
+visit. The page was dead from the first interaction onward, exactly as
+reported.
+
+The fix is one rule, and it is the first thing in the panel's CSS:
+
+```css
+.ai-panel[hidden],
+.ai-backdrop[hidden] { display: none; }
+```
+
+The same trap is why `.ai-backdrop` deliberately sets no `display` of its own.
+`escape.js` now asserts the closed panel's rendered area is zero and that a tap
+at the centre of the page reaches the page, so this cannot come back quietly.
+Nothing else in the site uses the `hidden` property - the lightbox toggles a
+class - so nothing else was affected.
+
+**Three softer failures were found alongside it, and all three are fixed.** Any
+one of them would have made the panel feel like a trap even with `hidden`
+working:
+
+1. **Nothing caught a tap beside the sheet.** A visitor's first instinct on a
+   phone is to tap outside a sheet to dismiss it, and that did nothing. There
+   is now a real `.ai-backdrop` - dimmed below 560px, transparent above it,
+   where the panel is a corner card rather than a takeover.
+2. **Escape stopped working the moment the visitor tapped into the chat.** The
+   key event then belongs to the cross-origin Chatbase iframe and the host page
+   never sees it - and tapping into the chat is the whole point of opening it.
+   Escape is now a convenience, not the way out.
+3. **`100vh` on a phone is the *large* viewport**, ignoring the browser's own
+   toolbars, so the top of the sheet - and with it the only close control -
+   could sit off the visible screen. Heights now use `dvh` with a `vh`
+   fallback, the close control is a full 44px, and the entire title bar closes
+   the panel.
+
+One related detail: closing by **tap** no longer sends focus back to the
+launcher. A focused pill deliberately holds still, and on a touch screen
+nothing ever moves focus away again, so the fish would have stopped swimming
+for the rest of the visit. Keyboard closes still restore focus, which is what
+a keyboard user needs.
+
+### Where the launcher is and is not
+
+Two deliberate absences, both verified rather than assumed:
+
+- **While the mobile menu is open** the pill is still there and still
+  swimming - the menu is a full-screen overlay inside the header (z-index 100)
+  and simply paints over the pill (z-index 60). It reappears the instant the
+  menu closes. A floating chat button sitting on top of a full-screen menu
+  would be the odd choice, so this stays as it is.
+- **On natfish-ai.html** there is no pill at all, by request - see below.
 
 ### No launcher on the NATFISH AI page
 
@@ -452,6 +519,23 @@ moves in the shell, that slice has to move with it.
   anywhere in the site, and there never has been. So "preserve the existing analytics implementation"
   has nothing to preserve here, and none was invented to satisfy it. If order-journey measurement is
   wanted, say so and it can be added deliberately.
+
+### Product images in the order list
+
+Each row on the NATFISH AI page carries a thumbnail. **Three of the six
+products have a photograph that is truthfully theirs** - Frozen Spiny Lobster
+Tails, Frozen Whole Raw Lobster, Frozen Queen Conch - and those three are the
+only ones that get one. The other three carry the species mark on navy, the
+same substitution the product cards on Seafood & Services already make, so a
+visitor moving between the two pages sees one consistent treatment rather than
+a gap. No borrowed or approximate image was used to fill a slot.
+
+That row also had a real layout bug, visible as a tall empty band inside each
+card on a phone: `.order-item__name` carried `flex: 1 1 16rem`, and when the
+row becomes a **column** below 560px a flex-basis is read along the vertical
+axis - so 16rem became a 256px minimum *height*. It is reset to `flex: 0 0
+auto` in the stacked layout. Any flex shorthand carrying a horizontal basis
+needs the same treatment when its container changes direction.
 
 ### Two contact-page copy decisions, per the client
 

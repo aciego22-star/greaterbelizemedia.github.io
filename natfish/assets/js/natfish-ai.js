@@ -47,6 +47,7 @@
   };
 
   var panel = null;
+  var backdrop = null;
   var statusEl = null;
 
   /* ---------------------------------------------------------- helpers -- */
@@ -108,6 +109,16 @@
   function buildPanel() {
     if (panel) return panel;
 
+    /* A real backdrop, not decoration. On a phone the panel covers most of the
+       screen, and a visitor's first instinct is to tap beside it to dismiss.
+       Without something to catch that tap the sheet is a trap - see the long
+       note above closePanel. */
+    backdrop = document.createElement("div");
+    backdrop.className = "ai-backdrop";
+    backdrop.hidden = true;
+    backdrop.addEventListener("click", function () { closePanel(false); });
+    document.body.appendChild(backdrop);
+
     panel = document.createElement("div");
     panel.className = "ai-panel";
     panel.id = "ai-panel";
@@ -132,7 +143,22 @@
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
       'stroke-width="2.2" stroke-linecap="round" aria-hidden="true" ' +
       'focusable="false"><path d="M6 6l12 12M18 6L6 18"/></svg>';
-    close.addEventListener("click", function () { closePanel(true); });
+    /* detail === 0 means the button was activated by keyboard rather than by a
+       pointer. Only then is focus sent back to the launcher: doing it after a
+       tap leaves the pill focused, and a focused pill deliberately holds still,
+       so on a touch screen - where nothing ever moves focus away again - the
+       fish would stop swimming for the rest of the visit. */
+    close.addEventListener("click", function (event) {
+      closePanel(event.detail === 0);
+    });
+
+    /* The bar itself closes too. On a phone that turns a 40px target into a
+       full-width one, which matters when it is the way out of a sheet that
+       covers the screen. The button keeps its own handler for the keyboard. */
+    bar.addEventListener("click", function (event) {
+      if (event.target === close || close.contains(event.target)) return;
+      closePanel(false);
+    });
 
     bar.appendChild(title);
     bar.appendChild(close);
@@ -165,10 +191,12 @@
     buildPanel();
     loadPanel();
     panel.hidden = false;
+    backdrop.hidden = false;
     /* One frame between unhiding and the open class so the entrance
        transition has a starting point to animate from. */
     window.requestAnimationFrame(function () {
       panel.classList.add("is-open");
+      backdrop.classList.add("is-open");
     });
     state.open = true;
     document.documentElement.classList.add("ai-panel-open");
@@ -176,15 +204,32 @@
     announce("NATFISH AI is open.");
   }
 
+  /* Closing has to be easy, and it was not.
+
+     The panel is 88% of the height of a phone screen. It began life with two
+     ways out: a 40px X, and the Escape key. Both fail in ordinary use. Escape
+     stops working the moment a visitor taps into the chat, because the key
+     event then belongs to the cross-origin iframe and the host page never sees
+     it - and tapping into the chat is the entire point of opening it. That
+     leaves one small button, on a sheet that hides the site behind it and
+     hides the launcher too, with tapping anywhere else doing nothing at all.
+     The result reads exactly like a frozen page.
+
+     So: a backdrop catches the tap beside the sheet, the close control is a
+     full 44px, and the whole top bar is clickable. */
   function closePanel(restoreFocus) {
     if (!panel || !state.open) return;
     panel.classList.remove("is-open");
+    backdrop.classList.remove("is-open");
     state.open = false;
     document.documentElement.classList.remove("ai-panel-open");
     /* Hidden only after the exit transition, and the iframe is kept: closing
        the panel must not throw away the conversation the visitor is having. */
     window.setTimeout(function () {
-      if (!state.open) panel.hidden = true;
+      if (!state.open) {
+        panel.hidden = true;
+        backdrop.hidden = true;
+      }
     }, 240);
     if (restoreFocus && state.lastTrigger) state.lastTrigger.focus();
     resumeSwim();
@@ -260,8 +305,10 @@
 
   /* Pixels per second of drift. One constant for every screen: the loop's
      duration is scaled to its distance, so the fish crosses a phone and a
-     desktop at the same unhurried pace instead of sprinting on wide screens. */
-  var SWIM_SPEED = 47;
+     desktop at the same unhurried pace instead of sprinting on wide screens.
+     28px/s is a slow cruise - roughly fifty seconds to cross a phone - which
+     is the point: the launcher should be noticed, not chased. */
+  var SWIM_SPEED = 28;
 
   /* The swim is a wrap: fully off screen left, across, fully off screen right,
      and around again, never reversing. Everything is measured rather than

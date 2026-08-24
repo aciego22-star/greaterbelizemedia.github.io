@@ -715,6 +715,25 @@ def order_button(prod, css="btn btn--ai btn--sm", fallback=f"{AI_PAGE}#ai-embed"
     )
 
 
+def order_thumb(prod):
+    """The small square beside a product in the order list.
+
+    Three of the six products have a photograph that is truthfully theirs; the
+    other three have none, and no borrowed or approximate image is used for
+    them. Those carry the species mark on a navy panel instead - the same
+    substitution the product cards on Seafood & Services already make, so a
+    visitor moving between the two pages sees one consistent treatment rather
+    than a gap where a picture should be.
+    """
+    if prod["img"]:
+        return f"""<div class="order-item__media">
+              {picture(prod["img"], "(max-width: 560px) 92vw, 96px", ratio="1 / 1")}
+            </div>"""
+    return f"""<div class="order-item__media order-item__media--mark">
+              {icon(prod["icon"], "order-item__mark")}
+            </div>"""
+
+
 # ==================================================== seafood-services ===
 
 # The six verified products, in the order the client supplied them. Scientific
@@ -1504,6 +1523,7 @@ def natfish_ai():
     )
     products = "\n          ".join(
         f"""<li class="order-item reveal">
+            {order_thumb(prod)}
             <div class="order-item__name">
               <h3>{prod["name"]}</h3>
               <p class="product__sci"><i>{prod["sci"]}</i></p>

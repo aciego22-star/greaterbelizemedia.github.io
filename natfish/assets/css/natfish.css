@@ -3803,7 +3803,7 @@ body.nav-open {
   align-items: center;
   gap: 0.6rem;
   min-width: 0;
-  animation: ai-bob 3.4s ease-in-out infinite alternate;
+  animation: ai-bob 2.9s ease-in-out infinite alternate;
 }
 
 /* Only the shadow deepens on hover. Nothing about the pill's own transform
@@ -3850,9 +3850,13 @@ body.nav-open {
   to   { transform: translateX(var(--ai-out-right)); }
 }
 
+/* The wobble. Amplitude is deliberately larger than it first was: against a
+   slow crossing a 3px rise was invisible, and the rise and fall is what reads
+   as swimming rather than sliding. It is the inner body that moves, because
+   the outer anchor already owns transform for the drift. */
 @keyframes ai-bob {
-  from { transform: translateY(3px); }
-  to   { transform: translateY(-3px); }
+  from { transform: translateY(7px); }
+  to   { transform: translateY(-7px); }
 }
 
 /* Reduced motion: no swim, no bob. The pill simply rests at the right margin,
@@ -4369,8 +4373,44 @@ body.nav-open {
   box-shadow: var(--shadow-md);
 }
 
+/* The product thumbnail. 96px square: large enough to identify a carton of
+   lobster tails at a glance, small enough that six of them stay a list rather
+   than becoming a second product grid. */
+.order-item__media {
+  flex: 0 0 auto;
+  width: 96px;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: var(--radius-md, 12px);
+  background: var(--sand-200);
+}
+
+.order-item__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Where no truthful photograph exists, the species mark on navy - the same
+   substitution the product cards make. */
+.order-item__media--mark {
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(120% 120% at 30% 20%, var(--navy-800) 0%, var(--navy-900) 70%);
+}
+
+.order-item__mark {
+  width: 52%;
+  height: auto;
+  color: var(--turq-300);
+}
+
 .order-item__name {
   min-width: 0;
+  /* flex-basis only along the row axis. When the row becomes a column below
+     560px this must be reset, or a 16rem basis is read as a 256px HEIGHT and
+     each item grows a tall empty band between its name and its button. */
   flex: 1 1 16rem;
 }
 
@@ -4399,6 +4439,24 @@ body.nav-open {
        spans it. */
     flex-direction: column;
     align-items: stretch;
+  }
+
+  /* The main axis is now vertical, so every flex shorthand above that carried
+     a horizontal basis has to be neutralised. Leaving .order-item__name at
+     "1 1 16rem" here is what put a 256px empty band inside each card. */
+  .order-item__name {
+    flex: 0 0 auto;
+  }
+
+  .order-item__media {
+    width: 100%;
+    /* A wide crop rather than a square: full width at 1:1 is a huge block of
+       carton, and the shape of the packaging reads better letterboxed. */
+    aspect-ratio: 16 / 9;
+  }
+
+  .order-item__mark {
+    width: clamp(64px, 22%, 96px);
   }
 
   .order-item .btn {
@@ -4616,6 +4674,51 @@ body.nav-open {
    Only the chrome is ours: the conversation inside is Chatbase's iframe at
    Chatbase's URL, untouched. */
 
+/* Catches the tap beside the sheet. Without it the panel is a trap on a
+   phone: it covers the page, the launcher is hidden behind it, and Escape
+   stops working as soon as the visitor taps into the cross-origin chat. */
+.ai-backdrop {
+  position: fixed;
+  z-index: 149;                     /* directly beneath the panel */
+  inset: 0;
+  background: rgba(3, 25, 42, 0.38);
+  opacity: 0;
+  transition: opacity 0.22s ease;
+}
+
+.ai-backdrop.is-open {
+  opacity: 1;
+}
+
+/* Above the small breakpoint the panel is a corner card, not a takeover, so a
+   dimmed page would overstate it. The element stays - it is still what makes a
+   click beside the panel close it - but it is invisible. */
+@media (min-width: 561px) {
+  .ai-backdrop {
+    background: transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ai-backdrop {
+    transition: none;
+  }
+}
+
+/* THE hidden ATTRIBUTE NEEDS HELP HERE, and leaving it out was a real bug.
+   The browser's own [hidden] rule is display:none at UA level, so ANY author
+   rule that sets display on the same element beats it. .ai-panel sets
+   display:flex, so panel.hidden = true had no effect at all: after the first
+   time a visitor opened the assistant, the closed panel stayed laid out at
+   88% of the height of a phone screen - invisible at opacity 0, and swallowing
+   every tap over that area. The page looked frozen from the first interaction
+   onward. The same trap is why .ai-backdrop deliberately sets no display
+   property of its own. */
+.ai-panel[hidden],
+.ai-backdrop[hidden] {
+  display: none;
+}
+
 .ai-panel {
   position: fixed;
   /* Above the sticky header (100) so the panel is never clipped by it, and
@@ -4625,7 +4728,13 @@ body.nav-open {
   right: max(1rem, env(safe-area-inset-right));
   bottom: calc(max(1rem, env(safe-area-inset-bottom)) + 76px);
   width: min(420px, calc(100vw - 2rem));
+  /* dvh, with vh as the fallback for browsers without it. On a phone 100vh is
+     the LARGE viewport - it ignores the browser's own toolbars - so sizing
+     against it can push the top of the sheet, and with it the close control,
+     off the visible screen. That is how the only way out of the panel
+     disappears. */
   height: min(700px, calc(100vh - 8rem));
+  height: min(700px, calc(100dvh - 8rem));
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -4643,12 +4752,15 @@ body.nav-open {
   transform: none;
 }
 
+/* The whole bar is a close target, which on a phone turns a 44px button into
+   a full-width one. */
 .ai-panel__bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
-  padding: 0.7rem 0.7rem 0.7rem 1.1rem;
+  padding: 0.55rem 0.55rem 0.55rem 1.1rem;
+  cursor: pointer;
   background: linear-gradient(135deg, var(--navy-900) 0%, var(--teal-700) 100%);
   color: var(--white);
   flex-shrink: 0;
@@ -4663,8 +4775,8 @@ body.nav-open {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 44px;                      /* the minimum target, not a pixel under */
+  height: 44px;
   padding: 0;
   border: 0;
   border-radius: 50%;
@@ -4706,7 +4818,12 @@ body.nav-open {
     left: 0;
     bottom: 0;
     width: auto;
-    height: min(88vh, 100vh - 3rem);
+    /* Same reasoning as above: dvh tracks the visible viewport as the
+       browser's toolbars come and go, so the close bar stays reachable. The
+       vh line is the fallback, and is deliberately the more conservative of
+       the two. */
+    height: min(82vh, 100vh - 4rem);
+    height: min(82dvh, 100dvh - 4rem);
     border-radius: var(--radius-lg) var(--radius-lg) 0 0;
     border-inline-width: 0;
     border-block-end-width: 0;
