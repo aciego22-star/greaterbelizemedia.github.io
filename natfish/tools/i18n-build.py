@@ -22,11 +22,24 @@ spec = importlib.util.spec_from_file_location(
 extract = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(extract)
 
-# Strings the season script builds at runtime rather than reading from markup.
+# Strings the scripts build at runtime rather than reading from markup. The
+# extractor only sees the built HTML, so anything a script creates after load
+# has to be listed here or it ships untranslated.
 RUNTIME = [
+    # natfish-seasons.js
     "Within the standard regulatory season",
     "Standard closed period",
     "Subject to national quota and current Fisheries notices",
+    # natfish-ai.js: the chrome around the Chatbase panel, which is built on
+    # first open and therefore exists in no page.
+    "Close NATFISH AI",
+    "NATFISH AI chat",
+    "NATFISH AI is open.",
+    # ... and the note shown in the artifact preview, where the embed's host
+    # is blocked by the artifact CSP.
+    "NATFISH AI is live on the website itself.",
+    "This shareable preview is a single file and cannot load the chat window. "
+    "Open the deployed site to talk to NATFISH AI.",
 ]
 
 

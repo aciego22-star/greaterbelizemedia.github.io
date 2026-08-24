@@ -19,7 +19,7 @@ from build_shell import (
     RECREATION_NOTE, SHORT, TEL2_DISPLAY, TEL2_HREF, TEL_DISPLAY, TEL_HREF,
     VIDEO_ID, VIDEO_SOURCE, VIDEO_TITLE, WHATSAPP, SRC_BELTRAIDE,
     SRC_FISHERIES_DEPT, SRC_FISHERYPROGRESS, SRC_FISHSOURCE, SRC_FISHWISE,
-    HOURS, RULE_WAVE, contact_strip, cta_band, footer, head, header, hero_picture,
+    AI_PAGE, HOURS, RULE_WAVE, contact_strip, cta_band, footer, head, header, hero_picture,
     hero_preload, identity_ribbon, logo_full, page_hero, picture,
 )
 
@@ -700,10 +700,16 @@ def ai_button(label, fallback, css="btn btn--ai", product=None, aria=None):
             f'{ICON_CHAT} {label}</a>')
 
 
-def order_button(prod, css="btn btn--ai btn--sm"):
-    """The per-product order action, with a product-specific accessible name."""
+def order_button(prod, css="btn btn--ai btn--sm", fallback=f"{AI_PAGE}#ai-embed"):
+    """The per-product order action, with a product-specific accessible name.
+
+    The fallback matters: if the script never runs this is an ordinary link,
+    and it has to land somewhere the visitor can actually start an order. From
+    another page that is the AI page's own embed; on the AI page itself the
+    caller passes the in-page anchor.
+    """
     return ai_button(
-        "Order with NATFISH AI", "natfish-ai.html#approved-products",
+        "Order with NATFISH AI", fallback,
         css=css, product=prod["name"],
         aria=f'Start an order for {prod["name"]} with NATFISH AI',
     )
@@ -1502,7 +1508,7 @@ def natfish_ai():
               <h3>{prod["name"]}</h3>
               <p class="product__sci"><i>{prod["sci"]}</i></p>
             </div>
-            {order_button(prod)}
+            {order_button(prod, fallback="#ai-embed")}
           </li>"""
         for prod in CATALOGUE
     )
@@ -1525,12 +1531,39 @@ def natfish_ai():
             "assistance.",
             "NATFISH AI",
             actions=(
-                ai_button("Start an order with NATFISH AI", "contact.html")
+                ai_button("Start an order with NATFISH AI", "#ai-embed")
                 + '<a class="arrow-link" href="#approved-products">View approved seafood</a>'
             ),
         )
         + f"""
-    <section class="section" aria-labelledby="ai-can-h">
+    <section class="section" aria-labelledby="ai-chat-h">
+      <div class="container container--narrow">
+        <div class="section-head section-head--center reveal">
+          <span class="eyebrow">The assistant</span>
+          <h2 id="ai-chat-h">Chat with NATFISH AI</h2>
+          <p class="lede">
+            Ask a question or start an order request right here. Everything
+            below explains what NATFISH AI can do and which seafood you can
+            order.
+          </p>
+        </div>
+
+        <!-- The client's Chatbase iframe embed, in the page it belongs on.
+             The script gives it its src when it scrolls into view, so a
+             visitor who never reaches it never sends a request to
+             chatbase.co, and every trigger on this page scrolls here rather
+             than opening a second copy of the same conversation. -->
+        <div class="ai-embed" id="ai-embed" aria-label="NATFISH AI chat">
+          <div class="ai-embed__frame"></div>
+        </div>
+        <p class="ai-embed__note">
+          NATFISH AI answers in English or Spanish. A NATFISH team member
+          confirms every order.
+        </p>
+      </div>
+    </section>
+
+    <section class="section section--sand" aria-labelledby="ai-can-h">
       <div class="container">
         <div class="section-head section-head--rule section-head--center reveal">
           {RULE_WAVE}
@@ -1544,7 +1577,7 @@ def natfish_ai():
       </div>
     </section>
 
-    <section class="section section--sand" aria-labelledby="ai-how-h">
+    <section class="section" aria-labelledby="ai-how-h">
       <div class="container">
         <div class="section-head section-head--rule section-head--center reveal">
           {RULE_WAVE}
@@ -1562,7 +1595,7 @@ def natfish_ai():
       </div>
     </section>
 
-    <section class="section" id="approved-products" aria-labelledby="ai-products-h">
+    <section class="section section--sand" id="approved-products" aria-labelledby="ai-products-h">
       <div class="container container--narrow">
         <div class="section-head section-head--center reveal">
           <span class="eyebrow">Approved Products</span>
@@ -1579,7 +1612,7 @@ def natfish_ai():
         </ul>
 
         <p class="order-list__cta reveal">
-          {ai_button("Start a seafood order", "contact.html")}
+          {ai_button("Start a seafood order", "#ai-embed")}
         </p>
 
         <p class="note reveal" style="text-align:center">
@@ -1589,7 +1622,7 @@ def natfish_ai():
       </div>
     </section>
 
-    <section class="section section--sand" aria-labelledby="ai-privacy-h">
+    <section class="section" aria-labelledby="ai-privacy-h">
       <div class="container container--narrow">
         <div class="section-head section-head--center reveal">
           <span class="eyebrow">Using it well</span>
@@ -1623,7 +1656,7 @@ def natfish_ai():
             "Start a seafood order request with NATFISH AI, or reach the team "
             "directly whenever you would rather speak with someone.",
             [
-                ai_button("Start an order with NATFISH AI", "contact.html"),
+                ai_button("Start an order with NATFISH AI", "#ai-embed"),
                 '<a class="btn btn--ghost" href="contact.html">Contact the NATFISH team</a>',
             ],
         )

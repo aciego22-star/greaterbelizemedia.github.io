@@ -38,7 +38,7 @@ Nothing in this list is stated as fact on a public page.
 | 2 | **Which products are currently sellable** | All six are listed as the catalogue. Confirm none has been discontinued. |
 | 3 | Whether NATFISH handles Nassau grouper, whelks, stone crab or shrimp | Listed on Seafood Seasons as *national regulatory seasons only*, never as NATFISH products. |
 | 4 | Spanish review | See §6. |
-| 5 | **The NATFISH AI activation gate** | The public copy now presents NATFISH AI as an active order-request channel. That is only allowed once the intended embed has been supplied **and** the Chatbase order flow is separately confirmed ready. `AGENT_ID` is still blank and no such confirmation exists, so **the site must not go public yet**. See §3c. |
+| 5 | **The NATFISH AI activation gate** | Half met. The intended embed **has** been supplied and is wired in. Still outstanding: separate confirmation that the Chatbase order flow itself is ready to conduct an order conversation. Nothing in this repository can establish that. **Confirm before the site goes public.** See §3c. |
 | 6 | **A live order test** | None was run. No real order, email, webhook or lead was sent to NATFISH during testing. Every automated test that exercises the assistant stubs Chatbase locally; nothing left the machine. Authorise a test explicitly when you want one. |
 
 ### Deliberately removed from the supplied material
@@ -211,29 +211,63 @@ least seven seconds.
 Nine pages now: `natfish-ai.html` joined the set, immediately before Contact in the nav, the mobile
 drawer and the footer.
 
-### The values still outstanding
+### The embed the client supplied
 
-`assets/js/natfish-ai.js`, near the top:
+The client supplied Chatbase's **iframe** embed, not the script/bubble one:
 
-```js
-var AGENT_ID = "";               /* TODO: REPLACE WITH THE NATFISH CHATBASE AGENT ID */
-var PRODUCT_CONTEXT_METHOD = ""; /* TODO: SUPPORTED CHATBASE CONTEXT CALL, IF ANY */
+```html
+<iframe src="https://www.chatbase.co/chatbot-iframe/eqR-QbTH69GbLMJsTuw8I"
+        width="100%" style="height: 100%; min-height: 700px"
+        frameborder="0" allow="microphone"></iframe>
 ```
 
-`AGENT_ID` is the only one the site needs to function; `PRODUCT_CONTEXT_METHOD` is optional and is
-described under "Passing the chosen product to the agent" below.
+**Those are two different products and the difference drove a rewrite of
+`assets/js/natfish-ai.js`.** The script embed ships its own floating bubble and
+a JavaScript API (`chatbase("open")`); the iframe embed ships neither. There is
+no way to open, close, query or talk to an iframe embed from the host page. So:
 
-**No fake id was invented, and no Chatbase method name was guessed.** A wrong id fails silently
-at runtime and looks exactly like a working one until somebody clicks it, which is precisely the kind
-of defect that reaches a client. While it is blank, every trigger stays a plain link to
-`natfish-ai.html` and nothing is requested from chatbase.co at all.
+- The **floating panel is ours** and the chat inside it is Chatbase's iframe at
+  Chatbase's URL, unmodified. Opening and closing is showing and hiding our
+  panel. Nothing is drawn to look like a chat.
+- **natfish-ai.html runs the same embed inline**, at `#ai-embed`, which is what
+  this embed form is designed for. Every trigger on that page scrolls to it
+  instead of opening a second copy of the same conversation.
+- The id lives in one constant and the URL is built in one place:
+
+```js
+var AGENT_ID = "eqR-QbTH69GbLMJsTuw8I";
+var IFRAME_BASE = "https://www.chatbase.co/chatbot-iframe/";
+```
+
+**Nothing is appended to that URL** - no query parameter, no fragment, no
+hidden instruction. The agent's behaviour is configured in Chatbase and nowhere
+else. The frame is given its `src` on first intent (a click, or the in-page
+block scrolling into view), so a visitor who never asks for the assistant never
+sends a request to chatbase.co.
+
+Closing the panel hides it and **keeps the iframe**, so a visitor who closes and
+reopens is still in the same conversation. Escape closes it and returns focus to
+whatever opened it.
+
+### What could not be verified from here
+
+The live embed URL was **not** loaded. This build container's network policy
+denies `chatbase.co` at the proxy (`ERR_TUNNEL_CONNECTION_FAILED`), so the frame
+cannot be fetched from here at all. What *is* verified is that the site requests
+exactly the supplied URL, exactly once, only on intent. Whether Chatbase serves
+it depends on the agent's domain allow-list, which can only be settled on the
+real deployment anyway.
+
+**No message was ever sent to the agent.** Every automated test stubs the
+Chatbase host locally, so nothing left the machine and no conversation was
+started. No test order was submitted.
 
 ### One-time Chatbase dashboard settings
 
 | # | Setting | Why |
 |---|---|---|
-| 1 | **Turn the default chat bubble off** | Otherwise Chatbase's own launcher and the NATFISH pill both appear. This cannot be done from the codebase: the bubble lives inside a cross-origin iframe. |
-| 2 | Allow the launch domain | The embed refuses to load on domains that are not on the agent's list. |
+| 1 | ~~Turn the default chat bubble off~~ | **No longer applicable.** That was a consequence of the script embed shipping its own launcher. The iframe embed has no bubble, so Chatbase's launcher and the NATFISH pill can no longer collide. |
+| 2 | **Allow the launch domain** | Still required, and now the most likely cause of a blank frame on first deploy: the embed refuses to load on domains that are not on the agent's list. Add the Netlify domain, and the final domain when it exists. |
 | 3 | Set the initial greeting | "Hi, I am NATFISH AI, the digital employee for National Fishermen Producers Co-operative Society Ltd. How may I assist you today?" |
 | 4 | Set the widget privacy notice | "You are chatting with an AI. Do not share payment, banking, password, ID or other sensitive information. NATFISH confirms prices, availability and orders." |
 | 5 | Confirm the agent answers in Spanish | There is deliberately no second agent and no canned Spanish opener. The agent replies in whichever language it is addressed in. |
@@ -244,18 +278,17 @@ Every "Ask NATFISH AI" control is a real `<a>` with a real destination, never `h
 upgrades it in place. That ordering matters: with JavaScript off, with the embed blocked, or before
 the id is supplied, the control still takes the visitor somewhere useful instead of doing nothing.
 
-- The floating pill falls back to `natfish-ai.html`.
-- The buttons on `natfish-ai.html` fall back to `contact.html`, since the visitor is already on the
-  AI page.
-- The contact-page card falls back to `natfish-ai.html`.
+- The floating pill falls back to `natfish-ai.html`, where the embed runs in the page itself - so
+  with JavaScript off the visitor still reaches a working chat window.
+- The buttons on `natfish-ai.html` fall back to `#ai-embed`, the block a few sections up.
+- Everything else falls back to `natfish-ai.html#ai-embed`.
 
-A click that lands while the embed is still loading is held, not dropped: the trigger gets
-`aria-busy`, `#ai-status` announces "Opening NATFISH AI", and the panel opens as soon as it can. After
-six seconds it gives up and follows the link. Rapid re-clicks during that window are ignored rather
-than queued.
+A fragment is allowed here where a bare `href="#"` is not: the rule is "no dead controls", and the
+automated check now verifies that any fragment names an element that actually exists on that page.
 
-The embed is requested once per page, and only on first intent: hovering or focusing a trigger, or the
-first pointer or key event anywhere. A visitor who never asks for the assistant never pays for it.
+There is no loading dance any more, because there is nothing to wait for: an iframe has no readiness
+signal to poll. A click docks the pill, then shows the panel, and the frame loads inside it exactly as
+a browser loads any iframe.
 
 ### The launcher
 
@@ -321,37 +354,34 @@ online payment, name a delivery area, a turnaround, a grade, a weight or a minim
 that an order is accepted before the team confirms it. Every route says the team confirms. Shrimp and
 any other unapproved product remain absent.
 
-**THE ACTIVATION GATE IS NOT MET.** Two things are outstanding and the site must not go public until
-both are done:
-
-1. `AGENT_ID` is still blank (below).
-2. Nobody has confirmed that the Chatbase order flow itself is ready. The website now *offers* to take
-   an order request; whether the agent can actually conduct that conversation is a Chatbase-side
-   question, and nothing in this repository can answer it.
+**THE ACTIVATION GATE IS HALF MET.** The intended embed has been supplied and is wired in, which
+settles the first condition. The second is still open: nobody has confirmed that the Chatbase order
+flow itself is ready. The website now *offers* to take an order request; whether the agent can
+actually conduct that conversation is a Chatbase-side question, and nothing in this repository can
+answer it. **Confirm that before the site goes public.**
 
 No order backend, webhook, automation, email routing, payment step or form was built, and none should
 be: the assistant hands the request to the team, and the team confirms it.
 
-### Passing the chosen product to the agent
+### Passing the chosen product to the agent: not possible with this embed
 
-Each order button carries `data-ai-product="<product name>"`. What happens to that value is decided by
-one constant in `assets/js/natfish-ai.js`, deliberately blank, sitting beside `AGENT_ID`:
+Each order button carries `data-ai-product="<product name>"`. **Nothing consumes
+it today, and with the iframe embed nothing can:** there is no client-side API
+to hand the agent context through, and the two ways of faking it are both out of
+bounds - typing a synthetic message into the panel on the visitor's behalf, and
+reaching into the Chatbase iframe (`contentWindow`, `contentDocument`,
+`postMessage`). The test suite checks that none of those appears in the source,
+and that nothing is appended to the embed URL.
 
-```js
-var PRODUCT_CONTEXT_METHOD = ""; /* TODO: SUPPORTED CHATBASE CONTEXT CALL, IF ANY */
-```
+The attribute stays because it is the hook point a future integration would read
+- if the account ever moves to the script embed, which does expose an API. Until
+then it is inert by design. The product-specific accessible name on each button
+("Start an order for Frozen Queen Conch, 85% Cleaned with NATFISH AI") is real
+and is what a screen-reader user hears; that is not affected.
 
-Blank means the product is sent nowhere and the panel simply opens - which is what the shipped site
-does today, and what the tests assert. Filling it in with the name of a context call that the NATFISH
-Chatbase plan actually documents makes the script call
-`chatbase(PRODUCT_CONTEXT_METHOD, { product: "..." })` once, immediately before the panel opens. If
-that call's payload key is not `product`, change it in `sendProductContext`; that is the only other
-place it appears.
-
-No method name was guessed. Two things this must never become, and the test suite checks for both:
-a synthetic message typed into the panel on the visitor's behalf, and any reach into the Chatbase
-iframe (`contentWindow`, `postMessage`, injected key events). Neither is a supported integration and
-both would be putting words in a visitor's mouth.
+**This means the agent does not know which product button was pressed.** The
+visitor names the product in the conversation, which is what the "Have these
+ready" list and the order-request checklist prepare them to do.
 
 ### Nothing was done inside Chatbase
 
@@ -361,6 +391,21 @@ deleted, retrained or replaced; no email, Make, Zapier, webhook, payment, invent
 workflow configured; no hidden instruction placed in the HTML, the JavaScript, a query parameter or
 the embed to steer the agent's behaviour; and **no test order submitted to NATFISH**. All of that is
 Bert's, and the items are listed under "One-time Chatbase dashboard settings" above.
+
+### The embed cannot work in the artifact preview, and says so
+
+The preview is one self-contained file under a Content-Security-Policy that blocks every external
+host, so the Chatbase frame can never load there. An empty white box reads as a broken build, so
+`tools/bundle-preview.py` sets `window.NATFISH_PREVIEW = true` and the script puts a short note in
+the frame's place: *"NATFISH AI is live on the website itself."* Translated, like everything else.
+On the real site that flag is never set.
+
+Building the preview also caught a genuine bug. All nine routes live in ONE document there, with the
+inactive ones hidden, so `document.getElementById("ai-embed")` succeeded on every route and every
+page believed it owned the in-page embed - clicking the pill on Contact scrolled to a `display:none`
+block instead of opening the panel. The routing lookup now requires the block to be **rendered**
+(`offsetParent !== null`); the wiring lookup deliberately does not, or a route that starts hidden
+would never be wired at all. Two lookups, two different questions.
 
 ### The preview bundle carries the launcher separately
 

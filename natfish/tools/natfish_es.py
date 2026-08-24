@@ -1449,3 +1449,35 @@ for _dead in (
     "member will assist you.",
 ):
     ES.pop(_dead, None)
+
+# The in-page Chatbase embed on natfish-ai.html, and the chrome around the
+# floating panel that carries the same embed on every other page. The
+# conversation itself is Chatbase's and answers in whichever language it is
+# addressed in; only our own labels are translated here.
+ES.update({
+    "Chat with NATFISH AI": "Converse con NATFISH AI",
+    "Ask a question or start an order request right here. Everything below "
+    "explains what NATFISH AI can do and which seafood you can order.":
+        "Haga una pregunta o inicie una solicitud de pedido aquí mismo. Todo "
+        "lo que sigue explica qué puede hacer NATFISH AI y qué mariscos puede "
+        "pedir.",
+    "NATFISH AI answers in English or Spanish. A NATFISH team member confirms "
+    "every order.":
+        "NATFISH AI responde en inglés o español. Un miembro del equipo de "
+        "NATFISH confirma cada pedido.",
+    "NATFISH AI chat": "Chat de NATFISH AI",
+    "Close NATFISH AI": "Cerrar NATFISH AI",
+    "NATFISH AI is open.": "NATFISH AI está abierto.",
+})
+
+# Shown only in the single-file artifact preview, where the artifact CSP blocks
+# the Chatbase host outright.
+ES.update({
+    "NATFISH AI is live on the website itself.":
+        "NATFISH AI está activo en el sitio web.",
+    "This shareable preview is a single file and cannot load the chat window. "
+    "Open the deployed site to talk to NATFISH AI.":
+        "Esta vista previa para compartir es un solo archivo y no puede cargar "
+        "la ventana de chat. Abra el sitio publicado para conversar con "
+        "NATFISH AI.",
+})

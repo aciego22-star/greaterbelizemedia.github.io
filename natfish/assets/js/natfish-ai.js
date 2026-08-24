@@ -1,76 +1,58 @@
-/* NATFISH AI: Chatbase loader, the floating launcher and every "Ask NATFISH AI"
-   trigger on the site.
+/* NATFISH AI: the Chatbase embed, the floating launcher and every
+   "Ask NATFISH AI" trigger on the site.
    ==========================================================================
 
    Everything to do with the assistant lives in this one file, loaded on every
-   page. Nothing is pasted into individual pages, so the agent id exists in
+   page. Nothing is pasted into individual pages, so the embed exists in
    exactly one place and the launcher behaves identically everywhere.
 
-   THE ONE VALUE THAT STILL HAS TO BE SUPPLIED IS AGENT_ID, DIRECTLY BELOW.
-   Until it is filled in, every trigger degrades to a plain link: the pill and
-   the page buttons still work, they just navigate instead of opening a chat
-   panel. No fake id is used, because a wrong id fails silently at runtime and
-   looks exactly like a working one until someone clicks it. */
+   THE EMBED IS THE IFRAME ONE THE CLIENT SUPPLIED, not the script/bubble one.
+   That distinction drives the whole design of this file:
+
+     - The iframe embed has NO JavaScript API. There is no chatbase("open"),
+       no getState, no queue, no way to ask it anything from the host page.
+       So the panel that holds it is ours, and opening and closing is simply
+       showing and hiding that panel.
+     - Because the panel is ours, the chat inside it is still entirely
+       Chatbase's: this is their iframe at their URL, unmodified. Nothing is
+       drawn to look like a chat, and nothing reaches into the frame.
+     - On natfish-ai.html the same embed runs inline in the page, which is
+       what this embed form is for. Triggers on that page scroll to it rather
+       than opening a second copy of the same conversation. */
 
 (function () {
   "use strict";
 
   /* =====================================================================
-     CONFIGURATION - the only place an agent id belongs.
-     Paste the id from Chatbase (Dashboard > the NATFISH agent > Connect >
-     Embed; it is the value assigned to script.id) between the quotes.
+     CONFIGURATION - the only place the Chatbase chatbot id belongs.
+     From the embed supplied by the client:
+
+       <iframe src="https://www.chatbase.co/chatbot-iframe/eqR-QbTH69GbLMJsTuw8I"
+               width="100%" style="height:100%;min-height:700px"
+               frameborder="0" allow="microphone"></iframe>
+
+     Nothing is appended to that URL. No query parameter, no fragment, no
+     hidden instruction: the agent's behaviour is configured in Chatbase and
+     nowhere else.
      ===================================================================== */
-  var AGENT_ID = ""; /* TODO: REPLACE WITH THE NATFISH CHATBASE AGENT ID */
+  var AGENT_ID = "eqR-QbTH69GbLMJsTuw8I";
 
-  /* =====================================================================
-     CONFIGURATION - passing the chosen product to the assistant.
-
-     Every "Order with NATFISH AI" button carries the product it belongs to in
-     data-ai-product. This constant decides what, if anything, is done with
-     that value, and it is deliberately BLANK by default: with no value here
-     the product is never sent anywhere, and the assistant simply opens.
-
-     To turn it on, put the name of the context call that the NATFISH Chatbase
-     plan actually exposes between the quotes - the one from Chatbase's own
-     documentation for this account. It is invoked as
-
-         chatbase(PRODUCT_CONTEXT_METHOD, { product: "Frozen Spiny Lobster Tails" });
-
-     immediately before the panel opens. If the payload key differs from
-     "product" for that call, change it in sendProductContext below; that is
-     the only other place it appears.
-
-     Two things this must never become, both of them out of bounds for this
-     codebase: a synthetic message typed into the panel on the visitor's
-     behalf, and any reach into the Chatbase iframe's DOM. Neither is a
-     supported integration, and both would be putting words in the visitor's
-     mouth. A method name that is not supported is a no-op inside the try
-     below, which is the correct failure: the panel still opens.
-     ===================================================================== */
-  var PRODUCT_CONTEXT_METHOD = ""; /* TODO: SUPPORTED CHATBASE CONTEXT CALL, IF ANY */
-
-  var EMBED_SRC = "https://www.chatbase.co/embed.min.js";
-  var EMBED_DOMAIN = "www.chatbase.co";
-
-  /* How long a click waits for a still-loading widget before giving up and
-     letting the link navigate instead. Long enough for a slow phone
-     connection, short enough that nothing feels broken. */
-  var OPEN_TIMEOUT_MS = 6000;
+  var IFRAME_BASE = "https://www.chatbase.co/chatbot-iframe/";
 
   var state = {
-    requested: false,   /* the embed script has been asked for */
-    ready: false,       /* chatbase has answered "initialized" */
-    failed: false,      /* the script errored, or there is no id */
-    pending: false,     /* a click is waiting on the widget right now */
-    docked: false       /* the pill has finished gliding to the right margin */
+    open: false,        /* the floating panel is showing */
+    loaded: false,      /* the panel's iframe has been given its src */
+    docked: false,      /* the pill has finished gliding to the right margin */
+    lastTrigger: null   /* where focus goes back to when the panel closes */
   };
 
+  var panel = null;
   var statusEl = null;
 
   /* ---------------------------------------------------------- helpers -- */
 
   function t(english) {
-    /* Reuse the site's translator so the assistant's strings switch with
+    /* Reuse the site's translator so the assistant's chrome switches with
        everything else. Falls back to English if i18n has not loaded. */
     var api = window.NATFISH;
     return api && typeof api.t === "function" ? api.t(english) : english;
@@ -81,94 +63,196 @@
     statusEl.textContent = english ? t(english) : "";
   }
 
-  /* --------------------------------------------------------- chatbase -- */
-
-  function installQueue() {
-    /* Chatbase's own stub: calls made before the script loads are queued and
-       replayed. Written out rather than inlined per page so there is one
-       copy. */
-    if (window.chatbase && window.chatbase("getState") === "initialized") return;
-
-    var stub = function () {
-      if (!stub.q) stub.q = [];
-      stub.q.push(arguments);
-    };
-    window.chatbase = new Proxy(stub, {
-      get: function (target, prop) {
-        if (prop === "q") return target.q;
-        return function () {
-          var args = Array.prototype.slice.call(arguments);
-          return target.apply(null, [prop].concat(args));
-        };
-      }
-    });
+  function src() {
+    return IFRAME_BASE + AGENT_ID;
   }
 
-  function load() {
-    /* Idempotent: the embed is requested once per page, no matter how many
-       triggers the visitor clicks. */
-    if (state.requested) return;
-    state.requested = true;
+  /* The artifact preview is a single self-contained file served under a strict
+     Content-Security-Policy that blocks every external host, so the Chatbase
+     frame cannot load there and never will. An empty white box reads as a
+     broken build, so the preview says what it is instead. Set only by
+     tools/bundle-preview.py; on the real site this is never true. */
+  function isPreview() {
+    return window.NATFISH_PREVIEW === true;
+  }
 
-    if (!AGENT_ID) {
-      state.failed = true;
+  function previewNote() {
+    var wrap = document.createElement("div");
+    wrap.className = "ai-blocked";
+    var h = document.createElement("p");
+    h.className = "ai-blocked__title";
+    h.textContent = t("NATFISH AI is live on the website itself.");
+    var b = document.createElement("p");
+    b.textContent = t("This shareable preview is a single file and cannot load "
+      + "the chat window. Open the deployed site to talk to NATFISH AI.");
+    wrap.appendChild(h);
+    wrap.appendChild(b);
+    return wrap;
+  }
+
+  /* Built rather than written into every page: it has no visual presence
+     until it is opened, so nine copies of it in the markup would be nine
+     copies of nothing. The pill stays in the shell markup, because that one
+     IS visible at first paint. */
+  function makeIframe(title) {
+    var frame = document.createElement("iframe");
+    frame.title = title;
+    frame.setAttribute("allow", "microphone");
+    frame.setAttribute("frameborder", "0");
+    frame.className = "ai-frame";
+    return frame;
+  }
+
+  /* ------------------------------------------------------- the panel -- */
+
+  function buildPanel() {
+    if (panel) return panel;
+
+    panel = document.createElement("div");
+    panel.className = "ai-panel";
+    panel.id = "ai-panel";
+    panel.hidden = true;
+    /* Not aria-modal: the page behind stays readable and operable, which is
+       the point of a docked assistant rather than a takeover. */
+    panel.setAttribute("role", "dialog");
+    panel.setAttribute("aria-label", t("NATFISH AI"));
+
+    var bar = document.createElement("div");
+    bar.className = "ai-panel__bar";
+
+    var title = document.createElement("span");
+    title.className = "ai-panel__title";
+    title.textContent = "NATFISH AI";
+
+    var close = document.createElement("button");
+    close.type = "button";
+    close.className = "ai-panel__close";
+    close.setAttribute("aria-label", t("Close NATFISH AI"));
+    close.innerHTML =
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+      'stroke-width="2.2" stroke-linecap="round" aria-hidden="true" ' +
+      'focusable="false"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+    close.addEventListener("click", function () { closePanel(true); });
+
+    bar.appendChild(title);
+    bar.appendChild(close);
+
+    var body = document.createElement("div");
+    body.className = "ai-panel__body";
+
+    panel.appendChild(bar);
+    panel.appendChild(body);
+    document.body.appendChild(panel);
+    return panel;
+  }
+
+  /* The src is set on first open, never on page load. A visitor who never
+     asks for the assistant never sends a request to chatbase.co. */
+  function loadPanel() {
+    if (state.loaded) return;
+    state.loaded = true;
+    var body = panel.querySelector(".ai-panel__body");
+    if (isPreview()) {
+      body.appendChild(previewNote());
       return;
     }
-
-    installQueue();
-
-    var script = document.createElement("script");
-    script.src = EMBED_SRC;
-    script.id = AGENT_ID;
-    script.domain = EMBED_DOMAIN;
-    script.async = true;
-    script.onerror = function () {
-      state.failed = true;
-      announce("NATFISH AI could not be reached. You can contact the team directly instead.");
-    };
-    document.body.appendChild(script);
-
-    /* Poll for readiness rather than trusting onload: the script tag having
-       run is not the same as the widget being able to open. */
-    var started = Date.now();
-    var poll = window.setInterval(function () {
-      var up = false;
-      try {
-        up = window.chatbase && window.chatbase("getState") === "initialized";
-      } catch (err) {
-        up = false;
-      }
-      if (up) {
-        state.ready = true;
-        window.clearInterval(poll);
-      } else if (Date.now() - started > OPEN_TIMEOUT_MS * 3) {
-        state.failed = true;
-        window.clearInterval(poll);
-      }
-    }, 250);
+    var frame = makeIframe(t("NATFISH AI chat"));
+    frame.src = src();
+    body.appendChild(frame);
   }
 
-  /* Fired only from a trigger the visitor clicked, only when the constant
-     above has been filled in, and only with the product name that is printed
-     on the button they pressed. Nothing is inferred and nothing is hidden. */
-  function sendProductContext(el) {
-    var product = el && el.getAttribute("data-ai-product");
-    if (!product || !PRODUCT_CONTEXT_METHOD) return;
-    try {
-      window.chatbase(PRODUCT_CONTEXT_METHOD, { product: product });
-    } catch (err) {
-      /* Unsupported call: the panel opens without the context, which is the
-         same experience as leaving the constant blank. */
-    }
+  function openPanel() {
+    buildPanel();
+    loadPanel();
+    panel.hidden = false;
+    /* One frame between unhiding and the open class so the entrance
+       transition has a starting point to animate from. */
+    window.requestAnimationFrame(function () {
+      panel.classList.add("is-open");
+    });
+    state.open = true;
+    document.documentElement.classList.add("ai-panel-open");
+    panel.querySelector(".ai-panel__close").focus();
+    announce("NATFISH AI is open.");
   }
 
-  function openWidget() {
-    try {
-      window.chatbase("open");
-      return true;
-    } catch (err) {
-      return false;
+  function closePanel(restoreFocus) {
+    if (!panel || !state.open) return;
+    panel.classList.remove("is-open");
+    state.open = false;
+    document.documentElement.classList.remove("ai-panel-open");
+    /* Hidden only after the exit transition, and the iframe is kept: closing
+       the panel must not throw away the conversation the visitor is having. */
+    window.setTimeout(function () {
+      if (!state.open) panel.hidden = true;
+    }, 240);
+    if (restoreFocus && state.lastTrigger) state.lastTrigger.focus();
+    announce("");
+  }
+
+  /* ------------------------------------------- the inline embed, if any -- */
+
+  /* natfish-ai.html carries the same embed in the page itself. Where that
+     exists it is the destination for every trigger on that page, so the
+     visitor never ends up with the assistant open twice. */
+  /* The block, whether or not it is currently on screen. Used for wiring. */
+  function embedBlock() {
+    return document.getElementById("ai-embed");
+  }
+
+  /* The block only when it is actually RENDERED. Used for routing a click.
+
+     On the real site each page is its own document, so where the block exists
+     it is always rendered and the two are the same thing. The artifact preview
+     puts all nine routes in ONE document and hides the inactive ones, and
+     without this check every route in the preview believed it owned the
+     in-page embed and scrolled to a display:none block instead of opening the
+     panel. The wiring above must NOT apply the same test, or a route that
+     starts hidden would never be wired at all. */
+  function inlineHost() {
+    var host = embedBlock();
+    return host && host.offsetParent !== null ? host : null;
+  }
+
+  function loadInline(host) {
+    if (host.getAttribute("data-loaded")) return;
+    host.setAttribute("data-loaded", "true");
+    var slot = host.querySelector(".ai-embed__frame");
+    if (isPreview()) {
+      slot.appendChild(previewNote());
+      return;
     }
+    var frame = makeIframe(t("NATFISH AI chat"));
+    frame.src = src();
+    slot.appendChild(frame);
+  }
+
+  function watchInline(host) {
+    /* Load when it comes into view rather than at first paint: it is the
+       point of the page, but it is still a third-party request and the
+       visitor should reach it before it fires. */
+    if (!("IntersectionObserver" in window)) {
+      loadInline(host);
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          loadInline(host);
+          io.disconnect();
+        }
+      });
+    }, { rootMargin: "300px" });
+    io.observe(host);
+  }
+
+  function goToInline(host) {
+    loadInline(host);
+    host.scrollIntoView({ behavior: "smooth", block: "start" });
+    /* Focus the region, not the iframe: dropping focus straight into a
+       third-party frame takes the keyboard away without warning. */
+    host.setAttribute("tabindex", "-1");
+    host.focus({ preventScroll: true });
   }
 
   /* ------------------------------------------------- swim and docking -- */
@@ -248,12 +332,6 @@
     window.setTimeout(finish, 900);
   }
 
-  /* ---------------------------------------------------------- triggers -- */
-
-  /* Every trigger is a real link whose href is a sensible destination if the
-     widget never arrives. That is why none of them is href="#": with
-     JavaScript off, or Chatbase down, the visitor still gets somewhere useful
-     instead of a dead control. */
   /* Any trigger anywhere on the page docks the pill, so the launcher is always
      at rest beside the panel that just opened. */
   function dockPill(done) {
@@ -269,103 +347,63 @@
     });
   }
 
+  /* ---------------------------------------------------------- triggers -- */
+
+  /* Every trigger is a real link whose href is a sensible destination if the
+     script never runs. That is why none of them is href="#": with JavaScript
+     off the visitor still lands on natfish-ai.html, where the embed runs in
+     the page itself, instead of on a dead control. */
   function onTrigger(event) {
     var el = event.currentTarget;
 
     /* Modified clicks belong to the browser, not to us. */
     if (event.metaKey || event.ctrlKey || event.shiftKey || event.button > 0) return;
 
-    if (state.failed || !AGENT_ID) return;   /* let the link navigate */
+    event.preventDefault();
+    state.lastTrigger = el;
 
-    if (state.ready) {
-      event.preventDefault();
-      dockPill(function () {
-        sendProductContext(el);
-        if (!openWidget()) {
-          state.failed = true;
-          window.location.href = el.getAttribute("href");
-        }
-      });
+    var host = inlineHost();
+    if (host) {
+      dockPill();
+      goToInline(host);
       return;
     }
 
-    /* Still loading. Hold the click briefly rather than either doing nothing
-       or navigating away from a page the visitor wanted to stay on. */
-    if (state.pending) {
-      event.preventDefault();
-      return;                                 /* ignore the impatient re-click */
-    }
-
-    event.preventDefault();
-    state.pending = true;
-    el.setAttribute("aria-busy", "true");
-    announce("Opening NATFISH AI.");
-    dockPill();
-    load();
-
-    var waited = 0;
-    var sentContext = false;
-    var wait = window.setInterval(function () {
-      waited += 200;
-      /* Both conditions, not either: the embed has to be ready AND the pill
-         has to have arrived. Waiting on readiness alone opened the panel while
-         the pill was still gliding, which is the seam this whole sequence
-         exists to hide. */
-      if (state.ready && state.docked) {
-        /* Once, and inside the branch rather than in the condition: neither a
-           tick that is still waiting nor a retry after a failed open may fire
-           the context call again. */
-        if (!sentContext) {
-          sentContext = true;
-          sendProductContext(el);
-        }
-        if (openWidget()) {
-          window.clearInterval(wait);
-          state.pending = false;
-          el.removeAttribute("aria-busy");
-          announce("");
-          return;
-        }
-      }
-      if (state.failed || waited >= OPEN_TIMEOUT_MS) {
-        window.clearInterval(wait);
-        state.pending = false;
-        el.removeAttribute("aria-busy");
-        announce("NATFISH AI is taking too long to load. Opening the NATFISH AI page instead.");
-        window.location.href = el.getAttribute("href");
-      }
-    }, 200);
+    dockPill(function () { openPanel(); });
   }
 
   /* ------------------------------------------------------------- init -- */
 
   function init() {
-    var triggers = document.querySelectorAll("[data-ai-open]");
-    if (!triggers.length) return;
-
     statusEl = document.getElementById("ai-status");
+
+    /* Wired from the raw lookup: an IntersectionObserver on a display:none
+       element simply does not fire until it is shown, which is the behaviour
+       the preview's router needs. */
+    var block = embedBlock();
+    if (block) watchInline(block);
 
     var pill = document.querySelector(".ai-pill");
     if (pill) watchTravel(pill);
 
+    var triggers = document.querySelectorAll("[data-ai-open]");
     Array.prototype.forEach.call(triggers, function (el) {
       el.addEventListener("click", onTrigger);
     });
 
-    /* Warm the embed on first intent rather than on page load, so a visitor
-       who never asks for the assistant never pays for it. Passive and
-       one-shot. */
-    var warm = function () {
-      load();
-      window.removeEventListener("pointerdown", warm, true);
-      window.removeEventListener("keydown", warm, true);
-    };
-    Array.prototype.forEach.call(triggers, function (el) {
-      el.addEventListener("pointerenter", load, { once: true });
-      el.addEventListener("focus", load, { once: true });
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" && state.open) closePanel(true);
     });
-    window.addEventListener("pointerdown", warm, { capture: true, once: true });
-    window.addEventListener("keydown", warm, { capture: true, once: true });
+
+    /* The label inside our own chrome is translated; the conversation inside
+       the frame is Chatbase's and answers in whichever language it is
+       addressed in. */
+    document.addEventListener("natfish:languagechange", function () {
+      if (!panel) return;
+      panel.setAttribute("aria-label", t("NATFISH AI"));
+      panel.querySelector(".ai-panel__close")
+           .setAttribute("aria-label", t("Close NATFISH AI"));
+    });
   }
 
   if (document.readyState === "loading") {

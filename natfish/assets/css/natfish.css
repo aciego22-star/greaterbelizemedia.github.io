@@ -3752,7 +3752,7 @@ body.nav-open {
 
 .ai-pill {
   position: fixed;
-  z-index: 60;                 /* over content, under the open chat panel */
+  z-index: 60;                 /* over content, under the header and panel */
   left: max(1rem, env(safe-area-inset-left));
   bottom: max(1rem, env(safe-area-inset-bottom));
   --ai-travel: 0px;            /* replaced at runtime */
@@ -4584,4 +4584,174 @@ body.nav-open {
    itself is sand. */
 .section--sand .enquiry__checklist {
   background: var(--white);
+}
+
+/* ------------------------------------------------- the assistant panel -- */
+/* The client supplied Chatbase's IFRAME embed, which has no JavaScript API
+   and no launcher of its own, so the floating panel that holds it is ours.
+   Only the chrome is ours: the conversation inside is Chatbase's iframe at
+   Chatbase's URL, untouched. */
+
+.ai-panel {
+  position: fixed;
+  /* Above the sticky header (100) so the panel is never clipped by it, and
+     below the mobile nav drawer (200) and the lightbox (999), both of which
+     should win if they are opened over it. */
+  z-index: 150;
+  right: max(1rem, env(safe-area-inset-right));
+  bottom: calc(max(1rem, env(safe-area-inset-bottom)) + 76px);
+  width: min(420px, calc(100vw - 2rem));
+  height: min(700px, calc(100vh - 8rem));
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 24px 60px rgba(3, 25, 42, 0.28);
+  opacity: 0;
+  transform: translateY(12px) scale(0.985);
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+
+.ai-panel.is-open {
+  opacity: 1;
+  transform: none;
+}
+
+.ai-panel__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.7rem 0.7rem 0.7rem 1.1rem;
+  background: linear-gradient(135deg, var(--navy-900) 0%, var(--teal-700) 100%);
+  color: var(--white);
+  flex-shrink: 0;
+}
+
+.ai-panel__title {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.ai-panel__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--white);
+  cursor: pointer;
+  transition: background 0.18s ease;
+}
+
+.ai-panel__close:hover {
+  background: rgba(255, 255, 255, 0.26);
+}
+
+.ai-panel__close svg {
+  width: 18px;
+  height: 18px;
+}
+
+.ai-panel__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  background: var(--sand);
+}
+
+/* One rule for both the panel frame and the in-page one. */
+.ai-frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* On a phone the panel is the screen. Anything narrower than a full-width
+   sheet puts the agent's own input field into a column too narrow to type
+   in comfortably. */
+@media (max-width: 560px) {
+  .ai-panel {
+    right: 0;
+    left: 0;
+    bottom: 0;
+    width: auto;
+    height: min(88vh, 100vh - 3rem);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    border-inline-width: 0;
+    border-block-end-width: 0;
+  }
+
+  /* The launcher would sit on top of the sheet it just opened. */
+  .ai-panel-open .ai-pill {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ai-panel {
+    transition: none;
+  }
+}
+
+/* --------------------------------------------------- the inline embed -- */
+/* natfish-ai.html runs the same embed in the page, which is what this embed
+   form is designed for. min-height 700px comes from the supplied embed and is
+   the height the agent's own layout expects; the viewport clamp above it stops
+   the frame growing taller than the screen on a phone. */
+
+.ai-embed {
+  margin-top: clamp(1.75rem, 3.5vw, 2.5rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--white);
+  box-shadow: var(--shadow-md);
+}
+
+.ai-embed:focus-visible {
+  outline: 3px solid var(--teal-600);
+  outline-offset: 3px;
+}
+
+.ai-embed__frame {
+  height: min(700px, calc(100vh - 10rem));
+  min-height: 520px;
+  background: var(--sand);
+}
+
+.ai-embed__note {
+  margin: 0.9rem 0 0;
+  text-align: center;
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+}
+
+/* The stand-in shown where the embed cannot load: the artifact preview only,
+   which is one file under a CSP that blocks every external host. */
+.ai-blocked {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 100%;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+
+.ai-blocked p {
+  margin: 0;
+}
+
+.ai-blocked__title {
+  font-weight: 700;
+  color: var(--navy-900);
 }

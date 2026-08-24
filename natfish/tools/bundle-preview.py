@@ -342,7 +342,11 @@ def main():
         route_links(inline_png(footer)),
         inline_png(pill),
         lightbox,
-        f"<script>\n{hydrate}\n{js}\n{router}</script>",
+        # The flag has to be set before natfish-ai.js runs. The artifact is one
+        # file under a CSP that blocks every external host, so the Chatbase
+        # frame can never load here; the script shows an honest note in its
+        # place rather than an empty box that reads as a broken build.
+        f"<script>window.NATFISH_PREVIEW = true;\n{hydrate}\n{js}\n{router}</script>",
         "",
     ])
 

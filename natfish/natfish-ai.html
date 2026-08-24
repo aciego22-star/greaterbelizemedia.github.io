@@ -175,11 +175,38 @@
         <span class="eyebrow">NATFISH AI</span>
         <h1>Meet NATFISH AI, your digital guide to seafood and orders</h1>
         <p class="lede">Ask about NATFISH, explore the Co-operative&rsquo;s approved seafood products or start an order request in English or Spanish. NATFISH AI is available from any page of the website whenever you need assistance.</p>
-        <div class="page-hero__actions"><a class="btn btn--ai" href="contact.html" data-ai-open><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12.6a7.9 7.9 0 0 1-8.2 7.9 9 9 0 0 1-2.6-.4L4.6 21.4l1.2-3.9A7.6 7.6 0 0 1 3.6 12a7.9 7.9 0 0 1 8.2-7.9A7.9 7.9 0 0 1 21 11.6z"/><path class="ico__accent" d="M8.6 11.9h.01M12.3 11.9h.01M16 11.9h.01" stroke-width="2.6"/></svg> Start an order with NATFISH AI</a><a class="arrow-link" href="#approved-products">View approved seafood</a></div>
+        <div class="page-hero__actions"><a class="btn btn--ai" href="#ai-embed" data-ai-open><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12.6a7.9 7.9 0 0 1-8.2 7.9 9 9 0 0 1-2.6-.4L4.6 21.4l1.2-3.9A7.6 7.6 0 0 1 3.6 12a7.9 7.9 0 0 1 8.2-7.9A7.9 7.9 0 0 1 21 11.6z"/><path class="ico__accent" d="M8.6 11.9h.01M12.3 11.9h.01M16 11.9h.01" stroke-width="2.6"/></svg> Start an order with NATFISH AI</a><a class="arrow-link" href="#approved-products">View approved seafood</a></div>
       </div>
     </section>
 
-    <section class="section" aria-labelledby="ai-can-h">
+    <section class="section" aria-labelledby="ai-chat-h">
+      <div class="container container--narrow">
+        <div class="section-head section-head--center reveal">
+          <span class="eyebrow">The assistant</span>
+          <h2 id="ai-chat-h">Chat with NATFISH AI</h2>
+          <p class="lede">
+            Ask a question or start an order request right here. Everything
+            below explains what NATFISH AI can do and which seafood you can
+            order.
+          </p>
+        </div>
+
+        <!-- The client's Chatbase iframe embed, in the page it belongs on.
+             The script gives it its src when it scrolls into view, so a
+             visitor who never reaches it never sends a request to
+             chatbase.co, and every trigger on this page scrolls here rather
+             than opening a second copy of the same conversation. -->
+        <div class="ai-embed" id="ai-embed" aria-label="NATFISH AI chat">
+          <div class="ai-embed__frame"></div>
+        </div>
+        <p class="ai-embed__note">
+          NATFISH AI answers in English or Spanish. A NATFISH team member
+          confirms every order.
+        </p>
+      </div>
+    </section>
+
+    <section class="section section--sand" aria-labelledby="ai-can-h">
       <div class="container">
         <div class="section-head section-head--rule section-head--center reveal">
           <svg class="rule-wave" viewBox="0 0 118 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M1 4q7.4-3.6 14.8 0t14.8 0t14.8 0t14.8 0"/><path d="M76 4h41" opacity=".45"/></svg>
@@ -212,7 +239,7 @@
       </div>
     </section>
 
-    <section class="section section--sand" aria-labelledby="ai-how-h">
+    <section class="section" aria-labelledby="ai-how-h">
       <div class="container">
         <div class="section-head section-head--rule section-head--center reveal">
           <svg class="rule-wave" viewBox="0 0 118 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M1 4q7.4-3.6 14.8 0t14.8 0t14.8 0t14.8 0"/><path d="M76 4h41" opacity=".45"/></svg>
@@ -241,7 +268,7 @@
       </div>
     </section>
 
-    <section class="section" id="approved-products" aria-labelledby="ai-products-h">
+    <section class="section section--sand" id="approved-products" aria-labelledby="ai-products-h">
       <div class="container container--narrow">
         <div class="section-head section-head--center reveal">
           <span class="eyebrow">Approved Products</span>
@@ -259,47 +286,47 @@
               <h3>Frozen Spiny Lobster Tails</h3>
               <p class="product__sci"><i>Panulirus argus</i></p>
             </div>
-            <a class="btn btn--ai btn--sm" href="natfish-ai.html#approved-products" data-ai-open data-ai-product="Frozen Spiny Lobster Tails" aria-label="Start an order for Frozen Spiny Lobster Tails with NATFISH AI"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12.6a7.9 7.9 0 0 1-8.2 7.9 9 9 0 0 1-2.6-.4L4.6 21.4l1.2-3.9A7.6 7.6 0 0 1 3.6 12a7.9 7.9 0 0 1 8.2-7.9A7.9 7.9 0 0 1 21 11.6z"/><path class="ico__accent" d="M8.6 11.9h.01M12.3 11.9h.01M16 11.9h.01" stroke-width="2.6"/></svg> Order with NATFISH AI</a>
+            <a class="btn btn--ai btn--sm" href="#ai-embed" data-ai-open data-ai-product="Frozen Spiny Lobster Tails" aria-label="Start an order for Frozen Spiny Lobster Tails with NATFISH AI"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12.6a7.9 7.9 0 0 1-8.2 7.9 9 9 0 0 1-2.6-.4L4.6 21.4l1.2-3.9A7.6 7.6 0 0 1 3.6 12a7.9 7.9 0 0 1 8.2-7.9A7.9 7.9 0 0 1 21 11.6z"/><path class="ico__accent" d="M8.6 11.9h.01M12.3 11.9h.01M16 11.9h.01" stroke-width="2.6"/></svg> Order with NATFISH AI</a>
           </li>
           <li class="order-item reveal">
             <div class="order-item__name">
               <h3>Frozen Lobster Head Meat</h3>
               <p class="product__sci"><i>Panulirus argus</i></p>
             </div>
-            <a class="btn btn--ai btn--sm" href="natfish-ai.html#approved-products" data-ai-open data-ai-product="Frozen Lobster Head Meat" aria-label="Start an order for Frozen Lobster Head Meat with NATFISH AI"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12.6a7.9 7.9 0 0 1-8.2 7.9 9 9 0 0 1-2.6-.4L4.6 21.4l1.2-3.9A7.6 7.6 0 0 1 3.6 12a7.9 7.9 0 0 1 8.2-7.9A7.9 7.9 0 0 1 21 11.6z"/><path class="ico__accent" d="M8.6 11.9h.01M12.3 11.9h.01M16 11.9h.01" stroke-width="2.6"/></svg> Order with NATFISH AI</a>
+            <a class="btn btn--ai btn--sm" href="#ai-embed" data-ai-open data-ai-product="Frozen Lobster Head Meat" aria-label="Start an order for Frozen Lobster Head Meat with NATFISH AI"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12.6a7.9 7.9 0 0 1-8.2 7.9 9 9 0 0 1-2.6-.4L4.6 21.4l1.2-3.9A7.6 7.6 0 0 1 3.6 12a7.9 7.9 0 0 1 8.2-7.9A7.9 7.9 0 0 1 21 11.6z"/><path class="ico__accent" d="M8.6 11.9h.01M12.3 11.9h.01M16 11.9h.01" stroke-width="2.6"/></svg> Order with NATFISH AI</a>
           </li>
           <li class="order-item reveal">
             <div class="order-item__name">
               <h3>Frozen Whole Raw Lobster</h3>
               <p class="product__sci"><i>Panulirus argus</i></p>
             </div>
-            <a class="btn btn--ai btn--sm" href="natfish-ai.html#approved-products" data-ai-open data-ai-product="Frozen Whole Raw Lobster" aria-label="Start an order for Frozen Whole Raw Lobster with NATFISH AI"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12.6a7.9 7.9 0 0 1-8.2 7.9 9 9 0 0 1-2.6-.4L4.6 21.4l1.2-3.9A7.6 7.6 0 0 1 3.6 12a7.9 7.9 0 0 1 8.2-7.9A7.9 7.9 0 0 1 21 11.6z"/><path class="ico__accent" d="M8.6 11.9h.01M12.3 11.9h.01M16 11.9h.01" stroke-width="2.6"/></svg> Order with NATFISH AI</a>
+            <a class="btn btn--ai btn--sm" href="#ai-embed" data-ai-open data-ai-product="Frozen Whole Raw Lobster" aria-label="Start an order for Frozen Whole Raw Lobster with NATFISH AI"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12.6a7.9 7.9 0 0 1-8.2 7.9 9 9 0 0 1-2.6-.4L4.6 21.4l1.2-3.9A7.6 7.6 0 0 1 3.6 12a7.9 7.9 0 0 1 8.2-7.9A7.9 7.9 0 0 1 21 11.6z"/><path class="ico__accent" d="M8.6 11.9h.01M12.3 11.9h.01M16 11.9h.01" stroke-width="2.6"/></svg> Order with NATFISH AI</a>
           </li>
           <li class="order-item reveal">
             <div class="order-item__name">
               <h3>Frozen Whole Cooked Lobster</h3>
               <p class="product__sci"><i>Panulirus argus</i></p>
             </div>
-            <a class="btn btn--ai btn--sm" href="natfish-ai.html#approved-products" data-ai-open data-ai-product="Frozen Whole Cooked Lobster" aria-label="Start an order for Frozen Whole Cooked Lobster with NATFISH AI"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12.6a7.9 7.9 0 0 1-8.2 7.9 9 9 0 0 1-2.6-.4L4.6 21.4l1.2-3.9A7.6 7.6 0 0 1 3.6 12a7.9 7.9 0 0 1 8.2-7.9A7.9 7.9 0 0 1 21 11.6z"/><path class="ico__accent" d="M8.6 11.9h.01M12.3 11.9h.01M16 11.9h.01" stroke-width="2.6"/></svg> Order with NATFISH AI</a>
+            <a class="btn btn--ai btn--sm" href="#ai-embed" data-ai-open data-ai-product="Frozen Whole Cooked Lobster" aria-label="Start an order for Frozen Whole Cooked Lobster with NATFISH AI"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12.6a7.9 7.9 0 0 1-8.2 7.9 9 9 0 0 1-2.6-.4L4.6 21.4l1.2-3.9A7.6 7.6 0 0 1 3.6 12a7.9 7.9 0 0 1 8.2-7.9A7.9 7.9 0 0 1 21 11.6z"/><path class="ico__accent" d="M8.6 11.9h.01M12.3 11.9h.01M16 11.9h.01" stroke-width="2.6"/></svg> Order with NATFISH AI</a>
           </li>
           <li class="order-item reveal">
             <div class="order-item__name">
               <h3>Frozen Queen Conch, 85% Cleaned</h3>
               <p class="product__sci"><i>Strombus gigas</i></p>
             </div>
-            <a class="btn btn--ai btn--sm" href="natfish-ai.html#approved-products" data-ai-open data-ai-product="Frozen Queen Conch, 85% Cleaned" aria-label="Start an order for Frozen Queen Conch, 85% Cleaned with NATFISH AI"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12.6a7.9 7.9 0 0 1-8.2 7.9 9 9 0 0 1-2.6-.4L4.6 21.4l1.2-3.9A7.6 7.6 0 0 1 3.6 12a7.9 7.9 0 0 1 8.2-7.9A7.9 7.9 0 0 1 21 11.6z"/><path class="ico__accent" d="M8.6 11.9h.01M12.3 11.9h.01M16 11.9h.01" stroke-width="2.6"/></svg> Order with NATFISH AI</a>
+            <a class="btn btn--ai btn--sm" href="#ai-embed" data-ai-open data-ai-product="Frozen Queen Conch, 85% Cleaned" aria-label="Start an order for Frozen Queen Conch, 85% Cleaned with NATFISH AI"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12.6a7.9 7.9 0 0 1-8.2 7.9 9 9 0 0 1-2.6-.4L4.6 21.4l1.2-3.9A7.6 7.6 0 0 1 3.6 12a7.9 7.9 0 0 1 8.2-7.9A7.9 7.9 0 0 1 21 11.6z"/><path class="ico__accent" d="M8.6 11.9h.01M12.3 11.9h.01M16 11.9h.01" stroke-width="2.6"/></svg> Order with NATFISH AI</a>
           </li>
           <li class="order-item reveal">
             <div class="order-item__name">
               <h3>Lionfish Fillet</h3>
               <p class="product__sci"><i>Pterois volitans</i></p>
             </div>
-            <a class="btn btn--ai btn--sm" href="natfish-ai.html#approved-products" data-ai-open data-ai-product="Lionfish Fillet" aria-label="Start an order for Lionfish Fillet with NATFISH AI"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12.6a7.9 7.9 0 0 1-8.2 7.9 9 9 0 0 1-2.6-.4L4.6 21.4l1.2-3.9A7.6 7.6 0 0 1 3.6 12a7.9 7.9 0 0 1 8.2-7.9A7.9 7.9 0 0 1 21 11.6z"/><path class="ico__accent" d="M8.6 11.9h.01M12.3 11.9h.01M16 11.9h.01" stroke-width="2.6"/></svg> Order with NATFISH AI</a>
+            <a class="btn btn--ai btn--sm" href="#ai-embed" data-ai-open data-ai-product="Lionfish Fillet" aria-label="Start an order for Lionfish Fillet with NATFISH AI"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12.6a7.9 7.9 0 0 1-8.2 7.9 9 9 0 0 1-2.6-.4L4.6 21.4l1.2-3.9A7.6 7.6 0 0 1 3.6 12a7.9 7.9 0 0 1 8.2-7.9A7.9 7.9 0 0 1 21 11.6z"/><path class="ico__accent" d="M8.6 11.9h.01M12.3 11.9h.01M16 11.9h.01" stroke-width="2.6"/></svg> Order with NATFISH AI</a>
           </li>
         </ul>
 
         <p class="order-list__cta reveal">
-          <a class="btn btn--ai" href="contact.html" data-ai-open><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12.6a7.9 7.9 0 0 1-8.2 7.9 9 9 0 0 1-2.6-.4L4.6 21.4l1.2-3.9A7.6 7.6 0 0 1 3.6 12a7.9 7.9 0 0 1 8.2-7.9A7.9 7.9 0 0 1 21 11.6z"/><path class="ico__accent" d="M8.6 11.9h.01M12.3 11.9h.01M16 11.9h.01" stroke-width="2.6"/></svg> Start a seafood order</a>
+          <a class="btn btn--ai" href="#ai-embed" data-ai-open><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12.6a7.9 7.9 0 0 1-8.2 7.9 9 9 0 0 1-2.6-.4L4.6 21.4l1.2-3.9A7.6 7.6 0 0 1 3.6 12a7.9 7.9 0 0 1 8.2-7.9A7.9 7.9 0 0 1 21 11.6z"/><path class="ico__accent" d="M8.6 11.9h.01M12.3 11.9h.01M16 11.9h.01" stroke-width="2.6"/></svg> Start a seafood order</a>
         </p>
 
         <p class="note reveal" style="text-align:center">
@@ -309,7 +336,7 @@
       </div>
     </section>
 
-    <section class="section section--sand" aria-labelledby="ai-privacy-h">
+    <section class="section" aria-labelledby="ai-privacy-h">
       <div class="container container--narrow">
         <div class="section-head section-head--center reveal">
           <span class="eyebrow">Using it well</span>
@@ -344,7 +371,7 @@
           <h2>Ready when you are</h2>
           <p class="lede" style="margin-inline:auto">Start a seafood order request with NATFISH AI, or reach the team directly whenever you would rather speak with someone.</p>
           <div class="cta-band__actions">
-            <a class="btn btn--ai" href="contact.html" data-ai-open><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12.6a7.9 7.9 0 0 1-8.2 7.9 9 9 0 0 1-2.6-.4L4.6 21.4l1.2-3.9A7.6 7.6 0 0 1 3.6 12a7.9 7.9 0 0 1 8.2-7.9A7.9 7.9 0 0 1 21 11.6z"/><path class="ico__accent" d="M8.6 11.9h.01M12.3 11.9h.01M16 11.9h.01" stroke-width="2.6"/></svg> Start an order with NATFISH AI</a>
+            <a class="btn btn--ai" href="#ai-embed" data-ai-open><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12.6a7.9 7.9 0 0 1-8.2 7.9 9 9 0 0 1-2.6-.4L4.6 21.4l1.2-3.9A7.6 7.6 0 0 1 3.6 12a7.9 7.9 0 0 1 8.2-7.9A7.9 7.9 0 0 1 21 11.6z"/><path class="ico__accent" d="M8.6 11.9h.01M12.3 11.9h.01M16 11.9h.01" stroke-width="2.6"/></svg> Start an order with NATFISH AI</a>
             <a class="btn btn--ghost" href="contact.html">Contact the NATFISH team</a>
           </div>
         </div>
