@@ -18,10 +18,21 @@ const others = (Object.keys(departments) as DepartmentId[])
   .map((id) => departments[id]);
 
 // Authentic client lifestyle photo behind each department header.
-const heroImageFor: Record<DepartmentId, { src: string; pos?: string }> = {
+// `mobile` is an optional portrait crop for narrow screens: a wide photograph
+// cover-cropped into a tall header loses its subject, so departments with a
+// clear subject supply a crop composed for portrait.
+const heroImageFor: Record<
+  DepartmentId,
+  { src: string; mobile?: string; pos?: string; alt?: string }
+> = {
   marine: { src: '/media/life/boat-wake.jpg', pos: 'center 40%' },
   fishing: { src: '/media/life/trolling-spread.jpg', pos: 'center 45%' },
-  diving: { src: '/media/life/reef-flats.jpg', pos: 'center 55%' },
+  diving: {
+    src: '/media/life/diving-turtle.jpg',
+    mobile: '/media/life/diving-turtle-mobile.jpg',
+    pos: 'center 50%',
+    alt: 'A diver swimming alongside a green sea turtle over the seagrass flats in Belize',
+  },
 };
 
 // group products by category id for anchored sections
@@ -37,7 +48,8 @@ const byCategory = d.categories.map((c) => ({
   lead={d.tagline}
   crumbs={[{ label: d.title }]}
   image={heroImageFor[dept].src}
-  imageAlt={`${d.title} at Duke Marine, Belize City`}
+  mobileImage={heroImageFor[dept].mobile}
+  imageAlt={heroImageFor[dept].alt ?? `${d.title} at Duke Marine, Belize City`}
   imagePosition={heroImageFor[dept].pos}
 >
   <div class="dhero__actions" data-reveal data-reveal-delay="180">
@@ -100,7 +112,7 @@ const byCategory = d.categories.map((c) => ({
             <div class="crossell__media">
               <img
                 src={heroImageFor[o.id].src}
-                alt={`${o.title} at Duke Marine, Belize City`}
+                alt={heroImageFor[o.id].alt ?? `${o.title} at Duke Marine, Belize City`}
                 class="crossell__img"
                 loading="lazy"
                 style={heroImageFor[o.id].pos ? `object-position:${heroImageFor[o.id].pos}` : undefined}

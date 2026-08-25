@@ -17,6 +17,8 @@ interface Props {
   title?: string;
   description?: string;
   image?: string;
+  /** Describes the share image. Defaults to a description of the brand card. */
+  imageAlt?: string;
   noindex?: boolean;
   solidHeader?: boolean;
   /** "website" for normal pages, "article" for blog posts. */
@@ -28,7 +30,8 @@ interface Props {
 const {
   title,
   description = site.description,
-  image = '/social-card.svg',
+  image = '/social-card.jpg',
+  imageAlt,
   noindex = false,
   solidHeader = false,
   ogType = 'website',
@@ -120,6 +123,17 @@ const articleLd = article
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={socialImage} />
+    <meta
+      property="og:image:alt"
+      content={imageAlt ?? `${site.name}, marine parts, sales and service in Belize City`}
+    />
+    {socialImage.endsWith('/social-card.jpg') && (
+      <>
+        <meta property="og:image:type" content="image/jpeg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+      </>
+    )}
     {article && <meta property="article:published_time" content={article.publishedTime} />}
     {article && <meta property="article:author" content={article.author} />}
     {article && article.section && <meta property="article:section" content={article.section} />}
