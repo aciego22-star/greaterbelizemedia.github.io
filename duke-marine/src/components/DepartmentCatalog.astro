@@ -25,7 +25,12 @@ const heroImageFor: Record<
   DepartmentId,
   { src: string; mobile?: string; pos?: string; alt?: string; ar?: number; arMobile?: number }
 > = {
-  marine: { src: '/media/life/boat-wake.jpg', pos: 'center 30%' },
+  // boat-wake.jpg is portrait, so a wide header crops it to a thin band. At 30%
+  // that band fell entirely in the sky above the horizon, which sits at about
+  // 52%. 66% puts the horizon along the top of the band and fills the rest with
+  // the wake. Phones are unaffected: there the header is narrower than the
+  // photograph, so it crops the width and the vertical point does nothing.
+  marine: { src: '/media/life/boat-wake.jpg', pos: 'center 66%' },
   fishing: {
     src: '/media/life/fishing-catch.jpg',
     mobile: '/media/life/fishing-catch-mobile.jpg',
