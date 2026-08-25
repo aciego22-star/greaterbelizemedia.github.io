@@ -29,7 +29,9 @@ const heroImageFor: Record<
   fishing: {
     src: '/media/life/fishing-catch.jpg',
     mobile: '/media/life/fishing-catch-mobile.jpg',
-    pos: 'center 30%',
+    // Centred: the wide file is composed around the photograph, so shifting the
+    // focal point away from the middle would cut it off again.
+    pos: 'center center',
     alt: 'An angler holding a kingfish aboard a boat offshore of Belize',
   },
   diving: {
