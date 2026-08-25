@@ -30,7 +30,11 @@ export const galleryGroups: GalleryGroup[] = [
     blurb: 'Customer catches and memorable days on Belize’s waters, shared by members of the Duke Marine community.',
     photos: [
       { src: '/media/life/wahoo-catch.jpg', alt: 'Angler on the boat holding up a big wahoo caught off Belize' },
+      { src: '/media/life/wahoo-landed.jpg', alt: 'Angler holding a big wahoo on the deck of a centre console off Belize' },
       { src: '/media/life/kingfish-lift.jpg', alt: 'Angler lifting a large kingfish aboard after the fight' },
+      { src: '/media/life/kingfish-catch.jpg', alt: 'Angler holding a kingfish beside the rod that caught it' },
+      { src: '/media/life/kingfish-boatside.jpg', alt: 'Angler holding a kingfish at the stern on the run back in' },
+      { src: '/media/life/wahoo-tuna-haul.jpg', alt: 'A wahoo and a morning of tuna laid out on the deck' },
       { src: '/media/life/bonito-catch.jpg', alt: 'Angler in a sun buff holding a fresh catch on the deck' },
     ],
   },
