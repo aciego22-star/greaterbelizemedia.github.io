@@ -26,7 +26,12 @@ const heroImageFor: Record<
   { src: string; mobile?: string; pos?: string; alt?: string }
 > = {
   marine: { src: '/media/life/boat-wake.jpg', pos: 'center 40%' },
-  fishing: { src: '/media/life/trolling-spread.jpg', pos: 'center 45%' },
+  fishing: {
+    src: '/media/life/fishing-catch.jpg',
+    mobile: '/media/life/fishing-catch-mobile.jpg',
+    pos: 'center 30%',
+    alt: 'An angler holding a kingfish aboard a boat offshore of Belize',
+  },
   diving: {
     src: '/media/life/diving-turtle.jpg',
     mobile: '/media/life/diving-turtle-mobile.jpg',
