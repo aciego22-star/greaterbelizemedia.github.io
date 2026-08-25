@@ -23,6 +23,8 @@ export const galleryGroups: GalleryGroup[] = [
       { src: '/media/life/trolling-spread.jpg', alt: 'Trolling rods set in the holders as the boat runs across open water' },
       { src: '/media/life/trolling-rods.jpg', alt: 'Trolling spread out the back of the boat under a bright Belize sky' },
       { src: '/media/life/boat-wake.jpg', alt: 'The wake trailing behind the boat across turquoise Caribbean water' },
+      { src: '/media/life/casting-flats.jpg', alt: 'Angler casting from the boat over the flats off Belize' },
+      { src: '/media/life/turtle-encounter.jpg', alt: 'A diver swimming alongside a green sea turtle over the seagrass flats' },
     ],
   },
   {
@@ -36,6 +38,8 @@ export const galleryGroups: GalleryGroup[] = [
       { src: '/media/life/kingfish-boatside.jpg', alt: 'Angler holding a kingfish at the stern on the run back in' },
       { src: '/media/life/wahoo-tuna-haul.jpg', alt: 'A wahoo and a morning of tuna laid out on the deck' },
       { src: '/media/life/bonito-catch.jpg', alt: 'Angler in a sun buff holding a fresh catch on the deck' },
+      { src: '/media/life/billfish-release.jpg', alt: 'A billfish brought alongside the boat and released off Belize' },
+      { src: '/media/life/lionfish-cull.jpg', alt: 'A morning of lionfish laid out on the dock after a cull' },
     ],
   },
   {
