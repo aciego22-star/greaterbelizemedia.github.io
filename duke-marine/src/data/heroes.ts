@@ -21,6 +21,13 @@ export interface PageHeroImage {
   /** Intrinsic pixel size of `src`; supplied to reduce layout shift. */
   width?: number;
   height?: number;
+  /**
+   * Aspect ratio of `src`. Supplying it makes the header take the shape of the
+   * picture, so the whole frame shows instead of a crop of it.
+   */
+  aspect?: number;
+  /** Same, for `mobileSrc`. */
+  aspectMobile?: number;
 }
 
 export const pageHeroes = {

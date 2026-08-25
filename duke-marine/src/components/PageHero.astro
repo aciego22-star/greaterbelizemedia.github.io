@@ -24,6 +24,15 @@ interface Props {
   /** Intrinsic size of the desktop source; supplied to reduce layout shift. */
   imageWidth?: number;
   imageHeight?: number;
+  /**
+   * Aspect ratio of the header artwork, e.g. 2.224. Supplying it makes the
+   * header take the shape of the picture instead of forcing the picture into a
+   * fixed box, so the whole frame is shown rather than a crop of it. The header
+   * still grows if the wording needs more room than the shape allows.
+   */
+  aspect?: number;
+  /** Same, for the narrow crop served below 640px. */
+  aspectMobile?: number;
 }
 const {
   eyebrow,
@@ -37,6 +46,8 @@ const {
   mobileImage,
   imageWidth,
   imageHeight,
+  aspect,
+  aspectMobile,
 } = Astro.props;
 
 // Explicit props take precedence; otherwise fall back to the shared config.
@@ -46,9 +57,13 @@ const alt = imageAlt ?? hero?.alt ?? '';
 const position = imagePosition ?? hero?.position ?? 'center';
 const w = imageWidth ?? hero?.width;
 const h = imageHeight ?? hero?.height;
+
+const ar = aspect ?? hero?.aspect;
+const arMobile = aspectMobile ?? hero?.aspectMobile ?? ar;
+const arStyle = ar ? `--hero-ar:${ar}; --hero-ar-m:${arMobile}` : undefined;
 ---
 
-<section class="page-hero on-dark">
+<section class:list={['page-hero', 'on-dark', { 'page-hero--whole': !!ar }]} style={arStyle}>
   {
     src ? (
       <div class="page-hero__bg" aria-hidden={alt ? undefined : 'true'}>
@@ -95,6 +110,21 @@ const h = imageHeight ?? hero?.height;
 </section>
 
 <style>
+  /* Takes the shape of the picture so the whole frame shows rather than a
+     crop. aspect-ratio yields to the content, so the header still grows if the
+     wording needs more height than the picture's shape gives it. */
+  /* min-height rather than aspect-ratio: the header clips its overflow, so a
+     fixed aspect would hold a box shorter than the wording needs and push the
+     text out over the section below. A minimum lets the shape be honoured
+     wherever there is room and simply gives way where there is not. */
+  .page-hero--whole {
+    min-height: calc(100vw / var(--hero-ar));
+  }
+  @media (max-width: 640px) {
+    .page-hero--whole {
+      min-height: calc(100vw / var(--hero-ar-m, var(--hero-ar)));
+    }
+  }
   .page-hero {
     position: relative;
     padding-top: calc(var(--header-offset) + clamp(3rem, 7vw, 6rem));

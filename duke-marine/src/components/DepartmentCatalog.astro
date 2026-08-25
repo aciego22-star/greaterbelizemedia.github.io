@@ -23,15 +23,17 @@ const others = (Object.keys(departments) as DepartmentId[])
 // clear subject supply a crop composed for portrait.
 const heroImageFor: Record<
   DepartmentId,
-  { src: string; mobile?: string; pos?: string; alt?: string }
+  { src: string; mobile?: string; pos?: string; alt?: string; ar?: number; arMobile?: number }
 > = {
   marine: { src: '/media/life/boat-wake.jpg', pos: 'center 30%' },
   fishing: {
     src: '/media/life/fishing-catch.jpg',
     mobile: '/media/life/fishing-catch-mobile.jpg',
-    // The photograph is portrait and this header is a wide band, so the crop
-    // sits high enough to keep the angler's head and the fish in frame.
-    pos: 'center 22%',
+    // Both files are composed for the shape they serve, so the header takes
+    // their shape and shows the whole frame rather than cropping into it.
+    ar: 1870 / 841,
+    arMobile: 941 / 1672,
+    pos: 'center center',
     alt: 'An angler holding a kingfish aboard a boat offshore of Belize',
   },
   diving: {
@@ -56,6 +58,8 @@ const byCategory = d.categories.map((c) => ({
   crumbs={[{ label: d.title }]}
   image={heroImageFor[dept].src}
   mobileImage={heroImageFor[dept].mobile}
+  aspect={heroImageFor[dept].ar}
+  aspectMobile={heroImageFor[dept].arMobile}
   imageAlt={heroImageFor[dept].alt ?? `${d.title} at Duke Marine, Belize City`}
   imagePosition={heroImageFor[dept].pos}
 >
