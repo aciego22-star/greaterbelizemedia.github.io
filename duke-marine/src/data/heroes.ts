@@ -32,22 +32,26 @@ export interface PageHeroImage {
 
 export const pageHeroes = {
   /**
-   * GALLERY HEADER — INTERIM APPROVED SITE ASSET.
+   * GALLERY HEADER — CLIENT-SUPPLIED, COMPOSED FOR THE SHAPES IT SERVES.
    *
-   * gallery-2.jpg is already published in the Duke Marine gallery, is
-   * landscape (1284x766) and carries no embedded promotional wording, so it
-   * suits a wide header. It replaced life/sandbar-sail.jpg, which is portrait
-   * (1200x1600) and cropped poorly here.
+   * Two files: a wide one for desktop and a portrait one for phones. Because
+   * `aspect` is given, the header takes the shape of whichever file it is
+   * showing, so the whole frame appears instead of a crop of it.
    *
-   * AWAITING A POSSIBLE FINAL CLIENT-SUPPLIED REPLACEMENT: swap `src` (and add
-   * `mobileSrc`) once Duke Marine approves a dedicated gallery photograph.
+   * This replaced gallery-2.jpg, which stays in use inside the gallery grid.
    */
   gallery: {
-    src: '/media/gallery-2.jpg',
-    alt: 'Marine pumps and boat parts on the shelves at Duke Marine in Belize City',
-    position: 'center 42%',
-    width: 1284,
-    height: 766,
+    src: '/media/gallery-header.jpg',
+    mobileSrc: '/media/gallery-header-mobile.jpg',
+    alt: 'An angler rigging a skirted trolling lure on the boat off Belize',
+    // Only has an effect where the header has to crop, which is at tablet
+    // widths where this page's longer heading needs more height than the wide
+    // file's shape gives. Biased right so the angler stays in frame there.
+    position: '92% center',
+    width: 1870,
+    height: 841,
+    aspect: 1870 / 841,
+    aspectMobile: 941 / 1672,
   },
 
   /**
