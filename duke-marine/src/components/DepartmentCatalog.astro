@@ -25,19 +25,19 @@ const heroImageFor: Record<
   DepartmentId,
   { src: string; mobile?: string; pos?: string; alt?: string }
 > = {
-  marine: { src: '/media/life/boat-wake.jpg', pos: 'center 40%' },
+  marine: { src: '/media/life/boat-wake.jpg', pos: 'center 30%' },
   fishing: {
     src: '/media/life/fishing-catch.jpg',
     mobile: '/media/life/fishing-catch-mobile.jpg',
-    // Centred: the wide file is composed around the photograph, so shifting the
-    // focal point away from the middle would cut it off again.
-    pos: 'center center',
+    // The photograph is portrait and this header is a wide band, so the crop
+    // sits high enough to keep the angler's head and the fish in frame.
+    pos: 'center 22%',
     alt: 'An angler holding a kingfish aboard a boat offshore of Belize',
   },
   diving: {
     src: '/media/life/diving-turtle.jpg',
     mobile: '/media/life/diving-turtle-mobile.jpg',
-    pos: 'center 50%',
+    pos: 'center 30%',
     alt: 'A diver swimming alongside a green sea turtle over the seagrass flats in Belize',
   },
 };
