@@ -1,0 +1,94 @@
+[
+  {
+    "id": "g-01",
+    "kind": "photo",
+    "title": "Front counter and dispensary",
+    "filters": ["inside-cosmic"],
+    "src": "",
+    "alt": "Placeholder — photograph of the Cosmic Pharmacy front counter pending",
+    "aspect": "landscape",
+    "sourceNote": "Final asset: client photograph, inside the pharmacy"
+  },
+  {
+    "id": "g-02",
+    "kind": "photo",
+    "title": "Supplement wall",
+    "filters": ["inside-cosmic", "products-wellness"],
+    "src": "",
+    "alt": "Placeholder — photograph of the supplement shelves pending",
+    "aspect": "portrait",
+    "sourceNote": "Final asset: client photograph, supplement shelves"
+  },
+  {
+    "id": "g-03",
+    "kind": "photo",
+    "title": "Wellness picks of the week",
+    "filters": ["products-wellness", "social-highlights"],
+    "src": "",
+    "alt": "Placeholder — wellness product feature photograph pending",
+    "aspect": "square",
+    "sourceNote": "Final asset: approved social photograph"
+  },
+  {
+    "id": "g-04",
+    "kind": "photo",
+    "title": "Serving Belize City",
+    "filters": ["community"],
+    "src": "",
+    "alt": "Placeholder — community service photograph pending",
+    "aspect": "landscape",
+    "sourceNote": "Final asset: approved community photograph"
+  },
+  {
+    "id": "g-05",
+    "kind": "video",
+    "title": "A look around Cosmic",
+    "filters": ["videos", "inside-cosmic"],
+    "src": "",
+    "poster": "",
+    "alt": "Placeholder — short walkthrough video pending",
+    "aspect": "portrait",
+    "sourceNote": "Final asset: client-owned short video with cleared audio"
+  },
+  {
+    "id": "g-06",
+    "kind": "photo",
+    "title": "Beauty and personal-care corner",
+    "filters": ["inside-cosmic", "products-wellness"],
+    "src": "",
+    "alt": "Placeholder — beauty and personal-care display photograph pending",
+    "aspect": "portrait",
+    "sourceNote": "Final asset: client photograph, front-shop display"
+  },
+  {
+    "id": "g-07",
+    "kind": "photo",
+    "title": "Cosmic PMOS collection",
+    "filters": ["products-wellness", "social-highlights"],
+    "src": "",
+    "alt": "Placeholder — Cosmic PMOS collection photograph pending",
+    "aspect": "square",
+    "sourceNote": "Final asset: approved social photograph of the PMOS kits"
+  },
+  {
+    "id": "g-08",
+    "kind": "video",
+    "title": "Cosmic highlights",
+    "filters": ["videos", "social-highlights"],
+    "src": "",
+    "poster": "",
+    "alt": "Placeholder — social highlight video pending",
+    "aspect": "portrait",
+    "sourceNote": "Final asset: client-owned social video with cleared audio"
+  },
+  {
+    "id": "g-09",
+    "kind": "photo",
+    "title": "Out-district orders on their way",
+    "filters": ["community", "social-highlights"],
+    "src": "",
+    "alt": "Placeholder — shipping and delivery photograph pending",
+    "aspect": "landscape",
+    "sourceNote": "Final asset: approved photograph of packed orders"
+  }
+]

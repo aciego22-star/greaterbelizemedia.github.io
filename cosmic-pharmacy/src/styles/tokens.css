@@ -1,0 +1,67 @@
+/* Cosmic Pharmacy design tokens.
+   Single-theme committed design: dark cosmic canvas + light clinical panels.
+   Every color is explicit; nothing inherits from the host theme. */
+:root {
+  /* Cosmic canvas */
+  --midnight: #070b22;
+  --midnight-2: #0d1338;
+  --midnight-3: #141b4d;
+
+  /* Brand */
+  --cosmic-blue: #3d6df2;
+  --cosmic-blue-deep: #2b51c4;
+  --cosmic-blue-soft: rgba(61, 109, 242, 0.1);
+  --magenta: #d6409f;
+  --magenta-deep: #b02f83;
+  --magenta-soft: rgba(214, 64, 159, 0.1);
+
+  /* Light clinical surfaces */
+  --panel: #ffffff;
+  --panel-cool: #f4f6fb;
+  --lavender: #e9ebfc;
+  --line-light: #dfe3f0;
+
+  /* Ink on light */
+  --ink: #151a33;
+  --ink-soft: #4c5370;
+  --ink-faint: #7c839f;
+
+  /* Ink on dark */
+  --star-white: #f2f4ff;
+  --star-dim: #aab1d6;
+  --line-dark: rgba(170, 177, 214, 0.22);
+
+  /* Semantic (separate from accent) */
+  --ok: #1e8e5a;
+  --ok-soft: #e2f4ea;
+  --warn: #a06a00;
+  --warn-soft: #faf0da;
+  --danger: #c23a3a;
+  --danger-soft: #fbe9e9;
+
+  /* Type */
+  --font-display: 'Bricolage Grotesque', 'Avenir Next', 'Segoe UI', sans-serif;
+  --font-body: 'Instrument Sans', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+
+  /* Scale */
+  --text-xs: 0.78rem;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.15rem;
+  --text-xl: clamp(1.4rem, 2.4vw, 1.8rem);
+  --text-2xl: clamp(1.8rem, 3.4vw, 2.5rem);
+  --text-hero: clamp(2.1rem, 5vw, 3.4rem);
+
+  /* Shape */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-pill: 999px;
+  --shadow-panel: 0 18px 50px rgba(7, 11, 34, 0.28);
+  --shadow-card: 0 6px 24px rgba(21, 26, 51, 0.08);
+  --shadow-card-hover: 0 14px 34px rgba(21, 26, 51, 0.14);
+
+  /* Layout */
+  --wrap: 1160px;
+  --header-h: 64px;
+}
