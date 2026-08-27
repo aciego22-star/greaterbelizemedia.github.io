@@ -374,6 +374,14 @@ The boxes are photographed on Cosmic's own nebula backdrop, so the card tiles
 keep that background rather than attempting a cutout, which would have looked
 rough at this source resolution.
 
+The section closes with `kits-in-hand.webp`, the real kits held by the
+pharmacist, beside the campaign's own sign-off.
+
+**One wording change from her campaign.** Her graphic reads "Designed for you in
+mind", which mixes "designed for you" with "with you in mind". The site uses
+"designed with you in mind". Revert it in `src/pages/Home.tsx` (`.kits-headline`)
+if she wants her exact phrasing kept.
+
 ## 16. Add-to-cart meteorite
 
 `src/components/CartMeteor.tsx` fires a meteorite from the add-to-cart button

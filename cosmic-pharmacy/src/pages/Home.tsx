@@ -11,6 +11,7 @@ import kitMetabolic from '../assets/kits/kit-metabolic.webp';
 import kitCraving from '../assets/kits/kit-craving.webp';
 import kitCycle from '../assets/kits/kit-cycle.webp';
 import kitsBoxes from '../assets/kits/kits-boxes.webp';
+import kitsInHand from '../assets/kits/kits-in-hand.webp';
 import { whatsappUrl } from '../lib/whatsapp';
 import { usePageMeta } from '../lib/usePageMeta';
 
@@ -139,23 +140,38 @@ export function Home() {
             ))}
           </ul>
 
-          <p className="kits-note">
-            Guided by a pharmacist, here to simplify your wellness. {business.pharmacistFullName} confirms what is in each kit, whether it
-            suits you, and the price, before anything is final.
-          </p>
+          <div className="kits-close">
+            <figure className="kits-photo">
+              <img
+                src={kitsInHand}
+                alt={`${business.pharmacistFullName} holding the Skin Balance and Craving Control kits at ${business.name}`}
+                width={900}
+                height={543}
+                loading="lazy"
+                decoding="async"
+              />
+            </figure>
 
-          <div className="section-cta-row">
-            <Link className="btn btn-magenta" to="/products/womens-wellness">
-              See the PMOS Collection
-            </Link>
-            <a
-              className="btn btn-outline-light"
-              href={whatsappUrl('Hello Cosmic Pharmacy! I would like to ask about the wellness kits.')}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Ask about a kit
-            </a>
+            <div className="kits-close-copy">
+              <p className="kits-headline">Your wellness kit, designed with you in mind, available only at Cosmic Pharmacy.</p>
+              <p className="kits-note">
+                Guided by a pharmacist, here to simplify your wellness. {business.pharmacistFullName} confirms what is in each kit, whether
+                it suits you, and the price, before anything is final.
+              </p>
+              <div className="section-cta-row">
+                <Link className="btn btn-magenta" to="/products/womens-wellness">
+                  Let's get started on yours
+                </Link>
+                <a
+                  className="btn btn-outline-light"
+                  href={whatsappUrl('Hello Cosmic Pharmacy! I would like to ask about the wellness kits.')}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Ask about a kit
+                </a>
+              </div>
+            </div>
           </div>
         </section>
 
