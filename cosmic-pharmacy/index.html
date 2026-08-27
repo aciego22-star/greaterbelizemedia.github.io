@@ -2,6 +2,26 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      /* Sets the time-of-day sky before first paint, so the page never flashes
+         the wrong theme. Mirrors the schedule in src/lib/theme.ts — change both
+         together. Wrapped in try/catch so a locked-down browser falls back to
+         the default day sky rather than blocking the render. */
+      (function () {
+        try {
+          var h = new Date().getHours();
+          var t = h < 5 ? 'night' : h < 8 ? 'sunrise' : h < 17 ? 'day' : h < 20 ? 'dusk' : 'night';
+          document.documentElement.setAttribute('data-theme', t);
+          var bar = { sunrise: '#fff7f9', day: '#ffffff', dusk: '#1f0f33', night: '#0b0616' }[t];
+          document.addEventListener('DOMContentLoaded', function () {
+            var m = document.querySelector('meta[name="theme-color"]');
+            if (m) m.setAttribute('content', bar);
+          });
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'day');
+        }
+      })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cosmic Pharmacy | Medicine · Health · Beauty | Belize City</title>
     <meta

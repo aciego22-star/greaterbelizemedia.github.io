@@ -276,7 +276,77 @@ camera files, drop a 400x400 (or larger) WebP at
 At that point it is worth generating a second, larger derivative for the detail
 page, which the current source resolution cannot justify.
 
-## 14. Footer safety notice (removed on request)
+## 14. Time-of-day skies
+
+The site changes sky with the visitor's local clock. Four skies, all drawn from
+the client's own palette rather than from literal sunrise colours, so nothing
+warm is introduced and the brand holds all day.
+
+| Theme | Window | Sky |
+|---|---|---|
+| `sunrise` | 05:00-08:00 | Rose at the horizon lifting into a cool lilac |
+| `day` | 08:00-17:00 | The bright cosmic white |
+| `dusk` | 17:00-20:00 | Magenta bleeding into violet, from her reel |
+| `night` | 20:00-05:00 | Violet black, from her coming-soon page |
+
+Belize sits at about 17 degrees north and keeps UTC-6 all year with no daylight
+saving, so sunrise only drifts between roughly 05:25 and 06:25 and sunset
+between 17:25 and 18:35. Fixed windows stay accurate there year-round, which
+they would not in a temperate country.
+
+### How it is built
+
+**Only the sky changes. Content cards do not.** White panels, product
+photography and the ink inside them are identical in all four themes, which is
+why the 231-product catalogue never needed a second design or a second contrast
+pass.
+
+- `src/styles/tokens.css` holds the four palettes under `:root[data-theme='...']`.
+  Each block overrides the sky, the ink that sits directly on it, and the card
+  shadows, which need to be deeper to lift a white panel off a dark ground.
+- `--ink-card` and friends hold the never-changing card values, so a light
+  surface nested inside a dark region (the pale hero button, the social
+  circles) can reset back to them.
+- Regions that sit on the sky rather than on a card - the header, the footer,
+  the hero copy and the carousel controls - re-point `--ink` and friends to the
+  `--on-sky` set. Every rule inside them still reads `var(--ink)` and simply
+  resolves to the right value, so no rule needed rewriting. In the two light
+  themes the two sets are identical, so nothing changes by day.
+- The header also re-points `--panel`, so the Products dropdown and the mobile
+  nav follow the dark bar instead of staying white against it.
+- `src/lib/theme.ts` owns the schedule. It wakes exactly on the next boundary
+  rather than polling, and re-checks on `visibilitychange` because background
+  tabs throttle timers and a sleeping phone would otherwise wake still showing
+  dusk.
+- The inline script at the top of `index.html` sets `data-theme` before first
+  paint, so the page never flashes the wrong sky. **It duplicates the schedule -
+  change both together.**
+- `src/components/CosmicCanvas.tsx` holds one `SKIES` palette per theme and
+  watches `data-theme` with a `MutationObserver`, so a change swaps colours on
+  the next frame without regenerating the stars, which would make them jump.
+
+### Deliberate deviations from the client's reference
+
+Her coming-soon page renders the social icons as dark circles with a tinted
+ring. Here they stay white circles in all four themes. On a dark circle the
+black portion of the TikTok mark disappears, and white circles are consistent
+with the light-cards-on-dark-sky direction she chose. Easy to reverse if she
+prefers her original treatment, but each icon would then need restyling.
+
+### Verification
+
+`npm run test` covers the schedule: full 24-hour coverage, the exact boundary
+hours, and the wake interval including the overnight rollover. Contrast is
+swept across 13 routes x 4 themes (52 page loads) and all sampled text passes
+WCAG AA. A browser check freezes the clock at 03:15, 06:15, 12:15, 18:15 and
+22:15 and asserts the right sky is set both before paint and after React mounts.
+
+### Changing the windows
+
+Edit `SCHEDULE` in `src/lib/theme.ts` and the mirrored line in `index.html`.
+The tests read `SCHEDULE`, so they follow automatically.
+
+## 15. Footer safety notice (removed on request)
 
 The general "Product information is provided for general reference..." line was
 removed from the footer at the client's request. The build brief (section 15)

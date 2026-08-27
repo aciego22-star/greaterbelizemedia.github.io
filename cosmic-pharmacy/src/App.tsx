@@ -3,6 +3,7 @@ import { HashRouter, Route, Routes, useLocation } from 'react-router-dom';
 import { BasketProvider } from './basket/BasketProvider';
 import { BasketDrawer } from './basket/BasketDrawer';
 import { CosmicCanvas } from './components/CosmicCanvas';
+import { useTimeOfDayTheme } from './lib/theme';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { Home } from './pages/Home';
@@ -27,6 +28,10 @@ function ScrollToTop() {
 }
 
 export default function App() {
+  // Keeps <html data-theme> in step with the visitor's clock for as long as the
+  // tab is open. The initial value is already set pre-paint by index.html.
+  useTimeOfDayTheme();
+
   return (
     <HashRouter>
       <BasketProvider>

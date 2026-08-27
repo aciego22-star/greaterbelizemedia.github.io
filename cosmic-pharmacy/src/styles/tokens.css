@@ -34,16 +34,37 @@
   --blush: #fdeff5;
   --line-light: #dce8f7;
 
-  /* Ink */
-  --ink: #10254a;
-  --ink-soft: #47597a;
-  --ink-faint: #606b83;
+  /* Ink on a white content card. These never change with the time of day, so
+     any light surface nested inside a sky region can reset back to them. */
+  --ink-card: #10254a;
+  --ink-soft-card: #47597a;
+  --ink-faint-card: #606b83;
+  --line-card: #dce8f7;
+  --link-card: #2438b6;
+  --accent-card: #c62a68;
 
-  /* Ink used directly on the cosmic sky (kept under the old names so every
-     component reads the same tokens). */
-  --star-white: #10254a;
+  /* Ink */
+  --ink: var(--ink-card);
+  --ink-soft: var(--ink-soft-card);
+  --ink-faint: var(--ink-faint-card);
+
+  /* Ink used directly on the cosmic sky, outside the white content cards.
+     These are the tokens that flip with the time of day. */
+  --on-sky: #10254a;
+  --on-sky-soft: #47597a;
+  --on-sky-faint: #606b83;
+  --on-sky-line: #dce8f7;
+  --on-sky-link: #2438b6;
+  --on-sky-accent: #c62a68;
+  --star-white: var(--on-sky);
   --star-dim: #51658a;
   --line-dark: rgba(22, 121, 209, 0.2);
+
+  /* Surfaces that sit on the sky rather than on a card. */
+  --header-bg: rgba(255, 255, 255, 0.86);
+  --header-panel: #ffffff;
+  --footer-bg-a: rgba(255, 255, 255, 0.5);
+  --footer-bg-b: rgba(234, 242, 253, 0.9);
 
   /* Legacy surface names, now light */
   --midnight: var(--sky);
@@ -83,4 +104,96 @@
   /* Layout */
   --wrap: 1160px;
   --header-h: 96px;
+}
+
+/* ============================================================================
+   Time-of-day skies
+   ----------------------------------------------------------------------------
+   Four skies drawn from the client's own palette rather than from literal
+   sunrise colours: pale rose, bright white, magenta-into-violet, then violet
+   black. Nothing warm is introduced, so the brand stays coherent all day.
+
+   Only the sky and the things sitting directly on it change. Content cards
+   keep their white panel and dark ink in every theme, which is why the
+   catalogue, its photography and its typography never need a second design.
+
+   `data-theme` is set on <html> before first paint by the inline script in
+   index.html, then kept current by src/lib/theme.ts.
+   ========================================================================= */
+
+/* ---- Sunrise, 05:00-08:00. Rose at the horizon lifting into a cool sky. --- */
+:root[data-theme='sunrise'] {
+  --sky: #fff7f9;
+  --sky-2: #fdf2f7;
+  --sky-3: #f3f2fd;
+
+  --panel-cool: #fdf5f9;
+  --lavender: #f7eef8;
+  --blush: #fdeaf2;
+  --line-light: #f2dfe8;
+
+  --on-sky-line: #f2dfe8;
+  --header-bg: rgba(255, 250, 252, 0.88);
+  --header-panel: #fffafc;
+  --footer-bg-a: rgba(255, 247, 250, 0.55);
+  --footer-bg-b: rgba(250, 232, 241, 0.92);
+}
+
+/* ---- Day, 08:00-17:00. The bright cosmic white, unchanged. --------------- */
+:root[data-theme='day'] {
+  /* Inherits the :root defaults above. Declared so the attribute is always
+     meaningful and a future day-only override has somewhere to live. */
+  --sky: #ffffff;
+}
+
+/* ---- Dusk, 17:00-20:00. Magenta bleeding into violet: her reel. ---------- */
+:root[data-theme='dusk'] {
+  --sky: #1f0f33;
+  --sky-2: #33144a;
+  --sky-3: #48193f;
+
+  /* Text and rules on the sky invert; cards below do not. */
+  --on-sky: #fbf6fd;
+  --on-sky-soft: #d7c8e6;
+  --on-sky-faint: #bcaacf;
+  --on-sky-line: rgba(238, 210, 246, 0.22);
+  --on-sky-link: #9fd0ff;
+  --on-sky-accent: #ff9dc6;
+  --star-dim: #cbb8dd;
+  --line-dark: rgba(238, 210, 246, 0.24);
+
+  --header-bg: rgba(26, 12, 43, 0.86);
+  --header-panel: #241041;
+  --footer-bg-a: rgba(31, 15, 51, 0.55);
+  --footer-bg-b: rgba(53, 20, 68, 0.92);
+
+  /* White cards need a real shadow to lift off a dark ground. */
+  --shadow-panel: 0 22px 54px rgba(0, 0, 0, 0.45);
+  --shadow-card: 0 6px 22px rgba(0, 0, 0, 0.38);
+  --shadow-card-hover: 0 16px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* ---- Night, 20:00-05:00. Violet black: her coming-soon page. ------------- */
+:root[data-theme='night'] {
+  --sky: #0b0616;
+  --sky-2: #120a20;
+  --sky-3: #1a0c24;
+
+  --on-sky: #f4f1f8;
+  --on-sky-soft: #c6bad6;
+  --on-sky-faint: #a79ab8;
+  --on-sky-line: rgba(220, 205, 240, 0.18);
+  --on-sky-link: #93c8ff;
+  --on-sky-accent: #ff92c0;
+  --star-dim: #b9aecb;
+  --line-dark: rgba(220, 205, 240, 0.2);
+
+  --header-bg: rgba(11, 6, 22, 0.88);
+  --header-panel: #140b22;
+  --footer-bg-a: rgba(11, 6, 22, 0.6);
+  --footer-bg-b: rgba(26, 12, 36, 0.94);
+
+  --shadow-panel: 0 22px 54px rgba(0, 0, 0, 0.55);
+  --shadow-card: 0 6px 22px rgba(0, 0, 0, 0.45);
+  --shadow-card-hover: 0 16px 40px rgba(0, 0, 0, 0.6);
 }

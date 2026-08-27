@@ -17,11 +17,44 @@ main,
 }
 
 /* ============ Header ============ */
+
+/* The header and footer sit on the cosmic sky rather than on a content card,
+   so they follow the time-of-day theme while cards stay light. Re-pointing the
+   ink tokens here means every rule below keeps reading var(--ink) and simply
+   resolves to the right value; in the two light themes these are identical to
+   the defaults, so nothing changes by day. --panel is redirected too, so the
+   Products dropdown and the mobile nav panel follow the header rather than
+   staying white against a dark bar. */
+.site-header,
+.site-footer,
+.hero-copy,
+.hero-controls {
+  --ink: var(--on-sky);
+  --ink-soft: var(--on-sky-soft);
+  --ink-faint: var(--on-sky-faint);
+  --line-light: var(--on-sky-line);
+  --cosmic-blue-deep: var(--on-sky-link);
+  --magenta-deep: var(--on-sky-accent);
+}
+
+/* Light surfaces nested inside a sky region reset to card ink, so a pale pill
+   button on a dark bar keeps its dark label instead of inheriting the sky's. */
+.hero-copy .btn,
+.site-footer .social-link {
+  --ink: var(--ink-card);
+  --ink-soft: var(--ink-soft-card);
+  --ink-faint: var(--ink-faint-card);
+  --line-light: var(--line-card);
+  --cosmic-blue-deep: var(--link-card);
+  --magenta-deep: var(--accent-card);
+}
+
 .site-header {
+  --panel: var(--header-panel);
   position: sticky;
   top: 0;
   z-index: 60;
-  background: rgba(255, 255, 255, 0.86);
+  background: var(--header-bg);
   backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--line-light);
 }
@@ -1917,7 +1950,7 @@ a.contact-row .contact-row-value {
 
 /* ============ Footer ============ */
 .site-footer {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(234, 242, 253, 0.9));
+  background: linear-gradient(180deg, var(--footer-bg-a), var(--footer-bg-b));
   border-top: 1px solid var(--line-light);
   color: var(--ink-soft);
   padding: clamp(2.4rem, 5vw, 3.6rem) 0 1.6rem;
@@ -2182,7 +2215,7 @@ a.contact-row .contact-row-value {
     right: 0;
     z-index: 70;
     display: none;
-    background: #ffffff;
+    background: var(--panel);
     border-top: 1px solid var(--line-light);
     border-bottom: 1px solid var(--line-dark);
     box-shadow: 0 24px 46px rgba(16, 37, 74, 0.16);
