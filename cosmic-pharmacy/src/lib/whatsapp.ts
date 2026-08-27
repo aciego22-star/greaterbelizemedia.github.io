@@ -8,7 +8,7 @@ export const fulfilmentLabels: Record<FulfilmentOption, string> = {
   pickup: 'Pick up at Cosmic Pharmacy',
   'belize-city-delivery': 'Belize City delivery',
   'out-district-shipping': 'Out-district shipping',
-  'island-shipping': 'Main-island shipping'
+  'island-shipping': 'Shipping to the Cayes'
 };
 
 export function whatsappUrl(message: string): string {

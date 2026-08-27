@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useBasket } from '../basket/BasketProvider';
 import { business } from '../data/business';
-import logoWhite from '../assets/brand/cosmic-pharmacy-logo-white.svg';
-import iconWhite from '../assets/brand/cosmic-pharmacy-icon-white.svg';
+import logoPrimary from '../assets/brand/cosmic-pharmacy-logo-primary.svg';
+import iconPrimary from '../assets/brand/cosmic-pharmacy-icon.svg';
 
 const productPages = [
   { to: '/products/supplements', label: 'Supplements' },
@@ -59,8 +59,8 @@ export function Header() {
         <Link to="/" className="brand" aria-label={`${business.name}, ${business.tagline}. Go to the home page`}>
           {/* Full horizontal lockup where there is room; the standalone mark below that,
               per the logo pack's minimum-width rule. */}
-          <img className="brand-logo" src={logoWhite} alt={`${business.name}. ${business.tagline}`} width={232} height={83} />
-          <img className="brand-icon" src={iconWhite} alt={business.name} width={40} height={46} />
+          <img className="brand-logo" src={logoPrimary} alt={`${business.name}. ${business.tagline}`} width={232} height={83} />
+          <img className="brand-icon" src={iconPrimary} alt={business.name} width={40} height={46} />
         </Link>
 
         <nav className={`main-nav ${menuOpen ? 'open' : ''}`} id="main-nav" aria-label="Main navigation">

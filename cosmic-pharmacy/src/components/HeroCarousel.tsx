@@ -89,7 +89,7 @@ export function HeroCarousel() {
                   )}
                 </div>
                 {i === 0 && (
-                  <p className="hero-supportline">Pharmacist-guided service · WhatsApp ordering · Out-district and island shipping</p>
+                  <p className="hero-supportline">Pharmacist-guided service · WhatsApp ordering · Out-district and Cayes shipping</p>
                 )}
               </div>
             </div>

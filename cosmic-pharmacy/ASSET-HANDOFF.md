@@ -117,11 +117,29 @@ The client's logo pack is installed and in use:
 - `public/favicon.ico`, `icon-192.png`, `icon-512.png` and
   `apple-touch-icon-180.png` come straight from the pack's `web/` folder.
 
-Placement follows the pack's rules: the white horizontal lockup on the dark
-header and footer, and the standalone white mark below 1000 px where the
-lockup would fall under its minimum legible width. The header lockup renders
-at 232 px wide against the pack's "approximately 240 px" minimum; confirm with
-the client if they want it larger (that would mean a taller sticky header).
+Placement: the full-colour horizontal lockup (`cosmic-pharmacy-logo-primary.svg`,
+the pack's original file, unmodified) sits on the header and footer, with the
+standalone colour mark below 1000 px where the lockup would fall under its
+minimum legible width. The header lockup renders at 232 px wide against the
+pack's "approximately 240 px" minimum; confirm with the client if they want it
+larger (that would mean a taller sticky header).
+
+## 10. Colour system
+
+The site sits on a bright cosmic sky: a near-white ground carrying blue and
+pink starlight, with white content panels floating on it. `src/styles/tokens.css`
+splits the palette in two:
+
+- `--brand-blue` (#1679D1), `--brand-pink` (#EA4F8D), `--cyan` and `--brand-navy`
+  are the logo pack's exact values, used for the logo, the starfield and other
+  decorative work.
+- `--cosmic-blue` (#1470C9), `--magenta-deep` (#C62A68) and `--whatsapp` (#198446)
+  are the same hues nudged just far enough to clear WCAG AA contrast when they
+  carry white text on buttons and badges.
+
+Every sampled piece of text across all 13 routes passes WCAG AA at these values.
+If the client wants the brighter hues on buttons, the trade-off is contrast:
+white text on #EA4F8D is only 3.5:1 against the 4.5:1 minimum.
 
 ## 9. Social links
 

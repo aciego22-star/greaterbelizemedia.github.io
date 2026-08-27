@@ -26,8 +26,8 @@ body {
   font-family: var(--font-body);
   font-size: var(--text-md);
   line-height: 1.6;
-  color: var(--star-white);
-  background: var(--midnight);
+  color: var(--ink);
+  background: var(--sky);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
@@ -135,7 +135,7 @@ textarea {
 .btn-primary {
   background: var(--cosmic-blue);
   color: #ffffff;
-  box-shadow: 0 8px 22px rgba(61, 109, 242, 0.35);
+  box-shadow: 0 8px 20px rgba(22, 121, 209, 0.3);
 }
 
 .btn-primary:hover {
@@ -143,23 +143,24 @@ textarea {
 }
 
 .btn-magenta {
-  background: var(--magenta);
+  background: var(--magenta-deep);
   color: #ffffff;
-  box-shadow: 0 8px 22px rgba(214, 64, 159, 0.3);
+  box-shadow: 0 8px 20px rgba(234, 79, 141, 0.3);
 }
 
 .btn-magenta:hover {
-  background: var(--magenta-deep);
+  background: var(--magenta-darker);
 }
 
 .btn-outline-dark {
-  background: transparent;
-  color: var(--star-white);
-  border-color: var(--line-dark);
+  background: rgba(255, 255, 255, 0.75);
+  color: var(--cosmic-blue-deep);
+  border-color: var(--cosmic-blue);
 }
 
 .btn-outline-dark:hover {
-  border-color: var(--star-white);
+  background: #ffffff;
+  border-color: var(--cosmic-blue-deep);
 }
 
 .btn-outline-light {
@@ -174,13 +175,13 @@ textarea {
 }
 
 .btn-whatsapp {
-  background: #1f9d55;
+  background: var(--whatsapp);
   color: #ffffff;
-  box-shadow: 0 8px 22px rgba(31, 157, 85, 0.32);
+  box-shadow: 0 8px 20px rgba(31, 157, 85, 0.28);
 }
 
 .btn-whatsapp:hover {
-  background: #187f44;
+  background: var(--whatsapp-dark);
 }
 
 .btn-sm {
@@ -239,7 +240,7 @@ textarea {
 }
 
 .eyebrow.on-dark {
-  color: var(--star-dim);
+  color: var(--magenta-deep);
 }
 
 .section-title {
@@ -295,7 +296,7 @@ textarea {
 }
 
 .badge-sale {
-  background: var(--magenta);
+  background: var(--magenta-deep);
   color: #fff;
 }
 

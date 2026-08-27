@@ -9,13 +9,17 @@ interface Star {
   /** Drift velocity, px/s. */
   vx: number;
   vy: number;
+  /** Brand blue or brand pink. */
+  hue: 'blue' | 'pink';
+  /** Four-point sparkles echo the diamonds in the logo. */
+  sparkle: boolean;
 }
 
 interface Nebula {
   baseX: number;
   baseY: number;
   r: number;
-  hue: 'blue' | 'magenta';
+  hue: 'blue' | 'cyan' | 'magenta';
   /** Orbit the blob wanders around its base point. */
   orbitX: number;
   orbitY: number;
@@ -35,6 +39,7 @@ interface Orbit {
   satSpeed: number;
   satPhase: number;
   satColor: string;
+  satCore: string;
 }
 
 interface ShootingStar {
@@ -47,10 +52,11 @@ interface ShootingStar {
 }
 
 /**
- * The site's outer visual canvas: a living cosmos — drifting starfield,
- * wandering nebulae, precessing orbital lines with satellites, and the
- * occasional shooting star. Original composition (not the coming-soon
- * page's), pointer-events: none, and a single static frame under
+ * The site's outer visual canvas: a bright cosmic sky in the brand's own
+ * colours. Blue and pink starlight drifts across a near-white ground, soft
+ * cyan/blue/pink nebulae wander through it, orbital lines precess with
+ * satellites riding them, and a shooting star crosses now and then.
+ * pointer-events: none, and a single static frame under
  * prefers-reduced-motion.
  */
 export function CosmicCanvas() {
@@ -85,9 +91,9 @@ export function CosmicCanvas() {
       canvas!.height = Math.floor(height * dpr);
       ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      const starCount = width < 720 ? 80 : 160;
+      const starCount = width < 720 ? 90 : 170;
       stars = Array.from({ length: starCount }, () => {
-        const r = 0.4 + rand() * 1.5;
+        const r = 0.7 + rand() * 1.9;
         // Bigger (nearer) stars drift faster — a gentle parallax current
         // flowing toward the lower-left.
         const speed = (3 + rand() * 5) * (r / 1.2);
@@ -99,15 +105,17 @@ export function CosmicCanvas() {
           phase: rand() * Math.PI * 2,
           twinkleSpeed: 0.5 + rand() * 1.2,
           vx: Math.cos(angle) * speed,
-          vy: -Math.sin(angle) * speed
+          vy: -Math.sin(angle) * speed,
+          hue: rand() > 0.42 ? 'blue' : 'pink',
+          sparkle: rand() > 0.86
         };
       });
 
       const d = Math.max(width, height);
       nebulae = [
-        { baseX: width * 0.8, baseY: height * 0.15, r: d * 0.48, hue: 'blue', orbitX: width * 0.14, orbitY: height * 0.1, periodS: 34, phase: 0 },
-        { baseX: width * 0.1, baseY: height * 0.72, r: d * 0.42, hue: 'magenta', orbitX: width * 0.12, orbitY: height * 0.12, periodS: 46, phase: 2.1 },
-        { baseX: width * 0.5, baseY: height * 1.0, r: d * 0.38, hue: 'blue', orbitX: width * 0.16, orbitY: height * 0.08, periodS: 40, phase: 4.2 }
+        { baseX: width * 0.8, baseY: height * 0.14, r: d * 0.5, hue: 'blue', orbitX: width * 0.14, orbitY: height * 0.1, periodS: 34, phase: 0 },
+        { baseX: width * 0.09, baseY: height * 0.7, r: d * 0.44, hue: 'magenta', orbitX: width * 0.12, orbitY: height * 0.12, periodS: 46, phase: 2.1 },
+        { baseX: width * 0.52, baseY: height * 1.02, r: d * 0.4, hue: 'cyan', orbitX: width * 0.16, orbitY: height * 0.08, periodS: 40, phase: 4.2 }
       ];
 
       orbits = [
@@ -120,7 +128,8 @@ export function CosmicCanvas() {
           precession: 0.02,
           satSpeed: 0.22,
           satPhase: rand() * Math.PI * 2,
-          satColor: 'rgba(214, 64, 159, 0.85)'
+          satColor: 'rgba(234, 79, 141, 0.5)',
+          satCore: '#ea4f8d'
         },
         {
           cx: width * 0.12,
@@ -131,7 +140,8 @@ export function CosmicCanvas() {
           precession: -0.016,
           satSpeed: 0.17,
           satPhase: rand() * Math.PI * 2,
-          satColor: 'rgba(122, 158, 255, 0.85)'
+          satColor: 'rgba(22, 121, 209, 0.5)',
+          satCore: '#1679d1'
         }
       ];
     }
@@ -140,11 +150,11 @@ export function CosmicCanvas() {
       const tS = tMs / 1000;
       ctx!.clearRect(0, 0, width, height);
 
-      // Base midnight gradient
+      // Base sky: white, warming very slightly toward the brand blue
       const base = ctx!.createLinearGradient(0, 0, 0, height);
-      base.addColorStop(0, '#070b22');
-      base.addColorStop(0.5, '#0a0f2e');
-      base.addColorStop(1, '#070b22');
+      base.addColorStop(0, '#ffffff');
+      base.addColorStop(0.45, '#f4f9ff');
+      base.addColorStop(1, '#fdfbff');
       ctx!.fillStyle = base;
       ctx!.fillRect(0, 0, width, height);
 
@@ -157,13 +167,16 @@ export function CosmicCanvas() {
         const breathe = 0.85 + 0.15 * Math.sin(a * 0.5);
         const g = ctx!.createRadialGradient(nx, ny, 0, nx, ny, n.r);
         if (n.hue === 'blue') {
-          g.addColorStop(0, `rgba(61, 109, 242, ${(0.2 * breathe).toFixed(3)})`);
-          g.addColorStop(0.55, `rgba(43, 81, 196, ${(0.08 * breathe).toFixed(3)})`);
+          g.addColorStop(0, `rgba(22, 121, 209, ${(0.15 * breathe).toFixed(3)})`);
+          g.addColorStop(0.55, `rgba(36, 56, 182, ${(0.05 * breathe).toFixed(3)})`);
+        } else if (n.hue === 'cyan') {
+          g.addColorStop(0, `rgba(19, 181, 230, ${(0.14 * breathe).toFixed(3)})`);
+          g.addColorStop(0.55, `rgba(19, 181, 230, ${(0.045 * breathe).toFixed(3)})`);
         } else {
-          g.addColorStop(0, `rgba(214, 64, 159, ${(0.16 * breathe).toFixed(3)})`);
-          g.addColorStop(0.55, `rgba(176, 47, 131, ${(0.06 * breathe).toFixed(3)})`);
+          g.addColorStop(0, `rgba(234, 79, 141, ${(0.14 * breathe).toFixed(3)})`);
+          g.addColorStop(0.55, `rgba(213, 54, 120, ${(0.045 * breathe).toFixed(3)})`);
         }
-        g.addColorStop(1, 'rgba(7, 11, 34, 0)');
+        g.addColorStop(1, 'rgba(255, 255, 255, 0)');
         ctx!.fillStyle = g;
         ctx!.fillRect(0, 0, width, height);
       }
@@ -172,7 +185,7 @@ export function CosmicCanvas() {
       for (const o of orbits) {
         const tilt = o.tilt + tS * o.precession;
         ctx!.save();
-        ctx!.strokeStyle = 'rgba(170, 177, 214, 0.1)';
+        ctx!.strokeStyle = 'rgba(22, 121, 209, 0.14)';
         ctx!.lineWidth = 1;
         ctx!.beginPath();
         ctx!.ellipse(o.cx, o.cy, o.rx, o.ry, tilt, 0, Math.PI * 2);
@@ -184,16 +197,16 @@ export function CosmicCanvas() {
         const ey = Math.sin(sa) * o.ry;
         const sx = o.cx + ex * Math.cos(tilt) - ey * Math.sin(tilt);
         const sy = o.cy + ex * Math.sin(tilt) + ey * Math.cos(tilt);
-        const glow = ctx!.createRadialGradient(sx, sy, 0, sx, sy, 9);
+        const glow = ctx!.createRadialGradient(sx, sy, 0, sx, sy, 10);
         glow.addColorStop(0, o.satColor);
-        glow.addColorStop(1, 'rgba(7, 11, 34, 0)');
+        glow.addColorStop(1, 'rgba(255, 255, 255, 0)');
         ctx!.fillStyle = glow;
         ctx!.beginPath();
-        ctx!.arc(sx, sy, 9, 0, Math.PI * 2);
+        ctx!.arc(sx, sy, 10, 0, Math.PI * 2);
         ctx!.fill();
-        ctx!.fillStyle = '#f2f4ff';
+        ctx!.fillStyle = o.satCore;
         ctx!.beginPath();
-        ctx!.arc(sx, sy, 1.8, 0, Math.PI * 2);
+        ctx!.arc(sx, sy, 2.2, 0, Math.PI * 2);
         ctx!.fill();
         ctx!.restore();
       }
@@ -208,11 +221,24 @@ export function CosmicCanvas() {
           if (s.y < -4) s.y += height + 8;
           if (s.y > height + 4) s.y -= height + 8;
         }
-        const alpha = reduceMotion ? 0.6 : 0.35 + 0.45 * (0.5 + 0.5 * Math.sin(s.phase + tS * s.twinkleSpeed));
-        ctx!.fillStyle = `rgba(242, 244, 255, ${alpha.toFixed(3)})`;
-        ctx!.beginPath();
-        ctx!.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx!.fill();
+        const alpha = reduceMotion ? 0.55 : 0.3 + 0.45 * (0.5 + 0.5 * Math.sin(s.phase + tS * s.twinkleSpeed));
+        const rgb = s.hue === 'blue' ? '22, 121, 209' : '234, 79, 141';
+        ctx!.fillStyle = `rgba(${rgb}, ${alpha.toFixed(3)})`;
+        if (s.sparkle) {
+          // Four-point diamond, the same motif as the logo's sparkles.
+          const a = s.r * 2.6;
+          ctx!.beginPath();
+          ctx!.moveTo(s.x, s.y - a);
+          ctx!.quadraticCurveTo(s.x, s.y, s.x + a, s.y);
+          ctx!.quadraticCurveTo(s.x, s.y, s.x, s.y + a);
+          ctx!.quadraticCurveTo(s.x, s.y, s.x - a, s.y);
+          ctx!.quadraticCurveTo(s.x, s.y, s.x, s.y - a);
+          ctx!.fill();
+        } else {
+          ctx!.beginPath();
+          ctx!.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx!.fill();
+        }
       }
 
       // Shooting star — a brief bright streak every so often
@@ -240,10 +266,10 @@ export function CosmicCanvas() {
             const tailX = shooting.x - shooting.vx * 0.14;
             const tailY = shooting.y - shooting.vy * 0.14;
             const trail = ctx!.createLinearGradient(shooting.x, shooting.y, tailX, tailY);
-            trail.addColorStop(0, `rgba(242, 244, 255, ${(0.9 * fade).toFixed(3)})`);
-            trail.addColorStop(1, 'rgba(242, 244, 255, 0)');
+            trail.addColorStop(0, `rgba(19, 181, 230, ${(0.85 * fade).toFixed(3)})`);
+            trail.addColorStop(1, 'rgba(19, 181, 230, 0)');
             ctx!.strokeStyle = trail;
-            ctx!.lineWidth = 1.6;
+            ctx!.lineWidth = 2;
             ctx!.lineCap = 'round';
             ctx!.beginPath();
             ctx!.moveTo(shooting.x, shooting.y);

@@ -99,7 +99,7 @@ export function Home() {
             </li>
             <li>
               <strong>Pickup or delivery</strong>
-              <span>Collect in person, or arrange Belize City delivery, out-district or island shipping.</span>
+              <span>Collect in person, or arrange Belize City delivery, out-district or Cayes shipping.</span>
             </li>
           </ol>
         </section>

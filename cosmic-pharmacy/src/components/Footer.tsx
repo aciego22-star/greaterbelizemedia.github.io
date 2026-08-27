@@ -1,14 +1,14 @@
 import { Link } from 'react-router-dom';
 import { business } from '../data/business';
 import { SocialLinks } from './SocialLinks';
-import logoWhite from '../assets/brand/cosmic-pharmacy-logo-white.svg';
+import logoPrimary from '../assets/brand/cosmic-pharmacy-logo-primary.svg';
 
 export function Footer() {
   return (
     <footer className="site-footer">
       <div className="wrap footer-inner">
         <Link to="/" className="footer-logo" aria-label={`${business.name}, go to the home page`}>
-          <img src={logoWhite} alt={`${business.name}. ${business.tagline}`} width={260} height={93} />
+          <img src={logoPrimary} alt={`${business.name}. ${business.tagline}`} width={260} height={93} />
         </Link>
 
         <p className="footer-promise">{business.promise}</p>

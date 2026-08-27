@@ -26,7 +26,7 @@ const services = [
   },
   {
     name: 'Delivery & shipping',
-    desc: 'Belize City delivery, plus out-district and main-island shipping. Options and charges are confirmed by the pharmacy on each request.'
+    desc: 'Belize City delivery, plus out-district and shipping to the Cayes. Options and charges are confirmed by the pharmacy on each request.'
   }
 ];
 

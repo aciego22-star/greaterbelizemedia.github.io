@@ -40,7 +40,7 @@ export const heroSlides: HeroSlide[] = [
     id: 'whatsapp-service',
     eyebrow: 'Countrywide service',
     headline: 'Search. Add to basket. Send on WhatsApp.',
-    copy: 'Cosmic confirms availability, pricing and next steps, with pickup, Belize City delivery, and out-district and island shipping.',
+    copy: 'Cosmic confirms availability, pricing and next steps, with pickup, Belize City delivery, and out-district and Cayes shipping.',
     ctaLabel: 'How It Works',
     ctaTo: '/services',
     durationMs: 8000,

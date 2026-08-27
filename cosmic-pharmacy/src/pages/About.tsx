@@ -64,7 +64,7 @@ export function About() {
             </article>
             <article className="service-card">
               <h3>All of Belize</h3>
-              <p>Belize City, the districts and the islands. Service doesn't stop at the neighbourhood.</p>
+              <p>Belize City, the districts and the Cayes. Service doesn't stop at the neighbourhood.</p>
             </article>
           </div>
         </section>

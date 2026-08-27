@@ -1,43 +1,62 @@
 /* Cosmic Pharmacy design tokens.
-   Single-theme committed design: dark cosmic canvas + light clinical panels.
-   Every color is explicit; nothing inherits from the host theme. */
+   Light cosmic system: a bright, near-white sky carrying blue and pink
+   starlight, with white content panels floating on it. Every colour is drawn
+   from the client's logo pack (brand-colours.json). */
 :root {
-  /* Cosmic canvas */
-  --midnight: #070b22;
-  --midnight-2: #0d1338;
-  --midnight-3: #141b4d;
+  /* Brand hues exactly as supplied in the logo pack. Used for the logo,
+     the starfield and decorative work. */
+  --cyan: #13b5e6;
+  --brand-blue: #1679d1;
+  --brand-pink: #ea4f8d;
+  --brand-navy: #103a70;
 
-  /* Brand */
-  --cosmic-blue: #3d6df2;
-  --cosmic-blue-deep: #2b51c4;
-  --cosmic-blue-soft: rgba(61, 109, 242, 0.1);
-  --magenta: #d6409f;
-  --magenta-deep: #b02f83;
-  --magenta-soft: rgba(214, 64, 159, 0.1);
+  /* Action colours: the same hues nudged just far enough to clear WCAG AA
+     when they carry white text. */
+  --cosmic-blue: #1470c9;
+  --cosmic-blue-deep: #2438b6;
+  --cosmic-blue-soft: rgba(22, 121, 209, 0.1);
+  --magenta: #ea4f8d;
+  --magenta-deep: #c62a68;
+  --magenta-darker: #ac1f58;
+  --magenta-soft: rgba(234, 79, 141, 0.1);
+  --whatsapp: #198446;
+  --whatsapp-dark: #146d39;
 
-  /* Light clinical surfaces */
+  /* The cosmic sky (light) */
+  --sky: #ffffff;
+  --sky-2: #f2f7fe;
+  --sky-3: #eaf1fc;
+
+  /* Content surfaces */
   --panel: #ffffff;
-  --panel-cool: #f4f6fb;
-  --lavender: #e9ebfc;
-  --line-light: #dfe3f0;
+  --panel-cool: #f4f8fe;
+  --lavender: #eaf2fd;
+  --blush: #fdeff5;
+  --line-light: #dce8f7;
 
-  /* Ink on light */
-  --ink: #151a33;
-  --ink-soft: #4c5370;
-  --ink-faint: #7c839f;
+  /* Ink */
+  --ink: #10254a;
+  --ink-soft: #47597a;
+  --ink-faint: #606b83;
 
-  /* Ink on dark */
-  --star-white: #f2f4ff;
-  --star-dim: #aab1d6;
-  --line-dark: rgba(170, 177, 214, 0.22);
+  /* Ink used directly on the cosmic sky (kept under the old names so every
+     component reads the same tokens). */
+  --star-white: #10254a;
+  --star-dim: #51658a;
+  --line-dark: rgba(22, 121, 209, 0.2);
 
-  /* Semantic (separate from accent) */
-  --ok: #1e8e5a;
-  --ok-soft: #e2f4ea;
-  --warn: #a06a00;
-  --warn-soft: #faf0da;
-  --danger: #c23a3a;
-  --danger-soft: #fbe9e9;
+  /* Legacy surface names, now light */
+  --midnight: var(--sky);
+  --midnight-2: #ffffff;
+  --midnight-3: var(--sky-3);
+
+  /* Semantic (separate from the accent hues) */
+  --ok: #12805a;
+  --ok-soft: #e2f5ec;
+  --warn: #9a6100;
+  --warn-soft: #fdf1da;
+  --danger: #c2334d;
+  --danger-soft: #fce9ed;
 
   /* Type */
   --font-display: 'Bricolage Grotesque', 'Avenir Next', 'Segoe UI', sans-serif;
@@ -57,9 +76,9 @@
   --radius-md: 14px;
   --radius-lg: 22px;
   --radius-pill: 999px;
-  --shadow-panel: 0 18px 50px rgba(7, 11, 34, 0.28);
-  --shadow-card: 0 6px 24px rgba(21, 26, 51, 0.08);
-  --shadow-card-hover: 0 14px 34px rgba(21, 26, 51, 0.14);
+  --shadow-panel: 0 18px 46px rgba(16, 37, 74, 0.1);
+  --shadow-card: 0 4px 18px rgba(16, 37, 74, 0.07);
+  --shadow-card-hover: 0 14px 34px rgba(16, 37, 74, 0.13);
 
   /* Layout */
   --wrap: 1160px;
