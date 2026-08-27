@@ -78,6 +78,27 @@ Three stills + one video slide. For each still:
 - Intentional mobile composition matters more than resolution — keep the
   subject centred; the frame renders ~4:3 to 16:10.
 
+The client's three stills are installed as `src/assets/hero/*.webp`, resolved
+through `lib/media.ts` by key (not path) so they inline in the single-file
+preview. Two are photographs and one is a designed graphic, which the frame
+handles differently:
+
+- `hero-storefront` and `hero-shelves` are near-square and portrait phone
+  photographs in a 4:3 frame, so they use `imageFit: 'cover'` with an
+  `imageFocus` that keeps the subject in view: the storefront is framed at
+  `center 42%` to hold the sign and the licence plate, the shelves at
+  `center 30%` for the stocked shelving.
+- `hero-how-it-works` is a 9:16 infographic. Cropping it would cut the headline
+  off, so it uses `imageFit: 'contain'` and the frame takes the graphic's own
+  deep navy, which makes the letterboxing read as part of the artwork.
+
+Two edits were made to that infographic before installing it, both requested by
+the client: the pill, the cyan line and the sub-line were re-centred, and the
+WhatsApp mark was replaced with the real one. The re-centring moves the original
+pixels rather than re-typesetting, because the graphic's typeface is not
+available here and re-setting the text would not have matched the step labels
+below it.
+
 For the video slide:
 
 - `videoSrcDesktop`: MP4 H.264 + AAC, 1080p, target under ~25 MB.

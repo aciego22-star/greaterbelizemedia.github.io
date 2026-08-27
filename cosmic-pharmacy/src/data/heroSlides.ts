@@ -18,8 +18,13 @@ export const heroSlides: HeroSlide[] = [
     secondaryCtaLabel: 'Send a Prescription',
     secondaryCtaTo: '/prescriptions',
     durationMs: 9000,
-    image: '',
-    imageAlt: 'Cosmic Pharmacy storefront and pharmacist-led service',
+    image: 'hero-storefront',
+    // Client photograph, close to square. Framed slightly high so the sign and
+    // the licence plate stay in view when the 4:3 frame crops.
+    imageFit: 'cover',
+    imageFocus: 'center 42%',
+    imageAlt:
+      'The Cosmic Pharmacy storefront on Holy Emmanuel Street, with the illuminated sign and the licence plate reading Marion Carter, RPh, Chemist and Druggist',
     placeholderNote: 'Final asset: Cosmic Pharmacy storefront or pharmacist-led service photograph'
   },
   {
@@ -31,21 +36,29 @@ export const heroSlides: HeroSlide[] = [
     ctaLabel: 'Browse the Range',
     ctaTo: '/products/supplements',
     durationMs: 8000,
-    image: '',
-    imageAlt: 'Medicine, health, supplement and everyday-care range at Cosmic Pharmacy',
+    image: 'hero-shelves',
+    // Portrait photograph of the shelves; framed on the upper wall so the
+    // stocked supplement and medicine shelving reads at 4:3.
+    imageFit: 'cover',
+    imageFocus: 'center 30%',
+    imageAlt: 'Stocked shelves inside Cosmic Pharmacy: supplements, medicine, baby care and everyday health products',
     placeholderNote: 'Final asset: medicine, health, supplements and everyday-care range photograph'
   },
   {
     kind: 'image',
     id: 'whatsapp-service',
     eyebrow: 'Countrywide service',
-    headline: 'Search. Add to basket. Send on WhatsApp.',
+    headline: 'Search. Add to cart. Send on WhatsApp.',
     copy: 'Cosmic confirms availability, pricing and next steps, with pickup, Belize City delivery, and out-district and Cayes shipping.',
     ctaLabel: 'How It Works',
     ctaTo: '/services',
     durationMs: 8000,
-    image: '',
-    imageAlt: 'Search, basket and WhatsApp ordering from Cosmic Pharmacy',
+    image: 'hero-how-it-works',
+    // A designed graphic rather than a photograph: cropping it would cut the
+    // headline off, so it is shown whole against the frame.
+    imageFit: 'contain',
+    imageAlt:
+      'How it works: search the catalogue, build your cart, then send it on WhatsApp. Availability and pricing confirmed by the pharmacy.',
     placeholderNote: 'Final asset: search, basket, WhatsApp ordering and countrywide-service visual'
   },
   {

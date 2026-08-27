@@ -7,7 +7,7 @@
  * Storing paths instead would break the preview, where nothing is served from
  * public/.
  */
-const catalogueImages = import.meta.glob('../assets/catalogue/*.webp', {
+const catalogueImages = import.meta.glob(['../assets/catalogue/*.webp', '../assets/hero/*.webp'], {
   eager: true,
   query: '?url',
   import: 'default'

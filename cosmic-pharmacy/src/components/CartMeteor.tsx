@@ -10,7 +10,7 @@ import { useEffect } from 'react';
  * callbacks through the tree. Colour comes from CSS custom properties, so it
  * follows the time-of-day sky for free.
  */
-const FLIGHT_MS = 963; // Slowed three times at the client's request: 560 -> 728 -> 837 -> 963ms.
+const FLIGHT_MS = 1107; // Slowed four times at the client's request: 560 -> 728 -> 837 -> 963 -> 1107ms.
 
 export function CartMeteor() {
   useEffect(() => {

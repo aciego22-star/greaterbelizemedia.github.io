@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { heroSlides } from '../data/heroSlides';
 import { HeroVideoSlide } from './HeroVideoSlide';
 import { PlaceholderMedia } from './PlaceholderMedia';
+import { mediaUrl } from '../lib/media';
 
 /**
  * ICB-style hero media sequence: ordered stills + one inlaid video slide in a
@@ -62,8 +63,12 @@ export function HeroCarousel() {
             >
               {slide.kind === 'image' ? (
                 <div className="hero-media">
-                  {slide.image ? (
-                    <img src={slide.image} alt={slide.imageAlt} />
+                  {mediaUrl(slide.image) ? (
+                    <img
+                      src={mediaUrl(slide.image)}
+                      alt={slide.imageAlt}
+                      style={{ objectFit: slide.imageFit ?? 'cover', objectPosition: slide.imageFocus ?? 'center' }}
+                    />
                   ) : (
                     <PlaceholderMedia note={slide.placeholderNote} />
                   )}

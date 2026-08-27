@@ -79,9 +79,14 @@ export interface HeroSlideBase {
 
 export interface HeroImageSlide extends HeroSlideBase {
   kind: 'image';
-  /** Path under public/assets/hero/ once real media arrives; empty string renders the labeled placeholder. */
+  /** Image key resolved through lib/media.ts; empty string renders the labeled placeholder. */
   image: string;
   imageAlt: string;
+  /** How the image sits in the 4:3 frame. Photographs crop; a designed graphic
+   *  has to be shown whole, so it is contained instead. */
+  imageFit?: 'cover' | 'contain';
+  /** object-position for cropped photographs, e.g. 'center 35%'. */
+  imageFocus?: string;
   /** Short label describing what the final asset should show (placeholder state only). */
   placeholderNote: string;
 }

@@ -2852,3 +2852,10 @@ a.contact-row .contact-row-value {
   margin: 1rem 0 0;
   max-width: 62rem;
 }
+
+/* A contained hero graphic is letterboxed rather than cropped, so the frame
+   takes the graphic's own deep navy instead of the pale panel colour and the
+   bars read as part of the artwork. */
+.hero-media:has(img[style*='contain']) {
+  background: #050d24;
+}
