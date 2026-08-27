@@ -887,13 +887,9 @@ boundary that section's note exists to draw.
 
 ### Three things for the client to confirm
 
-1. **Fish fillets and fish portions** (images 05 and 06) are the first fish
-   products shown anywhere on the site. Seafood & Services lists lobster, conch
-   and lionfish and says nothing about fish fillets. The captions claim nothing
-   beyond "prepared for distribution" - no stock, price, grade or availability -
-   but the product line and this gallery now disagree. Ms Denise should say
-   whether Seafood & Services is to be updated, or whether these are shown as
-   photography only.
+1. ~~Fish fillets and fish portions are the first fish products shown anywhere
+   on the site.~~ **Resolved.** The client asked for Seafood & Services to be
+   updated, so the catalogue is now eight products - see section 4c.
 2. **Alt text for images 08, 09 and 10 names NATFISH directly** ("NATFISH
    representatives", "NATFISH delegation", "NATFISH team members and
    partners"). That is the client's own wording, supplied with the images, and
@@ -907,6 +903,75 @@ boundary that section's note exists to draw.
    the site's standing rule is that no export market or trading relationship is
    asserted anywhere. Publishing it is a judgement for Ms Denise to make
    knowingly rather than one to make for her.
+
+---
+
+## 4c. Eight products, not six
+
+Frozen Fish Fillets and Frozen Fish Portions joined the catalogue at the
+client's request, after they supplied photographs of both for the Gallery.
+
+**Neither carries a scientific name, and that is deliberate.** Every other entry
+has one; these two have `sci: None` and `sci_line()` renders nothing rather than
+an empty italic line. The only support for them is two photographs and two
+client captions that say "prepared for distribution" - no species, no weight, no
+grade, no availability. Naming a species to fill the line would be inventing the
+one fact the page most looks like it is stating. If the client confirms the
+species, add it.
+
+The body copy claims only what the photograph shows: individually packaged, and
+boxed for distribution.
+
+They use the `crate-fish` icon and the client's own gallery photographs, so both
+have a truthful image; five of the eight now do.
+
+### The drafts are generated, not typed
+
+Adding two products exposed a real defect. The email and WhatsApp drafts each
+carried a hand-typed list of the six product names, so the catalogue grew to
+eight while both drafts silently kept offering six - a buyer would have been
+handed a pick-list that did not match the page they were reading.
+
+`EMAIL_TEMPLATE` and `WHATSAPP_TEMPLATE` now carry a `{products}` slot and are
+filled from `PRODUCT_PICKS`, which is derived from `CATALOGUE`. One list, three
+places: the pick-list on the page, the email draft and the WhatsApp draft.
+`orderqa.js` holds the catalogue once and asserts all three agree, so the next
+product cannot be half-added.
+
+---
+
+## 4d. One tap, not two
+
+The client reported having to touch some controls twice, the gallery worst of
+all. Driven under touch emulation in Chromium, every control already fired on
+the first tap - the lightbox, the gallery filter tabs, the menu button, the
+language toggle, the AI launcher and the video facade. So the fault was not in
+any of the handlers.
+
+The cause is the phantom hover. On a device with no real pointer - iOS Safari
+most of all - the first tap on an element that has `:hover` styles is spent
+applying them, and only the second tap activates the control. The stylesheet
+had 41 ungated hover rules, so this could happen almost anywhere.
+
+**Every `:hover` rule in `natfish.css` now sits inside `@media (hover: hover)`.
+Keep it that way when adding one.** Nothing is lost on a desktop: the query is
+true for a mouse or a trackpad, and false only for a finger, where a hover style
+could never be seen anyway. `taps.js` asserts both directions - one tap per
+control on a touch device, and that a mouse still gets every highlight.
+
+### A hover bug this uncovered
+
+Writing that test surfaced something older: **the cards had never lifted on
+hover.** `.reveal.is-visible { transform: none }` sits later in the stylesheet
+than the component hover rules and ties with them on specificity, so it won on
+source order and cancelled every hover lift on a revealed element - the seafood
+cards, the news cards, the product rows. Confirmed against the pre-change
+stylesheet, so it was not introduced by the gating.
+
+The reveal now rises on `translate` rather than `transform`. `translate` is an
+independent transform property: it composes with `transform` instead of
+replacing it, so the reveal and the hover no longer fight over one declaration.
+Keep them on separate properties.
 
 ---
 

@@ -2,6 +2,24 @@
    NATFISH V2
    National Fishermen Producers Co-operative Society Ltd.
    No build step, no external dependencies.
+   ==========================================================================
+
+   EVERY :hover RULE IN THIS FILE SITS INSIDE @media (hover: hover).
+   Keep it that way when adding one.
+
+   The reason is the double tap the client reported. On a touch device with no
+   real pointer - iOS Safari most of all - the first tap on an element that has
+   hover styles is spent applying them, and only the second tap activates the
+   control. The visitor experiences a link or a gallery photograph that ignores
+   the first touch. Gating the hover styles on a pointer that can actually
+   hover removes the phantom hover state, and with it the wasted tap.
+
+   Nothing is lost on a desktop: (hover: hover) is true for a mouse or a
+   trackpad, so every hover style behaves exactly as before. It is false for a
+   finger, where a hover style could never be seen anyway.
+
+   `taps.js` asserts one tap per control on a touch device and that no hover
+   rule survives when the pointer cannot hover.
    ========================================================================== */
 
 :root {
@@ -138,9 +156,13 @@ a {
   text-underline-offset: 3px;
 }
 
-a:hover {
-  color: var(--navy-800);
+
+@media (hover: hover) {
+  a:hover {
+    color: var(--navy-800);
+  }
 }
+
 
 ul {
   margin: 0 0 1.1em;
@@ -235,9 +257,13 @@ strong {
   color: var(--turq-300);
 }
 
-.section--navy a:hover {
-  color: var(--white);
+
+@media (hover: hover) {
+  .section--navy a:hover {
+    color: var(--white);
+  }
 }
+
 
 .section-head {
   max-width: 60ch;
@@ -311,9 +337,13 @@ strong {
     border-color 0.18s ease, box-shadow 0.18s ease, color 0.18s ease;
 }
 
-.btn:hover {
-  transform: translateY(-1px);
+
+@media (hover: hover) {
+  .btn:hover {
+    transform: translateY(-1px);
+  }
 }
+
 
 .btn:active {
   transform: translateY(0);
@@ -326,12 +356,16 @@ strong {
   box-shadow: var(--shadow-sm);
 }
 
-.btn--primary:hover {
-  background: var(--teal-700);
-  border-color: var(--teal-700);
-  color: var(--white);
-  box-shadow: var(--shadow-md);
+
+@media (hover: hover) {
+  .btn--primary:hover {
+    background: var(--teal-700);
+    border-color: var(--teal-700);
+    color: var(--white);
+    box-shadow: var(--shadow-md);
+  }
 }
+
 
 .btn--ghost {
   background: transparent;
@@ -339,11 +373,15 @@ strong {
   color: var(--white);
 }
 
-.btn--ghost:hover {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: var(--white);
-  color: var(--white);
+
+@media (hover: hover) {
+  .btn--ghost:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: var(--white);
+    color: var(--white);
+  }
 }
+
 
 .btn--outline {
   background: transparent;
@@ -351,11 +389,15 @@ strong {
   color: var(--navy-800);
 }
 
-.btn--outline:hover {
-  border-color: var(--teal-600);
-  color: var(--teal-700);
-  background: rgba(14, 124, 139, 0.05);
+
+@media (hover: hover) {
+  .btn--outline:hover {
+    border-color: var(--teal-600);
+    color: var(--teal-700);
+    background: rgba(14, 124, 139, 0.05);
+  }
 }
+
 
 .btn--block {
   width: 100%;
@@ -396,9 +438,13 @@ li .arrow-link {
   transition: transform 0.18s ease;
 }
 
-.arrow-link:hover::after {
-  transform: translateX(4px);
+
+@media (hover: hover) {
+  .arrow-link:hover::after {
+    transform: translateX(4px);
+  }
 }
+
 
 /* ------------------------------------------------------------- header -- */
 
@@ -524,14 +570,20 @@ li .arrow-link {
   transition: transform 0.2s ease;
 }
 
-.nav__link:hover {
-  color: var(--teal-700);
+
+@media (hover: hover) {
+  .nav__link:hover {
+    color: var(--teal-700);
+  }
 }
 
-.nav__link:hover::after,
-.nav__link[aria-current="page"]::after {
-  transform: scaleX(1);
+@media (hover: hover) {
+  .nav__link:hover::after,
+  .nav__link[aria-current="page"]::after {
+    transform: scaleX(1);
+  }
 }
+
 
 .nav__link[aria-current="page"] {
   color: var(--navy-800);
@@ -950,10 +1002,14 @@ body.nav-open {
   text-decoration: none;
 }
 
-.breadcrumb a:hover {
-  color: var(--white);
-  text-decoration: underline;
+
+@media (hover: hover) {
+  .breadcrumb a:hover {
+    color: var(--white);
+    text-decoration: underline;
+  }
 }
+
 
 .breadcrumb span {
   opacity: 0.5;
@@ -1044,11 +1100,15 @@ body.nav-open {
     border-color 0.24s ease;
 }
 
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-md);
-  border-color: rgba(14, 124, 139, 0.34);
+
+@media (hover: hover) {
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+    border-color: rgba(14, 124, 139, 0.34);
+  }
 }
+
 
 .card__media {
   position: relative;
@@ -1064,9 +1124,13 @@ body.nav-open {
   transition: transform 0.5s ease;
 }
 
-.card:hover .card__media img {
-  transform: scale(1.045);
+
+@media (hover: hover) {
+  .card:hover .card__media img {
+    transform: scale(1.045);
+  }
 }
+
 
 .card__body {
   display: flex;
@@ -1351,10 +1415,14 @@ body.nav-open {
   margin-left: 4px;
 }
 
-.video__poster:hover .video__play {
-  transform: scale(1.07);
-  background: var(--white);
+
+@media (hover: hover) {
+  .video__poster:hover .video__play {
+    transform: scale(1.07);
+    background: var(--white);
+  }
 }
+
 
 .video__label {
   position: absolute;
@@ -1552,11 +1620,15 @@ body.nav-open {
   color: var(--white);
 }
 
-.btn--whatsapp:hover {
-  background: #16853f;
-  border-color: #16853f;
-  color: var(--white);
+
+@media (hover: hover) {
+  .btn--whatsapp:hover {
+    background: #16853f;
+    border-color: #16853f;
+    color: var(--white);
+  }
 }
+
 
 .btn svg {
   width: 18px;
@@ -1595,10 +1667,14 @@ body.nav-open {
   transition: transform 0.22s ease, box-shadow 0.22s ease;
 }
 
-.news-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-md);
+
+@media (hover: hover) {
+  .news-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+  }
 }
+
 
 .news-card__tag {
   display: inline-block;
@@ -1677,13 +1753,19 @@ body.nav-open {
   transition: opacity 0.3s ease;
 }
 
-.gallery__item:hover img {
-  transform: scale(1.05);
+
+@media (hover: hover) {
+  .gallery__item:hover img {
+    transform: scale(1.05);
+  }
 }
 
-.gallery__item:hover::after {
-  opacity: 1;
+@media (hover: hover) {
+  .gallery__item:hover::after {
+    opacity: 1;
+  }
 }
+
 
 .gallery__item--wide {
   grid-column: span 2;
@@ -1769,9 +1851,13 @@ body.nav-open {
   transition: background-color 0.18s ease;
 }
 
-.lightbox__btn:hover {
-  background: rgba(255, 255, 255, 0.2);
+
+@media (hover: hover) {
+  .lightbox__btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
 }
+
 
 .lightbox__btn svg {
   width: 20px;
@@ -1860,10 +1946,14 @@ body.nav-open {
   border-bottom: 1px solid rgba(127, 215, 228, 0.5);
 }
 
-.contact-list a:hover {
-  color: var(--turq-300);
-  border-bottom-color: var(--turq-300);
+
+@media (hover: hover) {
+  .contact-list a:hover {
+    color: var(--turq-300);
+    border-bottom-color: var(--turq-300);
+  }
 }
+
 
 .contact-list__label {
   display: block;
@@ -1936,10 +2026,14 @@ body.nav-open {
   text-decoration: none;
 }
 
-.footer-list a:hover {
-  color: var(--white);
-  text-decoration: underline;
+
+@media (hover: hover) {
+  .footer-list a:hover {
+    color: var(--white);
+    text-decoration: underline;
+  }
 }
+
 
 .footer-bottom {
   display: flex;
@@ -1958,15 +2052,25 @@ body.nav-open {
 
 /* ----------------------------------------------------------- reveal  -- */
 
+/* The reveal rises on `translate`, not `transform`, and that is deliberate.
+
+   `.reveal.is-visible { transform: none }` sits later in this file than the
+   component hover rules and ties with them on specificity, so it won on source
+   order and quietly cancelled every hover lift on a revealed element - the
+   seafood cards, the news cards, the product rows. They had never lifted.
+
+   `translate` is an independent transform property: it composes with
+   `transform` instead of replacing it, so the reveal and the hover no longer
+   fight over the same declaration. Keep them on separate properties. */
 .reveal {
   opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 0.65s ease, transform 0.65s ease;
+  translate: 0 18px;
+  transition: opacity 0.65s ease, translate 0.65s ease;
 }
 
 .reveal.is-visible {
   opacity: 1;
-  transform: none;
+  translate: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1983,20 +2087,23 @@ body.nav-open {
 
   .reveal {
     opacity: 1;
-    transform: none;
+    translate: none;
   }
 
-  .btn:hover,
-  .card:hover,
-  .news-card:hover {
-    transform: none;
+  @media (hover: hover) {
+    .btn:hover,
+    .card:hover,
+    .news-card:hover {
+      transform: none;
+    }
   }
+
 }
 
 /* Without JS the reveal elements must still be visible. */
 .no-js .reveal {
   opacity: 1;
-  transform: none;
+  translate: none;
 }
 
 /* ==========================================================================
@@ -2153,10 +2260,14 @@ body.nav-open {
   transition: transform 0.22s ease, box-shadow 0.22s ease;
 }
 
-.update-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-md);
+
+@media (hover: hover) {
+  .update-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+  }
 }
+
 
 .update-card__media {
   aspect-ratio: 16 / 9;
@@ -2353,10 +2464,14 @@ body.nav-open {
   transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
 }
 
-.gallery-filter__btn:hover {
-  border-color: var(--teal-600);
-  color: var(--teal-600);
+
+@media (hover: hover) {
+  .gallery-filter__btn:hover {
+    border-color: var(--teal-600);
+    color: var(--teal-600);
+  }
 }
+
 
 .gallery-filter__btn.is-active {
   background: var(--navy-900);
@@ -2413,9 +2528,13 @@ body.nav-open {
   transition: transform 0.4s ease, filter 0.3s ease;
 }
 
-.gallery-preview:hover img {
-  filter: brightness(1.06);
+
+@media (hover: hover) {
+  .gallery-preview:hover img {
+    filter: brightness(1.06);
+  }
 }
+
 
 @media (max-width: 700px) {
   .gallery-preview {
@@ -2438,11 +2557,15 @@ body.nav-open {
   color: var(--white);
 }
 
-.btn--onDark:hover {
-  border-color: var(--turq-300);
-  color: var(--turq-300);
-  background: rgba(255, 255, 255, 0.06);
+
+@media (hover: hover) {
+  .btn--onDark:hover {
+    border-color: var(--turq-300);
+    color: var(--turq-300);
+    background: rgba(255, 255, 255, 0.06);
+  }
 }
+
 
 /* ------------------------------------------------------ contact strip -- */
 
@@ -2487,9 +2610,13 @@ body.nav-open {
   font-weight: 600;
 }
 
-.contact-strip__list a:hover {
-  text-decoration: underline;
+
+@media (hover: hover) {
+  .contact-strip__list a:hover {
+    text-decoration: underline;
+  }
 }
+
 
 /* ----------------------------------------------------- enquiry blocks -- */
 
@@ -2527,11 +2654,15 @@ body.nav-open {
   color: var(--white);
 }
 
-.btn--whatsapp:hover {
-  background: #16853f;
-  border-color: #16853f;
-  color: var(--white);
+
+@media (hover: hover) {
+  .btn--whatsapp:hover {
+    background: #16853f;
+    border-color: #16853f;
+    color: var(--white);
+  }
 }
+
 
 .btn svg {
   width: 18px;
@@ -2623,9 +2754,11 @@ body.nav-open {
     transition: none;
   }
 
-  .update-card:hover,
-  .gallery-preview:hover img {
-    transform: none;
+  @media (hover: hover) {
+    .update-card:hover,
+    .gallery-preview:hover img {
+      transform: none;
+    }
   }
 }
 
@@ -2823,11 +2956,15 @@ body.nav-open {
   transition: border-color 0.18s ease, color 0.18s ease, background-color 0.18s ease;
 }
 
-.lang-toggle:hover {
-  border-color: var(--teal-600);
-  color: var(--teal-700);
-  background: rgba(14, 124, 139, 0.05);
+
+@media (hover: hover) {
+  .lang-toggle:hover {
+    border-color: var(--teal-600);
+    color: var(--teal-700);
+    background: rgba(14, 124, 139, 0.05);
+  }
 }
+
 
 .lang-toggle__globe {
   display: inline-flex;
@@ -2933,10 +3070,14 @@ body.nav-open {
   transition: color 0.18s ease, border-color 0.18s ease;
 }
 
-.site-credit a:hover {
-  color: var(--turq-300);
-  border-bottom-color: var(--turq-300);
+
+@media (hover: hover) {
+  .site-credit a:hover {
+    color: var(--turq-300);
+    border-bottom-color: var(--turq-300);
+  }
 }
+
 
 /* ------------------------------------------- alignment corrections -- */
 
@@ -3484,10 +3625,14 @@ body.nav-open {
   transition: transform 0.22s ease, box-shadow 0.22s ease;
 }
 
-.product:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-md);
+
+@media (hover: hover) {
+  .product:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+  }
 }
+
 
 .product__media {
   /* 16:10 rather than 4:3. The packaging photographs are 1.5 to 2.6 wide after
@@ -3944,11 +4089,15 @@ body.nav-open {
   animation: ai-bob 2.9s ease-in-out infinite alternate;
 }
 
-/* Only the shadow deepens on hover. Nothing about the pill's own transform
-   changes, because that belongs to the swim. */
-.ai-pill:hover {
-  box-shadow: 0 14px 32px rgba(3, 25, 42, 0.4);
+
+@media (hover: hover) {
+  /* Only the shadow deepens on hover. Nothing about the pill's own transform
+     changes, because that belongs to the swim. */
+  .ai-pill:hover {
+    box-shadow: 0 14px 32px rgba(3, 25, 42, 0.4);
+  }
 }
+
 
 /* The site's own focus treatment, not a new one. */
 .ai-pill:focus-visible {
@@ -3956,14 +4105,18 @@ body.nav-open {
   outline-offset: 3px;
 }
 
-/* A drifting target is a hard target. Both motions stop the moment a pointer
-   or the keyboard reaches the pill, and resume when it leaves. */
-.ai-pill:hover,
-.ai-pill:focus-visible,
-.ai-pill:hover .ai-pill__body,
-.ai-pill:focus-visible .ai-pill__body {
-  animation-play-state: paused;
+
+@media (hover: hover) {
+  /* A drifting target is a hard target. Both motions stop the moment a pointer
+     or the keyboard reaches the pill, and resume when it leaves. */
+  .ai-pill:hover,
+  .ai-pill:focus-visible,
+  .ai-pill:hover .ai-pill__body,
+  .ai-pill:focus-visible .ai-pill__body {
+    animation-play-state: paused;
+  }
 }
+
 
 /* Docking. .is-docking swaps the animation for a transition so the pill glides
    from wherever it was rather than jumping; .is-docked is the resting place at
@@ -4316,9 +4469,13 @@ body.nav-open {
   color: var(--turq-300);
 }
 
-.section--navy a:not(.btn):hover {
-  color: var(--white);
+
+@media (hover: hover) {
+  .section--navy a:not(.btn):hover {
+    color: var(--white);
+  }
 }
+
 
 .section--navy .btn--primary {
   color: var(--white);
@@ -4333,11 +4490,15 @@ body.nav-open {
   color: var(--navy-800);
 }
 
-.btn--ghost:hover {
-  background: rgba(5, 43, 69, 0.06);
-  border-color: var(--navy-800);
-  color: var(--navy-900);
+
+@media (hover: hover) {
+  .btn--ghost:hover {
+    background: rgba(5, 43, 69, 0.06);
+    border-color: var(--navy-800);
+    color: var(--navy-900);
+  }
 }
+
 
 .section--navy .btn--ghost,
 .hero__panel .btn--ghost,
@@ -4347,14 +4508,18 @@ body.nav-open {
   color: var(--white);
 }
 
-.section--navy .btn--ghost:hover,
-.hero__panel .btn--ghost:hover,
-.season-feature__panel .btn--ghost:hover,
-.site-footer .btn--ghost:hover {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: var(--white);
-  color: var(--white);
+
+@media (hover: hover) {
+  .section--navy .btn--ghost:hover,
+  .hero__panel .btn--ghost:hover,
+  .season-feature__panel .btn--ghost:hover,
+  .site-footer .btn--ghost:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: var(--white);
+    color: var(--white);
+  }
 }
+
 
 /* 3. The cooperative-model step numbers ran turquoise-500 on white at 11px:
       2.87:1. Same hue, two steps darker, which keeps the accent without
@@ -4426,10 +4591,14 @@ body.nav-open {
   color: var(--white);
 }
 
-.btn--ai:hover {
-  background: linear-gradient(135deg, var(--navy-900) 0%, var(--teal-700) 100%);
-  color: var(--white);
+
+@media (hover: hover) {
+  .btn--ai:hover {
+    background: linear-gradient(135deg, var(--navy-900) 0%, var(--teal-700) 100%);
+    color: var(--white);
+  }
 }
+
 
 .section--navy .btn--ai {
   color: var(--white);
@@ -4450,9 +4619,13 @@ body.nav-open {
   color: var(--turq-300);
 }
 
-.page-hero__actions .arrow-link:hover {
-  color: var(--white);
+
+@media (hover: hover) {
+  .page-hero__actions .arrow-link:hover {
+    color: var(--white);
+  }
 }
+
 
 /* ------------------------------------------------ per-product ordering -- */
 /* A product card ends with two actions, not one: start the order here, or
@@ -4511,10 +4684,14 @@ body.nav-open {
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.order-item:hover {
-  border-color: var(--teal-600);
-  box-shadow: var(--shadow-md);
+
+@media (hover: hover) {
+  .order-item:hover {
+    border-color: var(--teal-600);
+    box-shadow: var(--shadow-md);
+  }
 }
+
 
 /* The product thumbnail. 96px square: large enough to identify a carton of
    lobster tails at a glance, small enough that six of them stay a list rather
@@ -4732,9 +4909,13 @@ body.nav-open {
   color: var(--turq-300);
 }
 
-.path--ai .arrow-link:hover {
-  color: var(--white);
+
+@media (hover: hover) {
+  .path--ai .arrow-link:hover {
+    color: var(--white);
+  }
 }
+
 
 /* The "Have these ready" panel: a lighter plate inside the navy card so the
    four lines read as a checklist rather than as more body copy. */
@@ -4927,10 +5108,14 @@ body.nav-open {
   transition: background 0.18s ease, transform 0.18s ease;
 }
 
-.ai-panel__close:hover {
-  background: var(--teal-700);
-  transform: scale(1.06);
+
+@media (hover: hover) {
+  .ai-panel__close:hover {
+    background: var(--teal-700);
+    transform: scale(1.06);
+  }
 }
+
 
 .ai-panel__close svg {
   width: 24px;

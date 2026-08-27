@@ -1642,3 +1642,50 @@ ES.update({
          "Integrantes del equipo de NATFISH y socios"),
     ]
 })
+
+
+# ---------------------------------------------------------------------------
+# Fish fillets and fish portions, added to the catalogue after the client
+# supplied photographs of both. No species is named in either language, because
+# none is supported.
+ES.update({
+    "Belizean Lobster, Conch, Lionfish & Fish Products | NATFISH":
+        "Langosta, caracol, pez le\u00f3n y pescado de Belice | NATFISH",
+    "Frozen spiny lobster tails, lobster head meat, whole raw and cooked "
+    "lobster, queen conch 85% cleaned, lionfish fillet and packed fish "
+    "fillets and portions, prepared by a Belizean fisher-owned co-operative.":
+        "Colas de langosta espinosa congeladas, carne de cabeza de langosta, "
+        "langosta entera cruda y cocida, caracol reina 85% limpio, filete de "
+        "pez le\u00f3n y filetes y porciones de pescado empacados, preparados por "
+        "una cooperativa belice\u00f1a de pescadores.",
+    "Eight products from Belizean waters":
+        "Ocho productos de las aguas de Belice",
+    "Eight products, and the co-operative behind them":
+        "Ocho productos, y la cooperativa detr\u00e1s de ellos",
+    "Frozen Fish Fillets": "Filetes de pescado congelados",
+    "Frozen Fish Portions": "Porciones de pescado congeladas",
+    "Fish fillets, individually packaged and boxed for distribution.":
+        "Filetes de pescado empacados individualmente y encajados para "
+        "distribuci\u00f3n.",
+    "Fish portions, individually packaged and boxed for distribution.":
+        "Porciones de pescado empacadas individualmente y encajadas para "
+        "distribuci\u00f3n.",
+    "Four spiny lobster preparations, queen conch, lionfish fillet and packed "
+    "fish fillets and portions. Specifications and current availability are "
+    "confirmed directly with NATFISH.":
+        "Cuatro preparaciones de langosta espinosa, caracol reina, filete de "
+        "pez le\u00f3n y filetes y porciones de pescado empacados. Las "
+        "especificaciones y la disponibilidad actual se confirman directamente "
+        "con NATFISH.",
+    "Frozen spiny lobster in four preparations, frozen queen conch, lionfish "
+    "fillet and packed fish fillets and portions. Availability follows "
+    "Belize's regulated seasons and is confirmed directly with NATFISH.":
+        "Langosta espinosa congelada en cuatro preparaciones, caracol reina "
+        "congelado, filete de pez le\u00f3n y filetes y porciones de pescado "
+        "empacados. La disponibilidad sigue las temporadas reguladas de Belice "
+        "y se confirma directamente con NATFISH.",
+    "Start an order for Frozen Fish Fillets with NATFISH AI":
+        "Inicie un pedido de filetes de pescado congelados con NATFISH AI",
+    "Start an order for Frozen Fish Portions with NATFISH AI":
+        "Inicie un pedido de porciones de pescado congeladas con NATFISH AI",
+})

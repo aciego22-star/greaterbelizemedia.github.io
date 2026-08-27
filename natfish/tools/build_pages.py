@@ -41,8 +41,15 @@ ICON_CHECK = """<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="current
 # line is a pick-list rather than a set of fields: a buyer can delete the five
 # that do not apply faster than they can type the one that does.
 
+# The product lines in both drafts are generated from CATALOGUE further down
+# this file, not typed out here. They were typed out here once, and adding two
+# products to the catalogue left both drafts silently offering the old six -
+# a buyer would have been handed a pick-list that did not match the page they
+# were reading. The templates carry a {products} slot and are filled in after
+# the catalogue is defined, so the two cannot drift apart again.
+
 EMAIL_SUBJECT = "NATFISH Seafood Buyer Enquiry"
-EMAIL_BODY = """Hello NATFISH,
+EMAIL_TEMPLATE = """Hello NATFISH,
 
 I would like to enquire about purchasing seafood.
 
@@ -52,12 +59,7 @@ Country or location:
 Telephone or WhatsApp:
 
 Product required (delete those that do not apply):
-  - Frozen Spiny Lobster Tails
-  - Frozen Lobster Head Meat
-  - Frozen Whole Raw Lobster
-  - Frozen Whole Cooked Lobster
-  - Frozen Queen Conch, 85% Cleaned
-  - Lionfish Fillet
+{products}
 
 Approximate quantity:
 Preferred timeframe:
@@ -67,19 +69,14 @@ Additional information:
 
 Thank you."""
 
-WHATSAPP_BODY = """Hello NATFISH. I would like to make a seafood enquiry.
+WHATSAPP_TEMPLATE = """Hello NATFISH. I would like to make a seafood enquiry.
 
 Name:
 Company:
 Location:
 
 Product required (delete those that do not apply):
-  - Frozen Spiny Lobster Tails
-  - Frozen Lobster Head Meat
-  - Frozen Whole Raw Lobster
-  - Frozen Whole Cooked Lobster
-  - Frozen Queen Conch, 85% Cleaned
-  - Lionfish Fillet
+{products}
 
 Approximate quantity:
 Preferred timeframe:
@@ -363,11 +360,12 @@ def home():
         <div class="section-head section-head--rule reveal section-head--center">
           {RULE_WAVE}
           <span class="eyebrow">Seafood &amp; Services</span>
-          <h2 id="home-seafood-h">Six products from Belizean waters</h2>
+          <h2 id="home-seafood-h">Eight products from Belizean waters</h2>
           <p class="lede">
-            Frozen spiny lobster in four preparations, frozen queen conch and
-            lionfish fillet. Availability follows Belize's regulated seasons and
-            is confirmed directly with NATFISH.
+            Frozen spiny lobster in four preparations, frozen queen conch,
+            lionfish fillet and packed fish fillets and portions. Availability
+            follows Belize's regulated seasons and is confirmed directly with
+            NATFISH.
           </p>
         </div>
 
@@ -726,8 +724,8 @@ def order_button(prod, css="btn btn--ai btn--sm", fallback=f"{AI_PAGE}#ai-embed"
 def order_thumb(prod):
     """The small square beside a product in the order list.
 
-    Three of the six products have a photograph that is truthfully theirs; the
-    other three have none, and no borrowed or approximate image is used for
+    Five of the eight products have a photograph that is truthfully theirs;
+    the other three have none, and no borrowed or approximate image is used for
     them. Those carry the species mark on a navy panel instead - the same
     substitution the product cards on Seafood & Services already make, so a
     visitor moving between the two pages sees one consistent treatment rather
@@ -801,6 +799,28 @@ CATALOGUE = [
         "body": "Fillet from an invasive Indo-Pacific species that Belizean "
                 "fishers help keep in check on the reef.",
     },
+    # The two fish entries carry no scientific name because none is supported.
+    # The client supplied photographs of packed fish fillets and fish portions
+    # with captions that say only "prepared for distribution" - no species, no
+    # weight, no grade - and inventing a species to fill the line would be
+    # exactly the kind of claim this site does not make. `sci: None` renders no
+    # italic line at all rather than an empty one.
+    {
+        "name": "Frozen Fish Fillets",
+        "sci": None,
+        "icon": "crate-fish",
+        "img": "05-frozen-fish-fillets-box",
+        "body": "Fish fillets, individually packaged and boxed for "
+                "distribution.",
+    },
+    {
+        "name": "Frozen Fish Portions",
+        "sci": None,
+        "icon": "crate-fish",
+        "img": "06-frozen-fish-portions-box",
+        "body": "Fish portions, individually packaged and boxed for "
+                "distribution.",
+    },
 ]
 
 AVAILABILITY_NOTE = (
@@ -809,6 +829,13 @@ AVAILABILITY_NOTE = (
     '<a href="{cta}">Contact NATFISH</a> to discuss current availability, '
     'specifications and buyer requirements.'
 )
+
+
+def sci_line(prod):
+    """The species line, or nothing where no species is supported."""
+    if not prod.get("sci"):
+        return ""
+    return f'<p class="product__sci"><i>{prod["sci"]}</i></p>'
 
 
 def product_card(prod):
@@ -825,7 +852,7 @@ def product_card(prod):
             {media}
             <div class="product__body">
               <h3>{prod["name"]}</h3>
-              <p class="product__sci"><i>{prod["sci"]}</i></p>
+              {sci_line(prod)}
               <p>{prod["body"]}</p>
               <div class="product__actions">
                 {order_button(prod)}
@@ -838,15 +865,16 @@ def product_card(prod):
 def seafood_services():
     return (
         head(
-            "Belizean Lobster, Conch &amp; Lionfish Products | NATFISH",
+            "Belizean Lobster, Conch, Lionfish &amp; Fish Products | NATFISH",
             "Frozen spiny lobster tails, lobster head meat, whole raw and cooked "
-            "lobster, queen conch 85% cleaned and lionfish fillet, prepared by a "
-            "Belizean fisher-owned co-operative.",
+            "lobster, queen conch 85% cleaned, lionfish fillet and packed fish "
+            "fillets and portions, prepared by a Belizean fisher-owned "
+            "co-operative.",
         )
         + header("seafood-services.html")
         + page_hero(
             "Seafood &amp; Services",
-            "Six products, and the co-operative behind them",
+            "Eight products, and the co-operative behind them",
             "What NATFISH brings to market, and the co-operative functions that "
             "carry a member's catch from the water to a buyer.",
             "Seafood &amp; Services",
@@ -872,9 +900,9 @@ def seafood_services():
           <span class="eyebrow">Product catalogue</span>
           <h2 id="sf-catalogue-h">Frozen seafood from Belizean waters</h2>
           <p class="lede">
-            Four spiny lobster preparations, queen conch and lionfish fillet.
-            Specifications and current availability are confirmed directly with
-            NATFISH.
+            Four spiny lobster preparations, queen conch, lionfish fillet and
+            packed fish fillets and portions. Specifications and current
+            availability are confirmed directly with NATFISH.
           </p>
         </div>
 
@@ -1607,7 +1635,7 @@ def natfish_ai():
             {order_thumb(prod)}
             <div class="order-item__name">
               <h3>{prod["name"]}</h3>
-              <p class="product__sci"><i>{prod["sci"]}</i></p>
+              {sci_line(prod)}
             </div>
             {order_button(prod, fallback="#ai-embed")}
           </li>"""
@@ -1793,9 +1821,15 @@ CHECKLIST = [
 ]
 
 # Named so a buyer can say exactly which product they mean. Both enquiry drafts
-# carry the same six lines, so the pick-list on the page and the pick-list in
+# carry the same eight lines, so the pick-list on the page and the one in
 # the message a buyer sends never drift apart.
 PRODUCT_PICKS = [p["name"] for p in CATALOGUE]
+
+# One list, three places: the pick-list rendered on the page, the email draft
+# and the WhatsApp draft.
+_PICK_LINES = "\n".join(f"  - {name}" for name in PRODUCT_PICKS)
+EMAIL_BODY = EMAIL_TEMPLATE.format(products=_PICK_LINES)
+WHATSAPP_BODY = WHATSAPP_TEMPLATE.format(products=_PICK_LINES)
 
 
 def contact():
