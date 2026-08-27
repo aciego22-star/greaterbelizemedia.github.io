@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useBasket } from '../basket/BasketProvider';
 import { business } from '../data/business';
+import logoWhite from '../assets/brand/cosmic-pharmacy-logo-white.svg';
+import iconWhite from '../assets/brand/cosmic-pharmacy-icon-white.svg';
 
 const productPages = [
   { to: '/products/supplements', label: 'Supplements' },
@@ -12,7 +14,6 @@ const productPages = [
 ];
 
 const mainLinks = [
-  { to: '/services', label: 'Services' },
   { to: '/shop', label: 'Shop All' },
   { to: '/blog', label: 'Blog' },
   { to: '/gallery', label: 'Gallery' },
@@ -39,7 +40,10 @@ export function Header() {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) setProductsOpen(false);
     };
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setProductsOpen(false);
+      if (e.key === 'Escape') {
+        setProductsOpen(false);
+        setMenuOpen(false);
+      }
     };
     document.addEventListener('click', onClick);
     document.addEventListener('keydown', onKey);
@@ -52,21 +56,14 @@ export function Header() {
   return (
     <header className="site-header">
       <div className="wrap header-inner">
-        <Link to="/" className="brand" aria-label={`${business.name} home`}>
-          <span className="brand-mark" aria-hidden="true">
-            <svg viewBox="0 0 40 40">
-              <circle cx="20" cy="20" r="9" fill="none" stroke="currentColor" strokeWidth="2.4" />
-              <ellipse cx="20" cy="20" rx="17" ry="6.5" fill="none" stroke="currentColor" strokeWidth="1.6" transform="rotate(-18 20 20)" />
-              <circle cx="33.5" cy="14" r="2.4" fill="currentColor" className="brand-moon" />
-            </svg>
-          </span>
-          <span className="brand-text">
-            <strong>{business.name}</strong>
-            <small>{business.tagline}</small>
-          </span>
+        <Link to="/" className="brand" aria-label={`${business.name}, ${business.tagline}. Go to the home page`}>
+          {/* Full horizontal lockup where there is room; the standalone mark below that,
+              per the logo pack's minimum-width rule. */}
+          <img className="brand-logo" src={logoWhite} alt={`${business.name}. ${business.tagline}`} width={232} height={83} />
+          <img className="brand-icon" src={iconWhite} alt={business.name} width={40} height={46} />
         </Link>
 
-        <nav className={`main-nav ${menuOpen ? 'open' : ''}`} aria-label="Main navigation">
+        <nav className={`main-nav ${menuOpen ? 'open' : ''}`} id="main-nav" aria-label="Main navigation">
           <ul className="nav-list">
             <li>
               <NavLink to="/" end className="nav-link">
@@ -86,7 +83,10 @@ export function Header() {
                 aria-haspopup="true"
                 onClick={() => setProductsOpen((v) => !v)}
               >
-                Products <span aria-hidden="true" className="caret">▾</span>
+                Products{' '}
+                <span aria-hidden="true" className="caret">
+                  ▾
+                </span>
               </button>
               <ul className="drop-list">
                 {productPages.map((p) => (
@@ -103,15 +103,13 @@ export function Header() {
                 </li>
               </ul>
             </li>
-            {mainLinks
-              .filter((l) => l.to !== '/services')
-              .map((l) => (
-                <li key={l.to}>
-                  <NavLink to={l.to} className="nav-link">
-                    {l.label}
-                  </NavLink>
-                </li>
-              ))}
+            {mainLinks.map((l) => (
+              <li key={l.to}>
+                <NavLink to={l.to} className="nav-link">
+                  {l.label}
+                </NavLink>
+              </li>
+            ))}
           </ul>
         </nav>
 
@@ -129,7 +127,13 @@ export function Header() {
           </button>
           <button type="button" className="icon-btn basket-btn" aria-label={`Open basket, ${summary.itemCount} items`} onClick={openBasket}>
             <svg viewBox="0 0 24 24" aria-hidden="true" width="20" height="20">
-              <path d="M4 7h16l-1.5 12a2 2 0 0 1-2 1.8h-9A2 2 0 0 1 5.5 19L4 7Z" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+              <path
+                d="M4 7h16l-1.5 12a2 2 0 0 1-2 1.8h-9A2 2 0 0 1 5.5 19L4 7Z"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinejoin="round"
+              />
               <path d="M8.5 10V6a3.5 3.5 0 0 1 7 0v4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
             </svg>
             {summary.itemCount > 0 && (
@@ -143,6 +147,7 @@ export function Header() {
             className="icon-btn menu-btn"
             aria-label={menuOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={menuOpen}
+            aria-controls="main-nav"
             onClick={() => setMenuOpen((v) => !v)}
           >
             <span className={`burger ${menuOpen ? 'x' : ''}`} aria-hidden="true">

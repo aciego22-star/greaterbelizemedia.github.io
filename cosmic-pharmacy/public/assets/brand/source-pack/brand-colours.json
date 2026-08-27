@@ -1,0 +1,21 @@
+{
+  "brand": "Cosmic Pharmacy",
+  "tagline": "MEDICINE·HEALTH·BEAUTY",
+  "colours": {
+    "cyan": "#13B5E6",
+    "blue": "#1679D1",
+    "deepBlue": "#2438B6",
+    "pink": "#EA4F8D",
+    "deepPink": "#D53678",
+    "navy": "#103A70",
+    "cosmicBackground": "#050E26",
+    "white": "#FFFFFF"
+  },
+  "website": {
+    "darkHeaderLogo": "svg/cosmic-pharmacy-logo-white.svg",
+    "lightBackgroundLogo": "svg/cosmic-pharmacy-logo-primary.svg",
+    "compactMark": "svg/cosmic-pharmacy-icon.svg",
+    "favicon": "web/favicon.ico",
+    "socialAvatar": "png/cosmic-pharmacy-social-avatar-1024.png"
+  }
+}

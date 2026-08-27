@@ -104,3 +104,31 @@ For the video slide:
   `/* /index.html 200`.
 - Do not publish under Cosmic's official domain without written authorization —
   this build is a private demonstration.
+
+## 8. Logo pack (installed)
+
+The client's logo pack is installed and in use:
+
+- `src/assets/brand/*.svg` are the working files the site imports (coordinate
+  precision trimmed to 1 decimal, verified pixel-identical at display size,
+  27% smaller / ~47 KB gzipped). The XML prolog is removed intentionally.
+- `public/assets/brand/source-pack/` holds the untouched original pack for
+  reference and reprint.
+- `public/favicon.ico`, `icon-192.png`, `icon-512.png` and
+  `apple-touch-icon-180.png` come straight from the pack's `web/` folder.
+
+Placement follows the pack's rules: the white horizontal lockup on the dark
+header and footer, and the standalone white mark below 1000 px where the
+lockup would fall under its minimum legible width. The header lockup renders
+at 232 px wide against the pack's "approximately 240 px" minimum; confirm with
+the client if they want it larger (that would mean a taller sticky header).
+
+## 9. Social links
+
+`src/data/business.ts` holds every social destination. Facebook, Instagram and
+email are the client's confirmed details. Two still need confirmation before
+publication and are marked VERIFY in that file:
+
+- **TikTok** - assumed to match the Instagram handle (`@cosmicpharmacybz`).
+- **Google Business Profile** - currently a Google Maps search link for the
+  business. Replace with the profile's own short link once supplied.

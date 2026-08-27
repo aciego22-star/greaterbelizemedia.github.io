@@ -1,62 +1,56 @@
 import { Link } from 'react-router-dom';
 import { business } from '../data/business';
+import { SocialLinks } from './SocialLinks';
+import logoWhite from '../assets/brand/cosmic-pharmacy-logo-white.svg';
 
 export function Footer() {
   return (
     <footer className="site-footer">
-      <div className="wrap footer-grid">
-        <div className="footer-brand">
-          <strong className="footer-name">{business.name}</strong>
-          <span className="footer-tag">{business.tagline}</span>
-          <p className="footer-promise">{business.promise}</p>
-          <p className="footer-detail">{business.address}</p>
-          <p className="footer-detail">
-            <a href={`tel:${business.phoneTel}`}>{business.phoneDisplay}</a> ·{' '}
-            <a href={`mailto:${business.email}`}>{business.email}</a>
-          </p>
-          <p className="footer-detail">
-            <a href={business.instagramUrl} target="_blank" rel="noopener noreferrer">
-              Instagram {business.instagram}
-            </a>{' '}
-            ·{' '}
-            <a href={business.facebookUrl} target="_blank" rel="noopener noreferrer">
-              Facebook
-            </a>
-          </p>
-        </div>
+      <div className="wrap footer-inner">
+        <Link to="/" className="footer-logo" aria-label={`${business.name}, go to the home page`}>
+          <img src={logoWhite} alt={`${business.name}. ${business.tagline}`} width={260} height={93} />
+        </Link>
 
-        <nav className="footer-nav" aria-label="Footer">
-          <div>
-            <h3>Shop</h3>
-            <Link to="/shop">Shop All</Link>
-            <Link to="/products/supplements">Supplements</Link>
-            <Link to="/products/health">Health Products</Link>
-            <Link to="/products/personal-care-beauty">Personal Care & Beauty</Link>
-            <Link to="/products/womens-wellness">Women's Wellness & PMOS</Link>
-            <Link to="/products/medical-devices">Medical Devices</Link>
-          </div>
-          <div>
-            <h3>Cosmic</h3>
-            <Link to="/services">Services</Link>
-            <Link to="/prescriptions">Prescriptions & Refills</Link>
-            <Link to="/blog">Blog</Link>
-            <Link to="/gallery">Gallery</Link>
-            <Link to="/about">About</Link>
-            <Link to="/contact">Contact & Hours</Link>
-          </div>
-        </nav>
+        <p className="footer-promise">{business.promise}</p>
+
+        <address className="footer-contact">
+          <span>{business.address}</span>
+          <span aria-hidden="true" className="footer-sep">
+            ·
+          </span>
+          <a href={`tel:${business.phoneTel}`}>{business.phoneDisplay}</a>
+          <span aria-hidden="true" className="footer-sep">
+            ·
+          </span>
+          <a href={`mailto:${business.email}`}>{business.email}</a>
+        </address>
 
         <div className="footer-hours">
-          <h3>Hours</h3>
           {business.hours.map((h) => (
-            <p key={h.days} className="footer-detail">
-              <span>{h.days}</span>
-              <br />
-              {h.open} – {h.close}
-            </p>
+            <span key={h.days}>
+              <strong>{h.days}</strong> {h.open} – {h.close}
+            </span>
           ))}
-          <p className="footer-detail">{business.serviceReach}</p>
         </div>
+
+        <SocialLinks />
+
+        <nav className="footer-nav" aria-label="Footer">
+          <Link to="/services">Services</Link>
+          <Link to="/shop">Shop All</Link>
+          <Link to="/products/supplements">Supplements</Link>
+          <Link to="/products/health">Health Products</Link>
+          <Link to="/products/personal-care-beauty">Personal Care & Beauty</Link>
+          <Link to="/products/womens-wellness">Women's Wellness & PMOS</Link>
+          <Link to="/products/medical-devices">Medical Devices</Link>
+          <Link to="/prescriptions">Prescriptions & Refills</Link>
+          <Link to="/blog">Blog</Link>
+          <Link to="/gallery">Gallery</Link>
+          <Link to="/about">About</Link>
+          <Link to="/contact">Contact</Link>
+        </nav>
+
+        <p className="footer-reach">{business.serviceReach}</p>
       </div>
 
       <div className="wrap footer-legal">

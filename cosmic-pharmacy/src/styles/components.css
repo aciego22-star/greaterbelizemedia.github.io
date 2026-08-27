@@ -66,39 +66,22 @@ main,
 .brand {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  flex-shrink: 0;
   text-decoration: none;
-  color: var(--star-white);
+  /* Clear space around the lockup, per the logo pack rules. */
+  padding-right: 0.5rem;
 }
 
-.brand-mark {
+.brand-logo {
+  width: 232px;
+  height: auto;
+}
+
+/* Standalone mark takes over below the lockup's minimum legible width. */
+.brand-icon {
+  display: none;
   width: 40px;
-  height: 40px;
-  color: var(--cosmic-blue);
-}
-
-.brand-mark .brand-moon {
-  color: var(--magenta);
-  fill: var(--magenta);
-}
-
-.brand-text {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.15;
-}
-
-.brand-text strong {
-  font-family: var(--font-display);
-  font-size: 1.05rem;
-  letter-spacing: 0.01em;
-}
-
-.brand-text small {
-  font-size: 0.62rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--star-dim);
+  height: auto;
 }
 
 .main-nav {
@@ -1661,75 +1644,158 @@ a.product-cat:hover {
   background: rgba(7, 11, 34, 0.92);
   border-top: 1px solid var(--line-dark);
   color: var(--star-dim);
-  padding: clamp(2rem, 4vw, 3.4rem) 0 1.6rem;
+  padding: clamp(2.4rem, 5vw, 3.6rem) 0 1.6rem;
   margin-top: clamp(1.5rem, 4vw, 3rem);
+  text-align: center;
 }
 
-.footer-grid {
-  display: grid;
-  grid-template-columns: 1.2fr 1.4fr 0.9fr;
-  gap: 2rem;
+.footer-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.1rem;
 }
 
-.footer-name {
-  display: block;
+.footer-logo {
+  display: inline-block;
+  line-height: 0;
+}
+
+.footer-logo img {
+  width: min(260px, 70vw);
+  height: auto;
+}
+
+.footer-promise {
+  margin: 0;
   font-family: var(--font-display);
   font-size: var(--text-lg);
   color: var(--star-white);
 }
 
-.footer-tag {
-  display: block;
-  font-size: var(--text-xs);
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  margin-bottom: 0.8rem;
-}
-
-.footer-promise {
-  color: var(--star-white);
-  font-family: var(--font-display);
-}
-
-.footer-detail {
+.footer-contact {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.3rem 0.6rem;
+  margin: 0;
+  font-style: normal;
   font-size: var(--text-sm);
-  margin-bottom: 0.5rem;
+  max-width: 46rem;
 }
 
-.footer-detail a {
+.footer-contact a {
   color: var(--star-white);
   text-decoration: none;
 }
 
-.footer-detail a:hover {
+.footer-contact a:hover {
   text-decoration: underline;
 }
 
-.footer-nav {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
+.footer-sep {
+  color: var(--cosmic-blue);
 }
 
-.footer-nav h3,
-.footer-hours h3 {
+.footer-hours {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.3rem 1.4rem;
   font-size: var(--text-sm);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+}
+
+.footer-hours strong {
   color: var(--star-white);
-  margin-bottom: 0.7rem;
+  font-weight: 600;
+}
+
+/* ---- Social row ---- */
+.social-row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  list-style: none;
+  margin: 0.2rem 0 0;
+  padding: 0;
+}
+
+.social-link {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid var(--line-dark);
+  background: rgba(61, 109, 242, 0.1);
+  color: var(--star-white);
+  text-decoration: none;
+  /* Each icon drifts on its own rhythm so the row feels alive, not busy. */
+  animation: social-drift 5.2s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 0.55s);
+  transition: color 0.2s, border-color 0.2s, background 0.2s, box-shadow 0.2s;
+  will-change: transform;
+}
+
+@keyframes social-drift {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  35% {
+    transform: translateY(-6px) rotate(-4deg);
+  }
+  70% {
+    transform: translateY(3px) rotate(3deg);
+  }
+}
+
+.social-link:hover,
+.social-link:focus-visible {
+  color: var(--tint);
+  border-color: var(--tint);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 8px 24px rgba(7, 11, 34, 0.5), 0 0 0 4px color-mix(in srgb, var(--tint) 22%, transparent);
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .social-link {
+    animation: none;
+  }
+}
+
+.footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.2rem 0.4rem;
+  max-width: 52rem;
+  margin-top: 0.3rem;
 }
 
 .footer-nav a {
-  display: block;
-  padding: 0.25rem 0;
+  padding: 0.3rem 0.7rem;
+  border-radius: var(--radius-pill);
   color: var(--star-dim);
   font-size: var(--text-sm);
   text-decoration: none;
+  transition: color 0.15s, background 0.15s;
 }
 
 .footer-nav a:hover {
   color: var(--star-white);
+  background: rgba(61, 109, 242, 0.16);
+}
+
+.footer-reach {
+  margin: 0;
+  font-size: var(--text-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
 }
 
 .footer-legal {
@@ -1777,44 +1843,59 @@ a.product-cat:hover {
   .detail-grid {
     grid-template-columns: 1fr;
   }
-
-  .footer-grid {
-    grid-template-columns: 1fr 1fr;
-  }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 1000px) {
+  :root {
+    --header-h: 64px;
+  }
+
+  .brand-logo {
+    display: none;
+  }
+
+  .brand-icon {
+    display: block;
+  }
+
   .menu-btn {
     display: inline-flex;
   }
 
-  /* Closed state is display:none (not an off-screen transform) so the
-     off-canvas panel can never widen the mobile layout viewport. */
+  /* Anchored to the header rather than the viewport: .site-header carries a
+     backdrop-filter, which makes it the containing block for fixed children —
+     a fixed panel would collapse to the header's own height and clip the menu.
+     Closed state is display:none so the panel can never widen the layout. */
   .main-nav {
-    position: fixed;
-    top: 0;
+    position: absolute;
+    top: 100%;
+    left: 0;
     right: 0;
-    bottom: 0;
     z-index: 70;
-    width: min(320px, 86vw);
-    background: var(--midnight-2);
-    border-left: 1px solid var(--line-dark);
-    padding: calc(var(--header-h) + 1.4rem) 1.2rem 2rem;
     display: none;
+    background: var(--midnight-2);
+    border-top: 1px solid var(--line-dark);
+    border-bottom: 1px solid var(--line-dark);
+    box-shadow: 0 24px 50px rgba(7, 11, 34, 0.55);
+    padding: 0.7rem clamp(1rem, 4vw, 2.4rem) 1.1rem;
+    max-height: min(78vh, 620px);
     overflow-y: auto;
+    overscroll-behavior: contain;
   }
 
   .main-nav.open {
     display: block;
-    animation: nav-slide-in 0.25s ease;
+    animation: nav-drop 0.22s ease;
   }
 
-  @keyframes nav-slide-in {
+  @keyframes nav-drop {
     from {
-      transform: translateX(100%);
+      opacity: 0;
+      transform: translateY(-8px);
     }
     to {
-      transform: translateX(0);
+      opacity: 1;
+      transform: translateY(0);
     }
   }
 
@@ -1855,6 +1936,10 @@ a.product-cat:hover {
     border-top-color: var(--line-dark);
   }
 
+}
+
+/* Phone-only layout (the 1000px block above is for the nav and brand lockup). */
+@media (max-width: 760px) {
   .utility-address {
     display: none;
   }
@@ -1875,10 +1960,6 @@ a.product-cat:hover {
 
   .basket-drawer {
     width: 100%;
-  }
-
-  .footer-grid {
-    grid-template-columns: 1fr;
   }
 
   .gallery-grid {

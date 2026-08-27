@@ -18,6 +18,14 @@ export const business = {
   instagramUrl: 'https://www.instagram.com/cosmicpharmacybz/',
   facebookName: 'Cosmic Pharmacy, Belize City',
   facebookUrl: 'https://www.facebook.com/people/Cosmic-Pharmacy/100091933047386/',
+  // VERIFY WITH CLIENT BEFORE PUBLICATION - handle assumed to match Instagram;
+  // confirm the real TikTok account before this link goes live.
+  tiktok: '@cosmicpharmacybz',
+  tiktokUrl: 'https://www.tiktok.com/@cosmicpharmacybz',
+  // VERIFY WITH CLIENT BEFORE PUBLICATION - Google Maps search link for the
+  // business. Replace with the Google Business Profile short link once supplied.
+  googleBusinessUrl:
+    'https://www.google.com/maps/search/?api=1&query=Cosmic+Pharmacy+Holy+Emmanuel+Street+Belize+City',
   serviceReach: 'Belize City · out-district · main islands',
   // VERIFY WITH CLIENT BEFORE PUBLICATION — hours conflict across current public sources;
   // these are the hours on Cosmic's current coming-soon page.
