@@ -46,7 +46,7 @@ export function RetailLanding({ title, eyebrow, intro, categorySlugs, metaDescri
         <section className="panel-section cool section-pad">
           <h2>Browse {title.toLowerCase()}</h2>
           <p className="section-intro">
-            {pageProducts.length} demo product{pageProducts.length === 1 ? '' : 's'} in this department — the full catalogue is populated
+            {pageProducts.length} demo product{pageProducts.length === 1 ? '' : 's'} in this department. The full catalogue is populated
             from Cosmic's approved product list.
           </p>
           <ProductGrid products={pageProducts} />

@@ -6,7 +6,7 @@ import { usePageMeta } from '../lib/usePageMeta';
 const services = [
   {
     name: 'Prescription filling & refill assistance',
-    desc: 'Bring or send your prescription and the pharmacist takes it from there — with clear guidance on what is required before dispensing.'
+    desc: 'Bring or send your prescription and the pharmacist takes it from there, with clear guidance on what is required before dispensing.'
   },
   {
     name: 'Pharmacist guidance',
@@ -26,7 +26,7 @@ const services = [
   },
   {
     name: 'Delivery & shipping',
-    desc: 'Belize City delivery, plus out-district and main-island shipping — options and charges are confirmed by the pharmacy on each request.'
+    desc: 'Belize City delivery, plus out-district and main-island shipping. Options and charges are confirmed by the pharmacy on each request.'
   }
 ];
 
@@ -43,7 +43,7 @@ export function Services() {
           <span className="eyebrow">Service-led pharmacy</span>
           <h1 className="section-title">Services</h1>
           <p className="section-intro">
-            Cosmic's difference isn't just what's on the shelf — it's the pharmacist behind the counter. {business.promise}
+            Cosmic's difference isn't just what's on the shelf. It's the pharmacist behind the counter. {business.promise}
           </p>
           <div className="services-grid">
             {services.map((s) => (
@@ -55,9 +55,9 @@ export function Services() {
           </div>
         </section>
 
-        <section className="panel-section cool section-pad">
+        <section className="panel-section cool section-pad band-center">
           <h2>Ready when you are</h2>
-          <div className="section-cta-row">
+          <div className="section-cta-row center">
             <Link className="btn btn-primary" to="/shop">
               Search Products
             </Link>
@@ -66,7 +66,7 @@ export function Services() {
             </a>
           </div>
           <p className="text-muted services-note">
-            Delivery areas, shipping charges and timing are confirmed by Cosmic Pharmacy on each request — the website doesn't guarantee
+            Delivery areas, shipping charges and timing are confirmed by Cosmic Pharmacy on each request. The website doesn't guarantee
             stock or delivery times.
           </p>
         </section>

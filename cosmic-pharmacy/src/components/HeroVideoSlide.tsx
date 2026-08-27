@@ -29,7 +29,7 @@ export function HeroVideoSlide({ slide, active, reducedMotion, onPlayingChange }
   const attemptedRef = useRef(false);
 
   const hasSource = Boolean(slide.videoSrcDesktop || slide.videoSrcMobile);
-  const overlayLabel = `Cosmic Pharmacy in ${formatDuration(slide.durationSeconds)} — Play with Sound`;
+  const overlayLabel = `Cosmic Pharmacy in ${formatDuration(slide.durationSeconds)} · Play with Sound`;
 
   const startPlayback = useCallback(() => {
     const video = videoRef.current;

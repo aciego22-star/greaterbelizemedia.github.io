@@ -5,7 +5,7 @@
     "title": "Front counter and dispensary",
     "filters": ["inside-cosmic"],
     "src": "",
-    "alt": "Placeholder — photograph of the Cosmic Pharmacy front counter pending",
+    "alt": "Placeholder: photograph of the Cosmic Pharmacy front counter pending",
     "aspect": "landscape",
     "sourceNote": "Final asset: client photograph, inside the pharmacy"
   },
@@ -15,7 +15,7 @@
     "title": "Supplement wall",
     "filters": ["inside-cosmic", "products-wellness"],
     "src": "",
-    "alt": "Placeholder — photograph of the supplement shelves pending",
+    "alt": "Placeholder: photograph of the supplement shelves pending",
     "aspect": "portrait",
     "sourceNote": "Final asset: client photograph, supplement shelves"
   },
@@ -25,7 +25,7 @@
     "title": "Wellness picks of the week",
     "filters": ["products-wellness", "social-highlights"],
     "src": "",
-    "alt": "Placeholder — wellness product feature photograph pending",
+    "alt": "Placeholder: wellness product feature photograph pending",
     "aspect": "square",
     "sourceNote": "Final asset: approved social photograph"
   },
@@ -35,7 +35,7 @@
     "title": "Serving Belize City",
     "filters": ["community"],
     "src": "",
-    "alt": "Placeholder — community service photograph pending",
+    "alt": "Placeholder: community service photograph pending",
     "aspect": "landscape",
     "sourceNote": "Final asset: approved community photograph"
   },
@@ -46,7 +46,7 @@
     "filters": ["videos", "inside-cosmic"],
     "src": "",
     "poster": "",
-    "alt": "Placeholder — short walkthrough video pending",
+    "alt": "Placeholder: short walkthrough video pending",
     "aspect": "portrait",
     "sourceNote": "Final asset: client-owned short video with cleared audio"
   },
@@ -56,9 +56,9 @@
     "title": "Beauty and personal-care corner",
     "filters": ["inside-cosmic", "products-wellness"],
     "src": "",
-    "alt": "Placeholder — beauty and personal-care display photograph pending",
+    "alt": "Placeholder: beauty and personal-care display photograph pending",
     "aspect": "portrait",
-    "sourceNote": "Final asset: client photograph, front-shop display"
+    "sourceNote": "Final asset: client photograph, pharmacy display"
   },
   {
     "id": "g-07",
@@ -66,7 +66,7 @@
     "title": "Cosmic PMOS collection",
     "filters": ["products-wellness", "social-highlights"],
     "src": "",
-    "alt": "Placeholder — Cosmic PMOS collection photograph pending",
+    "alt": "Placeholder: Cosmic PMOS collection photograph pending",
     "aspect": "square",
     "sourceNote": "Final asset: approved social photograph of the PMOS kits"
   },
@@ -77,7 +77,7 @@
     "filters": ["videos", "social-highlights"],
     "src": "",
     "poster": "",
-    "alt": "Placeholder — social highlight video pending",
+    "alt": "Placeholder: social highlight video pending",
     "aspect": "portrait",
     "sourceNote": "Final asset: client-owned social video with cleared audio"
   },
@@ -87,7 +87,7 @@
     "title": "Out-district orders on their way",
     "filters": ["community", "social-highlights"],
     "src": "",
-    "alt": "Placeholder — shipping and delivery photograph pending",
+    "alt": "Placeholder: shipping and delivery photograph pending",
     "aspect": "landscape",
     "sourceNote": "Final asset: approved photograph of packed orders"
   }

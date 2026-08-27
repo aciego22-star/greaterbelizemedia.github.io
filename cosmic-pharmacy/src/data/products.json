@@ -14,7 +14,7 @@
     "pharmacistGuidanceRequired": false,
     "keywords": ["scar", "cream", "skin", "topical"],
     "image": "",
-    "imageAlt": "Placeholder — Maximum Strength Scar Cream packaging photo pending",
+    "imageAlt": "Placeholder: Maximum Strength Scar Cream packaging photo pending",
     "sale": true,
     "lastVerified": null
   },
@@ -36,7 +36,7 @@
     "pharmacistGuidanceRequired": false,
     "keywords": ["sinus", "headache", "congestion", "caplets"],
     "image": "",
-    "imageAlt": "Placeholder — HealthA2Z Sinus Headache PE packaging photo pending",
+    "imageAlt": "Placeholder: HealthA2Z Sinus Headache PE packaging photo pending",
     "sale": true,
     "lastVerified": null
   },
@@ -57,7 +57,7 @@
     "pharmacistGuidanceRequired": false,
     "keywords": ["beet root", "tart cherry", "gummies", "wellness"],
     "image": "",
-    "imageAlt": "Placeholder — YumVs Beet Root with Tart Cherry gummies packaging photo pending",
+    "imageAlt": "Placeholder: YumVs Beet Root with Tart Cherry gummies packaging photo pending",
     "sale": true,
     "featured": true,
     "lastVerified": null
@@ -79,7 +79,7 @@
     "pharmacistGuidanceRequired": false,
     "keywords": ["chewable", "vitamin c", "soy protein", "kids"],
     "image": "",
-    "imageAlt": "Placeholder — Animalín chewable tablets packaging photo pending",
+    "imageAlt": "Placeholder: Animalín chewable tablets packaging photo pending",
     "sale": true,
     "lastVerified": null
   },
@@ -100,7 +100,7 @@
     "pharmacistGuidanceRequired": false,
     "keywords": ["multivitamin", "men", "50 plus", "daily"],
     "image": "",
-    "imageAlt": "Placeholder — Puritan's Pride Ultra Man 50 Plus packaging photo pending",
+    "imageAlt": "Placeholder: Puritan's Pride Ultra Man 50 Plus packaging photo pending",
     "sale": true,
     "lastVerified": null
   },
@@ -122,7 +122,7 @@
     "pharmacistGuidanceRequired": false,
     "keywords": ["flaxseed", "oil", "omega", "softgel"],
     "image": "",
-    "imageAlt": "Placeholder — Nature's Bounty Flaxseed Oil packaging photo pending",
+    "imageAlt": "Placeholder: Nature's Bounty Flaxseed Oil packaging photo pending",
     "sale": true,
     "lastVerified": null
   },
@@ -143,7 +143,7 @@
     "pharmacistGuidanceRequired": false,
     "keywords": ["multivitamin", "women", "daily", "centrum"],
     "image": "",
-    "imageAlt": "Placeholder — Centrum Women multivitamin packaging photo pending",
+    "imageAlt": "Placeholder: Centrum Women multivitamin packaging photo pending",
     "sale": true,
     "featured": true,
     "lastVerified": null
@@ -165,7 +165,7 @@
     "pharmacistGuidanceRequired": true,
     "keywords": ["hioscina", "solution", "digestive"],
     "image": "",
-    "imageAlt": "Placeholder — Hioscina solution packaging photo pending",
+    "imageAlt": "Placeholder: Hioscina solution packaging photo pending",
     "lastVerified": null
   },
   {
@@ -184,7 +184,7 @@
     "pharmacistGuidanceRequired": true,
     "keywords": ["pmos", "skin", "kit", "wellness", "women"],
     "image": "",
-    "imageAlt": "Placeholder — Cosmic PMOS Skin Balance Kit photo pending",
+    "imageAlt": "Placeholder: Cosmic PMOS Skin Balance Kit photo pending",
     "featured": true,
     "lastVerified": null
   },
@@ -204,7 +204,7 @@
     "pharmacistGuidanceRequired": true,
     "keywords": ["pmos", "metabolic", "kit", "wellness", "women"],
     "image": "",
-    "imageAlt": "Placeholder — Cosmic PMOS Metabolic Reset Kit photo pending",
+    "imageAlt": "Placeholder: Cosmic PMOS Metabolic Reset Kit photo pending",
     "lastVerified": null
   },
   {
@@ -223,7 +223,7 @@
     "pharmacistGuidanceRequired": true,
     "keywords": ["pmos", "fertility", "kit", "wellness", "women"],
     "image": "",
-    "imageAlt": "Placeholder — Cosmic PMOS Fertility Support Kit photo pending",
+    "imageAlt": "Placeholder: Cosmic PMOS Fertility Support Kit photo pending",
     "lastVerified": null
   },
   {
@@ -242,7 +242,7 @@
     "pharmacistGuidanceRequired": true,
     "keywords": ["pmos", "cycle", "kit", "wellness", "women"],
     "image": "",
-    "imageAlt": "Placeholder — Cosmic PMOS Cycle Balance Kit photo pending",
+    "imageAlt": "Placeholder: Cosmic PMOS Cycle Balance Kit photo pending",
     "lastVerified": null
   },
   {
@@ -261,7 +261,7 @@
     "pharmacistGuidanceRequired": true,
     "keywords": ["pmos", "craving", "kit", "wellness", "women"],
     "image": "",
-    "imageAlt": "Placeholder — Cosmic PMOS Craving Control Kit photo pending",
+    "imageAlt": "Placeholder: Cosmic PMOS Craving Control Kit photo pending",
     "lastVerified": null
   },
   {
@@ -281,7 +281,7 @@
     "pharmacistGuidanceRequired": true,
     "keywords": ["boric acid", "feminine", "suppository", "ph-d"],
     "image": "",
-    "imageAlt": "Placeholder — pH-D boric acid suppositories packaging photo pending",
+    "imageAlt": "Placeholder: pH-D boric acid suppositories packaging photo pending",
     "lastVerified": null
   },
   {
@@ -300,7 +300,7 @@
     "pharmacistGuidanceRequired": false,
     "keywords": ["liners", "feminine", "daily", "kotex"],
     "image": "",
-    "imageAlt": "Placeholder — Kotex daily liners packaging photo pending",
+    "imageAlt": "Placeholder: Kotex daily liners packaging photo pending",
     "lastVerified": null
   },
   {
@@ -319,7 +319,7 @@
     "pharmacistGuidanceRequired": false,
     "keywords": ["chlorophyll", "liquid", "greens", "wellness"],
     "image": "",
-    "imageAlt": "Placeholder — liquid chlorophyll packaging photo pending",
+    "imageAlt": "Placeholder: liquid chlorophyll packaging photo pending",
     "lastVerified": null
   },
   {
@@ -338,7 +338,7 @@
     "pharmacistGuidanceRequired": false,
     "keywords": ["lip", "balm", "vaseline", "lip therapy"],
     "image": "",
-    "imageAlt": "Placeholder — Vaseline Lip Therapy packaging photo pending",
+    "imageAlt": "Placeholder: Vaseline Lip Therapy packaging photo pending",
     "lastVerified": null
   },
   {
@@ -356,7 +356,7 @@
     "pharmacistGuidanceRequired": false,
     "keywords": ["charcoal", "mask", "peel", "facial", "skin"],
     "image": "",
-    "imageAlt": "Placeholder — activated-charcoal peel-off mask packaging photo pending",
+    "imageAlt": "Placeholder: activated-charcoal peel-off mask packaging photo pending",
     "lastVerified": null
   },
   {
@@ -374,7 +374,7 @@
     "pharmacistGuidanceRequired": false,
     "keywords": ["spray bottle", "mist", "hair", "accessory"],
     "image": "",
-    "imageAlt": "Placeholder — fine-mist spray bottle photo pending",
+    "imageAlt": "Placeholder: fine-mist spray bottle photo pending",
     "lastVerified": null
   },
   {
@@ -393,7 +393,7 @@
     "pharmacistGuidanceRequired": false,
     "keywords": ["lip balm", "carmex", "medicated", "lips"],
     "image": "",
-    "imageAlt": "Placeholder — Carmex medicated lip balm packaging photo pending",
+    "imageAlt": "Placeholder: Carmex medicated lip balm packaging photo pending",
     "lastVerified": null
   },
   {
@@ -411,7 +411,7 @@
     "pharmacistGuidanceRequired": false,
     "keywords": ["hair brush", "detangle", "styling"],
     "image": "",
-    "imageAlt": "Placeholder — tangle-free hair brush photo pending",
+    "imageAlt": "Placeholder: tangle-free hair brush photo pending",
     "lastVerified": null
   },
   {
@@ -429,7 +429,7 @@
     "pharmacistGuidanceRequired": false,
     "keywords": ["thermal patch", "menstrual", "comfort", "warming"],
     "image": "",
-    "imageAlt": "Placeholder — menstrual thermal patches packaging photo pending",
+    "imageAlt": "Placeholder: menstrual thermal patches packaging photo pending",
     "lastVerified": null
   },
   {
@@ -447,7 +447,7 @@
     "pharmacistGuidanceRequired": false,
     "keywords": ["castor oil", "organic", "hair", "skin"],
     "image": "",
-    "imageAlt": "Placeholder — organic castor oil packaging photo pending",
+    "imageAlt": "Placeholder: organic castor oil packaging photo pending",
     "lastVerified": null
   },
   {
@@ -465,7 +465,7 @@
     "pharmacistGuidanceRequired": false,
     "keywords": ["pill organizer", "weekly", "am pm", "medication"],
     "image": "",
-    "imageAlt": "Placeholder — weekly AM/PM pill organizer photo pending",
+    "imageAlt": "Placeholder: weekly AM/PM pill organizer photo pending",
     "featured": true,
     "lastVerified": null
   },
@@ -484,7 +484,7 @@
     "pharmacistGuidanceRequired": false,
     "keywords": ["contact lens", "case", "storage", "eye"],
     "image": "",
-    "imageAlt": "Placeholder — contact-lens cases photo pending",
+    "imageAlt": "Placeholder: contact-lens cases photo pending",
     "lastVerified": null
   },
   {
@@ -503,7 +503,7 @@
     "pharmacistGuidanceRequired": false,
     "keywords": ["lancing", "lancet", "glucose", "diabetes"],
     "image": "",
-    "imageAlt": "Placeholder — TRUEdraw lancing device packaging photo pending",
+    "imageAlt": "Placeholder: TRUEdraw lancing device packaging photo pending",
     "lastVerified": null
   },
   {
@@ -522,7 +522,7 @@
     "pharmacistGuidanceRequired": false,
     "keywords": ["contact lens", "solution", "renu", "eye care"],
     "image": "",
-    "imageAlt": "Placeholder — Bausch + Lomb Renu solution packaging photo pending",
+    "imageAlt": "Placeholder: Bausch + Lomb Renu solution packaging photo pending",
     "lastVerified": null
   },
   {
@@ -541,7 +541,7 @@
     "pharmacistGuidanceRequired": false,
     "keywords": ["breast pads", "nursing", "mother", "avent"],
     "image": "",
-    "imageAlt": "Placeholder — Philips Avent breast pads packaging photo pending",
+    "imageAlt": "Placeholder: Philips Avent breast pads packaging photo pending",
     "lastVerified": null
   },
   {
@@ -559,7 +559,7 @@
     "pharmacistGuidanceRequired": false,
     "keywords": ["ear plugs", "foam", "sleep", "noise"],
     "image": "",
-    "imageAlt": "Placeholder — soft foam ear plugs packaging photo pending",
+    "imageAlt": "Placeholder: soft foam ear plugs packaging photo pending",
     "lastVerified": null
   },
   {
@@ -577,7 +577,7 @@
     "pharmacistGuidanceRequired": false,
     "keywords": ["thermometer", "fever", "temperature", "digital"],
     "image": "",
-    "imageAlt": "Placeholder — digital clinical thermometer packaging photo pending",
+    "imageAlt": "Placeholder: digital clinical thermometer packaging photo pending",
     "featured": true,
     "lastVerified": null
   },
@@ -596,7 +596,7 @@
     "pharmacistGuidanceRequired": false,
     "keywords": ["eye patch", "protection", "first aid"],
     "image": "",
-    "imageAlt": "Placeholder — eye patch packaging photo pending",
+    "imageAlt": "Placeholder: eye patch packaging photo pending",
     "lastVerified": null
   },
   {
@@ -614,7 +614,7 @@
     "pharmacistGuidanceRequired": false,
     "keywords": ["insoles", "comfort", "feet", "cushion"],
     "image": "",
-    "imageAlt": "Placeholder — comfort insoles packaging photo pending",
+    "imageAlt": "Placeholder: comfort insoles packaging photo pending",
     "lastVerified": null
   },
   {
@@ -632,7 +632,7 @@
     "pharmacistGuidanceRequired": false,
     "keywords": ["pill cutter", "splitter", "medication", "storage"],
     "image": "",
-    "imageAlt": "Placeholder — pill cutter photo pending",
+    "imageAlt": "Placeholder: pill cutter photo pending",
     "lastVerified": null
   },
   {
@@ -651,7 +651,7 @@
     "pharmacistGuidanceRequired": false,
     "keywords": ["glucose", "test strips", "diabetes", "easytouch"],
     "image": "",
-    "imageAlt": "Placeholder — EasyTouch glucose test strips packaging photo pending",
+    "imageAlt": "Placeholder: EasyTouch glucose test strips packaging photo pending",
     "featured": true,
     "lastVerified": null
   },
@@ -671,7 +671,7 @@
     "pharmacistGuidanceRequired": false,
     "keywords": ["glucose monitor", "diabetes", "monitoring system", "easytouch"],
     "image": "",
-    "imageAlt": "Placeholder — EasyTouch HealthPro system packaging photo pending",
+    "imageAlt": "Placeholder: EasyTouch HealthPro system packaging photo pending",
     "lastVerified": null
   },
   {
@@ -690,7 +690,7 @@
     "pharmacistGuidanceRequired": false,
     "keywords": ["blood pressure", "monitor", "wrist", "surelife"],
     "image": "",
-    "imageAlt": "Placeholder — SureLife wrist blood-pressure monitor packaging photo pending",
+    "imageAlt": "Placeholder: SureLife wrist blood-pressure monitor packaging photo pending",
     "lastVerified": null
   },
   {
@@ -709,7 +709,7 @@
     "pharmacistGuidanceRequired": false,
     "keywords": ["blood pressure", "monitor", "upper arm", "surelife"],
     "image": "",
-    "imageAlt": "Placeholder — SureLife upper-arm blood-pressure monitor packaging photo pending",
+    "imageAlt": "Placeholder: SureLife upper-arm blood-pressure monitor packaging photo pending",
     "featured": true,
     "lastVerified": null
   }

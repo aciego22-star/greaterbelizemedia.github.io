@@ -33,8 +33,8 @@ describe('buildBasketMessage', () => {
   const msg = buildBasketMessage(lines, lookup, 'out-district-shipping', 'Call before shipping');
 
   it('lists every line with quantity and price state', () => {
-    expect(msg).toContain('1. Centrum Women Multivitamin — Qty 2 — BZD 20.00 each');
-    expect(msg).toContain('Qty 1 — Confirm price');
+    expect(msg).toContain('1. Centrum Women Multivitamin - Qty 2 - BZD 20.00 each');
+    expect(msg).toContain('Qty 1 - Confirm price');
   });
 
   it('includes estimated subtotal, fulfilment and notes', () => {

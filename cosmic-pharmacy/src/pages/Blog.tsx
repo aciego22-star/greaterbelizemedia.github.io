@@ -8,7 +8,7 @@ const articles = (rawArticles as Article[]).slice().sort((a, b) => b.date.locale
 export function Blog() {
   usePageMeta(
     'Health & Wellness Journal | Cosmic Pharmacy',
-    'Practical health and wellness reading from Cosmic Pharmacy, Belize City — pharmacist-reviewed articles on everyday care.'
+    'Practical health and wellness reading from Cosmic Pharmacy, Belize City. Pharmacist-reviewed articles on everyday care.'
   );
 
   return (
@@ -18,7 +18,7 @@ export function Blog() {
           <span className="eyebrow">Health & Wellness Journal</span>
           <h1 className="section-title">The Cosmic Blog</h1>
           <p className="section-intro">
-            Practical, plain-language reading on everyday health and using the pharmacy well. Demo articles shown — published articles are
+            Practical, plain-language reading on everyday health and using the pharmacy well. Demo articles shown; published articles are
             reviewed and approved by the pharmacist before going live.
           </p>
           <div className="article-grid">

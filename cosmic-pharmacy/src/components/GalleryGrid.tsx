@@ -67,7 +67,7 @@ export function GalleryGrid({ limit, showFilters = true }: GalleryGridProps) {
                 </button>
               )
             ) : (
-              <PlaceholderMedia note={`${item.title} — ${item.sourceNote ?? 'asset pending'}`} />
+              <PlaceholderMedia note={`${item.title} · ${item.sourceNote ?? 'asset pending'}`} />
             )}
             <figcaption>
               {item.kind === 'video' && <span className="gallery-kind" aria-hidden="true">▶ </span>}

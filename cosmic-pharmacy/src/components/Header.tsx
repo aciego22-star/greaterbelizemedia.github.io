@@ -52,7 +52,7 @@ export function Header() {
   return (
     <header className="site-header">
       <div className="wrap header-inner">
-        <Link to="/" className="brand" aria-label={`${business.name} — home`}>
+        <Link to="/" className="brand" aria-label={`${business.name} home`}>
           <span className="brand-mark" aria-hidden="true">
             <svg viewBox="0 0 40 40">
               <circle cx="20" cy="20" r="9" fill="none" stroke="currentColor" strokeWidth="2.4" />

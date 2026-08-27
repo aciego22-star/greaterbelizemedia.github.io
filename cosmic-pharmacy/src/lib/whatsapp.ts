@@ -37,7 +37,7 @@ export function buildBasketMessage(
       product.brand && !product.name.toLowerCase().startsWith(product.brand.toLowerCase())
         ? `${product.brand} ${product.name}`
         : product.name;
-    rows.push(`${n}. ${brandName} — Qty ${line.quantity} — ${priced}`);
+    rows.push(`${n}. ${brandName} - Qty ${line.quantity} - ${priced}`);
     n += 1;
   }
 

@@ -13,7 +13,7 @@ export function Contact() {
       <div className="wrap page-stack">
         <section className="panel-section section-pad">
           <span className="eyebrow">Contact & Visit Us</span>
-          <h1 className="section-title">Come see us — or just message</h1>
+          <h1 className="section-title">Come see us, or just message</h1>
           <div className="visit-grid">
             <div>
               <h2>Location</h2>
@@ -46,12 +46,12 @@ export function Contact() {
                   {h.open} – {h.close}
                 </p>
               ))}
-              <p className="text-muted">Hours from Cosmic's current public page — please confirm around public holidays.</p>
+              <p className="text-muted">Hours from Cosmic's current public page. Please confirm around public holidays.</p>
               <a className="btn btn-whatsapp" href={whatsappUrl('Hello Cosmic Pharmacy! I have a quick question.')} target="_blank" rel="noopener noreferrer">
                 Message Us on WhatsApp
               </a>
             </div>
-            <div className="map-placeholder" role="img" aria-label="Map placeholder — embedded map pending">
+            <div className="map-placeholder" role="img" aria-label="Map placeholder, embedded map pending">
               <span>Map embed pending</span>
               <span className="text-muted">#41 Corner Holy Emmanuel Street/CET Site</span>
             </div>

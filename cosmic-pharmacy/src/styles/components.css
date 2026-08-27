@@ -1263,6 +1263,7 @@ a.product-cat:hover {
 
 .section-cta {
   margin-top: 1.4rem;
+  text-align: center;
 }
 
 .section-cta-row {
@@ -1270,6 +1271,24 @@ a.product-cat:hover {
   gap: 0.8rem;
   flex-wrap: wrap;
   margin-top: 1.2rem;
+}
+
+.section-cta-row.center {
+  justify-content: center;
+}
+
+/* Standalone promotional/CTA bands read best centered */
+.band-center {
+  text-align: center;
+}
+
+.band-center .section-intro {
+  margin-inline: auto;
+}
+
+.band-center .notice {
+  margin-inline: auto;
+  max-width: 44rem;
 }
 
 .guidance-grid {
@@ -1718,6 +1737,12 @@ a.product-cat:hover {
   padding-top: 1.2rem;
   border-top: 1px solid var(--line-dark);
   font-size: var(--text-xs);
+  text-align: center;
+}
+
+.footer-legal p {
+  max-width: 52rem;
+  margin-inline: auto;
 }
 
 .footer-fineprint {

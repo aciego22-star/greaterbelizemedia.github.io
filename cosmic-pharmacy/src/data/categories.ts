@@ -9,7 +9,7 @@ export const categories: CategoryDef[] = [
     slug: 'otc-medicine',
     name: 'Over-the-Counter Medicine',
     shortName: 'OTC Medicine',
-    description: 'Everyday relief for pain, fever, sinus, allergy and digestion — with a pharmacist nearby when you have questions.',
+    description: 'Everyday relief for pain, fever, sinus, allergy and digestion, with a pharmacist nearby when you have questions.',
     icon: 'capsule',
     retailPage: 'health-products'
   },
@@ -57,7 +57,7 @@ export const categories: CategoryDef[] = [
     slug: 'skin-hair-beauty',
     name: 'Skin, Hair & Beauty',
     shortName: 'Beauty',
-    description: 'Skin care, hair care, lip care and front-shop beauty finds.',
+    description: 'Skin care, hair care, lip care and beauty essentials.',
     icon: 'sparkle',
     retailPage: 'personal-care-beauty'
   },
@@ -97,7 +97,7 @@ export const categories: CategoryDef[] = [
     slug: 'sale-featured',
     name: 'Sale & Featured Products',
     shortName: 'Sale & Featured',
-    description: 'Current specials and featured picks from around the shop.',
+    description: 'Current specials and featured picks from around the pharmacy.',
     icon: 'tag'
   }
 ];

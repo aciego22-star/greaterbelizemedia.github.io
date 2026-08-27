@@ -65,7 +65,7 @@ export function Footer() {
           Cosmic Pharmacy. Consult a qualified healthcare professional when medical advice is required.
         </p>
         <p className="footer-fineprint">
-          © {new Date().getFullYear()} {business.name}, Belize City · Private concept demonstration — not the official Cosmic Pharmacy
+          © {new Date().getFullYear()} {business.name}, Belize City · Private concept demonstration, not the official Cosmic Pharmacy
           website.
         </p>
       </div>

@@ -110,7 +110,7 @@ export function ShopAll() {
           <h1 className="section-title">Shop All</h1>
           <p className="section-intro">
             Search by product, brand or category, browse by department, or go A–Z. Add what you need to your basket and send the whole
-            request to Cosmic Pharmacy on WhatsApp — the pharmacist confirms availability, pricing and next steps.
+            request to Cosmic Pharmacy on WhatsApp. The pharmacist confirms availability, pricing and next steps.
           </p>
 
           <div className="mode-tabs" role="group" aria-label="Browse mode">
@@ -289,7 +289,7 @@ export function ShopAll() {
                 </div>
               </div>
 
-              {medicalQuery && <PharmacistCard context="That reads like a health question — search can find products, but only a pharmacist can tell you what fits." />}
+              {medicalQuery && <PharmacistCard context="That reads like a health question. Search can find products, but only a pharmacist can tell you what fits." />}
 
               {results.length > 0 ? (
                 <ProductGrid products={results} backSearch={backSearch} />
@@ -298,7 +298,7 @@ export function ShopAll() {
                   <h2>{mode === 'az' && letter ? `No products starting with “${letter}” yet` : 'No matching products'}</h2>
                   <p className="text-muted">
                     {mode === 'az'
-                      ? 'Try another letter, or search the full catalogue — Cosmic can also source hard-to-find products on request.'
+                      ? 'Try another letter, or search the full catalogue. Cosmic can also source hard-to-find products on request.'
                       : 'Try a different spelling or a broader term, or reset your filters. Cosmic can also source hard-to-find products on request.'}
                   </p>
                   <div className="empty-actions">

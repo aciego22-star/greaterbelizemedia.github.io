@@ -59,7 +59,7 @@ export function ArticlePage() {
 
           {article.demo && (
             <p className="notice">
-              Demo article for the concept build — final journal content is written for Cosmic and approved by the pharmacist before
+              Demo article for the concept build. Final journal content is written for Cosmic and approved by the pharmacist before
               publication.
             </p>
           )}

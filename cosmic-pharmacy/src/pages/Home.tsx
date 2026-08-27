@@ -1,26 +1,9 @@
 import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { HeroCarousel } from '../components/HeroCarousel';
-import { ProductGrid } from '../components/ProductGrid';
-import { GalleryGrid } from '../components/GalleryGrid';
-import { ArticleCard } from '../components/ArticleCard';
-import { featuredProducts, saleProducts } from '../lib/catalog';
 import { business } from '../data/business';
-import rawArticles from '../data/articles.json';
-import type { Article } from '../data/types';
-import { buildPmosMessage, whatsappUrl } from '../lib/whatsapp';
+import { whatsappUrl } from '../lib/whatsapp';
 import { usePageMeta } from '../lib/usePageMeta';
-
-const articles = rawArticles as Article[];
-
-const pathways = [
-  { to: '/services', name: 'Services', desc: 'Prescriptions, guidance, sourcing and delivery.' },
-  { to: '/products/supplements', name: 'Supplements', desc: 'Vitamins, minerals and wellness formulas.' },
-  { to: '/products/health', name: 'Health Products', desc: 'OTC medicine, first aid and monitoring.' },
-  { to: '/products/personal-care-beauty', name: 'Personal Care & Beauty', desc: 'Hygiene, skin, hair and everyday care.' },
-  { to: '/products/womens-wellness', name: "Women's Wellness", desc: 'Cosmic PMOS kits and guided support.' },
-  { to: '/shop', name: 'Shop All', desc: 'The full searchable product database.' }
-];
 
 export function Home() {
   usePageMeta(
@@ -34,8 +17,6 @@ export function Home() {
     e.preventDefault();
     navigate(`/shop?mode=search${q.trim() ? `&q=${encodeURIComponent(q.trim())}` : '&focus=1'}`);
   };
-
-  const featured = [...new Set([...featuredProducts, ...saleProducts])].slice(0, 8);
 
   return (
     <div className="page home-page">
@@ -68,36 +49,6 @@ export function Home() {
       </div>
 
       <div className="wrap page-stack">
-        {/* Customer pathways */}
-        <section className="panel-section section-pad">
-          <span className="eyebrow">Find your way</span>
-          <h2 className="section-title">Where would you like to start?</h2>
-          <div className="pathway-grid">
-            {pathways.map((p) => (
-              <Link key={p.to} to={p.to} className="pathway-card">
-                <span className="pathway-name">{p.name}</span>
-                <span className="pathway-desc">{p.desc}</span>
-                <span className="pathway-arrow" aria-hidden="true">→</span>
-              </Link>
-            ))}
-          </div>
-        </section>
-
-        {/* Featured & sale */}
-        <section className="panel-section cool section-pad">
-          <span className="eyebrow">Featured & on sale</span>
-          <h2 className="section-title">Picks from the shop floor</h2>
-          <p className="section-intro">
-            Sale prices shown are recent references from Cosmic's own posts — the pharmacy confirms current pricing on every request.
-          </p>
-          <ProductGrid products={featured} />
-          <div className="section-cta">
-            <Link className="btn btn-primary" to="/shop?mode=search&cat=sale-featured">
-              See all featured & sale items
-            </Link>
-          </div>
-        </section>
-
         {/* Pharmacist guidance */}
         <section className="panel-section section-pad guidance-band">
           <div className="guidance-grid">
@@ -105,17 +56,16 @@ export function Home() {
               <span className="eyebrow">Pharmacist-guided</span>
               <h2 className="section-title">Real guidance, not just a shelf</h2>
               <p className="section-intro">
-                {business.pharmacist} and the Cosmic team are known for asking the right questions before recommending anything, helping
-                customers source hard-to-find products, and serving people well beyond the neighbourhood — friendly, efficient and fairly
-                priced. {business.promise}
+                {business.pharmacist} and the Cosmic team are known for asking the right questions before recommending anything, for helping
+                customers source hard-to-find products, and for friendly, efficient service at fair prices across Belize.{' '}
+                {business.promise}
               </p>
-              <ul className="guidance-list">
-                <li>Knowledgeable pharmacist guidance on every request</li>
-                <li>The right questions before a product is recommended or dispensed</li>
-                <li>Help sourcing hard-to-find products</li>
-                <li>Service to Belize City, the districts and the islands</li>
-              </ul>
-              <a className="btn btn-whatsapp" href={whatsappUrl('Hello Cosmic Pharmacy! I would like some guidance from the pharmacist.')} target="_blank" rel="noopener noreferrer">
+              <a
+                className="btn btn-whatsapp"
+                href={whatsappUrl('Hello Cosmic Pharmacy! I would like some guidance from the pharmacist.')}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 Talk to the Pharmacist
               </a>
             </div>
@@ -130,32 +80,14 @@ export function Home() {
           </div>
         </section>
 
-        {/* PMOS feature */}
-        <section className="panel-section cool section-pad">
-          <span className="eyebrow">Cosmic Wellness</span>
-          <h2 className="section-title">The Cosmic PMOS Collection</h2>
-          <p className="section-intro">
-            Cosmic's own pharmacist-guided wellness-support kits — browse by goal, then talk it through with {business.pharmacist} before
-            you choose.
-          </p>
-          <div className="section-cta-row">
-            <Link className="btn btn-primary" to="/products/womens-wellness">
-              Explore the Collection
-            </Link>
-            <a className="btn btn-whatsapp" href={whatsappUrl(buildPmosMessage())} target="_blank" rel="noopener noreferrer">
-              Ask {business.pharmacist} Which Kit to Discuss
-            </a>
-          </div>
-        </section>
-
         {/* How it works */}
-        <section className="panel-section section-pad">
+        <section className="panel-section cool section-pad">
           <span className="eyebrow">How it works</span>
           <h2 className="section-title">Search. Basket. WhatsApp. Done.</h2>
           <ol className="how-steps">
             <li>
-              <strong>Search the database</strong>
-              <span>Find products by name, brand, category or A–Z — over the counter, wellness, beauty and devices.</span>
+              <strong>Search the catalogue</strong>
+              <span>Find products by name, brand, category or A–Z: medicine, wellness, beauty and medical devices.</span>
             </li>
             <li>
               <strong>Build your basket</strong>
@@ -163,65 +95,35 @@ export function Home() {
             </li>
             <li>
               <strong>Send it on WhatsApp</strong>
-              <span>One tap sends your whole request to Cosmic — a pharmacist reviews it and confirms availability and pricing.</span>
+              <span>One tap sends your whole request to Cosmic. A pharmacist reviews it and confirms availability and pricing.</span>
             </li>
             <li>
               <strong>Pickup or delivery</strong>
-              <span>Collect in store, or arrange Belize City delivery, out-district or island shipping.</span>
+              <span>Collect in person, or arrange Belize City delivery, out-district or island shipping.</span>
             </li>
           </ol>
         </section>
 
-        {/* Blog previews */}
-        <section className="panel-section cool section-pad">
-          <span className="eyebrow">Health & Wellness Journal</span>
-          <h2 className="section-title">From the blog</h2>
-          <div className="article-grid">
-            {articles.slice(0, 3).map((a) => (
-              <ArticleCard key={a.id} article={a} />
-            ))}
-          </div>
-          <div className="section-cta">
-            <Link className="btn btn-outline-light" to="/blog">
-              Read the Journal
-            </Link>
-          </div>
-        </section>
-
-        {/* Gallery preview */}
-        <section className="panel-section section-pad">
-          <span className="eyebrow">Cosmic in Motion</span>
-          <h2 className="section-title">Inside the pharmacy</h2>
-          <GalleryGrid limit={4} showFilters={false} />
-          <div className="section-cta">
-            <Link className="btn btn-primary" to="/gallery">
-              View Gallery
-            </Link>
-          </div>
-        </section>
-
-        {/* Shipping message */}
-        <section className="panel-section cool section-pad shipping-band">
-          <span className="eyebrow">Countrywide</span>
-          <h2 className="section-title">Out-district and island shipping</h2>
+        {/* Explore the pharmacy: slim, centered pointers to the deeper pages */}
+        <section className="panel-section section-pad band-center">
+          <span className="eyebrow">Explore Cosmic</span>
+          <h2 className="section-title">The rest lives on its own pages</h2>
           <p className="section-intro">
-            Not in Belize City? Cosmic serves out-district customers and the main islands — build your request online and the team confirms
-            shipping options and charges on WhatsApp.
+            Browse the departments, see current specials, or start a prescription request. Each has a dedicated page of its own.
           </p>
-          <Link className="btn btn-primary" to="/services">
-            See Delivery & Shipping Options
-          </Link>
-        </section>
-
-        {/* Testimonials placeholder */}
-        <section className="panel-section section-pad">
-          <span className="eyebrow">What customers say</span>
-          <h2 className="section-title">Testimonials</h2>
-          <div className="testimonial-placeholder">
-            <p className="text-muted">
-              Approved customer testimonials will appear here. Cosmic Pharmacy publishes testimonial copy only with the customer's
-              permission and never publishes customer health information.
-            </p>
+          <div className="section-cta-row center">
+            <Link className="btn btn-primary" to="/shop?mode=categories">
+              Browse Departments
+            </Link>
+            <Link className="btn btn-outline-light" to="/shop?mode=search&cat=sale-featured">
+              Current Specials
+            </Link>
+            <Link className="btn btn-outline-light" to="/products/womens-wellness">
+              Cosmic PMOS Collection
+            </Link>
+            <Link className="btn btn-magenta" to="/prescriptions">
+              Send a Prescription
+            </Link>
           </div>
         </section>
 
@@ -249,9 +151,9 @@ export function Home() {
                   {h.open} – {h.close}
                 </p>
               ))}
-              <p className="text-muted">Hours shown from Cosmic's current public page — confirm before holidays.</p>
+              <p className="text-muted">Hours shown from Cosmic's current public page. Please confirm around holidays.</p>
             </div>
-            <div className="map-placeholder" role="img" aria-label="Map placeholder — embedded map pending">
+            <div className="map-placeholder" role="img" aria-label="Map placeholder, embedded map pending">
               <span>Map embed pending</span>
               <span className="text-muted">#41 Corner Holy Emmanuel Street/CET Site</span>
             </div>
