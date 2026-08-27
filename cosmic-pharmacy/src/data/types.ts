@@ -93,12 +93,22 @@ export interface HeroImageSlide extends HeroSlideBase {
 
 export interface HeroVideoSlide extends HeroSlideBase {
   kind: 'video';
+  /** Video key resolved through lib/media.ts, or a path; empty renders the placeholder. */
   videoSrcDesktop: string;
   videoSrcMobile?: string;
   poster: string;
   posterAlt: string;
   /** Verified runtime in seconds. Update when the final edit is supplied. */
   durationSeconds: number;
+  /**
+   * Whether the file actually carries an audio track. A silent clip autoplays
+   * muted (which every browser permits) and drops the sound affordances, so the
+   * interface never offers sound that does not exist.
+   */
+  hasAudio: boolean;
+  /** How the video sits in the frame. A portrait or text-bearing edit has to be
+   *  contained; cropping it would cut the wording off. */
+  videoFit?: 'cover' | 'contain';
   captionLabel: string;
   placeholderNote: string;
 }

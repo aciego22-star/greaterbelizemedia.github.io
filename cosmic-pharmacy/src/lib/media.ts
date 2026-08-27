@@ -7,15 +7,20 @@
  * Storing paths instead would break the preview, where nothing is served from
  * public/.
  */
-const catalogueImages = import.meta.glob(['../assets/catalogue/*.webp', '../assets/hero/*.webp'], {
-  eager: true,
-  query: '?url',
-  import: 'default'
-}) as Record<string, string>;
+const catalogueImages = import.meta.glob(
+  ['../assets/catalogue/*.webp', '../assets/hero/*.webp', '../assets/hero/*.mp4'],
+  {
+    eager: true,
+    query: '?url',
+    import: 'default'
+  }
+) as Record<string, string>;
 
 const byKey = new Map<string, string>();
 for (const [path, url] of Object.entries(catalogueImages)) {
-  const key = path.split('/').pop()!.replace(/\.webp$/, '');
+  // Keys carry no extension, so the same key works whether the asset is a
+  // still or the hero video.
+  const key = path.split('/').pop()!.replace(/\.[a-z0-9]+$/i, '');
   byKey.set(key, url);
 }
 

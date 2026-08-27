@@ -36,8 +36,13 @@ export const business = {
   mapEmbedUrl:
     'https://www.google.com/maps?q=Cosmic+Pharmacy%2C+Holy+Emmanuel+Street%2FCET+Site%2C+Belize+City%2C+Belize&output=embed',
   serviceReach: 'Belize City · out-district · The Cayes',
-  // VERIFY WITH CLIENT BEFORE PUBLICATION — hours conflict across current public sources;
-  // these are the hours on Cosmic's current coming-soon page.
+  // VERIFY WITH CLIENT BEFORE PUBLICATION — hours conflict across sources, and
+  // the conflict widened. These are the hours on Cosmic's current coming-soon
+  // page. Cosmic's own promotional reel (now the hero video) states something
+  // different on its opening-hours card: Mon-Sat 7:30 a.m. to 7 p.m., and
+  // Sunday AND holidays 9 a.m. to 1 p.m. Left as-is deliberately: the reel's
+  // date is unknown, and published hours are a fact customers act on. Ms Carter
+  // confirms which set is current before this goes anywhere public.
   hours: [
     { days: 'Monday – Saturday', open: '9:00 a.m.', close: '7:30 p.m.' },
     { days: 'Sunday', open: '9:00 a.m.', close: '1:00 p.m.' }

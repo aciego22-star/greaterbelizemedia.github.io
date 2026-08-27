@@ -71,7 +71,7 @@ Each record:
 
 ## 4. Hero media (`src/data/heroSlides.ts`)
 
-Three stills + one video slide. For each still:
+Three stills + one video slide, all four installed. For each still:
 
 - Desktop composition ~2000×1250 px (16:10), JPG/WebP under ~400 KB.
 - Set `image: 'assets/hero/<file>'` and a real `imageAlt`.
@@ -99,17 +99,77 @@ pixels rather than re-typesetting, because the graphic's typeface is not
 available here and re-setting the text would not have matched the step labels
 below it.
 
-For the video slide:
+### The video slide (installed)
 
-- `videoSrcDesktop`: MP4 H.264 + AAC, 1080p, target under ~25 MB.
-- `videoSrcMobile`: lighter encode (720p, under ~12 MB) — served on small
-  screens so phones never pull the desktop file.
-- `poster`: JPG frame from the video, ~1600 px wide.
-- `durationSeconds`: set to the final edit's REAL runtime — the on-video
-  caption and the "Play with Sound" overlay both read it.
-- The player attempts audible autoplay when the slide activates and falls back
-  to the poster + "Cosmic Pharmacy in [duration] — Play with Sound" overlay
-  when the browser blocks it. No code changes needed.
+The client's promotional reel is installed as `src/assets/hero/cosmic-hero.mp4`
+with `src/assets/hero/hero-video-poster.webp` as its poster, both resolved by
+key through `lib/media.ts` like every other asset.
+
+What was supplied and what was done to it:
+
+- 720x1280 portrait, H.264, 30 fps, 37.53 s, 1.5 MB. It is a slideshow of
+  Cosmic's own branded cards: shop with us, card payments, online bank
+  transfers, DigiWallet, city delivery, Tropic Air and BPMS shipping, text or
+  call, and opening hours, opening and closing on the logo over a nebula.
+- Remuxed (stream copy, no re-encode, so nothing was degraded) with the moov
+  atom moved to the front of the file, so it starts streaming immediately
+  instead of downloading in full first. The supplied file had it at the end.
+- The poster is the frame at t=2.2 s, where the logo and the full
+  "Medicine. Health. Beauty." line are both on screen.
+- One encode serves both breakpoints. At 720x1280 and 1.5 MB it is already
+  phone-sized, so a separate mobile file would only add weight for no gain.
+  `videoSrcMobile` stays free for a second encode if a heavier edit replaces it.
+
+**The file carries no audio track.** It is a video-only MP4, so `hasAudio` is
+`false` on that slide, and the player behaves accordingly: it autoplays muted,
+which every browser permits without a gesture, and it withholds the sound
+affordances rather than offering sound the file does not have. The overlay reads
+"Play" rather than "Play with Sound", and no mute/unmute control is rendered.
+Set `hasAudio: true` the moment a mixed file replaces it and all of that comes
+back on its own.
+
+Because the reel is portrait and its cards are almost entirely wording, it uses
+`videoFit: 'contain'`: cropping it to the landscape frame would cut the headings
+off. The space either side takes a blurred, dimmed copy of the poster rather
+than flat bars, the way every video platform frames a vertical upload, and the
+caption shortens to the runtime alone so it sits in the gutter instead of across
+the reel. A browser check asserts that the caption and the controls never
+overlap the painted video rect.
+
+If a different edit is supplied later:
+
+- `videoSrcDesktop`: MP4 H.264 + AAC, target under ~25 MB.
+- `videoSrcMobile`: lighter encode, under ~12 MB, served on small screens so
+  phones never pull the desktop file. Skip it when one encode is already small.
+- `poster`: a frame from the video, ~1600 px wide.
+- `durationSeconds`: the edit's REAL runtime. The caption and the overlay both
+  read it, and a unit test fails if the caption drifts away from it.
+- `hasAudio`: whether the file actually carries an audio track. Confirm it,
+  do not assume it.
+- `videoFit`: `contain` for a portrait or text-bearing edit, `cover` for a
+  landscape one.
+
+### Audio: still outstanding
+
+The client asked for a music track over this reel. It was not added, for two
+separate reasons, either of which is on its own blocking:
+
+1. **Licensing.** The rule agreed from the original brief still stands:
+   platform-licensed music is not cleared for the website. A commercial
+   recording on a public pharmacy site needs a sync licence in Cosmic's name.
+   This is the client's decision to make, not something to work around.
+2. **No source.** This environment cannot reach any music service, so the track
+   cannot be fetched here even if it were cleared.
+
+The practical path: the client supplies the reel already mixed with its audio,
+as a single file. Then `videoSrcDesktop` points at it and `hasAudio` flips to
+`true`, and nothing else changes.
+
+One thing worth telling the client before they commit to it: a hero video
+cannot start with sound on its own. Every browser blocks audible autoplay, so
+the player falls back to the poster and a "Play with Sound" button, and the
+track is only heard after a deliberate tap. A silent reel that plays by itself
+often serves a homepage better than a scored one that waits behind a button.
 
 ## 5. Replacing placeholders — exact steps
 
@@ -430,3 +490,23 @@ asked for that notice, so consider restoring it before production publication.
 Point-of-need wording still appears where it matters: product detail pages
 carry "Availability, final price and fulfilment are confirmed by Cosmic
 Pharmacy", and the PMOS collection keeps its own consultation disclaimer.
+
+## 20. Opening hours: a third source, and a conflict
+
+Cosmic's promotional reel, supplied as the hero video, carries an opening-hours
+card. What it states does not match what the site currently shows, and the two
+sets look like a transposition of each other rather than a small drift:
+
+| Source | Monday to Saturday | Sunday |
+| --- | --- | --- |
+| Site now (`src/data/business.ts`), from the coming-soon page | 9:00 a.m. to 7:30 p.m. | 9:00 a.m. to 1:00 p.m. |
+| The reel's opening-hours card | 7:30 a.m. to 7:00 p.m. | 9:00 a.m. to 1:00 p.m., **and holidays** |
+
+The reel also states the address as #41 Holy Emmanuel Street (Barbara Harris
+St.), Belize City, and the contact number as 611-8080.
+
+`business.ts` was **not** changed. The reel's date is unknown, and opening hours
+are a fact customers act on: someone arriving at 8 a.m. on the strength of the
+wrong set is a real cost. Ms Carter confirms which set is current, and whether
+holidays follow the Sunday hours, before this goes anywhere public. The values
+are one edit in `business.ts` once she does.

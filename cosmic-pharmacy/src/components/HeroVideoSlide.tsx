@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import type { CSSProperties } from 'react';
 import type { HeroVideoSlide as HeroVideoSlideData } from '../data/types';
 import { PlaceholderMedia } from './PlaceholderMedia';
+import { mediaUrl } from '../lib/media';
 
 type VideoState = 'idle' | 'blocked' | 'playing' | 'paused' | 'ended';
 
@@ -11,31 +13,56 @@ interface HeroVideoSlideProps {
   onPlayingChange: (playing: boolean) => void;
 }
 
+/**
+ * MIME type for a resolved source. The Netlify build resolves to a hashed file
+ * path and the single-file build to a data URI, so the type is read from
+ * whichever form came back rather than assumed from the slide data.
+ */
+function videoType(url: string): string {
+  const data = /^data:(video\/[a-z0-9.+-]+)/i.exec(url);
+  if (data) return data[1].toLowerCase();
+  const ext = /\.([a-z0-9]+)(?:[?#]|$)/i.exec(url);
+  return ext && ext[1].toLowerCase() === 'webm' ? 'video/webm' : 'video/mp4';
+}
+
 function formatDuration(seconds: number): string {
   if (seconds % 60 === 0) return `${seconds / 60 === 1 ? '60' : seconds} Seconds`;
   return `${seconds} Seconds`;
 }
 
 /**
- * First-class hero video slide. Attempts audible autoplay when the slide
- * becomes active and detects blocking from the play() promise — it never
- * silently downgrades to muted autoplay. Blocked or reduced-motion visits get
- * the poster with a "Play with Sound" action instead.
+ * First-class hero video slide.
+ *
+ * A clip with sound attempts audible autoplay when the slide becomes active and
+ * detects blocking from the play() promise; it never silently downgrades to
+ * muted autoplay, so blocked or reduced-motion visits get the poster with a
+ * "Play with Sound" action instead.
+ *
+ * A silent clip (hasAudio: false) has nothing to downgrade. It autoplays muted,
+ * which every browser permits without a gesture, and the sound affordances are
+ * withheld rather than offering sound the file does not carry.
  */
 export function HeroVideoSlide({ slide, active, reducedMotion, onPlayingChange }: HeroVideoSlideProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [state, setState] = useState<VideoState>('idle');
-  const [muted, setMuted] = useState(false);
+  const [muted, setMuted] = useState(!slide.hasAudio);
   const attemptedRef = useRef(false);
 
-  const hasSource = Boolean(slide.videoSrcDesktop || slide.videoSrcMobile);
-  const overlayLabel = `Cosmic Pharmacy in ${formatDuration(slide.durationSeconds)} · Play with Sound`;
+  const desktopSrc = mediaUrl(slide.videoSrcDesktop);
+  const mobileSrc = mediaUrl(slide.videoSrcMobile);
+  const posterSrc = mediaUrl(slide.poster);
+  const hasSource = Boolean(desktopSrc || mobileSrc);
+  const overlayLabel = slide.hasAudio
+    ? `Cosmic Pharmacy in ${formatDuration(slide.durationSeconds)} · Play with Sound`
+    : `Cosmic Pharmacy in ${formatDuration(slide.durationSeconds)} · Play`;
 
   const startPlayback = useCallback(() => {
     const video = videoRef.current;
     if (!video) return;
-    video.muted = false;
-    setMuted(false);
+    // A silent clip stays muted: muted autoplay is never blocked, so it starts
+    // on its own. Only a clip that carries sound has an audible attempt to make.
+    video.muted = !slide.hasAudio;
+    setMuted(!slide.hasAudio);
     const attempt = video.play();
     if (attempt && typeof attempt.then === 'function') {
       attempt
@@ -44,7 +71,7 @@ export function HeroVideoSlide({ slide, active, reducedMotion, onPlayingChange }
           onPlayingChange(true);
         })
         .catch(() => {
-          // Audible autoplay blocked: wait for the visitor's deliberate play.
+          // Autoplay blocked: wait for the visitor's deliberate play.
           video.pause();
           setState('blocked');
           onPlayingChange(false);
@@ -53,9 +80,9 @@ export function HeroVideoSlide({ slide, active, reducedMotion, onPlayingChange }
       setState('playing');
       onPlayingChange(true);
     }
-  }, [onPlayingChange]);
+  }, [onPlayingChange, slide.hasAudio]);
 
-  // Attempt audible autoplay once per activation of this slide.
+  // Attempt playback once per activation of this slide.
   useEffect(() => {
     if (!active) {
       attemptedRef.current = false;
@@ -111,22 +138,37 @@ export function HeroVideoSlide({ slide, active, reducedMotion, onPlayingChange }
   const started = state === 'playing' || state === 'paused' || state === 'ended';
 
   return (
-    <div className="hero-media hero-video">
+    <div
+      className={`hero-media hero-video ${slide.videoFit === 'contain' ? 'is-contained' : ''}`}
+      // A portrait edit cannot fill a landscape frame. Rather than leave flat
+      // bars, the poster fills the frame behind it, blurred and dimmed, the way
+      // every video platform treats a vertical upload.
+      style={posterSrc ? ({ '--hero-video-backdrop': `url(${posterSrc})` } as CSSProperties) : undefined}
+    >
       <video
         ref={videoRef}
         playsInline
+        muted={!slide.hasAudio}
         preload="metadata"
-        poster={slide.poster || undefined}
+        poster={posterSrc || undefined}
+        aria-label={slide.posterAlt}
+        style={{ objectFit: slide.videoFit ?? 'cover' }}
         onEnded={() => {
           setState('ended');
           onPlayingChange(false);
         }}
       >
-        {slide.videoSrcMobile && <source src={slide.videoSrcMobile} media="(max-width: 720px)" />}
-        {slide.videoSrcDesktop && <source src={slide.videoSrcDesktop} />}
+        {mobileSrc && <source src={mobileSrc} type={videoType(mobileSrc)} media="(max-width: 720px)" />}
+        {desktopSrc && <source src={desktopSrc} type={videoType(desktopSrc)} />}
       </video>
 
-      <span className="hero-video-caption">{slide.captionLabel}</span>
+      {/* A contained portrait reel leaves gutters at the sides, not the bottom,
+          so the full caption would sit across the reel's own wording. The
+          runtime alone fits the gutter; the headline beside it already names
+          the pharmacy. */}
+      <span className="hero-video-caption">
+        {slide.videoFit === 'contain' ? `${slide.durationSeconds} sec` : slide.captionLabel}
+      </span>
 
       {showOverlay && (
         <button type="button" className="hero-video-overlay" onClick={startPlayback}>
@@ -144,9 +186,11 @@ export function HeroVideoSlide({ slide, active, reducedMotion, onPlayingChange }
           <button type="button" className="icon-btn on-video" onClick={togglePlay} aria-label={state === 'playing' ? 'Pause video' : 'Play video'}>
             {state === 'playing' ? '⏸' : '▶'}
           </button>
-          <button type="button" className="icon-btn on-video" onClick={toggleMute} aria-label={muted ? 'Unmute video' : 'Mute video'}>
-            {muted ? '🔇' : '🔊'}
-          </button>
+          {slide.hasAudio && (
+            <button type="button" className="icon-btn on-video" onClick={toggleMute} aria-label={muted ? 'Unmute video' : 'Mute video'}>
+              {muted ? '🔇' : '🔊'}
+            </button>
+          )}
         </div>
       )}
     </div>

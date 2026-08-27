@@ -66,13 +66,24 @@ export const heroSlides: HeroSlide[] = [
     id: 'cosmic-video',
     eyebrow: 'Cosmic in motion',
     headline: 'Meet Cosmic Pharmacy.',
+    copy: 'Ways to pay, ways to reach us, and how your order gets to you, whether you are in Belize City, out district or on the Cayes.',
+    ctaLabel: 'How It Works',
+    ctaTo: '/services',
     durationMs: 12000,
-    videoSrcDesktop: '', // e.g. 'assets/hero/cosmic-90s-desktop.mp4' once supplied
-    videoSrcMobile: '', // e.g. 'assets/hero/cosmic-90s-mobile.mp4' once supplied
-    poster: '',
-    posterAlt: 'Cosmic Pharmacy video poster',
-    durationSeconds: 90, // VERIFY: replace with the final edit's real runtime
-    captionLabel: 'Cosmic Pharmacy in 90 Seconds',
+    // Client-supplied promotional reel. One 720x1280 encode serves both
+    // breakpoints: it is already phone-sized, so a separate mobile file would
+    // only add weight. Remuxed with the moov atom first so it starts streaming
+    // rather than waiting for the whole file.
+    videoSrcDesktop: 'cosmic-hero',
+    poster: 'hero-video-poster',
+    posterAlt: 'Cosmic Pharmacy logo over a nebula, with the line Medicine. Health. Beauty.',
+    durationSeconds: 38, // Measured from the supplied file: 37.53s.
+    // The supplied file carries no audio track, so nothing here offers sound.
+    hasAudio: false,
+    // A 720x1280 portrait reel whose cards are almost entirely wording.
+    // Cropping it to the landscape frame would cut the headings off.
+    videoFit: 'contain',
+    captionLabel: 'Cosmic Pharmacy in 38 Seconds',
     placeholderNote: 'Final asset: client-owned Cosmic Pharmacy video (desktop + mobile encodes and poster)'
   }
 ];

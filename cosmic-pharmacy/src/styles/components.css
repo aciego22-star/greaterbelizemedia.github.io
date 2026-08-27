@@ -2859,3 +2859,36 @@ a.contact-row .contact-row-value {
 .hero-media:has(img[style*='contain']) {
   background: #050d24;
 }
+
+/* Keeps the caption inside the narrower of the two gutters a contained
+   portrait reel leaves. The 4:3 frame gives the tighter one, at ~28.9% of the
+   frame width per side, so 26% clears the reel at either frame ratio. */
+.hero-video.is-contained .hero-video-caption {
+  max-width: 26%;
+}
+
+/* The client's reel is a 720x1280 portrait edit, and its cards are almost
+   entirely wording: cropping it to the landscape frame would cut the headings
+   off, so it is contained. The space either side takes a blurred, dimmed copy
+   of the poster instead of flat bars, which is how every video platform frames
+   a vertical upload. */
+.hero-video.is-contained {
+  background: #050d24;
+}
+
+.hero-video.is-contained::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--hero-video-backdrop);
+  background-size: cover;
+  background-position: center;
+  filter: blur(28px) brightness(0.55) saturate(1.1);
+  transform: scale(1.15);
+  z-index: 0;
+}
+
+.hero-video.is-contained video {
+  position: relative;
+  z-index: 1;
+}
