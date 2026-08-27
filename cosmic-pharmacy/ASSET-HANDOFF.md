@@ -167,7 +167,7 @@ supplies it, so the pin carries their reviews and opening hours.
 
 The build brief said not to display a first name unless the client confirmed it.
 The client has since confirmed it, so the home page now names her in full:
-**Marianne Carter, Proprietor & Pharmacist-in-Charge**. Both strings live in
+**Marion Carter, Proprietor & Pharmacist-in-Charge**. Both strings live in
 `src/data/business.ts` as `pharmacistFullName` and `pharmacistTitle`; running
 copy elsewhere still uses the short `pharmacist` reference ("Ms. Carter").
 

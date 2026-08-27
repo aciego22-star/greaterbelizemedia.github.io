@@ -2228,12 +2228,28 @@ a.contact-row .contact-row-value {
 }
 
 @media (max-width: 520px) {
+  /* Address, phone and email each take their own line on a phone: inline
+     separators end up orphaned at the start of a wrapped line otherwise. */
+  .footer-contact {
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .footer-contact .footer-sep {
+    display: none;
+  }
+
+  /* The two columns hold on phones too: the client's reference keeps EXPLORE
+     and COMPANY side by side at every width. Tighter gutter and slightly
+     smaller links so the longest labels still fit two columns at 360px. */
   .footer-nav {
-    grid-template-columns: 1fr;
-    gap: 1.6rem;
-    justify-items: start;
-    width: max-content;
-    max-width: 100%;
+    gap: 1.5rem 1.1rem;
+    width: 100%;
+  }
+
+  .footer-nav a {
+    font-size: var(--text-sm);
+    line-height: 1.4;
   }
 }
 

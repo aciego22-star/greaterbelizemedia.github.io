@@ -9,7 +9,7 @@ export const business = {
   /** Short reference used in running copy. */
   pharmacist: 'Ms. Carter',
   /** Full name and title, confirmed by the client. */
-  pharmacistFullName: 'Marianne Carter',
+  pharmacistFullName: 'Marion Carter',
   pharmacistTitle: 'Proprietor & Pharmacist-in-Charge',
   phoneDisplay: '+501 611-8080',
   phoneTel: '+5016118080',
