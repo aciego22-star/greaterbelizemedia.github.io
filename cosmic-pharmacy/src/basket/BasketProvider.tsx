@@ -54,7 +54,15 @@ export function BasketProvider({ children }: { children: ReactNode }) {
       }
       return [...prev, { productId, quantity: Math.min(quantity, 99) }];
     });
-    setIsOpen(true);
+    // Hold the drawer back until the meteorite has landed and the badge has
+    // ticked, so the effect is not covered the instant it starts. Opens at once
+    // when motion is reduced, since there is no animation to wait for.
+    const reduce = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) {
+      setIsOpen(true);
+    } else {
+      window.setTimeout(() => setIsOpen(true), 620);
+    }
   }, []);
 
   const setQuantity = useCallback((productId: string, quantity: number) => {

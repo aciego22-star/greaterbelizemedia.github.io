@@ -5,8 +5,27 @@ import { business } from '../data/business';
 import { ContactDetails } from '../components/ContactDetails';
 import { LocationMap } from '../components/LocationMap';
 import msCarter from '../assets/people/ms-carter.webp';
+import kitFertility from '../assets/kits/kit-fertility.webp';
+import kitSkin from '../assets/kits/kit-skin.webp';
+import kitMetabolic from '../assets/kits/kit-metabolic.webp';
+import kitCraving from '../assets/kits/kit-craving.webp';
+import kitCycle from '../assets/kits/kit-cycle.webp';
+import kitsBoxes from '../assets/kits/kits-boxes.webp';
 import { whatsappUrl } from '../lib/whatsapp';
 import { usePageMeta } from '../lib/usePageMeta';
+
+/**
+ * The PMOS kits, in the order Cosmic lists them in her own campaign. Copy is
+ * taken from that campaign rather than written here: the kits are wellness
+ * bundles, and what each one contains is for the pharmacy to confirm.
+ */
+const KITS = [
+  { name: 'Fertility Support', kit: 'Fertility Support Kit', image: kitFertility },
+  { name: 'Skin Balance', kit: 'Skin Balance Kit', image: kitSkin },
+  { name: 'Metabolic Support', kit: 'Metabolic Reset Kit', image: kitMetabolic },
+  { name: 'Craving Control', kit: 'Craving Control Kit', image: kitCraving },
+  { name: 'Cycle Balance', kit: 'Cycle Balance Kit', image: kitCycle }
+];
 
 export function Home() {
   usePageMeta(
@@ -89,6 +108,57 @@ export function Home() {
           </div>
         </section>
 
+        {/* What's new: the PMOS kits */}
+        <section className="panel-section section-pad whats-new">
+          <span className="eyebrow">What's new at Cosmic</span>
+          <h2 className="section-title">Women are tired of guessing.</h2>
+          <p className="section-intro">
+            Many supplements, but which ones make sense together? That is where Cosmic Pharmacy comes in: five kits, each built around one
+            concern, put together and guided by a pharmacist.
+          </p>
+
+          <figure className="kits-hero">
+            <img
+              src={kitsBoxes}
+              alt="The five Cosmic Pharmacy kits: Skin Balance, Craving Control, Cycle Balance, Metabolic Reset and Fertility Support"
+              width={1100}
+              height={664}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+
+          <p className="kits-prompt">Choose your main concern:</p>
+          <ul className="kits-grid">
+            {KITS.map((k) => (
+              <li key={k.kit} className="kit-card">
+                <img src={k.image} alt={`${k.kit} box`} loading="lazy" decoding="async" />
+                <strong>{k.name}</strong>
+                <span>{k.kit}</span>
+              </li>
+            ))}
+          </ul>
+
+          <p className="kits-note">
+            Guided by a pharmacist, here to simplify your wellness. {business.pharmacistFullName} confirms what is in each kit, whether it
+            suits you, and the price, before anything is final.
+          </p>
+
+          <div className="section-cta-row">
+            <Link className="btn btn-magenta" to="/products/womens-wellness">
+              See the PMOS Collection
+            </Link>
+            <a
+              className="btn btn-outline-light"
+              href={whatsappUrl('Hello Cosmic Pharmacy! I would like to ask about the wellness kits.')}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Ask about a kit
+            </a>
+          </div>
+        </section>
+
         {/* How it works */}
         <section className="panel-section cool section-pad">
           <p className="section-kicker">Our entire pharmacy is now online.</p>
@@ -100,7 +170,7 @@ export function Home() {
               <span>Find products by name, brand, category or A–Z: medicine, wellness, beauty and medical devices.</span>
             </li>
             <li>
-              <strong>Build your basket</strong>
+              <strong>Build your cart</strong>
               <span>Add items and quantities. Prices shown are confirmed by the pharmacy before anything is final.</span>
             </li>
             <li>

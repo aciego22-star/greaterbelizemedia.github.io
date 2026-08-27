@@ -76,7 +76,7 @@ export function ProductCard({ product, backSearch }: ProductCardProps) {
               </a>
             )
           ) : (
-            <button type="button" className="btn btn-primary btn-sm" onClick={() => add(product.id)}>
+            <button type="button" className="btn btn-primary btn-sm" data-add-to-cart onClick={() => add(product.id)}>
               Add to Basket
             </button>
           )}

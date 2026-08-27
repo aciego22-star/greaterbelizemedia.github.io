@@ -161,7 +161,7 @@ export function ProductDetail() {
               ) : (
                 <div className="detail-actions">
                   <QuantityControl value={quantity} onChange={(q) => setQuantity(Math.max(1, q))} label={product.name} />
-                  <button type="button" className="btn btn-primary" onClick={() => add(product.id, quantity)}>
+                  <button type="button" className="btn btn-primary" data-add-to-cart onClick={() => add(product.id, quantity)}>
                     Add to Basket
                   </button>
                   <a

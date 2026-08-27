@@ -349,7 +349,52 @@ WCAG AA. A browser check freezes the clock at 03:15, 06:15, 12:15, 18:15 and
 Edit `SCHEDULE` in `src/lib/theme.ts` and the mirrored line in `index.html`.
 The tests read `SCHEDULE`, so they follow automatically.
 
-## 15. Footer safety notice (removed on request)
+## 15. What's new at Cosmic: the PMOS kits
+
+`src/assets/kits/*.webp` are the five kit boxes plus the group shot, cropped
+from the client's own campaign reel (`kits-boxes` is the arrangement; the rest
+are individual boxes). They are stored separately from `src/assets/catalogue/`
+on purpose - the catalogue tests assert that folder holds exactly the 286
+supplied images and that every one is used, so anything else belongs elsewhere.
+
+The section sits on the home page below Ms. Carter and is built from her own
+campaign wording, not copy written here:
+
+- "Women are tired of guessing."
+- "Many supplements, but which ones make sense together?"
+- "That is where Cosmic Pharmacy comes in."
+- "Choose your main concern:" with the five kits in her order.
+- "Guided by a pharmacist, here to simplify your wellness."
+
+**No kit contents are stated anywhere.** These are wellness bundles and what
+goes in each one is the pharmacy's to confirm, so the section names the
+concern, shows the box, and hands off to the PMOS collection or WhatsApp.
+
+The boxes are photographed on Cosmic's own nebula backdrop, so the card tiles
+keep that background rather than attempting a cutout, which would have looked
+rough at this source resolution.
+
+## 16. Add-to-cart meteorite
+
+`src/components/CartMeteor.tsx` fires a meteorite from the add-to-cart button
+to the basket icon, then hands off to the badge, which pops with the new count.
+
+- It listens once on the document for clicks on `[data-add-to-cart]` rather than
+  taking props, so any add button anywhere gets the effect. Both add buttons
+  carry that attribute.
+- The badge is hidden for the duration of the flight (`.basket-btn.awaiting`),
+  so the meteorite is what delivers the number instead of the count racing
+  ahead of it. The button's `aria-label` carries the real count throughout, so
+  assistive technology is never out of date.
+- The basket drawer is held back ~620ms in `BasketProvider` so it does not cover
+  the effect the instant it starts.
+- Colour comes from `--meteor-core` / `--meteor-glow` / `--meteor-trail`, which
+  are defined per sky, so the meteorite belongs to whichever theme is up: blue
+  by day, rose at sunrise, gold at sunset, pale violet at night.
+- Under `prefers-reduced-motion` there is no meteorite and the drawer opens
+  immediately.
+
+## 17. Footer safety notice (removed on request)
 
 The general "Product information is provided for general reference..." line was
 removed from the footer at the client's request. The build brief (section 15)

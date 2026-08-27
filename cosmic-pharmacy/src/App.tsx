@@ -3,6 +3,7 @@ import { HashRouter, Route, Routes, useLocation } from 'react-router-dom';
 import { BasketProvider } from './basket/BasketProvider';
 import { BasketDrawer } from './basket/BasketDrawer';
 import { CosmicCanvas } from './components/CosmicCanvas';
+import { CartMeteor } from './components/CartMeteor';
 import { useTimeOfDayTheme } from './lib/theme';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
@@ -36,6 +37,7 @@ export default function App() {
     <HashRouter>
       <BasketProvider>
         <CosmicCanvas />
+        <CartMeteor />
         <a className="skip-link" href="#main-content">
           Skip to content
         </a>

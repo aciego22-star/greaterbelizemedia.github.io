@@ -55,7 +55,10 @@ main,
   top: 0;
   z-index: 60;
   background: var(--header-bg);
-  backdrop-filter: blur(14px);
+  /* No backdrop blur. Any blur at all smears the starfield behind the bar into
+     a flat haze, and the point of the translucency is that the cosmic dust
+     reads through it. Content scrolling underneath is handled by the tint
+     itself, whose alpha is tuned per sky in tokens.css. */
   border-bottom: 1px solid var(--line-light);
 }
 
@@ -2372,5 +2375,161 @@ a.contact-row .contact-row-value {
 
   .product-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* ============ Add-to-cart meteorite ============ */
+
+/* Positioned at the origin by the Web Animations transform, so it needs no
+   layout of its own. pointer-events: none keeps it out of the way of the click
+   that spawned it. */
+.cart-meteor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 200;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle at 35% 35%, #fff 0%, var(--meteor-core) 55%, var(--meteor-core) 100%);
+  box-shadow:
+    0 0 10px 3px var(--meteor-glow),
+    /* The tail: a run of fading copies behind the head, angled by the
+       rotation the animation applies. */
+    -10px 0 8px -2px var(--meteor-trail),
+    -20px 0 10px -4px var(--meteor-glow),
+    -30px 0 12px -6px var(--meteor-glow);
+}
+
+/* Hidden while the meteorite is in the air, so it reads as the meteorite
+   turning into the count on impact rather than the count racing ahead of it. */
+.basket-btn.awaiting .basket-count {
+  opacity: 0;
+  transform: scale(0.2);
+}
+
+/* The badge takes over the moment the meteorite lands. */
+.basket-count.landed {
+  animation: badge-land 0.42s cubic-bezier(0.2, 1.4, 0.4, 1);
+}
+
+@keyframes badge-land {
+  0% {
+    transform: scale(0.2);
+    box-shadow: 0 0 0 10px var(--meteor-glow);
+  }
+  55% {
+    transform: scale(1.35);
+    box-shadow: 0 0 0 4px transparent;
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+/* A brief nudge on the basket itself, so the hit registers. */
+.basket-btn.struck {
+  animation: basket-struck 0.4s ease;
+}
+
+@keyframes basket-struck {
+  0%, 100% { transform: translateY(0); }
+  35% { transform: translateY(-3px) scale(1.08); }
+  70% { transform: translateY(1px) scale(0.98); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cart-meteor { display: none; }
+  .basket-count.landed,
+  .basket-btn.struck { animation: none; }
+}
+
+/* ============ What's new: the PMOS kits ============ */
+
+.whats-new .kits-hero {
+  margin: 1.4rem 0 0;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--line-light);
+  line-height: 0;
+}
+
+.whats-new .kits-hero img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.kits-prompt {
+  margin: 1.5rem 0 0.2rem;
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.kits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  list-style: none;
+  margin: 0.9rem 0 0;
+  padding: 0;
+}
+
+.kit-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.7rem 0.7rem 0.9rem;
+  border: 1px solid var(--line-light);
+  border-radius: var(--radius-md);
+  background: var(--panel-cool);
+}
+
+/* The boxes are photographed on Cosmic's own nebula, so the tile keeps that
+   backdrop rather than fighting it with a white cutout. */
+.kit-card img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.45rem;
+}
+
+.kit-card strong {
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  color: var(--ink);
+}
+
+.kit-card span {
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+}
+
+.kits-note {
+  margin: 1.3rem 0 0;
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+  max-width: 52rem;
+}
+
+.whats-new .section-cta-row {
+  margin-top: 1.1rem;
+}
+
+@media (max-width: 520px) {
+  .kits-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.7rem;
+  }
+
+  .kit-card {
+    padding: 0.55rem 0.55rem 0.7rem;
   }
 }
