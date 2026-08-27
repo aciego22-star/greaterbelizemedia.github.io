@@ -809,6 +809,107 @@ It loads only when the visitor clicks play.
 
 ---
 
+## 4b. The Gallery page
+
+Three photograph sections and a video section, in this order:
+
+| Section | What | Provenance |
+|---|---|---|
+| Fishing, product and representation | The client's ten supplied photographs, with filter tabs | Client-supplied, 2026 |
+| Inside the processing rooms | The ten facility photographs | Supplied by the General Manager |
+| How the product is packed | Four packaging photographs, under the recreation disclosure | Recreated from an old pamphlet |
+| On film | Third-party documentary video, attributed | Ocean Link |
+
+All three photograph sections feed the same lightbox.
+
+### The supplied set
+
+Ten photographs delivered as a zip with their own instruction file, already
+standardised by the client to **1600x1200** and sorted into three folders whose
+names are the classification. `tools/process-gallery-images.py` reads the folder
+each file arrived in and writes `tools/gallery_dims.py`, so the classification
+comes from the client and cannot drift out of step with the images.
+
+**Filenames, captions and alt text are the client's own words, used verbatim.**
+Do not paraphrase or "improve" them. They live in `ALT` and a separate
+`CAPTION` dict in `build_shell.py` - separate because `SHORT` entries are label
+fragments that the older gallery template finishes with a full stop of its own,
+while these are finished sentences that must not have one appended.
+
+They sit in **`assets/img/gallery/`**, not `official/`. Two reasons, both
+practical: the supplied names collide numerically with the existing official
+set (`01-...` exists in both), and `img_dir()` routes anything containing
+"belizean-pride" to `products/`, the folder for pamphlet recreations. These are
+neither - they are the client's own photographs of their own product - so
+`img_dir()` checks `GALLERY_GROUPS` first.
+
+The client standardised the frames themselves, and several of the originals
+were not 4:3, so those carry a blurred fill at the edges. That is their
+framing and it ships as supplied: nothing here re-crops, recolours or retouches.
+
+### Filter tabs
+
+The gallery had no filter of any kind, and the client's instruction was to add
+one using their three labels exactly. It is a row of buttons, not links or a
+`<select>`: the filtering is in-page state rather than navigation, and
+`aria-pressed` is what tells a screen reader which view is active. Tabs are
+44px tall so a thumb can hit them.
+
+The bar ships `hidden` and the script reveals it, so a visitor without
+JavaScript sees all ten photographs instead of a row of dead buttons.
+
+`.gallery__figure[hidden] { display: none }` is **not optional**. The gallery
+carries an author `display`, and a UA-level `[hidden]` rule loses to any author
+`display` - the same trap that once left the closed NATFISH AI panel swallowing
+every tap on a phone. It is spelled out in both places on purpose.
+
+### Two layouts, deliberately
+
+The older sections stay a CSS `columns` masonry: those photographs mix
+landscape and portrait, and masonry stops a tall one leaving a hole. The
+supplied set is uniformly 4:3, so masonry buys nothing there and costs
+something - columns fill top to bottom, which scatters the three
+classifications through the layout. It is a grid instead, which keeps DOM order
+(the client's own numbering) and gives exactly the one/two/three columns the
+instruction asked for.
+
+The override has to sit **after** `.gallery:has(.gallery__figure)` in the
+stylesheet: the two selectors tie on specificity, so source order decides.
+
+### Lightbox scope
+
+The arrow keys walk the grid the opened photograph belongs to, intersected with
+what is actually visible. Both halves matter: without the visibility filter,
+arrowing out of a filtered group shows a photograph the visitor has just
+filtered away; without the grid scope, arrowing past the end of the facility
+photographs lands in the packaging recreations, crossing the disclosure
+boundary that section's note exists to draw.
+
+### Three things for the client to confirm
+
+1. **Fish fillets and fish portions** (images 05 and 06) are the first fish
+   products shown anywhere on the site. Seafood & Services lists lobster, conch
+   and lionfish and says nothing about fish fillets. The captions claim nothing
+   beyond "prepared for distribution" - no stock, price, grade or availability -
+   but the product line and this gallery now disagree. Ms Denise should say
+   whether Seafood & Services is to be updated, or whether these are shown as
+   photography only.
+2. **Alt text for images 08, 09 and 10 names NATFISH directly** ("NATFISH
+   representatives", "NATFISH delegation", "NATFISH team members and
+   partners"). That is the client's own wording, supplied with the images, and
+   is theirs to assert. Note it settles for the gallery what is still open for
+   the hero photographs in section 3b, where our own alt text stops short of
+   naming NATFISH. Worth reconciling the two once she has confirmed.
+3. **Image 10 has a legible banner.** The group photograph is taken in front of
+   a Republic of China (Taiwan) and Belize flag banner with Chinese text and a
+   naval crest. The caption names no event, date, country or partner, per the
+   instruction not to invent any - but the banner is readable at full size, and
+   the site's standing rule is that no export market or trading relationship is
+   asserted anywhere. Publishing it is a judgement for Ms Denise to make
+   knowingly rather than one to make for her.
+
+---
+
 ## 5. Page architecture
 
 ```
@@ -894,7 +995,9 @@ tools/build_pages.py         the nine pages; run this after editing either
 tools/build_icons.py         the inline SVG icon family
 tools/build_seasons.py       the Seafood Seasons card data
 tools/process-v2-images.py   regenerates the photography set
+tools/process-hero-images.py regenerates the hero pairs and the concept hero
 tools/process-logo.py        regenerates the three logo lockups
+tools/process-gallery-images.py  regenerates the client's supplied gallery set
 tools/bundle-preview.py      builds the single-file artifact preview
 tools/make-netlify-zip.sh    builds the deployable zip, excluding this file and tools/
 ```

@@ -1520,3 +1520,125 @@ ES.update({
 # The AI-service disclosure this replaced. It is not lost: the paragraph
 # directly above the list still opens "NATFISH AI is an AI-powered service."
 ES.pop("The visitor is clearly told that NATFISH AI is an AI service.", None)
+
+
+# ---------------------------------------------------------------------------
+# The Gallery page's supplied set: three classification labels, the filter bar,
+# and the client's own alt text and captions for ten photographs.
+#
+# The English is the client's wording and is used verbatim; the Spanish is a
+# faithful translation of it and asserts nothing the English does not. Where
+# the client names NATFISH, so does the Spanish; where they say "an
+# international exhibition" without naming one, the Spanish does the same.
+ES.update({
+    # -- section, filter bar and empty state
+    "From the co-operative": "Desde la cooperativa",
+    "Fishing, product and representation":
+        "Pesca, producto y representaci\u00f3n",
+    "Photographs supplied by NATFISH, across the harvest, the packed product "
+    "and the co-operative representing Belizean seafood.":
+        "Fotograf\u00edas proporcionadas por NATFISH, de la captura, el producto "
+        "empacado y la cooperativa representando los productos del mar de "
+        "Belice.",
+    "An authentic look at the harvest, the people, the processing and the "
+    "packed product of National Fishermen Producers Co-operative Society Ltd. "
+    "Select any photograph to view it larger.":
+        "Una mirada aut\u00e9ntica a la captura, la gente, el procesamiento y el "
+        "producto empacado de National Fishermen Producers Co-operative Society "
+        "Ltd. Seleccione cualquier fotograf\u00eda para verla m\u00e1s grande.",
+    "Inside the processing rooms": "Dentro de las salas de procesamiento",
+    "Show": "Mostrar",
+    "All": "Todas",
+    "Fishing & Harvest": "Pesca y captura",
+    "Products & Processing": "Productos y procesamiento",
+    "Trade Shows & Representation": "Ferias y representaci\u00f3n",
+    "No photographs in this group.": "No hay fotograf\u00edas en este grupo.",
+
+    # -- captions
+    "A Belizean lobster fisher displaying part of a fresh harvest.":
+        "Un pescador de langosta belice\u00f1o mostrando parte de una captura "
+        "fresca.",
+    "Lobster fishers displaying their catch aboard a harvest boat.":
+        "Pescadores de langosta mostrando su captura a bordo de un bote de "
+        "pesca.",
+    "Belizean Pride wild-caught Caribbean spiny lobster.":
+        "Langosta espinosa del Caribe de captura silvestre Belizean Pride.",
+    "Belizean Pride spiny lobster head meat.":
+        "Carne de cabeza de langosta espinosa Belizean Pride.",
+    "Frozen fish fillets prepared for distribution.":
+        "Filetes de pescado congelados preparados para distribuci\u00f3n.",
+    "Frozen fish portions prepared for distribution.":
+        "Porciones de pescado congeladas preparadas para distribuci\u00f3n.",
+    "Belizean Pride products presented at an international exhibition.":
+        "Productos Belizean Pride presentados en una exposici\u00f3n "
+        "internacional.",
+    "NATFISH representatives presenting Belizean Pride products.":
+        "Representantes de NATFISH presentando productos Belizean Pride.",
+    "The NATFISH delegation representing Belizean seafood products.":
+        "La delegaci\u00f3n de NATFISH representando los productos del mar de "
+        "Belice.",
+    "NATFISH team members and partners.":
+        "Integrantes del equipo de NATFISH y socios.",
+
+    # -- alt text
+    "Belizean lobster fisher aboard a boat filled with a fresh spiny lobster "
+    "catch":
+        "Pescador de langosta belice\u00f1o a bordo de un bote lleno de una "
+        "captura fresca de langosta espinosa",
+    "Two Belizean lobster fishers displaying their catch aboard a harvest boat":
+        "Dos pescadores de langosta belice\u00f1os mostrando su captura a bordo "
+        "de un bote de pesca",
+    "Belizean Pride wild-caught Caribbean spiny lobster in a 10-kilogram box":
+        "Langosta espinosa del Caribe de captura silvestre Belizean Pride en "
+        "una caja de 10 kilogramos",
+    "Belizean Pride packaged spiny lobster head meat":
+        "Carne de cabeza de langosta espinosa Belizean Pride empacada",
+    "Individually packaged frozen fish fillets prepared for distribution":
+        "Filetes de pescado congelados empacados individualmente y preparados "
+        "para distribuci\u00f3n",
+    "Individually packaged frozen fish portions in a distribution box":
+        "Porciones de pescado congeladas empacadas individualmente en una caja "
+        "de distribuci\u00f3n",
+    "Belizean Pride lobster and conch products displayed at an international "
+    "exhibition":
+        "Productos de langosta y caracol Belizean Pride exhibidos en una "
+        "exposici\u00f3n internacional",
+    "NATFISH representatives standing behind a Belizean Pride product display":
+        "Representantes de NATFISH de pie detr\u00e1s de una exhibici\u00f3n de "
+        "productos Belizean Pride",
+    "NATFISH delegation in white uniforms behind a Belizean Pride exhibition "
+    "display":
+        "Delegaci\u00f3n de NATFISH con uniformes blancos detr\u00e1s de una "
+        "exhibici\u00f3n de productos Belizean Pride",
+    "NATFISH team members and partners gathered for a group photograph":
+        "Integrantes del equipo de NATFISH y socios reunidos para una "
+        "fotograf\u00eda grupal",
+})
+
+# The "View larger:" announcements are built from the caption labels, so they
+# are assembled here rather than written out twice.
+ES.update({
+    "View larger: " + en: "Ver m\u00e1s grande: " + es
+    for en, es in [
+        ("A Belizean lobster fisher displaying part of a fresh harvest",
+         "Un pescador de langosta belice\u00f1o mostrando parte de una captura fresca"),
+        ("Lobster fishers displaying their catch aboard a harvest boat",
+         "Pescadores de langosta mostrando su captura a bordo de un bote de pesca"),
+        ("Belizean Pride wild-caught Caribbean spiny lobster",
+         "Langosta espinosa del Caribe de captura silvestre Belizean Pride"),
+        ("Belizean Pride spiny lobster head meat",
+         "Carne de cabeza de langosta espinosa Belizean Pride"),
+        ("Frozen fish fillets prepared for distribution",
+         "Filetes de pescado congelados preparados para distribuci\u00f3n"),
+        ("Frozen fish portions prepared for distribution",
+         "Porciones de pescado congeladas preparadas para distribuci\u00f3n"),
+        ("Belizean Pride products presented at an international exhibition",
+         "Productos Belizean Pride presentados en una exposici\u00f3n internacional"),
+        ("NATFISH representatives presenting Belizean Pride products",
+         "Representantes de NATFISH presentando productos Belizean Pride"),
+        ("The NATFISH delegation representing Belizean seafood products",
+         "La delegaci\u00f3n de NATFISH representando los productos del mar de Belice"),
+        ("NATFISH team members and partners",
+         "Integrantes del equipo de NATFISH y socios"),
+    ]
+})

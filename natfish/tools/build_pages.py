@@ -13,7 +13,8 @@ from build_seasons import (
     FISHERIES_SOURCE, LAST_REVIEW, PAGE_NOTE, cards as season_cards,
 )
 from build_shell import (
-    ADDRESS, ALT, BUYER_CTA, COMMITTEE, EMAIL, FOUNDED_DATE, GM_EMAIL, GM_NAME,
+    ADDRESS, ALT, BUYER_CTA, CAPTION, COMMITTEE, EMAIL, FOUNDED_DATE,
+    GALLERY_CLASSES, GALLERY_GROUPS, GM_EMAIL, GM_NAME,
     GM_TITLE, ICON_ARROW, ICON_MAIL, ICON_PHONE, ICON_PIN, ICON_WA, LEGAL,
     LEGAL_NO_DOT, MAPS, MARKETS, MEMBERS, MOBILE_DISPLAY, MOBILE_HREF,
     RECREATION_NOTE, SHORT, TEL2_DISPLAY, TEL2_HREF, TEL_DISPLAY, TEL_HREF,
@@ -1339,6 +1340,60 @@ GALLERY_PRODUCTS = [
 ]
 
 
+# The client's supplied set, in their own numbered order. GALLERY_GROUPS is
+# generated from the folder each file arrived in, so the classification comes
+# from the client and cannot drift out of step with the images.
+GALLERY_SUPPLIED = sorted(GALLERY_GROUPS)
+
+
+def gallery_filter_bar():
+    """Unobtrusive filter tabs over the client's supplied set.
+
+    The gallery had no filter of any kind, and the client's instruction is to
+    add one using their three labels exactly. It is a group of buttons rather
+    than links or a <select>: the filtering is in-page state, not navigation,
+    and `aria-pressed` is what tells a screen reader which view is active.
+
+    Everything is visible with no JavaScript. The bar is only revealed once the
+    script has taken charge of it, so a visitor without JS sees all ten
+    photographs rather than a row of dead buttons.
+    """
+    tabs = ['<button class="gallery-filter__btn is-active" type="button" '
+            'data-gallery-filter="all" aria-pressed="true">All</button>']
+    for key, label in GALLERY_CLASSES:
+        tabs.append(f'<button class="gallery-filter__btn" type="button" '
+                    f'data-gallery-filter="{key}" aria-pressed="false">{label}</button>')
+    joined = "\n            ".join(tabs)
+    return f"""<div class="gallery-filter reveal" data-gallery-filter-bar hidden>
+            <span class="gallery-filter__label" id="gal-filter-label">Show</span>
+            <div class="gallery-filter__tabs" role="group" aria-labelledby="gal-filter-label">
+            {joined}
+            </div>
+          </div>"""
+
+
+def gallery_supplied_figures():
+    """The ten supplied photographs, captions and alt text used verbatim.
+
+    Every one is 1600x1200. `picture()` writes the real dimensions and the
+    stylesheet holds each figure at `--ratio`, so they render at their native
+    4:3 with no crop of ours on top of the client's own framing.
+    """
+    sizes = "(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw"
+    out = []
+    for stem in GALLERY_SUPPLIED:
+        out.append(
+            f"""<figure class="gallery__figure" data-gallery-cat="{GALLERY_GROUPS[stem]}">
+            <button class="gallery__item" type="button"
+                    aria-label="View larger: {SHORT[stem]}">
+              {picture(stem, sizes, full=True)}
+            </button>
+            <figcaption>{CAPTION[stem]}</figcaption>
+          </figure>"""
+        )
+    return "\n          ".join(out)
+
+
 def gallery_figures(items):
     out = []
     for stem, _mod in items:
@@ -1368,18 +1423,37 @@ def gallery():
         + page_hero(
             "Gallery",
             "The people, the process, the product",
-            "An authentic look inside the people, processing, products and "
-            f"cold-storage operations of {LEGAL_NO_DOT}. Select any photograph "
+            "An authentic look at the harvest, the people, the processing and "
+            f"the packed product of {LEGAL_NO_DOT}. Select any photograph "
             "to view it larger.",
             "Gallery",
         )
         + f"""
-    <section class="section" aria-labelledby="gal-photos-h">
+    <section class="section" aria-labelledby="gal-supplied-h">
+      <div class="container">
+        <div class="section-head section-head--rule reveal section-head--center">
+          {RULE_WAVE}
+          <span class="eyebrow">From the co-operative</span>
+          <h2 id="gal-supplied-h">Fishing, product and representation</h2>
+          <p class="lede">Photographs supplied by NATFISH, across the harvest,
+          the packed product and the co-operative representing Belizean seafood.</p>
+        </div>
+        {gallery_filter_bar()}
+        <div class="gallery reveal" data-gallery-filterable>
+          {gallery_supplied_figures()}
+        </div>
+        <p class="gallery-empty" data-gallery-empty hidden role="status">
+          No photographs in this group.
+        </p>
+      </div>
+    </section>
+
+    <section class="section section--sand" aria-labelledby="gal-photos-h">
       <div class="container">
         <div class="section-head section-head--rule reveal section-head--center">
           {RULE_WAVE}
           <span class="eyebrow">Inside the facility</span>
-          <h2 id="gal-photos-h">Photographs supplied by NATFISH</h2>
+          <h2 id="gal-photos-h">Inside the processing rooms</h2>
         </div>
         <div class="gallery reveal">
           {gallery_figures(GALLERY_AUTHENTIC)}
@@ -1387,7 +1461,7 @@ def gallery():
       </div>
     </section>
 
-    <section class="section section--sand" aria-labelledby="gal-products-h">
+    <section class="section" aria-labelledby="gal-products-h">
       <div class="container">
         <div class="section-head section-head--rule reveal section-head--center">
           {RULE_WAVE}

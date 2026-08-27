@@ -79,11 +79,17 @@ def data_uri(rel):
 PICTURE_RE = re.compile(
     r"<picture>\s*(?:<source[^>]*>\s*)+(<img\b[^>]*>)\s*</picture>", re.S
 )
-STEM_RE = re.compile(r"assets/img/((?:official|products|concept)/[\w-]+?)-\d+\.jpg")
+# Every folder under assets/img/ that holds photography. Named once: a folder
+# missing from this alternation is not an error, it just silently ships with
+# real relative URLs the artifact's CSP cannot fetch, which is how the client's
+# gallery set first came out blank in the preview.
+IMG_DIRS = "official|products|concept|gallery"
+
+STEM_RE = re.compile(rf"assets/img/((?:{IMG_DIRS})/[\w-]+?)-\d+\.jpg")
 # The phone crop of an art-directed hero, and the media query that selects it.
 PHONE_SOURCE_RE = re.compile(
-    r'<source media="([^"]*)"[^>]*srcset="assets/img/'
-    r'((?:official|products|concept)/[\w-]+?-mobile)-\d+\.webp'
+    rf'<source media="([^"]*)"[^>]*srcset="assets/img/'
+    rf'((?:{IMG_DIRS})/[\w-]+?-mobile)-\d+\.webp'
 )
 
 

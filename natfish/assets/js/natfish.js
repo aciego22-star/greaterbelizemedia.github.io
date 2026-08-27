@@ -282,10 +282,29 @@
     var lbCaption = lightbox.querySelector(".lightbox__caption");
     var lastFocus = null;
     var index = 0;
+    /* The set the arrow keys walk. Recomputed when the overlay opens rather
+       than captured once, and scoped two ways:
+
+       - to the grid the opened photograph belongs to, because the gallery page
+         has three of them and arrowing out of the facility photographs into
+         the packaging recreations crosses a disclosure boundary; and
+       - to what is actually on screen, because the filter hides figures and
+         stepping into a hidden one shows a photograph the visitor has just
+         filtered away. */
+    var walk = Array.prototype.slice.call(triggers);
+
+    var walkSetFor = function (trigger) {
+      var grid = trigger.closest(".gallery") || document;
+      var set = Array.prototype.filter.call(
+        grid.querySelectorAll(".gallery__item"),
+        function (el) { return el.offsetParent !== null; }
+      );
+      return set.length ? set : [trigger];
+    };
 
     var show = function (i) {
-      index = (i + triggers.length) % triggers.length;
-      var source = triggers[index].querySelector("img");
+      index = (i + walk.length) % walk.length;
+      var source = walk[index].querySelector("img");
       if (!source) return;
 
       lbImage.src = source.getAttribute("data-full") || source.currentSrc ||
@@ -296,7 +315,9 @@
 
     var open = function (i) {
       lastFocus = document.activeElement;
-      show(i);
+      walk = walkSetFor(triggers[i]);
+      var at = walk.indexOf(triggers[i]);
+      show(at < 0 ? 0 : at);
       lightbox.classList.add("is-open");
       document.body.classList.add("nav-open");
       lightbox.querySelector(".lightbox__close").focus();
@@ -350,6 +371,51 @@
           first.focus();
         }
       }
+    });
+  }
+
+  /* ---------------------------------------------------- gallery filter -- */
+
+  /* Filter tabs over the client's supplied gallery set.
+
+     The bar ships `hidden` and is revealed here, so a visitor without
+     JavaScript sees all ten photographs instead of a row of buttons that do
+     nothing. Filtering hides figures with the `hidden` property, and the
+     stylesheet carries the matching `display: none` - the gallery uses CSS
+     columns, and a `display` of any kind set by an author rule beats the
+     browser's own `[hidden]`, which is exactly the trap that once froze the
+     NATFISH AI panel. */
+
+  var filterBar = document.querySelector("[data-gallery-filter-bar]");
+  var filterable = document.querySelector("[data-gallery-filterable]");
+
+  if (filterBar && filterable) {
+    var figures = filterable.querySelectorAll("[data-gallery-cat]");
+    var empty = document.querySelector("[data-gallery-empty]");
+    var buttons = filterBar.querySelectorAll("[data-gallery-filter]");
+
+    filterBar.hidden = false;
+
+    var applyFilter = function (want) {
+      var shown = 0;
+      Array.prototype.forEach.call(figures, function (fig) {
+        var match = want === "all" ||
+          fig.getAttribute("data-gallery-cat") === want;
+        fig.hidden = !match;
+        if (match) shown++;
+      });
+      Array.prototype.forEach.call(buttons, function (btn) {
+        var on = btn.getAttribute("data-gallery-filter") === want;
+        btn.classList.toggle("is-active", on);
+        btn.setAttribute("aria-pressed", on ? "true" : "false");
+      });
+      if (empty) empty.hidden = shown !== 0;
+    };
+
+    Array.prototype.forEach.call(buttons, function (btn) {
+      btn.addEventListener("click", function () {
+        applyFilter(btn.getAttribute("data-gallery-filter"));
+      });
     });
   }
 

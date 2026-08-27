@@ -143,14 +143,22 @@ PRODUCTS = "assets/img/products"
 # rule from the original brief and never asserts that a person, vessel or catch
 # belongs to NATFISH.
 CONCEPT = "assets/img/concept"
+# GALLERY  ten photographs the client supplied for the Gallery page, already
+#          standardised by them to 1600x1200 and sorted into three named
+#          classifications. Their own folder because the supplied filenames
+#          collide numerically with official/, and because two of them carry
+#          "belizean-pride" in the name, which img_dir() otherwise routes to
+#          products/ - the folder for recreations rather than photographs.
+GALLERY = "assets/img/gallery"
 
 # Intrinsic dimensions of the largest derivative, written by
 # tools/process-v2-images.py. Carried into width/height on every <img> so no
 # image can shift the layout while it loads.
 from v2_dims import DIMS  # noqa: E402
 from hero_dims import HERO_DIMS  # noqa: E402
+from gallery_dims import GALLERY_DIMS, GALLERY_GROUPS  # noqa: E402
 
-DIMS = {**DIMS, **HERO_DIMS}
+DIMS = {**DIMS, **HERO_DIMS, **GALLERY_DIMS}
 
 RECREATION_NOTE = (
     "Packaging photography on this page was recreated from NATFISH product "
@@ -198,6 +206,36 @@ ALT = {
     "hero-2-boat-leaving-harbour":
         "A small fishing boat heading out of the harbour past moored skiffs and "
         "the waterfront.",
+    # ---- the client's supplied gallery set --------------------------------
+    # Alt text and captions below are the client's own words, supplied with the
+    # images and used verbatim. Do not paraphrase them: they are the client's
+    # statement about their own photographs, and three of them name NATFISH
+    # directly, which is theirs to assert and not ours.
+    "01-lobster-fisher-boat-catch":
+        "Belizean lobster fisher aboard a boat filled with a fresh spiny "
+        "lobster catch",
+    "02-lobster-harvest-boat":
+        "Two Belizean lobster fishers displaying their catch aboard a harvest "
+        "boat",
+    "03-belizean-pride-frozen-lobster-10kg":
+        "Belizean Pride wild-caught Caribbean spiny lobster in a 10-kilogram box",
+    "04-belizean-pride-lobster-head-meat":
+        "Belizean Pride packaged spiny lobster head meat",
+    "05-frozen-fish-fillets-box":
+        "Individually packaged frozen fish fillets prepared for distribution",
+    "06-frozen-fish-portions-box":
+        "Individually packaged frozen fish portions in a distribution box",
+    "07-belizean-pride-exhibition-display":
+        "Belizean Pride lobster and conch products displayed at an "
+        "international exhibition",
+    "08-natfish-delegation-black-uniforms":
+        "NATFISH representatives standing behind a Belizean Pride product "
+        "display",
+    "09-natfish-delegation-white-uniforms":
+        "NATFISH delegation in white uniforms behind a Belizean Pride "
+        "exhibition display",
+    "10-natfish-team-group":
+        "NATFISH team members and partners gathered for a group photograph",
     "01-belizean-pride-lobster-cases":
         "Cartons of frozen Belizean spiny lobster tails packed for cold storage.",
     "02-belizean-pride-orange-lobster-tails":
@@ -207,6 +245,40 @@ ALT = {
     "04-wild-caught-frozen-conch":
         "A carton of frozen queen conch meat, bagged for shipping.",
 }
+
+# The client's supplied gallery captions, used verbatim and already punctuated.
+# Kept apart from SHORT because SHORT entries are label fragments that the
+# gallery template ends with a full stop of its own; these are finished
+# sentences and must not have one appended.
+CAPTION = {
+    "01-lobster-fisher-boat-catch":
+        "A Belizean lobster fisher displaying part of a fresh harvest.",
+    "02-lobster-harvest-boat":
+        "Lobster fishers displaying their catch aboard a harvest boat.",
+    "03-belizean-pride-frozen-lobster-10kg":
+        "Belizean Pride wild-caught Caribbean spiny lobster.",
+    "04-belizean-pride-lobster-head-meat":
+        "Belizean Pride spiny lobster head meat.",
+    "05-frozen-fish-fillets-box":
+        "Frozen fish fillets prepared for distribution.",
+    "06-frozen-fish-portions-box":
+        "Frozen fish portions prepared for distribution.",
+    "07-belizean-pride-exhibition-display":
+        "Belizean Pride products presented at an international exhibition.",
+    "08-natfish-delegation-black-uniforms":
+        "NATFISH representatives presenting Belizean Pride products.",
+    "09-natfish-delegation-white-uniforms":
+        "The NATFISH delegation representing Belizean seafood products.",
+    "10-natfish-team-group":
+        "NATFISH team members and partners.",
+}
+
+# The three classifications, in the client's order and with their exact labels.
+GALLERY_CLASSES = [
+    ("fishing", "Fishing &amp; Harvest"),
+    ("products", "Products &amp; Processing"),
+    ("trade", "Trade Shows &amp; Representation"),
+]
 
 # Short labels for the carousel status region and gallery captions.
 SHORT = {
@@ -224,6 +296,18 @@ SHORT = {
     "hero-lobster-boat-catch": "A morning lobster catch aboard the skiff",
     "hero-trade-show-stand": "Belizean Pride on show at a seafood trade show",
     "hero-2-boat-leaving-harbour": "Heading out of the harbour",
+    # The client's set uses its supplied caption as its label too, so the
+    # "View larger" announcement matches the caption a sighted visitor reads.
+    "01-lobster-fisher-boat-catch": "A Belizean lobster fisher displaying part of a fresh harvest",
+    "02-lobster-harvest-boat": "Lobster fishers displaying their catch aboard a harvest boat",
+    "03-belizean-pride-frozen-lobster-10kg": "Belizean Pride wild-caught Caribbean spiny lobster",
+    "04-belizean-pride-lobster-head-meat": "Belizean Pride spiny lobster head meat",
+    "05-frozen-fish-fillets-box": "Frozen fish fillets prepared for distribution",
+    "06-frozen-fish-portions-box": "Frozen fish portions prepared for distribution",
+    "07-belizean-pride-exhibition-display": "Belizean Pride products presented at an international exhibition",
+    "08-natfish-delegation-black-uniforms": "NATFISH representatives presenting Belizean Pride products",
+    "09-natfish-delegation-white-uniforms": "The NATFISH delegation representing Belizean seafood products",
+    "10-natfish-team-group": "NATFISH team members and partners",
     "01-belizean-pride-lobster-cases": "Frozen lobster tails, cased",
     "02-belizean-pride-orange-lobster-tails": "Cooked lobster tails, bagged",
     "03-belizean-pride-raw-lobster-tails": "Raw lobster tails, bagged",
@@ -249,6 +333,8 @@ def img_dir(stem):
     concept imagery and stays in concept/, which is what keeps the two
     provenances - and the two different alt-text rules - from blurring.
     """
+    if stem in GALLERY_GROUPS:
+        return GALLERY
     if stem.startswith("hero-"):
         base = stem.rsplit("-desktop", 1)[0].rsplit("-mobile", 1)[0]
         return OFFICIAL if base in HERO_PAIRS else CONCEPT

@@ -2310,6 +2310,84 @@ body.nav-open {
   }
 }
 
+/* ------------------------------------------- gallery filter tabs ------ */
+/* Unobtrusive by instruction: a label and a row of quiet pills, not a second
+   navigation. It sits between the section heading and the grid, centred to
+   match the heading above it. */
+
+.gallery-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem 0.85rem;
+  margin-block: 0 clamp(1.1rem, 2.4vw, 1.75rem);
+}
+
+.gallery-filter__label {
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.gallery-filter__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.45rem;
+}
+
+.gallery-filter__btn {
+  /* 44px tall so a thumb can hit it, which a small pill would otherwise fail. */
+  min-height: 44px;
+  padding: 0.4rem 0.95rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.86rem;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+
+.gallery-filter__btn:hover {
+  border-color: var(--teal-600);
+  color: var(--teal-600);
+}
+
+.gallery-filter__btn.is-active {
+  background: var(--navy-900);
+  border-color: var(--navy-900);
+  color: var(--white);
+}
+
+/* On sand the white pill would float; on navy neither token reads. Only the
+   sand case exists today, and it is one line rather than a second palette. */
+.section--sand .gallery-filter__btn {
+  background: transparent;
+}
+
+.section--sand .gallery-filter__btn.is-active {
+  background: var(--navy-900);
+}
+
+/* The gallery is a CSS columns layout, so `.gallery__figure` carries an author
+   `display`. A UA-level [hidden] rule loses to it, and a filtered-out figure
+   would stay on screen. This is the same trap that once left the closed
+   NATFISH AI panel swallowing taps; it is spelled out both places on purpose. */
+.gallery__figure[hidden] {
+  display: none;
+}
+
+.gallery-empty {
+  margin: 0;
+  text-align: center;
+  color: var(--ink-soft);
+}
+
 /* Homepage gallery teaser: four crops that link through. */
 .gallery-preview {
   display: grid;
@@ -3656,6 +3734,32 @@ body.nav-open {
 @media (max-width: 460px) {
   .gallery:has(.gallery__figure) { column-count: 1; }
 }
+
+/* --------------------------------------- the supplied gallery grid ---- */
+/* The rest of the gallery is a CSS `columns` masonry, which is right for it:
+   those photographs mix landscape and portrait, and masonry stops a tall one
+   from leaving a hole. The client's supplied set is uniformly 1600x1200, so
+   masonry buys nothing there and costs something - columns fill top-to-bottom,
+   which scatters the three classifications through the layout instead of
+   keeping each one together. A grid keeps DOM order, which is the client's own
+   numbering, and gives exactly the one/two/three columns they asked for. */
+
+.gallery[data-gallery-filterable] {
+  display: grid;
+  column-count: auto;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(0.9rem, 1.8vw, 1.4rem);
+  align-items: start;
+}
+
+@media (max-width: 860px) {
+  .gallery[data-gallery-filterable] { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 460px) {
+  .gallery[data-gallery-filterable] { grid-template-columns: 1fr; }
+}
+
 
 /* Fallback for engines without :has(). Columns are the enhancement; the grid
    underneath still renders a usable gallery. */
