@@ -167,44 +167,82 @@ stays English inside Spanish copy, hyphen included.
 
 Three images, in this order, set by the client:
 
-| # | File | Subject |
-|---|---|---|
-| 1 | `hero-1-fisher-with-conch-catch` | A young fisher in a skiff with a conch catch. **Default slide, and the client's favourite.** |
-| 2 | `hero-2-boat-leaving-harbour` | A boat heading out of the harbour. |
-| 3 | `hero-3-fishers-at-sunrise` | Two fishers at the traps at sunrise. |
+| # | File | Subject | Provenance |
+|---|---|---|---|
+| 1 | `hero-lobster-diver-dock` | A diver walking up a dock with a string of spiny lobster and his fins. **Default slide.** | Client-supplied |
+| 2 | `hero-2-boat-leaving-harbour` | A boat heading out of the harbour. | V1 concept pack |
+| 3 | `hero-lobster-boat-catch` | Two fishers aboard a skiff, the hull full of lobster. | Client-supplied |
 
-They live in `assets/img/concept/`, deliberately apart from `official/`. **These three are from the
-original V1 concept pack, not photographs the General Manager supplied.** That distinction matters and
-is easy to lose: the same pack produced the storefront image that had to be destroyed for carrying a
-fabricated telephone number. Their alt text therefore follows the concept-imagery rule from the
-original brief and never says a person, vessel or catch belongs to NATFISH. The folder name is what
-keeps the next person from reaching for them as if they were documentary.
+Slides 1 and 3 replaced the fisher with the conch catch and the two fishers at sunrise, at the
+client's request. Their derivatives were **deleted**, not just unreferenced: the packaging step
+refuses to ship an image nothing points at.
 
-Regenerate with `python3 tools/process-hero-images.py <v1-image-pack-dir>`.
+**Two provenances, two folders, two alt-text rules.** Slides 1 and 3 are the client's own
+photography and sit in `assets/img/official/`. Slide 2 is from the original V1 concept pack and stays
+in `assets/img/concept/`. That distinction matters and is easy to lose: the same concept pack produced
+the storefront image that had to be destroyed for carrying a fabricated telephone number. Concept alt
+text never says a person, vessel or catch belongs to NATFISH; the folder name is what keeps the next
+person from reaching for a concept image as if it were documentary. `img_dir()` routes by the
+`HERO_PAIRS` set, not by the `hero-` prefix.
+
+**CLIENT CONFIRMATION REQUIRED.** The alt text for slides 1 and 3 describes what is visible and stops
+there - it does not state that the people, vessel or catch are NATFISH's. If Ms Denise confirms these
+are NATFISH members and that the people photographed consented to the use, the alt text can name
+NATFISH the way the processing-room photographs already do.
+
+### Responsive pairs, and why the hero is art-directed
+
+The client supplied slides 1 and 3 as **pre-cropped pairs**: a 2400x1080 landscape frame and a
+1080x1920 portrait frame of the same photograph. Both crops are published, and the browser picks
+between them with a `media` query on the `<source>` - real art direction, not one file with a focal
+point.
+
+The switch is at **600px, not the 900px layout breakpoint**. Between the two the hero has already
+stacked, but the frame there is still a wide band (768 x 380 on a tablet, about 2:1), and a 9:16
+portrait file dropped into a 2:1 band keeps only a third of its height. The landscape crop is the
+better source for that shape, so the art direction switches where the *frame* turns portrait-ish, not
+where the layout stacks.
+
+Both crops of slide 1 are preloaded, each behind its own `media`, so a phone fetches only the portrait
+file and a desktop only the landscape one. Without `media` the browser speculatively fetches one and
+then the other - two full hero downloads on first paint. Slides 2 and 3 are lazy: they sit behind
+`opacity: 0` for at least seven seconds.
+
+Regenerate with
+`python3 tools/process-hero-images.py <pairs-dir> <v1-image-pack-dir>`.
 
 **No overlay, by design.** The hero is a split layout: the headline, copy and buttons sit on their own
 navy panel beside the photograph on desktop and above it on a phone. Nothing is ever drawn over a face,
 so no darkening gradient is needed and none is applied. Do not add one; it would only make the
 photographs murkier for no readability gain.
 
-**Focal points are per slide and per breakpoint**, in the stylesheet against `.hero__slide--N`. At every
-width the frame is wider than tall but narrower than the 1.78 source, so `cover` crops the horizontal
-axis only and X is the value that decides what survives. Slide 3 gets an extra nudge below 400px to
-keep the sun in shot.
+### Frame sizes and focal points
 
-The mobile hero frame is `clamp(300px, 62vw, 380px)`, raised from a 250px floor. Because the crop is
-horizontal, a taller frame scales the photograph up and the subject grows with it: at 390px the fisher
-went from roughly a quarter of the frame to a third. That is what "prominently framed" needed. Lowering
-it again shrinks her.
+The phone frame is **`clamp(340px, 108vw, 430px)`** below 600px - roughly square, 421px tall at 390px
+wide. It was a 300px band. The band existed for landscape sources; against the client's portrait crop
+it showed barely a third of the picture, cutting the lobster - the whole subject - off the bottom of
+both photographs. The taller frame is what makes their crop appear as they composed it. It is capped
+at 430px so the photograph still fits on the first screen at every phone size down to 320x568, which
+`herofold.js` asserts. Between 600 and 900px the older `clamp(300px, 62vw, 380px)` band still applies,
+where the landscape crop is being served.
+
+Focal points now apply to **slide 2 only**, which is the one single-source image left. The pair slides
+are served a crop the client composed for the frame they are filling, so on a desktop they keep the
+default centre - overriding it would undo their framing. On a phone the frame is not the crop's own
+9:16, so about 60% of the height shows and the window is pushed down to `50% 72%`, landing on
+0.28-0.89 of the file: below the head, above the feet. That is the one window holding the fisher's
+face and the catch in the same frame. Verified at 360, 390 and 430.
+
+One `sizes` subtlety worth keeping: below 600px slide 2's 1.78 landscape file is `cover`-cropped into
+a roughly square frame, so the *painted* width is about 1.9 viewport widths. A plain `100vw` hint made
+the browser pick a tier half the width it was going to paint, which was visibly soft, hence the
+`190vw` term in `HERO_SIZES_SINGLE`.
 
 Rotation is 7s. It pauses on keyboard focus entering the hero and behind a hidden tab, stops on a
 horizontal swipe, and does not run at all under `prefers-reduced-motion`. It deliberately does **not**
 pause on hover any more - see "The hero looked like it rotated every few minutes" in §3c. There are
 still **no visible controls** - the client had them removed in V1 because the control strip broke the
 mobile hero layout.
-
-Only slide 1 is preloaded and eager; the other two are lazy, since they sit behind `opacity: 0` for at
-least seven seconds.
 
 ---
 

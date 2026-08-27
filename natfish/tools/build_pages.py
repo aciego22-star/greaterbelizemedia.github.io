@@ -214,21 +214,24 @@ def process_step(stem, title, body, n):
           </li>"""
 
 
-# The three client-approved hero images, in the approved order. The fisher with
-# the conch catch leads: she is the client's favourite of the three and the
-# slide the homepage must open on.
+# The three approved hero images, in the approved order.
 #
-# Focal points are per slide and per breakpoint, set in the stylesheet against
-# .hero__slide--N. At every width the hero frame is wider-than-tall but
-# narrower than the 1.78 source, so `cover` crops the horizontal axis only and
-# the X value is what matters. Chosen so that:
-#   1  the fisher stays right of centre with the conch still in frame at left
-#   2  the departing boat stays centred
-#   3  both fishers and the sun stay in frame at the same time
+# Slides 1 and 3 are photographs the client supplied specifically for the hero,
+# each as a pre-cropped pair: a 2400x1080 landscape frame for the desktop hero
+# and a 1080x1920 portrait frame for the phone. Because the client composed
+# both crops, no focal point is applied to them - the browser simply picks the
+# crop that matches the frame it is filling. The diver leads: he is the one
+# frame where a Belizean fisher, the dock and the lobster itself all read at a
+# glance, which is what the opening slide has to carry.
+#
+# Slide 2 is the last of the original V1 concept images and has no phone crop,
+# so it keeps the older treatment: one photograph with a per-slide, per-
+# breakpoint focal point set in the stylesheet against .hero__slide--2, chosen
+# to keep the departing boat centred as the frame narrows.
 HERO_SLIDES = [
-    "hero-1-fisher-with-conch-catch",
+    "hero-lobster-diver-dock",
     "hero-2-boat-leaving-harbour",
-    "hero-3-fishers-at-sunrise",
+    "hero-lobster-boat-catch",
 ]
 
 

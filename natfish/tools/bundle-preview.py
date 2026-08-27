@@ -61,15 +61,30 @@ def data_uri(rel):
     since anything that can open an artifact can decode WebP.
     """
     if rel not in _IMG_CACHE:
-        raw = (ROOT / "assets" / "img" / f"{rel}-800.webp").read_bytes()
-        _IMG_CACHE[rel] = "data:image/webp;base64," + base64.b64encode(raw).decode()
+        # 800w for everything that has it. The hero's portrait crop does not:
+        # it is only ever served to a phone, so its tiers are 360 to 1080 and
+        # 720 is the one closest to the same visual budget.
+        for tier in (800, 720):
+            path = ROOT / "assets" / "img" / f"{rel}-{tier}.webp"
+            if path.is_file():
+                break
+        else:
+            raise SystemExit(f"ERROR: no derivative to inline for {rel}")
+        _IMG_CACHE[rel] = ("data:image/webp;base64,"
+                           + base64.b64encode(path.read_bytes()).decode())
     return _IMG_CACHE[rel]
 
 
+# One or more <source> elements: the hero's art-directed pairs carry three.
 PICTURE_RE = re.compile(
-    r"<picture>\s*<source[^>]*>\s*(<img\b[^>]*>)\s*</picture>", re.S
+    r"<picture>\s*(?:<source[^>]*>\s*)+(<img\b[^>]*>)\s*</picture>", re.S
 )
 STEM_RE = re.compile(r"assets/img/((?:official|products|concept)/[\w-]+?)-\d+\.jpg")
+# The phone crop of an art-directed hero, and the media query that selects it.
+PHONE_SOURCE_RE = re.compile(
+    r'<source media="([^"]*)"[^>]*srcset="assets/img/'
+    r'((?:official|products|concept)/[\w-]+?-mobile)-\d+\.webp'
+)
 
 
 def inline_images(html):
@@ -83,6 +98,7 @@ def inline_images(html):
 
     def swap(match):
         tag = match.group(1)
+        whole = match.group(0)
         stem = STEM_RE.search(tag)
         if not stem:
             return match.group(0)
@@ -103,6 +119,18 @@ def inline_images(html):
         tag = tag.replace(' loading="lazy"', ' loading="eager"')
         # width/height stay on the tag: they are what stops the single-page
         # bundle from reflowing as fourteen data URIs decode.
+
+        # The hero's two client-supplied slides are art-directed: a landscape
+        # crop above 600px and a portrait one below it. Collapsing that to the
+        # landscape crop alone would leave a phone viewing the preview with the
+        # wrong photograph under a focal point tuned for the other one, so the
+        # <picture> is kept with the phone crop as a second entry in the table.
+        phone = PHONE_SOURCE_RE.search(whole)
+        if phone:
+            media, phone_key = phone.group(1), phone.group(2)
+            data_uri(phone_key)
+            return (f'<picture><source media="{media}" '
+                    f'data-img-srcset="{phone_key}">{tag}</picture>')
         return tag
 
     return PICTURE_RE.sub(swap, html)
@@ -119,6 +147,14 @@ HYDRATE_JS = """
       if (!uri) return;
       el.src = uri;
       if (el.hasAttribute("data-full-img")) el.setAttribute("data-full", uri);
+    }
+  );
+  /* <source> entries for the hero's art-directed slides. */
+  Array.prototype.forEach.call(
+    document.querySelectorAll("source[data-img-srcset]"),
+    function (el) {
+      var uri = IMAGES[el.getAttribute("data-img-srcset")];
+      if (uri) el.srcset = uri;
     }
   );
 })();

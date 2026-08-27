@@ -185,15 +185,15 @@ ALT = {
     "10-cold-storage-room":
         "Racked trays inside the NATFISH cold storage room, cold vapour drifting "
         "between the shelves.",
-    "hero-1-fisher-with-conch-catch":
-        "A young fisher sitting in a skiff on clear turquoise water, a morning "
-        "harvest of queen conch piled in the bow beside her.",
+    "hero-lobster-diver-dock":
+        "A diver walking along a wooden dock with a string of freshly caught "
+        "spiny lobster in one hand and his fins in the other.",
+    "hero-lobster-boat-catch":
+        "Two fishers aboard a skiff tied up at a dock, a morning catch of spiny "
+        "lobster filling the hull and packed into crates.",
     "hero-2-boat-leaving-harbour":
         "A small fishing boat heading out of the harbour past moored skiffs and "
         "the waterfront.",
-    "hero-3-fishers-at-sunrise":
-        "Two fishers working with lobster traps aboard an open skiff on calm "
-        "water at sunrise.",
     "01-belizean-pride-lobster-cases":
         "Cartons of frozen Belizean spiny lobster tails packed for cold storage.",
     "02-belizean-pride-orange-lobster-tails":
@@ -216,9 +216,9 @@ SHORT = {
     "08-lobster-weighing-and-sorting": "Weighing and sorting the catch",
     "09-lobster-processing-table": "Sorting whole spiny lobster",
     "10-cold-storage-room": "The cold storage room",
-    "hero-1-fisher-with-conch-catch": "A morning conch harvest aboard a skiff",
+    "hero-lobster-diver-dock": "Bringing the lobster catch up the dock",
+    "hero-lobster-boat-catch": "A morning lobster catch aboard the skiff",
     "hero-2-boat-leaving-harbour": "Heading out of the harbour",
-    "hero-3-fishers-at-sunrise": "Working the traps at sunrise",
     "01-belizean-pride-lobster-cases": "Frozen lobster tails, cased",
     "02-belizean-pride-orange-lobster-tails": "Cooked lobster tails, bagged",
     "03-belizean-pride-raw-lobster-tails": "Raw lobster tails, bagged",
@@ -237,9 +237,16 @@ FOCUS = {
 
 
 def img_dir(stem):
-    """Authentic photographs live in official/, recreations in products/."""
+    """Authentic photographs live in official/, recreations in products/.
+
+    The hero mixes both. The client's responsive pairs are their own
+    photography and sit in official/; the one surviving V1 hero is illustrative
+    concept imagery and stays in concept/, which is what keeps the two
+    provenances - and the two different alt-text rules - from blurring.
+    """
     if stem.startswith("hero-"):
-        return CONCEPT
+        base = stem.rsplit("-desktop", 1)[0].rsplit("-mobile", 1)[0]
+        return OFFICIAL if base in HERO_PAIRS else CONCEPT
     if "belizean-pride" in stem or "wild-caught" in stem:
         return PRODUCTS
     return OFFICIAL
@@ -302,26 +309,87 @@ LOGO_SRCSET = ("assets/img/natfish-logo-400.png 400w, "
                "assets/img/natfish-logo-1200.png 1200w")
 
 
+# The hero breakpoint. Below it the hero stacks and the photograph runs full
+# width; above it the photograph takes 60% of a split layout. The same number
+# is the media condition on the phone crop, so the art direction and the layout
+# switch on the same line.
+HERO_BP = 900
+HERO_SIZES = f"(max-width: {HERO_BP}px) 100vw, 60vw"
+
+# The phone crop is served below this width, not below HERO_BP. Between the two
+# the hero is already stacked, but the frame there is still a wide band (768 x
+# 380 on a tablet, about 2:1), and a 9:16 portrait file dropped into a 2:1 band
+# keeps only a third of its height. The landscape crop is the better source for
+# that shape, so the art direction switches at the width where the frame itself
+# turns portrait-ish, which is not where the layout stacks.
+HERO_PHONE_BP = 600
+
+# A single-source hero has no portrait crop, so below HERO_PHONE_BP its 1.78
+# landscape file is `cover`-cropped into a frame that is roughly square. The
+# rendered image is then far wider than the viewport - frame height x 1.78,
+# which at a 1.08 frame ratio works out near 1.9 viewport widths - and a plain
+# `100vw` hint would pick a tier about half the width actually painted, which
+# is visibly soft. The 190vw term states the real painted width so the browser
+# picks the tier it is going to need.
+HERO_SIZES_SINGLE = (f"(max-width: {HERO_PHONE_BP}px) 190vw, "
+                     f"(max-width: {HERO_BP}px) 100vw, 60vw")
+
+# Single-source heroes (the surviving concept image) still use the old three
+# tiers. The client's responsive pairs carry their own, because their two crops
+# have different natural widths and are served to different screens.
 HERO_TIERS = (480, 800, 1400)
-HERO_SIZES = "(max-width: 900px) 100vw, 60vw"
+PAIR_TIERS_DESKTOP = (800, 1400, 1920, 2400)
+PAIR_TIERS_MOBILE = (360, 540, 720, 1080)
+
+# Heroes the client supplied as a pre-cropped desktop/phone pair. Anything in
+# this set is published as `<stem>-desktop-*` and `<stem>-mobile-*` and is
+# rendered with a `media`-switched <source>, not with a focal point.
+HERO_PAIRS = {
+    "hero-lobster-diver-dock",
+    "hero-lobster-boat-catch",
+}
+
+
+def _srcset(d, stem, tiers, ext):
+    return ", ".join(f"{d}/{stem}-{t}.{ext} {t}w" for t in tiers)
 
 
 def hero_picture(stem, index, *, eager):
     """One carousel slide.
 
-    object-position is not set here. Each slide needs a different crop on a
-    phone than on a desktop, and an inline style cannot carry a media query, so
-    the focal points live in the stylesheet keyed to .hero__slide--N.
+    A pair slide is art-directed: the client cropped a 2400x1080 landscape
+    frame for the desktop hero and a 1080x1920 portrait frame for the phone, so
+    the browser is given both and picks by the same 900px line the layout uses.
+    Because each crop is already composed for its own frame, no focal point is
+    applied to a pair - `object-position` stays at the default centre.
+
+    A single-source slide has no phone crop, so it keeps the older approach:
+    one photograph, cropped by a per-slide focal point in the stylesheet. Those
+    focal points cannot be inline styles because they differ by breakpoint.
+
+    The alt text is the full ALT description, not the SHORT label. The hero is
+    the first thing on the page and carries real meaning, so a screen reader
+    should get the sentence rather than the caption.
     """
-    w, h = DIMS[stem]
     d = img_dir(stem)
-    srcset_webp = ", ".join(f"{d}/{stem}-{t}.webp {t}w" for t in HERO_TIERS)
-    srcset_jpg = ", ".join(f"{d}/{stem}-{t}.jpg {t}w" for t in HERO_TIERS)
     loading = (' loading="eager" fetchpriority="high"' if eager
                else ' loading="lazy" decoding="async"')
+    if stem not in HERO_PAIRS:
+        w, h = DIMS[stem]
+        return f"""<picture>
+            <source type="image/webp" srcset="{_srcset(d, stem, HERO_TIERS, 'webp')}" sizes="{HERO_SIZES_SINGLE}">
+            <img src="{d}/{stem}-800.jpg" srcset="{_srcset(d, stem, HERO_TIERS, 'jpg')}" sizes="{HERO_SIZES_SINGLE}" width="{w}" height="{h}" alt="{ALT[stem]}"{loading}>
+          </picture>"""
+
+    mob, desk = f"{stem}-mobile", f"{stem}-desktop"
+    mw, mh = DIMS[mob]
+    dw, dh = DIMS[desk]
+    phone = f"(max-width: {HERO_PHONE_BP}px)"
     return f"""<picture>
-            <source type="image/webp" srcset="{srcset_webp}" sizes="{HERO_SIZES}">
-            <img src="{d}/{stem}-800.jpg" srcset="{srcset_jpg}" sizes="{HERO_SIZES}" width="{w}" height="{h}" alt="{SHORT[stem]}"{loading}>
+            <source media="{phone}" type="image/webp" srcset="{_srcset(d, mob, PAIR_TIERS_MOBILE, 'webp')}" sizes="100vw" width="{mw}" height="{mh}">
+            <source media="{phone}" type="image/jpeg" srcset="{_srcset(d, mob, PAIR_TIERS_MOBILE, 'jpg')}" sizes="100vw" width="{mw}" height="{mh}">
+            <source type="image/webp" srcset="{_srcset(d, desk, PAIR_TIERS_DESKTOP, 'webp')}" sizes="{HERO_SIZES}">
+            <img src="{d}/{desk}-1400.jpg" srcset="{_srcset(d, desk, PAIR_TIERS_DESKTOP, 'jpg')}" sizes="{HERO_SIZES}" width="{dw}" height="{dh}" alt="{ALT[stem]}"{loading}>
           </picture>"""
 
 
@@ -331,13 +399,30 @@ def hero_preload(stem):
     The other two are lazy: they are behind opacity 0 for at least seven
     seconds, and preloading all three would put two images the visitor may
     never see ahead of the fonts and the stylesheet.
+
+    For a pair, both crops are preloaded with the matching `media`, so a phone
+    fetches the portrait file and a desktop the landscape one. Without `media`
+    the browser would speculatively fetch the wrong crop and then fetch the
+    right one again - two full hero downloads on the first paint.
     """
     d = img_dir(stem)
-    srcset = ", ".join(f"{d}/{stem}-{t}.webp {t}w" for t in HERO_TIERS)
-    return (f'  <link rel="preload" as="image" type="image/webp"\n'
-            f'        href="{d}/{stem}-800.webp"\n'
-            f'        imagesrcset="{srcset}" imagesizes="{HERO_SIZES}"'
-            f' fetchpriority="high">\n')
+    if stem not in HERO_PAIRS:
+        return (f'  <link rel="preload" as="image" type="image/webp"\n'
+                f'        href="{d}/{stem}-800.webp"\n'
+                f'        imagesrcset="{_srcset(d, stem, HERO_TIERS, "webp")}"'
+                f' imagesizes="{HERO_SIZES_SINGLE}" fetchpriority="high">\n')
+
+    mob, desk = f"{stem}-mobile", f"{stem}-desktop"
+    phone = f"(max-width: {HERO_PHONE_BP}px)"
+    return (f'  <link rel="preload" as="image" type="image/webp" media="{phone}"\n'
+            f'        href="{d}/{mob}-720.webp"\n'
+            f'        imagesrcset="{_srcset(d, mob, PAIR_TIERS_MOBILE, "webp")}"'
+            f' imagesizes="100vw" fetchpriority="high">\n'
+            f'  <link rel="preload" as="image" type="image/webp"'
+            f' media="(min-width: {HERO_PHONE_BP + 1}px)"\n'
+            f'        href="{d}/{desk}-1400.webp"\n'
+            f'        imagesrcset="{_srcset(d, desk, PAIR_TIERS_DESKTOP, "webp")}"'
+            f' imagesizes="{HERO_SIZES}" fetchpriority="high">\n')
 
 
 def logo_img(css, sizes):

@@ -841,6 +841,19 @@ body.nav-open {
   }
 }
 
+/* Below 600px the hero is served the client's portrait crop instead of the
+   landscape one (see hero_picture in tools/build_shell.py), and a 300px band
+   would show barely a third of it. The frame grows to roughly square so the
+   crop the client composed is the crop that appears: at 390px it is 421px
+   tall, which keeps the diver's face, the catch in his hand and the dock all
+   in shot at once. Capped at 430px so the headline below it stays above the
+   fold on a 667px screen. */
+@media (max-width: 600px) {
+  .hero__media {
+    height: clamp(340px, 108vw, 430px);
+  }
+}
+
 @media (max-width: 480px) {
   .hero__actions {
     flex-direction: column;
@@ -3697,34 +3710,31 @@ body.nav-open {
    desktop, and above it on a phone. No text or control ever crosses a face,
    which is why no darkening gradient is needed over the photograph at all. */
 
-/* 1 - the fisher with the conch catch. She sits right of centre and the catch
-   fills the lower left, so the window holds just right of centre: far enough
-   to keep her whole, not so far that the conch is lost. */
-.hero__slide--1 img { object-position: 53% 50%; }
+/* Slides 1 and 3 are the client's responsive pairs.
 
-/* 2 - the boat leaving the harbour, which sits centre-left in the frame. */
-.hero__slide--2 img { object-position: 47% 55%; }
+   On a desktop the 2400x1080 crop is served into a 1.6:1 frame and the centre
+   is the client's own framing, so no focal point is set: overriding it would
+   undo their composition.
 
-/* 3 - two fishers at the traps on the left of frame, the sun low on the right.
-   Slightly right of centre is the one position that keeps both. */
-.hero__slide--3 img { object-position: 54% 50%; }
-
-@media (max-width: 900px) {
-  /* The phone frame is narrower again, so each window tightens on its subject.
-     Verified at 430, 390 and 360: the fisher stays whole with the conch still
-     showing, the departing boat stays centred, and the sunrise stays in frame
-     alongside both fishers. */
-  .hero__slide--1 img { object-position: 56% 50%; }
-  .hero__slide--2 img { object-position: 46% 58%; }
-  .hero__slide--3 img { object-position: 57% 50%; }
+   On a phone the 1080x1920 crop is served into a frame that is roughly square
+   rather than the full 9:16, so about 60% of its height shows and where that
+   window sits has to be chosen. It is pushed down to 72%, which lands it on
+   0.28-0.89 of the file: below the head, above the feet. That is the one
+   window holding the fisher's face and the catch in the same frame - centring
+   it cuts the lobster off the bottom of both photographs, which is the whole
+   subject. Verified at 360, 390 and 430. */
+@media (max-width: 600px) {
+  .hero__slide--1 img,
+  .hero__slide--3 img { object-position: 50% 72%; }
 }
 
-/* At 360 the frame is 1.2:1 against a 1.78 source, so a third of the width is
-   cropped. Slide 3 shifts a little further right so the sun stays in shot; the
-   left-hand fisher sits at about a third across and is still clear of the
-   edge. */
-@media (max-width: 400px) {
-  .hero__slide--3 img { object-position: 60% 50%; }
+/* 2 - the boat leaving the harbour, which sits centre-left in the frame. This
+   is the one slide with a single source and no phone crop, so it still needs a
+   focal point per breakpoint to keep the boat in shot as the frame narrows. */
+.hero__slide--2 img { object-position: 47% 55%; }
+
+@media (max-width: 900px) {
+  .hero__slide--2 img { object-position: 46% 58%; }
 }
 
 /* ================================================== NATFISH AI ======== */

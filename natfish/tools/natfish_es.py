@@ -951,15 +951,24 @@ ES.update({
     "the waterfront.":
         "Una pequeña embarcación pesquera saliendo del puerto, pasando junto a "
         "botes amarrados y el malecón.",
-    "Two fishers working with lobster traps aboard an open skiff on calm water "
-    "at sunrise.":
-        "Dos pescadores trabajando con nasas para langosta a bordo de un bote "
-        "abierto en aguas tranquilas al amanecer.",
-    "A young fisher sitting in a skiff on clear turquoise water, a morning "
-    "harvest of queen conch piled in the bow beside her.":
-        "Una joven pescadora sentada en un bote sobre aguas turquesas claras, "
-        "con la captura matutina de caracol reina apilada en la proa junto a "
-        "ella.",
+})
+
+# The two hero photographs the client supplied as responsive pairs, which
+# replaced the fisher with the conch catch and the two fishers at sunrise. The
+# strings for those two are gone with them; nothing else referenced either one.
+ES.update({
+    "Bringing the lobster catch up the dock":
+        "Subiendo la captura de langosta por el muelle",
+    "A morning lobster catch aboard the skiff":
+        "Una captura matinal de langosta a bordo del bote",
+    "A diver walking along a wooden dock with a string of freshly caught spiny "
+    "lobster in one hand and his fins in the other.":
+        "Un buzo caminando por un muelle de madera con una sarta de langosta "
+        "espinosa recién capturada en una mano y sus aletas en la otra.",
+    "Two fishers aboard a skiff tied up at a dock, a morning catch of spiny "
+    "lobster filling the hull and packed into crates.":
+        "Dos pescadores a bordo de un bote amarrado a un muelle, con la captura "
+        "matutina de langosta espinosa llenando el casco y acomodada en cajas.",
 })
 
 # The Operations section added to Seafood & Services, where the wide

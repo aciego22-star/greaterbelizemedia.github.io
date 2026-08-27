@@ -1,23 +1,26 @@
 #!/usr/bin/env python3
-"""Build the web derivatives for the three approved homepage hero images.
+"""Build the web derivatives for the homepage hero carousel.
 
-These three came from the original V1 image pack and were reviewed and approved
-by the client for the homepage hero. They are kept in assets/img/concept/,
-apart from assets/img/official/, because their provenance is different: the
-official folder holds photographs the General Manager supplied of NATFISH's own
-people and rooms, while these are illustrative sea-and-boat imagery from the
-concept pack. Keeping the two apart in the path is what stops the distinction
-being lost the next time someone reaches for an image.
+Two provenances share this script, and the folder each lands in is what keeps
+them apart:
 
-Their alt text follows the same rule the client set for concept photography in
-the original brief: describe only what is visible, and never assert that a
-person, vessel or catch belongs to NATFISH.
+CLIENT PAIRS -> assets/img/official/
+    Photographs the client supplied for the hero, delivered as pre-cropped
+    responsive pairs: a 2400x1080 landscape frame for the desktop hero and a
+    1080x1920 portrait frame for the phone. Both crops of a pair are the same
+    photograph; the client chose each crop, so neither is re-cropped here. They
+    sit in official/ with the rest of the client's own photography.
 
-Nothing is recoloured, retouched or crop-adjusted. The only operation is
+CONCEPT      -> assets/img/concept/
+    Illustrative sea-and-boat imagery from the original V1 concept pack. Their
+    alt text follows the concept-imagery rule from the original brief and never
+    asserts that a person, vessel or catch belongs to NATFISH.
+
+Nothing is recoloured, retouched or crop-adjusted. The only operations are
 downscaling to web sizes and stripping metadata.
 
 Usage:
-    python3 tools/process-hero-images.py <v1-image-pack-dir>
+    python3 tools/process-hero-images.py <pairs-dir> <v1-image-pack-dir>
 """
 import pathlib
 import sys
@@ -26,18 +29,40 @@ from PIL import Image
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 CONCEPT = ROOT / "assets" / "img" / "concept"
+OFFICIAL = ROOT / "assets" / "img" / "official"
 
 # A hero fills the viewport width on a phone and 60% of it on a desktop, so it
-# needs a larger top tier than the in-page photography does.
-TIERS = (480, 800, 1400, 1920)
+# needs a larger top tier than the in-page photography does. Tiers are widths,
+# because that is what a srcset `w` descriptor means - which matters for the
+# portrait crops, whose long edge is the height.
+# The landscape crop is only ever served above 600px, where the frame is at
+# least 600 CSS px wide, so a 480w tier would never be chosen. The portrait crop
+# is the opposite - it is only served below 600px - so it starts at 360.
+TIERS_DESKTOP = (800, 1400, 1920, 2400)
 
-# Source file -> published name, in the approved carousel order. The client
-# named the fisherwoman as the default first slide and her favourite of the
-# three, so she leads and is the one that is preloaded.
-HEROES = [
-    ("natfish_image_03", "hero-1-fisher-with-conch-catch"),
+# The surviving concept hero is a single 1400px source with no phone crop, so
+# it keeps the older three tiers - which must stay in step with HERO_TIERS in
+# tools/build_shell.py, since that is what its srcset lists.
+TIERS_SINGLE = (480, 800, 1400)
+TIERS_MOBILE = (360, 540, 720, 1080)
+
+# The client-supplied responsive pairs, in carousel order. Each entry is
+# (published stem, desktop source, mobile source).
+PAIRS = [
+    ("hero-lobster-diver-dock",
+     "NATFISH-lobster-diver-desktop-2400x1080",
+     "NATFISH-lobster-diver-mobile-1080x1920"),
+    ("hero-lobster-boat-catch",
+     "NATFISH-lobster-boat-desktop-2400x1080",
+     "NATFISH-lobster-boat-mobile-1080x1920"),
+]
+
+# What survives from the V1 concept pack. The fisher with the conch catch and
+# the two fishers at sunrise were both removed at the client's request when the
+# pairs above arrived; their derivatives were deleted with them, because the
+# packaging step refuses to ship an image nothing references.
+CONCEPT_HEROES = [
     ("natfish_image_10", "hero-2-boat-leaving-harbour"),
-    ("natfish_image_01", "hero-3-fishers-at-sunrise"),
 ]
 
 
@@ -48,35 +73,54 @@ def strip(im):
     return clean
 
 
+def derive(im, stem, tiers, out):
+    """Write every tier at or below the source width. Returns the largest size."""
+    written = []
+    for tier in tiers:
+        width = min(tier, im.width)
+        scale = width / im.width
+        size = (width, round(im.height * scale))
+        if size in written:
+            continue
+        r = im.resize(size, Image.LANCZOS)
+        r.save(out / f"{stem}-{tier}.webp", "WEBP", quality=82, method=6)
+        r.save(out / f"{stem}-{tier}.jpg", "JPEG", quality=84,
+               optimize=True, progressive=True)
+        written.append(size)
+    print(f"  {stem:38s} {im.width}x{im.height} -> "
+          f"{', '.join(f'{w}x{h}' for w, h in written)}")
+    return written[-1]
+
+
+def open_source(directory, name):
+    path = directory / f"{name}.jpg"
+    if not path.exists():
+        raise SystemExit(f"ERROR: missing source {path}")
+    return strip(Image.open(path).convert("RGB"))
+
+
 def main():
-    if len(sys.argv) != 2:
+    if len(sys.argv) != 3:
         raise SystemExit(__doc__)
-    src_dir = pathlib.Path(sys.argv[1])
+    pairs_dir = pathlib.Path(sys.argv[1])
+    v1_dir = pathlib.Path(sys.argv[2])
     CONCEPT.mkdir(parents=True, exist_ok=True)
+    OFFICIAL.mkdir(parents=True, exist_ok=True)
 
     dims = {}
-    for src, stem in HEROES:
-        path = src_dir / f"{src}.jpg"
-        if not path.exists():
-            raise SystemExit(f"ERROR: missing source {path}")
-        im = strip(Image.open(path).convert("RGB"))
-        native = max(im.size)
+    print("client pairs -> official/")
+    for stem, desktop_src, mobile_src in PAIRS:
+        dims[f"{stem}-desktop"] = derive(
+            open_source(pairs_dir, desktop_src), f"{stem}-desktop",
+            TIERS_DESKTOP, OFFICIAL)
+        dims[f"{stem}-mobile"] = derive(
+            open_source(pairs_dir, mobile_src), f"{stem}-mobile",
+            TIERS_MOBILE, OFFICIAL)
 
-        written = []
-        for tier in TIERS:
-            edge = min(tier, native)
-            scale = edge / native
-            size = (round(im.width * scale), round(im.height * scale))
-            if size in written:
-                continue
-            r = im.resize(size, Image.LANCZOS)
-            r.save(CONCEPT / f"{stem}-{tier}.webp", "WEBP", quality=82, method=6)
-            r.save(CONCEPT / f"{stem}-{tier}.jpg", "JPEG", quality=84,
-                   optimize=True, progressive=True)
-            written.append(size)
-        dims[stem] = written[-1]
-        print(f"  {stem:34s} {im.width}x{im.height} -> "
-              f"{', '.join(f'{w}x{h}' for w, h in written)}")
+    print("concept -> concept/")
+    for src, stem in CONCEPT_HEROES:
+        dims[stem] = derive(open_source(v1_dir, src), stem,
+                            TIERS_SINGLE, CONCEPT)
 
     lines = ["# Generated by tools/process-hero-images.py. Do not edit by hand.",
              "HERO_DIMS = {"]
@@ -85,9 +129,7 @@ def main():
     lines.append("}")
     (ROOT / "tools" / "hero_dims.py").write_text("\n".join(lines) + "\n",
                                                  encoding="utf-8")
-
-    total = sum(f.stat().st_size for f in CONCEPT.iterdir() if f.is_file())
-    print(f"\nwrote {len(dims)} hero images, {total / 1024 / 1024:.2f} MB")
+    print(f"\nwrote {len(dims)} hero image sets")
 
 
 if __name__ == "__main__":
