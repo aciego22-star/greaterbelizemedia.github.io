@@ -370,9 +370,17 @@ campaign wording, not copy written here:
 goes in each one is the pharmacy's to confirm, so the section names the
 concern, shows the box, and hands off to the PMOS collection or WhatsApp.
 
-The boxes are photographed on Cosmic's own nebula backdrop, so the card tiles
-keep that background rather than attempting a cutout, which would have looked
-rough at this source resolution.
+The five kit renders are the client's own supplied files (1200x1200 PNG,
+trimmed to the box and re-encoded to 620px WebP). They replaced earlier crops
+taken from the campaign reel.
+
+The section runs the kits twice: a continuous right-to-left marquee at the top,
+then the same five as cards below. **The marquee carries `contain: inline-size`
+and that is not optional.** Its track is `width: max-content`, and without
+containment that intrinsic width feeds back into the auto-sized `.page-stack`
+grid column, sizing every section on the page to the track and pushing the
+whole page about 1080px wider. `overflow: hidden` cannot save it, because the
+container itself has grown.
 
 The section closes with `kits-in-hand.webp`, the real kits held by the
 pharmacist, beside the campaign's own sign-off.
@@ -384,7 +392,7 @@ if she wants her exact phrasing kept.
 
 ## 16. Add-to-cart meteorite
 
-`src/components/CartMeteor.tsx` fires a meteorite from the add-to-cart button
+`src/components/CartMeteor.tsx` fires a meteorite (728ms flight) from the add-to-cart button
 to the basket icon, then hands off to the badge, which pops with the new count.
 
 - It listens once on the document for clicks on `[data-add-to-cart]` rather than
@@ -394,15 +402,35 @@ to the basket icon, then hands off to the badge, which pops with the new count.
   so the meteorite is what delivers the number instead of the count racing
   ahead of it. The button's `aria-label` carries the real count throughout, so
   assistive technology is never out of date.
-- The basket drawer is held back ~620ms in `BasketProvider` so it does not cover
-  the effect the instant it starts.
+- **Adding an item does not open the basket.** Being thrown to a checkout
+  screen mid-shop reads as a rush. Instead `.basket-btn.has-items` nudges once
+  every ten seconds (movement is the first 8% of the cycle, the rest is rest),
+  and the basket opens only when the shopper taps it. The nudge stops while the
+  basket is open.
 - Colour comes from `--meteor-core` / `--meteor-glow` / `--meteor-trail`, which
   are defined per sky, so the meteorite belongs to whichever theme is up: blue
   by day, rose at sunrise, gold at sunset, pale violet at night.
-- Under `prefers-reduced-motion` there is no meteorite and the drawer opens
-  immediately.
+- Under `prefers-reduced-motion` there is no meteorite and no nudge; the count
+  simply updates.
 
-## 17. Footer safety notice (removed on request)
+## 17. Supernova badge
+
+`src/components/NovaBadge.tsx` sits at the far right of the "What's new at
+Cosmic" heading: a core flares, shockwaves and ejecta scatter, the whole thing
+collapses and resolves into the word **New**, which then holds for most of the
+7s cycle so it reads as a label rather than a loop. Pure CSS on one element
+tree, drawing its colours from the brand tokens so it follows the sky. Under
+`prefers-reduced-motion` only the word remains.
+
+## 18. Eyebrow rules
+
+The small dash that used to lead every eyebrow is gone sitewide, at the
+client's request. It came from a single `.eyebrow::before` rule in
+`src/styles/base.css`; removing that rule cleared all 18 eyebrows across the
+site at once. A browser check asserts no eyebrow carries a leading rule on any
+route.
+
+## 19. Footer safety notice (removed on request)
 
 The general "Product information is provided for general reference..." line was
 removed from the footer at the client's request. The build brief (section 15)

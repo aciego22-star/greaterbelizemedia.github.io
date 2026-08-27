@@ -5,12 +5,12 @@ import { business } from '../data/business';
 import { ContactDetails } from '../components/ContactDetails';
 import { LocationMap } from '../components/LocationMap';
 import msCarter from '../assets/people/ms-carter.webp';
+import { NovaBadge } from '../components/NovaBadge';
 import kitFertility from '../assets/kits/kit-fertility.webp';
 import kitSkin from '../assets/kits/kit-skin.webp';
 import kitMetabolic from '../assets/kits/kit-metabolic.webp';
 import kitCraving from '../assets/kits/kit-craving.webp';
 import kitCycle from '../assets/kits/kit-cycle.webp';
-import kitsBoxes from '../assets/kits/kits-boxes.webp';
 import kitsInHand from '../assets/kits/kits-in-hand.webp';
 import { whatsappUrl } from '../lib/whatsapp';
 import { usePageMeta } from '../lib/usePageMeta';
@@ -111,23 +111,27 @@ export function Home() {
 
         {/* What's new: the PMOS kits */}
         <section className="panel-section section-pad whats-new">
-          <span className="eyebrow">What's new at Cosmic</span>
-          <h2 className="section-title">Women are tired of guessing.</h2>
-          <p className="section-intro">
-            Many supplements, but which ones make sense together? That is where Cosmic Pharmacy comes in: five kits, each built around one
-            concern, put together and guided by a pharmacist.
-          </p>
+          <div className="whats-new-head">
+            <div className="whats-new-head-copy">
+              <span className="eyebrow">What's new at Cosmic</span>
+              <h2 className="section-title">Women are tired of guessing.</h2>
+              <p className="section-intro">
+                Many supplements, but which ones make sense together? That is where Cosmic Pharmacy comes in: five kits, each built around
+                one concern, put together and guided by a pharmacist.
+              </p>
+            </div>
+            <NovaBadge />
+          </div>
 
-          <figure className="kits-hero">
-            <img
-              src={kitsBoxes}
-              alt="The five Cosmic Pharmacy kits: Skin Balance, Craving Control, Cycle Balance, Metabolic Reset and Fertility Support"
-              width={1100}
-              height={664}
-              loading="lazy"
-              decoding="async"
-            />
-          </figure>
+          {/* Continuous right-to-left march. The list is rendered twice so the
+              translation can loop seamlessly at the halfway point. */}
+          <div className="kits-marquee" aria-hidden="true">
+            <div className="kits-marquee-track">
+              {[...KITS, ...KITS].map((k, i) => (
+                <img key={`${k.kit}-${i}`} src={k.image} alt="" loading="lazy" decoding="async" />
+              ))}
+            </div>
+          </div>
 
           <p className="kits-prompt">Choose your main concern:</p>
           <ul className="kits-grid">

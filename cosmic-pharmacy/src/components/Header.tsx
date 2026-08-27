@@ -22,7 +22,7 @@ const mainLinks = [
 ];
 
 export function Header() {
-  const { summary, openBasket } = useBasket();
+  const { summary, openBasket, isOpen } = useBasket();
   const [menuOpen, setMenuOpen] = useState(false);
   const [productsOpen, setProductsOpen] = useState(false);
   const navigate = useNavigate();
@@ -125,7 +125,15 @@ export function Header() {
               <line x1="15.5" y1="15.5" x2="21" y2="21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
             </svg>
           </button>
-          <button type="button" className="icon-btn basket-btn" aria-label={`Open basket, ${summary.itemCount} items`} onClick={openBasket}>
+          {/* has-items drives a slow nudge every 10s, so a filled basket keeps
+              reminding the shopper without interrupting them. It stops while
+              the basket is open. */}
+          <button
+            type="button"
+            className={`icon-btn basket-btn ${summary.itemCount > 0 && !isOpen ? 'has-items' : ''}`}
+            aria-label={`Open basket, ${summary.itemCount} items`}
+            onClick={openBasket}
+          >
             <svg viewBox="0 0 24 24" aria-hidden="true" width="20" height="20">
               <path
                 d="M4 7h16l-1.5 12a2 2 0 0 1-2 1.8h-9A2 2 0 0 1 5.5 19L4 7Z"

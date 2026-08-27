@@ -218,10 +218,9 @@ textarea {
   padding: clamp(2.4rem, 5vw, 4rem) clamp(1.1rem, 4vw, 3rem);
 }
 
+/* No leading rule: the client asked for the dashes off every eyebrow sitewide. */
 .eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
+  display: inline-block;
   font-family: var(--font-display);
   font-size: var(--text-xs);
   font-weight: 700;
@@ -229,14 +228,6 @@ textarea {
   text-transform: uppercase;
   color: var(--cosmic-blue-deep);
   margin-bottom: 0.9rem;
-}
-
-.eyebrow::before {
-  content: '';
-  width: 22px;
-  height: 2px;
-  border-radius: 2px;
-  background: linear-gradient(90deg, var(--cosmic-blue), var(--magenta));
 }
 
 .eyebrow.on-dark {

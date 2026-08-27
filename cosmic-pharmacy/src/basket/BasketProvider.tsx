@@ -54,15 +54,9 @@ export function BasketProvider({ children }: { children: ReactNode }) {
       }
       return [...prev, { productId, quantity: Math.min(quantity, 99) }];
     });
-    // Hold the drawer back until the meteorite has landed and the badge has
-    // ticked, so the effect is not covered the instant it starts. Opens at once
-    // when motion is reduced, since there is no animation to wait for.
-    const reduce = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduce) {
-      setIsOpen(true);
-    } else {
-      window.setTimeout(() => setIsOpen(true), 620);
-    }
+    // Deliberately does NOT open the basket. Being thrown to a checkout screen
+    // mid-shop is a rush the shopper did not ask for; the basket button nudges
+    // on a slow cycle instead, and opens only when they choose to.
   }, []);
 
   const setQuantity = useCallback((productId: string, quantity: number) => {
