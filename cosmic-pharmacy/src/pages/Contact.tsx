@@ -1,5 +1,7 @@
 import { business } from '../data/business';
-import { whatsappUrl } from '../lib/whatsapp';
+import { ContactDetails } from '../components/ContactDetails';
+import { LocationMap } from '../components/LocationMap';
+import { SocialLinks } from '../components/SocialLinks';
 import { usePageMeta } from '../lib/usePageMeta';
 
 export function Contact() {
@@ -14,47 +16,18 @@ export function Contact() {
         <section className="panel-section section-pad">
           <span className="eyebrow">Contact & Visit Us</span>
           <h1 className="section-title">Come see us, or just message</h1>
-          <div className="visit-grid">
-            <div>
-              <h2>Location</h2>
-              <p>{business.address}</p>
-              <h2>Phone & WhatsApp</h2>
-              <p>
-                <a href={`tel:${business.phoneTel}`}>{business.phoneDisplay}</a>
-              </p>
-              <h2>Email</h2>
-              <p>
-                <a href={`mailto:${business.email}`}>{business.email}</a>
-              </p>
-              <h2>Social</h2>
-              <p>
-                <a href={business.instagramUrl} target="_blank" rel="noopener noreferrer">
-                  Instagram {business.instagram}
-                </a>
-                <br />
-                <a href={business.facebookUrl} target="_blank" rel="noopener noreferrer">
-                  {business.facebookName}
-                </a>
-              </p>
-            </div>
-            <div>
-              <h2>Opening hours</h2>
-              {business.hours.map((h) => (
-                <p key={h.days}>
-                  <strong>{h.days}</strong>
-                  <br />
-                  {h.open} – {h.close}
-                </p>
-              ))}
-              <p className="text-muted">Hours from Cosmic's current public page. Please confirm around public holidays.</p>
-              <a className="btn btn-whatsapp" href={whatsappUrl('Hello Cosmic Pharmacy! I have a quick question.')} target="_blank" rel="noopener noreferrer">
-                Message Us on WhatsApp
-              </a>
-            </div>
-            <div className="map-placeholder" role="img" aria-label="Map placeholder, embedded map pending">
-              <span>Map embed pending</span>
-              <span className="text-muted">#41 Corner Holy Emmanuel Street/CET Site</span>
-            </div>
+          <p className="section-intro">
+            Every detail below is live: tap to call, message, mail or open the map. {business.promise}
+          </p>
+
+          <div className="contact-layout">
+            <ContactDetails />
+            <LocationMap />
+          </div>
+
+          <div className="contact-social">
+            <h2>Find us on social</h2>
+            <SocialLinks />
           </div>
         </section>
       </div>

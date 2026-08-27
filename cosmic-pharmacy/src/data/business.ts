@@ -26,6 +26,9 @@ export const business = {
   // business. Replace with the Google Business Profile short link once supplied.
   googleBusinessUrl:
     'https://www.google.com/maps/search/?api=1&query=Cosmic+Pharmacy+Holy+Emmanuel+Street+Belize+City',
+  /** Keyless Google Maps embed. Swap for the Business Profile place ID when supplied. */
+  mapEmbedUrl:
+    'https://www.google.com/maps?q=Cosmic+Pharmacy%2C+Holy+Emmanuel+Street%2FCET+Site%2C+Belize+City%2C+Belize&output=embed',
   serviceReach: 'Belize City · out-district · The Cayes',
   // VERIFY WITH CLIENT BEFORE PUBLICATION — hours conflict across current public sources;
   // these are the hours on Cosmic's current coming-soon page.

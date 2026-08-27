@@ -2,6 +2,8 @@ import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { HeroCarousel } from '../components/HeroCarousel';
 import { business } from '../data/business';
+import { ContactDetails } from '../components/ContactDetails';
+import { LocationMap } from '../components/LocationMap';
 import { whatsappUrl } from '../lib/whatsapp';
 import { usePageMeta } from '../lib/usePageMeta';
 
@@ -131,32 +133,9 @@ export function Home() {
         <section className="panel-section cool section-pad">
           <span className="eyebrow">Visit us</span>
           <h2 className="section-title">Find Cosmic Pharmacy</h2>
-          <div className="visit-grid">
-            <div>
-              <h3>Location</h3>
-              <p>{business.address}</p>
-              <h3>Contact</h3>
-              <p>
-                <a href={`tel:${business.phoneTel}`}>{business.phoneDisplay}</a> (phone & WhatsApp)
-                <br />
-                <a href={`mailto:${business.email}`}>{business.email}</a>
-              </p>
-            </div>
-            <div>
-              <h3>Hours</h3>
-              {business.hours.map((h) => (
-                <p key={h.days}>
-                  <strong>{h.days}</strong>
-                  <br />
-                  {h.open} – {h.close}
-                </p>
-              ))}
-              <p className="text-muted">Hours shown from Cosmic's current public page. Please confirm around holidays.</p>
-            </div>
-            <div className="map-placeholder" role="img" aria-label="Map placeholder, embedded map pending">
-              <span>Map embed pending</span>
-              <span className="text-muted">#41 Corner Holy Emmanuel Street/CET Site</span>
-            </div>
+          <div className="contact-layout">
+            <ContactDetails />
+            <LocationMap />
           </div>
         </section>
       </div>

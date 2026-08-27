@@ -9,41 +9,11 @@
 }
 
 /* Everything above the canvas */
-.utility-bar,
 .site-header,
 main,
 .site-footer {
   position: relative;
   z-index: 1;
-}
-
-/* ============ Utility bar ============ */
-.utility-bar {
-  background: rgba(255, 255, 255, 0.78);
-  border-bottom: 1px solid var(--line-light);
-  font-size: var(--text-xs);
-  color: var(--ink-soft);
-}
-
-.utility-inner {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem 1.6rem;
-  padding: 0.4rem 0;
-}
-
-.utility-link {
-  color: var(--ink);
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.utility-link:hover {
-  text-decoration: underline;
-}
-
-.utility-address {
-  margin-left: auto;
 }
 
 /* ============ Header ============ */
@@ -86,6 +56,13 @@ main,
 
 .main-nav {
   margin-left: auto;
+}
+
+/* With the nav inline, the actions follow it rather than pushing off alone. */
+@media (min-width: 1001px) {
+  .header-actions {
+    margin-left: 0;
+  }
 }
 
 .nav-list {
@@ -176,6 +153,8 @@ main,
   display: flex;
   align-items: center;
   gap: 0.4rem;
+  /* Sits hard right whether or not the inline nav is on screen. */
+  margin-left: auto;
 }
 
 .icon-btn {
@@ -1325,7 +1304,7 @@ a.product-cat:hover {
   place-items: center;
   width: 34px;
   height: 34px;
-  margin-bottom: 0.4rem;
+  margin: 0 auto 0.6rem;
   border-radius: 50%;
   background: var(--cosmic-blue);
   color: #fff;
@@ -1372,20 +1351,184 @@ a.product-cat:hover {
   color: var(--cosmic-blue-deep);
 }
 
-.map-placeholder {
+/* ---- Contact rows: every detail is a live action ---- */
+.contact-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.9fr) 1.1fr;
+  gap: clamp(1.2rem, 3vw, 2.2rem);
+  align-items: start;
+  margin-top: 1.4rem;
+}
+
+.contact-rows {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.contact-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--line-light);
+  border-radius: var(--radius-md);
+  background: var(--panel);
+  color: var(--ink);
+  text-decoration: none;
+  transition: border-color 0.18s, box-shadow 0.18s, transform 0.18s;
+}
+
+a.contact-row:hover,
+a.contact-row:focus-visible {
+  border-color: var(--cosmic-blue);
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
+}
+
+.contact-row-static {
+  background: var(--panel-cool);
+}
+
+.contact-row-icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--lavender);
+  color: var(--cosmic-blue);
+}
+
+a.contact-row:hover .contact-row-icon {
+  background: var(--cosmic-blue);
+  color: #ffffff;
+}
+
+.contact-row-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.contact-row-label {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.contact-row-value {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--text-sm);
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+a.contact-row .contact-row-value {
+  color: var(--cosmic-blue-deep);
+  font-weight: 600;
+}
+
+.contact-hours-line strong {
+  font-weight: 700;
+}
+
+.contact-social {
+  margin-top: clamp(1.6rem, 3vw, 2.4rem);
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--line-light);
+  text-align: center;
+}
+
+.contact-social h2 {
+  font-size: var(--text-md);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 0.9rem;
+}
+
+/* ---- Location map ---- */
+.location-map {
+  display: block;
+  position: relative;
+  min-height: 320px;
+  height: 100%;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--line-light);
+  background: var(--panel-cool);
+  box-shadow: var(--shadow-card);
+}
+
+.location-map iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  border: 0;
+}
+
+.location-map-fallback {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.4rem;
-  min-height: 220px;
-  border: 1.5px dashed var(--line-light);
-  border-radius: var(--radius-md);
-  background: var(--panel-cool);
-  color: var(--ink-soft);
-  font-weight: 600;
+  gap: 0.5rem;
+  padding: 1.6rem 1.2rem;
   text-align: center;
-  padding: 1rem;
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.location-map-grid {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(22, 121, 209, 0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(22, 121, 209, 0.09) 1px, transparent 1px);
+  background-size: 34px 34px;
+  pointer-events: none;
+}
+
+.location-map-pin {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: var(--magenta-deep);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.location-map-body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+}
+
+.location-map-body strong {
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  color: var(--ink);
+}
+
+.location-map-cta {
+  margin-top: 0.4rem;
+  font-weight: 700;
+  color: var(--cosmic-blue-deep);
+}
+
+.location-map-fallback:hover .location-map-cta {
+  text-decoration: underline;
 }
 
 /* ============ Services / About ============ */
@@ -1951,11 +2094,13 @@ a.product-cat:hover {
 }
 
 /* Phone-only layout (the 1000px block above is for the nav and brand lockup). */
-@media (max-width: 760px) {
-  .utility-address {
-    display: none;
+@media (max-width: 860px) {
+  .contact-layout {
+    grid-template-columns: 1fr;
   }
+}
 
+@media (max-width: 760px) {
   .home-search {
     flex-direction: column;
     align-items: stretch;

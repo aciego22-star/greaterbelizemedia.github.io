@@ -150,3 +150,14 @@ publication and are marked VERIFY in that file:
 - **TikTok** - assumed to match the Instagram handle (`@cosmicpharmacybz`).
 - **Google Business Profile** - currently a Google Maps search link for the
   business. Replace with the profile's own short link once supplied.
+
+## 11. Map embed
+
+`src/components/LocationMap.tsx` renders a keyless Google Maps embed of the
+pharmacy (`business.mapEmbedUrl`). Sandboxed contexts, including the private
+preview build, refuse third-party frames, so the component probes for outbound
+access first and falls back to a branded card that still opens the real map.
+The deployed Netlify site shows the live map; the preview shows the card.
+
+Swap `mapEmbedUrl` for the Google Business Profile place ID once the client
+supplies it, so the pin carries their reviews and opening hours.

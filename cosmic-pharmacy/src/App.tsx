@@ -3,7 +3,6 @@ import { HashRouter, Route, Routes, useLocation } from 'react-router-dom';
 import { BasketProvider } from './basket/BasketProvider';
 import { BasketDrawer } from './basket/BasketDrawer';
 import { CosmicCanvas } from './components/CosmicCanvas';
-import { UtilityBar } from './components/UtilityBar';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { Home } from './pages/Home';
@@ -35,7 +34,6 @@ export default function App() {
         <a className="skip-link" href="#main-content">
           Skip to content
         </a>
-        <UtilityBar />
         <Header />
         <main id="main-content">
           <ScrollToTop />
