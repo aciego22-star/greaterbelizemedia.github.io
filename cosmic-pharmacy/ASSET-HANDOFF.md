@@ -89,7 +89,8 @@ For the video slide:
 
 ## 6. Approval checklist before production publication
 
-- [ ] Ms. Carter has approved each selected photo/video.
+- [ ] Ms. Carter has approved each selected photo/video, including her own
+      portrait now used on the home page.
 - [ ] Permission confirmed for any identifiable customer, staff member or child.
 - [ ] No prescriptions, health information or sensitive context visible.
 - [ ] Music/audio cleared for web use (not just platform-licensed).
@@ -161,3 +162,25 @@ The deployed Netlify site shows the live map; the preview shows the card.
 
 Swap `mapEmbedUrl` for the Google Business Profile place ID once the client
 supplies it, so the pin carries their reviews and opening hours.
+
+## 12. Pharmacist portrait
+
+`src/assets/people/ms-carter.webp` is Ms. Carter cut out of the supplied studio
+photograph. The original arrived as RGB with a white backdrop rather than a
+transparent PNG, so the background was flood-filled from the edges inward using
+a strict threshold (backdrop measures 244-254 and perfectly neutral; her lab
+coat is 223-239 with a blue cast). Filling inward rather than by colour alone
+keeps the white coat intact. Verified against blue, pink and light backgrounds.
+
+To replace it, drop in a new cutout at the same path (transparent WebP or PNG,
+roughly 550x1000). The home page renders it at up to 400 px tall over a soft
+brand-coloured halo.
+
+## 13. Footer safety notice (removed on request)
+
+The general "Product information is provided for general reference..." line was
+removed from the footer at the client's request. The build brief (section 15)
+asked for that notice, so consider restoring it before production publication.
+Point-of-need wording still appears where it matters: product detail pages
+carry "Availability, final price and fulfilment are confirmed by Cosmic
+Pharmacy", and the PMOS collection keeps its own consultation disclaimer.

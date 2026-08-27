@@ -4,6 +4,7 @@ import { HeroCarousel } from '../components/HeroCarousel';
 import { business } from '../data/business';
 import { ContactDetails } from '../components/ContactDetails';
 import { LocationMap } from '../components/LocationMap';
+import msCarter from '../assets/people/ms-carter.webp';
 import { whatsappUrl } from '../lib/whatsapp';
 import { usePageMeta } from '../lib/usePageMeta';
 
@@ -71,14 +72,20 @@ export function Home() {
                 Talk to the Pharmacist
               </a>
             </div>
-            <div className="guidance-visual" aria-hidden="true">
-              <svg viewBox="0 0 200 200">
-                <circle cx="100" cy="100" r="52" fill="none" stroke="#3d6df2" strokeWidth="3" />
-                <ellipse cx="100" cy="100" rx="92" ry="34" fill="none" stroke="#d6409f" strokeWidth="2" transform="rotate(-18 100 100)" />
-                <circle cx="172" cy="72" r="7" fill="#d6409f" />
-                <path d="M100 74v52M74 100h52" stroke="#3d6df2" strokeWidth="7" strokeLinecap="round" />
-              </svg>
-            </div>
+            <figure className="guidance-visual">
+              <span className="guidance-halo" aria-hidden="true" />
+              <img
+                className="guidance-portrait"
+                src={msCarter}
+                alt={`${business.pharmacist}, the pharmacist at ${business.name}`}
+                width={551}
+                height={1000}
+              />
+              <figcaption className="guidance-caption">
+                <strong>{business.pharmacist}</strong>
+                <span>Pharmacist</span>
+              </figcaption>
+            </figure>
           </div>
         </section>
 

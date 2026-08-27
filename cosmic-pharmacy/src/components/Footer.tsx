@@ -36,28 +36,30 @@ export function Footer() {
         <SocialLinks />
 
         <nav className="footer-nav" aria-label="Footer">
-          <Link to="/services">Services</Link>
-          <Link to="/shop">Shop All</Link>
-          <Link to="/products/supplements">Supplements</Link>
-          <Link to="/products/health">Health Products</Link>
-          <Link to="/products/personal-care-beauty">Personal Care & Beauty</Link>
-          <Link to="/products/womens-wellness">Women's Wellness & PMOS</Link>
-          <Link to="/products/medical-devices">Medical Devices</Link>
-          <Link to="/prescriptions">Prescriptions & Refills</Link>
-          <Link to="/blog">Blog</Link>
-          <Link to="/gallery">Gallery</Link>
-          <Link to="/about">About</Link>
-          <Link to="/contact">Contact</Link>
+          <div className="footer-nav-col start">
+            <h2>Shop</h2>
+            <Link to="/shop">Shop All</Link>
+            <Link to="/products/supplements">Supplements</Link>
+            <Link to="/products/health">Health Products</Link>
+            <Link to="/products/personal-care-beauty">Personal Care & Beauty</Link>
+            <Link to="/products/womens-wellness">Women's Wellness & PMOS</Link>
+            <Link to="/products/medical-devices">Medical Devices</Link>
+          </div>
+          <div className="footer-nav-col end">
+            <h2>Cosmic</h2>
+            <Link to="/services">Services</Link>
+            <Link to="/prescriptions">Prescriptions & Refills</Link>
+            <Link to="/blog">Blog</Link>
+            <Link to="/gallery">Gallery</Link>
+            <Link to="/about">About</Link>
+            <Link to="/contact">Contact</Link>
+          </div>
         </nav>
 
         <p className="footer-reach">{business.serviceReach}</p>
       </div>
 
       <div className="wrap footer-legal">
-        <p>
-          Product information is provided for general reference. Availability, pricing, prescription status and suitability are confirmed by
-          Cosmic Pharmacy. Consult a qualified healthcare professional when medical advice is required.
-        </p>
         <p className="footer-fineprint">
           © {new Date().getFullYear()} {business.name}, Belize City · Private concept demonstration, not the official Cosmic Pharmacy
           website.
