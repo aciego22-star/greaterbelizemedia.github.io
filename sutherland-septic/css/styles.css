@@ -484,6 +484,9 @@ ul { margin: 0; padding: 0; list-style: none; }
 }
 .post-body p { color: var(--muted); font-size: 1.02rem; line-height: 1.7; margin-bottom: 18px; }
 .post-body p strong, .post-list strong { color: var(--ink); }
+.post-body a { color: var(--green-700); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+.post-body a:hover { color: var(--green-600); }
+.post-related { margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--line-soft); }
 .post-list { margin: 0 0 22px; padding: 0; list-style: none; }
 .post-list li {
   position: relative; padding-left: 30px; margin-bottom: 14px;
@@ -1063,12 +1066,14 @@ a.info-row:hover .ir-link { text-decoration: underline; }
 .page-hero .hero-media.hero-services { background-image: url("../images/pumping-action.jpg");  background-position: center 42%; }
 .page-hero .hero-media.hero-gallery  { background-image: url("../images/gravel-road.jpg");     background-position: center 55%; }
 .page-hero .hero-media.hero-blog     { background-image: url("../images/tank-top.jpg");        background-position: center 45%; }
+.page-hero .hero-media.hero-flush    { background-image: url("../images/pumping-action.jpg");  background-position: center 40%; }
 
 @media (min-width: 761px) {
   .page-hero .hero-media.hero-about    { background-image: url("../images/fleet-profile.jpg");   background-position: center 52%; }
   .page-hero .hero-media.hero-services { background-image: url("../images/pumping-home.jpg");     background-position: center 58%; }
   .page-hero .hero-media.hero-gallery  { background-image: url("../images/green-truck-site.jpg"); background-position: center 52%; }
   .page-hero .hero-media.hero-blog     { background-image: url("../images/truck-sunset.jpg");     background-position: center 55%; }
+  .page-hero .hero-media.hero-flush    { background-image: url("../images/equipment.jpg");         background-position: center 50%; }
 
   /* Crisp cropped mascot avatar in the Roland pill on desktop; the mobile
      <img src="logo-full.jpg"> is left exactly as-is. */

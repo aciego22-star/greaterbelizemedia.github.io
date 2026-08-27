@@ -59,3 +59,7 @@
   from = "/blog/septic-pump-frequency"
   to = "/blog-septic-pump-frequency.html"
   status = 200
+[[redirects]]
+  from = "/blog/what-not-to-flush"
+  to = "/blog-what-not-to-flush.html"
+  status = 200
