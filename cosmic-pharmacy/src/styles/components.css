@@ -2431,7 +2431,7 @@ a.contact-row .contact-row-value {
 }
 
 /* A brief nudge on the basket itself, so the hit registers. */
-.basket-btn.struck {
+.basket-btn.struck > svg {
   animation: basket-struck 0.4s ease;
 }
 
@@ -2828,7 +2828,10 @@ a.contact-row .contact-row-value {
    opens the drawer, so this is what keeps the basket present without
    interrupting someone who is still shopping. The cycle is mostly rest: the
    movement occupies the first ~8% and the rest is stillness. */
-.basket-btn.has-items {
+/* The nudge moves the icon, never the button. Animating the button itself made
+   the hit target drift during the ~0.8s of movement, so a tap that landed
+   mid-nudge could miss the basket entirely. */
+.basket-btn.has-items > svg {
   animation: cart-nudge 10s ease-in-out infinite;
 }
 
@@ -2841,7 +2844,7 @@ a.contact-row .contact-row-value {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .basket-btn.has-items { animation: none; }
+  .basket-btn.has-items > svg { animation: none; }
 }
 
 /* The catalogue-wide demo caveat, shown wherever products are listed. */

@@ -109,6 +109,31 @@ export function Home() {
           </div>
         </section>
 
+        {/* How it works */}
+        <section className="panel-section cool section-pad">
+          <p className="section-kicker">Our entire pharmacy is now online.</p>
+          <span className="eyebrow">How it works</span>
+          <h2 className="section-title how-title">Search. Add to cart. Send to WhatsApp. Done.</h2>
+          <ol className="how-steps">
+            <li>
+              <strong>Search the catalogue</strong>
+              <span>Find products by name, brand, category or A–Z: medicine, wellness, beauty and medical devices.</span>
+            </li>
+            <li>
+              <strong>Build your cart</strong>
+              <span>Add items and quantities. Prices shown are confirmed by the pharmacy before anything is final.</span>
+            </li>
+            <li>
+              <strong>Send it on WhatsApp</strong>
+              <span>One tap sends your whole request to Cosmic. A pharmacist reviews it and confirms availability and pricing.</span>
+            </li>
+            <li>
+              <strong>Pickup or delivery</strong>
+              <span>Collect in person, or arrange Belize City delivery, out-district or Cayes shipping.</span>
+            </li>
+          </ol>
+        </section>
+
         {/* What's new: the PMOS kits */}
         <section className="panel-section section-pad whats-new">
           <div className="whats-new-head">
@@ -180,47 +205,22 @@ export function Home() {
           </div>
         </section>
 
-        {/* How it works */}
-        <section className="panel-section cool section-pad">
-          <p className="section-kicker">Our entire pharmacy is now online.</p>
-          <span className="eyebrow">How it works</span>
-          <h2 className="section-title how-title">Search. Add to cart. Send to WhatsApp. Done.</h2>
-          <ol className="how-steps">
-            <li>
-              <strong>Search the catalogue</strong>
-              <span>Find products by name, brand, category or A–Z: medicine, wellness, beauty and medical devices.</span>
-            </li>
-            <li>
-              <strong>Build your cart</strong>
-              <span>Add items and quantities. Prices shown are confirmed by the pharmacy before anything is final.</span>
-            </li>
-            <li>
-              <strong>Send it on WhatsApp</strong>
-              <span>One tap sends your whole request to Cosmic. A pharmacist reviews it and confirms availability and pricing.</span>
-            </li>
-            <li>
-              <strong>Pickup or delivery</strong>
-              <span>Collect in person, or arrange Belize City delivery, out-district or Cayes shipping.</span>
-            </li>
-          </ol>
-        </section>
-
         {/* Explore the pharmacy: slim, centered pointers to the deeper pages */}
         <section className="panel-section section-pad band-center">
           <span className="eyebrow">Explore Cosmic</span>
-          <h2 className="section-title">The rest lives on its own pages</h2>
           <p className="section-intro">
-            Browse the departments, see current specials, or start a prescription request. Each has a dedicated page of its own.
+            Browse the departments, look around the pharmacy, read the blog, or start a prescription request. Each has a dedicated page of
+            its own.
           </p>
           <div className="section-cta-row center">
             <Link className="btn btn-primary" to="/shop?mode=categories">
               Browse Departments
             </Link>
-            <Link className="btn btn-outline-light" to="/shop?mode=search&cat=sale-featured">
-              Current Specials
+            <Link className="btn btn-outline-light" to="/gallery">
+              Gallery
             </Link>
-            <Link className="btn btn-outline-light" to="/products/womens-wellness">
-              Cosmic PMOS Collection
+            <Link className="btn btn-outline-light" to="/blog">
+              Blog
             </Link>
             <Link className="btn btn-magenta" to="/prescriptions">
               Send a Prescription

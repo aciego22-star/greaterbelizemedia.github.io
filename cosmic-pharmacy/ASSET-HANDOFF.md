@@ -369,10 +369,15 @@ to the basket icon, then hands off to the badge, which pops with the new count.
   ahead of it. The button's `aria-label` carries the real count throughout, so
   assistive technology is never out of date.
 - **Adding an item does not open the basket.** Being thrown to a checkout
-  screen mid-shop reads as a rush. Instead `.basket-btn.has-items` nudges once
-  every ten seconds (movement is the first 8% of the cycle, the rest is rest),
-  and the basket opens only when the shopper taps it. The nudge stops while the
-  basket is open.
+  screen mid-shop reads as a rush. Instead the basket nudges once every ten
+  seconds while it holds items (movement is the first 8% of the cycle, the rest
+  is rest), and it opens only when the shopper taps it. The nudge stops while
+  the basket is open.
+- **The nudge animates the icon, not the button** (`.basket-btn.has-items > svg`).
+  Animating the button moved its hit target for ~0.8s of every cycle, so a tap
+  landing mid-nudge could miss the basket entirely - an intermittent miss the
+  client hit in use. A check in the functional suite measures the button's
+  bounding box across a full cycle and fails if it moves at all.
 - Colour comes from `--meteor-core` / `--meteor-glow` / `--meteor-trail`, which
   are defined per sky, so the meteorite belongs to whichever theme is up: blue
   by day, rose at sunrise, gold at sunset, pale violet at night.
