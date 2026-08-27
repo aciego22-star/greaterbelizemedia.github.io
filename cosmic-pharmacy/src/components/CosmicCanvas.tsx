@@ -51,7 +51,7 @@ interface ShootingStar {
   lifeMs: number;
 }
 
-type SkyName = 'sunrise' | 'day' | 'dusk' | 'night';
+type SkyName = 'sunrise' | 'day' | 'sunset' | 'night';
 
 interface SkyPalette {
   /** Three vertical stops for the ground, top to bottom. */
@@ -95,14 +95,17 @@ const SKIES: Record<SkyName, SkyPalette> = {
     orbit: 'rgba(22, 121, 209, 0.14)',
     trail: 'rgba(19, 181, 230, 0.85)'
   },
-  dusk: {
-    base: ['#1b0d2e', '#331449', '#4b1a42'],
-    neb: { blue: '86, 62, 190', cyan: '150, 90, 220', magenta: '226, 70, 140' },
-    nebAlpha: 0.42,
-    star: { blue: '176, 206, 255', pink: '255, 176, 214' },
+  sunset: {
+    // A sunset ramp rather than a flat dark: violet overhead, magenta through
+    // the middle, amber gold low down where the sun has just gone. The gold is
+    // the warmest thing on the site and appears only in this three-hour window.
+    base: ['#180c34', '#57204d', '#a4602f'],
+    neb: { blue: '96, 64, 190', cyan: '236, 150, 66', magenta: '232, 78, 128' },
+    nebAlpha: 0.4,
+    star: { blue: '186, 212, 255', pink: '255, 198, 190' },
     starAlpha: [0.35, 0.95],
-    orbit: 'rgba(236, 196, 255, 0.16)',
-    trail: 'rgba(255, 190, 225, 0.9)'
+    orbit: 'rgba(255, 214, 176, 0.17)',
+    trail: 'rgba(255, 206, 150, 0.9)'
   },
   night: {
     base: ['#0a0514', '#110a1f', '#1b0c26'],

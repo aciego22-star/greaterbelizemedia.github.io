@@ -1,4 +1,6 @@
 import { describe, expect, it } from 'vitest';
+// ?raw keeps this working without Node types in the app's tsconfig.
+import indexHtml from '../../../index.html?raw';
 import { SCHEDULE, msUntilNextChange, themeForDate, themeForHour, type ThemeName } from '../theme';
 
 describe('time-of-day schedule', () => {
@@ -13,7 +15,7 @@ describe('time-of-day schedule', () => {
       [0, 'night'], [4, 'night'],
       [5, 'sunrise'], [7, 'sunrise'],
       [8, 'day'], [16, 'day'],
-      [17, 'dusk'], [19, 'dusk'],
+      [17, 'sunset'], [19, 'sunset'],
       [20, 'night'], [23, 'night']
     ];
     for (const [hour, theme] of expected) expect(themeForHour(hour), `hour ${hour}`).toBe(theme);
@@ -34,7 +36,7 @@ describe('time-of-day schedule', () => {
   it('wakes at the next boundary, not on a fixed poll', () => {
     const d = new Date();
     d.setHours(16, 30, 0, 0);
-    // 30 minutes to the 17:00 dusk boundary
+    // 30 minutes to the 17:00 sunset boundary
     expect(msUntilNextChange(d)).toBe(30 * 60 * 1000);
   });
 
@@ -44,4 +46,23 @@ describe('time-of-day schedule', () => {
     // 23:00 -> 05:00 sunrise is six hours away
     expect(msUntilNextChange(d)).toBe(6 * 60 * 60 * 1000);
   });
+});
+
+describe('pre-paint script in index.html', () => {
+  it('duplicates the same boundary hours as SCHEDULE', () => {
+    const line = indexHtml.split('\n').find((l: string) => l.includes("var t = h <"))!;
+    expect(line, 'inline theme script not found in index.html').toBeTruthy();
+    const hours = [...line.matchAll(/h < (\d+)/g)].map((m) => Number(m[1]));
+    // The chain reads: below the first boundary it is still night, then each
+    // boundary in order. Dropping the leading 5 leaves the theme start hours.
+    expect(hours).toEqual([SCHEDULE[0].from, ...SCHEDULE.slice(1).map((s) => s.from)]);
+  });
+
+  it('names every theme, and no theme the app does not have', () => {
+    const line = indexHtml.split('\n').find((l: string) => l.includes("var t = h <"))!;
+    const named = new Set([...line.matchAll(/'(\w+)'/g)].map((m) => m[1]));
+    const known = new Set<string>(SCHEDULE.map((s) => s.theme));
+    expect([...named].sort()).toEqual([...known].sort());
+  });
+
 });

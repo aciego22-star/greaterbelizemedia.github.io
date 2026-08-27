@@ -146,11 +146,13 @@
   --sky: #ffffff;
 }
 
-/* ---- Dusk, 17:00-20:00. Magenta bleeding into violet: her reel. ---------- */
-:root[data-theme='dusk'] {
-  --sky: #1f0f33;
-  --sky-2: #33144a;
-  --sky-3: #48193f;
+/* ---- Sunset, 17:00-20:00. A real sunset: violet overhead, magenta through the
+   middle, gold at the horizon. The warm band lives in the canvas gradient;
+   these tokens stay dark enough for light text and floating white cards. --- */
+:root[data-theme='sunset'] {
+  --sky: #2a1240;
+  --sky-2: #4a1b48;
+  --sky-3: #6b2f3c;
 
   /* Text and rules on the sky invert; cards below do not. */
   --on-sky: #fbf6fd;
@@ -162,10 +164,12 @@
   --star-dim: #cbb8dd;
   --line-dark: rgba(238, 210, 246, 0.24);
 
-  --header-bg: rgba(26, 12, 43, 0.86);
-  --header-panel: #241041;
-  --footer-bg-a: rgba(31, 15, 51, 0.55);
-  --footer-bg-b: rgba(53, 20, 68, 0.92);
+  --header-bg: rgba(30, 14, 50, 0.88);
+  --header-panel: #2a1246;
+  /* The footer lands on the gold horizon band, so it carries a heavier overlay
+     than the other skies to keep its text comfortably readable. */
+  --footer-bg-a: rgba(38, 17, 54, 0.82);
+  --footer-bg-b: rgba(52, 22, 60, 0.97);
 
   /* White cards need a real shadow to lift off a dark ground. */
   --shadow-panel: 0 22px 54px rgba(0, 0, 0, 0.45);

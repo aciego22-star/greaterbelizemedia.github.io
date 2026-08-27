@@ -248,6 +248,23 @@ textarea {
   font-weight: 700;
 }
 
+/* A line that sits above the eyebrow, introducing the section. */
+.section-kicker {
+  margin: 0 0 0.35rem;
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+/* Four short sentences: let the browser break them evenly rather than
+   leaving one orphan word on the last line. */
+.how-title {
+  text-wrap: balance;
+  max-width: 24ch;
+}
+
 .section-intro {
   color: var(--ink-soft);
   max-width: 46rem;

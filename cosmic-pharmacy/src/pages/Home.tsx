@@ -91,8 +91,9 @@ export function Home() {
 
         {/* How it works */}
         <section className="panel-section cool section-pad">
+          <p className="section-kicker">Our entire pharmacy is now online.</p>
           <span className="eyebrow">How it works</span>
-          <h2 className="section-title">Search. Basket. WhatsApp. Done.</h2>
+          <h2 className="section-title how-title">Search. Add to cart. Send to WhatsApp. Done.</h2>
           <ol className="how-steps">
             <li>
               <strong>Search the catalogue</strong>

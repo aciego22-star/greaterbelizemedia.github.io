@@ -1680,8 +1680,12 @@ a.contact-row .contact-row-value {
   font-size: var(--text-sm);
 }
 
+/* The steps above it are a centred grid, so the button that follows them
+   centres too rather than hanging off the left edge. */
 .rx-cta {
-  margin: 0.6rem 0 1.2rem;
+  display: flex;
+  width: fit-content;
+  margin: 0.6rem auto 1.2rem;
 }
 
 .landing-cats {
@@ -2192,12 +2196,17 @@ a.contact-row .contact-row-value {
     --header-h: 64px;
   }
 
+  /* The full lockup stays on phones. It scales down with the viewport rather
+     than being swapped for the standalone mark, and the action icons give back
+     a little width so it keeps as much room as possible. */
+  /* 48vw keeps the lockup inside the row at 320px once the three action icons
+     and the wrap padding are accounted for; 52vw overflowed by 9px there. */
   .brand-logo {
-    display: none;
+    width: clamp(140px, 48vw, 232px);
   }
 
   .brand-icon {
-    display: block;
+    display: none;
   }
 
   .menu-btn {
@@ -2284,6 +2293,21 @@ a.contact-row .contact-row-value {
 @media (max-width: 860px) {
   .contact-layout {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  /* Give the lockup room: slightly tighter touch targets, still >= 40px. */
+  .header-actions {
+    gap: 0.15rem;
+  }
+
+  .icon-btn {
+    width: 40px;
+  }
+
+  .brand {
+    padding-right: 0.25rem;
   }
 }
 

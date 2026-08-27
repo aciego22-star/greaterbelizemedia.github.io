@@ -286,7 +286,7 @@ warm is introduced and the brand holds all day.
 |---|---|---|
 | `sunrise` | 05:00-08:00 | Rose at the horizon lifting into a cool lilac |
 | `day` | 08:00-17:00 | The bright cosmic white |
-| `dusk` | 17:00-20:00 | Magenta bleeding into violet, from her reel |
+| `sunset` | 17:00-20:00 | Violet overhead, magenta through the middle, gold at the horizon |
 | `night` | 20:00-05:00 | Violet black, from her coming-soon page |
 
 Belize sits at about 17 degrees north and keeps UTC-6 all year with no daylight
@@ -317,10 +317,13 @@ pass.
 - `src/lib/theme.ts` owns the schedule. It wakes exactly on the next boundary
   rather than polling, and re-checks on `visibilitychange` because background
   tabs throttle timers and a sleeping phone would otherwise wake still showing
-  dusk.
+  sunset.
 - The inline script at the top of `index.html` sets `data-theme` before first
   paint, so the page never flashes the wrong sky. **It duplicates the schedule -
-  change both together.**
+  change both together.** A unit test parses `index.html` and fails if the two
+  drift apart. It carries no colours: `<meta name="theme-color">` is set from
+  the rendered `--sky` in `theme.ts`, so the browser chrome follows the sky from
+  one definition rather than a second hand-maintained list.
 - `src/components/CosmicCanvas.tsx` holds one `SKIES` palette per theme and
   watches `data-theme` with a `MutationObserver`, so a change swaps colours on
   the next frame without regenerating the stars, which would make them jump.

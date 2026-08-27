@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export type ThemeName = 'sunrise' | 'day' | 'dusk' | 'night';
+export type ThemeName = 'sunrise' | 'day' | 'sunset' | 'night';
 
 /**
  * Belize sits at about 17 degrees north and keeps UTC-6 all year with no
@@ -14,7 +14,7 @@ export type ThemeName = 'sunrise' | 'day' | 'dusk' | 'night';
 export const SCHEDULE: ReadonlyArray<{ from: number; theme: ThemeName }> = [
   { from: 5, theme: 'sunrise' },
   { from: 8, theme: 'day' },
-  { from: 17, theme: 'dusk' },
+  { from: 17, theme: 'sunset' },
   { from: 20, theme: 'night' }
 ];
 
@@ -42,14 +42,22 @@ export function msUntilNextChange(date: Date): number {
 }
 
 function apply(theme: ThemeName) {
-  document.documentElement.dataset.theme = theme;
+  const root = document.documentElement;
+  root.dataset.theme = theme;
+  // Match the browser's own chrome to the sky, read back from the stylesheet so
+  // the colour is defined in exactly one place. Without this the address bar
+  // stays on whatever the first paint was, so a night visitor gets a white bar
+  // above a near-black page.
+  const meta = document.querySelector('meta[name="theme-color"]');
+  const sky = getComputedStyle(root).getPropertyValue('--sky').trim();
+  if (meta && sky) meta.setAttribute('content', sky);
 }
 
 /**
  * Keeps <html data-theme> current for as long as the tab is open.
  *
  * A timer alone is not enough: background tabs throttle timers heavily and a
- * phone that sleeps through 20:00 would wake still showing dusk. Re-checking
+ * phone that sleeps through 20:00 would wake still showing sunset. Re-checking
  * whenever the page becomes visible again covers that.
  */
 export function useTimeOfDayTheme(): ThemeName {
