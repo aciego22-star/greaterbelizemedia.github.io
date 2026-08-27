@@ -140,10 +140,11 @@ export function HeroVideoSlide({ slide, active, reducedMotion, onPlayingChange }
   return (
     <div
       className={`hero-media hero-video ${slide.videoFit === 'contain' ? 'is-contained' : ''}`}
-      // A portrait edit cannot fill a landscape frame. Rather than leave flat
-      // bars, the poster fills the frame behind it, blurred and dimmed, the way
-      // every video platform treats a vertical upload.
-      style={posterSrc ? ({ '--hero-video-backdrop': `url(${posterSrc})` } as CSSProperties) : undefined}
+      // A portrait edit cannot fill a wide frame. Rather than leave flat bars,
+      // the poster fills the frame behind it, blurred and dimmed, the way every
+      // video platform treats a vertical upload. Whether it is letterboxed at
+      // all is a breakpoint decision, so the fit itself lives in CSS.
+      style={posterSrc ? ({ '--hero-backdrop': `url(${posterSrc})` } as CSSProperties) : undefined}
     >
       <video
         ref={videoRef}
@@ -152,7 +153,6 @@ export function HeroVideoSlide({ slide, active, reducedMotion, onPlayingChange }
         preload="metadata"
         poster={posterSrc || undefined}
         aria-label={slide.posterAlt}
-        style={{ objectFit: slide.videoFit ?? 'cover' }}
         onEnded={() => {
           setState('ended');
           onPlayingChange(false);

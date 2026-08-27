@@ -26,15 +26,29 @@ main,
    Products dropdown and the mobile nav panel follow the header rather than
    staying white against a dark bar. */
 .site-header,
-.site-footer,
-.hero-copy,
-.hero-controls {
+.site-footer {
   --ink: var(--on-sky);
   --ink-soft: var(--on-sky-soft);
   --ink-faint: var(--on-sky-faint);
   --line-light: var(--on-sky-line);
   --cosmic-blue-deep: var(--on-sky-link);
   --magenta-deep: var(--on-sky-accent);
+}
+
+/* The hero copy no longer sits on the sky. It sits on a dark scrim over a
+   photograph, which stays dark in all four themes, so its ink is fixed light
+   rather than following --on-sky. Day would otherwise put navy text on it. */
+.hero-copy,
+.hero-controls {
+  --ink: #ffffff;
+  --ink-soft: rgba(255, 255, 255, 0.88);
+  --ink-faint: rgba(255, 255, 255, 0.72);
+  --line-light: rgba(255, 255, 255, 0.42);
+  --cosmic-blue-deep: #bfe0ff;
+  /* Paler than the brand magenta elsewhere. The eyebrow is small text sitting
+     on a photograph, and the deeper pink does not clear 4.5:1 against the
+     brightest thing the stills put behind it. */
+  --magenta-deep: #ffd3e6;
 }
 
 /* Light surfaces nested inside a sky region reset to card ink, so a pale pill
@@ -262,51 +276,132 @@ main,
 }
 
 /* ============ Hero ============ */
+/* A full-bleed stage rather than a framed card beside a column of text: the
+   media fills the section edge to edge and the copy sits on top of it. Every
+   still is supplied as a matched pair of crops, wide and tall, so the phone is
+   art-directed rather than handed a scaled-down landscape frame. */
 .hero {
   position: relative;
-  padding: clamp(1.2rem, 3vw, 2.4rem) 0 0;
+  padding: 0;
+  /* Slides that are shown whole reserve this strip at the foot of the stage.
+     The carousel controls, and the video's own caption and play control, all
+     live in it, so nothing is ever laid over the artwork it belongs to. */
+  --hero-rail: clamp(64px, 9vh, 88px);
 }
 
 .hero-track {
   position: relative;
-  width: min(var(--wrap), 92vw);
-  margin-inline: auto;
-  min-height: clamp(420px, 60vh, 560px);
+  width: 100%;
+  /* Immersive by intent: most of the screen on a desktop, effectively all of it
+     below the header on a phone (see the phone breakpoint). */
+  min-height: clamp(520px, 82vh, 900px);
+  overflow: hidden;
+  background: #050d24;
 }
 
 .hero-slide {
   position: absolute;
   inset: 0;
-  display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
-  gap: clamp(1.2rem, 3vw, 3rem);
-  align-items: center;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.6s ease;
 }
 
 .hero-slide.active {
-  position: relative;
   opacity: 1;
   visibility: visible;
 }
 
+.hero-media {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #050d24;
+}
+
+.hero-media picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-media img,
+.hero-media video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-media .placeholder-media {
+  height: 100%;
+}
+
+/* Carries the copy's contrast, so it exists only under slides that have copy.
+   A slide shown whole is not dimmed for the sake of text that is not there.
+   Weighted to the foot of the frame, where the copy sits, and kept light
+   across the middle so the photograph is still the thing you see. */
+.hero-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  /* Stops chosen against the measured worst case, not by eye: the interior
+     photograph is white shelving right where the eyebrow lands, and small text
+     needs 4.5:1 over whatever the photograph actually paints there. The copy
+     block starts around 40% down the stage, so the ramp is steep through the
+     upper forties and the top quarter stays close to clear, leaving the
+     picture to be the thing you see. */
+  background: linear-gradient(
+    180deg,
+    rgba(4, 9, 26, 0.3) 0%,
+    rgba(4, 9, 26, 0.1) 22%,
+    rgba(4, 9, 26, 0.62) 34%,
+    rgba(4, 9, 26, 0.84) 62%,
+    rgba(4, 9, 26, 0.93) 100%
+  );
+}
+
+/* On a wide stage the copy occupies the left of the frame, so the scrim gains
+   a horizontal wash on that side. Without it the headline sits on whatever the
+   photograph happens to put there, which on the storefront is a bright wall. */
+@media (min-width: 901px) {
+  .hero-scrim {
+    background:
+      linear-gradient(
+        90deg,
+        rgba(4, 9, 26, 0.9) 0%,
+        rgba(4, 9, 26, 0.72) 34%,
+        rgba(4, 9, 26, 0.24) 62%,
+        rgba(4, 9, 26, 0.06) 100%
+      ),
+      linear-gradient(180deg, rgba(4, 9, 26, 0.34) 0%, rgba(4, 9, 26, 0.1) 34%, rgba(4, 9, 26, 0.62) 100%);
+  }
+}
+
 .hero-copy {
-  order: 0;
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: clamp(4rem, 9vh, 6.5rem);
+  width: min(var(--wrap), 92vw);
 }
 
 .hero-headline {
   font-size: var(--text-hero);
   font-weight: 700;
   color: var(--ink);
-  margin-bottom: 0.5em;
+  margin-bottom: 0.45em;
+  max-width: 22ch;
+  text-wrap: balance;
+  text-shadow: 0 2px 18px rgba(4, 9, 26, 0.55);
 }
 
 .hero-lead {
   color: var(--ink-soft);
   font-size: var(--text-lg);
   max-width: 34rem;
+  text-shadow: 0 1px 12px rgba(4, 9, 26, 0.6);
 }
 
 .hero-ctas {
@@ -320,34 +415,15 @@ main,
   margin-top: 1.2rem;
   font-size: var(--text-sm);
   color: var(--ink-soft);
+  text-shadow: 0 1px 12px rgba(4, 9, 26, 0.6);
 }
 
-.hero-media {
-  order: 1;
-  position: relative;
-  aspect-ratio: 4 / 3;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  border: 1px solid var(--line-light);
-  background: var(--panel-cool);
-  box-shadow: var(--shadow-panel);
-}
-
-.hero-media img,
-.hero-media video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.hero-media .placeholder-media {
-  height: 100%;
-}
-
+/* In the rail, at its left end: the carousel controls hold the centre and the
+   play control the right, so the three read as one bar. */
 .hero-video-caption {
   position: absolute;
-  left: 12px;
-  bottom: 12px;
+  left: clamp(0.9rem, 3vw, 2rem);
+  bottom: calc((var(--hero-rail) - 1.7rem) / 2);
   z-index: 2;
   padding: 0.25rem 0.7rem;
   border-radius: var(--radius-pill);
@@ -397,8 +473,8 @@ main,
 
 .hero-video-controls {
   position: absolute;
-  right: 10px;
-  bottom: 10px;
+  right: clamp(0.9rem, 3vw, 2rem);
+  bottom: calc((var(--hero-rail) - 2.2rem) / 2);
   z-index: 2;
   display: flex;
   gap: 0.4rem;
@@ -410,12 +486,23 @@ main,
   color: #ffffff;
 }
 
+/* Overlaid on the foot of the stage rather than stacked beneath it, so the
+   media keeps the full height it was given. The pill is its own contrast
+   backing: the controls sit over photographs that vary slide to slide. */
 .hero-controls {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: clamp(0.9rem, 2.4vh, 1.6rem);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.6rem;
-  padding: 1.1rem 0 0.4rem;
+  gap: 0.5rem;
+  padding: 0.3rem 0.55rem;
+  border-radius: var(--radius-pill);
+  background: rgba(4, 9, 26, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.16);
 }
 
 .hero-arrow {
@@ -2153,25 +2240,6 @@ a.contact-row .contact-row-value {
 
 /* ============ Responsive ============ */
 @media (max-width: 960px) {
-  .hero-slide {
-    grid-template-columns: 1fr;
-    align-content: start;
-    gap: 1.2rem;
-  }
-
-  .hero-track {
-    min-height: 640px;
-  }
-
-  .hero-media {
-    order: 0;
-    aspect-ratio: 16 / 10;
-  }
-
-  .hero-copy {
-    order: 1;
-  }
-
   .guidance-grid {
     grid-template-columns: 1fr;
   }
@@ -2336,11 +2404,9 @@ a.contact-row .contact-row-value {
   .gallery-grid {
     columns: 2 160px;
   }
-
-  .hero-track {
-    min-height: 660px;
-  }
 }
+
+
 
 @media (max-width: 520px) {
   /* Address, phone and email each take their own line on a phone: inline
@@ -2853,42 +2919,98 @@ a.contact-row .contact-row-value {
   max-width: 62rem;
 }
 
-/* A contained hero graphic is letterboxed rather than cropped, so the frame
-   takes the graphic's own deep navy instead of the pale panel colour and the
-   bars read as part of the artwork. */
-.hero-media:has(img[style*='contain']) {
+/* ---- Media shown whole ----
+   Two slides cannot be cropped: the how-it-works graphic, whose numbered steps
+   run to the edges of the frame, and the client's 720x1280 reel, whose cards
+   are almost entirely wording. Both are contained and anchored to the top, so
+   the slack in the frame collects at the foot of the stage as one rail. The
+   rail and any side gutters take a blurred, dimmed copy of the artwork rather
+   than flat bars, which is how every video platform frames a vertical upload. */
+.hero-media.is-contained {
   background: #050d24;
 }
 
-/* Keeps the caption inside the narrower of the two gutters a contained
-   portrait reel leaves. The 4:3 frame gives the tighter one, at ~28.9% of the
-   frame width per side, so 26% clears the reel at either frame ratio. */
-.hero-video.is-contained .hero-video-caption {
-  max-width: 26%;
-}
-
-/* The client's reel is a 720x1280 portrait edit, and its cards are almost
-   entirely wording: cropping it to the landscape frame would cut the headings
-   off, so it is contained. The space either side takes a blurred, dimmed copy
-   of the poster instead of flat bars, which is how every video platform frames
-   a vertical upload. */
-.hero-video.is-contained {
-  background: #050d24;
-}
-
-.hero-video.is-contained::before {
+.hero-media.is-contained::before {
   content: '';
   position: absolute;
   inset: 0;
-  background-image: var(--hero-video-backdrop);
+  background-image: var(--hero-backdrop);
   background-size: cover;
   background-position: center;
-  filter: blur(28px) brightness(0.55) saturate(1.1);
+  filter: blur(28px) brightness(0.5) saturate(1.1);
   transform: scale(1.15);
   z-index: 0;
 }
 
-.hero-video.is-contained video {
+.hero-media.is-contained img,
+.hero-media.is-contained video {
   position: relative;
   z-index: 1;
+  height: calc(100% - var(--hero-rail));
+  object-fit: contain;
+  object-position: center top;
+}
+
+/* ---- The hero on a narrow screen ----
+   It owns the screen below the header, the way the client's other builds do.
+   svh rather than vh: on a phone vh is the *largest* viewport height, so a
+   100vh hero is taller than what you can actually see until the address bar
+   collapses, and the copy at its foot would start life below the fold. The
+   104px is the sticky header plus a deliberate strip of the next section, so
+   the page still reads as scrollable. */
+@media (max-width: 900px) {
+  .hero-track {
+    min-height: calc(100vh - 104px);
+    min-height: calc(100svh - 104px);
+  }
+
+  /* A stage-percentage gradient cannot guarantee contrast here: how far up the
+     stage the copy starts depends on how many lines the headline takes and how
+     tall the screen is, and it ranged from 37% to 52% across the sizes we
+     ship. This backing is tied to the copy block instead, so it covers the
+     text wherever the text ends up. It bleeds past the copy's own width to the
+     edges of the stage, which clips it, so it reads as the scrim deepening
+     rather than as a panel with sides. */
+  .hero-copy::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    /* The top inset is the fade's whole runway: the eyebrow is the first line
+       in the block, so the gradient has to be at strength by the time it
+       reaches it, not still ramping. */
+    inset: -2.75rem -50vw -3rem;
+    background: linear-gradient(
+      180deg,
+      rgba(4, 9, 26, 0) 0%,
+      rgba(4, 9, 26, 0.52) 12%,
+      rgba(4, 9, 26, 0.58) 100%
+    );
+    pointer-events: none;
+  }
+
+  /* The tall crop's subject sits elsewhere in the frame than the wide one's,
+     so each slide carries its own narrow-screen focus. This breakpoint matches
+     the <source> in HeroCarousel: any portrait-ish frame is better served by
+     the tall crop than by a wide one cropped to a sliver of its middle. */
+  .hero-media img {
+    object-position: var(--hero-focus-mobile, center);
+  }
+}
+
+/* On a small phone the copy block is long enough to start a quarter of the way
+   up the stage, above where the scrim has any strength. Tightening the type
+   pulls it back down into the scrim, and a 320px screen wants the shorter
+   block regardless. */
+@media (max-width: 420px) {
+  .hero-headline {
+    font-size: clamp(1.7rem, 8vw, 2.1rem);
+  }
+
+  .hero-lead {
+    font-size: var(--text-md);
+  }
+
+  .hero-supportline {
+    display: none;
+  }
 }

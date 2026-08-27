@@ -38,9 +38,28 @@ describe('hero media', () => {
     }
   });
 
+  it('resolves every phone crop to a shipped asset', () => {
+    for (const slide of images) {
+      if (!slide.imageMobile) continue;
+      expect(heroFiles.has(slide.imageMobile), `${slide.id} phone crop missing`).toBe(true);
+    }
+  });
+
+  it('art-directs every still for the phone', () => {
+    // The hero fills the phone screen, so a wide crop scaled down loses the
+    // subject entirely. Every still needs its own tall crop, not a resize.
+    for (const slide of images) {
+      expect(slide.imageMobile, `${slide.id} has no phone crop`).toBeTruthy();
+      expect(slide.imageMobile).not.toBe(slide.image);
+    }
+  });
+
   it('leaves no hero asset orphaned', () => {
     const used = new Set<string>();
-    for (const slide of images) used.add(slide.image);
+    for (const slide of images) {
+      used.add(slide.image);
+      if (slide.imageMobile) used.add(slide.imageMobile);
+    }
     for (const slide of videos) {
       used.add(slide.videoSrcDesktop);
       used.add(slide.poster);
@@ -51,13 +70,22 @@ describe('hero media', () => {
     }
   });
 
-  it('contains rather than crops any media that carries wording', () => {
-    // Both the how-it-works graphic and the portrait reel are mostly type.
-    // Cropping either to the landscape frame cuts the headings off.
-    const howItWorks = images.find((s) => s.image === 'hero-how-it-works');
-    expect(howItWorks?.imageFit).toBe('contain');
+  it('lays no copy over a slide that carries its own wording', () => {
+    // The how-it-works graphic and the reel both carry their own headline in
+    // the artwork. Overlaying the site's copy would collide with it and say the
+    // same thing twice, so both are shown whole.
+    const howItWorks = images.find((s) => s.image === 'hero-how-it-works-desktop');
+    expect(howItWorks?.overlay).toBe('none');
     const reel = videos.find((s) => s.videoSrcDesktop === 'cosmic-hero');
-    expect(reel?.videoFit).toBe('contain');
+    expect(reel?.overlay).toBe('none');
+  });
+
+  it('gives every slide that does carry copy a headline and a way to act', () => {
+    for (const slide of heroSlides) {
+      if (slide.overlay === 'none') continue;
+      expect(slide.headline, `${slide.id} has no headline`).toBeTruthy();
+      expect(slide.ctaLabel && slide.ctaTo, `${slide.id} has no call to action`).toBeTruthy();
+    }
   });
 
   it('declares the supplied reel as silent so no sound control is offered', () => {

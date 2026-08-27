@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import type { CSSProperties } from 'react';
 import { Link } from 'react-router-dom';
 import { heroSlides } from '../data/heroSlides';
 import { HeroVideoSlide } from './HeroVideoSlide';
@@ -6,9 +7,12 @@ import { PlaceholderMedia } from './PlaceholderMedia';
 import { mediaUrl } from '../lib/media';
 
 /**
- * ICB-style hero media sequence: ordered stills + one inlaid video slide in a
- * single hero system. Rotation pauses on hover, focus, interaction, and while
- * the video plays; reduced motion disables auto-rotation entirely.
+ * Full-bleed hero stage: ordered stills + one inlaid video slide, the media
+ * filling the section edge to edge with the copy overlaid on it rather than
+ * sitting in a column beside a framed card.
+ *
+ * Rotation pauses on hover, focus, interaction, and while the video plays;
+ * reduced motion disables auto-rotation entirely.
  */
 export function HeroCarousel() {
   const [index, setIndex] = useState(0);
@@ -62,13 +66,38 @@ export function HeroCarousel() {
               aria-hidden={!active}
             >
               {slide.kind === 'image' ? (
-                <div className="hero-media">
+                <div
+                  className={`hero-media ${slide.imageFit === 'contain' ? 'is-contained' : ''}`}
+                  // Contained media leaves slack in the frame. Filling it with a
+                  // blurred copy of the artwork reads as part of the piece,
+                  // where flat bars would read as a mistake.
+                  style={
+                    slide.imageFit === 'contain'
+                      ? ({ '--hero-backdrop': `url(${mediaUrl(slide.image)})` } as CSSProperties)
+                      : undefined
+                  }
+                >
                   {mediaUrl(slide.image) ? (
-                    <img
-                      src={mediaUrl(slide.image)}
-                      alt={slide.imageAlt}
-                      style={{ objectFit: slide.imageFit ?? 'cover', objectPosition: slide.imageFocus ?? 'center' }}
-                    />
+                    // Art direction, not resolution: the phone gets its own tall
+                    // crop, because the wide one scaled down loses the subject.
+                    <picture>
+                      {mediaUrl(slide.imageMobile) && (
+                        <source media="(max-width: 900px)" srcSet={mediaUrl(slide.imageMobile)} />
+                      )}
+                      <img
+                        src={mediaUrl(slide.image)}
+                        alt={slide.imageAlt}
+                        // The tall crop's subject sits elsewhere in the frame, so
+                        // its focus travels with it as a custom property.
+                        style={
+                          {
+                            objectFit: slide.imageFit ?? 'cover',
+                            objectPosition: slide.imageFocus ?? 'center',
+                            '--hero-focus-mobile': slide.imageFocusMobile ?? slide.imageFocus ?? 'center'
+                          } as CSSProperties
+                        }
+                      />
+                    </picture>
                   ) : (
                     <PlaceholderMedia note={slide.placeholderNote} />
                   )}
@@ -77,26 +106,33 @@ export function HeroCarousel() {
                 <HeroVideoSlide slide={slide} active={active} reducedMotion={reducedMotion} onPlayingChange={setVideoPlaying} />
               )}
 
-              <div className="hero-copy" hidden={!active}>
-                {slide.eyebrow && <span className="eyebrow on-dark">{slide.eyebrow}</span>}
-                <h1 className="hero-headline">{slide.headline}</h1>
-                {slide.copy && <p className="hero-lead">{slide.copy}</p>}
-                <div className="hero-ctas">
-                  {slide.ctaLabel && slide.ctaTo && (
-                    <Link className="btn btn-primary" to={slide.ctaTo}>
-                      {slide.ctaLabel}
-                    </Link>
-                  )}
-                  {slide.secondaryCtaLabel && slide.secondaryCtaTo && (
-                    <Link className="btn btn-outline-dark" to={slide.secondaryCtaTo}>
-                      {slide.secondaryCtaLabel}
-                    </Link>
+              {/* The scrim only exists where copy sits on top of the media. A
+                  slide shown whole gets none, so the artwork is not dimmed for
+                  the sake of text that is not there. */}
+              {slide.overlay !== 'none' && <div className="hero-scrim" aria-hidden="true" />}
+
+              {slide.overlay !== 'none' && (
+                <div className="hero-copy" hidden={!active}>
+                  {slide.eyebrow && <span className="eyebrow on-dark">{slide.eyebrow}</span>}
+                  <h1 className="hero-headline">{slide.headline}</h1>
+                  {slide.copy && <p className="hero-lead">{slide.copy}</p>}
+                  <div className="hero-ctas">
+                    {slide.ctaLabel && slide.ctaTo && (
+                      <Link className="btn btn-primary" to={slide.ctaTo}>
+                        {slide.ctaLabel}
+                      </Link>
+                    )}
+                    {slide.secondaryCtaLabel && slide.secondaryCtaTo && (
+                      <Link className="btn btn-outline-dark" to={slide.secondaryCtaTo}>
+                        {slide.secondaryCtaLabel}
+                      </Link>
+                    )}
+                  </div>
+                  {i === 0 && (
+                    <p className="hero-supportline">Pharmacist-guided service · WhatsApp ordering · Out-district and Cayes shipping</p>
                   )}
                 </div>
-                {i === 0 && (
-                  <p className="hero-supportline">Pharmacist-guided service · WhatsApp ordering · Out-district and Cayes shipping</p>
-                )}
-              </div>
+              )}
             </div>
           );
         })}

@@ -71,33 +71,78 @@ Each record:
 
 ## 4. Hero media (`src/data/heroSlides.ts`)
 
-Three stills + one video slide, all four installed. For each still:
+The hero is a **full-bleed stage**, not a framed card beside a column of text.
+The media fills the section edge to edge and the copy sits on top of it. On a
+phone it takes the whole screen below the header, which is what the client asked
+for and what their other builds do.
 
-- Desktop composition ~2000×1250 px (16:10), JPG/WebP under ~400 KB.
-- Set `image: 'assets/hero/<file>'` and a real `imageAlt`.
-- Intentional mobile composition matters more than resolution — keep the
-  subject centred; the frame renders ~4:3 to 16:10.
+### Every still is art-directed twice
 
-The client's three stills are installed as `src/assets/hero/*.webp`, resolved
-through `lib/media.ts` by key (not path) so they inline in the single-file
-preview. Two are photographs and one is a designed graphic, which the frame
-handles differently:
+The client supplied matched crops: **2400x1080 wide** and **1080x1920 tall**,
+installed as `hero-<name>-desktop.webp` and `hero-<name>-mobile.webp`. A slide
+carries both keys and the browser picks:
 
-- `hero-storefront` and `hero-shelves` are near-square and portrait phone
-  photographs in a 4:3 frame, so they use `imageFit: 'cover'` with an
-  `imageFocus` that keeps the subject in view: the storefront is framed at
-  `center 42%` to hold the sign and the licence plate, the shelves at
-  `center 30%` for the stocked shelving.
-- `hero-how-it-works` is a 9:16 infographic. Cropping it would cut the headline
-  off, so it uses `imageFit: 'contain'` and the frame takes the graphic's own
-  deep navy, which makes the letterboxing read as part of the artwork.
+```
+image:       'hero-storefront-desktop'   // wide crop
+imageMobile: 'hero-storefront-mobile'    // tall crop, <= 900px
+```
 
-Two edits were made to that infographic before installing it, both requested by
-the client: the pill, the cyan line and the sub-line were re-centred, and the
-WhatsApp mark was replaced with the real one. The re-centring moves the original
-pixels rather than re-typesetting, because the graphic's typeface is not
-available here and re-setting the text would not have matched the step labels
-below it.
+`<picture>` swaps at 900px, matching the CSS breakpoint. This is art direction,
+not resolution: a wide crop scaled down loses the subject entirely on a 9:16
+screen, which is the whole reason the crops were re-cut. A unit test fails if
+any still ships without its own tall crop.
+
+`imageFocus` and `imageFocusMobile` set `object-position` per crop, because the
+subject sits in a different place in each.
+
+### Two slides are shown whole, and reserve a control rail
+
+The how-it-works graphic and the client's reel both carry their own headline,
+their own steps and their own fine print, running to the edges of the frame.
+Neither can be cropped and neither should have the site's copy laid over it, so
+both are `overlay: 'none'` and `imageFit`/`videoFit: 'contain'`, anchored to the
+top of the stage.
+
+The slack that leaves collects at the foot of the stage as `--hero-rail`. The
+carousel controls, the video's runtime chip and its play control all live in
+that rail, so nothing is ever laid over the artwork it belongs to. The rail and
+any side gutters take a blurred, dimmed copy of the artwork rather than flat
+bars. Browser checks assert that the chrome never overlaps the painted media.
+
+Slides that do carry copy stay `cover` and full-bleed; a photograph has no
+critical content at its edges.
+
+### Contrast over photographs
+
+Copy over a photograph is the one place where the theme tokens cannot be
+trusted: `--on-sky` is navy in the day theme, and the hero scrim is dark in all
+four. So `.hero-copy` and `.hero-controls` take fixed light ink instead of
+following the sky, and the eyebrow uses a paler pink than the brand magenta
+elsewhere, because the deeper one does not clear 4.5:1 against the brightest
+thing the stills put behind it.
+
+The scrim is two parts, and the second exists for a measured reason:
+
+1. A stage gradient, weighted to the foot of the frame.
+2. On narrow screens, a backing tied to the **copy block itself**. How far up
+   the stage the copy starts depends on how many lines the headline takes and
+   how tall the screen is: it measured anywhere from 37% to 52% across the
+   sizes we ship, so a stage-percentage gradient cannot guarantee contrast. The
+   backing bleeds past the copy to the edges of the stage, which clips it, so
+   it reads as the scrim deepening rather than as a panel with sides.
+
+A sweep samples the pixel actually painted behind every run of hero copy, across
+3 widths x 4 themes: **112/112 pass AA**, tightest 5.01:1. Re-run it after any
+change to a hero image, the scrim, or the copy: a brighter photograph in the
+same slot can fail it on its own.
+
+### Replacing a still
+
+- Supply both crops, ~2400x1080 and ~1080x1920, WebP under ~250 KB each.
+- Add both keys, real `imageAlt`, and a focus for each crop.
+- If the new asset carries its own wording, set `overlay: 'none'` and
+  `imageFit: 'contain'`.
+- Re-run the contrast sweep.
 
 ### The video slide (installed)
 
@@ -116,7 +161,7 @@ What was supplied and what was done to it:
   instead of downloading in full first. The supplied file had it at the end.
 - The poster is the frame at t=2.2 s, where the logo and the full
   "Medicine. Health. Beauty." line are both on screen.
-- One encode serves both breakpoints. At 720x1280 and 1.5 MB it is already
+- One encode serves every breakpoint. At 720x1280 and 1.5 MB it is already
   phone-sized, so a separate mobile file would only add weight for no gain.
   `videoSrcMobile` stays free for a second encode if a heavier edit replaces it.
 
@@ -127,14 +172,6 @@ affordances rather than offering sound the file does not have. The overlay reads
 "Play" rather than "Play with Sound", and no mute/unmute control is rendered.
 Set `hasAudio: true` the moment a mixed file replaces it and all of that comes
 back on its own.
-
-Because the reel is portrait and its cards are almost entirely wording, it uses
-`videoFit: 'contain'`: cropping it to the landscape frame would cut the headings
-off. The space either side takes a blurred, dimmed copy of the poster rather
-than flat bars, the way every video platform frames a vertical upload, and the
-caption shortens to the runtime alone so it sits in the gutter instead of across
-the reel. A browser check asserts that the caption and the controls never
-overlap the painted video rect.
 
 If a different edit is supplied later:
 
@@ -151,25 +188,25 @@ If a different edit is supplied later:
 
 ### Audio: still outstanding
 
-The client asked for a music track over this reel. It was not added, for two
-separate reasons, either of which is on its own blocking:
+The client asked for a specific commercial track over this reel, described as
+temporary, for a presentation. It was not added, and the reason is a capability
+limit rather than a judgement call: **this environment cannot reach any music
+service**, so the recording cannot be obtained here at all. Nothing about the
+build is in the way. The tooling to mux it is in place.
 
-1. **Licensing.** The rule agreed from the original brief still stands:
-   platform-licensed music is not cleared for the website. A commercial
-   recording on a public pharmacy site needs a sync licence in Cosmic's name.
-   This is the client's decision to make, not something to work around.
-2. **No source.** This environment cannot reach any music service, so the track
-   cannot be fetched here even if it were cleared.
+The one-step path: the client sends the audio as a file, in any format. It is
+muxed into the existing video without re-encoding the picture, `hasAudio` flips
+to `true`, and the sound controls return on their own.
 
-The practical path: the client supplies the reel already mixed with its audio,
-as a single file. Then `videoSrcDesktop` points at it and `hasAudio` flips to
-`true`, and nothing else changes.
+If the track is ever meant to stay past the presentation, it needs a sync
+licence in Cosmic's name. The rule agreed from the original brief still stands
+for anything published: platform-licensed music is not cleared for the website.
 
-One thing worth telling the client before they commit to it: a hero video
-cannot start with sound on its own. Every browser blocks audible autoplay, so
-the player falls back to the poster and a "Play with Sound" button, and the
-track is only heard after a deliberate tap. A silent reel that plays by itself
-often serves a homepage better than a scored one that waits behind a button.
+One thing worth telling the client before they commit to a scored hero: no
+browser lets a hero video start with sound on its own. A scored reel falls back
+to the poster and a "Play with Sound" button, and the track is only heard after
+a deliberate tap. A silent reel that plays by itself often serves a homepage
+better than a scored one that waits behind a button.
 
 ## 5. Replacing placeholders — exact steps
 

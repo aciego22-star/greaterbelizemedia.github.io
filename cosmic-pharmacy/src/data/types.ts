@@ -77,16 +77,33 @@ export interface HeroSlideBase {
   durationMs: number;
 }
 
+/**
+ * How much of the site's own copy sits over a hero slide.
+ *
+ * 'full' overlays the eyebrow, headline, lead and calls to action. 'none'
+ * leaves the artwork to speak for itself, which is the only honest option for a
+ * designed slide that already carries its own headline: overlaying ours would
+ * both collide with it and say the same thing twice.
+ */
+export type HeroOverlay = 'full' | 'none';
+
 export interface HeroImageSlide extends HeroSlideBase {
   kind: 'image';
-  /** Image key resolved through lib/media.ts; empty string renders the labeled placeholder. */
+  /** Wide crop, resolved through lib/media.ts; empty renders the labeled placeholder. */
   image: string;
+  /** Tall crop for phones. Art direction, not just resolution: the wide crop
+   *  scaled down loses the subject entirely on a 9:16 screen. */
+  imageMobile?: string;
   imageAlt: string;
-  /** How the image sits in the 4:3 frame. Photographs crop; a designed graphic
-   *  has to be shown whole, so it is contained instead. */
+  /** How the image sits in the frame. Both crops are cut to the frame's own
+   *  shape, so 'cover' is right for all of them; 'contain' remains for any
+   *  future asset that cannot be cropped. */
   imageFit?: 'cover' | 'contain';
   /** object-position for cropped photographs, e.g. 'center 35%'. */
   imageFocus?: string;
+  /** Same, for the tall crop, whose subject usually sits elsewhere. */
+  imageFocusMobile?: string;
+  overlay?: HeroOverlay;
   /** Short label describing what the final asset should show (placeholder state only). */
   placeholderNote: string;
 }
@@ -107,8 +124,11 @@ export interface HeroVideoSlide extends HeroSlideBase {
    */
   hasAudio: boolean;
   /** How the video sits in the frame. A portrait or text-bearing edit has to be
-   *  contained; cropping it would cut the wording off. */
+   *  contained; cropping it would cut the wording off. On phones the frame is
+   *  itself close to 9:16, so a portrait reel covers it with almost nothing
+   *  lost, and 'contain' applies from the tablet breakpoint up. */
   videoFit?: 'cover' | 'contain';
+  overlay?: HeroOverlay;
   captionLabel: string;
   placeholderNote: string;
 }

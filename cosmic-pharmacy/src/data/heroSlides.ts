@@ -1,10 +1,15 @@
 import type { HeroSlide } from './types';
 
 /**
- * Hero media sequence (ICB pattern): three stills + one inlaid video slide.
- * Edit slide order, copy, timing and media paths here only.
- * Media paths point at public/assets/hero/ — empty string renders a clearly
- * labeled placeholder until the final Cosmic assets arrive (see ASSET-HANDOFF.md).
+ * Hero media sequence: three stills + one inlaid video slide, all four supplied
+ * by the client as matched wide and tall crops.
+ *
+ * The hero is a full-bleed stage rather than a card beside a column of text, so
+ * every slide is art-directed twice: a 20:9 wide crop and a 9:16 tall crop. The
+ * wide crop scaled down does not survive a phone screen, which is the whole
+ * reason the client re-cut them.
+ *
+ * Media are stored as keys, never paths, and resolved through lib/media.ts.
  */
 export const heroSlides: HeroSlide[] = [
   {
@@ -18,13 +23,15 @@ export const heroSlides: HeroSlide[] = [
     secondaryCtaLabel: 'Send a Prescription',
     secondaryCtaTo: '/prescriptions',
     durationMs: 9000,
-    image: 'hero-storefront',
-    // Client photograph, close to square. Framed slightly high so the sign and
-    // the licence plate stay in view when the 4:3 frame crops.
+    image: 'hero-storefront-desktop',
+    imageMobile: 'hero-storefront-mobile',
     imageFit: 'cover',
-    imageFocus: 'center 42%',
+    // The sign and the licence plate sit high in both crops, and the copy sits
+    // over the lower third, so both frames are held above centre.
+    imageFocus: 'center 38%',
+    imageFocusMobile: 'center 32%',
     imageAlt:
-      'The Cosmic Pharmacy storefront on Holy Emmanuel Street, with the illuminated sign and the licence plate reading Marion Carter, RPh, Chemist and Druggist',
+      'The Cosmic Pharmacy storefront, with the illuminated sign and the licence plate reading Marion Carter, RPh, Chemist and Druggist',
     placeholderNote: 'Final asset: Cosmic Pharmacy storefront or pharmacist-led service photograph'
   },
   {
@@ -36,27 +43,35 @@ export const heroSlides: HeroSlide[] = [
     ctaLabel: 'Browse the Range',
     ctaTo: '/products/supplements',
     durationMs: 8000,
-    image: 'hero-shelves',
-    // Portrait photograph of the shelves; framed on the upper wall so the
-    // stocked supplement and medicine shelving reads at 4:3.
+    image: 'hero-interior-desktop',
+    imageMobile: 'hero-interior-mobile',
     imageFit: 'cover',
-    imageFocus: 'center 30%',
-    imageAlt: 'Stocked shelves inside Cosmic Pharmacy: supplements, medicine, baby care and everyday health products',
+    // Weighted to the shelving rather than the ceiling or the floor tiles.
+    imageFocus: 'center 45%',
+    imageFocusMobile: 'center 40%',
+    imageAlt: 'Inside Cosmic Pharmacy: stocked shelves of supplements, medicine, baby care and everyday health products',
     placeholderNote: 'Final asset: medicine, health, supplements and everyday-care range photograph'
   },
   {
     kind: 'image',
     id: 'whatsapp-service',
+    // A designed slide that already carries its own headline, its own three
+    // numbered steps and its own fine print, in both crops. Overlaying the
+    // site's copy would collide with the artwork and repeat what it says, so
+    // this slide is shown whole and speaks for itself.
+    overlay: 'none',
     eyebrow: 'Countrywide service',
     headline: 'Search. Add to cart. Send on WhatsApp.',
-    copy: 'Cosmic confirms availability, pricing and next steps, with pickup, Belize City delivery, and out-district and Cayes shipping.',
-    ctaLabel: 'How It Works',
-    ctaTo: '/services',
     durationMs: 8000,
-    image: 'hero-how-it-works',
-    // A designed graphic rather than a photograph: cropping it would cut the
-    // headline off, so it is shown whole against the frame.
+    image: 'hero-how-it-works-desktop',
+    imageMobile: 'hero-how-it-works-mobile',
+    // The one asset that must never be cropped: it is a designed graphic whose
+    // three numbered steps run to the edges of the frame, and the stage is not
+    // cut to either crop's exact ratio. Contained and anchored to the top, so
+    // the slack collects at the foot of the stage as the control rail.
     imageFit: 'contain',
+    imageFocus: 'center top',
+    imageFocusMobile: 'center top',
     imageAlt:
       'How it works: search the catalogue, build your cart, then send it on WhatsApp. Availability and pricing confirmed by the pharmacy.',
     placeholderNote: 'Final asset: search, basket, WhatsApp ordering and countrywide-service visual'
@@ -64,11 +79,11 @@ export const heroSlides: HeroSlide[] = [
   {
     kind: 'video',
     id: 'cosmic-video',
+    // The reel carries Cosmic's own wording on every card. Same reasoning as
+    // the slide above: it is shown whole, with no copy over it.
+    overlay: 'none',
     eyebrow: 'Cosmic in motion',
     headline: 'Meet Cosmic Pharmacy.',
-    copy: 'Ways to pay, ways to reach us, and how your order gets to you, whether you are in Belize City, out district or on the Cayes.',
-    ctaLabel: 'How It Works',
-    ctaTo: '/services',
     durationMs: 12000,
     // Client-supplied promotional reel. One 720x1280 encode serves both
     // breakpoints: it is already phone-sized, so a separate mobile file would
@@ -80,8 +95,10 @@ export const heroSlides: HeroSlide[] = [
     durationSeconds: 38, // Measured from the supplied file: 37.53s.
     // The supplied file carries no audio track, so nothing here offers sound.
     hasAudio: false,
-    // A 720x1280 portrait reel whose cards are almost entirely wording.
-    // Cropping it to the landscape frame would cut the headings off.
+    // A 9:16 reel on a 9:16 phone screen covers it with almost nothing lost, so
+    // the phone gets it edge to edge. From the tablet breakpoint up the frame
+    // turns wide and it is contained instead, because its cards are almost
+    // entirely wording and cropping would cut the headings off.
     videoFit: 'contain',
     captionLabel: 'Cosmic Pharmacy in 38 Seconds',
     placeholderNote: 'Final asset: client-owned Cosmic Pharmacy video (desktop + mobile encodes and poster)'
