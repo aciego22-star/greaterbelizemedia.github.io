@@ -144,13 +144,18 @@ white text on #EA4F8D is only 3.5:1 against the 4.5:1 minimum.
 
 ## 9. Social links
 
-`src/data/business.ts` holds every social destination. Facebook, Instagram and
-email are the client's confirmed details. Two still need confirmation before
-publication and are marked VERIFY in that file:
+`src/data/business.ts` holds every social destination. All five are now the
+client's confirmed details: Facebook, Instagram, TikTok, Google Business
+Profile and email. Nothing here is left assumed.
 
-- **TikTok** - assumed to match the Instagram handle (`@cosmicpharmacybz`).
-- **Google Business Profile** - currently a Google Maps search link for the
-  business. Replace with the profile's own short link once supplied.
+Two notes worth keeping:
+
+- **TikTok** is `@cosmicpharmacy` with no `bz` suffix, unlike the Instagram
+  handle `@cosmicpharmacybz`. Easy to get wrong.
+- **Google Business Profile** is the client's share link,
+  `https://maps.app.goo.gl/hbeZFGHJ43F7phbV7`. The app tracking parameters it
+  arrived with (`?g_st=`) were stripped: they identify the sharing session,
+  not the destination.
 
 ## 11. Map embed
 
@@ -160,8 +165,11 @@ preview build, refuse third-party frames, so the component probes for outbound
 access first and falls back to a branded card that still opens the real map.
 The deployed Netlify site shows the live map; the preview shows the card.
 
-Swap `mapEmbedUrl` for the Google Business Profile place ID once the client
-supplies it, so the pin carries their reviews and opening hours.
+`mapEmbedUrl` stays address-based on purpose. A `maps.app.goo.gl` share link
+cannot be used as an iframe source, so the profile link and the embed URL are
+two separate fields. Every outbound "open in Google Maps" link on the site
+(the map card, the social row's Google icon, and the Visit us contact row)
+points at the profile, so visitors land on her reviews and hours.
 
 ## 12. Pharmacist name and portrait
 
