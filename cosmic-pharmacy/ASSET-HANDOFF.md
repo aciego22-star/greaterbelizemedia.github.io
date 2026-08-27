@@ -163,7 +163,13 @@ The deployed Netlify site shows the live map; the preview shows the card.
 Swap `mapEmbedUrl` for the Google Business Profile place ID once the client
 supplies it, so the pin carries their reviews and opening hours.
 
-## 12. Pharmacist portrait
+## 12. Pharmacist name and portrait
+
+The build brief said not to display a first name unless the client confirmed it.
+The client has since confirmed it, so the home page now names her in full:
+**Marianne Carter, Proprietor & Pharmacist-in-Charge**. Both strings live in
+`src/data/business.ts` as `pharmacistFullName` and `pharmacistTitle`; running
+copy elsewhere still uses the short `pharmacist` reference ("Ms. Carter").
 
 `src/assets/people/ms-carter.webp` is Ms. Carter cut out of the supplied studio
 photograph. The original arrived as RGB with a white backdrop rather than a

@@ -77,13 +77,13 @@ export function Home() {
               <img
                 className="guidance-portrait"
                 src={msCarter}
-                alt={`${business.pharmacist}, the pharmacist at ${business.name}`}
+                alt={`${business.pharmacistFullName}, ${business.pharmacistTitle} at ${business.name}`}
                 width={551}
                 height={1000}
               />
               <figcaption className="guidance-caption">
-                <strong>{business.pharmacist}</strong>
-                <span>Pharmacist</span>
+                <strong>{business.pharmacistFullName}</strong>
+                <span>{business.pharmacistTitle}</span>
               </figcaption>
             </figure>
           </div>

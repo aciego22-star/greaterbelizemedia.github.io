@@ -6,8 +6,11 @@ export const business = {
   name: 'Cosmic Pharmacy',
   tagline: 'Medicine · Health · Beauty',
   promise: 'We take care of you.',
-  /** Proprietor/pharmacist reference. Do not add a first name unless confirmed by the client. */
+  /** Short reference used in running copy. */
   pharmacist: 'Ms. Carter',
+  /** Full name and title, confirmed by the client. */
+  pharmacistFullName: 'Marianne Carter',
+  pharmacistTitle: 'Proprietor & Pharmacist-in-Charge',
   phoneDisplay: '+501 611-8080',
   phoneTel: '+5016118080',
   /** Digits-only number used in wa.me deep links. */

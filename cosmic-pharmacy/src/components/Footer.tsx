@@ -36,8 +36,8 @@ export function Footer() {
         <SocialLinks />
 
         <nav className="footer-nav" aria-label="Footer">
-          <div className="footer-nav-col start">
-            <h2>Shop</h2>
+          <div className="footer-nav-col">
+            <h2>Explore</h2>
             <Link to="/shop">Shop All</Link>
             <Link to="/products/supplements">Supplements</Link>
             <Link to="/products/health">Health Products</Link>
@@ -45,8 +45,8 @@ export function Footer() {
             <Link to="/products/womens-wellness">Women's Wellness & PMOS</Link>
             <Link to="/products/medical-devices">Medical Devices</Link>
           </div>
-          <div className="footer-nav-col end">
-            <h2>Cosmic</h2>
+          <div className="footer-nav-col">
+            <h2>Company</h2>
             <Link to="/services">Services</Link>
             <Link to="/prescriptions">Prescriptions & Refills</Link>
             <Link to="/blog">Blog</Link>
