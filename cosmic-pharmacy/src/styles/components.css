@@ -2523,21 +2523,40 @@ a.contact-row .contact-row-value {
   }
 }
 
-.kits-prompt {
-  margin: 1.5rem 0 0.2rem;
+/* The line that used to be the heading, now stepped down under the collection
+   name so the section reads name first, then the problem it answers. */
+.kits-lead {
+  margin: 0 0 0.5rem;
   font-family: var(--font-display);
   font-size: var(--text-lg);
   font-weight: 600;
   color: var(--ink);
 }
 
+.kits-prompt {
+  margin: 1.8rem 0 0.2rem;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* Five cards across on a wide screen; on narrower ones they wrap, and the
+   orphan on the last row centres instead of hanging off to the left. */
 .kits-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 1rem;
   list-style: none;
   margin: 0.9rem 0 0;
   padding: 0;
+}
+
+.kit-card {
+  flex: 1 1 180px;
+  max-width: 240px;
 }
 
 .kit-card {
@@ -2583,6 +2602,27 @@ a.contact-row .contact-row-value {
   margin-top: 1.1rem;
 }
 
+/* Stacked on a phone, the buttons read better centred under the copy than
+   pinned to the left edge. */
+@media (max-width: 760px) {
+  .kits-close-copy {
+    text-align: center;
+  }
+
+  .kits-close-copy .kits-note {
+    margin-inline: auto;
+  }
+
+  .whats-new .section-cta-row {
+    justify-content: center;
+  }
+
+  .whats-new .section-cta-row .btn {
+    width: min(100%, 20rem);
+    justify-content: center;
+  }
+}
+
 @media (max-width: 760px) {
   .whats-new-head {
     flex-direction: column-reverse;
@@ -2596,11 +2636,12 @@ a.contact-row .contact-row-value {
 
 @media (max-width: 520px) {
   .kits-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.7rem;
   }
 
   .kit-card {
+    flex: 1 1 calc(50% - 0.7rem);
+    max-width: calc(50% - 0.35rem);
     padding: 0.55rem 0.55rem 0.7rem;
   }
 }
@@ -2801,4 +2842,10 @@ a.contact-row .contact-row-value {
 
 @media (prefers-reduced-motion: reduce) {
   .basket-btn.has-items { animation: none; }
+}
+
+/* The catalogue-wide demo caveat, shown wherever products are listed. */
+.catalogue-notice {
+  margin: 1rem 0 0;
+  max-width: 62rem;
 }

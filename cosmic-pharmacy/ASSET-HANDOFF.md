@@ -205,76 +205,42 @@ To replace it, drop in a new cutout at the same path (transparent WebP or PNG,
 roughly 550x1000). The home page renders it at up to 400 px tall over a soft
 brand-coloured halo.
 
-## 13. The 286-image catalogue (installed)
+## 13. The 100-product demo catalogue (installed)
 
-The client's catalogue pack (286 images plus draft records) is curated and live.
+The client's 100-product demo pack replaced the earlier 286-image draft. Only
+these 100 products appear in the catalogue.
 
-### What was done
+- `src/assets/catalogue/` holds 100 product images (the pack's 1200x1200 JPEGs
+  re-encoded to 600px WebP, 1.9 MB total) plus the 29 editorial graphics the
+  gallery still uses. 129 files in all, and a unit test asserts that split.
+- Every record carries the pack's BZD price, marked `demo-only`, and
+  `in-stock`, exactly as the pack specifies.
+- **Nothing asserts prescription status.** The pack states it is unconfirmed for
+  every item, so no record sets `prescriptionRequired` or
+  `pharmacistGuidanceRequired`, every card offers Add to Basket, and
+  `CatalogueNotice` carries the caveat on the shop and every retail page.
+- Image provenance (source URLs, screenshot ids, grid positions) is kept out of
+  the bundle entirely, per the pack's rule against exposing it. It lives in
+  `CATALOGUE-SOURCES.csv` at the project root, which the app never imports. A
+  unit test fails if any of it leaks into `products.json`.
 
-Every one of the 286 images was reviewed by eye, not by OCR alone. The pack's
-own OCR was too noisy to name products from ("inus Headache PE", "m Animalin
-C"), so it is kept only as a search aid. The result:
+### The site's categories were not changed
 
-- **231 catalogue records** with real names, brands, categories, subcategories,
-  pack sizes and keywords.
-- **29 gallery items** for the images that are not products: Cosmic's own
-  educational graphics, promotions, shop interiors and brand cards. These were
-  never turned into fake product records.
-- **26 images folded in as extra views** of a product already recorded, so
-  duplicates do not appear as separate products. The detail page shows a view
-  switcher for those 25 products.
+The pack groups its 100 items into five broad buckets. The site's twelve
+category slugs, its five retail pages and its product types are unchanged;
+each product was placed into the slug it actually belongs to, using the bucket
+only as a starting point. Baby items in the pack's "Health Products" bucket go
+to `mother-baby`, glucose meters in "Medical Devices" go to
+`diabetes-monitoring`, and so on. Distribution across the retail pages:
+Supplements 20, Health Products 15, Personal Care & Beauty 36, Women's Wellness
+20, Medical Devices 12.
 
-286 = 231 primary + 26 extra views + 29 gallery. A unit test asserts that split
-and fails if any supplied image stops being reachable.
+### Regenerating
 
-### Where the images live
-
-`src/assets/catalogue/*.webp` — 400x400, ~14 KB each, 4 MB total, down from the
-21 MB of supplied JPEGs. The source tiles carry only about 232 px of true
-detail (they are crops of social-media grid screenshots upscaled to 864 px), so
-400 px is already generous; side-by-side comparison at display size shows no
-visible loss.
-
-Records store a **key** (`cosmic-product-041`), never a path, and `src/lib/media.ts`
-resolves it. That is what lets one record work in both builds: Vite emits hashed
-files for Netlify and inlines data URIs for the single-file preview.
-
-### What is deliberately not claimed
-
-Per the pack's own rules and the build brief, nothing clinical was inferred from
-a photograph:
-
-- `stockStatus` is **confirm-availability** on all 231 records.
-- 19 records carry a price, and only because a sale sticker was legible in the
-  photograph. They are marked `demo-only`, not `verified`. The other 212 are
-  `confirm-price` with `priceBzd: null` and stay out of every subtotal.
-- 44 records are flagged `pharmacistGuidanceRequired`, which replaces Add to
-  Basket with the pharmacist pathway. One record (Clobetasol Propionate 0.05%,
-  marked "Rx only" on the carton) is `prescriptionRequired` and routed to
-  prescription-refills.
-- 9 products whose packaging could not be read with confidence carry
-  `nameStatus: "confirm-with-pharmacy"` and say so in the description.
-- No ingredient, dose, indication or benefit was invented. Descriptions state
-  the category, pack size and who confirms what.
-
-### Client verification
-
-`CATALOGUE-REVIEW.csv` in this folder is the sheet for Ms. Carter or her
-designated representative. One row per image, carrying the proposed name, brand,
-category and any price read off a shelf sticker, then blank CONFIRM_ columns for
-name, brand, price, stock, prescription status and permission to publish the
-image. The `ocr_suggested_name` column is included so a reviewer can see what
-the machine read versus what was proposed.
-
-Nothing here should go public until that sheet comes back.
-
-### Replacing these images with real photography
-
-These are crops of social-media screenshots. When Cosmic supplies original
-camera files, drop a 400x400 (or larger) WebP at
-`src/assets/catalogue/<key>.webp` under the same key and nothing else changes.
-At that point it is worth generating a second, larger derivative for the detail
-page, which the current source resolution cannot justify.
+The importer lives in the session scratchpad rather than the repo, since it is
+a one-time migration. To reload from a new pack, follow the same mapping rules
+above and re-run `npm run validate:data`, which checks every image key against
+the files actually on disk.
 
 ## 14. Time-of-day skies
 

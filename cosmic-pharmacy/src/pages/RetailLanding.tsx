@@ -4,6 +4,7 @@ import { productsInCategories } from '../lib/catalog';
 import { ProductGrid } from '../components/ProductGrid';
 import { PharmacistCard } from '../components/PharmacistCard';
 import { usePageMeta } from '../lib/usePageMeta';
+import { CatalogueNotice } from '../components/CatalogueNotice';
 
 export interface RetailLandingProps {
   title: string;
@@ -31,6 +32,8 @@ export function RetailLanding({ title, eyebrow, intro, categorySlugs, metaDescri
           <span className="eyebrow">{eyebrow}</span>
           <h1 className="section-title">{title}</h1>
           <p className="section-intro">{intro}</p>
+
+          <CatalogueNotice />
 
           <div className="landing-cats">
             {pageCategories.map((c) => (

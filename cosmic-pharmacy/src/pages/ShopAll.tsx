@@ -16,6 +16,7 @@ import { ProductGrid } from '../components/ProductGrid';
 import { PharmacistCard } from '../components/PharmacistCard';
 import { usePageMeta } from '../lib/usePageMeta';
 import { productTypeLabels } from '../lib/format';
+import { CatalogueNotice } from '../components/CatalogueNotice';
 
 type Mode = 'search' | 'categories' | 'az';
 
@@ -112,6 +113,7 @@ export function ShopAll() {
             Search by product, brand or category, browse by department, or go A–Z. Add what you need to your basket and send the whole
             request to Cosmic Pharmacy on WhatsApp. The pharmacist confirms availability, pricing and next steps.
           </p>
+          <CatalogueNotice />
 
           <div className="mode-tabs" role="group" aria-label="Browse mode">
             {(Object.keys(modeLabels) as Mode[]).map((m) => (

@@ -19,24 +19,26 @@ describe('normalize', () => {
 
 describe('searchProducts', () => {
   it('finds by partial name', () => {
-    const hits = searchProducts('centr', products);
-    expect(hits.some((p) => p.slug === 'centrum-women-multivitamin')).toBe(true);
+    const hits = searchProducts('lipikar', products);
+    expect(hits.some((p) => p.slug.startsWith('la-roche-posay-lipikar'))).toBe(true);
   });
 
   it('finds by brand', () => {
-    const hits = searchProducts('easytouch', products);
+    const hits = searchProducts('easy-touch', products);
     expect(hits.length).toBe(2);
-    expect(hits.every((p) => p.brand === 'EasyTouch')).toBe(true);
+    expect(hits.every((p) => p.brand === 'Easy-Touch')).toBe(true);
   });
 
   it('finds by keyword', () => {
     const hits = searchProducts('glucose', products);
-    expect(hits.some((p) => p.slug === 'easytouch-glucose-test-strips')).toBe(true);
+    expect(hits.some((p) => p.slug === 'easy-touch-healthpro-glucose-test-strips')).toBe(true);
   });
 
-  it('finds accented brands from unaccented input', () => {
-    const hits = searchProducts('animalin', products);
-    expect(hits.some((p) => p.slug === 'animalin-c-soy-protein-and-vitamin-c')).toBe(true);
+  it('normalises punctuation in brand names', () => {
+    // "Nature's Truth" must be findable as "natures truth".
+    const hits = searchProducts('natures truth', products);
+    expect(hits.length).toBeGreaterThan(5);
+    expect(hits.every((p) => p.brand === "Nature's Truth")).toBe(true);
   });
 
   it('weights name matches above keyword matches', () => {
@@ -56,11 +58,11 @@ describe('searchProducts', () => {
 
 describe('filterProducts', () => {
   it('filters by category and brand together', () => {
-    const hits = filterProducts(products, { category: 'diabetes-monitoring', brand: 'EasyTouch' });
+    const hits = filterProducts(products, { category: 'diabetes-monitoring', brand: 'Easy-Touch' });
     expect(hits).toHaveLength(2);
-    expect(hits.every((p) => p.category === 'diabetes-monitoring' && p.brand === 'EasyTouch')).toBe(true);
+    expect(hits.every((p) => p.category === 'diabetes-monitoring' && p.brand === 'Easy-Touch')).toBe(true);
     // The same brand outside that category must not leak in.
-    expect(filterProducts(products, { brand: 'EasyTouch' }).length).toBeGreaterThanOrEqual(hits.length);
+    expect(filterProducts(products, { brand: 'Easy-Touch' }).length).toBeGreaterThanOrEqual(hits.length);
   });
 
   it('sale-featured pseudo-category collects sale and featured items', () => {
@@ -77,7 +79,10 @@ describe('filterProducts', () => {
 
 describe('sortProducts', () => {
   it('sorts by price ascending with unpriced items last', () => {
-    const sorted = sortProducts(products, 'price-asc');
+    // The client's demo catalogue prices every item, so the unpriced branch is
+    // exercised with a synthetic record rather than left untested.
+    const unpriced = { ...products[0], id: 'x', slug: 'x', priceBzd: null, priceStatus: 'confirm-price' as const };
+    const sorted = sortProducts([...products, unpriced], 'price-asc');
     const priced = sorted.filter((p) => typeof p.priceBzd === 'number');
     expect(priced[0].priceBzd).toBeLessThanOrEqual(priced[priced.length - 1].priceBzd as number);
     expect(typeof sorted[sorted.length - 1].priceBzd).not.toBe('number');

@@ -18,8 +18,10 @@ const galleryList = gallery as GalleryItem[];
 const productKeys = (p: Product) => (p.images?.length ? p.images : p.image ? [p.image] : []);
 
 describe('catalogue images', () => {
-  it('ships the full set supplied by the client', () => {
-    expect(imageFiles.size).toBe(286);
+  it('ships the 100-product catalogue plus the gallery assets', () => {
+    // 100 product images from the client's demo catalogue, plus the 29
+    // editorial graphics the gallery still uses.
+    expect(imageFiles.size).toBe(129);
   });
 
   it('uses every supplied image exactly once, with nothing orphaned', () => {
@@ -32,8 +34,8 @@ describe('catalogue images', () => {
     for (const g of galleryList) if (g.src) claim(g.src, g.id);
 
     const unused = [...imageFiles].filter((k) => !used.has(k)).sort();
-    expect(unused, 'images in the pack that no record surfaces').toEqual([]);
-    expect(used.size).toBe(286);
+    expect(unused, 'images that no record surfaces').toEqual([]);
+    expect(used.size).toBe(129);
   });
 
   it('points every key at a file that exists', () => {
@@ -57,28 +59,39 @@ describe('catalogue records', () => {
     expect(new Set(list.map((p) => p.slug)).size).toBe(list.length);
   });
 
-  it('never states a price it has not confirmed', () => {
+  it('carries the client\'s demo price on every record, marked as a demo price', () => {
+    expect(list).toHaveLength(100);
     for (const p of list) {
-      if (p.priceStatus === 'confirm-price') expect(p.priceBzd).toBeNull();
-      else expect(typeof p.priceBzd).toBe('number');
+      expect(typeof p.priceBzd, p.slug).toBe('number');
+      expect(p.priceBzd!, p.slug).toBeGreaterThan(0);
+      expect(p.priceStatus, p.slug).toBe('demo-only');
     }
   });
 
-  it('leaves availability for the pharmacy to confirm', () => {
-    expect(list.every((p) => p.stockStatus === 'confirm-availability')).toBe(true);
+  it('marks every demo item in stock, as the pack specifies', () => {
+    expect(list.every((p) => p.stockStatus === 'in-stock')).toBe(true);
   });
 
-  it('routes prescription items to the prescription pathway', () => {
-    for (const p of list.filter((x) => x.prescriptionRequired)) {
-      expect(p.productType).toBe('prescription');
-      expect(p.category).toBe('prescription-refills');
+  it('asserts nothing about prescription status, which the pack leaves unconfirmed', () => {
+    // The supplied pack states prescription status is unconfirmed for every
+    // item, so no record claims one either way and every card offers the
+    // basket. The catalogue-wide notice carries the caveat instead.
+    expect(list.some((p) => p.prescriptionRequired)).toBe(false);
+    expect(list.some((p) => p.pharmacistGuidanceRequired)).toBe(false);
+    expect(list.some((p) => p.productType === 'prescription')).toBe(false);
+  });
+
+  it('keeps image provenance out of the shipped bundle', () => {
+    // The pack forbids exposing image-source URLs or verification fields.
+    const blob = JSON.stringify(list);
+    for (const banned of ['imageSourceUrl', 'imageSourcePageUrl', 'sourceScreenshot', 'walmartimages', 'http']) {
+      expect(blob.includes(banned), `products.json leaks ${banned}`).toBe(false);
     }
   });
 
   it('never exposes raw OCR text as a product name', () => {
     for (const p of list) {
       expect(p.name).not.toMatch(/^Catalogue Item/);
-      expect(p.name).not.toBe(p.ocrText);
       expect(p.name.trim().length).toBeGreaterThan(2);
     }
   });

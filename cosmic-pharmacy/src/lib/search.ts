@@ -7,6 +7,9 @@ export function normalize(text: string): string {
     .toLowerCase()
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
+    // Apostrophes are dropped, not spaced: "Nature's Truth" has to be findable
+    // as "natures truth", which is how people actually type it.
+    .replace(/['\u2019]/g, '')
     .replace(/[^a-z0-9\s+/-]/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();

@@ -114,10 +114,11 @@ export function Home() {
           <div className="whats-new-head">
             <div className="whats-new-head-copy">
               <span className="eyebrow">What's new at Cosmic</span>
-              <h2 className="section-title">Women are tired of guessing.</h2>
+              <h2 className="section-title">The Cosmic PMOS Collection</h2>
+              <p className="kits-lead">Women are tired of guessing.</p>
               <p className="section-intro">
-                Many supplements, but which ones make sense together? That is where Cosmic Pharmacy comes in: five kits, each built around
-                one concern, put together and guided by a pharmacist.
+                Many supplements, but which ones actually make sense together? Five kits, each built around a single concern and put
+                together by a pharmacist, so you start with a plan instead of a shelf.
               </p>
             </div>
             <NovaBadge />
@@ -133,7 +134,7 @@ export function Home() {
             </div>
           </div>
 
-          <p className="kits-prompt">Choose your main concern:</p>
+          <p className="kits-prompt">Choose your main concern</p>
           <ul className="kits-grid">
             {KITS.map((k) => (
               <li key={k.kit} className="kit-card">
