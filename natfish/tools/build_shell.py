@@ -191,6 +191,10 @@ ALT = {
     "hero-lobster-boat-catch":
         "Two fishers aboard a skiff tied up at a dock, a morning catch of spiny "
         "lobster filling the hull and packed into crates.",
+    "hero-trade-show-stand":
+        "A seafood trade show stand hung with Belizean Pride banners, four "
+        "people in matching shirts standing behind a table of spiny lobster "
+        "and conch cartons.",
     "hero-2-boat-leaving-harbour":
         "A small fishing boat heading out of the harbour past moored skiffs and "
         "the waterfront.",
@@ -218,6 +222,7 @@ SHORT = {
     "10-cold-storage-room": "The cold storage room",
     "hero-lobster-diver-dock": "Bringing the lobster catch up the dock",
     "hero-lobster-boat-catch": "A morning lobster catch aboard the skiff",
+    "hero-trade-show-stand": "Belizean Pride on show at a seafood trade show",
     "hero-2-boat-leaving-harbour": "Heading out of the harbour",
     "01-belizean-pride-lobster-cases": "Frozen lobster tails, cased",
     "02-belizean-pride-orange-lobster-tails": "Cooked lobster tails, bagged",
@@ -347,6 +352,7 @@ PAIR_TIERS_MOBILE = (360, 540, 720, 1080)
 HERO_PAIRS = {
     "hero-lobster-diver-dock",
     "hero-lobster-boat-catch",
+    "hero-trade-show-stand",
 }
 
 

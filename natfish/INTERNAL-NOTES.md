@@ -165,19 +165,23 @@ stays English inside Spanish copy, hyphen included.
 
 ## 3b. Homepage hero
 
-Three images, in this order, set by the client:
+Four images, in this order, set by the client:
 
 | # | File | Subject | Provenance |
 |---|---|---|---|
 | 1 | `hero-lobster-diver-dock` | A diver walking up a dock with a string of spiny lobster and his fins. **Default slide.** | Client-supplied |
 | 2 | `hero-2-boat-leaving-harbour` | A boat heading out of the harbour. | V1 concept pack |
 | 3 | `hero-lobster-boat-catch` | Two fishers aboard a skiff, the hull full of lobster. | Client-supplied |
+| 4 | `hero-trade-show-stand` | A Belizean Pride trade show stand, four people behind a table of lobster and conch cartons. | Client-supplied |
 
 Slides 1 and 3 replaced the fisher with the conch catch and the two fishers at sunrise, at the
 client's request. Their derivatives were **deleted**, not just unreferenced: the packaging step
-refuses to ship an image nothing points at.
+refuses to ship an image nothing points at. Slide 4 was added afterwards to make four.
 
-**Two provenances, two folders, two alt-text rules.** Slides 1 and 3 are the client's own
+The carousel reads nothing from a slide count - `natfish.js` takes `.hero__slide` as it finds it -
+so a fifth is a line in `HERO_SLIDES` plus an entry in `PAIRS`, `HERO_PAIRS`, `ALT` and `SHORT`.
+
+**Two provenances, two folders, two alt-text rules.** Slides 1, 3 and 4 are the client's own
 photography and sit in `assets/img/official/`. Slide 2 is from the original V1 concept pack and stays
 in `assets/img/concept/`. That distinction matters and is easy to lose: the same concept pack produced
 the storefront image that had to be destroyed for carrying a fabricated telephone number. Concept alt
@@ -185,14 +189,25 @@ text never says a person, vessel or catch belongs to NATFISH; the folder name is
 person from reaching for a concept image as if it were documentary. `img_dir()` routes by the
 `HERO_PAIRS` set, not by the `hero-` prefix.
 
-**CLIENT CONFIRMATION REQUIRED.** The alt text for slides 1 and 3 describes what is visible and stops
-there - it does not state that the people, vessel or catch are NATFISH's. If Ms Denise confirms these
-are NATFISH members and that the people photographed consented to the use, the alt text can name
-NATFISH the way the processing-room photographs already do.
+**CLIENT CONFIRMATION REQUIRED.** The alt text for slides 1, 3 and 4 describes what is visible and
+stops there - it does not state that the people, vessel or catch are NATFISH's. If Ms Denise confirms
+these are NATFISH members and staff, and that the people photographed consented to the use, the alt
+text can name NATFISH the way the processing-room photographs already do. `heroqa.js` asserts that no
+hero alt text contains the string "NATFISH", so lifting that restriction is a deliberate act, not a
+drift.
+
+Slide 4 is the one that most invites an unsupported claim, so it is worth being explicit about what
+the picture does and does not establish. The stand is unmistakably a Belizean Pride stand, and
+Belizean Pride is NATFISH's own brand, so the alt text names the brand. It does **not** name the
+event, the host country, the year, or any buyer or market, because none of those are supported - and
+the site's standing rule is that no export market is asserted anywhere. The photograph does contain
+readable detail a viewer may draw their own conclusions from (an adjacent exhibitor's seamoss panel,
+flags on the display); none of it is described, captioned or relied on. If Ms Denise wants the event
+named, she needs to supply the name and date and it becomes a News item, not hero alt text.
 
 ### Responsive pairs, and why the hero is art-directed
 
-The client supplied slides 1 and 3 as **pre-cropped pairs**: a 2400x1080 landscape frame and a
+The client supplied slides 1, 3 and 4 as **pre-cropped pairs**: a 2400x1080 landscape frame and a
 1080x1920 portrait frame of the same photograph. Both crops are published, and the browser picks
 between them with a `media` query on the `<source>` - real art direction, not one file with a focal
 point.
@@ -226,12 +241,20 @@ at 430px so the photograph still fits on the first screen at every phone size do
 `herofold.js` asserts. Between 600 and 900px the older `clamp(300px, 62vw, 380px)` band still applies,
 where the landscape crop is being served.
 
-Focal points now apply to **slide 2 only**, which is the one single-source image left. The pair slides
-are served a crop the client composed for the frame they are filling, so on a desktop they keep the
-default centre - overriding it would undo their framing. On a phone the frame is not the crop's own
-9:16, so about 60% of the height shows and the window is pushed down to `50% 72%`, landing on
-0.28-0.89 of the file: below the head, above the feet. That is the one window holding the fisher's
-face and the catch in the same frame. Verified at 360, 390 and 430.
+Focal points apply to **slide 2 and the two water shots only**. Every pair slide is served a crop the
+client composed for the frame it is filling, so on a desktop they all keep the default centre -
+overriding it would undo their framing. On a phone the frame is not the crop's own 9:16, so about 60%
+of the height shows and the window has to be placed:
+
+- **Slides 1 and 3** are pushed down to `50% 72%`, landing on 0.28-0.89 of the file: below the head,
+  above the feet. That is the one window holding the fisher's face and the catch in the same frame;
+  centred, the lobster - the whole subject - falls off the bottom of both photographs.
+- **Slide 4 stays centred.** Its subject runs from the banner at the top to the cartons on the table,
+  and the centred window lands on 0.20-0.80, which holds the banner, all four people and the cartons
+  together. Pushing it down would cut the banner off.
+- **Slide 2** is the one single-source image left and keeps its own per-breakpoint focal point.
+
+Verified at 360, 390 and 430.
 
 One `sizes` subtlety worth keeping: below 600px slide 2's 1.78 landscape file is `cover`-cropped into
 a roughly square frame, so the *painted* width is about 1.9 viewport widths. A plain `100vw` hint made

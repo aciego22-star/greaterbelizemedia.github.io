@@ -55,6 +55,9 @@ PAIRS = [
     ("hero-lobster-boat-catch",
      "NATFISH-lobster-boat-desktop-2400x1080",
      "NATFISH-lobster-boat-mobile-1080x1920"),
+    ("hero-trade-show-stand",
+     "NATFISH-trade-show-desktop-2400x1080",
+     "NATFISH-trade-show-mobile-1080x1920"),
 ]
 
 # What survives from the V1 concept pack. The fisher with the conch catch and

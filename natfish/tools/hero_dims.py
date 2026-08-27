@@ -4,5 +4,7 @@ HERO_DIMS = {
     "hero-lobster-diver-dock-mobile": (1080, 1920),
     "hero-lobster-boat-catch-desktop": (2400, 1080),
     "hero-lobster-boat-catch-mobile": (1080, 1920),
+    "hero-trade-show-stand-desktop": (2400, 1080),
+    "hero-trade-show-stand-mobile": (1080, 1920),
     "hero-2-boat-leaving-harbour": (1400, 787),
 }

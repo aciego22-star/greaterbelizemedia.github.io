@@ -969,6 +969,14 @@ ES.update({
     "lobster filling the hull and packed into crates.":
         "Dos pescadores a bordo de un bote amarrado a un muelle, con la captura "
         "matutina de langosta espinosa llenando el casco y acomodada en cajas.",
+    "Belizean Pride on show at a seafood trade show":
+        "Belizean Pride en exhibición en una feria de productos del mar",
+    "A seafood trade show stand hung with Belizean Pride banners, four "
+    "people in matching shirts standing behind a table of spiny lobster "
+    "and conch cartons.":
+        "Un stand en una feria de productos del mar con banderolas de "
+        "Belizean Pride, y cuatro personas con camisas iguales de pie "
+        "detrás de una mesa con cajas de langosta espinosa y caracol.",
 })
 
 # The Operations section added to Seafood & Services, where the wide

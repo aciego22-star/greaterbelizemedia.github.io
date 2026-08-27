@@ -3710,19 +3710,26 @@ body.nav-open {
    desktop, and above it on a phone. No text or control ever crosses a face,
    which is why no darkening gradient is needed over the photograph at all. */
 
-/* Slides 1 and 3 are the client's responsive pairs.
+/* Slides 1, 3 and 4 are the client's responsive pairs.
 
    On a desktop the 2400x1080 crop is served into a 1.6:1 frame and the centre
-   is the client's own framing, so no focal point is set: overriding it would
-   undo their composition.
+   is the client's own framing, so no focal point is set for any of them:
+   overriding it would undo their composition.
 
    On a phone the 1080x1920 crop is served into a frame that is roughly square
    rather than the full 9:16, so about 60% of its height shows and where that
-   window sits has to be chosen. It is pushed down to 72%, which lands it on
-   0.28-0.89 of the file: below the head, above the feet. That is the one
-   window holding the fisher's face and the catch in the same frame - centring
-   it cuts the lobster off the bottom of both photographs, which is the whole
-   subject. Verified at 360, 390 and 430. */
+   window sits has to be chosen.
+
+   The two water shots are pushed down to 72%, landing on 0.28-0.89 of the
+   file: below the head, above the feet. That is the one window holding the
+   fisher's face and the catch in the same frame - centring it cuts the lobster
+   off the bottom of both photographs, which is the whole subject.
+
+   The trade-show stand is the exception and is left centred. Its subject runs
+   from the banner at the top to the product cartons on the table, and the
+   centred window lands on 0.20-0.80, which holds the banner, all four
+   representatives and the cartons at once. Pushing it down would cut the
+   banner off. Verified at 360, 390 and 430. */
 @media (max-width: 600px) {
   .hero__slide--1 img,
   .hero__slide--3 img { object-position: 50% 72%; }

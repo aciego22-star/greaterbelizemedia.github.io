@@ -214,15 +214,18 @@ def process_step(stem, title, body, n):
           </li>"""
 
 
-# The three approved hero images, in the approved order.
+# The four approved hero images, in the approved order.
 #
-# Slides 1 and 3 are photographs the client supplied specifically for the hero,
+# Slides 1, 3 and 4 are photographs the client supplied specifically for the hero,
 # each as a pre-cropped pair: a 2400x1080 landscape frame for the desktop hero
 # and a 1080x1920 portrait frame for the phone. Because the client composed
 # both crops, no focal point is applied to them - the browser simply picks the
 # crop that matches the frame it is filling. The diver leads: he is the one
 # frame where a Belizean fisher, the dock and the lobster itself all read at a
-# glance, which is what the opening slide has to carry.
+# glance, which is what the opening slide has to carry. The trade-show stand
+# closes the rotation: it is the one frame that shows the co-operative
+# presenting its own branded product, so it reads as the end of the journey the
+# three water shots begin.
 #
 # Slide 2 is the last of the original V1 concept images and has no phone crop,
 # so it keeps the older treatment: one photograph with a per-slide, per-
@@ -232,6 +235,7 @@ HERO_SLIDES = [
     "hero-lobster-diver-dock",
     "hero-2-boat-leaving-harbour",
     "hero-lobster-boat-catch",
+    "hero-trade-show-stand",
 ]
 
 

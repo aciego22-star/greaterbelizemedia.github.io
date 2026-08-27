@@ -44,6 +44,7 @@ window.NATFISH_STRINGS = {
   "A member-owned Belizean co-operative registered on 29 April 1966, owned by the 636 fishers who make it up.": "Una cooperativa beliceña propiedad de sus socios, registrada el 29 de abril de 1966 y perteneciente a los 636 pescadores que la integran.",
   "A member-owned society, registered in 1966": "Una sociedad propiedad de sus socios, registrada en 1966",
   "A note on certifications.": "Una nota sobre certificaciones.",
+  "A seafood trade show stand hung with Belizean Pride banners, four people in matching shirts standing behind a table of spiny lobster and conch cartons.": "Un stand en una feria de productos del mar con banderolas de Belizean Pride, y cuatro personas con camisas iguales de pie detrás de una mesa con cajas de langosta espinosa y caracol.",
   "A set of photographs from inside the co-operative's own facility: the people who receive and prepare the catch, the steps between landing and cold storage, and the product that leaves at the end of it.": "Un conjunto de fotografías tomadas dentro de la planta de la propia cooperativa: las personas que reciben y preparan la captura, los pasos entre el desembarque y el almacenamiento en frío, y el producto que sale al final.",
   "A small fishing boat heading out of the harbour past moored skiffs and the waterfront.": "Una pequeña embarcación pesquera saliendo del puerto, pasando junto a botes amarrados y el malecón.",
   "A special licence is required to fish and to export stone crab.": "Se requiere una licencia especial para pescar y exportar cangrejo moro.",
