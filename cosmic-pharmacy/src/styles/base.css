@@ -318,6 +318,7 @@ textarea {
 .stock {
   font-size: var(--text-xs);
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .stock.in-stock {

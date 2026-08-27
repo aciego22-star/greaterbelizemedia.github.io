@@ -29,11 +29,15 @@ same list — add a product once and it appears everywhere it belongs.
      replaces **Add to Basket** with the pharmacist pathway.
    - Never invent ingredients, doses, pack sizes, indications or benefits — use
      "Confirm details with pharmacist" wording when the source is unclear.
-5. Save the product photo as
-   `public/assets/products/<slug>.jpg` (uncropped packaging on a clean
-   background) and set `"image": "assets/products/<slug>.jpg"`. Leave
-   `"image": ""` while the photo is pending — the site shows a labeled
+5. Images are **keys, not paths**. Save the photo as
+   `src/assets/catalogue/<key>.webp` and set `"image": "<key>"` (no folder, no
+   extension). `src/lib/media.ts` resolves the key at build time, which is what
+   lets the same record work in the Netlify build and in the single-file preview.
+   Leave `"image": ""` while a photo is pending and the site shows a labeled
    placeholder.
+   - Several photographs of the same product go in `"images": ["key-a", "key-b"]`
+     with the primary key repeated first. The detail page then shows a view
+     switcher; cards always use the primary.
 6. Check your work:
 
 ```bash

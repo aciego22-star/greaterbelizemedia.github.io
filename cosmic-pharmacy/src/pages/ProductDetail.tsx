@@ -5,6 +5,7 @@ import { formatBzd, priceLabel, productTypeLabels, stockLabels } from '../lib/fo
 import { categoryBySlug } from '../data/categories';
 import { useBasket } from '../basket/BasketProvider';
 import { PlaceholderMedia } from '../components/PlaceholderMedia';
+import { mediaUrls } from '../lib/media';
 import { ProductGrid } from '../components/ProductGrid';
 import { QuantityControl } from '../basket/QuantityControl';
 import { buildQuestionMessage, whatsappUrl } from '../lib/whatsapp';
@@ -15,6 +16,7 @@ export function ProductDetail() {
   const [params] = useSearchParams();
   const { add } = useBasket();
   const [quantity, setQuantity] = useState(1);
+  const [activeView, setActiveView] = useState(0);
 
   const product = slug ? productBySlug.get(slug) : undefined;
   usePageMeta(
@@ -41,6 +43,12 @@ export function ProductDetail() {
     );
   }
 
+  const views = mediaUrls(product.images ?? [product.image]);
+  // The component is reused across product routes, so the selected view can
+  // outlive the product that had it. Clamp rather than reset, so navigating
+  // between two multi-view products keeps a sensible index.
+  const active = Math.min(activeView, Math.max(views.length - 1, 0));
+
   const review = requiresReview(product);
   const related = productsInCategory(product.category)
     .filter((p) => p.id !== product.id)
@@ -56,11 +64,27 @@ export function ProductDetail() {
           </nav>
 
           <div className="detail-grid">
-            <div className="detail-media">
-              {product.image ? (
-                <img src={product.image} alt={product.imageAlt} />
-              ) : (
-                <PlaceholderMedia note={product.imageAlt} />
+            {/* The frame is a fixed square that clips its contents, so the view
+                switcher sits beside it rather than inside it. */}
+            <div className="detail-media-col">
+              <div className="detail-media">
+                {views.length ? <img src={views[active]} alt={product.imageAlt} /> : <PlaceholderMedia note={product.imageAlt} />}
+              </div>
+              {views.length > 1 && (
+                <div className="detail-views" role="group" aria-label={`${product.name}: ${views.length} views`}>
+                  {views.map((src, i) => (
+                    <button
+                      key={src}
+                      type="button"
+                      className={`detail-view ${i === active ? 'active' : ''}`}
+                      aria-pressed={i === active}
+                      aria-label={`View ${i + 1} of ${views.length}`}
+                      onClick={() => setActiveView(i)}
+                    >
+                      <img src={src} alt="" loading="lazy" />
+                    </button>
+                  ))}
+                </div>
               )}
             </div>
 

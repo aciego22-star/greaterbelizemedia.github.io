@@ -28,8 +28,17 @@ export interface Product {
   prescriptionRequired: boolean;
   pharmacistGuidanceRequired: boolean;
   keywords: string[];
+  /** Stable image key resolved through lib/media.ts, not a path. */
   image: string;
+  /** Every view of this product, primary first. Present only when there is more than one. */
+  images?: string[];
   imageAlt: string;
+  /** Package text lifted by OCR from the source photograph. Search aid only, never displayed. */
+  ocrText?: string;
+  /** The catalogue image this record was curated from, for traceability. */
+  sourceImage?: string;
+  /** Set when the pack was not legible enough to name with confidence. */
+  nameStatus?: 'confirm-with-pharmacy';
   featured?: boolean;
   sale?: boolean;
   newArrival?: boolean;

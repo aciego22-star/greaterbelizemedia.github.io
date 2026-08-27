@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import rawGallery from '../data/gallery.json';
 import type { GalleryFilter, GalleryItem } from '../data/types';
 import { PlaceholderMedia } from './PlaceholderMedia';
+import { mediaUrl } from '../lib/media';
 
 const galleryItems = rawGallery as GalleryItem[];
 
@@ -58,12 +59,12 @@ export function GalleryGrid({ limit, showFilters = true }: GalleryGridProps) {
       <div className="gallery-grid">
         {items.map((item) => (
           <figure key={item.id} className={`gallery-item ${item.aspect}`}>
-            {item.src ? (
+            {mediaUrl(item.src) ? (
               item.kind === 'video' ? (
-                <video src={item.src} poster={item.poster || undefined} controls playsInline preload="metadata" aria-label={item.title} />
+                <video src={mediaUrl(item.src)} poster={mediaUrl(item.poster) || undefined} controls playsInline preload="metadata" aria-label={item.title} />
               ) : (
                 <button type="button" className="gallery-photo-btn" onClick={() => setLightboxItem(item)} aria-label={`View ${item.title}`}>
-                  <img src={item.src} alt={item.alt} loading="lazy" />
+                  <img src={mediaUrl(item.src)} alt={item.alt} loading="lazy" decoding="async" />
                 </button>
               )
             ) : (
@@ -85,7 +86,7 @@ export function GalleryGrid({ limit, showFilters = true }: GalleryGridProps) {
             <button type="button" ref={closeRef} className="icon-btn lightbox-close" onClick={() => setLightboxItem(null)} aria-label="Close viewer">
               ✕
             </button>
-            <img src={lightboxItem.src} alt={lightboxItem.alt} />
+            <img src={mediaUrl(lightboxItem.src)} alt={lightboxItem.alt} />
             <p>{lightboxItem.title}</p>
           </div>
         </div>

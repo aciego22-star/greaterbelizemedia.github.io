@@ -4,7 +4,7 @@
  * Run: npm run validate:data
  * Exits non-zero with clear messages when a record is invalid.
  */
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
@@ -33,6 +33,17 @@ export function validateProducts(products) {
   const errors = [];
   const ids = new Set();
   const slugs = new Set();
+  const allImageKeys = new Map();
+  let catalogueKeys;
+  try {
+    catalogueKeys = new Set(
+      readdirSync(join(root, 'src/assets/catalogue'))
+        .filter((f) => f.endsWith('.webp'))
+        .map((f) => f.replace(/\.webp$/, ''))
+    );
+  } catch {
+    catalogueKeys = new Set();
+  }
 
   products.forEach((p, i) => {
     const label = p?.id || p?.slug || p?.name || `record #${i + 1}`;
@@ -67,10 +78,21 @@ export function validateProducts(products) {
 
     if (!Array.isArray(p.keywords)) errors.push(`${label}: keywords must be an array`);
 
+    // Images are stable keys resolved through src/lib/media.ts, so the asset
+    // must actually exist on disk — a typo would otherwise render an empty card.
+    const imageKeys = Array.isArray(p.images) ? p.images : p.image ? [p.image] : [];
     if (typeof p.image !== 'string') {
-      errors.push(`${label}: image path missing (use "" while the photo is pending)`);
-    } else if (p.image && !p.image.startsWith('assets/products/')) {
-      errors.push(`${label}: image "${p.image}" must live under assets/products/ (or be "" while pending)`);
+      errors.push(`${label}: image missing (use "" while the photo is pending)`);
+    }
+    if (Array.isArray(p.images)) {
+      if (p.images.length < 2) errors.push(`${label}: images[] is for extra views, so it needs at least 2 entries`);
+      if (p.images[0] !== p.image) errors.push(`${label}: images[0] must repeat the primary image "${p.image}"`);
+    }
+    for (const k of imageKeys) {
+      if (k.includes('/')) continue; // A real supplied path, checked at build time.
+      if (!catalogueKeys.has(k)) errors.push(`${label}: image "${k}" has no file at src/assets/catalogue/${k}.webp`);
+      if (allImageKeys.has(k)) errors.push(`${label}: image "${k}" is already used by ${allImageKeys.get(k)}`);
+      else allImageKeys.set(k, label);
     }
     if (!p.imageAlt) errors.push(`${label}: missing imageAlt`);
   });

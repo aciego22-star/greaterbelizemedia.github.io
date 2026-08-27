@@ -5,6 +5,7 @@ import { formatBzd, priceLabel, productTypeLabels, stockLabels } from '../lib/fo
 import { categoryBySlug } from '../data/categories';
 import { useBasket } from '../basket/BasketProvider';
 import { PlaceholderMedia } from './PlaceholderMedia';
+import { mediaUrl } from '../lib/media';
 import { buildQuestionMessage, whatsappUrl } from '../lib/whatsapp';
 
 interface ProductCardProps {
@@ -24,8 +25,8 @@ export function ProductCard({ product, backSearch }: ProductCardProps) {
   return (
     <article className="product-card">
       <Link to={detailTo} className="product-card-media" aria-hidden="true" tabIndex={-1}>
-        {product.image ? (
-          <img src={product.image} alt="" loading="lazy" />
+        {mediaUrl(product.image) ? (
+          <img src={mediaUrl(product.image)} alt="" loading="lazy" decoding="async" width={400} height={400} />
         ) : (
           <PlaceholderMedia note={product.imageAlt} compact />
         )}
@@ -41,7 +42,7 @@ export function ProductCard({ product, backSearch }: ProductCardProps) {
         {product.size && <span className="product-size">{product.size}</span>}
 
         <div className="product-meta">
-          <span className="product-price num">
+          <span className={`product-price num ${hasNumericPrice(product) ? '' : 'pending'}`}>
             {priceLabel(product)}
             {hasNumericPrice(product) && typeof product.compareAtPriceBzd === 'number' && (
               <s className="product-compare num">{formatBzd(product.compareAtPriceBzd)}</s>

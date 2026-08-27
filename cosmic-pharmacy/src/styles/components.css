@@ -809,7 +809,8 @@ main,
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: 0.6rem;
+  flex-wrap: wrap;
+  gap: 0.15rem 0.6rem;
   margin-top: 0.2rem;
 }
 
@@ -817,6 +818,17 @@ main,
   font-family: var(--font-display);
   font-weight: 700;
   color: var(--ink);
+  white-space: nowrap;
+}
+
+/* Most of the catalogue has no confirmed price yet, so "Confirm price" is the
+   common case. Rendering it at full price weight shouted, and broke across two
+   lines inside the card. It reads as the status it is. */
+.product-price.pending {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--ink-soft);
 }
 
 .product-compare {
@@ -1858,6 +1870,49 @@ a.contact-row .contact-row-value {
   right: 0;
   color: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.detail-media-col {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Extra views of the same pack. Only rendered when a product has more than one
+   photograph, so most detail pages are unchanged. */
+.detail-views {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.7rem;
+}
+
+.detail-view {
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  border: 1px solid var(--line-light);
+  border-radius: 10px;
+  background: #ffffff;
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.detail-view img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.detail-view:hover,
+.detail-view:focus-visible {
+  border-color: var(--cosmic-blue);
+}
+
+.detail-view.active {
+  border-color: var(--cosmic-blue);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--cosmic-blue) 28%, transparent);
 }
 
 /* ============ Footer ============ */

@@ -34,6 +34,10 @@ export function searchProducts(query: string, source: Product[]): Product[] {
     const category = normalize(categoryName(product.category));
     const subcategory = normalize(product.subcategory ?? '');
     const keywords = product.keywords.map(normalize);
+    // OCR of the package itself: noisy, so it scores low and only on tokens long
+    // enough to be meaningful. It lets a shopper find a product by wording that
+    // is printed on the box but absent from the curated fields.
+    const packText = normalize(product.ocrText ?? '');
 
     let score = 0;
     let allTokensMatch = true;
@@ -49,6 +53,7 @@ export function searchProducts(query: string, source: Product[]): Product[] {
       if (keywords.some((k) => k.includes(token))) tokenScore = Math.max(tokenScore, 35);
       if (category.includes(token)) tokenScore = Math.max(tokenScore, 30);
       if (subcategory.includes(token)) tokenScore = Math.max(tokenScore, 30);
+      if (token.length >= 4 && packText.includes(token)) tokenScore = Math.max(tokenScore, 15);
       if (tokenScore === 0) {
         allTokensMatch = false;
         break;

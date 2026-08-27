@@ -24,9 +24,9 @@ describe('searchProducts', () => {
   });
 
   it('finds by brand', () => {
-    const hits = searchProducts('surelife', products);
+    const hits = searchProducts('easytouch', products);
     expect(hits.length).toBe(2);
-    expect(hits.every((p) => p.brand === 'SureLife')).toBe(true);
+    expect(hits.every((p) => p.brand === 'EasyTouch')).toBe(true);
   });
 
   it('finds by keyword', () => {
@@ -36,7 +36,7 @@ describe('searchProducts', () => {
 
   it('finds accented brands from unaccented input', () => {
     const hits = searchProducts('animalin', products);
-    expect(hits.some((p) => p.slug === 'animalin-soy-protein-vitamin-c-chewables')).toBe(true);
+    expect(hits.some((p) => p.slug === 'animalin-c-soy-protein-and-vitamin-c')).toBe(true);
   });
 
   it('weights name matches above keyword matches', () => {
@@ -56,8 +56,11 @@ describe('searchProducts', () => {
 
 describe('filterProducts', () => {
   it('filters by category and brand together', () => {
-    const hits = filterProducts(products, { category: 'diabetes-monitoring', brand: 'SureLife' });
+    const hits = filterProducts(products, { category: 'diabetes-monitoring', brand: 'EasyTouch' });
     expect(hits).toHaveLength(2);
+    expect(hits.every((p) => p.category === 'diabetes-monitoring' && p.brand === 'EasyTouch')).toBe(true);
+    // The same brand outside that category must not leak in.
+    expect(filterProducts(products, { brand: 'EasyTouch' }).length).toBeGreaterThanOrEqual(hits.length);
   });
 
   it('sale-featured pseudo-category collects sale and featured items', () => {
