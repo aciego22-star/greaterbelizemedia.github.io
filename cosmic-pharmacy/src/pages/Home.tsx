@@ -20,12 +20,15 @@ import { usePageMeta } from '../lib/usePageMeta';
  * taken from that campaign rather than written here: the kits are wellness
  * bundles, and what each one contains is for the pharmacy to confirm.
  */
+// Intrinsic sizes travel with each kit. The marquee sizes its images by height
+// with width:auto, so without them the track has no width until every file has
+// decoded, and a track with no width is a marquee with nothing in it.
 const KITS = [
-  { name: 'Fertility Support', kit: 'Fertility Support Kit', image: kitFertility },
-  { name: 'Skin Balance', kit: 'Skin Balance Kit', image: kitSkin },
-  { name: 'Metabolic Support', kit: 'Metabolic Reset Kit', image: kitMetabolic },
-  { name: 'Craving Control', kit: 'Craving Control Kit', image: kitCraving },
-  { name: 'Cycle Balance', kit: 'Cycle Balance Kit', image: kitCycle }
+  { name: 'Fertility Support', kit: 'Fertility Support Kit', image: kitFertility, w: 620, h: 506 },
+  { name: 'Skin Balance', kit: 'Skin Balance Kit', image: kitSkin, w: 620, h: 472 },
+  { name: 'Metabolic Support', kit: 'Metabolic Reset Kit', image: kitMetabolic, w: 620, h: 545 },
+  { name: 'Craving Control', kit: 'Craving Control Kit', image: kitCraving, w: 620, h: 502 },
+  { name: 'Cycle Balance', kit: 'Cycle Balance Kit', image: kitCycle, w: 620, h: 484 }
 ];
 
 export function Home() {
@@ -150,11 +153,17 @@ export function Home() {
           </div>
 
           {/* Continuous right-to-left march. The list is rendered twice so the
-              translation can loop seamlessly at the halfway point. */}
+              translation can loop seamlessly at the halfway point.
+
+              Never lazy-loaded. Every image but the first sits outside the
+              viewport horizontally, inside an overflow:hidden track, so the
+              lazy loader never reaches them: they stayed at zero width, the
+              track collapsed, and once the loaded copies marched off the left
+              the strip was empty. They are ten small bundled files. */}
           <div className="kits-marquee" aria-hidden="true">
             <div className="kits-marquee-track">
               {[...KITS, ...KITS].map((k, i) => (
-                <img key={`${k.kit}-${i}`} src={k.image} alt="" loading="lazy" decoding="async" />
+                <img key={`${k.kit}-${i}`} src={k.image} alt="" width={k.w} height={k.h} decoding="async" />
               ))}
             </div>
           </div>

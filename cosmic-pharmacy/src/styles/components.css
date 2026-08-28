@@ -529,20 +529,33 @@ main,
 
 .hero-dots {
   display: flex;
-  gap: 0.5rem;
+  /* The buttons carry their own padding now, so the dots keep their old spacing
+     without leaving untappable gaps between them. */
+  gap: 0;
 }
 
 .hero-dot {
+  width: 26px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: none;
+  display: grid;
+  place-items: center;
+}
+
+.hero-dot::before {
+  content: '';
   width: 12px;
   height: 12px;
-  padding: 0;
   border-radius: 50%;
   border: 1px solid var(--ink-faint);
   background: transparent;
   transition: background 0.15s, transform 0.15s;
 }
 
-.hero-dot.active {
+.hero-dot.active::before {
   background: var(--cosmic-blue);
   border-color: var(--cosmic-blue);
   transform: scale(1.15);
@@ -2162,10 +2175,15 @@ a.contact-row .contact-row-value {
   /* Each platform keeps its own brand colour. */
   color: var(--tint);
   text-decoration: none;
-  /* Each icon drifts on its own rhythm so the row feels alive, not busy. */
+  transition: color 0.2s, border-color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+
+/* The drift moves the icon, never the link. Animating the anchor itself moved
+   its hit target for most of every 5.2s cycle, so a tap aimed at the icon could
+   land beside it: exactly the defect the basket button had. */
+.social-link > svg {
   animation: social-drift 5.2s ease-in-out infinite;
   animation-delay: calc(var(--i) * 0.55s);
-  transition: color 0.2s, border-color 0.2s, background 0.2s, box-shadow 0.2s;
   will-change: transform;
 }
 
@@ -2175,10 +2193,16 @@ a.contact-row .contact-row-value {
     transform: translateY(0) rotate(0deg);
   }
   35% {
-    transform: translateY(-6px) rotate(-4deg);
+    transform: translateY(-4px) rotate(-5deg);
   }
   70% {
-    transform: translateY(3px) rotate(3deg);
+    transform: translateY(2px) rotate(4deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .social-link > svg {
+    animation: none;
   }
 }
 
@@ -2591,12 +2615,18 @@ a.contact-row .contact-row-value {
   gap: clamp(1rem, 3vw, 2.4rem);
   width: max-content;
   padding: 0.9rem clamp(0.5rem, 1.5vw, 1.2rem);
-  animation: kits-march 46s linear infinite;
+  /* 46s put the strip at about 24px/s on a phone, which read as stalled.
+     This is roughly two and a half times that. */
+  animation: kits-march 18s linear infinite;
 }
 
 .kits-marquee-track img {
   height: clamp(96px, 13vw, 150px);
+  /* Width comes from the intrinsic ratio the width/height attributes carry, so
+     the track has its full width from the first layout rather than after the
+     last decode. */
   width: auto;
+  flex: none;
   display: block;
   border-radius: var(--radius-sm);
 }
@@ -3075,4 +3105,53 @@ a.contact-row .contact-row-value {
     right: 0.75rem;
     bottom: calc(var(--hero-rail) - 3.1rem);
   }
+}
+
+/* The product title is a one-line link about 18px tall. The image above it is
+   already a link to the same page, so the two are joined into one target: the
+   title's hit area reaches up over the card's media. */
+.product-name a {
+  position: relative;
+  display: inline-block;
+}
+
+.product-name a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: max(100%, 44px);
+}
+
+/* ---- Thumb-sized hit areas ----
+   Several controls paint smaller than a finger lands: buttons at 38px tall,
+   chips at 36, the header icons at 40. Rather than resize them and change the
+   design, each grows an invisible 44x44 hit area centred on itself. The overlay
+   is a child, so a tap on it still resolves to the control. */
+.btn,
+.chip,
+.icon-btn,
+.social-link,
+.footer-contact a,
+.qty-btn {
+  position: relative;
+}
+
+.btn::after,
+.chip::after,
+.icon-btn::after,
+.footer-contact a::after,
+.qty-btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: max(100%, 44px);
+  height: max(100%, 44px);
+  /* Purely a target. It must never paint over the label it belongs to. */
+  background: none;
+  pointer-events: auto;
 }
