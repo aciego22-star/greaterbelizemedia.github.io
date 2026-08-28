@@ -69,6 +69,54 @@ Each record:
 - Audio: platform-licensed music is NOT cleared for the website — use clips with
   Cosmic's own voice/audio or properly licensed web audio.
 
+### The client's gallery pack (installed)
+
+Six full-resolution assets, in `src/assets/gallery/` and keyed like everything
+else. They lead the gallery, because they are the only uncropped, full-quality
+media in it.
+
+**Two of the six were not new items.** `cosmic-gallery-pmos-stop-the-noise` and
+`cosmic-gallery-pharmacy-services` are the uncropped originals of graphics the
+gallery already carried as 400x400 square crops from the catalogue folder, and
+those crops had cut the wording off: the Stop the Noise crop lost its
+"Contact us at 611-8080" line and its six-step footer strip, and the services
+crop lost the phone number and the whole social row. The records now point at
+the originals and the two square crops were deleted, which is why the catalogue
+count went from 129 to 127 while the total went to 133.
+
+Categories were mapped onto the gallery's existing filters rather than adding
+new chips:
+
+| Pack category | Filters used |
+| --- | --- |
+| Pharmacy & Services | `inside-cosmic`, `social-highlights` |
+| Inside Cosmic Pharmacy | `inside-cosmic` |
+| Product & Wellness Highlights | `products-wellness`, `social-highlights` |
+| Women's Wellness & PMOS | `products-wellness`, `social-highlights` |
+| Milestones & Community | `community`, `social-highlights` |
+
+A "Women's Wellness & PMOS" chip of its own is a reasonable next step if the
+client wants it, but two items did not justify one.
+
+The pack's `fit` column has no counterpart in the data, deliberately. It asks
+for `contain` on the graphics and `cover` on the photograph so nothing is
+cropped; the gallery is a masonry that already lets every item keep its native
+aspect ratio, so there is no crop to fit against and a `fit` field would be
+dead. Everything else the pack asked for was already in place: the lightbox
+opens the complete image, images below the fold are `loading="lazy"` and
+`decoding="async"`, and the grid runs one column on a phone, two at the middle
+breakpoint and three above it.
+
+**Two things need Ms Carter before publication:**
+
+1. The third-anniversary graphic carries a dated offer in its own artwork:
+   "10% off on all prescriptions being filled, valid until 10th May." It sits
+   under a milestone title, so it reads as a record rather than a live offer,
+   but a visitor sees the graphic, not the caption. Confirm it stays.
+2. The PMOS kit comparison carries the kits' own wellness wording. Per the
+   pack's own rule, none of it is restated as advice anywhere else on the site,
+   and it should not be.
+
 ## 4. Hero media (`src/data/heroSlides.ts`)
 
 The hero is a **full-bleed stage**, not a framed card beside a column of text.

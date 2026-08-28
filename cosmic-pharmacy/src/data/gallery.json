@@ -1,28 +1,79 @@
 [
   {
+    "id": "g-012",
+    "kind": "photo",
+    "title": "Cosmic Pharmacy Services",
+    "filters": [
+      "inside-cosmic",
+      "social-highlights"
+    ],
+    "src": "cosmic-gallery-pharmacy-services",
+    "alt": "Cosmic Pharmacy service overview featuring the pharmacy interior, storefront and staff",
+    "aspect": "portrait",
+    "sourceNote": "Cosmic Pharmacy gallery pack, uncropped. Supersedes the square crop that cut the phone number and social row off."
+  },
+  {
     "id": "g-011",
     "kind": "photo",
-    "title": "Stop the Noise: Female Wellness and PMOS guidance",
+    "title": "End the Guesswork",
     "filters": [
       "social-highlights"
     ],
-    "src": "cosmic-product-011",
-    "alt": "Cosmic Pharmacy PMOS campaign graphic, Stop the Noise, inviting customers to start with a plan",
-    "aspect": "square",
-    "sourceNote": "Cosmic Pharmacy social post, promotional asset. Confirm permission to publish."
+    "src": "cosmic-gallery-pmos-stop-the-noise",
+    "alt": "Cosmic Pharmacy female wellness and PMOS guided-support information",
+    "aspect": "landscape",
+    "sourceNote": "Cosmic Pharmacy gallery pack, uncropped. Supersedes the square crop that cut the contact line off."
   },
   {
-    "id": "g-012",
+    "id": "g-301",
     "kind": "photo",
-    "title": "Cosmic Pharmacy services at a glance",
+    "title": "Serving Our Community",
     "filters": [
-      "social-highlights",
       "inside-cosmic"
     ],
-    "src": "cosmic-product-012",
-    "alt": "Cosmic Pharmacy brand graphic showing wellness advice, medical supplies, vitamin support and pharmacy pickup",
-    "aspect": "square",
-    "sourceNote": "Cosmic Pharmacy social post, brand asset. Confirm permission to publish."
+    "src": "cosmic-gallery-pharmacist-stocking-shelves",
+    "alt": "Cosmic Pharmacy team member arranging products on the pharmacy shelves",
+    "aspect": "portrait",
+    "sourceNote": "Cosmic Pharmacy gallery pack."
+  },
+  {
+    "id": "g-302",
+    "kind": "photo",
+    "title": "Wellman and Wellwoman Sport",
+    "filters": [
+      "products-wellness",
+      "social-highlights"
+    ],
+    "src": "cosmic-gallery-wellman-wellwoman-sport",
+    "alt": "Wellman Sport and Wellwoman Sport vitamin products featured by Cosmic Pharmacy",
+    "aspect": "portrait",
+    "sourceNote": "Cosmic Pharmacy gallery pack."
+  },
+  {
+    "id": "g-303",
+    "kind": "photo",
+    "title": "Women's Wellness Support Kits",
+    "filters": [
+      "products-wellness",
+      "social-highlights"
+    ],
+    "src": "cosmic-gallery-pmos-kit-comparison",
+    "alt": "Comparison of five Cosmic Pharmacy women's wellness and PMOS support kits",
+    "aspect": "landscape",
+    "sourceNote": "Cosmic Pharmacy gallery pack. Carries the kits' own wording; nothing from it is restated as advice elsewhere on the site."
+  },
+  {
+    "id": "g-304",
+    "kind": "photo",
+    "title": "Cosmic Pharmacy Third Anniversary",
+    "filters": [
+      "community",
+      "social-highlights"
+    ],
+    "src": "cosmic-gallery-third-anniversary",
+    "alt": "Cosmic Pharmacy third-anniversary customer appreciation promotion",
+    "aspect": "portrait",
+    "sourceNote": "Cosmic Pharmacy gallery pack. Carries a dated offer, valid until 10 May; confirm before publication."
   },
   {
     "id": "g-145",

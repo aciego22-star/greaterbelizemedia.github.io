@@ -8,7 +8,12 @@
  * public/.
  */
 const catalogueImages = import.meta.glob(
-  ['../assets/catalogue/*.webp', '../assets/hero/*.webp', '../assets/hero/*.mp4'],
+  [
+    '../assets/catalogue/*.webp',
+    '../assets/gallery/*.webp',
+    '../assets/hero/*.webp',
+    '../assets/hero/*.mp4'
+  ],
   {
     eager: true,
     query: '?url',

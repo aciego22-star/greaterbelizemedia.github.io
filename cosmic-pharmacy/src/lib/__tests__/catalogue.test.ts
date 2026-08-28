@@ -4,9 +4,11 @@ import gallery from '../../data/gallery.json';
 import type { GalleryItem, Product } from '../../data/types';
 
 // Enumerated the same way lib/media.ts does, so this asserts against exactly
-// what the build will resolve rather than against a directory listing.
+// what the build will resolve rather than against a directory listing. The
+// gallery pack lives in its own folder: those assets are full-resolution
+// editorial media, not catalogue product shots.
 const imageFiles = new Set<string>(
-  Object.keys(import.meta.glob('../../assets/catalogue/*.webp')).map(
+  Object.keys(import.meta.glob(['../../assets/catalogue/*.webp', '../../assets/gallery/*.webp'])).map(
     (path) => path.split('/').pop()!.replace(/\.webp$/, '')
   )
 );
@@ -19,9 +21,13 @@ const productKeys = (p: Product) => (p.images?.length ? p.images : p.image ? [p.
 
 describe('catalogue images', () => {
   it('ships the 100-product catalogue plus the gallery assets', () => {
-    // 100 product images from the client's demo catalogue, plus the 29
-    // editorial graphics the gallery still uses.
-    expect(imageFiles.size).toBe(129);
+    // 100 product images from the client's demo catalogue, plus 27 editorial
+    // graphics the gallery still draws from the catalogue folder, plus the 6
+    // full-resolution assets from the client's gallery pack. Two of the 29
+    // former catalogue graphics were square 400px crops of pack assets, with
+    // the wording cut off, and were dropped when the uncropped originals
+    // arrived.
+    expect(imageFiles.size).toBe(133);
   });
 
   it('uses every supplied image exactly once, with nothing orphaned', () => {
@@ -35,7 +41,7 @@ describe('catalogue images', () => {
 
     const unused = [...imageFiles].filter((k) => !used.has(k)).sort();
     expect(unused, 'images that no record surfaces').toEqual([]);
-    expect(used.size).toBe(129);
+    expect(used.size).toBe(133);
   });
 
   it('points every key at a file that exists', () => {
@@ -100,5 +106,59 @@ describe('catalogue records', () => {
     for (const p of list) {
       expect(p.imageAlt.length).toBeGreaterThan(10);
     }
+  });
+});
+
+describe('the client gallery pack', () => {
+  const packKeys = new Set(
+    Object.keys(import.meta.glob('../../assets/gallery/*.webp')).map((path) =>
+      path.split('/').pop()!.replace(/\.webp$/, '')
+    )
+  );
+
+  it('ships all six supplied assets', () => {
+    expect(packKeys.size).toBe(6);
+  });
+
+  it('surfaces every one of them in the gallery', () => {
+    const used = new Set(galleryList.map((g) => g.src));
+    for (const key of packKeys) {
+      expect(used.has(key), `${key} ships but no gallery item shows it`).toBe(true);
+    }
+  });
+
+  it('leads the gallery with them', () => {
+    // They are the only full-resolution, uncropped assets in the gallery, so
+    // they open it rather than being buried among the 400px social crops.
+    const lead = galleryList.slice(0, packKeys.size).map((g) => g.src);
+    for (const key of lead) {
+      expect(packKeys.has(key), `${key} sits in the lead but is not a pack asset`).toBe(true);
+    }
+  });
+
+  it('keeps the aspect hint honest against the file it points at', () => {
+    // The gallery is a masonry that lets each item keep its native ratio, so a
+    // wrong hint only misleads a reader of the data. These are the supplied
+    // dimensions.
+    const shape: Record<string, 'portrait' | 'landscape'> = {
+      'cosmic-gallery-pharmacist-stocking-shelves': 'portrait',
+      'cosmic-gallery-pharmacy-services': 'portrait',
+      'cosmic-gallery-third-anniversary': 'portrait',
+      'cosmic-gallery-wellman-wellwoman-sport': 'portrait',
+      'cosmic-gallery-pmos-kit-comparison': 'landscape',
+      'cosmic-gallery-pmos-stop-the-noise': 'landscape'
+    };
+    for (const item of galleryList) {
+      const want = shape[item.src];
+      if (want) expect(item.aspect, `${item.src}`).toBe(want);
+    }
+  });
+
+  it('keeps the dated anniversary offer flagged for confirmation', () => {
+    // The graphic carries "10% off, valid until 10th May" in its own artwork.
+    // It reads as a milestone rather than a live offer, but it is not ours to
+    // publish unflagged.
+    const item = galleryList.find((g) => g.src === 'cosmic-gallery-third-anniversary');
+    expect(item?.sourceNote ?? '').toMatch(/confirm/i);
   });
 });
