@@ -129,6 +129,12 @@ export interface HeroVideoSlide extends HeroSlideBase {
    *  lost, and 'contain' applies from the tablet breakpoint up. */
   videoFit?: 'cover' | 'contain';
   overlay?: HeroOverlay;
+  /**
+   * How long the slide holds after the reel finishes, before the carousel moves
+   * on. Separate from durationMs, which for a video slide is only the fallback
+   * dwell used when the reel cannot play at all.
+   */
+  endDwellMs?: number;
   captionLabel: string;
   placeholderNote: string;
 }

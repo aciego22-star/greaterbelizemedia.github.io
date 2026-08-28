@@ -4,13 +4,13 @@ import type { HeroVideoSlide as HeroVideoSlideData } from '../data/types';
 import { PlaceholderMedia } from './PlaceholderMedia';
 import { mediaUrl } from '../lib/media';
 
-type VideoState = 'idle' | 'blocked' | 'playing' | 'paused' | 'ended';
+export type VideoState = 'idle' | 'blocked' | 'playing' | 'paused' | 'ended';
 
 interface HeroVideoSlideProps {
   slide: HeroVideoSlideData;
   active: boolean;
   reducedMotion: boolean;
-  onPlayingChange: (playing: boolean) => void;
+  onStateChange: (state: VideoState) => void;
 }
 
 /**
@@ -48,9 +48,15 @@ function formatDuration(seconds: number): string {
  * A silent clip (hasAudio: false) skips step 1 and offers no sound control at
  * all, rather than offering sound the file does not carry.
  */
-export function HeroVideoSlide({ slide, active, reducedMotion, onPlayingChange }: HeroVideoSlideProps) {
+export function HeroVideoSlide({ slide, active, reducedMotion, onStateChange }: HeroVideoSlideProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [state, setState] = useState<VideoState>('idle');
+  const [state, setRawState] = useState<VideoState>('idle');
+  const onStateChangeRef = useRef(onStateChange);
+  onStateChangeRef.current = onStateChange;
+  const setState = useCallback((next: VideoState) => {
+    setRawState(next);
+    onStateChangeRef.current(next);
+  }, []);
   const [muted, setMuted] = useState(!slide.hasAudio);
   /** Playing muted only because audible autoplay was refused, not by choice. */
   const [soundWithheld, setSoundWithheld] = useState(false);
@@ -74,13 +80,12 @@ export function HeroVideoSlide({ slide, active, reducedMotion, onPlayingChange }
         await video.play();
         setMuted(!withSound);
         setState('playing');
-        onPlayingChange(true);
         return true;
       } catch {
         return false;
       }
     },
-    [onPlayingChange]
+    [setState]
   );
 
   const startPlayback = useCallback(
@@ -98,44 +103,43 @@ export function HeroVideoSlide({ slide, active, reducedMotion, onPlayingChange }
       }
       videoRef.current?.pause();
       setState('blocked');
-      onPlayingChange(false);
     },
-    [attempt, onPlayingChange, slide.hasAudio]
+    [attempt, setState, slide.hasAudio]
   );
 
   // Attempt playback once per activation of this slide.
   useEffect(() => {
     if (!active) {
+      // Rewound and reset to idle, not left where it stopped. A slide that
+      // deactivated as 'ended' used to stay 'ended', and the guard below then
+      // refused to start it again: the reel played once on the first pass and
+      // never again on any later one.
       attemptedRef.current = false;
       const video = videoRef.current;
-      if (video && !video.paused) video.pause();
-      if (state === 'playing') {
-        setState('paused');
-        onPlayingChange(false);
+      if (video) {
+        if (!video.paused) video.pause();
+        video.currentTime = 0;
       }
+      setSoundWithheld(false);
+      if (state !== 'idle') setState('idle');
       return;
     }
     if (!hasSource || reducedMotion || attemptedRef.current) return;
-    if (state === 'ended') return;
     attemptedRef.current = true;
     void startPlayback();
-  }, [active, hasSource, reducedMotion, startPlayback, state, onPlayingChange]);
+  }, [active, hasSource, reducedMotion, startPlayback, state, setState]);
 
   const togglePlay = () => {
     const video = videoRef.current;
     if (!video) return;
     if (video.paused) {
       void video.play().then(
-        () => {
-          setState('playing');
-          onPlayingChange(true);
-        },
+        () => setState('playing'),
         () => setState('blocked')
       );
     } else {
       video.pause();
       setState('paused');
-      onPlayingChange(false);
     }
   };
 
@@ -176,10 +180,7 @@ export function HeroVideoSlide({ slide, active, reducedMotion, onPlayingChange }
         preload="metadata"
         poster={posterSrc || undefined}
         aria-label={slide.posterAlt}
-        onEnded={() => {
-          setState('ended');
-          onPlayingChange(false);
-        }}
+        onEnded={() => setState('ended')}
       >
         {mobileSrc && <source src={mobileSrc} type={videoType(mobileSrc)} media="(max-width: 720px)" />}
         {desktopSrc && <source src={desktopSrc} type={videoType(desktopSrc)} />}

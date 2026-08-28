@@ -22,7 +22,7 @@ export const heroSlides: HeroSlide[] = [
     ctaTo: '/shop',
     secondaryCtaLabel: 'Send a Prescription',
     secondaryCtaTo: '/prescriptions',
-    durationMs: 9000,
+    durationMs: 6000,
     image: 'hero-storefront-desktop',
     imageMobile: 'hero-storefront-mobile',
     imageFit: 'cover',
@@ -42,7 +42,7 @@ export const heroSlides: HeroSlide[] = [
     copy: 'OTC medicine, vitamins and supplements, personal care, and medical devices, with a pharmacist who helps you source what others don’t stock.',
     ctaLabel: 'Browse the Range',
     ctaTo: '/products/supplements',
-    durationMs: 8000,
+    durationMs: 6000,
     image: 'hero-interior-desktop',
     imageMobile: 'hero-interior-mobile',
     imageFit: 'cover',
@@ -62,7 +62,7 @@ export const heroSlides: HeroSlide[] = [
     overlay: 'none',
     eyebrow: 'Countrywide service',
     headline: 'Search. Add to cart. Send on WhatsApp.',
-    durationMs: 8000,
+    durationMs: 6000,
     image: 'hero-how-it-works-desktop',
     imageMobile: 'hero-how-it-works-mobile',
     // The one asset that must never be cropped: it is a designed graphic whose
@@ -84,7 +84,11 @@ export const heroSlides: HeroSlide[] = [
     overlay: 'none',
     eyebrow: 'Cosmic in motion',
     headline: 'Meet Cosmic Pharmacy.',
-    durationMs: 12000,
+    // Only the fallback: what the slide holds for if the reel cannot play at
+    // all. When it plays, the carousel waits for it to finish and then holds
+    // for endDwellMs.
+    durationMs: 8000,
+    endDwellMs: 20000,
     // Client-supplied promotional reel. One 720x1280 encode serves both
     // breakpoints: it is already phone-sized, so a separate mobile file would
     // only add weight. Remuxed with the moov atom first so it starts streaming
