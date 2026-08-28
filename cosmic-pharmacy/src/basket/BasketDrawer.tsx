@@ -5,6 +5,7 @@ import { productById, hasNumericPrice, requiresReview } from '../lib/catalog';
 import { formatBzd, priceLabel } from '../lib/format';
 import { buildBasketMessage, fulfilmentLabels, whatsappUrl } from '../lib/whatsapp';
 import { PlaceholderMedia } from '../components/PlaceholderMedia';
+import { mediaUrl } from '../lib/media';
 import type { FulfilmentOption } from '../data/types';
 
 /**
@@ -64,7 +65,11 @@ export function BasketDrawer() {
                 return (
                   <li key={line.productId} className="basket-line">
                     <div className="basket-thumb">
-                      <PlaceholderMedia note={p.imageAlt} compact />
+                      {mediaUrl(p.image) ? (
+                        <img src={mediaUrl(p.image)} alt={p.imageAlt} loading="lazy" decoding="async" />
+                      ) : (
+                        <PlaceholderMedia note={p.imageAlt} compact />
+                      )}
                     </div>
                     <div className="basket-line-info">
                       <span className="basket-line-name">{p.name}</span>
