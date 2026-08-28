@@ -1,0 +1,477 @@
+[
+  {
+    "id": "g-012",
+    "kind": "photo",
+    "title": "Cosmic Pharmacy Services",
+    "filters": [
+      "inside-cosmic",
+      "social-highlights"
+    ],
+    "src": "cosmic-gallery-pharmacy-services",
+    "alt": "Cosmic Pharmacy service overview featuring the pharmacy interior, storefront and staff",
+    "aspect": "portrait",
+    "sourceNote": "Cosmic Pharmacy gallery pack, uncropped. Supersedes the square crop that cut the phone number and social row off."
+  },
+  {
+    "id": "g-011",
+    "kind": "photo",
+    "title": "End the Guesswork",
+    "filters": [
+      "social-highlights"
+    ],
+    "src": "cosmic-gallery-pmos-stop-the-noise",
+    "alt": "Cosmic Pharmacy female wellness and PMOS guided-support information",
+    "aspect": "landscape",
+    "sourceNote": "Cosmic Pharmacy gallery pack, uncropped. Supersedes the square crop that cut the contact line off."
+  },
+  {
+    "id": "g-301",
+    "kind": "photo",
+    "title": "Serving Our Community",
+    "filters": [
+      "inside-cosmic"
+    ],
+    "src": "cosmic-gallery-pharmacist-stocking-shelves",
+    "alt": "Cosmic Pharmacy team member arranging products on the pharmacy shelves",
+    "aspect": "portrait",
+    "sourceNote": "Cosmic Pharmacy gallery pack."
+  },
+  {
+    "id": "g-302",
+    "kind": "photo",
+    "title": "Wellman and Wellwoman Sport",
+    "filters": [
+      "products-wellness",
+      "social-highlights"
+    ],
+    "src": "cosmic-gallery-wellman-wellwoman-sport",
+    "alt": "Wellman Sport and Wellwoman Sport vitamin products featured by Cosmic Pharmacy",
+    "aspect": "portrait",
+    "sourceNote": "Cosmic Pharmacy gallery pack."
+  },
+  {
+    "id": "g-303",
+    "kind": "photo",
+    "title": "Women's Wellness Support Kits",
+    "filters": [
+      "products-wellness",
+      "social-highlights"
+    ],
+    "src": "cosmic-gallery-pmos-kit-comparison",
+    "alt": "Comparison of five Cosmic Pharmacy women's wellness and PMOS support kits",
+    "aspect": "landscape",
+    "sourceNote": "Cosmic Pharmacy gallery pack. Carries the kits' own wording; nothing from it is restated as advice elsewhere on the site."
+  },
+  {
+    "id": "g-304",
+    "kind": "photo",
+    "title": "Cosmic Pharmacy Third Anniversary",
+    "filters": [
+      "community",
+      "social-highlights"
+    ],
+    "src": "cosmic-gallery-third-anniversary",
+    "alt": "Cosmic Pharmacy third-anniversary customer appreciation promotion",
+    "aspect": "portrait",
+    "sourceNote": "Cosmic Pharmacy gallery pack. Carries a dated offer, valid until 10 May; confirm before publication."
+  },
+  {
+    "id": "g-145",
+    "kind": "photo",
+    "title": "Father's month men's health display",
+    "filters": [
+      "social-highlights"
+    ],
+    "src": "cosmic-product-145",
+    "alt": "Cosmic Pharmacy display of men's health supplements with a ten percent off promotion for June",
+    "aspect": "square",
+    "sourceNote": "Cosmic Pharmacy social post, promotional asset. Confirm permission to publish."
+  },
+  {
+    "id": "g-155",
+    "kind": "photo",
+    "title": "Behind the counter at Cosmic Pharmacy",
+    "filters": [
+      "inside-cosmic"
+    ],
+    "src": "cosmic-product-155",
+    "alt": "Pharmacy team member holding prenatal and iron supplement cartons at the Cosmic Pharmacy counter",
+    "aspect": "square",
+    "sourceNote": "Cosmic Pharmacy social post, inside asset. Confirm permission to publish."
+  },
+  {
+    "id": "g-158",
+    "kind": "photo",
+    "title": "Vitamin E: enhance your health",
+    "filters": [
+      "social-highlights",
+      "products-wellness"
+    ],
+    "src": "cosmic-product-158",
+    "alt": "Cosmic Pharmacy educational graphic about vitamin E showing Nature's Bounty E-Oil and vitamin E capsules",
+    "aspect": "square",
+    "sourceNote": "Cosmic Pharmacy social post, educational asset. Confirm permission to publish."
+  },
+  {
+    "id": "g-159",
+    "kind": "photo",
+    "title": "Vitamin C: boost your immunity",
+    "filters": [
+      "social-highlights",
+      "products-wellness"
+    ],
+    "src": "cosmic-product-159",
+    "alt": "Cosmic Pharmacy educational graphic about vitamin C showing Cebion and other vitamin C products",
+    "aspect": "square",
+    "sourceNote": "Cosmic Pharmacy social post, educational asset. Confirm permission to publish."
+  },
+  {
+    "id": "g-160",
+    "kind": "photo",
+    "title": "Omega 3 supplements explained",
+    "filters": [
+      "social-highlights",
+      "products-wellness"
+    ],
+    "src": "cosmic-product-160",
+    "alt": "Cosmic Pharmacy educational graphic about omega 3 supplements showing flaxseed oil and fish oil",
+    "aspect": "square",
+    "sourceNote": "Cosmic Pharmacy social post, educational asset. Confirm permission to publish."
+  },
+  {
+    "id": "g-161",
+    "kind": "photo",
+    "title": "A traditional preference: cod liver oil",
+    "filters": [
+      "social-highlights",
+      "products-wellness"
+    ],
+    "src": "cosmic-product-161",
+    "alt": "Cosmic Pharmacy educational graphic showing Scott's Emulsion flavoured cod liver oil",
+    "aspect": "square",
+    "sourceNote": "Cosmic Pharmacy social post, educational asset. Confirm permission to publish."
+  },
+  {
+    "id": "g-162",
+    "kind": "photo",
+    "title": "Boost your child's immune system",
+    "filters": [
+      "social-highlights",
+      "products-wellness"
+    ],
+    "src": "cosmic-product-162",
+    "alt": "Cosmic Pharmacy educational graphic showing Ballena Azul flavoured cod liver oil emulsion for children",
+    "aspect": "square",
+    "sourceNote": "Cosmic Pharmacy social post, educational asset. Confirm permission to publish."
+  },
+  {
+    "id": "g-163",
+    "kind": "photo",
+    "title": "Cod liver oil for colds and flu",
+    "filters": [
+      "social-highlights",
+      "products-wellness"
+    ],
+    "src": "cosmic-product-163",
+    "alt": "Cosmic Pharmacy educational graphic showing Seven Seas cod liver oil supplements",
+    "aspect": "square",
+    "sourceNote": "Cosmic Pharmacy social post, educational asset. Confirm permission to publish."
+  },
+  {
+    "id": "g-164",
+    "kind": "photo",
+    "title": "Whey protein and creatine powder",
+    "filters": [
+      "social-highlights",
+      "products-wellness"
+    ],
+    "src": "cosmic-product-164",
+    "alt": "Cosmic Pharmacy graphic showing Rule 1 whey protein and creatine powder tubs",
+    "aspect": "square",
+    "sourceNote": "Cosmic Pharmacy social post, educational asset. Confirm permission to publish."
+  },
+  {
+    "id": "g-165",
+    "kind": "photo",
+    "title": "Signs and symptoms of menopause",
+    "filters": [
+      "social-highlights",
+      "products-wellness"
+    ],
+    "src": "cosmic-product-165",
+    "alt": "Cosmic Pharmacy educational graphic listing signs of menopause alongside Menopace daily support",
+    "aspect": "square",
+    "sourceNote": "Cosmic Pharmacy social post, educational asset. Confirm permission to publish."
+  },
+  {
+    "id": "g-166",
+    "kind": "photo",
+    "title": "Evening primrose oil explained",
+    "filters": [
+      "social-highlights",
+      "products-wellness"
+    ],
+    "src": "cosmic-product-166",
+    "alt": "Cosmic Pharmacy educational graphic about evening primrose oil showing Sundance 1000 mg capsules",
+    "aspect": "square",
+    "sourceNote": "Cosmic Pharmacy social post, educational asset. Confirm permission to publish."
+  },
+  {
+    "id": "g-167",
+    "kind": "photo",
+    "title": "Sleep support on the shelf",
+    "filters": [
+      "products-wellness",
+      "inside-cosmic"
+    ],
+    "src": "cosmic-product-167",
+    "alt": "Melatonin gummies and Animalin Nite children's sleep support on the Cosmic Pharmacy shelf",
+    "aspect": "square",
+    "sourceNote": "Cosmic Pharmacy social post, products asset. Confirm permission to publish."
+  },
+  {
+    "id": "g-168",
+    "kind": "photo",
+    "title": "The melatonin range",
+    "filters": [
+      "products-wellness",
+      "inside-cosmic"
+    ],
+    "src": "cosmic-product-168",
+    "alt": "Melatonin tablets, gummies and liquid drops from several brands on the Cosmic Pharmacy shelf",
+    "aspect": "square",
+    "sourceNote": "Cosmic Pharmacy social post, products asset. Confirm permission to publish."
+  },
+  {
+    "id": "g-170",
+    "kind": "photo",
+    "title": "The magnesium range",
+    "filters": [
+      "products-wellness",
+      "inside-cosmic"
+    ],
+    "src": "cosmic-product-170",
+    "alt": "Magnesium supplements from Sundown, Nature's Bounty, Naturagel and Solaray on the Cosmic Pharmacy shelf",
+    "aspect": "square",
+    "sourceNote": "Cosmic Pharmacy social post, products asset. Confirm permission to publish."
+  },
+  {
+    "id": "g-174",
+    "kind": "photo",
+    "title": "Relaxation and sleep support",
+    "filters": [
+      "products-wellness",
+      "inside-cosmic"
+    ],
+    "src": "cosmic-product-174",
+    "alt": "Relhax Plus capsules with liquid and tablet melatonin on the Cosmic Pharmacy shelf",
+    "aspect": "square",
+    "sourceNote": "Cosmic Pharmacy social post, products asset. Confirm permission to publish."
+  },
+  {
+    "id": "g-178",
+    "kind": "photo",
+    "title": "The vitamin D range",
+    "filters": [
+      "products-wellness",
+      "inside-cosmic"
+    ],
+    "src": "cosmic-product-178",
+    "alt": "Vitamin D3 softgels in 5,000 IU and 10,000 IU strengths from several brands on the Cosmic Pharmacy shelf",
+    "aspect": "square",
+    "sourceNote": "Cosmic Pharmacy social post, products asset. Confirm permission to publish."
+  },
+  {
+    "id": "g-191",
+    "kind": "photo",
+    "title": "Our favourite sunscreen",
+    "filters": [
+      "social-highlights",
+      "products-wellness"
+    ],
+    "src": "cosmic-product-191",
+    "alt": "Cosmic Pharmacy graphic introducing the SKIN1004 Centella sun serum as a favourite sunscreen",
+    "aspect": "square",
+    "sourceNote": "Cosmic Pharmacy social post, educational asset. Confirm permission to publish."
+  },
+  {
+    "id": "g-210",
+    "kind": "photo",
+    "title": "Inside Cosmic Pharmacy",
+    "filters": [
+      "inside-cosmic"
+    ],
+    "src": "cosmic-product-210",
+    "alt": "The Cosmic Pharmacy sales floor with stocked shelves and the counter display case",
+    "aspect": "square",
+    "sourceNote": "Cosmic Pharmacy social post, inside asset. Confirm permission to publish."
+  },
+  {
+    "id": "g-214",
+    "kind": "photo",
+    "title": "Treating magnesium deficiency",
+    "filters": [
+      "social-highlights",
+      "products-wellness"
+    ],
+    "src": "cosmic-product-214",
+    "alt": "Cosmic Pharmacy educational graphic about magnesium deficiency showing Solaray Magnesium Glycinate",
+    "aspect": "square",
+    "sourceNote": "Cosmic Pharmacy social post, educational asset. Confirm permission to publish."
+  },
+  {
+    "id": "g-255",
+    "kind": "photo",
+    "title": "The B vitamin range",
+    "filters": [
+      "products-wellness",
+      "inside-cosmic"
+    ],
+    "src": "cosmic-product-255",
+    "alt": "B-complex liquid, B-12 energy gummies and sublingual B vitamins on the Cosmic Pharmacy shelf",
+    "aspect": "square",
+    "sourceNote": "Cosmic Pharmacy social post, products asset. Confirm permission to publish."
+  },
+  {
+    "id": "g-256",
+    "kind": "photo",
+    "title": "What ashwagandha supports",
+    "filters": [
+      "social-highlights",
+      "products-wellness"
+    ],
+    "src": "cosmic-product-256",
+    "alt": "Cosmic Pharmacy educational graphic listing what ashwagandha supports, with two ashwagandha bottles",
+    "aspect": "square",
+    "sourceNote": "Cosmic Pharmacy social post, educational asset. Confirm permission to publish."
+  },
+  {
+    "id": "g-257",
+    "kind": "photo",
+    "title": "Complejo B: energy and brain support",
+    "filters": [
+      "social-highlights",
+      "products-wellness"
+    ],
+    "src": "cosmic-product-257",
+    "alt": "Avivia Pharma graphic listing the benefits of Complejo B, including a diabetic formula",
+    "aspect": "square",
+    "sourceNote": "Cosmic Pharmacy social post, educational asset. Confirm permission to publish."
+  },
+  {
+    "id": "g-258",
+    "kind": "photo",
+    "title": "CoQ-10 for heart health",
+    "filters": [
+      "social-highlights",
+      "products-wellness"
+    ],
+    "src": "cosmic-product-258",
+    "alt": "Solaray graphic describing CoQ-10 as an antioxidant supporting heart health and energy",
+    "aspect": "square",
+    "sourceNote": "Cosmic Pharmacy social post, educational asset. Confirm permission to publish."
+  },
+  {
+    "id": "g-259",
+    "kind": "photo",
+    "title": "Convifer: two for the price of one",
+    "filters": [
+      "social-highlights"
+    ],
+    "src": "cosmic-product-259",
+    "alt": "Cosmic Pharmacy promotion offering two Convifer con Hierro cartons for the price of one",
+    "aspect": "square",
+    "sourceNote": "Cosmic Pharmacy social post, promotional asset. Confirm permission to publish."
+  },
+  {
+    "id": "g-260",
+    "kind": "photo",
+    "title": "Three bottles of One-Daily for eleven dollars",
+    "filters": [
+      "social-highlights"
+    ],
+    "src": "cosmic-product-260",
+    "alt": "Cosmic Pharmacy promotion offering three bottles of Geri-Care One-Daily multivitamin for eleven dollars",
+    "aspect": "square",
+    "sourceNote": "Cosmic Pharmacy social post, promotional asset. Confirm permission to publish."
+  },
+  {
+    "id": "g-275",
+    "kind": "photo",
+    "title": "What creatine monohydrate does",
+    "filters": [
+      "social-highlights",
+      "products-wellness"
+    ],
+    "src": "cosmic-product-275",
+    "alt": "Cosmic Pharmacy educational graphic listing the effects of creatine monohydrate beside a Rule 1 creatine tub",
+    "aspect": "square",
+    "sourceNote": "Cosmic Pharmacy social post, educational asset. Confirm permission to publish."
+  },
+  {
+    "id": "g-276",
+    "kind": "photo",
+    "title": "Perfect7 Man Plus benefits",
+    "filters": [
+      "social-highlights",
+      "products-wellness"
+    ],
+    "src": "cosmic-product-276",
+    "alt": "Seven Seas graphic listing the benefits of Perfect7 Man Plus alongside the pack",
+    "aspect": "square",
+    "sourceNote": "Cosmic Pharmacy social post, educational asset. Confirm permission to publish."
+  },
+  {
+    "id": "g-04",
+    "kind": "photo",
+    "title": "Serving Belize City",
+    "filters": [
+      "community"
+    ],
+    "src": "",
+    "alt": "Placeholder: community service photograph pending",
+    "aspect": "landscape",
+    "sourceNote": "Final asset: approved community photograph"
+  },
+  {
+    "id": "g-05",
+    "kind": "video",
+    "title": "A look around Cosmic",
+    "filters": [
+      "videos",
+      "inside-cosmic"
+    ],
+    "src": "",
+    "poster": "",
+    "alt": "Placeholder: short walkthrough video pending",
+    "aspect": "portrait",
+    "sourceNote": "Final asset: client-owned short video with cleared audio"
+  },
+  {
+    "id": "g-08",
+    "kind": "video",
+    "title": "Cosmic highlights",
+    "filters": [
+      "videos",
+      "social-highlights"
+    ],
+    "src": "",
+    "poster": "",
+    "alt": "Placeholder: social highlight video pending",
+    "aspect": "portrait",
+    "sourceNote": "Final asset: client-owned social video with cleared audio"
+  },
+  {
+    "id": "g-09",
+    "kind": "photo",
+    "title": "Out-district orders on their way",
+    "filters": [
+      "community",
+      "social-highlights"
+    ],
+    "src": "",
+    "alt": "Placeholder: shipping and delivery photograph pending",
+    "aspect": "landscape",
+    "sourceNote": "Final asset: approved photograph of packed orders"
+  }
+]

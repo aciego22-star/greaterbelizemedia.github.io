@@ -1,0 +1,3157 @@
+/* ============ Cosmic canvas ============ */
+.cosmic-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Everything above the canvas */
+.site-header,
+main,
+.site-footer {
+  position: relative;
+  z-index: 1;
+}
+
+/* ============ Header ============ */
+
+/* The header and footer sit on the cosmic sky rather than on a content card,
+   so they follow the time-of-day theme while cards stay light. Re-pointing the
+   ink tokens here means every rule below keeps reading var(--ink) and simply
+   resolves to the right value; in the two light themes these are identical to
+   the defaults, so nothing changes by day. --panel is redirected too, so the
+   Products dropdown and the mobile nav panel follow the header rather than
+   staying white against a dark bar. */
+.site-header,
+.site-footer {
+  --ink: var(--on-sky);
+  --ink-soft: var(--on-sky-soft);
+  --ink-faint: var(--on-sky-faint);
+  --line-light: var(--on-sky-line);
+  --cosmic-blue-deep: var(--on-sky-link);
+  --magenta-deep: var(--on-sky-accent);
+}
+
+/* The hero copy no longer sits on the sky. It sits on a dark scrim over a
+   photograph, which stays dark in all four themes, so its ink is fixed light
+   rather than following --on-sky. Day would otherwise put navy text on it. */
+.hero-copy,
+.hero-controls {
+  --ink: #ffffff;
+  --ink-soft: rgba(255, 255, 255, 0.88);
+  --ink-faint: rgba(255, 255, 255, 0.72);
+  --line-light: rgba(255, 255, 255, 0.42);
+  --cosmic-blue-deep: #bfe0ff;
+  /* Paler than the brand magenta elsewhere. The eyebrow is small text sitting
+     on a photograph, and the deeper pink does not clear 4.5:1 against the
+     brightest thing the stills put behind it. */
+  --magenta-deep: #ffd3e6;
+}
+
+/* Light surfaces nested inside a sky region reset to card ink, so a pale pill
+   button on a dark bar keeps its dark label instead of inheriting the sky's. */
+.hero-copy .btn,
+.site-footer .social-link {
+  --ink: var(--ink-card);
+  --ink-soft: var(--ink-soft-card);
+  --ink-faint: var(--ink-faint-card);
+  --line-light: var(--line-card);
+  --cosmic-blue-deep: var(--link-card);
+  --magenta-deep: var(--accent-card);
+}
+
+.site-header {
+  --panel: var(--header-panel);
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  background: var(--header-bg);
+  /* No backdrop blur. Any blur at all smears the starfield behind the bar into
+     a flat haze, and the point of the translucency is that the cosmic dust
+     reads through it. Content scrolling underneath is handled by the tint
+     itself, whose alpha is tuned per sky in tokens.css. */
+  border-bottom: 1px solid var(--line-light);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  min-height: var(--header-h);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  text-decoration: none;
+  /* Clear space around the lockup, per the logo pack rules. */
+  padding-right: 0.5rem;
+}
+
+.brand-logo {
+  width: 232px;
+  height: auto;
+}
+
+/* Standalone mark takes over below the lockup's minimum legible width. */
+.brand-icon {
+  display: none;
+  width: 40px;
+  height: auto;
+}
+
+.main-nav {
+  margin-left: auto;
+}
+
+/* With the nav inline, the actions follow it rather than pushing off alone. */
+@media (min-width: 1001px) {
+  .header-actions {
+    margin-left: 0;
+  }
+}
+
+.nav-list {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.5rem 0.75rem;
+  border: none;
+  background: none;
+  border-radius: var(--radius-sm);
+  color: var(--ink-soft);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.15s, background 0.15s;
+}
+
+.nav-link:hover {
+  color: var(--cosmic-blue-deep);
+}
+
+.nav-link.active {
+  color: var(--cosmic-blue-deep);
+  background: rgba(22, 121, 209, 0.12);
+}
+
+.caret {
+  font-size: 0.7em;
+}
+
+.nav-dropdown {
+  position: relative;
+}
+
+.drop-list {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 250px;
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem;
+  background: var(--panel);
+  border: 1px solid var(--line-light);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.nav-dropdown.open .drop-list {
+  display: block;
+}
+
+.drop-link {
+  display: block;
+  padding: 0.55rem 0.8rem;
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.drop-link:hover {
+  background: var(--lavender);
+  color: var(--cosmic-blue-deep);
+}
+
+.drop-link-rx {
+  color: var(--magenta-deep);
+  font-weight: 600;
+  border-top: 1px solid var(--line-light);
+  margin-top: 0.3rem;
+  padding-top: 0.7rem;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  /* Sits hard right whether or not the inline nav is on screen. */
+  margin-left: auto;
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: none;
+  color: var(--ink);
+  font-size: 1rem;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.icon-btn:hover {
+  background: rgba(22, 121, 209, 0.12);
+}
+
+.basket-btn {
+  position: relative;
+}
+
+.basket-count {
+  position: absolute;
+  top: 2px;
+  right: 0;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: var(--radius-pill);
+  background: var(--magenta-deep);
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+}
+
+.menu-btn {
+  display: none;
+}
+
+.burger {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.burger i {
+  width: 20px;
+  height: 2px;
+  background: currentColor;
+  border-radius: 2px;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.burger.x i:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.burger.x i:nth-child(2) {
+  opacity: 0;
+}
+
+.burger.x i:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* ============ Hero ============ */
+/* A full-bleed stage rather than a framed card beside a column of text: the
+   media fills the section edge to edge and the copy sits on top of it. Every
+   still is supplied as a matched pair of crops, wide and tall, so the phone is
+   art-directed rather than handed a scaled-down landscape frame. */
+.hero {
+  position: relative;
+  padding: 0;
+  /* Slides that are shown whole reserve this strip at the foot of the stage.
+     The carousel controls, and the video's own caption and play control, all
+     live in it, so nothing is ever laid over the artwork it belongs to. */
+  --hero-rail: clamp(64px, 9vh, 88px);
+}
+
+.hero-track {
+  position: relative;
+  width: 100%;
+  /* Immersive by intent: most of the screen on a desktop, effectively all of it
+     below the header on a phone (see the phone breakpoint). */
+  min-height: clamp(520px, 82vh, 900px);
+  overflow: hidden;
+  background: #050d24;
+}
+
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.6s ease;
+}
+
+.hero-slide.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.hero-media {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #050d24;
+}
+
+.hero-media picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-media img,
+.hero-media video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-media .placeholder-media {
+  height: 100%;
+}
+
+/* Carries the copy's contrast, so it exists only under slides that have copy.
+   A slide shown whole is not dimmed for the sake of text that is not there.
+   Weighted to the foot of the frame, where the copy sits, and kept light
+   across the middle so the photograph is still the thing you see. */
+.hero-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  /* Stops chosen against the measured worst case, not by eye: the interior
+     photograph is white shelving right where the eyebrow lands, and small text
+     needs 4.5:1 over whatever the photograph actually paints there. The copy
+     block starts around 40% down the stage, so the ramp is steep through the
+     upper forties and the top quarter stays close to clear, leaving the
+     picture to be the thing you see. */
+  background: linear-gradient(
+    180deg,
+    rgba(4, 9, 26, 0.3) 0%,
+    rgba(4, 9, 26, 0.1) 22%,
+    rgba(4, 9, 26, 0.62) 34%,
+    rgba(4, 9, 26, 0.84) 62%,
+    rgba(4, 9, 26, 0.93) 100%
+  );
+}
+
+/* On a wide stage the copy occupies the left of the frame, so the scrim gains
+   a horizontal wash on that side. Without it the headline sits on whatever the
+   photograph happens to put there, which on the storefront is a bright wall. */
+@media (min-width: 901px) {
+  .hero-scrim {
+    background:
+      linear-gradient(
+        90deg,
+        rgba(4, 9, 26, 0.9) 0%,
+        rgba(4, 9, 26, 0.72) 34%,
+        rgba(4, 9, 26, 0.24) 62%,
+        rgba(4, 9, 26, 0.06) 100%
+      ),
+      linear-gradient(180deg, rgba(4, 9, 26, 0.34) 0%, rgba(4, 9, 26, 0.1) 34%, rgba(4, 9, 26, 0.62) 100%);
+  }
+}
+
+.hero-copy {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: clamp(4rem, 9vh, 6.5rem);
+  width: min(var(--wrap), 92vw);
+}
+
+.hero-headline {
+  font-size: var(--text-hero);
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 0.45em;
+  max-width: 22ch;
+  text-wrap: balance;
+  text-shadow: 0 2px 18px rgba(4, 9, 26, 0.55);
+}
+
+.hero-lead {
+  color: var(--ink-soft);
+  font-size: var(--text-lg);
+  max-width: 34rem;
+  text-shadow: 0 1px 12px rgba(4, 9, 26, 0.6);
+}
+
+.hero-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 1.4rem;
+}
+
+.hero-supportline {
+  margin-top: 1.2rem;
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+  text-shadow: 0 1px 12px rgba(4, 9, 26, 0.6);
+}
+
+/* In the rail, at its left end: the carousel controls hold the centre and the
+   play control the right, so the three read as one bar. */
+.hero-video-caption {
+  position: absolute;
+  left: clamp(0.9rem, 3vw, 2rem);
+  bottom: calc((var(--hero-rail) - 1.7rem) / 2);
+  z-index: 2;
+  padding: 0.25rem 0.7rem;
+  border-radius: var(--radius-pill);
+  background: rgba(16, 37, 74, 0.78);
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.hero-video-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
+  border: none;
+  background: linear-gradient(180deg, rgba(16, 37, 74, 0.35), rgba(16, 37, 74, 0.75));
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  font-weight: 600;
+  text-align: center;
+  padding: 1rem;
+}
+
+.hero-play-ring {
+  display: grid;
+  place-items: center;
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  background: var(--cosmic-blue);
+  color: #fff;
+  box-shadow: 0 0 0 8px rgba(22, 121, 209, 0.25), 0 12px 30px rgba(16, 37, 74, 0.4);
+  transition: transform 0.2s;
+}
+
+.hero-video-overlay:hover .hero-play-ring {
+  transform: scale(1.06);
+}
+
+.hero-video-controls {
+  position: absolute;
+  right: clamp(0.9rem, 3vw, 2rem);
+  bottom: calc((var(--hero-rail) - 2.2rem) / 2);
+  z-index: 2;
+  display: flex;
+  gap: 0.4rem;
+}
+
+/* While sound is being withheld the control stops being an icon and says what
+   it does. A speaker glyph alone does not tell anyone there is a track. */
+.icon-btn.on-video.is-labelled {
+  width: auto;
+  gap: 0.35rem;
+  padding-inline: 0.6rem;
+  background: var(--cosmic-blue);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.icon-btn.on-video .sound-label {
+  font-family: var(--font-display);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.icon-btn.on-video {
+  background: rgba(16, 37, 74, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+}
+
+/* Overlaid on the foot of the stage rather than stacked beneath it, so the
+   media keeps the full height it was given. The pill is its own contrast
+   backing: the controls sit over photographs that vary slide to slide. */
+.hero-controls {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: clamp(0.9rem, 2.4vh, 1.6rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.55rem;
+  border-radius: var(--radius-pill);
+  background: rgba(4, 9, 26, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.hero-arrow {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.hero-dots {
+  display: flex;
+  /* The buttons carry their own padding now, so the dots keep their old spacing
+     without leaving untappable gaps between them. */
+  gap: 0;
+}
+
+.hero-dot {
+  width: 26px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: none;
+  display: grid;
+  place-items: center;
+}
+
+.hero-dot::before {
+  content: '';
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid var(--ink-faint);
+  background: transparent;
+  transition: background 0.15s, transform 0.15s;
+}
+
+.hero-dot.active::before {
+  background: var(--cosmic-blue);
+  border-color: var(--cosmic-blue);
+  transform: scale(1.15);
+}
+
+.hero-pause {
+  font-size: 0.85rem;
+}
+
+/* ============ Placeholder media ============ */
+.placeholder-media {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  height: 100%;
+  min-height: 150px;
+  padding: 1rem;
+  background:
+    repeating-linear-gradient(45deg, rgba(22, 121, 209, 0.05) 0 14px, transparent 14px 28px),
+    linear-gradient(160deg, #f6faff, #eef4fd);
+  color: var(--ink-soft);
+  text-align: center;
+}
+
+.placeholder-orbit {
+  width: 44px;
+  height: 44px;
+  color: var(--cosmic-blue);
+  opacity: 0.85;
+}
+
+.placeholder-tag {
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--magenta-deep);
+}
+
+.placeholder-note {
+  font-size: var(--text-xs);
+  max-width: 26rem;
+}
+
+.placeholder-media.compact {
+  min-height: 0;
+  gap: 0.3rem;
+}
+
+.placeholder-media.compact .placeholder-orbit {
+  width: 30px;
+  height: 30px;
+}
+
+/* ============ Page scaffolding ============ */
+.page {
+  padding: clamp(1.4rem, 3vw, 2.4rem) 0 clamp(2.4rem, 5vw, 4rem);
+}
+
+.page-stack {
+  display: grid;
+  gap: clamp(1.2rem, 2.6vw, 2rem);
+}
+
+.home-page {
+  padding-top: 0;
+}
+
+.home-search {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+  padding: 1rem clamp(1rem, 3vw, 1.6rem);
+  margin: clamp(1.2rem, 3vw, 2rem) 0;
+}
+
+/* ============ Search field (orbit motif) ============ */
+.search-orbit {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.search-orbit input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0.6rem 1rem 0.6rem 2.9rem;
+  border: 1.5px solid var(--line-light);
+  border-radius: var(--radius-pill);
+  background: var(--panel);
+  color: var(--ink);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-orbit input:focus {
+  outline: none;
+  border-color: var(--cosmic-blue);
+  box-shadow: 0 0 0 4px rgba(22, 121, 209, 0.16), 0 0 0 8px rgba(234, 79, 141, 0.1);
+}
+
+.search-orbit .search-icon {
+  position: absolute;
+  left: 1rem;
+  color: var(--ink-faint);
+  pointer-events: none;
+}
+
+.search-orbit.large input {
+  min-height: 54px;
+  font-size: var(--text-lg);
+}
+
+/* ============ Mode tabs ============ */
+.mode-tabs {
+  display: inline-flex;
+  gap: 0.25rem;
+  margin: 1.2rem 0;
+  padding: 0.25rem;
+  border-radius: var(--radius-pill);
+  background: var(--panel-cool);
+  border: 1px solid var(--line-light);
+}
+
+.mode-tab {
+  min-height: 44px;
+  padding: 0.5rem 1.4rem;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--ink-soft);
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  transition: background 0.15s, color 0.15s;
+}
+
+.mode-tab.active {
+  background: var(--cosmic-blue);
+  color: #fff;
+}
+
+/* ============ Shop controls ============ */
+.search-row {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.filters-toggle {
+  flex-shrink: 0;
+}
+
+.filter-rail {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 0.8rem 1rem;
+  align-items: end;
+  padding: 1rem;
+  margin-bottom: 1.2rem;
+  border: 1px solid var(--line-light);
+  border-radius: var(--radius-md);
+  background: var(--panel-cool);
+}
+
+.filter-rail .field {
+  margin-bottom: 0;
+}
+
+.check-field {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+}
+
+.check-field input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--cosmic-blue);
+}
+
+.results-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin: 0.6rem 0 1.2rem;
+}
+
+.results-count {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+  font-weight: 600;
+}
+
+.sort-field {
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sort-field label {
+  margin: 0;
+}
+
+.sort-field select {
+  min-height: 40px;
+}
+
+/* ============ Category cards ============ */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+  margin-top: 1.2rem;
+}
+
+.category-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 1.2rem 1.2rem 1rem;
+  border: 1px solid var(--line-light);
+  border-radius: var(--radius-md);
+  background: var(--panel);
+  color: var(--ink);
+  text-align: left;
+  text-decoration: none;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
+}
+
+.category-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-card-hover);
+  border-color: var(--cosmic-blue);
+}
+
+.category-card-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-md);
+}
+
+.category-card-desc {
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+}
+
+.category-card-cta {
+  margin-top: auto;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--cosmic-blue-deep);
+}
+
+.rx-card {
+  border-color: rgba(234, 79, 141, 0.45);
+}
+
+.rx-card .category-card-cta {
+  color: var(--magenta-deep);
+}
+
+/* ============ A–Z index ============ */
+.alpha-index-wrap {
+  overflow-x: auto;
+  margin: 1rem 0 0.4rem;
+  padding-bottom: 0.4rem;
+}
+
+.alpha-index {
+  display: flex;
+  gap: 0.3rem;
+  min-width: max-content;
+}
+
+.alpha-letter {
+  min-width: 44px;
+  min-height: 44px;
+  border: 1px solid var(--line-light);
+  border-radius: var(--radius-sm);
+  background: var(--panel);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-weight: 600;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+}
+
+.alpha-letter:hover {
+  border-color: var(--cosmic-blue);
+  color: var(--cosmic-blue-deep);
+}
+
+.alpha-letter.active {
+  background: var(--cosmic-blue);
+  border-color: var(--cosmic-blue);
+  color: #fff;
+}
+
+.alpha-letter.empty {
+  color: var(--ink-faint);
+  background: var(--panel-cool);
+}
+
+/* ============ Product cards ============ */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.1rem;
+  margin-top: 0.6rem;
+}
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line-light);
+  border-radius: var(--radius-md);
+  background: var(--panel);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.18s, box-shadow 0.18s;
+}
+
+.product-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.product-card-media {
+  position: relative;
+  display: block;
+  aspect-ratio: 1;
+  background: var(--panel-cool);
+  text-decoration: none;
+  color: inherit;
+}
+
+.product-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* packaging is never cropped */
+  padding: 0.8rem;
+}
+
+.product-card-media .placeholder-media {
+  height: 100%;
+}
+
+.card-flag {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.product-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.9rem 1rem 1.1rem;
+  flex: 1;
+}
+
+.product-brand {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.product-name {
+  font-size: var(--text-md);
+  font-weight: 700;
+  margin: 0;
+}
+
+.product-name a {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.product-name a:hover {
+  color: var(--cosmic-blue-deep);
+}
+
+.product-size {
+  font-size: var(--text-xs);
+  color: var(--ink-faint);
+}
+
+.product-meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.15rem 0.6rem;
+  margin-top: 0.2rem;
+}
+
+.product-price {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+/* Most of the catalogue has no confirmed price yet, so "Confirm price" is the
+   common case. Rendering it at full price weight shouted, and broke across two
+   lines inside the card. It reads as the status it is. */
+.product-price.pending {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.product-compare {
+  margin-left: 0.4rem;
+  font-weight: 400;
+  color: var(--ink-faint);
+  font-size: var(--text-xs);
+}
+
+.product-tags {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.product-cat {
+  font-size: var(--text-xs);
+  color: var(--ink-faint);
+  text-decoration: none;
+}
+
+a.product-cat:hover {
+  color: var(--cosmic-blue-deep);
+  text-decoration: underline;
+}
+
+.product-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: auto;
+  padding-top: 0.7rem;
+}
+
+/* ============ Pharmacist card ============ */
+.pharmacist-card {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  padding: 1.2rem 1.3rem;
+  margin: 1rem 0;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--lavender), #f6e9f4);
+  border: 1px solid var(--line-light);
+  color: var(--ink);
+}
+
+.pharmacist-card h3 {
+  margin: 0 0 0.25rem;
+  font-size: var(--text-lg);
+}
+
+.pharmacist-card p {
+  margin: 0 0 0.8rem;
+  color: var(--ink-soft);
+  font-size: var(--text-sm);
+}
+
+.pharmacist-card-icon {
+  color: var(--cosmic-blue);
+  flex-shrink: 0;
+}
+
+.pharmacist-card-context {
+  font-weight: 600;
+  color: var(--magenta-deep) !important;
+}
+
+/* ============ Empty state ============ */
+.empty-state {
+  padding: 1.6rem 0 0.5rem;
+  max-width: 36rem;
+}
+
+.empty-state h2 {
+  font-size: var(--text-xl);
+}
+
+.empty-actions {
+  margin: 0.8rem 0 0.4rem;
+}
+
+/* ============ Detail view ============ */
+.breadcrumb {
+  margin-bottom: 1rem;
+  font-size: var(--text-sm);
+}
+
+.breadcrumb a {
+  color: var(--cosmic-blue-deep);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 440px) 1fr;
+  gap: clamp(1.4rem, 3.5vw, 3rem);
+  align-items: start;
+}
+
+.detail-media {
+  border: 1px solid var(--line-light);
+  border-radius: var(--radius-md);
+  background: var(--panel-cool);
+  aspect-ratio: 1;
+  overflow: hidden;
+}
+
+.detail-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 1.2rem;
+}
+
+.detail-media .placeholder-media {
+  height: 100%;
+}
+
+.detail-name {
+  font-size: var(--text-2xl);
+  margin-bottom: 0.4em;
+}
+
+.detail-desc {
+  color: var(--ink-soft);
+  max-width: 40rem;
+}
+
+.detail-facts {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.4rem 1.2rem;
+  margin: 1rem 0 1.2rem;
+  font-size: var(--text-sm);
+}
+
+.detail-facts dt {
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: var(--text-xs);
+  color: var(--ink-faint);
+  align-self: center;
+}
+
+.detail-facts dd {
+  margin: 0;
+}
+
+.detail-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  margin: 1rem 0;
+}
+
+.detail-review-note {
+  width: 100%;
+  margin: 0;
+  font-size: var(--text-sm);
+}
+
+.related {
+  margin-top: clamp(1.8rem, 4vw, 3rem);
+}
+
+.related h2 {
+  font-size: var(--text-xl);
+}
+
+/* ============ Quantity control ============ */
+.qty {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--line-light);
+  border-radius: var(--radius-pill);
+  background: var(--panel);
+}
+
+.qty-btn {
+  width: 42px;
+  height: 42px;
+  border: none;
+  background: none;
+  color: var(--ink);
+  font-size: 1.2rem;
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+}
+
+.qty-btn:hover {
+  color: var(--cosmic-blue-deep);
+}
+
+.qty-value {
+  min-width: 30px;
+  text-align: center;
+  font-weight: 700;
+}
+
+/* ============ Basket drawer ============ */
+.drawer-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(16, 37, 74, 0.42);
+  backdrop-filter: blur(2px);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.basket-drawer {
+  width: min(440px, 100%);
+  height: 100%;
+  overflow-y: auto;
+  background: var(--panel);
+  color: var(--ink);
+  padding: 1.2rem 1.3rem 2rem;
+  box-shadow: -18px 0 50px rgba(16, 37, 74, 0.22);
+  display: flex;
+  flex-direction: column;
+}
+
+.basket-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.8rem;
+}
+
+.basket-head h2 {
+  margin: 0;
+  font-size: var(--text-xl);
+}
+
+.basket-head .icon-btn {
+  color: var(--ink);
+}
+
+.basket-head .icon-btn:hover {
+  background: var(--lavender);
+}
+
+.basket-empty {
+  padding: 2rem 0;
+}
+
+.basket-lines {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.9rem;
+}
+
+.basket-line {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 0.8rem;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid var(--line-light);
+}
+
+.basket-thumb {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--panel-cool);
+}
+
+.basket-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+}
+
+.basket-thumb .placeholder-media {
+  height: 100%;
+  padding: 0.3rem;
+}
+
+.basket-thumb .placeholder-media .placeholder-note {
+  display: none;
+}
+
+.basket-line-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.basket-line-name {
+  font-weight: 700;
+  font-size: var(--text-sm);
+}
+
+.basket-line-brand {
+  font-size: var(--text-xs);
+  color: var(--ink-faint);
+}
+
+.basket-line-price {
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+}
+
+.basket-line-info .badge {
+  align-self: flex-start;
+  margin-top: 0.2rem;
+}
+
+.basket-line-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.link-btn {
+  border: none;
+  background: none;
+  padding: 0.35rem 0.2rem;
+  color: var(--ink-faint);
+  font-size: var(--text-sm);
+  text-decoration: underline;
+}
+
+.link-btn:hover {
+  color: var(--danger);
+}
+
+.basket-summary {
+  margin-top: 1.1rem;
+  display: grid;
+  gap: 0.7rem;
+}
+
+.basket-subtotal {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: var(--text-md);
+}
+
+.basket-subtotal strong {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+}
+
+.basket-note {
+  margin: 0;
+  font-size: var(--text-xs);
+}
+
+.basket-clear {
+  justify-self: center;
+}
+
+/* ============ Home sections ============ */
+.pathway-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.pathway-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 1.2rem 1.2rem 1.1rem;
+  border: 1px solid var(--line-light);
+  border-radius: var(--radius-md);
+  background: var(--panel-cool);
+  color: var(--ink);
+  text-decoration: none;
+  transition: transform 0.18s, border-color 0.18s, background 0.18s;
+}
+
+.pathway-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--cosmic-blue);
+  background: var(--lavender);
+}
+
+.pathway-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+
+.pathway-desc {
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+}
+
+.pathway-arrow {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  color: var(--cosmic-blue);
+  font-weight: 700;
+}
+
+.section-cta {
+  margin-top: 1.4rem;
+  text-align: center;
+}
+
+.section-cta-row {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  margin-top: 1.2rem;
+}
+
+.section-cta-row.center {
+  justify-content: center;
+}
+
+/* Standalone promotional/CTA bands read best centered */
+.band-center {
+  text-align: center;
+}
+
+.band-center .section-intro {
+  margin-inline: auto;
+}
+
+.band-center .notice {
+  margin-inline: auto;
+  max-width: 44rem;
+}
+
+.guidance-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: clamp(1.4rem, 4vw, 3rem);
+  align-items: center;
+}
+
+.guidance-list {
+  margin: 0 0 1.4rem;
+  padding-left: 1.2rem;
+  color: var(--ink-soft);
+  display: grid;
+  gap: 0.4rem;
+}
+
+/* ---- Pharmacist portrait ---- */
+.guidance-visual {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  margin: 0;
+  min-height: 340px;
+}
+
+/* A true circle behind the cutout: crisp edge, brand gradient fill. */
+.guidance-halo {
+  position: absolute;
+  bottom: 3.1rem;
+  left: 50%;
+  width: min(330px, 80%);
+  aspect-ratio: 1 / 1;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: linear-gradient(155deg, rgba(19, 181, 230, 0.3), rgba(22, 121, 209, 0.18) 46%, rgba(234, 79, 141, 0.24));
+  box-shadow: 0 0 0 1px rgba(22, 121, 209, 0.12), 0 20px 40px rgba(16, 37, 74, 0.08);
+}
+
+.guidance-portrait {
+  position: relative;
+  width: auto;
+  height: auto;
+  max-height: 420px;
+  max-width: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 16px 26px rgba(16, 37, 74, 0.16));
+}
+
+.guidance-caption {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 0.7rem;
+  padding: 0.45rem 1.2rem;
+  border-radius: var(--radius-pill);
+  background: #ffffff;
+  border: 1px solid var(--line-light);
+  box-shadow: var(--shadow-card);
+  line-height: 1.25;
+}
+
+.guidance-caption strong {
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  color: var(--ink);
+}
+
+.guidance-caption span {
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--magenta-deep);
+  text-wrap: balance;
+}
+
+.guidance-caption {
+  max-width: min(100%, 22rem);
+  text-align: center;
+}
+
+.how-steps {
+  counter-reset: step;
+  list-style: none;
+  margin: 1.4rem 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.2rem;
+}
+
+.how-steps li {
+  counter-increment: step;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 1.1rem 1.1rem 1.2rem;
+  border: 1px solid var(--line-light);
+  border-radius: var(--radius-md);
+  background: var(--panel-cool);
+}
+
+.how-steps li::before {
+  content: counter(step);
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  margin: 0 auto 0.6rem;
+  border-radius: 50%;
+  background: var(--cosmic-blue);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+
+.how-steps strong {
+  font-family: var(--font-display);
+}
+
+.how-steps span {
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+}
+
+.testimonial-placeholder {
+  padding: 1.4rem;
+  border: 1.5px dashed var(--line-light);
+  border-radius: var(--radius-md);
+  background: var(--panel-cool);
+  max-width: 44rem;
+}
+
+.visit-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.6rem;
+  margin-top: 1rem;
+}
+
+.visit-grid h2,
+.visit-grid h3 {
+  font-size: var(--text-md);
+  margin-bottom: 0.3rem;
+}
+
+.visit-grid p {
+  margin-bottom: 0.9rem;
+  color: var(--ink-soft);
+}
+
+.visit-grid a:not(.btn) {
+  color: var(--cosmic-blue-deep);
+}
+
+/* ---- Contact rows: every detail is a live action ---- */
+.contact-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.9fr) 1.1fr;
+  gap: clamp(1.2rem, 3vw, 2.2rem);
+  align-items: start;
+  margin-top: 1.4rem;
+}
+
+.contact-rows {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.contact-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--line-light);
+  border-radius: var(--radius-md);
+  background: var(--panel);
+  color: var(--ink);
+  text-decoration: none;
+  transition: border-color 0.18s, box-shadow 0.18s, transform 0.18s;
+}
+
+a.contact-row:hover,
+a.contact-row:focus-visible {
+  border-color: var(--cosmic-blue);
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
+}
+
+.contact-row-static {
+  background: var(--panel-cool);
+}
+
+.contact-row-icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--lavender);
+  color: var(--cosmic-blue);
+}
+
+/* Rows whose destination owns a brand colour keep that colour. */
+.contact-row-icon.branded {
+  background: color-mix(in srgb, var(--tint) 14%, #ffffff);
+  color: var(--tint);
+}
+
+a.contact-row:hover .contact-row-icon {
+  background: var(--cosmic-blue);
+  color: #ffffff;
+}
+
+a.contact-row:hover .contact-row-icon.branded {
+  background: color-mix(in srgb, var(--tint) 24%, #ffffff);
+  color: var(--tint);
+}
+
+.contact-row-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.contact-row-label {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.contact-row-value {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--text-sm);
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+a.contact-row .contact-row-value {
+  color: var(--cosmic-blue-deep);
+  font-weight: 600;
+}
+
+.contact-hours-line strong {
+  font-weight: 700;
+}
+
+.contact-social {
+  margin-top: clamp(1.6rem, 3vw, 2.4rem);
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--line-light);
+  text-align: center;
+}
+
+.contact-social h2 {
+  font-size: var(--text-md);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 0.9rem;
+}
+
+/* ---- Location map ---- */
+.location-map {
+  display: block;
+  position: relative;
+  min-height: 320px;
+  height: 100%;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--line-light);
+  background: var(--panel-cool);
+  box-shadow: var(--shadow-card);
+}
+
+.location-map iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  border: 0;
+}
+
+.location-map-fallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1.6rem 1.2rem;
+  text-align: center;
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.location-map-grid {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(22, 121, 209, 0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(22, 121, 209, 0.09) 1px, transparent 1px);
+  background-size: 34px 34px;
+  pointer-events: none;
+}
+
+.location-map-pin {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: var(--magenta-deep);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.location-map-body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+}
+
+.location-map-body strong {
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  color: var(--ink);
+}
+
+.location-map-cta {
+  margin-top: 0.4rem;
+  font-weight: 700;
+  color: var(--cosmic-blue-deep);
+}
+
+.location-map-fallback:hover .location-map-cta {
+  text-decoration: underline;
+}
+
+/* ============ Services / About ============ */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-top: 1.2rem;
+}
+
+.service-card {
+  padding: 1.2rem 1.2rem 1.1rem;
+  border: 1px solid var(--line-light);
+  border-radius: var(--radius-md);
+  background: var(--panel-cool);
+}
+
+.service-card h2,
+.service-card h3 {
+  font-size: var(--text-md);
+  margin-bottom: 0.35rem;
+}
+
+.service-card p {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+}
+
+.services-note {
+  margin-top: 1rem;
+  font-size: var(--text-sm);
+}
+
+/* The steps above it are a centred grid, so the button that follows them
+   centres too rather than hanging off the left edge. */
+.rx-cta {
+  display: flex;
+  width: fit-content;
+  margin: 0.6rem auto 1.2rem;
+}
+
+.landing-cats {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-top: 0.8rem;
+}
+
+.pmos-band .btn {
+  margin-top: 0.4rem;
+}
+
+.pmos-disclaimer {
+  margin-top: 1.2rem;
+  max-width: 52rem;
+}
+
+/* ============ Blog ============ */
+.article-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.1rem;
+  margin-top: 1rem;
+}
+
+.article-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line-light);
+  border-radius: var(--radius-md);
+  background: var(--panel);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.18s, box-shadow 0.18s;
+}
+
+.article-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.article-card-media {
+  display: block;
+  aspect-ratio: 16 / 9;
+  background: var(--panel-cool);
+  text-decoration: none;
+  color: inherit;
+}
+
+.article-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.article-card-media .placeholder-media {
+  height: 100%;
+}
+
+.article-card-body {
+  padding: 1rem 1.1rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.article-kicker {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--magenta-deep);
+}
+
+.article-card-body h3 {
+  font-size: var(--text-lg);
+  margin: 0;
+}
+
+.article-card-body h3 a {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.article-card-body h3 a:hover {
+  color: var(--cosmic-blue-deep);
+}
+
+.article-card-body p {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+}
+
+.article-body {
+  max-width: 100%;
+}
+
+.article-body > p,
+.article-body > h2 {
+  max-width: 42rem;
+}
+
+.article-byline {
+  color: var(--ink-faint);
+  font-size: var(--text-sm);
+}
+
+.article-hero {
+  aspect-ratio: 16 / 7;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin: 1rem 0 1.4rem;
+  background: var(--panel-cool);
+}
+
+.article-hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.article-hero .placeholder-media {
+  height: 100%;
+}
+
+/* ============ Gallery ============ */
+.gallery-filters {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin: 0.8rem 0 1.2rem;
+}
+
+.gallery-grid {
+  columns: 3 240px;
+  column-gap: 1rem;
+}
+
+.gallery-item {
+  break-inside: avoid;
+  margin: 0 0 1rem;
+  border: 1px solid var(--line-light);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--panel);
+  box-shadow: var(--shadow-card);
+}
+
+.gallery-item.portrait .placeholder-media {
+  aspect-ratio: 3 / 4;
+}
+
+.gallery-item.landscape .placeholder-media {
+  aspect-ratio: 4 / 3;
+}
+
+.gallery-item.square .placeholder-media {
+  aspect-ratio: 1;
+}
+
+.gallery-item figcaption {
+  padding: 0.6rem 0.9rem;
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+}
+
+.gallery-kind {
+  color: var(--magenta-deep);
+}
+
+.gallery-photo-btn {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+}
+
+.gallery-item video {
+  width: 100%;
+}
+
+/* ============ Lightbox ============ */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: grid;
+  place-items: center;
+  background: rgba(16, 37, 74, 0.8);
+  padding: 1.5rem;
+}
+
+.lightbox-inner {
+  position: relative;
+  max-width: min(920px, 94vw);
+  color: #ffffff;
+}
+
+.lightbox-inner img {
+  max-height: 78vh;
+  width: auto;
+  max-width: 100%;
+  border-radius: var(--radius-md);
+  margin-inline: auto;
+}
+
+.lightbox-inner p {
+  text-align: center;
+  margin-top: 0.8rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: -48px;
+  right: 0;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.detail-media-col {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Extra views of the same pack. Only rendered when a product has more than one
+   photograph, so most detail pages are unchanged. */
+.detail-views {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.7rem;
+}
+
+.detail-view {
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  border: 1px solid var(--line-light);
+  border-radius: 10px;
+  background: #ffffff;
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.detail-view img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.detail-view:hover,
+.detail-view:focus-visible {
+  border-color: var(--cosmic-blue);
+}
+
+.detail-view.active {
+  border-color: var(--cosmic-blue);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--cosmic-blue) 28%, transparent);
+}
+
+/* ============ Footer ============ */
+.site-footer {
+  background: linear-gradient(180deg, var(--footer-bg-a), var(--footer-bg-b));
+  border-top: 1px solid var(--line-light);
+  color: var(--ink-soft);
+  padding: clamp(2.4rem, 5vw, 3.6rem) 0 1.6rem;
+  margin-top: clamp(1.5rem, 4vw, 3rem);
+  text-align: center;
+}
+
+.footer-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.1rem;
+}
+
+.footer-logo {
+  display: inline-block;
+  line-height: 0;
+  text-decoration: none;
+}
+
+.footer-logo img {
+  width: min(260px, 70vw);
+  height: auto;
+}
+
+.footer-promise {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  color: var(--ink);
+}
+
+.footer-contact {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.3rem 0.6rem;
+  margin: 0;
+  font-style: normal;
+  font-size: var(--text-sm);
+  max-width: 46rem;
+}
+
+.footer-contact a {
+  color: var(--cosmic-blue-deep);
+  text-decoration: none;
+}
+
+.footer-contact a:hover {
+  text-decoration: underline;
+}
+
+.footer-sep {
+  color: var(--magenta-deep);
+}
+
+.footer-hours {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.3rem 1.4rem;
+  font-size: var(--text-sm);
+}
+
+.footer-hours strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* ---- Social row ---- */
+.social-row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  list-style: none;
+  margin: 0.2rem 0 0;
+  padding: 0;
+}
+
+.social-link {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid var(--line-light);
+  background: #ffffff;
+  box-shadow: var(--shadow-card);
+  /* Each platform keeps its own brand colour. */
+  color: var(--tint);
+  text-decoration: none;
+  transition: color 0.2s, border-color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+
+/* The drift moves the icon, never the link. Animating the anchor itself moved
+   its hit target for most of every 5.2s cycle, so a tap aimed at the icon could
+   land beside it: exactly the defect the basket button had. */
+.social-link > svg {
+  animation: social-drift 5.2s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 0.55s);
+  will-change: transform;
+}
+
+@keyframes social-drift {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  35% {
+    transform: translateY(-4px) rotate(-5deg);
+  }
+  70% {
+    transform: translateY(2px) rotate(4deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .social-link > svg {
+    animation: none;
+  }
+}
+
+.social-link:hover,
+.social-link:focus-visible {
+  color: var(--tint);
+  border-color: var(--tint);
+  background: #ffffff;
+  box-shadow: 0 10px 24px rgba(16, 37, 74, 0.16), 0 0 0 4px color-mix(in srgb, var(--tint) 20%, transparent);
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .social-link {
+    animation: none;
+  }
+}
+
+.footer-nav {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.4rem clamp(1.5rem, 6vw, 4.5rem);
+  width: min(100%, 40rem);
+  margin-top: 0.8rem;
+  padding-top: 1.6rem;
+  border-top: 1px solid var(--line-light);
+  text-align: left;
+}
+
+.footer-nav-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.55rem;
+  text-align: left;
+}
+
+.footer-nav-col h2 {
+  margin: 0 0 0.35rem;
+  font-family: var(--font-display);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.footer-nav a {
+  color: var(--ink-soft);
+  font-size: var(--text-md);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.footer-nav a:hover {
+  color: var(--cosmic-blue-deep);
+}
+
+.footer-reach {
+  margin: 0;
+  font-size: var(--text-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.footer-legal {
+  margin-top: 2rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--line-light);
+  font-size: var(--text-xs);
+  text-align: center;
+}
+
+.footer-legal p {
+  max-width: 52rem;
+  margin-inline: auto;
+}
+
+.footer-fineprint {
+  margin-bottom: 0;
+}
+
+/* ============ Responsive ============ */
+@media (max-width: 960px) {
+  .guidance-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* She sits directly below the button once stacked, so centre it over her. */
+  .guidance-grid .btn-whatsapp {
+    display: inline-flex;
+    width: fit-content;
+    margin-inline: auto;
+  }
+
+  .guidance-grid > div:first-child {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 1000px) {
+  :root {
+    --header-h: 64px;
+  }
+
+  /* The full lockup stays on phones. It scales down with the viewport rather
+     than being swapped for the standalone mark, and the action icons give back
+     a little width so it keeps as much room as possible. */
+  /* 48vw keeps the lockup inside the row at 320px once the three action icons
+     and the wrap padding are accounted for; 52vw overflowed by 9px there. */
+  .brand-logo {
+    width: clamp(140px, 48vw, 232px);
+  }
+
+  .brand-icon {
+    display: none;
+  }
+
+  .menu-btn {
+    display: inline-flex;
+  }
+
+  /* Anchored to the header rather than the viewport: .site-header carries a
+     backdrop-filter, which makes it the containing block for fixed children —
+     a fixed panel would collapse to the header's own height and clip the menu.
+     Closed state is display:none so the panel can never widen the layout. */
+  .main-nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 70;
+    display: none;
+    background: var(--panel);
+    border-top: 1px solid var(--line-light);
+    border-bottom: 1px solid var(--line-dark);
+    box-shadow: 0 24px 46px rgba(16, 37, 74, 0.16);
+    padding: 0.7rem clamp(1rem, 4vw, 2.4rem) 1.1rem;
+    max-height: min(78vh, 620px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .main-nav.open {
+    display: block;
+    animation: nav-drop 0.22s ease;
+  }
+
+  @keyframes nav-drop {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .nav-list {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.2rem;
+  }
+
+  .nav-link {
+    width: 100%;
+    justify-content: space-between;
+    min-height: 46px;
+    font-size: var(--text-md);
+  }
+
+  /* Products behaves as an accordion on mobile */
+  .nav-dropdown .drop-list {
+    position: static;
+    box-shadow: none;
+    border: none;
+    background: rgba(22, 121, 209, 0.07);
+    border-radius: var(--radius-sm);
+    min-width: 0;
+  }
+
+  .drop-link {
+    color: var(--ink);
+  }
+
+  .drop-link:hover {
+    background: rgba(22, 121, 209, 0.14);
+    color: #fff;
+  }
+
+  .drop-link-rx {
+    color: var(--magenta-deep);
+    border-top-color: var(--line-light);
+  }
+
+}
+
+/* Phone-only layout (the 1000px block above is for the nav and brand lockup). */
+@media (max-width: 860px) {
+  .contact-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  /* Give the lockup room: slightly tighter touch targets, still >= 40px. */
+  .header-actions {
+    gap: 0.15rem;
+  }
+
+  .icon-btn {
+    width: 40px;
+  }
+
+  .brand {
+    padding-right: 0.25rem;
+  }
+}
+
+@media (max-width: 760px) {
+  .home-search {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-row {
+    flex-wrap: wrap;
+  }
+
+  .results-bar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .basket-drawer {
+    width: 100%;
+  }
+
+  .gallery-grid {
+    columns: 2 160px;
+  }
+}
+
+
+
+@media (max-width: 520px) {
+  /* Address, phone and email each take their own line on a phone: inline
+     separators end up orphaned at the start of a wrapped line otherwise. */
+  .footer-contact {
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .footer-contact .footer-sep {
+    display: none;
+  }
+
+  /* The two columns hold on phones too: the client's reference keeps EXPLORE
+     and COMPANY side by side at every width. Tighter gutter and slightly
+     smaller links so the longest labels still fit two columns at 360px. */
+  .footer-nav {
+    gap: 1.5rem 1.1rem;
+    width: 100%;
+  }
+
+  .footer-nav a {
+    font-size: var(--text-sm);
+    line-height: 1.4;
+  }
+}
+
+@media (max-width: 420px) {
+  .gallery-grid {
+    columns: 1;
+  }
+
+  .product-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============ Add-to-cart meteorite ============ */
+
+/* Positioned at the origin by the Web Animations transform, so it needs no
+   layout of its own. pointer-events: none keeps it out of the way of the click
+   that spawned it. */
+.cart-meteor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 200;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle at 35% 35%, #fff 0%, var(--meteor-core) 55%, var(--meteor-core) 100%);
+  box-shadow:
+    0 0 10px 3px var(--meteor-glow),
+    /* The tail: a run of fading copies behind the head, angled by the
+       rotation the animation applies. */
+    -10px 0 8px -2px var(--meteor-trail),
+    -20px 0 10px -4px var(--meteor-glow),
+    -30px 0 12px -6px var(--meteor-glow);
+}
+
+/* Hidden while the meteorite is in the air, so it reads as the meteorite
+   turning into the count on impact rather than the count racing ahead of it. */
+.basket-btn.awaiting .basket-count {
+  opacity: 0;
+  transform: scale(0.2);
+}
+
+/* The badge takes over the moment the meteorite lands. */
+.basket-count.landed {
+  animation: badge-land 0.42s cubic-bezier(0.2, 1.4, 0.4, 1);
+}
+
+@keyframes badge-land {
+  0% {
+    transform: scale(0.2);
+    box-shadow: 0 0 0 10px var(--meteor-glow);
+  }
+  55% {
+    transform: scale(1.35);
+    box-shadow: 0 0 0 4px transparent;
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+/* A brief nudge on the basket itself, so the hit registers. */
+.basket-btn.struck > svg {
+  animation: basket-struck 0.4s ease;
+}
+
+@keyframes basket-struck {
+  0%, 100% { transform: translateY(0); }
+  35% { transform: translateY(-3px) scale(1.08); }
+  70% { transform: translateY(1px) scale(0.98); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cart-meteor { display: none; }
+  .basket-count.landed,
+  .basket-btn.struck { animation: none; }
+}
+
+/* ============ What's new: the PMOS kits ============ */
+
+/* Centred heading with the nova pinned to the far right. The nova is taken out
+   of flow so the copy stays optically centred in the panel rather than being
+   pushed off-centre by the badge's width. */
+.whats-new-head {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 96px;
+}
+
+.whats-new-head-copy {
+  text-align: center;
+  max-width: 46rem;
+}
+
+.whats-new-head-copy .section-intro {
+  margin-inline: auto;
+}
+
+.whats-new-head .nova {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+/* The marquee. The track holds the list twice and slides exactly half its
+   width, so the loop point is invisible. */
+.kits-marquee {
+  margin-top: 1.6rem;
+  /* The track is width: max-content. Without containment its intrinsic width
+     feeds back into the auto-sized .page-stack grid column, which then sizes
+     every section to the track and pushes the page ~1080px wider; overflow
+     never gets a chance to clip because the container itself has grown.
+     contain: inline-size makes this element's width independent of its
+     contents, which is exactly the guarantee needed here. */
+  width: 100%;
+  contain: inline-size;
+  overflow: hidden;
+  border: 1px solid var(--line-light);
+  border-radius: var(--radius-md);
+  background: var(--panel-cool);
+  /* Fade the ends so items enter and leave rather than being cut off. */
+  mask: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+
+.kits-marquee-track {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 3vw, 2.4rem);
+  width: max-content;
+  padding: 0.9rem clamp(0.5rem, 1.5vw, 1.2rem);
+  /* 46s put the strip at about 24px/s on a phone, which read as stalled.
+     This is roughly two and a half times that. */
+  animation: kits-march 18s linear infinite;
+}
+
+.kits-marquee-track img {
+  height: clamp(96px, 13vw, 150px);
+  /* Width comes from the intrinsic ratio the width/height attributes carry, so
+     the track has its full width from the first layout rather than after the
+     last decode. */
+  width: auto;
+  flex: none;
+  display: block;
+  border-radius: var(--radius-sm);
+}
+
+@keyframes kits-march {
+  from { transform: translateX(0); }
+  /* Half the track is one full copy of the list. */
+  to { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kits-marquee-track {
+    animation: none;
+  }
+}
+
+/* The line that used to be the heading, now stepped down under the collection
+   name so the section reads name first, then the problem it answers. */
+.kits-lead {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.kits-prompt {
+  margin: 1.8rem 0 0.2rem;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* Five cards across on a wide screen; on narrower ones they wrap, and the
+   orphan on the last row centres instead of hanging off to the left. */
+.kits-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  list-style: none;
+  margin: 0.9rem 0 0;
+  padding: 0;
+}
+
+.kit-card {
+  flex: 1 1 180px;
+  max-width: 240px;
+}
+
+.kit-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.7rem 0.7rem 0.9rem;
+  border: 1px solid var(--line-light);
+  border-radius: var(--radius-md);
+  background: var(--panel-cool);
+}
+
+/* The boxes are photographed on Cosmic's own nebula, so the tile keeps that
+   backdrop rather than fighting it with a white cutout. */
+.kit-card img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.45rem;
+}
+
+.kit-card strong {
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  color: var(--ink);
+}
+
+.kit-card span {
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+}
+
+.kits-note {
+  margin: 1.3rem 0 0;
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+  max-width: 52rem;
+}
+
+.whats-new .section-cta-row {
+  margin-top: 1.1rem;
+}
+
+/* Stacked on a phone, the buttons read better centred under the copy than
+   pinned to the left edge. */
+@media (max-width: 760px) {
+  .kits-close-copy {
+    text-align: center;
+  }
+
+  .kits-close-copy .kits-note {
+    margin-inline: auto;
+  }
+
+  .whats-new .section-cta-row {
+    justify-content: center;
+  }
+
+  .whats-new .section-cta-row .btn {
+    width: min(100%, 20rem);
+    justify-content: center;
+  }
+}
+
+@media (max-width: 760px) {
+  .whats-new-head {
+    flex-direction: column-reverse;
+    gap: 0.6rem;
+  }
+
+  .whats-new-head .nova {
+    position: static;
+  }
+}
+
+@media (max-width: 520px) {
+  .kits-grid {
+    gap: 0.7rem;
+  }
+
+  .kit-card {
+    flex: 1 1 calc(50% - 0.7rem);
+    max-width: calc(50% - 0.35rem);
+    padding: 0.55rem 0.55rem 0.7rem;
+  }
+}
+
+/* The closing band: the real kits in hand, beside the invitation. */
+.kits-close {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(1.2rem, 3vw, 2.4rem);
+  align-items: center;
+  margin-top: 1.6rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line-light);
+}
+
+.kits-photo {
+  margin: 0;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--line-light);
+  line-height: 0;
+}
+
+.kits-photo img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.kits-headline {
+  margin: 0 0 0.6rem;
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.kits-close .kits-note {
+  margin-top: 0;
+}
+
+@media (max-width: 760px) {
+  .kits-close {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============ Supernova badge ============ */
+
+.nova {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 96px;
+  height: 96px;
+  flex: none;
+  /* Isolated so the ejecta and shockwaves cannot paint over neighbouring copy. */
+  isolation: isolate;
+}
+
+.nova > * {
+  grid-area: 1 / 1;
+}
+
+/* The collapsing core: flares bright, then folds away as the word arrives. */
+.nova-core {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, #fff 0%, var(--cyan) 40%, var(--brand-pink) 100%);
+  box-shadow: 0 0 18px 6px var(--meteor-glow);
+  animation: nova-core 7s cubic-bezier(0.3, 0, 0.2, 1) infinite;
+}
+
+@keyframes nova-core {
+  0% { transform: scale(0); opacity: 0; }
+  6% { transform: scale(0.5); opacity: 1; }
+  16% { transform: scale(2.7); opacity: 1; }
+  26% { transform: scale(0.35); opacity: 0.9; }
+  34% { transform: scale(0); opacity: 0; }
+  100% { transform: scale(0); opacity: 0; }
+}
+
+/* Shockwaves racing outward from the collapse. */
+.nova-wave {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--brand-pink);
+  opacity: 0;
+  animation: nova-wave 7s cubic-bezier(0.15, 0.7, 0.3, 1) infinite;
+}
+
+.nova-wave-2 {
+  border-color: var(--cyan);
+  animation-delay: 0.18s;
+}
+
+@keyframes nova-wave {
+  0%, 10% { transform: scale(0.2); opacity: 0; }
+  16% { opacity: 0.85; }
+  32% { transform: scale(3.6); opacity: 0; }
+  100% { transform: scale(3.6); opacity: 0; }
+}
+
+/* The accretion ring: always turning, brightest around the burst. */
+.nova-ring {
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, transparent 0deg, var(--cyan) 70deg, var(--brand-pink) 170deg, transparent 250deg);
+  mask: radial-gradient(circle, transparent 60%, #000 62%, #000 72%, transparent 74%);
+  animation: nova-spin 7s linear infinite, nova-ring-fade 7s ease-in-out infinite;
+}
+
+@keyframes nova-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes nova-ring-fade {
+  0%, 8% { opacity: 0.25; }
+  20% { opacity: 1; }
+  46%, 100% { opacity: 0.4; }
+}
+
+/* Ejecta thrown out on eight bearings. */
+.nova-ejecta {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--brand-blue);
+  opacity: 0;
+  transform: rotate(calc(var(--i) * 45deg)) translateY(0);
+  animation: nova-ejecta 7s cubic-bezier(0.1, 0.75, 0.3, 1) infinite;
+  animation-delay: calc(var(--i) * 0.012s);
+}
+
+.nova-ejecta:nth-child(even) {
+  background: var(--brand-pink);
+}
+
+@keyframes nova-ejecta {
+  0%, 12% { transform: rotate(calc(var(--i) * 45deg)) translateY(0) scale(0.4); opacity: 0; }
+  18% { opacity: 1; }
+  33% { transform: rotate(calc(var(--i) * 45deg)) translateY(-38px) scale(1); opacity: 0; }
+  100% { transform: rotate(calc(var(--i) * 45deg)) translateY(-38px) scale(1); opacity: 0; }
+}
+
+/* What it all resolves into. */
+.nova-word {
+  font-family: var(--font-display);
+  font-size: 1.32rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+  opacity: 0;
+  animation: nova-word 7s cubic-bezier(0.2, 1.3, 0.35, 1) infinite;
+}
+
+@keyframes nova-word {
+  0%, 26% { opacity: 0; transform: scale(0.3); filter: blur(4px); }
+  38% { opacity: 1; transform: scale(1.12); filter: blur(0); }
+  44% { transform: scale(1); }
+  88% { opacity: 1; transform: scale(1); filter: blur(0); }
+  97%, 100% { opacity: 0; transform: scale(0.85); filter: blur(2px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nova-core,
+  .nova-wave,
+  .nova-ring,
+  .nova-ejecta {
+    display: none;
+  }
+
+  .nova-word {
+    opacity: 1;
+    animation: none;
+  }
+}
+
+/* A filled basket nudges once every ten seconds. Adding an item no longer
+   opens the drawer, so this is what keeps the basket present without
+   interrupting someone who is still shopping. The cycle is mostly rest: the
+   movement occupies the first ~8% and the rest is stillness. */
+/* The nudge moves the icon, never the button. Animating the button itself made
+   the hit target drift during the ~0.8s of movement, so a tap that landed
+   mid-nudge could miss the basket entirely. */
+.basket-btn.has-items > svg {
+  animation: cart-nudge 10s ease-in-out infinite;
+}
+
+@keyframes cart-nudge {
+  0% { transform: translateY(0) rotate(0deg); }
+  2% { transform: translateY(-4px) rotate(-7deg); }
+  4% { transform: translateY(0) rotate(6deg); }
+  6% { transform: translateY(-2px) rotate(-3deg); }
+  8%, 100% { transform: translateY(0) rotate(0deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .basket-btn.has-items > svg { animation: none; }
+}
+
+/* The catalogue-wide demo caveat, shown wherever products are listed. */
+.catalogue-notice {
+  margin: 1rem 0 0;
+  max-width: 62rem;
+}
+
+/* ---- Media shown whole ----
+   Two slides cannot be cropped: the how-it-works graphic, whose numbered steps
+   run to the edges of the frame, and the client's 720x1280 reel, whose cards
+   are almost entirely wording. Both are contained and anchored to the top, so
+   the slack in the frame collects at the foot of the stage as one rail. The
+   rail and any side gutters take a blurred, dimmed copy of the artwork rather
+   than flat bars, which is how every video platform frames a vertical upload. */
+.hero-media.is-contained {
+  background: #050d24;
+}
+
+.hero-media.is-contained::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--hero-backdrop);
+  background-size: cover;
+  background-position: center;
+  filter: blur(28px) brightness(0.5) saturate(1.1);
+  transform: scale(1.15);
+  z-index: 0;
+}
+
+.hero-media.is-contained img,
+.hero-media.is-contained video {
+  position: relative;
+  z-index: 1;
+  height: calc(100% - var(--hero-rail));
+  object-fit: contain;
+  object-position: center top;
+}
+
+/* ---- The hero on a narrow screen ----
+   It owns the screen below the header, the way the client's other builds do.
+   svh rather than vh: on a phone vh is the *largest* viewport height, so a
+   100vh hero is taller than what you can actually see until the address bar
+   collapses, and the copy at its foot would start life below the fold. The
+   104px is the sticky header plus a deliberate strip of the next section, so
+   the page still reads as scrollable. */
+@media (max-width: 900px) {
+  .hero-track {
+    min-height: calc(100vh - 104px);
+    min-height: calc(100svh - 104px);
+  }
+
+  /* A stage-percentage gradient cannot guarantee contrast here: how far up the
+     stage the copy starts depends on how many lines the headline takes and how
+     tall the screen is, and it ranged from 37% to 52% across the sizes we
+     ship. This backing is tied to the copy block instead, so it covers the
+     text wherever the text ends up. It bleeds past the copy's own width to the
+     edges of the stage, which clips it, so it reads as the scrim deepening
+     rather than as a panel with sides. */
+  .hero-copy::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    /* The top inset is the fade's whole runway: the eyebrow is the first line
+       in the block, so the gradient has to be at strength by the time it
+       reaches it, not still ramping. */
+    inset: -2.75rem -50vw -3rem;
+    background: linear-gradient(
+      180deg,
+      rgba(4, 9, 26, 0) 0%,
+      rgba(4, 9, 26, 0.52) 12%,
+      rgba(4, 9, 26, 0.58) 100%
+    );
+    pointer-events: none;
+  }
+
+  /* The tall crop's subject sits elsewhere in the frame than the wide one's,
+     so each slide carries its own narrow-screen focus. This breakpoint matches
+     the <source> in HeroCarousel: any portrait-ish frame is better served by
+     the tall crop than by a wide one cropped to a sliver of its middle. */
+  .hero-media img {
+    object-position: var(--hero-focus-mobile, center);
+  }
+}
+
+/* On a small phone the copy block is long enough to start a quarter of the way
+   up the stage, above where the scrim has any strength. Tightening the type
+   pulls it back down into the scrim, and a 320px screen wants the shorter
+   block regardless. */
+@media (max-width: 420px) {
+  .hero-headline {
+    font-size: clamp(1.7rem, 8vw, 2.1rem);
+  }
+
+  .hero-lead {
+    font-size: var(--text-md);
+  }
+
+  .hero-supportline {
+    display: none;
+  }
+}
+
+/* ---- The rail on a phone ----
+   The caption reads "Cosmic Pharmacy in 38 Seconds" at every width now. At
+   390px that is about 240px, and the carousel controls take another 135 in the
+   centre of the same row, so the two collide below roughly 660px. The rail
+   grows a row instead: caption above, controls below. */
+@media (max-width: 720px) {
+  /* Two rows, measured against what the controls actually render at: the
+     carousel pill is 54px tall with its padding and border, the video's
+     controls 42px. 116px of rail was not enough for both plus the gaps, and
+     they stacked. */
+  .hero {
+    --hero-rail: clamp(118px, 15vh, 132px);
+  }
+
+  .hero-controls {
+    bottom: 0.85rem;
+  }
+
+  /* Top row of the rail: the caption at one end, the video's own controls at
+     the other. Centring the caption and right-anchoring the controls put both
+     on a collision course with the carousel pill in the middle. */
+  .hero-video-caption {
+    left: 0.75rem;
+    bottom: calc(var(--hero-rail) - 2.6rem);
+    /* One line, always. Wrapped to two it grew past the rail it sits in and
+       clipped the foot of the reel. */
+    white-space: nowrap;
+    font-size: 0.68rem;
+    letter-spacing: 0.03em;
+    padding-inline: 0.6rem;
+  }
+
+  .hero-video-controls {
+    right: 0.75rem;
+    bottom: calc(var(--hero-rail) - 3.1rem);
+  }
+}
+
+/* The product title is a one-line link about 18px tall. The image above it is
+   already a link to the same page, so the two are joined into one target: the
+   title's hit area reaches up over the card's media. */
+.product-name a {
+  position: relative;
+  display: inline-block;
+}
+
+.product-name a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: max(100%, 44px);
+}
+
+/* ---- Thumb-sized hit areas ----
+   Several controls paint smaller than a finger lands: buttons at 38px tall,
+   chips at 36, the header icons at 40. Rather than resize them and change the
+   design, each grows an invisible 44x44 hit area centred on itself. The overlay
+   is a child, so a tap on it still resolves to the control. */
+.btn,
+.chip,
+.icon-btn,
+.social-link,
+.footer-contact a,
+.qty-btn {
+  position: relative;
+}
+
+.btn::after,
+.chip::after,
+.icon-btn::after,
+.footer-contact a::after,
+.qty-btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: max(100%, 44px);
+  height: max(100%, 44px);
+  /* Purely a target. It must never paint over the label it belongs to. */
+  background: none;
+  pointer-events: auto;
+}

@@ -1,0 +1,397 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-md);
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--sky);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  line-height: 1.15;
+  margin: 0 0 0.6em;
+  text-wrap: balance;
+  letter-spacing: -0.01em;
+}
+
+p {
+  margin: 0 0 1em;
+}
+
+img,
+video {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+}
+
+input,
+select,
+textarea {
+  font-family: var(--font-body);
+  font-size: var(--text-md);
+}
+
+:focus-visible {
+  outline: 3px solid var(--cosmic-blue);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 200;
+  background: var(--cosmic-blue);
+  color: #fff;
+  padding: 0.6rem 1.1rem;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transition: top 0.2s;
+}
+
+.skip-link:focus {
+  top: 0.75rem;
+}
+
+.wrap {
+  width: min(var(--wrap), 92vw);
+  margin-inline: auto;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.65rem 1.4rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid transparent;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  letter-spacing: 0.015em;
+  text-decoration: none;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn-primary {
+  background: var(--cosmic-blue);
+  color: #ffffff;
+  box-shadow: 0 8px 20px rgba(22, 121, 209, 0.3);
+}
+
+.btn-primary:hover {
+  background: var(--cosmic-blue-deep);
+}
+
+.btn-magenta {
+  background: var(--magenta-deep);
+  color: #ffffff;
+  box-shadow: 0 8px 20px rgba(234, 79, 141, 0.3);
+}
+
+.btn-magenta:hover {
+  background: var(--magenta-darker);
+}
+
+.btn-outline-dark {
+  background: rgba(255, 255, 255, 0.75);
+  color: var(--cosmic-blue-deep);
+  border-color: var(--cosmic-blue);
+}
+
+.btn-outline-dark:hover {
+  background: #ffffff;
+  border-color: var(--cosmic-blue-deep);
+}
+
+.btn-outline-light {
+  background: var(--panel);
+  color: var(--ink);
+  border-color: var(--line-light);
+}
+
+.btn-outline-light:hover {
+  border-color: var(--cosmic-blue);
+  color: var(--cosmic-blue-deep);
+}
+
+.btn-whatsapp {
+  background: var(--whatsapp);
+  color: #ffffff;
+  box-shadow: 0 8px 20px rgba(31, 157, 85, 0.28);
+}
+
+.btn-whatsapp:hover {
+  background: var(--whatsapp-dark);
+}
+
+.btn-sm {
+  min-height: 38px;
+  padding: 0.4rem 1rem;
+  font-size: var(--text-xs);
+}
+
+.btn-block {
+  width: 100%;
+}
+
+.btn[disabled] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ---------- Panels & sections ---------- */
+.panel-section {
+  position: relative;
+  z-index: 1;
+  background: var(--panel);
+  color: var(--ink);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-panel);
+}
+
+.panel-section.cool {
+  background: var(--panel-cool);
+}
+
+.section-pad {
+  padding: clamp(2.4rem, 5vw, 4rem) clamp(1.1rem, 4vw, 3rem);
+}
+
+/* No leading rule: the client asked for the dashes off every eyebrow sitewide. */
+.eyebrow {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--cosmic-blue-deep);
+  margin-bottom: 0.9rem;
+}
+
+.eyebrow.on-dark {
+  color: var(--magenta-deep);
+}
+
+.section-title {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+}
+
+/* A line that sits above the eyebrow, introducing the section. */
+.section-kicker {
+  margin: 0 0 0.35rem;
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+/* Four short sentences: let the browser break them evenly rather than
+   leaving one orphan word on the last line. */
+.how-title {
+  text-wrap: balance;
+  max-width: 24ch;
+}
+
+.section-intro {
+  color: var(--ink-soft);
+  max-width: 46rem;
+}
+
+.on-dark .section-intro,
+.section-intro.on-dark {
+  color: var(--star-dim);
+}
+
+/* ---------- Chips, badges, pills ---------- */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 36px;
+  padding: 0.3rem 0.95rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--line-light);
+  background: var(--panel);
+  color: var(--ink-soft);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  text-decoration: none;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+
+.chip:hover {
+  border-color: var(--cosmic-blue);
+  color: var(--cosmic-blue-deep);
+}
+
+.chip.active {
+  background: var(--cosmic-blue);
+  border-color: var(--cosmic-blue);
+  color: #fff;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  border-radius: var(--radius-pill);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.badge-sale {
+  background: var(--magenta-deep);
+  color: #fff;
+}
+
+.badge-new {
+  background: var(--cosmic-blue);
+  color: #fff;
+}
+
+.badge-type {
+  background: var(--lavender);
+  color: var(--cosmic-blue-deep);
+}
+
+.badge-review {
+  background: var(--warn-soft);
+  color: var(--warn);
+}
+
+.stock {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.stock.in-stock {
+  color: var(--ok);
+}
+
+.stock.low-stock,
+.stock.confirm-availability {
+  color: var(--warn);
+}
+
+.stock.out-of-stock {
+  color: var(--danger);
+}
+
+/* ---------- Forms ---------- */
+.field {
+  display: grid;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+}
+
+.field > label {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.field input,
+.field select,
+.field textarea {
+  min-height: 44px;
+  padding: 0.55rem 0.85rem;
+  border: 1px solid var(--line-light);
+  border-radius: var(--radius-sm);
+  background: var(--panel);
+  color: var(--ink);
+}
+
+.field textarea {
+  resize: vertical;
+}
+
+/* ---------- Misc ---------- */
+.notice {
+  border-radius: var(--radius-md);
+  padding: 0.9rem 1.1rem;
+  font-size: var(--text-sm);
+  background: var(--lavender);
+  color: var(--ink-soft);
+  border: 1px solid var(--line-light);
+}
+
+.notice.warn {
+  background: var(--warn-soft);
+  border-color: rgba(160, 106, 0, 0.25);
+  color: var(--warn);
+}
+
+.text-muted {
+  color: var(--ink-faint);
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+}

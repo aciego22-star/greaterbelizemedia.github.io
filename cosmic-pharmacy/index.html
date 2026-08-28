@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      /* Sets the time-of-day sky before first paint, so the page never flashes
+         the wrong theme. Mirrors the schedule in src/lib/theme.ts — change both
+         together; a unit test asserts they agree. The browser chrome colour is
+         set from the rendered --sky in theme.ts rather than duplicated here.
+         Wrapped in try/catch so a locked-down browser falls back to the default
+         day sky rather than blocking the render. */
+      (function () {
+        try {
+          var h = new Date().getHours();
+          var t = h < 5 ? 'night' : h < 8 ? 'sunrise' : h < 17 ? 'day' : h < 20 ? 'sunset' : 'night';
+          document.documentElement.setAttribute('data-theme', t);
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'day');
+        }
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cosmic Pharmacy | Medicine · Health · Beauty | Belize City</title>
+    <meta
+      name="description"
+      content="Cosmic Pharmacy, Belize City. Search medicine, wellness and personal-care products, build your request, and send it to Cosmic Pharmacy on WhatsApp for pharmacist review. Pickup, Belize City delivery, out-district and Cayes shipping."
+    />
+    <meta property="og:title" content="Cosmic Pharmacy | Medicine · Health · Beauty" />
+    <meta
+      property="og:description"
+      content="Everything you need. Guidance you can trust. Search products, build your request, and send it to Cosmic Pharmacy on WhatsApp."
+    />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#FFFFFF" />
+    <link rel="icon" href="./favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon-180.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Pharmacy",
+        "name": "Cosmic Pharmacy",
+        "slogan": "Medicine · Health · Beauty",
+        "telephone": "+501 611-8080",
+        "email": "cosmicpharmacybz@gmail.com",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "#41 Corner Holy Emmanuel Street/CET Site",
+          "addressLocality": "Belize City",
+          "addressCountry": "BZ"
+        },
+        "sameAs": [
+          "https://www.instagram.com/cosmicpharmacybz/",
+          "https://www.facebook.com/people/Cosmic-Pharmacy/100091933047386/"
+        ],
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+            "opens": "09:00",
+            "closes": "19:30"
+          },
+          { "@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "09:00", "closes": "13:00" }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
