@@ -88,10 +88,11 @@ describe('hero media', () => {
     }
   });
 
-  it('declares the supplied reel as silent so no sound control is offered', () => {
+  it('declares the reel as scored, so the sound control is offered', () => {
     const reel = videos.find((s) => s.videoSrcDesktop === 'cosmic-hero');
-    // The file the client supplied carries a video track only; see
-    // ASSET-HANDOFF.md. Flip this the moment a mixed file replaces it.
-    expect(reel?.hasAudio).toBe(false);
+    // The reel is muxed with the client's supplied track; see ASSET-HANDOFF.md.
+    // If a silent edit ever replaces it this has to go back to false, or the
+    // interface offers sound the file does not carry.
+    expect(reel?.hasAudio).toBe(true);
   });
 });

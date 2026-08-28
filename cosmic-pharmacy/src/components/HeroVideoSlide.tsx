@@ -33,19 +33,27 @@ function formatDuration(seconds: number): string {
 /**
  * First-class hero video slide.
  *
- * A clip with sound attempts audible autoplay when the slide becomes active and
- * detects blocking from the play() promise; it never silently downgrades to
- * muted autoplay, so blocked or reduced-motion visits get the poster with a
- * "Play with Sound" action instead.
+ * Playback degrades in one direction, and never silently:
  *
- * A silent clip (hasAudio: false) has nothing to downgrade. It autoplays muted,
- * which every browser permits without a gesture, and the sound affordances are
- * withheld rather than offering sound the file does not carry.
+ * 1. A clip with sound tries audible autoplay first. Every browser blocks that
+ *    until the visitor has interacted with the page, so it succeeds on a return
+ *    visit and fails on a first one.
+ * 2. Blocked, it plays muted rather than freezing on its poster, and says so:
+ *    a labelled Sound control appears, so the visitor is told the sound exists
+ *    instead of being left to guess. A full-bleed hero that sits still on a
+ *    poster until it is clicked is a worse trade than one that plays.
+ * 3. Only if muted playback fails too does it fall back to the poster and a
+ *    deliberate play action.
+ *
+ * A silent clip (hasAudio: false) skips step 1 and offers no sound control at
+ * all, rather than offering sound the file does not carry.
  */
 export function HeroVideoSlide({ slide, active, reducedMotion, onPlayingChange }: HeroVideoSlideProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [state, setState] = useState<VideoState>('idle');
   const [muted, setMuted] = useState(!slide.hasAudio);
+  /** Playing muted only because audible autoplay was refused, not by choice. */
+  const [soundWithheld, setSoundWithheld] = useState(false);
   const attemptedRef = useRef(false);
 
   const desktopSrc = mediaUrl(slide.videoSrcDesktop);
@@ -56,31 +64,44 @@ export function HeroVideoSlide({ slide, active, reducedMotion, onPlayingChange }
     ? `Cosmic Pharmacy in ${formatDuration(slide.durationSeconds)} · Play with Sound`
     : `Cosmic Pharmacy in ${formatDuration(slide.durationSeconds)} · Play`;
 
-  const startPlayback = useCallback(() => {
-    const video = videoRef.current;
-    if (!video) return;
-    // A silent clip stays muted: muted autoplay is never blocked, so it starts
-    // on its own. Only a clip that carries sound has an audible attempt to make.
-    video.muted = !slide.hasAudio;
-    setMuted(!slide.hasAudio);
-    const attempt = video.play();
-    if (attempt && typeof attempt.then === 'function') {
-      attempt
-        .then(() => {
-          setState('playing');
-          onPlayingChange(true);
-        })
-        .catch(() => {
-          // Autoplay blocked: wait for the visitor's deliberate play.
-          video.pause();
-          setState('blocked');
-          onPlayingChange(false);
-        });
-    } else {
-      setState('playing');
-      onPlayingChange(true);
-    }
-  }, [onPlayingChange, slide.hasAudio]);
+  /** One playback attempt at a given sound setting. Resolves to whether it ran. */
+  const attempt = useCallback(
+    async (withSound: boolean): Promise<boolean> => {
+      const video = videoRef.current;
+      if (!video) return false;
+      video.muted = !withSound;
+      try {
+        await video.play();
+        setMuted(!withSound);
+        setState('playing');
+        onPlayingChange(true);
+        return true;
+      } catch {
+        return false;
+      }
+    },
+    [onPlayingChange]
+  );
+
+  const startPlayback = useCallback(
+    async (preferSound = true) => {
+      const wantSound = preferSound && slide.hasAudio;
+      if (wantSound && (await attempt(true))) {
+        setSoundWithheld(false);
+        return;
+      }
+      // Muted playback is never blocked, so this is where an autoplay refusal
+      // lands. The hero keeps moving and the sound becomes one tap away.
+      if (await attempt(false)) {
+        setSoundWithheld(wantSound);
+        return;
+      }
+      videoRef.current?.pause();
+      setState('blocked');
+      onPlayingChange(false);
+    },
+    [attempt, onPlayingChange, slide.hasAudio]
+  );
 
   // Attempt playback once per activation of this slide.
   useEffect(() => {
@@ -97,7 +118,7 @@ export function HeroVideoSlide({ slide, active, reducedMotion, onPlayingChange }
     if (!hasSource || reducedMotion || attemptedRef.current) return;
     if (state === 'ended') return;
     attemptedRef.current = true;
-    startPlayback();
+    void startPlayback();
   }, [active, hasSource, reducedMotion, startPlayback, state, onPlayingChange]);
 
   const togglePlay = () => {
@@ -123,6 +144,8 @@ export function HeroVideoSlide({ slide, active, reducedMotion, onPlayingChange }
     if (!video) return;
     video.muted = !video.muted;
     setMuted(video.muted);
+    // A deliberate choice either way, so the "we withheld this" label goes.
+    setSoundWithheld(false);
   };
 
   if (!hasSource) {
@@ -162,16 +185,10 @@ export function HeroVideoSlide({ slide, active, reducedMotion, onPlayingChange }
         {desktopSrc && <source src={desktopSrc} type={videoType(desktopSrc)} />}
       </video>
 
-      {/* A contained portrait reel leaves gutters at the sides, not the bottom,
-          so the full caption would sit across the reel's own wording. The
-          runtime alone fits the gutter; the headline beside it already names
-          the pharmacy. */}
-      <span className="hero-video-caption">
-        {slide.videoFit === 'contain' ? `${slide.durationSeconds} sec` : slide.captionLabel}
-      </span>
+      <span className="hero-video-caption">{slide.captionLabel}</span>
 
       {showOverlay && (
-        <button type="button" className="hero-video-overlay" onClick={startPlayback}>
+        <button type="button" className="hero-video-overlay" onClick={() => void startPlayback(true)}>
           <span className="hero-play-ring" aria-hidden="true">
             <svg viewBox="0 0 24 24" width="26" height="26">
               <path d="M8 5.5v13l11-6.5-11-6.5Z" fill="currentColor" />
@@ -187,8 +204,14 @@ export function HeroVideoSlide({ slide, active, reducedMotion, onPlayingChange }
             {state === 'playing' ? '⏸' : '▶'}
           </button>
           {slide.hasAudio && (
-            <button type="button" className="icon-btn on-video" onClick={toggleMute} aria-label={muted ? 'Unmute video' : 'Mute video'}>
+            <button
+              type="button"
+              className={`icon-btn on-video ${soundWithheld ? 'is-labelled' : ''}`}
+              onClick={toggleMute}
+              aria-label={muted ? 'Play video with sound' : 'Mute video'}
+            >
               {muted ? '🔇' : '🔊'}
+              {soundWithheld && <span className="sound-label">Sound</span>}
             </button>
           )}
         </div>

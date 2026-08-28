@@ -93,8 +93,10 @@ export const heroSlides: HeroSlide[] = [
     poster: 'hero-video-poster',
     posterAlt: 'Cosmic Pharmacy logo over a nebula, with the line Medicine. Health. Beauty.',
     durationSeconds: 38, // Measured from the supplied file: 37.53s.
-    // The supplied file carries no audio track, so nothing here offers sound.
-    hasAudio: false,
+    // Scored with the client's own supplied track, 1:00 to 1:38 of it, cut to
+    // the picture's exact 37.53s with a fade at each end. See ASSET-HANDOFF.md:
+    // the licence for it is still the client's to settle before publication.
+    hasAudio: true,
     // A 9:16 reel on a 9:16 phone screen covers it with almost nothing lost, so
     // the phone gets it edge to edge. From the tablet breakpoint up the frame
     // turns wide and it is contained instead, because its cards are almost

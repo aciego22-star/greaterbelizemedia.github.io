@@ -480,6 +480,23 @@ main,
   gap: 0.4rem;
 }
 
+/* While sound is being withheld the control stops being an icon and says what
+   it does. A speaker glyph alone does not tell anyone there is a track. */
+.icon-btn.on-video.is-labelled {
+  width: auto;
+  gap: 0.35rem;
+  padding-inline: 0.6rem;
+  background: var(--cosmic-blue);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.icon-btn.on-video .sound-label {
+  font-family: var(--font-display);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
 .icon-btn.on-video {
   background: rgba(16, 37, 74, 0.72);
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -3012,5 +3029,43 @@ a.contact-row .contact-row-value {
 
   .hero-supportline {
     display: none;
+  }
+}
+
+/* ---- The rail on a phone ----
+   The caption reads "Cosmic Pharmacy in 38 Seconds" at every width now. At
+   390px that is about 240px, and the carousel controls take another 135 in the
+   centre of the same row, so the two collide below roughly 660px. The rail
+   grows a row instead: caption above, controls below. */
+@media (max-width: 720px) {
+  /* Two rows, measured against what the controls actually render at: the
+     carousel pill is 54px tall with its padding and border, the video's
+     controls 42px. 116px of rail was not enough for both plus the gaps, and
+     they stacked. */
+  .hero {
+    --hero-rail: clamp(118px, 15vh, 132px);
+  }
+
+  .hero-controls {
+    bottom: 0.85rem;
+  }
+
+  /* Top row of the rail: the caption at one end, the video's own controls at
+     the other. Centring the caption and right-anchoring the controls put both
+     on a collision course with the carousel pill in the middle. */
+  .hero-video-caption {
+    left: 0.75rem;
+    bottom: calc(var(--hero-rail) - 2.6rem);
+    /* One line, always. Wrapped to two it grew past the rail it sits in and
+       clipped the foot of the reel. */
+    white-space: nowrap;
+    font-size: 0.68rem;
+    letter-spacing: 0.03em;
+    padding-inline: 0.6rem;
+  }
+
+  .hero-video-controls {
+    right: 0.75rem;
+    bottom: calc(var(--hero-rail) - 3.1rem);
   }
 }

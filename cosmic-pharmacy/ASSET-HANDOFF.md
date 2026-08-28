@@ -234,27 +234,60 @@ If a different edit is supplied later:
 - `videoFit`: `contain` for a portrait or text-bearing edit, `cover` for a
   landscape one.
 
-### Audio: still outstanding
+### Audio (installed)
 
-The client asked for a specific commercial track over this reel, described as
-temporary, for a presentation. It was not added, and the reason is a capability
-limit rather than a judgement call: **this environment cannot reach any music
-service**, so the recording cannot be obtained here at all. Nothing about the
-build is in the way. The tooling to mux it is in place.
+The reel is scored with a track the client supplied themselves, described as
+temporary, for a presentation.
 
-The one-step path: the client sends the audio as a file, in any format. It is
-muxed into the existing video without re-encoding the picture, `hasAudio` flips
-to `true`, and the sound controls return on their own.
+What was done:
 
-If the track is ever meant to stay past the presentation, it needs a sync
-licence in Cosmic's name. The rule agreed from the original brief still stands
-for anything published: platform-licensed music is not cleared for the website.
+- The client sent a 3:12 MP4. Only its audio was used: its picture was dropped
+  outright (`-vn`).
+- The requested segment is 1:00 to 1:38, which is 38.0 s. It was cut to the
+  reel's exact **37.53 s** instead, so the track ends with the picture rather
+  than being clipped mid-note by the player when the video runs out.
+- 0.2 s fade in, 1.4 s fade out. The segment starts and ends mid-track and a
+  hard cut at either end reads as a glitch. Measured result: -21 dB at the head,
+  -8.8 dB through the middle, -31.6 dB at the tail.
+- AAC 160 kbps, 44.1 kHz stereo, muxed with the **picture stream-copied**, so
+  the video itself was never re-encoded and lost nothing. moov atom to the
+  front again. 1.5 MB to 2.4 MB.
 
-One thing worth telling the client before they commit to a scored hero: no
-browser lets a hero video start with sound on its own. A scored reel falls back
-to the poster and a "Play with Sound" button, and the track is only heard after
-a deliberate tap. A silent reel that plays by itself often serves a homepage
-better than a scored one that waits behind a button.
+`hasAudio` on the slide is now `true`.
+
+**The licence is still open.** The client supplied the file and called it
+temporary for a presentation, which is their call to make. Nothing about that
+settles publication: a commercial recording on a live pharmacy site needs a sync
+licence in Cosmic's name, and the rule from the original brief still stands for
+anything published. Swap the track or clear it before this goes public.
+
+### How playback degrades, and why
+
+No browser lets a video start with sound on its own. Rather than let that freeze
+a full-bleed hero on its poster, playback degrades in one direction and never
+silently:
+
+1. Audible autoplay is attempted first. It succeeds where the visitor has
+   already interacted with the site.
+2. Refused, the reel plays **muted** and says so: the sound control turns into a
+   labelled "Sound" button. The hero keeps moving and the track is one tap away.
+3. Only if muted playback fails too does it fall back to the poster and a
+   deliberate play action.
+
+This is verified both ways. The browser harness runs the whole slide twice: once
+with autoplay permitted, once with `play()` rejecting while unmuted until a
+trusted gesture lands, which is Chrome's and Safari's actual rule. Headless
+Chromium permits audible autoplay and ignores `--autoplay-policy`, so the
+refusal has to be reproduced at that seam or the fallback is never exercised.
+
+### The rail on a phone
+
+The caption reads "Cosmic Pharmacy in 38 Seconds" in full at every width, at the
+client's request. At 390px that plus the carousel controls plus the video's own
+controls do not fit on one line, so the rail runs two rows: caption and video
+controls on top, carousel controls beneath. Its height is measured against what
+the controls actually render at, 54px and 42px, not guessed. A browser check
+asserts that none of the three overlaps either the reel or each other.
 
 ## 5. Replacing placeholders — exact steps
 
