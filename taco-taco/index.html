@@ -495,6 +495,24 @@ html.js.has-items #basket-bar{display:flex}
 #oc-send{cursor:pointer;border:0;background:var(--green);color:#fff;font-family:var(--font-display);
  text-transform:uppercase;font-weight:800;font-size:.76rem;letter-spacing:.5px;padding:0 18px;border-radius:999px}
 #oc-send:hover{background:var(--green-d)}
+
+/* ---------- depth pass: layered parallax, card tilt, scroll reveal (CSS + tiny JS, no libraries) ----------
+   Parallax and reveal drive the independent `translate` property, so they compose with the
+   existing keyframe transforms on these elements instead of overwriting them. */
+.d3-tilt{transition:transform .4s cubic-bezier(.22,.9,.3,1),box-shadow .4s ease}
+.d3-tilt.d3-live{transition:transform .09s linear,box-shadow .4s ease}
+@media (hover:hover) and (pointer:fine){
+ .fav.d3-tilt:hover,.gitem.d3-tilt:hover{z-index:5}
+ .about-card.d3-tilt:hover{box-shadow:0 26px 52px rgba(0,0,0,.30)}
+ .ostep.d3-tilt:hover{box-shadow:0 20px 40px rgba(44,33,24,.16)}
+ .gitem.d3-tilt:hover{box-shadow:0 26px 50px rgba(44,33,24,.30)}
+}
+html.js .d3-rv{opacity:0;translate:0 22px;transition:opacity .75s ease,translate .75s cubic-bezier(.22,.9,.3,1)}
+html.js .d3-rv.in{opacity:1;translate:0 0}
+@media (prefers-reduced-motion: reduce){
+ html.js .d3-rv{opacity:1;translate:0 0;transition:none}
+ .d3-tilt{transition:none}
+}
 </style>
 </head>
 <body>
@@ -857,6 +875,84 @@ html.js.has-items #basket-bar{display:flex}
  });}
 
  loadBasket();
+})();
+/* ---------- depth pass: hero parallax, card tilt, scroll reveal ----------
+   Everything here is decoration only: it never touches the basket or the order flow, it is
+   skipped entirely for reduced-motion users, and content stays visible if any of it is missing. */
+(function(){
+ var mq=window.matchMedia||function(){return {matches:false};};
+ var reduce=mq('(prefers-reduced-motion: reduce)').matches;
+ var fine=mq('(hover:hover) and (pointer:fine)').matches;
+ var rAF=window.requestAnimationFrame||function(f){return setTimeout(f,16);};
+
+ /* 1) scroll reveal. A rAF-throttled sweep rather than IntersectionObserver: anything at or
+       above the fold is revealed, so a fast jump-scroll or an anchor jump can never strand an
+       element in the hidden state. Listeners detach once everything has been revealed. */
+ if(!reduce){
+  var pending=[].slice.call(document.querySelectorAll('.sec-head,.fav,.about-card,.ostep,.order-card,.gitem'));
+  pending.forEach(function(el){el.classList.add('d3-rv');});
+  var rvQueued=false;
+  function sweep(){
+   rvQueued=false;
+   var vh=window.innerHeight, next=[];
+   pending.forEach(function(el){
+    if(el.getBoundingClientRect().top < vh*0.94){el.classList.add('in');} else {next.push(el);}
+   });
+   pending=next;
+   if(!pending.length){
+    window.removeEventListener('scroll',rvTick); window.removeEventListener('resize',rvTick);
+    document.removeEventListener('click',rvTick);
+   }
+  }
+  function rvTick(){ if(!rvQueued){rvQueued=true;rAF(sweep);} }
+  window.addEventListener('scroll',rvTick,{passive:true});
+  window.addEventListener('resize',rvTick);
+  document.addEventListener('click',rvTick);   // layout shifts, e.g. expanding the menu
+  sweep();
+ }
+
+ /* 2) hero parallax: each layer drifts at its own rate so the stage reads as a diorama.
+       Desktop also gets a small pointer sway. */
+ var stage=document.querySelector('.hero-stage');
+ if(stage&&!reduce){
+  var layers=[['.stage-type',-0.14,-10],['.blob',0.05,5],['.product-wrap',0.12,10],
+              ['.spin-badge:not(.b2)',0.26,20],['.spin-badge.b2',0.19,-16],
+              ['.side-badge:not(.two)',0.29,-22],['.side-badge.two',0.22,18]]
+   .map(function(l){return [stage.querySelector(l[0]),l[1],l[2]];})
+   .filter(function(l){return l[0];});
+  var amp=fine?1:0.5, mx=0, queued=false;
+  function paint(){
+   queued=false;
+   var r=stage.getBoundingClientRect();
+   if(r.bottom<0||r.top>window.innerHeight)return;      // offscreen: nothing to do
+   var y=-r.top;                                         // px scrolled past the stage top
+   layers.forEach(function(l){
+    l[0].style.translate=(mx*l[2]*amp).toFixed(1)+'px '+(y*l[1]*amp).toFixed(1)+'px';
+   });
+  }
+  function tick(){ if(!queued){queued=true;rAF(paint);} }
+  window.addEventListener('scroll',tick,{passive:true});
+  window.addEventListener('resize',tick);
+  if(fine){document.querySelector('.hero').addEventListener('pointermove',function(e){
+   mx=(e.clientX/window.innerWidth-0.5)*2; tick();},{passive:true});}
+  paint();
+ }
+
+ /* 3) card tilt toward the cursor. Pointer-precise devices only, so touch is untouched. */
+ if(fine&&!reduce){
+  [].slice.call(document.querySelectorAll('.fav,.about-card,.ostep,.gitem')).forEach(function(el){
+   el.classList.add('d3-tilt');
+   el.addEventListener('pointerenter',function(){el.classList.add('d3-live');});
+   el.addEventListener('pointermove',function(e){
+    var r=el.getBoundingClientRect();
+    var cx=(e.clientX-r.left)/r.width-0.5, cy=(e.clientY-r.top)/r.height-0.5;
+    el.style.transform='perspective(780px) rotateX('+(-cy*6).toFixed(2)+'deg) rotateY('+
+      (cx*6).toFixed(2)+'deg) translateZ(8px)';
+   },{passive:true});
+   el.addEventListener('pointerleave',function(){
+    el.classList.remove('d3-live'); el.style.transform='';});
+  });
+ }
 })();
 </script>
 <div class="topbar"></div>
