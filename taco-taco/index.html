@@ -515,6 +515,26 @@ html.js .d3-rv.in{opacity:1;transform:none}
  html.js .d3-rv{opacity:1;transform:none;transition:none}
  .d3-tilt{transition:none}
 }
+
+/* ---------- scroll-scrubbed showcase: the scroll position IS the play head ----------
+   Frames are the gallery photos already embedded in this page, cloned at runtime, so this
+   costs no extra bytes. The grid below stays in the markup as the no-JS / reduced-motion view. */
+.scrub{position:relative;display:none}
+html.js .scrub{display:block}
+html.js.scrub-on .gal{display:none}
+.scrub-stage{position:sticky;top:0;height:100vh;height:100svh;display:grid;place-items:center;
+ overflow:hidden}
+.scrub-deck{position:relative;width:min(520px,80vw);aspect-ratio:1;perspective:1200px}
+.sf{position:absolute;inset:0;margin:0;border-radius:24px;overflow:hidden;opacity:0;
+ box-shadow:0 30px 70px rgba(44,33,24,.38);backface-visibility:hidden}
+.sf img{width:100%;height:100%;object-fit:cover;display:block}
+.scrub-hud{position:absolute;left:0;right:0;bottom:6%;display:flex;flex-direction:column;
+ align-items:center;gap:10px;pointer-events:none}
+.scrub-num{font-family:var(--font-display);font-size:.9rem;letter-spacing:2px;color:var(--green-d)}
+.scrub-track{width:min(230px,52vw);height:4px;border-radius:99px;background:rgba(44,33,24,.16);overflow:hidden}
+.scrub-track i{display:block;height:100%;width:0;background:var(--red);border-radius:99px}
+.scrub-hint{font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:700}
+@media (prefers-reduced-motion: reduce){ html.js .scrub{display:none} html.js.scrub-on .gal{display:grid} }
 </style>
 </head>
 <body>
@@ -959,6 +979,64 @@ html.js .d3-rv.in{opacity:1;transform:none}
     el.classList.remove('d3-live'); el.style.transform='';});
   });
  }
+})();
+
+/* ---------- scroll-scrubbed showcase ----------
+   Level 2: scroll drives playback. Frames are the gallery <img> nodes already in the page,
+   cloned so no image data is duplicated. Skipped entirely for reduced motion, and the original
+   grid remains the fallback, so the gallery is never lost. */
+(function(){
+ var mq=window.matchMedia||function(){return {matches:false};};
+ if(mq('(prefers-reduced-motion: reduce)').matches) return;
+ var rAF=window.requestAnimationFrame||function(f){return setTimeout(f,16);};
+ var sec=document.getElementById('gallery'), gal=sec&&sec.querySelector('.gal');
+ if(!sec||!gal) return;
+ var imgs=[].slice.call(gal.querySelectorAll('img'));
+ if(imgs.length<4) return;
+
+ var scrub=document.createElement('div'); scrub.className='scrub';
+ var stage=document.createElement('div'); stage.className='scrub-stage';
+ var deck=document.createElement('div'); deck.className='scrub-deck';
+ var frames=imgs.map(function(im){
+  var f=document.createElement('figure'); f.className='sf';
+  var c=im.cloneNode(false); c.removeAttribute('class'); c.setAttribute('alt',im.getAttribute('alt')||'');
+  f.appendChild(c); deck.appendChild(f); return f;
+ });
+ var N=frames.length;
+ var hud=document.createElement('div'); hud.className='scrub-hud';
+ hud.innerHTML='<span class="scrub-num"><b>01</b> / '+(N<10?'0':'')+N+'</span>'+
+   '<div class="scrub-track"><i></i></div><span class="scrub-hint">Keep scrolling</span>';
+ stage.appendChild(deck); stage.appendChild(hud); scrub.appendChild(stage);
+ gal.parentNode.insertBefore(scrub, gal);
+ document.documentElement.classList.add('scrub-on');
+ var num=hud.querySelector('b'), bar=hud.querySelector('.scrub-track i');
+
+ function sizeIt(){ scrub.style.height=(window.innerHeight + (N-1)*window.innerHeight*0.16)+'px'; }
+ var last=-1, queued=false;
+ function draw(){
+  queued=false;
+  var r=scrub.getBoundingClientRect(), travel=scrub.offsetHeight-stage.offsetHeight;
+  if(travel<=0) return;
+  var p=Math.max(0,Math.min(1,-r.top/travel));
+  if(r.bottom<0||r.top>window.innerHeight) return;      // offscreen: skip the work
+  var pos=p*(N-1);
+  for(var i=0;i<N;i++){
+   var d=i-pos, ad=Math.abs(d), f=frames[i];
+   if(ad>1.15){ if(f.style.opacity!=='0'){f.style.opacity='0';f.style.visibility='hidden';} continue; }
+   f.style.visibility='visible';
+   f.style.opacity=(1-ad).toFixed(3);
+   f.style.zIndex=String(100-Math.round(ad*100));
+   f.style.transform='translate3d('+(d*30).toFixed(1)+'%,0,'+(-ad*300).toFixed(0)+'px) '+
+                     'rotateY('+(-d*30).toFixed(1)+'deg)';
+  }
+  var idx=Math.round(pos)+1;
+  if(idx!==last){ last=idx; num.textContent=(idx<10?'0':'')+idx; }
+  bar.style.width=(p*100).toFixed(1)+'%';
+ }
+ function tick(){ if(!queued){queued=true;rAF(draw);} }
+ window.addEventListener('scroll',tick,{passive:true});
+ window.addEventListener('resize',function(){sizeIt();tick();});
+ sizeIt(); draw();
 })();
 </script>
 <div class="topbar"></div>
