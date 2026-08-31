@@ -507,10 +507,12 @@ html.js.has-items #basket-bar{display:flex}
  .ostep.d3-tilt:hover{box-shadow:0 20px 40px rgba(44,33,24,.16)}
  .gitem.d3-tilt:hover{box-shadow:0 26px 50px rgba(44,33,24,.30)}
 }
-html.js .d3-rv{opacity:0;translate:0 22px;transition:opacity .75s ease,translate .75s cubic-bezier(.22,.9,.3,1)}
-html.js .d3-rv.in{opacity:1;translate:0 0}
+html.js .d3-rv{opacity:0;transform:perspective(900px) rotateX(12deg) translateY(38px) scale(.955);
+ transform-origin:50% 100%;
+ transition:opacity .7s ease,transform .85s cubic-bezier(.22,.9,.3,1)}
+html.js .d3-rv.in{opacity:1;transform:none}
 @media (prefers-reduced-motion: reduce){
- html.js .d3-rv{opacity:1;translate:0 0;transition:none}
+ html.js .d3-rv{opacity:1;transform:none;transition:none}
  .d3-tilt{transition:none}
 }
 </style>
@@ -890,7 +892,11 @@ html.js .d3-rv.in{opacity:1;translate:0 0}
        element in the hidden state. Listeners detach once everything has been revealed. */
  if(!reduce){
   var pending=[].slice.call(document.querySelectorAll('.sec-head,.fav,.about-card,.ostep,.order-card,.gitem'));
-  pending.forEach(function(el){el.classList.add('d3-rv');});
+  pending.forEach(function(el){
+   el.classList.add('d3-rv');
+   var sibs=el.parentNode?[].slice.call(el.parentNode.children):[], i=sibs.indexOf(el);
+   if(i>0&&sibs.length>1&&sibs.length<9){el.style.transitionDelay=(Math.min(i,5)*0.07).toFixed(2)+'s';}
+  });
   var rvQueued=false;
   function sweep(){
    rvQueued=false;
@@ -915,12 +921,12 @@ html.js .d3-rv.in{opacity:1;translate:0 0}
        Desktop also gets a small pointer sway. */
  var stage=document.querySelector('.hero-stage');
  if(stage&&!reduce){
-  var layers=[['.stage-type',-0.14,-10],['.blob',0.05,5],['.product-wrap',0.12,10],
-              ['.spin-badge:not(.b2)',0.26,20],['.spin-badge.b2',0.19,-16],
-              ['.side-badge:not(.two)',0.29,-22],['.side-badge.two',0.22,18]]
+  var layers=[['.stage-type',-0.22,-10],['.blob',0.08,5],['.product-wrap',0.18,10],
+              ['.spin-badge:not(.b2)',0.40,20],['.spin-badge.b2',0.30,-16],
+              ['.side-badge:not(.two)',0.44,-22],['.side-badge.two',0.34,18]]
    .map(function(l){return [stage.querySelector(l[0]),l[1],l[2]];})
    .filter(function(l){return l[0];});
-  var amp=fine?1:0.5, mx=0, queued=false;
+  var amp=fine?1:0.9, mx=0, queued=false;
   function paint(){
    queued=false;
    var r=stage.getBoundingClientRect();
