@@ -521,7 +521,6 @@ html.js .d3-rv.in{opacity:1;transform:none}
    costs no extra bytes. The grid below stays in the markup as the no-JS / reduced-motion view. */
 .scrub{position:relative;display:none}
 html.js .scrub{display:block}
-html.js.scrub-on .gal{display:none}
 .scrub-stage{position:sticky;top:0;height:100vh;height:100svh;display:grid;place-items:center;
  overflow:hidden}
 .scrub-deck{position:relative;width:min(520px,80vw);aspect-ratio:1;perspective:1200px}
@@ -533,8 +532,14 @@ html.js.scrub-on .gal{display:none}
 .scrub-num{font-family:var(--font-display);font-size:.9rem;letter-spacing:2px;color:var(--green-d)}
 .scrub-track{width:min(230px,52vw);height:4px;border-radius:99px;background:rgba(44,33,24,.16);overflow:hidden}
 .scrub-track i{display:block;height:100%;width:0;background:var(--red);border-radius:99px}
-.scrub-hint{font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:700}
-@media (prefers-reduced-motion: reduce){ html.js .scrub{display:none} html.js.scrub-on .gal{display:grid} }
+.scrub-skip{pointer-events:auto;cursor:pointer;border:2px solid var(--border);background:#fff;color:var(--ink);
+ font-family:inherit;font-weight:800;font-size:.72rem;letter-spacing:1.2px;text-transform:uppercase;
+ padding:9px 17px;border-radius:999px;box-shadow:0 8px 20px rgba(44,33,24,.16)}
+.scrub-skip:hover{background:var(--cream)}
+.gal-label{display:none;text-align:center;color:var(--muted);font-weight:800;text-transform:uppercase;
+ letter-spacing:2px;font-size:.76rem;margin:0 0 16px}
+html.js.scrub-on .gal-label{display:block}
+@media (prefers-reduced-motion: reduce){ html.js .scrub{display:none} html.js .gal-label{display:none} }
 </style>
 </head>
 <body>
@@ -1005,13 +1010,22 @@ html.js.scrub-on .gal{display:none}
  var N=frames.length;
  var hud=document.createElement('div'); hud.className='scrub-hud';
  hud.innerHTML='<span class="scrub-num"><b>01</b> / '+(N<10?'0':'')+N+'</span>'+
-   '<div class="scrub-track"><i></i></div><span class="scrub-hint">Keep scrolling</span>';
+   '<div class="scrub-track"><i></i></div>'+
+   '<button type="button" class="scrub-skip" id="scrub-skip">Skip to gallery</button>';
  stage.appendChild(deck); stage.appendChild(hud); scrub.appendChild(stage);
  gal.parentNode.insertBefore(scrub, gal);
  document.documentElement.classList.add('scrub-on');
  var num=hud.querySelector('b'), bar=hud.querySelector('.scrub-track i');
 
- function sizeIt(){ scrub.style.height=(window.innerHeight + (N-1)*window.innerHeight*0.16)+'px'; }
+ // Escape hatch: a pinned section should never trap the reader.
+ var label=document.createElement('p'); label.className='gal-label'; label.textContent='Browse all photos';
+ gal.parentNode.insertBefore(label, gal);
+ hud.querySelector('#scrub-skip').addEventListener('click',function(){
+  var y=label.getBoundingClientRect().top+window.pageYOffset-84;
+  try{window.scrollTo({top:y,behavior:'smooth'});}catch(e){window.scrollTo(0,y);}
+ });
+
+ function sizeIt(){ scrub.style.height=(window.innerHeight + (N-1)*window.innerHeight*0.12)+'px'; }
  var last=-1, queued=false;
  function draw(){
   queued=false;
