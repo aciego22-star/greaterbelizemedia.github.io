@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact &amp; Appointments — OWM Hospital</title>
+  <meta name="description" content="Contact OWM Hospital or request an appointment online. Find our location, phone numbers, and clinic hours.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700;800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="top-strip">
+    <div class="container">
+      <span class="emergency">🚨 Emergency? Call <a href="tel:+5010000000">(501) 000-0000</a> — available 24/7</span>
+      <span>📍 Main Street, Your Town, Belize &nbsp;|&nbsp; ✉️ <a href="mailto:info@owmhospital.com">info@owmhospital.com</a></span>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">O</span>
+        <span class="brand-name">OWM Hospital<span>Caring for our community</span></span>
+      </a>
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+      <nav class="main-nav" aria-label="Main navigation">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="doctors.html">Our Doctors</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a class="nav-cta" href="contact.html#appointment">Book Appointment</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <div class="breadcrumb"><a href="index.html">Home</a> / Contact</div>
+        <h1>Contact &amp; Appointments</h1>
+        <p>We're here to help. Reach us by phone or email, visit us in person, or request an appointment online below.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="contact-split">
+          <div>
+            <h2 id="appointment" style="margin-bottom: 18px;">Request an Appointment</h2>
+            <div class="form-card">
+              <form name="appointment" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="thank-you.html">
+                <input type="hidden" name="form-name" value="appointment">
+                <p style="display:none;"><label>Don't fill this out: <input name="bot-field"></label></p>
+                <div class="form-grid">
+                  <div class="form-field">
+                    <label for="name">Full Name *</label>
+                    <input type="text" id="name" name="name" required autocomplete="name">
+                  </div>
+                  <div class="form-field">
+                    <label for="phone">Phone Number *</label>
+                    <input type="tel" id="phone" name="phone" required autocomplete="tel">
+                  </div>
+                  <div class="form-field">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" autocomplete="email">
+                  </div>
+                  <div class="form-field">
+                    <label for="department">Department *</label>
+                    <select id="department" name="department" required>
+                      <option value="">Select a department…</option>
+                      <option>General Medicine</option>
+                      <option>Pediatrics</option>
+                      <option>Maternity / Obstetrics</option>
+                      <option>Surgery</option>
+                      <option>Dental Clinic</option>
+                      <option>Laboratory</option>
+                      <option>Specialist Clinic</option>
+                      <option>Other / Not Sure</option>
+                    </select>
+                  </div>
+                  <div class="form-field">
+                    <label for="date">Preferred Date</label>
+                    <input type="date" id="date" name="preferred-date">
+                  </div>
+                  <div class="form-field">
+                    <label for="time">Preferred Time</label>
+                    <select id="time" name="preferred-time">
+                      <option value="">No preference</option>
+                      <option>Morning (8am – 12pm)</option>
+                      <option>Afternoon (12pm – 5pm)</option>
+                    </select>
+                  </div>
+                  <div class="form-field full">
+                    <label for="message">Reason for Visit / Additional Notes</label>
+                    <textarea id="message" name="message" rows="4" placeholder="Briefly describe the reason for your visit…"></textarea>
+                  </div>
+                  <div class="form-field full">
+                    <button type="submit" class="btn btn-teal" style="width:100%;">Submit Appointment Request</button>
+                  </div>
+                </div>
+                <p class="form-note">⚠️ This form is for non-urgent appointment requests only. If this is a medical emergency, call <strong>(501) 000-0000</strong> or go to the Emergency Department immediately. Our team will contact you to confirm your appointment.</p>
+              </form>
+            </div>
+          </div>
+
+          <div>
+            <h2 style="margin-bottom: 18px;">Get in Touch</h2>
+            <div class="info-block">
+              <h3>📍 Location</h3>
+              <p>OWM Hospital<br>Main Street, Your Town<br>Belize, Central America</p>
+            </div>
+            <div class="info-block">
+              <h3>📞 Phone</h3>
+              <p>Front Desk: <a href="tel:+5010000000">(501) 000-0000</a><br>
+              Emergency (24/7): <a href="tel:+5010000000">(501) 000-0000</a></p>
+            </div>
+            <div class="info-block">
+              <h3>✉️ Email</h3>
+              <p><a href="mailto:info@owmhospital.com">info@owmhospital.com</a></p>
+            </div>
+            <div class="info-block">
+              <h3>🕐 Clinic Hours</h3>
+              <p>Monday – Friday: 8:00am – 5:00pm<br>
+              Saturday: 8:00am – 12:00pm<br>
+              Emergency Department: 24/7</p>
+            </div>
+            <div class="map-placeholder">
+              🗺️ Map goes here<br>
+              <small style="font-weight:400;">(Replace with a Google Maps embed once the hospital's address is confirmed.)</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">
+            <span class="brand-mark">O</span>
+            <span class="brand-name" style="color:#fff;">OWM Hospital</span>
+          </div>
+          <p>Providing compassionate, quality healthcare to our community — because every patient deserves the best care, close to home.</p>
+        </div>
+        <div>
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="doctors.html">Our Doctors</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Services</h4>
+          <ul>
+            <li><a href="services.html">Emergency Care</a></li>
+            <li><a href="services.html">Maternity</a></li>
+            <li><a href="services.html">Pediatrics</a></li>
+            <li><a href="services.html">Laboratory</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul>
+            <li>📍 Main Street, Your Town, Belize</li>
+            <li>📞 <a href="tel:+5010000000">(501) 000-0000</a></li>
+            <li>✉️ <a href="mailto:info@owmhospital.com">info@owmhospital.com</a></li>
+            <li>🕐 Emergency: 24/7</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span id="year"></span> OWM Hospital. All rights reserved.</span>
+        <span>Website by Greater Belize Media</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
