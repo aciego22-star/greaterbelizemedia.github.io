@@ -165,23 +165,35 @@ stays English inside Spanish copy, hyphen included.
 
 ## 3b. Homepage hero
 
-Four images, in this order, set by the client:
+Five images, in this order, set by the client. **Every one is now the client's own photography** -
+no concept imagery is left in the hero:
 
-| # | File | Subject | Provenance |
-|---|---|---|---|
-| 1 | `hero-lobster-diver-dock` | A diver walking up a dock with a string of spiny lobster and his fins. **Default slide.** | Client-supplied |
-| 2 | `hero-2-boat-leaving-harbour` | A boat heading out of the harbour. | V1 concept pack |
-| 3 | `hero-lobster-boat-catch` | Two fishers aboard a skiff, the hull full of lobster. | Client-supplied |
-| 4 | `hero-trade-show-stand` | A Belizean Pride trade show stand, four people behind a table of lobster and conch cartons. | Client-supplied |
+| # | File | Subject |
+|---|---|---|
+| 1 | `hero-lobster-diver-dock` | A diver walking up a dock with a string of spiny lobster and his fins. **Default slide.** |
+| 2 | `hero-diver-lobster-catch` | A diver at sea holding a spiny lobster up by its antennae. |
+| 3 | `hero-lobster-boat-catch` | Two fishers aboard a skiff, the hull full of lobster. |
+| 4 | `hero-trade-show-stand` | A Belizean Pride trade show stand, four people behind a table of cartons. |
+| 5 | `hero-belizean-pride-range` | The packed Belizean Pride range beside the NATFISH mark. |
 
-Slides 1 and 3 replaced the fisher with the conch catch and the two fishers at sunrise, at the
-client's request. Their derivatives were **deleted**, not just unreferenced: the packaging step
-refuses to ship an image nothing points at. Slide 4 was added afterwards to make four.
+The three V1 concept heroes went one at a time as the client's own photographs arrived: the fisher
+with the conch catch and the two fishers at sunrise first, then the boat leaving the harbour. The
+first two were **deleted**, not just unreferenced, because the packaging step refuses to ship an
+image nothing points at. `hero-2-boat-leaving-harbour` is still built, because the Gallery's video
+facade uses it as a poster - but it is no longer a slide.
+
+The rotation now runs from the water to the market: two divers, a loaded skiff, the trade stand, the
+packed product.
+
+**Slides 1 and 2 are both a man holding lobster**, back to back on a seven-second timer. They are
+different enough in framing - one walking a dock in profile, one facing the camera at sea - and this
+is the order the client set, slide 2 having taken the slot the harbour photograph vacated. Worth
+raising with them if it ever reads as repetitive; swapping 2 and 3 would fix it.
 
 The carousel reads nothing from a slide count - `natfish.js` takes `.hero__slide` as it finds it -
 so a fifth is a line in `HERO_SLIDES` plus an entry in `PAIRS`, `HERO_PAIRS`, `ALT` and `SHORT`.
 
-**Two provenances, two folders, two alt-text rules.** Slides 1, 3 and 4 are the client's own
+**Two provenances, two folders, two alt-text rules.** All five hero slides are the client's own
 photography and sit in `assets/img/official/`. Slide 2 is from the original V1 concept pack and stays
 in `assets/img/concept/`. That distinction matters and is easy to lose: the same concept pack produced
 the storefront image that had to be destroyed for carrying a fabricated telephone number. Concept alt
@@ -189,12 +201,12 @@ text never says a person, vessel or catch belongs to NATFISH; the folder name is
 person from reaching for a concept image as if it were documentary. `img_dir()` routes by the
 `HERO_PAIRS` set, not by the `hero-` prefix.
 
-**CLIENT CONFIRMATION REQUIRED.** The alt text for slides 1, 3 and 4 describes what is visible and
-stops there - it does not state that the people, vessel or catch are NATFISH's. If Ms Denise confirms
+**CLIENT CONFIRMATION REQUIRED.** The hero alt text describes what is visible and stops there - it does not state that the people, vessel or catch are NATFISH's. If Ms Denise confirms
 these are NATFISH members and staff, and that the people photographed consented to the use, the alt
-text can name NATFISH the way the processing-room photographs already do. `heroqa.js` asserts that no
-hero alt text contains the string "NATFISH", so lifting that restriction is a deliberate act, not a
-drift.
+text can name NATFISH the way the processing-room photographs already do. `heroqa.js` asserts that no hero alt text names NATFISH, so lifting that
+restriction is a deliberate act rather than a drift. It allows exactly one phrase - "the NATFISH
+mark" - because slide 5 is a product collage with the logo visibly printed in it, and describing a
+mark in the frame is not the same as claiming a person, a vessel or a catch.
 
 Slide 4 is the one that most invites an unsupported claim, so it is worth being explicit about what
 the picture does and does not establish. The stand is unmistakably a Belizean Pride stand, and
@@ -207,7 +219,7 @@ named, she needs to supply the name and date and it becomes a News item, not her
 
 ### Responsive pairs, and why the hero is art-directed
 
-The client supplied slides 1, 3 and 4 as **pre-cropped pairs**: a 2400x1080 landscape frame and a
+The client supplied all five slides as **pre-cropped pairs**: a 2400x1080 landscape frame and a
 1080x1920 portrait frame of the same photograph. Both crops are published, and the browser picks
 between them with a `media` query on the `<source>` - real art direction, not one file with a focal
 point.
@@ -241,20 +253,34 @@ at 430px so the photograph still fits on the first screen at every phone size do
 `herofold.js` asserts. Between 600 and 900px the older `clamp(300px, 62vw, 380px)` band still applies,
 where the landscape crop is being served.
 
-Focal points apply to **slide 2 and the two water shots only**. Every pair slide is served a crop the
-client composed for the frame it is filling, so on a desktop they all keep the default centre -
-overriding it would undo their framing. On a phone the frame is not the crop's own 9:16, so about 60%
-of the height shows and the window has to be placed:
+**No focal point is set on any desktop slide.** Every one is a crop the client composed for the frame
+it is filling, so the default centre is their framing and overriding it would undo it.
+
+On a phone the frame is roughly square rather than the crop's own 9:16, so about 60% of the height
+shows and the window has to be placed per photograph:
 
 - **Slides 1 and 3** are pushed down to `50% 72%`, landing on 0.28-0.89 of the file: below the head,
   above the feet. That is the one window holding the fisher's face and the catch in the same frame;
   centred, the lobster - the whole subject - falls off the bottom of both photographs.
-- **Slide 4 stays centred.** Its subject runs from the banner at the top to the cartons on the table,
-  and the centred window lands on 0.20-0.80, which holds the banner, all four people and the cartons
-  together. Pushing it down would cut the banner off.
-- **Slide 2** is the one single-source image left and keeps its own per-breakpoint focal point.
+- **Slides 2 and 4 stay centred.** The diver at sea is composed on the centre with the lobster held
+  up in front of him, and the trade-show stand runs from the banner down to the cartons; a centred
+  window holds all of both.
+- **Slide 5 is pushed to `50% 64%`**, which is the one value chosen against the *design* rather than
+  the subject. It is a built collage: the NATFISH mark at the top, the packaging below, spanning more
+  height than the frame can show. Centred, the mark is sliced in half and reads as a mistake. At 64%
+  it is cleared entirely and the whole range shows. Losing the mark costs nothing, because the site
+  header carries the same lockup about 80px above it - keeping it would have put the same logo on
+  screen twice.
 
-Verified at 360, 390 and 430.
+Verified at 360, 390 and 430; asserted per slide in `heroqa.js`.
+
+### Tiers come from the generator, never from a constant
+
+A source narrower than a tier is not upscaled, so the 1672px and 1920px heroes have no `-2400`
+derivative. The markup used to hard-code `(800, 1400, 1920, 2400)`, which would have listed a file
+nobody generated - a 404 on the homepage. `process-hero-images.py` now records the tiers it actually
+wrote into `HERO_TIERS_BY_STEM`, and `hero_tiers()` reads it. **Do not hard-code a tier list again.**
+`revisions.js` resolves every image reference on the homepage against the filesystem.
 
 One `sizes` subtlety worth keeping: below 600px slide 2's 1.78 landscape file is `cover`-cropped into
 a roughly square frame, so the *painted* width is about 1.9 viewport widths. A plain `100vw` hint made
@@ -1048,6 +1074,18 @@ Kept deliberately, because they are not title ornament: the nav link's underline
 (an active/hover affordance), the hamburger bars, the 3px turquoise seam where
 the hero panel meets its photograph, the connectors in the process flow, and the
 identity ribbon's band edge.
+
+---
+
+## 4f. What's New carries no gallery shortcut
+
+Removed at the client's request: they found the gallery detour diluting on an announcements page.
+Two things went - a "Photo feature" band whose only purpose was an arrow link to the gallery, and the
+Gallery call-to-action that closed the page. The page now closes to Contact, like the commercial
+pages do, rather than ending on a notice.
+
+Gallery is still one click away in the header nav and the footer. `revisions.js` asserts there is no
+gallery link in the page body and that both of those still work.
 
 ---
 

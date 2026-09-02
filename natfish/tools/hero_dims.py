@@ -2,9 +2,29 @@
 HERO_DIMS = {
     "hero-lobster-diver-dock-desktop": (2400, 1080),
     "hero-lobster-diver-dock-mobile": (1080, 1920),
+    "hero-diver-lobster-catch-desktop": (1672, 941),
+    "hero-diver-lobster-catch-mobile": (941, 1672),
     "hero-lobster-boat-catch-desktop": (2400, 1080),
     "hero-lobster-boat-catch-mobile": (1080, 1920),
     "hero-trade-show-stand-desktop": (2400, 1080),
     "hero-trade-show-stand-mobile": (1080, 1920),
+    "hero-belizean-pride-range-desktop": (1920, 1080),
+    "hero-belizean-pride-range-mobile": (1080, 1920),
     "hero-2-boat-leaving-harbour": (1400, 787),
+}
+
+# The tiers actually written for each stem. A source narrower than a tier is not
+# upscaled, so this is what the srcset may list.
+HERO_TIERS_BY_STEM = {
+    "hero-lobster-diver-dock-desktop": (800, 1400, 1920, 2400),
+    "hero-lobster-diver-dock-mobile": (360, 540, 720, 1080),
+    "hero-diver-lobster-catch-desktop": (800, 1400, 1920),
+    "hero-diver-lobster-catch-mobile": (360, 540, 720, 1080),
+    "hero-lobster-boat-catch-desktop": (800, 1400, 1920, 2400),
+    "hero-lobster-boat-catch-mobile": (360, 540, 720, 1080),
+    "hero-trade-show-stand-desktop": (800, 1400, 1920, 2400),
+    "hero-trade-show-stand-mobile": (360, 540, 720, 1080),
+    "hero-belizean-pride-range-desktop": (800, 1400, 1920),
+    "hero-belizean-pride-range-mobile": (360, 540, 720, 1080),
+    "hero-2-boat-leaving-harbour": (480, 800, 1400),
 }

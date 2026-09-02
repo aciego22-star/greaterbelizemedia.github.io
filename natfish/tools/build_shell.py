@@ -155,7 +155,7 @@ GALLERY = "assets/img/gallery"
 # tools/process-v2-images.py. Carried into width/height on every <img> so no
 # image can shift the layout while it loads.
 from v2_dims import DIMS  # noqa: E402
-from hero_dims import HERO_DIMS  # noqa: E402
+from hero_dims import HERO_DIMS, HERO_TIERS_BY_STEM  # noqa: E402
 from gallery_dims import GALLERY_DIMS, GALLERY_GROUPS  # noqa: E402
 from news_dims import NEWS_DIMS  # noqa: E402
 
@@ -202,6 +202,13 @@ ALT = {
     "hero-lobster-boat-catch":
         "Two fishers aboard a skiff tied up at a dock, a morning catch of spiny "
         "lobster filling the hull and packed into crates.",
+    "hero-diver-lobster-catch":
+        "A diver in a wetsuit standing in open turquoise water, holding a "
+        "spiny lobster up by its antennae.",
+    "hero-belizean-pride-range":
+        "Belizean Pride packaging beside the NATFISH mark: a carton of "
+        "wild-caught Caribbean spiny lobster, a box of spiny lobster head meat "
+        "and individually wrapped tails.",
     "hero-trade-show-stand":
         "A seafood trade show stand hung with Belizean Pride banners, four "
         "people in matching shirts standing behind a table of spiny lobster "
@@ -298,6 +305,8 @@ SHORT = {
     "news-food-taipei-2026-delegation": "The NATFISH delegation at Food Taipei 2026",
     "hero-lobster-diver-dock": "Bringing the lobster catch up the dock",
     "hero-lobster-boat-catch": "A morning lobster catch aboard the skiff",
+    "hero-diver-lobster-catch": "A spiny lobster brought up from the reef",
+    "hero-belizean-pride-range": "The Belizean Pride range",
     "hero-trade-show-stand": "Belizean Pride on show at a seafood trade show",
     "hero-2-boat-leaving-harbour": "Heading out of the harbour",
     # The client's set uses its supplied caption as its label too, so the
@@ -432,17 +441,22 @@ HERO_SIZES_SINGLE = (f"(max-width: {HERO_PHONE_BP}px) 190vw, "
 # Single-source heroes (the surviving concept image) still use the old three
 # tiers. The client's responsive pairs carry their own, because their two crops
 # have different natural widths and are served to different screens.
-HERO_TIERS = (480, 800, 1400)
-PAIR_TIERS_DESKTOP = (800, 1400, 1920, 2400)
-PAIR_TIERS_MOBILE = (360, 540, 720, 1080)
+# The tiers a stem actually has on disk, from the generator. A source narrower
+# than a tier is not upscaled, so the two most recent heroes (1672px and 1920px
+# wide) have no 2400 derivative - and a srcset that listed one would be a 404 on
+# the page. Never hard-code the tier list here again.
+def hero_tiers(stem):
+    return HERO_TIERS_BY_STEM[stem]
 
 # Heroes the client supplied as a pre-cropped desktop/phone pair. Anything in
 # this set is published as `<stem>-desktop-*` and `<stem>-mobile-*` and is
 # rendered with a `media`-switched <source>, not with a focal point.
 HERO_PAIRS = {
     "hero-lobster-diver-dock",
+    "hero-diver-lobster-catch",
     "hero-lobster-boat-catch",
     "hero-trade-show-stand",
+    "hero-belizean-pride-range",
 }
 
 
@@ -473,8 +487,8 @@ def hero_picture(stem, index, *, eager):
     if stem not in HERO_PAIRS:
         w, h = DIMS[stem]
         return f"""<picture>
-            <source type="image/webp" srcset="{_srcset(d, stem, HERO_TIERS, 'webp')}" sizes="{HERO_SIZES_SINGLE}">
-            <img src="{d}/{stem}-800.jpg" srcset="{_srcset(d, stem, HERO_TIERS, 'jpg')}" sizes="{HERO_SIZES_SINGLE}" width="{w}" height="{h}" alt="{ALT[stem]}"{loading}>
+            <source type="image/webp" srcset="{_srcset(d, stem, hero_tiers(stem), 'webp')}" sizes="{HERO_SIZES_SINGLE}">
+            <img src="{d}/{stem}-800.jpg" srcset="{_srcset(d, stem, hero_tiers(stem), 'jpg')}" sizes="{HERO_SIZES_SINGLE}" width="{w}" height="{h}" alt="{ALT[stem]}"{loading}>
           </picture>"""
 
     mob, desk = f"{stem}-mobile", f"{stem}-desktop"
@@ -482,10 +496,10 @@ def hero_picture(stem, index, *, eager):
     dw, dh = DIMS[desk]
     phone = f"(max-width: {HERO_PHONE_BP}px)"
     return f"""<picture>
-            <source media="{phone}" type="image/webp" srcset="{_srcset(d, mob, PAIR_TIERS_MOBILE, 'webp')}" sizes="100vw" width="{mw}" height="{mh}">
-            <source media="{phone}" type="image/jpeg" srcset="{_srcset(d, mob, PAIR_TIERS_MOBILE, 'jpg')}" sizes="100vw" width="{mw}" height="{mh}">
-            <source type="image/webp" srcset="{_srcset(d, desk, PAIR_TIERS_DESKTOP, 'webp')}" sizes="{HERO_SIZES}">
-            <img src="{d}/{desk}-1400.jpg" srcset="{_srcset(d, desk, PAIR_TIERS_DESKTOP, 'jpg')}" sizes="{HERO_SIZES}" width="{dw}" height="{dh}" alt="{ALT[stem]}"{loading}>
+            <source media="{phone}" type="image/webp" srcset="{_srcset(d, mob, hero_tiers(mob), 'webp')}" sizes="100vw" width="{mw}" height="{mh}">
+            <source media="{phone}" type="image/jpeg" srcset="{_srcset(d, mob, hero_tiers(mob), 'jpg')}" sizes="100vw" width="{mw}" height="{mh}">
+            <source type="image/webp" srcset="{_srcset(d, desk, hero_tiers(desk), 'webp')}" sizes="{HERO_SIZES}">
+            <img src="{d}/{desk}-1400.jpg" srcset="{_srcset(d, desk, hero_tiers(desk), 'jpg')}" sizes="{HERO_SIZES}" width="{dw}" height="{dh}" alt="{ALT[stem]}"{loading}>
           </picture>"""
 
 
@@ -505,19 +519,19 @@ def hero_preload(stem):
     if stem not in HERO_PAIRS:
         return (f'  <link rel="preload" as="image" type="image/webp"\n'
                 f'        href="{d}/{stem}-800.webp"\n'
-                f'        imagesrcset="{_srcset(d, stem, HERO_TIERS, "webp")}"'
+                f'        imagesrcset="{_srcset(d, stem, hero_tiers(stem), "webp")}"'
                 f' imagesizes="{HERO_SIZES_SINGLE}" fetchpriority="high">\n')
 
     mob, desk = f"{stem}-mobile", f"{stem}-desktop"
     phone = f"(max-width: {HERO_PHONE_BP}px)"
     return (f'  <link rel="preload" as="image" type="image/webp" media="{phone}"\n'
             f'        href="{d}/{mob}-720.webp"\n'
-            f'        imagesrcset="{_srcset(d, mob, PAIR_TIERS_MOBILE, "webp")}"'
+            f'        imagesrcset="{_srcset(d, mob, hero_tiers(mob), "webp")}"'
             f' imagesizes="100vw" fetchpriority="high">\n'
             f'  <link rel="preload" as="image" type="image/webp"'
             f' media="(min-width: {HERO_PHONE_BP + 1}px)"\n'
             f'        href="{d}/{desk}-1400.webp"\n'
-            f'        imagesrcset="{_srcset(d, desk, PAIR_TIERS_DESKTOP, "webp")}"'
+            f'        imagesrcset="{_srcset(d, desk, hero_tiers(desk), "webp")}"'
             f' imagesizes="{HERO_SIZES}" fetchpriority="high">\n')
 
 

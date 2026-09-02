@@ -3939,39 +3939,39 @@ body.nav-open {
    desktop, and above it on a phone. No text or control ever crosses a face,
    which is why no darkening gradient is needed over the photograph at all. */
 
-/* Slides 1, 3 and 4 are the client's responsive pairs.
+/* All five slides are the client's responsive pairs.
 
-   On a desktop the 2400x1080 crop is served into a 1.6:1 frame and the centre
+   On a desktop each 16:9-ish crop is served into a 1.6:1 frame and the centre
    is the client's own framing, so no focal point is set for any of them:
    overriding it would undo their composition.
 
-   On a phone the 1080x1920 crop is served into a frame that is roughly square
-   rather than the full 9:16, so about 60% of its height shows and where that
-   window sits has to be chosen.
-
-   The two water shots are pushed down to 72%, landing on 0.28-0.89 of the
-   file: below the head, above the feet. That is the one window holding the
-   fisher's face and the catch in the same frame - centring it cuts the lobster
-   off the bottom of both photographs, which is the whole subject.
-
-   The trade-show stand is the exception and is left centred. Its subject runs
-   from the banner at the top to the product cartons on the table, and the
-   centred window lands on 0.20-0.80, which holds the banner, all four
-   representatives and the cartons at once. Pushing it down would cut the
-   banner off. Verified at 360, 390 and 430. */
+   On a phone the 9:16 crop is served into a frame that is roughly square rather
+   than the full 9:16, so about 60% of its height shows and where that window
+   sits has to be chosen per photograph. The values below are measured against
+   each file, not guessed, and verified at 360, 390 and 430. */
 @media (max-width: 600px) {
+  /* 1 and 3, the two water shots: pushed down to 0.28-0.89 of the file -
+     below the head, above the feet. That is the one window holding the
+     fisher's face and the catch in the same frame; centred, the lobster falls
+     off the bottom of both. */
   .hero__slide--1 img,
   .hero__slide--3 img { object-position: 50% 72%; }
+
+  /* 5, the product range, is a built collage rather than a photograph: the
+     NATFISH mark sits at the top and the packaging fills the rest, spanning
+     more height than this frame can show. Centred, the mark is sliced in half
+     and reads as a mistake. The window is pushed to 64%, which clears it
+     entirely and gives the whole range - the flagship carton, the head-meat box
+     and the bagged tails. Losing the mark costs nothing here: the site header
+     carries the same logo about 80px above it, so keeping it would have put the
+     same lockup on screen twice. */
+  .hero__slide--5 img { object-position: 50% 64%; }
 }
 
-/* 2 - the boat leaving the harbour, which sits centre-left in the frame. This
-   is the one slide with a single source and no phone crop, so it still needs a
-   focal point per breakpoint to keep the boat in shot as the frame narrows. */
-.hero__slide--2 img { object-position: 47% 55%; }
-
-@media (max-width: 900px) {
-  .hero__slide--2 img { object-position: 46% 58%; }
-}
+/* Slides 2 and 4 stay centred. The diver at sea is composed on the centre of
+   the frame with the lobster held up in front of him, and the trade-show stand
+   runs from the banner down to the cartons on the table; a centred window holds
+   all of both. */
 
 /* ================================================== NATFISH AI ======== */
 

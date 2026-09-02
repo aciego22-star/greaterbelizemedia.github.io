@@ -1717,3 +1717,28 @@ ES.update({
         "Taiw\u00e1n.",
     "(opens in a new tab)": "(se abre en una pesta\u00f1a nueva)",
 })
+
+
+# ---------------------------------------------------------------------------
+# The fifth hero pair and the second, plus What's New closing to Contact now
+# that its gallery shortcut is gone.
+ES.update({
+    "A diver in a wetsuit standing in open turquoise water, holding a spiny "
+    "lobster up by its antennae.":
+        "Un buzo con traje de neopreno de pie en aguas turquesas abiertas, "
+        "sosteniendo una langosta espinosa por las antenas.",
+    "Belizean Pride packaging beside the NATFISH mark: a carton of wild-caught "
+    "Caribbean spiny lobster, a box of spiny lobster head meat and "
+    "individually wrapped tails.":
+        "Empaque Belizean Pride junto al emblema de NATFISH: una caja de "
+        "langosta espinosa del Caribe de captura silvestre, una caja de carne "
+        "de cabeza de langosta espinosa y colas envueltas individualmente.",
+    "A spiny lobster brought up from the reef":
+        "Una langosta espinosa tra\u00edda desde el arrecife",
+    "The Belizean Pride range": "La l\u00ednea Belizean Pride",
+    "Talk to the co-operative": "Hable con la cooperativa",
+    "Questions about an update, the co-operative or a buyer requirement all "
+    "reach the same team.":
+        "Las preguntas sobre una novedad, la cooperativa o un requerimiento de "
+        "compra llegan todas al mismo equipo.",
+})

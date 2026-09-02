@@ -257,28 +257,29 @@ def process_step(stem, title, body, n):
           </li>"""
 
 
-# The four approved hero images, in the approved order.
+# The five approved hero images, in the approved order.
 #
-# Slides 1, 3 and 4 are photographs the client supplied specifically for the hero,
-# each as a pre-cropped pair: a 2400x1080 landscape frame for the desktop hero
-# and a 1080x1920 portrait frame for the phone. Because the client composed
-# both crops, no focal point is applied to them - the browser simply picks the
-# crop that matches the frame it is filling. The diver leads: he is the one
-# frame where a Belizean fisher, the dock and the lobster itself all read at a
-# glance, which is what the opening slide has to carry. The trade-show stand
-# closes the rotation: it is the one frame that shows the co-operative
-# presenting its own branded product, so it reads as the end of the journey the
-# three water shots begin.
+# All five are photographs the client supplied specifically for the hero, each
+# as a pre-cropped pair: a landscape frame for the desktop hero and a 9:16
+# portrait frame for the phone. Because the client composed both crops, the
+# desktop side takes no focal point at all - the browser simply picks the crop
+# that matches the frame it is filling.
 #
-# Slide 2 is the last of the original V1 concept images and has no phone crop,
-# so it keeps the older treatment: one photograph with a per-slide, per-
-# breakpoint focal point set in the stylesheet against .hero__slide--2, chosen
-# to keep the departing boat centred as the frame narrows.
+# The order is theirs: the diver on the dock opens, because it is the one frame
+# where a Belizean fisher, the dock and the lobster itself all read at a glance.
+# The diver at sea took the slot vacated by the last V1 concept image, a boat
+# leaving the harbour. The trade-show stand and the packed Belizean Pride range
+# close the rotation, so it runs from the water to the market.
+#
+# No concept imagery is left in the hero. `hero-2-boat-leaving-harbour` still
+# exists because the Gallery's video facade uses it as a poster, but it is no
+# longer a slide.
 HERO_SLIDES = [
     "hero-lobster-diver-dock",
-    "hero-2-boat-leaving-harbour",
+    "hero-diver-lobster-catch",
     "hero-lobster-boat-catch",
     "hero-trade-show-stand",
+    "hero-belizean-pride-range",
 ]
 
 
@@ -1219,33 +1220,6 @@ def news():
       </div>
     </section>
 
-    <section class="section section--sand" aria-labelledby="news-feature-h">
-      <div class="container">
-        <div class="split split--media-right">
-          <div class="split__media reveal">
-            {picture("02-lobster-packing-line-portrait", "(max-width: 860px) 92vw, 46vw")}
-          </div>
-          <div class="reveal">
-            <p class="update-card__meta">
-              <span class="update-card__tag">Photo feature</span>
-            </p>
-            <h2 id="news-feature-h">Inside NATFISH: People, Process and Product</h2>
-            <p class="lede">
-              A set of photographs from inside the co-operative's own facility:
-              the people who receive and prepare the catch, the steps between
-              landing and cold storage, and the product that leaves at the end
-              of it.
-            </p>
-            <p class="note">
-              An evergreen feature, not a dated announcement. The photographs
-              were supplied by NATFISH and do not document a specific event.
-            </p>
-            <a class="arrow-link" href="gallery.html">View the gallery</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <section class="section" aria-labelledby="news-more-h">
       <div class="container">
         <div class="section-head reveal section-head--center">
@@ -1265,14 +1239,20 @@ def news():
       </div>
     </section>
 """
+        # No gallery shortcut anywhere on this page, by client instruction: the
+        # "Photo feature" band and the Gallery call-to-action that used to close
+        # the page were both detours off an announcements page, and the client
+        # found them diluting. Gallery is still one click away in the nav and in
+        # the footer. What's New now closes to the same place the commercial
+        # pages do.
         + cta_band(
-            "Gallery",
-            "See the work and the product",
-            "Photography and video covering Belizean fisheries, seafood "
-            "handling and the waters NATFISH members work in.",
+            "Contact",
+            "Talk to the co-operative",
+            "Questions about an update, the co-operative or a buyer "
+            "requirement all reach the same team.",
             [
-                '<a class="btn btn--primary" href="gallery.html">Open the gallery</a>',
-                '<a class="btn btn--ghost" href="about.html">About NATFISH</a>',
+                '<a class="btn btn--primary" href="contact.html">Contact NATFISH</a>',
+                f'<a class="btn btn--ghost" href="{BUYER_CTA}">Buyer Enquiry</a>',
             ],
         )
         + footer()
