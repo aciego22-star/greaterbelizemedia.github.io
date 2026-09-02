@@ -541,6 +541,22 @@ HERO_SIZES_SINGLE = (f"(max-width: {HERO_PHONE_BP}px) 190vw, "
 def hero_tiers(stem):
     return HERO_TIERS_BY_STEM[stem]
 
+
+# The JPEG ladder is the fallback behind the WebP <source>, so it is only ever
+# reached by an engine with no WebP support at all - which since 2020 means a
+# browser old enough that it is certainly not driving a 2400px retina panel.
+# Carrying a 2400w JPEG for it costs about 2 MB across the five hero slides and
+# serves nobody, so the fallback stops at 1400w. Every WebP tier, which is what
+# every real visitor receives, is untouched.
+HERO_JPEG_MAX = 1400
+
+
+def hero_jpeg_tiers(stem):
+    tiers = [t for t in hero_tiers(stem) if t <= HERO_JPEG_MAX]
+    # A crop whose every tier is above the cap still needs one file to fall
+    # back to, so keep the smallest rather than emitting an empty srcset.
+    return tiers or [hero_tiers(stem)[0]]
+
 # Heroes the client supplied as a pre-cropped desktop/phone pair. Anything in
 # this set is published as `<stem>-desktop-*` and `<stem>-mobile-*` and is
 # rendered with a `media`-switched <source>, not with a focal point.
@@ -581,7 +597,7 @@ def hero_picture(stem, index, *, eager):
         w, h = DIMS[stem]
         return f"""<picture>
             <source type="image/webp" srcset="{_srcset(d, stem, hero_tiers(stem), 'webp')}" sizes="{HERO_SIZES_SINGLE}">
-            <img src="{d}/{stem}-800.jpg" srcset="{_srcset(d, stem, hero_tiers(stem), 'jpg')}" sizes="{HERO_SIZES_SINGLE}" width="{w}" height="{h}" alt="{ALT[stem]}"{loading}>
+            <img src="{d}/{stem}-800.jpg" srcset="{_srcset(d, stem, hero_jpeg_tiers(stem), 'jpg')}" sizes="{HERO_SIZES_SINGLE}" width="{w}" height="{h}" alt="{ALT[stem]}"{loading}>
           </picture>"""
 
     mob, desk = f"{stem}-mobile", f"{stem}-desktop"
@@ -590,9 +606,9 @@ def hero_picture(stem, index, *, eager):
     phone = f"(max-width: {HERO_PHONE_BP}px)"
     return f"""<picture>
             <source media="{phone}" type="image/webp" srcset="{_srcset(d, mob, hero_tiers(mob), 'webp')}" sizes="100vw" width="{mw}" height="{mh}">
-            <source media="{phone}" type="image/jpeg" srcset="{_srcset(d, mob, hero_tiers(mob), 'jpg')}" sizes="100vw" width="{mw}" height="{mh}">
+            <source media="{phone}" type="image/jpeg" srcset="{_srcset(d, mob, hero_jpeg_tiers(mob), 'jpg')}" sizes="100vw" width="{mw}" height="{mh}">
             <source type="image/webp" srcset="{_srcset(d, desk, hero_tiers(desk), 'webp')}" sizes="{HERO_SIZES}">
-            <img src="{d}/{desk}-1400.jpg" srcset="{_srcset(d, desk, hero_tiers(desk), 'jpg')}" sizes="{HERO_SIZES}" width="{dw}" height="{dh}" alt="{ALT[stem]}"{loading}>
+            <img src="{d}/{desk}-1400.jpg" srcset="{_srcset(d, desk, hero_jpeg_tiers(desk), 'jpg')}" sizes="{HERO_SIZES}" width="{dw}" height="{dh}" alt="{ALT[stem]}"{loading}>
           </picture>"""
 
 

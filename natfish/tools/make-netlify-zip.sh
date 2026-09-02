@@ -72,6 +72,32 @@ cp -R assets/css assets/js assets/img assets/fonts "$STAGE/assets/"
 # deployment package, which should carry only what the site actually requests.
 rm -f "$STAGE/assets/img/natfish-logo-approved-final.png"
 
+# The package carries only what the site actually requests. Anything under
+# assets/img that no page or stylesheet names is dropped here rather than
+# merely warned about, so a generator that writes a wider tier ladder than the
+# markup uses cannot quietly add megabytes to a deployment.
+#
+# JPEGs are included in the sweep. They were not, once, and the hero's
+# fallback ladder went on shipping 2400w JPEGs for two megabytes after the
+# markup had stopped naming them.
+dropped=0
+freed=0
+for f in "$STAGE"/assets/img/*.png "$STAGE"/assets/img/*/*.webp \
+         "$STAGE"/assets/img/*/*.jpg "$STAGE"/assets/img/*/*.png; do
+  [ -e "$f" ] || continue
+  name="${f#"$STAGE"/}"
+  if ! grep -qF "$name" "$STAGE"/*.html "$STAGE"/assets/css/*.css 2>/dev/null; then
+    freed=$((freed + $(stat -c%s "$f")))
+    rm -f "$f"
+    dropped=$((dropped + 1))
+  fi
+done
+if [ "$dropped" -eq 0 ]; then
+  echo "OK: every packaged image is referenced"
+else
+  echo "OK: dropped $dropped unreferenced image(s), $((freed / 1024)) KB"
+fi
+
 rm -f "$OUT"
 ( cd "$STAGE" && zip -qr -X "$OLDPWD/$OUT" . )
 
@@ -91,19 +117,6 @@ if unzip -l "$OUT" | grep -qE 'natfish-logo-mark|natfish-logo\.png|natfish-logo@
   exit 1
 fi
 echo "OK: only the approved logo derivatives are packaged"
-
-# Every image in the package must be referenced by a page, so no stale asset
-# rides along unnoticed.
-stale=0
-for f in "$STAGE"/assets/img/*.png "$STAGE"/assets/img/*/*.webp; do
-  [ -e "$f" ] || continue
-  name="${f#"$STAGE"/}"
-  if ! grep -qF "$name" "$STAGE"/*.html "$STAGE"/assets/css/*.css 2>/dev/null; then
-    echo "WARNING: $name is packaged but referenced by nothing" >&2
-    stale=$((stale + 1))
-  fi
-done
-[ "$stale" -eq 0 ] && echo "OK: every packaged image is referenced"
 
 # Cache-busting hashes must match the bytes actually being shipped.
 #
