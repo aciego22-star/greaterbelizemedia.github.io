@@ -23,7 +23,11 @@ mechanical operations are applied, and only these:
    are enclosed by darker pixels. The check in verify() fails the build if the
    cleared area ever strays outside the expected range.
 
-2. A square crop, for the favicon and touch icon only. A browser tab is square
+2. A square crop, kept only as the source for the in-page 180px NATFISH mark.
+   The browser favicon set is NOT built here any more - see
+   tools/make-favicons.py, which produces the whole package (ico, 16, 32, 180,
+   192, 512) at the site root with a tighter crop for the small sizes.
+   A browser tab is square
    and the logo is 2:1, so the full lockup cannot be used there. The crop is
    the circular emblem with the whole lobster, hand and sleeve inside it,
    stopping 1px short of the wordmark. The logo itself is never cropped.
@@ -108,10 +112,7 @@ def main():
 
     square.resize((ICON, ICON), Image.LANCZOS).save(
         IMG / "natfish-icon.png", optimize=True)
-    square.resize((FAVICON, FAVICON), Image.LANCZOS).save(
-        IMG / "favicon.png", optimize=True)
     print(f"  natfish-icon.png  {ICON}x{ICON}")
-    print(f"  favicon.png       {FAVICON}x{FAVICON}")
 
     # The pages carry these as width/height so the header never reflows.
     print(f"\nintrinsic ratio {logo.width}/{logo.height} "

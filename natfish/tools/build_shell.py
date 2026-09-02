@@ -11,6 +11,7 @@ Accuracy tiers used throughout:
 """
 
 import hashlib
+import json
 import pathlib
 
 from build_icons import icon
@@ -115,6 +116,7 @@ NAV = [
     ("Seafood Seasons", "seafood-seasons.html"),
     ("Responsible Fisheries", "responsible.html"),
     ("What&rsquo;s New", "news.html"),
+    ("Insights", "insights.html"),
     ("Gallery", "gallery.html"),
     ("NATFISH AI", "natfish-ai.html"),
     ("Contact", "contact.html"),
@@ -356,8 +358,11 @@ def img_dir(stem):
     return OFFICIAL
 
 
+PICTURE_TIERS = (480, 800, 1400)
+
+
 def picture(stem, sizes, css="", *, eager=False, alt=None, full=False,
-            ratio=None, focus=None):
+            ratio=None, focus=None, tiers=PICTURE_TIERS):
     """A responsive <picture>: WebP first, JPEG fallback, three width tiers.
 
     width/height come from the real derivative rather than a shared constant,
@@ -397,9 +402,15 @@ def picture(stem, sizes, css="", *, eager=False, alt=None, full=False,
     # natural proportions, so it points at the largest derivative.
     data_full = f' data-full="{d}/{stem}-1400.jpg"' if full else ""
 
+    # `tiers` defaults to the three every in-page photograph has. It is a
+    # parameter because the hero pairs are generated on their own ladder and a
+    # srcset that names a tier nobody wrote is a 404 on the page.
+    webp = ", ".join(f"{d}/{stem}-{t}.webp {t}w" for t in tiers)
+    jpg = ", ".join(f"{d}/{stem}-{t}.jpg {t}w" for t in tiers)
+    fallback = tiers[min(1, len(tiers) - 1)]
     return f"""<picture>
-          <source type="image/webp" srcset="{d}/{stem}-480.webp 480w, {d}/{stem}-800.webp 800w, {d}/{stem}-1400.webp 1400w" sizes="{sizes}">
-          <img src="{d}/{stem}-800.jpg" srcset="{d}/{stem}-480.jpg 480w, {d}/{stem}-800.jpg 800w, {d}/{stem}-1400.jpg 1400w" sizes="{sizes}" width="{w}" height="{h}" alt="{alt_text}"{cls}{style}{loading}{data_full}>
+          <source type="image/webp" srcset="{webp}" sizes="{sizes}">
+          <img src="{d}/{stem}-{fallback}.jpg" srcset="{jpg}" sizes="{sizes}" width="{w}" height="{h}" alt="{alt_text}"{cls}{style}{loading}{data_full}>
         </picture>"""
 
 
@@ -580,7 +591,9 @@ def org_jsonld():
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "{LEGAL}",
-    "alternateName": "NATFISH",
+    "alternateName": "NatFish",
+    "url": "{SITE_URL}/",
+    "logo": "{SITE_URL}/assets/img/natfish-logo-1200.png",
     "foundingDate": "{FOUNDED_ISO}",
     "foundingLocation": {{
       "@type": "Place",
@@ -629,36 +642,117 @@ def org_jsonld():
 """
 
 
-def head(title, description, og_image="official/og-card", preload="",
-         extra_jsonld=""):
-    """No canonical and no og:url until a real domain exists.
+SITE_URL = "https://natfish.bz"
+SITE_SHORT = "NatFish"
 
-    The V1 build pointed both at the agency's own GitHub Pages domain, which
-    must not be associated with the client site. Open Graph carries a relative
-    image path, which resolves once the site sits on its real host.
+# The og:image alt is fixed for every page that does not override it: it
+# describes the shared card, not the page.
+OG_CARD_ALT = ("Belizean Pride wild-caught Caribbean spiny lobster products "
+               "from NatFish in Belize.")
+
+FAVICONS = """  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+"""
+
+
+def breadcrumb_jsonld(trail):
+    """BreadcrumbList for a page that shows breadcrumbs.
+
+    Absolute URLs, built from SITE_URL like every other absolute reference, so
+    the structured data and the visible trail always name the same pages.
     """
+    items = []
+    for i, (name, path) in enumerate(trail, start=1):
+        url = SITE_URL + "/" if path == "index.html" else f"{SITE_URL}/{path}"
+        safe = name.replace("&rsquo;", "\u2019").replace("&amp;", "&")
+        items.append(
+            '      {\n'
+            f'        "@type": "ListItem",\n'
+            f'        "position": {i},\n'
+            f'        "name": {json.dumps(safe)},\n'
+            f'        "item": "{url}"\n'
+            '      }'
+        )
+    joined = ",\n".join(items)
+    return ('  <script type="application/ld+json">\n'
+            '  {\n'
+            '    "@context": "https://schema.org",\n'
+            '    "@type": "BreadcrumbList",\n'
+            '    "itemListElement": [\n'
+            f'{joined}\n'
+            '    ]\n'
+            '  }\n'
+            '  </script>\n')
+
+
+def website_jsonld():
+    """WebSite, homepage only. No SearchAction: the site has no search."""
+    return ('  <script type="application/ld+json">\n'
+            '  {\n'
+            '    "@context": "https://schema.org",\n'
+            '    "@type": "WebSite",\n'
+            f'    "name": {json.dumps(SITE_SHORT)},\n'
+            f'    "alternateName": {json.dumps(LEGAL)},\n'
+            f'    "url": "{SITE_URL}/",\n'
+            '    "inLanguage": "en-BZ"\n'
+            '  }\n'
+            '  </script>\n')
+
+
+def head(title, description, path, og_image="official/og-card", preload="",
+         extra_jsonld="", og_type="website", extra_head=""):
+    """The shared document head.
+
+    `path` is the page's own filename, and everything absolute is built from
+    it: the canonical, og:url and the structured data all resolve against
+    SITE_URL. That is the production domain, never the temporary preview host -
+    a canonical pointing at a preview subdomain teaches search engines the
+    wrong home for the page and is very hard to undo. The preview is kept out
+    of the index by a header instead; see netlify.toml.
+
+    `lang="en-BZ"` because this is Belizean English. The Spanish runtime swaps
+    the attribute at load time when a visitor chooses Spanish.
+
+    Every favicon and the manifest are referenced relatively. Every page in
+    this site sits at the root, so a relative path resolves the same from all
+    of them, and it keeps the site working when it is served from a
+    subdirectory - which is exactly how it is previewed.
+    """
+    # The homepage's canonical is the bare domain, not /index.html: that is the
+    # URL people link to and the one the host serves at the root, so it is the
+    # one the sitemap and the canonical must both name.
+    url = SITE_URL + "/" if path == "index.html" else f"{SITE_URL}/{path}"
+    img = f"{SITE_URL}/assets/img/{og_image}.jpg"
     return f"""<!DOCTYPE html>
-<html lang="en" class="no-js">
+<html lang="en-BZ" class="no-js">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{title}</title>
   <meta name="description" content="{description}">
   <meta name="theme-color" content="#052b45">
+  <link rel="canonical" href="{url}">
 
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="NATFISH">
+  <meta property="og:type" content="{og_type}">
+  <meta property="og:site_name" content="{SITE_SHORT}">
+  <meta property="og:locale" content="en_BZ">
   <meta property="og:title" content="{title}">
   <meta property="og:description" content="{description}">
-  <meta property="og:image" content="assets/img/{og_image}.jpg">
+  <meta property="og:url" content="{url}">
+  <meta property="og:image" content="{img}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="{ALT['01-lobster-packing-team-wide']}">
+  <meta property="og:image:alt" content="{OG_CARD_ALT}">
   <meta name="twitter:card" content="summary_large_image">
-
-  <link rel="icon" type="image/png" href="assets/img/favicon.png">
-  <link rel="apple-touch-icon" href="assets/img/natfish-icon.png">
-
+  <meta name="twitter:title" content="{title}">
+  <meta name="twitter:description" content="{description}">
+  <meta name="twitter:image" content="{img}">
+  <meta name="twitter:image:alt" content="{OG_CARD_ALT}">
+{extra_head}
+{FAVICONS}
   <!-- Self-hosted Bitter and Source Sans 3. The latin subsets are preloaded
        because they carry the headline and the first paragraph; font-display
        swap means the fallback shows immediately and nothing is ever invisible. -->

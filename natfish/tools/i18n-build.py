@@ -47,6 +47,7 @@ def main():
     used = set(extract.collect()) | set(RUNTIME)
     es = {k: ES[k] for k in sorted(used) if k in ES}
     missing = sorted(k for k in used if k not in ES)
+    assert_no_literal_escapes(es)
 
     payload = json.dumps({"es": es}, ensure_ascii=False, indent=1,
                          sort_keys=True)
@@ -71,6 +72,27 @@ def main():
     for m in missing:
         print("  MISSING:", m)
     return 1 if missing else 0
+
+
+
+def assert_no_literal_escapes(strings):
+    """A Spanish value must never contain a literal \\uXXXX or \\xXX sequence.
+
+    These blocks are written through shell heredocs, where a doubled backslash
+    survives into the Python source and Python then reads it as an escaped
+    backslash rather than the character it names. The result ships to the
+    browser as the text "\\u00f3" where an "o with an accent" was meant. It
+    happened once across 102 strings and was invisible until someone read the
+    Spanish site, so it is checked rather than remembered.
+    """
+    import re as _re
+    bad = [k for k, v in strings.items()
+           if _re.search(r"\\[ux][0-9a-fA-F]{2}", v)]
+    if bad:
+        print(f"  !! {len(bad)} Spanish string(s) carry a literal escape sequence")
+        for k in bad[:5]:
+            print(f"     {k[:70]}")
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":

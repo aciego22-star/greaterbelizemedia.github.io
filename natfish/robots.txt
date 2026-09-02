@@ -1,0 +1,5 @@
+# National Fishermen Producers Co-operative Society Ltd.
+User-agent: *
+Allow: /
+
+Sitemap: https://natfish.bz/sitemap.xml

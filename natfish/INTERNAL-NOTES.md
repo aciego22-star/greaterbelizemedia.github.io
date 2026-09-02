@@ -1098,6 +1098,109 @@ gallery link in the page body and that both of those still work.
 
 ---
 
+## 4g. Insights, production SEO and the favicon package
+
+### Insights is a separate section from What's New, on purpose
+
+**What's New** carries company news, events, visits and announcements: things
+with a date that matters. **Insights** carries evergreen material - seafood
+education, fisheries knowledge, product information, handling guidance and, in
+time, fisher stories. They are two nav items, two pages and two homepage
+sections. Do not merge them.
+
+| Piece | Where |
+|---|---|
+| Nav and footer link | `NAV` in `build_shell.py`, between What's New and Gallery |
+| Landing page | `insights.html` |
+| First article | `insights-belizean-caribbean-spiny-lobster.html` |
+| Homepage preview | `home()`, the sand section after Latest updates |
+| Card | `article_card()`, one definition shared by both places |
+
+The article copy is the client's, used exactly as supplied and written into the
+page as semantic HTML. **It is not injected by script** - it reads with
+JavaScript off, which `seoqa.js` asserts by loading the page with JavaScript
+disabled and counting the words. The reading time is counted from the rendered
+text at build time rather than guessed.
+
+### URLs
+
+The project's convention is flat `.html` at the root, so Insights follows it and
+the canonicals name exactly what the host serves. `netlify.toml` also accepts
+the directory forms - `/insights/` and
+`/insights/belizean-caribbean-spiny-lobster/` - and 301s them to the canonical
+page, so a link written either way still lands and there is no duplicate.
+
+### Production SEO
+
+`SITE_URL = "https://natfish.bz"` in `build_shell.py` is the single source for
+every absolute URL: canonicals, `og:url`, the sitemap and all structured data.
+The homepage's canonical is the bare domain, not `/index.html`.
+
+Every page carries `lang="en-BZ"`, a unique title and description, a
+self-referencing canonical, the full Open Graph set with an absolute image, a
+`summary_large_image` Twitter card, the favicon set and the manifest. Structured
+data: Organization on every page, WebSite on the homepage, BreadcrumbList where
+breadcrumbs are shown, Article on the article.
+
+`sitemap.xml` and `robots.txt` are **generated** by `tools/build_site_files.py`
+from the same `PAGES` map the HTML is built from. A hand-kept sitemap drifts the
+first time a page is added; `seoqa.js` asserts every canonical appears in the
+sitemap exactly.
+
+### The preview-to-production indexing switch
+
+The temporary Netlify subdomain is kept out of search results by an
+`X-Robots-Tag: noindex, nofollow` header at the end of `netlify.toml`, inside a
+block banner-marked **PREVIEW ONLY - DELETE THIS ENTIRE BLOCK**.
+
+A header rather than a `robots.txt` Disallow, because a disallowed URL can still
+be indexed from an inbound link whereas noindex is obeyed. A header rather than
+a meta tag, because removing it is then one deletion rather than a rebuild of
+every page.
+
+**To go live:** delete that block, redeploy, then confirm
+`curl -sI https://natfish.bz/ | grep -i robots` returns nothing, and submit
+`https://natfish.bz/sitemap.xml` in Search Console. `robots.txt` and every
+canonical are already written for production and need no change.
+
+### Favicons
+
+`tools/make-favicons.py` builds the whole package at the site root from the
+approved artwork. The emblem is **cropped, never redrawn or recoloured**.
+
+Two crops of the same mark, because a favicon set exists precisely so each size
+can be right: the 180/192/512 icons use the full emblem, and the 16/32/ico use
+the circular ring alone. The emblem is taller than it is wide - the lobster's
+antennae reach above the ring - so at 16px the full crop wasted its pixels on
+margin and read as a brown smear. The ring crop fills the frame and is legible.
+The ground is white because the artwork is navy line work that disappears on a
+transparent ground in a dark browser tab.
+
+### The social card
+
+`tools/make-social-card.py` builds the 1200x630 card from the client's own
+Belizean Pride collage, which already carries the NATFISH lockup. Fitted by
+height and centred on its own sampled background rather than cropped, because
+cropping to 1.905:1 would have shaved the top and the lockup lives there.
+Nothing is relabelled or distorted.
+
+### Three things fixed along the way
+
+1. **102 Spanish strings shipped literal escape sequences.** Blocks added
+   through shell heredocs kept a doubled backslash, so Python read `\\u00f3` as
+   an escaped backslash and the browser was sent the text `\u00f3` where an
+   accented letter belonged. Invisible until someone read the Spanish site.
+   Decoded, and `i18n-build.py` now refuses to build if any value carries one.
+2. **The desktop nav overflowed at 1280 in Spanish.** Ten items plus longer
+   Spanish labels pushed the Buyer Enquiry button 29px past the viewport. The
+   bar now starts at 1366 rather than 1280; below that the drawer keeps the
+   header, which is where it was already tested.
+3. **A 1px horizontal scroll at 1440 in Spanish**, from the decorative page-hero
+   watermark and a flex rounding in the header row. The hero clips, and the nav
+   may shrink.
+
+---
+
 ## 5. Page architecture
 
 ```

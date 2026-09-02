@@ -1742,3 +1742,276 @@ ES.update({
         "Las preguntas sobre una novedad, la cooperativa o un requerimiento de "
         "compra llegan todas al mismo equipo.",
 })
+
+
+# ---------------------------------------------------------------------------
+# Insights from NatFish: the section, the landing page and the first article.
+#
+# The article is the client's copy, translated faithfully. Nothing is added,
+# dropped or softened; where the English is careful not to promise availability
+# or a price, the Spanish is too. Brand names stay in English: "Belizean Pride"
+# is a product line and "NatFish" is the working name, so neither is translated.
+ES.update({
+    # -- section, navigation and landing page
+    "Insights": "Perspectivas",
+    "Insights from NatFish": "Perspectivas de NatFish",
+    "Insights from NatFish | Belizean Seafood Knowledge":
+        "Perspectivas de NatFish | Conocimiento sobre los productos del mar de Belice",
+    "Explore insights from NatFish on Belizean seafood, fisheries, product "
+    "handling and the people behind Belize’s fishing industry.":
+        "Explore las perspectivas de NatFish sobre los productos del mar de "
+        "Belice, la pesca, el manejo del producto y las personas detrás de la "
+        "industria pesquera del país.",
+    "Evergreen writing on Belizean seafood: what the co-operative handles, how "
+    "it is prepared and what buyers should know. Company news, events and "
+    "visits are on":
+        "Contenido permanente sobre los productos del mar de Belice: lo que "
+        "maneja la cooperativa, cómo se prepara y lo que los compradores deben "
+        "saber. Las noticias, eventos y visitas de la empresa están en",
+    "Evergreen writing on Belizean seafood: what the co-operative handles, how "
+    "it is prepared and what buyers should know.":
+        "Contenido permanente sobre los productos del mar de Belice: lo que "
+        "maneja la cooperativa, cómo se prepara y lo que los compradores deben "
+        "saber.",
+    "What’s New at NatFish": "Novedades de NatFish",
+    "Latest article": "Último artículo",
+    "All insights": "Todas las perspectivas",
+    "Seafood education from the co-operative":
+        "Educación sobre productos del mar, desde la cooperativa",
+    "More to come.": "Habrá más.",
+    "Insights is a permanent section. Further articles on seafood handling, "
+    "fisheries knowledge, product information and the people behind the catch "
+    "will be added here as NatFish publishes them.":
+        "Perspectivas es una sección permanente. Aquí se irán añadiendo más "
+        "artículos sobre el manejo de los productos del mar, conocimiento "
+        "pesquero, información de productos y las personas detrás de la "
+        "captura, conforme NatFish los publique.",
+    "See what the co-operative supplies": "Vea lo que suministra la cooperativa",
+    "Frozen spiny lobster, queen conch, lionfish fillet and packed fish, "
+    "prepared by a Belizean fisher-owned co-operative.":
+        "Langosta espinosa congelada, caracol reina, filete de pez león y "
+        "pescado empacado, preparados por una cooperativa beliceña de "
+        "pescadores.",
+    "View NatFish seafood products":
+        "Ver los productos del mar de NatFish",
+    "Start a seafood order": "Inicie un pedido de productos del mar",
+
+    # -- the card
+    "Seafood Education": "Educación sobre productos del mar",
+    "September 2, 2026": "2 de septiembre de 2026",
+    "Learn what sets Belizean Caribbean spiny lobster apart and how NatFish "
+    "connects local fishers, careful processing and the market.":
+        "Conozca qué distingue a la langosta espinosa del Caribe de Belice y "
+        "cómo NatFish conecta a los pescadores locales, el procesamiento "
+        "cuidadoso y el mercado.",
+    "Read the article on Belizean spiny lobster":
+        "Lea el artículo sobre la langosta espinosa de Belice",
+
+    # -- the article
+    "Belizean Caribbean Spiny Lobster: What Makes It Special?":
+        "Langosta espinosa del Caribe de Belice: ¿qué la hace especial?",
+    "Belizean Caribbean Spiny Lobster: What Makes It Special? | NatFish":
+        "Langosta espinosa del Caribe de Belice: ¿qué la hace especial? | NatFish",
+    "Discover what makes Belizean Caribbean spiny lobster special, from wild "
+    "harvesting and careful handling to the cooperative role of NatFish.":
+        "Descubra qué hace especial a la langosta espinosa del Caribe de "
+        "Belice, desde la captura silvestre y el manejo cuidadoso hasta el papel "
+        "cooperativo de NatFish.",
+    "NatFish Team": "Equipo NatFish",
+    "By the NatFish Team": "Por el Equipo NatFish",
+    "Breadcrumb": "Ruta de navegación",
+    "3 minute read": "3 minutos de lectura",
+    "4 minute read": "4 minutos de lectura",
+    "5 minute read": "5 minutos de lectura",
+
+    "Caribbean spiny lobster is one of Belize’s most recognizable seafood "
+    "products. Known scientifically as":
+        "La langosta espinosa del Caribe es uno de los productos del mar más "
+        "reconocibles de Belice. Conocida científicamente como",
+    ", it represents much more than a meal. It connects Belize’s marine "
+    "environment, the knowledge of local fishers, careful handling and a "
+    "seafood tradition valued at home and abroad.":
+        ", representa mucho más que una comida. Conecta el entorno marino de "
+        "Belice, el conocimiento de los pescadores locales, el manejo cuidadoso "
+        "y una tradición de productos del mar valorada dentro y fuera del país.",
+    "At NatFish, that story begins with the people who harvest from Belizean "
+    "waters and continues through the cooperative system that prepares seafood "
+    "for the market.":
+        "En NatFish, esa historia comienza con las personas que capturan en "
+        "aguas beliceñas y continúa a través del sistema cooperativo que "
+        "prepara los productos del mar para el mercado.",
+
+    "A Product of Belizean Waters": "Un producto de las aguas de Belice",
+    "Unlike farmed seafood, wild-caught Caribbean spiny lobster is harvested "
+    "from its natural marine environment. Its quality begins at sea, where "
+    "experience and responsible fishing practices are essential.":
+        "A diferencia de los productos del mar de cultivo, la langosta espinosa "
+        "del Caribe de captura silvestre se obtiene de su entorno marino "
+        "natural. Su calidad comienza en el mar, donde la experiencia y las "
+        "prácticas de pesca responsable son esenciales.",
+    "The words “Product of Belize” therefore carry real meaning. They "
+    "identify where the lobster originated while connecting the finished "
+    "product to Belizean fishers and the communities that depend on the "
+    "country’s marine resources.":
+        "Por eso las palabras “Product of Belize” tienen un significado real. "
+        "Identifican el origen de la langosta y a la vez conectan el producto "
+        "terminado con los pescadores beliceños y las comunidades que dependen "
+        "de los recursos marinos del país.",
+    "Responsible harvesting also means respecting current fishing seasons, "
+    "size requirements and other regulations established to protect the "
+    "fishery. Buyers and consumers can support this effort by purchasing "
+    "Belizean Pride lobster directly from NatFish and respecting the current "
+    "rules governing the fishery.":
+        "La captura responsable también significa respetar las temporadas de "
+        "pesca vigentes, los requisitos de talla y otras regulaciones "
+        "establecidas para proteger la pesquería. Los compradores y "
+        "consumidores pueden apoyar este esfuerzo comprando langosta Belizean "
+        "Pride directamente a NatFish y respetando las reglas vigentes que "
+        "rigen la pesquería.",
+
+    "Why Careful Handling Matters": "Por qué importa el manejo cuidadoso",
+    "Seafood requires careful handling throughout its journey from the sea to "
+    "the customer. Temperature control, hygienic processing and appropriate "
+    "packaging all contribute to the condition in which the product reaches "
+    "homes, restaurants, hotels and distributors.":
+        "Los productos del mar requieren un manejo cuidadoso a lo largo de todo "
+        "su recorrido desde el mar hasta el cliente. El control de temperatura, "
+        "el procesamiento higiénico y el empaque adecuado contribuyen a la "
+        "condición en la que el producto llega a hogares, restaurantes, hoteles "
+        "y distribuidores.",
+    "NatFish’s Belizean Pride whole-lobster packaging identifies the product "
+    "as wild-caught, processed from live lobsters, individually wrapped and "
+    "quick frozen. Individual wrapping makes the product easier to store and "
+    "handle, while the frozen format supports distribution when the correct "
+    "cold chain is maintained.":
+        "El empaque de langosta entera Belizean Pride de NatFish identifica el "
+        "producto como de captura silvestre, procesado a partir de langostas "
+        "vivas, envuelto individualmente y congelado rápidamente. El envoltorio "
+        "individual facilita almacenar y manipular el producto, mientras que el "
+        "formato congelado favorece la distribución cuando se mantiene la "
+        "cadena de frío correcta.",
+    "Customers purchasing frozen lobster should look for intact packaging, "
+    "keep the product properly frozen and follow safe preparation "
+    "instructions.":
+        "Los clientes que compren langosta congelada deben verificar que el "
+        "empaque esté intacto, mantener el producto debidamente congelado y "
+        "seguir instrucciones de preparación seguras.",
+
+    "Different Products for Different Kitchens":
+        "Diferentes productos para diferentes cocinas",
+    "Caribbean spiny lobster can be supplied in several useful forms.":
+        "La langosta espinosa del Caribe puede suministrarse en varias "
+        "presentaciones útiles.",
+    "A whole lobster creates a distinctive presentation and allows cooks to "
+    "prepare the product according to their preferred recipe. Lobster meat can "
+    "also be used in cooked dishes such as soups, stews, rice dishes, sauces "
+    "and other local or international preparations.":
+        "Una langosta entera crea una presentación distintiva y permite a los "
+        "cocineros preparar el producto según la receta que prefieran. La carne "
+        "de langosta también puede usarse en platos cocinados como sopas, "
+        "guisos, arroces, salsas y otras preparaciones locales o "
+        "internacionales.",
+    "NatFish’s Belizean Pride range includes individually wrapped, "
+    "quick-frozen whole Caribbean spiny lobster and spiny lobster head meat. "
+    "Offering different product formats helps households, restaurants and "
+    "other buyers select the option that best suits their menus and "
+    "preparation needs.":
+        "La línea Belizean Pride de NatFish incluye langosta espinosa del "
+        "Caribe entera, envuelta individualmente y congelada rápidamente, y "
+        "carne de cabeza de langosta espinosa. Ofrecer distintos formatos de "
+        "producto ayuda a los hogares, restaurantes y otros compradores a elegir "
+        "la opción que mejor se adapte a sus menús y necesidades de "
+        "preparación.",
+    "It can also encourage fuller use of the catch by creating practical uses "
+    "for different parts of the lobster.":
+        "También puede fomentar un aprovechamiento más completo de la captura, "
+        "al crear usos prácticos para distintas partes de la langosta.",
+
+    "The Value of a Fishermen’s Cooperative":
+        "El valor de una cooperativa de pescadores",
+    "National Fishermen Producers Co-operative Society Ltd., known as NatFish, "
+    "provides a structure through which seafood can be received, processed, "
+    "packaged and prepared for the market.":
+        "National Fishermen Producers Co-operative Society Ltd., conocida como "
+        "NatFish, ofrece una estructura mediante la cual los productos del mar "
+        "pueden recibirse, procesarse, empacarse y prepararse para el mercado.",
+    "That cooperative structure connects individual fishers with a wider value "
+    "chain. It helps give Belizean seafood a recognizable identity and creates "
+    "a pathway between the people harvesting the product and the customers "
+    "purchasing it.":
+        "Esa estructura cooperativa conecta a los pescadores individuales con "
+        "una cadena de valor más amplia. Ayuda a dar a los productos del mar de "
+        "Belice una identidad reconocible y crea un camino entre las personas "
+        "que capturan el producto y los clientes que lo compran.",
+    "For buyers, knowing the source of seafood creates greater confidence. For "
+    "Belize, maintaining that connection helps ensure that the country is "
+    "recognized not only for its marine resources, but also for the people and "
+    "organizations working throughout the seafood industry.":
+        "Para los compradores, conocer el origen de los productos del mar "
+        "genera mayor confianza. Para Belice, mantener esa conexión ayuda a "
+        "asegurar que el país sea reconocido no solo por sus recursos marinos, "
+        "sino también por las personas y organizaciones que trabajan en toda la "
+        "industria de los productos del mar.",
+
+    "Why Buy Belizean Pride Directly from NatFish":
+        "Por qué comprar Belizean Pride directamente a NatFish",
+    "Belizean Pride products are produced and packed by National Fishermen "
+    "Producers Co-operative Society Ltd. Customers interested in the products "
+    "featured here can therefore contact NatFish directly for current "
+    "availability and ordering information.":
+        "Los productos Belizean Pride son producidos y empacados por National "
+        "Fishermen Producers Co-operative Society Ltd. Por lo tanto, los "
+        "clientes interesados en los productos presentados aquí pueden "
+        "comunicarse directamente con NatFish para conocer la disponibilidad "
+        "actual y la información de pedidos.",
+    "Customers can contact NatFish to:":
+        "Los clientes pueden comunicarse con NatFish para:",
+    "Confirm which Belizean Pride products and formats are currently "
+    "available.":
+        "Confirmar qué productos y formatos Belizean Pride están disponibles "
+        "actualmente.",
+    "Ask about available quantities.":
+        "Consultar sobre las cantidades disponibles.",
+    "Receive current ordering and collection information.":
+        "Recibir información actual sobre pedidos y recolección.",
+    "Request appropriate storage and handling guidance.":
+        "Solicitar orientación adecuada de almacenamiento y manejo.",
+    "Learn about other available NatFish seafood products.":
+        "Conocer otros productos del mar de NatFish disponibles.",
+    "Buying directly from NatFish gives customers a clear point of contact for "
+    "the Belizean Pride range. It also keeps the purchase connected to the "
+    "cooperative and the Belizean fishermen behind the product.":
+        "Comprar directamente a NatFish da a los clientes un punto de contacto "
+        "claro para la línea Belizean Pride. Además mantiene la compra "
+        "conectada con la cooperativa y con los pescadores beliceños detrás "
+        "del producto.",
+
+    "Belizean Pride from Sea to Market":
+        "Belizean Pride, del mar al mercado",
+    "What makes Belizean Caribbean spiny lobster special is the complete story "
+    "behind it. It begins in Belizean waters, depends on the skill of local "
+    "fishers and continues through careful processing and preparation for the "
+    "market.":
+        "Lo que hace especial a la langosta espinosa del Caribe de Belice es la "
+        "historia completa detrás de ella. Comienza en aguas beliceñas, "
+        "depende de la destreza de los pescadores locales y continúa a través "
+        "de un procesamiento y una preparación cuidadosos para el mercado.",
+    "Through NatFish and the Belizean Pride product line, customers can "
+    "discover seafood that carries a clear Belizean identity from its origin "
+    "to the finished product.":
+        "A través de NatFish y la línea de productos Belizean Pride, los "
+        "clientes pueden descubrir productos del mar que llevan una identidad "
+        "beliceña clara desde su origen hasta el producto terminado.",
+
+    # -- closing call to action
+    "Belizean Pride": "Belizean Pride",
+    "Explore the products, or ask NatFish directly":
+        "Explore los productos o pregunte directamente a NatFish",
+    "To learn more about available NatFish and Belizean Pride products, "
+    "explore our Products page or contact NatFish on WhatsApp at "
+    "+501 628-1449.":
+        "Para conocer más sobre los productos NatFish y Belizean Pride "
+        "disponibles, explore nuestra página de productos o comuníquese con "
+        "NatFish por WhatsApp al +501 628-1449.",
+    "Message NatFish on WhatsApp": "Escriba a NatFish por WhatsApp",
+})

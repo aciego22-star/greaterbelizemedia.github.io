@@ -20,9 +20,13 @@ from build_shell import (
     RECREATION_NOTE, SHORT, TEL2_DISPLAY, TEL2_HREF, TEL_DISPLAY, TEL_HREF,
     VIDEO_ID, VIDEO_SOURCE, VIDEO_TITLE, WHATSAPP, SRC_BELTRAIDE,
     SRC_FISHERIES_DEPT, SRC_FISHERYPROGRESS, SRC_FISHSOURCE, SRC_FISHWISE,
-    AI_PAGE, HOURS, RULE_WAVE, contact_strip, cta_band, footer, head, header, hero_picture,
-    hero_preload, identity_ribbon, logo_full, page_hero, picture,
+    AI_PAGE, HOURS, RULE_WAVE, SITE_URL, breadcrumb_jsonld,
+    contact_strip, cta_band, footer, head, header, hero_picture,
+    hero_preload, hero_tiers, identity_ribbon, logo_full, page_hero, picture,
+    website_jsonld,
 )
+import json
+import re
 
 OUT = pathlib.Path("/home/user/greaterbelizemedia.github.io/natfish")
 
@@ -319,7 +323,9 @@ def home():
             "A member-owned co-operative of 636 Belizean fishers, registered in "
             "Belize City in 1966. Frozen spiny lobster, queen conch and lionfish "
             "fillet prepared for local and international markets.",
+            "index.html",
             preload=hero_preload(HERO_SLIDES[0]),
+            extra_jsonld=website_jsonld(),
         )
         + header("index.html")
         + identity_ribbon()
@@ -479,7 +485,26 @@ def home():
       </div>
     </section>
 
-    <section class="section section--sand" aria-labelledby="home-gallery-h">
+    <section class="section section--sand" aria-labelledby="home-insights-h">
+      <div class="container">
+        <div class="section-head section-head--split reveal">
+          <div>
+            <span class="eyebrow">Insights</span>
+            <h2 class="h-icon" id="home-insights-h">{icon("steward", "h-icon__mark")} Insights from NatFish</h2>
+          </div>
+          <a class="arrow-link" href="{INSIGHTS_PAGE}">All insights</a>
+        </div>
+        <p class="lede reveal" style="margin-bottom:clamp(1.4rem,3vw,2rem)">
+          Evergreen writing on Belizean seafood: what the co-operative handles,
+          how it is prepared and what buyers should know.
+        </p>
+        <div class="insight-grid insight-grid--feature">
+          {article_card()}
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="home-gallery-h">
       <div class="container">
         <div class="section-head section-head--split reveal">
           <div>
@@ -521,6 +546,7 @@ def about():
             f"{LEGAL_NO_DOT} was registered in Belize City on {FOUNDED_DATE} and "
             f"has grown to {MEMBERS} fisher members, governed by a "
             f"{COMMITTEE}-member Managing Committee elected from the membership.",
+            "about.html",
         )
         + header("about.html")
         + page_hero(
@@ -916,6 +942,7 @@ def seafood_services():
             "lobster, queen conch 85% cleaned, lionfish fillet and packed fish "
             "fillets and portions, prepared by a Belizean fisher-owned "
             "co-operative.",
+            "seafood-services.html",
         )
         + header("seafood-services.html")
         + page_hero(
@@ -1052,6 +1079,7 @@ def responsible():
             "NATFISH works to operate in accordance with HACCP and U.S. FDA "
             "regulations, and has participated in seafood traceability work and "
             "Belize's spiny lobster Fishery Improvement Project.",
+            "responsible.html",
         )
         + header("responsible.html")
         + page_hero(
@@ -1190,6 +1218,7 @@ def news():
             "What&rsquo;s New at NATFISH | NATFISH",
             "Announcements, co-operative updates, fisheries-sector developments "
             f"and media coverage relevant to {LEGAL_NO_DOT}.",
+            "news.html",
         )
         + header("news.html")
         + page_hero(
@@ -1274,6 +1303,7 @@ def seafood_seasons():
             "A plain-language guide to Belize's standard regulated seafood "
             "seasons for lobster, conch, Nassau grouper, whelks and stone crab. "
             "Contact NATFISH to confirm current availability.",
+            "seafood-seasons.html",
         )
         + header("seafood-seasons.html")
         + f"""
@@ -1469,6 +1499,7 @@ def gallery():
             "Photographs from inside the NATFISH facility in Belize City: the "
             "packing team, lobster and conch processing, packing and cold "
             "storage.",
+            "gallery.html",
         )
         + header("gallery.html")
         + page_hero(
@@ -1671,6 +1702,7 @@ def natfish_ai():
             f"Meet NATFISH AI, the digital employee for {LEGAL_NO_DOT}. Ask "
             "questions, explore approved seafood and start an order in English "
             "or Spanish.",
+            "natfish-ai.html",
             extra_jsonld=ai_jsonld(),
         )
         + header("natfish-ai.html")
@@ -1871,6 +1903,7 @@ def contact():
             "Contact NATFISH &amp; Start a Seafood Order | Belize City",
             "Start a seafood order request with NATFISH AI, or contact the "
             f"NATFISH team directly by email, WhatsApp or telephone at {ADDRESS}.",
+            "contact.html",
         )
         + header("contact.html")
         + page_hero(
@@ -2085,6 +2118,359 @@ def contact():
     )
 
 
+
+# ============================================================== insights ===
+#
+# "Insights from NatFish" is kept deliberately separate from "What's New at
+# NatFish". What's New carries company news, events, visits and announcements -
+# things with a date that matters. Insights carries evergreen material:
+# seafood education, fisheries knowledge, product information, handling
+# guidance and, in time, fisher stories. Mixing the two would make both harder
+# to scan, which is why they are two sections and two pages.
+#
+# The article copy below is the client's, used exactly as supplied. It is
+# written into the page as semantic HTML - headings, paragraphs and a list -
+# and NOT injected by script, so it is readable with JavaScript switched off
+# and indexable by anything that fetches the page.
+
+INSIGHTS_PAGE = "insights.html"
+
+ARTICLE = {
+    "slug": "insights-belizean-caribbean-spiny-lobster.html",
+    "category": "Seafood Education",
+    "title": "Belizean Caribbean Spiny Lobster: What Makes It Special?",
+    "author": "NatFish Team",
+    "date_iso": "2026-09-02",
+    "date_display": "September 2, 2026",
+    "img": "hero-belizean-pride-range",
+    "alt": ("Belizean Pride wild-caught Caribbean spiny lobster products from "
+            "NatFish in Belize."),
+    "excerpt": ("Learn what sets Belizean Caribbean spiny lobster apart and how "
+                "NatFish connects local fishers, careful processing and the "
+                "market."),
+    "meta": ("Discover what makes Belizean Caribbean spiny lobster special, "
+             "from wild harvesting and careful handling to the cooperative "
+             "role of NatFish."),
+}
+
+# The article body, as supplied. Section headings become <h2>; the bullet list
+# stays a list. Nothing is reworded, shortened or padded with search terms.
+ARTICLE_BODY = [
+    ("p", "Caribbean spiny lobster is one of Belize&rsquo;s most recognizable "
+          "seafood products. Known scientifically as <i>Panulirus argus</i>, it "
+          "represents much more than a meal. It connects Belize&rsquo;s marine "
+          "environment, the knowledge of local fishers, careful handling and a "
+          "seafood tradition valued at home and abroad."),
+    ("p", "At NatFish, that story begins with the people who harvest from "
+          "Belizean waters and continues through the cooperative system that "
+          "prepares seafood for the market."),
+    ("h2", "A Product of Belizean Waters"),
+    ("p", "Unlike farmed seafood, wild-caught Caribbean spiny lobster is "
+          "harvested from its natural marine environment. Its quality begins at "
+          "sea, where experience and responsible fishing practices are "
+          "essential."),
+    ("p", "The words &ldquo;Product of Belize&rdquo; therefore carry real "
+          "meaning. They identify where the lobster originated while connecting "
+          "the finished product to Belizean fishers and the communities that "
+          "depend on the country&rsquo;s marine resources."),
+    ("p", "Responsible harvesting also means respecting current fishing "
+          "seasons, size requirements and other regulations established to "
+          "protect the fishery. Buyers and consumers can support this effort by "
+          "purchasing Belizean Pride lobster directly from NatFish and "
+          "respecting the current rules governing the fishery."),
+    ("h2", "Why Careful Handling Matters"),
+    ("p", "Seafood requires careful handling throughout its journey from the "
+          "sea to the customer. Temperature control, hygienic processing and "
+          "appropriate packaging all contribute to the condition in which the "
+          "product reaches homes, restaurants, hotels and distributors."),
+    ("p", "NatFish&rsquo;s Belizean Pride whole-lobster packaging identifies "
+          "the product as wild-caught, processed from live lobsters, "
+          "individually wrapped and quick frozen. Individual wrapping makes the "
+          "product easier to store and handle, while the frozen format supports "
+          "distribution when the correct cold chain is maintained."),
+    ("p", "Customers purchasing frozen lobster should look for intact "
+          "packaging, keep the product properly frozen and follow safe "
+          "preparation instructions."),
+    ("h2", "Different Products for Different Kitchens"),
+    ("p", "Caribbean spiny lobster can be supplied in several useful forms."),
+    ("p", "A whole lobster creates a distinctive presentation and allows cooks "
+          "to prepare the product according to their preferred recipe. Lobster "
+          "meat can also be used in cooked dishes such as soups, stews, rice "
+          "dishes, sauces and other local or international preparations."),
+    ("p", "NatFish&rsquo;s Belizean Pride range includes individually wrapped, "
+          "quick-frozen whole Caribbean spiny lobster and spiny lobster head "
+          "meat. Offering different product formats helps households, "
+          "restaurants and other buyers select the option that best suits their "
+          "menus and preparation needs."),
+    ("p", "It can also encourage fuller use of the catch by creating practical "
+          "uses for different parts of the lobster."),
+    ("h2", "The Value of a Fishermen&rsquo;s Cooperative"),
+    ("p", "National Fishermen Producers Co-operative Society Ltd., known as "
+          "NatFish, provides a structure through which seafood can be received, "
+          "processed, packaged and prepared for the market."),
+    ("p", "That cooperative structure connects individual fishers with a wider "
+          "value chain. It helps give Belizean seafood a recognizable identity "
+          "and creates a pathway between the people harvesting the product and "
+          "the customers purchasing it."),
+    ("p", "For buyers, knowing the source of seafood creates greater "
+          "confidence. For Belize, maintaining that connection helps ensure "
+          "that the country is recognized not only for its marine resources, "
+          "but also for the people and organizations working throughout the "
+          "seafood industry."),
+    ("h2", "Why Buy Belizean Pride Directly from NatFish"),
+    ("p", "Belizean Pride products are produced and packed by National "
+          "Fishermen Producers Co-operative Society Ltd. Customers interested "
+          "in the products featured here can therefore contact NatFish directly "
+          "for current availability and ordering information."),
+    ("p", "Customers can contact NatFish to:"),
+    ("ul", [
+        "Confirm which Belizean Pride products and formats are currently "
+        "available.",
+        "Ask about available quantities.",
+        "Receive current ordering and collection information.",
+        "Request appropriate storage and handling guidance.",
+        "Learn about other available NatFish seafood products.",
+    ]),
+    ("p", "Buying directly from NatFish gives customers a clear point of "
+          "contact for the Belizean Pride range. It also keeps the purchase "
+          "connected to the cooperative and the Belizean fishermen behind the "
+          "product."),
+    ("h2", "Belizean Pride from Sea to Market"),
+    ("p", "What makes Belizean Caribbean spiny lobster special is the complete "
+          "story behind it. It begins in Belizean waters, depends on the skill "
+          "of local fishers and continues through careful processing and "
+          "preparation for the market."),
+    ("p", "Through NatFish and the Belizean Pride product line, customers can "
+          "discover seafood that carries a clear Belizean identity from its "
+          "origin to the finished product."),
+]
+
+
+def reading_time():
+    """Minutes, counted from the finished article rather than guessed.
+
+    225 words a minute is the usual reading speed for prose of this kind.
+    Counted from the rendered text, so it cannot drift from what is on the page.
+    """
+    words = 0
+    for kind, body in ARTICLE_BODY:
+        chunks = body if isinstance(body, list) else [body]
+        for chunk in chunks:
+            words += len(re.sub(r"<[^>]+>|&[a-z]+;", " ", chunk).split())
+    return max(1, round(words / 225))
+
+
+def article_jsonld():
+    """Article, built only from what is actually on the page.
+
+    No wordCount, no articleBody duplicate, no unverified publisher detail: the
+    fields below are all things a reader can see for themselves on the page.
+    """
+    a = ARTICLE
+    url = f"{SITE_URL}/{a['slug']}"
+    img = f"{SITE_URL}/assets/img/official/og-article-spiny-lobster.jpg"
+    data = {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": a["title"],
+        "description": a["meta"],
+        "image": [img],
+        "datePublished": a["date_iso"],
+        "dateModified": a["date_iso"],
+        "author": {"@type": "Organization", "name": a["author"]},
+        "publisher": {
+            "@type": "Organization",
+            "name": LEGAL,
+            "alternateName": "NatFish",
+            "logo": {
+                "@type": "ImageObject",
+                "url": f"{SITE_URL}/assets/img/natfish-logo-1200.png",
+            },
+        },
+        "mainEntityOfPage": {"@type": "WebPage", "@id": url},
+        "inLanguage": "en-BZ",
+        "articleSection": a["category"],
+    }
+    return ('  <script type="application/ld+json">\n  '
+            + json.dumps(data, indent=2, ensure_ascii=False).replace("\n", "\n  ")
+            + "\n  </script>\n")
+
+
+def article_body_html():
+    """The article body as semantic HTML: headings, paragraphs and one list.
+
+    Built here rather than injected by script, so the article is readable with
+    JavaScript off and indexable by anything that fetches the page.
+    """
+    nl = "\n"
+    out = []
+    for kind, body in ARTICLE_BODY:
+        if kind == "ul":
+            items = (nl + "            ").join(f"<li>{i}</li>" for i in body)
+            out.append('<ul class="article__list">' + nl + "            " + items
+                       + nl + "          </ul>")
+        elif kind == "h2":
+            out.append(f"<h2>{body}</h2>")
+        else:
+            out.append(f"<p>{body}</p>")
+    return (nl + "          ").join(out)
+
+
+def article_card(*, heading_level="h3"):
+    """The article's card, shared by the homepage preview and the landing page.
+
+    One definition so the two can never disagree about the title, the excerpt
+    or the date.
+    """
+    a = ARTICLE
+    return f"""<article class="insight-card reveal">
+            <a class="insight-card__media" href="{a['slug']}" tabindex="-1" aria-hidden="true">
+              {picture(a['img'] + '-desktop', "(max-width: 640px) 92vw, (max-width: 1024px) 46vw, 30vw", alt="", tiers=hero_tiers(a['img'] + '-desktop'))}
+            </a>
+            <div class="insight-card__body">
+              <p class="update-card__meta">
+                <span class="update-card__tag">{a['category']}</span>
+                <time class="update-card__date" datetime="{a['date_iso']}">{a['date_display']}</time>
+              </p>
+              <{heading_level}><a href="{a['slug']}">{a['title']}</a></{heading_level}>
+              <p>{a['excerpt']}</p>
+              <a class="arrow-link" href="{a['slug']}">Read the article on Belizean spiny lobster</a>
+            </div>
+          </article>"""
+
+
+def insights():
+    a = ARTICLE
+    return (
+        head(
+            "Insights from NatFish | Belizean Seafood Knowledge",
+            "Explore insights from NatFish on Belizean seafood, fisheries, "
+            "product handling and the people behind Belize&rsquo;s fishing "
+            "industry.",
+            INSIGHTS_PAGE,
+            og_image="official/og-article-spiny-lobster",
+            extra_jsonld=breadcrumb_jsonld([("Home", "index.html"),
+                                            ("Insights", INSIGHTS_PAGE)]),
+        )
+        + header(INSIGHTS_PAGE)
+        + page_hero(
+            "Insights",
+            "Insights from NatFish",
+            "Evergreen writing on Belizean seafood: what the co-operative "
+            "handles, how it is prepared and what buyers should know. Company "
+            "news, events and visits are on "
+            f'<a href="news.html">What&rsquo;s New at NatFish</a>.',
+            "Insights",
+        )
+        + f"""
+    <section class="section" aria-labelledby="insights-list-h">
+      <div class="container">
+        <div class="section-head reveal section-head--center">
+          <span class="eyebrow">Latest article</span>
+          <h2 id="insights-list-h">Seafood education from the co-operative</h2>
+        </div>
+        <div class="insight-grid">
+          {article_card()}
+        </div>
+        <p class="notice reveal" style="margin-top:clamp(2rem,4vw,3rem)">
+          <strong>More to come.</strong> Insights is a permanent section. Further
+          articles on seafood handling, fisheries knowledge, product information
+          and the people behind the catch will be added here as NatFish publishes
+          them.
+        </p>
+      </div>
+    </section>
+"""
+        + cta_band(
+            "Seafood &amp; Services",
+            "See what the co-operative supplies",
+            "Frozen spiny lobster, queen conch, lionfish fillet and packed fish, "
+            "prepared by a Belizean fisher-owned co-operative.",
+            [
+                '<a class="btn btn--primary" href="seafood-services.html">View NatFish seafood products</a>',
+                f'<a class="btn btn--ghost" href="{BUYER_CTA}">Start a seafood order</a>',
+            ],
+        )
+        + footer()
+    )
+
+
+def article_page():
+    a = ARTICLE
+    mins = reading_time()
+    return (
+        head(
+            f"{a['title']} | NatFish",
+            a["meta"],
+            a["slug"],
+            og_image="official/og-article-spiny-lobster",
+            og_type="article",
+            extra_head="\n".join([
+                f'  <meta property="article:published_time" content="{a["date_iso"]}">',
+                f'  <meta property="article:modified_time" content="{a["date_iso"]}">',
+                f'  <meta property="article:section" content="{a["category"]}">',
+                f'  <meta name="author" content="{a["author"]}">',
+            ]),
+            extra_jsonld=article_jsonld() + breadcrumb_jsonld([
+                ("Home", "index.html"),
+                ("Insights", INSIGHTS_PAGE),
+                (a["title"], a["slug"]),
+            ]),
+        )
+        # header() has already opened <main id="main">; the article is the
+        # page's main content, not a second landmark.
+        + header(INSIGHTS_PAGE)
+        + f"""
+    <article class="article">
+      <div class="container container--narrow">
+        <nav class="breadcrumb reveal" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="{INSIGHTS_PAGE}">Insights</a></li>
+            <li aria-current="page">{a['title']}</li>
+          </ol>
+        </nav>
+
+        <header class="article__head reveal">
+          <p class="update-card__meta">
+            <span class="update-card__tag">{a['category']}</span>
+            <time class="update-card__date" datetime="{a['date_iso']}">{a['date_display']}</time>
+          </p>
+          <h1>{a['title']}</h1>
+          <p class="article__byline">By the {a['author']}
+            <span class="article__dot" aria-hidden="true">&middot;</span>
+            <span>{mins} minute read</span>
+          </p>
+        </header>
+      </div>
+
+      <div class="container">
+        <figure class="article__figure reveal">
+          {hero_picture(a['img'], 1, eager=True)}
+        </figure>
+      </div>
+
+      <div class="container container--narrow">
+        <div class="article__body reveal">
+          {article_body_html()}
+        </div>
+      </div>
+    </article>
+"""
+        + cta_band(
+            "Belizean Pride",
+            "Explore the products, or ask NatFish directly",
+            "To learn more about available NatFish and Belizean Pride products, "
+            "explore our Products page or contact NatFish on WhatsApp at "
+            f"{MOBILE_DISPLAY}.",
+            [
+                '<a class="btn btn--primary" href="seafood-services.html">View NatFish seafood products</a>',
+                f'<a class="btn btn--whatsapp" href="https://wa.me/{WHATSAPP}" target="_blank" rel="noopener noreferrer">{ICON_WA} Message NatFish on WhatsApp</a>',
+            ],
+        )
+        + footer()
+    )
+
 # ================================================================ main ===
 
 PAGES = {
@@ -2097,6 +2483,8 @@ PAGES = {
     "gallery.html": gallery,
     "natfish-ai.html": natfish_ai,
     "contact.html": contact,
+    "insights.html": insights,
+    ARTICLE["slug"]: article_page,
 }
 
 

@@ -30,6 +30,23 @@ PAGES=(
   gallery.html
   natfish-ai.html
   contact.html
+  insights.html
+  insights-belizean-caribbean-spiny-lobster.html
+)
+
+# Root-level files the site serves directly: the favicon set, the manifest and
+# the two files search engines look for. Listed rather than globbed for the
+# same reason PAGES is - so a missing one is an error, not a silent gap.
+ROOTFILES=(
+  favicon.ico
+  favicon-16x16.png
+  favicon-32x32.png
+  apple-touch-icon.png
+  android-chrome-192x192.png
+  android-chrome-512x512.png
+  site.webmanifest
+  robots.txt
+  sitemap.xml
 )
 
 # Every page in the folder must be listed above, or a new page silently
@@ -42,7 +59,11 @@ for f in *.html; do
   esac
 done
 
-cp -- "${PAGES[@]}" netlify.toml "$STAGE/"
+for f in "${ROOTFILES[@]}"; do
+  [ -f "$f" ] || { echo "ERROR: missing $f - run tools/build_site_files.py and tools/make-favicons.py" >&2; exit 1; }
+done
+
+cp -- "${PAGES[@]}" "${ROOTFILES[@]}" netlify.toml "$STAGE/"
 mkdir -p "$STAGE/assets"
 cp -R assets/css assets/js assets/img assets/fonts "$STAGE/assets/"
 

@@ -496,7 +496,7 @@ li .arrow-link {
 
 /* At 2.035:1, 50px tall is a 102px-wide box, which clears the 46px menu button
    with room to spare even at 320px. */
-@media (max-width: 1279px) {
+@media (max-width: 1365px) {
   .logo img {
     height: 50px;
   }
@@ -542,6 +542,29 @@ li .arrow-link {
   list-style: none;
   margin: 0;
   padding: 0;
+}
+
+/* The desktop nav bar carries ten items now that Insights has joined it, and
+   the Spanish labels are longer than the English ones. The bar therefore only
+   appears from 1366px up; below that the drawer keeps the header, which is
+   also where it was already tested. At 1280 in Spanish the row used to push
+   the Buyer Enquiry button 29px past the viewport edge and scroll the whole
+   page sideways. The nowrap and min-width below stop the list from being the
+   thing that grows the header if a label is ever added. */
+@media (min-width: 1366px) {
+  .nav__list {
+    flex-wrap: nowrap;
+    min-width: 0;
+  }
+
+  /* A flex item will not shrink below its content width unless told it may.
+     With ten nav items and the longer Spanish labels, the header row summed to
+     one pixel more than the container at 1440 and the whole page picked up a
+     1px horizontal scroll. `min-width: 0` lets the row absorb that rounding
+     instead of pushing it onto the document. */
+  .nav {
+    min-width: 0;
+  }
 }
 
 .nav__link {
@@ -644,7 +667,7 @@ li .arrow-link {
   transform: rotate(-45deg);
 }
 
-@media (max-width: 1279px) {
+@media (max-width: 1365px) {
   .nav-toggle {
     display: inline-flex;
     position: relative;
@@ -731,7 +754,7 @@ li .arrow-link {
   }
 }
 
-@media (min-width: 1280px) {
+@media (min-width: 1366px) {
   .nav__cta {
     display: none;
   }
@@ -2989,7 +3012,7 @@ body.nav-open {
 }
 
 /* On mobile it sits between the compact logo and the hamburger. */
-@media (max-width: 1279px) {
+@media (max-width: 1365px) {
   .lang-toggle {
     margin-left: auto;
     margin-right: 0.6rem;
@@ -3007,7 +3030,7 @@ body.nav-open {
 }
 
 /* Above the drawer breakpoint the toggle sits after the nav, before the CTA. */
-@media (min-width: 1280px) {
+@media (min-width: 1366px) {
   .lang-toggle {
     margin-left: 0.9rem;
     margin-right: 0.15rem;
@@ -3039,6 +3062,21 @@ body.nav-open {
 .page-hero {
   position: relative;
   isolation: isolate;
+}
+
+/* The watermark is decorative and sits a fraction outside the hero on purpose,
+   so the letter's side bearing lines up with the edge rather than its glyph
+   box. That nudge is 12px at the largest size, and without a clip it grew the
+   document and gave the page a 1px horizontal scroll - in Spanish, where the
+   heading above it is longer, it was the only thing over the line. The hero
+   clips instead, so the optical adjustment stays and the overflow does not.
+   `hidden`, not `clip`. `clip` stops the painting but Chromium still counted
+   the clipped box in the root's scrollWidth, which left a 1px horizontal
+   scroll behind - measured, not assumed. `hidden` establishes a scroll
+   container and ends it. Nothing in this hero is sticky, so there is nothing
+   to lose by it. */
+.page-hero {
+  overflow: hidden;
 }
 
 .page-hero__watermark {
@@ -3432,7 +3470,7 @@ body.nav-open {
   max-width: 1560px;
 }
 
-@media (min-width: 1280px) {
+@media (min-width: 1366px) {
   .nav__list {
     gap: clamp(0.4rem, 0.95vw, 0.9rem);
   }
@@ -3452,7 +3490,7 @@ body.nav-open {
    Spanish selected, the nav overran its content box by 53px once NATFISH AI
    was added as the ninth item. These three reductions recover about 80px,
    which clears it with room to spare and leaves 1400px and above untouched. */
-@media (min-width: 1280px) and (max-width: 1399px) {
+@media (min-width: 1366px) and (max-width: 1399px) {
   .nav__list {
     gap: 0.5rem;
   }
@@ -3976,6 +4014,200 @@ body.nav-open {
    matches it exactly. Either way the centre is the client's own framing, and
    overriding it would undo their composition. Do not add object-position here:
    if a slide looks cropped, the frame is the wrong shape, not the focal point. */
+
+/* ===================================================== insights ======== */
+/* Two components, both built from tokens already in this file so Insights
+   inherits the site's type, colour and spacing rather than introducing a
+   second visual language. */
+
+.insight-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  gap: clamp(1.1rem, 2.4vw, 1.8rem);
+  align-items: start;
+}
+
+/* The homepage preview and the landing page both currently show one article.
+   A lone card stretched across a three-column grid reads as a mistake, so a
+   single card is held to a readable measure and centred; when a second article
+   arrives the grid takes over on its own. */
+.insight-grid--feature,
+.insight-grid:has(> .insight-card:only-child) {
+  grid-template-columns: minmax(0, 46rem);
+  justify-content: center;
+}
+
+.insight-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+@media (hover: hover) {
+  .insight-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+    border-color: rgba(14, 124, 139, 0.34);
+  }
+}
+
+/* The card's image is a second link to the same article. It is hidden from
+   assistive technology and taken out of the tab order rather than duplicated,
+   so a keyboard or screen-reader user meets the article once, by its title. */
+.insight-card__media {
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+}
+
+.insight-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+@media (hover: hover) {
+  .insight-card:hover .insight-card__media img {
+    transform: scale(1.04);
+  }
+}
+
+.insight-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: clamp(1.1rem, 2.4vw, 1.6rem);
+}
+
+.insight-card__body h2,
+.insight-card__body h3 {
+  font-size: clamp(1.15rem, 2.1vw, 1.4rem);
+  margin: 0;
+}
+
+.insight-card__body h2 a,
+.insight-card__body h3 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.insight-card__body h2 a:hover,
+.insight-card__body h3 a:hover {
+  text-decoration: underline;
+}
+
+.insight-card__body p {
+  margin: 0;
+  color: var(--ink-soft);
+}
+
+.insight-card__body .arrow-link {
+  margin-top: 0.2rem;
+}
+
+/* ------------------------------------------------------- breadcrumb ---- */
+
+.breadcrumb {
+  margin-bottom: clamp(1.2rem, 2.6vw, 1.8rem);
+}
+
+.breadcrumb ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.55rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.86rem;
+  color: var(--ink-soft);
+}
+
+.breadcrumb li + li::before {
+  content: "/";
+  margin-right: 0.55rem;
+  color: var(--line-strong, rgba(16, 41, 58, 0.35));
+}
+
+.breadcrumb a {
+  color: var(--teal-600);
+}
+
+.breadcrumb [aria-current="page"] {
+  color: var(--ink-soft);
+}
+
+/* ---------------------------------------------------------- article ---- */
+
+.article {
+  padding-block: clamp(2rem, 5vw, 3.4rem);
+}
+
+.article__head h1 {
+  margin-block: 0.3rem 0.6rem;
+}
+
+.article__byline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+}
+
+.article__dot {
+  opacity: 0.5;
+}
+
+.article__figure {
+  margin: clamp(1.6rem, 4vw, 2.6rem) 0;
+}
+
+.article__figure picture,
+.article__figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-lg);
+}
+
+/* Body copy at a readable measure. The container is already narrow; this holds
+   the line length in the 60-75 character band even on a wide desktop. */
+.article__body {
+  max-width: 68ch;
+}
+
+.article__body h2 {
+  font-size: clamp(1.35rem, 2.6vw, 1.75rem);
+  margin-block: clamp(1.8rem, 3.6vw, 2.4rem) 0.7rem;
+}
+
+.article__body p {
+  margin-block: 0 1.05rem;
+  line-height: 1.75;
+}
+
+.article__list {
+  margin-block: 0 1.05rem;
+  padding-left: 1.15rem;
+  line-height: 1.75;
+}
+
+.article__list li {
+  margin-bottom: 0.45rem;
+}
+
+.article__body > *:last-child {
+  margin-bottom: 0;
+}
 
 /* ================================================== NATFISH AI ======== */
 
