@@ -71,17 +71,12 @@ ES = {
     "Tell NATFISH what you need and the team will review your enquiry and come back to you on availability and next steps.":
         "Cuéntele a NATFISH lo que necesita y el equipo revisará su consulta y le responderá sobre la disponibilidad y los siguientes pasos.",
     "Talk to NATFISH": "Hable con NATFISH",
-    "Provisional details, pending confirmation.": "Datos provisionales, pendientes de confirmación.",
 
     # ------------------------------------------------- seafood seasons --
     "Know the Season. Protect the Future.": "Conozca la temporada. Proteja el futuro.",
     "Belize's regulated seafood seasons help protect breeding cycles, encourage responsible fishing and sustain fisher livelihoods for future generations. Use this guide to understand the standard national seasons, then contact NATFISH to confirm current product availability.":
         "Las temporadas reguladas de pesca de Belice ayudan a proteger los ciclos reproductivos, promover la pesca responsable y sostener los medios de vida de los pescadores para las futuras generaciones. Utilice esta guía para conocer las temporadas nacionales y comuníquese con NATFISH para confirmar la disponibilidad actual.",
     "Check Current Availability": "Consultar disponibilidad actual",
-    "This is a general regulatory guide, not a NATFISH product catalogue.":
-        "Esta es una guía normativa general, no un catálogo de productos de NATFISH.",
-    "The dates below summarise Belize's standing national fisheries seasons. They do not describe what NATFISH holds, and a regulatory open season does not mean a product is available.":
-        "Las fechas siguientes resumen las temporadas pesqueras nacionales vigentes en Belice. No describen lo que NATFISH tiene, y una temporada abierta según la normativa no significa que un producto esté disponible.",
     "Standard national seasons": "Temporadas nacionales estándar",
     "Belize seafood seasons at a glance": "Las temporadas de mariscos de Belice de un vistazo",
     "Status is calculated from today's date against the standard regulatory period only. Confirm every requirement with NATFISH and with the Belize Fisheries Department before you commit.":
@@ -157,8 +152,6 @@ ES = {
     "NATFISH was built so that Belizean fishers could combine their effort and reach markets no single fisher could reach alone.":
         "NATFISH se creó para que los pescadores beliceños pudieran unir su esfuerzo y llegar a mercados que ningún pescador alcanzaría por su cuenta.",
     "Legal name": "Razón social",
-    "NATFISH is the working digital name for the Society.":
-        "NATFISH es el nombre digital de trabajo de la Sociedad.",
     "History": "Historia",
     "Registered on 29 April 1966": "Registrada el 29 de abril de 1966",
     "29 April 1966.": "29 de abril de 1966.",
@@ -174,8 +167,6 @@ ES = {
     "Managing committee elected by members": "Comité directivo elegido por los socios",
     "Base": "Sede",
     "Belize City, Belize": "Ciudad de Belice, Belice",
-    "Sources:": "Fuentes:",
-    "Source:": "Fuente:",
     "and": "y",
     "FisheryProgress institutional strengthening report":
         "Informe de fortalecimiento institucional de FisheryProgress",
@@ -198,9 +189,6 @@ ES = {
     "A co-operative gives a fisher more than a buyer for the day's catch. It gives a share in the organization, a vote in how it is run, and a route to markets that would otherwise be out of reach.":
         "Una cooperativa le da al pescador más que un comprador para la captura del día. Le da una participación en la organización, un voto sobre cómo se dirige y una ruta hacia mercados que de otro modo estarían fuera de su alcance.",
     "Milestones": "Hitos",
-    "Sourced milestones": "Hitos documentados",
-    "Only milestones supported by the public record are listed. Further history will be added once NATFISH confirms it.":
-        "Solo se enumeran los hitos respaldados por el registro público. Se añadirá más historia una vez que NATFISH la confirme.",
     "The Society is registered": "Se registra la Sociedad",
     "The Society and its by-laws are registered on 29 April 1966.":
         "La Sociedad y sus estatutos se registran el 29 de abril de 1966.",
@@ -282,7 +270,6 @@ ES = {
         "Un Proyecto de Mejora Pesquera reúne a la industria, el gobierno y socios no gubernamentales para trabajar sobre la misma pesquería a lo largo del tiempo. Para una cooperativa cuyos socios dependen de esa pesquería, el interés es directo.",
     "FishSource, Belize spiny lobster FIP": "FishSource, PMP de la langosta espinosa de Belice",
     "FishSource Belize spiny lobster FIP": "FishSource, PMP de la langosta espinosa de Belice",
-    "A note on certifications.": "Una nota sobre certificaciones.",
     "Certifications, standards and product-specific claims should be confirmed directly with NATFISH, which can advise what applies to a given product at a given time.":
         "Las certificaciones, normas y afirmaciones sobre productos específicos deben confirmarse directamente con NATFISH, que puede indicar qué se aplica a un producto determinado en un momento determinado.",
     "Questions about standards or documentation?": "¿Preguntas sobre normas o documentación?",
@@ -312,9 +299,6 @@ ES = {
         "National Fishermen ha participado en la documentación electrónica de capturas y en el Proyecto de Mejora Pesquera de la langosta espinosa de Belice, ambos orientados a mejor información y mejor manejo.",
     "More updates": "Más novedades",
     "Also happening": "También está ocurriendo",
-    "About this page.": "Sobre esta página.",
-    "This page carries publicly sourced items only, with no dates, quotes or outcomes added beyond what the source supports. It is built to carry NATFISH announcements, events, public notices and media coverage as the co-operative publishes them.":
-        "Esta página contiene únicamente elementos de fuentes públicas, sin fechas, citas ni resultados añadidos más allá de lo que respalda la fuente. Está construida para alojar anuncios, eventos, avisos públicos y cobertura mediática de NATFISH conforme la cooperativa los publique.",
     "See the work and the product": "Vea el trabajo y el producto",
     "Open the gallery": "Abrir la galería",
 
@@ -323,19 +307,12 @@ ES = {
         "Fotografía y video sobre las pesquerías beliceñas, el manejo de mariscos y las aguas en las que trabajan los socios de NATFISH.",
     "Photographs and video from Belize's fisheries. Select any photograph to view it larger.":
         "Fotografías y video de las pesquerías de Belice. Seleccione cualquier fotografía para verla más grande.",
-    "About this imagery.": "Sobre estas imágenes.",
-    "The photographs below are concept images prepared for the website presentation. They do not depict identified NATFISH members, staff, vessels or facilities. Client-owned photography will replace them as it is supplied.":
-        "Las fotografías siguientes son imágenes conceptuales preparadas para la presentación del sitio web. No representan a socios, personal, embarcaciones ni instalaciones identificados de NATFISH. La fotografía propiedad del cliente las sustituirá conforme se suministre.",
     "Photographs": "Fotografías",
     "Video": "Video",
     "On film": "En video",
-    "Third-party documentary material about the co-operative. NATFISH-owned video will be added here as it is supplied.":
-        "Material documental de terceros sobre la cooperativa. El video propiedad de NATFISH se añadirá aquí conforme se suministre.",
     "The National Fishermen Co-operative of Belize": "La Cooperativa National Fishermen de Belice",
     "Play the video: The National Fishermen Co-operative of Belize":
         "Reproducir el video: La Cooperativa National Fishermen de Belice",
-    "Courtesy of Ocean Link. This is third-party documentary footage used with attribution. It is not NATFISH-owned production.":
-        "Cortesía de Ocean Link. Estas son imágenes documentales de terceros utilizadas con atribución. No son una producción propiedad de NATFISH.",
     "Get in touch with NATFISH": "Póngase en contacto con NATFISH",
     "For buyer enquiries, co-operative matters or media requests, the team can be reached directly.":
         "Para consultas de compra, asuntos de la cooperativa o solicitudes de prensa, puede contactar al equipo directamente.",
@@ -369,8 +346,6 @@ ES = {
         "Cualquier información adicional que NATFISH deba conocer",
     "General Contact": "Contacto general",
     "Reach the co-operative": "Comuníquese con la cooperativa",
-    "For co-operative matters, media requests and general questions. These details are provisional pending confirmation by NATFISH.":
-        "Para asuntos de la cooperativa, solicitudes de prensa y consultas generales. Estos datos son provisionales, pendientes de confirmación por NATFISH.",
     "Visit": "Visítenos",
     "Open in Google Maps": "Abrir en Google Maps",
     "Call": "Llamar",
@@ -417,26 +392,6 @@ ES = {
     "A packed export box of Belizean seafood": "Una caja de exportación con mariscos beliceños",
     "Belizean lobster, conch and reef fish": "Langosta, caracol y peces de arrecife beliceños",
     "A skiff on the Belize City waterfront": "Una embarcación en el malecón de la Ciudad de Belice",
-    "Photography on this page is concept imagery prepared for the website presentation. It does not depict identified NATFISH members, staff, vessels or facilities.":
-        "La fotografía de esta página es material conceptual preparado para la presentación del sitio web. No representa a socios, personal, embarcaciones ni instalaciones identificados de NATFISH.",
-    "Fishers hauling lobster traps at sunrise. Concept image used for the website presentation.":
-        "Pescadores levantando nasas para langosta al amanecer. Imagen conceptual utilizada para la presentación del sitio web.",
-    "A morning conch harvest aboard a skiff. Concept image used for the website presentation.":
-        "Una captura matinal de caracol a bordo de una embarcación. Imagen conceptual utilizada para la presentación del sitio web.",
-    "Caribbean spiny lobster on ice. Concept image used for the website presentation.":
-        "Langosta espinosa del Caribe sobre hielo. Imagen conceptual utilizada para la presentación del sitio web.",
-    "Cleaned conch meat during handling. Concept image used for the website presentation.":
-        "Carne de caracol limpia durante el manejo. Imagen conceptual utilizada para la presentación del sitio web.",
-    "Grading seafood in a processing room. Concept image used for the website presentation.":
-        "Clasificación de mariscos en una sala de procesamiento. Imagen conceptual utilizada para la presentación del sitio web.",
-    "Recording catch information dockside. Concept image used for the website presentation.":
-        "Registro de información de capturas en el muelle. Imagen conceptual utilizada para la presentación del sitio web.",
-    "A packed export box of Belizean seafood. Concept image used for the website presentation.":
-        "Una caja de exportación con mariscos beliceños. Imagen conceptual utilizada para la presentación del sitio web.",
-    "Belizean lobster, conch and reef fish. Concept image used for the website presentation.":
-        "Langosta, caracol y peces de arrecife beliceños. Imagen conceptual utilizada para la presentación del sitio web.",
-    "A skiff on the Belize City waterfront. Concept image used for the website presentation.":
-        "Una embarcación en el malecón de la Ciudad de Belice. Imagen conceptual utilizada para la presentación del sitio web.",
     "View larger: Fishers hauling lobster traps at sunrise":
         "Ver más grande: Pescadores levantando nasas para langosta al amanecer",
     "View larger: A morning conch harvest aboard a skiff":
@@ -652,12 +607,6 @@ ES.update({
         "636 pescadores socios, y las personas que reciben, preparan y empacan "
         "lo que ellos desembarcan. La cooperativa es la estructura que conecta "
         "su trabajo en el mar con un comprador.",
-    "Only milestones NATFISH has confirmed, or that the public record supports, "
-    "are listed. Further history will be added as the co-operative supplies it.":
-        "Solo se enumeran los hitos que NATFISH ha confirmado o que respalda el "
-        "registro público. Se añadirá más historia conforme la cooperativa la "
-        "proporcione.",
-    "Background sources:": "Fuentes de referencia:",
     "Frozen spiny lobster, queen conch and lionfish fillet, and the co-operative "
     "functions that carry a member's catch to a buyer.":
         "Langosta espinosa congelada, caracol reina y filete de pez león, y las "
@@ -729,11 +678,6 @@ ES.update({
     "possible value in international markets.":
         "La Sociedad comercializa ese producto de forma colectiva y trabaja "
         "para obtener el mejor valor posible en los mercados internacionales.",
-    "Packaging photography on this page was recreated from NATFISH product "
-    "material. It illustrates presentation and format only.":
-        "La fotografía de empaque de esta página fue recreada a partir de "
-        "material de producto de NATFISH. Solo ilustra la presentación y el "
-        "formato.",
 
     # --------------------------------------------- responsible fisheries --
     "Food Safety & Responsible Fisheries | NATFISH Belize":
@@ -746,15 +690,6 @@ ES.update({
         "La inocuidad alimentaria y la protección del consumidor están entre "
         "nuestras máximas prioridades, al respaldar una pesca artesanal "
         "reconocida a nivel mundial.",
-    "Working in accordance with a regulation is not the same as holding a "
-    "certificate against it. Certifications, standards and product-specific "
-    "claims should be confirmed directly with NATFISH, which can advise what "
-    "applies to a given product and a given market.":
-        "Operar conforme a una norma no es lo mismo que contar con un "
-        "certificado de esa norma. Las certificaciones, los estándares y las "
-        "declaraciones sobre productos específicos deben confirmarse "
-        "directamente con NATFISH, que puede indicar qué aplica a un producto y "
-        "a un mercado determinados.",
 
     # -------------------------------------------------------- gallery ----
     "Inside NATFISH | Belize Seafood Processing Gallery":
@@ -781,11 +716,6 @@ ES.update({
         "cooperativa: las personas que reciben y preparan la captura, los pasos "
         "entre el desembarque y el almacenamiento en frío, y el producto que "
         "sale al final.",
-    "An evergreen feature, not a dated announcement. The photographs were "
-    "supplied by NATFISH and do not document a specific event.":
-        "Un reportaje permanente, no un anuncio con fecha. Las fotografías "
-        "fueron proporcionadas por NATFISH y no documentan un evento "
-        "específico.",
 
     # -------------------------------------------------------- contact ----
     "Contact NATFISH | Belize Seafood Buyer Enquiries":
@@ -1778,14 +1708,6 @@ ES.update({
     "All insights": "Todas las perspectivas",
     "Seafood education from the co-operative":
         "Educación sobre productos del mar, desde la cooperativa",
-    "More to come.": "Habrá más.",
-    "Insights is a permanent section. Further articles on seafood handling, "
-    "fisheries knowledge, product information and the people behind the catch "
-    "will be added here as NatFish publishes them.":
-        "Perspectivas es una sección permanente. Aquí se irán añadiendo más "
-        "artículos sobre el manejo de los productos del mar, conocimiento "
-        "pesquero, información de productos y las personas detrás de la "
-        "captura, conforme NatFish los publique.",
     "See what the co-operative supplies": "Vea lo que suministra la cooperativa",
     "Frozen spiny lobster, queen conch, lionfish fillet and packed fish, "
     "prepared by a Belizean fisher-owned co-operative.":
@@ -2014,4 +1936,104 @@ ES.update({
         "disponibles, explore nuestra página de productos o comuníquese con "
         "NatFish por WhatsApp al +501 628-1449.",
     "Message NatFish on WhatsApp": "Escriba a NatFish por WhatsApp",
+})
+
+
+# --------------------------------------------------------------------------
+# The second gallery delivery, and the wording changes that came with the same
+# brief: the internal notices removed, "Source:" replaced with "Learn more:",
+# and the two disclaimers rewritten as customer instructions.
+# --------------------------------------------------------------------------
+ES.update({
+    # The new filter group.
+    "Training & Workshops": "Capacitación y talleres",
+
+    # Captions.
+    "Packaged frozen lionfish fillets.":
+        "Filetes de pez león congelados y empacados.",
+    "A Belizean fisher holding two Caribbean spiny lobsters at sea.":
+        "Un pescador beliceño sosteniendo dos langostas espinosas del Caribe "
+        "en el mar.",
+    "Coastal fishing structures near mangroves in Belize.":
+        "Estructuras de pesca costeras cerca de los manglares en Belice.",
+    "A Belizean fisher with a Caribbean spiny lobster.":
+        "Un pescador beliceño con una langosta espinosa del Caribe.",
+    "NatFish representatives at Food Taipei Mega Shows 2026.":
+        "Representantes de NatFish en Food Taipei Mega Shows 2026.",
+    "NatFish representatives participating in a workshop.":
+        "Representantes de NatFish participando en un taller.",
+    "NatFish participants gathered after a workshop.":
+        "Participantes de NatFish reunidos después de un taller.",
+
+    # Alt text.
+    "Frozen lionfish fillets individually packaged in a white food-grade tray.":
+        "Filetes de pez león congelados, empacados individualmente en una "
+        "bandeja blanca apta para alimentos.",
+    "Belizean fisher seated on a boat and holding two Caribbean spiny lobsters.":
+        "Pescador beliceño sentado en una embarcación y sosteniendo dos "
+        "langostas espinosas del Caribe.",
+    "Wooden fishing structures in coastal water beside mangroves in Belize.":
+        "Estructuras de pesca de madera en aguas costeras junto a los "
+        "manglares en Belice.",
+    "Belizean fisher standing at sea and holding a Caribbean spiny lobster.":
+        "Pescador beliceño de pie en el mar sosteniendo una langosta espinosa "
+        "del Caribe.",
+    "Four NatFish representatives at the Food Taipei Mega Shows 2026 display.":
+        "Cuatro representantes de NatFish en el expositor de Food Taipei Mega "
+        "Shows 2026.",
+    "NatFish representatives seated around a conference table during a workshop.":
+        "Representantes de NatFish sentados alrededor de una mesa de "
+        "conferencias durante un taller.",
+    "NatFish participants standing together for a group photograph after a workshop.":
+        "Participantes de NatFish de pie juntos para una fotografía grupal "
+        "después de un taller.",
+
+    # Lightbox labels.
+    "View larger: Packaged frozen lionfish fillets":
+        "Ver más grande: Filetes de pez león congelados y empacados",
+    "View larger: A fisher holding two spiny lobsters":
+        "Ver más grande: Un pescador sosteniendo dos langostas espinosas",
+    "View larger: Coastal fishing structures near mangroves":
+        "Ver más grande: Estructuras de pesca costeras cerca de los manglares",
+    "View larger: A fisher with a spiny lobster":
+        "Ver más grande: Un pescador con una langosta espinosa",
+    "View larger: NatFish at Food Taipei Mega Shows 2026":
+        "Ver más grande: NatFish en Food Taipei Mega Shows 2026",
+    "View larger: A NatFish workshop in progress":
+        "Ver más grande: Un taller de NatFish en curso",
+    "View larger: NatFish participants after a workshop":
+        "Ver más grande: Participantes de NatFish después de un taller",
+
+    # Replaces "Source:" on the news cards and the Responsible Fisheries page.
+    "Learn more:": "Más información:",
+
+    # Rewritten notes.
+    "Membership, governance and market figures come from the":
+        "Las cifras de membresía, gobernanza y mercados provienen del",
+    "Certifications and documentation.": "Certificaciones y documentación.",
+    "NATFISH can confirm which certifications, standards and documentation "
+    "apply to a given product and a given market. Ask the team for what your "
+    "market requires.":
+        "NATFISH puede confirmar qué certificaciones, normas y documentación "
+        "corresponden a un producto y a un mercado determinados. Consulte al "
+        "equipo sobre lo que exige su mercado.",
+    "Belize's national fisheries seasons.":
+        "Las temporadas pesqueras nacionales de Belice.",
+    "The dates below summarise the standing seasons set for the country's "
+    "fisheries. For what NATFISH has available right now, and in what form, "
+    "ask the co-operative.":
+        "Las fechas a continuación resumen las temporadas vigentes "
+        "establecidas para las pesquerías del país. Para saber qué tiene "
+        "NATFISH disponible en este momento, y en qué presentación, consulte "
+        "a la cooperativa.",
+    "Lobster and conch packaging photographs were recreated from NATFISH "
+    "product material.":
+        "Las fotografías del empaque de langosta y caracol fueron recreadas a "
+        "partir de material de producto de NATFISH.",
+    "Courtesy of Ocean Link, used with attribution.":
+        "Cortesía de Ocean Link, utilizado con atribución.",
+    "Documentary material about the co-operative, filmed by Ocean Link and "
+    "used with attribution.":
+        "Material documental sobre la cooperativa, filmado por Ocean Link y "
+        "utilizado con atribución.",
 })

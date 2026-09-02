@@ -158,14 +158,19 @@ GALLERY = "assets/img/gallery"
 # image can shift the layout while it loads.
 from v2_dims import DIMS  # noqa: E402
 from hero_dims import HERO_DIMS, HERO_TIERS_BY_STEM  # noqa: E402
-from gallery_dims import GALLERY_DIMS, GALLERY_GROUPS  # noqa: E402
+from gallery_dims import (GALLERY_DIMS, GALLERY_GROUPS,  # noqa: E402
+                          GALLERY_TIERS)
 from news_dims import NEWS_DIMS  # noqa: E402
 
 DIMS = {**DIMS, **HERO_DIMS, **GALLERY_DIMS, **NEWS_DIMS}
 
+# A photo credit, not a disclaimer. The four Belizean Pride carton photographs
+# in products/ are recreations built from NATFISH product material rather than
+# documentary shots, so the pages that show them say so in one plain sentence.
+# Everything else on the site is a real photograph.
 RECREATION_NOTE = (
-    "Packaging photography on this page was recreated from NATFISH product "
-    "material. It illustrates presentation and format only."
+    "Lobster and conch packaging photographs were recreated from NATFISH "
+    "product material."
 )
 
 ALT = {
@@ -256,6 +261,34 @@ ALT = {
         "A carton of individually bagged raw spiny lobster tails.",
     "04-wild-caught-frozen-conch":
         "A carton of frozen queen conch meat, bagged for shipping.",
+
+    # The second supplied gallery delivery. Alt text is the client's own, used
+    # word for word: it describes only what is visible, names nobody, and
+    # claims no date, location, title or outcome.
+    "lionfish-fillets-4x3":
+        "Frozen lionfish fillets individually packaged in a white food-grade "
+        "tray.",
+    "fisherman-two-spiny-lobsters":
+        "Belizean fisher seated on a boat and holding two Caribbean spiny "
+        "lobsters.",
+    "coastal-fishing-structures":
+        "Wooden fishing structures in coastal water beside mangroves in "
+        "Belize.",
+    "fisherman-spiny-lobster":
+        "Belizean fisher standing at sea and holding a Caribbean spiny "
+        "lobster.",
+    # "NatFish", not "NATFISH", in these three: the client supplied the exact
+    # wording and has asked for the mixed-case form in ordinary copy, reserving
+    # the all-caps form for the logo. Their strings ship unaltered.
+    "natfish-food-taipei-2026":
+        "Four NatFish representatives at the Food Taipei Mega Shows 2026 "
+        "display.",
+    "natfish-workshop":
+        "NatFish representatives seated around a conference table during a "
+        "workshop.",
+    "natfish-workshop-group":
+        "NatFish participants standing together for a group photograph after "
+        "a workshop.",
 }
 
 # The client's supplied gallery captions, used verbatim and already punctuated.
@@ -283,13 +316,33 @@ CAPTION = {
         "The NATFISH delegation representing Belizean seafood products.",
     "10-natfish-team-group":
         "NATFISH team members and partners.",
+
+    # The second delivery, captions used word for word from the client's table.
+    "lionfish-fillets-4x3": "Packaged frozen lionfish fillets.",
+    "fisherman-two-spiny-lobsters":
+        "A Belizean fisher holding two Caribbean spiny lobsters at sea.",
+    "coastal-fishing-structures":
+        "Coastal fishing structures near mangroves in Belize.",
+    "fisherman-spiny-lobster":
+        "A Belizean fisher with a Caribbean spiny lobster.",
+    "natfish-food-taipei-2026":
+        "NatFish representatives at Food Taipei Mega Shows 2026.",
+    "natfish-workshop": "NatFish representatives participating in a workshop.",
+    "natfish-workshop-group":
+        "NatFish participants gathered after a workshop.",
 }
 
-# The three classifications, in the client's order and with their exact labels.
+# The classifications, in the client's order and with their exact labels. The
+# first three came from the folder names of the original supplied set. The
+# fourth was added for the workshop photographs in the second delivery, whose
+# brief classifies them as Training: a workshop is not a trade show, and
+# filing it under "Trade Shows & Representation" would have been the one
+# inaccurate mapping in the set.
 GALLERY_CLASSES = [
     ("fishing", "Fishing &amp; Harvest"),
     ("products", "Products &amp; Processing"),
     ("trade", "Trade Shows &amp; Representation"),
+    ("training", "Training &amp; Workshops"),
 ]
 
 # Short labels for the carousel status region and gallery captions.
@@ -327,6 +380,13 @@ SHORT = {
     "02-belizean-pride-orange-lobster-tails": "Cooked lobster tails, bagged",
     "03-belizean-pride-raw-lobster-tails": "Raw lobster tails, bagged",
     "04-wild-caught-frozen-conch": "Frozen queen conch meat",
+    "lionfish-fillets-4x3": "Packaged frozen lionfish fillets",
+    "fisherman-two-spiny-lobsters": "A fisher holding two spiny lobsters",
+    "coastal-fishing-structures": "Coastal fishing structures near mangroves",
+    "fisherman-spiny-lobster": "A fisher with a spiny lobster",
+    "natfish-food-taipei-2026": "NatFish at Food Taipei Mega Shows 2026",
+    "natfish-workshop": "A NatFish workshop in progress",
+    "natfish-workshop-group": "NatFish participants after a workshop",
 }
 
 # Photographs whose subject sits away from the frame centre. Rendered as a
@@ -337,6 +397,13 @@ FOCUS = {
     "03-lobster-processing-room-wide": "focus-centre",
     "04-fresh-conch-processing-closeup": "focus-centre",
     "10-cold-storage-room": "focus-top",
+    # The second gallery delivery is the first set that is not uniformly 4:3,
+    # so these three carry a measured crop rather than the centre default. The
+    # values were read off the rendered tiles, not guessed: see the comment
+    # beside the rules in the stylesheet.
+    "fisherman-spiny-lobster": "focus-diver",
+    "fisherman-two-spiny-lobsters": "focus-boat",
+    "natfish-workshop-group": "focus-group",
 }
 
 
@@ -361,8 +428,21 @@ def img_dir(stem):
 PICTURE_TIERS = (480, 800, 1400)
 
 
+def gallery_tiers(stem):
+    """The widths actually written for a gallery photograph.
+
+    The first supplied set was uniformly 1600px wide, so every one of them had
+    all three tiers and the list could be a constant. The second delivery is
+    not: one file is 720px wide, another 1200, three 1280. Naming a 1400w
+    derivative for a 720px source is either a 404 or a lie to the browser's
+    density calculation, so the processor records what it wrote and the markup
+    reads it back.
+    """
+    return tuple(GALLERY_TIERS.get(stem, PICTURE_TIERS))
+
+
 def picture(stem, sizes, css="", *, eager=False, alt=None, full=False,
-            ratio=None, focus=None, tiers=PICTURE_TIERS):
+            ratio=None, focus=None, tiers=None):
     """A responsive <picture>: WebP first, JPEG fallback, three width tiers.
 
     width/height come from the real derivative rather than a shared constant,
@@ -374,6 +454,8 @@ def picture(stem, sizes, css="", *, eager=False, alt=None, full=False,
     `focus` sets object-position for a single placement, where the shared
     FOCUS entry for that image is not the right crop for this particular frame.
     """
+    if tiers is None:
+        tiers = gallery_tiers(stem) if stem in GALLERY_TIERS else PICTURE_TIERS
     alt_text = ALT[stem] if alt is None else alt
     loading = (
         ' loading="eager" fetchpriority="high"'
@@ -400,7 +482,7 @@ def picture(stem, sizes, css="", *, eager=False, alt=None, full=False,
     style = f' style="{";".join(decls)}"'
     # The lightbox reads data-full at click time and shows the image at its
     # natural proportions, so it points at the largest derivative.
-    data_full = f' data-full="{d}/{stem}-1400.jpg"' if full else ""
+    data_full = f' data-full="{d}/{stem}-{tiers[-1]}.jpg"' if full else ""
 
     # `tiers` defaults to the three every in-page photograph has. It is a
     # parameter because the hero pairs are generated on their own ladder and a
@@ -1057,8 +1139,3 @@ def page_hero(eyebrow, title, lede, crumb, actions=""):
       </div>
     </section>
 """
-
-
-def concept_note():
-    """Small disclosure placed under image-led sections."""
-    return f'<p class="concept-note">{CONCEPT_NOTE}</p>'

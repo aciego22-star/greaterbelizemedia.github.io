@@ -30,6 +30,12 @@ PAGES = [
     ("gallery", "gallery.html"),
     ("natfish-ai", "natfish-ai.html"),
     ("contact", "contact.html"),
+    # Added with the Insights section. Without them the nav's Insights link and
+    # every "read the article" button were dead ends in the shareable preview,
+    # which is the one place the client actually clicks the site.
+    ("insights", "insights.html"),
+    ("insights-belizean-caribbean-spiny-lobster",
+     "insights-belizean-caribbean-spiny-lobster.html"),
 ]
 
 

@@ -13,7 +13,7 @@ from build_seasons import (
     FISHERIES_SOURCE, LAST_REVIEW, PAGE_NOTE, cards as season_cards,
 )
 from build_shell import (
-    ADDRESS, ALT, BUYER_CTA, CAPTION, COMMITTEE, EMAIL, FOUNDED_DATE,
+    ADDRESS, ALT, BUYER_CTA, CAPTION, COMMITTEE, DIMS, EMAIL, FOUNDED_DATE,
     GALLERY_CLASSES, GALLERY_GROUPS, GM_EMAIL, GM_NAME,
     GM_TITLE, ICON_ARROW, ICON_MAIL, ICON_PHONE, ICON_PIN, ICON_WA, LEGAL,
     LEGAL_NO_DOT, MAPS, MARKETS, MEMBERS, MOBILE_DISPLAY, MOBILE_HREF,
@@ -125,7 +125,7 @@ UPDATES = [
             "Taipei 2026, held from June 24 to 27, helping showcase Belizean "
             "seafood to an international audience."
         ),
-        # A named call to action rather than the usual "Source:" line, because
+        # A named call to action rather than the usual credit line, because
         # the client supplied both the label and the destination.
         "cta": "Read the Full Event Coverage",
         "url": "https://focustaiwan.tw/society/202606240017",
@@ -189,7 +189,7 @@ def update_link(u, *, button_class="btn btn--primary btn--sm"):
                 f'<span class="visually-hidden"> (opens in a new tab)</span>'
                 f'</a></p>')
     return (f'<p class="update-card__source">\n'
-            f'                Source: <a href="{u["url"]}" target="_blank"'
+            f'                Learn more: <a href="{u["url"]}" target="_blank"'
             f' rel="noopener noreferrer">{u["source"]}</a>\n'
             f'              </p>')
 
@@ -563,10 +563,7 @@ def about():
           {logo_full("logo-full", 420)}
           <div>
             <span class="eyebrow">Legal name</span>
-            <p class="lede" style="margin-bottom:0.4rem">{LEGAL}</p>
-            <p class="note" style="margin:0">
-              NATFISH is the working digital name for the Society.
-            </p>
+            <p class="lede" style="margin:0">{LEGAL}</p>
           </div>
         </div>
 
@@ -688,11 +685,6 @@ def about():
         <div class="section-head reveal section-head--center">
           <span class="eyebrow">Milestones</span>
           <h2 id="about-mile-h">Milestones</h2>
-          <p class="lede">
-            Only milestones NATFISH has confirmed, or that the public record
-            supports, are listed. Further history will be added as the
-            co-operative supplies it.
-          </p>
         </div>
         <ol class="timeline reveal">
           <li>
@@ -735,7 +727,7 @@ def about():
           </li>
         </ol>
         <p class="note" style="margin-top:1.5rem">
-          Background sources:
+          Membership, governance and market figures come from the
           <a href="{SRC_FISHERYPROGRESS}" target="_blank" rel="noopener noreferrer">FisheryProgress institutional strengthening report</a>
           and
           <a href="{SRC_FISHWISE}" target="_blank" rel="noopener noreferrer">FishWise</a>.
@@ -867,7 +859,11 @@ CATALOGUE = [
         "name": "Lionfish Fillet",
         "sci": "Pterois volitans",
         "icon": "lionfish",
-        "img": None,
+        # Was the navy species mark until the client supplied this photograph.
+        # It is a 4:3 file in a 16:10 card, so `cover` trims the top and bottom;
+        # the focal point holds the tray whole rather than shaving its front lip.
+        "img": "lionfish-fillets-4x3",
+        "focus": "50% 58%",
         "body": "Fillet from an invasive Indo-Pacific species that Belizean "
                 "fishers help keep in check on the reef.",
     },
@@ -914,7 +910,7 @@ def product_card(prod):
     """One catalogue entry. Photographs are only used where they are truthful."""
     if prod["img"]:
         media = f"""<div class="product__media">
-              {picture(prod["img"], "(max-width: 640px) 92vw, (max-width: 1024px) 46vw, 31vw", full=True)}
+              {picture(prod["img"], "(max-width: 640px) 92vw, (max-width: 1024px) 46vw, 31vw", full=True, focus=prod.get("focus"), alt=prod.get("alt"))}
             </div>"""
     else:
         media = f"""<div class="product__media product__media--mark">
@@ -1143,7 +1139,7 @@ def responsible():
               practical tool as much as a compliance one.
             </p>
             <p class="note">
-              Source:
+              Learn more:
               <a href="{SRC_FISHWISE}" target="_blank" rel="noopener noreferrer">FishWise, the story of the National Fishermen's Co-operative in Belize</a>.
             </p>
           </div>
@@ -1169,7 +1165,7 @@ def responsible():
               the interest is direct.
             </p>
             <p class="note">
-              Source:
+              Learn more:
               <a href="{SRC_FISHSOURCE}" target="_blank" rel="noopener noreferrer">FishSource, Belize spiny lobster FIP</a>.
             </p>
           </div>
@@ -1183,11 +1179,10 @@ def responsible():
         </p>
 
         <p class="notice reveal" style="margin-top:1rem">
-          <strong>A note on certifications.</strong> Working in accordance with
-          a regulation is not the same as holding a certificate against it.
-          Certifications, standards and product-specific claims should be
-          confirmed directly with NATFISH, which can advise what applies to a
-          given product and a given market.
+          <strong>Certifications and documentation.</strong> NATFISH can
+          confirm which certifications, standards and documentation apply to a
+          given product and a given market. Ask the team for what your market
+          requires.
         </p>
       </div>
     </section>
@@ -1258,13 +1253,6 @@ def news():
         <div class="grid grid--2">
           {others}
         </div>
-
-        <p class="notice reveal" style="margin-top:clamp(2rem,4vw,3rem)">
-          <strong>About this page.</strong> This page carries publicly sourced
-          items only, with no dates, quotes or outcomes added beyond what the
-          source supports. It is built to carry NATFISH announcements, events,
-          public notices and media coverage as the co-operative publishes them.
-        </p>
       </div>
     </section>
 """
@@ -1336,10 +1324,10 @@ def seafood_seasons():
 
     <div class="container">
       <p class="notice notice--strong reveal">
-        <strong>This is a general regulatory guide, not a NATFISH product
-        catalogue.</strong> The dates below summarise Belize's standing national
-        fisheries seasons. They do not describe what NATFISH holds, and a
-        regulatory open season does not mean a product is available.
+        <strong>Belize's national fisheries seasons.</strong> The dates below
+        summarise the standing seasons set for the country's fisheries. For
+        what NATFISH has available right now, and in what form, ask the
+        co-operative.
       </p>
     </div>
 
@@ -1424,7 +1412,32 @@ GALLERY_PRODUCTS = [
 # The client's supplied set, in their own numbered order. GALLERY_GROUPS is
 # generated from the folder each file arrived in, so the classification comes
 # from the client and cannot drift out of step with the images.
-GALLERY_SUPPLIED = sorted(GALLERY_GROUPS)
+def _supplied_order(stem):
+    """Group first, then the client's own filename order inside each group.
+
+    The original ten were numbered 01-10 in exactly this grouping, so sorting
+    by group reproduces their order untouched and drops each new photograph in
+    beside the ones it belongs with, rather than trailing seven strangers off
+    the end of the "All" view.
+    """
+    keys = [k for k, _ in GALLERY_CLASSES]
+    return (keys.index(GALLERY_GROUPS[stem]), stem)
+
+
+GALLERY_SUPPLIED = sorted(GALLERY_GROUPS, key=_supplied_order)
+
+
+# A gallery card is 4:3. The first supplied set was uniformly 4:3 too, so those
+# photographs render at their own natural proportions with no crop at all,
+# which is what the client asked for. The second delivery is not: a 2.17
+# panorama, two 0.75 portraits and three 16:9 frames. Left natural they would
+# tear holes in a grid of 4:3 neighbours, so anything that is not already 4:3
+# is held in the standard card and cropped, with a focal point set per image.
+# Derived from the real file dimensions rather than a hand-kept list, so a
+# future addition cannot be forgotten.
+def needs_crop(stem):
+    w, h = DIMS[stem]
+    return abs(w / h - 4 / 3) > 0.01
 
 
 def gallery_filter_bar():
@@ -1454,17 +1467,20 @@ def gallery_filter_bar():
 
 
 def gallery_supplied_figures():
-    """The ten supplied photographs, captions and alt text used verbatim.
+    """The supplied photographs, captions and alt text used verbatim.
 
-    Every one is 1600x1200. `picture()` writes the real dimensions and the
-    stylesheet holds each figure at `--ratio`, so they render at their native
-    4:3 with no crop of ours on top of the client's own framing.
+    The first ten are all 1600x1200. `picture()` writes the real dimensions and
+    the stylesheet holds each figure at `--ratio`, so they render at their
+    native 4:3 with no crop of ours on top of the client's own framing. The
+    seven added since are mixed, and `needs_crop()` puts the ones that are not
+    4:3 into the standard card with a measured focal point instead.
     """
     sizes = "(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw"
     out = []
     for stem in GALLERY_SUPPLIED:
+        crop = " gallery__figure--crop" if needs_crop(stem) else ""
         out.append(
-            f"""<figure class="gallery__figure" data-gallery-cat="{GALLERY_GROUPS[stem]}">
+            f"""<figure class="gallery__figure{crop}" data-gallery-cat="{GALLERY_GROUPS[stem]}">
             <button class="gallery__item" type="button"
                     aria-label="View larger: {SHORT[stem]}">
               {picture(stem, sizes, full=True)}
@@ -1563,8 +1579,8 @@ def gallery():
           <span class="eyebrow">Video</span>
           <h2 id="gal-video-h">On film</h2>
           <p class="lede" style="margin-inline:auto">
-            Third-party documentary material about the co-operative. NATFISH-owned
-            video will be added here as it is supplied.
+            Documentary material about the co-operative, filmed by Ocean Link
+            and used with attribution.
           </p>
         </div>
 
@@ -1576,8 +1592,7 @@ def gallery():
           </button>
         </div>
         <p class="video-credit reveal">
-          Courtesy of {VIDEO_SOURCE}. This is third-party documentary footage
-          used with attribution. It is not NATFISH-owned production.
+          Courtesy of {VIDEO_SOURCE}, used with attribution.
         </p>
       </div>
     </section>
@@ -2372,12 +2387,6 @@ def insights():
         <div class="insight-grid">
           {article_card()}
         </div>
-        <p class="notice reveal" style="margin-top:clamp(2rem,4vw,3rem)">
-          <strong>More to come.</strong> Insights is a permanent section. Further
-          articles on seafood handling, fisheries knowledge, product information
-          and the people behind the catch will be added here as NatFish publishes
-          them.
-        </p>
       </div>
     </section>
 """

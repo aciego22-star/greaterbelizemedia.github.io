@@ -2214,16 +2214,6 @@ body.nav-open {
   background: var(--white);
 }
 
-/* Small disclosure under image-led sections. */
-.concept-note {
-  margin-top: 1.25rem;
-  padding-top: 0.9rem;
-  border-top: 1px solid var(--line);
-  font-size: 0.85rem;
-  line-height: 1.5;
-  color: var(--ink-soft);
-}
-
 /* ----------------------------------------------------- identity panel -- */
 
 .identity-panel {
@@ -3525,6 +3515,25 @@ body.nav-open {
 .focus-centre  { object-position: 50% 50%; }
 .focus-top     { object-position: 50% 28%; }
 
+/* The three photographs in the second delivery whose subject will not survive
+   a centred crop into the gallery's 4:3 card. Measured against the rendered
+   tile rather than guessed, and written as one value each because the card is
+   4:3 at every width, so unlike the crops above there is nothing to re-tune on
+   a phone.
+
+   focus-diver  0.75 portrait. The 4:3 window keeps 56% of the height. 66%
+                holds the antennae, the face and the whole lobster, and gives
+                up only sky above and water below.
+   focus-boat   0.75 portrait. The fisher and the two raised lobsters together
+                span more than the window, so something has to go: 15% keeps
+                the fisher whole from raised hands to crossed legs and both
+                lobster bodies, and loses only the thread-thin antenna tips.
+   focus-group  16:9. The line of people is wider than the window, so the
+                window is nudged left to hold the man at the end of the row. */
+.focus-diver   { object-position: 50% 66%; }
+.focus-boat    { object-position: 50% 15%; }
+.focus-group   { object-position: 40% 50%; }
+
 @media (max-width: 860px) {
   /* Tall frames on a phone: hold the top third, where the faces and hands are. */
   .focus-left   { object-position: 44% 38%; }
@@ -3919,6 +3928,24 @@ body.nav-open {
   height: auto;
   object-fit: fill;
   display: block;
+}
+
+/* The second supplied delivery is the first that is not uniformly 4:3: a 2.17
+   panorama, two 0.75 portraits and three 16:9 frames. Left at their natural
+   proportions they would tear ragged holes through a grid whose other cards
+   are all 4:3, so anything not already 4:3 is held in the standard card and
+   cropped with `cover`. The focal point is set per image further down, and the
+   lightbox still opens the whole uncropped photograph.
+
+   Same specificity as the natural-proportions rules above, so this has to sit
+   after them, not before. */
+.gallery__figure--crop .gallery__item {
+  aspect-ratio: 4 / 3;
+}
+
+.gallery__figure--crop .gallery__item img {
+  height: 100%;
+  object-fit: cover;
 }
 
 @media (max-width: 860px) {
