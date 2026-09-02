@@ -892,15 +892,23 @@ body.nav-open {
 }
 
 /* Below 600px the hero is served the client's portrait crop instead of the
-   landscape one (see hero_picture in tools/build_shell.py), and a 300px band
-   would show barely a third of it. The frame grows to roughly square so the
-   crop the client composed is the crop that appears: at 390px it is 421px
-   tall, which keeps the diver's face, the catch in his hand and the dock all
-   in shot at once. Capped at 430px so the headline below it stays above the
-   fold on a 667px screen. */
+   landscape one (see hero_picture in tools/build_shell.py). The frame is the
+   same 9:16 as that crop, so every slide shows exactly as the client composed
+   it - nothing is cropped, and no focal point is needed on any of them.
+
+   This was a roughly square frame first, which showed about 60% of each crop
+   through a per-slide window. The client asked twice to see the crops whole:
+   the diver's lower half was gone, and the product collage lost its label.
+   A frame that matches the crop is the only honest answer to "show it as is".
+
+   The cost is height: at 390px wide the photograph is 693px tall, so on most
+   phones the first screen is the photograph and the headline sits just below
+   it - the shape of a full-bleed portrait hero. On the smallest screens
+   (320x568, 360x640) the photograph itself runs a little past the fold. */
 @media (max-width: 600px) {
   .hero__media {
-    height: clamp(340px, 108vw, 430px);
+    height: auto;
+    aspect-ratio: 9 / 16;
   }
 }
 
@@ -3939,39 +3947,12 @@ body.nav-open {
    desktop, and above it on a phone. No text or control ever crosses a face,
    which is why no darkening gradient is needed over the photograph at all. */
 
-/* All five slides are the client's responsive pairs.
-
-   On a desktop each 16:9-ish crop is served into a 1.6:1 frame and the centre
-   is the client's own framing, so no focal point is set for any of them:
-   overriding it would undo their composition.
-
-   On a phone the 9:16 crop is served into a frame that is roughly square rather
-   than the full 9:16, so about 60% of its height shows and where that window
-   sits has to be chosen per photograph. The values below are measured against
-   each file, not guessed, and verified at 360, 390 and 430. */
-@media (max-width: 600px) {
-  /* 1 and 3, the two water shots: pushed down to 0.28-0.89 of the file -
-     below the head, above the feet. That is the one window holding the
-     fisher's face and the catch in the same frame; centred, the lobster falls
-     off the bottom of both. */
-  .hero__slide--1 img,
-  .hero__slide--3 img { object-position: 50% 72%; }
-
-  /* 5, the product range, is a built collage rather than a photograph: the
-     NATFISH mark sits at the top and the packaging fills the rest, spanning
-     more height than this frame can show. Centred, the mark is sliced in half
-     and reads as a mistake. The window is pushed to 64%, which clears it
-     entirely and gives the whole range - the flagship carton, the head-meat box
-     and the bagged tails. Losing the mark costs nothing here: the site header
-     carries the same logo about 80px above it, so keeping it would have put the
-     same lockup on screen twice. */
-  .hero__slide--5 img { object-position: 50% 64%; }
-}
-
-/* Slides 2 and 4 stay centred. The diver at sea is composed on the centre of
-   the frame with the lobster held up in front of him, and the trade-show stand
-   runs from the banner down to the cartons on the table; a centred window holds
-   all of both. */
+/* All five slides are the client's responsive pairs, and no focal point is set
+   on any of them at any width. On a desktop the landscape crop is served into
+   a 1.6:1 frame; on a phone the portrait crop is served into a 9:16 frame that
+   matches it exactly. Either way the centre is the client's own framing, and
+   overriding it would undo their composition. Do not add object-position here:
+   if a slide looks cropped, the frame is the wrong shape, not the focal point. */
 
 /* ================================================== NATFISH AI ======== */
 

@@ -243,36 +243,27 @@ navy panel beside the photograph on desktop and above it on a phone. Nothing is 
 so no darkening gradient is needed and none is applied. Do not add one; it would only make the
 photographs murkier for no readability gain.
 
-### Frame sizes and focal points
+### Frame sizes: the phone frame is 9:16, and nothing is cropped
 
-The phone frame is **`clamp(340px, 108vw, 430px)`** below 600px - roughly square, 421px tall at 390px
-wide. It was a 300px band. The band existed for landscape sources; against the client's portrait crop
-it showed barely a third of the picture, cutting the lobster - the whole subject - off the bottom of
-both photographs. The taller frame is what makes their crop appear as they composed it. It is capped
-at 430px so the photograph still fits on the first screen at every phone size down to 320x568, which
-`herofold.js` asserts. Between 600 and 900px the older `clamp(300px, 62vw, 380px)` band still applies,
-where the landscape crop is being served.
+The phone frame is **`aspect-ratio: 9 / 16`** below 600px - the same shape as the client's portrait
+crops, so every slide shows exactly as they composed it. **No focal point is set on any slide at any
+width.** On a desktop the landscape crop is served into a 1.6:1 frame at the client's own centre.
 
-**No focal point is set on any desktop slide.** Every one is a crop the client composed for the frame
-it is filling, so the default centre is their framing and overriding it would undo it.
+It was not always this. The frame was a 300px band first, then roughly square (about 60% of each
+crop through a per-slide `object-position` window). The client pushed back twice - the diver's lower
+half was gone, the product collage lost its label - and asked to see the crops "as is". A frame that
+matches the crop is the only honest answer to that. If a slide ever looks cropped again, the frame is
+the wrong shape; do not reach for a focal point.
 
-On a phone the frame is roughly square rather than the crop's own 9:16, so about 60% of the height
-shows and the window has to be placed per photograph:
-
-- **Slides 1 and 3** are pushed down to `50% 72%`, landing on 0.28-0.89 of the file: below the head,
-  above the feet. That is the one window holding the fisher's face and the catch in the same frame;
-  centred, the lobster - the whole subject - falls off the bottom of both photographs.
-- **Slides 2 and 4 stay centred.** The diver at sea is composed on the centre with the lobster held
-  up in front of him, and the trade-show stand runs from the banner down to the cartons; a centred
-  window holds all of both.
-- **Slide 5 is pushed to `50% 64%`**, which is the one value chosen against the *design* rather than
-  the subject. It is a built collage: the NATFISH mark at the top, the packaging below, spanning more
-  height than the frame can show. Centred, the mark is sliced in half and reads as a mistake. At 64%
-  it is cleared entirely and the whole range shows. Losing the mark costs nothing, because the site
-  header carries the same lockup about 80px above it - keeping it would have put the same logo on
-  screen twice.
-
-Verified at 360, 390 and 430; asserted per slide in `heroqa.js`.
+**The cost is height, and it is a real one.** At 390px wide the photograph is 693px tall. Above it
+sit the 76px header and the identity ribbon (the registered legal name - approved content that
+stays), so the photograph runs about 27px past the fold on a 390x844 phone and further on the
+smallest screens. The first screen on a phone is now the photograph and the ribbon; the headline,
+copy and buttons sit directly beneath it, one flick down. That is the shape of a full-bleed portrait
+hero and it is what the client's asset choice implies, but it should be said plainly: **on a phone,
+nothing but the photograph is above the fold.** `herofold.js` asserts the photograph starts on the
+first screen and overruns it by under 12% on any common phone. Between 600 and 900px the older
+`clamp(300px, 62vw, 380px)` band still applies, where the landscape crop is served.
 
 ### Tiers come from the generator, never from a constant
 
