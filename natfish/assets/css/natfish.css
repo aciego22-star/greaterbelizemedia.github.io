@@ -907,8 +907,31 @@ body.nav-open {
    (320x568, 360x640) the photograph itself runs a little past the fold. */
 @media (max-width: 600px) {
   .hero__media {
-    height: auto;
-    aspect-ratio: 9 / 16;
+    /* Full width, 9:16 tall, but never taller than the screen.
+
+       `aspect-ratio` cannot express this on its own: pair it with a
+       `max-height` and the box honours the ratio by shrinking its WIDTH, so a
+       small phone got a narrow strip of photograph with empty bands either
+       side. Driving the height directly keeps the photograph full-bleed and
+       lets the cap take the height only. 16/9 of the viewport width is the
+       9:16 portrait height.
+
+       The frame may never be taller than the screen it is on.
+
+       Without this cap a 9:16 frame is simply width x 1.78, which is right on
+       a tall phone and absurd anywhere short: in a 500x380 preview panel the
+       photograph came out 889px tall, so all a visitor saw was a band of sky
+       with the headline a thousand pixels below the fold. The hero read as
+       missing, and it was this rule that did it.
+
+       On the phones this is actually for, the cap never binds - 390x844 allows
+       780px against a 693px frame, 430x932 allows 868 against 764 - so the
+       client's crops still show whole. It binds only on short windows and on
+       the two smallest legacy phones (320x568, 360x640), where the frame is
+       clamped to the screen and `cover` trims about a tenth off the height.
+       A tenth trimmed beats a photograph three screens tall. */
+    height: min(calc(100vw * 16 / 9), calc(100vh - 4rem));
+    height: min(calc(100vw * 16 / 9), calc(100dvh - 4rem));
   }
 }
 

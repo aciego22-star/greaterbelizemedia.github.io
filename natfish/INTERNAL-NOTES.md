@@ -255,6 +255,24 @@ half was gone, the product collage lost its label - and asked to see the crops "
 matches the crop is the only honest answer to that. If a slide ever looks cropped again, the frame is
 the wrong shape; do not reach for a focal point.
 
+**The frame is capped to the screen, and that cap is load-bearing.** `aspect-ratio: 9/16` alone made
+the frame `width x 1.78` with no ceiling, which is right on a tall phone and wrong anywhere short: in
+a 500x380 preview panel the photograph came out 889px tall, so a visitor saw a band of empty sky with
+the headline a thousand pixels below the fold. **The client reported the hero as missing, and that
+rule was why.** Pairing `aspect-ratio` with `max-height` does not fix it either - the box honours the
+ratio by shrinking its *width*, leaving a narrow strip of photograph with bands either side. The
+height is therefore driven directly:
+
+```css
+height: min(calc(100vw * 16 / 9), calc(100dvh - 4rem));
+```
+
+Full width always, 9:16 where the screen allows it, clamped to the screen where it does not. On every
+tall phone the cap never binds and the crop shows whole (390x844 allows 780 against 693; 430x932
+allows 868 against 764). It binds on short windows and on 320x568 and 360x640, where `cover` trims
+about a tenth. `heromatrix.js` asserts, at seventeen viewport sizes, that the photograph both fits
+the screen and spans its full width.
+
 **The cost is height, and it is a real one.** At 390px wide the photograph is 693px tall. Above it
 sit the 76px header and the identity ribbon (the registered legal name - approved content that
 stays), so the photograph runs about 27px past the fold on a 390x844 phone and further on the
