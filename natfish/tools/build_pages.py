@@ -219,15 +219,18 @@ def update_card(u, *, compact=False):
 # The seven-step handling sequence, in the co-operative's own order and their
 # own words for what each step involves.
 #
-# Five steps have an authentic photograph of that step happening at the
-# facility. Two do not: NATFISH has said photographs of the tally bench and of
-# shipping are coming, and until they arrive those cards carry a species-style
-# icon panel rather than a borrowed picture. The same rule as the product
-# cards - a card with no truthful photograph gets a mark, never a stand-in.
+# Every step now carries a photograph of what it describes. Three of them were
+# icon panels until the client asked for pictures and confirmed the set already
+# in the project was the set to use:
 #
-# `icon` is only read when there is no photograph.
+#   Selecting / Receiving  workers sorting the catch at the stainless table,
+#                          which is the selection the step describes
+#   Tally                  closed, labelled cartons - "boxes are covered"
+#   Shipping               sealed cartons loaded in a refrigerated container
+#
+# `icon` is kept as the fallback for any step added later without a picture.
 PROCESS = [
-    (None, "handling", "Selecting / Receiving",
+    ("09-lobster-processing-table", "handling", "Selecting / Receiving",
      "Catch is received and selected against Belize Fisheries Department "
      "regulations on size and weight."),
     ("07-lobster-washing-station", "handling", "Cleaning / Processing",
@@ -237,12 +240,12 @@ PROCESS = [
      "Graded and weighed by 10 lb. units."),
     ("05-lobster-tail-packing-boxes", "crate-fish", "Wrapping / Packing",
      "Product is bagged and packed into cartons by hand, ready for freezing."),
-    (None, "tag", "Tally",
+    ("belizean-pride-packaged-products", "tag", "Tally",
      "Boxes are covered, and the date, lot number and lobster size are "
      "recorded on each one."),
     ("10-cold-storage-room", "steward", "Cold Storage",
      "Packed cartons move into cold storage and stay there until they ship."),
-    (None, "route", "Shipping",
+    ("seafood-shipment-cold-storage", "route", "Shipping",
      "Cartons leave the facility under temperature control."),
 ]
 
@@ -256,7 +259,7 @@ HOME_SEAFOOD = [
     ("04-fresh-conch-processing-closeup", "Queen conch", "conch",
      "Frozen queen conch meat, 85% cleaned, handled and packed at the "
      "co-operative&rsquo;s own facility."),
-    (None, "Lionfish", "lionfish",
+    ("lionfish-fillets-4x3", "Lionfish", "lionfish",
      "Lionfish fillet, taken from an invasive species that Belizean fishers "
      "help keep in check."),
 ]
@@ -455,7 +458,7 @@ def home():
 
     <section class="season-feature" aria-labelledby="home-seasons-h">
       <div class="season-feature__media">
-        {picture("09-lobster-processing-table", "(max-width: 900px) 100vw, 52vw", focus="50% 40%")}
+        {picture("fisherman-at-sea", "(max-width: 900px) 100vw, 52vw")}
       </div>
       <div class="season-feature__panel">
         <div class="season-feature__inner">
