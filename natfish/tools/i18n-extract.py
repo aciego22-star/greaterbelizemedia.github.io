@@ -24,7 +24,7 @@ ATTRS = ("alt", "aria-label", "title", "placeholder")
 LEAVE_ALONE = re.compile(
     r"^(NATFISH|NATFISH AI|Austere Automations|Belize|Belize City|2026|"
     r"nationalfishermen@gmail\.com|deniseobrien125@gmail\.com|"
-    r"\+501 227-3165|\+501 227-8039|\+501 611-4831|"
+    r"\+501 227-3165|\+501 227-8039|\+501 628-1449|"
     r"#1 Angel Lane, Belize City, Belize|"
     r"National Fishermen Producers Co-operative Society Ltd\.?|"
     r"Panulirus argus|Strombus gigas|Pterois volitans|"

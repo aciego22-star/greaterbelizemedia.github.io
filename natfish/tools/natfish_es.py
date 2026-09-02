@@ -807,8 +807,8 @@ ES.update({
     "Both options open a message you can edit before sending. The email goes to":
         "Ambas opciones abren un mensaje que usted puede editar antes de "
         "enviarlo. El correo se envía a",
-    "and WhatsApp opens a chat with +501 611-4831.":
-        "y WhatsApp abre un chat con +501 611-4831.",
+    "and WhatsApp opens a chat with +501 628-1449.":
+        "y WhatsApp abre un chat con +501 628-1449.",
     "For co-operative matters, orders, media requests and general questions.":
         "Para asuntos de la cooperativa, pedidos, solicitudes de prensa y "
         "consultas generales.",
@@ -1398,9 +1398,9 @@ ES.update({
     "Message on WhatsApp": "Escribir por WhatsApp",
     "Call the office": "Llamar a la oficina",
     "Email goes to": "El correo se envía a",
-    ", WhatsApp opens a chat with +501 611-4831, and the office is open "
+    ", WhatsApp opens a chat with +501 628-1449, and the office is open "
     "Monday to Friday, 8:00 a.m. to 5:00 p.m.":
-        ", WhatsApp abre un chat con +501 611-4831 y la oficina atiende de "
+        ", WhatsApp abre un chat con +501 628-1449 y la oficina atiende de "
         "lunes a viernes, de 8:00 a. m. a 5:00 p. m.",
 
     # ------------------------------------------- contact: what to include --
@@ -1688,4 +1688,32 @@ ES.update({
         "Inicie un pedido de filetes de pescado congelados con NATFISH AI",
     "Start an order for Frozen Fish Portions with NATFISH AI":
         "Inicie un pedido de porciones de pescado congeladas con NATFISH AI",
+})
+
+
+# ---------------------------------------------------------------------------
+# The Food Taipei 2026 update. The English is the client's wording, and the
+# Spanish keeps it exactly as narrow: the delegation travelled and National
+# Fishermen exhibited. Neither language says a contract, a sale, a partnership
+# or an agreement came of it, because none has been evidenced.
+ES.update({
+    "NATFISH Represents Belize at Food Taipei 2026":
+        "NATFISH representa a Belice en Food Taipei 2026",
+    "June 2026": "Junio de 2026",
+    "From June 20 to 29, 2026, a NATFISH delegation travelled to Taiwan to "
+    "represent Belize and its fishing community. During the visit, National "
+    "Fishermen participated as an official exhibitor at Food Taipei 2026, held "
+    "from June 24 to 27, helping showcase Belizean seafood to an international "
+    "audience.":
+        "Del 20 al 29 de junio de 2026, una delegaci\u00f3n de NATFISH viaj\u00f3 a "
+        "Taiw\u00e1n para representar a Belice y a su comunidad pesquera. Durante "
+        "la visita, National Fishermen particip\u00f3 como expositor oficial en "
+        "Food Taipei 2026, celebrado del 24 al 27 de junio, contribuyendo a dar "
+        "a conocer los productos del mar de Belice ante un p\u00fablico "
+        "internacional.",
+    "Read the Full Event Coverage": "Lea la cobertura completa del evento",
+    "National Fishermen delegation at Food Taipei Mega Shows 2026 in Taiwan.":
+        "Delegaci\u00f3n de National Fishermen en Food Taipei Mega Shows 2026 en "
+        "Taiw\u00e1n.",
+    "(opens in a new tab)": "(se abre en una pesta\u00f1a nueva)",
 })

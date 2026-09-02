@@ -101,6 +101,31 @@ def whatsapp_href():
 # Three publicly sourced items. No dates, quotes, speakers or outcomes are
 # added beyond what the sources support.
 UPDATES = [
+    # Newest first. UPDATES[0] is the featured item on What's New and the first
+    # of the two the homepage carries.
+    #
+    # The wording is the client's, used as supplied, and it is deliberately
+    # narrow: it says the delegation travelled, and that National Fishermen
+    # took part as an official exhibitor. It does not say a contract, a sale, a
+    # partnership or an agreement came of it, because none has been evidenced -
+    # and the client asked explicitly that none be claimed. Do not add one.
+    {
+        "tag": "Trade &amp; Markets",
+        "title": "NATFISH Represents Belize at Food Taipei 2026",
+        "date": "June 2026",
+        "img": "news-food-taipei-2026-delegation",
+        "body": (
+            "From June 20 to 29, 2026, a NATFISH delegation travelled to Taiwan "
+            "to represent Belize and its fishing community. During the visit, "
+            "National Fishermen participated as an official exhibitor at Food "
+            "Taipei 2026, held from June 24 to 27, helping showcase Belizean "
+            "seafood to an international audience."
+        ),
+        # A named call to action rather than the usual "Source:" line, because
+        # the client supplied both the label and the destination.
+        "cta": "Read the Full Event Coverage",
+        "url": "https://focustaiwan.tw/society/202606240017",
+    },
     {
         "tag": "Trade &amp; Markets",
         "title": "Belizean seafood featured in 2026 trade promotion",
@@ -143,6 +168,28 @@ UPDATES = [
 ]
 
 
+def update_link(u, *, button_class="btn btn--primary btn--sm"):
+    """Where an update sends the reader.
+
+    Most items credit the public source they came from, which is what keeps the
+    page honest about what is NATFISH's own announcement and what is somebody
+    else's reporting. An item with a `cta` gets a named button instead, for the
+    cases where the client has supplied the label and the destination
+    themselves. Either way the link leaves the site, so both open in a new tab
+    with `rel="noopener noreferrer"`.
+    """
+    if u.get("cta"):
+        return (f'<p class="update-card__cta">'
+                f'<a class="{button_class}" href="{u["url"]}"'
+                f' target="_blank" rel="noopener noreferrer">{u["cta"]}'
+                f'<span class="visually-hidden"> (opens in a new tab)</span>'
+                f'</a></p>')
+    return (f'<p class="update-card__source">\n'
+            f'                Source: <a href="{u["url"]}" target="_blank"'
+            f' rel="noopener noreferrer">{u["source"]}</a>\n'
+            f'              </p>')
+
+
 def update_card(u, *, compact=False):
     media = ""
     if not compact:
@@ -157,9 +204,7 @@ def update_card(u, *, compact=False):
               </p>
               <h3>{u['title']}</h3>
               <p>{u['body']}</p>
-              <p class="update-card__source">
-                Source: <a href="{u['url']}" target="_blank" rel="noopener noreferrer">{u['source']}</a>
-              </p>
+              {update_link(u)}
             </div>
           </article>"""
 
@@ -1168,9 +1213,7 @@ def news():
             </p>
             <h3>{featured['title']}</h3>
             <p class="lede">{featured['body']}</p>
-            <p class="update-card__source">
-              Source: <a href="{featured['url']}" target="_blank" rel="noopener noreferrer">{featured['source']}</a>
-            </p>
+            {update_link(featured)}
           </div>
         </article>
       </div>

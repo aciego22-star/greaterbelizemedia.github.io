@@ -99,7 +99,7 @@ Used consistently in page copy, footers, structured data, enquiry drafts and `te
 | General Manager | Ms. Denise O'Brien, `deniseobrien125@gmail.com` (Contact page only) |
 | Primary office | `+501 227-3165` |
 | Secondary office | `+501 227-8039` |
-| Mobile / WhatsApp | `+501 611-4831` |
+| Mobile / WhatsApp | `+501 628-1449` |
 | General and orders | `nationalfishermen@gmail.com` |
 | Address | `#1 Angel Lane, Belize City, Belize` |
 
@@ -975,6 +975,82 @@ Keep them on separate properties.
 
 ---
 
+## 4e. Three client revisions
+
+### The Food Taipei 2026 update
+
+`UPDATES[0]`, so it is the featured item on What's New and the first of the two
+the homepage carries. The photograph is the client's, published as
+`news-food-taipei-2026-delegation` in `official/` by
+`tools/process-news-images.py`.
+
+**The wording is the client's, used as supplied, and it is deliberately narrow.**
+It says the delegation travelled and that National Fishermen took part as an
+official exhibitor. It does not say a contract, a sale, a partnership or an
+agreement came of the visit, because none has been evidenced and the client
+asked explicitly that none be claimed. Do not add one. `revisions.js` asserts
+the card's text contains no such word.
+
+This is the first item that names an event, a date range and a country, and it
+is the client who supplied all three. It does not license naming the event
+anywhere else: the hero and gallery captions for the other trade-show
+photographs still stop short, because nobody has confirmed those are the same
+event.
+
+The item uses a named button rather than the usual "Source:" line, because the
+client supplied both the label and the destination. `update_link()` renders one
+or the other: an item with a `cta` gets the button, everything else keeps its
+source credit. Either way the link leaves the site, so both open in a new tab
+with `rel="noopener noreferrer"` and a visually hidden "(opens in a new tab)".
+
+The source photograph is 1280px wide, below the 1400 top tier, so the largest
+derivative is 1280 while the srcset still declares `1400w`. `picture()` emits a
+fixed 480/800/1400 srcset, and seven of the portrait photographs in `official/`
+already have the same mismatch. It is worth a pass one day - the descriptor
+should be the real width - but it is not this change, and the visible effect is
+a slightly conservative tier choice, not a broken image.
+
+### The mobile and WhatsApp number
+
+`+501 628-1449`, replacing `611-4831` everywhere: the constants in
+`build_shell.py`, both Spanish strings that spelled it out, the extractor's
+number pattern, and the JSON-LD. The office lines are untouched -
+`227-3165` is still the primary landline and `227-8039` the secondary.
+
+`revisions.js` walks every built file and fails if the old number survives
+anywhere, and checks each page's `tel:` and `wa.me` links against the three
+allowed numbers - in Spanish as well, where the runtime swaps strings that
+contain it.
+
+### No decorative lines beside or above a title
+
+Three things went, at the client's request, and they were three separate
+mechanisms:
+
+1. **`.eyebrow::after`** - the 26px dash trailing every eyebrow. This is the
+   one in the client's screenshot, beside "WHAT'S NEW".
+2. **`RULE_WAVE`** - the rope-and-wave SVG above thirteen section heads. Its
+   second path was a plain horizontal stroke. The constant is emptied rather
+   than deleted, so the thirteen call sites still mark where it stood.
+3. **`.section-head--rule`'s 2px `border-top`** - the hairline above editorial
+   heads. The class stays because it is on every section head in the markup and
+   still carries the head's top spacing, now 0.4rem instead of 1.4rem.
+
+Spacing was retuned after: the eyebrow's bottom margin went from 0.85rem to
+0.7rem, because the dash used to give that line visual weight and a little
+optical space, and without it the eyebrow read as crowding the heading.
+
+**Do not put a decorative rule back beside or above a title.** `revisions.js`
+asserts, on all nine pages and in both languages, that no eyebrow renders an
+`::after` bar, no `.rule-wave` exists, and no section head carries a top border.
+
+Kept deliberately, because they are not title ornament: the nav link's underline
+(an active/hover affordance), the hamburger bars, the 3px turquoise seam where
+the hero panel meets its photograph, the connectors in the process flow, and the
+identity ribbon's band edge.
+
+---
+
 ## 5. Page architecture
 
 ```
@@ -1011,7 +1087,7 @@ in-season and will not appear here automatically.
 
 There are **no forms anywhere on the site.** Buyer enquiries are two links on
 `contact.html#order`: a `mailto:` to `nationalfishermen@gmail.com` and a `wa.me` link to
-`5016114831`, both carrying a prefilled, fully editable draft that includes the six-product pick list.
+`5016281449`, both carrying a prefilled, fully editable draft that includes the eight-product pick list.
 Nothing is captured server-side. Enabling Netlify Forms later would mean reintroducing a real
 `<form>`, a hidden `form-name` input and a background POST.
 
@@ -1063,6 +1139,7 @@ tools/process-v2-images.py   regenerates the photography set
 tools/process-hero-images.py regenerates the hero pairs and the concept hero
 tools/process-logo.py        regenerates the three logo lockups
 tools/process-gallery-images.py  regenerates the client's supplied gallery set
+tools/process-news-images.py     web tiers for a photograph published with a news item
 tools/bundle-preview.py      builds the single-file artifact preview
 tools/make-netlify-zip.sh    builds the deployable zip, excluding this file and tools/
 ```

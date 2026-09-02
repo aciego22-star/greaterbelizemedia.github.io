@@ -277,7 +277,10 @@ strong {
 
 .eyebrow {
   display: block;
-  margin-bottom: 0.85rem;
+  /* Raised from 0.85rem. The trailing dash used to give the eyebrow visual
+     weight and a little optical space; without it the line needs the gap
+     itself, or it reads as crowding the heading. */
+  margin-bottom: 0.7rem;
   font-family: var(--font-body);
   font-size: 0.78rem;
   font-weight: 600;
@@ -290,16 +293,11 @@ strong {
   color: var(--turq-300);
 }
 
-.eyebrow::after {
-  content: "";
-  display: inline-block;
-  width: 26px;
-  height: 2px;
-  margin-left: 0.7rem;
-  vertical-align: 0.22em;
-  background: currentColor;
-  opacity: 0.55;
-}
+/* The 26px dash that used to trail every eyebrow is gone, at the client's
+   request, along with the wave glyph and the hairline that sat above section
+   heads. Headings now carry no ornament at all - the eyebrow's letter-spaced
+   uppercase and the heading beneath it do the work. Do not put a decorative
+   rule back beside or above a title. */
 
 .lede {
   font-size: clamp(1.05rem, 1.6vw, 1.2rem);
@@ -2868,33 +2866,16 @@ body.nav-open {
 
 /* --------------------------------------------------- editorial rhythm -- */
 
-/* A rope-and-wave rule, used sparingly to break the run of identical
-   section headings. */
-.rule-wave {
-  display: block;
-  width: 118px;
-  height: 8px;
-  margin: 0 0 1.25rem;
-  color: var(--turq-500);
-}
+/* The rope-and-wave rule that used to sit above section headings is gone at
+   the client's request, along with the eyebrow dash and the hairline. Its
+   markup is gone too - RULE_WAVE in tools/build_shell.py no longer emits an
+   SVG - so there is nothing left to style. */
 
-.section-head--center .rule-wave {
-  margin-inline: auto;
-}
-
-.section--navy .rule-wave {
-  color: var(--turq-300);
-}
-
-/* Editorial heads: left-aligned with a hairline above, so not every section
-   opens with the same centred stack. */
+/* Editorial heads. The 2px hairline that ran above these is gone with the rest
+   of the heading ornament; the class is kept because it is on every section
+   head in the markup and still carries the head's own top spacing. */
 .section-head--rule {
-  padding-top: 1.4rem;
-  border-top: 2px solid var(--navy-800);
-}
-
-.section--navy .section-head--rule {
-  border-top-color: var(--turq-300);
+  padding-top: 0.4rem;
 }
 
 .section-head--rule .eyebrow {
@@ -3081,10 +3062,9 @@ body.nav-open {
 
 /* ------------------------------------------- alignment corrections -- */
 
-/* Headings that introduce a card grid are centred, with their wave rule and
-   lede centred too. Long editorial copy stays left-aligned for readability. */
-.section-head--center .lede,
-.section-head--center .rule-wave {
+/* Headings that introduce a card grid are centred, with their lede centred
+   too. Long editorial copy stays left-aligned for readability. */
+.section-head--center .lede {
   margin-inline: auto;
 }
 
@@ -4420,12 +4400,8 @@ body.nav-open {
   margin-inline: auto;
 }
 
-/* A centred head with the editorial rule above it: the rule spans the head's
-   own measure rather than the full container, so it reads as part of the
-   heading block instead of a stray line across the page. */
-.section-head--rule.section-head--center {
-  border-top-color: var(--navy-800);
-}
+/* Nothing left to colour here now that the rule is gone; the centred variant
+   differs from the plain one only in alignment. */
 
 /* ------------------------------------- .pillar on a light background ---- */
 /* The pillar component was written for .section--navy and hard-codes

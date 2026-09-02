@@ -74,9 +74,9 @@ TEL_DISPLAY = "+501 227-3165"
 TEL_HREF = "+5012273165"
 TEL2_DISPLAY = "+501 227-8039"
 TEL2_HREF = "+5012278039"
-MOBILE_DISPLAY = "+501 611-4831"
-MOBILE_HREF = "+5016114831"
-WHATSAPP = "5016114831"
+MOBILE_DISPLAY = "+501 628-1449"
+MOBILE_HREF = "+5016281449"
+WHATSAPP = "5016281449"
 
 EMAIL = "nationalfishermen@gmail.com"
 ADDRESS = "#1 Angel Lane, Belize City, Belize"
@@ -157,8 +157,9 @@ GALLERY = "assets/img/gallery"
 from v2_dims import DIMS  # noqa: E402
 from hero_dims import HERO_DIMS  # noqa: E402
 from gallery_dims import GALLERY_DIMS, GALLERY_GROUPS  # noqa: E402
+from news_dims import NEWS_DIMS  # noqa: E402
 
-DIMS = {**DIMS, **HERO_DIMS, **GALLERY_DIMS}
+DIMS = {**DIMS, **HERO_DIMS, **GALLERY_DIMS, **NEWS_DIMS}
 
 RECREATION_NOTE = (
     "Packaging photography on this page was recreated from NATFISH product "
@@ -193,6 +194,8 @@ ALT = {
     "10-cold-storage-room":
         "Racked trays inside the NATFISH cold storage room, cold vapour drifting "
         "between the shelves.",
+    "news-food-taipei-2026-delegation":
+        "National Fishermen delegation at Food Taipei Mega Shows 2026 in Taiwan.",
     "hero-lobster-diver-dock":
         "A diver walking along a wooden dock with a string of freshly caught "
         "spiny lobster in one hand and his fins in the other.",
@@ -292,6 +295,7 @@ SHORT = {
     "08-lobster-weighing-and-sorting": "Weighing and sorting the catch",
     "09-lobster-processing-table": "Sorting whole spiny lobster",
     "10-cold-storage-room": "The cold storage room",
+    "news-food-taipei-2026-delegation": "The NATFISH delegation at Food Taipei 2026",
     "hero-lobster-diver-dock": "Bringing the lobster catch up the dock",
     "hero-lobster-boat-catch": "A morning lobster catch aboard the skiff",
     "hero-trade-show-stand": "Belizean Pride on show at a seafood trade show",
@@ -716,12 +720,13 @@ ICON_WA = icon("whatsapp")
 ICON_ARROW = icon("arrow")
 
 
-RULE_WAVE = (
-    '<svg class="rule-wave" viewBox="0 0 118 8" fill="none" stroke="currentColor" '
-    'stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false">'
-    '<path d="M1 4q7.4-3.6 14.8 0t14.8 0t14.8 0t14.8 0"/>'
-    '<path d="M76 4h41" opacity=".45"/></svg>'
-)
+# The rope-and-wave rule that used to open a section head. The client asked for
+# every decorative line beside or above a title to go, and this was one of them:
+# a wave glyph followed by a short horizontal stroke. It is emptied rather than
+# deleted because it appears at thirteen call sites across the generators, and
+# an empty string keeps those call sites honest about where the mark used to be
+# should the client ever want it back. Nothing renders.
+RULE_WAVE = ""
 
 
 def identity_ribbon():
