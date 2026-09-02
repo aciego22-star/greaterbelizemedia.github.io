@@ -88,30 +88,3 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
     X-Frame-Options = "SAMEORIGIN"
-
-# ===========================================================================
-# PREVIEW ONLY - DELETE THIS ENTIRE BLOCK WHEN THE SITE GOES LIVE ON natfish.bz
-# ===========================================================================
-#
-# While the site is demonstrated on the temporary Netlify subdomain, this
-# header keeps that host out of search results. Without it the preview would
-# compete with natfish.bz for the same content once the real domain is live.
-#
-# It is a header rather than a robots.txt Disallow on purpose: a disallowed URL
-# can still be indexed from an inbound link, whereas noindex is obeyed. It is
-# also not a meta tag in the pages, so removing it is one deletion here rather
-# than a rebuild of every page.
-#
-# TO GO LIVE:
-#   1. Delete this block, from the banner above to the end of the file.
-#   2. Redeploy.
-#   3. Fetch https://natfish.bz/ and confirm the response carries NO
-#      X-Robots-Tag header:  curl -sI https://natfish.bz/ | grep -i robots
-#   4. Submit https://natfish.bz/sitemap.xml in Google Search Console.
-#
-# robots.txt and every canonical tag are already written for production and
-# need no change at launch.
-[[headers]]
-  for = "/*"
-  [headers.values]
-    X-Robots-Tag = "noindex, nofollow"

@@ -144,3 +144,21 @@ if [ "$bad" -ne 0 ]; then
   exit 1
 fi
 echo "OK: every cache-busting hash matches the file it points at"
+
+# Say out loud whether this package is indexable. The noindex header that kept
+# the temporary Netlify subdomain out of search results was removed when the
+# site went live, and the failure mode if it ever comes back is silent: the
+# site deploys, looks perfect, and is invisible to Google.
+if grep -q "X-Robots-Tag" netlify.toml; then
+  echo "NOTE: netlify.toml carries an X-Robots-Tag. This package is NOT indexable." >&2
+  grep -n "X-Robots-Tag" netlify.toml >&2
+else
+  echo "OK: no X-Robots-Tag - this package is indexable"
+fi
+
+# The pages themselves must never carry a noindex either.
+if grep -qil "noindex" "$STAGE"/*.html; then
+  echo "ERROR: a page carries a noindex robots meta tag" >&2
+  exit 1
+fi
+echo "OK: no page carries a noindex meta tag"
