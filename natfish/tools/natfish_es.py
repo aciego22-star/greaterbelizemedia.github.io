@@ -2037,3 +2037,217 @@ ES.update({
         "Material documental sobre la cooperativa, filmado por Ocean Link y "
         "utilizado con atribución.",
 })
+
+
+# --------------------------------------------------------------------------
+# The client's page-by-page change document: the seven-step handling sequence,
+# the three-product homepage, the corrected lobster photographs, the About
+# history and community wording, the two opening-hours schedules, and the
+# NATFISH in Motion video section.
+#
+# The three video titles are the client's own and are left in English: they are
+# the titles of the published Shorts, not site copy, and a Spanish reader
+# clicking through would otherwise see a title that does not match the video.
+# --------------------------------------------------------------------------
+ES.update({
+    # ---- the seven handling steps ----
+    "Seven steps between the landing and the container, at the "
+    "co-operative’s own facility.":
+        "Siete pasos entre el desembarque y el contenedor, en las propias "
+        "instalaciones de la cooperativa.",
+    "Selecting / Receiving": "Selección / Recepción",
+    "Catch is received and selected against Belize Fisheries Department "
+    "regulations on size and weight.":
+        "La captura se recibe y se selecciona conforme a las regulaciones de "
+        "talla y peso del Departamento de Pesca de Belice.",
+    "Cleaning / Processing": "Limpieza / Procesamiento",
+    "Product is rinsed and prepared at the stainless washing station before it "
+    "goes any further.":
+        "El producto se enjuaga y se prepara en la estación de lavado de acero "
+        "inoxidable antes de continuar.",
+    "Grading": "Clasificación",
+    "Graded and weighed by 10 lb. units.":
+        "Clasificado y pesado en unidades de 10 libras.",
+    "Wrapping / Packing": "Envoltura / Empaque",
+    "Tally": "Conteo y rotulado",
+    "Boxes are covered, and the date, lot number and lobster size are recorded "
+    "on each one.":
+        "Las cajas se cubren y en cada una se anotan la fecha, el número de "
+        "lote y la talla de la langosta.",
+    "Cold Storage": "Almacenamiento en frío",
+    "Shipping": "Envío",
+    "Cartons leave the facility under temperature control.":
+        "Las cajas salen de las instalaciones con temperatura controlada.",
+
+    # ---- three products on the homepage ----
+    "Three products from Belizean waters":
+        "Tres productos de aguas beliceñas",
+    "Spiny lobster, queen conch and lionfish. Availability follows "
+    "Belize’s regulated seasons and is confirmed directly with NATFISH.":
+        "Langosta espinosa, caracol reina y pez león. La disponibilidad sigue "
+        "las temporadas reguladas de Belice y se confirma directamente con "
+        "NATFISH.",
+    "Frozen spiny lobster, queen conch and lionfish fillet, prepared by a "
+    "Belizean fisher-owned co-operative.":
+        "Langosta espinosa congelada, caracol reina y filete de pez león, "
+        "preparados por una cooperativa beliceña propiedad de sus pescadores.",
+    "Six products, and the co-operative behind them":
+        "Seis productos, y la cooperativa detrás de ellos",
+    "Four spiny lobster preparations, queen conch and lionfish fillet. "
+    "Specifications and current availability are confirmed directly with "
+    "NATFISH.":
+        "Cuatro presentaciones de langosta espinosa, caracol reina y filete de "
+        "pez león. Las especificaciones y la disponibilidad actual se "
+        "confirman directamente con NATFISH.",
+    "Which of the products you need": "Qué productos necesita",
+    "Lobster tails, prepared and packed at the co-operative's own facility.":
+        "Colas de langosta, preparadas y empacadas en las propias "
+        "instalaciones de la cooperativa.",
+
+    # ---- the two corrected lobster photographs ----
+    "NATFISH workers sorting spiny lobster tails across a stainless "
+    "processing table.":
+        "Trabajadores de NATFISH clasificando colas de langosta espinosa sobre "
+        "una mesa de procesamiento de acero inoxidable.",
+    "Sorting spiny lobster tails.": "Clasificando colas de langosta espinosa.",
+    "View larger: Sorting spiny lobster tails":
+        "Ver más grande: Clasificando colas de langosta espinosa",
+    "A carton of whole raw spiny lobster, frozen and packed for market.":
+        "Una caja de langosta espinosa entera cruda, congelada y empacada para "
+        "el mercado.",
+    "Whole raw lobster, cased.": "Langosta entera cruda, encajada.",
+    "View larger: Whole raw lobster, cased":
+        "Ver más grande: Langosta entera cruda, encajada",
+
+    # ---- About ----
+    "National Fishermen Producers Co-operative Society Ltd was registered in "
+    "Belize City. What began with 20 members has grown into a member-owned "
+    "co-operative of 636 fishers.":
+        "National Fishermen Producers Co-operative Society Ltd fue registrada "
+        "en la Ciudad de Belice. Lo que comenzó con 20 miembros se ha "
+        "convertido en una cooperativa de 636 pescadores que es propiedad de "
+        "sus miembros.",
+    "The co-operative is owned by its members and governed by a seven-member "
+    "Managing Committee elected from the general membership. Members are not "
+    "customers of the Society; they are its owners, and the committee is there "
+    "to support and serve its members.":
+        "La cooperativa es propiedad de sus miembros y está gobernada por un "
+        "Comité Directivo de siete integrantes elegido entre la membresía "
+        "general. Los miembros no son clientes de la Sociedad; son sus "
+        "dueños, y el comité está para apoyar y servir a sus miembros.",
+    "Membership has grown from 20 members to 636 fishers.":
+        "La membresía ha crecido de 20 miembros a 636 pescadores.",
+    "The Co-operative gives a fisher more than a buyer for the day’s "
+    "catch. It gives a share in the organization, a vote in how it is run, and "
+    "a route to markets that would otherwise be out of reach.":
+        "La Cooperativa le da a un pescador más que un comprador para la "
+        "captura del día. Le da una participación en la organización, un voto "
+        "en cómo se dirige y una ruta a mercados que de otro modo estarían "
+        "fuera de su alcance.",
+    "Through the Society, Belizean Pride Seafood has reached buyers in the "
+    "United States, Canada, Mexico, the West Indies, Taiwan and Australia.":
+        "A través de la Sociedad, Belizean Pride Seafood ha llegado a "
+        "compradores en Estados Unidos, Canadá, México, las Indias "
+        "Occidentales, Taiwán y Australia.",
+
+    # ---- opening hours ----
+    "Office hours": "Horario de oficina",
+    "Market hours": "Horario del mercado",
+    "Monday to Friday": "Lunes a viernes",
+    "Saturday": "Sábado",
+    "8:00 a.m. to 5:00 p.m.": "8:00 a. m. a 5:00 p. m.",
+    "8:00 a.m. to 12:00 p.m.": "8:00 a. m. a 12:00 p. m.",
+    "8:00 a.m. to 4:30 p.m.": "8:00 a. m. a 4:30 p. m.",
+    "8:00 a.m. to 11:30 a.m.": "8:00 a. m. a 11:30 a. m.",
+    ", WhatsApp opens a chat with +501 628-1449. The office is open Monday to "
+    "Friday, 8:00 a.m. to 5:00 p.m., and Saturday, 8:00 a.m. to 12:00 p.m.":
+        ", WhatsApp abre un chat con +501 628-1449. La oficina abre de lunes a "
+        "viernes, de 8:00 a. m. a 5:00 p. m., y los sábados de 8:00 a. m. a "
+        "12:00 p. m.",
+
+    # ---- NATFISH in Motion ----
+    "Videos": "Videos",
+    "NATFISH in Motion": "NATFISH en movimiento",
+    "See the people, work and waters behind Belizean Pride seafood.":
+        "Conozca a la gente, el trabajo y las aguas detrás de los mariscos "
+        "Belizean Pride.",
+    "An authentic look at the harvest, the people, the processing and the "
+    "packed product of National Fishermen Producers Co-operative Society Ltd. "
+    "Select any photograph to view it larger, or watch":
+        "Una mirada auténtica a la captura, la gente, el procesamiento y el "
+        "producto empacado de National Fishermen Producers Co-operative "
+        "Society Ltd. Seleccione cualquier fotografía para verla más grande, o "
+        "vea",
+
+    # ---- the third gallery delivery ----
+    "Fishers handling a Caribbean spiny lobster catch at sea.":
+        "Pescadores manipulando una captura de langosta espinosa del Caribe en "
+        "el mar.",
+    "Fishers aboard a boat handling a large catch of Caribbean spiny lobsters.":
+        "Pescadores a bordo de una embarcación manipulando una gran captura de "
+        "langostas espinosas del Caribe.",
+    "Careful handling of a Caribbean spiny lobster catch aboard a fishing "
+    "vessel.":
+        "Manipulación cuidadosa de una captura de langosta espinosa del Caribe "
+        "a bordo de una embarcación pesquera.",
+    "Gloved fishers handling Caribbean spiny lobsters aboard a boat.":
+        "Pescadores con guantes manipulando langostas espinosas del Caribe a "
+        "bordo de una embarcación.",
+    "A lobster catch and transport crates aboard a fishing vessel.":
+        "Una captura de langosta y cajas de transporte a bordo de una "
+        "embarcación pesquera.",
+    "Caribbean spiny lobsters and ventilated transport crates inside a fishing "
+    "boat.":
+        "Langostas espinosas del Caribe y cajas de transporte ventiladas "
+        "dentro de una embarcación pesquera.",
+    "A fisher displaying a fresh catch in Belizean waters.":
+        "Un pescador mostrando una captura fresca en aguas beliceñas.",
+    "Fisher in clear Caribbean water holding a freshly caught fish.":
+        "Pescador en aguas claras del Caribe sosteniendo un pez recién "
+        "capturado.",
+    "A Belizean fisherman working at sea.":
+        "Un pescador beliceño trabajando en el mar.",
+    "Belizean fisherman standing aboard a fishing vessel at sea.":
+        "Pescador beliceño de pie a bordo de una embarcación pesquera en el "
+        "mar.",
+    "Belizean Pride seafood products prepared for distribution.":
+        "Productos de mariscos Belizean Pride preparados para su distribución.",
+    "Boxes of Belizean Pride seafood products arranged for distribution.":
+        "Cajas de productos de mariscos Belizean Pride dispuestas para su "
+        "distribución.",
+    "Packaged seafood prepared for temperature-controlled transport.":
+        "Mariscos empacados preparados para transporte con temperatura "
+        "controlada.",
+    "Sealed seafood cartons stacked inside a refrigerated transport "
+    "compartment.":
+        "Cajas de mariscos selladas apiladas dentro de un compartimento de "
+        "transporte refrigerado.",
+    "View larger: A spiny lobster catch handled at sea":
+        "Ver más grande: Una captura de langosta espinosa manipulada en el mar",
+    "View larger: Handling spiny lobster aboard a vessel":
+        "Ver más grande: Manipulando langosta espinosa a bordo de una "
+        "embarcación",
+    "View larger: A lobster catch and transport crates":
+        "Ver más grande: Una captura de langosta y cajas de transporte",
+    "View larger: A fresh catch in Belizean waters":
+        "Ver más grande: Una captura fresca en aguas beliceñas",
+    "View larger: A Belizean fisherman at sea":
+        "Ver más grande: Un pescador beliceño en el mar",
+    "View larger: Belizean Pride products, boxed":
+        "Ver más grande: Productos Belizean Pride, encajados",
+    "View larger: Cartons loaded for cold transport":
+        "Ver más grande: Cajas cargadas para transporte en frío",
+})
+
+ES.update({
+    # The footer blurb, with the founding date dropped: the legal line directly
+    # beneath it already carries the date, and two of them stacked was the
+    # duplication the client flagged.
+    "National Fishermen Producers Co-operative Society Ltd. A member-owned "
+    "Belizean co-operative in Belize City, purchasing and marketing the "
+    "produce of 636 fishers at home and abroad.":
+        "National Fishermen Producers Co-operative Society Ltd. Una "
+        "cooperativa beliceña propiedad de sus miembros, con sede en la Ciudad "
+        "de Belice, que compra y comercializa la producción de 636 pescadores "
+        "en el país y en el extranjero.",
+})

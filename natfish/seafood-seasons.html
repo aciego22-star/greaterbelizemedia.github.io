@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Seafood Seasons | NATFISH</title>
-  <meta name="description" content="A plain-language guide to Belize's standard regulated seafood seasons for lobster, conch, Nassau grouper, whelks and stone crab. Contact NATFISH to confirm current availability.">
+  <meta name="description" content="A plain-language guide to Belize's standard regulated seasons for Caribbean spiny lobster and queen conch. Contact NATFISH to confirm current availability.">
   <meta name="theme-color" content="#052b45">
   <link rel="canonical" href="https://natfish.bz/seafood-seasons.html">
 
@@ -12,7 +12,7 @@
   <meta property="og:site_name" content="NatFish">
   <meta property="og:locale" content="en_BZ">
   <meta property="og:title" content="Seafood Seasons | NATFISH">
-  <meta property="og:description" content="A plain-language guide to Belize's standard regulated seafood seasons for lobster, conch, Nassau grouper, whelks and stone crab. Contact NATFISH to confirm current availability.">
+  <meta property="og:description" content="A plain-language guide to Belize's standard regulated seasons for Caribbean spiny lobster and queen conch. Contact NATFISH to confirm current availability.">
   <meta property="og:url" content="https://natfish.bz/seafood-seasons.html">
   <meta property="og:image" content="https://natfish.bz/assets/img/official/og-card.jpg">
   <meta property="og:image:width" content="1200">
@@ -20,7 +20,7 @@
   <meta property="og:image:alt" content="Belizean Pride wild-caught Caribbean spiny lobster products from NatFish in Belize.">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Seafood Seasons | NATFISH">
-  <meta name="twitter:description" content="A plain-language guide to Belize's standard regulated seafood seasons for lobster, conch, Nassau grouper, whelks and stone crab. Contact NATFISH to confirm current availability.">
+  <meta name="twitter:description" content="A plain-language guide to Belize's standard regulated seasons for Caribbean spiny lobster and queen conch. Contact NATFISH to confirm current availability.">
   <meta name="twitter:image" content="https://natfish.bz/assets/img/official/og-card.jpg">
   <meta name="twitter:image:alt" content="Belizean Pride wild-caught Caribbean spiny lobster products from NatFish in Belize.">
 
@@ -30,13 +30,10 @@
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
 
-  <!-- Self-hosted Bitter and Source Sans 3. The latin subsets are preloaded
-       because they carry the headline and the first paragraph; font-display
-       swap means the fallback shows immediately and nothing is ever invisible. -->
   <link rel="preload" href="assets/fonts/bitter-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/source-sans-3-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/css/fonts.css?v=0d78bcd1">
-  <link rel="stylesheet" href="assets/css/natfish.css?v=88a8ea0c">
+  <link rel="stylesheet" href="assets/css/natfish.css?v=9e143c17">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -58,12 +55,20 @@
     },
     "email": "nationalfishermen@gmail.com",
     "telephone": "+5012273165",
-    "openingHoursSpecification": {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-      "opens": "08:00",
-      "closes": "17:00"
-    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "opens": "08:00",
+        "closes": "17:00"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": "Saturday",
+        "opens": "08:00",
+        "closes": "12:00"
+      }
+    ],
     "contactPoint": [
       {
         "@type": "ContactPoint",
@@ -103,8 +108,6 @@
              alt="NATFISH &ndash; National Fishermen Producers Co-operative Society Ltd.">
         </a>
 
-      <!-- Language control. Stays between the logo and the hamburger at every
-           width, so it is reachable on a phone without opening the menu. -->
       <button class="lang-toggle" type="button" data-lang-toggle
               aria-label="Switch language to Espanol"
               data-label-en="Switch language to Espanol"
@@ -237,59 +240,6 @@
           </dl>
           <p class="season-card__note">The season may close earlier than the date shown when the national catch quota is reached.</p>
         </article>
-          <article class="season-card reveal" data-season
-                 data-open-from="04-01" data-open-to="11-30">
-          <div class="season-card__head">
-            <span class="season-card__icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2.4 13.9c2.4-2.9 5.4-4.4 7.8-4.4s5 1.5 6.6 4.4c-1.6 2.9-4.2 4.4-6.6 4.4s-5.4-1.5-7.8-4.4z"/><circle cx="6.9" cy="13" r=".95"/><path d="m16.8 13.9 3.5-2.4v4.8z"/><path class="ico__accent" d="M14.6 7.4c0-2.4 2-4.4 4.6-4.4 0 2.4-2 4.4-4.6 4.4z"/><path class="ico__accent" d="M2.4 21.2q2.4-1.7 4.8 0t4.8 0t4.8 0t4.8 0"/></svg></span>
-            <h3>Nassau Grouper</h3>
-          </div>
-          <p class="season-status" data-season-status>Contact NATFISH for availability</p>
-          <p class="season-card__contact">Contact NATFISH for availability</p>
-          <dl class="season-facts">
-            <div><dt>Standard open season</dt><dd>1 April to 30 November</dd></div>
-            <div><dt>Closed season</dt><dd>1 December to 31 March</dd></div>
-            <div><dt>Legal size range</dt><dd>20 to 30 inches</dd></div>
-          </dl>
-          
-        </article>
-          <article class="season-card reveal" data-season
-                 data-open-from="10-01" data-open-to="12-31">
-          <div class="season-card__head">
-            <span class="season-card__icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.4 11.2h17.2v7.6a1.7 1.7 0 0 1-1.7 1.7H5.1a1.7 1.7 0 0 1-1.7-1.7z"/><path d="M3.4 15h17.2M9.1 11.2v9.3M14.9 11.2v9.3"/><path class="ico__accent" d="M6.3 6.4c1.7-2.3 5.2-2.3 6.9 0-1.7 2.3-5.2 2.3-6.9 0z"/><path class="ico__accent" d="m13.2 6.4 2.7-1.8v3.6z"/></svg></span>
-            <h3>Whelks</h3>
-          </div>
-          <p class="season-status" data-season-status>Contact NATFISH for availability</p>
-          <p class="season-card__contact">Contact NATFISH for availability</p>
-          <dl class="season-facts">
-            <div><dt>Standard open season</dt><dd>1 October to 31 December</dd></div>
-            <div><dt>Closed season</dt><dd>1 January to 30 September</dd></div>
-            <div><dt>Licence</dt><dd>A special licence is required to fish whelks.</dd></div>
-          </dl>
-          
-        </article>
-          <article class="season-card reveal" data-season
-                 data-open-from="10-01" data-open-to="06-30">
-          <div class="season-card__head">
-            <span class="season-card__icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2.8 11.4h11.6v7.6a1.7 1.7 0 0 1-1.7 1.7H4.5a1.7 1.7 0 0 1-1.7-1.7z"/><path d="M2.8 15.1h11.6M8.6 11.4v9.3"/><circle class="ico__accent" cx="17.4" cy="7.2" r="4.4"/><path class="ico__accent" d="m15.5 7.3 1.5 1.5 2.6-2.9"/></svg></span>
-            <h3>Florida Stone Crab</h3>
-          </div>
-          <p class="season-status" data-season-status>Contact NATFISH for availability</p>
-          <p class="season-card__contact">Contact NATFISH for availability</p>
-          <dl class="season-facts">
-            <div><dt>Standard open season</dt><dd>1 October to 30 June</dd></div>
-            <div><dt>Closed season</dt><dd>1 July to 30 September</dd></div>
-            <div><dt>Licence</dt><dd>A special licence is required to fish and to export stone crab.</dd></div>
-          </dl>
-          
-        </article>
-          <article class="season-card season-card--note reveal">
-          <div class="season-card__head">
-            <span class="season-card__icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.6 17.2h16.8l-1.9 3.1a1.9 1.9 0 0 1-1.6.9H7.1a1.9 1.9 0 0 1-1.6-.9z"/><circle cx="7.6" cy="5.9" r="1.7"/><path d="M4.9 13.4c0-2.3 1.2-4.1 2.7-4.1s2.7 1.8 2.7 4.1"/><path class="ico__accent" d="M12.6 7.9h8.2v6.2h-8.2zM12.6 11h8.2M16.7 7.9v6.2M12.6 7.9l8.2 6.2M20.8 7.9l-8.2 6.2"/></svg></span>
-            <h3>Shrimp</h3>
-          </div>
-          <p class="season-status season-status--varies">Availability varies</p>
-          <p class="season-card__body">Belize's shrimp industry is primarily aquaculture-based. Harvesting and availability may therefore depend on production and supplier schedules rather than the same national calendar used for lobster and conch. Contact NATFISH to confirm current availability and sourcing.</p>
-        </article>
         </div>
 
         <div class="season-meta reveal">
@@ -334,9 +284,9 @@
              alt="NATFISH &ndash; National Fishermen Producers Co-operative Society Ltd.">
           </div>
           <p>
-            National Fishermen Producers Co-operative Society Ltd. A member-owned Belizean co-operative registered in
-            Belize City on 29 April 1966, purchasing and marketing the produce of
-            636 fishers at home and abroad.
+            National Fishermen Producers Co-operative Society Ltd. A member-owned Belizean co-operative in Belize
+            City, purchasing and marketing the produce of 636 fishers at
+            home and abroad.
           </p>
         </div>
 
@@ -374,8 +324,6 @@
         <p>Registered in Belize City on 29 April 1966.</p>
       </div>
 
-      <!-- Attribution: centred, secondary to NATFISH, and the studio name is
-           the only clickable part. -->
       <p class="site-credit">
         <span data-i18n-text="Website designed and developed by">Website designed and developed by</span>
         <a href="https://austereautomations.com/" target="_blank" rel="noopener noreferrer">Austere Automations</a>
@@ -396,7 +344,7 @@
 
   <p class="visually-hidden" id="lang-status" role="status" aria-live="polite"></p>
 
-  <script src="assets/js/natfish-strings.js?v=492caf53"></script>
+  <script src="assets/js/natfish-strings.js?v=00581f38"></script>
   <script src="assets/js/natfish-i18n.js?v=b8a289c3"></script>
   <script src="assets/js/natfish-seasons.js?v=c270a135"></script>
   <script src="assets/js/natfish.js?v=95dbc695"></script>

@@ -11,8 +11,13 @@ from build_icons import icon
 FISHERIES_SOURCE = "https://fisheries.gov.bz/regulations/"
 LAST_REVIEW = "18 August 2026"
 
+# Lobster and conch only. Nassau grouper, whelks, Florida stone crab and shrimp
+# were removed at the client's instruction: NATFISH does not buy them from its
+# fishers and cannot sell them, so listing their seasons here invited enquiries
+# the co-operative cannot answer.
+#
 # open_from / open_to are month-day. A pair where open_from is later in the year
-# than open_to wraps across the new year (lobster, conch, stone crab).
+# than open_to wraps across the new year, as both of these do.
 SEASONS = [
     {
         "key": "lobster",
@@ -44,55 +49,7 @@ SEASONS = [
         ],
         "note": "The season may close earlier than the date shown when the national catch quota is reached.",
     },
-    {
-        "key": "grouper",
-        "icon": "steward",
-        "name": "Nassau Grouper",
-        "open_from": "04-01",
-        "open_to": "11-30",
-        "open_label": "1 April to 30 November",
-        "closed_label": "1 December to 31 March",
-        "facts": [("Legal size range", "20 to 30 inches")],
-        "note": None,
-    },
-    {
-        "key": "whelk",
-        "icon": "crate-fish",
-        "name": "Whelks",
-        "open_from": "10-01",
-        "open_to": "12-31",
-        "open_label": "1 October to 31 December",
-        "closed_label": "1 January to 30 September",
-        "facts": [("Licence", "A special licence is required to fish whelks.")],
-        "note": None,
-    },
-    {
-        "key": "stonecrab",
-        "icon": "handling",
-        "name": "Florida Stone Crab",
-        "open_from": "10-01",
-        "open_to": "06-30",
-        "open_label": "1 October to 30 June",
-        "closed_label": "1 July to 30 September",
-        "facts": [("Licence", "A special licence is required to fish and to export stone crab.")],
-        "note": None,
-    },
-    {
-        "key": "shrimp",
-        "icon": "net",
-        "name": "Shrimp",
-        "no_season": True,
-        "facts": [],
-        "note": None,
-    },
 ]
-
-SHRIMP_COPY = (
-    "Belize's shrimp industry is primarily aquaculture-based. Harvesting and "
-    "availability may therefore depend on production and supplier schedules "
-    "rather than the same national calendar used for lobster and conch. "
-    "Contact NATFISH to confirm current availability and sourcing."
-)
 
 PAGE_NOTE = (
     "Season dates summarise standing Belize Fisheries regulations and may "
@@ -106,17 +63,6 @@ def season_card(s):
     facts = "\n            ".join(
         f"<div><dt>{k}</dt><dd>{v}</dd></div>" for k, v in s["facts"]
     )
-
-    if s.get("no_season"):
-        # No statutory shrimp season exists, so none is invented.
-        return f"""<article class="season-card season-card--note reveal">
-          <div class="season-card__head">
-            <span class="season-card__icon">{icon(s['icon'])}</span>
-            <h3>{s['name']}</h3>
-          </div>
-          <p class="season-status season-status--varies">Availability varies</p>
-          <p class="season-card__body">{SHRIMP_COPY}</p>
-        </article>"""
 
     quota = ' data-season-quota="true"' if s.get("quota") else ""
     note = (

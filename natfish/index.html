@@ -30,13 +30,10 @@
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
 
-  <!-- Self-hosted Bitter and Source Sans 3. The latin subsets are preloaded
-       because they carry the headline and the first paragraph; font-display
-       swap means the fallback shows immediately and nothing is ever invisible. -->
   <link rel="preload" href="assets/fonts/bitter-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/source-sans-3-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/css/fonts.css?v=0d78bcd1">
-  <link rel="stylesheet" href="assets/css/natfish.css?v=88a8ea0c">
+  <link rel="stylesheet" href="assets/css/natfish.css?v=9e143c17">
   <link rel="preload" as="image" type="image/webp" media="(max-width: 600px)"
         href="assets/img/official/hero-lobster-diver-dock-mobile-720.webp"
         imagesrcset="assets/img/official/hero-lobster-diver-dock-mobile-360.webp 360w, assets/img/official/hero-lobster-diver-dock-mobile-540.webp 540w, assets/img/official/hero-lobster-diver-dock-mobile-720.webp 720w, assets/img/official/hero-lobster-diver-dock-mobile-1080.webp 1080w" imagesizes="100vw" fetchpriority="high">
@@ -64,12 +61,20 @@
     },
     "email": "nationalfishermen@gmail.com",
     "telephone": "+5012273165",
-    "openingHoursSpecification": {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-      "opens": "08:00",
-      "closes": "17:00"
-    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "opens": "08:00",
+        "closes": "17:00"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": "Saturday",
+        "opens": "08:00",
+        "closes": "12:00"
+      }
+    ],
     "contactPoint": [
       {
         "@type": "ContactPoint",
@@ -119,8 +124,6 @@
              alt="NATFISH &ndash; National Fishermen Producers Co-operative Society Ltd.">
         </a>
 
-      <!-- Language control. Stays between the logo and the hamburger at every
-           width, so it is reachable on a phone without opening the menu. -->
       <button class="lang-toggle" type="button" data-lang-toggle
               aria-label="Switch language to Espanol"
               data-label-en="Switch language to Espanol"
@@ -282,59 +285,86 @@
           <span class="eyebrow">Inside the facility</span>
           <h2 id="home-process-h">Care from processing to cold storage</h2>
           <p class="lede">
-            Four steps between the landing and the container, photographed at
-            the co-operative's own facility.
+            Seven steps between the landing and the container, at the
+            co-operative&rsquo;s own facility.
           </p>
         </div>
 
         <ol class="steps">
           <li class="step reveal">
-            <div class="step__media">
-              <picture>
-          <source type="image/webp" srcset="assets/img/official/07-lobster-washing-station-480.webp 480w, assets/img/official/07-lobster-washing-station-800.webp 800w, assets/img/official/07-lobster-washing-station-1400.webp 1400w" sizes="(max-width: 640px) 92vw, (max-width: 1024px) 44vw, 23vw">
-          <img src="assets/img/official/07-lobster-washing-station-800.jpg" srcset="assets/img/official/07-lobster-washing-station-480.jpg 480w, assets/img/official/07-lobster-washing-station-800.jpg 800w, assets/img/official/07-lobster-washing-station-1400.jpg 1400w" sizes="(max-width: 640px) 92vw, (max-width: 1024px) 44vw, 23vw" width="1054" height="1400" alt="NATFISH workers in aprons and gloves rinsing lobster at the stainless washing station." class="is-portrait" style="--ratio:1054 / 1400" loading="lazy" decoding="async" data-full="assets/img/official/07-lobster-washing-station-1400.jpg">
-        </picture>
+            <div class="step__media step__media--mark">
+              <svg class="ico step__mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2.8 11.4h11.6v7.6a1.7 1.7 0 0 1-1.7 1.7H4.5a1.7 1.7 0 0 1-1.7-1.7z"/><path d="M2.8 15.1h11.6M8.6 11.4v9.3"/><circle class="ico__accent" cx="17.4" cy="7.2" r="4.4"/><path class="ico__accent" d="m15.5 7.3 1.5 1.5 2.6-2.9"/></svg>
               <span class="step__n" aria-hidden="true">1</span>
             </div>
             <div class="step__body">
-              <h3>Careful handling</h3>
-              <p>Landed catch is rinsed and checked at the washing station before it goes any further.</p>
+              <h3>Selecting / Receiving</h3>
+              <p>Catch is received and selected against Belize Fisheries Department regulations on size and weight.</p>
             </div>
           </li><li class="step reveal">
             <div class="step__media">
               <picture>
-          <source type="image/webp" srcset="assets/img/official/08-lobster-weighing-and-sorting-480.webp 480w, assets/img/official/08-lobster-weighing-and-sorting-800.webp 800w, assets/img/official/08-lobster-weighing-and-sorting-1400.webp 1400w" sizes="(max-width: 640px) 92vw, (max-width: 1024px) 44vw, 23vw">
-          <img src="assets/img/official/08-lobster-weighing-and-sorting-800.jpg" srcset="assets/img/official/08-lobster-weighing-and-sorting-480.jpg 480w, assets/img/official/08-lobster-weighing-and-sorting-800.jpg 800w, assets/img/official/08-lobster-weighing-and-sorting-1400.jpg 1400w" sizes="(max-width: 640px) 92vw, (max-width: 1024px) 44vw, 23vw" width="1054" height="1400" alt="A NATFISH worker weighing lobster on a digital scale beside sorting bins." class="is-portrait" style="--ratio:1054 / 1400" loading="lazy" decoding="async" data-full="assets/img/official/08-lobster-weighing-and-sorting-1400.jpg">
+          <source type="image/webp" srcset="assets/img/official/07-lobster-washing-station-480.webp 480w, assets/img/official/07-lobster-washing-station-800.webp 800w, assets/img/official/07-lobster-washing-station-1400.webp 1400w" sizes="(max-width: 620px) 40vw, (max-width: 1024px) 44vw, 15vw">
+          <img src="assets/img/official/07-lobster-washing-station-800.jpg" srcset="assets/img/official/07-lobster-washing-station-480.jpg 480w, assets/img/official/07-lobster-washing-station-800.jpg 800w, assets/img/official/07-lobster-washing-station-1400.jpg 1400w" sizes="(max-width: 620px) 40vw, (max-width: 1024px) 44vw, 15vw" width="1054" height="1400" alt="NATFISH workers in aprons and gloves rinsing lobster at the stainless washing station." class="is-portrait" style="--ratio:1054 / 1400" loading="lazy" decoding="async" data-full="assets/img/official/07-lobster-washing-station-1400.jpg">
         </picture>
               <span class="step__n" aria-hidden="true">2</span>
             </div>
             <div class="step__body">
-              <h3>Weighing and sorting</h3>
-              <p>Each lot is weighed and sorted so what leaves the room matches what the buyer agreed to.</p>
+              <h3>Cleaning / Processing</h3>
+              <p>Product is rinsed and prepared at the stainless washing station before it goes any further.</p>
             </div>
           </li><li class="step reveal">
             <div class="step__media">
               <picture>
-          <source type="image/webp" srcset="assets/img/official/05-lobster-tail-packing-boxes-480.webp 480w, assets/img/official/05-lobster-tail-packing-boxes-800.webp 800w, assets/img/official/05-lobster-tail-packing-boxes-1400.webp 1400w" sizes="(max-width: 640px) 92vw, (max-width: 1024px) 44vw, 23vw">
-          <img src="assets/img/official/05-lobster-tail-packing-boxes-800.jpg" srcset="assets/img/official/05-lobster-tail-packing-boxes-480.jpg 480w, assets/img/official/05-lobster-tail-packing-boxes-800.jpg 800w, assets/img/official/05-lobster-tail-packing-boxes-1400.jpg 1400w" sizes="(max-width: 640px) 92vw, (max-width: 1024px) 44vw, 23vw" width="1053" height="1400" alt="Individually bagged lobster tails being packed into cartons at NATFISH." class="is-portrait" style="--ratio:1053 / 1400" loading="lazy" decoding="async" data-full="assets/img/official/05-lobster-tail-packing-boxes-1400.jpg">
+          <source type="image/webp" srcset="assets/img/official/08-lobster-weighing-and-sorting-480.webp 480w, assets/img/official/08-lobster-weighing-and-sorting-800.webp 800w, assets/img/official/08-lobster-weighing-and-sorting-1400.webp 1400w" sizes="(max-width: 620px) 40vw, (max-width: 1024px) 44vw, 15vw">
+          <img src="assets/img/official/08-lobster-weighing-and-sorting-800.jpg" srcset="assets/img/official/08-lobster-weighing-and-sorting-480.jpg 480w, assets/img/official/08-lobster-weighing-and-sorting-800.jpg 800w, assets/img/official/08-lobster-weighing-and-sorting-1400.jpg 1400w" sizes="(max-width: 620px) 40vw, (max-width: 1024px) 44vw, 15vw" width="1054" height="1400" alt="A NATFISH worker weighing lobster on a digital scale beside sorting bins." class="is-portrait" style="--ratio:1054 / 1400" loading="lazy" decoding="async" data-full="assets/img/official/08-lobster-weighing-and-sorting-1400.jpg">
         </picture>
               <span class="step__n" aria-hidden="true">3</span>
             </div>
             <div class="step__body">
-              <h3>Packing</h3>
-              <p>Product is bagged and packed into cartons by hand, ready for freezing.</p>
+              <h3>Grading</h3>
+              <p>Graded and weighed by 10 lb. units.</p>
             </div>
           </li><li class="step reveal">
             <div class="step__media">
               <picture>
-          <source type="image/webp" srcset="assets/img/official/10-cold-storage-room-480.webp 480w, assets/img/official/10-cold-storage-room-800.webp 800w, assets/img/official/10-cold-storage-room-1400.webp 1400w" sizes="(max-width: 640px) 92vw, (max-width: 1024px) 44vw, 23vw">
-          <img src="assets/img/official/10-cold-storage-room-800.jpg" srcset="assets/img/official/10-cold-storage-room-480.jpg 480w, assets/img/official/10-cold-storage-room-800.jpg 800w, assets/img/official/10-cold-storage-room-1400.jpg 1400w" sizes="(max-width: 640px) 92vw, (max-width: 1024px) 44vw, 23vw" width="788" height="1400" alt="Racked trays inside the NATFISH cold storage room, cold vapour drifting between the shelves." class="focus-top is-portrait" style="--ratio:788 / 1400" loading="lazy" decoding="async" data-full="assets/img/official/10-cold-storage-room-1400.jpg">
+          <source type="image/webp" srcset="assets/img/official/05-lobster-tail-packing-boxes-480.webp 480w, assets/img/official/05-lobster-tail-packing-boxes-800.webp 800w, assets/img/official/05-lobster-tail-packing-boxes-1400.webp 1400w" sizes="(max-width: 620px) 40vw, (max-width: 1024px) 44vw, 15vw">
+          <img src="assets/img/official/05-lobster-tail-packing-boxes-800.jpg" srcset="assets/img/official/05-lobster-tail-packing-boxes-480.jpg 480w, assets/img/official/05-lobster-tail-packing-boxes-800.jpg 800w, assets/img/official/05-lobster-tail-packing-boxes-1400.jpg 1400w" sizes="(max-width: 620px) 40vw, (max-width: 1024px) 44vw, 15vw" width="1053" height="1400" alt="Individually bagged lobster tails being packed into cartons at NATFISH." class="is-portrait" style="--ratio:1053 / 1400" loading="lazy" decoding="async" data-full="assets/img/official/05-lobster-tail-packing-boxes-1400.jpg">
         </picture>
               <span class="step__n" aria-hidden="true">4</span>
             </div>
             <div class="step__body">
-              <h3>Cold storage</h3>
+              <h3>Wrapping / Packing</h3>
+              <p>Product is bagged and packed into cartons by hand, ready for freezing.</p>
+            </div>
+          </li><li class="step reveal">
+            <div class="step__media step__media--mark">
+              <svg class="ico step__mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M11.9 3.2h6.9a2 2 0 0 1 2 2v6.9l-9 9a1.9 1.9 0 0 1-2.7 0L3.4 15.4a1.9 1.9 0 0 1 0-2.7z"/><circle cx="16.6" cy="7.4" r="1.6"/><path class="ico__accent" d="M3.2 21.6h.01M6.6 21.6h.01M10 21.6h.01M13.4 21.6h.01" stroke-width="2.6"/></svg>
+              <span class="step__n" aria-hidden="true">5</span>
+            </div>
+            <div class="step__body">
+              <h3>Tally</h3>
+              <p>Boxes are covered, and the date, lot number and lobster size are recorded on each one.</p>
+            </div>
+          </li><li class="step reveal">
+            <div class="step__media">
+              <picture>
+          <source type="image/webp" srcset="assets/img/official/10-cold-storage-room-480.webp 480w, assets/img/official/10-cold-storage-room-800.webp 800w, assets/img/official/10-cold-storage-room-1400.webp 1400w" sizes="(max-width: 620px) 40vw, (max-width: 1024px) 44vw, 15vw">
+          <img src="assets/img/official/10-cold-storage-room-800.jpg" srcset="assets/img/official/10-cold-storage-room-480.jpg 480w, assets/img/official/10-cold-storage-room-800.jpg 800w, assets/img/official/10-cold-storage-room-1400.jpg 1400w" sizes="(max-width: 620px) 40vw, (max-width: 1024px) 44vw, 15vw" width="788" height="1400" alt="Racked trays inside the NATFISH cold storage room, cold vapour drifting between the shelves." class="focus-top is-portrait" style="--ratio:788 / 1400" loading="lazy" decoding="async" data-full="assets/img/official/10-cold-storage-room-1400.jpg">
+        </picture>
+              <span class="step__n" aria-hidden="true">6</span>
+            </div>
+            <div class="step__body">
+              <h3>Cold Storage</h3>
               <p>Packed cartons move into cold storage and stay there until they ship.</p>
+            </div>
+          </li><li class="step reveal">
+            <div class="step__media step__media--mark">
+              <svg class="ico step__mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2.6 12.6h8v6.3a1.6 1.6 0 0 1-1.6 1.6H4.2a1.6 1.6 0 0 1-1.6-1.6z"/><path d="M2.6 15.9h8M6.6 12.6v8"/><path class="ico__accent" d="M12.4 16.4c3.4 0 5-2.3 5-5.2"/><path class="ico__accent" d="m15.2 14.6-2.8 1.8 2 2.5"/><path d="M17.4 2.6a3.6 3.6 0 0 0-3.6 3.6c0 2.6 3.6 5.8 3.6 5.8s3.6-3.2 3.6-5.8a3.6 3.6 0 0 0-3.6-3.6z"/></svg>
+              <span class="step__n" aria-hidden="true">7</span>
+            </div>
+            <div class="step__body">
+              <h3>Shipping</h3>
+              <p>Cartons leave the facility under temperature control.</p>
             </div>
           </li>
         </ol>
@@ -346,11 +376,10 @@
         <div class="section-head section-head--rule reveal section-head--center">
           
           <span class="eyebrow">Seafood &amp; Services</span>
-          <h2 id="home-seafood-h">Eight products from Belizean waters</h2>
+          <h2 id="home-seafood-h">Three products from Belizean waters</h2>
           <p class="lede">
-            Frozen spiny lobster in four preparations, frozen queen conch,
-            lionfish fillet and packed fish fillets and portions. Availability
-            follows Belize's regulated seasons and is confirmed directly with
+            Spiny lobster, queen conch and lionfish. Availability follows
+            Belize&rsquo;s regulated seasons and is confirmed directly with
             NATFISH.
           </p>
         </div>
@@ -359,7 +388,7 @@
           <article class="card reveal">
             <div class="card__media"><picture>
           <source type="image/webp" srcset="assets/img/products/03-belizean-pride-raw-lobster-tails-480.webp 480w, assets/img/products/03-belizean-pride-raw-lobster-tails-800.webp 800w, assets/img/products/03-belizean-pride-raw-lobster-tails-1400.webp 1400w" sizes="(max-width: 640px) 92vw, (max-width: 900px) 46vw, 30vw">
-          <img src="assets/img/products/03-belizean-pride-raw-lobster-tails-800.jpg" srcset="assets/img/products/03-belizean-pride-raw-lobster-tails-480.jpg 480w, assets/img/products/03-belizean-pride-raw-lobster-tails-800.jpg 800w, assets/img/products/03-belizean-pride-raw-lobster-tails-1400.jpg 1400w" sizes="(max-width: 640px) 92vw, (max-width: 900px) 46vw, 30vw" width="1254" height="602" alt="A carton of individually bagged raw spiny lobster tails." style="--ratio:1254 / 602" loading="lazy" decoding="async">
+          <img src="assets/img/products/03-belizean-pride-raw-lobster-tails-800.jpg" srcset="assets/img/products/03-belizean-pride-raw-lobster-tails-480.jpg 480w, assets/img/products/03-belizean-pride-raw-lobster-tails-800.jpg 800w, assets/img/products/03-belizean-pride-raw-lobster-tails-1400.jpg 1400w" sizes="(max-width: 640px) 92vw, (max-width: 900px) 46vw, 30vw" width="1254" height="602" alt="A carton of whole raw spiny lobster, frozen and packed for market." style="--ratio:1254 / 602" loading="lazy" decoding="async">
         </picture></div>
             <div class="card__body">
               <h3 class="h-icon"><svg class="ico h-icon__mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><ellipse cx="12" cy="9.1" rx="3.5" ry="2.9" fill="currentColor" stroke="none"/><path d="M8.9 12.1h6.2l-.5 2.4H9.4z" fill="currentColor" stroke="none"/><path d="M9.5 14.9h5l-.45 2.3H9.95z" fill="currentColor" stroke="none"/><path d="M10.05 17.6h3.9l-.4 2.2h-3.1z" fill="currentColor" stroke="none"/><path d="M12 19.5 9.1 22.5h5.8z" fill="currentColor" stroke="none"/><path d="M10.2 6.6 6.4 2.3M13.8 6.6 17.6 2.3"/><path d="M8.5 8.1 5.1 7.1M8.4 10.5 5 10.9M15.5 8.1l3.4-1M15.6 10.5l3.4.4"/></svg> Spiny lobster</h3>
@@ -394,7 +423,7 @@
       <div class="season-feature__media">
         <picture>
           <source type="image/webp" srcset="assets/img/official/09-lobster-processing-table-480.webp 480w, assets/img/official/09-lobster-processing-table-800.webp 800w, assets/img/official/09-lobster-processing-table-1400.webp 1400w" sizes="(max-width: 900px) 100vw, 52vw">
-          <img src="assets/img/official/09-lobster-processing-table-800.jpg" srcset="assets/img/official/09-lobster-processing-table-480.jpg 480w, assets/img/official/09-lobster-processing-table-800.jpg 800w, assets/img/official/09-lobster-processing-table-1400.jpg 1400w" sizes="(max-width: 900px) 100vw, 52vw" width="1054" height="1400" alt="NATFISH workers sorting whole spiny lobster across a stainless processing table." class="is-portrait" style="--ratio:1054 / 1400;object-position:50% 40%" loading="lazy" decoding="async">
+          <img src="assets/img/official/09-lobster-processing-table-800.jpg" srcset="assets/img/official/09-lobster-processing-table-480.jpg 480w, assets/img/official/09-lobster-processing-table-800.jpg 800w, assets/img/official/09-lobster-processing-table-1400.jpg 1400w" sizes="(max-width: 900px) 100vw, 52vw" width="1054" height="1400" alt="NATFISH workers sorting spiny lobster tails across a stainless processing table." class="is-portrait" style="--ratio:1054 / 1400;object-position:50% 40%" loading="lazy" decoding="async">
         </picture>
       </div>
       <div class="season-feature__panel">
@@ -593,9 +622,9 @@
              alt="NATFISH &ndash; National Fishermen Producers Co-operative Society Ltd.">
           </div>
           <p>
-            National Fishermen Producers Co-operative Society Ltd. A member-owned Belizean co-operative registered in
-            Belize City on 29 April 1966, purchasing and marketing the produce of
-            636 fishers at home and abroad.
+            National Fishermen Producers Co-operative Society Ltd. A member-owned Belizean co-operative in Belize
+            City, purchasing and marketing the produce of 636 fishers at
+            home and abroad.
           </p>
         </div>
 
@@ -633,8 +662,6 @@
         <p>Registered in Belize City on 29 April 1966.</p>
       </div>
 
-      <!-- Attribution: centred, secondary to NATFISH, and the studio name is
-           the only clickable part. -->
       <p class="site-credit">
         <span data-i18n-text="Website designed and developed by">Website designed and developed by</span>
         <a href="https://austereautomations.com/" target="_blank" rel="noopener noreferrer">Austere Automations</a>
@@ -655,7 +682,7 @@
 
   <p class="visually-hidden" id="lang-status" role="status" aria-live="polite"></p>
 
-  <script src="assets/js/natfish-strings.js?v=492caf53"></script>
+  <script src="assets/js/natfish-strings.js?v=00581f38"></script>
   <script src="assets/js/natfish-i18n.js?v=b8a289c3"></script>
   <script src="assets/js/natfish-seasons.js?v=c270a135"></script>
   <script src="assets/js/natfish.js?v=95dbc695"></script>

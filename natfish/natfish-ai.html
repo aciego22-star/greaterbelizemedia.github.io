@@ -30,13 +30,10 @@
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
 
-  <!-- Self-hosted Bitter and Source Sans 3. The latin subsets are preloaded
-       because they carry the headline and the first paragraph; font-display
-       swap means the fallback shows immediately and nothing is ever invisible. -->
   <link rel="preload" href="assets/fonts/bitter-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/source-sans-3-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/css/fonts.css?v=0d78bcd1">
-  <link rel="stylesheet" href="assets/css/natfish.css?v=88a8ea0c">
+  <link rel="stylesheet" href="assets/css/natfish.css?v=9e143c17">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -58,12 +55,20 @@
     },
     "email": "nationalfishermen@gmail.com",
     "telephone": "+5012273165",
-    "openingHoursSpecification": {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-      "opens": "08:00",
-      "closes": "17:00"
-    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "opens": "08:00",
+        "closes": "17:00"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": "Saturday",
+        "opens": "08:00",
+        "closes": "12:00"
+      }
+    ],
     "contactPoint": [
       {
         "@type": "ContactPoint",
@@ -133,8 +138,6 @@
              alt="NATFISH &ndash; National Fishermen Producers Co-operative Society Ltd.">
         </a>
 
-      <!-- Language control. Stays between the logo and the hamburger at every
-           width, so it is reachable on a phone without opening the menu. -->
       <button class="lang-toggle" type="button" data-lang-toggle
               aria-label="Switch language to Espanol"
               data-label-en="Switch language to Espanol"
@@ -204,11 +207,6 @@
           </p>
         </div>
 
-        <!-- The client's Chatbase iframe embed, in the page it belongs on.
-             The script gives it its src when it scrolls into view, so a
-             visitor who never reaches it never sends a request to
-             chatbase.co, and every trigger on this page scrolls here rather
-             than opening a second copy of the same conversation. -->
         <div class="ai-embed" id="ai-embed" aria-label="NATFISH AI chat">
           <div class="ai-embed__frame"></div>
         </div>
@@ -297,8 +295,8 @@
           <li class="order-item reveal">
             <div class="order-item__media">
               <picture>
-          <source type="image/webp" srcset="assets/img/products/03-belizean-pride-raw-lobster-tails-480.webp 480w, assets/img/products/03-belizean-pride-raw-lobster-tails-800.webp 800w, assets/img/products/03-belizean-pride-raw-lobster-tails-1400.webp 1400w" sizes="(max-width: 560px) 92vw, 96px">
-          <img src="assets/img/products/03-belizean-pride-raw-lobster-tails-800.jpg" srcset="assets/img/products/03-belizean-pride-raw-lobster-tails-480.jpg 480w, assets/img/products/03-belizean-pride-raw-lobster-tails-800.jpg 800w, assets/img/products/03-belizean-pride-raw-lobster-tails-1400.jpg 1400w" sizes="(max-width: 560px) 92vw, 96px" width="1254" height="602" alt="A carton of individually bagged raw spiny lobster tails." style="--ratio:1 / 1" loading="lazy" decoding="async">
+          <source type="image/webp" srcset="assets/img/official/09-lobster-processing-table-480.webp 480w, assets/img/official/09-lobster-processing-table-800.webp 800w, assets/img/official/09-lobster-processing-table-1400.webp 1400w" sizes="(max-width: 560px) 92vw, 96px">
+          <img src="assets/img/official/09-lobster-processing-table-800.jpg" srcset="assets/img/official/09-lobster-processing-table-480.jpg 480w, assets/img/official/09-lobster-processing-table-800.jpg 800w, assets/img/official/09-lobster-processing-table-1400.jpg 1400w" sizes="(max-width: 560px) 92vw, 96px" width="1054" height="1400" alt="NATFISH workers sorting spiny lobster tails across a stainless processing table." class="is-portrait" style="--ratio:1 / 1" loading="lazy" decoding="async">
         </picture>
             </div>
             <div class="order-item__name">
@@ -308,8 +306,11 @@
             <a class="btn btn--ai btn--sm" href="#ai-embed" data-ai-open data-ai-product="Frozen Spiny Lobster Tails" aria-label="Start an order for Frozen Spiny Lobster Tails with NATFISH AI"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12.6a7.9 7.9 0 0 1-8.2 7.9 9 9 0 0 1-2.6-.4L4.6 21.4l1.2-3.9A7.6 7.6 0 0 1 3.6 12a7.9 7.9 0 0 1 8.2-7.9A7.9 7.9 0 0 1 21 11.6z"/><path class="ico__accent" d="M8.6 11.9h.01M12.3 11.9h.01M16 11.9h.01" stroke-width="2.6"/></svg> Order with NATFISH AI</a>
           </li>
           <li class="order-item reveal">
-            <div class="order-item__media order-item__media--mark">
-              <svg class="ico order-item__mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><ellipse cx="12" cy="9.1" rx="3.5" ry="2.9" fill="currentColor" stroke="none"/><path d="M8.9 12.1h6.2l-.5 2.4H9.4z" fill="currentColor" stroke="none"/><path d="M9.5 14.9h5l-.45 2.3H9.95z" fill="currentColor" stroke="none"/><path d="M10.05 17.6h3.9l-.4 2.2h-3.1z" fill="currentColor" stroke="none"/><path d="M12 19.5 9.1 22.5h5.8z" fill="currentColor" stroke="none"/><path d="M10.2 6.6 6.4 2.3M13.8 6.6 17.6 2.3"/><path d="M8.5 8.1 5.1 7.1M8.4 10.5 5 10.9M15.5 8.1l3.4-1M15.6 10.5l3.4.4"/></svg>
+            <div class="order-item__media">
+              <picture>
+          <source type="image/webp" srcset="assets/img/gallery/04-belizean-pride-lobster-head-meat-480.webp 480w, assets/img/gallery/04-belizean-pride-lobster-head-meat-800.webp 800w, assets/img/gallery/04-belizean-pride-lobster-head-meat-1400.webp 1400w" sizes="(max-width: 560px) 92vw, 96px">
+          <img src="assets/img/gallery/04-belizean-pride-lobster-head-meat-800.jpg" srcset="assets/img/gallery/04-belizean-pride-lobster-head-meat-480.jpg 480w, assets/img/gallery/04-belizean-pride-lobster-head-meat-800.jpg 800w, assets/img/gallery/04-belizean-pride-lobster-head-meat-1400.jpg 1400w" sizes="(max-width: 560px) 92vw, 96px" width="1400" height="1050" alt="Belizean Pride packaged spiny lobster head meat" style="--ratio:1 / 1" loading="lazy" decoding="async">
+        </picture>
             </div>
             <div class="order-item__name">
               <h3>Frozen Lobster Head Meat</h3>
@@ -320,8 +321,8 @@
           <li class="order-item reveal">
             <div class="order-item__media">
               <picture>
-          <source type="image/webp" srcset="assets/img/official/09-lobster-processing-table-480.webp 480w, assets/img/official/09-lobster-processing-table-800.webp 800w, assets/img/official/09-lobster-processing-table-1400.webp 1400w" sizes="(max-width: 560px) 92vw, 96px">
-          <img src="assets/img/official/09-lobster-processing-table-800.jpg" srcset="assets/img/official/09-lobster-processing-table-480.jpg 480w, assets/img/official/09-lobster-processing-table-800.jpg 800w, assets/img/official/09-lobster-processing-table-1400.jpg 1400w" sizes="(max-width: 560px) 92vw, 96px" width="1054" height="1400" alt="NATFISH workers sorting whole spiny lobster across a stainless processing table." class="is-portrait" style="--ratio:1 / 1" loading="lazy" decoding="async">
+          <source type="image/webp" srcset="assets/img/products/03-belizean-pride-raw-lobster-tails-480.webp 480w, assets/img/products/03-belizean-pride-raw-lobster-tails-800.webp 800w, assets/img/products/03-belizean-pride-raw-lobster-tails-1400.webp 1400w" sizes="(max-width: 560px) 92vw, 96px">
+          <img src="assets/img/products/03-belizean-pride-raw-lobster-tails-800.jpg" srcset="assets/img/products/03-belizean-pride-raw-lobster-tails-480.jpg 480w, assets/img/products/03-belizean-pride-raw-lobster-tails-800.jpg 800w, assets/img/products/03-belizean-pride-raw-lobster-tails-1400.jpg 1400w" sizes="(max-width: 560px) 92vw, 96px" width="1254" height="602" alt="A carton of whole raw spiny lobster, frozen and packed for market." style="--ratio:1 / 1" loading="lazy" decoding="async">
         </picture>
             </div>
             <div class="order-item__name">
@@ -365,32 +366,6 @@
               <p class="product__sci"><i>Pterois volitans</i></p>
             </div>
             <a class="btn btn--ai btn--sm" href="#ai-embed" data-ai-open data-ai-product="Lionfish Fillet" aria-label="Start an order for Lionfish Fillet with NATFISH AI"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12.6a7.9 7.9 0 0 1-8.2 7.9 9 9 0 0 1-2.6-.4L4.6 21.4l1.2-3.9A7.6 7.6 0 0 1 3.6 12a7.9 7.9 0 0 1 8.2-7.9A7.9 7.9 0 0 1 21 11.6z"/><path class="ico__accent" d="M8.6 11.9h.01M12.3 11.9h.01M16 11.9h.01" stroke-width="2.6"/></svg> Order with NATFISH AI</a>
-          </li>
-          <li class="order-item reveal">
-            <div class="order-item__media">
-              <picture>
-          <source type="image/webp" srcset="assets/img/gallery/05-frozen-fish-fillets-box-480.webp 480w, assets/img/gallery/05-frozen-fish-fillets-box-800.webp 800w, assets/img/gallery/05-frozen-fish-fillets-box-1400.webp 1400w" sizes="(max-width: 560px) 92vw, 96px">
-          <img src="assets/img/gallery/05-frozen-fish-fillets-box-800.jpg" srcset="assets/img/gallery/05-frozen-fish-fillets-box-480.jpg 480w, assets/img/gallery/05-frozen-fish-fillets-box-800.jpg 800w, assets/img/gallery/05-frozen-fish-fillets-box-1400.jpg 1400w" sizes="(max-width: 560px) 92vw, 96px" width="1400" height="1050" alt="Individually packaged frozen fish fillets prepared for distribution" style="--ratio:1 / 1" loading="lazy" decoding="async">
-        </picture>
-            </div>
-            <div class="order-item__name">
-              <h3>Frozen Fish Fillets</h3>
-              
-            </div>
-            <a class="btn btn--ai btn--sm" href="#ai-embed" data-ai-open data-ai-product="Frozen Fish Fillets" aria-label="Start an order for Frozen Fish Fillets with NATFISH AI"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12.6a7.9 7.9 0 0 1-8.2 7.9 9 9 0 0 1-2.6-.4L4.6 21.4l1.2-3.9A7.6 7.6 0 0 1 3.6 12a7.9 7.9 0 0 1 8.2-7.9A7.9 7.9 0 0 1 21 11.6z"/><path class="ico__accent" d="M8.6 11.9h.01M12.3 11.9h.01M16 11.9h.01" stroke-width="2.6"/></svg> Order with NATFISH AI</a>
-          </li>
-          <li class="order-item reveal">
-            <div class="order-item__media">
-              <picture>
-          <source type="image/webp" srcset="assets/img/gallery/06-frozen-fish-portions-box-480.webp 480w, assets/img/gallery/06-frozen-fish-portions-box-800.webp 800w, assets/img/gallery/06-frozen-fish-portions-box-1400.webp 1400w" sizes="(max-width: 560px) 92vw, 96px">
-          <img src="assets/img/gallery/06-frozen-fish-portions-box-800.jpg" srcset="assets/img/gallery/06-frozen-fish-portions-box-480.jpg 480w, assets/img/gallery/06-frozen-fish-portions-box-800.jpg 800w, assets/img/gallery/06-frozen-fish-portions-box-1400.jpg 1400w" sizes="(max-width: 560px) 92vw, 96px" width="1400" height="1050" alt="Individually packaged frozen fish portions in a distribution box" style="--ratio:1 / 1" loading="lazy" decoding="async">
-        </picture>
-            </div>
-            <div class="order-item__name">
-              <h3>Frozen Fish Portions</h3>
-              
-            </div>
-            <a class="btn btn--ai btn--sm" href="#ai-embed" data-ai-open data-ai-product="Frozen Fish Portions" aria-label="Start an order for Frozen Fish Portions with NATFISH AI"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12.6a7.9 7.9 0 0 1-8.2 7.9 9 9 0 0 1-2.6-.4L4.6 21.4l1.2-3.9A7.6 7.6 0 0 1 3.6 12a7.9 7.9 0 0 1 8.2-7.9A7.9 7.9 0 0 1 21 11.6z"/><path class="ico__accent" d="M8.6 11.9h.01M12.3 11.9h.01M16 11.9h.01" stroke-width="2.6"/></svg> Order with NATFISH AI</a>
           </li>
         </ul>
 
@@ -459,9 +434,9 @@
              alt="NATFISH &ndash; National Fishermen Producers Co-operative Society Ltd.">
           </div>
           <p>
-            National Fishermen Producers Co-operative Society Ltd. A member-owned Belizean co-operative registered in
-            Belize City on 29 April 1966, purchasing and marketing the produce of
-            636 fishers at home and abroad.
+            National Fishermen Producers Co-operative Society Ltd. A member-owned Belizean co-operative in Belize
+            City, purchasing and marketing the produce of 636 fishers at
+            home and abroad.
           </p>
         </div>
 
@@ -499,8 +474,6 @@
         <p>Registered in Belize City on 29 April 1966.</p>
       </div>
 
-      <!-- Attribution: centred, secondary to NATFISH, and the studio name is
-           the only clickable part. -->
       <p class="site-credit">
         <span data-i18n-text="Website designed and developed by">Website designed and developed by</span>
         <a href="https://austereautomations.com/" target="_blank" rel="noopener noreferrer">Austere Automations</a>
@@ -510,7 +483,7 @@
 
   <p class="visually-hidden" id="lang-status" role="status" aria-live="polite"></p>
 
-  <script src="assets/js/natfish-strings.js?v=492caf53"></script>
+  <script src="assets/js/natfish-strings.js?v=00581f38"></script>
   <script src="assets/js/natfish-i18n.js?v=b8a289c3"></script>
   <script src="assets/js/natfish-seasons.js?v=c270a135"></script>
   <script src="assets/js/natfish.js?v=95dbc695"></script>

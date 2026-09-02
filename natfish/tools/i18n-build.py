@@ -43,10 +43,21 @@ RUNTIME = [
 ]
 
 
+# Strings that stay in English on purpose, so a missing translation for them is
+# not a gap. These three are the titles of the client's published YouTube
+# Shorts: the card title has to match the title on the video itself, or a
+# Spanish reader clicks through to something that looks like a different clip.
+KEEP_ENGLISH = {
+    "The Caribbean Spiny Lobster Harvest",
+    "Working Belize\u2019s Waters",
+    "From Sea to Market",
+}
+
+
 def main():
     used = set(extract.collect()) | set(RUNTIME)
     es = {k: ES[k] for k in sorted(used) if k in ES}
-    missing = sorted(k for k in used if k not in ES)
+    missing = sorted(k for k in used if k not in ES and k not in KEEP_ENGLISH)
     assert_no_literal_escapes(es)
 
     payload = json.dumps({"es": es}, ensure_ascii=False, indent=1,
@@ -68,7 +79,8 @@ def main():
     )
 
     print(f"{out.relative_to(ROOT)}: {len(es)} Spanish strings, "
-          f"{len(missing)} missing")
+          f"{len(missing)} missing, "
+          f"{len(KEEP_ENGLISH & used)} deliberately English")
     for m in missing:
         print("  MISSING:", m)
     return 1 if missing else 0

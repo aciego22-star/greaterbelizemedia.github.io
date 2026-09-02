@@ -99,6 +99,32 @@ PHONE_SOURCE_RE = re.compile(
 )
 
 
+# The Shorts on the Gallery page. The artifact runs under a CSP that blocks
+# every external host, so a youtube-nocookie frame can only ever render as an
+# empty navy box here. Same treatment as the Chatbase panel: swap it for an
+# honest note and a link out, so the preview says what is there rather than
+# looking like a broken build.
+SHORT_IFRAME_RE = re.compile(
+    r'<iframe src="https://www\.youtube-nocookie\.com/embed/([\w-]+)"\s*\n'
+    r'\s*title="([^"]*)".*?</iframe>', re.S)
+
+
+def swap_shorts(html):
+    def note(m):
+        vid, title = m.group(1), m.group(2)
+        return (
+            '<a class="video-card__stub" '
+            f'href="https://www.youtube.com/shorts/{vid}" '
+            'target="_blank" rel="noopener noreferrer">'
+            '<span class="video-card__stub-title">Watch on YouTube</span>'
+            '<span class="video-card__stub-note">This shareable preview is a '
+            'single file and cannot load a video player. The Short plays on '
+            'the website itself.</span>'
+            f'<span class="visually-hidden">{title}</span>'
+            "</a>")
+    return SHORT_IFRAME_RE.sub(note, html)
+
+
 def inline_images(html):
     """Collapse each <picture> to one <img> keyed to a shared image table.
 
@@ -373,7 +399,7 @@ def main():
 
     routes = []
     for slug, body in pages:
-        body = route_links(inline_png(inline_images(body)))
+        body = route_links(inline_png(swap_shorts(inline_images(body))))
         routes.append(f'<div data-route="{slug}">{body}</div>')
 
     # json.dumps, not manual quoting: the legal name carries an apostrophe that

@@ -20,7 +20,8 @@ from build_shell import (
     RECREATION_NOTE, SHORT, TEL2_DISPLAY, TEL2_HREF, TEL_DISPLAY, TEL_HREF,
     VIDEO_ID, VIDEO_SOURCE, VIDEO_TITLE, WHATSAPP, SRC_BELTRAIDE,
     SRC_FISHERIES_DEPT, SRC_FISHERYPROGRESS, SRC_FISHSOURCE, SRC_FISHWISE,
-    AI_PAGE, HOURS, RULE_WAVE, SITE_URL, breadcrumb_jsonld,
+    AI_PAGE, HOURS, MARKET_HOURS, OFFICE_HOURS, RULE_WAVE, SITE_URL,
+    breadcrumb_jsonld,
     contact_strip, cta_band, footer, head, header, hero_picture,
     hero_preload, hero_tiers, identity_ribbon, logo_full, page_hero, picture,
     website_jsonld,
@@ -215,20 +216,34 @@ def update_card(u, *, compact=False):
 
 # ================================================================ home ===
 
-# The four-step handling story. Every image is an authentic client photograph
-# and every one of them is portrait, which is why this renders as a portrait
-# card grid rather than the usual wide band.
+# The seven-step handling sequence, in the co-operative's own order and their
+# own words for what each step involves.
+#
+# Five steps have an authentic photograph of that step happening at the
+# facility. Two do not: NATFISH has said photographs of the tally bench and of
+# shipping are coming, and until they arrive those cards carry a species-style
+# icon panel rather than a borrowed picture. The same rule as the product
+# cards - a card with no truthful photograph gets a mark, never a stand-in.
+#
+# `icon` is only read when there is no photograph.
 PROCESS = [
-    ("07-lobster-washing-station", "Careful handling",
-     "Landed catch is rinsed and checked at the washing station before it goes "
-     "any further."),
-    ("08-lobster-weighing-and-sorting", "Weighing and sorting",
-     "Each lot is weighed and sorted so what leaves the room matches what the "
-     "buyer agreed to."),
-    ("05-lobster-tail-packing-boxes", "Packing",
+    (None, "handling", "Selecting / Receiving",
+     "Catch is received and selected against Belize Fisheries Department "
+     "regulations on size and weight."),
+    ("07-lobster-washing-station", "handling", "Cleaning / Processing",
+     "Product is rinsed and prepared at the stainless washing station before "
+     "it goes any further."),
+    ("08-lobster-weighing-and-sorting", "seal", "Grading",
+     "Graded and weighed by 10 lb. units."),
+    ("05-lobster-tail-packing-boxes", "crate-fish", "Wrapping / Packing",
      "Product is bagged and packed into cartons by hand, ready for freezing."),
-    ("10-cold-storage-room", "Cold storage",
+    (None, "tag", "Tally",
+     "Boxes are covered, and the date, lot number and lobster size are "
+     "recorded on each one."),
+    ("10-cold-storage-room", "steward", "Cold Storage",
      "Packed cartons move into cold storage and stay there until they ship."),
+    (None, "route", "Shipping",
+     "Cartons leave the facility under temperature control."),
 ]
 
 # The six verified products, grouped for the homepage. The full catalogue with
@@ -247,11 +262,23 @@ HOME_SEAFOOD = [
 ]
 
 
-def process_step(stem, title, body, n):
-    """One portrait card in the handling sequence."""
+def process_step(stem, ico, title, body, n):
+    """One portrait card in the handling sequence.
+
+    A step with no photograph yet gets the same treatment a product with no
+    truthful photograph gets: an icon on a navy panel, keeping the row even
+    without labelling somebody else's picture as this step.
+    """
+    if stem:
+        media = picture(
+            stem, "(max-width: 620px) 40vw, (max-width: 1024px) 44vw, 15vw",
+            full=True)
+    else:
+        media = icon(ico, "step__mark")
+    mark = "" if stem else " step__media--mark"
     return f"""<li class="step reveal">
-            <div class="step__media">
-              {picture(stem, "(max-width: 640px) 92vw, (max-width: 1024px) 44vw, 23vw", full=True)}
+            <div class="step__media{mark}">
+              {media}
               <span class="step__n" aria-hidden="true">{n}</span>
             </div>
             <div class="step__body">
@@ -396,13 +423,13 @@ def home():
           <span class="eyebrow">Inside the facility</span>
           <h2 id="home-process-h">Care from processing to cold storage</h2>
           <p class="lede">
-            Four steps between the landing and the container, photographed at
-            the co-operative's own facility.
+            Seven steps between the landing and the container, at the
+            co-operative&rsquo;s own facility.
           </p>
         </div>
 
         <ol class="steps">
-          {"".join(process_step(stem, t, b, i + 1) for i, (stem, t, b) in enumerate(PROCESS))}
+          {"".join(process_step(stem, ico, t, b, i + 1) for i, (stem, ico, t, b) in enumerate(PROCESS))}
         </ol>
       </div>
     </section>
@@ -412,11 +439,10 @@ def home():
         <div class="section-head section-head--rule reveal section-head--center">
           {RULE_WAVE}
           <span class="eyebrow">Seafood &amp; Services</span>
-          <h2 id="home-seafood-h">Eight products from Belizean waters</h2>
+          <h2 id="home-seafood-h">Three products from Belizean waters</h2>
           <p class="lede">
-            Frozen spiny lobster in four preparations, frozen queen conch,
-            lionfish fillet and packed fish fillets and portions. Availability
-            follows Belize's regulated seasons and is confirmed directly with
+            Spiny lobster, queen conch and lionfish. Availability follows
+            Belize&rsquo;s regulated seasons and is confirmed directly with
             NATFISH.
           </p>
         </div>
@@ -571,17 +597,17 @@ def about():
           <div class="reveal">
             <span class="eyebrow">History</span>
             <h2>Registered on {FOUNDED_DATE}</h2>
-            <p class="stat-line">{FOUNDED_DATE}.</p>
             <p>
-              {LEGAL_NO_DOT} was registered in Belize City on {FOUNDED_DATE}.
-              What began with a small founding group of fishers has grown into a
-              member-owned co-operative of {MEMBERS} fishers.
+              {LEGAL_NO_DOT} was registered in Belize City. What began with 20
+              members has grown into a member-owned co-operative of {MEMBERS}
+              fishers.
             </p>
             <p>
               The co-operative is owned by its members and governed by a
               {COMMITTEE}-member Managing Committee elected from the general
               membership. Members are not customers of the Society; they are its
-              owners, and the committee that runs it answers to them.
+              owners, and the committee is there to support and serve its
+              members.
             </p>
             <p>
               NATFISH supports its members through education in fishery
@@ -595,10 +621,6 @@ def about():
               {picture("03-lobster-processing-room-wide", "(max-width: 860px) 92vw, 46vw")}
             </div>
             <ul class="factlist">
-              <li>
-                <span class="factlist__key">Registered</span>
-                <span class="factlist__val">{FOUNDED_DATE}, Belize City</span>
-              </li>
               <li>
                 <span class="factlist__key">Members</span>
                 <span class="factlist__val">{MEMBERS} fishers</span>
@@ -667,14 +689,17 @@ def about():
               connects their work at sea to a buyer.
             </p>
             <p>
-              A co-operative gives a fisher more than a buyer for the day's
+              The Co-operative gives a fisher more than a buyer for the day&rsquo;s
               catch. It gives a share in the organization, a vote in how it is
               run, and a route to markets that would otherwise be out of reach.
             </p>
             <p>
-              Through the Society, Belizean seafood has reached buyers in
+              Through the Society, Belizean Pride Seafood has reached buyers in
               {MARKETS}.
             </p>
+            <figure class="inline-figure">
+              {picture("belizean-pride-packaged-products", "(max-width: 860px) 60vw, 300px", tiers=(480, 720))}
+            </figure>
           </div>
         </div>
       </div>
@@ -701,8 +726,7 @@ def about():
             <div>
               <h3>Fisher members</h3>
               <p>
-                Membership has grown from a small founding group to {MEMBERS}
-                fishers.
+                Membership has grown from 20 members to {MEMBERS} fishers.
               </p>
             </div>
           </li>
@@ -788,9 +812,9 @@ def order_button(prod, css="btn btn--ai btn--sm", fallback=f"{AI_PAGE}#ai-embed"
 def order_thumb(prod):
     """The small square beside a product in the order list.
 
-    Five of the eight products have a photograph that is truthfully theirs;
-    the other three have none, and no borrowed or approximate image is used for
-    them. Those carry the species mark on a navy panel instead - the same
+    Five of the six products have a photograph that is truthfully theirs; the
+    sixth, whole cooked lobster, has none, and no borrowed or approximate image
+    is used for it. Those carry the species mark on a navy panel instead - the same
     substitution the product cards on Seafood & Services already make, so a
     visitor moving between the two pages sees one consistent treatment rather
     than a gap where a picture should be.
@@ -815,19 +839,27 @@ def order_thumb(prod):
 # own, and captioning a different product with their name would be a false
 # label. Those cards carry the species mark instead.
 CATALOGUE = [
+    # These two photographs were the wrong way round: the client confirmed that
+    # the carton in products/03 holds whole raw lobster, and that the tray in
+    # official/09 holds tails. The stems keep their original filenames - they
+    # are referenced from the gallery and the generated dimension tables - but
+    # the alt text and short labels in build_shell.py were corrected to match
+    # what each photograph actually shows.
     {
         "name": "Frozen Spiny Lobster Tails",
         "sci": "Panulirus argus",
         "icon": "lobster",
-        "img": "03-belizean-pride-raw-lobster-tails",
-        "body": "Lobster tails, individually bagged and packed into cartons at "
-                "the co-operative's facility.",
+        "img": "09-lobster-processing-table",
+        "body": "Lobster tails, prepared and packed at the co-operative's own "
+                "facility.",
     },
     {
         "name": "Frozen Lobster Head Meat",
         "sci": "Panulirus argus",
         "icon": "lobster",
-        "img": None,
+        # The client's own packaged head-meat photograph, already approved and
+        # running in the gallery. Asked for by name in the change document.
+        "img": "04-belizean-pride-lobster-head-meat",
         "body": "Head meat recovered during lobster processing and frozen for "
                 "market.",
     },
@@ -835,16 +867,19 @@ CATALOGUE = [
         "name": "Frozen Whole Raw Lobster",
         "sci": "Panulirus argus",
         "icon": "lobster",
-        "img": "09-lobster-processing-table",
+        "img": "03-belizean-pride-raw-lobster-tails",
         "body": "Whole spiny lobster, frozen raw rather than tailed.",
     },
     {
         "name": "Frozen Whole Cooked Lobster",
         "sci": "Panulirus argus",
         "icon": "lobster",
-        # The one cooked-lobster photograph supplied shows cooked *tails*, not
-        # whole cooked lobster, so it would be a false label here. It runs in
-        # the gallery under its own accurate caption instead.
+        # MISSING ASSET. The client asked for a cooked-product photograph here
+        # and no verified one exists in the project. The only cooked lobster
+        # anywhere in the set is products/02, which shows cooked *tails*, and
+        # the raw whole lobster on the card above is explicitly not to be
+        # reused. So this card keeps the species mark until NATFISH supplies a
+        # photograph of whole cooked lobster.
         "img": None,
         "body": "Whole spiny lobster, cooked before freezing.",
     },
@@ -867,29 +902,11 @@ CATALOGUE = [
         "body": "Fillet from an invasive Indo-Pacific species that Belizean "
                 "fishers help keep in check on the reef.",
     },
-    # The two fish entries carry no scientific name because none is supported.
-    # The client supplied photographs of packed fish fillets and fish portions
-    # with captions that say only "prepared for distribution" - no species, no
-    # weight, no grade - and inventing a species to fill the line would be
-    # exactly the kind of claim this site does not make. `sci: None` renders no
-    # italic line at all rather than an empty one.
-    {
-        "name": "Frozen Fish Fillets",
-        "sci": None,
-        "icon": "crate-fish",
-        "img": "05-frozen-fish-fillets-box",
-        "body": "Fish fillets, individually packaged and boxed for "
-                "distribution.",
-    },
-    {
-        "name": "Frozen Fish Portions",
-        "sci": None,
-        "icon": "crate-fish",
-        "img": "06-frozen-fish-portions-box",
-        "body": "Fish portions, individually packaged and boxed for "
-                "distribution.",
-    },
 ]
+
+# Frozen Fish Fillets and Frozen Fish Portions were removed from the catalogue
+# at the client's instruction. Their photographs stay in the gallery, which the
+# same brief said not to touch.
 
 AVAILABILITY_NOTE = (
     'Product availability follows <a href="seafood-seasons.html">Belize&rsquo;s '
@@ -933,17 +950,16 @@ def product_card(prod):
 def seafood_services():
     return (
         head(
-            "Belizean Lobster, Conch, Lionfish &amp; Fish Products | NATFISH",
+            "Belizean Lobster, Conch &amp; Lionfish Products | NATFISH",
             "Frozen spiny lobster tails, lobster head meat, whole raw and cooked "
-            "lobster, queen conch 85% cleaned, lionfish fillet and packed fish "
-            "fillets and portions, prepared by a Belizean fisher-owned "
-            "co-operative.",
+            "lobster, queen conch 85% cleaned and lionfish fillet, prepared by a "
+            "Belizean fisher-owned co-operative.",
             "seafood-services.html",
         )
         + header("seafood-services.html")
         + page_hero(
             "Seafood &amp; Services",
-            "Eight products, and the co-operative behind them",
+            "Six products, and the co-operative behind them",
             "What NATFISH brings to market, and the co-operative functions that "
             "carry a member's catch from the water to a buyer.",
             "Seafood &amp; Services",
@@ -969,9 +985,9 @@ def seafood_services():
           <span class="eyebrow">Product catalogue</span>
           <h2 id="sf-catalogue-h">Frozen seafood from Belizean waters</h2>
           <p class="lede">
-            Four spiny lobster preparations, queen conch, lionfish fillet and
-            packed fish fillets and portions. Specifications and current
-            availability are confirmed directly with NATFISH.
+            Four spiny lobster preparations, queen conch and lionfish fillet.
+            Specifications and current availability are confirmed directly with
+            NATFISH.
           </p>
         </div>
 
@@ -1288,9 +1304,9 @@ def seafood_seasons():
     return (
         head(
             "Seafood Seasons | NATFISH",
-            "A plain-language guide to Belize's standard regulated seafood "
-            "seasons for lobster, conch, Nassau grouper, whelks and stone crab. "
-            "Contact NATFISH to confirm current availability.",
+            "A plain-language guide to Belize's standard regulated seasons for "
+            "Caribbean spiny lobster and queen conch. Contact NATFISH to "
+            "confirm current availability.",
             "seafood-seasons.html",
         )
         + header("seafood-seasons.html")
@@ -1508,6 +1524,54 @@ def gallery_figures(items):
     return "\n          ".join(out)
 
 
+# The three YouTube Shorts the client supplied, in their order, with their
+# titles. The footage could not be viewed from this environment - YouTube is
+# outside the network policy here - so the titles ship exactly as given and
+# nothing is asserted about what each clip contains beyond the title itself.
+#
+# youtube-nocookie.com, not youtube.com: the privacy-enhanced host sets no
+# tracking cookie until the visitor actually starts a video.
+SHORTS = [
+    ("p2_6LaOfD1o", "The Caribbean Spiny Lobster Harvest"),
+    ("_6veScdF7Oc", "Working Belize&rsquo;s Waters"),
+    ("qyHOSf9wVSI", "From Sea to Market"),
+]
+
+# What the player is allowed to reach for. YouTube's own embed list, minus
+# nothing: dropping an entry here breaks fullscreen or picture-in-picture
+# rather than tightening anything, because the iframe is sandboxed by origin.
+SHORT_ALLOW = ("accelerometer; autoplay; clipboard-write; encrypted-media; "
+               "gyroscope; picture-in-picture; web-share")
+
+
+def short_card(video):
+    """One 9:16 Short.
+
+    `loading="lazy"` is what keeps three players off the critical path: the
+    section sits well below the fold, so nothing is fetched from YouTube until
+    the visitor scrolls near it, and nothing plays until they press play. The
+    title is on the iframe as well as on the card, because a screen reader
+    landing inside the frame has only the iframe's own accessible name.
+
+    No VideoObject structured data. It needs a thumbnail URL, an upload date
+    and a duration, and inventing any of the three would be worse than having
+    no rich result at all.
+    """
+    vid, title = video
+    plain = title.replace("&rsquo;", "\u2019")
+    return f"""<figure class="video-card">
+            <div class="video-card__frame">
+              <iframe src="https://www.youtube-nocookie.com/embed/{vid}"
+                      title="{plain}"
+                      loading="lazy"
+                      referrerpolicy="strict-origin-when-cross-origin"
+                      allow="{SHORT_ALLOW}"
+                      allowfullscreen></iframe>
+            </div>
+            <figcaption class="video-card__title">{title}</figcaption>
+          </figure>"""
+
+
 def gallery():
     return (
         head(
@@ -1523,7 +1587,8 @@ def gallery():
             "The people, the process, the product",
             "An authentic look at the harvest, the people, the processing and "
             f"the packed product of {LEGAL_NO_DOT}. Select any photograph "
-            "to view it larger.",
+            "to view it larger, or watch "
+            '<a href="#natfish-in-motion">NATFISH in Motion</a>.',
             "Gallery",
         )
         + f"""
@@ -1569,6 +1634,20 @@ def gallery():
         </div>
         <div class="gallery reveal">
           {gallery_figures(GALLERY_PRODUCTS)}
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="natfish-in-motion" aria-labelledby="gal-motion-h">
+      <div class="container">
+        <div class="section-head reveal section-head--center">
+          <span class="eyebrow">Videos</span>
+          <h2 id="gal-motion-h">NATFISH in Motion</h2>
+          <p class="lede">See the people, work and waters behind Belizean Pride
+          seafood.</p>
+        </div>
+        <div class="video-grid reveal">
+          {"".join(short_card(v) for v in SHORTS)}
         </div>
       </div>
     </section>
@@ -1869,7 +1948,7 @@ def natfish_ai():
 # "before you start" prompt, not the full checklist further down the page, and
 # a visitor who has to read nine bullets before clicking will not click.
 READY_LIST = [
-    "Which of the six approved products you need",
+    "Which of the products you need",
     "The approximate quantity you would like",
     "Your name, telephone number and email address",
     "Your preferred pickup or fulfilment details",
@@ -1880,7 +1959,7 @@ READY_LIST = [
 # confirm, and the page must not pre-empt them.
 CHECKLIST = [
     "Your name, and your company if you are buying for one",
-    "Which of the six approved products you need",
+    "Which of the products you need",
     "Approximate quantity",
     "Your preferred timeframe",
     "Telephone or WhatsApp number",
@@ -1900,6 +1979,24 @@ PRODUCT_PICKS = [p["name"] for p in CATALOGUE]
 _PICK_LINES = "\n".join(f"  - {name}" for name in PRODUCT_PICKS)
 EMAIL_BODY = EMAIL_TEMPLATE.format(products=_PICK_LINES)
 WHATSAPP_BODY = WHATSAPP_TEMPLATE.format(products=_PICK_LINES)
+
+
+def hours_block(label, schedule):
+    """One opening-hours schedule as a definition list.
+
+    A list rather than a sentence: the office and the market each keep a
+    weekday time and a different Saturday time, and four times run together in
+    prose is exactly the sort of thing a customer misreads on a phone.
+    """
+    rows = "\n              ".join(
+        f"<div><dt>{days}</dt><dd>{time}</dd></div>" for days, time in schedule
+    )
+    return f"""<div class="hours">
+              <p class="hours__label">{label}</p>
+              <dl class="hours__list">
+              {rows}
+              </dl>
+            </div>"""
 
 
 def contact():
@@ -1999,7 +2096,8 @@ def contact():
 
             <p class="note">
               Email goes to <a href="mailto:{EMAIL}">{EMAIL}</a>, WhatsApp opens
-              a chat with {MOBILE_DISPLAY}, and the office is open {HOURS}
+              a chat with {MOBILE_DISPLAY}. The office is open {HOURS}, and
+              Saturday, 8:00 a.m. to 12:00 p.m.
             </p>
           </article>
         </div>
@@ -2067,10 +2165,8 @@ def contact():
             <span class="contact-card__icon">{icon("coast")}</span>
             <h3>Visit</h3>
             <p>{ADDRESS}</p>
-            <p>
-              {HOURS}
-              <span class="contact-card__tag">Office hours</span>
-            </p>
+            {hours_block("Office hours", OFFICE_HOURS)}
+            {hours_block("Market hours", MARKET_HOURS)}
             <a class="arrow-link" href="{MAPS}" target="_blank" rel="noopener noreferrer">Open in Google Maps</a>
           </div>
           <div class="contact-card reveal">
@@ -2393,8 +2489,8 @@ def insights():
         + cta_band(
             "Seafood &amp; Services",
             "See what the co-operative supplies",
-            "Frozen spiny lobster, queen conch, lionfish fillet and packed fish, "
-            "prepared by a Belizean fisher-owned co-operative.",
+            "Frozen spiny lobster, queen conch and lionfish fillet, prepared by "
+            "a Belizean fisher-owned co-operative.",
             [
                 '<a class="btn btn--primary" href="seafood-services.html">View NatFish seafood products</a>',
                 f'<a class="btn btn--ghost" href="{BUYER_CTA}">Start a seafood order</a>',
@@ -2497,11 +2593,22 @@ PAGES = {
 }
 
 
+# Comments in these templates explain layout decisions to whoever edits them
+# next. They are not for the public: shipping them puts build commentary in the
+# source of a customer-facing page, which is the same class of thing as the
+# internal notes the client asked to have taken off the rendered pages.
+COMMENT_RE = re.compile(r"[ \t]*<!--(?!\[if).*?-->[ \t]*\n?", re.S)
+
+
+def strip_comments(html):
+    return COMMENT_RE.sub("", html)
+
+
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     for name, builder in PAGES.items():
         path = OUT / name
-        path.write_text(builder(), encoding="utf-8")
+        path.write_text(strip_comments(builder()), encoding="utf-8")
         print(f"{name:26} {path.stat().st_size / 1024:6.1f} KB")
 
 

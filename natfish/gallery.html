@@ -30,13 +30,10 @@
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
 
-  <!-- Self-hosted Bitter and Source Sans 3. The latin subsets are preloaded
-       because they carry the headline and the first paragraph; font-display
-       swap means the fallback shows immediately and nothing is ever invisible. -->
   <link rel="preload" href="assets/fonts/bitter-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/source-sans-3-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/css/fonts.css?v=0d78bcd1">
-  <link rel="stylesheet" href="assets/css/natfish.css?v=88a8ea0c">
+  <link rel="stylesheet" href="assets/css/natfish.css?v=9e143c17">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -58,12 +55,20 @@
     },
     "email": "nationalfishermen@gmail.com",
     "telephone": "+5012273165",
-    "openingHoursSpecification": {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-      "opens": "08:00",
-      "closes": "17:00"
-    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "opens": "08:00",
+        "closes": "17:00"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": "Saturday",
+        "opens": "08:00",
+        "closes": "12:00"
+      }
+    ],
     "contactPoint": [
       {
         "@type": "ContactPoint",
@@ -103,8 +108,6 @@
              alt="NATFISH &ndash; National Fishermen Producers Co-operative Society Ltd.">
         </a>
 
-      <!-- Language control. Stays between the logo and the hamburger at every
-           width, so it is reachable on a phone without opening the menu. -->
       <button class="lang-toggle" type="button" data-lang-toggle
               aria-label="Switch language to Espanol"
               data-label-en="Switch language to Espanol"
@@ -157,7 +160,7 @@
         <p class="breadcrumb"><a href="index.html">Home</a><span>/</span>Gallery</p>
         <span class="eyebrow">Gallery</span>
         <h1>The people, the process, the product</h1>
-        <p class="lede">An authentic look at the harvest, the people, the processing and the packed product of National Fishermen Producers Co-operative Society Ltd. Select any photograph to view it larger.</p>
+        <p class="lede">An authentic look at the harvest, the people, the processing and the packed product of National Fishermen Producers Co-operative Society Ltd. Select any photograph to view it larger, or watch <a href="#natfish-in-motion">NATFISH in Motion</a>.</p>
       </div>
     </section>
 
@@ -213,6 +216,26 @@
           </figure>
           <figure class="gallery__figure gallery__figure--crop" data-gallery-cat="fishing">
             <button class="gallery__item" type="button"
+                    aria-label="View larger: A fresh catch in Belizean waters">
+              <picture>
+          <source type="image/webp" srcset="assets/img/gallery/fisher-with-catch-in-belizean-waters-480.webp 480w, assets/img/gallery/fisher-with-catch-in-belizean-waters-800.webp 800w, assets/img/gallery/fisher-with-catch-in-belizean-waters-960.webp 960w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
+          <img src="assets/img/gallery/fisher-with-catch-in-belizean-waters-800.jpg" srcset="assets/img/gallery/fisher-with-catch-in-belizean-waters-480.jpg 480w, assets/img/gallery/fisher-with-catch-in-belizean-waters-800.jpg 800w, assets/img/gallery/fisher-with-catch-in-belizean-waters-960.jpg 960w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw" width="960" height="1280" alt="Fisher in clear Caribbean water holding a freshly caught fish." class="is-portrait" style="--ratio:960 / 1280" loading="lazy" decoding="async" data-full="assets/img/gallery/fisher-with-catch-in-belizean-waters-960.jpg">
+        </picture>
+            </button>
+            <figcaption>A fisher displaying a fresh catch in Belizean waters.</figcaption>
+          </figure>
+          <figure class="gallery__figure" data-gallery-cat="fishing">
+            <button class="gallery__item" type="button"
+                    aria-label="View larger: A Belizean fisherman at sea">
+              <picture>
+          <source type="image/webp" srcset="assets/img/gallery/fisherman-at-sea-480.webp 480w, assets/img/gallery/fisherman-at-sea-800.webp 800w, assets/img/gallery/fisherman-at-sea-1152.webp 1152w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
+          <img src="assets/img/gallery/fisherman-at-sea-800.jpg" srcset="assets/img/gallery/fisherman-at-sea-480.jpg 480w, assets/img/gallery/fisherman-at-sea-800.jpg 800w, assets/img/gallery/fisherman-at-sea-1152.jpg 1152w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw" width="1152" height="864" alt="Belizean fisherman standing aboard a fishing vessel at sea." style="--ratio:1152 / 864" loading="lazy" decoding="async" data-full="assets/img/gallery/fisherman-at-sea-1152.jpg">
+        </picture>
+            </button>
+            <figcaption>A Belizean fisherman working at sea.</figcaption>
+          </figure>
+          <figure class="gallery__figure gallery__figure--crop" data-gallery-cat="fishing">
+            <button class="gallery__item" type="button"
                     aria-label="View larger: A fisher with a spiny lobster">
               <picture>
           <source type="image/webp" srcset="assets/img/gallery/fisherman-spiny-lobster-480.webp 480w, assets/img/gallery/fisherman-spiny-lobster-800.webp 800w, assets/img/gallery/fisherman-spiny-lobster-1200.webp 1200w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
@@ -230,6 +253,36 @@
         </picture>
             </button>
             <figcaption>A Belizean fisher holding two Caribbean spiny lobsters at sea.</figcaption>
+          </figure>
+          <figure class="gallery__figure gallery__figure--crop" data-gallery-cat="fishing">
+            <button class="gallery__item" type="button"
+                    aria-label="View larger: A lobster catch and transport crates">
+              <picture>
+          <source type="image/webp" srcset="assets/img/gallery/lobster-catch-and-transport-crates-480.webp 480w, assets/img/gallery/lobster-catch-and-transport-crates-720.webp 720w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
+          <img src="assets/img/gallery/lobster-catch-and-transport-crates-720.jpg" srcset="assets/img/gallery/lobster-catch-and-transport-crates-480.jpg 480w, assets/img/gallery/lobster-catch-and-transport-crates-720.jpg 720w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw" width="720" height="1280" alt="Caribbean spiny lobsters and ventilated transport crates inside a fishing boat." class="is-portrait" style="--ratio:720 / 1280" loading="lazy" decoding="async" data-full="assets/img/gallery/lobster-catch-and-transport-crates-720.jpg">
+        </picture>
+            </button>
+            <figcaption>A lobster catch and transport crates aboard a fishing vessel.</figcaption>
+          </figure>
+          <figure class="gallery__figure gallery__figure--crop" data-gallery-cat="fishing">
+            <button class="gallery__item" type="button"
+                    aria-label="View larger: A spiny lobster catch handled at sea">
+              <picture>
+          <source type="image/webp" srcset="assets/img/gallery/spiny-lobster-catch-on-boat-480.webp 480w, assets/img/gallery/spiny-lobster-catch-on-boat-800.webp 800w, assets/img/gallery/spiny-lobster-catch-on-boat-1200.webp 1200w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
+          <img src="assets/img/gallery/spiny-lobster-catch-on-boat-800.jpg" srcset="assets/img/gallery/spiny-lobster-catch-on-boat-480.jpg 480w, assets/img/gallery/spiny-lobster-catch-on-boat-800.jpg 800w, assets/img/gallery/spiny-lobster-catch-on-boat-1200.jpg 1200w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw" width="1200" height="1600" alt="Fishers aboard a boat handling a large catch of Caribbean spiny lobsters." class="focus-catch-top is-portrait" style="--ratio:1200 / 1600" loading="lazy" decoding="async" data-full="assets/img/gallery/spiny-lobster-catch-on-boat-1200.jpg">
+        </picture>
+            </button>
+            <figcaption>Fishers handling a Caribbean spiny lobster catch at sea.</figcaption>
+          </figure>
+          <figure class="gallery__figure gallery__figure--crop" data-gallery-cat="fishing">
+            <button class="gallery__item" type="button"
+                    aria-label="View larger: Handling spiny lobster aboard a vessel">
+              <picture>
+          <source type="image/webp" srcset="assets/img/gallery/spiny-lobster-handling-at-sea-480.webp 480w, assets/img/gallery/spiny-lobster-handling-at-sea-800.webp 800w, assets/img/gallery/spiny-lobster-handling-at-sea-900.webp 900w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
+          <img src="assets/img/gallery/spiny-lobster-handling-at-sea-800.jpg" srcset="assets/img/gallery/spiny-lobster-handling-at-sea-480.jpg 480w, assets/img/gallery/spiny-lobster-handling-at-sea-800.jpg 800w, assets/img/gallery/spiny-lobster-handling-at-sea-900.jpg 900w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw" width="900" height="1600" alt="Gloved fishers handling Caribbean spiny lobsters aboard a boat." class="focus-gunwale is-portrait" style="--ratio:900 / 1600" loading="lazy" decoding="async" data-full="assets/img/gallery/spiny-lobster-handling-at-sea-900.jpg">
+        </picture>
+            </button>
+            <figcaption>Careful handling of a Caribbean spiny lobster catch aboard a fishing vessel.</figcaption>
           </figure>
           <figure class="gallery__figure" data-gallery-cat="products">
             <button class="gallery__item" type="button"
@@ -271,6 +324,16 @@
             </button>
             <figcaption>Frozen fish portions prepared for distribution.</figcaption>
           </figure>
+          <figure class="gallery__figure gallery__figure--crop" data-gallery-cat="products">
+            <button class="gallery__item" type="button"
+                    aria-label="View larger: Belizean Pride products, boxed">
+              <picture>
+          <source type="image/webp" srcset="assets/img/gallery/belizean-pride-packaged-products-480.webp 480w, assets/img/gallery/belizean-pride-packaged-products-720.webp 720w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
+          <img src="assets/img/gallery/belizean-pride-packaged-products-720.jpg" srcset="assets/img/gallery/belizean-pride-packaged-products-480.jpg 480w, assets/img/gallery/belizean-pride-packaged-products-720.jpg 720w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw" width="720" height="1280" alt="Boxes of Belizean Pride seafood products arranged for distribution." class="focus-pride-boxes is-portrait" style="--ratio:720 / 1280" loading="lazy" decoding="async" data-full="assets/img/gallery/belizean-pride-packaged-products-720.jpg">
+        </picture>
+            </button>
+            <figcaption>Belizean Pride seafood products prepared for distribution.</figcaption>
+          </figure>
           <figure class="gallery__figure" data-gallery-cat="products">
             <button class="gallery__item" type="button"
                     aria-label="View larger: Packaged frozen lionfish fillets">
@@ -280,6 +343,16 @@
         </picture>
             </button>
             <figcaption>Packaged frozen lionfish fillets.</figcaption>
+          </figure>
+          <figure class="gallery__figure gallery__figure--crop" data-gallery-cat="products">
+            <button class="gallery__item" type="button"
+                    aria-label="View larger: Cartons loaded for cold transport">
+              <picture>
+          <source type="image/webp" srcset="assets/img/gallery/seafood-shipment-cold-storage-480.webp 480w, assets/img/gallery/seafood-shipment-cold-storage-800.webp 800w, assets/img/gallery/seafood-shipment-cold-storage-960.webp 960w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
+          <img src="assets/img/gallery/seafood-shipment-cold-storage-800.jpg" srcset="assets/img/gallery/seafood-shipment-cold-storage-480.jpg 480w, assets/img/gallery/seafood-shipment-cold-storage-800.jpg 800w, assets/img/gallery/seafood-shipment-cold-storage-960.jpg 960w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw" width="960" height="1280" alt="Sealed seafood cartons stacked inside a refrigerated transport compartment." class="is-portrait" style="--ratio:960 / 1280" loading="lazy" decoding="async" data-full="assets/img/gallery/seafood-shipment-cold-storage-960.jpg">
+        </picture>
+            </button>
+            <figcaption>Packaged seafood prepared for temperature-controlled transport.</figcaption>
           </figure>
           <figure class="gallery__figure" data-gallery-cat="trade">
             <button class="gallery__item" type="button"
@@ -378,13 +451,13 @@
           </figure>
           <figure class="gallery__figure">
             <button class="gallery__item" type="button"
-                    aria-label="View larger: Sorting whole spiny lobster">
+                    aria-label="View larger: Sorting spiny lobster tails">
               <picture>
           <source type="image/webp" srcset="assets/img/official/09-lobster-processing-table-480.webp 480w, assets/img/official/09-lobster-processing-table-800.webp 800w, assets/img/official/09-lobster-processing-table-1400.webp 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
-          <img src="assets/img/official/09-lobster-processing-table-800.jpg" srcset="assets/img/official/09-lobster-processing-table-480.jpg 480w, assets/img/official/09-lobster-processing-table-800.jpg 800w, assets/img/official/09-lobster-processing-table-1400.jpg 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw" width="1054" height="1400" alt="NATFISH workers sorting whole spiny lobster across a stainless processing table." class="is-portrait" style="--ratio:1054 / 1400" loading="lazy" decoding="async" data-full="assets/img/official/09-lobster-processing-table-1400.jpg">
+          <img src="assets/img/official/09-lobster-processing-table-800.jpg" srcset="assets/img/official/09-lobster-processing-table-480.jpg 480w, assets/img/official/09-lobster-processing-table-800.jpg 800w, assets/img/official/09-lobster-processing-table-1400.jpg 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw" width="1054" height="1400" alt="NATFISH workers sorting spiny lobster tails across a stainless processing table." class="is-portrait" style="--ratio:1054 / 1400" loading="lazy" decoding="async" data-full="assets/img/official/09-lobster-processing-table-1400.jpg">
         </picture>
             </button>
-            <figcaption>Sorting whole spiny lobster.</figcaption>
+            <figcaption>Sorting spiny lobster tails.</figcaption>
           </figure>
           <figure class="gallery__figure">
             <button class="gallery__item" type="button"
@@ -501,13 +574,13 @@
           </figure>
           <figure class="gallery__figure">
             <button class="gallery__item" type="button"
-                    aria-label="View larger: Raw lobster tails, bagged">
+                    aria-label="View larger: Whole raw lobster, cased">
               <picture>
           <source type="image/webp" srcset="assets/img/products/03-belizean-pride-raw-lobster-tails-480.webp 480w, assets/img/products/03-belizean-pride-raw-lobster-tails-800.webp 800w, assets/img/products/03-belizean-pride-raw-lobster-tails-1400.webp 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
-          <img src="assets/img/products/03-belizean-pride-raw-lobster-tails-800.jpg" srcset="assets/img/products/03-belizean-pride-raw-lobster-tails-480.jpg 480w, assets/img/products/03-belizean-pride-raw-lobster-tails-800.jpg 800w, assets/img/products/03-belizean-pride-raw-lobster-tails-1400.jpg 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw" width="1254" height="602" alt="A carton of individually bagged raw spiny lobster tails." style="--ratio:1254 / 602" loading="lazy" decoding="async" data-full="assets/img/products/03-belizean-pride-raw-lobster-tails-1400.jpg">
+          <img src="assets/img/products/03-belizean-pride-raw-lobster-tails-800.jpg" srcset="assets/img/products/03-belizean-pride-raw-lobster-tails-480.jpg 480w, assets/img/products/03-belizean-pride-raw-lobster-tails-800.jpg 800w, assets/img/products/03-belizean-pride-raw-lobster-tails-1400.jpg 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw" width="1254" height="602" alt="A carton of whole raw spiny lobster, frozen and packed for market." style="--ratio:1254 / 602" loading="lazy" decoding="async" data-full="assets/img/products/03-belizean-pride-raw-lobster-tails-1400.jpg">
         </picture>
             </button>
-            <figcaption>Raw lobster tails, bagged.</figcaption>
+            <figcaption>Whole raw lobster, cased.</figcaption>
           </figure>
           <figure class="gallery__figure">
             <button class="gallery__item" type="button"
@@ -518,6 +591,50 @@
         </picture>
             </button>
             <figcaption>Frozen queen conch meat.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="natfish-in-motion" aria-labelledby="gal-motion-h">
+      <div class="container">
+        <div class="section-head reveal section-head--center">
+          <span class="eyebrow">Videos</span>
+          <h2 id="gal-motion-h">NATFISH in Motion</h2>
+          <p class="lede">See the people, work and waters behind Belizean Pride
+          seafood.</p>
+        </div>
+        <div class="video-grid reveal">
+          <figure class="video-card">
+            <div class="video-card__frame">
+              <iframe src="https://www.youtube-nocookie.com/embed/p2_6LaOfD1o"
+                      title="The Caribbean Spiny Lobster Harvest"
+                      loading="lazy"
+                      referrerpolicy="strict-origin-when-cross-origin"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowfullscreen></iframe>
+            </div>
+            <figcaption class="video-card__title">The Caribbean Spiny Lobster Harvest</figcaption>
+          </figure><figure class="video-card">
+            <div class="video-card__frame">
+              <iframe src="https://www.youtube-nocookie.com/embed/_6veScdF7Oc"
+                      title="Working Belize’s Waters"
+                      loading="lazy"
+                      referrerpolicy="strict-origin-when-cross-origin"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowfullscreen></iframe>
+            </div>
+            <figcaption class="video-card__title">Working Belize&rsquo;s Waters</figcaption>
+          </figure><figure class="video-card">
+            <div class="video-card__frame">
+              <iframe src="https://www.youtube-nocookie.com/embed/qyHOSf9wVSI"
+                      title="From Sea to Market"
+                      loading="lazy"
+                      referrerpolicy="strict-origin-when-cross-origin"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowfullscreen></iframe>
+            </div>
+            <figcaption class="video-card__title">From Sea to Market</figcaption>
           </figure>
         </div>
       </div>
@@ -576,9 +693,9 @@
              alt="NATFISH &ndash; National Fishermen Producers Co-operative Society Ltd.">
           </div>
           <p>
-            National Fishermen Producers Co-operative Society Ltd. A member-owned Belizean co-operative registered in
-            Belize City on 29 April 1966, purchasing and marketing the produce of
-            636 fishers at home and abroad.
+            National Fishermen Producers Co-operative Society Ltd. A member-owned Belizean co-operative in Belize
+            City, purchasing and marketing the produce of 636 fishers at
+            home and abroad.
           </p>
         </div>
 
@@ -616,8 +733,6 @@
         <p>Registered in Belize City on 29 April 1966.</p>
       </div>
 
-      <!-- Attribution: centred, secondary to NATFISH, and the studio name is
-           the only clickable part. -->
       <p class="site-credit">
         <span data-i18n-text="Website designed and developed by">Website designed and developed by</span>
         <a href="https://austereautomations.com/" target="_blank" rel="noopener noreferrer">Austere Automations</a>
@@ -654,7 +769,7 @@
 
   <p class="visually-hidden" id="lang-status" role="status" aria-live="polite"></p>
 
-  <script src="assets/js/natfish-strings.js?v=492caf53"></script>
+  <script src="assets/js/natfish-strings.js?v=00581f38"></script>
   <script src="assets/js/natfish-i18n.js?v=b8a289c3"></script>
   <script src="assets/js/natfish-seasons.js?v=c270a135"></script>
   <script src="assets/js/natfish.js?v=95dbc695"></script>

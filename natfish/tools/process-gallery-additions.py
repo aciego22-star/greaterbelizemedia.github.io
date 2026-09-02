@@ -38,11 +38,23 @@ OUT = ROOT / "assets" / "img" / "gallery"
 # never upscaled - the tier is simply dropped.
 TIERS = (480, 800, 1400)
 
-# stem -> classification key. Taken from the brief's table: Products,
-# Fisheries, Events and Training, mapped onto the gallery's own filter groups.
-# "Training" is a fourth group rather than a squeeze into "Trade Shows &
-# Representation", because a workshop is not a trade show.
+# stem -> classification key, for every batch this script has processed. Only
+# the files actually present in the source directory given on the command line
+# are touched, so one table can cover them all and a re-run of an older batch
+# still lands in the right group.
+#
+# The briefs name their own categories and they do not match the gallery's four
+# filter groups one for one, so each is mapped to the closest accurate group
+# rather than growing a tab per delivery:
+#
+#   Products, Processing and Products  -> products
+#   Fisheries, Fishing at Sea,
+#   Fishing Community                  -> fishing
+#   Events                             -> trade
+#   Training                           -> training  (added for the workshops;
+#                                        a workshop is not a trade show)
 GROUPS = {
+    # Second delivery.
     "lionfish-fillets-4x3": "products",
     "fisherman-two-spiny-lobsters": "fishing",
     "coastal-fishing-structures": "fishing",
@@ -50,6 +62,14 @@ GROUPS = {
     "natfish-food-taipei-2026": "trade",
     "natfish-workshop": "training",
     "natfish-workshop-group": "training",
+    # Third delivery, with the client's page corrections.
+    "spiny-lobster-catch-on-boat": "fishing",
+    "spiny-lobster-handling-at-sea": "fishing",
+    "lobster-catch-and-transport-crates": "fishing",
+    "fisher-with-catch-in-belizean-waters": "fishing",
+    "fisherman-at-sea": "fishing",
+    "belizean-pride-packaged-products": "products",
+    "seafood-shipment-cold-storage": "products",
 }
 
 SOURCE_EXTS = (".jpeg", ".jpg", ".png", ".webp")
@@ -91,9 +111,9 @@ def main():
     for path in sorted(src.iterdir()):
         if path.suffix.lower() in SOURCE_EXTS and path.stem in GROUPS:
             found[path.stem] = path
-    missing = sorted(set(GROUPS) - set(found))
-    if missing:
-        raise SystemExit("ERROR: missing source file(s): " + ", ".join(missing))
+    if not found:
+        raise SystemExit(
+            f"ERROR: {src} holds no file whose stem is listed in GROUPS")
 
     for stem, path in sorted(found.items()):
         im = strip(Image.open(path).convert("RGB"))

@@ -30,13 +30,10 @@
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
 
-  <!-- Self-hosted Bitter and Source Sans 3. The latin subsets are preloaded
-       because they carry the headline and the first paragraph; font-display
-       swap means the fallback shows immediately and nothing is ever invisible. -->
   <link rel="preload" href="assets/fonts/bitter-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/source-sans-3-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/css/fonts.css?v=0d78bcd1">
-  <link rel="stylesheet" href="assets/css/natfish.css?v=88a8ea0c">
+  <link rel="stylesheet" href="assets/css/natfish.css?v=9e143c17">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -58,12 +55,20 @@
     },
     "email": "nationalfishermen@gmail.com",
     "telephone": "+5012273165",
-    "openingHoursSpecification": {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-      "opens": "08:00",
-      "closes": "17:00"
-    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "opens": "08:00",
+        "closes": "17:00"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": "Saturday",
+        "opens": "08:00",
+        "closes": "12:00"
+      }
+    ],
     "contactPoint": [
       {
         "@type": "ContactPoint",
@@ -103,8 +108,6 @@
              alt="NATFISH &ndash; National Fishermen Producers Co-operative Society Ltd.">
         </a>
 
-      <!-- Language control. Stays between the logo and the hamburger at every
-           width, so it is reachable on a phone without opening the menu. -->
       <button class="lang-toggle" type="button" data-lang-toggle
               aria-label="Switch language to Espanol"
               data-label-en="Switch language to Espanol"
@@ -174,10 +177,6 @@
         </div>
 
         <div class="paths">
-          <!-- Path one leads: it is the only route that answers immediately.
-               Path two is the same width on a phone and deliberately quieter,
-               not smaller, on a wide screen -- someone who wants a person
-               should never have to hunt for one. -->
           <article class="path path--ai reveal" aria-labelledby="path-ai-h">
             <span class="path__tag">Available online</span>
             <span class="path__icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12.6a7.9 7.9 0 0 1-8.2 7.9 9 9 0 0 1-2.6-.4L4.6 21.4l1.2-3.9A7.6 7.6 0 0 1 3.6 12a7.9 7.9 0 0 1 8.2-7.9A7.9 7.9 0 0 1 21 11.6z"/><path class="ico__accent" d="M8.6 11.9h.01M12.3 11.9h.01M16 11.9h.01" stroke-width="2.6"/></svg></span>
@@ -192,7 +191,7 @@
             <div class="path__ready">
               <h4>Have these ready</h4>
               <ul class="checklist">
-              <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m4.5 12.6 5.2 5.2L19.5 7.4"/></svg><span>Which of the six approved products you need</span></li>
+              <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m4.5 12.6 5.2 5.2L19.5 7.4"/></svg><span>Which of the products you need</span></li>
               <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m4.5 12.6 5.2 5.2L19.5 7.4"/></svg><span>The approximate quantity you would like</span></li>
               <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m4.5 12.6 5.2 5.2L19.5 7.4"/></svg><span>Your name, telephone number and email address</span></li>
               <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m4.5 12.6 5.2 5.2L19.5 7.4"/></svg><span>Your preferred pickup or fulfilment details</span></li>
@@ -216,10 +215,10 @@
             </p>
 
             <div class="path__action path__action--stack">
-              <a class="btn btn--primary" href="mailto:nationalfishermen@gmail.com?subject=NATFISH%20Seafood%20Buyer%20Enquiry&amp;body=Hello%20NATFISH%2C%0A%0AI%20would%20like%20to%20enquire%20about%20purchasing%20seafood.%0A%0AName%3A%0ACompany%3A%0ACountry%20or%20location%3A%0ATelephone%20or%20WhatsApp%3A%0A%0AProduct%20required%20%28delete%20those%20that%20do%20not%20apply%29%3A%0A%20%20-%20Frozen%20Spiny%20Lobster%20Tails%0A%20%20-%20Frozen%20Lobster%20Head%20Meat%0A%20%20-%20Frozen%20Whole%20Raw%20Lobster%0A%20%20-%20Frozen%20Whole%20Cooked%20Lobster%0A%20%20-%20Frozen%20Queen%20Conch%2C%2085%25%20Cleaned%0A%20%20-%20Lionfish%20Fillet%0A%20%20-%20Frozen%20Fish%20Fillets%0A%20%20-%20Frozen%20Fish%20Portions%0A%0AApproximate%20quantity%3A%0APreferred%20timeframe%3A%0APackaging%20or%20preparation%20requirements%3A%0ADestination%20or%20delivery%20location%3A%0AAdditional%20information%3A%0A%0AThank%20you.">
+              <a class="btn btn--primary" href="mailto:nationalfishermen@gmail.com?subject=NATFISH%20Seafood%20Buyer%20Enquiry&amp;body=Hello%20NATFISH%2C%0A%0AI%20would%20like%20to%20enquire%20about%20purchasing%20seafood.%0A%0AName%3A%0ACompany%3A%0ACountry%20or%20location%3A%0ATelephone%20or%20WhatsApp%3A%0A%0AProduct%20required%20%28delete%20those%20that%20do%20not%20apply%29%3A%0A%20%20-%20Frozen%20Spiny%20Lobster%20Tails%0A%20%20-%20Frozen%20Lobster%20Head%20Meat%0A%20%20-%20Frozen%20Whole%20Raw%20Lobster%0A%20%20-%20Frozen%20Whole%20Cooked%20Lobster%0A%20%20-%20Frozen%20Queen%20Conch%2C%2085%25%20Cleaned%0A%20%20-%20Lionfish%20Fillet%0A%0AApproximate%20quantity%3A%0APreferred%20timeframe%3A%0APackaging%20or%20preparation%20requirements%3A%0ADestination%20or%20delivery%20location%3A%0AAdditional%20information%3A%0A%0AThank%20you.">
                 <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.6" y="4.8" width="18.8" height="14.4" rx="2"/><path d="m2.6 7.4 8.36 5.2a2 2 0 0 0 2.08 0l8.36-5.2"/></svg> Email the order team
               </a>
-              <a class="btn btn--whatsapp" href="https://wa.me/5016281449?text=Hello%20NATFISH.%20I%20would%20like%20to%20make%20a%20seafood%20enquiry.%0A%0AName%3A%0ACompany%3A%0ALocation%3A%0A%0AProduct%20required%20%28delete%20those%20that%20do%20not%20apply%29%3A%0A%20%20-%20Frozen%20Spiny%20Lobster%20Tails%0A%20%20-%20Frozen%20Lobster%20Head%20Meat%0A%20%20-%20Frozen%20Whole%20Raw%20Lobster%0A%20%20-%20Frozen%20Whole%20Cooked%20Lobster%0A%20%20-%20Frozen%20Queen%20Conch%2C%2085%25%20Cleaned%0A%20%20-%20Lionfish%20Fillet%0A%20%20-%20Frozen%20Fish%20Fillets%0A%20%20-%20Frozen%20Fish%20Portions%0A%0AApproximate%20quantity%3A%0APreferred%20timeframe%3A%0AAdditional%20information%3A"
+              <a class="btn btn--whatsapp" href="https://wa.me/5016281449?text=Hello%20NATFISH.%20I%20would%20like%20to%20make%20a%20seafood%20enquiry.%0A%0AName%3A%0ACompany%3A%0ALocation%3A%0A%0AProduct%20required%20%28delete%20those%20that%20do%20not%20apply%29%3A%0A%20%20-%20Frozen%20Spiny%20Lobster%20Tails%0A%20%20-%20Frozen%20Lobster%20Head%20Meat%0A%20%20-%20Frozen%20Whole%20Raw%20Lobster%0A%20%20-%20Frozen%20Whole%20Cooked%20Lobster%0A%20%20-%20Frozen%20Queen%20Conch%2C%2085%25%20Cleaned%0A%20%20-%20Lionfish%20Fillet%0A%0AApproximate%20quantity%3A%0APreferred%20timeframe%3A%0AAdditional%20information%3A"
                  target="_blank" rel="noopener noreferrer">
                 <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.4 20.6 4.7 16.7A8.6 8.6 0 1 1 8 20.1z"/><path d="M9 8.6c.3 0 .5.1.6.4l.7 1.6c.1.2.1.4 0 .5l-.6.8c-.1.2-.1.4 0 .5a8 8 0 0 0 3 3c.2.1.4.1.5 0l.8-.6c.1-.1.3-.2.5-.1l1.6.7c.3.1.4.3.4.6 0 1.1-.9 2-2 2a8 8 0 0 1-7.4-7.4c0-1.1.9-2 2-2z"/></svg> Message on WhatsApp
               </a>
@@ -230,7 +229,8 @@
 
             <p class="note">
               Email goes to <a href="mailto:nationalfishermen@gmail.com">nationalfishermen@gmail.com</a>, WhatsApp opens
-              a chat with +501 628-1449, and the office is open Monday to Friday, 8:00 a.m. to 5:00 p.m.
+              a chat with +501 628-1449. The office is open Monday to Friday, 8:00 a.m. to 5:00 p.m., and
+              Saturday, 8:00 a.m. to 12:00 p.m.
             </p>
           </article>
         </div>
@@ -254,12 +254,8 @@
               <a href="seafood-seasons.html">View the Seafood Seasons guide</a>.
             </p>
 
-            <!-- One action, not two: NATFISH AI already leads the ordering
-                 section directly above, and this checklist serves whichever
-                 route the visitor picked - repeating the assistant here made
-                 the section read as another pitch for it. -->
             <div class="enquiry__actions">
-              <a class="btn btn--primary" href="mailto:nationalfishermen@gmail.com?subject=NATFISH%20Seafood%20Buyer%20Enquiry&amp;body=Hello%20NATFISH%2C%0A%0AI%20would%20like%20to%20enquire%20about%20purchasing%20seafood.%0A%0AName%3A%0ACompany%3A%0ACountry%20or%20location%3A%0ATelephone%20or%20WhatsApp%3A%0A%0AProduct%20required%20%28delete%20those%20that%20do%20not%20apply%29%3A%0A%20%20-%20Frozen%20Spiny%20Lobster%20Tails%0A%20%20-%20Frozen%20Lobster%20Head%20Meat%0A%20%20-%20Frozen%20Whole%20Raw%20Lobster%0A%20%20-%20Frozen%20Whole%20Cooked%20Lobster%0A%20%20-%20Frozen%20Queen%20Conch%2C%2085%25%20Cleaned%0A%20%20-%20Lionfish%20Fillet%0A%20%20-%20Frozen%20Fish%20Fillets%0A%20%20-%20Frozen%20Fish%20Portions%0A%0AApproximate%20quantity%3A%0APreferred%20timeframe%3A%0APackaging%20or%20preparation%20requirements%3A%0ADestination%20or%20delivery%20location%3A%0AAdditional%20information%3A%0A%0AThank%20you.">
+              <a class="btn btn--primary" href="mailto:nationalfishermen@gmail.com?subject=NATFISH%20Seafood%20Buyer%20Enquiry&amp;body=Hello%20NATFISH%2C%0A%0AI%20would%20like%20to%20enquire%20about%20purchasing%20seafood.%0A%0AName%3A%0ACompany%3A%0ACountry%20or%20location%3A%0ATelephone%20or%20WhatsApp%3A%0A%0AProduct%20required%20%28delete%20those%20that%20do%20not%20apply%29%3A%0A%20%20-%20Frozen%20Spiny%20Lobster%20Tails%0A%20%20-%20Frozen%20Lobster%20Head%20Meat%0A%20%20-%20Frozen%20Whole%20Raw%20Lobster%0A%20%20-%20Frozen%20Whole%20Cooked%20Lobster%0A%20%20-%20Frozen%20Queen%20Conch%2C%2085%25%20Cleaned%0A%20%20-%20Lionfish%20Fillet%0A%0AApproximate%20quantity%3A%0APreferred%20timeframe%3A%0APackaging%20or%20preparation%20requirements%3A%0ADestination%20or%20delivery%20location%3A%0AAdditional%20information%3A%0A%0AThank%20you.">
                 <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.6" y="4.8" width="18.8" height="14.4" rx="2"/><path d="m2.6 7.4 8.36 5.2a2 2 0 0 0 2.08 0l8.36-5.2"/></svg> Email the order team
               </a>
             </div>
@@ -269,7 +265,7 @@
             <h3 id="checklist-h">Include where you can</h3>
             <ul class="checklist checklist--two">
             <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m4.5 12.6 5.2 5.2L19.5 7.4"/></svg><span>Your name, and your company if you are buying for one</span></li>
-            <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m4.5 12.6 5.2 5.2L19.5 7.4"/></svg><span>Which of the six approved products you need</span></li>
+            <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m4.5 12.6 5.2 5.2L19.5 7.4"/></svg><span>Which of the products you need</span></li>
             <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m4.5 12.6 5.2 5.2L19.5 7.4"/></svg><span>Approximate quantity</span></li>
             <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m4.5 12.6 5.2 5.2L19.5 7.4"/></svg><span>Your preferred timeframe</span></li>
             <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m4.5 12.6 5.2 5.2L19.5 7.4"/></svg><span>Telephone or WhatsApp number</span></li>
@@ -290,8 +286,6 @@
               <li>Frozen Whole Cooked Lobster</li>
               <li>Frozen Queen Conch, 85% Cleaned</li>
               <li>Lionfish Fillet</li>
-              <li>Frozen Fish Fillets</li>
-              <li>Frozen Fish Portions</li>
             </ul>
           </aside>
         </div>
@@ -313,10 +307,20 @@
             <span class="contact-card__icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 2.6a4.9 4.9 0 0 0-4.9 4.9c0 3.5 4.9 8 4.9 8s4.9-4.5 4.9-8A4.9 4.9 0 0 0 12 2.6z"/><circle cx="12" cy="7.4" r="1.8"/><path class="ico__accent" d="M2.4 19.4q2.4-1.8 4.8 0t4.8 0t4.8 0t4.8 0"/></svg></span>
             <h3>Visit</h3>
             <p>#1 Angel Lane, Belize City, Belize</p>
-            <p>
-              Monday to Friday, 8:00 a.m. to 5:00 p.m.
-              <span class="contact-card__tag">Office hours</span>
-            </p>
+            <div class="hours">
+              <p class="hours__label">Office hours</p>
+              <dl class="hours__list">
+              <div><dt>Monday to Friday</dt><dd>8:00 a.m. to 5:00 p.m.</dd></div>
+              <div><dt>Saturday</dt><dd>8:00 a.m. to 12:00 p.m.</dd></div>
+              </dl>
+            </div>
+            <div class="hours">
+              <p class="hours__label">Market hours</p>
+              <dl class="hours__list">
+              <div><dt>Monday to Friday</dt><dd>8:00 a.m. to 4:30 p.m.</dd></div>
+              <div><dt>Saturday</dt><dd>8:00 a.m. to 11:30 a.m.</dd></div>
+              </dl>
+            </div>
             <a class="arrow-link" href="https://www.google.com/maps/search/?api=1&amp;query=%231+Angel+Lane%2C+Belize+City%2C+Belize" target="_blank" rel="noopener noreferrer">Open in Google Maps</a>
           </div>
           <div class="contact-card reveal">
@@ -391,9 +395,9 @@
              alt="NATFISH &ndash; National Fishermen Producers Co-operative Society Ltd.">
           </div>
           <p>
-            National Fishermen Producers Co-operative Society Ltd. A member-owned Belizean co-operative registered in
-            Belize City on 29 April 1966, purchasing and marketing the produce of
-            636 fishers at home and abroad.
+            National Fishermen Producers Co-operative Society Ltd. A member-owned Belizean co-operative in Belize
+            City, purchasing and marketing the produce of 636 fishers at
+            home and abroad.
           </p>
         </div>
 
@@ -431,8 +435,6 @@
         <p>Registered in Belize City on 29 April 1966.</p>
       </div>
 
-      <!-- Attribution: centred, secondary to NATFISH, and the studio name is
-           the only clickable part. -->
       <p class="site-credit">
         <span data-i18n-text="Website designed and developed by">Website designed and developed by</span>
         <a href="https://austereautomations.com/" target="_blank" rel="noopener noreferrer">Austere Automations</a>
@@ -453,7 +455,7 @@
 
   <p class="visually-hidden" id="lang-status" role="status" aria-live="polite"></p>
 
-  <script src="assets/js/natfish-strings.js?v=492caf53"></script>
+  <script src="assets/js/natfish-strings.js?v=00581f38"></script>
   <script src="assets/js/natfish-i18n.js?v=b8a289c3"></script>
   <script src="assets/js/natfish-seasons.js?v=c270a135"></script>
   <script src="assets/js/natfish.js?v=95dbc695"></script>

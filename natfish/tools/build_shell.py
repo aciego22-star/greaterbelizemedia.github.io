@@ -81,9 +81,24 @@ WHATSAPP = "5016281449"
 
 EMAIL = "nationalfishermen@gmail.com"
 ADDRESS = "#1 Angel Lane, Belize City, Belize"
-# Newly supplied by the client. Nothing on the site claimed opening hours
-# before this, deliberately: the fabricated hours on the V1 storefront image
-# were one of the reasons that image had to be destroyed.
+# Supplied by the client, and the only opening hours the site has ever claimed:
+# the fabricated hours on the V1 storefront image were one of the reasons that
+# image had to be destroyed.
+#
+# Two schedules, not one. The office and the market keep different Saturday and
+# weekday closing times, and a visitor planning a trip to Angel Lane needs the
+# market times, not the office's.
+OFFICE_HOURS = [
+    ("Monday to Friday", "8:00 a.m. to 5:00 p.m."),
+    ("Saturday", "8:00 a.m. to 12:00 p.m."),
+]
+MARKET_HOURS = [
+    ("Monday to Friday", "8:00 a.m. to 4:30 p.m."),
+    ("Saturday", "8:00 a.m. to 11:30 a.m."),
+]
+
+# The one-line form, for a sentence that has room for the weekday office hours
+# and nothing more. Everywhere with room for the full picture uses the lists.
 HOURS = "Monday to Friday, 8:00 a.m. to 5:00 p.m."
 MAPS = ("https://www.google.com/maps/search/?api=1&amp;query="
         "%231+Angel+Lane%2C+Belize+City%2C+Belize")
@@ -195,8 +210,9 @@ ALT = {
         "washing station.",
     "08-lobster-weighing-and-sorting":
         "A NATFISH worker weighing lobster on a digital scale beside sorting bins.",
+    # Corrected: the client confirmed this tray holds tails, not whole lobster.
     "09-lobster-processing-table":
-        "NATFISH workers sorting whole spiny lobster across a stainless "
+        "NATFISH workers sorting spiny lobster tails across a stainless "
         "processing table.",
     "10-cold-storage-room":
         "Racked trays inside the NATFISH cold storage room, cold vapour drifting "
@@ -257,8 +273,11 @@ ALT = {
         "Cartons of frozen Belizean spiny lobster tails packed for cold storage.",
     "02-belizean-pride-orange-lobster-tails":
         "A carton of individually bagged cooked spiny lobster tails.",
+    # Corrected: the client confirmed this carton holds whole raw lobster. The
+    # filename still says "tails" because it is referenced from the generated
+    # dimension tables; the description is what the page actually reads out.
     "03-belizean-pride-raw-lobster-tails":
-        "A carton of individually bagged raw spiny lobster tails.",
+        "A carton of whole raw spiny lobster, frozen and packed for market.",
     "04-wild-caught-frozen-conch":
         "A carton of frozen queen conch meat, bagged for shipping.",
 
@@ -289,6 +308,28 @@ ALT = {
     "natfish-workshop-group":
         "NatFish participants standing together for a group photograph after "
         "a workshop.",
+
+    # The third delivery. Alt text is the client's own, word for word. Two
+    # things it deliberately does not say: the fish one fisher is holding is
+    # not named as a species, because NATFISH has not confirmed what it is,
+    # and the loaded container is described as transport, not as an export.
+    "spiny-lobster-catch-on-boat":
+        "Fishers aboard a boat handling a large catch of Caribbean spiny "
+        "lobsters.",
+    "spiny-lobster-handling-at-sea":
+        "Gloved fishers handling Caribbean spiny lobsters aboard a boat.",
+    "lobster-catch-and-transport-crates":
+        "Caribbean spiny lobsters and ventilated transport crates inside a "
+        "fishing boat.",
+    "fisher-with-catch-in-belizean-waters":
+        "Fisher in clear Caribbean water holding a freshly caught fish.",
+    "fisherman-at-sea":
+        "Belizean fisherman standing aboard a fishing vessel at sea.",
+    "belizean-pride-packaged-products":
+        "Boxes of Belizean Pride seafood products arranged for distribution.",
+    "seafood-shipment-cold-storage":
+        "Sealed seafood cartons stacked inside a refrigerated transport "
+        "compartment.",
 }
 
 # The client's supplied gallery captions, used verbatim and already punctuated.
@@ -330,6 +371,22 @@ CAPTION = {
     "natfish-workshop": "NatFish representatives participating in a workshop.",
     "natfish-workshop-group":
         "NatFish participants gathered after a workshop.",
+
+    # The third delivery, captions used word for word from the client's table.
+    "spiny-lobster-catch-on-boat":
+        "Fishers handling a Caribbean spiny lobster catch at sea.",
+    "spiny-lobster-handling-at-sea":
+        "Careful handling of a Caribbean spiny lobster catch aboard a fishing "
+        "vessel.",
+    "lobster-catch-and-transport-crates":
+        "A lobster catch and transport crates aboard a fishing vessel.",
+    "fisher-with-catch-in-belizean-waters":
+        "A fisher displaying a fresh catch in Belizean waters.",
+    "fisherman-at-sea": "A Belizean fisherman working at sea.",
+    "belizean-pride-packaged-products":
+        "Belizean Pride seafood products prepared for distribution.",
+    "seafood-shipment-cold-storage":
+        "Packaged seafood prepared for temperature-controlled transport.",
 }
 
 # The classifications, in the client's order and with their exact labels. The
@@ -355,7 +412,7 @@ SHORT = {
     "06-lobster-tail-packing-close": "Bagged tails, carton by carton",
     "07-lobster-washing-station": "Rinsing at the washing station",
     "08-lobster-weighing-and-sorting": "Weighing and sorting the catch",
-    "09-lobster-processing-table": "Sorting whole spiny lobster",
+    "09-lobster-processing-table": "Sorting spiny lobster tails",
     "10-cold-storage-room": "The cold storage room",
     "news-food-taipei-2026-delegation": "The NATFISH delegation at Food Taipei 2026",
     "hero-lobster-diver-dock": "Bringing the lobster catch up the dock",
@@ -378,7 +435,7 @@ SHORT = {
     "10-natfish-team-group": "NATFISH team members and partners",
     "01-belizean-pride-lobster-cases": "Frozen lobster tails, cased",
     "02-belizean-pride-orange-lobster-tails": "Cooked lobster tails, bagged",
-    "03-belizean-pride-raw-lobster-tails": "Raw lobster tails, bagged",
+    "03-belizean-pride-raw-lobster-tails": "Whole raw lobster, cased",
     "04-wild-caught-frozen-conch": "Frozen queen conch meat",
     "lionfish-fillets-4x3": "Packaged frozen lionfish fillets",
     "fisherman-two-spiny-lobsters": "A fisher holding two spiny lobsters",
@@ -387,6 +444,13 @@ SHORT = {
     "natfish-food-taipei-2026": "NatFish at Food Taipei Mega Shows 2026",
     "natfish-workshop": "A NatFish workshop in progress",
     "natfish-workshop-group": "NatFish participants after a workshop",
+    "spiny-lobster-catch-on-boat": "A spiny lobster catch handled at sea",
+    "spiny-lobster-handling-at-sea": "Handling spiny lobster aboard a vessel",
+    "lobster-catch-and-transport-crates": "A lobster catch and transport crates",
+    "fisher-with-catch-in-belizean-waters": "A fresh catch in Belizean waters",
+    "fisherman-at-sea": "A Belizean fisherman at sea",
+    "belizean-pride-packaged-products": "Belizean Pride products, boxed",
+    "seafood-shipment-cold-storage": "Cartons loaded for cold transport",
 }
 
 # Photographs whose subject sits away from the frame centre. Rendered as a
@@ -404,6 +468,12 @@ FOCUS = {
     "fisherman-spiny-lobster": "focus-diver",
     "fisherman-two-spiny-lobsters": "focus-boat",
     "natfish-workshop-group": "focus-group",
+    # Third delivery. Five of the seven are portrait or near-portrait, so the
+    # 4:3 card keeps between 42 and 56 per cent of their height and the choice
+    # of which part matters. The four not listed here read correctly centred.
+    "spiny-lobster-catch-on-boat": "focus-catch-top",
+    "spiny-lobster-handling-at-sea": "focus-gunwale",
+    "belizean-pride-packaged-products": "focus-pride-boxes",
 }
 
 
@@ -705,12 +775,20 @@ def org_jsonld():
     }},
     "email": "{EMAIL}",
     "telephone": "{tel}",
-    "openingHoursSpecification": {{
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-      "opens": "08:00",
-      "closes": "17:00"
-    }},
+    "openingHoursSpecification": [
+      {{
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "opens": "08:00",
+        "closes": "17:00"
+      }},
+      {{
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": "Saturday",
+        "opens": "08:00",
+        "closes": "12:00"
+      }}
+    ],
     "contactPoint": [
       {{
         "@type": "ContactPoint",
@@ -1083,9 +1161,9 @@ def footer(with_lightbox=False, with_ai_pill=True):
             {logo_full("", 300)}
           </div>
           <p>
-            {LEGAL_NO_DOT}. A member-owned Belizean co-operative registered in
-            Belize City on {FOUNDED_DATE}, purchasing and marketing the produce of
-            {MEMBERS} fishers at home and abroad.
+            {LEGAL_NO_DOT}. A member-owned Belizean co-operative in Belize
+            City, purchasing and marketing the produce of {MEMBERS} fishers at
+            home and abroad.
           </p>
         </div>
 

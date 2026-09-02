@@ -30,13 +30,10 @@
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
 
-  <!-- Self-hosted Bitter and Source Sans 3. The latin subsets are preloaded
-       because they carry the headline and the first paragraph; font-display
-       swap means the fallback shows immediately and nothing is ever invisible. -->
   <link rel="preload" href="assets/fonts/bitter-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/source-sans-3-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/css/fonts.css?v=0d78bcd1">
-  <link rel="stylesheet" href="assets/css/natfish.css?v=88a8ea0c">
+  <link rel="stylesheet" href="assets/css/natfish.css?v=9e143c17">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -58,12 +55,20 @@
     },
     "email": "nationalfishermen@gmail.com",
     "telephone": "+5012273165",
-    "openingHoursSpecification": {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-      "opens": "08:00",
-      "closes": "17:00"
-    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "opens": "08:00",
+        "closes": "17:00"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": "Saturday",
+        "opens": "08:00",
+        "closes": "12:00"
+      }
+    ],
     "contactPoint": [
       {
         "@type": "ContactPoint",
@@ -103,8 +108,6 @@
              alt="NATFISH &ndash; National Fishermen Producers Co-operative Society Ltd.">
         </a>
 
-      <!-- Language control. Stays between the logo and the hamburger at every
-           width, so it is reachable on a phone without opening the menu. -->
       <button class="lang-toggle" type="button" data-lang-toggle
               aria-label="Switch language to Espanol"
               data-label-en="Switch language to Espanol"
@@ -178,17 +181,17 @@
           <div class="reveal">
             <span class="eyebrow">History</span>
             <h2>Registered on 29 April 1966</h2>
-            <p class="stat-line">29 April 1966.</p>
             <p>
-              National Fishermen Producers Co-operative Society Ltd was registered in Belize City on 29 April 1966.
-              What began with a small founding group of fishers has grown into a
-              member-owned co-operative of 636 fishers.
+              National Fishermen Producers Co-operative Society Ltd was registered in Belize City. What began with 20
+              members has grown into a member-owned co-operative of 636
+              fishers.
             </p>
             <p>
               The co-operative is owned by its members and governed by a
               seven-member Managing Committee elected from the general
               membership. Members are not customers of the Society; they are its
-              owners, and the committee that runs it answers to them.
+              owners, and the committee is there to support and serve its
+              members.
             </p>
             <p>
               NATFISH supports its members through education in fishery
@@ -205,10 +208,6 @@
         </picture>
             </div>
             <ul class="factlist">
-              <li>
-                <span class="factlist__key">Registered</span>
-                <span class="factlist__val">29 April 1966, Belize City</span>
-              </li>
               <li>
                 <span class="factlist__key">Members</span>
                 <span class="factlist__val">636 fishers</span>
@@ -280,14 +279,20 @@
               connects their work at sea to a buyer.
             </p>
             <p>
-              A co-operative gives a fisher more than a buyer for the day's
+              The Co-operative gives a fisher more than a buyer for the day&rsquo;s
               catch. It gives a share in the organization, a vote in how it is
               run, and a route to markets that would otherwise be out of reach.
             </p>
             <p>
-              Through the Society, Belizean seafood has reached buyers in
+              Through the Society, Belizean Pride Seafood has reached buyers in
               the United States, Canada, Mexico, the West Indies, Taiwan and Australia.
             </p>
+            <figure class="inline-figure">
+              <picture>
+          <source type="image/webp" srcset="assets/img/gallery/belizean-pride-packaged-products-480.webp 480w, assets/img/gallery/belizean-pride-packaged-products-720.webp 720w" sizes="(max-width: 860px) 60vw, 300px">
+          <img src="assets/img/gallery/belizean-pride-packaged-products-720.jpg" srcset="assets/img/gallery/belizean-pride-packaged-products-480.jpg 480w, assets/img/gallery/belizean-pride-packaged-products-720.jpg 720w" sizes="(max-width: 860px) 60vw, 300px" width="720" height="1280" alt="Boxes of Belizean Pride seafood products arranged for distribution." class="focus-pride-boxes is-portrait" style="--ratio:720 / 1280" loading="lazy" decoding="async">
+        </picture>
+            </figure>
           </div>
         </div>
       </div>
@@ -314,8 +319,7 @@
             <div>
               <h3>Fisher members</h3>
               <p>
-                Membership has grown from a small founding group to 636
-                fishers.
+                Membership has grown from 20 members to 636 fishers.
               </p>
             </div>
           </li>
@@ -374,9 +378,9 @@
              alt="NATFISH &ndash; National Fishermen Producers Co-operative Society Ltd.">
           </div>
           <p>
-            National Fishermen Producers Co-operative Society Ltd. A member-owned Belizean co-operative registered in
-            Belize City on 29 April 1966, purchasing and marketing the produce of
-            636 fishers at home and abroad.
+            National Fishermen Producers Co-operative Society Ltd. A member-owned Belizean co-operative in Belize
+            City, purchasing and marketing the produce of 636 fishers at
+            home and abroad.
           </p>
         </div>
 
@@ -414,8 +418,6 @@
         <p>Registered in Belize City on 29 April 1966.</p>
       </div>
 
-      <!-- Attribution: centred, secondary to NATFISH, and the studio name is
-           the only clickable part. -->
       <p class="site-credit">
         <span data-i18n-text="Website designed and developed by">Website designed and developed by</span>
         <a href="https://austereautomations.com/" target="_blank" rel="noopener noreferrer">Austere Automations</a>
@@ -436,7 +438,7 @@
 
   <p class="visually-hidden" id="lang-status" role="status" aria-live="polite"></p>
 
-  <script src="assets/js/natfish-strings.js?v=492caf53"></script>
+  <script src="assets/js/natfish-strings.js?v=00581f38"></script>
   <script src="assets/js/natfish-i18n.js?v=b8a289c3"></script>
   <script src="assets/js/natfish-seasons.js?v=c270a135"></script>
   <script src="assets/js/natfish.js?v=95dbc695"></script>
