@@ -25,6 +25,15 @@ interface Props {
   ogType?: string;
   /** Supplied by blog posts to emit BlogPosting structured data. */
   article?: ArticleMeta;
+  /**
+   * Images to fetch as early as possible. Only worth using for artwork the
+   * browser cannot find on its own: a plain <img> is spotted by the preload
+   * scanner already, but a CSS background is not discovered until the
+   * stylesheets have loaded and the page has been laid out. `media` narrows a
+   * preload to the screens that will actually display it, so a phone never
+   * downloads the desktop file or the other way round.
+   */
+  preloadImages?: { href: string; media?: string }[];
 }
 
 const {
@@ -36,6 +45,7 @@ const {
   solidHeader = false,
   ogType = 'website',
   article,
+  preloadImages = [],
 } = Astro.props;
 
 const pageTitle = title ? `${title} | ${site.name}` : `${site.name} | ${site.tagline}`;
@@ -109,6 +119,12 @@ const articleLd = article
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="generator" content={Astro.generator} />
+
+    {
+      preloadImages.map((p) => (
+        <link rel="preload" as="image" href={p.href} media={p.media} fetchpriority="high" />
+      ))
+    }
 
     <title>{pageTitle}</title>
     <meta name="description" content={description} />

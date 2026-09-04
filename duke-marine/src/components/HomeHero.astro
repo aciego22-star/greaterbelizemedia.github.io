@@ -3,18 +3,14 @@
  * Full-image hero slideshow, cross-fades the client's brand photos every 7s.
  * Each slide shows the WHOLE image (contain) in any orientation, over a blurred
  * fill of itself so there are no empty bars. Respects prefers-reduced-motion.
- * Swap/add images in public/media and edit the `slides` array below.
+ *
+ * Each slide has a portrait poster (mobile) and a dedicated landscape banner
+ * (desktop). Mobile shows the portrait via contain+blur; desktop shows the whole
+ * landscape banner (no crop) below the header. A slide with `href` renders as a
+ * clickable link. Drop new images in public/media and edit src/data/heroSlides.ts,
+ * which the home page also reads so it preloads whichever poster comes first.
  */
-// Each slide has a portrait poster (mobile) and a dedicated landscape banner
-// (desktop). Mobile shows the portrait via contain+blur; desktop shows the whole
-// landscape banner (no crop) below the header. Swap/add images in public/media.
-// A slide with `href` renders as a clickable link (whole slide navigates);
-// slides without `href` are decorative images.
-const slides = [
-  { src: '/media/hero-catch.jpg', desktop: '/media/hero-catch-desktop.jpg', label: 'Built for the catch, fishing, diving and boat supplies' },
-  { src: '/media/hero-dive.jpg', desktop: '/media/hero-dive-desktop.jpg', label: 'Every great dive starts with the right gear' },
-  { src: '/media/hero-careers.jpg', desktop: '/media/hero-careers-desktop.jpg', href: '/careers', label: 'Careers at Duke Marine. Explore current employment opportunities.' },
-];
+import { heroSlides as slides } from '../data/heroSlides';
 ---
 
 <section class="hero on-dark">

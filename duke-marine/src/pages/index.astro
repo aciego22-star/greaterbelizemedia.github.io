@@ -14,6 +14,15 @@ import { departments, type DepartmentId } from '../data/catalog';
 import { featuredProducts } from '../data/products';
 import { brands } from '../data/brands';
 import { galleryPhotos } from '../data/gallery';
+import { heroSlides, HERO_DESKTOP_MIN } from '../data/heroSlides';
+
+// The hero draws its posters as CSS backgrounds, which the browser cannot spot
+// while it is still fetching stylesheets, so the first poster is asked for
+// up front instead. One per screen size, so neither is downloaded needlessly.
+const heroPreload = [
+  { href: heroSlides[0].src, media: `(max-width: ${HERO_DESKTOP_MIN - 1}px)` },
+  { href: heroSlides[0].desktop, media: `(min-width: ${HERO_DESKTOP_MIN}px)` },
+];
 
 // Home shows 4 brand logos at a time and rotates through all of them.
 const brandData = brands.map((b) => ({ logo: b.logo, name: b.name, dark: !!b.dark }));
@@ -68,7 +77,7 @@ const reasons = [
 ];
 ---
 
-<BaseLayout>
+<BaseLayout preloadImages={heroPreload}>
   <HomeHero />
 
   <!-- Departments split -->
