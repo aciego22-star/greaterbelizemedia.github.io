@@ -43,6 +43,16 @@ RUNTIME = [
 ]
 
 
+# Strings the extractor cannot see because of its own guard. It skips anything
+# without two adjacent letters, which is what stops telephone numbers, prices
+# and lone initials from being offered for translation. "Q & A" is a real
+# heading that happens to fall on the wrong side of that rule, so it is named
+# here rather than by loosening a guard that is doing its job everywhere else.
+SHORT_LABELS = [
+    "Q & A",
+]
+
+
 # Strings that stay in English on purpose, so a missing translation for them is
 # not a gap. These three are the titles of the client's published YouTube
 # Shorts: the card title has to match the title on the video itself, or a
@@ -58,7 +68,7 @@ KEEP_ENGLISH = {
 
 
 def main():
-    used = set(extract.collect()) | set(RUNTIME)
+    used = set(extract.collect()) | set(RUNTIME) | set(SHORT_LABELS)
     es = {k: ES[k] for k in sorted(used) if k in ES}
     missing = sorted(k for k in used if k not in ES and k not in KEEP_ENGLISH)
     assert_no_literal_escapes(es)

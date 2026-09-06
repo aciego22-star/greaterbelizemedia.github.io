@@ -2263,7 +2263,7 @@ ES.update({
 # as "cooperativa"/"Sociedad" in running prose only.
 ES.update({
     # section chrome
-    "Answers": "Respuestas",
+    "Q & A": "Preguntas y respuestas",
     "About the co-operative, answered":
         "Sobre la cooperativa, preguntas frecuentes",
     "The questions people most often ask about who NatFish is and how it is "

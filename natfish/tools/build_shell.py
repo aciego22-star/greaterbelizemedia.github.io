@@ -981,7 +981,7 @@ def breadcrumb_node(path, trail):
 
 
 def faq_section(pairs, *, heading="Frequently asked questions",
-                eyebrow="Answers", intro="", tone=""):
+                eyebrow="Q &amp; A", intro="", tone=""):
     """The visible FAQ, rendered from the SAME pairs that build the markup.
 
     <details>/<summary>, not a JavaScript accordion. It is keyboard-operable
