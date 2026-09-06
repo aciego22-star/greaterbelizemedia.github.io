@@ -8,9 +8,14 @@ import { site } from '../data/site';
 
 const mapEmbed = `https://www.google.com/maps?q=${encodeURIComponent(site.address.mapQuery)}&output=embed`;
 const mapDirections = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(site.address.mapQuery)}`;
+
+// One trail, given to both the visible breadcrumbs and the structured
+// data, so the two can never describe different things.
+const crumbs = [{ label: 'Contact' }];
 ---
 
 <BaseLayout
+  breadcrumbs={crumbs}
   title="Contact"
   description="Visit Duke Marine in Belize City, or reach us by phone, WhatsApp or email. Request a quote for marine, fishing and diving supplies."
 >
@@ -18,7 +23,7 @@ const mapDirections = `https://www.google.com/maps/search/?api=1&query=${encodeU
     eyebrow="Contact"
     title="Let’s talk gear"
     lead="Visit the shop, request a quote, or contact us in whichever way is easiest. We are open throughout the week, including a half-day on Saturdays, and are more than happy to assist with any of your queries."
-    crumbs={[{ label: 'Contact' }]}
+    crumbs={crumbs}
     hero={pageHeroes.contact}
   />
 

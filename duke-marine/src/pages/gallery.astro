@@ -7,9 +7,14 @@ import VideoSection from '../components/VideoSection.astro';
 import Icon from '../components/Icon.astro';
 import CtaBanner from '../components/CtaBanner.astro';
 import { galleryGroups, dayOnTheWaterVideos, galleryVideos } from '../data/gallery';
+
+// One trail, given to both the visible breadcrumbs and the structured
+// data, so the two can never describe different things.
+const crumbs = [{ label: 'Gallery' }];
 ---
 
 <BaseLayout
+  breadcrumbs={crumbs}
   title="Gallery & Video"
   description="Photos and video shared with Duke Marine, fishing, boating and the Belize coastline from our customers and community, plus gear on the shelves in Belize City."
 >
@@ -17,7 +22,7 @@ import { galleryGroups, dayOnTheWaterVideos, galleryVideos } from '../data/galle
     eyebrow="Gallery & Video"
     title="Straight from the shop, and Belize’s waters"
     lead="Gear on our shelves, and fishing, boating and life on Belize’s waters shared by Duke Marine customers and the community."
-    crumbs={[{ label: 'Gallery' }]}
+    crumbs={crumbs}
     hero={pageHeroes.gallery}
   />
 

@@ -6,9 +6,14 @@ import Icon from '../components/Icon.astro';
 import { site } from '../data/site';
 
 const applyMailto = `mailto:${site.email}?subject=Employment%20Application`;
+
+// One trail, given to both the visible breadcrumbs and the structured
+// data, so the two can never describe different things.
+const crumbs = [{ label: 'Careers' }];
 ---
 
 <BaseLayout
+  breadcrumbs={crumbs}
   title="Careers"
   description="Duke Marine is accepting applications for a Retail Sales Associate and a Marine Yard & Maintenance Assistant in Belize City. Email your CV to dukemarine@btl.net."
 >
@@ -16,7 +21,7 @@ const applyMailto = `mailto:${site.email}?subject=Employment%20Application`;
     eyebrow="Careers"
     title="Join the Duke Marine Team"
     lead="Duke Marine is currently accepting applications for open positions in Belize City."
-    crumbs={[{ label: 'Careers' }]}
+    crumbs={crumbs}
     hero={pageHeroes.careers}
   />
 

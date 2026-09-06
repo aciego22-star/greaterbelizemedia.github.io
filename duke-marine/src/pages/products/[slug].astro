@@ -23,9 +23,42 @@ const related = products
   .slice(0, 3);
 
 const waMsg = encodeURIComponent(`Hi Duke Marine, I'm interested in the ${product.name}. Is it in stock?`);
+
+// The trail the page renders, given to the layout so the structured data says
+// the same thing.
+const crumbs = [{ label: dept.title, href: dept.href }, { label: product.name }];
+
+/**
+ * Describes the item itself. Every field below is something the page already
+ * shows, which is the rule for structured data.
+ *
+ * Deliberately absent: `offers`, `price` and `availability`. Duke Marine does
+ * not publish prices or stock levels, and claiming either in markup would be
+ * describing something the page does not say. The trade is that Google will not
+ * show a price-carrying rich result for these pages; what it does give is a
+ * clear statement of what each item is, which is what search and answer engines
+ * read when deciding whether the shop stocks a thing.
+ */
+const productLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: product.name,
+  description: product.blurb,
+  url: new URL(`/products/${product.slug}`, site.url).href,
+  category: `${dept.title} / ${catName}`,
+  ...(product.image ? { image: new URL(product.image, site.url).href } : {}),
+  ...(product.brand ? { brand: { '@type': 'Brand', name: product.brand } } : {}),
+  seller: { '@type': 'Store', name: site.name, url: site.url },
+};
 ---
 
-<BaseLayout title={product.name} description={product.blurb} solidHeader={true}>
+<BaseLayout
+  title={product.name}
+  description={product.blurb}
+  solidHeader={true}
+  breadcrumbs={crumbs}
+  extraSchema={[productLd]}
+>
   <article class="pdp">
     <div class="container">
       <nav class="crumbs" aria-label="Breadcrumb">

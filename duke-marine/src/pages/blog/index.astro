@@ -13,9 +13,14 @@ const [featured, ...rest] = posts;
 
 const fmt = (d: Date) =>
   d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+// One trail, given to both the visible breadcrumbs and the structured
+// data, so the two can never describe different things.
+const crumbs = [{ label: 'Blog' }];
 ---
 
 <BaseLayout
+  breadcrumbs={crumbs}
   title="Blog"
   description="The Duke Marine blog, guides, new arrivals and seasonal advice from Belize’s marine, fishing & diving supply shop."
 >
@@ -23,7 +28,7 @@ const fmt = (d: Date) =>
     eyebrow="Blog"
     title="From the shop &amp; the water"
     lead="Seasonal guides, new arrivals and advice from the Duke Marine team."
-    crumbs={[{ label: 'Blog' }]}
+    crumbs={crumbs}
     image="/media/life/wahoo-catch.jpg"
     imageAlt="An angler holding a wahoo on a Belize fishing charter"
     imagePosition="center 40%"

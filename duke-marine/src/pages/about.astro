@@ -12,9 +12,14 @@ const heritage = [
   { icon: 'anchor', label: 'Belize’s First Marine Store' },
   { icon: 'boat', label: 'Marine, Fishing & Diving Supplies' },
 ];
+
+// One trail, given to both the visible breadcrumbs and the structured
+// data, so the two can never describe different things.
+const crumbs = [{ label: 'About' }];
 ---
 
 <BaseLayout
+  breadcrumbs={crumbs}
   title="About Us"
   description="Duke Marine has served Belize’s boating, fishing and diving community since 1991, founded by Paul and Ruth Duke as Belize’s first dedicated marine store."
 >
@@ -22,7 +27,7 @@ const heritage = [
     eyebrow="Our Story"
     title="Built on Experience. Trusted for Generations."
     lead="Serving Belize’s boating, fishing and diving community since 1991."
-    crumbs={[{ label: 'About' }]}
+    crumbs={crumbs}
     image="/media/life/caye-approach.jpg"
     imageAlt="Approaching a caye across Belize’s waters"
     imagePosition="center 55%"

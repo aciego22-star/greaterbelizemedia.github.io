@@ -4,9 +4,14 @@ import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
 import CtaBanner from '../components/CtaBanner.astro';
 import { brands } from '../data/brands';
+
+// One trail, given to both the visible breadcrumbs and the structured
+// data, so the two can never describe different things.
+const crumbs = [{ label: 'Brands' }];
 ---
 
 <BaseLayout
+  breadcrumbs={crumbs}
   title="Brands We Carry"
   description="Duke Marine stocks the marine and fishing brands Belize’s boaters trust, Penn, Awlgrip, Pettit, Rule, Ritchie, Nomad Design, Seachoice and Marpac."
 >
@@ -14,7 +19,7 @@ import { brands } from '../data/brands';
     eyebrow="Brands"
     title="Names you know, gear you trust"
     lead="These are the brands we stand behind, chosen because they hold up to Caribbean salt, sun and hard use. Here’s who they are and what they do best."
-    crumbs={[{ label: 'Brands' }]}
+    crumbs={crumbs}
     image="/media/gallery-7.jpg"
     imageAlt="Branded marine and fishing products on the shelves at Duke Marine"
     imagePosition="center"

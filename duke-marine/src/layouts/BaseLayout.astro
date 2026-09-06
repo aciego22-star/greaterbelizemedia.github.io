@@ -25,6 +25,15 @@ interface Props {
   ogType?: string;
   /** Supplied by blog posts to emit BlogPosting structured data. */
   article?: ArticleMeta;
+  /**
+   * The page's breadcrumb trail, WITHOUT the leading "Home" which is added
+   * here and by PageHero alike. Pass the very same array that is rendered on
+   * the page: structured data has to describe what a visitor can actually see,
+   * so the two must never be allowed to drift apart.
+   */
+  breadcrumbs?: { label: string; href?: string }[];
+  /** Further schema.org objects for this page, e.g. a Product. */
+  extraSchema?: Record<string, unknown>[];
 }
 
 const {
@@ -36,6 +45,8 @@ const {
   solidHeader = false,
   ogType = 'website',
   article,
+  breadcrumbs = [],
+  extraSchema = [],
 } = Astro.props;
 
 const pageTitle = title ? `${title} | ${site.name}` : `${site.name} | ${site.tagline}`;
@@ -72,7 +83,44 @@ const jsonLd = {
   openingHoursSpecification: site.hours
     .filter((h) => h.time !== 'Closed')
     .map((h) => ({ '@type': 'OpeningHoursSpecification', description: `${h.day} ${h.time}` })),
+  /**
+   * The profiles that are the same business. These are already linked in the
+   * footer; declaring them here is what lets a search or answer engine treat
+   * the site and those pages as one entity rather than three unrelated ones.
+   * Share-link tracking parameters are dropped, and empty entries never appear.
+   */
+  sameAs: Object.values(site.social)
+    .filter(Boolean)
+    .map((u) => u.split('?')[0]),
+  /** Where the shop serves, matching the address it publishes. */
+  areaServed: [
+    { '@type': 'City', name: 'Belize City' },
+    { '@type': 'Country', name: 'Belize' },
+  ],
+  hasMap: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(site.address.mapQuery)}`,
+  /** The three departments the site is actually built around. */
+  knowsAbout: ['Marine parts', 'Boat supplies', 'Fishing tackle', 'Diving equipment'],
 };
+
+/**
+ * Breadcrumbs, mirroring the trail the page renders. "Home" is position 1 here
+ * exactly as it is on the page. A crumb without an href is the current page.
+ */
+const breadcrumbLd = breadcrumbs.length
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: site.url },
+        ...breadcrumbs.map((c, i) => ({
+          '@type': 'ListItem',
+          position: i + 2,
+          name: c.label,
+          ...(c.href ? { item: new URL(c.href, site.url).href } : {}),
+        })),
+      ],
+    }
+  : null;
 
 // Blog posts additionally describe themselves as a BlogPosting.
 const articleLd = article
@@ -154,6 +202,10 @@ const articleLd = article
 
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     {articleLd && <script type="application/ld+json" set:html={JSON.stringify(articleLd)} />}
+    {breadcrumbLd && <script type="application/ld+json" set:html={JSON.stringify(breadcrumbLd)} />}
+    {extraSchema.map((sch) => (
+      <script type="application/ld+json" set:html={JSON.stringify(sch)} />
+    ))}
   </head>
   <body>
     <Header solid={solidHeader} />

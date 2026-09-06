@@ -1,9 +1,14 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import DepartmentCatalog from '../components/DepartmentCatalog.astro';
+import { departments } from '../data/catalog';
+
+// The same label DepartmentCatalog renders in the visible breadcrumbs.
+const crumbs = [{ label: departments.diving.title }];
 ---
 
 <BaseLayout
+  breadcrumbs={crumbs}
   title="Diving Supplies"
   description="Diving supplies in Belize at Duke Marine, masks, snorkels, fins, dive booties, spearguns and replacement parts for snorkelling and free-dive spearfishing on the reef."
 >

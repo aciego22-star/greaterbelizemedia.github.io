@@ -46,6 +46,7 @@ const prevInSeries = seriesPosts.find((p) => (p.data.seriesPart ?? 0) === (part 
 ---
 
 <BaseLayout
+  breadcrumbs={[{ label: 'Blog', href: '/blog' }, { label: post.data.category }]}
   title={seoTitle}
   description={metaDescription}
   image={cover}

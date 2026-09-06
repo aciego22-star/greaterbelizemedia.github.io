@@ -45,9 +45,14 @@ const steps = [
   { n: '03', title: 'We get it ready', text: 'We set aside what you need from the shelves so it’s ready when you come in.' },
   { n: '04', title: 'Pick it up', text: 'Collect it in store, ready to go, and we’re here for anything you need after.' },
 ];
+
+// One trail, given to both the visible breadcrumbs and the structured
+// data, so the two can never describe different things.
+const crumbs = [{ label: 'Services' }];
 ---
 
 <BaseLayout
+  breadcrumbs={crumbs}
   title="Services"
   description="Duke Marine offers product guidance, enquiries, quotations and WhatsApp assistance for marine, fishing and diving supplies in Belize City."
 >
@@ -55,7 +60,7 @@ const steps = [
     eyebrow="Services"
     title="How Duke Marine helps"
     lead="From product guidance to quotes and WhatsApp assistance, here’s how we help you find the right marine, fishing and diving gear."
-    crumbs={[{ label: 'Services' }]}
+    crumbs={crumbs}
     image="/media/life/rods-ready.jpg"
     imageAlt="Fishing rods rigged and ready on a Belize boat"
     imagePosition="center 45%"
