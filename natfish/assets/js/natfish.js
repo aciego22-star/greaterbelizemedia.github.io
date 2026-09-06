@@ -307,8 +307,16 @@
       var source = walk[index].querySelector("img");
       if (!source) return;
 
-      lbImage.src = source.getAttribute("data-full") || source.currentSrc ||
-        source.src;
+      /* data-full is the largest WebP. An engine that cannot decode it never
+         selected the WebP <source> in the grid either, so it is already
+         showing the JPEG fallback - drop back to that rather than leave a
+         broken image in the overlay. */
+      var fallback = source.currentSrc || source.src;
+      lbImage.onerror = function () {
+        lbImage.onerror = null;
+        if (lbImage.src !== fallback) lbImage.src = fallback;
+      };
+      lbImage.src = source.getAttribute("data-full") || fallback;
       lbImage.alt = source.alt;
       lbCaption.textContent = source.alt;
     };

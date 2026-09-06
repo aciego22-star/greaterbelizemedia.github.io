@@ -109,6 +109,26 @@ SHORT_IFRAME_RE = re.compile(
     r'\s*title="([^"]*)".*?</iframe>', re.S)
 
 
+# The self-hosted Short. Inlined rather than stubbed like the YouTube ones:
+# there is no server behind a single-file artifact, so a relative src resolves
+# to nothing, but a data URI plays. It costs about 5 MB of base64 against a
+# 16 MB ceiling, which is worth it for the one clip on the page that actually
+# can play here.
+VIDEO_RE = re.compile(r'(src|poster)="assets/video/([\w.-]+)"')
+
+
+def inline_video(html):
+    def swap(m):
+        attr, name = m.group(1), m.group(2)
+        path = ROOT / "assets" / "video" / name
+        if not path.is_file():
+            raise SystemExit(f"ERROR: no video asset to inline for {name}")
+        mime = "video/mp4" if name.endswith(".mp4") else "image/jpeg"
+        uri = base64.b64encode(path.read_bytes()).decode()
+        return f'{attr}="data:{mime};base64,{uri}"'
+    return VIDEO_RE.sub(swap, html)
+
+
 def swap_shorts(html):
     def note(m):
         vid, title = m.group(1), m.group(2)
@@ -399,7 +419,7 @@ def main():
 
     routes = []
     for slug, body in pages:
-        body = route_links(inline_png(swap_shorts(inline_images(body))))
+        body = route_links(inline_png(inline_video(swap_shorts(inline_images(body)))))
         routes.append(f'<div data-route="{slug}">{body}</div>')
 
     # json.dumps, not manual quoting: the legal name carries an apostrophe that

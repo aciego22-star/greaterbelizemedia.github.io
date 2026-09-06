@@ -65,7 +65,7 @@ done
 
 cp -- "${PAGES[@]}" "${ROOTFILES[@]}" netlify.toml "$STAGE/"
 mkdir -p "$STAGE/assets"
-cp -R assets/css assets/js assets/img assets/fonts "$STAGE/assets/"
+cp -R assets/css assets/js assets/img assets/fonts assets/video "$STAGE/assets/"
 
 # The approved logo master is the source the display sizes are generated from,
 # not something any page loads. It stays in the repository and out of the

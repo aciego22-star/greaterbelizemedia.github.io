@@ -1509,13 +1509,23 @@ body.nav-open {
   box-shadow: var(--shadow-lg);
 }
 
-.video-card__frame iframe {
+/* One rule for both kinds of player: the YouTube iframe and the self-hosted
+   file fill the same 9:16 frame. `object-fit: contain` on the video, not
+   cover: the file is 478x850, exactly the frame's ratio, and contain means a
+   future clip of a different shape is letterboxed rather than cropped. */
+.video-card__frame iframe,
+.video-card__frame video {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   border: 0;
   display: block;
+}
+
+.video-card__frame video {
+  object-fit: contain;
+  background: var(--navy-900);
 }
 
 /* Only the shareable single-file preview uses this: the artifact CSP blocks
@@ -5492,14 +5502,17 @@ body.nav-open {
      against it can push the top of the sheet, and with it the close control,
      off the visible screen. That is how the only way out of the panel
      disappears. */
-  /* 16rem of headroom, not 8. The panel grows upward from the bottom, and the
-     close button sits above its top edge, so the reserved space has to cover
-     the bottom offset, the sticky header AND the button - otherwise on a short
-     window the button lands on top of the header's Buyer Enquiry CTA. With
-     this, whenever the viewport is the binding constraint the panel's top
-     settles at a constant ~164px, which clears an 88px header with room. */
-  height: min(660px, calc(100vh - 16rem));
-  height: min(660px, calc(100dvh - 16rem));
+  /* Above the phone breakpoint the backdrop is transparent, so the header is
+     visible AND still clickable, and the close button genuinely must stay off
+     it - this panel is a corner card, not a takeover. The reserve is the 92px
+     bottom offset, an 88px header and the button's 62px: 16rem, measured, and
+     12 was tried and put the button through the header at 1440x900.
+
+     The cap is what moved. 660px left a tall desktop with the panel ending
+     well short of the space available; 720px uses it, and on any window short
+     enough for the reserve to bind, the reserve still wins. */
+  height: min(720px, calc(100vh - 16rem));
+  height: min(720px, calc(100dvh - 16rem));
   display: flex;
   flex-direction: column;
   /* NOT overflow:hidden. The close button sits above the panel's top edge so
@@ -5589,14 +5602,19 @@ body.nav-open {
        The vh line is the fallback, and is deliberately the more conservative
        of the two.
 
-       The 11rem reserve is not decoration. The close button floats ABOVE the
-       sheet's top edge (52px tall plus a 0.6rem gap), and the sticky header is
-       76px on a phone. A sheet that took 82dvh on a 568px-tall screen started
-       at y=102 and pushed the button up to y=41, straight through the header.
-       11rem (176px) keeps the button clear of the header at every phone size
-       we test, down to 320x568. */
-    height: min(82vh, 100vh - 11rem);
-    height: min(82dvh, 100dvh - 11rem);
+       The reserve covers the close button, and nothing else. It used to cover
+       the sticky header too, on the theory that the button must not land on
+       the header's own controls - but .ai-backdrop is z-index 149, inset 0,
+       and the header is sticky at 100, so the moment the sheet opens the
+       header is already dimmed and already untappable. Reserving room for
+       controls nobody can reach cost 100px of sheet on every phone and left
+       the panel starting a third of the way down a 568px screen.
+
+       5.5rem (88px) is the button's own 52px, its 0.6rem gap, and enough left
+       over that it never crowds the top of the viewport. At 320x568 that is a
+       480px sheet - 85% of the screen - with the button at y=26. */
+    height: min(94vh, 100vh - 5.5rem);
+    height: min(94dvh, 100dvh - 5.5rem);
     border-radius: 0;
   }
 

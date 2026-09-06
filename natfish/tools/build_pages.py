@@ -26,6 +26,8 @@ from build_shell import (
     hero_preload, hero_tiers, identity_ribbon, logo_full, page_hero, picture,
     website_jsonld,
 )
+from video_dims import VIDEO_DIMS
+
 import json
 import re
 
@@ -1534,10 +1536,20 @@ def gallery_figures(items):
 #
 # youtube-nocookie.com, not youtube.com: the privacy-enhanced host sets no
 # tracking cookie until the visitor actually starts a video.
+# A card is either ("youtube", <video id>, <title>) or
+# ("file", <stem under assets/video>, <title>).
+#
+# The first one runs from the site rather than from YouTube. YouTube pulled it -
+# "blocked due to the claimed content by WMG" - so the embed rendered as a dead
+# "Video unavailable" panel. The client supplied the original file to run
+# directly until the upload is sorted out, and tools/process-video.py builds
+# the web derivative. Its soundtrack is not published with it: the claim is on
+# the music, and moving the file off YouTube would not move it out of that
+# claim. See that script for the whole reasoning.
 SHORTS = [
-    ("p2_6LaOfD1o", "The Caribbean Spiny Lobster Harvest"),
-    ("_6veScdF7Oc", "Working Belize&rsquo;s Waters"),
-    ("qyHOSf9wVSI", "From Sea to Market"),
+    ("file", "natfish-lobster-harvest", "The Caribbean Spiny Lobster Harvest"),
+    ("youtube", "_6veScdF7Oc", "Working Belize&rsquo;s Waters"),
+    ("youtube", "qyHOSf9wVSI", "From Sea to Market"),
 ]
 
 # What the player is allowed to reach for. YouTube's own embed list, minus
@@ -1548,28 +1560,41 @@ SHORT_ALLOW = ("accelerometer; autoplay; clipboard-write; encrypted-media; "
 
 
 def short_card(video):
-    """One 9:16 Short.
+    """One 9:16 Short, from YouTube or from this site.
 
-    `loading="lazy"` is what keeps three players off the critical path: the
-    section sits well below the fold, so nothing is fetched from YouTube until
-    the visitor scrolls near it, and nothing plays until they press play. The
-    title is on the iframe as well as on the card, because a screen reader
-    landing inside the frame has only the iframe's own accessible name.
+    Neither kind fetches anything before it is needed. The iframes are
+    `loading="lazy"`, so nothing reaches YouTube until the visitor scrolls the
+    section into view; the self-hosted file is `preload="metadata"`, so the
+    browser takes the header and the poster and leaves the three and a half
+    megabytes alone until somebody presses play. Nothing autoplays.
+
+    The title is repeated onto the player itself, because a screen reader
+    landing inside an iframe has only the iframe's own accessible name, and a
+    <video> with no label is announced as "video".
 
     No VideoObject structured data. It needs a thumbnail URL, an upload date
     and a duration, and inventing any of the three would be worse than having
     no rich result at all.
     """
-    vid, title = video
+    kind, ref, title = video
     plain = title.replace("&rsquo;", "\u2019")
-    return f"""<figure class="video-card">
-            <div class="video-card__frame">
-              <iframe src="https://www.youtube-nocookie.com/embed/{vid}"
+    if kind == "file":
+        w, h = VIDEO_DIMS[ref]
+        player = f"""<video src="assets/video/{ref}.mp4"
+                     poster="assets/video/{ref}-poster.jpg"
+                     width="{w}" height="{h}"
+                     title="{plain}" aria-label="{plain}"
+                     controls playsinline preload="metadata"></video>"""
+    else:
+        player = f"""<iframe src="https://www.youtube-nocookie.com/embed/{ref}"
                       title="{plain}"
                       loading="lazy"
                       referrerpolicy="strict-origin-when-cross-origin"
                       allow="{SHORT_ALLOW}"
-                      allowfullscreen></iframe>
+                      allowfullscreen></iframe>"""
+    return f"""<figure class="video-card">
+            <div class="video-card__frame">
+              {player}
             </div>
             <figcaption class="video-card__title">{title}</figcaption>
           </figure>"""

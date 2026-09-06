@@ -552,7 +552,13 @@ def picture(stem, sizes, css="", *, eager=False, alt=None, full=False,
     style = f' style="{";".join(decls)}"'
     # The lightbox reads data-full at click time and shows the image at its
     # natural proportions, so it points at the largest derivative.
-    data_full = f' data-full="{d}/{stem}-{tiers[-1]}.jpg"' if full else ""
+    # WebP, not JPEG. The lightbox is the only thing that ever asks for the
+    # largest tier, and shipping it in both formats cost 7.3 MB for a file that
+    # only an engine with no WebP support could need - and that engine is one
+    # the lightbox's own JavaScript already predates. The script falls back to
+    # the thumbnail the card is already showing if this fails to decode, so
+    # that engine gets a smaller photograph rather than a broken one.
+    data_full = f' data-full="{d}/{stem}-{tiers[-1]}.webp"' if full else ""
 
     # `tiers` defaults to the three every in-page photograph has. It is a
     # parameter because the hero pairs are generated on their own ladder and a
