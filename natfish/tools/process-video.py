@@ -6,13 +6,15 @@ WHY THIS EXISTS. The first Short in NATFISH in Motion was pulled by YouTube -
 "Video unavailable" panel on the live site. The client supplied the original
 file to run from the site directly until the YouTube upload is sorted out.
 
-THE AUDIO IS DROPPED, DELIBERATELY. WMG claimed the music on the soundtrack.
-Moving the same file off YouTube does not move it out of that claim: hosting
-it on natfish.bz would still be publishing the track without a licence, and
-the co-operative would be the publisher. The picture is the co-operative's own
-and is what the client wanted; the music is not, so it does not travel with it.
-Restore the audio only from a version whose soundtrack NATFISH has the right
-to use.
+THE AUDIO IS DROPPED BY DEFAULT. WMG claimed the music on the soundtrack, and
+moving the file off YouTube does not move it out of that claim: hosting it on
+natfish.bz is still publishing the track, with the co-operative as publisher
+rather than YouTube. The picture is the co-operative's own; the music is not.
+
+`--with-audio` keeps it anyway. The client asked for the soundtrack back for a
+board presentation, knowing that, and it is their site and their call. It is
+meant to come off again straight afterwards - see INTERNAL-NOTES.md - and the
+one-line revert is to re-run this script without the flag and repackage.
 
 Everything else here is ordinary web-video hygiene:
 
@@ -24,7 +26,7 @@ Everything else here is ordinary web-video hygiene:
               play rather than a black rectangle.
 
 Usage:
-    python3 tools/process-video.py <source.mp4> <stem> [poster-seconds]
+    python3 tools/process-video.py <source.mp4> <stem> [poster-seconds] [--with-audio]
 """
 import pathlib
 import subprocess
@@ -47,17 +49,22 @@ def run(args):
 
 
 def main():
-    if not 3 <= len(sys.argv) <= 4:
+    args = [a for a in sys.argv[1:] if a != "--with-audio"]
+    with_audio = "--with-audio" in sys.argv
+    if not 2 <= len(args) <= 3:
         raise SystemExit(__doc__)
-    src = pathlib.Path(sys.argv[1])
-    stem = sys.argv[2]
-    poster_at = sys.argv[3] if len(sys.argv) == 4 else "1"
+    src = pathlib.Path(args[0])
+    stem = args[1]
+    poster_at = args[2] if len(args) == 3 else "1"
     if not src.is_file():
         raise SystemExit(f"ERROR: {src} does not exist")
     OUT.mkdir(parents=True, exist_ok=True)
 
     mp4 = OUT / f"{stem}.mp4"
-    run(["-i", str(src), "-an", "-c:v", "libx264", "-profile:v", "main",
+    # AAC at 128k rather than a straight copy: the source is 131k stereo, and
+    # re-encoding keeps the muxer from carrying anything else across.
+    audio = ["-c:a", "aac", "-b:a", "128k"] if with_audio else ["-an"]
+    run(["-i", str(src), *audio, "-c:v", "libx264", "-profile:v", "main",
          "-pix_fmt", "yuv420p", "-crf", CRF, "-preset", "slow",
          "-movflags", "+faststart", str(mp4), "-y"])
 
@@ -84,12 +91,16 @@ def main():
         f'    "{stem}": ({w}, {h}),\n'
         "}\n", encoding="utf-8")
 
-    # Prove the audio really is gone rather than trusting the -an flag: this
-    # is the whole reason the file is being rebuilt, and a silent regression
-    # here would republish a claimed soundtrack from the co-operative's own
-    # domain.
-    if "Audio:" in probe:
-        raise SystemExit("ERROR: the encode still carries an audio track")
+    # Check the output rather than trusting the flag, in both directions: a
+    # silent regression either way is the failure that matters here.
+    has_audio = "Audio:" in probe
+    if has_audio != with_audio:
+        raise SystemExit(
+            "ERROR: asked for audio but the encode has none"
+            if with_audio else
+            "ERROR: the encode still carries an audio track")
+    if with_audio:
+        print("  !! SOUNDTRACK INCLUDED - temporary, see INTERNAL-NOTES.md")
 
     # A VP9 WebM was tried alongside this and came out at 6.95 MB against the
     # MP4's 3.69 for the same clip - handheld footage of moving water and
@@ -97,7 +108,7 @@ def main():
     # H.264 in MP4 plays in every browser that matters, so it ships alone.
     for f in (mp4, poster):
         print(f"  {f.relative_to(ROOT)}  {f.stat().st_size / 1024 / 1024:.2f} MB")
-    print(f"  {dims}, no audio track")
+    print(f"  {dims}, {'with audio' if with_audio else 'no audio track'}")
 
 
 if __name__ == "__main__":

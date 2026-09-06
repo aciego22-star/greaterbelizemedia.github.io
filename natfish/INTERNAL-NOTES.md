@@ -1328,3 +1328,35 @@ guard's failure path was tested by hand, not just its success path.
 The rotating hero advances every 7 seconds, supports swipe, pauses on a hidden tab and while the
 keyboard is inside it, and does not rotate at all under `prefers-reduced-motion`. It does **not** pause
 on hover - see §3c. It has no visible controls, by client instruction in V1.
+
+---
+
+## TEMPORARY: the Short is publishing a claimed soundtrack
+
+**Put this back before the site is left unattended.**
+
+`assets/video/natfish-lobster-harvest.mp4` currently ships **with** its music.
+That is the track WMG claimed on YouTube, which is why the embed was pulled and
+why the clip is self-hosted at all. Hosting it here does not escape the claim -
+it makes NATFISH the publisher instead of YouTube.
+
+The client asked for it back so the board could see the clip as intended, for
+the few days up to **Wednesday 9 September 2026**, knowing all of the above.
+Their site, their call, logged here rather than argued twice.
+
+Revert - one command and a repackage:
+
+```
+python3 tools/process-video.py \
+  source-images/video/natfish-lobster-harvest-source.mp4 \
+  natfish-lobster-harvest 1.5
+python3 tools/build_pages.py && bash tools/make-netlify-zip.sh
+```
+
+Dropping `--with-audio` is the whole change; the script refuses to write a file
+whose audio state does not match what was asked for. Also set `EXPECT_AUDIO`
+back to `false` at the top of the video check in the QA suite, which is
+asserting the temporary state on purpose so it cannot be forgotten quietly.
+
+The permanent fix is a version of the clip whose soundtrack NATFISH has the
+right to use, or the YouTube embed restored once the claim is resolved.
