@@ -1360,3 +1360,106 @@ asserting the temporary state on purpose so it cannot be forgotten quietly.
 
 The permanent fix is a version of the clip whose soundtrack NATFISH has the
 right to use, or the YouTube embed restored once the claim is resolved.
+
+---
+
+## Layers of SEO: what was built, and what is still the client's to supply
+
+The client asked for the site to satisfy five layers from day one of launch, and
+to load in three seconds or less. Both were treated as measurable, not aspirational.
+
+### Speed: measured, not estimated
+
+Core Web Vitals on the packaged copy, at 390px on a throttled 4G profile
+(9 Mbps down, 170 ms RTT, 4x CPU slowdown, the profile Lighthouse uses for
+mobile). Every page finishes loading in about one second, against a three
+second target:
+
+| page | bytes | LCP | CLS | load |
+|---|---|---|---|---|
+| index | 941K | 1092ms | 0 | 1140ms |
+| about | 773K | 1100ms | 0 | 1125ms |
+| seafood-services | 595K | 980ms | 0 | 1017ms |
+| seafood-seasons | 537K | 1004ms | 0 | 1056ms |
+| responsible | 575K | 944ms | 0.005 | 982ms |
+| news | 577K | 1208ms | 0 | 970ms |
+| gallery | 759K | 1072ms | 0 | 1158ms |
+| natfish-ai | 449K | 996ms | 0 | 1033ms |
+| contact | 515K | 1052ms | 0 | 1086ms |
+| insights | 548K | 1220ms | 0 | 959ms |
+| the article | 590K | 1028ms | 0 | 1079ms |
+
+The one non-zero CLS, 0.005 on Responsible Fisheries, comes from a
+`.split__media` block and predates this work. Google's "good" threshold is
+0.1, so it is twenty times inside the bar. It is recorded here rather than
+chased.
+
+The largest single win was the Gallery page, which was pulling the whole 4.2 MB
+video on first paint because the `<video>` carried `preload="metadata"`.
+Chromium fetches the entire file for that value on a short clip. It is now
+`preload="none"`, and Gallery went from 4955K to 759K on first paint with no
+visible change: the poster frame still renders, and the clip loads when someone
+presses play.
+
+### SEO
+
+Site architecture, crawlability and internal linking were already in place.
+Added: a `BreadcrumbList` on all ten inner pages rather than only the two
+Insights pages, derived from `NAV` so a renamed nav item renames the breadcrumb
+with it. `tools/build_pages.py` now generates `sitemap.xml` instead of it being
+hand-maintained, which closes the gap where a new page shipped uncrawled.
+
+### AEO
+
+This was the real gap. Five pages now carry a visible FAQ section with
+`FAQPage` markup: About (5), Seafood & Services (5), Seafood Seasons (5),
+Contact (5) and Responsible Fisheries (3). All 23 answers are in Spanish too.
+
+Both the visible section and the markup are rendered from ONE list per page, so
+they cannot drift. Google withdraws FAQ rich results when the markup states an
+answer the visitor cannot read, and a test asserts every marked-up question and
+answer appears in the rendered text of its own page.
+
+What the FAQs deliberately do not answer: price, minimum order, lead time,
+shipping, stock, certification status, capacity. Those are exactly the questions
+an answer engine would most like to quote, and exactly the ones NATFISH answers
+per enquiry. Where the question was unavoidable ("Does NatFish publish prices?")
+the answer says who to ask.
+
+### GEO and AIO
+
+Every page now emits ONE `@graph` instead of separate disconnected blocks, with
+`@id` cross-references so a machine reads one organisation described from
+several pages rather than eleven unrelated organisations. `org_node()` is typed
+`["Organization", "LocalBusiness"]` and carries the verified address, the
+MARKET opening hours (not the office ones: `openingHoursSpecification` means the
+hours the premises are open to customers, and publishing the office hours there
+would tell a machine the counter is open until five when it shuts at half past
+four), `areaServed`, `knowsAbout` species entities and three contact points.
+
+Seafood & Services adds a `Brand`, an `ItemList` and six `Product` nodes, with
+no `Offer`, price, availability, weight or grade on any of them. Product images
+are read back from the same helper that writes the `<img>` tag, so the schema
+can never name a derivative the packaging step has swept out.
+
+`/llms.txt` is new: a plain-language map of the co-operative for language
+models, generated from the same constants as the pages. It closes with an
+explicit statement of what the site does not publish, and asks a model reading
+it to send people to the team rather than answer on the co-operative's behalf.
+A build-time assertion fails if any page lacks an `llms.txt` summary line.
+
+### SXO
+
+Already largely satisfied: mobile nav, focus rings, single H1 per page,
+breadcrumbs, per-page closing CTAs, the AI pill, contact routes on every page.
+The FAQ uses `<details>`/`<summary>` rather than a JavaScript accordion, so it
+is keyboard-operable and correctly announced with no script, and the answers
+stay in the DOM when shut, which is what search-in-page and an answer engine
+both need.
+
+### Not done, and why
+
+No review, rating, award, certification or social-profile markup. All of them
+are strong signals and all of them would be unsupported. If NATFISH supplies
+verified certifications or social profiles, they are a small addition to
+`org_node()`.

@@ -21,10 +21,9 @@ from build_shell import (
     VIDEO_ID, VIDEO_SOURCE, VIDEO_TITLE, WHATSAPP, SRC_BELTRAIDE,
     SRC_FISHERIES_DEPT, SRC_FISHERYPROGRESS, SRC_FISHSOURCE, SRC_FISHWISE,
     AI_PAGE, HOURS, MARKET_HOURS, OFFICE_HOURS, RULE_WAVE, SITE_URL,
-    breadcrumb_jsonld,
-    contact_strip, cta_band, footer, head, header, hero_picture,
+    NAV_LABEL, ORG_ID, _plain, faq_node, page_url, shipped_jpeg,
+    contact_strip, cta_band, faq_section, footer, head, header, hero_picture,
     hero_preload, hero_tiers, identity_ribbon, logo_full, page_hero, picture,
-    website_jsonld,
 )
 from video_dims import VIDEO_DIMS
 
@@ -357,7 +356,6 @@ def home():
             "fillet prepared for local and international markets.",
             "index.html",
             preload=hero_preload(HERO_SLIDES[0]),
-            extra_jsonld=website_jsonld(),
         )
         + header("index.html")
         + identity_ribbon()
@@ -578,6 +576,7 @@ def about():
             f"has grown to {MEMBERS} fisher members, governed by a "
             f"{COMMITTEE}-member Managing Committee elected from the membership.",
             "about.html",
+            faq=FAQ_ABOUT,
         )
         + header("about.html")
         + page_hero(
@@ -764,6 +763,11 @@ def about():
       </div>
     </section>
 """
+        + faq_section(
+            FAQ_ABOUT,
+            heading="About the co-operative, answered",
+            intro="The questions people most often ask about who NatFish is "
+                  "and how it is run.")
         + cta_band(
             "Next",
             "See what the co-operative brings to market",
@@ -952,6 +956,180 @@ def product_card(prod):
           </article>"""
 
 
+BRAND_ID = f"{SITE_URL}/#belizean-pride"
+CATALOGUE_ID = f"{SITE_URL}/seafood-services.html#catalogue"
+
+
+# ------------------------------------------------------------------ FAQ --
+#
+# Every answer below is drawn from something the site already states and that
+# the research supports: the registration date, the membership figure, the
+# committee, the address, the two sets of opening hours, the six products, the
+# species, the standing season dates and legal sizes, and the food-safety and
+# traceability wording that Responsible Fisheries already uses. Nothing here
+# introduces a fact that is not elsewhere on the site.
+#
+# What is deliberately NOT answered: price, minimum order, lead time, shipping,
+# stock, certification status and capacity. Those are exactly the questions an
+# answer engine would most like to quote, and exactly the ones NATFISH has to
+# answer per enquiry. Where the question is unavoidable, the answer says who to
+# ask rather than guessing on the co-operative's behalf.
+
+FAQ_ABOUT = [
+    ("What is NatFish?",
+     "NatFish is the working name of " + LEGAL_NO_DOT + ", a member-owned "
+     "co-operative of Belizean fishers. The Society purchases, processes and "
+     "markets its members&rsquo; catch so that fishers can reach buyers no "
+     "single fisher could reach alone."),
+    ("When was NatFish founded?",
+     f"The Society was registered in Belize City on {FOUNDED_DATE}."),
+    ("Who owns NatFish?",
+     f"Its fisher members. NatFish has {MEMBERS} members, and it is governed "
+     f"by a {COMMITTEE}-member Managing Committee elected from the "
+     "membership."),
+    ("What is NatFish&rsquo;s full registered name?",
+     f"{LEGAL} It is a registered co-operative society in Belize."),
+    ("Where is NatFish based?",
+     f"At {ADDRESS}."),
+]
+
+FAQ_PRODUCTS = [
+    ("What seafood products does NatFish sell?",
+     "Six: " + ", ".join(p["name"] for p in CATALOGUE[:-1]) + " and "
+     + CATALOGUE[-1]["name"] + "."),
+    ("What is Belizean Pride?",
+     f"Belizean Pride is the seafood product line of {LEGAL_NO_DOT}. It is the "
+     "brand the co-operative&rsquo;s own packed product carries."),
+    ("Which species does NatFish handle?",
+     # The Linnaean names sit in their own element rather than in brackets
+     # inside the sentence. That is the convention sci_line() already uses on
+     # the product cards, and it is what the translation extractor needs: it
+     # keys on text nodes, so a name spliced mid-sentence would break the
+     # sentence around it into three untranslatable fragments.
+     "Caribbean spiny lobster, queen conch and lionfish. "
+     "<i>Panulirus argus, Strombus gigas, Pterois volitans</i>"),
+    ("Does NatFish publish prices?",
+     "No. Availability follows Belize&rsquo;s regulated seasons and current "
+     "supply, so price and format are confirmed with the NatFish team for each "
+     "enquiry rather than published on the website."),
+    ("How do I place an order with NatFish?",
+     "Start an order request with NATFISH AI from any page, or contact the "
+     f"team directly by email at {EMAIL}, on WhatsApp at {MOBILE_DISPLAY}, or "
+     f"by telephone at {TEL_DISPLAY}. A NatFish team member confirms every "
+     "order."),
+]
+
+FAQ_SEASONS = [
+    ("When is lobster season open in Belize?",
+     "The standard open season for Caribbean spiny lobster runs from "
+     "1 July to 28 February, or 29 February in a leap year. The closed season "
+     "runs from 1 March to 30 June."),
+    ("When is conch season open in Belize?",
+     "The standard open season for queen conch runs from 1 October to "
+     "30 June, with a closed season from 1 July to 30 September. It may close "
+     "earlier than that date when the national catch quota is reached."),
+    ("What is the minimum legal size for spiny lobster in Belize?",
+     "A minimum carapace length of 3 inches and a minimum tail weight of "
+     "4 ounces."),
+    ("What is the minimum legal size for queen conch in Belize?",
+     "A minimum shell length of 7 inches, a minimum market-clean weight of "
+     "3 ounces and a minimum fillet weight of 2.75 ounces."),
+    ("Does an open season mean NatFish has product available?",
+     "No. A regulatory open season is not a stock statement. Season dates "
+     "summarise standing Belize Fisheries regulations and can change through "
+     "quota closures or official management notices, so please contact NatFish "
+     "to confirm current availability before making purchasing arrangements."),
+]
+
+FAQ_CONTACT = [
+    ("How do I contact NatFish?",
+     f"By email at {EMAIL}, on WhatsApp at {MOBILE_DISPLAY}, or by telephone "
+     f"at {TEL_DISPLAY} or {TEL2_DISPLAY}."),
+    ("Does NatFish have a WhatsApp number?",
+     f"Yes. {MOBILE_DISPLAY} is the co-operative&rsquo;s mobile and WhatsApp "
+     "line."),
+    ("What are NatFish&rsquo;s opening hours?",
+     # Built from the same two schedules the Contact page prints, so a change
+     # to either one changes the answer with it. Both already end in "m." so
+     # the sentence takes no full stop of its own.
+     "The office is open "
+     + "; ".join(f"{day}, {time}" for day, time in OFFICE_HOURS)
+     + " The seafood market is open "
+     + "; ".join(f"{day}, {time}" for day, time in MARKET_HOURS)),
+    ("Where is the NatFish seafood market?",
+     f"At {ADDRESS}, which is also the co-operative&rsquo;s office."),
+    ("Can I contact NatFish in Spanish?",
+     "Yes. The team and NATFISH AI both work in English and Spanish."),
+]
+
+FAQ_RESPONSIBLE = [
+    ("How does NatFish handle food safety?",
+     "NatFish works to operate in accordance with HACCP principles and "
+     "U.S. FDA regulations for the handling of its seafood."),
+    ("Is NatFish involved in fisheries sustainability work?",
+     "NatFish has participated in seafood traceability work and in "
+     "Belize&rsquo;s spiny lobster Fishery Improvement Project."),
+    ("Why does Belize close its lobster and conch seasons?",
+     "Closed seasons give the species time to breed, which is what keeps the "
+     "fishery, and the livelihoods built on it, working season after season."),
+]
+
+
+def catalogue_nodes():
+    """The six products, as an ItemList of Product entities.
+
+    NO offer, price, availability, weight, grade or delivery. NATFISH quotes
+    every one of those against the current season and the size of the order,
+    and a machine that reads a price out of this graph would republish it long
+    after it stopped being true. What IS here is the part that does not change:
+    what each product is, the species it comes from, who makes it and what it
+    looks like.
+
+    The one product without a photograph gets no `image` key rather than a
+    borrowed one, exactly as the card itself gets a species mark rather than a
+    stand-in photograph.
+    """
+    brand = {
+        "@type": "Brand",
+        "@id": BRAND_ID,
+        "name": "Belizean Pride",
+        "description": (
+            f"The seafood product line of {LEGAL_NO_DOT}."),
+    }
+    products = []
+    for prod in CATALOGUE:
+        slug = prod["name"].lower().replace(",", "").replace("%", "pct")
+        slug = "-".join(slug.split())
+        node = {
+            "@type": "Product",
+            "@id": f"{CATALOGUE_ID}-{slug}",
+            "name": _plain(prod["name"]),
+            "description": _plain(prod["body"]),
+            "brand": {"@id": BRAND_ID},
+            "manufacturer": {"@id": ORG_ID},
+            "category": "Seafood",
+            "additionalProperty": [{
+                "@type": "PropertyValue",
+                "name": "Species",
+                "value": prod["sci"],
+            }],
+        }
+        if prod["img"]:
+            node["image"] = f"{SITE_URL}/{shipped_jpeg(prod['img'])}"
+        products.append(node)
+    catalogue = {
+        "@type": "ItemList",
+        "@id": CATALOGUE_ID,
+        "name": "NATFISH seafood products",
+        "numberOfItems": len(products),
+        "itemListElement": [
+            {"@type": "ListItem", "position": i, "item": {"@id": n["@id"]}}
+            for i, n in enumerate(products, start=1)
+        ],
+    }
+    return [brand, catalogue] + products
+
+
 def seafood_services():
     return (
         head(
@@ -960,6 +1138,8 @@ def seafood_services():
             "lobster, queen conch 85% cleaned and lionfish fillet, prepared by a "
             "Belizean fisher-owned co-operative.",
             "seafood-services.html",
+            extra_nodes=catalogue_nodes(),
+            faq=FAQ_PRODUCTS,
         )
         + header("seafood-services.html")
         + page_hero(
@@ -1073,6 +1253,11 @@ def seafood_services():
       </div>
     </section>
 """
+        + faq_section(
+            FAQ_PRODUCTS,
+            heading="Questions about NatFish seafood",
+            intro="What the co-operative handles, and how to ask for it.",
+            tone="sand")
         + cta_band(
             "For Buyers",
             "Tell NATFISH what you need",
@@ -1097,6 +1282,7 @@ def responsible():
             "regulations, and has participated in seafood traceability work and "
             "Belize's spiny lobster Fishery Improvement Project.",
             "responsible.html",
+            faq=FAQ_RESPONSIBLE,
         )
         + header("responsible.html")
         + page_hero(
@@ -1208,6 +1394,9 @@ def responsible():
       </div>
     </section>
 """
+        + faq_section(
+            FAQ_RESPONSIBLE,
+            heading="Handling and responsible fisheries, answered")
         + cta_band(
             "For Buyers",
             "Questions about standards or documentation?",
@@ -1313,6 +1502,7 @@ def seafood_seasons():
             "Caribbean spiny lobster and queen conch. Contact NATFISH to "
             "confirm current availability.",
             "seafood-seasons.html",
+            faq=FAQ_SEASONS,
         )
         + header("seafood-seasons.html")
         + f"""
@@ -1385,6 +1575,12 @@ def seafood_seasons():
       </div>
     </section>
 """
+        + faq_section(
+            FAQ_SEASONS,
+            heading="Belize seafood seasons, answered",
+            intro="The season dates and legal sizes people ask about most, "
+                  "and what an open season does and does not mean.",
+            tone="sand")
         + cta_band(
             "For Buyers",
             "Ask NATFISH what is available",
@@ -1564,9 +1760,13 @@ def short_card(video):
 
     Neither kind fetches anything before it is needed. The iframes are
     `loading="lazy"`, so nothing reaches YouTube until the visitor scrolls the
-    section into view; the self-hosted file is `preload="metadata"`, so the
-    browser takes the header and the poster and leaves the three and a half
-    megabytes alone until somebody presses play. Nothing autoplays.
+    section into view.
+
+    The self-hosted file is `preload="none"`, not "metadata". Metadata sounds
+    like the cautious choice and measured as the opposite: Chromium pulled the
+    whole 4.2 MB on load, taking the Gallery page to 4.9 MB before anyone had
+    pressed anything. What the visitor sees until they press play is the
+    poster, 70 KB, which is all that needs to arrive. Nothing autoplays.
 
     The title is repeated onto the player itself, because a screen reader
     landing inside an iframe has only the iframe's own accessible name, and a
@@ -1584,7 +1784,7 @@ def short_card(video):
                      poster="assets/video/{ref}-poster.jpg"
                      width="{w}" height="{h}"
                      title="{plain}" aria-label="{plain}"
-                     controls playsinline preload="metadata"></video>"""
+                     controls playsinline preload="none"></video>"""
     else:
         player = f"""<iframe src="https://www.youtube-nocookie.com/embed/{ref}"
                       title="{plain}"
@@ -1750,44 +1950,26 @@ AI_STEPS = [
 ]
 
 
-def ai_jsonld():
-    """WebPage plus Service, both pointing at the existing Organization.
+def ai_nodes():
+    """The assistant, as a Service the co-operative provides.
 
     No rating, no offer, no price and no availability: NATFISH confirms all of
     those with the customer after a request, and structured data is republished
     verbatim by machines that will not read the page.
     """
-    return f"""  <script type="application/ld+json">
-  {{
-    "@context": "https://schema.org",
-    "@graph": [
-      {{
-        "@type": "WebPage",
-        "name": "NATFISH AI",
-        "description": "NATFISH AI is the digital employee of {LEGAL_NO_DOT}. Ask questions, explore approved seafood and start an order request in English or Spanish.",
-        "inLanguage": ["en", "es"],
-        "about": {{
-          "@type": "Organization",
-          "name": "{LEGAL}",
-          "alternateName": "NATFISH"
-        }}
-      }},
-      {{
+    return [{
         "@type": "Service",
+        "@id": f"{SITE_URL}/{AI_PAGE}#service",
         "name": "NATFISH AI",
-        "serviceType": "Seafood order request and customer information assistant",
-        "description": "An AI assistant that answers questions about the Co-operative and its approved seafood, and helps a visitor prepare an order request for the NATFISH team to confirm.",
+        "serviceType": "Customer information assistant",
+        "description": (
+            f"NATFISH AI answers questions about {LEGAL_NO_DOT}, its seafood "
+            "products, opening hours and contact details, in English or "
+            "Spanish, and hands an order request to the team."),
+        "provider": {"@id": ORG_ID},
         "availableLanguage": ["en", "es"],
-        "provider": {{
-          "@type": "Organization",
-          "name": "{LEGAL}",
-          "alternateName": "NATFISH"
-        }}
-      }}
-    ]
-  }}
-  </script>
-"""
+        "areaServed": {"@type": "Country", "name": "Belize"},
+    }]
 
 
 def natfish_ai():
@@ -1825,7 +2007,7 @@ def natfish_ai():
             "questions, explore approved seafood and start an order in English "
             "or Spanish.",
             "natfish-ai.html",
-            extra_jsonld=ai_jsonld(),
+            extra_nodes=ai_nodes(),
         )
         + header("natfish-ai.html")
         + page_hero(
@@ -2044,6 +2226,7 @@ def contact():
             "Start a seafood order request with NATFISH AI, or contact the "
             f"NATFISH team directly by email, WhatsApp or telephone at {ADDRESS}.",
             "contact.html",
+            faq=FAQ_CONTACT,
         )
         + header("contact.html")
         + page_hero(
@@ -2243,6 +2426,10 @@ def contact():
       </div>
     </section>
 """
+        + faq_section(
+            FAQ_CONTACT,
+            heading="Contacting NatFish, answered",
+            tone="sand")
         + cta_band(
             "About",
             "New to NATFISH?",
@@ -2399,40 +2586,39 @@ def reading_time():
     return max(1, round(words / 225))
 
 
-def article_jsonld():
-    """Article, built only from what is actually on the page.
+def article_nodes():
+    """The article, tied to the same organisation every other page names.
 
-    No wordCount, no articleBody duplicate, no unverified publisher detail: the
-    fields below are all things a reader can see for themselves on the page.
+    author and publisher are @id references rather than fresh Organization
+    objects. Repeating the name inline would describe a second, identical
+    company; pointing at the one already in the graph says it is the same one.
+
+    `citation` carries the sources the piece actually rests on, which is the
+    difference between a page a model will quote and one it will not.
     """
     a = ARTICLE
     url = f"{SITE_URL}/{a['slug']}"
-    img = f"{SITE_URL}/assets/img/official/og-article-spiny-lobster.jpg"
-    data = {
-        "@context": "https://schema.org",
+    return [{
         "@type": "Article",
+        "@id": url + "#article",
         "headline": a["title"],
         "description": a["meta"],
-        "image": [img],
+        "image": [f"{SITE_URL}/assets/img/official/og-article-spiny-lobster.jpg"],
         "datePublished": a["date_iso"],
         "dateModified": a["date_iso"],
-        "author": {"@type": "Organization", "name": a["author"]},
-        "publisher": {
-            "@type": "Organization",
-            "name": LEGAL,
-            "alternateName": "NatFish",
-            "logo": {
-                "@type": "ImageObject",
-                "url": f"{SITE_URL}/assets/img/natfish-logo-1200.png",
-            },
-        },
-        "mainEntityOfPage": {"@type": "WebPage", "@id": url},
+        "author": {"@id": ORG_ID},
+        "publisher": {"@id": ORG_ID},
+        "mainEntityOfPage": {"@id": url + "#webpage"},
+        "isPartOf": {"@id": url + "#webpage"},
         "inLanguage": "en-BZ",
         "articleSection": a["category"],
-    }
-    return ('  <script type="application/ld+json">\n  '
-            + json.dumps(data, indent=2, ensure_ascii=False).replace("\n", "\n  ")
-            + "\n  </script>\n")
+        "about": [
+            {"@type": "Thing", "name": "Caribbean spiny lobster",
+             "alternateName": "Panulirus argus"},
+            {"@id": ORG_ID},
+        ],
+        "citation": [SRC_FISHSOURCE, SRC_FISHWISE],
+    }]
 
 
 def article_body_html():
@@ -2488,8 +2674,7 @@ def insights():
             "industry.",
             INSIGHTS_PAGE,
             og_image="official/og-article-spiny-lobster",
-            extra_jsonld=breadcrumb_jsonld([("Home", "index.html"),
-                                            ("Insights", INSIGHTS_PAGE)]),
+            trail=[("Home", "index.html"), ("Insights", INSIGHTS_PAGE)],
         )
         + header(INSIGHTS_PAGE)
         + page_hero(
@@ -2544,11 +2729,9 @@ def article_page():
                 f'  <meta property="article:section" content="{a["category"]}">',
                 f'  <meta name="author" content="{a["author"]}">',
             ]),
-            extra_jsonld=article_jsonld() + breadcrumb_jsonld([
-                ("Home", "index.html"),
-                ("Insights", INSIGHTS_PAGE),
-                (a["title"], a["slug"]),
-            ]),
+            extra_nodes=article_nodes(),
+            trail=[("Home", "index.html"), ("Insights", INSIGHTS_PAGE),
+                   (a["title"], a["slug"])],
         )
         # header() has already opened <main id="main">; the article is the
         # page's main content, not a second landmark.
@@ -2632,12 +2815,170 @@ def strip_comments(html):
     return COMMENT_RE.sub("", html)
 
 
+# One line per page: the summary a machine gets in llms.txt. These are written
+# for a reader who will never see the page - short, factual, and saying what is
+# ON the page rather than selling it.
+PAGE_SUMMARY = {
+    "index.html":
+        "Who NatFish is, what it brings to market and how to reach it.",
+    "about.html":
+        "The Society's history from its 1966 registration, its membership and "
+        "how it is governed.",
+    "seafood-services.html":
+        "The six Belizean Pride seafood products and the co-operative "
+        "functions behind them. No prices: availability is confirmed per "
+        "enquiry.",
+    "seafood-seasons.html":
+        "Belize's standing regulated seasons and legal sizes for Caribbean "
+        "spiny lobster and queen conch. Regulation, not a stock statement.",
+    "responsible.html":
+        "Food-safety handling, traceability work and participation in "
+        "Belize's spiny lobster Fishery Improvement Project.",
+    "news.html":
+        "Co-operative announcements and fisheries-sector developments, each "
+        "linked to its source.",
+    "gallery.html":
+        "Photographs and video from inside the NatFish facility and the "
+        "waters its members fish.",
+    "natfish-ai.html":
+        "NATFISH AI, the assistant that answers questions and starts an order "
+        "request in English or Spanish.",
+    "contact.html":
+        "Address, telephone, WhatsApp, email and both sets of opening hours, "
+        "plus how to start an order.",
+    "insights.html":
+        "Evergreen writing on Belizean seafood and how it is handled.",
+    ARTICLE["slug"]:
+        "What distinguishes Belizean Caribbean spiny lobster, how it is "
+        "handled and what buyers should know.",
+}
+
+# A page with no summary would be silently absent from llms.txt, which is the
+# same failure the packaging script already guards against for the zip.
+assert set(PAGE_SUMMARY) == set(PAGES), (
+    "every page needs a PAGE_SUMMARY line: "
+    f"{set(PAGES) ^ set(PAGE_SUMMARY)}")
+
+# Pages whose content answers a question directly, worth pointing a machine at
+# ahead of the rest.
+LLMS_PRIMARY = ("index.html", "about.html", "seafood-services.html",
+                "seafood-seasons.html", "contact.html")
+
+
+def write_sitemap():
+    """sitemap.xml, generated from PAGES so a new page cannot be left out.
+
+    It used to be a hand-maintained file. The packaging script already refuses
+    to build if a page is missing from its own list; this closes the same gap
+    for the sitemap, which is the file that actually decides whether a new page
+    gets crawled.
+    """
+    def entry(name):
+        extra = ""
+        if name == "index.html":
+            extra = "\n    <priority>1.0</priority>"
+        elif name == ARTICLE["slug"]:
+            # The one page with a real publication date. Everything else is
+            # evergreen, and a lastmod stamped from the build clock would just
+            # tell a crawler the whole site changed every time it was rebuilt.
+            extra = f"\n    <lastmod>{ARTICLE['date_iso']}</lastmod>"
+        return f"  <url>\n    <loc>{page_url(name)}</loc>{extra}\n  </url>"
+
+    urls = "\n".join(entry(name) for name in PAGES)
+    (OUT / "sitemap.xml").write_text(
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        f"{urls}\n</urlset>\n", encoding="utf-8")
+    return len(PAGES)
+
+
+def write_llms_txt():
+    """/llms.txt - a plain-language map of the site for a language model.
+
+    This is the GEO and AIO layer's front door. An engine that lands here gets
+    the co-operative's verified facts stated once, in order, with a link to the
+    page each one comes from, instead of inferring them from navigation.
+
+    What it deliberately does NOT contain: prices, stock, minimum orders, lead
+    times, certifications or capacity. Those change, or are quoted per enquiry,
+    and this file is exactly the kind of thing that gets cached and repeated
+    long after it stops being true. The closing note says so in as many words,
+    so a model that reads it knows to send someone to the team rather than
+    answer for them.
+    """
+    def section(title, names):
+        lines = [f"## {title}", ""]
+        for name in names:
+            label = NAV_LABEL.get(name, name)
+            label = _plain(label)
+            lines.append(f"- [{label}]({page_url(name)}): "
+                         f"{PAGE_SUMMARY[name]}")
+        lines.append("")
+        return lines
+
+    rest = [n for n in PAGES
+            if n not in LLMS_PRIMARY and n in PAGE_SUMMARY]
+    out = [
+        f"# {_plain(LEGAL_NO_DOT)} (NatFish)",
+        "",
+        "> A member-owned co-operative of Belizean fishers, registered in "
+        f"Belize City on {FOUNDED_DATE}. NatFish purchases, processes and "
+        "markets its members' catch, and sells frozen Caribbean spiny "
+        "lobster, queen conch and lionfish fillet under the Belizean Pride "
+        "brand.",
+        "",
+        "## Facts",
+        "",
+        f"- Registered name: {_plain(LEGAL_NO_DOT)}",
+        f"- Working name: NatFish, styled NATFISH in the logo",
+        f"- Registered: {FOUNDED_DATE}, Belize City, Belize",
+        f"- Members: {MEMBERS} fishers, who own the Society",
+        f"- Governance: a {COMMITTEE}-member Managing Committee elected from "
+        "the membership",
+        f"- Address: {_plain(ADDRESS)}",
+        f"- Telephone: {TEL_DISPLAY}, {TEL2_DISPLAY}",
+        f"- Mobile and WhatsApp: {MOBILE_DISPLAY}",
+        f"- Email: {EMAIL}",
+        "- Office hours: "
+        + "; ".join(f"{d}, {t}" for d, t in OFFICE_HOURS),
+        "- Seafood market hours: "
+        + "; ".join(f"{d}, {t}" for d, t in MARKET_HOURS),
+        "- Languages: English and Spanish",
+        "- Species handled: Caribbean spiny lobster (Panulirus argus), queen "
+        "conch (Strombus gigas), lionfish (Pterois volitans)",
+        "- Products: " + "; ".join(p["name"] for p in CATALOGUE),
+        "",
+    ]
+    out += section("Start here", LLMS_PRIMARY)
+    out += section("More", rest)
+    out += [
+        "## What this site does not state",
+        "",
+        "Prices, minimum order quantities, lead times, shipping services, "
+        "stock levels, certifications and processing capacity are not "
+        "published here. Availability follows Belize's regulated seasons and "
+        "the catch of the moment, so NatFish confirms all of them per "
+        "enquiry. Please point anyone asking to the team rather than "
+        "answering on the co-operative's behalf.",
+        "",
+        f"Contact: {EMAIL}, WhatsApp {MOBILE_DISPLAY}, telephone "
+        f"{TEL_DISPLAY}.",
+        "",
+    ]
+    (OUT / "llms.txt").write_text("\n".join(out), encoding="utf-8")
+    return len(out)
+
+
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     for name, builder in PAGES.items():
         path = OUT / name
         path.write_text(strip_comments(builder()), encoding="utf-8")
         print(f"{name:26} {path.stat().st_size / 1024:6.1f} KB")
+    n = write_sitemap()
+    print(f"{'sitemap.xml':26} {n} pages")
+    write_llms_txt()
+    print(f"{'llms.txt':26} {(OUT / 'llms.txt').stat().st_size / 1024:6.1f} KB")
 
 
 if __name__ == "__main__":

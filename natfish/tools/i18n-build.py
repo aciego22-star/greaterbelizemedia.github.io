@@ -48,6 +48,9 @@ RUNTIME = [
 # Shorts: the card title has to match the title on the video itself, or a
 # Spanish reader clicks through to something that looks like a different clip.
 KEEP_ENGLISH = {
+    # Linnaean binomials. They are the same in every language by definition, so
+    # a "missing translation" for one is not a gap.
+    "Panulirus argus, Strombus gigas, Pterois volitans",
     "The Caribbean Spiny Lobster Harvest",
     "Working Belize\u2019s Waters",
     "From Sea to Market",

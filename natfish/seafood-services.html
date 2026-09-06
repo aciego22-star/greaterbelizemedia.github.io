@@ -33,64 +33,423 @@
   <link rel="preload" href="assets/fonts/bitter-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/source-sans-3-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/css/fonts.css?v=0d78bcd1">
-  <link rel="stylesheet" href="assets/css/natfish.css?v=d791a19f">
+  <link rel="stylesheet" href="assets/css/natfish.css?v=089ba96a">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "National Fishermen Producers Co-operative Society Ltd.",
-    "alternateName": "NatFish",
-    "url": "https://natfish.bz/",
-    "logo": "https://natfish.bz/assets/img/natfish-logo-1200.png",
-    "foundingDate": "1966-04-29",
-    "foundingLocation": {
-      "@type": "Place",
-      "name": "Belize City, Belize"
-    },
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "#1 Angel Lane",
-      "addressLocality": "Belize City",
-      "addressCountry": "BZ"
-    },
-    "email": "nationalfishermen@gmail.com",
-    "telephone": "+5012273165",
-    "openingHoursSpecification": [
+    "@graph": [
       {
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-        "opens": "08:00",
-        "closes": "17:00"
-      },
-      {
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": "Saturday",
-        "opens": "08:00",
-        "closes": "12:00"
-      }
-    ],
-    "contactPoint": [
-      {
-        "@type": "ContactPoint",
-        "contactType": "sales",
-        "name": "Primary office",
+        "@type": [
+          "Organization",
+          "LocalBusiness"
+        ],
+        "@id": "https://natfish.bz/#organization",
+        "name": "National Fishermen Producers Co-operative Society Ltd.",
+        "legalName": "National Fishermen Producers Co-operative Society Ltd.",
+        "alternateName": [
+          "NatFish",
+          "NATFISH",
+          "National Fishermen"
+        ],
+        "url": "https://natfish.bz/",
+        "logo": {
+          "@id": "https://natfish.bz/#logo"
+        },
+        "image": {
+          "@id": "https://natfish.bz/#logo"
+        },
+        "description": "A member-owned co-operative of Belizean fishers, registered in Belize City in 1966, which purchases, processes and markets its members' catch.",
+        "foundingDate": "1966-04-29",
+        "foundingLocation": {
+          "@type": "Place",
+          "name": "Belize City, Belize"
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "#1 Angel Lane",
+          "addressLocality": "Belize City",
+          "addressCountry": "BZ"
+        },
         "telephone": "+5012273165",
         "email": "nationalfishermen@gmail.com",
-        "availableLanguage": ["en", "es"]
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday"
+            ],
+            "opens": "08:00",
+            "closes": "16:30"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+              "Saturday"
+            ],
+            "opens": "08:00",
+            "closes": "11:30"
+          }
+        ],
+        "areaServed": [
+          {
+            "@type": "Country",
+            "name": "Belize"
+          },
+          {
+            "@type": "Country",
+            "name": "United States"
+          },
+          {
+            "@type": "Country",
+            "name": "Canada"
+          },
+          {
+            "@type": "Country",
+            "name": "Mexico"
+          },
+          {
+            "@type": "Country",
+            "name": "Taiwan"
+          },
+          {
+            "@type": "Country",
+            "name": "Australia"
+          }
+        ],
+        "knowsAbout": [
+          "Caribbean spiny lobster",
+          "Panulirus argus",
+          "Queen conch",
+          "Strombus gigas",
+          "Lionfish",
+          "Pterois volitans",
+          "Belize fisheries regulations",
+          "Seafood processing",
+          "Fishing co-operatives"
+        ],
+        "contactPoint": [
+          {
+            "@type": "ContactPoint",
+            "contactType": "sales",
+            "name": "Primary office",
+            "telephone": "+5012273165",
+            "email": "nationalfishermen@gmail.com",
+            "availableLanguage": [
+              "en",
+              "es"
+            ]
+          },
+          {
+            "@type": "ContactPoint",
+            "contactType": "customer service",
+            "name": "Secondary office",
+            "telephone": "+5012278039",
+            "availableLanguage": [
+              "en",
+              "es"
+            ]
+          },
+          {
+            "@type": "ContactPoint",
+            "contactType": "sales",
+            "name": "Mobile and WhatsApp",
+            "telephone": "+5016281449",
+            "availableLanguage": [
+              "en",
+              "es"
+            ]
+          }
+        ]
       },
       {
-        "@type": "ContactPoint",
-        "contactType": "customer service",
-        "name": "Secondary office",
-        "telephone": "+5012278039",
-        "availableLanguage": ["en", "es"]
+        "@type": "ImageObject",
+        "@id": "https://natfish.bz/#logo",
+        "url": "https://natfish.bz/assets/img/natfish-logo-1200.png",
+        "contentUrl": "https://natfish.bz/assets/img/natfish-logo-1200.png",
+        "width": 1789,
+        "height": 879,
+        "caption": "National Fishermen Producers Co-operative Society Ltd."
       },
       {
-        "@type": "ContactPoint",
-        "contactType": "sales",
-        "name": "Mobile and WhatsApp",
-        "telephone": "+5016281449",
-        "availableLanguage": ["en", "es"]
+        "@type": "WebSite",
+        "@id": "https://natfish.bz/#website",
+        "name": "NatFish",
+        "alternateName": "National Fishermen Producers Co-operative Society Ltd.",
+        "url": "https://natfish.bz/",
+        "inLanguage": "en-BZ",
+        "publisher": {
+          "@id": "https://natfish.bz/#organization"
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://natfish.bz/seafood-services.html#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://natfish.bz/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Seafood & Services",
+            "item": "https://natfish.bz/seafood-services.html"
+          }
+        ]
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://natfish.bz/seafood-services.html#webpage",
+        "url": "https://natfish.bz/seafood-services.html",
+        "name": "Belizean Lobster, Conch & Lionfish Products | NATFISH",
+        "description": "Frozen spiny lobster tails, lobster head meat, whole raw and cooked lobster, queen conch 85% cleaned and lionfish fillet, prepared by a Belizean fisher-owned co-operative.",
+        "isPartOf": {
+          "@id": "https://natfish.bz/#website"
+        },
+        "about": {
+          "@id": "https://natfish.bz/#organization"
+        },
+        "inLanguage": "en-BZ",
+        "primaryImageOfPage": {
+          "@type": "ImageObject",
+          "url": "https://natfish.bz/assets/img/official/og-card.jpg"
+        },
+        "breadcrumb": {
+          "@id": "https://natfish.bz/seafood-services.html#breadcrumb"
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://natfish.bz/seafood-services.html#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What seafood products does NatFish sell?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Six: Frozen Spiny Lobster Tails, Frozen Lobster Head Meat, Frozen Whole Raw Lobster, Frozen Whole Cooked Lobster, Frozen Queen Conch, 85% Cleaned and Lionfish Fillet."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is Belizean Pride?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Belizean Pride is the seafood product line of National Fishermen Producers Co-operative Society Ltd. It is the brand the co-operative’s own packed product carries."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Which species does NatFish handle?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Caribbean spiny lobster, queen conch and lionfish. <i>Panulirus argus, Strombus gigas, Pterois volitans</i>"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does NatFish publish prices?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Availability follows Belize’s regulated seasons and current supply, so price and format are confirmed with the NatFish team for each enquiry rather than published on the website."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I place an order with NatFish?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Start an order request with NATFISH AI from any page, or contact the team directly by email at nationalfishermen@gmail.com, on WhatsApp at +501 628-1449, or by telephone at +501 227-3165. A NatFish team member confirms every order."
+            }
+          }
+        ]
+      },
+      {
+        "@type": "Brand",
+        "@id": "https://natfish.bz/#belizean-pride",
+        "name": "Belizean Pride",
+        "description": "The seafood product line of National Fishermen Producers Co-operative Society Ltd."
+      },
+      {
+        "@type": "ItemList",
+        "@id": "https://natfish.bz/seafood-services.html#catalogue",
+        "name": "NATFISH seafood products",
+        "numberOfItems": 6,
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "item": {
+              "@id": "https://natfish.bz/seafood-services.html#catalogue-frozen-spiny-lobster-tails"
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "item": {
+              "@id": "https://natfish.bz/seafood-services.html#catalogue-frozen-lobster-head-meat"
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "item": {
+              "@id": "https://natfish.bz/seafood-services.html#catalogue-frozen-whole-raw-lobster"
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 4,
+            "item": {
+              "@id": "https://natfish.bz/seafood-services.html#catalogue-frozen-whole-cooked-lobster"
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 5,
+            "item": {
+              "@id": "https://natfish.bz/seafood-services.html#catalogue-frozen-queen-conch-85pct-cleaned"
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 6,
+            "item": {
+              "@id": "https://natfish.bz/seafood-services.html#catalogue-lionfish-fillet"
+            }
+          }
+        ]
+      },
+      {
+        "@type": "Product",
+        "@id": "https://natfish.bz/seafood-services.html#catalogue-frozen-spiny-lobster-tails",
+        "name": "Frozen Spiny Lobster Tails",
+        "description": "Lobster tails, prepared and packed at the co-operative's own facility.",
+        "brand": {
+          "@id": "https://natfish.bz/#belizean-pride"
+        },
+        "manufacturer": {
+          "@id": "https://natfish.bz/#organization"
+        },
+        "category": "Seafood",
+        "additionalProperty": [
+          {
+            "@type": "PropertyValue",
+            "name": "Species",
+            "value": "Panulirus argus"
+          }
+        ],
+        "image": "https://natfish.bz/assets/img/official/09-lobster-processing-table-800.jpg"
+      },
+      {
+        "@type": "Product",
+        "@id": "https://natfish.bz/seafood-services.html#catalogue-frozen-lobster-head-meat",
+        "name": "Frozen Lobster Head Meat",
+        "description": "Head meat recovered during lobster processing and frozen for market.",
+        "brand": {
+          "@id": "https://natfish.bz/#belizean-pride"
+        },
+        "manufacturer": {
+          "@id": "https://natfish.bz/#organization"
+        },
+        "category": "Seafood",
+        "additionalProperty": [
+          {
+            "@type": "PropertyValue",
+            "name": "Species",
+            "value": "Panulirus argus"
+          }
+        ],
+        "image": "https://natfish.bz/assets/img/gallery/04-belizean-pride-lobster-head-meat-800.jpg"
+      },
+      {
+        "@type": "Product",
+        "@id": "https://natfish.bz/seafood-services.html#catalogue-frozen-whole-raw-lobster",
+        "name": "Frozen Whole Raw Lobster",
+        "description": "Whole spiny lobster, frozen raw rather than tailed.",
+        "brand": {
+          "@id": "https://natfish.bz/#belizean-pride"
+        },
+        "manufacturer": {
+          "@id": "https://natfish.bz/#organization"
+        },
+        "category": "Seafood",
+        "additionalProperty": [
+          {
+            "@type": "PropertyValue",
+            "name": "Species",
+            "value": "Panulirus argus"
+          }
+        ],
+        "image": "https://natfish.bz/assets/img/products/03-belizean-pride-raw-lobster-tails-800.jpg"
+      },
+      {
+        "@type": "Product",
+        "@id": "https://natfish.bz/seafood-services.html#catalogue-frozen-whole-cooked-lobster",
+        "name": "Frozen Whole Cooked Lobster",
+        "description": "Whole spiny lobster, cooked before freezing.",
+        "brand": {
+          "@id": "https://natfish.bz/#belizean-pride"
+        },
+        "manufacturer": {
+          "@id": "https://natfish.bz/#organization"
+        },
+        "category": "Seafood",
+        "additionalProperty": [
+          {
+            "@type": "PropertyValue",
+            "name": "Species",
+            "value": "Panulirus argus"
+          }
+        ]
+      },
+      {
+        "@type": "Product",
+        "@id": "https://natfish.bz/seafood-services.html#catalogue-frozen-queen-conch-85pct-cleaned",
+        "name": "Frozen Queen Conch, 85% Cleaned",
+        "description": "Queen conch meat, cleaned to 85% and frozen for market.",
+        "brand": {
+          "@id": "https://natfish.bz/#belizean-pride"
+        },
+        "manufacturer": {
+          "@id": "https://natfish.bz/#organization"
+        },
+        "category": "Seafood",
+        "additionalProperty": [
+          {
+            "@type": "PropertyValue",
+            "name": "Species",
+            "value": "Strombus gigas"
+          }
+        ],
+        "image": "https://natfish.bz/assets/img/products/04-wild-caught-frozen-conch-800.jpg"
+      },
+      {
+        "@type": "Product",
+        "@id": "https://natfish.bz/seafood-services.html#catalogue-lionfish-fillet",
+        "name": "Lionfish Fillet",
+        "description": "Fillet from an invasive Indo-Pacific species that Belizean fishers help keep in check on the reef.",
+        "brand": {
+          "@id": "https://natfish.bz/#belizean-pride"
+        },
+        "manufacturer": {
+          "@id": "https://natfish.bz/#organization"
+        },
+        "category": "Seafood",
+        "additionalProperty": [
+          {
+            "@type": "PropertyValue",
+            "name": "Species",
+            "value": "Pterois volitans"
+          }
+        ],
+        "image": "https://natfish.bz/assets/img/gallery/lionfish-fillets-4x3-800.jpg"
       }
     ]
   }
@@ -363,6 +722,36 @@
       </div>
     </section>
 
+    <section class="section section--sand" id="faq" aria-labelledby="faq-h">
+      <div class="container container--narrow">
+        <span class="eyebrow">Answers</span>
+        <h2 id="faq-h">Questions about NatFish seafood</h2>
+        <p class="lede">What the co-operative handles, and how to ask for it.</p>
+        <div class="faq">
+          <details class="faq__item reveal">
+            <summary class="faq__q"><span>What seafood products does NatFish sell?</span><svg class="ico faq__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5.4 8.8 12 15.4l6.6-6.6"/></svg></summary>
+            <div class="faq__a"><p>Six: Frozen Spiny Lobster Tails, Frozen Lobster Head Meat, Frozen Whole Raw Lobster, Frozen Whole Cooked Lobster, Frozen Queen Conch, 85% Cleaned and Lionfish Fillet.</p></div>
+          </details>
+          <details class="faq__item reveal">
+            <summary class="faq__q"><span>What is Belizean Pride?</span><svg class="ico faq__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5.4 8.8 12 15.4l6.6-6.6"/></svg></summary>
+            <div class="faq__a"><p>Belizean Pride is the seafood product line of National Fishermen Producers Co-operative Society Ltd. It is the brand the co-operative&rsquo;s own packed product carries.</p></div>
+          </details>
+          <details class="faq__item reveal">
+            <summary class="faq__q"><span>Which species does NatFish handle?</span><svg class="ico faq__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5.4 8.8 12 15.4l6.6-6.6"/></svg></summary>
+            <div class="faq__a"><p>Caribbean spiny lobster, queen conch and lionfish. <i>Panulirus argus, Strombus gigas, Pterois volitans</i></p></div>
+          </details>
+          <details class="faq__item reveal">
+            <summary class="faq__q"><span>Does NatFish publish prices?</span><svg class="ico faq__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5.4 8.8 12 15.4l6.6-6.6"/></svg></summary>
+            <div class="faq__a"><p>No. Availability follows Belize&rsquo;s regulated seasons and current supply, so price and format are confirmed with the NatFish team for each enquiry rather than published on the website.</p></div>
+          </details>
+          <details class="faq__item reveal">
+            <summary class="faq__q"><span>How do I place an order with NatFish?</span><svg class="ico faq__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5.4 8.8 12 15.4l6.6-6.6"/></svg></summary>
+            <div class="faq__a"><p>Start an order request with NATFISH AI from any page, or contact the team directly by email at nationalfishermen@gmail.com, on WhatsApp at +501 628-1449, or by telephone at +501 227-3165. A NatFish team member confirms every order.</p></div>
+          </details>
+        </div>
+      </div>
+    </section>
+
     <section class="section section--navy section--tight cta-band">
       <div class="container container--narrow">
         <div class="section-head section-head--center reveal" style="margin-bottom:0">
@@ -449,7 +838,7 @@
 
   <p class="visually-hidden" id="lang-status" role="status" aria-live="polite"></p>
 
-  <script src="assets/js/natfish-strings.js?v=00581f38"></script>
+  <script src="assets/js/natfish-strings.js?v=3226395a"></script>
   <script src="assets/js/natfish-i18n.js?v=b8a289c3"></script>
   <script src="assets/js/natfish-seasons.js?v=c270a135"></script>
   <script src="assets/js/natfish.js?v=79e88ac3"></script>

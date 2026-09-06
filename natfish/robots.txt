@@ -3,3 +3,8 @@ User-agent: *
 Allow: /
 
 Sitemap: https://natfish.bz/sitemap.xml
+
+# A plain-language summary of the co-operative and its pages, for language
+# models and answer engines. Not a crawl directive - just the shortest honest
+# route to the facts, so they are quoted from here rather than inferred.
+# https://natfish.bz/llms.txt

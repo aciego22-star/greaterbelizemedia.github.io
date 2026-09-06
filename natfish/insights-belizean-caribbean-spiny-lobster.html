@@ -36,122 +36,241 @@
   <link rel="preload" href="assets/fonts/bitter-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/source-sans-3-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/css/fonts.css?v=0d78bcd1">
-  <link rel="stylesheet" href="assets/css/natfish.css?v=d791a19f">
+  <link rel="stylesheet" href="assets/css/natfish.css?v=089ba96a">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "National Fishermen Producers Co-operative Society Ltd.",
-    "alternateName": "NatFish",
-    "url": "https://natfish.bz/",
-    "logo": "https://natfish.bz/assets/img/natfish-logo-1200.png",
-    "foundingDate": "1966-04-29",
-    "foundingLocation": {
-      "@type": "Place",
-      "name": "Belize City, Belize"
-    },
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "#1 Angel Lane",
-      "addressLocality": "Belize City",
-      "addressCountry": "BZ"
-    },
-    "email": "nationalfishermen@gmail.com",
-    "telephone": "+5012273165",
-    "openingHoursSpecification": [
+    "@graph": [
       {
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-        "opens": "08:00",
-        "closes": "17:00"
-      },
-      {
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": "Saturday",
-        "opens": "08:00",
-        "closes": "12:00"
-      }
-    ],
-    "contactPoint": [
-      {
-        "@type": "ContactPoint",
-        "contactType": "sales",
-        "name": "Primary office",
+        "@type": [
+          "Organization",
+          "LocalBusiness"
+        ],
+        "@id": "https://natfish.bz/#organization",
+        "name": "National Fishermen Producers Co-operative Society Ltd.",
+        "legalName": "National Fishermen Producers Co-operative Society Ltd.",
+        "alternateName": [
+          "NatFish",
+          "NATFISH",
+          "National Fishermen"
+        ],
+        "url": "https://natfish.bz/",
+        "logo": {
+          "@id": "https://natfish.bz/#logo"
+        },
+        "image": {
+          "@id": "https://natfish.bz/#logo"
+        },
+        "description": "A member-owned co-operative of Belizean fishers, registered in Belize City in 1966, which purchases, processes and markets its members' catch.",
+        "foundingDate": "1966-04-29",
+        "foundingLocation": {
+          "@type": "Place",
+          "name": "Belize City, Belize"
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "#1 Angel Lane",
+          "addressLocality": "Belize City",
+          "addressCountry": "BZ"
+        },
         "telephone": "+5012273165",
         "email": "nationalfishermen@gmail.com",
-        "availableLanguage": ["en", "es"]
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday"
+            ],
+            "opens": "08:00",
+            "closes": "16:30"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+              "Saturday"
+            ],
+            "opens": "08:00",
+            "closes": "11:30"
+          }
+        ],
+        "areaServed": [
+          {
+            "@type": "Country",
+            "name": "Belize"
+          },
+          {
+            "@type": "Country",
+            "name": "United States"
+          },
+          {
+            "@type": "Country",
+            "name": "Canada"
+          },
+          {
+            "@type": "Country",
+            "name": "Mexico"
+          },
+          {
+            "@type": "Country",
+            "name": "Taiwan"
+          },
+          {
+            "@type": "Country",
+            "name": "Australia"
+          }
+        ],
+        "knowsAbout": [
+          "Caribbean spiny lobster",
+          "Panulirus argus",
+          "Queen conch",
+          "Strombus gigas",
+          "Lionfish",
+          "Pterois volitans",
+          "Belize fisheries regulations",
+          "Seafood processing",
+          "Fishing co-operatives"
+        ],
+        "contactPoint": [
+          {
+            "@type": "ContactPoint",
+            "contactType": "sales",
+            "name": "Primary office",
+            "telephone": "+5012273165",
+            "email": "nationalfishermen@gmail.com",
+            "availableLanguage": [
+              "en",
+              "es"
+            ]
+          },
+          {
+            "@type": "ContactPoint",
+            "contactType": "customer service",
+            "name": "Secondary office",
+            "telephone": "+5012278039",
+            "availableLanguage": [
+              "en",
+              "es"
+            ]
+          },
+          {
+            "@type": "ContactPoint",
+            "contactType": "sales",
+            "name": "Mobile and WhatsApp",
+            "telephone": "+5016281449",
+            "availableLanguage": [
+              "en",
+              "es"
+            ]
+          }
+        ]
       },
       {
-        "@type": "ContactPoint",
-        "contactType": "customer service",
-        "name": "Secondary office",
-        "telephone": "+5012278039",
-        "availableLanguage": ["en", "es"]
-      },
-      {
-        "@type": "ContactPoint",
-        "contactType": "sales",
-        "name": "Mobile and WhatsApp",
-        "telephone": "+5016281449",
-        "availableLanguage": ["en", "es"]
-      }
-    ]
-  }
-  </script>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": "Belizean Caribbean Spiny Lobster: What Makes It Special?",
-    "description": "Discover what makes Belizean Caribbean spiny lobster special, from wild harvesting and careful handling to the cooperative role of NatFish.",
-    "image": [
-      "https://natfish.bz/assets/img/official/og-article-spiny-lobster.jpg"
-    ],
-    "datePublished": "2026-09-02",
-    "dateModified": "2026-09-02",
-    "author": {
-      "@type": "Organization",
-      "name": "NatFish Team"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "National Fishermen Producers Co-operative Society Ltd.",
-      "alternateName": "NatFish",
-      "logo": {
         "@type": "ImageObject",
-        "url": "https://natfish.bz/assets/img/natfish-logo-1200.png"
-      }
-    },
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": "https://natfish.bz/insights-belizean-caribbean-spiny-lobster.html"
-    },
-    "inLanguage": "en-BZ",
-    "articleSection": "Seafood Education"
-  }
-  </script>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": "https://natfish.bz/"
+        "@id": "https://natfish.bz/#logo",
+        "url": "https://natfish.bz/assets/img/natfish-logo-1200.png",
+        "contentUrl": "https://natfish.bz/assets/img/natfish-logo-1200.png",
+        "width": 1789,
+        "height": 879,
+        "caption": "National Fishermen Producers Co-operative Society Ltd."
       },
       {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Insights",
-        "item": "https://natfish.bz/insights.html"
+        "@type": "WebSite",
+        "@id": "https://natfish.bz/#website",
+        "name": "NatFish",
+        "alternateName": "National Fishermen Producers Co-operative Society Ltd.",
+        "url": "https://natfish.bz/",
+        "inLanguage": "en-BZ",
+        "publisher": {
+          "@id": "https://natfish.bz/#organization"
+        }
       },
       {
-        "@type": "ListItem",
-        "position": 3,
-        "name": "Belizean Caribbean Spiny Lobster: What Makes It Special?",
-        "item": "https://natfish.bz/insights-belizean-caribbean-spiny-lobster.html"
+        "@type": "BreadcrumbList",
+        "@id": "https://natfish.bz/insights-belizean-caribbean-spiny-lobster.html#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://natfish.bz/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Insights",
+            "item": "https://natfish.bz/insights.html"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Belizean Caribbean Spiny Lobster: What Makes It Special?",
+            "item": "https://natfish.bz/insights-belizean-caribbean-spiny-lobster.html"
+          }
+        ]
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://natfish.bz/insights-belizean-caribbean-spiny-lobster.html#webpage",
+        "url": "https://natfish.bz/insights-belizean-caribbean-spiny-lobster.html",
+        "name": "Belizean Caribbean Spiny Lobster: What Makes It Special? | NatFish",
+        "description": "Discover what makes Belizean Caribbean spiny lobster special, from wild harvesting and careful handling to the cooperative role of NatFish.",
+        "isPartOf": {
+          "@id": "https://natfish.bz/#website"
+        },
+        "about": {
+          "@id": "https://natfish.bz/#organization"
+        },
+        "inLanguage": "en-BZ",
+        "primaryImageOfPage": {
+          "@type": "ImageObject",
+          "url": "https://natfish.bz/assets/img/official/og-article-spiny-lobster.jpg"
+        },
+        "breadcrumb": {
+          "@id": "https://natfish.bz/insights-belizean-caribbean-spiny-lobster.html#breadcrumb"
+        }
+      },
+      {
+        "@type": "Article",
+        "@id": "https://natfish.bz/insights-belizean-caribbean-spiny-lobster.html#article",
+        "headline": "Belizean Caribbean Spiny Lobster: What Makes It Special?",
+        "description": "Discover what makes Belizean Caribbean spiny lobster special, from wild harvesting and careful handling to the cooperative role of NatFish.",
+        "image": [
+          "https://natfish.bz/assets/img/official/og-article-spiny-lobster.jpg"
+        ],
+        "datePublished": "2026-09-02",
+        "dateModified": "2026-09-02",
+        "author": {
+          "@id": "https://natfish.bz/#organization"
+        },
+        "publisher": {
+          "@id": "https://natfish.bz/#organization"
+        },
+        "mainEntityOfPage": {
+          "@id": "https://natfish.bz/insights-belizean-caribbean-spiny-lobster.html#webpage"
+        },
+        "isPartOf": {
+          "@id": "https://natfish.bz/insights-belizean-caribbean-spiny-lobster.html#webpage"
+        },
+        "inLanguage": "en-BZ",
+        "articleSection": "Seafood Education",
+        "about": [
+          {
+            "@type": "Thing",
+            "name": "Caribbean spiny lobster",
+            "alternateName": "Panulirus argus"
+          },
+          {
+            "@id": "https://natfish.bz/#organization"
+          }
+        ],
+        "citation": [
+          "https://www.fishsource.org/fip_page/1184",
+          "https://fishwise.org/dive-deeper/resource/belize-fisheries-the-story-of-the-national-fishermens-co-operative-in-belize/"
+        ]
       }
     ]
   }
@@ -374,7 +493,7 @@
 
   <p class="visually-hidden" id="lang-status" role="status" aria-live="polite"></p>
 
-  <script src="assets/js/natfish-strings.js?v=00581f38"></script>
+  <script src="assets/js/natfish-strings.js?v=3226395a"></script>
   <script src="assets/js/natfish-i18n.js?v=b8a289c3"></script>
   <script src="assets/js/natfish-seasons.js?v=c270a135"></script>
   <script src="assets/js/natfish.js?v=79e88ac3"></script>

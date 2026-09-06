@@ -47,6 +47,7 @@ ROOTFILES=(
   site.webmanifest
   robots.txt
   sitemap.xml
+  llms.txt
 )
 
 # Every page in the folder must be listed above, or a new page silently

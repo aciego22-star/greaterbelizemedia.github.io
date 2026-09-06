@@ -2251,3 +2251,205 @@ ES.update({
         "de Belice, que compra y comercializa la producción de 636 pescadores "
         "en el país y en el extranjero.",
 })
+
+# ------------------------------------------------------------------ FAQ --
+#
+# The answer sections added for the AEO layer. Every one of these is a
+# translation of copy that is already on the page in English, so the Spanish
+# reader gets the same answer rather than a shorter one.
+#
+# Two conventions held throughout: the registered name is never translated,
+# because it is the name on the register, and "co-operative"/"Society" render
+# as "cooperativa"/"Sociedad" in running prose only.
+ES.update({
+    # section chrome
+    "Answers": "Respuestas",
+    "About the co-operative, answered":
+        "Sobre la cooperativa, preguntas frecuentes",
+    "The questions people most often ask about who NatFish is and how it is "
+    "run.":
+        "Las preguntas que más se hacen sobre quién es NatFish y cómo se "
+        "gobierna.",
+    "Questions about NatFish seafood":
+        "Preguntas sobre los mariscos de NatFish",
+    "What the co-operative handles, and how to ask for it.":
+        "Lo que maneja la cooperativa y cómo solicitarlo.",
+    "Belize seafood seasons, answered":
+        "Temporadas de mariscos de Belice, preguntas frecuentes",
+    "The season dates and legal sizes people ask about most, and what an open "
+    "season does and does not mean.":
+        "Las fechas de temporada y las tallas legales que más se consultan, y "
+        "qué significa y qué no significa una temporada abierta.",
+    "Contacting NatFish, answered":
+        "Cómo contactar a NatFish, preguntas frecuentes",
+    "Handling and responsible fisheries, answered":
+        "Manejo y pesca responsable, preguntas frecuentes",
+
+    # about
+    "What is NatFish?": "¿Qué es NatFish?",
+    "NatFish is the working name of National Fishermen Producers Co-operative "
+    "Society Ltd, a member-owned co-operative of Belizean fishers. The Society "
+    "purchases, processes and markets its members’ catch so that fishers "
+    "can reach buyers no single fisher could reach alone.":
+        "NatFish es el nombre comercial de National Fishermen Producers "
+        "Co-operative Society Ltd, una cooperativa de pescadores beliceños "
+        "propiedad de sus miembros. La Sociedad compra, procesa y comercializa "
+        "la captura de sus miembros para que los pescadores lleguen a "
+        "compradores que ninguno alcanzaría por su cuenta.",
+    "When was NatFish founded?": "¿Cuándo se fundó NatFish?",
+    "The Society was registered in Belize City on 29 April 1966.":
+        "La Sociedad se registró en la Ciudad de Belice el 29 de abril de 1966.",
+    "Who owns NatFish?": "¿Quién es dueño de NatFish?",
+    "Its fisher members. NatFish has 636 members, and it is governed by a "
+    "seven-member Managing Committee elected from the membership.":
+        "Sus pescadores miembros. NatFish cuenta con 636 miembros y está "
+        "gobernada por un Comité Directivo de siete personas elegido entre la "
+        "membresía.",
+    "What is NatFish’s full registered name?":
+        "¿Cuál es el nombre registrado completo de NatFish?",
+    "National Fishermen Producers Co-operative Society Ltd. It is a registered "
+    "co-operative society in Belize.":
+        "National Fishermen Producers Co-operative Society Ltd. Es una "
+        "sociedad cooperativa registrada en Belice.",
+    "Where is NatFish based?": "¿Dónde está NatFish?",
+    "At #1 Angel Lane, Belize City, Belize.":
+        "En #1 Angel Lane, Ciudad de Belice, Belice.",
+
+    # products
+    "What seafood products does NatFish sell?":
+        "¿Qué productos del mar vende NatFish?",
+    "Six: Frozen Spiny Lobster Tails, Frozen Lobster Head Meat, Frozen Whole "
+    "Raw Lobster, Frozen Whole Cooked Lobster, Frozen Queen Conch, 85% Cleaned "
+    "and Lionfish Fillet.":
+        "Seis: colas de langosta espinosa congeladas, carne de cabeza de "
+        "langosta congelada, langosta entera cruda congelada, langosta entera "
+        "cocida congelada, caracol reina congelado limpio al 85% y filete de "
+        "pez león.",
+    "What is Belizean Pride?": "¿Qué es Belizean Pride?",
+    "Belizean Pride is the seafood product line of National Fishermen "
+    "Producers Co-operative Society Ltd. It is the brand the "
+    "co-operative’s own packed product carries.":
+        "Belizean Pride es la línea de productos del mar de National Fishermen "
+        "Producers Co-operative Society Ltd. Es la marca que lleva el producto "
+        "empacado por la propia cooperativa.",
+    "Which species does NatFish handle?":
+        "¿Qué especies maneja NatFish?",
+    "Caribbean spiny lobster, queen conch and lionfish.":
+        "Langosta espinosa del Caribe, caracol reina y pez león.",
+    "Does NatFish publish prices?": "¿NatFish publica precios?",
+    "No. Availability follows Belize’s regulated seasons and current "
+    "supply, so price and format are confirmed with the NatFish team for each "
+    "enquiry rather than published on the website.":
+        "No. La disponibilidad depende de las temporadas reguladas de Belice y "
+        "del suministro del momento, así que el precio y el formato se "
+        "confirman con el equipo de NatFish en cada consulta en lugar de "
+        "publicarse en el sitio web.",
+    "How do I place an order with NatFish?":
+        "¿Cómo hago un pedido a NatFish?",
+    "Start an order request with NATFISH AI from any page, or contact the team "
+    "directly by email at nationalfishermen@gmail.com, on WhatsApp at "
+    "+501 628-1449, or by telephone at +501 227-3165. A NatFish team member "
+    "confirms every order.":
+        "Inicie una solicitud de pedido con NATFISH AI desde cualquier página, "
+        "o comuníquese directamente con el equipo por correo electrónico a "
+        "nationalfishermen@gmail.com, por WhatsApp al +501 628-1449 o por "
+        "teléfono al +501 227-3165. Un miembro del equipo de NatFish confirma "
+        "cada pedido.",
+
+    # seasons
+    "When is lobster season open in Belize?":
+        "¿Cuándo está abierta la temporada de langosta en Belice?",
+    "The standard open season for Caribbean spiny lobster runs from 1 July to "
+    "28 February, or 29 February in a leap year. The closed season runs from "
+    "1 March to 30 June.":
+        "La temporada abierta estándar de la langosta espinosa del Caribe va "
+        "del 1 de julio al 28 de febrero, o al 29 de febrero en año bisiesto. "
+        "La veda va del 1 de marzo al 30 de junio.",
+    "When is conch season open in Belize?":
+        "¿Cuándo está abierta la temporada de caracol en Belice?",
+    "The standard open season for queen conch runs from 1 October to 30 June, "
+    "with a closed season from 1 July to 30 September. It may close earlier "
+    "than that date when the national catch quota is reached.":
+        "La temporada abierta estándar del caracol reina va del 1 de octubre "
+        "al 30 de junio, con veda del 1 de julio al 30 de septiembre. Puede "
+        "cerrarse antes de esa fecha cuando se alcanza la cuota nacional de "
+        "captura.",
+    "What is the minimum legal size for spiny lobster in Belize?":
+        "¿Cuál es la talla legal mínima de la langosta espinosa en Belice?",
+    "A minimum carapace length of 3 inches and a minimum tail weight of "
+    "4 ounces.":
+        "Una longitud mínima de caparazón de 3 pulgadas y un peso mínimo de "
+        "cola de 4 onzas.",
+    "What is the minimum legal size for queen conch in Belize?":
+        "¿Cuál es la talla legal mínima del caracol reina en Belice?",
+    "A minimum shell length of 7 inches, a minimum market-clean weight of "
+    "3 ounces and a minimum fillet weight of 2.75 ounces.":
+        "Una longitud mínima de concha de 7 pulgadas, un peso mínimo limpio "
+        "para mercado de 3 onzas y un peso mínimo de filete de 2.75 onzas.",
+    "Does an open season mean NatFish has product available?":
+        "¿Una temporada abierta significa que NatFish tiene producto "
+        "disponible?",
+    "No. A regulatory open season is not a stock statement. Season dates "
+    "summarise standing Belize Fisheries regulations and can change through "
+    "quota closures or official management notices, so please contact NatFish "
+    "to confirm current availability before making purchasing arrangements.":
+        "No. Una temporada abierta por regulación no es una declaración de "
+        "existencias. Las fechas resumen los reglamentos vigentes de Pesca de "
+        "Belice y pueden cambiar por cierres de cuota o avisos oficiales de "
+        "manejo, así que comuníquese con NatFish para confirmar la "
+        "disponibilidad actual antes de concretar una compra.",
+
+    # contact
+    "How do I contact NatFish?": "¿Cómo contacto a NatFish?",
+    "By email at nationalfishermen@gmail.com, on WhatsApp at +501 628-1449, or "
+    "by telephone at +501 227-3165 or +501 227-8039.":
+        "Por correo electrónico a nationalfishermen@gmail.com, por WhatsApp al "
+        "+501 628-1449, o por teléfono al +501 227-3165 o +501 227-8039.",
+    "Does NatFish have a WhatsApp number?":
+        "¿NatFish tiene número de WhatsApp?",
+    "Yes. +501 628-1449 is the co-operative’s mobile and WhatsApp line.":
+        "Sí. El +501 628-1449 es la línea móvil y de WhatsApp de la "
+        "cooperativa.",
+    "What are NatFish’s opening hours?":
+        "¿Cuál es el horario de atención de NatFish?",
+    "The office is open Monday to Friday, 8:00 a.m. to 5:00 p.m.; Saturday, "
+    "8:00 a.m. to 12:00 p.m. The seafood market is open Monday to Friday, "
+    "8:00 a.m. to 4:30 p.m.; Saturday, 8:00 a.m. to 11:30 a.m.":
+        "La oficina abre de lunes a viernes, de 8:00 a.m. a 5:00 p.m.; "
+        "sábados, de 8:00 a.m. a 12:00 p.m. El mercado de mariscos abre de "
+        "lunes a viernes, de 8:00 a.m. a 4:30 p.m.; sábados, de 8:00 a.m. a "
+        "11:30 a.m.",
+    "Where is the NatFish seafood market?":
+        "¿Dónde está el mercado de mariscos de NatFish?",
+    "At #1 Angel Lane, Belize City, Belize, which is also the "
+    "co-operative’s office.":
+        "En #1 Angel Lane, Ciudad de Belice, Belice, que es también la oficina "
+        "de la cooperativa.",
+    "Can I contact NatFish in Spanish?":
+        "¿Puedo comunicarme con NatFish en español?",
+    "Yes. The team and NATFISH AI both work in English and Spanish.":
+        "Sí. Tanto el equipo como NATFISH AI trabajan en inglés y español.",
+
+    # responsible fisheries
+    "How does NatFish handle food safety?":
+        "¿Cómo maneja NatFish la inocuidad alimentaria?",
+    "NatFish works to operate in accordance with HACCP principles and U.S. FDA "
+    "regulations for the handling of its seafood.":
+        "NatFish trabaja para operar conforme a los principios HACCP y a los "
+        "reglamentos de la FDA de los Estados Unidos en el manejo de sus "
+        "mariscos.",
+    "Is NatFish involved in fisheries sustainability work?":
+        "¿Participa NatFish en trabajos de sostenibilidad pesquera?",
+    "NatFish has participated in seafood traceability work and in "
+    "Belize’s spiny lobster Fishery Improvement Project.":
+        "NatFish ha participado en trabajos de trazabilidad de productos del "
+        "mar y en el Proyecto de Mejora Pesquera de la langosta espinosa de "
+        "Belice.",
+    "Why does Belize close its lobster and conch seasons?":
+        "¿Por qué Belice cierra sus temporadas de langosta y caracol?",
+    "Closed seasons give the species time to breed, which is what keeps the "
+    "fishery, and the livelihoods built on it, working season after season.":
+        "Las vedas dan a las especies tiempo para reproducirse, y eso es lo "
+        "que mantiene funcionando la pesquería, y los medios de vida que "
+        "dependen de ella, temporada tras temporada.",
+})

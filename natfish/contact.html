@@ -33,64 +33,242 @@
   <link rel="preload" href="assets/fonts/bitter-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/source-sans-3-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/css/fonts.css?v=0d78bcd1">
-  <link rel="stylesheet" href="assets/css/natfish.css?v=d791a19f">
+  <link rel="stylesheet" href="assets/css/natfish.css?v=089ba96a">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "National Fishermen Producers Co-operative Society Ltd.",
-    "alternateName": "NatFish",
-    "url": "https://natfish.bz/",
-    "logo": "https://natfish.bz/assets/img/natfish-logo-1200.png",
-    "foundingDate": "1966-04-29",
-    "foundingLocation": {
-      "@type": "Place",
-      "name": "Belize City, Belize"
-    },
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "#1 Angel Lane",
-      "addressLocality": "Belize City",
-      "addressCountry": "BZ"
-    },
-    "email": "nationalfishermen@gmail.com",
-    "telephone": "+5012273165",
-    "openingHoursSpecification": [
+    "@graph": [
       {
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-        "opens": "08:00",
-        "closes": "17:00"
-      },
-      {
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": "Saturday",
-        "opens": "08:00",
-        "closes": "12:00"
-      }
-    ],
-    "contactPoint": [
-      {
-        "@type": "ContactPoint",
-        "contactType": "sales",
-        "name": "Primary office",
+        "@type": [
+          "Organization",
+          "LocalBusiness"
+        ],
+        "@id": "https://natfish.bz/#organization",
+        "name": "National Fishermen Producers Co-operative Society Ltd.",
+        "legalName": "National Fishermen Producers Co-operative Society Ltd.",
+        "alternateName": [
+          "NatFish",
+          "NATFISH",
+          "National Fishermen"
+        ],
+        "url": "https://natfish.bz/",
+        "logo": {
+          "@id": "https://natfish.bz/#logo"
+        },
+        "image": {
+          "@id": "https://natfish.bz/#logo"
+        },
+        "description": "A member-owned co-operative of Belizean fishers, registered in Belize City in 1966, which purchases, processes and markets its members' catch.",
+        "foundingDate": "1966-04-29",
+        "foundingLocation": {
+          "@type": "Place",
+          "name": "Belize City, Belize"
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "#1 Angel Lane",
+          "addressLocality": "Belize City",
+          "addressCountry": "BZ"
+        },
         "telephone": "+5012273165",
         "email": "nationalfishermen@gmail.com",
-        "availableLanguage": ["en", "es"]
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday"
+            ],
+            "opens": "08:00",
+            "closes": "16:30"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+              "Saturday"
+            ],
+            "opens": "08:00",
+            "closes": "11:30"
+          }
+        ],
+        "areaServed": [
+          {
+            "@type": "Country",
+            "name": "Belize"
+          },
+          {
+            "@type": "Country",
+            "name": "United States"
+          },
+          {
+            "@type": "Country",
+            "name": "Canada"
+          },
+          {
+            "@type": "Country",
+            "name": "Mexico"
+          },
+          {
+            "@type": "Country",
+            "name": "Taiwan"
+          },
+          {
+            "@type": "Country",
+            "name": "Australia"
+          }
+        ],
+        "knowsAbout": [
+          "Caribbean spiny lobster",
+          "Panulirus argus",
+          "Queen conch",
+          "Strombus gigas",
+          "Lionfish",
+          "Pterois volitans",
+          "Belize fisheries regulations",
+          "Seafood processing",
+          "Fishing co-operatives"
+        ],
+        "contactPoint": [
+          {
+            "@type": "ContactPoint",
+            "contactType": "sales",
+            "name": "Primary office",
+            "telephone": "+5012273165",
+            "email": "nationalfishermen@gmail.com",
+            "availableLanguage": [
+              "en",
+              "es"
+            ]
+          },
+          {
+            "@type": "ContactPoint",
+            "contactType": "customer service",
+            "name": "Secondary office",
+            "telephone": "+5012278039",
+            "availableLanguage": [
+              "en",
+              "es"
+            ]
+          },
+          {
+            "@type": "ContactPoint",
+            "contactType": "sales",
+            "name": "Mobile and WhatsApp",
+            "telephone": "+5016281449",
+            "availableLanguage": [
+              "en",
+              "es"
+            ]
+          }
+        ]
       },
       {
-        "@type": "ContactPoint",
-        "contactType": "customer service",
-        "name": "Secondary office",
-        "telephone": "+5012278039",
-        "availableLanguage": ["en", "es"]
+        "@type": "ImageObject",
+        "@id": "https://natfish.bz/#logo",
+        "url": "https://natfish.bz/assets/img/natfish-logo-1200.png",
+        "contentUrl": "https://natfish.bz/assets/img/natfish-logo-1200.png",
+        "width": 1789,
+        "height": 879,
+        "caption": "National Fishermen Producers Co-operative Society Ltd."
       },
       {
-        "@type": "ContactPoint",
-        "contactType": "sales",
-        "name": "Mobile and WhatsApp",
-        "telephone": "+5016281449",
-        "availableLanguage": ["en", "es"]
+        "@type": "WebSite",
+        "@id": "https://natfish.bz/#website",
+        "name": "NatFish",
+        "alternateName": "National Fishermen Producers Co-operative Society Ltd.",
+        "url": "https://natfish.bz/",
+        "inLanguage": "en-BZ",
+        "publisher": {
+          "@id": "https://natfish.bz/#organization"
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://natfish.bz/contact.html#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://natfish.bz/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Contact",
+            "item": "https://natfish.bz/contact.html"
+          }
+        ]
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://natfish.bz/contact.html#webpage",
+        "url": "https://natfish.bz/contact.html",
+        "name": "Contact NATFISH & Start a Seafood Order | Belize City",
+        "description": "Start a seafood order request with NATFISH AI, or contact the NATFISH team directly by email, WhatsApp or telephone at #1 Angel Lane, Belize City, Belize.",
+        "isPartOf": {
+          "@id": "https://natfish.bz/#website"
+        },
+        "about": {
+          "@id": "https://natfish.bz/#organization"
+        },
+        "inLanguage": "en-BZ",
+        "primaryImageOfPage": {
+          "@type": "ImageObject",
+          "url": "https://natfish.bz/assets/img/official/og-card.jpg"
+        },
+        "breadcrumb": {
+          "@id": "https://natfish.bz/contact.html#breadcrumb"
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://natfish.bz/contact.html#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How do I contact NatFish?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "By email at nationalfishermen@gmail.com, on WhatsApp at +501 628-1449, or by telephone at +501 227-3165 or +501 227-8039."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does NatFish have a WhatsApp number?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. +501 628-1449 is the co-operative’s mobile and WhatsApp line."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What are NatFish’s opening hours?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The office is open Monday to Friday, 8:00 a.m. to 5:00 p.m.; Saturday, 8:00 a.m. to 12:00 p.m. The seafood market is open Monday to Friday, 8:00 a.m. to 4:30 p.m.; Saturday, 8:00 a.m. to 11:30 a.m."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Where is the NatFish seafood market?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "At #1 Angel Lane, Belize City, Belize, which is also the co-operative’s office."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I contact NatFish in Spanish?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. The team and NATFISH AI both work in English and Spanish."
+            }
+          }
+        ]
       }
     ]
   }
@@ -369,6 +547,35 @@
       </div>
     </section>
 
+    <section class="section section--sand" id="faq" aria-labelledby="faq-h">
+      <div class="container container--narrow">
+        <span class="eyebrow">Answers</span>
+        <h2 id="faq-h">Contacting NatFish, answered</h2>
+        <div class="faq">
+          <details class="faq__item reveal">
+            <summary class="faq__q"><span>How do I contact NatFish?</span><svg class="ico faq__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5.4 8.8 12 15.4l6.6-6.6"/></svg></summary>
+            <div class="faq__a"><p>By email at nationalfishermen@gmail.com, on WhatsApp at +501 628-1449, or by telephone at +501 227-3165 or +501 227-8039.</p></div>
+          </details>
+          <details class="faq__item reveal">
+            <summary class="faq__q"><span>Does NatFish have a WhatsApp number?</span><svg class="ico faq__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5.4 8.8 12 15.4l6.6-6.6"/></svg></summary>
+            <div class="faq__a"><p>Yes. +501 628-1449 is the co-operative&rsquo;s mobile and WhatsApp line.</p></div>
+          </details>
+          <details class="faq__item reveal">
+            <summary class="faq__q"><span>What are NatFish&rsquo;s opening hours?</span><svg class="ico faq__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5.4 8.8 12 15.4l6.6-6.6"/></svg></summary>
+            <div class="faq__a"><p>The office is open Monday to Friday, 8:00 a.m. to 5:00 p.m.; Saturday, 8:00 a.m. to 12:00 p.m. The seafood market is open Monday to Friday, 8:00 a.m. to 4:30 p.m.; Saturday, 8:00 a.m. to 11:30 a.m.</p></div>
+          </details>
+          <details class="faq__item reveal">
+            <summary class="faq__q"><span>Where is the NatFish seafood market?</span><svg class="ico faq__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5.4 8.8 12 15.4l6.6-6.6"/></svg></summary>
+            <div class="faq__a"><p>At #1 Angel Lane, Belize City, Belize, which is also the co-operative&rsquo;s office.</p></div>
+          </details>
+          <details class="faq__item reveal">
+            <summary class="faq__q"><span>Can I contact NatFish in Spanish?</span><svg class="ico faq__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5.4 8.8 12 15.4l6.6-6.6"/></svg></summary>
+            <div class="faq__a"><p>Yes. The team and NATFISH AI both work in English and Spanish.</p></div>
+          </details>
+        </div>
+      </div>
+    </section>
+
     <section class="section section--navy section--tight cta-band">
       <div class="container container--narrow">
         <div class="section-head section-head--center reveal" style="margin-bottom:0">
@@ -455,7 +662,7 @@
 
   <p class="visually-hidden" id="lang-status" role="status" aria-live="polite"></p>
 
-  <script src="assets/js/natfish-strings.js?v=00581f38"></script>
+  <script src="assets/js/natfish-strings.js?v=3226395a"></script>
   <script src="assets/js/natfish-i18n.js?v=b8a289c3"></script>
   <script src="assets/js/natfish-seasons.js?v=c270a135"></script>
   <script src="assets/js/natfish.js?v=79e88ac3"></script>

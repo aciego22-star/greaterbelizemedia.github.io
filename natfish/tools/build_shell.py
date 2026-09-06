@@ -13,6 +13,7 @@ Accuracy tiers used throughout:
 import hashlib
 import json
 import pathlib
+import re
 
 from build_icons import icon
 
@@ -511,6 +512,19 @@ def gallery_tiers(stem):
     return tuple(GALLERY_TIERS.get(stem, PICTURE_TIERS))
 
 
+def shipped_jpeg(stem):
+    """The one JPEG derivative of `stem` that actually ships, as a site path.
+
+    make-netlify-zip.sh deletes every image the markup does not reference, so a
+    schema URL naming any other width would be a 404 in the deployed package.
+    This reads the same tier picture() writes into the <img>, which means the
+    two cannot drift apart.
+    """
+    tiers = gallery_tiers(stem) if stem in GALLERY_TIERS else PICTURE_TIERS
+    fallback = tiers[min(1, len(tiers) - 1)]
+    return f"{img_dir(stem)}/{stem}-{fallback}.jpg"
+
+
 def picture(stem, sizes, css="", *, eager=False, alt=None, full=False,
             ratio=None, focus=None, tiers=None):
     """A responsive <picture>: WebP first, JPEG fallback, three width tiers.
@@ -747,80 +761,6 @@ def logo_full(css="logo-full", width=380):
     return logo_img(css, f"{width}px")
 
 
-def org_jsonld():
-    """Organization data, limited to what the client actually supplied.
-
-    Opening hours are included now that the client has supplied them.
-    Deliberately still absent: aggregateRating, priceRange, hasCredential,
-    makesOffer and any volume or capacity figure. None of those were supplied,
-    and structured data is exactly where an unsupported claim does the most
-    damage, because it is machine-read and republished verbatim.
-    """
-    tel = TEL_HREF
-    return f"""  <script type="application/ld+json">
-  {{
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "{LEGAL}",
-    "alternateName": "NatFish",
-    "url": "{SITE_URL}/",
-    "logo": "{SITE_URL}/assets/img/natfish-logo-1200.png",
-    "foundingDate": "{FOUNDED_ISO}",
-    "foundingLocation": {{
-      "@type": "Place",
-      "name": "Belize City, Belize"
-    }},
-    "address": {{
-      "@type": "PostalAddress",
-      "streetAddress": "#1 Angel Lane",
-      "addressLocality": "Belize City",
-      "addressCountry": "BZ"
-    }},
-    "email": "{EMAIL}",
-    "telephone": "{tel}",
-    "openingHoursSpecification": [
-      {{
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-        "opens": "08:00",
-        "closes": "17:00"
-      }},
-      {{
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": "Saturday",
-        "opens": "08:00",
-        "closes": "12:00"
-      }}
-    ],
-    "contactPoint": [
-      {{
-        "@type": "ContactPoint",
-        "contactType": "sales",
-        "name": "Primary office",
-        "telephone": "{TEL_HREF}",
-        "email": "{EMAIL}",
-        "availableLanguage": ["en", "es"]
-      }},
-      {{
-        "@type": "ContactPoint",
-        "contactType": "customer service",
-        "name": "Secondary office",
-        "telephone": "{TEL2_HREF}",
-        "availableLanguage": ["en", "es"]
-      }},
-      {{
-        "@type": "ContactPoint",
-        "contactType": "sales",
-        "name": "Mobile and WhatsApp",
-        "telephone": "{MOBILE_HREF}",
-        "availableLanguage": ["en", "es"]
-      }}
-    ]
-  }}
-  </script>
-"""
-
-
 SITE_URL = "https://natfish.bz"
 SITE_SHORT = "NatFish"
 
@@ -837,52 +777,274 @@ FAVICONS = """  <link rel="icon" href="favicon.ico" sizes="any">
 """
 
 
-def breadcrumb_jsonld(trail):
-    """BreadcrumbList for a page that shows breadcrumbs.
+# ---------------------------------------------------------------- schema --
+#
+# One <script type="application/ld+json"> per page holding one @graph, not a
+# pile of separate blocks. The difference is not cosmetic: separate blocks
+# describe several unrelated things, and a graph describes one thing that the
+# other nodes point at. Every page's WebPage node says isPartOf the WebSite,
+# the WebSite says its publisher is the Organization, the Article says the same
+# Organization published it, and every one of those references is the same
+# @id. That is what lets a crawler - or a model - resolve "NATFISH" on the
+# gallery page and "National Fishermen Producers Co-operative Society Ltd." in
+# the article to a single entity rather than three lookalikes.
+#
+# Nothing here is asserted that the site does not already say in words. No
+# price, no availability, no rating, no social profile, no employee count, no
+# certification: those were never supplied, and structured data is the worst
+# place to guess, because it is machine-read and repeated verbatim.
 
-    Absolute URLs, built from SITE_URL like every other absolute reference, so
-    the structured data and the visible trail always name the same pages.
+ORG_ID = f"{SITE_URL}/#organization"
+SITE_ID = f"{SITE_URL}/#website"
+LOGO_ID = f"{SITE_URL}/#logo"
+
+
+def page_url(path):
+    """The absolute URL of a page. The homepage is the bare domain."""
+    return SITE_URL + "/" if path == "index.html" else f"{SITE_URL}/{path}"
+
+
+def _plain(text):
+    """Entity references are for HTML. JSON gets the characters themselves."""
+    return (text.replace("&rsquo;", "\u2019").replace("&amp;", "&")
+                .replace("&mdash;", "\u2014").replace("&ndash;", "\u2013"))
+
+
+def _hours(schedule):
+    """OpeningHoursSpecification from one of the schedules in the contacts.
+
+    The times are written for people - "8:00 a.m. to 5:00 p.m." - and schema
+    wants 24-hour clock, so they are parsed rather than duplicated as a second
+    hand-maintained list that could drift away from what the page shows.
     """
-    items = []
-    for i, (name, path) in enumerate(trail, start=1):
-        url = SITE_URL + "/" if path == "index.html" else f"{SITE_URL}/{path}"
-        safe = name.replace("&rsquo;", "\u2019").replace("&amp;", "&")
-        items.append(
-            '      {\n'
-            f'        "@type": "ListItem",\n'
-            f'        "position": {i},\n'
-            f'        "name": {json.dumps(safe)},\n'
-            f'        "item": "{url}"\n'
-            '      }'
-        )
-    joined = ",\n".join(items)
-    return ('  <script type="application/ld+json">\n'
-            '  {\n'
-            '    "@context": "https://schema.org",\n'
-            '    "@type": "BreadcrumbList",\n'
-            '    "itemListElement": [\n'
-            f'{joined}\n'
-            '    ]\n'
-            '  }\n'
-            '  </script>\n')
+    days = {"Monday to Friday": ["Monday", "Tuesday", "Wednesday", "Thursday",
+                                 "Friday"],
+            "Saturday": ["Saturday"]}
+    out = []
+    for label, span in schedule:
+        opens, closes = (_clock(t) for t in span.split(" to "))
+        out.append({"@type": "OpeningHoursSpecification",
+                    "dayOfWeek": days[label], "opens": opens, "closes": closes})
+    return out
 
 
-def website_jsonld():
-    """WebSite, homepage only. No SearchAction: the site has no search."""
-    return ('  <script type="application/ld+json">\n'
-            '  {\n'
-            '    "@context": "https://schema.org",\n'
-            '    "@type": "WebSite",\n'
-            f'    "name": {json.dumps(SITE_SHORT)},\n'
-            f'    "alternateName": {json.dumps(LEGAL)},\n'
-            f'    "url": "{SITE_URL}/",\n'
-            '    "inLanguage": "en-BZ"\n'
-            '  }\n'
-            '  </script>\n')
+def _clock(text):
+    """"8:00 a.m." -> "08:00"; "4:30 p.m." -> "16:30"."""
+    m = re.match(r"(\d{1,2}):(\d{2})\s*([ap])\.m\.", text.strip())
+    h, mins, half = int(m.group(1)), m.group(2), m.group(3)
+    if half == "p" and h != 12:
+        h += 12
+    if half == "a" and h == 12:
+        h = 0
+    return f"{h:02d}:{mins}"
+
+
+def logo_node():
+    """The logo, hoisted to its own graph node.
+
+    It is referenced twice from the organisation (logo and image) and could be
+    referenced again by an Article. Defining it once at the top of the graph
+    means every reference is a pointer to the same entity rather than one
+    inline definition and a dangling id.
+    """
+    return {
+        "@type": "ImageObject",
+        "@id": LOGO_ID,
+        "url": f"{SITE_URL}/assets/img/natfish-logo-1200.png",
+        "contentUrl": f"{SITE_URL}/assets/img/natfish-logo-1200.png",
+        "width": LOGO_W,
+        "height": LOGO_H,
+        "caption": _plain(LEGAL),
+    }
+
+
+def org_node():
+    """The co-operative, as one entity every other node points at.
+
+    Organization AND LocalBusiness: it is a registered society and it is also a
+    seafood market at a street address that the public can walk into. The
+    opening hours are the MARKET's, not the office's - openingHoursSpecification
+    means the hours the premises are open to customers, and publishing the
+    office hours there would tell a machine the counter is open until five when
+    it closes at half past four.
+    """
+    return {
+        "@type": ["Organization", "LocalBusiness"],
+        "@id": ORG_ID,
+        "name": _plain(LEGAL),
+        "legalName": _plain(LEGAL),
+        "alternateName": ["NatFish", "NATFISH", "National Fishermen"],
+        "url": f"{SITE_URL}/",
+        "logo": {"@id": LOGO_ID},
+        "image": {"@id": LOGO_ID},
+        "description": (
+            "A member-owned co-operative of Belizean fishers, registered in "
+            "Belize City in 1966, which purchases, processes and markets its "
+            "members' catch."),
+        "foundingDate": FOUNDED_ISO,
+        "foundingLocation": {"@type": "Place", "name": "Belize City, Belize"},
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "#1 Angel Lane",
+            "addressLocality": "Belize City",
+            "addressCountry": "BZ",
+        },
+        "telephone": TEL_HREF,
+        "email": EMAIL,
+        "openingHoursSpecification": _hours(MARKET_HOURS),
+        # Where the co-operative's seafood has actually reached, which is the
+        # one market claim the research supports.
+        "areaServed": [{"@type": "Country", "name": n} for n in
+                       ("Belize", "United States", "Canada", "Mexico",
+                        "Taiwan", "Australia")],
+        # Topic entities. These are what the site genuinely covers, and they
+        # are the hooks an answer engine uses to decide the page is about
+        # Caribbean spiny lobster rather than lobster in general.
+        "knowsAbout": [
+            "Caribbean spiny lobster", "Panulirus argus", "Queen conch",
+            "Strombus gigas", "Lionfish", "Pterois volitans",
+            "Belize fisheries regulations", "Seafood processing",
+            "Fishing co-operatives",
+        ],
+        "contactPoint": [
+            {"@type": "ContactPoint", "contactType": "sales",
+             "name": "Primary office", "telephone": TEL_HREF, "email": EMAIL,
+             "availableLanguage": ["en", "es"]},
+            {"@type": "ContactPoint", "contactType": "customer service",
+             "name": "Secondary office", "telephone": TEL2_HREF,
+             "availableLanguage": ["en", "es"]},
+            {"@type": "ContactPoint", "contactType": "sales",
+             "name": "Mobile and WhatsApp", "telephone": MOBILE_HREF,
+             "availableLanguage": ["en", "es"]},
+        ],
+    }
+
+
+def website_node():
+    return {
+        "@type": "WebSite",
+        "@id": SITE_ID,
+        "name": SITE_SHORT,
+        "alternateName": _plain(LEGAL),
+        "url": f"{SITE_URL}/",
+        "inLanguage": "en-BZ",
+        "publisher": {"@id": ORG_ID},
+    }
+
+
+def webpage_node(path, title, description, og_image, has_breadcrumb):
+    node = {
+        "@type": "WebPage",
+        "@id": page_url(path) + "#webpage",
+        "url": page_url(path),
+        "name": _plain(title),
+        "description": _plain(description),
+        "isPartOf": {"@id": SITE_ID},
+        "about": {"@id": ORG_ID},
+        "inLanguage": "en-BZ",
+        "primaryImageOfPage": {
+            "@type": "ImageObject",
+            "url": f"{SITE_URL}/assets/img/{og_image}.jpg",
+        },
+    }
+    if has_breadcrumb:
+        node["breadcrumb"] = {"@id": page_url(path) + "#breadcrumb"}
+    return node
+
+
+NAV_LABEL = dict((href, label) for label, href in NAV)
+
+
+def default_trail(path):
+    """Home / <this page>, derived from the nav so the two cannot diverge.
+
+    Every inner page already prints exactly this as its visible breadcrumb, and
+    Google requires the markup to match what the visitor can see. Deriving both
+    from NAV means renaming a nav item renames the breadcrumb with it.
+    """
+    label = NAV_LABEL.get(path)
+    if path == "index.html" or label is None:
+        return None
+    return [("Home", "index.html"), (label, path)]
+
+
+def breadcrumb_node(path, trail):
+    return {
+        "@type": "BreadcrumbList",
+        "@id": page_url(path) + "#breadcrumb",
+        "itemListElement": [
+            {"@type": "ListItem", "position": i, "name": _plain(name),
+             "item": page_url(p)}
+            for i, (name, p) in enumerate(trail, start=1)
+        ],
+    }
+
+
+def faq_section(pairs, *, heading="Frequently asked questions",
+                eyebrow="Answers", intro="", tone=""):
+    """The visible FAQ, rendered from the SAME pairs that build the markup.
+
+    <details>/<summary>, not a JavaScript accordion. It is keyboard-operable
+    and screen-reader-correct with no script at all, it survives the artifact
+    bundle, and its content is in the DOM whether it is open or shut, which is
+    what both a reader with search-in-page and an answer engine need.
+
+    Google's own rule for FAQ markup is that every question and answer has to
+    be visible on the page. Passing one list to this function and the same list
+    to faq_node() is what guarantees that, rather than a promise to keep two
+    copies in step.
+    """
+    items = "\n          ".join(
+        f"""<details class="faq__item reveal">
+            <summary class="faq__q"><span>{q}</span>{icon("chevron", "faq__chev")}</summary>
+            <div class="faq__a"><p>{a}</p></div>
+          </details>"""
+        for q, a in pairs
+    )
+    lede = f'\n        <p class="lede">{intro}</p>' if intro else ""
+    cls = f" section--{tone}" if tone else ""
+    return f"""
+    <section class="section{cls}" id="faq" aria-labelledby="faq-h">
+      <div class="container container--narrow">
+        <span class="eyebrow">{eyebrow}</span>
+        <h2 id="faq-h">{heading}</h2>{lede}
+        <div class="faq">
+          {items}
+        </div>
+      </div>
+    </section>
+"""
+
+
+def faq_node(path, pairs):
+    """FAQPage from question/answer pairs.
+
+    The answers are lifted from what the page already says. Nothing is
+    introduced here that a visitor cannot read on the page itself - a FAQ that
+    only exists in the markup is the sort of thing that gets a site's rich
+    results pulled, and it would be a lie besides.
+    """
+    return {
+        "@type": "FAQPage",
+        "@id": page_url(path) + "#faq",
+        "mainEntity": [
+            {"@type": "Question", "name": _plain(q),
+             "acceptedAnswer": {"@type": "Answer", "text": _plain(a)}}
+            for q, a in pairs
+        ],
+    }
+
+
+def graph_jsonld(nodes):
+    payload = {"@context": "https://schema.org", "@graph": nodes}
+    body = json.dumps(payload, indent=2, ensure_ascii=False)
+    body = "\n".join("  " + line for line in body.split("\n"))
+    return f'  <script type="application/ld+json">\n{body}\n  </script>\n'
 
 
 def head(title, description, path, og_image="official/og-card", preload="",
-         extra_jsonld="", og_type="website", extra_head=""):
+         extra_nodes=(), og_type="website", extra_head="", trail=None,
+         faq=None):
     """The shared document head.
 
     `path` is the page's own filename, and everything absolute is built from
@@ -903,8 +1065,25 @@ def head(title, description, path, og_image="official/og-card", preload="",
     # The homepage's canonical is the bare domain, not /index.html: that is the
     # URL people link to and the one the host serves at the root, so it is the
     # one the sitemap and the canonical must both name.
-    url = SITE_URL + "/" if path == "index.html" else f"{SITE_URL}/{path}"
+    url = page_url(path)
     img = f"{SITE_URL}/assets/img/{og_image}.jpg"
+
+    # Every page carries the whole graph: the organisation, the site, this
+    # page, its trail, and whatever else the page is (an article, a product
+    # list, a set of answers). Repeating the organisation on all eleven costs
+    # about a kilobyte before compression and means no page can be crawled in
+    # isolation without the crawler learning who published it.
+    if trail is None:
+        trail = default_trail(path)
+    nodes = [org_node(), logo_node(), website_node()]
+    if trail:
+        nodes.append(breadcrumb_node(path, trail))
+    nodes.append(webpage_node(path, title, description, og_image, bool(trail)))
+    if faq:
+        nodes.append(faq_node(path, faq))
+    nodes.extend(extra_nodes)
+    jsonld = graph_jsonld(nodes)
+
     return f"""<!DOCTYPE html>
 <html lang="en-BZ" class="no-js">
 <head>
@@ -939,7 +1118,7 @@ def head(title, description, path, og_image="official/og-card", preload="",
   <link rel="preload" href="assets/fonts/source-sans-3-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="{asset('assets/css/fonts.css')}">
   <link rel="stylesheet" href="{asset('assets/css/natfish.css')}">
-{preload}{org_jsonld()}{extra_jsonld}</head>
+{preload}{jsonld}</head>
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
 """
