@@ -1,7 +1,8 @@
-# Prospecting run output — never publish lead lists to the Pages site
-prospects_*.csv
-candidates_*.csv
-belize_signals_*.csv
+# Prospecting run output — never publish lead lists to the Pages site.
+# This repository is served publicly at greaterbelizemedia.github.io, so any
+# committed CSV of business contact data would be published on the open web.
+# Ignoring every CSV keeps that safe regardless of how a run file is named.
+*.csv
 
 # Python cruft
 __pycache__/
