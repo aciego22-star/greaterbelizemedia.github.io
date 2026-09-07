@@ -1,5 +1,7 @@
 # Prospecting run output — never publish lead lists to the Pages site
 prospects_*.csv
+candidates_*.csv
+belize_signals_*.csv
 
 # Python cruft
 __pycache__/
