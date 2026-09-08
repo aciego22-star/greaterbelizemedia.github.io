@@ -295,6 +295,18 @@ def analyze_pages(site_url, pages):
 # Fetching
 # ---------------------------------------------------------------------------
 
+def normalize_url(url):
+    """A stable key for one web address, however it happens to be written.
+
+    Chains list the same site against every branch, so this lets the analyze
+    stage fetch a given address once instead of once per location.
+    """
+    cleaned = url.strip().lower().split("#")[0]
+    cleaned = re.sub(r"^https?://", "", cleaned)
+    cleaned = re.sub(r"^www\.", "", cleaned)
+    return cleaned.rstrip("/")
+
+
 def is_social_media(url):
     host = urlparse(url).netloc.lower()
     host = host[4:] if host.startswith("www.") else host
@@ -520,8 +532,9 @@ def stage_analyze(city, category):
                             "Accept-Language": "es-MX,es;q=0.9,en;q=0.8"})
     robots = RobotsCache(session)
 
-    counts = {"ok": 0, "skipped": 0, "signal": 0}
+    counts = {"ok": 0, "skipped": 0, "signal": 0, "reused": 0}
     keyword_tally = {}
+    cache = {}          # normalized URL -> result, so each site is fetched once
     out_name = output_path(city, category)
 
     with open(out_name, "w", newline="", encoding="utf-8") as f:
@@ -530,19 +543,28 @@ def stage_analyze(city, category):
 
         for index, row in enumerate(rows, start=1):
             website = row["Website"]
+            key = normalize_url(website)
             print(f"[{index}/{len(rows)}] {row['Business Name']} — {website}")
-            pages, status = crawl_site(session, robots, website)
 
-            if status == "ok":
-                counts["ok"] += 1
-                result = analyze_pages(website, pages)
+            if key in cache:
+                # Already fetched for another branch of the same business.
+                result = cache[key]
+                counts["reused"] += 1
+                print("    (same website as an earlier row — reusing result)")
             else:
-                counts["skipped"] += 1
-                # A bracketed note keeps "could not check" distinct from
-                # "checked and found nothing".
-                result = {"signal": "no", "keywords": "", "email": "",
-                          "contact_person": "",
-                          "evidence": f"[not crawled: {status}]"}
+                pages, status = crawl_site(session, robots, website)
+                if status == "ok":
+                    counts["ok"] += 1
+                    result = analyze_pages(website, pages)
+                else:
+                    counts["skipped"] += 1
+                    # A bracketed note keeps "could not check" distinct from
+                    # "checked and found nothing".
+                    result = {"signal": "no", "keywords": "", "email": "",
+                              "contact_person": "",
+                              "evidence": f"[not crawled: {status}]"}
+                cache[key] = result
+                time.sleep(REQUEST_DELAY)   # only pause after a real request
 
             if result["signal"] == "yes":
                 counts["signal"] += 1
@@ -556,11 +578,11 @@ def stage_analyze(city, category):
                 row["Category"], result["signal"], result["keywords"],
                 result["evidence"],
             ])
-            time.sleep(REQUEST_DELAY)
 
     print()
     print(f"Websites checked:        {counts['ok']}")
     print(f"Not crawled (skipped):   {counts['skipped']}")
+    print(f"Reused (shared website): {counts['reused']}")
     print(f"Belize signal found:     {counts['signal']}")
     for label, count in sorted(keyword_tally.items(), key=lambda kv: -kv[1]):
         print(f"    {label}: {count}")
@@ -684,6 +706,13 @@ def self_test():
           links and links[0].endswith("/contacto"), str(links))
     check("off-site and PDF links excluded",
           all("facebook" not in l and not l.endswith(".pdf") for l in links), str(links))
+
+    # 12. Shared-website key: chain branches collapse to one fetch.
+    check("URL key ignores scheme, www and trailing slash",
+          normalize_url("https://www.YZA.mx/") == normalize_url("http://yza.mx"),
+          normalize_url("https://www.YZA.mx/"))
+    check("different sites keep different keys",
+          normalize_url("https://a.mx/") != normalize_url("https://b.mx/"))
 
     print()
     if failures:
