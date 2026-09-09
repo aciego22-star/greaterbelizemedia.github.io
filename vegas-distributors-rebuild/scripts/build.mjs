@@ -34,6 +34,7 @@ const video = read('data/video.json');
 const whatsNew = read('data/whats-new.json');
 const whatsNewImages = read('data/whats-new-images.json');
 const wines = read('data/wines-and-spirits.json');
+const featured = read('data/featured.json');
 const gallery = read('data/gallery.json');
 const galleryImages = read('data/gallery-images.json');
 const locales = { en: read('i18n/en.json'), es: read('i18n/es.json') };
@@ -98,7 +99,7 @@ const breadcrumbSchema = (locale, trail) => ({
 for (const locale of LOCALES) {
   const i18n = locales[locale];
   const base = { site, i18n, locale, company, catalog, images, productArt, campaign, campaignImages,
-    video, whatsNew, whatsNewImages, wines, gallery, galleryImages };
+    video, whatsNew, whatsNewImages, wines, featured, gallery, galleryImages };
 
   const render = (key, route, meta, result, structuredData = []) => {
     // A route is either one path shared by both languages or one path per

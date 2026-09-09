@@ -47,6 +47,11 @@ const productArt = {};
 
 const PRODUCTS = [
   { id: 'bop-cans', file: 'bop-cans-product.jpg', widths: [360, 650] },
+  // The promoted products turn on their own axis, so they are carried a little
+  // larger than the box they sit in: the corners sweep past the edges mid turn.
+  { id: 'promo-bop', file: 'promo-bop.png', widths: [420, 840] },
+  { id: 'promo-aqua-max', file: 'promo-aqua-max.png', widths: [420, 840] },
+  { id: 'promo-kelloggs', file: 'promo-kelloggs.png', widths: [420, 840] },
 ];
 
 for (const item of PRODUCTS) {

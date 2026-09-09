@@ -156,7 +156,31 @@
     "divisionsCta": "See all divisions",
     "pageHeading": "Vega's Distributors Ltd., wholesale product distribution in Belize",
     "featuredLeadTitle": "BOP insecticide",
-    "featuredLeadBody": "Citronella, Evergreen and original BOP sprays, stocked by retailers across the country and delivered through our national network."
+    "featuredLeadBody": "Citronella, Evergreen and original BOP sprays, stocked by retailers across the country and delivered through our national network.",
+    "promo": {
+      "label": "Promoted products",
+      "goTo": "Show {name}",
+      "items": {
+        "bop": {
+          "name": "BOP insecticide",
+          "body": "Citronella, Evergreen and original BOP sprays in 600 mL cans, stocked by retailers across the country and delivered through our national network.",
+          "alt": "Three BOP insecticide spray cans: Citronella, Evergreen and original.",
+          "action": "View brand"
+        },
+        "kelloggs": {
+          "name": "Kellogg's cereals",
+          "body": "Corn Flakes, Frosties and Choco Krispies together in the Kellogg's three pack, one of 33 Kellogg's lines we carry for supermarkets and wholesalers.",
+          "alt": "A Kellogg's three pack carton holding Choco Krispies, Corn Flakes and Frosties.",
+          "action": "View brand"
+        },
+        "aquaMax": {
+          "name": "Aqua Max bleach",
+          "body": "Aqua Max household bleach in the one litre bottle, carried alongside the cleaning lines that move through our warehouses every week.",
+          "alt": "A one litre bottle of Aqua Max bleach with a blue cap.",
+          "action": "See the division"
+        }
+      }
+    }
   },
   "about": {
     "title": "About Vega's Distributors",

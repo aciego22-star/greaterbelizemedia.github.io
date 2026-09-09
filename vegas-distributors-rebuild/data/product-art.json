@@ -39,5 +39,173 @@
         "height": 650
       }
     ]
+  },
+  "promo-bop": {
+    "base": "assets/product-art",
+    "width": 1254,
+    "height": 1254,
+    "avif": [
+      {
+        "file": "promo-bop-420.avif",
+        "width": 420,
+        "height": 420
+      },
+      {
+        "file": "promo-bop-840.avif",
+        "width": 840,
+        "height": 840
+      },
+      {
+        "file": "promo-bop-1254.avif",
+        "width": 1254,
+        "height": 1254
+      }
+    ],
+    "webp": [
+      {
+        "file": "promo-bop-420.webp",
+        "width": 420,
+        "height": 420
+      },
+      {
+        "file": "promo-bop-840.webp",
+        "width": 840,
+        "height": 840
+      },
+      {
+        "file": "promo-bop-1254.webp",
+        "width": 1254,
+        "height": 1254
+      }
+    ],
+    "fallback": [
+      {
+        "file": "promo-bop-420.jpg",
+        "width": 420,
+        "height": 420
+      },
+      {
+        "file": "promo-bop-840.jpg",
+        "width": 840,
+        "height": 840
+      },
+      {
+        "file": "promo-bop-1254.jpg",
+        "width": 1254,
+        "height": 1254
+      }
+    ]
+  },
+  "promo-aqua-max": {
+    "base": "assets/product-art",
+    "width": 1112,
+    "height": 1415,
+    "avif": [
+      {
+        "file": "promo-aqua-max-420.avif",
+        "width": 420,
+        "height": 534
+      },
+      {
+        "file": "promo-aqua-max-840.avif",
+        "width": 840,
+        "height": 1069
+      },
+      {
+        "file": "promo-aqua-max-1112.avif",
+        "width": 1112,
+        "height": 1415
+      }
+    ],
+    "webp": [
+      {
+        "file": "promo-aqua-max-420.webp",
+        "width": 420,
+        "height": 534
+      },
+      {
+        "file": "promo-aqua-max-840.webp",
+        "width": 840,
+        "height": 1069
+      },
+      {
+        "file": "promo-aqua-max-1112.webp",
+        "width": 1112,
+        "height": 1415
+      }
+    ],
+    "fallback": [
+      {
+        "file": "promo-aqua-max-420.jpg",
+        "width": 420,
+        "height": 534
+      },
+      {
+        "file": "promo-aqua-max-840.jpg",
+        "width": 840,
+        "height": 1069
+      },
+      {
+        "file": "promo-aqua-max-1112.jpg",
+        "width": 1112,
+        "height": 1415
+      }
+    ]
+  },
+  "promo-kelloggs": {
+    "base": "assets/product-art",
+    "width": 1536,
+    "height": 1024,
+    "avif": [
+      {
+        "file": "promo-kelloggs-420.avif",
+        "width": 420,
+        "height": 280
+      },
+      {
+        "file": "promo-kelloggs-840.avif",
+        "width": 840,
+        "height": 560
+      },
+      {
+        "file": "promo-kelloggs-1536.avif",
+        "width": 1536,
+        "height": 1024
+      }
+    ],
+    "webp": [
+      {
+        "file": "promo-kelloggs-420.webp",
+        "width": 420,
+        "height": 280
+      },
+      {
+        "file": "promo-kelloggs-840.webp",
+        "width": 840,
+        "height": 560
+      },
+      {
+        "file": "promo-kelloggs-1536.webp",
+        "width": 1536,
+        "height": 1024
+      }
+    ],
+    "fallback": [
+      {
+        "file": "promo-kelloggs-420.jpg",
+        "width": 420,
+        "height": 280
+      },
+      {
+        "file": "promo-kelloggs-840.jpg",
+        "width": 840,
+        "height": 560
+      },
+      {
+        "file": "promo-kelloggs-1536.jpg",
+        "width": 1536,
+        "height": 1024
+      }
+    ]
   }
 }

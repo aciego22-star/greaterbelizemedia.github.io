@@ -156,7 +156,31 @@
     "divisionsCta": "Ver todas las divisiones",
     "pageHeading": "Vega's Distributors Ltd., distribución mayorista de productos en Belice",
     "featuredLeadTitle": "Insecticida BOP",
-    "featuredLeadBody": "Aerosoles BOP Citronella, Evergreen y original, disponibles en comercios de todo el país y distribuidos por nuestra red nacional."
+    "featuredLeadBody": "Aerosoles BOP Citronella, Evergreen y original, disponibles en comercios de todo el país y distribuidos por nuestra red nacional.",
+    "promo": {
+      "label": "Productos promocionados",
+      "goTo": "Mostrar {name}",
+      "items": {
+        "bop": {
+          "name": "Insecticida BOP",
+          "body": "Aerosoles BOP Citronella, Evergreen y original en latas de 600 mL, disponibles en comercios de todo el país y distribuidos por nuestra red nacional.",
+          "alt": "Tres latas de insecticida BOP: Citronella, Evergreen y original.",
+          "action": "Ver la marca"
+        },
+        "kelloggs": {
+          "name": "Cereales Kellogg's",
+          "body": "Corn Flakes, Frosties y Choco Krispies juntos en el paquete de tres de Kellogg's, una de las 33 líneas de Kellogg's que distribuimos a supermercados y mayoristas.",
+          "alt": "Caja de tres paquetes de Kellogg's con Choco Krispies, Corn Flakes y Frosties.",
+          "action": "Ver la marca"
+        },
+        "aquaMax": {
+          "name": "Cloro Aqua Max",
+          "body": "Cloro para el hogar Aqua Max en botella de un litro, distribuido junto con las líneas de limpieza que pasan por nuestras bodegas cada semana.",
+          "alt": "Botella de un litro de cloro Aqua Max con tapa azul.",
+          "action": "Ver la división"
+        }
+      }
+    }
   },
   "about": {
     "title": "Acerca de Vega's Distributors",

@@ -630,6 +630,168 @@ ul, ol { margin: 0; padding: 0; }
 .featured__lead p { color: rgba(255, 255, 255, 0.78); margin: 0; max-width: 44ch; }
 .featured__lead .actions { margin-top: 0.7rem; }
 
+/* --------------------------------------------------------------------------
+   Promoted products
+
+   One product at a time turns on its own axis. Every few seconds it sinks out
+   of view and the next rises to take its place, carrying its own words with it.
+   -------------------------------------------------------------------------- */
+
+.promo__stage {
+  position: relative;
+  display: grid;
+  background: #fff;
+  height: 100%;
+  min-height: 20rem;
+  overflow: hidden;
+  /* Depth for the turn. Without it the picture only ever squashes. */
+  perspective: 1100px;
+}
+
+.promo__slot {
+  grid-area: 1 / 1;
+  display: grid;
+  place-items: center;
+  padding: clamp(1rem, 2.5vw, 1.75rem);
+  transform-style: preserve-3d;
+}
+
+/* Every product turns inside the same square arena. The three photographs are
+   a square, a landscape and a portrait, and sizing them by width alone left the
+   cereal small and pushed the bottle past the edges of the panel. Given one box
+   to fit inside, they all read at the same scale and turn about the same
+   centre. The picture is positioned because a percentage height inside a box
+   sized by its ratio is indefinite. */
+.promo__turn {
+  position: relative;
+  width: min(100%, 19rem);
+  aspect-ratio: 1;
+  transform-style: preserve-3d;
+}
+.promo__turn picture {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+.promo__turn img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Before the script runs only the first product is rendered, so the panel is
+   never a stack of three overlapping pictures. */
+.promo:not([data-ready]) .promo__slot:not(.is-current),
+.promo:not([data-ready]) .promo__panel:not(.is-current) { display: none; }
+.promo:not([data-ready]) .promo__dots { display: none; }
+
+.promo[data-ready] .promo__slot {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(42%);
+}
+.promo[data-ready] .promo__slot.is-current {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* The product that is leaving sinks; the one arriving rises into its place. */
+.promo[data-ready] .promo__slot.is-leaving {
+  opacity: 0;
+  visibility: visible;
+  transform: translateY(-42%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .promo[data-ready] .promo__slot {
+    transition: opacity 420ms ease, transform 620ms cubic-bezier(0.22, 0.68, 0.24, 1),
+      visibility 0s linear 620ms;
+  }
+  .promo[data-ready] .promo__slot.is-current,
+  .promo[data-ready] .promo__slot.is-leaving {
+    transition: opacity 480ms ease, transform 620ms cubic-bezier(0.22, 0.68, 0.24, 1), visibility 0s;
+  }
+
+  /* The turn itself, and the flip that keeps the label the right way round. */
+  .promo[data-ready] .promo__slot.is-current .promo__turn {
+    animation: promo-turn var(--promo-turn, 5s) linear infinite;
+  }
+  .promo[data-ready] .promo__slot.is-current .promo__turn img {
+    animation: promo-face var(--promo-turn, 5s) linear infinite;
+  }
+}
+
+@keyframes promo-turn {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(360deg); }
+}
+
+/* Flipped at the quarter and three quarter turns, where the picture is edge on
+   and a metre wide change is a pixel wide one. */
+@keyframes promo-face {
+  0%, 24.9% { transform: scaleX(1); }
+  25%, 74.9% { transform: scaleX(-1); }
+  75%, 100% { transform: scaleX(1); }
+}
+
+.promo__panels { display: grid; }
+.promo__panel { grid-area: 1 / 1; }
+.promo[data-ready] .promo__panel {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(0.6rem);
+  pointer-events: none;
+}
+.promo[data-ready] .promo__panel.is-current {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  pointer-events: auto;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .promo[data-ready] .promo__panel {
+    transition: opacity 360ms ease, transform 420ms ease, visibility 0s linear 420ms;
+  }
+  .promo[data-ready] .promo__panel.is-current {
+    transition: opacity 420ms ease 120ms, transform 480ms ease 120ms, visibility 0s;
+  }
+}
+
+.promo__dots {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 1.25rem;
+}
+.promo__dot {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.promo__dot-bar {
+  display: block;
+  width: 22px;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.3);
+  transition: background-color 200ms ease, width 200ms ease;
+}
+.promo__dot:hover .promo__dot-bar { background: rgba(255, 255, 255, 0.6); }
+.promo__dot[aria-current='true'] .promo__dot-bar { background: var(--yellow); width: 34px; }
+
+@media (max-width: 60rem) {
+  .promo__stage { min-height: 17rem; }
+  .promo__turn { width: min(82%, 15rem); }
+}
+
 .featured__item {
   display: grid;
   grid-template-columns: 7.5rem minmax(0, 1fr);

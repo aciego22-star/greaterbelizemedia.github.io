@@ -5,6 +5,7 @@ import {
   sectionHead, crumbs, notice, brandCard, categoryCard, divisionPanel, repCard, placeholderNote, plate,
 } from './partials.mjs';
 import { heroCarousel } from './hero.mjs';
+import { promoShowcase } from './promo.mjs';
 
 const localeCopy = (obj, locale) => obj[locale] ?? obj.en;
 
@@ -13,7 +14,7 @@ const localeCopy = (obj, locale) => obj[locale] ?? obj.en;
  * ------------------------------------------------------------------ */
 
 export function home(ctx) {
-  const { i18n, locale, company, catalog, images, productArt, campaign, campaignImages, video } = ctx;
+  const { i18n, locale, company, catalog, images, productArt, campaign, campaignImages, video, featured } = ctx;
   const c = i18n.home;
 
   // The document heading is stable; the carousel headlines are section-level,
@@ -50,7 +51,7 @@ export function home(ctx) {
   const kelloggs = catalog.brands.find((b) => b.slug === 'kelloggs');
   const industriesDivision = company.divisions.find((d) => d.slug === 'vegas-industries');
 
-  const featured =
+  const featuredBand =
     `<section class="band"><div class="shell">` +
     `<div class="band-head"><div class="band-head__text">` +
     `<p class="eyebrow">${esc(c.featuredEyebrow)}</p>` +
@@ -60,16 +61,7 @@ export function home(ctx) {
     `<a class="btn btn--outline" href="${link(locale, ROUTES.brands)}">${esc(c.categoriesAction)}</a>` +
     `</div>` +
     `<div class="featured reveal">` +
-    `<article class="featured__lead">` +
-    `<figure>${picture(productArt['bop-cans'], { alt: '', sizes: '(max-width: 60rem) 92vw, 375px' })}</figure>` +
-    `<div class="featured__lead-body">` +
-    `<p class="eyebrow" style="color:var(--yellow)">${esc(c.featuredLeadNote)}</p>` +
-    `<h3>${esc(c.featuredLeadTitle)}</h3>` +
-    `<p>${esc(c.featuredLeadBody)}</p>` +
-    `<div class="actions">` +
-    `<a class="btn btn--primary" href="${link(locale, `${ROUTES.products}/bop`)}">${esc(i18n.actions.viewBrand)}</a>` +
-    `<a class="btn btn--onDark" href="mailto:${esc(company.email)}?subject=${encodeURIComponent('BOP enquiry')}">${esc(i18n.actions.enquire)}</a>` +
-    `</div></div></article>` +
+    promoShowcase({ i18n, locale, productArt, featured, company }) +
     featuredItem(
       kelloggs,
       images.brands.kelloggs?.photos?.[0],
@@ -245,11 +237,11 @@ export function home(ctx) {
     .join('');
 
   return {
-    body: hero + trust + featured + divisions + categories + gateway + cta,
+    body: hero + trust + featuredBand + divisions + categories + gateway + cta,
     bodyClass: 'home',
     pageStyles: ['hero.css'],
     extraHead: preload,
-    pageScripts: ['hero.js'],
+    pageScripts: ['hero.js', 'promo.js'],
   };
 }
 
