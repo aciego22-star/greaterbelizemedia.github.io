@@ -1,0 +1,282 @@
+{
+  "careers-head-mechanic": {
+    "base": "assets/whats-new",
+    "width": 940,
+    "height": 788,
+    "avif": [
+      {
+        "file": "careers-head-mechanic-420.avif",
+        "width": 420,
+        "height": 352
+      },
+      {
+        "file": "careers-head-mechanic-840.avif",
+        "width": 840,
+        "height": 704
+      },
+      {
+        "file": "careers-head-mechanic-940.avif",
+        "width": 940,
+        "height": 788
+      }
+    ],
+    "webp": [
+      {
+        "file": "careers-head-mechanic-420.webp",
+        "width": 420,
+        "height": 352
+      },
+      {
+        "file": "careers-head-mechanic-840.webp",
+        "width": 840,
+        "height": 704
+      },
+      {
+        "file": "careers-head-mechanic-940.webp",
+        "width": 940,
+        "height": 788
+      }
+    ],
+    "fallback": [
+      {
+        "file": "careers-head-mechanic-420.jpg",
+        "width": 420,
+        "height": 352
+      },
+      {
+        "file": "careers-head-mechanic-840.jpg",
+        "width": 840,
+        "height": 704
+      },
+      {
+        "file": "careers-head-mechanic-940.jpg",
+        "width": 940,
+        "height": 788
+      }
+    ]
+  },
+  "careers-sales-representative": {
+    "base": "assets/whats-new",
+    "width": 1080,
+    "height": 1350,
+    "avif": [
+      {
+        "file": "careers-sales-representative-420.avif",
+        "width": 420,
+        "height": 525
+      },
+      {
+        "file": "careers-sales-representative-840.avif",
+        "width": 840,
+        "height": 1050
+      },
+      {
+        "file": "careers-sales-representative-1080.avif",
+        "width": 1080,
+        "height": 1350
+      }
+    ],
+    "webp": [
+      {
+        "file": "careers-sales-representative-420.webp",
+        "width": 420,
+        "height": 525
+      },
+      {
+        "file": "careers-sales-representative-840.webp",
+        "width": 840,
+        "height": 1050
+      },
+      {
+        "file": "careers-sales-representative-1080.webp",
+        "width": 1080,
+        "height": 1350
+      }
+    ],
+    "fallback": [
+      {
+        "file": "careers-sales-representative-420.jpg",
+        "width": 420,
+        "height": 525
+      },
+      {
+        "file": "careers-sales-representative-840.jpg",
+        "width": 840,
+        "height": 1050
+      },
+      {
+        "file": "careers-sales-representative-1080.jpg",
+        "width": 1080,
+        "height": 1350
+      }
+    ]
+  },
+  "careers-senior-accountant": {
+    "base": "assets/whats-new",
+    "width": 1080,
+    "height": 1350,
+    "avif": [
+      {
+        "file": "careers-senior-accountant-420.avif",
+        "width": 420,
+        "height": 525
+      },
+      {
+        "file": "careers-senior-accountant-840.avif",
+        "width": 840,
+        "height": 1050
+      },
+      {
+        "file": "careers-senior-accountant-1080.avif",
+        "width": 1080,
+        "height": 1350
+      }
+    ],
+    "webp": [
+      {
+        "file": "careers-senior-accountant-420.webp",
+        "width": 420,
+        "height": 525
+      },
+      {
+        "file": "careers-senior-accountant-840.webp",
+        "width": 840,
+        "height": 1050
+      },
+      {
+        "file": "careers-senior-accountant-1080.webp",
+        "width": 1080,
+        "height": 1350
+      }
+    ],
+    "fallback": [
+      {
+        "file": "careers-senior-accountant-420.jpg",
+        "width": 420,
+        "height": 525
+      },
+      {
+        "file": "careers-senior-accountant-840.jpg",
+        "width": 840,
+        "height": 1050
+      },
+      {
+        "file": "careers-senior-accountant-1080.jpg",
+        "width": 1080,
+        "height": 1350
+      }
+    ]
+  },
+  "ina-win-your-dream-kitchen": {
+    "base": "assets/whats-new",
+    "width": 1638,
+    "height": 2048,
+    "avif": [
+      {
+        "file": "ina-win-your-dream-kitchen-420.avif",
+        "width": 420,
+        "height": 525
+      },
+      {
+        "file": "ina-win-your-dream-kitchen-840.avif",
+        "width": 840,
+        "height": 1050
+      },
+      {
+        "file": "ina-win-your-dream-kitchen-1638.avif",
+        "width": 1638,
+        "height": 2048
+      }
+    ],
+    "webp": [
+      {
+        "file": "ina-win-your-dream-kitchen-420.webp",
+        "width": 420,
+        "height": 525
+      },
+      {
+        "file": "ina-win-your-dream-kitchen-840.webp",
+        "width": 840,
+        "height": 1050
+      },
+      {
+        "file": "ina-win-your-dream-kitchen-1638.webp",
+        "width": 1638,
+        "height": 2048
+      }
+    ],
+    "fallback": [
+      {
+        "file": "ina-win-your-dream-kitchen-420.jpg",
+        "width": 420,
+        "height": 525
+      },
+      {
+        "file": "ina-win-your-dream-kitchen-840.jpg",
+        "width": 840,
+        "height": 1050
+      },
+      {
+        "file": "ina-win-your-dream-kitchen-1638.jpg",
+        "width": 1638,
+        "height": 2048
+      }
+    ]
+  },
+  "september-gift-basket-raffle": {
+    "base": "assets/whats-new",
+    "width": 1414,
+    "height": 1904,
+    "avif": [
+      {
+        "file": "september-gift-basket-raffle-420.avif",
+        "width": 420,
+        "height": 566
+      },
+      {
+        "file": "september-gift-basket-raffle-840.avif",
+        "width": 840,
+        "height": 1131
+      },
+      {
+        "file": "september-gift-basket-raffle-1414.avif",
+        "width": 1414,
+        "height": 1904
+      }
+    ],
+    "webp": [
+      {
+        "file": "september-gift-basket-raffle-420.webp",
+        "width": 420,
+        "height": 566
+      },
+      {
+        "file": "september-gift-basket-raffle-840.webp",
+        "width": 840,
+        "height": 1131
+      },
+      {
+        "file": "september-gift-basket-raffle-1414.webp",
+        "width": 1414,
+        "height": 1904
+      }
+    ],
+    "fallback": [
+      {
+        "file": "september-gift-basket-raffle-420.jpg",
+        "width": 420,
+        "height": 566
+      },
+      {
+        "file": "september-gift-basket-raffle-840.jpg",
+        "width": 840,
+        "height": 1131
+      },
+      {
+        "file": "september-gift-basket-raffle-1414.jpg",
+        "width": 1414,
+        "height": 1904
+      }
+    ]
+  }
+}

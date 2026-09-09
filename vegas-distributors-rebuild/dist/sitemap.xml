@@ -43,6 +43,20 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.vegasdistributors.bz/wines-and-spirits/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.vegasdistributors.bz/wines-and-spirits/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.vegasdistributors.bz/es/vinos-y-licores/"/>
+    <lastmod>2026-09-09</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.vegasdistributors.bz/whats-new/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.vegasdistributors.bz/whats-new/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.vegasdistributors.bz/es/novedades/"/>
+    <lastmod>2026-09-09</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.vegasdistributors.bz/gallery/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.vegasdistributors.bz/gallery/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://www.vegasdistributors.bz/es/gallery/"/>
@@ -361,6 +375,20 @@
     <loc>https://www.vegasdistributors.bz/es/brands/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.vegasdistributors.bz/brands/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://www.vegasdistributors.bz/es/brands/"/>
+    <lastmod>2026-09-09</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.vegasdistributors.bz/es/vinos-y-licores/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.vegasdistributors.bz/wines-and-spirits/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.vegasdistributors.bz/es/vinos-y-licores/"/>
+    <lastmod>2026-09-09</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.vegasdistributors.bz/es/novedades/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.vegasdistributors.bz/whats-new/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.vegasdistributors.bz/es/novedades/"/>
     <lastmod>2026-09-09</lastmod>
     <priority>0.8</priority>
   </url>

@@ -1,0 +1,52 @@
+{
+  "$comment": "Everything here is traceable to something the client supplied. The intro paraphrases company.json's own history entry. The brand names and variants are read off the client's own hero artwork and the September raffle flyer. The venue list is read off the on-screen titles in the client's own campaign video. Nothing states availability, sizes, prices, strengths or distribution rights, because no supplied source states them.",
+  "brands": [
+    {
+      "id": "jarana",
+      "name": "Tequila Jarana",
+      "kind": "tequila",
+      "variants": ["Blanco", "Reposado"],
+      "source": "Wines & Spirits hero artwork; September gift basket flyer; Score with Jarana campaign video"
+    },
+    {
+      "id": "whitley-neill",
+      "name": "Whitley Neill Gin",
+      "kind": "gin",
+      "variants": [
+        "Small Batch",
+        "Aloe & Cucumber",
+        "Rhubarb & Ginger",
+        "Blood Orange",
+        "Raspberry",
+        "Black Cherry",
+        "Parma Violet",
+        "Blackberry"
+      ],
+      "source": "Wines & Spirits hero artwork"
+    },
+    {
+      "id": "flamingo",
+      "name": "Flamingo",
+      "kind": "liqueur",
+      "variants": ["Triple Sec", "Fresa", "Blue Curacao"],
+      "source": "September gift basket flyer"
+    },
+    {
+      "id": "santa-carolina",
+      "name": "Santa Carolina",
+      "kind": "wine",
+      "variants": ["Reservado Sweet"],
+      "source": "September gift basket flyer"
+    }
+  ],
+  "campaign": {
+    "id": "score-with-jarana",
+    "name": "Score with Jarana",
+    "venues": [
+      { "name": "Maximum Pink's Cafe", "town": "Corozal" },
+      { "name": "Lamanai Riverside Retreat", "town": "Orange Walk" },
+      { "name": "Chill Out Restaurant & Bar", "town": "Benque Viejo" }
+    ],
+    "sourceNote": "Venue names read from the on-screen titles in the supplied campaign video. The video states no dates, prizes or entry rules, so none are published here."
+  }
+}

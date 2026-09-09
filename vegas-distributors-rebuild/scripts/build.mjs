@@ -12,10 +12,12 @@ import { readFileSync, writeFileSync, mkdirSync, rmSync, cpSync, existsSync, rea
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { ROUTES, routePath, absoluteUrl, page } from './lib/layout.mjs';
+import { ROUTES, routeIn, routeAll, routePath, absoluteUrl, page } from './lib/layout.mjs';
 import * as core from './lib/pages.mjs';
 import * as cat from './lib/pages-catalog.mjs';
 import { galleryPage } from './lib/gallery.mjs';
+import { whatsNewPage } from './lib/pages-whats-new.mjs';
+import { winesPage } from './lib/pages-wines.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = join(ROOT, 'dist');
@@ -25,8 +27,13 @@ const site = read('data/site.json');
 const company = read('data/company.json');
 const catalog = read('data/catalog.json');
 const images = read('data/images.json');
-const heroes = read('data/heroes.json');
+const productArt = read('data/product-art.json');
 const campaign = read('data/campaign.json');
+const campaignImages = read('data/campaign-images.json');
+const video = read('data/video.json');
+const whatsNew = read('data/whats-new.json');
+const whatsNewImages = read('data/whats-new-images.json');
+const wines = read('data/wines-and-spirits.json');
 const gallery = read('data/gallery.json');
 const galleryImages = read('data/gallery-images.json');
 const locales = { en: read('i18n/en.json'), es: read('i18n/es.json') };
@@ -90,9 +97,14 @@ const breadcrumbSchema = (locale, trail) => ({
 
 for (const locale of LOCALES) {
   const i18n = locales[locale];
-  const base = { site, i18n, locale, company, catalog, images, heroes, campaign, gallery, galleryImages };
+  const base = { site, i18n, locale, company, catalog, images, productArt, campaign, campaignImages,
+    video, whatsNew, whatsNewImages, wines, gallery, galleryImages };
 
-  const render = (key, path, meta, result, structuredData = []) => {
+  const render = (key, route, meta, result, structuredData = []) => {
+    // A route is either one path shared by both languages or one path per
+    // language; the alternates and the language switch need to know which.
+    const path = routeIn(locale, route);
+    const localePaths = typeof route === 'string' ? undefined : routeAll(route);
     const outPath = routePath(locale, path);
     writePage(
       outPath,
@@ -100,6 +112,7 @@ for (const locale of LOCALES) {
         ...base,
         current: key,
         path,
+        localePaths,
         outPath,
         title: meta.title,
         description: meta.description,
@@ -151,6 +164,16 @@ for (const locale of LOCALES) {
     breadcrumbSchema(locale, crumbTrail({ name: i18n.nav.brands, path: ROUTES.brands })),
   ]);
 
+  render('wines', ROUTES.wines,
+    { title: i18n.wines.title, description: i18n.wines.description },
+    winesPage(base),
+    [breadcrumbSchema(locale, crumbTrail({ name: i18n.nav.wines, path: routeIn(locale, ROUTES.wines) }))]);
+
+  render('whatsNew', ROUTES.whatsNew,
+    { title: i18n.whatsNew.title, description: i18n.whatsNew.description },
+    whatsNewPage(base),
+    [breadcrumbSchema(locale, crumbTrail({ name: i18n.nav.whatsNewFull, path: routeIn(locale, ROUTES.whatsNew) }))]);
+
   render('gallery', ROUTES.gallery,
     { title: i18n.gallery.title, description: i18n.gallery.description },
     galleryPage(base),
@@ -193,7 +216,7 @@ for (const locale of LOCALES) {
 {
   const locale = 'en';
   const i18n = locales[locale];
-  const result = cat.notFound({ site, i18n, locale, company, catalog, images, heroes, campaign, gallery, galleryImages });
+  const result = cat.notFound({ site, i18n, locale, company, catalog, images, productArt, campaign, gallery, galleryImages });
   const html = page({
     site, i18n, locale, company, catalog, images,
     current: null,
@@ -218,17 +241,24 @@ cpSync(join(ROOT, 'src', 'styles'), join(DIST, 'assets', 'styles'), { recursive:
 cpSync(join(ROOT, 'src', 'js'), join(DIST, 'assets', 'js'), { recursive: true });
 cpSync(join(ROOT, 'src', 'assets', 'fonts'), join(DIST, 'assets', 'fonts'), { recursive: true });
 cpSync(join(ROOT, 'src', 'assets', 'images'), join(DIST, 'assets', 'images'), { recursive: true });
-cpSync(join(ROOT, 'src', 'assets', 'heroes'), join(DIST, 'assets', 'heroes'), { recursive: true });
+cpSync(join(ROOT, 'src', 'assets', 'product-art'), join(DIST, 'assets', 'product-art'), { recursive: true });
 cpSync(join(ROOT, 'src', 'assets', 'gallery'), join(DIST, 'assets', 'gallery'), { recursive: true });
+cpSync(join(ROOT, 'src', 'assets', 'campaign'), join(DIST, 'assets', 'campaign'), { recursive: true });
+cpSync(join(ROOT, 'src', 'assets', 'whats-new'), join(DIST, 'assets', 'whats-new'), { recursive: true });
+// The owner's original stays in src; only the web derivatives are published.
+cpSync(join(ROOT, 'src', 'assets', 'video'), join(DIST, 'assets', 'video'), { recursive: true });
 
 /* ------------------------------------------------------------------ *
  * sitemap.xml, robots.txt, Netlify config
  * ------------------------------------------------------------------ */
 
 // The /products/ alias is deliberately absent: it redirects to /brands/.
+// Entries are route definitions, so the two routes whose path differs by
+// language carry the right URL and the right alternates in each locale.
 const routeList = [
   ROUTES.home, ROUTES.about, ROUTES.divisions, ROUTES.industries, ROUTES.lubricants,
-  ROUTES.brands, ROUTES.gallery, ...catalog.brands.map((b) => `${ROUTES.products}/${b.slug}`),
+  ROUTES.brands, ROUTES.wines, ROUTES.whatsNew, ROUTES.gallery,
+  ...catalog.brands.map((b) => `${ROUTES.products}/${b.slug}`),
   ROUTES.network, ROUTES.contact,
 ];
 
@@ -238,9 +268,10 @@ const sitemap =
   `<?xml version="1.0" encoding="UTF-8"?>\n` +
   `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n` +
   LOCALES.flatMap((locale) =>
-    routeList.map((path) => {
+    routeList.map((route) => {
+      const path = routeIn(locale, route);
       const alternates = LOCALES.map(
-        (l) => `    <xhtml:link rel="alternate" hreflang="${l}" href="${absoluteUrl(site, l, path)}"/>`
+        (l) => `    <xhtml:link rel="alternate" hreflang="${l}" href="${absoluteUrl(site, l, routeIn(l, route))}"/>`
       ).join('\n');
       const priority = path === ROUTES.home ? '1.0' : path.includes('/') ? '0.6' : '0.8';
       return (

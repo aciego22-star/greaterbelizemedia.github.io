@@ -1,0 +1,205 @@
+/* --------------------------------------------------------------------------
+   What's New at Vega's Distributors
+
+   An editorial grid over the house navy and cobalt, with the client's own
+   flyers carried whole rather than cropped into thumbnails.
+   -------------------------------------------------------------------------- */
+
+.wn-hero { position: relative; background: var(--deep); }
+.wn-hero__art,
+.wn-hero__art img {
+  display: block;
+  width: 100%;
+}
+/* Shown whole. Cropping it to a band would cut into the headline and the
+   branding the composition was built around. */
+.wn-hero__art img { height: auto; }
+
+.wn-intro { max-width: 62rem; }
+.wn-intro h1 { margin: 0 0 0.6rem; }
+.wn-intro .lead { margin: 0; max-width: 54ch; }
+
+/* --------------------------------------------------------------------------
+   Filters
+
+   The chips belong to the list below them, so the two sit close together rather
+   than each carrying a full band's worth of space.
+   -------------------------------------------------------------------------- */
+
+.wn-filter-band { padding-block: clamp(1.75rem, 3.5vw, 2.5rem) 0; }
+[data-wn-section] { padding-top: clamp(1.5rem, 3vw, 2.25rem); }
+
+.wn-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.wn-chip {
+  min-height: 44px;
+  padding: 0 1.05rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink-soft);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+}
+.wn-chip:hover { border-color: var(--ink-soft); color: var(--ink); }
+.wn-chip[aria-pressed='true'] {
+  background: var(--deep);
+  border-color: var(--deep);
+  color: #fff;
+}
+
+/* --------------------------------------------------------------------------
+   Cards
+   -------------------------------------------------------------------------- */
+
+.wn-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
+  gap: clamp(1.1rem, 2.4vw, 1.8rem);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.wn-card > article {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #fff;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06), 0 12px 30px rgba(16, 24, 40, 0.08);
+  transition: transform 260ms cubic-bezier(0.2, 0.7, 0.3, 1), box-shadow 260ms ease;
+}
+
+/* A small lift on hover, and the same lift as cards arrive. Both are motion,
+   so both stop when a visitor asks for less of it. */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .wn-card > article:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06), 0 22px 46px rgba(16, 24, 40, 0.14);
+  }
+}
+
+.wn-card__media {
+  position: relative;
+  background: var(--deep);
+}
+.wn-card__image,
+.wn-card__image img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.wn-card__badge {
+  position: absolute;
+  left: 0.85rem;
+  top: 0.85rem;
+  margin: 0;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: #fff;
+  color: var(--ink);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+.wn-card__badge--open { background: var(--yellow); color: #201f1c; }
+.wn-card__badge--running { background: var(--red); color: #fff; }
+.wn-card__badge--ended { background: #e9eaec; color: var(--slate); }
+
+.wn-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: clamp(1rem, 2vw, 1.35rem);
+  flex: 1 1 auto;
+}
+
+.wn-card__kicker {
+  margin: 0;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--red);
+}
+.wn-card__body h3 { margin: 0; font-size: clamp(1.15rem, 1.7vw, 1.4rem); }
+.wn-card__when { margin: 0; font-size: 0.9rem; color: var(--slate); font-weight: 600; }
+.wn-card__summary { margin: 0; color: var(--ink-soft); }
+
+.wn-card__more { margin-top: auto; }
+.wn-card__more summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--ink);
+  padding: 0.55rem 0;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.wn-card__more summary::marker { color: var(--red); }
+
+.wn-card__detail { padding-bottom: 0.35rem; }
+.wn-card__block + .wn-card__block { margin-top: 0.85rem; }
+.wn-card__block h4 {
+  margin: 0 0 0.35rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+.wn-card__block ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 0.3rem;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+.wn-card__note {
+  margin: 0.85rem 0 0;
+  font-size: 0.9rem;
+  color: var(--slate);
+}
+
+.wn-card__actions { padding-top: 0.35rem; }
+
+.wn-card.is-ended > article { opacity: 0.92; }
+.wn-card.is-ended .wn-card__image img { filter: saturate(0.72); }
+
+.wn-empty {
+  margin: 1.5rem 0 0;
+  color: var(--slate);
+}
+
+/* --------------------------------------------------------------------------
+   Arrival
+
+   Cards settle into place as the grid comes into view. The class that starts it
+   is added by script, so a page without JavaScript shows every card outright.
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .wn-grid.is-armed .wn-card > article {
+    opacity: 0;
+    transform: translateY(18px) perspective(900px) rotateX(4deg);
+  }
+  .wn-grid.is-armed .wn-card.is-in > article {
+    opacity: 1;
+    transform: none;
+    transition: opacity 520ms ease, transform 620ms cubic-bezier(0.2, 0.7, 0.3, 1);
+    transition-delay: var(--wn-delay, 0ms);
+  }
+}

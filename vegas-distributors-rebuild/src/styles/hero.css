@@ -1,230 +1,200 @@
-/* ==========================================================================
-   Immersive campaign hero
-   Full-bleed stages with every word in HTML. Slides stack in one grid cell so
-   the first slide is complete before any script runs.
-   ========================================================================== */
+/* --------------------------------------------------------------------------
+   Campaign hero
+
+   The artwork is finished work: a landscape cut for wide screens and a portrait
+   cut for phones. Nothing is drawn over it except one call to action, so the
+   slide is mostly a frame around a picture that must never be stretched or
+   have its subject cropped away.
+   -------------------------------------------------------------------------- */
 
 .hero {
   position: relative;
   isolation: isolate;
   background: var(--deep);
-  overflow: hidden;
-  min-height: 82svh;
+  overflow: clip;
+}
+
+/* The landscape artwork is 16:9. Matching the slide to it means the whole
+   composition is visible on a wide screen with nothing cropped, and the height
+   is known before the image arrives, so nothing shifts. */
+.hero-track {
+  position: relative;
+  aspect-ratio: 1672 / 941;
+  max-height: min(880px, 100svh);
+  min-height: 30rem;
 }
 
 @supports not (height: 1svh) {
-  .hero { min-height: 82vh; }
+  .hero-track { max-height: min(880px, 100vh); }
 }
-
-@media (min-width: 60rem) {
-  .hero { min-height: min(900px, 100svh); }
-  @supports not (height: 1svh) {
-    .hero { min-height: min(900px, 100vh); }
-  }
-}
-
-.hero-track { display: grid; min-height: inherit; }
 
 .hero-slide {
-  grid-area: 1 / 1;
-  position: relative;
-  display: flex;
-  align-items: center;
-  min-height: inherit;
-}
-
-/* Before the script runs only the first slide exists visually. */
-.hero-slide[data-inert='true'] { visibility: hidden; }
-.hero[data-ready] .hero-slide { visibility: hidden; }
-.hero[data-ready] .hero-slide.is-current { visibility: visible; }
-
-/* Media sits in its own layer so parallax moves the picture, never the copy. */
-.hero-slide__media {
-  position: absolute;
-  inset: -6% 0;
-  will-change: transform;
-}
-.hero-bg, .hero-bg img { display: block; width: 100%; height: 100%; }
-.hero-bg img {
-  object-fit: cover;
-  /* Art direction per slide rather than one global crop. */
-  object-position: var(--pos-narrow, 50% 50%);
-}
-@media (min-width: 60rem) {
-  .hero-bg img { object-position: var(--pos-wide, 50% 50%); }
-}
-
-/* Directional scrim. Measured so the whole copy block clears AA on every
-   stage, including the bright Blanca Max blue. */
-.hero-slide__scrim {
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(100deg, rgba(5, 6, 8, 0.95) 0%, rgba(5, 6, 8, 0.92) 38%,
-      rgba(5, 6, 8, 0.78) 54%, rgba(5, 6, 8, 0.36) 74%, rgba(5, 6, 8, 0.06) 90%,
-      rgba(5, 6, 8, 0) 100%);
-}
-.hero-slide--blue .hero-slide__scrim {
-  background:
-    linear-gradient(100deg, rgba(2, 20, 52, 0.95) 0%, rgba(2, 20, 52, 0.92) 38%,
-      rgba(2, 20, 52, 0.78) 54%, rgba(2, 20, 52, 0.36) 74%, rgba(2, 20, 52, 0.06) 90%,
-      rgba(2, 20, 52, 0) 100%);
-}
-/* The ILB sunrise sits close to the copy column, so this stage holds its dark
-   field further across before releasing the scene. */
-.hero-slide--graphite .hero-slide__scrim {
-  background:
-    linear-gradient(100deg, rgba(8, 10, 13, 0.96) 0%, rgba(8, 10, 13, 0.95) 46%,
-      rgba(8, 10, 13, 0.88) 58%, rgba(8, 10, 13, 0.5) 74%, rgba(8, 10, 13, 0.12) 90%,
-      rgba(8, 10, 13, 0) 100%);
+  display: block;
 }
 
-@media (max-width: 60rem) {
-  .hero-slide__scrim {
-    background:
-      linear-gradient(180deg, rgba(5, 6, 8, 0.92) 0%, rgba(5, 6, 8, 0.86) 44%,
-        rgba(5, 6, 8, 0.66) 72%, rgba(5, 6, 8, 0.5) 100%);
-  }
-  .hero-slide--blue .hero-slide__scrim {
-    background:
-      linear-gradient(180deg, rgba(2, 20, 52, 0.92) 0%, rgba(2, 20, 52, 0.86) 44%,
-        rgba(2, 20, 52, 0.66) 72%, rgba(2, 20, 52, 0.5) 100%);
-  }
-  .hero-slide--graphite .hero-slide__scrim {
-    background:
-      linear-gradient(180deg, rgba(8, 10, 13, 0.92) 0%, rgba(8, 10, 13, 0.86) 44%,
-        rgba(8, 10, 13, 0.66) 72%, rgba(8, 10, 13, 0.5) 100%);
-  }
+/* Before the script runs only the first slide is rendered, so a hero without
+   JavaScript is one complete campaign rather than a stack. The slides stay
+   absolute either way: the track already reserves the height. */
+.hero:not([data-ready]) .hero-slide[data-inert] { display: none; }
+
+.hero[data-ready] .hero-slide {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 700ms cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear 700ms;
+}
+.hero[data-ready] .hero-slide.is-current {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 700ms cubic-bezier(0.4, 0, 0.2, 1), visibility 0s;
+}
+
+.hero-slide__media {
+  position: absolute;
+  inset: 0;
+}
+
+.campaign-art,
+.campaign-art img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.campaign-art img { object-fit: cover; object-position: 50% 50%; }
+
+/* The whole slide is a target for a pointer. It sits under the footer bar so
+   the real button still receives its own press. */
+.hero-slide__hit {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/* The call to action and the carousel controls sit over whatever the artwork
+   happens to put at the foot of the frame, which differs from campaign to
+   campaign. A soft gradient along the bottom edge keeps both readable without
+   dimming the picture itself. */
+.hero-track::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 42%;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(6, 7, 9, 0) 0%, rgba(6, 7, 9, 0.28) 46%, rgba(6, 7, 9, 0.76) 100%);
 }
 
 /* --------------------------------------------------------------------------
-   Copy
+   Call to action
    -------------------------------------------------------------------------- */
 
-/* Deliberately unpositioned: the product stage lives inside this column for
-   mobile flow, but positions against the full-bleed slide on desktop. */
-.hero-slide__inner {
-  width: 100%;
-  /* Wider than the site shell: the stage layers are anchored to fixed points
-     in the artwork, so a narrow centred column would push the copy into them
-     on large screens. */
-  max-width: 1600px;
-  padding-block: clamp(4rem, 10vw, 7rem) clamp(6rem, 12vw, 8rem);
+.hero-slide__foot {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: clamp(4.5rem, 9vh, 6.5rem);
+  z-index: 3;
+  pointer-events: none;
 }
-
-/* The stage layers sit over pedestals fixed in the artwork, so the copy column
-   is what yields: it never grows into the product's half of the frame. */
-.hero-slide__copy {
-  position: relative;
-  z-index: 2;
-  max-width: 650px;
-  color: #fff;
-}
-@media (min-width: 60rem) {
-  .hero-slide__copy { max-width: min(650px, 42vw); }
-}
-@media (min-width: 100rem) {
-  .hero-slide__copy { max-width: 650px; }
-}
-
-.hero-eyebrow {
+.hero-slide__foot-inner {
   display: flex;
   align-items: center;
-  gap: 0.7rem;
-  font-family: var(--display);
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  color: var(--yellow);
-  margin: 0 0 1.1rem;
+  gap: 0.75rem;
+  flex-wrap: wrap;
 }
-.hero-eyebrow::before { content: ''; width: 32px; height: 3px; background: var(--yellow); flex: 0 0 auto; }
+.hero-slide__foot-inner > * { pointer-events: auto; }
 
-.hero-headline {
-  font-family: var(--display);
-  font-weight: 700;
-  font-size: clamp(2.6rem, 1.35rem + 4.1vw, 5.25rem);
-  line-height: 1.01;
-  letter-spacing: -0.028em;
-  color: #fff;
-  margin: 0 0 1.15rem;
-  text-wrap: balance;
-  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.4);
-}
-
-.hero-body {
-  font-size: clamp(1.04rem, 0.96rem + 0.34vw, 1.24rem);
-  line-height: 1.55;
-  color: rgba(255, 255, 255, 0.92);
-  max-width: 46ch;
-  margin: 0 0 2rem;
-}
-
-.hero-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; }
-
+.hero-slide__cta { box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45); }
 
 /* --------------------------------------------------------------------------
-   Product stage
-   Exact artwork placed over the pedestal each background reserves.
+   The film
+
+   Portrait footage inside a landscape frame. It is shown whole at its own
+   proportions against a blurred, darkened copy of its own poster, so nothing is
+   stretched and no part of the picture is thrown away.
    -------------------------------------------------------------------------- */
 
-.hero-stage {
+.hero-video {
   position: absolute;
-  z-index: 1;
-  left: var(--stage-left);
-  top: var(--stage-top);
-  width: var(--stage-width);
-  max-width: var(--stage-max);
-  transform: translate(-50%, -50%);
-  will-change: transform;
+  inset: 0;
   display: grid;
-  justify-items: center;
-  gap: 0.6rem;
+  place-items: center;
+  background: #07080a;
 }
-/* Source artwork carries its own white ground, so it is presented as a
-   deliberate product plate rather than left as a bare rectangle. */
-.hero-stage__art {
-  width: 100%;
-  background: #fff;
-  border-radius: 16px;
-  padding: 0.6rem;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.25);
-}
-.hero-stage__art img {
-  width: 100%;
-  height: auto;
-  border-radius: 9px;
-}
-.hero-stage__mark {
-  display: block;
-  width: min(70%, 150px);
-  background: rgba(255, 255, 255, 0.94);
-  border-radius: 10px;
-  padding: 0.4rem 0.6rem;
-}
-.hero-stage__mark img { width: 100%; height: auto; }
 
-@media (max-width: 60rem) {
-  /* Below the breakpoint the pedestal is cropped out of frame, so the artwork
-     joins the content flow beneath the copy instead of floating over the
-     scene, where it would land on top of the header. */
-  .hero-slide { align-items: flex-start; }
-  .hero-slide__inner {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1.75rem;
-    padding-block: clamp(3rem, 12vw, 4rem) 6rem;
-  }
-  .hero-slide__copy { order: 1; }
-  .hero-stage {
-    position: static;
-    transform: none;
-    width: min(58%, 15rem);
-    max-width: none;
-    justify-items: start;
-    order: 2;
-  }
+.hero-video__backdrop {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.hero-video__backdrop img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.18);
+  filter: blur(38px) saturate(1.15) brightness(0.42);
+}
+
+.hero-video__frame {
+  position: relative;
+  height: 100%;
+  aspect-ratio: 9 / 16;
+  max-width: 100%;
+  overflow: hidden;
+  border-radius: 0;
+  box-shadow: 0 0 90px rgba(0, 0, 0, 0.6);
+}
+
+.hero-video__poster,
+.hero-video__poster img,
+.hero-video__film {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* The poster stays on top until the film is actually running, so a stalled or
+   refused start never shows a black rectangle. */
+.hero-video__poster {
+  z-index: 1;
+  transition: opacity 400ms ease;
+}
+.hero-video.is-playing .hero-video__poster { opacity: 0; }
+
+/* Media controls sit beside the call to action rather than over the picture. */
+.hero-media {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.hero-media__btn {
+  display: grid;
+  place-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(12, 13, 15, 0.62);
+  color: #fff;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+.hero-media__btn svg { width: 22px; height: 22px; }
+.hero-media__btn:hover { background: rgba(12, 13, 15, 0.85); border-color: #fff; }
+.hero-media__btn:active { transform: scale(0.94); }
+
+/* When sound was asked for but the browser refused to start with it, the
+   control says so by standing out rather than by adding another message. */
+.hero-media__btn.is-attention {
+  border-color: var(--yellow);
+  box-shadow: 0 0 0 3px rgba(253, 203, 10, 0.28);
 }
 
 /* --------------------------------------------------------------------------
@@ -235,82 +205,89 @@
   position: absolute;
   left: 0;
   right: 0;
-  bottom: clamp(1.25rem, 3vw, 2.25rem);
-  z-index: 3;
+  bottom: clamp(1rem, 3vh, 1.75rem);
+  z-index: 4;
 }
-.hero-controls__inner { display: flex; align-items: center; gap: 1.25rem; }
+.hero-controls__inner {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
 
+/* Without the script the carousel cannot move, so its controls are not shown. */
 .hero:not([data-ready]) .hero-controls { display: none; }
 
 .hero-nav { display: flex; gap: 0.5rem; }
 
-.hero-dots { display: flex; gap: 0.5rem; }
-
-.hero-dot {
-  width: 52px;
-  min-height: 44px;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  cursor: pointer;
-  display: grid;
+.hero-dots {
+  display: flex;
   align-items: center;
+  gap: 0.5rem;
+}
+.hero-dot {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  padding: 0;
 }
 .hero-dot__bar {
   display: block;
-  height: 3px;
-  border-radius: 3px;
-  background: rgba(255, 255, 255, 0.36);
-  transition: background-color 0.25s var(--ease);
+  width: 30px;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.45);
+  transition: background 200ms ease, width 200ms ease;
 }
-.hero-dot:hover .hero-dot__bar { background: rgba(255, 255, 255, 0.7); }
-.hero-dot[aria-current='true'] .hero-dot__bar { background: var(--yellow); }
-
-.hero-arrow:focus-visible, .hero-dot:focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; }
+.hero-dot:hover .hero-dot__bar { background: rgba(255, 255, 255, 0.75); }
+.hero-dot[aria-current='true'] .hero-dot__bar { background: var(--yellow); width: 46px; }
 
 /* --------------------------------------------------------------------------
-   Motion
+   Narrow screens
+
+   The slide becomes a portrait frame and takes the portrait artwork, which is
+   composed for exactly this shape.
    -------------------------------------------------------------------------- */
 
-@media (prefers-reduced-motion: no-preference) {
-  .hero[data-ready] .hero-slide.is-current { animation: hero-fade 0.7s var(--ease) both; }
-  @keyframes hero-fade { from { opacity: 0; } to { opacity: 1; } }
+@media (max-width: 47.999rem) {
+  .hero-track {
+    aspect-ratio: 941 / 1672;
+    max-height: min(760px, 100svh);
+    min-height: 32rem;
+  }
 
-  .hero[data-ready] .hero-slide.is-current .hero-slide__copy > *,
-  .hero[data-ready] .hero-slide.is-current .hero-stage {
-    animation: hero-rise 0.65s var(--ease) both;
+  @supports not (height: 1svh) {
+    .hero-track { max-height: min(760px, 100vh); }
   }
-  .hero[data-ready] .hero-slide.is-current .hero-eyebrow { animation-delay: 0.06s; }
-  .hero[data-ready] .hero-slide.is-current .hero-headline { animation-delay: 0.13s; }
-  .hero[data-ready] .hero-slide.is-current .hero-body { animation-delay: 0.2s; }
-  .hero[data-ready] .hero-slide.is-current .hero-actions { animation-delay: 0.27s; }
-  .hero[data-ready] .hero-slide.is-current .hero-stage { animation-delay: 0.18s; }
 
-  @keyframes hero-rise {
-    from { opacity: 0; transform: translate3d(0, 18px, 0); }
-    to { opacity: 1; transform: none; }
+  .hero-video__frame {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
   }
-  /* The stage layer is centred by a transform, so it needs its own keyframes. */
-  @media (min-width: 60rem) {
-    .hero[data-ready] .hero-slide.is-current .hero-stage { animation-name: hero-stage-rise; }
-    @keyframes hero-stage-rise {
-      from { opacity: 0; transform: translate(-50%, calc(-50% + 22px)) scale(0.97); }
-      to { opacity: 1; transform: translate(-50%, -50%); }
-    }
-  }
+  .hero-video__backdrop { display: none; }
+
+  .hero-slide__foot { bottom: clamp(4rem, 8vh, 5.5rem); }
+  .hero-slide__foot-inner { gap: 0.6rem; }
+  .hero-slide__cta { flex: 1 1 auto; justify-content: center; }
+  .hero-media__btn { width: 46px; height: 46px; }
+}
+
+/* The tallest phones leave room for the artwork to breathe; the shortest need
+   the call to action to stay clear of the controls. */
+@media (max-width: 47.999rem) and (max-height: 700px) {
+  .hero-track { min-height: 26rem; }
+  .hero-slide__foot { bottom: clamp(3.5rem, 7vh, 4.5rem); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-slide__media { transform: none !important; }
-  .hero-stage { transform: translate(-50%, -50%) !important; }
-}
-@media (prefers-reduced-motion: reduce) and (max-width: 60rem) {
-  .hero-stage { transform: none !important; }
-}
-
-@media (max-width: 26rem) {
-  .hero-headline { font-size: clamp(2.4rem, 1.7rem + 4.2vw, 3rem); }
-  .hero-actions .btn { flex: 1 1 100%; }
-  .hero-controls__inner { gap: 0.75rem; }
-  .hero-dot { width: 38px; }
+  .hero[data-ready] .hero-slide,
+  .hero[data-ready] .hero-slide.is-current,
+  .hero-video__poster {
+    transition: none;
+  }
 }

@@ -1,0 +1,344 @@
+{
+  "bop-campaign-desktop": {
+    "base": "assets/campaign",
+    "orientation": "desktop",
+    "width": 1672,
+    "height": 941,
+    "avif": [
+      {
+        "file": "bop-campaign-desktop-960.avif",
+        "width": 960,
+        "height": 540
+      },
+      {
+        "file": "bop-campaign-desktop-1280.avif",
+        "width": 1280,
+        "height": 720
+      },
+      {
+        "file": "bop-campaign-desktop-1672.avif",
+        "width": 1672,
+        "height": 941
+      }
+    ],
+    "webp": [
+      {
+        "file": "bop-campaign-desktop-960.webp",
+        "width": 960,
+        "height": 540
+      },
+      {
+        "file": "bop-campaign-desktop-1280.webp",
+        "width": 1280,
+        "height": 720
+      },
+      {
+        "file": "bop-campaign-desktop-1672.webp",
+        "width": 1672,
+        "height": 941
+      }
+    ],
+    "fallback": [
+      {
+        "file": "bop-campaign-desktop-960.jpg",
+        "width": 960,
+        "height": 540
+      },
+      {
+        "file": "bop-campaign-desktop-1280.jpg",
+        "width": 1280,
+        "height": 720
+      },
+      {
+        "file": "bop-campaign-desktop-1672.jpg",
+        "width": 1672,
+        "height": 941
+      }
+    ]
+  },
+  "bop-campaign-mobile": {
+    "base": "assets/campaign",
+    "orientation": "mobile",
+    "width": 941,
+    "height": 1672,
+    "avif": [
+      {
+        "file": "bop-campaign-mobile-480.avif",
+        "width": 480,
+        "height": 853
+      },
+      {
+        "file": "bop-campaign-mobile-720.avif",
+        "width": 720,
+        "height": 1279
+      },
+      {
+        "file": "bop-campaign-mobile-941.avif",
+        "width": 941,
+        "height": 1672
+      }
+    ],
+    "webp": [
+      {
+        "file": "bop-campaign-mobile-480.webp",
+        "width": 480,
+        "height": 853
+      },
+      {
+        "file": "bop-campaign-mobile-720.webp",
+        "width": 720,
+        "height": 1279
+      },
+      {
+        "file": "bop-campaign-mobile-941.webp",
+        "width": 941,
+        "height": 1672
+      }
+    ],
+    "fallback": [
+      {
+        "file": "bop-campaign-mobile-480.jpg",
+        "width": 480,
+        "height": 853
+      },
+      {
+        "file": "bop-campaign-mobile-720.jpg",
+        "width": 720,
+        "height": 1279
+      },
+      {
+        "file": "bop-campaign-mobile-941.jpg",
+        "width": 941,
+        "height": 1672
+      }
+    ]
+  },
+  "whats-new-desktop": {
+    "base": "assets/campaign",
+    "orientation": "desktop",
+    "width": 1672,
+    "height": 941,
+    "avif": [
+      {
+        "file": "whats-new-desktop-960.avif",
+        "width": 960,
+        "height": 540
+      },
+      {
+        "file": "whats-new-desktop-1280.avif",
+        "width": 1280,
+        "height": 720
+      },
+      {
+        "file": "whats-new-desktop-1672.avif",
+        "width": 1672,
+        "height": 941
+      }
+    ],
+    "webp": [
+      {
+        "file": "whats-new-desktop-960.webp",
+        "width": 960,
+        "height": 540
+      },
+      {
+        "file": "whats-new-desktop-1280.webp",
+        "width": 1280,
+        "height": 720
+      },
+      {
+        "file": "whats-new-desktop-1672.webp",
+        "width": 1672,
+        "height": 941
+      }
+    ],
+    "fallback": [
+      {
+        "file": "whats-new-desktop-960.jpg",
+        "width": 960,
+        "height": 540
+      },
+      {
+        "file": "whats-new-desktop-1280.jpg",
+        "width": 1280,
+        "height": 720
+      },
+      {
+        "file": "whats-new-desktop-1672.jpg",
+        "width": 1672,
+        "height": 941
+      }
+    ]
+  },
+  "whats-new-mobile": {
+    "base": "assets/campaign",
+    "orientation": "mobile",
+    "width": 941,
+    "height": 1672,
+    "avif": [
+      {
+        "file": "whats-new-mobile-480.avif",
+        "width": 480,
+        "height": 853
+      },
+      {
+        "file": "whats-new-mobile-720.avif",
+        "width": 720,
+        "height": 1279
+      },
+      {
+        "file": "whats-new-mobile-941.avif",
+        "width": 941,
+        "height": 1672
+      }
+    ],
+    "webp": [
+      {
+        "file": "whats-new-mobile-480.webp",
+        "width": 480,
+        "height": 853
+      },
+      {
+        "file": "whats-new-mobile-720.webp",
+        "width": 720,
+        "height": 1279
+      },
+      {
+        "file": "whats-new-mobile-941.webp",
+        "width": 941,
+        "height": 1672
+      }
+    ],
+    "fallback": [
+      {
+        "file": "whats-new-mobile-480.jpg",
+        "width": 480,
+        "height": 853
+      },
+      {
+        "file": "whats-new-mobile-720.jpg",
+        "width": 720,
+        "height": 1279
+      },
+      {
+        "file": "whats-new-mobile-941.jpg",
+        "width": 941,
+        "height": 1672
+      }
+    ]
+  },
+  "wines-and-spirits-desktop": {
+    "base": "assets/campaign",
+    "orientation": "desktop",
+    "width": 1672,
+    "height": 941,
+    "avif": [
+      {
+        "file": "wines-and-spirits-desktop-960.avif",
+        "width": 960,
+        "height": 540
+      },
+      {
+        "file": "wines-and-spirits-desktop-1280.avif",
+        "width": 1280,
+        "height": 720
+      },
+      {
+        "file": "wines-and-spirits-desktop-1672.avif",
+        "width": 1672,
+        "height": 941
+      }
+    ],
+    "webp": [
+      {
+        "file": "wines-and-spirits-desktop-960.webp",
+        "width": 960,
+        "height": 540
+      },
+      {
+        "file": "wines-and-spirits-desktop-1280.webp",
+        "width": 1280,
+        "height": 720
+      },
+      {
+        "file": "wines-and-spirits-desktop-1672.webp",
+        "width": 1672,
+        "height": 941
+      }
+    ],
+    "fallback": [
+      {
+        "file": "wines-and-spirits-desktop-960.jpg",
+        "width": 960,
+        "height": 540
+      },
+      {
+        "file": "wines-and-spirits-desktop-1280.jpg",
+        "width": 1280,
+        "height": 720
+      },
+      {
+        "file": "wines-and-spirits-desktop-1672.jpg",
+        "width": 1672,
+        "height": 941
+      }
+    ]
+  },
+  "wines-and-spirits-mobile": {
+    "base": "assets/campaign",
+    "orientation": "mobile",
+    "width": 941,
+    "height": 1672,
+    "avif": [
+      {
+        "file": "wines-and-spirits-mobile-480.avif",
+        "width": 480,
+        "height": 853
+      },
+      {
+        "file": "wines-and-spirits-mobile-720.avif",
+        "width": 720,
+        "height": 1279
+      },
+      {
+        "file": "wines-and-spirits-mobile-941.avif",
+        "width": 941,
+        "height": 1672
+      }
+    ],
+    "webp": [
+      {
+        "file": "wines-and-spirits-mobile-480.webp",
+        "width": 480,
+        "height": 853
+      },
+      {
+        "file": "wines-and-spirits-mobile-720.webp",
+        "width": 720,
+        "height": 1279
+      },
+      {
+        "file": "wines-and-spirits-mobile-941.webp",
+        "width": 941,
+        "height": 1672
+      }
+    ],
+    "fallback": [
+      {
+        "file": "wines-and-spirits-mobile-480.jpg",
+        "width": 480,
+        "height": 853
+      },
+      {
+        "file": "wines-and-spirits-mobile-720.jpg",
+        "width": 720,
+        "height": 1279
+      },
+      {
+        "file": "wines-and-spirits-mobile-941.jpg",
+        "width": 941,
+        "height": 1672
+      }
+    ]
+  }
+}

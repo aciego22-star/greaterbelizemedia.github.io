@@ -1,0 +1,194 @@
+{
+  "$comment": "Every field below is taken from the client's own flyers, supplied in the September 2026 handoff pack. Nothing is inferred. Where a flyer states no closing date the item carries none and the page says the vacancy is open rather than inventing a deadline. `endsOn` is the date the flyer itself states, and the build moves an item to the archive once that date has passed.",
+  "categories": [
+    { "id": "all", "en": "All", "es": "Todo" },
+    { "id": "promotions", "en": "Promotions & Giveaways", "es": "Promociones y sorteos" },
+    { "id": "careers", "en": "Careers", "es": "Empleos" },
+    { "id": "company", "en": "Company Updates", "es": "Novedades de la empresa" }
+  ],
+  "items": [
+    {
+      "id": "ina-win-your-dream-kitchen",
+      "category": "promotions",
+      "kind": "promotion",
+      "image": "ina-win-your-dream-kitchen",
+      "endsOn": "2026-10-31",
+      "en": {
+        "title": "INA Win Your Dream Kitchen",
+        "kicker": "Promotion",
+        "summary": "Buy any four units of INA pasta, fill out your ticket and place it in the box for a chance to win an appliance. Winners will be announced on October 31st 2026.",
+        "detail": [
+          "For the purchase of any 4 units of INA pasta, fill out your ticket and place it in the box for your chance to win an appliance.",
+          "Winners will be announced on October 31st 2026."
+        ],
+        "imageAlt": "INA Win Your Dream Kitchen flyer showing a stove, refrigerator and microwave alongside INA pasta packs.",
+        "cta": "View details"
+      },
+      "es": {
+        "title": "INA Gana la cocina de tus sueños",
+        "kicker": "Promoción",
+        "summary": "Compre cuatro unidades de pasta INA, llene su boleto y colóquelo en la caja para tener la oportunidad de ganar un electrodoméstico. Los ganadores se anunciarán el 31 de octubre de 2026.",
+        "detail": [
+          "Por la compra de 4 unidades de pasta INA, llene su boleto y colóquelo en la caja para tener la oportunidad de ganar un electrodoméstico.",
+          "Los ganadores se anunciarán el 31 de octubre de 2026."
+        ],
+        "imageAlt": "Volante de INA Gana la cocina de tus sueños con estufa, refrigeradora y microondas junto a paquetes de pasta INA.",
+        "cta": "Ver detalles"
+      }
+    },
+    {
+      "id": "september-gift-basket-raffle",
+      "category": "promotions",
+      "kind": "giveaway",
+      "image": "september-gift-basket-raffle",
+      "endsOn": "2026-09-19",
+      "en": {
+        "title": "September Gift Basket Raffle",
+        "kicker": "Giveaway",
+        "summary": "A gift basket valued at $350 from Vega's Wines & Spirits. The winner is drawn on September 19th.",
+        "detail": [
+          "Follow Vega's Distributors and the new Vega's Wines and Spirits page on Facebook and Instagram.",
+          "Like the giveaway post.",
+          "Tag a friend in the comments. You and your friend must follow the pages.",
+          "Share the post to your story and tag Vega's Distributors for an extra entry.",
+          "Winner drawn September 19th. Basket valued at $350."
+        ],
+        "imageAlt": "September Gift Basket Raffle flyer showing a wrapped gift basket of wines and spirits valued at $350.",
+        "cta": "View entry details"
+      },
+      "es": {
+        "title": "Sorteo de canasta de regalo de septiembre",
+        "kicker": "Sorteo",
+        "summary": "Una canasta de regalo valorada en $350 de Vega's Wines & Spirits. El ganador se sortea el 19 de septiembre.",
+        "detail": [
+          "Siga a Vega's Distributors y la nueva página de Vega's Wines and Spirits en Facebook e Instagram.",
+          "Dele me gusta a la publicación del sorteo.",
+          "Etiquete a un amigo en los comentarios. Usted y su amigo deben seguir las páginas.",
+          "Comparta la publicación en su historia y etiquete a Vega's Distributors para una entrada adicional.",
+          "Ganador sorteado el 19 de septiembre. Canasta valorada en $350."
+        ],
+        "imageAlt": "Volante del sorteo de canasta de regalo de septiembre con una canasta de vinos y licores valorada en $350.",
+        "cta": "Ver cómo participar"
+      }
+    },
+    {
+      "id": "careers-sales-representative",
+      "category": "careers",
+      "kind": "job",
+      "image": "careers-sales-representative",
+      "en": {
+        "title": "Sales Representative",
+        "kicker": "Careers",
+        "summary": "Vega's is hiring a Sales Representative. Minimum two years of sales experience, bilingual, own transportation.",
+        "requirements": [
+          "Minimum 2 years experience in sales",
+          "Bilingual",
+          "Must own transportation",
+          "Strong drive to achieve and exceed sales targets and quotas"
+        ],
+        "benefits": ["Sales commission", "Gas stipend", "Insurance"],
+        "documents": ["Application letter", "Resume", "Police record", "2 reference letters"],
+        "imageAlt": "Vega's Distributors We Are Hiring flyer for a Sales Representative.",
+        "cta": "Email application"
+      },
+      "es": {
+        "title": "Representante de ventas",
+        "kicker": "Empleos",
+        "summary": "Vega's busca un representante de ventas. Mínimo dos años de experiencia en ventas, bilingüe, con transporte propio.",
+        "requirements": [
+          "Mínimo 2 años de experiencia en ventas",
+          "Bilingüe",
+          "Debe contar con transporte propio",
+          "Fuerte motivación para alcanzar y superar metas y cuotas de ventas"
+        ],
+        "benefits": ["Comisión por ventas", "Estipendio de combustible", "Seguro"],
+        "documents": ["Carta de solicitud", "Currículum", "Récord policial", "2 cartas de referencia"],
+        "imageAlt": "Volante de Vega's Distributors anunciando la vacante de representante de ventas.",
+        "cta": "Enviar solicitud"
+      }
+    },
+    {
+      "id": "careers-senior-accountant",
+      "category": "careers",
+      "kind": "job",
+      "image": "careers-senior-accountant",
+      "location": "Vega's Distributors main office, Benque Viejo and Mopan Gas Station, San Jose Succotz",
+      "en": {
+        "title": "Senior Accountant",
+        "kicker": "Careers",
+        "summary": "Vega's is hiring a Senior Accountant for the main office in Benque Viejo and Mopan Gas Station in San Jose Succotz.",
+        "requirements": [
+          "Minimum Associates Degree in Accounting, Finance, Business Administration or a related field with 5 to 10 years of accounting experience. Bachelors Degree preferred",
+          "Strong knowledge of GAAP, Belize tax regulations and accounting procedures",
+          "Experience with accounting software and Microsoft Excel",
+          "Strong analytical, leadership, communication and problem solving skills",
+          "Ability to communicate effectively in English and Spanish"
+        ],
+        "benefits": ["Competitive salary", "Insurance benefit", "Leadership opportunity", "Career growth"],
+        "documents": ["Application letter", "Resume", "Police record", "2 reference letters"],
+        "imageAlt": "Vega's Distributors We Are Hiring flyer for a Senior Accountant.",
+        "cta": "Email application"
+      },
+      "es": {
+        "title": "Contador senior",
+        "kicker": "Empleos",
+        "summary": "Vega's busca un contador senior para la oficina principal en Benque Viejo y la estación Mopan Gas en San Jose Succotz.",
+        "requirements": [
+          "Mínimo título de Associates en Contabilidad, Finanzas, Administración de Empresas o campo relacionado, con 5 a 10 años de experiencia contable. Se prefiere licenciatura",
+          "Sólidos conocimientos de GAAP, regulaciones fiscales de Belice y procedimientos contables",
+          "Experiencia con software contable y Microsoft Excel",
+          "Fuertes habilidades analíticas, de liderazgo, comunicación y resolución de problemas",
+          "Capacidad para comunicarse eficazmente en inglés y español"
+        ],
+        "benefits": ["Salario competitivo", "Beneficio de seguro", "Oportunidad de liderazgo", "Crecimiento profesional"],
+        "documents": ["Carta de solicitud", "Currículum", "Récord policial", "2 cartas de referencia"],
+        "imageAlt": "Volante de Vega's Distributors anunciando la vacante de contador senior.",
+        "cta": "Enviar solicitud"
+      }
+    },
+    {
+      "id": "careers-head-mechanic",
+      "category": "careers",
+      "kind": "job",
+      "image": "careers-head-mechanic",
+      "en": {
+        "title": "Head Mechanic",
+        "kicker": "Careers",
+        "summary": "Vega's is hiring a Head Mechanic to manage the mechanical workshop and maintenance across the Vega's group.",
+        "requirements": [
+          "High school diploma or certification in a mechanical related field",
+          "Minimum of 5 to 8 years experience in gasoline and diesel engine repair and maintenance",
+          "Strong knowledge of diesel and gasoline engines, vehicle systems, mechanical equipment and basic electrical repairs",
+          "Experience diagnosing, repairing and maintaining light and heavy duty trucks and equipment",
+          "Ability to plan, organize, supervise and delegate work effectively",
+          "Strong analytical, troubleshooting and problem solving skills",
+          "Excellent verbal and written communication skills in English and Spanish",
+          "Valid driver's license with the ability to operate heavy duty trucks, tow heads and machinery"
+        ],
+        "documents": ["Application letter", "Recommendation letter"],
+        "note": "Applications may also be completed in person at the Vega's Distributors Ltd. headquarters in Benque Viejo.",
+        "imageAlt": "Vega's Distributors We Are Hiring flyer for a Head Mechanic.",
+        "cta": "Email application"
+      },
+      "es": {
+        "title": "Mecánico jefe",
+        "kicker": "Empleos",
+        "summary": "Vega's busca un mecánico jefe para dirigir el taller mecánico y el mantenimiento en todo el grupo Vega's.",
+        "requirements": [
+          "Diploma de secundaria o certificación en un campo relacionado con mecánica",
+          "Mínimo de 5 a 8 años de experiencia en reparación y mantenimiento de motores de gasolina y diésel",
+          "Sólidos conocimientos de motores diésel y de gasolina, sistemas de vehículos, equipo mecánico y reparaciones eléctricas básicas",
+          "Experiencia diagnosticando, reparando y manteniendo camiones y equipo ligero y pesado",
+          "Capacidad para planificar, organizar, supervisar y delegar el trabajo con eficacia",
+          "Fuertes habilidades analíticas, de diagnóstico y resolución de problemas",
+          "Excelente comunicación verbal y escrita en inglés y español",
+          "Licencia de conducir vigente con capacidad para operar camiones pesados, cabezales y maquinaria"
+        ],
+        "documents": ["Carta de solicitud", "Carta de recomendación"],
+        "note": "Las solicitudes también pueden completarse en persona en la sede de Vega's Distributors Ltd. en Benque Viejo.",
+        "imageAlt": "Volante de Vega's Distributors anunciando la vacante de mecánico jefe.",
+        "cta": "Enviar solicitud"
+      }
+    }
+  ]
+}

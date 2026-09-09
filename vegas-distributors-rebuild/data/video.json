@@ -1,0 +1,65 @@
+{
+  "$comment": "Written by scripts/optimize-video.mjs. The original is preserved under src/assets/video-sources and is never served.",
+  "id": "score-with-jarana",
+  "source": {
+    "width": 720,
+    "height": 1280,
+    "duration": 28.8,
+    "hasAudio": true
+  },
+  "width": 720,
+  "height": 1280,
+  "duration": 28.8,
+  "hasAudio": true,
+  "sources": [
+    {
+      "file": "score-with-jarana.webm",
+      "type": "video/webm"
+    },
+    {
+      "file": "score-with-jarana.mp4",
+      "type": "video/mp4"
+    }
+  ],
+  "poster": {
+    "base": "assets/video",
+    "avif": [
+      {
+        "file": "score-with-jarana-poster-480.avif",
+        "width": 480,
+        "height": 853
+      },
+      {
+        "file": "score-with-jarana-poster-720.avif",
+        "width": 720,
+        "height": 1280
+      }
+    ],
+    "webp": [
+      {
+        "file": "score-with-jarana-poster-480.webp",
+        "width": 480,
+        "height": 853
+      },
+      {
+        "file": "score-with-jarana-poster-720.webp",
+        "width": 720,
+        "height": 1280
+      }
+    ],
+    "fallback": [
+      {
+        "file": "score-with-jarana-poster-480.jpg",
+        "width": 480,
+        "height": 853
+      },
+      {
+        "file": "score-with-jarana-poster-720.jpg",
+        "width": 720,
+        "height": 1280
+      }
+    ],
+    "width": 720,
+    "height": 1280
+  }
+}

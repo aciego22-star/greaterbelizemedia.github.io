@@ -1,0 +1,21 @@
+{
+  "bop-cans": {
+    "base": "assets/product-art",
+    "width": 375,
+    "height": 333,
+    "webp": [
+      {
+        "file": "bop-cans-375.webp",
+        "width": 375,
+        "height": 333
+      }
+    ],
+    "fallback": [
+      {
+        "file": "bop-cans-375.jpg",
+        "width": 375,
+        "height": 333
+      }
+    ]
+  }
+}

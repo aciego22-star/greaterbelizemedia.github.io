@@ -2,7 +2,11 @@
 import { esc, cx, attrs, picture, jsonLd } from './html.mjs';
 import { socialLinks } from './partials.mjs';
 
-/** Route table. Paths are locale-independent; Spanish pages sit under /es/. */
+/**
+ * Route table. Most paths are the same in both languages and Spanish pages sit
+ * under /es/. Where a route reads badly in translation it carries a path per
+ * locale instead, written as { en, es }.
+ */
 export const ROUTES = {
   home: '',
   about: 'about',
@@ -10,11 +14,19 @@ export const ROUTES = {
   industries: 'divisions/vegas-industries',
   lubricants: 'divisions/international-lubricants-belize',
   brands: 'brands',
+  wines: { en: 'wines-and-spirits', es: 'vinos-y-licores' },
+  whatsNew: { en: 'whats-new', es: 'novedades' },
   gallery: 'gallery',
   products: 'products',
   network: 'sales-network',
   contact: 'contact',
 };
+
+/** Resolves a route entry, which may be one path or one path per locale. */
+export const routeIn = (locale, entry) => (typeof entry === 'string' ? entry : entry[locale]);
+
+/** The same route in every locale, for canonicals, alternates and the switch. */
+export const routeAll = (entry) => ({ en: routeIn('en', entry), es: routeIn('es', entry) });
 
 /** Output path for a route in a locale, e.g. ('es','products') -> 'es/products'. */
 export const routePath = (locale, path) =>
@@ -44,16 +56,17 @@ export const link = (locale, path) => {
 
 /* ------------------------------------------------------------------ */
 
-function head({ site, i18n, locale, title, description, outPath, path, og, extraHead = '', structuredData = [], switchPath, pageStyles, canonicalPath, forceNoindex }) {
+function head({ site, i18n, locale, title, description, outPath, path, og, extraHead = '', structuredData = [], switchPath, pageStyles, canonicalPath, forceNoindex, localePaths }) {
+  const pathIn = (l) => localePaths?.[l] ?? path;
   const fullTitle = path === ROUTES.home
     ? `${i18n.site.name} | ${title}`
     : `${title} | ${i18n.site.name}`;
 
   // An alias page points its canonical at the page it stands in for.
-  const canonical = absoluteUrl(site, locale, canonicalPath ?? path);
+  const canonical = absoluteUrl(site, locale, canonicalPath ?? pathIn(locale));
   const alternates = ['en', 'es']
-    .map((l) => `<link rel="alternate" hreflang="${l}" href="${esc(absoluteUrl(site, l, path))}">`)
-    .join('') + `<link rel="alternate" hreflang="x-default" href="${esc(absoluteUrl(site, 'en', path))}">`;
+    .map((l) => `<link rel="alternate" hreflang="${l}" href="${esc(absoluteUrl(site, l, pathIn(l)))}">`)
+    .join('') + `<link rel="alternate" hreflang="x-default" href="${esc(absoluteUrl(site, 'en', pathIn('en')))}">`;
 
   // Only the two Latin subsets actually used are preloaded; the rest load on demand.
   const preload = ['inter-400-latin.woff2', 'inter-600-latin.woff2', 'archivo-700-latin.woff2']
@@ -63,7 +76,7 @@ function head({ site, i18n, locale, title, description, outPath, path, og, extra
   // Browser-language detection, inlined so it runs before first paint.
   // English is the fallback, an explicit choice always wins, and the script
   // only exists on English pages so it can never loop.
-  const esHref = `{{BASE}}${routePath('es', switchPath ?? path)}/`;
+  const esHref = `{{BASE}}${routePath('es', localePaths?.es ?? switchPath ?? path)}/`;
   const detect =
     locale === 'en'
       ? `<script>(function(){try{var c=localStorage.getItem('vegas-lang');if(c==='en')return;` +
@@ -101,21 +114,27 @@ function head({ site, i18n, locale, title, description, outPath, path, og, extra
   );
 }
 
-function masthead({ i18n, locale, images, current, switchPath, bodyClass }) {
+function masthead({ i18n, locale, images, current, switchPath, bodyClass, localePaths }) {
+  // The What's New label is shortened to fit the bar, so it carries the full
+  // wording as its accessible name. The visible text is the start of that name,
+  // which is what a visitor speaking the link aloud will say.
   const items = [
     ['home', i18n.nav.home],
     ['about', i18n.nav.about],
     ['divisions', i18n.nav.divisions],
     ['brands', i18n.nav.brands],
     ['gallery', i18n.nav.gallery],
+    ['whatsNew', i18n.nav.whatsNew, i18n.nav.whatsNewFull],
     ['network', i18n.nav.salesNetwork],
     ['contact', i18n.nav.contact],
   ];
 
   const nav = items
-    .map(([id, label]) => {
+    .map(([id, label, fullLabel]) => {
       const isCurrent = id === current || (id !== 'home' && current?.startsWith(id));
-      return `<li><a href="${link(locale, ROUTES[id])}"${isCurrent ? ' aria-current="page"' : ''}>${esc(label)}</a></li>`;
+      return `<li><a href="${link(locale, routeIn(locale, ROUTES[id]))}"` +
+        (fullLabel ? ` aria-label="${esc(fullLabel)}"` : '') +
+        `${isCurrent ? ' aria-current="page"' : ''}>${esc(label)}</a></li>`;
     })
     .join('');
 
@@ -123,7 +142,7 @@ function masthead({ i18n, locale, images, current, switchPath, bodyClass }) {
   // other language — including deep routes such as /products/<brand>/.
   const langSwitch = ['en', 'es']
     .map((l) => {
-      const target = switchPath ?? '';
+      const target = localePaths?.[l] ?? switchPath ?? '';
       const href = l === locale ? '#' : `{{BASE}}${routePath(l, target)}${routePath(l, target) ? '/' : ''}`;
       const label = l === 'es' ? 'ES' : 'EN';
       const full = l === 'es' ? 'Español' : 'English';
@@ -134,7 +153,11 @@ function masthead({ i18n, locale, images, current, switchPath, bodyClass }) {
     .join('');
 
   return (
-    `<header class="masthead${bodyClass === 'home' ? ' masthead--over-hero' : ''}">` +
+    // The campaign artwork is finished work with its own branding inside it,
+    // so the header sits above the hero rather than over it. Floating the site
+    // logo across the artwork's own lockup would cover the very subject the
+    // slide is about.
+    `<header class="masthead">` +
     `<div class="shell masthead__bar">` +
     `<a class="brand" href="${link(locale, ROUTES.home)}">` +
     picture(images.company.logo, {
@@ -167,11 +190,13 @@ function footer({ site, i18n, locale, company, images }) {
     ['about', i18n.nav.about],
     ['divisions', i18n.nav.divisions],
     ['brands', i18n.nav.brands],
+    ['wines', i18n.nav.wines],
     ['gallery', i18n.nav.gallery],
+    ['whatsNew', i18n.nav.whatsNewFull],
     ['network', i18n.nav.salesNetwork],
     ['contact', i18n.nav.contact],
   ]
-    .map(([id, label]) => `<li><a href="${link(locale, ROUTES[id])}">${esc(label)}</a></li>`)
+    .map(([id, label]) => `<li><a href="${link(locale, routeIn(locale, ROUTES[id]))}">${esc(label)}</a></li>`)
     .join('');
 
   const divisions = company.divisions

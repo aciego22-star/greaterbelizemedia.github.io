@@ -1,0 +1,189 @@
+/* --------------------------------------------------------------------------
+   Vega's Wines & Spirits
+   -------------------------------------------------------------------------- */
+
+.ws-hero { position: relative; background: var(--deep); }
+.ws-hero__art,
+.ws-hero__art img { display: block; width: 100%; }
+/* Shown whole, for the same reason as the campaign hero: the composition
+   carries its own branding and headline. */
+.ws-hero__art img { height: auto; }
+
+.ws-intro { max-width: 60rem; }
+.ws-tagline {
+  margin: 0 0 0.5rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--red);
+}
+.ws-intro h1 { margin: 0 0 0.7rem; }
+.ws-intro .lead { margin: 0; max-width: 56ch; }
+
+/* --------------------------------------------------------------------------
+   Brands
+   -------------------------------------------------------------------------- */
+
+.ws-brands {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: clamp(1rem, 2.2vw, 1.6rem);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ws-brand {
+  padding: clamp(1.1rem, 2.2vw, 1.6rem);
+  border-radius: var(--radius);
+  background: #fff;
+  border: 1px solid var(--line);
+}
+.ws-brand__kind {
+  margin: 0 0 0.3rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--red);
+}
+.ws-brand h3 { margin: 0 0 0.9rem; font-size: 1.3rem; }
+.ws-brand__label {
+  margin: 0 0 0.4rem;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+.ws-brand__variants {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.ws-brand__variants li {
+  padding: 0.25rem 0.62rem;
+  border-radius: 999px;
+  background: #f3f4f6;
+  color: var(--ink-soft);
+  font-size: 0.86rem;
+}
+
+/* --------------------------------------------------------------------------
+   The campaign film
+   -------------------------------------------------------------------------- */
+
+.ws-campaign {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr);
+  gap: clamp(1.75rem, 4vw, 3.5rem);
+  align-items: center;
+}
+
+.ws-campaign__sub {
+  margin: 1.6rem 0 0.6rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+
+.ws-venues {
+  display: grid;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0 0 1.4rem;
+  padding: 0;
+}
+.ws-venues li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: baseline;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--line);
+}
+.ws-venues strong { color: var(--ink); }
+.ws-venues span { color: var(--slate); font-size: 0.92rem; }
+
+.ws-film { margin: 0; }
+.ws-film__frame {
+  position: relative;
+  aspect-ratio: 9 / 16;
+  max-height: 34rem;
+  margin-inline: auto;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: #07080a;
+  box-shadow: 0 24px 60px rgba(16, 24, 40, 0.22);
+}
+.ws-film__poster,
+.ws-film__poster img,
+.ws-film__video {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.ws-film__poster { z-index: 1; }
+.ws-film__frame.is-playing .ws-film__poster { display: none; }
+
+.ws-film__play {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 0.6rem;
+  border: 0;
+  background: linear-gradient(180deg, rgba(6, 7, 9, 0.1), rgba(6, 7, 9, 0.55));
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.ws-film__play svg {
+  width: 32px;
+  height: 32px;
+  padding: 16px;
+  border-radius: 999px;
+  border: 2px solid #fff;
+  background: rgba(12, 13, 15, 0.5);
+  box-sizing: content-box;
+}
+.ws-film__play:hover svg { background: rgba(12, 13, 15, 0.78); }
+
+.ws-film figcaption {
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  color: var(--slate);
+  text-align: center;
+}
+
+/* --------------------------------------------------------------------------
+   Closing band
+   -------------------------------------------------------------------------- */
+
+.ws-cta {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: center;
+}
+.ws-cta h2 { color: #fff; margin: 0 0 0.6rem; }
+.ws-cta .lead { color: #cfccc5; margin: 0; }
+.ws-cta__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+@media (max-width: 62rem) {
+  .ws-campaign,
+  .ws-cta { grid-template-columns: minmax(0, 1fr); }
+  .ws-film__frame { max-height: 30rem; }
+}

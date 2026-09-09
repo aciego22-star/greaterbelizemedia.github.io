@@ -19,6 +19,10 @@ const TYPES = {
   '.jpg': 'image/jpeg',
   '.png': 'image/png',
   '.woff2': 'font/woff2',
+  '.avif': 'image/avif',
+  '.svg': 'image/svg+xml',
+  '.mp4': 'video/mp4',
+  '.webm': 'video/webm',
 };
 
 createServer(async (req, res) => {
@@ -31,7 +35,35 @@ createServer(async (req, res) => {
     const info = await stat(file).catch(() => null);
     if (!info || info.isDirectory()) file = join(file, 'index.html');
     const body = await readFile(file);
-    res.writeHead(200, { 'Content-Type': TYPES[extname(file)] ?? 'application/octet-stream' });
+    const type = TYPES[extname(file)] ?? 'application/octet-stream';
+
+    // Media needs byte ranges. Without them a browser will not start playing a
+    // video at all, so checking playback locally would tell you nothing about
+    // how the built site behaves on a host that serves them.
+    const range = /^bytes=(\d*)-(\d*)$/.exec(req.headers.range ?? '');
+    if (range && /^(video|audio)\//.test(type)) {
+      const start = range[1] ? Number(range[1]) : 0;
+      const end = range[2] ? Math.min(Number(range[2]), body.length - 1) : body.length - 1;
+      if (start > end || start >= body.length) {
+        res.writeHead(416, { 'Content-Range': `bytes */${body.length}` });
+        res.end();
+        return;
+      }
+      res.writeHead(206, {
+        'Content-Type': type,
+        'Content-Range': `bytes ${start}-${end}/${body.length}`,
+        'Accept-Ranges': 'bytes',
+        'Content-Length': end - start + 1,
+      });
+      res.end(body.subarray(start, end + 1));
+      return;
+    }
+
+    res.writeHead(200, {
+      'Content-Type': type,
+      'Content-Length': body.length,
+      ...(/^(video|audio)\//.test(type) ? { 'Accept-Ranges': 'bytes' } : {}),
+    });
     res.end(body);
   } catch {
     try {

@@ -19,7 +19,10 @@
     "breadcrumbLabel": "Breadcrumb",
     "languageLabel": "Language",
     "brands": "Brands",
-    "gallery": "Gallery"
+    "gallery": "Gallery",
+    "wines": "Wines & Spirits",
+    "whatsNew": "What's New",
+    "whatsNewFull": "What's New at Vega's Distributors"
   },
   "actions": {
     "exploreProducts": "Explore Our Products",
@@ -151,7 +154,9 @@
     "categoriesEnquiryHeading": "Also distributed",
     "categoriesEnquiryBody": "Part of the range we supply to trade customers. Contact our sales team for details.",
     "divisionsCta": "See all divisions",
-    "pageHeading": "Vega's Distributors Ltd., wholesale product distribution in Belize"
+    "pageHeading": "Vega's Distributors Ltd., wholesale product distribution in Belize",
+    "featuredLeadTitle": "BOP insecticide",
+    "featuredLeadBody": "Citronella, Evergreen and original BOP sprays, stocked by retailers across the country and delivered through our national network."
   },
   "about": {
     "title": "About Vega's Distributors",
@@ -287,38 +292,34 @@
     "goTo": "Show slide {n}",
     "pauseNote": "Autoplay pauses while you are interacting.",
     "slides": {
-      "national": {
-        "eyebrow": "SERVING BELIZE SINCE 1980",
-        "headline": "Trusted products, nationwide reach.",
-        "body": "Supplying supermarkets, wholesalers and businesses across Belize with the brands their customers ask for.",
-        "primary": "Explore Our Brands",
-        "secondary": "Find Your Representative"
+      "wines": {
+        "name": "Vega's Wines & Spirits",
+        "alt": "Vega's Wines & Spirits: a lineup of Tequila Jarana and Whitley Neill gin bottles on a beach bar counter at sunset.",
+        "cta": "Explore Wines & Spirits"
       },
       "bop": {
-        "eyebrow": "HOUSEHOLD PROTECTION",
-        "headline": "Protection that means business.",
-        "body": "BOP insecticide, stocked by retailers across the country and delivered through our national network.",
-        "primary": "Explore BOP",
-        "secondary": "Contact Sales",
-        "productAlt": "BOP insecticide spray product range"
+        "name": "BOP insecticide",
+        "alt": "BOP campaign artwork reading Pests don't quit. Neither does BOP, with three BOP insecticide spray cans.",
+        "cta": "Explore BOP"
       },
-      "blanca": {
-        "eyebrow": "MADE IN BELIZE",
-        "headline": "Made in Belize, made for everyday clean.",
-        "body": "Blanca Max bleach is manufactured here at home by Vega’s Industries, in one litre and half litre.",
-        "primary": "Explore Blanca Max",
-        "secondary": "Contact Sales",
-        "productAlt": "Blanca Max bleach, one litre bottle"
+      "whatsNew": {
+        "name": "What's New at Vega's",
+        "alt": "What's New at Vega's artwork: promotions, giveaways, careers and company updates, with the Vega's team, appliances and a gift basket.",
+        "cta": "Explore What's New"
       },
-      "ilb": {
-        "eyebrow": "INTERNATIONAL LUBRICANTS OF BELIZE",
-        "headline": "Built to protect the work that moves Belize.",
-        "body": "Oils and lubricants for commercial transport, industrial equipment, passenger vehicles and marine use.",
-        "primary": "Explore ILB",
-        "secondary": "Contact Sales",
-        "productAlt": "Chevron lubricants artwork from International Lubricants of Belize"
+      "jarana": {
+        "name": "Score with Jarana",
+        "alt": "Score with Jarana campaign film, recorded at bars and restaurants across Belize.",
+        "description": "A Score with Jarana campaign film recorded at bars and restaurants across Belize, featuring Tequila Jarana.",
+        "cta": "Explore Wines & Spirits",
+        "play": "Play the film",
+        "pause": "Pause the film",
+        "sound": "Turn sound on",
+        "mute": "Turn sound off",
+        "soundBlocked": "Tap to turn sound on"
       }
-    }
+    },
+    "pageHeading": "Vega's Distributors campaigns"
   },
   "brands": {
     "title": "Brands We Distribute",
@@ -366,5 +367,55 @@
     "whatsapp": "WhatsApp",
     "facebook": "Facebook",
     "instagram": "Instagram"
+  },
+  "whatsNew": {
+    "title": "What's New at Vega's Distributors",
+    "description": "Explore Vega's latest promotions, giveaways, campaigns, career opportunities and company updates, all in one place.",
+    "heading": "What's New at Vega's Distributors",
+    "caption": "Explore Vega's latest promotions, giveaways, campaigns, career opportunities and company updates, all in one place.",
+    "heroAlt": "What's New at Vega's artwork: promotions, giveaways, careers and company updates.",
+    "filtersLabel": "Filter by category",
+    "currentHeading": "Current",
+    "archiveHeading": "Archive",
+    "archiveNote": "Past campaigns are kept here for reference.",
+    "empty": "Nothing in this category right now.",
+    "showing": "{n} of {total}",
+    "statusOpen": "Now Hiring",
+    "statusEnded": "Ended",
+    "statusRunning": "Running now",
+    "endsOn": "Winner announced {date}",
+    "endedOn": "Announced {date}",
+    "requirements": "Requirements",
+    "benefits": "Benefits",
+    "documents": "Send us",
+    "howToEnter": "How to enter",
+    "applyCta": "Email application",
+    "applySubject": "Application: {role}",
+    "companyEmpty": "Company updates will appear here as they are announced.",
+    "moreLabel": "Full details"
+  },
+  "wines": {
+    "title": "Vega's Wines & Spirits",
+    "description": "Vega's Wines & Spirits brings international wines, tequila, gin and liqueurs to bars, restaurants and retailers across Belize.",
+    "heading": "Vega's Wines & Spirits",
+    "tagline": "Global selection. Local service.",
+    "intro": "Vega's imports wines and spirits from Central America, Asia and Commonwealth regions and distributes them to supermarkets, wholesalers, bars and restaurants throughout Belize.",
+    "heroAlt": "Vega's Wines & Spirits: a lineup of Tequila Jarana and Whitley Neill gin bottles on a beach bar counter at sunset.",
+    "brandsHeading": "Brands in our campaigns",
+    "brandsNote": "These are the labels featured in our current campaign artwork. For the full range and current availability, speak to your sales representative.",
+    "variantsLabel": "Featured",
+    "kinds": {
+      "tequila": "Tequila",
+      "gin": "Gin",
+      "liqueur": "Liqueur",
+      "wine": "Wine"
+    },
+    "campaignHeading": "Score with Jarana",
+    "campaignBody": "Our Score with Jarana campaign has visited bars and restaurants around the country. Follow along on Instagram to see where it turns up next.",
+    "venuesHeading": "Venues in the film",
+    "contactHeading": "Stocking Vega’s Wines & Spirits",
+    "contactBody": "Bars, restaurants, hotels and retailers can order through the sales representative for their district.",
+    "findRep": "Find your representative",
+    "contactSales": "Contact Sales"
   }
 }

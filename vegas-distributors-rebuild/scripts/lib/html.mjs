@@ -40,6 +40,9 @@ export function picture(entry, { alt = '', sizes, className, loading = 'lazy', f
 
   return (
     `<picture${className ? ` class="${esc(className)}"` : ''}>` +
+    (entry.avif?.length
+      ? `<source type="image/avif" srcset="${srcset(entry.avif)}"${sizes ? ` sizes="${esc(sizes)}"` : ''}>`
+      : '') +
     `<source type="image/webp" srcset="${srcset(entry.webp)}"${sizes ? ` sizes="${esc(sizes)}"` : ''}>` +
     `<img src="{{BASE}}${base}/${largest.file}" srcset="${srcset(entry.fallback)}"` +
     (sizes ? ` sizes="${esc(sizes)}"` : '') +

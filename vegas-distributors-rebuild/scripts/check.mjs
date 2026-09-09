@@ -21,6 +21,15 @@ const warnings = [];
 const fail = (page, msg) => problems.push(`${page}: ${msg}`);
 const warn = (page, msg) => warnings.push(`${page}: ${msg}`);
 
+/** Turns the handful of entities this build emits back into their characters. */
+const decodeEntities = (str) =>
+  str
+    .replace(/&#39;/g, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&');
+
 /** Every .html file in the output. */
 const walk = (dir) =>
   readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
@@ -47,7 +56,10 @@ for (const file of pages) {
   const title = /<title>([^<]*)<\/title>/.exec(html)?.[1];
   if (!title) fail(rel, 'missing <title>');
   else {
-    if (title.length > 70) warn(rel, `title is ${title.length} characters`);
+    // Measure what a reader sees, not the markup: an escaped apostrophe is one
+    // character on the page and five in the source.
+    const shown = decodeEntities(title);
+    if (shown.length > 70) warn(rel, `title is ${shown.length} characters`);
     const tk = `${localeOf(rel)}::${title}`;
     titles.set(tk, [...(titles.get(tk) ?? []), rel]);
   }

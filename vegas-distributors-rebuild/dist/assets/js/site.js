@@ -77,14 +77,6 @@
       );
     };
 
-    if (masthead.classList.contains('masthead--over-hero')) {
-      var onScroll = function () {
-        masthead.classList.toggle('is-stuck', window.scrollY > 24);
-      };
-      window.addEventListener('scroll', onScroll, { passive: true });
-      onScroll();
-    }
-
     publishHeight();
     if ('ResizeObserver' in window) {
       // The header grows when the mobile panel opens; the hero must not shift.

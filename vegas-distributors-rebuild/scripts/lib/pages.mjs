@@ -13,14 +13,14 @@ const localeCopy = (obj, locale) => obj[locale] ?? obj.en;
  * ------------------------------------------------------------------ */
 
 export function home(ctx) {
-  const { i18n, locale, company, catalog, images, heroes, campaign } = ctx;
+  const { i18n, locale, company, catalog, images, productArt, campaign, campaignImages, video } = ctx;
   const c = i18n.home;
 
   // The document heading is stable; the carousel headlines are section-level,
   // so rotating slides never change the page's heading structure.
   const hero =
     `<h1 class="visually-hidden">${esc(c.pageHeading)}</h1>` +
-    heroCarousel({ i18n, locale, images, heroes, campaign, catalog });
+    heroCarousel({ i18n, locale, campaign, campaignImages, video });
 
   /* Trust band: one horizontal row of published facts, no cards. */
   const trust =
@@ -61,11 +61,11 @@ export function home(ctx) {
     `</div>` +
     `<div class="featured reveal">` +
     `<article class="featured__lead">` +
-    `<figure>${picture(heroes['bop-cans'], { alt: '', sizes: '(max-width: 60rem) 92vw, 375px' })}</figure>` +
+    `<figure>${picture(productArt['bop-cans'], { alt: '', sizes: '(max-width: 60rem) 92vw, 375px' })}</figure>` +
     `<div class="featured__lead-body">` +
     `<p class="eyebrow" style="color:var(--yellow)">${esc(c.featuredLeadNote)}</p>` +
-    `<h3>${esc(i18n.hero.slides.bop.headline)}</h3>` +
-    `<p>${esc(i18n.hero.slides.bop.body)}</p>` +
+    `<h3>${esc(c.featuredLeadTitle)}</h3>` +
+    `<p>${esc(c.featuredLeadBody)}</p>` +
     `<div class="actions">` +
     `<a class="btn btn--primary" href="${link(locale, `${ROUTES.products}/bop`)}">${esc(i18n.actions.viewBrand)}</a>` +
     `<a class="btn btn--onDark" href="mailto:${esc(company.email)}?subject=${encodeURIComponent('BOP enquiry')}">${esc(i18n.actions.enquire)}</a>` +
@@ -227,17 +227,29 @@ export function home(ctx) {
     `</ul>` +
     `</div></section>`;
 
-  // Only the first slide is preloaded; slides two to four stay lazy.
-  const first = heroes[campaign.slides[0].background];
-  const preloadSet = first.avif.map((s) => `{{BASE}}assets/heroes/${s.file} ${s.width}w`).join(', ');
+  // Only the first slide is preloaded, and only the cut this viewport will
+  // actually use, so a phone never fetches the landscape artwork to throw it
+  // away. Slides two to four stay lazy.
+  const firstArt = campaign.slides[0].art;
+  const preloadFor = (id) =>
+    campaignImages[id].avif.map((s) => `{{BASE}}assets/campaign/${s.file} ${s.width}w`).join(', ');
+  const preload = [
+    ['(max-width: 47.999rem)', preloadFor(firstArt.mobile)],
+    ['(min-width: 48rem)', preloadFor(firstArt.desktop)],
+  ]
+    .map(
+      ([media, srcset]) =>
+        `<link rel="preload" as="image" type="image/avif" media="${media}"` +
+        ` imagesrcset="${srcset}" imagesizes="100vw" fetchpriority="high">`
+    )
+    .join('');
 
   return {
     body: hero + trust + featured + divisions + categories + gateway + cta,
     bodyClass: 'home',
-    pageStyles: ['hero.css', 'gallery.css'],
-    extraHead:
-      `<link rel="preload" as="image" type="image/avif" imagesrcset="${preloadSet}" imagesizes="100vw" fetchpriority="high">`,
-    pageScripts: ['hero.js', 'gallery.js'],
+    pageStyles: ['hero.css'],
+    extraHead: preload,
+    pageScripts: ['hero.js'],
   };
 }
 

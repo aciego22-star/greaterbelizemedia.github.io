@@ -19,7 +19,10 @@
     "breadcrumbLabel": "Ruta de navegación",
     "languageLabel": "Idioma",
     "brands": "Marcas",
-    "gallery": "Galería"
+    "gallery": "Galería",
+    "wines": "Vinos y licores",
+    "whatsNew": "Novedades",
+    "whatsNewFull": "Novedades de Vega's"
   },
   "actions": {
     "exploreProducts": "Explorar Nuestros Productos",
@@ -151,7 +154,9 @@
     "categoriesEnquiryHeading": "También distribuimos",
     "categoriesEnquiryBody": "Parte de la gama que suministramos a clientes comerciales. Contacte a nuestro equipo de ventas para más detalles.",
     "divisionsCta": "Ver todas las divisiones",
-    "pageHeading": "Vega's Distributors Ltd., distribución mayorista de productos en Belice"
+    "pageHeading": "Vega's Distributors Ltd., distribución mayorista de productos en Belice",
+    "featuredLeadTitle": "Insecticida BOP",
+    "featuredLeadBody": "Aerosoles BOP Citronella, Evergreen y original, disponibles en comercios de todo el país y distribuidos por nuestra red nacional."
   },
   "about": {
     "title": "Acerca de Vega's Distributors",
@@ -287,38 +292,34 @@
     "goTo": "Mostrar diapositiva {n}",
     "pauseNote": "La reproducción automática se pausa mientras usted interactúa.",
     "slides": {
-      "national": {
-        "eyebrow": "SIRVIENDO A BELICE DESDE 1980",
-        "headline": "Productos de confianza, alcance nacional.",
-        "body": "Abastecemos a supermercados, mayoristas y empresas de todo Belice con las marcas que sus clientes piden.",
-        "primary": "Explorar Nuestras Marcas",
-        "secondary": "Encuentre a su Representante"
+      "wines": {
+        "name": "Vega's Wines & Spirits",
+        "alt": "Vega's Wines & Spirits: botellas de Tequila Jarana y ginebra Whitley Neill en una barra frente al mar al atardecer.",
+        "cta": "Explorar vinos y licores"
       },
       "bop": {
-        "eyebrow": "PROTECCIÓN PARA EL HOGAR",
-        "headline": "Protección que va en serio.",
-        "body": "Insecticida BOP, disponible en comercios de todo el país y distribuido por nuestra red nacional.",
-        "primary": "Explorar BOP",
-        "secondary": "Contactar Ventas",
-        "productAlt": "Gama de productos de insecticida en aerosol BOP"
+        "name": "Insecticida BOP",
+        "alt": "Arte de campaña de BOP con el mensaje Pests don’t quit. Neither does BOP y tres latas de insecticida BOP.",
+        "cta": "Conocer BOP"
       },
-      "blanca": {
-        "eyebrow": "HECHO EN BELICE",
-        "headline": "Hecho en Belice, hecho para la limpieza diaria.",
-        "body": "El cloro Blanca Max se fabrica aquí mismo en Vega’s Industries, en presentaciones de un litro y medio litro.",
-        "primary": "Explorar Blanca Max",
-        "secondary": "Contactar Ventas",
-        "productAlt": "Cloro Blanca Max, botella de un litro"
+      "whatsNew": {
+        "name": "Novedades de Vega's",
+        "alt": "Arte de Novedades de Vega's: promociones, sorteos, empleos y novedades de la empresa, con el equipo de Vega's, electrodomésticos y una canasta de regalo.",
+        "cta": "Ver novedades"
       },
-      "ilb": {
-        "eyebrow": "INTERNATIONAL LUBRICANTS OF BELIZE",
-        "headline": "Hecho para proteger el trabajo que mueve a Belice.",
-        "body": "Aceites y lubricantes para transporte comercial, equipo industrial, vehículos de pasajeros y uso marino.",
-        "primary": "Explorar ILB",
-        "secondary": "Contactar Ventas",
-        "productAlt": "Arte de lubricantes Chevron de International Lubricants of Belize"
+      "jarana": {
+        "name": "Score with Jarana",
+        "alt": "Video de la campaña Score with Jarana, grabado en bares y restaurantes de Belice.",
+        "description": "Video de la campaña Score with Jarana grabado en bares y restaurantes de Belice, con Tequila Jarana.",
+        "cta": "Explorar vinos y licores",
+        "play": "Reproducir el video",
+        "pause": "Pausar el video",
+        "sound": "Activar el sonido",
+        "mute": "Desactivar el sonido",
+        "soundBlocked": "Toque para activar el sonido"
       }
-    }
+    },
+    "pageHeading": "Campañas de Vega's Distributors"
   },
   "brands": {
     "title": "Marcas que Distribuimos",
@@ -366,5 +367,55 @@
     "whatsapp": "WhatsApp",
     "facebook": "Facebook",
     "instagram": "Instagram"
+  },
+  "whatsNew": {
+    "title": "Novedades de Vega's Distributors",
+    "description": "Descubra las últimas promociones, sorteos, campañas, oportunidades de empleo y novedades de Vega’s, todo en un solo lugar.",
+    "heading": "Novedades de Vega's Distributors",
+    "caption": "Descubra las últimas promociones, sorteos, campañas, oportunidades de empleo y novedades de Vega’s, todo en un solo lugar.",
+    "heroAlt": "Arte de Novedades de Vega's: promociones, sorteos, empleos y novedades de la empresa.",
+    "filtersLabel": "Filtrar por categoría",
+    "currentHeading": "Actual",
+    "archiveHeading": "Archivo",
+    "archiveNote": "Las campañas pasadas se conservan aquí como referencia.",
+    "empty": "No hay nada en esta categoría por ahora.",
+    "showing": "{n} de {total}",
+    "statusOpen": "Contratando ahora",
+    "statusEnded": "Finalizada",
+    "statusRunning": "En curso",
+    "endsOn": "Ganador anunciado el {date}",
+    "endedOn": "Anunciado el {date}",
+    "requirements": "Requisitos",
+    "benefits": "Beneficios",
+    "documents": "Envíenos",
+    "howToEnter": "Cómo participar",
+    "applyCta": "Enviar solicitud",
+    "applySubject": "Solicitud: {role}",
+    "companyEmpty": "Las novedades de la empresa aparecerán aquí a medida que se anuncien.",
+    "moreLabel": "Detalles completos"
+  },
+  "wines": {
+    "title": "Vega's Wines & Spirits",
+    "description": "Vega's Wines & Spirits lleva vinos internacionales, tequila, ginebra y licores a bares, restaurantes y comercios de todo Belice.",
+    "heading": "Vega's Wines & Spirits",
+    "tagline": "Selección global. Servicio local.",
+    "intro": "Vega's importa vinos y licores desde Centroamérica, Asia y regiones de la Commonwealth, y los distribuye a supermercados, mayoristas, bares y restaurantes en todo Belice.",
+    "heroAlt": "Vega's Wines & Spirits: botellas de Tequila Jarana y ginebra Whitley Neill en una barra frente al mar al atardecer.",
+    "brandsHeading": "Marcas en nuestras campañas",
+    "brandsNote": "Estas son las etiquetas que aparecen en el arte de nuestras campañas actuales. Para conocer la gama completa y la disponibilidad, hable con su representante de ventas.",
+    "variantsLabel": "Presentaciones",
+    "kinds": {
+      "tequila": "Tequila",
+      "gin": "Ginebra",
+      "liqueur": "Licor",
+      "wine": "Vino"
+    },
+    "campaignHeading": "Score with Jarana",
+    "campaignBody": "Nuestra campaña Score with Jarana ha visitado bares y restaurantes de todo el país. Síganos en Instagram para ver dónde aparece la próxima vez.",
+    "venuesHeading": "Lugares en el video",
+    "contactHeading": "Distribuir Vega's Wines & Spirits",
+    "contactBody": "Bares, restaurantes, hoteles y comercios pueden hacer pedidos a través del representante de ventas de su distrito.",
+    "findRep": "Encuentre a su representante",
+    "contactSales": "Contactar a ventas"
   }
 }

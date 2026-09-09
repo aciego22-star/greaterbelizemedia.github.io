@@ -31,6 +31,8 @@ const VIEWS = [
   { id: 'industries', path: 'divisions/vegas-industries' },
   { id: 'lubricants', path: 'divisions/international-lubricants-belize' },
   { id: 'brands', path: 'brands' },
+  { id: 'wines', path: 'wines-and-spirits' },
+  { id: 'whatsNew', path: 'whats-new' },
   { id: 'gallery', path: 'gallery' },
   { id: 'network', path: 'sales-network' },
   { id: 'contact', path: 'contact' },
@@ -40,6 +42,8 @@ const VIEWS = [
   { id: 'es-industries', path: 'es/divisions/vegas-industries' },
   { id: 'es-lubricants', path: 'es/divisions/international-lubricants-belize' },
   { id: 'es-brands', path: 'es/brands' },
+  { id: 'es-wines', path: 'es/vinos-y-licores' },
+  { id: 'es-whatsNew', path: 'es/novedades' },
   { id: 'es-gallery', path: 'es/gallery' },
   { id: 'es-network', path: 'es/sales-network' },
   { id: 'es-contact', path: 'es/contact' },
@@ -78,11 +82,11 @@ const fontCss = FONTS.map(
     `src:url(${dataUri(file, 'font/woff2')}) format('woff2');}`
 ).join('\n');
 
-const css = ['site.css', 'hero.css', 'gallery.css']
+const css = ['site.css', 'hero.css', 'gallery.css', 'whats-new.css', 'wines.css']
   .map((f) => readFileSync(join(DIST, 'assets', 'styles', f), 'utf8'))
   .join('\n');
 
-const js = ['site.js', 'hero.js', 'gallery.js', 'catalog.js']
+const js = ['site.js', 'hero.js', 'gallery.js', 'catalog.js', 'whats-new.js', 'wines.js']
   .map((f) => readFileSync(join(DIST, 'assets', 'js', f), 'utf8'));
 
 const imageCache = new Map();
@@ -106,7 +110,8 @@ function inlineImage(ref) {
  */
 function inlinePictures(html) {
   return html
-    .replace(/<source[^>]*>/g, '')
+    // Only the picture sources collapse; the video keeps its own.
+    .replace(/<source(?![^>]*type="video\/)[^>]*>/g, '')
     .replace(/<img([^>]*)>/g, (tag, attrsStr) => {
       const srcset = /srcset="([^"]*)"/.exec(attrsStr)?.[1];
       let chosen = /src="([^"]*)"/.exec(attrsStr)?.[1];
@@ -129,6 +134,29 @@ function inlinePictures(html) {
         .replace(/\ssizes="[^"]*"/g, '')
         .replace(/\ssrc="[^"]*"/g, '');
       return `<img src="${inlineImage(chosen)}"${cleaned}>`;
+    });
+}
+
+/**
+ * The campaign film.
+ *
+ * Only the MP4 is carried. Both derivatives together would roughly double the
+ * file for no benefit here: every browser this file will be opened in plays
+ * H.264, and the WebM exists on the built site for the Chromium builds that
+ * ship without it.
+ */
+function inlineVideo(html) {
+  return html
+    .replace(/<source[^>]*type="video\/webm"[^>]*>/g, '')
+    .replace(/<source([^>]*)src="([^"]*\.mp4)"([^>]*)>/g, (whole, a, ref, b) => {
+      const file = resolveAsset(ref);
+      if (!existsSync(join(DIST, file))) return whole;
+      return `<source${a}src="${dataUri(file, 'video/mp4')}"${b}>`;
+    })
+    .replace(/poster="([^"]*\.(?:jpg|png|webp))"/g, (whole, ref) => {
+      const file = resolveAsset(ref);
+      if (!existsSync(join(DIST, file))) return whole;
+      return `poster="${inlineImage(ref)}"`;
     });
 }
 
@@ -197,7 +225,7 @@ const views = VIEWS.map((v) => {
   const html = readPage(v.path);
   return {
     ...v,
-    body: replaceFrames(rewritePayload(rewriteLinks(inlinePictures(extractMain(html))))),
+    body: replaceFrames(rewritePayload(rewriteLinks(inlinePictures(inlineVideo(extractMain(html)))))),
     lang: /<html lang="es"/.test(html) ? 'es' : 'en',
   };
 });
@@ -274,9 +302,11 @@ ${css}
 
     // Mark the current page in the navigation, as the built site does.
     var paths = { home: '', about: 'about', divisions: 'divisions', brands: 'brands',
-      gallery: 'gallery', network: 'sales-network', contact: 'contact' };
+      wines: 'wines-and-spirits', whatsNew: 'whats-new', gallery: 'gallery',
+      network: 'sales-network', contact: 'contact' };
     var key = id.replace(/^es-/, '').replace(/^brand-.*$/, 'brands')
-      .replace('industries', 'divisions').replace('lubricants', 'divisions');
+      .replace('industries', 'divisions').replace('lubricants', 'divisions')
+      .replace('vinos-y-licores', 'wines').replace('novedades', 'whatsNew');
     Array.prototype.forEach.call(document.querySelectorAll('.nav-list a'), function (a) {
       var v = a.getAttribute('data-view') || '';
       var vk = v.replace(/^es-/, '');
@@ -319,10 +349,64 @@ ${css}
 ${js.map((s) => `<script>${s}</script>`).join('\n')}
 `;
 
+/* ------------------------------------------------------------------ *
+ * Deduplicate
+ *
+ * A brand logo or product photo appears on many of the bundled pages, and each
+ * appearance was carrying its own copy of the bytes. One copy is enough: the
+ * first use keeps the picture, later uses point back at it by index and are
+ * filled in on load.
+ * ------------------------------------------------------------------ */
+
+const BLANK = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
+const uris = new Map();
+
+const deduped = doc.replace(
+  /(src|poster)="(data:(image|video)\/[a-z0-9+.-]+;base64,[^"]+)"/g,
+  (whole, attr, uri, kind) => {
+    if (!uris.has(uri)) {
+      uris.set(uri, uris.size);
+      return `${whole} data-${kind === 'video' ? 'vid' : 'img'}="${uris.get(uri)}"`;
+    }
+    const ref = uris.get(uri);
+    // A repeated picture stands on a blank pixel until it is filled in; a
+    // repeated film stands on nothing, since an empty source is simply inert.
+    return kind === 'video'
+      ? `${attr}="" data-vid="${ref}"`
+      : `${attr}="${BLANK}" data-img="${ref}"`;
+  }
+);
+
+const expand =
+  `<script>(function(){` +
+  `var defs={};` +
+  `var each=function(sel,fn){Array.prototype.forEach.call(document.querySelectorAll(sel),fn);};` +
+  `var note=function(el,attr){` +
+  `var k=el.getAttribute('data-img')||el.getAttribute('data-vid');` +
+  `var v=el.getAttribute(attr);` +
+  `if(k!==null&&v&&v.length>200&&defs[k]===undefined)defs[k]=v;};` +
+  `each('img[data-img]',function(el){note(el,'src');});` +
+  `each('video[data-img]',function(el){note(el,'poster');});` +
+  `each('source[data-vid]',function(el){note(el,'src');});` +
+  `each('img[data-img]',function(el){` +
+  `var d=defs[el.getAttribute('data-img')];` +
+  `if(d&&el.getAttribute('src')!==d)el.setAttribute('src',d);});` +
+  `each('video[data-img]',function(el){` +
+  `var d=defs[el.getAttribute('data-img')];` +
+  `if(d&&el.getAttribute('poster')!==d)el.setAttribute('poster',d);});` +
+  `each('source[data-vid]',function(el){` +
+  `var d=defs[el.getAttribute('data-vid')];` +
+  `if(d&&!el.getAttribute('src')){el.setAttribute('src',d);` +
+  `var v=el.parentNode;if(v&&v.load)v.load();}});` +
+  `})();</script>`;
+
+const finalDoc = deduped + expand;
+
 mkdirSync(OUT_DIR, { recursive: true });
-writeFileSync(OUT, doc);
+writeFileSync(OUT, finalDoc);
 
 console.log(`Pages:  ${views.length}`);
 console.log(`Images: ${imageCache.size} inlined`);
-console.log(`Size:   ${(Buffer.byteLength(doc) / 1024 / 1024).toFixed(2)} MB`);
+console.log(`Unique: ${uris.size} pictures`);
+console.log(`Size:   ${(Buffer.byteLength(finalDoc) / 1024 / 1024).toFixed(2)} MB`);
 console.log(`Written: ${OUT}`);

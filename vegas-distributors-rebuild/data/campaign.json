@@ -1,99 +1,33 @@
 {
-  "$comment": "Hero slides. Copy lives in i18n. Each stage background reserves a product pedestal, so the product layer is positioned per slide rather than by one global rule. objectPosition gives each slide its own crop at narrow widths.",
+  "$comment": "Hero slides. Each campaign is a finished composition supplied by the client, in a landscape and a portrait cut. The headline and the branding are already inside the artwork, so nothing is drawn over it beyond one call to action. Copy lives in i18n; the artwork manifest is data/campaign-images.json.",
   "slides": [
     {
-      "id": "national",
-      "background": "hero-national-distribution-v2",
-      "tone": "dark",
-      "objectPosition": {
-        "wide": "50% 50%",
-        "narrow": "62% 50%"
-      },
-      "product": null,
-      "primary": {
-        "route": "brands"
-      },
-      "secondary": {
-        "route": "network"
-      }
+      "id": "wines",
+      "kind": "image",
+      "art": { "desktop": "wines-and-spirits-desktop", "mobile": "wines-and-spirits-mobile" },
+      "tone": "dusk",
+      "cta": { "route": "wines" }
     },
     {
       "id": "bop",
-      "background": "hero-bop-stage-v2",
-      "tone": "dark",
-      "objectPosition": {
-        "wide": "50% 50%",
-        "narrow": "72% 50%"
-      },
-      "product": {
-        "source": "campaign",
-        "key": "bop-cans",
-        "stage": {
-          "left": "74%",
-          "top": "68%",
-          "width": "26vw",
-          "max": 375
-        }
-      },
-      "primary": {
-        "route": "brand",
-        "slug": "bop"
-      },
-      "secondary": {
-        "route": "contact"
-      }
+      "kind": "image",
+      "art": { "desktop": "bop-campaign-desktop", "mobile": "bop-campaign-mobile" },
+      "tone": "night",
+      "cta": { "route": "brand", "slug": "bop" }
     },
     {
-      "id": "blanca",
-      "background": "hero-blanca-max-stage-v2",
-      "tone": "blue",
-      "objectPosition": {
-        "wide": "50% 50%",
-        "narrow": "70% 50%"
-      },
-      "product": {
-        "source": "division",
-        "key": "blanca-max-1-litre",
-        "mark": "blanca-max-logo",
-        "stage": {
-          "left": "74%",
-          "top": "60%",
-          "width": "15vw",
-          "max": 220
-        }
-      },
-      "primary": {
-        "route": "industries"
-      },
-      "secondary": {
-        "route": "contact"
-      }
+      "id": "whatsNew",
+      "kind": "image",
+      "art": { "desktop": "whats-new-desktop", "mobile": "whats-new-mobile" },
+      "tone": "navy",
+      "cta": { "route": "whatsNew" }
     },
     {
-      "id": "ilb",
-      "background": "hero-ilb-v2",
-      "tone": "graphite",
-      "objectPosition": {
-        "wide": "50% 50%",
-        "narrow": "68% 50%"
-      },
-      "product": {
-        "source": "division",
-        "key": "international-lubricants-chevron-artwork",
-        "mark": "international-lubricants-logo",
-        "stage": {
-          "left": "62%",
-          "top": "74%",
-          "width": "24vw",
-          "max": 336
-        }
-      },
-      "primary": {
-        "route": "lubricants"
-      },
-      "secondary": {
-        "route": "contact"
-      }
+      "id": "jarana",
+      "kind": "video",
+      "video": "score-with-jarana",
+      "tone": "night",
+      "cta": { "route": "wines" }
     }
   ]
 }
