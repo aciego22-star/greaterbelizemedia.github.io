@@ -13,6 +13,15 @@
   if (toggle && nav) {
     var mobile = window.matchMedia('(max-width: 52rem)');
 
+    // An open panel gives the header a solid surface, so the top row is never
+    // white-on-white against the panel behind it.
+    var markOpen = function () {
+      var header = toggle.closest('.masthead');
+      if (header) {
+        header.classList.toggle('is-open', mobile.matches && toggle.getAttribute('aria-expanded') === 'true');
+      }
+    };
+
     var apply = function () {
       if (mobile.matches) {
         var open = toggle.getAttribute('aria-expanded') === 'true';
@@ -28,6 +37,7 @@
       var open = toggle.getAttribute('aria-expanded') === 'true';
       toggle.setAttribute('aria-expanded', String(!open));
       apply();
+      markOpen();
       if (!open) {
         var first = nav.querySelector('a');
         if (first) first.focus();
@@ -39,12 +49,14 @@
       if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
         toggle.setAttribute('aria-expanded', 'false');
         apply();
+        markOpen();
         toggle.focus();
       }
     });
 
-    if (mobile.addEventListener) mobile.addEventListener('change', apply);
+    if (mobile.addEventListener) mobile.addEventListener('change', function () { apply(); markOpen(); });
     apply();
+    markOpen();
   }
 
   /* ---------------------------------------------------------------- *

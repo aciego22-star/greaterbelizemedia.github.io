@@ -18,7 +18,8 @@
     "primaryLabel": "Principal",
     "breadcrumbLabel": "Ruta de navegación",
     "languageLabel": "Idioma",
-    "brands": "Marcas"
+    "brands": "Marcas",
+    "gallery": "Galería"
   },
   "actions": {
     "exploreProducts": "Explorar Nuestros Productos",
@@ -259,7 +260,8 @@
     "officeHeading": "Oficina principal",
     "addressHeading": "Dirección",
     "ilbHeading": "International Lubricants of Belize",
-    "ilbBody": "Consultas de aceites y lubricantes."
+    "ilbBody": "Consultas de aceites y lubricantes.",
+    "socialBody": "Encuéntrenos en WhatsApp, Facebook e Instagram."
   },
   "notFound": {
     "title": "Página no encontrada",
@@ -272,11 +274,10 @@
     "exploreHeading": "Explorar",
     "divisionsHeading": "Divisiones",
     "contactHeading": "Contacto",
-    "followUs": "Síganos en Facebook",
     "copyright": "Vega's Distributors Ltd.",
     "rightsNote": "Los nombres y logotipos de terceros son propiedad de sus respectivos dueños y se muestran únicamente con fines de identificación.",
     "brandsHeading": "Marcas",
-    "followInstagram": "Síganos en Instagram"
+    "socialHeading": "Síganos"
   },
   "misc": {},
   "hero": {
@@ -343,14 +344,27 @@
     "aliasDescription": "El directorio de marcas de Vega's Distributors ahora está en /brands/."
   },
   "gallery": {
+    "title": "Marcas en Movimiento",
+    "description": "Arte de producto y campaña de las marcas que Vega's Distributors abastece en todo Belice.",
     "heading": "Marcas en Movimiento",
     "lead": "Arte de producto y campaña de la gama que distribuimos.",
     "label": "Galería de marcas",
+    "showcaseLabel": "Arte destacado",
+    "skip": "Ir a la galería",
+    "gridHeading": "La galería completa",
+    "gridLead": "Todas las piezas, listas para explorar.",
+    "top": "Volver arriba",
+    "counter": "{n} de {total}",
     "openLabel": "Ver {name}",
     "lightboxLabel": "Visor de arte de marca",
     "close": "Cerrar",
     "prev": "Imagen anterior",
     "next": "Imagen siguiente",
     "viewBrand": "Ver marca"
+  },
+  "social": {
+    "whatsapp": "WhatsApp",
+    "facebook": "Facebook",
+    "instagram": "Instagram"
   }
 }

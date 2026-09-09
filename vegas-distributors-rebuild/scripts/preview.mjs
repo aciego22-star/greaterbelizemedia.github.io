@@ -31,16 +31,30 @@ const VIEWS = [
   { id: 'industries', path: 'divisions/vegas-industries' },
   { id: 'lubricants', path: 'divisions/international-lubricants-belize' },
   { id: 'brands', path: 'brands' },
+  { id: 'gallery', path: 'gallery' },
   { id: 'network', path: 'sales-network' },
   { id: 'contact', path: 'contact' },
   { id: 'es-home', path: 'es' },
+  { id: 'es-about', path: 'es/about' },
+  { id: 'es-divisions', path: 'es/divisions' },
+  { id: 'es-industries', path: 'es/divisions/vegas-industries' },
+  { id: 'es-lubricants', path: 'es/divisions/international-lubricants-belize' },
   { id: 'es-brands', path: 'es/brands' },
+  { id: 'es-gallery', path: 'es/gallery' },
   { id: 'es-network', path: 'es/sales-network' },
   { id: 'es-contact', path: 'es/contact' },
   // Every brand detail page is carried, so nothing in the directory dead-ends.
   ...catalog.brands.map((b) => ({ id: `brand-${b.slug}`, path: `products/${b.slug}` })),
   ...catalog.brands.map((b) => ({ id: `es-brand-${b.slug}`, path: `es/products/${b.slug}` })),
 ];
+
+/**
+ * /products/ and /es/products/ are signposts that the host redirects to the
+ * brand directory, so links to them are followed here the way a visitor would
+ * experience them. The category query they carry is dropped, as the directory
+ * opens on its full listing.
+ */
+const ALIASES = { products: 'brands', 'es/products': 'es-brands' };
 
 const readPage = (path) => readFileSync(join(DIST, path, 'index.html'), 'utf8');
 const dataUri = (file, mime) => `data:${mime};base64,${readFileSync(join(DIST, file)).toString('base64')}`;
@@ -129,6 +143,7 @@ function rewriteLinks(html) {
       .replace(/\/$/, '');
     const view = VIEWS.find((v) => v.path === path);
     if (view) return `href="#${view.id}" data-view="${view.id}"`;
+    if (ALIASES[path]) return `href="#${ALIASES[path]}" data-view="${ALIASES[path]}"`;
     // Nothing should reach here; if it does, the link is inert rather than
     // sending the visitor somewhere they did not ask for.
     return 'href="#" data-inert';
@@ -136,6 +151,34 @@ function rewriteLinks(html) {
 }
 
 const extractMain = (html) => /<main id="main">([\s\S]*?)<\/main>/.exec(html)[1];
+
+/**
+ * The lightbox reads its images and brand links from a JSON payload rather
+ * than from markup, so that payload needs the same treatment as the rest of
+ * the page: images inlined, internal links turned into view switches.
+ */
+function rewritePayload(html) {
+  return html.replace(
+    /(<script type="application\/json" data-gallery-data>)([\s\S]*?)(<\/script>)/,
+    (whole, open, json, close) => {
+      let items;
+      try { items = JSON.parse(json); } catch { return whole; }
+      const rewritten = items.map((item) => {
+        const path = String(item.href ?? '')
+          .replace(/^(?:\.\.\/)+/, '')
+          .replace(/^\.\//, '')
+          .replace(/\/$/, '');
+        const view = VIEWS.find((v) => v.path === path);
+        return {
+          ...item,
+          src: inlineImage(item.src),
+          href: view ? `#${view.id}` : null,
+        };
+      });
+      return open + JSON.stringify(rewritten).replace(/</g, '\\u003c') + close;
+    }
+  );
+}
 
 /**
  * The review file is served under a policy that does not admit third-party
@@ -154,7 +197,7 @@ const views = VIEWS.map((v) => {
   const html = readPage(v.path);
   return {
     ...v,
-    body: replaceFrames(rewriteLinks(inlinePictures(extractMain(html)))),
+    body: replaceFrames(rewritePayload(rewriteLinks(inlinePictures(extractMain(html))))),
     lang: /<html lang="es"/.test(html) ? 'es' : 'en',
   };
 });
@@ -231,7 +274,7 @@ ${css}
 
     // Mark the current page in the navigation, as the built site does.
     var paths = { home: '', about: 'about', divisions: 'divisions', brands: 'brands',
-      network: 'sales-network', contact: 'contact' };
+      gallery: 'gallery', network: 'sales-network', contact: 'contact' };
     var key = id.replace(/^es-/, '').replace(/^brand-.*$/, 'brands')
       .replace('industries', 'divisions').replace('lubricants', 'divisions');
     Array.prototype.forEach.call(document.querySelectorAll('.nav-list a'), function (a) {
@@ -242,14 +285,32 @@ ${css}
     });
 
     window.scrollTo(0, 0);
+
+    // The showcase measures itself against the viewport, and it measures as
+    // zero while its page is hidden. Ask it to place its cards again now that
+    // the page it lives on is on screen.
+    window.dispatchEvent(new Event('resize'));
   }
 
   document.addEventListener('click', function (e) {
-    var a = e.target.closest && e.target.closest('a[data-view], a[data-inert]');
+    var a = e.target.closest && e.target.closest('a[data-view], a[data-inert], a[href^="#"]');
     if (!a) return;
+    // The lightbox rewrites its brand link's href as the visitor moves through
+    // the images, so a resolvable hash is more current than any data-view the
+    // markup was built with. In-page anchors, such as the skip control, resolve
+    // to nothing here and are left alone.
+    var href = a.getAttribute('href') || '';
+    var hash = href.charAt(0) === '#' ? href.slice(1) : '';
+    var v = hash && document.getElementById('view-' + hash) ? hash : a.getAttribute('data-view');
+    if (!v) {
+      if (!a.hasAttribute('data-inert')) return;
+      e.preventDefault();
+      return;
+    }
     e.preventDefault();
-    var v = a.getAttribute('data-view');
-    if (v) show(v);
+    var box = a.closest('[data-lightbox]');
+    if (box) { box.hidden = true; document.body.style.overflow = ''; }
+    show(v);
   });
 
   show('home');

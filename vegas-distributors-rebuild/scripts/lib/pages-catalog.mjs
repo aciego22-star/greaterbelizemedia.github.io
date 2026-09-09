@@ -1,7 +1,7 @@
 /** Brands directory, brand detail, sales network, contact and error routes. */
 import { esc, picture, telLink, mailLink, t } from './html.mjs';
 import { ROUTES, link, absoluteUrl } from './layout.mjs';
-import { sectionHead, crumbs, brandCard, categoryCard, repCard, plate } from './partials.mjs';
+import { sectionHead, crumbs, brandCard, categoryCard, repCard, plate, socialLinks } from './partials.mjs';
 
 const categoryLabel = (catalog, id, locale) => {
   const c = catalog.categories.find((x) => x.id === id);
@@ -275,13 +275,15 @@ export function contact(ctx) {
     `<div class="channel__actions">${actions}</div>` +
     `</li>`;
 
-  // The general WhatsApp action only renders once a destination is configured,
-  // so an unconfirmed number can never ship as a broken link.
+  // The WhatsApp action renders only once a destination is configured, so an
+  // unset value removes it everywhere rather than shipping a broken link.
   const whatsapp = company.generalWhatsappUrl
     ? card({
         heading: c.whatsappHeading,
         body: c.whatsappBody,
-        actions: `<a class="btn btn--primary" href="${esc(company.generalWhatsappUrl)}" rel="noopener noreferrer">${esc(c.whatsappAction)}</a>`,
+        actions:
+          `<a class="btn btn--primary" href="${esc(company.generalWhatsappUrl)}" rel="noopener noreferrer">` +
+          `${esc(c.whatsappAction)}</a>`,
       })
     : '';
 
@@ -309,6 +311,11 @@ export function contact(ctx) {
       heading: c.ilbHeading,
       body: c.ilbBody,
       actions: ilb.contact.phones.map((p) => telLink(p, p)).join('') + mailLink(ilb.contact.email),
+    }) +
+    card({
+      heading: i18n.footer.socialHeading,
+      body: c.socialBody,
+      actions: socialLinks({ company, i18n, className: 'social--dark' }),
     }) +
     `</ul>`;
 

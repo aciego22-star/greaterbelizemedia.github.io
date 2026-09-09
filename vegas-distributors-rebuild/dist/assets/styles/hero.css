@@ -101,9 +101,9 @@
    Copy
    -------------------------------------------------------------------------- */
 
+/* Deliberately unpositioned: the product stage lives inside this column for
+   mobile flow, but positions against the full-bleed slide on desktop. */
 .hero-slide__inner {
-  position: relative;
-  z-index: 2;
   width: 100%;
   /* Wider than the site shell: the stage layers are anchored to fixed points
      in the artwork, so a narrow centred column would push the copy into them
@@ -114,7 +114,12 @@
 
 /* The stage layers sit over pedestals fixed in the artwork, so the copy column
    is what yields: it never grows into the product's half of the frame. */
-.hero-slide__copy { max-width: 650px; color: #fff; }
+.hero-slide__copy {
+  position: relative;
+  z-index: 2;
+  max-width: 650px;
+  color: #fff;
+}
 @media (min-width: 60rem) {
   .hero-slide__copy { max-width: min(650px, 42vw); }
 }
@@ -157,14 +162,6 @@
 
 .hero-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; }
 
-.btn--lg { min-height: 54px; padding: 0.9rem 1.75rem; font-size: 1.02rem; }
-.btn--onDark {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.5);
-  color: #fff;
-  backdrop-filter: blur(6px);
-}
-.btn--onDark:hover { background: rgba(255, 255, 255, 0.2); border-color: #fff; }
 
 /* --------------------------------------------------------------------------
    Product stage
@@ -208,15 +205,18 @@
 .hero-stage__mark img { width: 100%; height: auto; }
 
 @media (max-width: 60rem) {
-  /* Below the breakpoint the pedestal is cropped away, so the artwork becomes
-     part of the content flow instead of floating over the scene. */
+  /* Below the breakpoint the pedestal is cropped out of frame, so the artwork
+     joins the content flow beneath the copy instead of floating over the
+     scene, where it would land on top of the header. */
   .hero-slide { align-items: flex-start; }
   .hero-slide__inner {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
     gap: 1.75rem;
     padding-block: clamp(3rem, 12vw, 4rem) 6rem;
   }
+  .hero-slide__copy { order: 1; }
   .hero-stage {
     position: static;
     transform: none;
@@ -225,7 +225,6 @@
     justify-items: start;
     order: 2;
   }
-  .hero-slide__copy { order: 1; }
 }
 
 /* --------------------------------------------------------------------------
@@ -244,22 +243,6 @@
 .hero:not([data-ready]) .hero-controls { display: none; }
 
 .hero-nav { display: flex; gap: 0.5rem; }
-
-.hero-arrow {
-  display: inline-grid;
-  place-items: center;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.45);
-  background: rgba(0, 0, 0, 0.32);
-  color: #fff;
-  cursor: pointer;
-  backdrop-filter: blur(8px);
-  transition: background-color 0.18s var(--ease), border-color 0.18s var(--ease);
-}
-.hero-arrow:hover { background: rgba(0, 0, 0, 0.62); border-color: #fff; }
-.hero-arrow svg { width: 20px; height: 20px; }
 
 .hero-dots { display: flex; gap: 0.5rem; }
 

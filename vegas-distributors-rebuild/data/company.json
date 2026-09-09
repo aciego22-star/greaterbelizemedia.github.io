@@ -445,6 +445,6 @@
     "embed": "https://www.google.com/maps?q=Vega%27s%20Distributors%20Ltd%2C%20Pedro%20Guerra%20Mena%20Street%2C%20Benque%20Viejo%20Town%2C%20Belize&output=embed",
     "link": "https://www.google.com/maps/search/?api=1&query=Vega%27s%20Distributors%20Ltd%2C%20Pedro%20Guerra%20Mena%20Street%2C%20Benque%20Viejo%20Town%2C%20Belize"
   },
-  "generalWhatsappUrl": "",
-  "generalWhatsappNote": "No public source confirms a general company WhatsApp number. While this is empty the general WhatsApp action is not rendered. Populate it when the client confirms the destination; no markup change is needed."
+  "generalWhatsappUrl": "https://wa.link/dl2lua",
+  "generalWhatsappNote": "Public wa.link supplied in the client's CONTACT CHANNELS.md and confirmed by the client for use as the site's WhatsApp destination. It could not be resolved from the build environment, so verify it opens the intended chat before launch. Clearing this value removes every WhatsApp action with no markup change."
 }

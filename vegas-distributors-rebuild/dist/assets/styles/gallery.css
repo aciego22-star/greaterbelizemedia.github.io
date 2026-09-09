@@ -1,63 +1,200 @@
 /* ==========================================================================
    Brands in Motion
-   A dimensional grid of official product artwork. Cards keep their source
-   aspect ratio, so nothing is cropped; variety comes from column spans.
+   A scroll-driven showcase above a plain browsing grid. Without script the
+   showcase is an ordinary stack of figures, so nothing depends on JavaScript.
    ========================================================================== */
 
-.gallery-band {
+.page-hero--gallery { padding-bottom: clamp(2rem, 4vw, 3rem); }
+
+/* --------------------------------------------------------------------------
+   Showcase, unenhanced: a readable vertical sequence
+   -------------------------------------------------------------------------- */
+
+.showcase { background: var(--deep); color: #fff; }
+
+.showcase__list {
+  list-style: none;
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 2.5rem);
+  width: min(1240px, 100% - 2 * var(--gutter));
+  margin-inline: auto;
+  padding-block: clamp(2.5rem, 6vw, 4rem);
+}
+.showcase__item figure { margin: 0; }
+.showcase__item img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+  background: #fff;
+}
+.showcase__item figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 0.9rem;
+  padding-top: 0.85rem;
+}
+.showcase__brand {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--yellow);
+}
+.showcase__caption { font-size: 0.92rem; color: rgba(255, 255, 255, 0.72); }
+
+.showcase__hud { display: none; }
+
+/* --------------------------------------------------------------------------
+   Showcase, enhanced: a sticky stage the sequence advances through
+   -------------------------------------------------------------------------- */
+
+.showcase[data-ready] {
+  /* One viewport of travel per item, plus one to read the last one. */
+  height: calc((var(--count) * 62vh) + 60vh);
   position: relative;
-  /* Cards enter from off-axis, so their start transforms are clipped rather
-     than allowed to widen the page. */
-  overflow-x: hidden;
-  overflow-x: clip;
 }
 
-.gallery {
+.showcase[data-ready] .showcase__stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  /* The shared perspective is what turns the sequence into depth. */
+  perspective: 1400px;
+  perspective-origin: 50% 45%;
+}
+@supports not (height: 1svh) {
+  .showcase[data-ready] .showcase__stage { height: 100vh; }
+}
+
+.showcase[data-ready] .showcase__list {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  transform-style: preserve-3d;
+}
+
+.showcase[data-ready] .showcase__item {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(58rem, 84vw);
+  margin: 0;
+  transform-origin: 50% 50%;
+  will-change: transform, opacity;
+  /* Positioned by script; hidden until it has a place. */
+  visibility: hidden;
+}
+.showcase[data-ready] .showcase__item.is-live { visibility: visible; }
+
+/* Each item becomes a solid card, so overlapping layers stay legible instead
+   of bleeding through one another. */
+.showcase[data-ready] .showcase__item figure {
+  background: #fff;
+  border-radius: 20px;
+  padding: 0.8rem;
+  box-shadow: 0 44px 100px rgba(0, 0, 0, 0.65), 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+.showcase[data-ready] .showcase__item img {
+  border-radius: 12px;
+  max-height: 56svh;
+  object-fit: contain;
+}
+.showcase[data-ready] .showcase__item figcaption {
+  justify-content: center;
+  text-align: center;
+  padding: 0.85rem 0.4rem 0.2rem;
+}
+.showcase[data-ready] .showcase__brand { color: var(--red); }
+.showcase[data-ready] .showcase__caption { color: var(--slate); }
+
+/* Heads-up display: position, progress and a way past the sequence. */
+.showcase[data-ready] .showcase__hud {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(1.25rem, 4vh, 2.5rem);
+  transform: translateX(-50%);
+  z-index: 3;
+  display: grid;
+  justify-items: center;
+  gap: 0.75rem;
+  width: min(26rem, calc(100% - 2 * var(--gutter)));
+}
+.showcase__counter {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.9);
+  font-variant-numeric: tabular-nums;
+}
+.showcase__progress {
+  width: 100%;
+  height: 3px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.24);
+  overflow: hidden;
+}
+.showcase__progress span {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--yellow);
+  transition: width 0.12s linear;
+}
+.showcase__skip { backdrop-filter: blur(8px); }
+
+@media (max-width: 60rem) {
+  .showcase[data-ready] { height: calc((var(--count) * 52vh) + 50vh); }
+  .showcase[data-ready] .showcase__item { width: min(30rem, 88vw); }
+  .showcase[data-ready] .showcase__item img { max-height: 52svh; }
+}
+
+/* --------------------------------------------------------------------------
+   The grid
+   -------------------------------------------------------------------------- */
+
+.tile-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  grid-auto-flow: dense;
-  /* One row height for every card, so spans vary but the grid never leaves
-     ragged gaps between differently proportioned sources. */
-  grid-auto-rows: clamp(8rem, 11.5vw, 11rem);
   gap: clamp(0.75rem, 1.6vw, 1.15rem);
   list-style: none;
-  /* The shared perspective is what makes the entry read as depth rather than
-     as a flat slide. */
-  perspective: 1200px;
-  perspective-origin: 50% 40%;
 }
-
-.g-card {
+.tile-card {
   position: relative;
-  grid-column: span 1;
   border-radius: var(--radius);
   overflow: hidden;
   background: #fff;
   border: 1px solid var(--line);
-  transform-style: preserve-3d;
+  transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
 }
-.g-card--wide { grid-column: span 2; }
-
-.g-card__button {
+.tile-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+.tile-card__button {
   display: block;
   width: 100%;
-  height: 100%;
   padding: 0;
   border: 0;
   background: transparent;
   cursor: zoom-in;
+  aspect-ratio: 16 / 9;
 }
-.g-card__button picture, .g-card__button img { display: block; width: 100%; height: 100%; }
-.g-card__button img { object-fit: cover; }
+.tile-card__button picture, .tile-card__button img { display: block; width: 100%; height: 100%; }
+.tile-card__button img { object-fit: cover; }
+.tile-card__button:focus-visible { outline: 3px solid var(--red); outline-offset: -3px; }
 
-.g-card__link {
+.tile-card__link {
   position: absolute;
   left: 0.6rem;
   bottom: 0.6rem;
   z-index: 2;
   font-size: 0.76rem;
   font-weight: 600;
-  letter-spacing: 0.02em;
   color: #fff;
   text-decoration: none;
   background: rgba(0, 0, 0, 0.62);
@@ -68,73 +205,42 @@
   transform: translateY(6px);
   transition: opacity 0.22s var(--ease), transform 0.22s var(--ease);
 }
-.g-card:hover .g-card__link,
-.g-card:focus-within .g-card__link { opacity: 1; transform: none; }
+.tile-card:hover .tile-card__link,
+.tile-card:focus-within .tile-card__link { opacity: 1; transform: none; }
 
-.g-card__button:focus-visible { outline: 3px solid var(--red); outline-offset: -3px; }
-
-@media (max-width: 75rem) {
-  .gallery { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-}
-@media (max-width: 48rem) {
-  .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .g-card--wide { grid-column: span 2; }
-}
-@media (max-width: 26rem) {
-  .gallery { grid-template-columns: 1fr; }
-  .g-card, .g-card--wide { grid-column: span 1; }
-}
+@media (max-width: 75rem) { .tile-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 48rem) { .tile-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
 /* --------------------------------------------------------------------------
-   Entry motion
-   Cards are visible by default. The script arms them, so a blocked or failed
-   script leaves a plain readable grid rather than an empty section.
+   Back to top
    -------------------------------------------------------------------------- */
 
-@media (prefers-reduced-motion: no-preference) {
-  .gallery.is-armed .g-card {
-    opacity: 0;
-    transition:
-      opacity 0.7s var(--ease),
-      transform 0.75s cubic-bezier(0.22, 0.68, 0.3, 1);
-  }
-  .gallery.is-armed .g-card[data-variant='1'] { transform: translate3d(0, 60px, -140px) rotateX(9deg); }
-  .gallery.is-armed .g-card[data-variant='2'] { transform: translate3d(-54px, 40px, -180px) rotateY(11deg); }
-  .gallery.is-armed .g-card[data-variant='3'] { transform: translate3d(54px, 40px, -180px) rotateY(-11deg); }
-  .gallery.is-armed .g-card[data-variant='4'] { transform: translate3d(0, 74px, -220px) scale(0.9); }
-  .gallery.is-armed .g-card[data-variant='5'] { transform: translate3d(-38px, 58px, -120px) rotateX(7deg) rotateY(7deg); }
-  .gallery.is-armed .g-card[data-variant='6'] { transform: translate3d(38px, 58px, -120px) rotateX(7deg) rotateY(-7deg); }
-
-  .gallery.is-armed .g-card.is-in {
-    opacity: 1;
-    transform: none;
-  }
-
-  /* Pointer tilt, kept small so it reads as a lift rather than a toy. */
-  .g-card.is-in.has-tilt {
-    transition: transform 0.18s var(--ease), box-shadow 0.22s var(--ease);
-    transform:
-      translate3d(0, -4px, 0)
-      rotateX(var(--tilt-x, 0deg))
-      rotateY(var(--tilt-y, 0deg));
-    box-shadow: var(--shadow-lg);
-  }
+.to-top {
+  position: fixed;
+  right: clamp(1rem, 3vw, 2rem);
+  bottom: clamp(1rem, 3vw, 2rem);
+  z-index: 90;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 48px;
+  padding: 0 1.05rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--red);
+  color: #fff;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow);
 }
-
-/* Narrow screens get the same choreography with far less travel. */
-@media (prefers-reduced-motion: no-preference) and (max-width: 48rem) {
-  .gallery.is-armed .g-card[data-variant='1'] { transform: translate3d(0, 30px, -60px); }
-  .gallery.is-armed .g-card[data-variant='2'] { transform: translate3d(-16px, 26px, -70px) rotateY(5deg); }
-  .gallery.is-armed .g-card[data-variant='3'] { transform: translate3d(16px, 26px, -70px) rotateY(-5deg); }
-  .gallery.is-armed .g-card[data-variant='4'] { transform: translate3d(0, 34px, -80px) scale(0.95); }
-  .gallery.is-armed .g-card[data-variant='5'] { transform: translate3d(-12px, 30px, -50px) rotateX(4deg); }
-  .gallery.is-armed .g-card[data-variant='6'] { transform: translate3d(12px, 30px, -50px) rotateX(4deg); }
-  /* Pointer tilt is a desktop affordance only. */
-  .g-card.is-in.has-tilt { transform: none; box-shadow: none; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .gallery .g-card { opacity: 1 !important; transform: none !important; }
+.to-top:hover { background: #b92a17; }
+.to-top svg { width: 17px; height: 17px; }
+.to-top:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+@media (max-width: 30rem) {
+  .to-top span { display: none; }
+  .to-top { padding: 0; width: 48px; justify-content: center; }
 }
 
 /* --------------------------------------------------------------------------
@@ -149,14 +255,8 @@
   place-items: center;
   padding: clamp(1rem, 4vw, 3rem);
 }
-.lightbox__backdrop { position: absolute; inset: 0; background: rgba(6, 7, 9, 0.88); border: 0; }
-.lightbox__panel {
-  position: relative;
-  display: grid;
-  gap: 1rem;
-  width: min(100%, 68rem);
-  max-height: 100%;
-}
+.lightbox__backdrop { position: absolute; inset: 0; background: rgba(6, 7, 9, 0.9); border: 0; }
+.lightbox__panel { position: relative; display: grid; gap: 1rem; width: min(100%, 68rem); max-height: 100%; }
 .lightbox__figure { margin: 0; display: grid; gap: 0.6rem; min-height: 0; }
 .lightbox__figure img {
   width: 100%;

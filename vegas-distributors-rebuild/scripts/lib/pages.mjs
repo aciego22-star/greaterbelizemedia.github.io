@@ -5,7 +5,6 @@ import {
   sectionHead, crumbs, notice, brandCard, categoryCard, divisionPanel, repCard, placeholderNote, plate,
 } from './partials.mjs';
 import { heroCarousel } from './hero.mjs';
-import { brandGallery } from './gallery.mjs';
 
 const localeCopy = (obj, locale) => obj[locale] ?? obj.en;
 
@@ -14,7 +13,7 @@ const localeCopy = (obj, locale) => obj[locale] ?? obj.en;
  * ------------------------------------------------------------------ */
 
 export function home(ctx) {
-  const { i18n, locale, company, catalog, images, heroes, campaign, gallery, galleryImages } = ctx;
+  const { i18n, locale, company, catalog, images, heroes, campaign } = ctx;
   const c = i18n.home;
 
   // The document heading is stable; the carousel headlines are section-level,
@@ -154,8 +153,6 @@ export function home(ctx) {
       false
     );
 
-  const galleryBand = brandGallery({ i18n, locale, gallery, galleryImages, catalog });
-
   /* Product discovery: four visual categories, then a compact enquiry band. */
   const withCounts = catalog.categories.map((cat) => ({
     cat,
@@ -235,7 +232,7 @@ export function home(ctx) {
   const preloadSet = first.avif.map((s) => `{{BASE}}assets/heroes/${s.file} ${s.width}w`).join(', ');
 
   return {
-    body: hero + trust + featured + divisions + galleryBand + categories + gateway + cta,
+    body: hero + trust + featured + divisions + categories + gateway + cta,
     bodyClass: 'home',
     pageStyles: ['hero.css', 'gallery.css'],
     extraHead:

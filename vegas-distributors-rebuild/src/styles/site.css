@@ -235,6 +235,33 @@ ul, ol { margin: 0; padding: 0; }
 .btn--yellow:hover { background: var(--yellow-deep); }
 
 .btn--sm { min-height: 40px; padding: 0.5rem 1rem; font-size: 0.9rem; }
+.btn--lg { min-height: 54px; padding: 0.9rem 1.75rem; font-size: 1.02rem; }
+.btn--onDark {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+  color: #fff;
+  backdrop-filter: blur(6px);
+}
+.btn--onDark:hover { background: rgba(255, 255, 255, 0.2); border-color: #fff; }
+
+/* A circular control for carousels and the gallery viewer. */
+.hero-arrow {
+  display: inline-grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  background: rgba(0, 0, 0, 0.32);
+  color: #fff;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: background-color 0.18s var(--ease), border-color 0.18s var(--ease);
+}
+.hero-arrow:hover { background: rgba(0, 0, 0, 0.62); border-color: #fff; }
+.hero-arrow svg { width: 20px; height: 20px; }
+
+
 .btn--full { width: 100%; }
 
 .band--deep .btn--outline {
@@ -266,6 +293,7 @@ ul, ol { margin: 0; padding: 0; }
    -------------------------------------------------------------------------- */
 
 .masthead {
+  --panel-inset: 0;
   position: sticky;
   top: 0;
   z-index: 100;
@@ -297,15 +325,32 @@ ul, ol { margin: 0; padding: 0; }
   color: #fff;
 }
 .masthead--over-hero:not(.is-stuck) .nav-toggle__bars i { background: #fff; }
-.masthead--over-hero.is-stuck { background: rgba(255, 255, 255, 0.97); border-bottom-color: var(--line); backdrop-filter: saturate(1.4) blur(10px); }
+.masthead--over-hero.is-stuck,
+.masthead--over-hero.is-open {
+  background: rgba(255, 255, 255, 0.97);
+  border-bottom-color: var(--line);
+  backdrop-filter: saturate(1.4) blur(10px);
+}
 
-/* Mobile keeps the panel readable by giving it its own solid surface. */
+/* With the panel open the header is a solid surface, so the top row reverts to
+   its normal dark treatment rather than staying white-on-white. */
+.masthead--over-hero.is-open .nav-list a { color: var(--ink-soft); }
+.masthead--over-hero.is-open .lang { background: var(--surface-raised); border-color: var(--line-strong); }
+.masthead--over-hero.is-open .lang a { color: var(--slate); }
+.masthead--over-hero.is-open .lang a[aria-current='true'] { background: var(--ink); color: #fff; }
+.masthead--over-hero.is-open .nav-toggle {
+  background: var(--surface-raised);
+  border-color: var(--line-strong);
+  color: var(--ink);
+}
+.masthead--over-hero.is-open .nav-toggle__bars i { background: var(--ink); }
+
+/* Mobile keeps the panel readable by giving it its own solid surface. One
+   inset governs the whole panel, so the links and the CTA share an edge. */
 @media (max-width: 52rem) {
   .masthead--over-hero .masthead__panel:not([hidden]) {
-    background: var(--surface-raised);
-    border-radius: var(--radius);
-    padding-inline: 0.6rem;
-    margin-bottom: 0.5rem;
+    border-top: 1px solid var(--line);
+    padding: 0.35rem var(--panel-inset) 0.9rem;
   }
   .masthead--over-hero:not(.is-stuck) .masthead__panel:not([hidden]) .nav-list a { color: var(--ink-soft); }
 }
@@ -1222,6 +1267,11 @@ table.products td.size:empty::after { content: '—'; color: var(--line-strong);
     var(--deep);
   color: #f4f2ee;
 }
+/* When the closing band is nested inside a padded section, that section's
+   ground would otherwise show as a strip of page colour between the dark band
+   and the footer. */
+.band:has(> .cta-band:last-child) { padding-bottom: 0; }
+
 .cta-band h2 { color: #fff; max-width: 20ch; }
 .cta-band .lead { color: #cfccc5; }
 .cta-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: clamp(1.75rem, 4vw, 3.5rem); align-items: center; }
@@ -1412,6 +1462,16 @@ table.products td.size:empty::after { content: '—'; color: var(--line-strong);
    Responsive
    -------------------------------------------------------------------------- */
 
+/* Between the desktop and mobile headers the bar is tight, especially in
+   Spanish where the labels are longer and there are seven of them. */
+@media (min-width: 52.0625rem) and (max-width: 78rem) {
+  .nav-list a { padding: 0 0.5rem; font-size: 0.88rem; }
+  .masthead__panel { gap: 0.6rem; }
+  .brand img { width: 108px; }
+  .masthead__cta .btn { padding: 0.5rem 0.8rem; font-size: 0.85rem; }
+  .lang a { padding: 0 0.55rem; }
+}
+
 @media (max-width: 62rem) {
   .hero__grid { grid-template-columns: 1fr; }
   .hero__composition { max-width: 34rem; }
@@ -1446,15 +1506,24 @@ table.products td.size:empty::after { content: '—'; color: var(--line-strong);
   .nav-toggle__bars i { display: block; width: 17px; height: 2px; background: var(--ink); border-radius: 2px; }
 
   /* Navigation and the utility actions collapse together behind one control,
-     so the header stays short and the CTAs never sit over the page. */
+     so the header stays short and the CTAs never sit over the page. The panel
+     takes no inset of its own, so the link fields and the CTA button line up
+     with the logo on the row above rather than sitting inside it. */
+  .masthead { --panel-inset: 0; }
+
   .masthead__panel {
     order: 4;
     width: 100%;
     flex-direction: column;
     align-items: stretch;
     gap: 0;
-    padding-bottom: 0.85rem;
+    padding: 0.35rem var(--panel-inset) 0.9rem;
   }
+
+  /* The link field and the CTA share the panel edge, so the current-page
+     marker and the button read as one column. */
+  .nav-list { padding: 0.35rem 0 0; }
+  .nav-list a[aria-current='page'] { border-radius: var(--radius-sm); }
   .nav-list {
     flex-direction: column;
     align-items: stretch;
@@ -1464,8 +1533,8 @@ table.products td.size:empty::after { content: '—'; color: var(--line-strong);
   .nav-list a { min-height: 48px; padding: 0 0.75rem; font-size: 1rem; }
   .nav-list a[aria-current='page'] { background: var(--yellow-wash); box-shadow: inset 3px 0 0 var(--yellow); }
 
-  .masthead__cta { flex-wrap: wrap; padding-top: 0.5rem; }
-  .masthead__cta .btn { flex: 1 1 auto; min-height: 48px; }
+  .masthead__cta { display: block; padding-top: 0.65rem; }
+  .masthead__cta .btn { width: 100%; min-height: 50px; }
 }
 
 /* The logo, language control and menu button stay on one row at every width.
@@ -1611,3 +1680,43 @@ table.products td.size:empty::after { content: '—'; color: var(--line-strong);
 }
 .map-frame iframe { width: 100%; height: 100%; border: 0; display: block; }
 @media (max-width: 48rem) { .map-frame { aspect-ratio: 4 / 3; } }
+
+/* --------------------------------------------------------------------------
+   Social channels
+   -------------------------------------------------------------------------- */
+
+.social {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  list-style: none;
+}
+.social__link {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #fff;
+  text-decoration: none;
+  transition: background-color 0.18s var(--ease), border-color 0.18s var(--ease), color 0.18s var(--ease);
+}
+.social__link svg { width: 21px; height: 21px; }
+.social__link:hover { border-color: transparent; color: #fff; }
+.social__link--whatsapp:hover { background: #25d366; }
+.social__link--facebook:hover { background: #1877f2; }
+.social__link--instagram:hover { background: linear-gradient(45deg, #f09433, #dc2743 50%, #bc1888); }
+
+/* On light surfaces the same row inverts. */
+.social--dark .social__link {
+  background: var(--surface-sunken);
+  border-color: var(--line);
+  color: var(--ink);
+}
+.social--dark .social__link:hover { color: #fff; }
+
+.footer-social-heading {
+  margin-top: 1.4rem;
+}

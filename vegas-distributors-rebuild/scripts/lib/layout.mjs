@@ -1,5 +1,6 @@
 /** Document shell: head metadata, masthead, footer and page assembly. */
 import { esc, cx, attrs, picture, jsonLd } from './html.mjs';
+import { socialLinks } from './partials.mjs';
 
 /** Route table. Paths are locale-independent; Spanish pages sit under /es/. */
 export const ROUTES = {
@@ -9,6 +10,7 @@ export const ROUTES = {
   industries: 'divisions/vegas-industries',
   lubricants: 'divisions/international-lubricants-belize',
   brands: 'brands',
+  gallery: 'gallery',
   products: 'products',
   network: 'sales-network',
   contact: 'contact',
@@ -105,6 +107,7 @@ function masthead({ i18n, locale, images, current, switchPath, bodyClass }) {
     ['about', i18n.nav.about],
     ['divisions', i18n.nav.divisions],
     ['brands', i18n.nav.brands],
+    ['gallery', i18n.nav.gallery],
     ['network', i18n.nav.salesNetwork],
     ['contact', i18n.nav.contact],
   ];
@@ -164,6 +167,7 @@ function footer({ site, i18n, locale, company, images }) {
     ['about', i18n.nav.about],
     ['divisions', i18n.nav.divisions],
     ['brands', i18n.nav.brands],
+    ['gallery', i18n.nav.gallery],
     ['network', i18n.nav.salesNetwork],
     ['contact', i18n.nav.contact],
   ]
@@ -197,9 +201,10 @@ function footer({ site, i18n, locale, company, images }) {
     `<div><h2>${esc(i18n.footer.divisionsHeading)}</h2><ul class="footer-list">${divisions}</ul></div>` +
     `<div><h2>${esc(i18n.footer.contactHeading)}</h2><ul class="footer-list">${phones}` +
     `<li><a href="mailto:${esc(company.email)}">${esc(company.email)}</a></li>` +
-    `<li><a href="${esc(company.facebook)}" rel="noopener noreferrer">${esc(i18n.footer.followUs)}</a></li>` +
-    (company.instagram ? `<li><a href="${esc(company.instagram)}" rel="noopener noreferrer">${esc(i18n.footer.followInstagram)}</a></li>` : '') +
-    `</ul></div>` +
+    `</ul>` +
+    `<h2 class="footer-social-heading">${esc(i18n.footer.socialHeading)}</h2>` +
+    socialLinks({ company, i18n }) +
+    `</div>` +
     `</div>` +
     `<div class="footer-note">` +
     `<span>&copy; ${year} ${esc(i18n.footer.copyright)}</span>` +

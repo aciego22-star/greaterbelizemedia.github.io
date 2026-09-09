@@ -43,6 +43,13 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.vegasdistributors.bz/gallery/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.vegasdistributors.bz/gallery/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.vegasdistributors.bz/es/gallery/"/>
+    <lastmod>2026-09-09</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.vegasdistributors.bz/products/ambar/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.vegasdistributors.bz/products/ambar/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://www.vegasdistributors.bz/es/products/ambar/"/>
@@ -354,6 +361,13 @@
     <loc>https://www.vegasdistributors.bz/es/brands/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.vegasdistributors.bz/brands/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://www.vegasdistributors.bz/es/brands/"/>
+    <lastmod>2026-09-09</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.vegasdistributors.bz/es/gallery/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.vegasdistributors.bz/gallery/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.vegasdistributors.bz/es/gallery/"/>
     <lastmod>2026-09-09</lastmod>
     <priority>0.8</priority>
   </url>

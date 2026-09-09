@@ -18,7 +18,8 @@
     "primaryLabel": "Primary",
     "breadcrumbLabel": "Breadcrumb",
     "languageLabel": "Language",
-    "brands": "Brands"
+    "brands": "Brands",
+    "gallery": "Gallery"
   },
   "actions": {
     "exploreProducts": "Explore Our Products",
@@ -259,7 +260,8 @@
     "officeHeading": "Head office",
     "addressHeading": "Address",
     "ilbHeading": "International Lubricants of Belize",
-    "ilbBody": "Oils and lubricants enquiries."
+    "ilbBody": "Oils and lubricants enquiries.",
+    "socialBody": "Find us on WhatsApp, Facebook and Instagram."
   },
   "notFound": {
     "title": "Page not found",
@@ -272,11 +274,10 @@
     "exploreHeading": "Explore",
     "divisionsHeading": "Divisions",
     "contactHeading": "Contact",
-    "followUs": "Follow us on Facebook",
     "copyright": "Vega's Distributors Ltd.",
     "rightsNote": "Third-party brand names and logos are the property of their respective owners and are shown for identification only.",
     "brandsHeading": "Brands",
-    "followInstagram": "Follow us on Instagram"
+    "socialHeading": "Follow us"
   },
   "misc": {},
   "hero": {
@@ -343,14 +344,27 @@
     "aliasDescription": "The Vega's Distributors brand directory has moved to /brands/."
   },
   "gallery": {
+    "title": "Brands in Motion",
+    "description": "Product and campaign artwork from the brands Vega's Distributors supplies across Belize.",
     "heading": "Brands in Motion",
     "lead": "Product and campaign artwork from across the range we distribute.",
     "label": "Brand gallery",
+    "showcaseLabel": "Featured artwork",
+    "skip": "Skip to gallery",
+    "gridHeading": "The full gallery",
+    "gridLead": "Every piece, laid out to browse.",
+    "top": "Back to top",
+    "counter": "{n} of {total}",
     "openLabel": "View {name}",
     "lightboxLabel": "Brand artwork viewer",
     "close": "Close",
     "prev": "Previous image",
     "next": "Next image",
     "viewBrand": "View brand"
+  },
+  "social": {
+    "whatsapp": "WhatsApp",
+    "facebook": "Facebook",
+    "instagram": "Instagram"
   }
 }

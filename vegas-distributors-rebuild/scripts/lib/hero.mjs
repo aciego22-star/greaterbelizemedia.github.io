@@ -79,7 +79,6 @@ export function heroCarousel({ i18n, locale, images, heroes, campaign, catalog }
         `${first ? '' : ' data-inert="true"'}>` +
         `<div class="hero-slide__media" data-parallax>` + background(entry, { eager: first }) + `</div>` +
         `<div class="hero-slide__scrim"></div>` +
-        productLayer(slide, { images, heroes, copy }) +
         `<div class="shell hero-slide__inner">` +
         `<div class="hero-slide__copy">` +
         `<p class="hero-eyebrow">${esc(copy.eyebrow)}</p>` +
@@ -90,6 +89,7 @@ export function heroCarousel({ i18n, locale, images, heroes, campaign, catalog }
         `<a class="btn btn--onDark btn--lg" href="${destination(slide.secondary)}">${esc(copy.secondary)}</a>` +
         `</div>` +
         `</div>` +
+        productLayer(slide, { images, heroes, copy }) +
         `</div>` +
         `</div>`
       );

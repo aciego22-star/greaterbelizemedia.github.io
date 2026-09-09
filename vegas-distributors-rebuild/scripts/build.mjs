@@ -15,6 +15,7 @@ import { fileURLToPath } from 'node:url';
 import { ROUTES, routePath, absoluteUrl, page } from './lib/layout.mjs';
 import * as core from './lib/pages.mjs';
 import * as cat from './lib/pages-catalog.mjs';
+import { galleryPage } from './lib/gallery.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = join(ROOT, 'dist');
@@ -150,6 +151,11 @@ for (const locale of LOCALES) {
     breadcrumbSchema(locale, crumbTrail({ name: i18n.nav.brands, path: ROUTES.brands })),
   ]);
 
+  render('gallery', ROUTES.gallery,
+    { title: i18n.gallery.title, description: i18n.gallery.description },
+    galleryPage(base),
+    [breadcrumbSchema(locale, crumbTrail({ name: i18n.nav.gallery, path: ROUTES.gallery }))]);
+
   // Anyone holding the old address still lands on the brand directory.
   render('brands', ROUTES.products,
     { title: i18n.brands.aliasTitle, description: i18n.brands.aliasDescription },
@@ -222,7 +228,7 @@ cpSync(join(ROOT, 'src', 'assets', 'gallery'), join(DIST, 'assets', 'gallery'), 
 // The /products/ alias is deliberately absent: it redirects to /brands/.
 const routeList = [
   ROUTES.home, ROUTES.about, ROUTES.divisions, ROUTES.industries, ROUTES.lubricants,
-  ROUTES.brands, ...catalog.brands.map((b) => `${ROUTES.products}/${b.slug}`),
+  ROUTES.brands, ROUTES.gallery, ...catalog.brands.map((b) => `${ROUTES.products}/${b.slug}`),
   ROUTES.network, ROUTES.contact,
 ];
 
