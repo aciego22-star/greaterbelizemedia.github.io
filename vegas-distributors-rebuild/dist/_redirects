@@ -1,0 +1,4 @@
+# The brand directory moved to /brands/. The static pages at /products/ and
+# /es/products/ carry the same redirect for hosts that ignore this file.
+/products/    /brands/       301!
+/es/products/ /es/brands/    301!

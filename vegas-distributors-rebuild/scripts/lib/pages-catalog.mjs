@@ -1,101 +1,121 @@
-/** Catalogue, sales-network, contact and error routes. */
+/** Brands directory, brand detail, sales network, contact and error routes. */
 import { esc, picture, telLink, mailLink, t } from './html.mjs';
-import { ROUTES, link } from './layout.mjs';
-import { sectionHead, crumbs, notice, brandCard, categoryCard, repCard } from './partials.mjs';
+import { ROUTES, link, absoluteUrl } from './layout.mjs';
+import { sectionHead, crumbs, brandCard, categoryCard, repCard, plate } from './partials.mjs';
 
 const categoryLabel = (catalog, id, locale) => {
   const c = catalog.categories.find((x) => x.id === id);
   return c ? c[locale] ?? c.en : id;
 };
 
-const divisionLabel = (company, slug, locale) => {
-  const d = company.divisions.find((x) => x.slug === slug);
-  if (!d) return slug;
-  return d.name;
-};
+const divisionLabel = (company, slug) => company.divisions.find((x) => x.slug === slug)?.name ?? slug;
+
+/** A direct email action carrying a useful subject line. */
+const mailto = (email, subject) =>
+  `mailto:${email}?subject=${encodeURIComponent(subject)}`.replace(/&/g, '&amp;');
 
 /* ------------------------------------------------------------------ *
- * Products index
+ * Brands directory
  * ------------------------------------------------------------------ */
 
-export function products(ctx) {
-  const { i18n, locale, catalog, company, images } = ctx;
-  const c = i18n.products;
-
-  const byCategory = catalog.categories.map((cat) => ({
-    cat,
-    brands: catalog.brands.filter((b) => b.categories.includes(cat.id)),
-  }));
+export function brands(ctx) {
+  const { i18n, locale, catalog, company, images, gallery, galleryImages } = ctx;
+  const c = i18n.brands;
 
   const categoryOptions = catalog.categories
     .map((cat) => {
       const n = catalog.brands.filter((b) => b.categories.includes(cat.id)).length;
-      return `<option value="${esc(cat.id)}">${esc(cat[locale] ?? cat.en)}${n ? ` (${n})` : ''}</option>`;
+      return n ? `<option value="${esc(cat.id)}">${esc(cat[locale] ?? cat.en)} (${n})</option>` : '';
     })
     .join('');
 
-  const divisionOptions = company.divisions
-    .map((d) => {
-      const n = catalog.brands.filter((b) => b.division === d.slug).length;
-      return n ? `<option value="${esc(d.slug)}">${esc(d.name)} (${n})</option>` : '';
-    })
-    .join('');
+  // Featured is limited to brands that have approved artwork behind them.
+  const featuredSlugs = ['bop', 'kelloggs', 'zafari', 'kerns', 'pringles', 'nutella'];
+  const featured = featuredSlugs
+    .map((slug) => catalog.brands.find((b) => b.slug === slug))
+    .filter(Boolean);
+
+  const featuredRow =
+    `<ul class="feature-row">` +
+    featured
+      .map((b) => {
+        const shot = gallery.items.find((g) => g.brand === b.slug);
+        const img = shot ? galleryImages[shot.id] : images.brands[b.slug]?.photos?.[0];
+        return (
+          `<li class="feature-card">` +
+          `<div class="feature-card__media">${picture(img, { alt: '', sizes: '(max-width: 60rem) 45vw, 260px' })}</div>` +
+          `<div class="feature-card__body">` +
+          `<h3><a class="stretch" href="${link(locale, `${ROUTES.products}/${b.slug}`)}">${esc(b.name)}</a></h3>` +
+          `<p>${esc(categoryLabel(catalog, b.category, locale))}</p>` +
+          `</div></li>`
+        );
+      })
+      .join('') +
+    `</ul>`;
+
+  // Ids are scoped per locale so both language directories can coexist in one
+  // document, which the review preview needs and the site never breaks on.
+  const uid = locale === 'en' ? '' : `-${locale}`;
 
   const filters =
-    `<form class="filters" id="brand-filters" role="search" aria-labelledby="filters-heading">` +
-    `<h2 class="visually-hidden" id="filters-heading">${esc(c.searchLabel)}</h2>` +
-    `<div class="filter-row">` +
+    `<div class="filters" role="search" aria-labelledby="filters-heading${uid}">` +
+    `<h3 class="visually-hidden" id="filters-heading${uid}">${esc(c.searchLabel)}</h3>` +
+    `<div class="filter-row filter-row--two">` +
     `<div class="field">` +
-    `<label for="brand-search">${esc(c.searchLabel)}</label>` +
-    `<input type="search" id="brand-search" name="q" placeholder="${esc(c.searchPlaceholder)}" autocomplete="off" spellcheck="false">` +
+    `<label for="brand-search${uid}">${esc(c.searchLabel)}</label>` +
+    `<input type="search" id="brand-search${uid}" name="q" placeholder="${esc(c.searchPlaceholder)}" autocomplete="off" spellcheck="false">` +
     `</div>` +
     `<div class="field">` +
-    `<label for="brand-category">${esc(c.categoryLabel)}</label>` +
-    `<select id="brand-category" name="category"><option value="">${esc(c.allCategories)}</option>${categoryOptions}</select>` +
-    `</div>` +
-    `<div class="field">` +
-    `<label for="brand-division">${esc(c.divisionLabel)}</label>` +
-    `<select id="brand-division" name="division"><option value="">${esc(c.allDivisions)}</option>${divisionOptions}</select>` +
+    `<label for="brand-category${uid}">${esc(c.categoryLabel)}</label>` +
+    `<select id="brand-category${uid}" name="category"><option value="">${esc(c.allCategories)}</option>${categoryOptions}</select>` +
     `</div>` +
     `</div>` +
     `<div class="filter-meta">` +
-    `<p id="result-count" role="status" data-template="${esc(c.resultsCount)}" data-template-one="${esc(c.resultsCountOne)}">${esc(t(c.resultsCount, { count: catalog.brands.length }))}</p>` +
-    `<button class="btn btn--ghost btn--sm" type="reset" id="clear-filters">${esc(c.clearFilters)}</button>` +
+    `<p data-result-count role="status" data-template="${esc(c.resultsCount)}" data-template-one="${esc(c.resultsCountOne)}">` +
+    `${esc(t(c.resultsCount, { count: catalog.brands.length }))}</p>` +
+    `<button class="btn btn--ghost btn--sm" type="button" data-clear-filters>${esc(c.clearFilters)}</button>` +
     `</div>` +
-    `</form>`;
+    `</div>`;
 
   const grid =
-    `<ul class="brand-grid" id="brand-grid">` +
+    `<ul class="brand-grid" data-brand-grid>` +
     catalog.brands
       .map((brand) =>
         brandCard({ brand, images, i18n, locale, category: categoryLabel(catalog, brand.category, locale) })
       )
       .join('') +
     `</ul>` +
-    `<div class="empty-state" id="no-results" hidden>` +
+    `<div class="empty-state" data-no-results hidden>` +
     `<h3>${esc(c.noResultsHeading)}</h3>` +
     `<p>${esc(c.noResultsBody)}</p>` +
-    `<a class="btn btn--primary" href="${link(locale, ROUTES.contact)}?type=availability">${esc(i18n.actions.enquire)}</a>` +
+    `<a class="btn btn--primary" href="${link(locale, ROUTES.contact)}">${esc(i18n.actions.contactSales)}</a>` +
     `</div>`;
 
   const body =
-    crumbs({ i18n, locale, trail: [{ label: i18n.nav.home, href: link(locale, ROUTES.home) }, { label: i18n.nav.products }] }) +
-    `<section class="page-head"><div class="shell">` +
-    `<hr class="rule"><h1>${esc(c.heading)}</h1><p class="lead">${esc(c.lead)}</p>` +
-    `<div style="margin-top:1.5rem">${notice(`<span><strong>${esc(i18n.misc.provisional)}.</strong> ${esc(c.verificationNotice)}</span>`)}</div>` +
+    `<section class="page-hero">` +
+    `<div class="shell">` +
+    `<p class="eyebrow">${esc(i18n.nav.brands)}</p>` +
+    `<h1>${esc(c.heading)}</h1>` +
+    `<p class="lead">${esc(c.lead)}</p>` +
+    `<p class="page-hero__note">${esc(t(i18n.brands.productCount, { count: catalog.totals.products }))} &middot; ` +
+    `${esc(t(c.resultsCount, { count: catalog.totals.brands }))}</p>` +
     `</div></section>` +
     `<section class="band band--tight"><div class="shell">` +
-    `<h2 id="categories-heading">${esc(c.categoriesHeading)}</h2>` +
-    `<ul class="categories" style="margin-top:1.5rem">` +
-    byCategory
-      .map(({ cat, brands }) => categoryCard({ category: cat, count: brands.length, brands, images, i18n, locale }))
-      .join('') +
-    `</ul></div></section>` +
+    `<div class="band-head"><div class="band-head__text">` +
+    `<h2>${esc(c.featuredHeading)}</h2><p>${esc(c.featuredLead)}</p>` +
+    `</div></div>` +
+    featuredRow +
+    `</div></section>` +
     `<section class="band band--sunken"><div class="shell">` +
-    `<h2 id="brands-heading">${esc(c.brandsHeading)}</h2>` +
-    `<p class="lead" style="margin:0.75rem 0 1.5rem">${esc(t(c.listingCount, { count: catalog.totals.products }))} · ${esc(t(c.brandCount, { count: catalog.totals.brands }))}</p>` +
-    filters + grid +
-    `</div></section>`;
+    `<div class="band-head"><div class="band-head__text"><h2>${esc(c.directoryHeading)}</h2></div></div>` +
+    `<div data-brand-directory>` + filters + grid + `</div>` +
+    `</div></section>` +
+    `<section class="band band--tight"><div class="shell cta-inline">` +
+    `<div><h2>${esc(c.inquiryHeading)}</h2><p class="lead">${esc(c.inquiryBody)}</p></div>` +
+    `<div class="actions">` +
+    `<a class="btn btn--primary btn--lg" href="${mailto(company.email, i18n.contact.emailSubject)}">${esc(i18n.actions.emailUs)}</a>` +
+    `<a class="btn btn--outline btn--lg" href="${link(locale, ROUTES.network)}">${esc(i18n.actions.findYourRep)}</a>` +
+    `</div></div></section>`;
 
   return { body, pageScripts: ['catalog.js'] };
 }
@@ -113,28 +133,23 @@ export function brand(ctx) {
     .map((section) => {
       const caption = section.label ?? c.sectionUngrouped;
       return (
-        `<div class="table-wrap" style="margin-top:1.25rem"><table class="products">` +
+        `<div class="table-wrap"><table class="products">` +
         `<caption>${esc(caption)}</caption>` +
         `<thead><tr><th scope="col">${esc(c.productName)}</th><th scope="col">${esc(c.productSize)}</th></tr></thead>` +
         `<tbody>` +
-        section.products
-          .map((p) => `<tr><td>${esc(p.name)}</td><td class="size">${esc(p.size)}</td></tr>`)
-          .join('') +
+        section.products.map((p) => `<tr><td>${esc(p.name)}</td><td class="size">${esc(p.size)}</td></tr>`).join('') +
         `</tbody></table></div>`
       );
     })
     .join('');
 
-  // Published artwork is low resolution, so a gallery item is never displayed
-  // wider than the largest derivative that exists for it: a stretched packshot
-  // reads as a broken label. The cap and the sizes hint are kept in step.
   const gallery = (img?.photos ?? [])
     .slice(0, 4)
     .map((p) => {
       const widest = p.fallback[p.fallback.length - 1].width;
       return (
         `<div class="tile" style="max-width:${widest}px">${picture(p, {
-          alt: p.alt ? `${b.name}: ${p.alt}` : `${b.name} product imagery published by Vega's Distributors`,
+          alt: p.alt ? `${b.name}: ${p.alt}` : `${b.name} product artwork`,
           sizes: `(max-width: 48rem) 90vw, ${widest}px`,
         })}</div>`
       );
@@ -147,12 +162,14 @@ export function brand(ctx) {
     .map((r) => `<li><a href="${link(locale, `${ROUTES.products}/${r.slug}`)}">${esc(r.name)}</a></li>`)
     .join('');
 
+  const subject = `${b.name} enquiry`;
+
   const body =
     crumbs({
       i18n, locale,
       trail: [
         { label: i18n.nav.home, href: link(locale, ROUTES.home) },
-        { label: i18n.nav.products, href: link(locale, ROUTES.products) },
+        { label: i18n.nav.brands, href: link(locale, ROUTES.brands) },
         { label: b.name },
       ],
     }) +
@@ -161,21 +178,22 @@ export function brand(ctx) {
     (img?.logo ? `<span class="brand-hero__mark">${picture(img.logo, { alt: b.name, sizes: '180px', loading: 'eager' })}</span>` : '') +
     `<h1>${esc(b.name)}</h1>` +
     `<ul class="chips" style="margin-top:1rem">` +
-    `<li class="chip">${esc(c.categoryLabel)}: ${esc(categoryLabel(catalog, b.category, locale))}</li>` +
-    `<li class="chip">${esc(c.divisionLabel)}: ${esc(divisionLabel(company, b.division, locale))}</li>` +
-    `<li class="chip">${esc(c.listingsLabel)}: ${b.productCount}</li>` +
+    `<li class="chip">${esc(categoryLabel(catalog, b.category, locale))}</li>` +
+    `<li class="chip">${esc(divisionLabel(company, b.division))}</li>` +
+    `<li class="chip">${esc(t(i18n.brands.productCount, { count: b.productCount }))}</li>` +
     `</ul>` +
     `<div class="actions" style="margin-top:1.5rem">` +
-    `<a class="btn btn--primary" href="${link(locale, ROUTES.contact)}?type=availability&amp;brand=${encodeURIComponent(b.slug)}">${esc(i18n.actions.requestAvailability)}</a>` +
-    `<a class="btn btn--outline" href="${link(locale, ROUTES.products)}">${esc(i18n.actions.backToProducts)}</a>` +
+    `<a class="btn btn--primary" href="${mailto(company.email, subject)}">${esc(i18n.actions.enquire)}</a>` +
+    `<a class="btn btn--outline" href="${link(locale, ROUTES.brands)}">${esc(i18n.actions.backToProducts)}</a>` +
     `</div>` +
     `</div>` +
     `<div class="brand-gallery">${gallery}</div>` +
     `</div></section>` +
     `<section class="band band--tight"><div class="shell">` +
-    notice(`<span><strong>${esc(i18n.misc.provisional)}.</strong> ${esc(c.provisionalNotice)}</span>`) +
-    (b.sourceNote ? `<div style="margin-top:1rem">${notice(`<span><strong>${esc(c.sourceNote)}.</strong> ${esc(b.sourceNote)}</span>`, 'info')}</div>` : '') +
-    `<h2 style="margin-top:2rem">${esc(c.productsHeading)}</h2>` +
+    `<div class="band-head"><div class="band-head__text">` +
+    `<h2>${esc(c.productsHeading)}</h2>` +
+    `<p>${esc(c.availability)}</p>` +
+    `</div></div>` +
     tables +
     `</div></section>` +
     (related
@@ -186,8 +204,10 @@ export function brand(ctx) {
     `<section class="band cta-band band--tight"><div class="shell cta-grid">` +
     `<div><h2>${esc(c.ctaHeading)}</h2><p class="lead">${esc(c.ctaBody)}</p></div>` +
     `<ul class="cta-options">` +
-    `<li><a class="cta-option" href="${link(locale, ROUTES.network)}"><span><strong>${esc(i18n.actions.findYourRep)}</strong><span>${esc(t(i18n.network.territoryCount, { count: company.territories.length }))}</span></span></a></li>` +
-    `<li><a class="cta-option" href="${link(locale, ROUTES.contact)}?type=quote&amp;brand=${encodeURIComponent(b.slug)}"><span><strong>${esc(i18n.actions.requestQuote)}</strong><span>${esc(b.name)}</span></span></a></li>` +
+    `<li><a class="cta-option" href="${link(locale, ROUTES.network)}"><span><strong>${esc(i18n.actions.findYourRep)}</strong>` +
+    `<span>${esc(t(i18n.network.territoryCount, { count: company.territories.length }))}</span></span></a></li>` +
+    `<li><a class="cta-option" href="${mailto(company.email, subject)}"><span><strong>${esc(i18n.actions.emailUs)}</strong>` +
+    `<span>${esc(company.email)}</span></span></a></li>` +
     `</ul></div></section>`;
 
   return { body };
@@ -240,138 +260,104 @@ export function network(ctx) {
 }
 
 /* ------------------------------------------------------------------ *
- * Contact
+ * Contact: direct channels only
  * ------------------------------------------------------------------ */
 
 export function contact(ctx) {
-  const { i18n, locale, company, catalog, site } = ctx;
+  const { i18n, locale, company } = ctx;
   const c = i18n.contact;
-  const f = c.fields;
+  const ilb = company.divisions.find((x) => x.slug === 'international-lubricants-belize');
 
-  const types = c.enquiryTypes
-    .map(
-      (x, i) =>
-        `<li><label class="enquiry-type">` +
-        `<input type="radio" name="enquiryType" value="${esc(x.id)}"${i === 0 ? ' checked' : ''}>` +
-        `<span><strong>${esc(x.title)}</strong><span>${esc(x.body)}</span></span>` +
-        `</label></li>`
-    )
-    .join('');
+  const card = ({ heading, body, actions, wide }) =>
+    `<li class="channel${wide ? ' channel--wide' : ''}">` +
+    `<h2>${esc(heading)}</h2>` +
+    `<p>${esc(body)}</p>` +
+    `<div class="channel__actions">${actions}</div>` +
+    `</li>`;
 
-  const territoryOptions = company.territories
-    .map((tt) => `<option value="${esc(tt.id)}">${esc(tt[locale] ?? tt.en)}</option>`)
-    .join('');
+  // The general WhatsApp action only renders once a destination is configured,
+  // so an unconfirmed number can never ship as a broken link.
+  const whatsapp = company.generalWhatsappUrl
+    ? card({
+        heading: c.whatsappHeading,
+        body: c.whatsappBody,
+        actions: `<a class="btn btn--primary" href="${esc(company.generalWhatsappUrl)}" rel="noopener noreferrer">${esc(c.whatsappAction)}</a>`,
+      })
+    : '';
 
-  const categoryOptions = catalog.categories
-    .map((cat) => `<option value="${esc(cat.id)}">${esc(cat[locale] ?? cat.en)}</option>`)
-    .join('');
+  const channels =
+    `<ul class="channels">` +
+    card({
+      heading: c.emailHeading,
+      body: c.emailBody,
+      actions:
+        `<a class="btn btn--primary" href="${mailto(company.email, c.emailSubject)}">${esc(c.emailAction)}</a>` +
+        `<span class="channel__value">${esc(company.email)}</span>`,
+    }) +
+    whatsapp +
+    card({
+      heading: c.phoneHeading,
+      body: c.phoneBody,
+      actions: company.phones.map((p) => telLink(p, p)).join(''),
+    }) +
+    card({
+      heading: c.networkHeading,
+      body: c.networkBody,
+      actions: `<a class="btn btn--outline" href="${link(locale, ROUTES.network)}">${esc(c.networkAction)}</a>`,
+    }) +
+    card({
+      heading: c.ilbHeading,
+      body: c.ilbBody,
+      actions: ilb.contact.phones.map((p) => telLink(p, p)).join('') + mailLink(ilb.contact.email),
+    }) +
+    `</ul>`;
 
-  const field = ({ id, label, type = 'text', required, hint, autocomplete, wide }) =>
-    `<div class="field${wide ? ' field--wide' : ''}" data-field="${esc(id)}">` +
-    `<label for="${esc(id)}">${esc(label)}${required ? '' : ` <span class="field__hint">(${esc(f.optional)})</span>`}</label>` +
-    `<input type="${esc(type)}" id="${esc(id)}" name="${esc(id)}"${required ? ' required aria-required="true"' : ''}` +
-    (autocomplete ? ` autocomplete="${esc(autocomplete)}"` : '') +
-    (hint ? ` aria-describedby="${esc(id)}-hint"` : '') +
-    `>` +
-    (hint ? `<p class="field__hint" id="${esc(id)}-hint">${esc(hint)}</p>` : '') +
-    `<p class="field__error" id="${esc(id)}-error" hidden></p>` +
-    `</div>`;
-
-  const form =
-    `<form class="form-card" id="enquiry-form" novalidate` +
-    (site.forms.endpoint ? ` data-endpoint="${esc(site.forms.endpoint)}"` : '') +
-    ` data-messages="${esc(JSON.stringify({
-      name: c.errors.name,
-      email: c.errors.email,
-      message: c.errors.message,
-      enquiryType: c.errors.enquiryType,
-      summary: c.errors.summary,
-      devHeading: c.devResultHeading,
-      devBody: c.devResultBody,
-      sent: c.devResultHeading,
-      failed: c.errors.summary,
-    }))}">` +
-    `<fieldset style="border:0;padding:0;margin:0 0 1.75rem">` +
-    `<legend><h2 style="font-size:1.3rem">${esc(c.enquiryTypeHeading)}</h2></legend>` +
-    `<ul class="enquiry-types" style="margin-top:1rem">${types}</ul>` +
-    `</fieldset>` +
-    `<h2 style="font-size:1.3rem;margin-bottom:1.1rem">${esc(c.formHeading)}</h2>` +
-    `<div class="form-grid">` +
-    field({ id: 'name', label: f.name, required: true, autocomplete: 'name' }) +
-    field({ id: 'business', label: f.business, hint: f.businessHint, autocomplete: 'organization' }) +
-    field({ id: 'email', label: f.email, type: 'email', required: true, autocomplete: 'email' }) +
-    field({ id: 'phone', label: f.phone, type: 'tel', hint: f.phoneHint, autocomplete: 'tel' }) +
-    `<div class="field" data-field="territory">` +
-    `<label for="territory">${esc(f.territory)} <span class="field__hint">(${esc(f.optional)})</span></label>` +
-    `<select id="territory" name="territory" aria-describedby="territory-hint">` +
-    `<option value="">${esc(f.selectPlaceholder)}</option>${territoryOptions}</select>` +
-    `<p class="field__hint" id="territory-hint">${esc(f.territoryHint)}</p></div>` +
-    `<div class="field" data-field="category">` +
-    `<label for="category">${esc(f.category)} <span class="field__hint">(${esc(f.optional)})</span></label>` +
-    `<select id="category" name="category"><option value="">${esc(f.selectPlaceholder)}</option>${categoryOptions}</select></div>` +
-    field({ id: 'product', label: f.product }) +
-    field({ id: 'quantity', label: f.quantity, hint: f.quantityHint }) +
-    `<div class="field field--wide" data-field="message">` +
-    `<label for="message">${esc(f.message)}</label>` +
-    `<textarea id="message" name="message" required aria-required="true"></textarea>` +
-    `<p class="field__error" id="message-error" hidden></p></div>` +
-    `<fieldset class="field field--wide" style="border:0;padding:0;margin:0">` +
-    `<legend>${esc(f.preferredContact)}</legend>` +
-    `<ul class="enquiry-types" style="margin-top:0.6rem">` +
-    c.preferredContactOptions
-      .map(
-        (o, i) =>
-          `<li><label class="enquiry-type"><input type="radio" name="preferredContact" value="${esc(o.id)}"${i === 0 ? ' checked' : ''}>` +
-          `<span><strong>${esc(o.label)}</strong></span></label></li>`
-      )
-      .join('') +
-    `</ul></fieldset>` +
+  const map =
+    `<section class="band band--tight"><div class="shell">` +
+    `<div class="band-head"><div class="band-head__text">` +
+    `<h2>${esc(c.mapHeading)}</h2><p>${esc(c.mapBody)}</p>` +
     `</div>` +
-    `<div class="actions" style="margin-top:1.75rem">` +
-    `<button class="btn btn--primary" type="submit">${esc(c.submit)}</button>` +
+    `<a class="btn btn--outline" href="${esc(company.maps.link)}" rel="noopener noreferrer">${esc(c.openInMaps)}</a>` +
     `</div>` +
-    `<div class="form-status" id="form-status" role="status" hidden></div>` +
-    `</form>`;
-
-  const office =
-    `<div class="stack" style="--stack-gap:1.5rem">` +
-    `<div class="form-card">` +
-    `<h2 style="font-size:1.15rem">${esc(c.officeHeading)}</h2>` +
-    `<h3 style="font-size:0.85rem;margin-top:1rem;color:var(--slate)">${esc(c.addressHeading)}</h3>` +
-    `<p>${esc(company.address.street)}<br>${esc(company.address.town)}<br>${esc(company.address.district)}, ${esc(company.address.country)}</p>` +
-    `<h3 style="font-size:0.85rem;color:var(--slate)">${esc(c.phoneHeading)}</h3>` +
-    `<p class="rep__actions" style="align-items:flex-start">${company.phones.map((p) => telLink(p, p)).join('')}</p>` +
-    `<h3 style="font-size:0.85rem;margin-top:1rem;color:var(--slate)">${esc(c.emailHeading)}</h3>` +
-    `<p>${mailLink(company.email)}</p>` +
-    `<h3 style="font-size:0.85rem;margin-top:1rem;color:var(--slate)">${esc(c.socialHeading)}</h3>` +
-    `<p><a class="action-link" href="${esc(company.facebook)}" rel="noopener noreferrer">${esc(i18n.footer.followUs)}</a></p>` +
-    `</div>` +
-    `<div class="form-card">` +
-    `<h2 style="font-size:1.15rem">${esc(c.ilbHeading)}</h2>` +
-    (() => {
-      const d = company.divisions.find((x) => x.slug === 'international-lubricants-belize');
-      return `<p class="rep__actions" style="align-items:flex-start;margin-top:0.85rem">${d.contact.phones.map((p) => telLink(p, p)).join('')}${mailLink(d.contact.email)}</p>`;
-    })() +
-    `</div>` +
-    `<p class="placeholder-note">${esc(c.mapNote)}</p>` +
-    `</div>`;
+    `<div class="map-frame">` +
+    `<iframe src="${esc(company.maps.embed)}" title="${esc(c.mapTitle)}" loading="lazy" ` +
+    `referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>` +
+    `</div></div></section>`;
 
   const body =
     crumbs({ i18n, locale, trail: [{ label: i18n.nav.home, href: link(locale, ROUTES.home) }, { label: i18n.nav.contact }] }) +
     `<section class="page-head"><div class="shell">` +
     `<hr class="rule"><h1>${esc(c.heading)}</h1><p class="lead">${esc(c.lead)}</p>` +
-    `<div style="margin-top:1.5rem">${notice(`<span><strong>${esc(c.devResultHeading)}.</strong> ${esc(c.devNotice)}</span>`, 'info')}</div>` +
     `</div></section>` +
-    `<section class="band band--tight"><div class="shell split split--wide-first">` +
-    form + office +
-    `</div></section>`;
+    `<section class="band band--tight"><div class="shell">${channels}</div></section>` +
+    map;
 
-  return { body, pageScripts: ['enquiry.js'] };
+  return { body };
 }
 
 /* ------------------------------------------------------------------ *
- * 404
+ * /products/ keeps working for anyone holding the old address.
  * ------------------------------------------------------------------ */
+
+export function productsAlias(ctx) {
+  const { i18n, locale } = ctx;
+  const target = link(locale, ROUTES.brands);
+
+  return {
+    body:
+      `<section class="band"><div class="shell">` +
+      `<h1>${esc(i18n.brands.heading)}</h1>` +
+      `<p class="lead">${esc(i18n.brands.lead)}</p>` +
+      `<div class="actions" style="margin-top:1.5rem">` +
+      `<a class="btn btn--primary btn--lg" href="${target}">${esc(i18n.nav.brands)}</a>` +
+      `</div></div></section>`,
+    extraHead: `<meta http-equiv="refresh" content="0; url=${target}">`,
+    canonicalPath: ROUTES.brands,
+    noindex: true,
+  };
+}
+
+/* ------------------------------------------------------------------ */
 
 export function notFound(ctx) {
   const { i18n, locale } = ctx;
@@ -381,7 +367,7 @@ export function notFound(ctx) {
     `<section class="band"><div class="shell">` +
     `<hr class="rule"><h1>${esc(c.heading)}</h1><p class="lead">${esc(c.lead)}</p>` +
     `<div class="actions" style="margin-top:1.75rem">` +
-    `<a class="btn btn--primary" href="${link(locale, ROUTES.products)}">${esc(i18n.nav.products)}</a>` +
+    `<a class="btn btn--primary" href="${link(locale, ROUTES.brands)}">${esc(i18n.nav.brands)}</a>` +
     `<a class="btn btn--outline" href="${link(locale, ROUTES.network)}">${esc(i18n.nav.salesNetwork)}</a>` +
     `<a class="btn btn--ghost" href="${link(locale, ROUTES.home)}">${esc(i18n.nav.home)}</a>` +
     `</div></div></section>`;

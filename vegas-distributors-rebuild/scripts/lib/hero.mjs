@@ -1,23 +1,22 @@
-/** Campaign hero carousel. */
+/** Immersive full-bleed campaign hero. */
 import { esc, picture, t } from './html.mjs';
 import { ROUTES, link } from './layout.mjs';
 
 /**
- * Responsive <picture> for a campaign background.
- * The first slide loads eagerly and is the LCP candidate; the rest are lazy.
+ * Full-bleed background. The first slide is the LCP candidate and loads
+ * eagerly; the rest are lazy. Sizes is always 100vw because the image bleeds
+ * to every edge.
  */
-function background(entry, { alt, eager }) {
-  const srcset = (list, dir) => list.map((s) => `{{BASE}}assets/heroes/${s.file} ${s.width}w`).join(', ');
-  // The hero is full-bleed, so the image is always viewport-width.
-  const sizes = '100vw';
+function background(entry, { eager }) {
+  const set = (list) => list.map((s) => `{{BASE}}assets/heroes/${s.file} ${s.width}w`).join(', ');
   const largest = entry.fallback[entry.fallback.length - 1];
 
   return (
-    `<picture class="hero-slide__bg">` +
-    `<source type="image/avif" srcset="${srcset(entry.avif)}" sizes="${sizes}">` +
-    `<source type="image/webp" srcset="${srcset(entry.webp)}" sizes="${sizes}">` +
-    `<img src="{{BASE}}assets/heroes/${largest.file}" srcset="${srcset(entry.fallback)}" sizes="${sizes}"` +
-    ` width="${entry.width}" height="${entry.height}" alt="${esc(alt)}"` +
+    `<picture class="hero-bg">` +
+    `<source type="image/avif" srcset="${set(entry.avif)}" sizes="100vw">` +
+    `<source type="image/webp" srcset="${set(entry.webp)}" sizes="100vw">` +
+    `<img src="{{BASE}}assets/heroes/${largest.file}" srcset="${set(entry.fallback)}" sizes="100vw"` +
+    ` width="${entry.width}" height="${entry.height}" alt=""` +
     ` loading="${eager ? 'eager' : 'lazy'}" decoding="${eager ? 'sync' : 'async'}"` +
     (eager ? ' fetchpriority="high"' : '') +
     `>` +
@@ -26,47 +25,44 @@ function background(entry, { alt, eager }) {
 }
 
 /**
- * Product artwork layered over the background.
- * Sources have white backgrounds, so each sits on a brand plate rather than
- * being machine-cut, which would chew into the labels.
+ * Exact product artwork, layered as its own element over the stage pedestal.
+ * Nothing is redrawn and no packaging text is baked into a bitmap.
  */
 function productLayer(slide, { images, heroes, copy }) {
-  const items = slide.products
-    .map((p) => {
-      const entry =
-        p.source === 'brand' ? images.brands[p.slug]?.photos?.[p.photo ?? 0]
-        : p.source === 'campaign' ? heroes[p.key]
-        : images.divisions[p.key];
-      if (!entry) return '';
-      const sizes =
-        slide.productLayout === 'stack' ? '(max-width: 60rem) 44vw, 300px'
-        : slide.productLayout === 'pair' ? '(max-width: 60rem) 38vw, 210px'
-        : '(max-width: 60rem) 62vw, 420px';
-      // Never display a source above its intrinsic width: the ILB artwork in
-      // particular is only 336px wide and would visibly soften if stretched.
-      const cap = slide.productLayout === 'single' ? Math.min(420, entry.width) : null;
-      return (
-        `<div class="hero-product${p.plate ? ' hero-product--plate' : ''}"` +
-        (cap ? ` style="max-width:${cap + 24}px"` : '') +
-        `>${picture(entry, { alt: '', sizes })}</div>`
-      );
-    })
-    .join('');
+  const p = slide.product;
+  if (!p) return '';
 
-  if (!items) return '';
+  const entry =
+    p.source === 'campaign' ? heroes[p.key]
+    : p.source === 'brand' ? images.brands[p.key]?.photos?.[0]
+    : images.divisions[p.key];
+  if (!entry) return '';
+
+  const mark = p.mark ? images.divisions[p.mark] : null;
+  const widest = entry.fallback[entry.fallback.length - 1].width;
+
+  // The stage position is a per-slide placement over the pedestal in the
+  // artwork; below the breakpoint the layer becomes a normal block instead.
+  const style =
+    `--stage-left:${p.stage.left};--stage-top:${p.stage.top};` +
+    `--stage-width:${p.stage.width};--stage-max:${Math.min(p.stage.max, widest)}px`;
+
   return (
-    `<div class="hero-slide__products hero-slide__products--${esc(slide.productLayout)}" role="img" aria-label="${esc(copy.productAlt)}">` +
-    items +
+    `<div class="hero-stage" style="${esc(style)}">` +
+    (mark ? `<span class="hero-stage__mark">${picture(mark, { alt: '', sizes: '150px' })}</span>` : '') +
+    `<div class="hero-stage__art">` +
+    picture(entry, { alt: copy.productAlt ?? '', sizes: `(max-width: 60rem) 40vw, ${p.stage.width}` }) +
+    `</div>` +
     `</div>`
   );
 }
 
-export function heroCarousel({ i18n, locale, images, heroes, campaign }) {
+export function heroCarousel({ i18n, locale, images, heroes, campaign, catalog }) {
   const c = i18n.hero;
 
   const destination = (target) => {
-    const route = ROUTES[target.route];
-    return `${link(locale, route)}${target.query ?? ''}`.replace(/&/g, '&amp;');
+    if (target.route === 'brand') return link(locale, `${ROUTES.products}/${target.slug}`);
+    return link(locale, ROUTES[target.route]);
   };
 
   const slides = campaign.slides
@@ -77,10 +73,13 @@ export function heroCarousel({ i18n, locale, images, heroes, campaign }) {
 
       return (
         `<div class="hero-slide hero-slide--${esc(slide.tone)}" id="hero-slide-${esc(slide.id)}"` +
-        ` role="group" aria-roledescription="slide" aria-label="${i + 1} / ${campaign.slides.length}: ${esc(copy.eyebrow)}"` +
+        ` role="group" aria-roledescription="slide"` +
+        ` aria-label="${i + 1} / ${campaign.slides.length}: ${esc(copy.eyebrow)}"` +
+        ` style="--pos-wide:${esc(slide.objectPosition.wide)};--pos-narrow:${esc(slide.objectPosition.narrow)}"` +
         `${first ? '' : ' data-inert="true"'}>` +
-        background(entry, { alt: '', eager: first }) +
+        `<div class="hero-slide__media" data-parallax>` + background(entry, { eager: first }) + `</div>` +
         `<div class="hero-slide__scrim"></div>` +
+        productLayer(slide, { images, heroes, copy }) +
         `<div class="shell hero-slide__inner">` +
         `<div class="hero-slide__copy">` +
         `<p class="hero-eyebrow">${esc(copy.eyebrow)}</p>` +
@@ -91,7 +90,6 @@ export function heroCarousel({ i18n, locale, images, heroes, campaign }) {
         `<a class="btn btn--onDark btn--lg" href="${destination(slide.secondary)}">${esc(copy.secondary)}</a>` +
         `</div>` +
         `</div>` +
-        productLayer(slide, { images, heroes, copy }) +
         `</div>` +
         `</div>`
       );
@@ -104,7 +102,7 @@ export function heroCarousel({ i18n, locale, images, heroes, campaign }) {
         `<button type="button" class="hero-dot" data-index="${i}"` +
         ` aria-label="${esc(t(c.goTo, { n: i + 1 }))}" aria-controls="hero-slide-${esc(slide.id)}"` +
         `${i === 0 ? ' aria-current="true"' : ''}>` +
-        `<span class="hero-dot__label" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span>` +
+        `<span class="hero-dot__bar" aria-hidden="true"></span>` +
         `</button>`
     )
     .join('');
@@ -112,7 +110,8 @@ export function heroCarousel({ i18n, locale, images, heroes, campaign }) {
   return (
     `<section class="hero" aria-roledescription="carousel" aria-label="${esc(c.label)}" data-hero>` +
     `<div class="hero-track">${slides}</div>` +
-    `<div class="hero-controls shell">` +
+    `<div class="hero-controls">` +
+    `<div class="shell hero-controls__inner">` +
     `<div class="hero-nav">` +
     `<button type="button" class="hero-arrow" data-hero-prev aria-label="${esc(c.prev)}">` +
     `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 4 7 12l8 8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>` +
@@ -122,8 +121,7 @@ export function heroCarousel({ i18n, locale, images, heroes, campaign }) {
     `</button>` +
     `</div>` +
     `<div class="hero-dots" role="group" aria-label="${esc(c.label)}">${dots}</div>` +
-    `<p class="hero-disclosure">${esc(c.conceptNote)}</p>` +
-    `</div>` +
+    `</div></div>` +
     `</section>`
   );
 }

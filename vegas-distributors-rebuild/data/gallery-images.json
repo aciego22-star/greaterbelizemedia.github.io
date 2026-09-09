@@ -1,0 +1,672 @@
+{
+  "zafari-2": {
+    "base": "assets/gallery",
+    "width": 1200,
+    "height": 675,
+    "avif": [
+      {
+        "file": "zafari-2-400.avif",
+        "width": 400,
+        "height": 225
+      },
+      {
+        "file": "zafari-2-800.avif",
+        "width": 800,
+        "height": 450
+      },
+      {
+        "file": "zafari-2-1200.avif",
+        "width": 1200,
+        "height": 675
+      }
+    ],
+    "webp": [
+      {
+        "file": "zafari-2-400.webp",
+        "width": 400,
+        "height": 225
+      },
+      {
+        "file": "zafari-2-800.webp",
+        "width": 800,
+        "height": 450
+      },
+      {
+        "file": "zafari-2-1200.webp",
+        "width": 1200,
+        "height": 675
+      }
+    ],
+    "fallback": [
+      {
+        "file": "zafari-2-400.jpg",
+        "width": 400,
+        "height": 225
+      },
+      {
+        "file": "zafari-2-800.jpg",
+        "width": 800,
+        "height": 450
+      },
+      {
+        "file": "zafari-2-1200.jpg",
+        "width": 1200,
+        "height": 675
+      }
+    ]
+  },
+  "bop-1": {
+    "base": "assets/gallery",
+    "width": 400,
+    "height": 178,
+    "avif": [
+      {
+        "file": "bop-1-400.avif",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "webp": [
+      {
+        "file": "bop-1-400.webp",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "fallback": [
+      {
+        "file": "bop-1-400.jpg",
+        "width": 400,
+        "height": 178
+      }
+    ]
+  },
+  "kelloggs-1": {
+    "base": "assets/gallery",
+    "width": 400,
+    "height": 178,
+    "avif": [
+      {
+        "file": "kelloggs-1-400.avif",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "webp": [
+      {
+        "file": "kelloggs-1-400.webp",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "fallback": [
+      {
+        "file": "kelloggs-1-400.jpg",
+        "width": 400,
+        "height": 178
+      }
+    ]
+  },
+  "guandy-2": {
+    "base": "assets/gallery",
+    "width": 1200,
+    "height": 675,
+    "avif": [
+      {
+        "file": "guandy-2-400.avif",
+        "width": 400,
+        "height": 225
+      },
+      {
+        "file": "guandy-2-800.avif",
+        "width": 800,
+        "height": 450
+      },
+      {
+        "file": "guandy-2-1200.avif",
+        "width": 1200,
+        "height": 675
+      }
+    ],
+    "webp": [
+      {
+        "file": "guandy-2-400.webp",
+        "width": 400,
+        "height": 225
+      },
+      {
+        "file": "guandy-2-800.webp",
+        "width": 800,
+        "height": 450
+      },
+      {
+        "file": "guandy-2-1200.webp",
+        "width": 1200,
+        "height": 675
+      }
+    ],
+    "fallback": [
+      {
+        "file": "guandy-2-400.jpg",
+        "width": 400,
+        "height": 225
+      },
+      {
+        "file": "guandy-2-800.jpg",
+        "width": 800,
+        "height": 450
+      },
+      {
+        "file": "guandy-2-1200.jpg",
+        "width": 1200,
+        "height": 675
+      }
+    ]
+  },
+  "kerns-1": {
+    "base": "assets/gallery",
+    "width": 400,
+    "height": 178,
+    "avif": [
+      {
+        "file": "kerns-1-400.avif",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "webp": [
+      {
+        "file": "kerns-1-400.webp",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "fallback": [
+      {
+        "file": "kerns-1-400.jpg",
+        "width": 400,
+        "height": 178
+      }
+    ]
+  },
+  "oreo-1": {
+    "base": "assets/gallery",
+    "width": 400,
+    "height": 178,
+    "avif": [
+      {
+        "file": "oreo-1-400.avif",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "webp": [
+      {
+        "file": "oreo-1-400.webp",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "fallback": [
+      {
+        "file": "oreo-1-400.jpg",
+        "width": 400,
+        "height": 178
+      }
+    ]
+  },
+  "zafari-1": {
+    "base": "assets/gallery",
+    "width": 1200,
+    "height": 675,
+    "avif": [
+      {
+        "file": "zafari-1-400.avif",
+        "width": 400,
+        "height": 225
+      },
+      {
+        "file": "zafari-1-800.avif",
+        "width": 800,
+        "height": 450
+      },
+      {
+        "file": "zafari-1-1200.avif",
+        "width": 1200,
+        "height": 675
+      }
+    ],
+    "webp": [
+      {
+        "file": "zafari-1-400.webp",
+        "width": 400,
+        "height": 225
+      },
+      {
+        "file": "zafari-1-800.webp",
+        "width": 800,
+        "height": 450
+      },
+      {
+        "file": "zafari-1-1200.webp",
+        "width": 1200,
+        "height": 675
+      }
+    ],
+    "fallback": [
+      {
+        "file": "zafari-1-400.jpg",
+        "width": 400,
+        "height": 225
+      },
+      {
+        "file": "zafari-1-800.jpg",
+        "width": 800,
+        "height": 450
+      },
+      {
+        "file": "zafari-1-1200.jpg",
+        "width": 1200,
+        "height": 675
+      }
+    ]
+  },
+  "pringles-1": {
+    "base": "assets/gallery",
+    "width": 400,
+    "height": 178,
+    "avif": [
+      {
+        "file": "pringles-1-400.avif",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "webp": [
+      {
+        "file": "pringles-1-400.webp",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "fallback": [
+      {
+        "file": "pringles-1-400.jpg",
+        "width": 400,
+        "height": 178
+      }
+    ]
+  },
+  "cashitas-2": {
+    "base": "assets/gallery",
+    "width": 1200,
+    "height": 675,
+    "avif": [
+      {
+        "file": "cashitas-2-400.avif",
+        "width": 400,
+        "height": 225
+      },
+      {
+        "file": "cashitas-2-800.avif",
+        "width": 800,
+        "height": 450
+      },
+      {
+        "file": "cashitas-2-1200.avif",
+        "width": 1200,
+        "height": 675
+      }
+    ],
+    "webp": [
+      {
+        "file": "cashitas-2-400.webp",
+        "width": 400,
+        "height": 225
+      },
+      {
+        "file": "cashitas-2-800.webp",
+        "width": 800,
+        "height": 450
+      },
+      {
+        "file": "cashitas-2-1200.webp",
+        "width": 1200,
+        "height": 675
+      }
+    ],
+    "fallback": [
+      {
+        "file": "cashitas-2-400.jpg",
+        "width": 400,
+        "height": 225
+      },
+      {
+        "file": "cashitas-2-800.jpg",
+        "width": 800,
+        "height": 450
+      },
+      {
+        "file": "cashitas-2-1200.jpg",
+        "width": 1200,
+        "height": 675
+      }
+    ]
+  },
+  "nutella-1": {
+    "base": "assets/gallery",
+    "width": 400,
+    "height": 178,
+    "avif": [
+      {
+        "file": "nutella-1-400.avif",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "webp": [
+      {
+        "file": "nutella-1-400.webp",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "fallback": [
+      {
+        "file": "nutella-1-400.jpg",
+        "width": 400,
+        "height": 178
+      }
+    ]
+  },
+  "kelloggs-2": {
+    "base": "assets/gallery",
+    "width": 400,
+    "height": 178,
+    "avif": [
+      {
+        "file": "kelloggs-2-400.avif",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "webp": [
+      {
+        "file": "kelloggs-2-400.webp",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "fallback": [
+      {
+        "file": "kelloggs-2-400.jpg",
+        "width": 400,
+        "height": 178
+      }
+    ]
+  },
+  "ferrero-rocher-1": {
+    "base": "assets/gallery",
+    "width": 400,
+    "height": 178,
+    "avif": [
+      {
+        "file": "ferrero-rocher-1-400.avif",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "webp": [
+      {
+        "file": "ferrero-rocher-1-400.webp",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "fallback": [
+      {
+        "file": "ferrero-rocher-1-400.jpg",
+        "width": 400,
+        "height": 178
+      }
+    ]
+  },
+  "zafari-3": {
+    "base": "assets/gallery",
+    "width": 1200,
+    "height": 675,
+    "avif": [
+      {
+        "file": "zafari-3-400.avif",
+        "width": 400,
+        "height": 225
+      },
+      {
+        "file": "zafari-3-800.avif",
+        "width": 800,
+        "height": 450
+      },
+      {
+        "file": "zafari-3-1200.avif",
+        "width": 1200,
+        "height": 675
+      }
+    ],
+    "webp": [
+      {
+        "file": "zafari-3-400.webp",
+        "width": 400,
+        "height": 225
+      },
+      {
+        "file": "zafari-3-800.webp",
+        "width": 800,
+        "height": 450
+      },
+      {
+        "file": "zafari-3-1200.webp",
+        "width": 1200,
+        "height": 675
+      }
+    ],
+    "fallback": [
+      {
+        "file": "zafari-3-400.jpg",
+        "width": 400,
+        "height": 225
+      },
+      {
+        "file": "zafari-3-800.jpg",
+        "width": 800,
+        "height": 450
+      },
+      {
+        "file": "zafari-3-1200.jpg",
+        "width": 1200,
+        "height": 675
+      }
+    ]
+  },
+  "tang-1": {
+    "base": "assets/gallery",
+    "width": 400,
+    "height": 178,
+    "avif": [
+      {
+        "file": "tang-1-400.avif",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "webp": [
+      {
+        "file": "tang-1-400.webp",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "fallback": [
+      {
+        "file": "tang-1-400.jpg",
+        "width": 400,
+        "height": 178
+      }
+    ]
+  },
+  "kerns-2": {
+    "base": "assets/gallery",
+    "width": 400,
+    "height": 178,
+    "avif": [
+      {
+        "file": "kerns-2-400.avif",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "webp": [
+      {
+        "file": "kerns-2-400.webp",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "fallback": [
+      {
+        "file": "kerns-2-400.jpg",
+        "width": 400,
+        "height": 178
+      }
+    ]
+  },
+  "kelloggs-3": {
+    "base": "assets/gallery",
+    "width": 400,
+    "height": 178,
+    "avif": [
+      {
+        "file": "kelloggs-3-400.avif",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "webp": [
+      {
+        "file": "kelloggs-3-400.webp",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "fallback": [
+      {
+        "file": "kelloggs-3-400.jpg",
+        "width": 400,
+        "height": 178
+      }
+    ]
+  },
+  "naturas-1": {
+    "base": "assets/gallery",
+    "width": 400,
+    "height": 178,
+    "avif": [
+      {
+        "file": "naturas-1-400.avif",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "webp": [
+      {
+        "file": "naturas-1-400.webp",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "fallback": [
+      {
+        "file": "naturas-1-400.jpg",
+        "width": 400,
+        "height": 178
+      }
+    ]
+  },
+  "ferrero-rocher-2": {
+    "base": "assets/gallery",
+    "width": 400,
+    "height": 178,
+    "avif": [
+      {
+        "file": "ferrero-rocher-2-400.avif",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "webp": [
+      {
+        "file": "ferrero-rocher-2-400.webp",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "fallback": [
+      {
+        "file": "ferrero-rocher-2-400.jpg",
+        "width": 400,
+        "height": 178
+      }
+    ]
+  },
+  "kerns-3": {
+    "base": "assets/gallery",
+    "width": 400,
+    "height": 178,
+    "avif": [
+      {
+        "file": "kerns-3-400.avif",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "webp": [
+      {
+        "file": "kerns-3-400.webp",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "fallback": [
+      {
+        "file": "kerns-3-400.jpg",
+        "width": 400,
+        "height": 178
+      }
+    ]
+  },
+  "kelloggs-4": {
+    "base": "assets/gallery",
+    "width": 400,
+    "height": 178,
+    "avif": [
+      {
+        "file": "kelloggs-4-400.avif",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "webp": [
+      {
+        "file": "kelloggs-4-400.webp",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "fallback": [
+      {
+        "file": "kelloggs-4-400.jpg",
+        "width": 400,
+        "height": 178
+      }
+    ]
+  }
+}

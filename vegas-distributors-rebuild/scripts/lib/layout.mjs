@@ -8,6 +8,7 @@ export const ROUTES = {
   divisions: 'divisions',
   industries: 'divisions/vegas-industries',
   lubricants: 'divisions/international-lubricants-belize',
+  brands: 'brands',
   products: 'products',
   network: 'sales-network',
   contact: 'contact',
@@ -41,12 +42,13 @@ export const link = (locale, path) => {
 
 /* ------------------------------------------------------------------ */
 
-function head({ site, i18n, locale, title, description, outPath, path, og, extraHead = '', structuredData = [], switchPath, pageStyles }) {
+function head({ site, i18n, locale, title, description, outPath, path, og, extraHead = '', structuredData = [], switchPath, pageStyles, canonicalPath, forceNoindex }) {
   const fullTitle = path === ROUTES.home
     ? `${i18n.site.name} | ${title}`
     : `${title} | ${i18n.site.name}`;
 
-  const canonical = absoluteUrl(site, locale, path);
+  // An alias page points its canonical at the page it stands in for.
+  const canonical = absoluteUrl(site, locale, canonicalPath ?? path);
   const alternates = ['en', 'es']
     .map((l) => `<link rel="alternate" hreflang="${l}" href="${esc(absoluteUrl(site, l, path))}">`)
     .join('') + `<link rel="alternate" hreflang="x-default" href="${esc(absoluteUrl(site, 'en', path))}">`;
@@ -74,7 +76,7 @@ function head({ site, i18n, locale, title, description, outPath, path, og, extra
     `<meta name="viewport" content="width=device-width, initial-scale=1">` +
     `<title>${esc(fullTitle)}</title>` +
     `<meta name="description" content="${esc(description)}">` +
-    (site.noindex ? `<meta name="robots" content="noindex, nofollow">` : `<meta name="robots" content="index, follow">`) +
+    (site.noindex || forceNoindex ? `<meta name="robots" content="noindex, nofollow">` : `<meta name="robots" content="index, follow">`) +
     `<link rel="canonical" href="${esc(canonical)}">` +
     alternates +
     `<meta name="theme-color" content="${esc(site.themeColor)}">` +
@@ -102,14 +104,14 @@ function masthead({ i18n, locale, images, current, switchPath, bodyClass }) {
     ['home', i18n.nav.home],
     ['about', i18n.nav.about],
     ['divisions', i18n.nav.divisions],
-    ['products', i18n.nav.products],
+    ['brands', i18n.nav.brands],
     ['network', i18n.nav.salesNetwork],
     ['contact', i18n.nav.contact],
   ];
 
   const nav = items
     .map(([id, label]) => {
-      const isCurrent = id === current || (current?.startsWith(id) && id !== 'home');
+      const isCurrent = id === current || (id !== 'home' && current?.startsWith(id));
       return `<li><a href="${link(locale, ROUTES[id])}"${isCurrent ? ' aria-current="page"' : ''}>${esc(label)}</a></li>`;
     })
     .join('');
@@ -129,9 +131,6 @@ function masthead({ i18n, locale, images, current, switchPath, bodyClass }) {
     .join('');
 
   return (
-    // A complementary landmark, so the status note is reachable by landmark
-    // navigation rather than floating outside the page structure.
-    `<aside class="concept-bar" aria-label="${esc(i18n.site.conceptBar)}"><div class="shell"><strong>${esc(i18n.site.conceptBar)}</strong><span>${esc(i18n.site.conceptBarText)}</span></div></aside>` +
     `<header class="masthead${bodyClass === 'home' ? ' masthead--over-hero' : ''}">` +
     `<div class="shell masthead__bar">` +
     `<a class="brand" href="${link(locale, ROUTES.home)}">` +
@@ -153,7 +152,7 @@ function masthead({ i18n, locale, images, current, switchPath, bodyClass }) {
     `<div class="masthead__panel" id="masthead-panel">` +
     `<nav aria-label="${esc(i18n.nav.primaryLabel)}"><ul class="nav-list">${nav}</ul></nav>` +
     `<div class="masthead__cta">` +
-    `<a class="btn btn--primary btn--sm" href="${link(locale, ROUTES.contact)}?type=quote">${esc(i18n.actions.requestQuote)}</a>` +
+    `<a class="btn btn--primary btn--sm" href="${link(locale, ROUTES.contact)}">${esc(i18n.actions.contactSales)}</a>` +
     `</div>` +
     `</div>` +
     `</div></header>`
@@ -164,7 +163,7 @@ function footer({ site, i18n, locale, company, images }) {
   const explore = [
     ['about', i18n.nav.about],
     ['divisions', i18n.nav.divisions],
-    ['products', i18n.nav.products],
+    ['brands', i18n.nav.brands],
     ['network', i18n.nav.salesNetwork],
     ['contact', i18n.nav.contact],
   ]
@@ -199,11 +198,11 @@ function footer({ site, i18n, locale, company, images }) {
     `<div><h2>${esc(i18n.footer.contactHeading)}</h2><ul class="footer-list">${phones}` +
     `<li><a href="mailto:${esc(company.email)}">${esc(company.email)}</a></li>` +
     `<li><a href="${esc(company.facebook)}" rel="noopener noreferrer">${esc(i18n.footer.followUs)}</a></li>` +
+    (company.instagram ? `<li><a href="${esc(company.instagram)}" rel="noopener noreferrer">${esc(i18n.footer.followInstagram)}</a></li>` : '') +
     `</ul></div>` +
     `</div>` +
     `<div class="footer-note">` +
     `<span>&copy; ${year} ${esc(i18n.footer.copyright)}</span>` +
-    `<span>${esc(i18n.footer.conceptBody)}</span>` +
     `<span>${esc(i18n.footer.rightsNote)}</span>` +
     `</div>` +
     `</div></footer>`

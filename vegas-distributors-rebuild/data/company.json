@@ -14,15 +14,30 @@
     "country": "Belize",
     "region": "Central America"
   },
-  "phones": ["+501 823-2064", "+501 823-3023"],
+  "phones": [
+    "+501 823-2064",
+    "+501 823-3023"
+  ],
   "email": "info@vegasdistributors.bz",
   "facebook": "https://www.facebook.com/vegasdist",
   "whatsapp": null,
   "whatsappNote": "No WhatsApp number is published by the business. Nothing is guessed; the WhatsApp action stays hidden until a number is supplied.",
   "values": [
-    { "id": "integrity", "en": "Integrity", "es": "Integridad" },
-    { "id": "teamwork", "en": "Teamwork", "es": "Trabajo en equipo" },
-    { "id": "respect", "en": "Respect", "es": "Respeto" }
+    {
+      "id": "integrity",
+      "en": "Integrity",
+      "es": "Integridad"
+    },
+    {
+      "id": "teamwork",
+      "en": "Teamwork",
+      "es": "Trabajo en equipo"
+    },
+    {
+      "id": "respect",
+      "en": "Respect",
+      "es": "Respeto"
+    }
   ],
   "vision": {
     "en": "To be a leading distributor in Belize.",
@@ -51,7 +66,11 @@
       "es": "Vega's importa abarrotes, suministros hoteleros, material de construcción, lubricantes, combustible, chocolates, vinos y licores desde Centroamérica, Asia y regiones de la Commonwealth, y distribuye a supermercados y mayoristas en todo Belice."
     }
   ],
-  "sourcingRegions": ["Central America", "Asia", "Commonwealth regions"],
+  "sourcingRegions": [
+    "Central America",
+    "Asia",
+    "Commonwealth regions"
+  ],
   "divisions": [
     {
       "slug": "vegas-distributors",
@@ -66,7 +85,13 @@
         "role": "Distribución de productos de consumo y comerciales",
         "summary": "La empresa matriz de distribución, que abastece a supermercados, mayoristas y clientes comerciales en todo Belice con marcas de consumo establecidas y productos fabricados localmente."
       },
-      "contact": { "phones": ["+501 823-2064", "+501 823-3023"], "email": "info@vegasdistributors.bz" }
+      "contact": {
+        "phones": [
+          "+501 823-2064",
+          "+501 823-3023"
+        ],
+        "email": "info@vegasdistributors.bz"
+      }
     },
     {
       "slug": "vegas-industries",
@@ -89,10 +114,26 @@
         "explainer": "El cloro es un compuesto químico derivado de fuentes naturales que se utiliza para blanquear telas. Actúa por oxidación: la alteración de un compuesto mediante la introducción de moléculas de oxígeno. Una mancha es esencialmente un compuesto químico, y el cloro descompone esas moléculas en elementos más pequeños para que se separen de la tela. El detergente y la agitación de la lavadora aceleran el proceso. Las propiedades desinfectantes actúan de la misma manera: los gérmenes se descomponen y quedan inofensivos."
       },
       "products": [
-        { "name": "Blanca Max", "size": "1 litre", "sizeEs": "1 litro", "image": "blanca-max-1-litre.jpg" },
-        { "name": "Blanca Max", "size": "1/2 litre", "sizeEs": "1/2 litro", "image": "blanca-max-half-litre.jpg" }
+        {
+          "name": "Blanca Max",
+          "size": "1 litre",
+          "sizeEs": "1 litro",
+          "image": "blanca-max-1-litre.jpg"
+        },
+        {
+          "name": "Blanca Max",
+          "size": "1/2 litre",
+          "sizeEs": "1/2 litro",
+          "image": "blanca-max-half-litre.jpg"
+        }
       ],
-      "contact": { "phones": ["+501 823-2064", "+501 823-3023"], "email": "info@vegasdistributors.bz" }
+      "contact": {
+        "phones": [
+          "+501 823-2064",
+          "+501 823-3023"
+        ],
+        "email": "info@vegasdistributors.bz"
+      }
     },
     {
       "slug": "international-lubricants-belize",
@@ -115,60 +156,275 @@
         "chevronNote": "Chevron cuenta con 30 años de experiencia fabricando lubricantes terminados con aceites base premium para ofrecer un rendimiento confiable en una amplia gama de condiciones de operación."
       },
       "productLines": [
-        { "id": "heavy-duty-motor-oils", "en": "Heavy-duty motor oils", "es": "Aceites de motor de alto rendimiento" },
-        { "id": "coolants-antifreeze", "en": "Coolants and antifreeze", "es": "Refrigerantes y anticongelantes" },
-        { "id": "greases", "en": "Greases", "es": "Grasas" },
-        { "id": "hydraulic-fluids", "en": "Hydraulic fluids", "es": "Fluidos hidráulicos" },
-        { "id": "gear-lubricants", "en": "Gear lubricants", "es": "Lubricantes para engranajes" },
-        { "id": "transmission-fluids", "en": "Transmission fluids", "es": "Fluidos de transmisión" }
+        {
+          "id": "heavy-duty-motor-oils",
+          "en": "Heavy-duty motor oils",
+          "es": "Aceites de motor de alto rendimiento"
+        },
+        {
+          "id": "coolants-antifreeze",
+          "en": "Coolants and antifreeze",
+          "es": "Refrigerantes y anticongelantes"
+        },
+        {
+          "id": "greases",
+          "en": "Greases",
+          "es": "Grasas"
+        },
+        {
+          "id": "hydraulic-fluids",
+          "en": "Hydraulic fluids",
+          "es": "Fluidos hidráulicos"
+        },
+        {
+          "id": "gear-lubricants",
+          "en": "Gear lubricants",
+          "es": "Lubricantes para engranajes"
+        },
+        {
+          "id": "transmission-fluids",
+          "en": "Transmission fluids",
+          "es": "Fluidos de transmisión"
+        }
       ],
       "applications": [
-        { "id": "commercial-transportation", "en": "Commercial transportation", "es": "Transporte comercial" },
-        { "id": "industrial-off-highway", "en": "Industrial and off-highway equipment", "es": "Equipo industrial y todoterreno" },
-        { "id": "passenger-vehicles", "en": "Passenger vehicles", "es": "Vehículos de pasajeros" },
-        { "id": "marine", "en": "Marine", "es": "Uso marino" }
+        {
+          "id": "commercial-transportation",
+          "en": "Commercial transportation",
+          "es": "Transporte comercial"
+        },
+        {
+          "id": "industrial-off-highway",
+          "en": "Industrial and off-highway equipment",
+          "es": "Equipo industrial y todoterreno"
+        },
+        {
+          "id": "passenger-vehicles",
+          "en": "Passenger vehicles",
+          "es": "Vehículos de pasajeros"
+        },
+        {
+          "id": "marine",
+          "en": "Marine",
+          "es": "Uso marino"
+        }
       ],
       "orderFormats": [
-        { "id": "litre", "en": "Litre", "es": "Litro" },
-        { "id": "gallon", "en": "Gallon", "es": "Galón" },
-        { "id": "five-gallon", "en": "5-gallon", "es": "5 galones" },
-        { "id": "fifty-five-gallon", "en": "55-gallon drum", "es": "Tambor de 55 galones" }
+        {
+          "id": "litre",
+          "en": "Litre",
+          "es": "Litro"
+        },
+        {
+          "id": "gallon",
+          "en": "Gallon",
+          "es": "Galón"
+        },
+        {
+          "id": "five-gallon",
+          "en": "5-gallon",
+          "es": "5 galones"
+        },
+        {
+          "id": "fifty-five-gallon",
+          "en": "55-gallon drum",
+          "es": "Tambor de 55 galones"
+        }
       ],
-      "contact": { "phones": ["+501 823-3800"], "email": "tristan@vegasdistributors.bz" }
+      "contact": {
+        "phones": [
+          "+501 823-3800"
+        ],
+        "email": "tristan@vegasdistributors.bz"
+      }
     }
   ],
   "management": [
-    { "area": { "en": "Accounts and Human Resources", "es": "Contabilidad y Recursos Humanos" }, "name": "Rosalia Reymundo", "email": "rosalia@vegasdistributors.bz" },
-    { "area": { "en": "ILB and Vega's Industries", "es": "ILB y Vega's Industries" }, "name": "Tristan Aldana", "email": "tristan@vegasdistributors.bz" },
-    { "area": { "en": "Information Technology", "es": "Tecnología de la Información" }, "name": "Ian Herrera", "email": "it@vegasdistributors.bz" },
-    { "area": { "en": "Sales", "es": "Ventas" }, "name": "Ian Vega", "email": "ian@vegasdistributors.bz" },
-    { "area": { "en": "Warehouse", "es": "Almacén" }, "name": "Lindsay Jeffery", "email": "lindsay@vegasdistributors.bz" }
+    {
+      "area": {
+        "en": "Accounts and Human Resources",
+        "es": "Contabilidad y Recursos Humanos"
+      },
+      "name": "Rosalia Reymundo",
+      "email": "rosalia@vegasdistributors.bz"
+    },
+    {
+      "area": {
+        "en": "ILB and Vega's Industries",
+        "es": "ILB y Vega's Industries"
+      },
+      "name": "Tristan Aldana",
+      "email": "tristan@vegasdistributors.bz"
+    },
+    {
+      "area": {
+        "en": "Information Technology",
+        "es": "Tecnología de la Información"
+      },
+      "name": "Ian Herrera",
+      "email": "it@vegasdistributors.bz"
+    },
+    {
+      "area": {
+        "en": "Sales",
+        "es": "Ventas"
+      },
+      "name": "Ian Vega",
+      "email": "ian@vegasdistributors.bz"
+    },
+    {
+      "area": {
+        "en": "Warehouse",
+        "es": "Almacén"
+      },
+      "name": "Lindsay Jeffery",
+      "email": "lindsay@vegasdistributors.bz"
+    }
   ],
   "territories": [
-    { "id": "belize-city-north", "en": "Belize City North", "es": "Ciudad de Belice Norte", "rep": "Juan Cubas", "email": "sales.belize@vegasdistributors.bz", "phone": "+501 626-9197", "region": "central" },
-    { "id": "belize-city-south", "en": "Belize City South", "es": "Ciudad de Belice Sur", "rep": "Earl Anderson", "email": "earl@vegasdistributors.bz", "phone": "+501 671-0923", "region": "central" },
-    { "id": "cayo-belmopan", "en": "Cayo, Belmopan", "es": "Cayo, Belmopán", "rep": "Luis Miguel Del Cid", "email": "miguel@vegasdistributors.bz", "phone": "+501 624-3551", "region": "west" },
-    { "id": "cayo-benque-san-ignacio", "en": "Cayo, Benque and San Ignacio", "es": "Cayo, Benque y San Ignacio", "rep": "Luis Perez", "email": "luis@vegasdistributors.bz", "phone": "+501 615-0627", "region": "west" },
-    { "id": "north-orange-walk-corozal", "en": "North, Orange Walk and Corozal", "es": "Norte, Orange Walk y Corozal", "rep": "Zane Robinson", "email": "zane@vegasdistributors.bz", "phone": "+501 615-6631", "region": "north" },
-    { "id": "orange-walk-depot", "en": "Orange Walk Depot", "es": "Depósito de Orange Walk", "rep": "Azet Awe", "email": "azet@vegasdistributors.bz", "phone": "+501 610-1842", "region": "north" },
-    { "id": "south-stann-creek", "en": "South, Stann Creek", "es": "Sur, Stann Creek", "rep": "Bradley Bell", "email": "sales.sc@vegasdistributors.bz", "phone": null, "region": "south" },
-    { "id": "south-punta-gorda", "en": "South, Punta Gorda", "es": "Sur, Punta Gorda", "rep": "Rhaheem Martinez", "email": "sales.pg@vegasdistributors.bz", "phone": "+501 627-4467", "region": "south" },
-    { "id": "international-lubricants", "en": "International Lubricants of Belize", "es": "International Lubricants of Belize", "rep": "Gilroy Spence", "email": "gilroy@vegasdistributors.bz", "phone": "+501 615-9983", "region": "national", "division": "international-lubricants-belize" }
+    {
+      "id": "belize-city-north",
+      "en": "Belize City North",
+      "es": "Ciudad de Belice Norte",
+      "rep": "Juan Cubas",
+      "email": "sales.belize@vegasdistributors.bz",
+      "phone": "+501 626-9197",
+      "region": "central"
+    },
+    {
+      "id": "belize-city-south",
+      "en": "Belize City South",
+      "es": "Ciudad de Belice Sur",
+      "rep": "Earl Anderson",
+      "email": "earl@vegasdistributors.bz",
+      "phone": "+501 671-0923",
+      "region": "central"
+    },
+    {
+      "id": "cayo-belmopan",
+      "en": "Cayo, Belmopan",
+      "es": "Cayo, Belmopán",
+      "rep": "Luis Miguel Del Cid",
+      "email": "miguel@vegasdistributors.bz",
+      "phone": "+501 624-3551",
+      "region": "west"
+    },
+    {
+      "id": "cayo-benque-san-ignacio",
+      "en": "Cayo, Benque and San Ignacio",
+      "es": "Cayo, Benque y San Ignacio",
+      "rep": "Luis Perez",
+      "email": "luis@vegasdistributors.bz",
+      "phone": "+501 615-0627",
+      "region": "west"
+    },
+    {
+      "id": "north-orange-walk-corozal",
+      "en": "North, Orange Walk and Corozal",
+      "es": "Norte, Orange Walk y Corozal",
+      "rep": "Zane Robinson",
+      "email": "zane@vegasdistributors.bz",
+      "phone": "+501 615-6631",
+      "region": "north"
+    },
+    {
+      "id": "orange-walk-depot",
+      "en": "Orange Walk Depot",
+      "es": "Depósito de Orange Walk",
+      "rep": "Azet Awe",
+      "email": "azet@vegasdistributors.bz",
+      "phone": "+501 610-1842",
+      "region": "north"
+    },
+    {
+      "id": "south-stann-creek",
+      "en": "South, Stann Creek",
+      "es": "Sur, Stann Creek",
+      "rep": "Bradley Bell",
+      "email": "sales.sc@vegasdistributors.bz",
+      "phone": null,
+      "region": "south"
+    },
+    {
+      "id": "south-punta-gorda",
+      "en": "South, Punta Gorda",
+      "es": "Sur, Punta Gorda",
+      "rep": "Rhaheem Martinez",
+      "email": "sales.pg@vegasdistributors.bz",
+      "phone": "+501 627-4467",
+      "region": "south"
+    },
+    {
+      "id": "international-lubricants",
+      "en": "International Lubricants of Belize",
+      "es": "International Lubricants of Belize",
+      "rep": "Gilroy Spence",
+      "email": "gilroy@vegasdistributors.bz",
+      "phone": "+501 615-9983",
+      "region": "national",
+      "division": "international-lubricants-belize"
+    }
   ],
   "regions": [
-    { "id": "north", "en": "North", "es": "Norte" },
-    { "id": "central", "en": "Central", "es": "Centro" },
-    { "id": "west", "en": "West", "es": "Oeste" },
-    { "id": "south", "en": "South", "es": "Sur" },
-    { "id": "national", "en": "National", "es": "Nacional" }
+    {
+      "id": "north",
+      "en": "North",
+      "es": "Norte"
+    },
+    {
+      "id": "central",
+      "en": "Central",
+      "es": "Centro"
+    },
+    {
+      "id": "west",
+      "en": "West",
+      "es": "Oeste"
+    },
+    {
+      "id": "south",
+      "en": "South",
+      "es": "Sur"
+    },
+    {
+      "id": "national",
+      "en": "National",
+      "es": "Nacional"
+    }
   ],
   "publishedCatalogueCategories": [
-    "Ball soaps", "Biscuits", "Bleach", "Brooms", "Cereals", "Chips", "Cones", "Confectionery",
-    "Cooking oils", "Corn flour", "Garlic", "Ideal essence", "Insecticides", "Instant soups",
-    "Jello", "Juices", "Ketchup", "Liquid chocolate", "Margarine", "Mayonnaise and dressings",
-    "Pancake mix", "Pastas", "Powdered detergent", "Powdered drinks", "Refried beans",
-    "Sauces and seasonings", "Shortening", "Snack mix", "Toilet paper and napkins",
-    "Chocolates", "Wines and spirits", "International Lubricants of Belize catalogue",
+    "Ball soaps",
+    "Biscuits",
+    "Bleach",
+    "Brooms",
+    "Cereals",
+    "Chips",
+    "Cones",
+    "Confectionery",
+    "Cooking oils",
+    "Corn flour",
+    "Garlic",
+    "Ideal essence",
+    "Insecticides",
+    "Instant soups",
+    "Jello",
+    "Juices",
+    "Ketchup",
+    "Liquid chocolate",
+    "Margarine",
+    "Mayonnaise and dressings",
+    "Pancake mix",
+    "Pastas",
+    "Powdered detergent",
+    "Powdered drinks",
+    "Refried beans",
+    "Sauces and seasonings",
+    "Shortening",
+    "Snack mix",
+    "Toilet paper and napkins",
+    "Chocolates",
+    "Wines and spirits",
+    "International Lubricants of Belize catalogue",
     "Mopan Gas Station catalogue"
   ],
   "needsApproval": [
@@ -183,5 +439,12 @@
     "Current employee count",
     "Rights to display every third-party brand logo",
     "Telephone number for the Stann Creek representative"
-  ]
+  ],
+  "instagram": "https://www.instagram.com/vegasdistributors.bz/",
+  "maps": {
+    "embed": "https://www.google.com/maps?q=Vega%27s%20Distributors%20Ltd%2C%20Pedro%20Guerra%20Mena%20Street%2C%20Benque%20Viejo%20Town%2C%20Belize&output=embed",
+    "link": "https://www.google.com/maps/search/?api=1&query=Vega%27s%20Distributors%20Ltd%2C%20Pedro%20Guerra%20Mena%20Street%2C%20Benque%20Viejo%20Town%2C%20Belize"
+  },
+  "generalWhatsappUrl": "",
+  "generalWhatsappNote": "No public source confirms a general company WhatsApp number. While this is empty the general WhatsApp action is not rendered. Populate it when the client confirms the destination; no markup change is needed."
 }

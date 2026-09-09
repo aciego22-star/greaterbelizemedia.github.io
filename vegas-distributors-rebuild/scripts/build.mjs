@@ -26,6 +26,8 @@ const catalog = read('data/catalog.json');
 const images = read('data/images.json');
 const heroes = read('data/heroes.json');
 const campaign = read('data/campaign.json');
+const gallery = read('data/gallery.json');
+const galleryImages = read('data/gallery-images.json');
 const locales = { en: read('i18n/en.json'), es: read('i18n/es.json') };
 
 const LOCALES = ['en', 'es'];
@@ -87,7 +89,7 @@ const breadcrumbSchema = (locale, trail) => ({
 
 for (const locale of LOCALES) {
   const i18n = locales[locale];
-  const base = { site, i18n, locale, company, catalog, images, heroes, campaign };
+  const base = { site, i18n, locale, company, catalog, images, heroes, campaign, gallery, galleryImages };
 
   const render = (key, path, meta, result, structuredData = []) => {
     const outPath = routePath(locale, path);
@@ -100,6 +102,8 @@ for (const locale of LOCALES) {
         outPath,
         title: meta.title,
         description: meta.description,
+        canonicalPath: result.canonicalPath,
+        forceNoindex: result.noindex,
         structuredData,
         body: result.body,
         bodyClass: result.bodyClass,
@@ -142,9 +146,14 @@ for (const locale of LOCALES) {
     ))]
   );
 
-  render('products', ROUTES.products, i18n.products, cat.products(base), [
-    breadcrumbSchema(locale, crumbTrail({ name: i18n.nav.products, path: ROUTES.products })),
+  render('brands', ROUTES.brands, i18n.brands, cat.brands(base), [
+    breadcrumbSchema(locale, crumbTrail({ name: i18n.nav.brands, path: ROUTES.brands })),
   ]);
+
+  // Anyone holding the old address still lands on the brand directory.
+  render('brands', ROUTES.products,
+    { title: i18n.brands.aliasTitle, description: i18n.brands.aliasDescription },
+    cat.productsAlias(base));
 
   for (const b of catalog.brands) {
     const path = `${ROUTES.products}/${b.slug}`;
@@ -152,12 +161,12 @@ for (const locale of LOCALES) {
       catalog.categories.find((x) => x.id === b.category)?.[locale] ?? b.category;
     const description =
       locale === 'es'
-        ? `${b.name}: ${b.productCount} listados publicados por Vega's en Belice. Categoría: ${categoryName}. Consulte la disponibilidad con su representante.`
-        : `${b.name}: ${b.productCount} listings published by Vega's Distributors in Belize. Category: ${categoryName}. Request availability from your representative.`;
+        ? `${b.name} en Belice: ${b.productCount} productos en la categoría ${categoryName}, distribuidos por Vega's Distributors.`
+        : `${b.name} in Belize: ${b.productCount} products in ${categoryName}, distributed nationwide by Vega's Distributors.`;
 
-    render('products', path, { title: b.name, description }, cat.brand({ ...base, brand: b }), [
+    render('brands', path, { title: b.name, description }, cat.brand({ ...base, brand: b }), [
       breadcrumbSchema(locale, crumbTrail(
-        { name: i18n.nav.products, path: ROUTES.products },
+        { name: i18n.nav.brands, path: ROUTES.brands },
         { name: b.name, path }
       )),
     ]);
@@ -178,7 +187,7 @@ for (const locale of LOCALES) {
 {
   const locale = 'en';
   const i18n = locales[locale];
-  const result = cat.notFound({ site, i18n, locale, company, catalog, images, heroes, campaign });
+  const result = cat.notFound({ site, i18n, locale, company, catalog, images, heroes, campaign, gallery, galleryImages });
   const html = page({
     site, i18n, locale, company, catalog, images,
     current: null,
@@ -204,14 +213,16 @@ cpSync(join(ROOT, 'src', 'js'), join(DIST, 'assets', 'js'), { recursive: true })
 cpSync(join(ROOT, 'src', 'assets', 'fonts'), join(DIST, 'assets', 'fonts'), { recursive: true });
 cpSync(join(ROOT, 'src', 'assets', 'images'), join(DIST, 'assets', 'images'), { recursive: true });
 cpSync(join(ROOT, 'src', 'assets', 'heroes'), join(DIST, 'assets', 'heroes'), { recursive: true });
+cpSync(join(ROOT, 'src', 'assets', 'gallery'), join(DIST, 'assets', 'gallery'), { recursive: true });
 
 /* ------------------------------------------------------------------ *
  * sitemap.xml, robots.txt, Netlify config
  * ------------------------------------------------------------------ */
 
+// The /products/ alias is deliberately absent: it redirects to /brands/.
 const routeList = [
   ROUTES.home, ROUTES.about, ROUTES.divisions, ROUTES.industries, ROUTES.lubricants,
-  ROUTES.products, ...catalog.brands.map((b) => `${ROUTES.products}/${b.slug}`),
+  ROUTES.brands, ...catalog.brands.map((b) => `${ROUTES.products}/${b.slug}`),
   ROUTES.network, ROUTES.contact,
 ];
 
@@ -246,6 +257,13 @@ const robots = site.noindex
   : `User-agent: *\nAllow: /\n\nSitemap: ${site.siteUrl}/sitemap.xml\n`;
 
 writeFileSync(join(DIST, 'robots.txt'), robots);
+
+writeFileSync(
+  join(DIST, '_redirects'),
+  `# The brand directory moved to /brands/. The static pages at /products/ and\n` +
+    `# /es/products/ carry the same redirect for hosts that ignore this file.\n` +
+    `/products/    /brands/       301!\n/es/products/ /es/brands/    301!\n`
+);
 
 writeFileSync(
   join(DIST, '_headers'),

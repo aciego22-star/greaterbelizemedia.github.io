@@ -1,11 +1,13 @@
-# Vega's Distributors — concept website rebuild
+# Vega's Distributors website
 
-A concept rebuild of the Vega's Distributors Ltd. website, built from information
-the company published publicly and captured on 8 September 2026.
+Static website for Vega's Distributors Ltd., built from information the company
+published publicly and captured on 8 September 2026.
 
-**This is not an approved site.** Nothing here has been confirmed as current by
-the business. Do not deploy it to a live domain, and do not replace the existing
-vegasdistributors.bz website, without explicit authorisation.
+**Internal note, not for publication.** Nothing here has been confirmed as
+current by the business. Do not deploy to a live domain, and do not replace the
+existing vegasdistributors.bz website, without explicit authorisation. The build
+ships with `noindex, nofollow` and a `Disallow: /` robots file until that
+approval arrives; none of that is explained anywhere a visitor can see it.
 
 ## Stack
 
@@ -46,17 +48,43 @@ npm run fonts                                       # re-download the bundled fo
 
 ```
 data/            content model
-  company.json     verified company facts, divisions, contacts, territories
-  catalog.json     37 brands, 346 product listings, generated from the pack
-  images.json      image manifest with intrinsic dimensions
+  company.json     company facts, divisions, contacts, territories, channels
+  catalog.json     37 brands and 346 products
+  campaign.json    hero slides: background, product layer, destinations
+  gallery.json     the 20 gallery items, captions and destinations
+  images.json      product image manifest with intrinsic dimensions
+  heroes.json      hero background and campaign artwork manifest
+  gallery-images.json  gallery derivatives manifest
   site.json        build flags and integration points
-i18n/            en.json / es.json — all interface copy
-scripts/         build, extraction, image, QA and packaging scripts
-  lib/             layout, partials and page templates
-src/             stylesheets, client JavaScript, fonts, optimised images
+i18n/            en.json / es.json, all interface copy
+scripts/         build, media, QA, preview and packaging scripts
+  lib/             layout, partials, hero, gallery and page templates
+src/             stylesheets, client JavaScript, fonts, image sources and output
 dist/            build output (committed, so the deliverable travels with the repo)
-release/         Netlify upload ZIP (git-ignored; regenerate with npm run package)
+release/         preview.html and the Netlify ZIP (git-ignored; npm run package)
 ```
+
+## Routes
+
+`/`, `/about/`, `/divisions/`, `/divisions/vegas-industries/`,
+`/divisions/international-lubricants-belize/`, `/brands/`, `/products/{slug}/`
+(37 brands), `/sales-network/`, `/contact/`, and the `/es/` mirror of all of
+them. `/products/` is a redirect to `/brands/`: a forced 301 in `_redirects` for
+Netlify, plus a static redirect page for hosts that ignore it, so older links
+keep working. Brand detail pages deliberately stay under `/products/{slug}/`.
+
+## Media
+
+Hero backgrounds and the 20 gallery items are campaign and product artwork
+supplied by the client. Backgrounds are emitted at 640/960/1440/source in AVIF,
+WebP and JPEG; gallery media at 400/800/1200/source in the same three formats.
+Product packaging is never redrawn or baked into a bitmap: every packshot is a
+separate HTML image layer over the background.
+
+The BOP banner is cropped to its can row for hero and featured use. The rest of
+that artwork is a baked-in product list and a stock insect photograph, neither
+of which belongs in a hero. The full banner still appears on the BOP brand page
+and in the gallery, where the client's manifest placed it.
 
 ## Content rules this build follows
 
@@ -72,13 +100,17 @@ release/         Netlify upload ZIP (git-ignored; regenerate with npm run packag
   fabricated number, and no WhatsApp link exists because none is published.
 - The generic `stafficon` and `womanicon` images in the pack are not used. Space
   for authentic facility, fleet and staff photography is marked as pending.
-- Product listings are labelled provisional wherever they appear.
+- Product ranges carry a short availability line rather than any claim of
+  current stock.
+- No AI assistant, chatbot or placeholder for one exists in this build.
 
 ## Integration points
 
 | What | Where | Status |
 | --- | --- | --- |
-| Enquiry backend | `data/site.json` → `forms.endpoint`; posted by `src/js/enquiry.js` | Not connected. The form validates and shows the exact payload a backend would receive. It never reports success. |
+| General WhatsApp | `data/company.json` → `generalWhatsappUrl` | Empty. No public source confirms a general company WhatsApp number, so the button is not rendered at all. Populate the value and the action appears; no markup change needed. |
+| ILB WhatsApp | not wired | Two public `wa.link` addresses appear in the pack. Neither could be resolved from this environment, so nothing was published. Test the destination, then add it to the ILB page only. |
+| Google Maps | `data/company.json` → `maps` | Query-based embed, lazy-loaded, with an "Open in Google Maps" link beside it. No hard-coded pin. |
 | Analytics | `scripts/lib/layout.mjs`, marked in `page()` before the site script | Not loaded. Add a deferred tag at the marker. |
 | AI Employee | `data/site.json` → `assistant.enabled` | Disabled. Nothing is advertised or contacted while false. No vendor is named. |
 | Indexing | `data/site.json` → `noindex` | `true`. Drives both the robots meta tag and `robots.txt`. Set to `false` only when a production launch is approved. |

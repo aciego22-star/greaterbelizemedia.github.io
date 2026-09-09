@@ -36,9 +36,9 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.vegasdistributors.bz/products/</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.vegasdistributors.bz/products/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://www.vegasdistributors.bz/es/products/"/>
+    <loc>https://www.vegasdistributors.bz/brands/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.vegasdistributors.bz/brands/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.vegasdistributors.bz/es/brands/"/>
     <lastmod>2026-09-09</lastmod>
     <priority>0.8</priority>
   </url>
@@ -351,9 +351,9 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.vegasdistributors.bz/es/products/</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.vegasdistributors.bz/products/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://www.vegasdistributors.bz/es/products/"/>
+    <loc>https://www.vegasdistributors.bz/es/brands/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.vegasdistributors.bz/brands/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.vegasdistributors.bz/es/brands/"/>
     <lastmod>2026-09-09</lastmod>
     <priority>0.8</priority>
   </url>

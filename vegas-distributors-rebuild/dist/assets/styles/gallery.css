@@ -1,0 +1,179 @@
+/* ==========================================================================
+   Brands in Motion
+   A dimensional grid of official product artwork. Cards keep their source
+   aspect ratio, so nothing is cropped; variety comes from column spans.
+   ========================================================================== */
+
+.gallery-band {
+  position: relative;
+  /* Cards enter from off-axis, so their start transforms are clipped rather
+     than allowed to widen the page. */
+  overflow-x: hidden;
+  overflow-x: clip;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-flow: dense;
+  /* One row height for every card, so spans vary but the grid never leaves
+     ragged gaps between differently proportioned sources. */
+  grid-auto-rows: clamp(8rem, 11.5vw, 11rem);
+  gap: clamp(0.75rem, 1.6vw, 1.15rem);
+  list-style: none;
+  /* The shared perspective is what makes the entry read as depth rather than
+     as a flat slide. */
+  perspective: 1200px;
+  perspective-origin: 50% 40%;
+}
+
+.g-card {
+  position: relative;
+  grid-column: span 1;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid var(--line);
+  transform-style: preserve-3d;
+}
+.g-card--wide { grid-column: span 2; }
+
+.g-card__button {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: zoom-in;
+}
+.g-card__button picture, .g-card__button img { display: block; width: 100%; height: 100%; }
+.g-card__button img { object-fit: cover; }
+
+.g-card__link {
+  position: absolute;
+  left: 0.6rem;
+  bottom: 0.6rem;
+  z-index: 2;
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #fff;
+  text-decoration: none;
+  background: rgba(0, 0, 0, 0.62);
+  backdrop-filter: blur(4px);
+  border-radius: 999px;
+  padding: 0.3rem 0.7rem;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.22s var(--ease), transform 0.22s var(--ease);
+}
+.g-card:hover .g-card__link,
+.g-card:focus-within .g-card__link { opacity: 1; transform: none; }
+
+.g-card__button:focus-visible { outline: 3px solid var(--red); outline-offset: -3px; }
+
+@media (max-width: 75rem) {
+  .gallery { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 48rem) {
+  .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .g-card--wide { grid-column: span 2; }
+}
+@media (max-width: 26rem) {
+  .gallery { grid-template-columns: 1fr; }
+  .g-card, .g-card--wide { grid-column: span 1; }
+}
+
+/* --------------------------------------------------------------------------
+   Entry motion
+   Cards are visible by default. The script arms them, so a blocked or failed
+   script leaves a plain readable grid rather than an empty section.
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .gallery.is-armed .g-card {
+    opacity: 0;
+    transition:
+      opacity 0.7s var(--ease),
+      transform 0.75s cubic-bezier(0.22, 0.68, 0.3, 1);
+  }
+  .gallery.is-armed .g-card[data-variant='1'] { transform: translate3d(0, 60px, -140px) rotateX(9deg); }
+  .gallery.is-armed .g-card[data-variant='2'] { transform: translate3d(-54px, 40px, -180px) rotateY(11deg); }
+  .gallery.is-armed .g-card[data-variant='3'] { transform: translate3d(54px, 40px, -180px) rotateY(-11deg); }
+  .gallery.is-armed .g-card[data-variant='4'] { transform: translate3d(0, 74px, -220px) scale(0.9); }
+  .gallery.is-armed .g-card[data-variant='5'] { transform: translate3d(-38px, 58px, -120px) rotateX(7deg) rotateY(7deg); }
+  .gallery.is-armed .g-card[data-variant='6'] { transform: translate3d(38px, 58px, -120px) rotateX(7deg) rotateY(-7deg); }
+
+  .gallery.is-armed .g-card.is-in {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Pointer tilt, kept small so it reads as a lift rather than a toy. */
+  .g-card.is-in.has-tilt {
+    transition: transform 0.18s var(--ease), box-shadow 0.22s var(--ease);
+    transform:
+      translate3d(0, -4px, 0)
+      rotateX(var(--tilt-x, 0deg))
+      rotateY(var(--tilt-y, 0deg));
+    box-shadow: var(--shadow-lg);
+  }
+}
+
+/* Narrow screens get the same choreography with far less travel. */
+@media (prefers-reduced-motion: no-preference) and (max-width: 48rem) {
+  .gallery.is-armed .g-card[data-variant='1'] { transform: translate3d(0, 30px, -60px); }
+  .gallery.is-armed .g-card[data-variant='2'] { transform: translate3d(-16px, 26px, -70px) rotateY(5deg); }
+  .gallery.is-armed .g-card[data-variant='3'] { transform: translate3d(16px, 26px, -70px) rotateY(-5deg); }
+  .gallery.is-armed .g-card[data-variant='4'] { transform: translate3d(0, 34px, -80px) scale(0.95); }
+  .gallery.is-armed .g-card[data-variant='5'] { transform: translate3d(-12px, 30px, -50px) rotateX(4deg); }
+  .gallery.is-armed .g-card[data-variant='6'] { transform: translate3d(12px, 30px, -50px) rotateX(4deg); }
+  /* Pointer tilt is a desktop affordance only. */
+  .g-card.is-in.has-tilt { transform: none; box-shadow: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery .g-card { opacity: 1 !important; transform: none !important; }
+}
+
+/* --------------------------------------------------------------------------
+   Lightbox
+   -------------------------------------------------------------------------- */
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  display: grid;
+  place-items: center;
+  padding: clamp(1rem, 4vw, 3rem);
+}
+.lightbox__backdrop { position: absolute; inset: 0; background: rgba(6, 7, 9, 0.88); border: 0; }
+.lightbox__panel {
+  position: relative;
+  display: grid;
+  gap: 1rem;
+  width: min(100%, 68rem);
+  max-height: 100%;
+}
+.lightbox__figure { margin: 0; display: grid; gap: 0.6rem; min-height: 0; }
+.lightbox__figure img {
+  width: 100%;
+  height: auto;
+  max-height: 72svh;
+  object-fit: contain;
+  border-radius: var(--radius);
+  background: #fff;
+}
+.lightbox__figure figcaption { color: rgba(255, 255, 255, 0.85); font-size: 0.92rem; }
+.lightbox__bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.lightbox__nav { display: flex; gap: 0.5rem; margin-left: auto; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .lightbox:not([hidden]) .lightbox__panel { animation: lightbox-in 0.28s var(--ease) both; }
+  @keyframes lightbox-in {
+    from { opacity: 0; transform: translate3d(0, 12px, 0) scale(0.985); }
+    to { opacity: 1; transform: none; }
+  }
+}

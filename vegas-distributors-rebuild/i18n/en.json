@@ -6,25 +6,21 @@
   "dir": "ltr",
   "site": {
     "name": "Vega's Distributors Ltd.",
-    "conceptBar": "Concept rebuild",
-    "conceptBarText": "This is an unapproved concept site built from publicly published information. Product details are provisional.",
     "skipLink": "Skip to main content"
   },
   "nav": {
     "home": "Home",
     "about": "About",
     "divisions": "Divisions",
-    "products": "Products",
     "salesNetwork": "Sales Network",
     "contact": "Contact",
     "menu": "Menu",
     "primaryLabel": "Primary",
     "breadcrumbLabel": "Breadcrumb",
-    "languageLabel": "Language"
+    "languageLabel": "Language",
+    "brands": "Brands"
   },
   "actions": {
-    "findRep": "Find a Representative",
-    "requestQuote": "Request a Quote",
     "exploreProducts": "Explore Our Products",
     "findYourRep": "Find Your Sales Representative",
     "requestAvailability": "Request Availability",
@@ -35,7 +31,9 @@
     "backToProducts": "All brands",
     "call": "Call",
     "email": "Email",
-    "enquire": "Send an enquiry"
+    "enquire": "Send an enquiry",
+    "contactSales": "Contact Sales",
+    "emailUs": "Email Us"
   },
   "home": {
     "title": "Wholesale Distribution in Belize",
@@ -78,18 +76,18 @@
     "divisionsLead": "Vega's operates a consumer and commercial distribution business, a Belizean bleach manufacturer and a lubricants distributor. Each serves a different customer need from the same Benque Viejo base.",
     "categoriesEyebrow": "Product discovery",
     "categoriesHeading": "Find what you stock, by category",
-    "categoriesLead": "Browse the categories Vega's publishes, then request availability from the representative who covers your district.",
+    "categoriesLead": "Browse our categories, then ask the representative who covers your district about availability.",
     "categoriesAction": "Browse the full brand directory",
     "networkEyebrow": "National sales network",
     "networkHeading": "A representative for every district",
     "networkLead": "Vega's covers Belize through territory representatives. Contact the person responsible for your area directly.",
     "networkAction": "See the full sales network",
     "whyEyebrow": "Why Vega's",
-    "whyHeading": "Built on published values and practical support",
+    "whyHeading": "Built on our values and practical support",
     "why": [
       {
         "title": "Integrity, teamwork and respect",
-        "body": "The three values the company publishes, and the basis of how its teams work with customers."
+        "body": "The three values we work by, and the basis of how our teams deal with customers."
       },
       {
         "title": "Longstanding distribution experience",
@@ -109,7 +107,7 @@
     "ctaOptions": [
       {
         "title": "Browse products",
-        "body": "37 brands and 346 published listings.",
+        "body": "37 brands across every category we carry.",
         "href": "/products"
       },
       {
@@ -150,7 +148,7 @@
     "gatewayLead": "Vega's works through named territory representatives from the north to the far south. Find the person who covers your district and contact them directly.",
     "gatewayAction": "Find Your Representative",
     "categoriesEnquiryHeading": "Also distributed",
-    "categoriesEnquiryBody": "Listed in the company's published import range, with no product detail online yet. Contact the sales team for availability.",
+    "categoriesEnquiryBody": "Part of the range we supply to trade customers. Contact our sales team for details.",
     "divisionsCta": "See all divisions",
     "pageHeading": "Vega's Distributors Ltd., wholesale product distribution in Belize"
   },
@@ -163,27 +161,17 @@
     "visionHeading": "Vision",
     "missionHeading": "Mission",
     "valuesHeading": "Our values",
-    "valuesLead": "The three values the company publishes.",
+    "valuesLead": "The three values we work by.",
     "valueDetail": {
       "integrity": "Dealing straightforwardly with customers, suppliers and colleagues.",
       "teamwork": "Warehouse, sales and administration working to the same standard.",
       "respect": "Respect for customers, staff and the communities Vega's serves."
     },
     "sourcingHeading": "Where products come from",
-    "sourcingLead": "Vega's publishes imports from Central America, Asia and Commonwealth regions, alongside Belizean manufacturing through Vega's Industries.",
-    "importList": "Published import categories",
-    "photographyHeading": "Photography to be supplied",
-    "photographyBody": "The current public website does not provide authentic photography of the distribution facility, delivery fleet or staff at work. Rather than use stock imagery that would misrepresent the business, those places are held open for approved photography.",
-    "photographyItems": [
-      "Distribution facility and warehouse",
-      "Delivery fleet",
-      "Staff at work",
-      "Product loading and merchandising",
-      "The Benque Viejo location",
-      "Customer-service and sales activity"
-    ],
+    "sourcingLead": "We import from Central America, Asia and Commonwealth regions, alongside Belizean manufacturing through Vega's Industries.",
+    "importList": "What we import",
     "managementHeading": "Management contacts",
-    "managementLead": "Contacts published on the company website. Confirm they remain current before production use.",
+    "managementLead": "Reach the right department directly.",
     "tableArea": "Area",
     "tableName": "Name",
     "tableEmail": "Email"
@@ -209,43 +197,29 @@
   },
   "products": {
     "title": "Products and Brands",
-    "description": "Search the brands and product listings Vega's publishes, by category or division, then request availability from your territory representative.",
+    "description": "Browse the brands and products Vega's Distributors supplies to supermarkets, wholesalers and businesses across Belize.",
     "heading": "Products and Brands",
-    "lead": "Search the brands Vega's publishes, filter by category, then request availability from the representative covering your district.",
-    "searchLabel": "Search brands and products",
-    "searchPlaceholder": "Search a brand or product name",
-    "categoryLabel": "Category",
-    "divisionLabel": "Division",
-    "allCategories": "All categories",
-    "allDivisions": "All divisions",
-    "resultsCount": "{count} brands",
-    "resultsCountOne": "1 brand",
-    "productsCount": "{count} listings",
-    "clearFilters": "Clear filters",
-    "noResultsHeading": "No brands match that search",
-    "noResultsBody": "Try a shorter search term, or clear the filters to see the full directory. If you are looking for something Vega's does not list online, send an enquiry and the sales team can confirm.",
+    "lead": "Browse our brands by category, then ask the representative covering your district about availability.",
     "categoriesHeading": "Browse by category",
-    "brandsHeading": "Brand directory",
     "enquiryOnly": "Enquiry only",
-    "enquiryOnlyBody": "Published in the company's import list, with no product detail online. Contact the sales team for availability.",
-    "verificationNotice": "Every brand, product name and pack size on this site was published on the Vega's website when this concept was built. None has been confirmed as current by the business, so treat listings as provisional and confirm availability before ordering.",
+    "enquiryOnlyBody": "Available to order through our sales team. Contact us for the current range.",
     "brandCount": "{count} brands",
-    "listingCount": "{count} listings"
+    "listingCount": "{count} products",
+    "availability": "Contact our sales team to confirm current availability and pack sizes."
   },
   "brand": {
-    "productsHeading": "Published listings",
+    "productsHeading": "Product Range",
     "productName": "Product",
     "productSize": "Size or pack",
     "sectionUngrouped": "Listings",
     "relatedHeading": "Related brands",
     "galleryHeading": "Product imagery",
-    "sourceNote": "Source note",
-    "provisionalNotice": "These listings were published on the Vega's website and have not been confirmed as current. Request availability before ordering.",
     "ctaHeading": "Need this brand for your business?",
     "ctaBody": "Ask the representative for your district to confirm current availability and pack sizes.",
     "categoryLabel": "Category",
     "divisionLabel": "Division",
-    "listingsLabel": "Listings"
+    "listingsLabel": "Listings",
+    "availability": "Contact our sales team to confirm current availability and pack sizes."
   },
   "network": {
     "title": "Sales Network",
@@ -254,7 +228,7 @@
     "lead": "Vega's covers Belize through named territory representatives. Find your district below and contact the representative directly.",
     "territoryLabel": "Territory",
     "repLabel": "Representative",
-    "noPhone": "No telephone number is published for this territory. Use email, or contact the head office.",
+    "noPhone": "Reach this representative by email, or call the head office.",
     "headOfficeHeading": "Head office",
     "coverageHeading": "Coverage by region",
     "coverageLead": "Territories are grouped by region. Each is served by a named representative.",
@@ -263,96 +237,35 @@
   },
   "contact": {
     "title": "Contact Vega's Distributors",
-    "description": "Contact Vega's Distributors in Benque Viejo del Carmen for product availability, wholesale accounts, quotes and supplier enquiries.",
-    "heading": "Contact Vega's",
-    "lead": "Tell us what you need and the enquiry will reach the right team. For orders and availability, contacting your territory representative directly is usually fastest.",
-    "enquiryTypeHeading": "What is your enquiry about?",
-    "enquiryTypes": [
-      {
-        "id": "availability",
-        "title": "Product availability",
-        "body": "Check whether a product or pack size is currently stocked."
-      },
-      {
-        "id": "wholesale",
-        "title": "Wholesale or account enquiry",
-        "body": "Open a trade account or discuss existing terms."
-      },
-      {
-        "id": "quote",
-        "title": "Request a quote",
-        "body": "Pricing for a specific product list and quantity."
-      },
-      {
-        "id": "representative",
-        "title": "Find a sales representative",
-        "body": "Be put in touch with the representative for your district."
-      },
-      {
-        "id": "supplier",
-        "title": "Supplier or international enquiry",
-        "body": "Offer a product line or discuss distribution in Belize."
-      },
-      {
-        "id": "general",
-        "title": "General customer service",
-        "body": "Anything else, including deliveries and invoices."
-      }
-    ],
-    "formHeading": "Your details",
-    "fields": {
-      "name": "Your name",
-      "business": "Business name",
-      "businessHint": "If you are enquiring on behalf of a company.",
-      "email": "Email",
-      "phone": "Telephone",
-      "phoneHint": "Optional. Include the country code if you are outside Belize.",
-      "territory": "District or territory",
-      "territoryHint": "Helps route your enquiry to the right representative.",
-      "category": "Product category",
-      "product": "Product or brand",
-      "quantity": "Quantity",
-      "quantityHint": "Cases, units or drums, if known.",
-      "message": "Message",
-      "preferredContact": "Preferred reply method",
-      "selectPlaceholder": "Select an option",
-      "optional": "optional",
-      "required": "required"
-    },
-    "preferredContactOptions": [
-      {
-        "id": "email",
-        "label": "Email"
-      },
-      {
-        "id": "phone",
-        "label": "Telephone"
-      }
-    ],
-    "submit": "Send enquiry",
-    "errors": {
-      "name": "Enter your name so we know who is enquiring.",
-      "email": "Enter a valid email address, such as name@example.com.",
-      "message": "Tell us what you need.",
-      "enquiryType": "Choose what your enquiry is about.",
-      "summary": "Check the highlighted fields and try again."
-    },
-    "devNotice": "This concept site has no enquiry backend connected. Nothing is sent and no enquiry is stored. The form validates your input and shows the exact payload that would be submitted, so the integration can be wired up later.",
-    "devResultHeading": "Development mode: nothing was sent",
-    "devResultBody": "This is the payload a connected backend would receive:",
+    "description": "Contact Vega's Distributors in Benque Viejo del Carmen by email or telephone, or find the sales representative for your district.",
+    "heading": "Talk to our team",
+    "lead": "Reach us directly. For orders and availability, the representative for your district is usually the quickest way to an answer.",
+    "emailHeading": "Email",
+    "emailBody": "Send us your requirements and our team will come back to you.",
+    "emailAction": "Email our team",
+    "emailSubject": "Enquiry from the website",
+    "whatsappHeading": "WhatsApp",
+    "whatsappBody": "Message our team directly.",
+    "whatsappAction": "Open WhatsApp",
+    "phoneHeading": "Telephone",
+    "phoneBody": "Head office, Benque Viejo del Carmen.",
+    "networkHeading": "Your district representative",
+    "networkBody": "Nine territories across Belize, each with a named representative.",
+    "networkAction": "Find your representative",
+    "mapHeading": "Find us",
+    "mapBody": "Pedro Guerra Mena Street, Benque Viejo Town, Cayo District, Belize.",
+    "mapTitle": "Map showing Vega's Distributors in Benque Viejo Town",
+    "openInMaps": "Open in Google Maps",
     "officeHeading": "Head office",
     "addressHeading": "Address",
-    "phoneHeading": "Telephone",
-    "emailHeading": "Email",
-    "socialHeading": "Social",
     "ilbHeading": "International Lubricants of Belize",
-    "mapNote": "Vega's publishes a street address but no map embed. A map will be added once the exact location is confirmed by the business."
+    "ilbBody": "Oils and lubricants enquiries."
   },
   "notFound": {
     "title": "Page not found",
     "heading": "We could not find that page",
     "lead": "The page may have moved, or the address may be mistyped. Try the product directory or the sales network.",
-    "description": "The requested page could not be found on the Vega's Distributors concept site."
+    "description": "The page you are looking for is not available."
   },
   "footer": {
     "tagline": "Service with Pride.",
@@ -360,57 +273,84 @@
     "divisionsHeading": "Divisions",
     "contactHeading": "Contact",
     "followUs": "Follow us on Facebook",
-    "conceptHeading": "Concept status",
-    "conceptBody": "An unapproved concept rebuild using information published by Vega's Distributors on 8 September 2026.",
     "copyright": "Vega's Distributors Ltd.",
-    "rightsNote": "Third-party brand names and logos are the property of their respective owners and are shown for identification only."
+    "rightsNote": "Third-party brand names and logos are the property of their respective owners and are shown for identification only.",
+    "brandsHeading": "Brands",
+    "followInstagram": "Follow us on Instagram"
   },
-  "misc": {
-    "provisional": "Provisional",
-    "unconfirmed": "Not confirmed by the business",
-    "needsApprovalHeading": "Pending business approval",
-    "reviewNeeded": "Spanish product terminology is pending review"
-  },
+  "misc": {},
   "hero": {
     "label": "Campaign highlights",
     "prev": "Previous slide",
     "next": "Next slide",
     "goTo": "Show slide {n}",
     "pauseNote": "Autoplay pauses while you are interacting.",
-    "conceptNote": "Campaign concept image. Not a photograph of a Vega's facility, vehicle or worksite.",
     "slides": {
-      "bop": {
-        "eyebrow": "CURRENTLY PROMOTED",
-        "headline": "Protection that means business.",
-        "body": "Ask your Vega's sales representative about BOP insecticide products and current availability.",
-        "primary": "Enquire About BOP",
-        "secondary": "Find Your Representative",
-        "productAlt": "BOP insecticide product artwork published by Vega's Distributors"
-      },
       "national": {
         "eyebrow": "SERVING BELIZE SINCE 1980",
-        "headline": "Trusted products. Nationwide reach.",
-        "body": "Serving supermarkets, wholesalers and businesses across Belize with established brands and dependable distribution support.",
-        "primary": "Explore Our Products",
-        "secondary": "Find Your Representative",
-        "productAlt": "Product artwork from brands distributed by Vega's Distributors"
+        "headline": "Trusted products, nationwide reach.",
+        "body": "Supplying supermarkets, wholesalers and businesses across Belize with the brands their customers ask for.",
+        "primary": "Explore Our Brands",
+        "secondary": "Find Your Representative"
+      },
+      "bop": {
+        "eyebrow": "HOUSEHOLD PROTECTION",
+        "headline": "Protection that means business.",
+        "body": "BOP insecticide, stocked by retailers across the country and delivered through our national network.",
+        "primary": "Explore BOP",
+        "secondary": "Contact Sales",
+        "productAlt": "BOP insecticide spray product range"
       },
       "blanca": {
-        "eyebrow": "PROUDLY MADE IN BELIZE",
-        "headline": "Made in Belize. Made for everyday clean.",
-        "body": "Discover Blanca Max bleach from Vega's Industries, available in 1 litre and half-litre sizes.",
+        "eyebrow": "MADE IN BELIZE",
+        "headline": "Made in Belize, made for everyday clean.",
+        "body": "Blanca Max bleach is manufactured here at home by Vega’s Industries, in one litre and half litre.",
         "primary": "Explore Blanca Max",
-        "secondary": "Contact Vega's Industries",
-        "productAlt": "Blanca Max bleach bottles, 1 litre and half litre"
+        "secondary": "Contact Sales",
+        "productAlt": "Blanca Max bleach, one litre bottle"
       },
       "ilb": {
         "eyebrow": "INTERNATIONAL LUBRICANTS OF BELIZE",
         "headline": "Built to protect the work that moves Belize.",
         "body": "Oils and lubricants for commercial transport, industrial equipment, passenger vehicles and marine use.",
         "primary": "Explore ILB",
-        "secondary": "Request Product Information",
-        "productAlt": "Chevron lubricants artwork published by International Lubricants of Belize"
+        "secondary": "Contact Sales",
+        "productAlt": "Chevron lubricants artwork from International Lubricants of Belize"
       }
     }
+  },
+  "brands": {
+    "title": "Brands We Distribute",
+    "description": "Vega's Distributors supplies recognised food, beverage, snack, household and industrial brands to supermarkets, wholesalers and businesses across Belize.",
+    "heading": "The brands Belize knows",
+    "lead": "For more than four decades we have brought recognised international and Central American brands to shelves across Belize, alongside products made here at home.",
+    "searchLabel": "Search brands and products",
+    "searchPlaceholder": "Search a brand or product name",
+    "categoryLabel": "Category",
+    "allCategories": "All categories",
+    "resultsCount": "{count} brands",
+    "resultsCountOne": "1 brand",
+    "clearFilters": "Clear filters",
+    "noResultsHeading": "Nothing matches that search",
+    "noResultsBody": "Try a shorter search term or clear the filters. If you are looking for something you cannot see here, our sales team can help.",
+    "featuredHeading": "Featured Brands",
+    "featuredLead": "A few of the ranges moving through our warehouse right now.",
+    "directoryHeading": "Full Brand Directory",
+    "inquiryHeading": "Looking for a brand we have not listed?",
+    "inquiryBody": "Our sales team can confirm what we carry and put you in touch with the representative for your district.",
+    "productCount": "{count} products",
+    "aliasTitle": "Our Brands",
+    "aliasDescription": "The Vega's Distributors brand directory has moved to /brands/."
+  },
+  "gallery": {
+    "heading": "Brands in Motion",
+    "lead": "Product and campaign artwork from across the range we distribute.",
+    "label": "Brand gallery",
+    "openLabel": "View {name}",
+    "lightboxLabel": "Brand artwork viewer",
+    "close": "Close",
+    "prev": "Previous image",
+    "next": "Next image",
+    "viewBrand": "View brand"
   }
 }

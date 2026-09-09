@@ -5,6 +5,7 @@ import {
   sectionHead, crumbs, notice, brandCard, categoryCard, divisionPanel, repCard, placeholderNote, plate,
 } from './partials.mjs';
 import { heroCarousel } from './hero.mjs';
+import { brandGallery } from './gallery.mjs';
 
 const localeCopy = (obj, locale) => obj[locale] ?? obj.en;
 
@@ -13,14 +14,14 @@ const localeCopy = (obj, locale) => obj[locale] ?? obj.en;
  * ------------------------------------------------------------------ */
 
 export function home(ctx) {
-  const { i18n, locale, company, catalog, images, heroes, campaign } = ctx;
+  const { i18n, locale, company, catalog, images, heroes, campaign, gallery, galleryImages } = ctx;
   const c = i18n.home;
 
   // The document heading is stable; the carousel headlines are section-level,
   // so rotating slides never change the page's heading structure.
   const hero =
     `<h1 class="visually-hidden">${esc(c.pageHeading)}</h1>` +
-    heroCarousel({ i18n, locale, images, heroes, campaign });
+    heroCarousel({ i18n, locale, images, heroes, campaign, catalog });
 
   /* Trust band: one horizontal row of published facts, no cards. */
   const trust =
@@ -57,7 +58,7 @@ export function home(ctx) {
     `<h2>${esc(c.featuredHeading)}</h2>` +
     `<p>${esc(c.featuredLead)}</p>` +
     `</div>` +
-    `<a class="btn btn--outline" href="${link(locale, ROUTES.products)}">${esc(c.categoriesAction)}</a>` +
+    `<a class="btn btn--outline" href="${link(locale, ROUTES.brands)}">${esc(c.categoriesAction)}</a>` +
     `</div>` +
     `<div class="featured reveal">` +
     `<article class="featured__lead">` +
@@ -68,7 +69,7 @@ export function home(ctx) {
     `<p>${esc(i18n.hero.slides.bop.body)}</p>` +
     `<div class="actions">` +
     `<a class="btn btn--primary" href="${link(locale, `${ROUTES.products}/bop`)}">${esc(i18n.actions.viewBrand)}</a>` +
-    `<a class="btn btn--onDark" href="${link(locale, ROUTES.contact)}?type=availability&amp;brand=bop">${esc(i18n.actions.requestAvailability)}</a>` +
+    `<a class="btn btn--onDark" href="mailto:${esc(company.email)}?subject=${encodeURIComponent('BOP enquiry')}">${esc(i18n.actions.enquire)}</a>` +
     `</div></div></article>` +
     featuredItem(
       kelloggs,
@@ -153,6 +154,8 @@ export function home(ctx) {
       false
     );
 
+  const galleryBand = brandGallery({ i18n, locale, gallery, galleryImages, catalog });
+
   /* Product discovery: four visual categories, then a compact enquiry band. */
   const withCounts = catalog.categories.map((cat) => ({
     cat,
@@ -179,7 +182,7 @@ export function home(ctx) {
     enquiryOnly
       .map(
         ({ cat }) =>
-          `<li><a href="${link(locale, ROUTES.contact)}?type=availability&amp;category=${encodeURIComponent(cat.id)}">${esc(cat[locale] ?? cat.en)}</a></li>`
+          `<li><a href="${link(locale, ROUTES.contact)}">${esc(cat[locale] ?? cat.en)}</a></li>`
       )
       .join('') +
     `</ul>` +
@@ -220,7 +223,7 @@ export function home(ctx) {
     `<ul class="cta-options">` +
     c.ctaOptions
       .map((o) => {
-        const key = o.href === '/products' ? ROUTES.products : o.href === '/sales-network' ? ROUTES.network : ROUTES.contact;
+        const key = o.href === '/products' ? ROUTES.brands : o.href === '/sales-network' ? ROUTES.network : ROUTES.contact;
         return `<li><a class="cta-option" href="${link(locale, key)}"><span><strong>${esc(o.title)}</strong><span>${esc(o.body)}</span></span></a></li>`;
       })
       .join('') +
@@ -232,12 +235,12 @@ export function home(ctx) {
   const preloadSet = first.avif.map((s) => `{{BASE}}assets/heroes/${s.file} ${s.width}w`).join(', ');
 
   return {
-    body: hero + trust + featured + divisions + categories + gateway + cta,
+    body: hero + trust + featured + divisions + galleryBand + categories + gateway + cta,
     bodyClass: 'home',
-    pageStyles: ['hero.css'],
+    pageStyles: ['hero.css', 'gallery.css'],
     extraHead:
       `<link rel="preload" as="image" type="image/avif" imagesrcset="${preloadSet}" imagesizes="100vw" fetchpriority="high">`,
-    pageScripts: ['hero.js'],
+    pageScripts: ['hero.js', 'gallery.js'],
   };
 }
 
@@ -254,7 +257,6 @@ export function about(ctx) {
       (h) =>
         `<li><span class="timeline__year">${esc(h.year)}</span>` +
         `<div class="timeline__body"><p>${esc(localeCopy(h, locale))}</p>` +
-        (h.note ? `<p class="field__hint">${esc(h.note)}</p>` : '') +
         `</div></li>`
     )
     .join('');
@@ -287,9 +289,9 @@ export function about(ctx) {
     `<section class="band band--tight"><div class="shell split split--wide-first">` +
     `<div><h2>${esc(c.historyHeading)}</h2><ul class="timeline" style="margin-top:1.5rem">${history}</ul></div>` +
     `<div class="stack" style="--stack-gap:1.25rem">` +
-    `<div class="form-card"><h3>${esc(c.visionHeading)}</h3><p>${esc(localeCopy(company.vision, locale))}</p></div>` +
-    `<div class="form-card"><h3>${esc(c.missionHeading)}</h3><p>${esc(localeCopy(company.mission, locale))}</p>` +
-    `<p class="field__hint">${esc(company.mission.note)}</p></div>` +
+    `<div class="panel"><h3>${esc(c.visionHeading)}</h3><p>${esc(localeCopy(company.vision, locale))}</p></div>` +
+    `<div class="panel"><h3>${esc(c.missionHeading)}</h3><p>${esc(localeCopy(company.mission, locale))}</p>` +
+    `</div>` +
     `</div></div></section>` +
     `<section class="band band--sunken"><div class="shell">` +
     sectionHead({ heading: c.valuesHeading, lead: c.valuesLead }) +
@@ -301,7 +303,7 @@ export function about(ctx) {
     `<ul class="chips" style="margin-top:0.75rem">` +
     company.publishedCatalogueCategories.map((k) => `<li class="chip">${esc(k)}</li>`).join('') +
     `</ul></div>` +
-    `<div>${placeholderNote({ heading: c.photographyHeading, body: c.photographyBody, items: c.photographyItems })}</div>` +
+    `<div>${placeholderNote({ heading: c.managementHeading, body: c.managementLead })}</div>` +
     `</div></section>` +
     `<section class="band band--sunken"><div class="shell">` +
     sectionHead({ heading: c.managementHeading, lead: c.managementLead }) +
@@ -375,8 +377,8 @@ export function industries(ctx) {
     `<div class="division__media" style="margin-top:1.5rem">${portfolio}</div></div>` +
     `<div class="stack" style="--stack-gap:1.25rem">` +
     `<div><h2>${esc(c.missionHeading)}</h2><p style="margin-top:0.85rem">${esc(copy.mission)}</p></div>` +
-    `<div class="form-card"><h3>${esc(c.aboutBleachHeading)}</h3><p>${esc(copy.explainer)}</p></div>` +
-    `<div class="actions"><a class="btn btn--primary" href="${link(locale, ROUTES.contact)}?type=availability&amp;division=vegas-industries">${esc(i18n.actions.requestAvailability)}</a></div>` +
+    `<div class="panel"><h3>${esc(c.aboutBleachHeading)}</h3><p>${esc(copy.explainer)}</p></div>` +
+    `<div class="actions"><a class="btn btn--primary" href="${link(locale, ROUTES.contact)}">${esc(i18n.actions.enquire)}</a></div>` +
     `</div></div></section>` +
     `<section class="band band--sunken"><div class="shell">` +
     `<h2>${esc(c.contactDivision)}</h2>` +
@@ -423,11 +425,11 @@ export function lubricants(ctx) {
     `<div><h2>${esc(c.productLinesHeading)}</h2>${list(d.productLines)}</div>` +
     `<div><h2>${esc(c.applicationsHeading)}</h2>${list(d.applications)}</div>` +
     `<div><h2>${esc(c.orderFormatsHeading)}</h2><p>${esc(c.orderFormatsLead)}</p>${list(d.orderFormats)}</div>` +
-    `<div class="actions"><a class="btn btn--primary" href="${link(locale, ROUTES.contact)}?type=quote&amp;division=international-lubricants-belize">${esc(i18n.actions.requestQuote)}</a></div>` +
+    `<div class="actions"><a class="btn btn--primary" href="${link(locale, ROUTES.contact)}">${esc(i18n.actions.contactSales)}</a></div>` +
     `</div>` +
     `<div class="stack" style="--stack-gap:1.25rem">` +
     plate(images.divisions['international-lubricants-chevron-artwork'], { alt: 'Chevron lubricants artwork published by International Lubricants of Belize' }) +
-    `<div class="form-card"><h3>${esc(c.chevronHeading)}</h3><p>${esc(copy.chevronNote)}</p></div>` +
+    `<div class="panel"><h3>${esc(c.chevronHeading)}</h3><p>${esc(copy.chevronNote)}</p></div>` +
     `</div>` +
     `</div></section>` +
     `<section class="band band--sunken"><div class="shell">` +

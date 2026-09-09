@@ -1,101 +1,98 @@
 {
-  "$comment": "Hero carousel definition. Copy lives in i18n; this file maps each slide to its background, its real product artwork and its destinations. Backgrounds are campaign environments, not photographs of Vega's premises, so each slide carries a disclosure line.",
+  "$comment": "Hero slides. Copy lives in i18n. Each stage background reserves a product pedestal, so the product layer is positioned per slide rather than by one global rule. objectPosition gives each slide its own crop at narrow widths.",
   "slides": [
     {
-      "id": "bop",
-      "background": "hero-01-bop-household-protection",
+      "id": "national",
+      "background": "hero-national-distribution-v2",
       "tone": "dark",
-      "products": [
-        {
-          "source": "campaign",
-          "key": "bop-cans",
-          "plate": true
-        }
-      ],
-      "productLayout": "single",
+      "objectPosition": {
+        "wide": "50% 50%",
+        "narrow": "62% 50%"
+      },
+      "product": null,
       "primary": {
-        "route": "contact",
-        "query": "?type=availability&brand=bop"
+        "route": "brands"
       },
       "secondary": {
         "route": "network"
       }
     },
     {
-      "id": "national",
-      "background": "hero-03-national-distribution",
+      "id": "bop",
+      "background": "hero-bop-stage-v2",
       "tone": "dark",
-      "products": [
-        {
-          "source": "brand",
-          "slug": "kelloggs",
-          "photo": 0,
-          "plate": true
-        },
-        {
-          "source": "brand",
-          "slug": "pringles",
-          "photo": 0,
-          "plate": true
-        },
-        {
-          "source": "brand",
-          "slug": "oreo",
-          "photo": 0,
-          "plate": true
+      "objectPosition": {
+        "wide": "50% 50%",
+        "narrow": "72% 50%"
+      },
+      "product": {
+        "source": "campaign",
+        "key": "bop-cans",
+        "stage": {
+          "left": "74%",
+          "top": "68%",
+          "width": "26vw",
+          "max": 375
         }
-      ],
-      "productLayout": "stack",
+      },
       "primary": {
-        "route": "products"
+        "route": "brand",
+        "slug": "bop"
       },
       "secondary": {
-        "route": "network"
+        "route": "contact"
       }
     },
     {
       "id": "blanca",
-      "background": "hero-02-blanca-max-belize",
+      "background": "hero-blanca-max-stage-v2",
       "tone": "blue",
-      "products": [
-        {
-          "source": "division",
-          "key": "blanca-max-1-litre",
-          "plate": true
-        },
-        {
-          "source": "division",
-          "key": "blanca-max-half-litre",
-          "plate": true
+      "objectPosition": {
+        "wide": "50% 50%",
+        "narrow": "70% 50%"
+      },
+      "product": {
+        "source": "division",
+        "key": "blanca-max-1-litre",
+        "mark": "blanca-max-logo",
+        "stage": {
+          "left": "74%",
+          "top": "60%",
+          "width": "15vw",
+          "max": 220
         }
-      ],
-      "productLayout": "pair",
+      },
       "primary": {
         "route": "industries"
       },
       "secondary": {
-        "route": "contact",
-        "query": "?type=availability&division=vegas-industries"
+        "route": "contact"
       }
     },
     {
       "id": "ilb",
-      "background": "hero-04-ilb-heavy-duty",
+      "background": "hero-ilb-v2",
       "tone": "graphite",
-      "products": [
-        {
-          "source": "division",
-          "key": "international-lubricants-chevron-artwork",
-          "plate": true
+      "objectPosition": {
+        "wide": "50% 50%",
+        "narrow": "68% 50%"
+      },
+      "product": {
+        "source": "division",
+        "key": "international-lubricants-chevron-artwork",
+        "mark": "international-lubricants-logo",
+        "stage": {
+          "left": "62%",
+          "top": "74%",
+          "width": "24vw",
+          "max": 336
         }
-      ],
-      "productLayout": "single",
+      },
       "primary": {
         "route": "lubricants"
       },
       "secondary": {
-        "route": "contact",
-        "query": "?type=quote&division=international-lubricants-belize"
+        "route": "contact"
       }
     }
   ]

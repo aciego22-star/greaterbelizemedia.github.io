@@ -1,0 +1,165 @@
+{
+  "$comment": "Official Vega's product and campaign artwork. Captions stay factual and never imply that an item is new, stocked or on promotion. Replacing the files without changing this shape swaps the gallery media wholesale.",
+  "items": [
+    {
+      "id": "zafari-2",
+      "file": "zafari-2-1200.jpg",
+      "brand": "zafari",
+      "span": "wide",
+      "en": "Zafari snack campaign artwork",
+      "es": "Arte de campaña de snacks Zafari"
+    },
+    {
+      "id": "bop-1",
+      "file": "bop-1-400.jpg",
+      "brand": "bop",
+      "span": "normal",
+      "en": "BOP insecticide spray product range",
+      "es": "Gama de productos de insecticida en aerosol BOP"
+    },
+    {
+      "id": "kelloggs-1",
+      "file": "kelloggs-1-400.jpg",
+      "brand": "kelloggs",
+      "span": "normal",
+      "en": "Kellogg's cereal product range",
+      "es": "Gama de cereales Kellogg's"
+    },
+    {
+      "id": "guandy-2",
+      "file": "guandy-2-1200.jpg",
+      "brand": "guandy",
+      "span": "wide",
+      "en": "Guandy confectionery product artwork",
+      "es": "Arte de producto de confitería Guandy"
+    },
+    {
+      "id": "kerns-1",
+      "file": "kerns-1-400.jpg",
+      "brand": "kerns",
+      "span": "normal",
+      "en": "Kern's juice product artwork",
+      "es": "Arte de producto de jugos Kern's"
+    },
+    {
+      "id": "oreo-1",
+      "file": "oreo-1-400.jpg",
+      "brand": "oreo",
+      "span": "normal",
+      "en": "Oreo cookie product artwork",
+      "es": "Arte de producto de galletas Oreo"
+    },
+    {
+      "id": "zafari-1",
+      "file": "zafari-1-1200.jpg",
+      "brand": "zafari",
+      "span": "normal",
+      "en": "Zafari wafer product artwork",
+      "es": "Arte de producto de obleas Zafari"
+    },
+    {
+      "id": "pringles-1",
+      "file": "pringles-1-400.jpg",
+      "brand": "pringles",
+      "span": "normal",
+      "en": "Pringles snack product artwork",
+      "es": "Arte de producto de snacks Pringles"
+    },
+    {
+      "id": "cashitas-2",
+      "file": "cashitas-2-1200.jpg",
+      "brand": "cashitas",
+      "span": "wide",
+      "en": "Cashitas snack product artwork",
+      "es": "Arte de producto de snacks Cashitas"
+    },
+    {
+      "id": "nutella-1",
+      "file": "nutella-1-400.jpg",
+      "brand": "nutella",
+      "span": "normal",
+      "en": "Nutella hazelnut spread product artwork",
+      "es": "Arte de producto de crema de avellanas Nutella"
+    },
+    {
+      "id": "kelloggs-2",
+      "file": "kelloggs-2-400.jpg",
+      "brand": "kelloggs",
+      "span": "normal",
+      "en": "Kellogg's breakfast cereal artwork",
+      "es": "Arte de cereales para el desayuno Kellogg's"
+    },
+    {
+      "id": "ferrero-rocher-1",
+      "file": "ferrero-rocher-1-400.jpg",
+      "brand": "ferrero-rocher",
+      "span": "normal",
+      "en": "Ferrero Rocher chocolate assortment",
+      "es": "Surtido de chocolates Ferrero Rocher"
+    },
+    {
+      "id": "zafari-3",
+      "file": "zafari-3-1200.jpg",
+      "brand": "zafari",
+      "span": "wide",
+      "en": "Zafari chocolate wafer campaign artwork",
+      "es": "Arte de campaña de obleas de chocolate Zafari"
+    },
+    {
+      "id": "tang-1",
+      "file": "tang-1-400.jpg",
+      "brand": "tang",
+      "span": "normal",
+      "en": "Tang drink mix product artwork",
+      "es": "Arte de producto de refresco en polvo Tang"
+    },
+    {
+      "id": "kerns-2",
+      "file": "kerns-2-400.jpg",
+      "brand": "kerns",
+      "span": "normal",
+      "en": "Kern's beverage selection",
+      "es": "Selección de bebidas Kern's"
+    },
+    {
+      "id": "kelloggs-3",
+      "file": "kelloggs-3-400.jpg",
+      "brand": "kelloggs",
+      "span": "normal",
+      "en": "Kellogg's cereal selection",
+      "es": "Selección de cereales Kellogg's"
+    },
+    {
+      "id": "naturas-1",
+      "file": "naturas-1-400.jpg",
+      "brand": "naturas",
+      "span": "normal",
+      "en": "Natura's pantry product artwork",
+      "es": "Arte de producto de despensa Natura's"
+    },
+    {
+      "id": "ferrero-rocher-2",
+      "file": "ferrero-rocher-2-400.jpg",
+      "brand": "ferrero-rocher",
+      "span": "normal",
+      "en": "Ferrero Collection product artwork",
+      "es": "Arte de producto de Ferrero Collection"
+    },
+    {
+      "id": "kerns-3",
+      "file": "kerns-3-400.jpg",
+      "brand": "kerns",
+      "span": "normal",
+      "en": "Kern's juice range",
+      "es": "Gama de jugos Kern's"
+    },
+    {
+      "id": "kelloggs-4",
+      "file": "kelloggs-4-400.jpg",
+      "brand": "kelloggs",
+      "span": "normal",
+      "en": "Kellogg's family cereal products",
+      "es": "Cereales familiares Kellogg's"
+    }
+  ]
+}
