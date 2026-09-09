@@ -8,7 +8,7 @@
   /* Brand */
   --yellow: #fdcb0a;
   --yellow-deep: #ecbc02;
-  --yellow-wash: #fff8dd;
+  --yellow-wash: #fff6d1;
   --red: #d3301b;
   --red-bright: #e01e25;
   --red-wash: #fdeeec;
@@ -26,13 +26,14 @@
   --ink: #202124;
   --ink-soft: #3c4043;
   --slate: #5f6368;
-  --line: #e4e0d6;
-  --line-strong: #cfcabb;
-  --surface: #fffdf8;
+  --line: #e3e5e8;
+  --line-strong: #c9ccd1;
+  --surface: #ffffff;
   --surface-raised: #ffffff;
-  --surface-sunken: #f7f4ec;
-  --deep: #171717;
-  --deep-soft: #262523;
+  --surface-sunken: #f3f4f6;
+  --deep: #141517;
+  --deep-soft: #1e1f22;
+  --masthead-height: 68px;
 
   /* Type */
   --display: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
@@ -268,10 +269,51 @@ ul, ol { margin: 0; padding: 0; }
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(255, 253, 248, 0.94);
+  background: rgba(255, 255, 255, 0.94);
   backdrop-filter: saturate(1.4) blur(10px);
   border-bottom: 1px solid var(--line);
+  transition: background-color 0.25s var(--ease), border-color 0.25s var(--ease);
 }
+
+/* On the homepage the header floats over the campaign hero, then takes a solid
+   surface once the visitor scrolls. The hero is pulled up beneath it. */
+.masthead--over-hero {
+  background: transparent;
+  border-bottom-color: transparent;
+  backdrop-filter: none;
+}
+.masthead--over-hero:not(.is-stuck) .nav-list a { color: rgba(255, 255, 255, 0.88); }
+.masthead--over-hero:not(.is-stuck) .nav-list a:hover { background: rgba(255, 255, 255, 0.14); color: #fff; }
+.masthead--over-hero:not(.is-stuck) .nav-list a[aria-current='page'] { color: #fff; }
+.masthead--over-hero:not(.is-stuck) .lang {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+.masthead--over-hero:not(.is-stuck) .lang a { color: rgba(255, 255, 255, 0.85); }
+.masthead--over-hero:not(.is-stuck) .lang a[aria-current='true'] { background: #fff; color: var(--ink); }
+.masthead--over-hero:not(.is-stuck) .nav-toggle {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #fff;
+}
+.masthead--over-hero:not(.is-stuck) .nav-toggle__bars i { background: #fff; }
+.masthead--over-hero.is-stuck { background: rgba(255, 255, 255, 0.97); border-bottom-color: var(--line); backdrop-filter: saturate(1.4) blur(10px); }
+
+/* Mobile keeps the panel readable by giving it its own solid surface. */
+@media (max-width: 52rem) {
+  .masthead--over-hero .masthead__panel:not([hidden]) {
+    background: var(--surface-raised);
+    border-radius: var(--radius);
+    padding-inline: 0.6rem;
+    margin-bottom: 0.5rem;
+  }
+  .masthead--over-hero:not(.is-stuck) .masthead__panel:not([hidden]) .nav-list a { color: var(--ink-soft); }
+}
+
+.home .hero {
+  margin-top: calc(-1 * var(--masthead-height));
+}
+.home .hero .hero-slide__inner { padding-top: calc(var(--masthead-height) + clamp(2rem, 5vw, 3.5rem)); }
 
 .masthead__bar {
   display: flex;
@@ -281,18 +323,13 @@ ul, ol { margin: 0; padding: 0; }
   padding-block: 0.6rem;
 }
 
-/* The guide asks for a calm neutral field around the mark. */
 .brand {
   display: inline-flex;
   align-items: center;
   flex: 0 0 auto;
   text-decoration: none;
-  padding: 0.35rem 0.6rem;
-  border-radius: var(--radius-sm);
-  background: var(--surface-raised);
-  border: 1px solid var(--line);
 }
-.brand img { width: 122px; height: auto; }
+.brand img { width: 128px; height: auto; }
 
 .masthead__panel {
   display: flex;
@@ -470,32 +507,303 @@ ul, ol { margin: 0; padding: 0; }
 }
 
 /* --------------------------------------------------------------------------
-   Fact strip
+   Trust band
+   One horizontal band held together by dividers and type, not floating cards.
    -------------------------------------------------------------------------- */
 
-.facts {
+.trust-band {
+  border-block: 1px solid var(--line);
+  background: var(--surface);
+}
+.trust-band__list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
-  gap: 1px;
-  background: var(--line);
-  border: 1px solid var(--line);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  list-style: none;
+  margin: 0;
+}
+.trust-band__list li {
+  padding: clamp(1.1rem, 2.6vw, 1.6rem) clamp(0.75rem, 2vw, 1.75rem);
+  border-left: 1px solid var(--line);
+}
+.trust-band__list li:first-child { border-left: 0; padding-left: 0; }
+.trust-band__list li:last-child { padding-right: 0; }
+
+.trust-band__value {
+  display: block;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(1.15rem, 0.98rem + 0.7vw, 1.55rem);
+  line-height: 1.15;
+  letter-spacing: -0.014em;
+  color: var(--ink);
+}
+.trust-band__label {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: var(--slate);
+}
+
+@media (max-width: 60rem) {
+  .trust-band__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .trust-band__list li:nth-child(3) { border-left: 0; padding-left: 0; }
+  .trust-band__list li:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+  .trust-band__list li:nth-child(2), .trust-band__list li:nth-child(4) { padding-right: 0; }
+}
+@media (max-width: 30rem) {
+  .trust-band__list { grid-template-columns: 1fr; }
+  .trust-band__list li { border-left: 0; padding-inline: 0; border-bottom: 1px solid var(--line); }
+  .trust-band__list li:last-child { border-bottom: 0; }
+}
+
+/* --------------------------------------------------------------------------
+   Featured campaign grid
+   An editorial lead plus two supporting entries, not a wall of equal cards.
+   -------------------------------------------------------------------------- */
+
+.featured {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1.1rem, 2.5vw, 1.75rem);
+}
+
+/* The promoted line runs the full width as a horizontal editorial card, so the
+   two supporting entries below it are never padded out to match its height. */
+.featured__lead {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(0, 375px) minmax(0, 1fr);
+  align-items: center;
+  background: var(--deep);
+  color: #fff;
   border-radius: var(--radius-lg);
   overflow: hidden;
 }
-.fact { background: var(--surface-raised); padding: clamp(1.35rem, 3vw, 1.9rem); }
-.fact dt {
+.featured__lead figure { margin: 0; background: #fff; display: flex; align-items: center; justify-content: center; height: 100%; }
+/* Contained, not cropped: the can row is only 375px wide at source. */
+.featured__lead img { width: 100%; height: auto; max-height: 100%; object-fit: contain; }
+.featured__lead-body { padding: clamp(1.4rem, 3.5vw, 2.4rem); display: grid; gap: 0.6rem; align-content: center; }
+.featured__lead h3 { color: #fff; font-size: clamp(1.4rem, 1.1rem + 1.1vw, 2rem); }
+.featured__lead p { color: rgba(255, 255, 255, 0.78); margin: 0; max-width: 44ch; }
+.featured__lead .actions { margin-top: 0.7rem; }
+
+.featured__item {
+  display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr);
+  gap: 1.1rem;
+  align-items: center;
+  padding: 1.1rem;
+  border-radius: var(--radius);
+  background: var(--surface-sunken);
+  position: relative;
+}
+/* Both supporting entries present their artwork in the same box, whatever
+   shape the source happens to be. */
+.featured__item figure {
+  margin: 0;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  padding: 0.5rem;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.featured__item figure img { max-height: 100%; width: auto; object-fit: contain; }
+.featured__item h3 { font-size: 1.06rem; }
+.featured__item p { margin: 0.25rem 0 0; font-size: 0.9rem; color: var(--slate); }
+
+@media (max-width: 60rem) {
+  .featured__lead { grid-template-columns: 1fr; }
+  .featured__lead figure { aspect-ratio: 16 / 9; }
+}
+@media (max-width: 44rem) {
+  .featured { grid-template-columns: 1fr; }
+}
+@media (max-width: 30rem) {
+  .featured__item { grid-template-columns: 5rem minmax(0, 1fr); gap: 0.85rem; }
+}
+
+/* --------------------------------------------------------------------------
+   Editorial section headings
+   -------------------------------------------------------------------------- */
+
+.band-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  padding-bottom: 1.1rem;
+  margin-bottom: clamp(1.75rem, 3.5vw, 2.75rem);
+  border-bottom: 2px solid var(--ink);
+}
+.band-head__text { max-width: 54ch; min-width: 0; }
+.band-head .eyebrow { margin-bottom: 0.5rem; }
+.band-head h2 { margin-bottom: 0.55rem; }
+.band-head p { margin: 0; color: var(--slate); }
+.band--deep .band-head { border-bottom-color: rgba(255, 255, 255, 0.35); }
+
+/* --------------------------------------------------------------------------
+   Division bands
+   Each division gets its own ground and rhythm rather than a repeated card.
+   -------------------------------------------------------------------------- */
+
+.dband { position: relative; overflow: hidden; }
+.dband__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(1.75rem, 4vw, 4rem);
+  padding-block: clamp(2.75rem, 6vw, 4.5rem);
+}
+.dband__label {
   font-family: var(--display);
   font-size: 0.76rem;
   font-weight: 700;
-  letter-spacing: 0.13em;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: var(--slate);
-  margin-bottom: 0.55rem;
+  margin: 0 0 0.85rem;
 }
-.fact dd { margin: 0; font-size: 1.02rem; color: var(--ink); line-height: 1.5; }
-.fact dd strong { font-family: var(--display); font-size: 1.5rem; display: block; line-height: 1.15; }
+.dband h3 { font-size: clamp(1.6rem, 1.2rem + 1.6vw, 2.4rem); margin-bottom: 0.85rem; }
+.dband__body { max-width: 46ch; }
+.dband .actions { margin-top: 1.5rem; }
+.dband__mark { display: block; width: fit-content; margin-bottom: 1.2rem; }
+.dband__mark img { height: 42px; width: auto; }
+
+/* Parent: charcoal ground, yellow route motif. */
+.dband--parent { background: var(--deep); color: #fff; }
+.dband--parent h3 { color: #fff; }
+.dband--parent .dband__label { color: var(--yellow); }
+.dband--parent .dband__body { color: rgba(255, 255, 255, 0.8); }
+.dband--parent::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(60rem 26rem at 88% 12%, rgba(253, 203, 10, 0.14), transparent 66%);
+  pointer-events: none;
+}
+.dband--parent .dband__inner { position: relative; }
+
+/* Industries: clean blue and white, product led. */
+.dband--industries { background: var(--industries-wash); }
+.dband--industries .dband__label { color: var(--industries); }
+
+/* ILB: graphite and steel with restrained yellow. */
+.dband--lubricants { background: #23262a; color: #eef0f2; }
+.dband--lubricants h3 { color: #fff; }
+.dband--lubricants .dband__label { color: var(--yellow); }
+.dband--lubricants .dband__body { color: rgba(238, 240, 242, 0.8); }
+
+.dband__media { min-width: 0; }
+.dband__media img { border-radius: var(--radius); }
+.dband--flip .dband__media { order: -1; }
+
+.dband__products { display: flex; gap: 1rem; align-items: flex-end; }
+.dband__products .plate { flex: 1 1 0; max-width: 13rem; }
+
+/* A white plate is how white-background packshots sit on a colour ground. */
+.plate {
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 0.75rem;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.18);
+}
+.plate img { border-radius: 8px; width: 100%; height: auto; }
+
+.dband__lines {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+  gap: 0.5rem 1.5rem;
+  list-style: none;
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid currentColor;
+  border-top-color: rgba(255, 255, 255, 0.22);
+}
+.dband--industries .dband__lines { border-top-color: rgba(15, 111, 180, 0.28); }
+.dband__lines li { font-size: 0.92rem; padding-left: 0.9rem; position: relative; }
+.dband__lines li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0.62em;
+  width: 5px; height: 5px;
+  background: var(--yellow);
+}
+.dband--industries .dband__lines li::before { background: var(--industries); }
+
+@media (max-width: 60rem) {
+  .dband__inner { grid-template-columns: 1fr; }
+  .dband--flip .dband__media { order: 0; }
+}
 
 /* --------------------------------------------------------------------------
+   Enquiry band for categories with no published product detail
+   -------------------------------------------------------------------------- */
+
+.enquiry-band {
+  display: grid;
+  grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+  gap: clamp(1rem, 3vw, 2.5rem);
+  align-items: center;
+  margin-top: clamp(1.5rem, 3vw, 2.25rem);
+  padding: clamp(1.25rem, 3vw, 1.9rem);
+  background: var(--surface-sunken);
+  border-radius: var(--radius);
+}
+.enquiry-band h3 { font-size: 1.1rem; }
+.enquiry-band p { margin: 0.35rem 0 0; font-size: 0.9rem; color: var(--slate); }
+.enquiry-band__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.75rem;
+  list-style: none;
+}
+.enquiry-band__links a {
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  border-bottom: 2px solid var(--yellow);
+  padding-bottom: 2px;
+}
+.enquiry-band__links a:hover { border-bottom-color: var(--red); color: var(--red); }
+
+@media (max-width: 48rem) { .enquiry-band { grid-template-columns: 1fr; } }
+
+/* --------------------------------------------------------------------------
+   Sales network gateway
+   -------------------------------------------------------------------------- */
+
+.gateway {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr);
+  gap: clamp(1.75rem, 4vw, 3.5rem);
+  align-items: center;
+}
+.region-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+.region-list li {
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+.region-list__name { font-family: var(--display); font-weight: 700; font-size: 1rem; }
+.region-list__count { font-size: 0.85rem; color: var(--slate); }
+@media (max-width: 48rem) { .gateway { grid-template-columns: 1fr; } }
+
+/* --------------------------------------------------------------------------
+   Division panels
+   -------------------------------------------------------------------------- *//* --------------------------------------------------------------------------
    Division panels
    -------------------------------------------------------------------------- */
 
@@ -1207,6 +1515,24 @@ table.products td.size:empty::after { content: '—'; color: var(--line-strong);
 
   .masthead__cta { flex-wrap: wrap; padding-top: 0.5rem; }
   .masthead__cta .btn { flex: 1 1 auto; min-height: 48px; }
+}
+
+/* The logo, language control and menu button stay on one row at every width.
+   Below 24rem the button label is dropped visually but kept as its name. */
+@media (max-width: 24rem) {
+  .brand img { width: 88px; }
+  .masthead__bar { gap: 0.4rem; }
+  .nav-toggle { padding: 0 0.6rem; gap: 0; }
+  .nav-toggle__label {
+    position: absolute;
+    width: 1px; height: 1px;
+    margin: -1px; padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .lang a { padding: 0 0.55rem; font-size: 0.78rem; }
 }
 
 @media (max-width: 40rem) {

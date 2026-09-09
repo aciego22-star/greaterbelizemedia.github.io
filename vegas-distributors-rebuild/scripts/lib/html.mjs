@@ -29,7 +29,9 @@ export const t = (template, values = {}) =>
 export function picture(entry, { alt = '', sizes, className, loading = 'lazy', fetchpriority, decoding = 'async' } = {}) {
   if (!entry) return '';
 
-  const base = `assets/images/${entry.dir}`;
+  // Most entries live under assets/images/<dir>; campaign artwork carries its
+  // own base because it is emitted by the hero pipeline.
+  const base = entry.base ?? `assets/images/${entry.dir}`;
   const srcset = (list) => list.map((s) => `{{BASE}}${base}/${s.file} ${s.width}w`).join(', ');
   const largest = entry.fallback[entry.fallback.length - 1];
 

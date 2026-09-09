@@ -1,0 +1,102 @@
+{
+  "$comment": "Hero carousel definition. Copy lives in i18n; this file maps each slide to its background, its real product artwork and its destinations. Backgrounds are campaign environments, not photographs of Vega's premises, so each slide carries a disclosure line.",
+  "slides": [
+    {
+      "id": "bop",
+      "background": "hero-01-bop-household-protection",
+      "tone": "dark",
+      "products": [
+        {
+          "source": "campaign",
+          "key": "bop-cans",
+          "plate": true
+        }
+      ],
+      "productLayout": "single",
+      "primary": {
+        "route": "contact",
+        "query": "?type=availability&brand=bop"
+      },
+      "secondary": {
+        "route": "network"
+      }
+    },
+    {
+      "id": "national",
+      "background": "hero-03-national-distribution",
+      "tone": "dark",
+      "products": [
+        {
+          "source": "brand",
+          "slug": "kelloggs",
+          "photo": 0,
+          "plate": true
+        },
+        {
+          "source": "brand",
+          "slug": "pringles",
+          "photo": 0,
+          "plate": true
+        },
+        {
+          "source": "brand",
+          "slug": "oreo",
+          "photo": 0,
+          "plate": true
+        }
+      ],
+      "productLayout": "stack",
+      "primary": {
+        "route": "products"
+      },
+      "secondary": {
+        "route": "network"
+      }
+    },
+    {
+      "id": "blanca",
+      "background": "hero-02-blanca-max-belize",
+      "tone": "blue",
+      "products": [
+        {
+          "source": "division",
+          "key": "blanca-max-1-litre",
+          "plate": true
+        },
+        {
+          "source": "division",
+          "key": "blanca-max-half-litre",
+          "plate": true
+        }
+      ],
+      "productLayout": "pair",
+      "primary": {
+        "route": "industries"
+      },
+      "secondary": {
+        "route": "contact",
+        "query": "?type=availability&division=vegas-industries"
+      }
+    },
+    {
+      "id": "ilb",
+      "background": "hero-04-ilb-heavy-duty",
+      "tone": "graphite",
+      "products": [
+        {
+          "source": "division",
+          "key": "international-lubricants-chevron-artwork",
+          "plate": true
+        }
+      ],
+      "productLayout": "single",
+      "primary": {
+        "route": "lubricants"
+      },
+      "secondary": {
+        "route": "contact",
+        "query": "?type=quote&division=international-lubricants-belize"
+      }
+    }
+  ]
+}

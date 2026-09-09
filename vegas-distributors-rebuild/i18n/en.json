@@ -122,7 +122,37 @@
         "body": "Quotes, wholesale accounts and availability.",
         "href": "/contact"
       }
-    ]
+    ],
+    "trust": [
+      {
+        "value": "Since 1980",
+        "label": "Trading from Benque Viejo del Carmen"
+      },
+      {
+        "value": "Three Operating Divisions",
+        "label": "Distribution, manufacturing and lubricants"
+      },
+      {
+        "value": "Nationwide Sales Coverage",
+        "label": "Named representatives by territory"
+      },
+      {
+        "value": "Based in Benque Viejo",
+        "label": "Cayo District, Belize"
+      }
+    ],
+    "featuredEyebrow": "Featured now",
+    "featuredHeading": "Current campaign and everyday lines",
+    "featuredLead": "What Vega's is promoting right now, alongside the categories that move every week.",
+    "featuredLeadNote": "Currently promoted",
+    "gatewayEyebrow": "National sales network",
+    "gatewayHeading": "Coverage in every district",
+    "gatewayLead": "Vega's works through named territory representatives from the north to the far south. Find the person who covers your district and contact them directly.",
+    "gatewayAction": "Find Your Representative",
+    "categoriesEnquiryHeading": "Also distributed",
+    "categoriesEnquiryBody": "Listed in the company's published import range, with no product detail online yet. Contact the sales team for availability.",
+    "divisionsCta": "See all divisions",
+    "pageHeading": "Vega's Distributors Ltd., wholesale product distribution in Belize"
   },
   "about": {
     "title": "About Vega's Distributors",
@@ -308,7 +338,7 @@
       "summary": "Check the highlighted fields and try again."
     },
     "devNotice": "This concept site has no enquiry backend connected. Nothing is sent and no enquiry is stored. The form validates your input and shows the exact payload that would be submitted, so the integration can be wired up later.",
-    "devResultHeading": "Development mode — nothing was sent",
+    "devResultHeading": "Development mode: nothing was sent",
     "devResultBody": "This is the payload a connected backend would receive:",
     "officeHeading": "Head office",
     "addressHeading": "Address",
@@ -340,5 +370,47 @@
     "unconfirmed": "Not confirmed by the business",
     "needsApprovalHeading": "Pending business approval",
     "reviewNeeded": "Spanish product terminology is pending review"
+  },
+  "hero": {
+    "label": "Campaign highlights",
+    "prev": "Previous slide",
+    "next": "Next slide",
+    "goTo": "Show slide {n}",
+    "pauseNote": "Autoplay pauses while you are interacting.",
+    "conceptNote": "Campaign concept image. Not a photograph of a Vega's facility, vehicle or worksite.",
+    "slides": {
+      "bop": {
+        "eyebrow": "CURRENTLY PROMOTED",
+        "headline": "Protection that means business.",
+        "body": "Ask your Vega's sales representative about BOP insecticide products and current availability.",
+        "primary": "Enquire About BOP",
+        "secondary": "Find Your Representative",
+        "productAlt": "BOP insecticide product artwork published by Vega's Distributors"
+      },
+      "national": {
+        "eyebrow": "SERVING BELIZE SINCE 1980",
+        "headline": "Trusted products. Nationwide reach.",
+        "body": "Serving supermarkets, wholesalers and businesses across Belize with established brands and dependable distribution support.",
+        "primary": "Explore Our Products",
+        "secondary": "Find Your Representative",
+        "productAlt": "Product artwork from brands distributed by Vega's Distributors"
+      },
+      "blanca": {
+        "eyebrow": "PROUDLY MADE IN BELIZE",
+        "headline": "Made in Belize. Made for everyday clean.",
+        "body": "Discover Blanca Max bleach from Vega's Industries, available in 1 litre and half-litre sizes.",
+        "primary": "Explore Blanca Max",
+        "secondary": "Contact Vega's Industries",
+        "productAlt": "Blanca Max bleach bottles, 1 litre and half litre"
+      },
+      "ilb": {
+        "eyebrow": "INTERNATIONAL LUBRICANTS OF BELIZE",
+        "headline": "Built to protect the work that moves Belize.",
+        "body": "Oils and lubricants for commercial transport, industrial equipment, passenger vehicles and marine use.",
+        "primary": "Explore ILB",
+        "secondary": "Request Product Information",
+        "productAlt": "Chevron lubricants artwork published by International Lubricants of Belize"
+      }
+    }
   }
 }

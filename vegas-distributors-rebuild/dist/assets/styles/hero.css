@@ -1,0 +1,359 @@
+/* ==========================================================================
+   Campaign hero carousel
+   Full-bleed backgrounds with all copy in HTML. Slides sit stacked; only the
+   current one is visible, so the first slide is complete without JavaScript.
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  background: var(--deep);
+  /* Content-led on mobile with a floor that keeps product and CTAs in frame. */
+  min-height: 680px;
+}
+
+@media (min-width: 60rem) {
+  .hero {
+    min-height: max(78vh, 720px);
+    max-height: 820px;
+    height: 78vh;
+  }
+}
+
+.hero-track {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  min-height: inherit;
+  height: 100%;
+}
+
+/* Every slide occupies the same grid cell; visibility decides which shows. */
+.hero-slide {
+  grid-area: 1 / 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: inherit;
+  overflow: hidden;
+}
+
+/* Without JavaScript only the first slide is ever painted. */
+.hero-slide[data-inert='true'] { visibility: hidden; }
+.hero[data-ready] .hero-slide { visibility: hidden; }
+.hero[data-ready] .hero-slide.is-current { visibility: visible; }
+
+.hero-slide__bg {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+.hero-slide__bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Keeps the uncluttered left panel of each background behind the copy. */
+  object-position: center;
+}
+
+/* Directional scrim, tuned per slide so copy holds contrast over its ground.
+   Measured white-on-background contrast across the whole copy block is kept at
+   or above 4.5:1 on every slide at every width, so the headline, body and
+   eyebrow all clear AA rather than only the large text. */
+.hero-slide__scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(100deg, rgba(6, 6, 7, 0.96) 0%, rgba(6, 6, 7, 0.94) 40%,
+      rgba(6, 6, 7, 0.82) 55%, rgba(6, 6, 7, 0.4) 74%, rgba(6, 6, 7, 0.08) 90%,
+      rgba(6, 6, 7, 0) 100%);
+}
+.hero-slide--blue .hero-slide__scrim {
+  background:
+    linear-gradient(100deg, rgba(3, 18, 42, 0.96) 0%, rgba(3, 18, 42, 0.94) 40%,
+      rgba(3, 18, 42, 0.83) 55%, rgba(3, 18, 42, 0.42) 74%, rgba(3, 18, 42, 0.08) 90%,
+      rgba(3, 18, 42, 0) 100%);
+}
+.hero-slide--graphite .hero-slide__scrim {
+  background:
+    linear-gradient(100deg, rgba(9, 11, 13, 0.96) 0%, rgba(9, 11, 13, 0.94) 40%,
+      rgba(9, 11, 13, 0.83) 55%, rgba(9, 11, 13, 0.42) 74%, rgba(9, 11, 13, 0.08) 90%,
+      rgba(9, 11, 13, 0) 100%);
+}
+
+/* Below the two-column breakpoint the copy spans the full width, so the scrim
+   has to run top-to-bottom instead of left-to-right. */
+@media (max-width: 60rem) {
+  .hero-slide__scrim {
+    background:
+      linear-gradient(180deg, rgba(6, 6, 7, 0.9) 0%, rgba(6, 6, 7, 0.82) 46%,
+        rgba(6, 6, 7, 0.6) 70%, rgba(6, 6, 7, 0.42) 100%);
+  }
+  .hero-slide--blue .hero-slide__scrim {
+    background:
+      linear-gradient(180deg, rgba(3, 18, 42, 0.9) 0%, rgba(3, 18, 42, 0.82) 46%,
+        rgba(3, 18, 42, 0.6) 70%, rgba(3, 18, 42, 0.42) 100%);
+  }
+  .hero-slide--graphite .hero-slide__scrim {
+    background:
+      linear-gradient(180deg, rgba(9, 11, 13, 0.9) 0%, rgba(9, 11, 13, 0.82) 46%,
+        rgba(9, 11, 13, 0.6) 70%, rgba(9, 11, 13, 0.42) 100%);
+  }
+}
+
+/* The route-line motif from the Vega mark, used once and kept quiet. */
+.hero-slide__scrim::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: min(46%, 30rem);
+  height: 3px;
+  background: linear-gradient(90deg, var(--yellow) 0%, var(--yellow) 62%, transparent 100%);
+  opacity: 0.9;
+}
+
+.hero-slide__inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr);
+  align-items: center;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  width: 100%;
+  padding-block: clamp(3rem, 7vw, 4.5rem);
+}
+
+.hero-slide__copy {
+  max-width: 650px;
+  min-width: 0;
+  color: #fff;
+}
+
+.hero-eyebrow {
+  font-family: var(--display);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--yellow);
+  margin: 0 0 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+.hero-eyebrow::before {
+  content: '';
+  width: 30px;
+  height: 3px;
+  background: var(--yellow);
+  flex: 0 0 auto;
+}
+
+.hero-headline {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(2.5rem, 1.4rem + 3.6vw, 5.125rem);
+  line-height: 1.02;
+  letter-spacing: -0.026em;
+  color: #fff;
+  margin: 0 0 1.1rem;
+  text-wrap: balance;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.35);
+}
+
+.hero-body {
+  font-size: clamp(1.02rem, 0.96rem + 0.3vw, 1.2rem);
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 46ch;
+  margin: 0 0 1.9rem;
+}
+
+.hero-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; }
+
+.btn--lg { min-height: 54px; padding: 0.9rem 1.7rem; font-size: 1.02rem; }
+
+.btn--onDark {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+  color: #fff;
+  backdrop-filter: blur(6px);
+}
+.btn--onDark:hover { background: rgba(255, 255, 255, 0.2); border-color: #fff; }
+
+/* --------------------------------------------------------------------------
+   Product layers
+   Sources carry white backgrounds, so each sits on a plate. No machine cutouts.
+   -------------------------------------------------------------------------- */
+
+.hero-slide__products {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.hero-product {
+  min-width: 0;
+  border-radius: 16px;
+  overflow: hidden;
+}
+.hero-product--plate {
+  background: #fff;
+  padding: 0.75rem;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45), 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+.hero-product img { width: 100%; height: auto; display: block; border-radius: 8px; }
+
+.hero-slide__products--single .hero-product { max-width: 420px; width: 100%; }
+
+.hero-slide__products--pair { gap: 1.25rem; align-items: flex-end; }
+.hero-slide__products--pair .hero-product { max-width: 210px; flex: 1 1 0; }
+.hero-slide__products--pair .hero-product:last-child { max-width: 172px; }
+
+/* A light editorial stagger rather than a flat row. */
+.hero-slide__products--stack { flex-direction: column; align-items: stretch; gap: 0.85rem; max-width: 380px; margin-inline: auto; }
+.hero-slide__products--stack .hero-product:nth-child(1) { transform: translateX(-6%); }
+.hero-slide__products--stack .hero-product:nth-child(3) { transform: translateX(6%); }
+
+/* --------------------------------------------------------------------------
+   Controls
+   -------------------------------------------------------------------------- */
+
+.hero-controls {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: clamp(1rem, 3vw, 1.9rem);
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+}
+
+/* Controls do nothing until the script wires them up. */
+.hero:not([data-ready]) .hero-nav,
+.hero:not([data-ready]) .hero-dots { display: none; }
+
+.hero-nav { display: flex; gap: 0.5rem; }
+
+.hero-arrow {
+  display: inline-grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition: background-color 0.18s var(--ease), border-color 0.18s var(--ease);
+}
+.hero-arrow:hover { background: rgba(0, 0, 0, 0.6); border-color: #fff; }
+.hero-arrow svg { width: 20px; height: 20px; }
+
+.hero-dots { display: flex; gap: 0.4rem; }
+
+.hero-dot {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 0.35rem;
+  border: 0;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.62);
+  font-family: var(--display);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  position: relative;
+}
+.hero-dot__label { position: relative; z-index: 1; }
+.hero-dot::after {
+  content: '';
+  position: absolute;
+  left: 0.35rem;
+  right: 0.35rem;
+  bottom: 12px;
+  height: 3px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.32);
+  transition: background-color 0.2s var(--ease);
+}
+.hero-dot:hover { color: #fff; }
+.hero-dot:hover::after { background: rgba(255, 255, 255, 0.6); }
+.hero-dot[aria-current='true'] { color: #fff; }
+.hero-dot[aria-current='true']::after { background: var(--yellow); }
+
+/* Sits over whatever part of the background it lands on, so it carries its
+   own ground rather than relying on the scrim reaching that far. */
+.hero-disclosure {
+  margin: 0;
+  flex: 1 1 16rem;
+  min-width: 0;
+  max-width: 34rem;
+  margin-left: auto;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  font-size: 0.72rem;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.88);
+  text-align: right;
+}
+
+.hero-arrow:focus-visible,
+.hero-dot:focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; }
+
+/* --------------------------------------------------------------------------
+   Slide transition
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero[data-ready] .hero-slide.is-current { animation: hero-in 0.6s var(--ease) both; }
+  @keyframes hero-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .hero[data-ready] .hero-slide.is-current .hero-slide__copy > * { animation: hero-rise 0.55s var(--ease) both; }
+  .hero[data-ready] .hero-slide.is-current .hero-eyebrow { animation-delay: 0.05s; }
+  .hero[data-ready] .hero-slide.is-current .hero-headline { animation-delay: 0.12s; }
+  .hero[data-ready] .hero-slide.is-current .hero-body { animation-delay: 0.19s; }
+  .hero[data-ready] .hero-slide.is-current .hero-actions { animation-delay: 0.26s; }
+  @keyframes hero-rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: none; }
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Responsive
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 60rem) {
+  .hero-slide__inner {
+    grid-template-columns: 1fr;
+    align-content: center;
+    gap: 1.75rem;
+    padding-block: clamp(2.5rem, 8vw, 3.5rem) 5.5rem;
+  }
+  .hero-slide__copy { max-width: 34rem; }
+  .hero-slide__products { justify-content: flex-start; }
+  .hero-slide__products--stack { flex-direction: row; max-width: none; margin-inline: 0; }
+  .hero-slide__products--stack .hero-product { transform: none; flex: 1 1 0; max-width: 9.5rem; }
+  .hero-slide__products--single .hero-product { max-width: 20rem; }
+  .hero-controls { left: var(--gutter); right: var(--gutter); transform: none; width: auto; max-width: none; padding: 0; }
+  .hero-disclosure { text-align: left; flex-basis: 100%; }
+}
+
+@media (max-width: 26rem) {
+  .hero-headline { font-size: clamp(2.35rem, 1.6rem + 4.4vw, 3.125rem); }
+  .hero-slide__products--pair .hero-product { max-width: 7.5rem; }
+  .hero-actions .btn { flex: 1 1 100%; }
+}

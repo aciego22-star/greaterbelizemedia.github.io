@@ -48,6 +48,43 @@
   }
 
   /* ---------------------------------------------------------------- *
+   * Header
+   *
+   * On the homepage the header floats over the hero and takes a solid
+   * surface once the visitor scrolls. Its measured height is published as a
+   * custom property so the hero can sit beneath it exactly.
+   * ---------------------------------------------------------------- */
+
+  var masthead = document.querySelector('.masthead');
+
+  if (masthead) {
+    var publishHeight = function () {
+      document.documentElement.style.setProperty(
+        '--masthead-height',
+        Math.round(masthead.getBoundingClientRect().height) + 'px'
+      );
+    };
+
+    if (masthead.classList.contains('masthead--over-hero')) {
+      var onScroll = function () {
+        masthead.classList.toggle('is-stuck', window.scrollY > 24);
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    }
+
+    publishHeight();
+    if ('ResizeObserver' in window) {
+      // The header grows when the mobile panel opens; the hero must not shift.
+      new ResizeObserver(function () {
+        if (masthead.querySelector('.masthead__panel').hidden !== false || window.innerWidth > 832) publishHeight();
+      }).observe(masthead);
+    } else {
+      window.addEventListener('resize', publishHeight);
+    }
+  }
+
+  /* ---------------------------------------------------------------- *
    * Language choice
    *
    * Recording the visitor's explicit pick stops the detection script in the

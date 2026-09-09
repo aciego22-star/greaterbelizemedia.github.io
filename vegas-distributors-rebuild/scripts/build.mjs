@@ -24,6 +24,8 @@ const site = read('data/site.json');
 const company = read('data/company.json');
 const catalog = read('data/catalog.json');
 const images = read('data/images.json');
+const heroes = read('data/heroes.json');
+const campaign = read('data/campaign.json');
 const locales = { en: read('i18n/en.json'), es: read('i18n/es.json') };
 
 const LOCALES = ['en', 'es'];
@@ -85,7 +87,7 @@ const breadcrumbSchema = (locale, trail) => ({
 
 for (const locale of LOCALES) {
   const i18n = locales[locale];
-  const base = { site, i18n, locale, company, catalog, images };
+  const base = { site, i18n, locale, company, catalog, images, heroes, campaign };
 
   const render = (key, path, meta, result, structuredData = []) => {
     const outPath = routePath(locale, path);
@@ -100,6 +102,9 @@ for (const locale of LOCALES) {
         description: meta.description,
         structuredData,
         body: result.body,
+        bodyClass: result.bodyClass,
+        pageStyles: result.pageStyles,
+        extraHead: result.extraHead,
         pageScripts: result.pageScripts,
       })
     );
@@ -173,7 +178,7 @@ for (const locale of LOCALES) {
 {
   const locale = 'en';
   const i18n = locales[locale];
-  const result = cat.notFound({ site, i18n, locale, company, catalog, images });
+  const result = cat.notFound({ site, i18n, locale, company, catalog, images, heroes, campaign });
   const html = page({
     site, i18n, locale, company, catalog, images,
     current: null,
@@ -198,6 +203,7 @@ cpSync(join(ROOT, 'src', 'styles'), join(DIST, 'assets', 'styles'), { recursive:
 cpSync(join(ROOT, 'src', 'js'), join(DIST, 'assets', 'js'), { recursive: true });
 cpSync(join(ROOT, 'src', 'assets', 'fonts'), join(DIST, 'assets', 'fonts'), { recursive: true });
 cpSync(join(ROOT, 'src', 'assets', 'images'), join(DIST, 'assets', 'images'), { recursive: true });
+cpSync(join(ROOT, 'src', 'assets', 'heroes'), join(DIST, 'assets', 'heroes'), { recursive: true });
 
 /* ------------------------------------------------------------------ *
  * sitemap.xml, robots.txt, Netlify config

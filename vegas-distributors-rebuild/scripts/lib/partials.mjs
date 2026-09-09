@@ -98,7 +98,9 @@ export function divisionPanel({ division, i18n, locale, images, flip, level = 3,
       `<div class="tile tile--product">${picture(images.divisions['blanca-max-1-litre'], { alt: 'Blanca Max bleach, 1 litre bottle', sizes: '(max-width: 62rem) 45vw, 260px' })}</div>` +
       `<div class="tile tile--product">${picture(images.divisions['blanca-max-half-litre'], { alt: 'Blanca Max bleach, half litre bottle', sizes: '(max-width: 62rem) 45vw, 260px' })}</div>`;
   } else if (division.slug === 'international-lubricants-belize') {
-    media = `<div class="tile tile--wide">${picture(images.divisions['international-lubricants-chevron-artwork'], { alt: 'Chevron lubricants artwork published by International Lubricants of Belize', sizes: '(max-width: 62rem) 92vw, 540px' })}</div>`;
+    media = plate(images.divisions['international-lubricants-chevron-artwork'], {
+      alt: 'Chevron lubricants artwork published by International Lubricants of Belize',
+    });
   } else {
     // The parent brand is represented by its own mark, not invented facilities.
     media = `<div class="tile tile--wide tile--mark">${picture(images.company['vegas-lockup'], { alt: '', sizes: '(max-width: 62rem) 60vw, 320px' })}</div>`;
@@ -142,6 +144,23 @@ export function repCard({ territory, i18n, locale, level = 3 }) {
       : `<span class="rep__note">${esc(i18n.network.noPhone)}</span>`) +
     mailLink(territory.email) +
     `</div></li>`
+  );
+}
+
+/**
+ * A white plate holding published artwork.
+ *
+ * Sources are low resolution, so the plate never lets its image render wider
+ * than the largest derivative that exists. Without this the ILB artwork (336px)
+ * and the BOP can row (375px) visibly soften in wide layouts.
+ */
+export function plate(entry, { alt = '', sizes, className = '', pad = 24 } = {}) {
+  if (!entry) return '';
+  const widest = entry.fallback[entry.fallback.length - 1].width;
+  return (
+    `<div class="plate ${className}" style="max-width:${widest + pad}px">` +
+    picture(entry, { alt, sizes: sizes ?? `${widest}px` }) +
+    `</div>`
   );
 }
 

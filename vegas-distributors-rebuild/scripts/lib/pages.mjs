@@ -2,8 +2,9 @@
 import { esc, picture, telLink, mailLink, t, cx } from './html.mjs';
 import { ROUTES, link, absoluteUrl } from './layout.mjs';
 import {
-  sectionHead, crumbs, notice, brandCard, categoryCard, divisionPanel, repCard, placeholderNote,
+  sectionHead, crumbs, notice, brandCard, categoryCard, divisionPanel, repCard, placeholderNote, plate,
 } from './partials.mjs';
+import { heroCarousel } from './hero.mjs';
 
 const localeCopy = (obj, locale) => obj[locale] ?? obj.en;
 
@@ -12,91 +13,202 @@ const localeCopy = (obj, locale) => obj[locale] ?? obj.en;
  * ------------------------------------------------------------------ */
 
 export function home(ctx) {
-  const { i18n, locale, company, catalog, images } = ctx;
+  const { i18n, locale, company, catalog, images, heroes, campaign } = ctx;
   const c = i18n.home;
 
-  // Hero composition, built from real brand imagery plus the company mark.
-  // Every tile matches its source aspect ratio, so nothing is cropped or stretched.
-  const composition =
-    `<div class="hero__composition" role="img" aria-label="${esc(c.compositionAlt)}">` +
-    `<div class="tile tile--wide">${picture(images.brands.olmeca?.photos?.[0], { alt: '', sizes: '(max-width: 62rem) 92vw, 520px', loading: 'eager', fetchpriority: 'high' })}</div>` +
-    `<div class="tile tile--wide">${picture(images.brands.kerns?.photos?.[0], { alt: '', sizes: '(max-width: 62rem) 92vw, 520px', loading: 'eager' })}</div>` +
-    `<div class="tile tile--third tile--product">${picture(images.divisions['blanca-max-1-litre'], { alt: '', sizes: '(max-width: 62rem) 30vw, 165px' })}</div>` +
-    `<div class="tile tile--third tile--mark">${picture(images.company['vegas-mark'], { alt: '', sizes: '(max-width: 62rem) 30vw, 165px', loading: 'eager' })}</div>` +
-    `<div class="tile tile--third tile--accent"><span>1980</span><small>${esc(locale === 'es' ? 'Desde' : 'Since')}</small></div>` +
-    `</div>`;
-
+  // The document heading is stable; the carousel headlines are section-level,
+  // so rotating slides never change the page's heading structure.
   const hero =
-    `<section class="hero"><div class="shell hero__grid">` +
-    `<div class="hero__copy">` +
-    `<p class="eyebrow">${esc(c.heroEyebrow)}</p>` +
-    `<h1>${esc(c.heroHeadline)}</h1>` +
-    `<p class="lead">${esc(c.heroLead)}</p>` +
-    `<div class="actions">` +
-    `<a class="btn btn--primary" href="${link(locale, ROUTES.products)}">${esc(i18n.actions.exploreProducts)}</a>` +
-    `<a class="btn btn--outline" href="${link(locale, ROUTES.network)}">${esc(i18n.actions.findYourRep)}</a>` +
-    `</div>` +
-    `<ul class="hero__proof">${c.heroProof.map((p) => `<li>${esc(p)}</li>`).join('')}</ul>` +
-    `</div>` +
-    composition +
-    `</div></section>`;
+    `<h1 class="visually-hidden">${esc(c.pageHeading)}</h1>` +
+    heroCarousel({ i18n, locale, images, heroes, campaign });
 
-  const facts =
-    `<section class="band band--tight"><div class="shell">` +
-    sectionHead({ eyebrow: c.factsEyebrow, heading: c.factsHeading }) +
-    `<dl class="facts reveal">` +
-    c.facts
-      .map((f) => `<div class="fact"><dt>${esc(f.term)}</dt><dd><strong>${esc(f.value)}</strong>${esc(f.detail)}</dd></div>`)
+  /* Trust band: one horizontal row of published facts, no cards. */
+  const trust =
+    `<section class="trust-band"><div class="shell">` +
+    `<ul class="trust-band__list">` +
+    c.trust
+      .map(
+        (f) =>
+          `<li><span class="trust-band__value">${esc(f.value)}</span>` +
+          `<span class="trust-band__label">${esc(f.label)}</span></li>`
+      )
       .join('') +
-    `</dl>` +
-    `</div></section>`;
+    `</ul></div></section>`;
+
+  /* Featured: the promoted line as an editorial lead, two supporting entries. */
+  const bop = catalog.brands.find((b) => b.slug === 'bop');
+  const supporting = ['kelloggs', 'blanca'].map((key) =>
+    key === 'blanca' ? null : catalog.brands.find((b) => b.slug === key)
+  );
+
+  const featuredItem = (brand, imageEntry, title, body, href) =>
+    `<article class="featured__item">` +
+    `<figure>${picture(imageEntry, { alt: '', sizes: '120px' })}</figure>` +
+    `<div><h3><a class="stretch" href="${href}">${esc(title)}</a></h3><p>${esc(body)}</p></div>` +
+    `</article>`;
+
+  const kelloggs = catalog.brands.find((b) => b.slug === 'kelloggs');
+  const industriesDivision = company.divisions.find((d) => d.slug === 'vegas-industries');
+
+  const featured =
+    `<section class="band"><div class="shell">` +
+    `<div class="band-head"><div class="band-head__text">` +
+    `<p class="eyebrow">${esc(c.featuredEyebrow)}</p>` +
+    `<h2>${esc(c.featuredHeading)}</h2>` +
+    `<p>${esc(c.featuredLead)}</p>` +
+    `</div>` +
+    `<a class="btn btn--outline" href="${link(locale, ROUTES.products)}">${esc(c.categoriesAction)}</a>` +
+    `</div>` +
+    `<div class="featured reveal">` +
+    `<article class="featured__lead">` +
+    `<figure>${picture(heroes['bop-cans'], { alt: '', sizes: '(max-width: 60rem) 92vw, 375px' })}</figure>` +
+    `<div class="featured__lead-body">` +
+    `<p class="eyebrow" style="color:var(--yellow)">${esc(c.featuredLeadNote)}</p>` +
+    `<h3>${esc(i18n.hero.slides.bop.headline)}</h3>` +
+    `<p>${esc(i18n.hero.slides.bop.body)}</p>` +
+    `<div class="actions">` +
+    `<a class="btn btn--primary" href="${link(locale, `${ROUTES.products}/bop`)}">${esc(i18n.actions.viewBrand)}</a>` +
+    `<a class="btn btn--onDark" href="${link(locale, ROUTES.contact)}?type=availability&amp;brand=bop">${esc(i18n.actions.requestAvailability)}</a>` +
+    `</div></div></article>` +
+    featuredItem(
+      kelloggs,
+      images.brands.kelloggs?.photos?.[0],
+      kelloggs.name,
+      t(i18n.products.listingCount, { count: kelloggs.productCount }),
+      link(locale, `${ROUTES.products}/kelloggs`)
+    ) +
+    featuredItem(
+      null,
+      images.divisions['blanca-max-1-litre'],
+      industriesDivision.name,
+      localeCopy(industriesDivision, locale).role,
+      link(locale, ROUTES.industries)
+    ) +
+    `</div></div></section>`;
+
+  /* Divisions as three visually distinct editorial bands. */
+  const divisionBand = (division, variant, media, flip) => {
+    const copy = localeCopy(division, locale);
+    const routeKey =
+      division.slug === 'vegas-industries' ? 'industries'
+      : division.slug === 'international-lubricants-belize' ? 'lubricants'
+      : 'products';
+    const lines =
+      division.productLines
+        ? `<ul class="dband__lines">${division.productLines.map((l) => `<li>${esc(l[locale] ?? l.en)}</li>`).join('')}</ul>`
+        : division.products
+          ? `<ul class="dband__lines">${division.products.map((p) => `<li>${esc(p.name)} ${esc(locale === 'es' ? p.sizeEs : p.size)}</li>`).join('')}</ul>`
+          : '';
+
+    return (
+      `<section class="dband dband--${variant}${flip ? ' dband--flip' : ''} reveal">` +
+      `<div class="shell dband__inner">` +
+      `<div class="dband__content">` +
+      (division.logo && images.divisions[division.logo.replace(/\.[a-z]+$/, '')]
+        ? `<span class="dband__mark plate" style="padding:0.5rem 0.7rem">${picture(images.divisions[division.logo.replace(/\.[a-z]+$/, '')], { alt: division.name, sizes: '150px' })}</span>`
+        : '') +
+      `<p class="dband__label">${esc(copy.role)}</p>` +
+      `<h3>${esc(division.name)}</h3>` +
+      `<div class="dband__body"><p>${esc(copy.summary)}</p></div>` +
+      lines +
+      `<div class="actions"><a class="btn ${variant === 'industries' ? 'btn--dark' : 'btn--onDark'}" href="${link(locale, ROUTES[routeKey])}">${esc(routeKey === 'products' ? i18n.actions.viewProducts : i18n.actions.readMore)}</a></div>` +
+      `</div>` +
+      `<div class="dband__media">${media}</div>` +
+      `</div></section>`
+    );
+  };
+
+  const parent = company.divisions.find((d) => d.slug === 'vegas-distributors');
+  const industries = company.divisions.find((d) => d.slug === 'vegas-industries');
+  const lubricants = company.divisions.find((d) => d.slug === 'international-lubricants-belize');
 
   const divisions =
-    `<section class="band band--sunken"><div class="shell">` +
-    sectionHead({ eyebrow: c.divisionsEyebrow, heading: c.divisionsHeading, lead: c.divisionsLead }) +
-    company.divisions
-      .map((d, i) => divisionPanel({ division: d, i18n, locale, images, flip: i % 2 === 1, reveal: true }))
-      .join('') +
-    `</div></section>`;
+    `<section class="band band--tight"><div class="shell">` +
+    `<div class="band-head"><div class="band-head__text">` +
+    `<p class="eyebrow">${esc(c.divisionsEyebrow)}</p>` +
+    `<h2>${esc(c.divisionsHeading)}</h2>` +
+    `<p>${esc(c.divisionsLead)}</p>` +
+    `</div>` +
+    `<a class="btn btn--outline" href="${link(locale, ROUTES.divisions)}">${esc(c.divisionsCta)}</a>` +
+    `</div></div>` +
+    divisionBand(
+      parent, 'parent',
+      `<div class="dband__products">` +
+      plate(images.brands.pringles?.photos?.[0], { sizes: '(max-width: 60rem) 45vw, 210px' }) +
+      plate(images.brands.oreo?.photos?.[0], { sizes: '(max-width: 60rem) 45vw, 210px' }) +
+      `</div>`,
+      false
+    ) +
+    divisionBand(
+      industries, 'industries',
+      `<div class="dband__products">` +
+      plate(images.divisions['blanca-max-1-litre'], { alt: 'Blanca Max bleach, 1 litre bottle', sizes: '(max-width: 60rem) 42vw, 200px' }) +
+      plate(images.divisions['blanca-max-half-litre'], { alt: 'Blanca Max bleach, half litre bottle', sizes: '(max-width: 60rem) 42vw, 200px' }) +
+      `</div>`,
+      true
+    ) +
+    divisionBand(
+      lubricants, 'lubricants',
+      plate(images.divisions['international-lubricants-chevron-artwork'], { alt: 'Chevron lubricants artwork published by International Lubricants of Belize' }),
+      false
+    );
 
-  const byCategory = catalog.categories.map((cat) => {
-    const brands = catalog.brands.filter((b) => b.categories.includes(cat.id));
-    return { cat, brands };
-  });
+  /* Product discovery: four visual categories, then a compact enquiry band. */
+  const withCounts = catalog.categories.map((cat) => ({
+    cat,
+    brands: catalog.brands.filter((b) => b.categories.includes(cat.id)),
+  }));
+  const visual = withCounts.filter((x) => x.brands.length);
+  const enquiryOnly = withCounts.filter((x) => !x.brands.length);
 
   const categories =
-    `<section class="band"><div class="shell">` +
-    sectionHead({ eyebrow: c.categoriesEyebrow, heading: c.categoriesHeading, lead: c.categoriesLead }) +
+    `<section class="band band--sunken"><div class="shell">` +
+    `<div class="band-head"><div class="band-head__text">` +
+    `<p class="eyebrow">${esc(c.categoriesEyebrow)}</p>` +
+    `<h2>${esc(c.categoriesHeading)}</h2>` +
+    `<p>${esc(c.categoriesLead)}</p>` +
+    `</div></div>` +
     `<ul class="categories reveal">` +
-    byCategory
+    visual
       .map(({ cat, brands }) => categoryCard({ category: cat, count: brands.length, brands, images, i18n, locale }))
       .join('') +
     `</ul>` +
-    `<div class="actions" style="margin-top:1.75rem"><a class="btn btn--dark" href="${link(locale, ROUTES.products)}">${esc(c.categoriesAction)}</a></div>` +
-    `</div></section>`;
-
-  const regionsWithCounts = company.regions
-    .map((r) => ({ r, n: company.territories.filter((tt) => tt.region === r.id).length }))
-    .filter((x) => x.n);
-
-  const network =
-    `<section class="band band--sunken"><div class="shell">` +
-    sectionHead({ eyebrow: c.networkEyebrow, heading: c.networkHeading, lead: c.networkLead }) +
-    `<ul class="rep-grid reveal">` +
-    company.territories.slice(0, 4).map((territory) => repCard({ territory, i18n, locale })).join('') +
+    `<div class="enquiry-band">` +
+    `<div><h3>${esc(c.categoriesEnquiryHeading)}</h3><p>${esc(c.categoriesEnquiryBody)}</p></div>` +
+    `<ul class="enquiry-band__links">` +
+    enquiryOnly
+      .map(
+        ({ cat }) =>
+          `<li><a href="${link(locale, ROUTES.contact)}?type=availability&amp;category=${encodeURIComponent(cat.id)}">${esc(cat[locale] ?? cat.en)}</a></li>`
+      )
+      .join('') +
     `</ul>` +
-    `<div class="actions" style="margin-top:1.5rem">` +
-    `<a class="btn btn--outline" href="${link(locale, ROUTES.network)}">${esc(c.networkAction)}</a>` +
-    `<span class="chip">${esc(t(i18n.network.territoryCount, { count: company.territories.length }))}</span>` +
     `</div>` +
     `</div></section>`;
 
-  const why =
-    `<section class="band"><div class="shell">` +
-    sectionHead({ eyebrow: c.whyEyebrow, heading: c.whyHeading }) +
-    `<ul class="value-list reveal" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr));display:grid">` +
-    c.why.map((w) => `<li><strong>${esc(w.title)}</strong><span>${esc(w.body)}</span></li>`).join('') +
-    `</ul></div></section>`;
+  /* Sales gateway: coverage at a glance, detail lives on its own page. */
+  const gateway =
+    `<section class="band"><div class="shell gateway reveal">` +
+    `<div>` +
+    `<p class="eyebrow">${esc(c.gatewayEyebrow)}</p>` +
+    `<h2>${esc(c.gatewayHeading)}</h2>` +
+    `<p class="lead" style="margin-top:1rem">${esc(c.gatewayLead)}</p>` +
+    `<div class="actions" style="margin-top:1.75rem">` +
+    `<a class="btn btn--primary btn--lg" href="${link(locale, ROUTES.network)}">${esc(c.gatewayAction)}</a>` +
+    `</div></div>` +
+    `<ul class="region-list">` +
+    company.regions
+      .map((region) => {
+        const n = company.territories.filter((tt) => tt.region === region.id).length;
+        if (!n) return '';
+        return (
+          `<li><span class="region-list__name">${esc(region[locale] ?? region.en)}</span>` +
+          `<span class="region-list__count">${esc(n === 1 ? i18n.network.territoryCountOne : t(i18n.network.territoryCount, { count: n }))}</span></li>`
+        );
+      })
+      .join('') +
+    `</ul>` +
+    `</div></section>`;
 
   const cta =
     `<section class="band cta-band"><div class="shell cta-grid">` +
@@ -115,7 +227,18 @@ export function home(ctx) {
     `</ul>` +
     `</div></section>`;
 
-  return { body: hero + facts + divisions + categories + network + why + cta };
+  // Only the first slide is preloaded; slides two to four stay lazy.
+  const first = heroes[campaign.slides[0].background];
+  const preloadSet = first.avif.map((s) => `{{BASE}}assets/heroes/${s.file} ${s.width}w`).join(', ');
+
+  return {
+    body: hero + trust + featured + divisions + categories + gateway + cta,
+    bodyClass: 'home',
+    pageStyles: ['hero.css'],
+    extraHead:
+      `<link rel="preload" as="image" type="image/avif" imagesrcset="${preloadSet}" imagesizes="100vw" fetchpriority="high">`,
+    pageScripts: ['hero.js'],
+  };
 }
 
 /* ------------------------------------------------------------------ *
@@ -303,7 +426,7 @@ export function lubricants(ctx) {
     `<div class="actions"><a class="btn btn--primary" href="${link(locale, ROUTES.contact)}?type=quote&amp;division=international-lubricants-belize">${esc(i18n.actions.requestQuote)}</a></div>` +
     `</div>` +
     `<div class="stack" style="--stack-gap:1.25rem">` +
-    `<div class="tile">${picture(images.divisions['international-lubricants-chevron-artwork'], { alt: 'Chevron lubricants artwork published by International Lubricants of Belize', sizes: '(max-width: 62rem) 92vw, 540px' })}</div>` +
+    plate(images.divisions['international-lubricants-chevron-artwork'], { alt: 'Chevron lubricants artwork published by International Lubricants of Belize' }) +
     `<div class="form-card"><h3>${esc(c.chevronHeading)}</h3><p>${esc(copy.chevronNote)}</p></div>` +
     `</div>` +
     `</div></section>` +

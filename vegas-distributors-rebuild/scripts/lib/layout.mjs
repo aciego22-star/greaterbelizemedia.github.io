@@ -41,10 +41,10 @@ export const link = (locale, path) => {
 
 /* ------------------------------------------------------------------ */
 
-function head({ site, i18n, locale, title, description, outPath, path, og, extraHead = '', structuredData = [], switchPath }) {
+function head({ site, i18n, locale, title, description, outPath, path, og, extraHead = '', structuredData = [], switchPath, pageStyles }) {
   const fullTitle = path === ROUTES.home
-    ? `${i18n.site.name} — ${title}`
-    : `${title} — ${i18n.site.name}`;
+    ? `${i18n.site.name} | ${title}`
+    : `${title} | ${i18n.site.name}`;
 
   const canonical = absoluteUrl(site, locale, path);
   const alternates = ['en', 'es']
@@ -91,12 +91,13 @@ function head({ site, i18n, locale, title, description, outPath, path, og, extra
     preload +
     `<link rel="stylesheet" href="{{BASE}}assets/styles/fonts.css">` +
     `<link rel="stylesheet" href="{{BASE}}assets/styles/site.css">` +
+    (pageStyles ?? []).map((f) => `<link rel="stylesheet" href="{{BASE}}assets/styles/${f}">`).join('') +
     structuredData.map(jsonLd).join('') +
     extraHead
   );
 }
 
-function masthead({ i18n, locale, images, current, switchPath }) {
+function masthead({ i18n, locale, images, current, switchPath, bodyClass }) {
   const items = [
     ['home', i18n.nav.home],
     ['about', i18n.nav.about],
@@ -131,7 +132,7 @@ function masthead({ i18n, locale, images, current, switchPath }) {
     // A complementary landmark, so the status note is reachable by landmark
     // navigation rather than floating outside the page structure.
     `<aside class="concept-bar" aria-label="${esc(i18n.site.conceptBar)}"><div class="shell"><strong>${esc(i18n.site.conceptBar)}</strong><span>${esc(i18n.site.conceptBarText)}</span></div></aside>` +
-    `<header class="masthead">` +
+    `<header class="masthead${bodyClass === 'home' ? ' masthead--over-hero' : ''}">` +
     `<div class="shell masthead__bar">` +
     `<a class="brand" href="${link(locale, ROUTES.home)}">` +
     picture(images.company.logo, {
@@ -139,19 +140,19 @@ function masthead({ i18n, locale, images, current, switchPath }) {
       className: 'brand__logo',
       loading: 'eager',
       fetchpriority: 'high',
-      sizes: '122px',
+      sizes: '128px',
     }) +
     `</a>` +
     // The language control stays on the top row at every width; the rest of the
     // header collapses behind the menu button on small screens.
     `<div class="lang" role="group" aria-label="${esc(i18n.nav.languageLabel)}">${langSwitch}</div>` +
     `<button class="nav-toggle" type="button" aria-expanded="false" aria-controls="masthead-panel">` +
-    `<span class="nav-toggle__bars" aria-hidden="true"><i></i><i></i><i></i></span>${esc(i18n.nav.menu)}` +
+    `<span class="nav-toggle__bars" aria-hidden="true"><i></i><i></i><i></i></span>` +
+    `<span class="nav-toggle__label">${esc(i18n.nav.menu)}</span>` +
     `</button>` +
     `<div class="masthead__panel" id="masthead-panel">` +
     `<nav aria-label="${esc(i18n.nav.primaryLabel)}"><ul class="nav-list">${nav}</ul></nav>` +
     `<div class="masthead__cta">` +
-    `<a class="btn btn--outline btn--sm" href="${link(locale, ROUTES.network)}">${esc(i18n.actions.findRep)}</a>` +
     `<a class="btn btn--primary btn--sm" href="${link(locale, ROUTES.contact)}?type=quote">${esc(i18n.actions.requestQuote)}</a>` +
     `</div>` +
     `</div>` +

@@ -63,6 +63,7 @@ const fontCss = FONTS.map(
 ).join('\n');
 
 const siteCss = readFileSync(join(DIST, 'assets/styles/site.css'), 'utf8');
+const heroCss = readFileSync(join(DIST, 'assets/styles/hero.css'), 'utf8');
 
 /* ------------------------------------------------------------------ *
  * Rewrite each view
@@ -156,6 +157,7 @@ const conceptBar = rewriteLinks(inlinePictures(/<aside class="concept-bar"[\s\S]
 const siteJs = readFileSync(join(DIST, 'assets/js/site.js'), 'utf8');
 const catalogJs = readFileSync(join(DIST, 'assets/js/catalog.js'), 'utf8');
 const enquiryJs = readFileSync(join(DIST, 'assets/js/enquiry.js'), 'utf8');
+const heroJs = readFileSync(join(DIST, 'assets/js/hero.js'), 'utf8');
 
 /* ------------------------------------------------------------------ */
 
@@ -174,11 +176,16 @@ const doc = `<title>Vega's Distributors Rebuild</title>
 <style>
 ${fontCss}
 ${siteCss}
+${heroCss}
 
 /* The deployed site reveals sections on scroll. In a single-file review
    artifact that would leave the first frame and any thumbnail blank, so every
    section rests visible here. The effect itself is unchanged in dist/. */
 .reveal, .reveal.is-armed { opacity: 1 !important; transform: none !important; }
+
+/* Views are swapped in place, so a hero inside a hidden view must not claim
+   viewport height or leave a gap. */
+.preview-view[hidden] { display: none !important; }
 
 /* The site commits to one light, warm-white identity taken from the brand
    guide, so it paints its own ground rather than borrowing the host theme. */
@@ -236,12 +243,21 @@ ${footer}
       t.setAttribute('aria-selected', String(t.getAttribute('data-view') === id));
     });
     document.documentElement.lang = document.getElementById('view-' + id).lang || 'en';
+    // The header only floats over a hero on the two homepage views.
+    var overHero = id === 'home' || id === 'es-home';
+    document.body.classList.toggle('home', overHero);
+    var mast = document.querySelector('.masthead');
+    if (mast) mast.classList.toggle('masthead--over-hero', overHero);
     window.scrollTo(0, 0);
   }
 
   Array.prototype.forEach.call(tabs, function (t) {
     t.addEventListener('click', function () { show(t.getAttribute('data-view')); });
   });
+
+  // Apply the opening view through the same path as a tab click, so the header
+  // treatment and language are correct on first paint.
+  show('home');
 
   // Links rewritten by the build carry the target view.
   document.addEventListener('click', function (e) {
@@ -264,6 +280,7 @@ ${footer}
 <script>${siteJs}</script>
 <script>${catalogJs}</script>
 <script>${enquiryJs}</script>
+<script>${heroJs}</script>
 `;
 
 mkdirSync(OUT_DIR, { recursive: true });

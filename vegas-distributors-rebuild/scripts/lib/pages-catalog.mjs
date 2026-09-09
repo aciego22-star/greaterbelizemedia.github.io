@@ -125,15 +125,20 @@ export function brand(ctx) {
     })
     .join('');
 
+  // Published artwork is low resolution, so a gallery item is never displayed
+  // wider than the largest derivative that exists for it: a stretched packshot
+  // reads as a broken label. The cap and the sizes hint are kept in step.
   const gallery = (img?.photos ?? [])
     .slice(0, 4)
-    .map(
-      (p) =>
-        `<div class="tile">${picture(p, {
+    .map((p) => {
+      const widest = p.fallback[p.fallback.length - 1].width;
+      return (
+        `<div class="tile" style="max-width:${widest}px">${picture(p, {
           alt: p.alt ? `${b.name}: ${p.alt}` : `${b.name} product imagery published by Vega's Distributors`,
-          sizes: '(max-width: 48rem) 90vw, 320px',
+          sizes: `(max-width: 48rem) 90vw, ${widest}px`,
         })}</div>`
-    )
+      );
+    })
     .join('');
 
   const related = b.related

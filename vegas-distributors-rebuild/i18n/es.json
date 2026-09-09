@@ -122,7 +122,37 @@
         "body": "Cotizaciones, cuentas mayoristas y disponibilidad.",
         "href": "/contact"
       }
-    ]
+    ],
+    "trust": [
+      {
+        "value": "Desde 1980",
+        "label": "Operando desde Benque Viejo del Carmen"
+      },
+      {
+        "value": "Tres Divisiones Operativas",
+        "label": "Distribución, manufactura y lubricantes"
+      },
+      {
+        "value": "Cobertura Nacional de Ventas",
+        "label": "Representantes designados por territorio"
+      },
+      {
+        "value": "Con sede en Benque Viejo",
+        "label": "Distrito de Cayo, Belice"
+      }
+    ],
+    "featuredEyebrow": "Destacado ahora",
+    "featuredHeading": "Campaña actual y líneas de todos los días",
+    "featuredLead": "Lo que Vega's promueve en este momento, junto a las categorías que se mueven cada semana.",
+    "featuredLeadNote": "En promoción actualmente",
+    "gatewayEyebrow": "Red nacional de ventas",
+    "gatewayHeading": "Cobertura en cada distrito",
+    "gatewayLead": "Vega's trabaja con representantes de territorio designados, del norte al extremo sur. Encuentre a la persona que cubre su distrito y contáctela directamente.",
+    "gatewayAction": "Encuentre a su Representante",
+    "categoriesEnquiryHeading": "También distribuimos",
+    "categoriesEnquiryBody": "Incluido en la gama de importación publicada por la empresa, todavía sin detalle de producto en línea. Contacte al equipo de ventas para conocer la disponibilidad.",
+    "divisionsCta": "Ver todas las divisiones",
+    "pageHeading": "Vega's Distributors Ltd., distribución mayorista de productos en Belice"
   },
   "about": {
     "title": "Acerca de Vega's Distributors",
@@ -340,5 +370,47 @@
     "unconfirmed": "No confirmado por la empresa",
     "needsApprovalHeading": "Pendiente de aprobación de la empresa",
     "reviewNeeded": "La terminología de producto en español está pendiente de revisión"
+  },
+  "hero": {
+    "label": "Campañas destacadas",
+    "prev": "Diapositiva anterior",
+    "next": "Diapositiva siguiente",
+    "goTo": "Mostrar diapositiva {n}",
+    "pauseNote": "La reproducción automática se pausa mientras usted interactúa.",
+    "conceptNote": "Imagen conceptual de campaña. No es una fotografía de una instalación, vehículo u obra de Vega's.",
+    "slides": {
+      "bop": {
+        "eyebrow": "EN PROMOCIÓN ACTUALMENTE",
+        "headline": "Protección que va en serio.",
+        "body": "Consulte con su representante de ventas de Vega's sobre los productos insecticidas BOP y su disponibilidad actual.",
+        "primary": "Consultar sobre BOP",
+        "secondary": "Encuentre a su Representante",
+        "productAlt": "Arte de producto del insecticida BOP publicado por Vega's Distributors"
+      },
+      "national": {
+        "eyebrow": "SIRVIENDO A BELICE DESDE 1980",
+        "headline": "Productos de confianza. Alcance nacional.",
+        "body": "Abastecemos a supermercados, mayoristas y empresas de todo Belice con marcas establecidas y un soporte de distribución confiable.",
+        "primary": "Explorar Nuestros Productos",
+        "secondary": "Encuentre a su Representante",
+        "productAlt": "Arte de producto de marcas distribuidas por Vega's Distributors"
+      },
+      "blanca": {
+        "eyebrow": "HECHO CON ORGULLO EN BELICE",
+        "headline": "Hecho en Belice. Hecho para la limpieza diaria.",
+        "body": "Descubra el cloro Blanca Max de Vega's Industries, disponible en presentaciones de 1 litro y medio litro.",
+        "primary": "Explorar Blanca Max",
+        "secondary": "Contactar a Vega's Industries",
+        "productAlt": "Botellas de cloro Blanca Max, 1 litro y medio litro"
+      },
+      "ilb": {
+        "eyebrow": "INTERNATIONAL LUBRICANTS OF BELIZE",
+        "headline": "Hecho para proteger el trabajo que mueve a Belice.",
+        "body": "Aceites y lubricantes para transporte comercial, equipo industrial, vehículos de pasajeros y uso marino.",
+        "primary": "Explorar ILB",
+        "secondary": "Solicitar Información de Producto",
+        "productAlt": "Arte de lubricantes Chevron publicado por International Lubricants of Belize"
+      }
+    }
   }
 }

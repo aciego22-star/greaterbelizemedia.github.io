@@ -1,0 +1,301 @@
+{
+  "hero-01-bop-household-protection": {
+    "width": 1672,
+    "height": 941,
+    "avif": [
+      {
+        "file": "hero-01-bop-household-protection-640.avif",
+        "width": 640,
+        "height": 360
+      },
+      {
+        "file": "hero-01-bop-household-protection-960.avif",
+        "width": 960,
+        "height": 540
+      },
+      {
+        "file": "hero-01-bop-household-protection-1440.avif",
+        "width": 1440,
+        "height": 810
+      },
+      {
+        "file": "hero-01-bop-household-protection-1672.avif",
+        "width": 1672,
+        "height": 941
+      }
+    ],
+    "webp": [
+      {
+        "file": "hero-01-bop-household-protection-640.webp",
+        "width": 640,
+        "height": 360
+      },
+      {
+        "file": "hero-01-bop-household-protection-960.webp",
+        "width": 960,
+        "height": 540
+      },
+      {
+        "file": "hero-01-bop-household-protection-1440.webp",
+        "width": 1440,
+        "height": 810
+      },
+      {
+        "file": "hero-01-bop-household-protection-1672.webp",
+        "width": 1672,
+        "height": 941
+      }
+    ],
+    "fallback": [
+      {
+        "file": "hero-01-bop-household-protection-640.jpg",
+        "width": 640,
+        "height": 360
+      },
+      {
+        "file": "hero-01-bop-household-protection-960.jpg",
+        "width": 960,
+        "height": 540
+      },
+      {
+        "file": "hero-01-bop-household-protection-1440.jpg",
+        "width": 1440,
+        "height": 810
+      },
+      {
+        "file": "hero-01-bop-household-protection-1672.jpg",
+        "width": 1672,
+        "height": 941
+      }
+    ]
+  },
+  "hero-02-blanca-max-belize": {
+    "width": 1672,
+    "height": 941,
+    "avif": [
+      {
+        "file": "hero-02-blanca-max-belize-640.avif",
+        "width": 640,
+        "height": 360
+      },
+      {
+        "file": "hero-02-blanca-max-belize-960.avif",
+        "width": 960,
+        "height": 540
+      },
+      {
+        "file": "hero-02-blanca-max-belize-1440.avif",
+        "width": 1440,
+        "height": 810
+      },
+      {
+        "file": "hero-02-blanca-max-belize-1672.avif",
+        "width": 1672,
+        "height": 941
+      }
+    ],
+    "webp": [
+      {
+        "file": "hero-02-blanca-max-belize-640.webp",
+        "width": 640,
+        "height": 360
+      },
+      {
+        "file": "hero-02-blanca-max-belize-960.webp",
+        "width": 960,
+        "height": 540
+      },
+      {
+        "file": "hero-02-blanca-max-belize-1440.webp",
+        "width": 1440,
+        "height": 810
+      },
+      {
+        "file": "hero-02-blanca-max-belize-1672.webp",
+        "width": 1672,
+        "height": 941
+      }
+    ],
+    "fallback": [
+      {
+        "file": "hero-02-blanca-max-belize-640.jpg",
+        "width": 640,
+        "height": 360
+      },
+      {
+        "file": "hero-02-blanca-max-belize-960.jpg",
+        "width": 960,
+        "height": 540
+      },
+      {
+        "file": "hero-02-blanca-max-belize-1440.jpg",
+        "width": 1440,
+        "height": 810
+      },
+      {
+        "file": "hero-02-blanca-max-belize-1672.jpg",
+        "width": 1672,
+        "height": 941
+      }
+    ]
+  },
+  "hero-03-national-distribution": {
+    "width": 1672,
+    "height": 941,
+    "avif": [
+      {
+        "file": "hero-03-national-distribution-640.avif",
+        "width": 640,
+        "height": 360
+      },
+      {
+        "file": "hero-03-national-distribution-960.avif",
+        "width": 960,
+        "height": 540
+      },
+      {
+        "file": "hero-03-national-distribution-1440.avif",
+        "width": 1440,
+        "height": 810
+      },
+      {
+        "file": "hero-03-national-distribution-1672.avif",
+        "width": 1672,
+        "height": 941
+      }
+    ],
+    "webp": [
+      {
+        "file": "hero-03-national-distribution-640.webp",
+        "width": 640,
+        "height": 360
+      },
+      {
+        "file": "hero-03-national-distribution-960.webp",
+        "width": 960,
+        "height": 540
+      },
+      {
+        "file": "hero-03-national-distribution-1440.webp",
+        "width": 1440,
+        "height": 810
+      },
+      {
+        "file": "hero-03-national-distribution-1672.webp",
+        "width": 1672,
+        "height": 941
+      }
+    ],
+    "fallback": [
+      {
+        "file": "hero-03-national-distribution-640.jpg",
+        "width": 640,
+        "height": 360
+      },
+      {
+        "file": "hero-03-national-distribution-960.jpg",
+        "width": 960,
+        "height": 540
+      },
+      {
+        "file": "hero-03-national-distribution-1440.jpg",
+        "width": 1440,
+        "height": 810
+      },
+      {
+        "file": "hero-03-national-distribution-1672.jpg",
+        "width": 1672,
+        "height": 941
+      }
+    ]
+  },
+  "hero-04-ilb-heavy-duty": {
+    "width": 1672,
+    "height": 941,
+    "avif": [
+      {
+        "file": "hero-04-ilb-heavy-duty-640.avif",
+        "width": 640,
+        "height": 360
+      },
+      {
+        "file": "hero-04-ilb-heavy-duty-960.avif",
+        "width": 960,
+        "height": 540
+      },
+      {
+        "file": "hero-04-ilb-heavy-duty-1440.avif",
+        "width": 1440,
+        "height": 810
+      },
+      {
+        "file": "hero-04-ilb-heavy-duty-1672.avif",
+        "width": 1672,
+        "height": 941
+      }
+    ],
+    "webp": [
+      {
+        "file": "hero-04-ilb-heavy-duty-640.webp",
+        "width": 640,
+        "height": 360
+      },
+      {
+        "file": "hero-04-ilb-heavy-duty-960.webp",
+        "width": 960,
+        "height": 540
+      },
+      {
+        "file": "hero-04-ilb-heavy-duty-1440.webp",
+        "width": 1440,
+        "height": 810
+      },
+      {
+        "file": "hero-04-ilb-heavy-duty-1672.webp",
+        "width": 1672,
+        "height": 941
+      }
+    ],
+    "fallback": [
+      {
+        "file": "hero-04-ilb-heavy-duty-640.jpg",
+        "width": 640,
+        "height": 360
+      },
+      {
+        "file": "hero-04-ilb-heavy-duty-960.jpg",
+        "width": 960,
+        "height": 540
+      },
+      {
+        "file": "hero-04-ilb-heavy-duty-1440.jpg",
+        "width": 1440,
+        "height": 810
+      },
+      {
+        "file": "hero-04-ilb-heavy-duty-1672.jpg",
+        "width": 1672,
+        "height": 941
+      }
+    ]
+  },
+  "bop-cans": {
+    "base": "assets/heroes",
+    "width": 375,
+    "height": 333,
+    "webp": [
+      {
+        "file": "bop-cans-375.webp",
+        "width": 375,
+        "height": 333
+      }
+    ],
+    "fallback": [
+      {
+        "file": "bop-cans-375.jpg",
+        "width": 375,
+        "height": 333
+      }
+    ]
+  }
+}
