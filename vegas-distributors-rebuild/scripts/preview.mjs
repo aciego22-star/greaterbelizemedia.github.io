@@ -266,7 +266,12 @@ const chrome = (path, selector) => {
 };
 
 const headerEn = chrome('', 'header');
-const headerEs = chrome('es', 'header');
+// Both language headers live in one document here, so the second one's panel
+// takes its own id. Two elements sharing an id is invalid, and it pointed the
+// Spanish menu button's aria-controls at the English panel.
+const headerEs = chrome('es', 'header')
+  .replace(/id="masthead-panel"/g, 'id="masthead-panel-es"')
+  .replace(/aria-controls="masthead-panel"/g, 'aria-controls="masthead-panel-es"');
 const footerEn = chrome('', 'footer');
 const footerEs = chrome('es', 'footer');
 

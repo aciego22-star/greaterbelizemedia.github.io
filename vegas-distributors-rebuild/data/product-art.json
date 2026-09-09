@@ -1,20 +1,42 @@
 {
   "bop-cans": {
     "base": "assets/product-art",
-    "width": 375,
-    "height": 333,
+    "width": 650,
+    "height": 650,
+    "avif": [
+      {
+        "file": "bop-cans-360.avif",
+        "width": 360,
+        "height": 360
+      },
+      {
+        "file": "bop-cans-650.avif",
+        "width": 650,
+        "height": 650
+      }
+    ],
     "webp": [
       {
-        "file": "bop-cans-375.webp",
-        "width": 375,
-        "height": 333
+        "file": "bop-cans-360.webp",
+        "width": 360,
+        "height": 360
+      },
+      {
+        "file": "bop-cans-650.webp",
+        "width": 650,
+        "height": 650
       }
     ],
     "fallback": [
       {
-        "file": "bop-cans-375.jpg",
-        "width": 375,
-        "height": 333
+        "file": "bop-cans-360.jpg",
+        "width": 360,
+        "height": 360
+      },
+      {
+        "file": "bop-cans-650.jpg",
+        "width": 650,
+        "height": 650
       }
     ]
   }

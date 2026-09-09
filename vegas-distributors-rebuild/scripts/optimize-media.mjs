@@ -41,35 +41,44 @@ const productArt = {};
 /* ------------------------------------------------------------------ *
  * Product artwork
  *
- * A straight crop of a supplied product banner, used beside copy on the
- * homepage. It is the only thing left from the old stage pipeline.
+ * Supplied product photography shown beside copy on the homepage. These are
+ * whole pictures, taken as given: nothing is cropped out of them.
  * ------------------------------------------------------------------ */
 
-const CROPS = [
-  { id: 'bop-cans', file: 'bop-banner.jpg', widthRatio: 0.5, widths: [375, 750] },
+const PRODUCTS = [
+  { id: 'bop-cans', file: 'bop-cans-product.jpg', widths: [360, 650] },
 ];
 
-for (const crop of CROPS) {
-  const file = join(PRODUCT_SRC, crop.file);
-  if (!existsSync(file)) { console.warn(`  missing product source: ${crop.file}`); continue; }
+for (const item of PRODUCTS) {
+  const file = join(PRODUCT_SRC, item.file);
+  if (!existsSync(file)) { console.warn(`  missing product source: ${item.file}`); continue; }
   const meta = await sharp(file).metadata();
-  const cropWidth = Math.round(meta.width * crop.widthRatio);
-  const entry = { base: 'assets/product-art', width: cropWidth, height: meta.height, webp: [], fallback: [] };
+  const widths = [...new Set([...item.widths.filter((w) => w < meta.width), meta.width])];
 
-  for (const w of crop.widths.filter((w) => w <= cropWidth)) {
-    const h = Math.round((meta.height / cropWidth) * w);
-    const base = () =>
-      sharp(file).extract({ left: 0, top: 0, width: cropWidth, height: meta.height })
-        .resize({ width: w, withoutEnlargement: true });
-    await base().webp({ quality: 82, effort: 5 }).toFile(join(ART_OUT, `${crop.id}-${w}.webp`));
-    await base().jpeg({ quality: 88, mozjpeg: true }).toFile(join(ART_OUT, `${crop.id}-${w}.jpg`));
-    entry.webp.push({ file: `${crop.id}-${w}.webp`, width: w, height: h });
-    entry.fallback.push({ file: `${crop.id}-${w}.jpg`, width: w, height: h });
-    track(join(ART_OUT, `${crop.id}-${w}.webp`));
-    track(join(ART_OUT, `${crop.id}-${w}.jpg`));
+  const entry = {
+    base: 'assets/product-art',
+    width: meta.width,
+    height: meta.height,
+    avif: [], webp: [], fallback: [],
+  };
+
+  for (const w of widths) {
+    const h = Math.round((meta.height / meta.width) * w);
+    const base = () => sharp(file).resize({ width: w, withoutEnlargement: true });
+    const jobs = [
+      ['avif', `${item.id}-${w}.avif`, base().avif({ quality: 54, effort: 4 })],
+      ['webp', `${item.id}-${w}.webp`, base().webp({ quality: 84, effort: 5 })],
+      ['fallback', `${item.id}-${w}.jpg`, base().jpeg({ quality: 88, mozjpeg: true })],
+    ];
+    for (const [kind, name, pipeline] of jobs) {
+      await pipeline.toFile(join(ART_OUT, name));
+      entry[kind].push({ file: name, width: w, height: h });
+      track(join(ART_OUT, name));
+    }
   }
-  productArt[crop.id] = entry;
-  console.log(`  art  ${crop.id.padEnd(34)} cropped to ${cropWidth}x${meta.height}`);
+
+  productArt[item.id] = entry;
+  console.log(`  art  ${item.id.padEnd(34)} ${meta.width}x${meta.height} -> ${widths.join(', ')}`);
 }
 
 writeFileSync(join(ROOT, 'data', 'product-art.json'), JSON.stringify(productArt, null, 2) + '\n');

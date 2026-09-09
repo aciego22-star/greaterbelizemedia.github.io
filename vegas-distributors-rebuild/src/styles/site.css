@@ -569,7 +569,8 @@ ul, ol { margin: 0; padding: 0; }
   overflow: hidden;
 }
 .featured__lead figure { margin: 0; background: #fff; display: flex; align-items: center; justify-content: center; height: 100%; }
-/* Contained, not cropped: the can row is only 375px wide at source. */
+/* Contained, not cropped: the product photograph is square and is shown whole
+   whatever shape the panel takes. */
 .featured__lead img { width: 100%; height: auto; max-height: 100%; object-fit: contain; }
 .featured__lead-body { padding: clamp(1.4rem, 3.5vw, 2.4rem); display: grid; gap: 0.6rem; align-content: center; }
 .featured__lead h3 { color: #fff; font-size: clamp(1.4rem, 1.1rem + 1.1vw, 2rem); }

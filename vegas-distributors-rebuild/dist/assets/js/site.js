@@ -7,19 +7,29 @@
    * Mobile navigation
    * ---------------------------------------------------------------- */
 
-  var toggle = document.querySelector('.nav-toggle');
-  var nav = document.getElementById('masthead-panel');
+  /* Wired up per header rather than once per document. A page normally carries
+     one header, but where more than one is present, picking only the first
+     match left the others' menu buttons doing nothing at all. Each header also
+     finds its own panel by walking down from itself, so a repeated id cannot
+     cross the wires. */
+  var eachMasthead = function (fn) {
+    Array.prototype.forEach.call(document.querySelectorAll('.masthead'), fn);
+  };
 
-  if (toggle && nav) {
-    var mobile = window.matchMedia('(max-width: 52rem)');
+  var mobile = window.matchMedia('(max-width: 52rem)');
+
+  eachMasthead(function (header) {
+    var toggle = header.querySelector('.nav-toggle');
+    var nav = header.querySelector('.masthead__panel');
+    if (!toggle || !nav) return;
 
     // An open panel gives the header a solid surface, so the top row is never
     // white-on-white against the panel behind it.
     var markOpen = function () {
-      var header = toggle.closest('.masthead');
-      if (header) {
-        header.classList.toggle('is-open', mobile.matches && toggle.getAttribute('aria-expanded') === 'true');
-      }
+      header.classList.toggle(
+        'is-open',
+        mobile.matches && toggle.getAttribute('aria-expanded') === 'true'
+      );
     };
 
     var apply = function () {
@@ -65,10 +75,12 @@
       }
     });
 
-    if (mobile.addEventListener) mobile.addEventListener('change', function () { apply(); markOpen(); });
+    if (mobile.addEventListener) {
+      mobile.addEventListener('change', function () { apply(); markOpen(); });
+    }
     apply();
     markOpen();
-  }
+  });
 
   /* ---------------------------------------------------------------- *
    * Header
