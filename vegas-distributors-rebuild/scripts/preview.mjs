@@ -7,7 +7,7 @@
  *
  * Usage: node scripts/preview.mjs
  */
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
+import { readFileSync, readdirSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -82,12 +82,24 @@ const fontCss = FONTS.map(
     `src:url(${dataUri(file, 'font/woff2')}) format('woff2');}`
 ).join('\n');
 
-const css = ['site.css', 'hero.css', 'gallery.css', 'whats-new.css', 'wines.css']
+/* Read from what the build actually produced rather than from a list kept by
+   hand. A stylesheet or a script added to a page but forgotten here left that
+   part of the site dead in this file while working perfectly on the real one,
+   which is a bug that looks exactly like a broken feature. */
+const bundle = (dir, ext) =>
+  readdirSync(join(DIST, 'assets', dir))
+    .filter((f) => f.endsWith(ext))
+    .sort()
+    .map((f) => readFileSync(join(DIST, 'assets', dir, f), 'utf8'));
+
+// fonts.css is replaced by the inlined faces above, so it is left out.
+const css = readdirSync(join(DIST, 'assets', 'styles'))
+  .filter((f) => f.endsWith('.css') && f !== 'fonts.css')
+  .sort()
   .map((f) => readFileSync(join(DIST, 'assets', 'styles', f), 'utf8'))
   .join('\n');
 
-const js = ['site.js', 'hero.js', 'gallery.js', 'catalog.js', 'whats-new.js', 'wines.js']
-  .map((f) => readFileSync(join(DIST, 'assets', 'js', f), 'utf8'));
+const js = bundle('js', '.js');
 
 const imageCache = new Map();
 const resolveAsset = (ref) => ref.replace(/^(\.\.\/)+/, '').replace(/^\.\//, '');

@@ -143,12 +143,14 @@ function masthead({ i18n, locale, images, current, switchPath, bodyClass, locale
   const langSwitch = ['en', 'es']
     .map((l) => {
       const target = localePaths?.[l] ?? switchPath ?? '';
-      const href = l === locale ? '#' : `{{BASE}}${routePath(l, target)}${routePath(l, target) ? '/' : ''}`;
       const label = l === 'es' ? 'ES' : 'EN';
       const full = l === 'es' ? 'Español' : 'English';
-      return l === locale
-        ? `<a href="${esc(href)}" aria-current="true" lang="${l}" hreflang="${l}"><span aria-hidden="true">${label}</span><span class="visually-hidden">${esc(full)}</span></a>`
-        : `<a href="${esc(href)}" lang="${l}" hreflang="${l}"><span aria-hidden="true">${label}</span><span class="visually-hidden">${esc(full)}</span></a>`;
+      const inner = `<span aria-hidden="true">${label}</span><span class="visually-hidden">${esc(full)}</span>`;
+      // The language you are already reading is a marker, not a link: a link
+      // that only jumps to the top of the page reads as broken when tapped.
+      if (l === locale) return `<span aria-current="true" lang="${l}">${inner}</span>`;
+      const href = `{{BASE}}${routePath(l, target)}${routePath(l, target) ? '/' : ''}`;
+      return `<a href="${esc(href)}" lang="${l}" hreflang="${l}">${inner}</a>`;
     })
     .join('');
 

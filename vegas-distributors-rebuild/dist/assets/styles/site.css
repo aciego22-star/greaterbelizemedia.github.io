@@ -373,7 +373,7 @@ ul, ol { margin: 0; padding: 0; }
   overflow: hidden;
   background: var(--surface-raised);
 }
-.lang a {
+.lang > * {
   display: inline-flex;
   align-items: center;
   min-height: 38px;
@@ -384,8 +384,8 @@ ul, ol { margin: 0; padding: 0; }
   color: var(--slate);
   text-decoration: none;
 }
-.lang a[aria-current='true'] { background: var(--ink); color: #fff; }
-.lang a:not([aria-current='true']):hover { background: rgba(32, 33, 36, 0.07); color: var(--ink); }
+.lang [aria-current='true'] { background: var(--ink); color: #fff; }
+.lang a:hover { background: rgba(32, 33, 36, 0.07); color: var(--ink); }
 
 .nav-toggle { display: none; }
 
@@ -1654,7 +1654,7 @@ table.products td.size:empty::after { content: '-'; color: var(--line-strong); }
   .masthead__panel { gap: 0.6rem; }
   .brand img { width: 108px; }
   .masthead__cta .btn { padding: 0.5rem 0.8rem; font-size: 0.85rem; }
-  .lang a { padding: 0 0.55rem; }
+  .lang > * { padding: 0 0.55rem; }
 }
 
 @media (max-width: 62rem) {
@@ -1737,7 +1737,7 @@ table.products td.size:empty::after { content: '-'; color: var(--line-strong); }
     clip-path: inset(50%);
     white-space: nowrap;
   }
-  .lang a { padding: 0 0.55rem; font-size: 0.78rem; }
+  .lang > * { padding: 0 0.55rem; font-size: 0.78rem; }
 }
 
 @media (max-width: 40rem) {
