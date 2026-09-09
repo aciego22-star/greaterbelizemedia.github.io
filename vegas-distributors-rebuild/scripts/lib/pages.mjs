@@ -278,7 +278,7 @@ export function about(ctx) {
     .join('');
 
   const management =
-    `<div class="table-wrap"><table class="products">` +
+    `<div class="table-wrap"><table class="products table--people">` +
     `<thead><tr><th scope="col">${esc(c.tableArea)}</th><th scope="col">${esc(c.tableName)}</th><th scope="col">${esc(c.tableEmail)}</th></tr></thead>` +
     `<tbody>` +
     company.management
@@ -357,12 +357,12 @@ export function industries(ctx) {
   const portfolio = d.products
     .map(
       (p) =>
-        `<figure class="tile tile--product" style="aspect-ratio:auto">` +
+        `<figure class="tile tile--product tile--captioned">` +
         picture(images.divisions[p.image.replace(/\.[a-z]+$/, '')], {
           alt: `${p.name} ${locale === 'es' ? p.sizeEs : p.size}`,
           sizes: '(max-width: 48rem) 45vw, 280px',
         }) +
-        `<figcaption style="padding:0.85rem 1rem;font-weight:600">${esc(p.name)} · ${esc(locale === 'es' ? p.sizeEs : p.size)}</figcaption>` +
+        `<figcaption class="tile__caption">${esc(p.name)} · ${esc(locale === 'es' ? p.sizeEs : p.size)}</figcaption>` +
         `</figure>`
     )
     .join('');

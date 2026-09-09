@@ -72,6 +72,13 @@ html {
   scroll-padding-top: 6rem;
 }
 
+/* The browser gives a figure 40px of side margin by default, which quietly
+   narrows anything laid out as a figure inside a grid or flex track. Every
+   figure here is a deliberate box, so the default is cleared once. */
+figure {
+  margin: 0;
+}
+
 body {
   margin: 0;
   background: var(--surface);
@@ -447,6 +454,16 @@ ul, ol { margin: 0; padding: 0; }
   border: 1px solid var(--line);
   box-shadow: var(--shadow-sm);
 }
+/* A tile takes its height from an aspect ratio, and a percentage height
+   measured against that is indefinite, so an image sized in percentages keeps
+   its own proportions and spills out. Positioning the picture gives everything
+   inside it a definite box to work from. Captioned tiles opt out below, since
+   they are ordinary columns rather than a single full-bleed picture. */
+.tile:not(.tile--product) > picture {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
 .tile img { width: 100%; height: 100%; object-fit: cover; }
 
 /* Ratios match the supplied artwork so nothing is cropped or stretched.
@@ -455,9 +472,27 @@ ul, ol { margin: 0; padding: 0; }
 .tile--half { grid-column: span 3; aspect-ratio: 750 / 333; }
 .tile--third { grid-column: span 2; aspect-ratio: 1 / 1; }
 
-/* Portrait product shots sit inside their box rather than being cropped. */
-.tile--product { background: #fff; }
+/* Portrait product shots sit inside their box rather than being cropped. When
+   the tile also carries a caption it becomes a column, so the caption keeps its
+   own space instead of being pushed past the bottom edge and clipped. */
+.tile--product { background: #fff; display: flex; flex-direction: column; }
+.tile--product picture { flex: 1 1 auto; min-height: 8rem; }
 .tile--product img { object-fit: contain; padding: 0.9rem; }
+.tile--product figcaption { flex: 0 0 auto; }
+
+/* A captioned tile is sized by its contents rather than by a ratio, so the
+   picture and the words below it each keep the room they need. The picture area
+   is squared off so that tiles standing side by side start their captions on
+   the same line, whatever shape the photographs happen to be. */
+.tile--captioned { aspect-ratio: auto; }
+.tile--captioned picture { flex: 0 0 auto; aspect-ratio: 1 / 1; min-height: 0; }
+.tile__caption {
+  padding: 0.7rem 0.85rem 0.85rem;
+  font-weight: 600;
+  font-size: 0.92rem;
+  line-height: 1.35;
+  text-wrap: balance;
+}
 
 .tile--mark {
   display: grid;
@@ -465,7 +500,9 @@ ul, ol { margin: 0; padding: 0; }
   padding: 1.1rem;
   background: var(--surface-raised);
 }
-.tile--mark img { width: 78%; height: auto; object-fit: contain; }
+/* A mark is scaled to fit inside the padding, not cropped to fill it. */
+.tile--mark > picture { inset: 1.1rem; }
+.tile--mark img { object-fit: contain; }
 
 .tile--accent {
   background: var(--yellow);
@@ -568,10 +605,26 @@ ul, ol { margin: 0; padding: 0; }
   border-radius: var(--radius-lg);
   overflow: hidden;
 }
-.featured__lead figure { margin: 0; background: #fff; display: flex; align-items: center; justify-content: center; height: 100%; }
-/* Contained, not cropped: the product photograph is square and is shown whole
-   whatever shape the panel takes. */
-.featured__lead img { width: 100%; height: auto; max-height: 100%; object-fit: contain; }
+.featured__lead figure {
+  --plate-pad: clamp(0.75rem, 2vw, 1.4rem);
+  position: relative;
+  margin: 0;
+  background: #fff;
+  height: 100%;
+}
+/* Contained, not cropped, and taken out of flow so the panel decides its own
+   shape rather than inheriting the picture's. Both sides are sized explicitly:
+   an image is a replaced element, so it does not stretch to fill insets the way
+   a div would, and left to itself it keeps its own proportions and spills. */
+.featured__lead img {
+  position: absolute;
+  top: var(--plate-pad);
+  left: var(--plate-pad);
+  width: calc(100% - 2 * var(--plate-pad));
+  height: calc(100% - 2 * var(--plate-pad));
+  max-width: none;
+  object-fit: contain;
+}
 .featured__lead-body { padding: clamp(1.4rem, 3.5vw, 2.4rem); display: grid; gap: 0.6rem; align-content: center; }
 .featured__lead h3 { color: #fff; font-size: clamp(1.4rem, 1.1rem + 1.1vw, 2rem); }
 .featured__lead p { color: rgba(255, 255, 255, 0.78); margin: 0; max-width: 44ch; }
@@ -601,13 +654,18 @@ ul, ol { margin: 0; padding: 0; }
   align-items: center;
   justify-content: center;
 }
-.featured__item figure img { max-height: 100%; width: auto; object-fit: contain; }
+.featured__item figure picture { display: flex; max-width: 100%; max-height: 100%; }
+.featured__item figure img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; }
 .featured__item h3 { font-size: 1.06rem; }
 .featured__item p { margin: 0.25rem 0 0; font-size: 0.9rem; color: var(--slate); }
 
 @media (max-width: 60rem) {
   .featured__lead { grid-template-columns: 1fr; }
-  .featured__lead figure { aspect-ratio: 16 / 9; }
+  /* A shape that suits a square product photograph: 16/9 leaves it small and
+     stranded between two wide margins. The height comes from the ratio rather
+     than from the row, so the picture inside has a definite box to fit into. */
+  .featured__lead figure { aspect-ratio: 5 / 4; height: auto; }
+  .featured__lead { grid-template-rows: auto auto; }
 }
 @media (max-width: 44rem) {
   .featured { grid-template-columns: 1fr; }
@@ -853,6 +911,9 @@ ul, ol { margin: 0; padding: 0; }
    reset here rather than leaking a six-column layout into a two-column grid. */
 .division__media > .tile { grid-column: auto; aspect-ratio: 4 / 5; }
 .division__media > .tile--wide { grid-column: 1 / -1; aspect-ratio: 750 / 333; }
+/* A captioned tile keeps its content height here too, and the pair line up. */
+.division__media > .tile--captioned { aspect-ratio: auto; }
+.division__media { align-items: stretch; }
 .division__media--single { grid-template-columns: 1fr; }
 
 .chips { display: flex; flex-wrap: wrap; gap: 0.45rem; list-style: none; margin-top: 1.1rem; }
@@ -1276,6 +1337,25 @@ table.products td.size:empty::after { content: '—'; color: var(--line-strong);
   justify-content: space-between;
   font-size: 0.85rem;
   color: #9c9990;
+}
+
+/* --------------------------------------------------------------------------
+   Touch targets
+
+   A link inside a sentence is exempt from the minimum size, because tapping the
+   sentence is the only sensible thing to do there. A link standing on its own
+   in a list is not, and several of these were only as tall as their text. They
+   are given a comfortable height instead, which reads better on a phone as
+   well as being easier to hit.
+   -------------------------------------------------------------------------- */
+
+.footer-list a,
+.crumbs a,
+.enquiry-band__links a,
+.table--people td a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
 }
 
 /* --------------------------------------------------------------------------

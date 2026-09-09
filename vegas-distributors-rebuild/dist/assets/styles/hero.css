@@ -201,12 +201,17 @@
    Controls
    -------------------------------------------------------------------------- */
 
+/* The bar spans the slide so its controls line up with the page gutter, but
+   only the controls themselves should take a press. Left solid, the empty part
+   of the bar reaches up over the call to action and swallows taps meant for it
+   on a small screen. */
 .hero-controls {
   position: absolute;
   left: 0;
   right: 0;
   bottom: clamp(1rem, 3vh, 1.75rem);
   z-index: 4;
+  pointer-events: none;
 }
 .hero-controls__inner {
   display: flex;
@@ -214,6 +219,7 @@
   gap: 1.25rem;
   flex-wrap: wrap;
 }
+.hero-controls button { pointer-events: auto; }
 
 /* Without the script the carousel cannot move, so its controls are not shown. */
 .hero:not([data-ready]) .hero-controls { display: none; }
@@ -270,6 +276,11 @@
     aspect-ratio: auto;
   }
   .hero-video__backdrop { display: none; }
+
+  /* Arrows and position markers stay on one row: wrapped onto two they push
+     the whole bar up into the call to action. */
+  .hero-controls__inner { gap: 0.6rem; flex-wrap: nowrap; }
+  .hero-dots { min-width: 0; flex-wrap: nowrap; }
 
   .hero-slide__foot { bottom: clamp(4rem, 8vh, 5.5rem); }
   /* The call to action and the film's controls share one row: stacked, they
