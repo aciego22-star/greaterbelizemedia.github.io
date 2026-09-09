@@ -44,12 +44,23 @@
       }
     });
 
+    var close = function () {
+      if (toggle.getAttribute('aria-expanded') !== 'true') return;
+      toggle.setAttribute('aria-expanded', 'false');
+      apply();
+      markOpen();
+    };
+
+    // Choosing somewhere to go closes the menu behind you.
+    nav.addEventListener('click', function (e) {
+      var link = e.target.closest && e.target.closest('a[href]');
+      if (link && mobile.matches) close();
+    });
+
     // Escape closes the menu and returns focus to the control that opened it.
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
-        toggle.setAttribute('aria-expanded', 'false');
-        apply();
-        markOpen();
+        close();
         toggle.focus();
       }
     });

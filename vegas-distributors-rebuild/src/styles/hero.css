@@ -272,9 +272,18 @@
   .hero-video__backdrop { display: none; }
 
   .hero-slide__foot { bottom: clamp(4rem, 8vh, 5.5rem); }
-  .hero-slide__foot-inner { gap: 0.6rem; }
-  .hero-slide__cta { flex: 1 1 auto; justify-content: center; }
-  .hero-media__btn { width: 46px; height: 46px; }
+  /* The call to action and the film's controls share one row: stacked, they
+     push the carousel controls into the artwork on a short phone. */
+  .hero-slide__foot-inner { gap: 0.5rem; flex-wrap: nowrap; }
+  .hero-slide__cta {
+    flex: 1 1 auto;
+    justify-content: center;
+    padding-inline: 1.1rem;
+    min-width: 0;
+  }
+  .hero-media { flex: 0 0 auto; }
+  .hero-media__btn { width: 44px; height: 44px; }
+  .hero-media__btn svg { width: 20px; height: 20px; }
 }
 
 /* The tallest phones leave room for the artwork to breathe; the shortest need

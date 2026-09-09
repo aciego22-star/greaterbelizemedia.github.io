@@ -103,31 +103,58 @@ function inlineImage(ref) {
   return uri;
 }
 
+/** Picks the smallest derivative in a srcset that is still wide enough. */
+function chooseFrom(srcset, target) {
+  const candidates = srcset
+    .split(',')
+    .map((entry) => {
+      const [url, w] = entry.trim().split(/\s+/);
+      return { url, w: parseInt(w, 10) || 0 };
+    })
+    .sort((a, b) => a.w - b.w);
+  return (candidates.find((c) => c.w >= target) ?? candidates[candidates.length - 1])?.url;
+}
+
 /**
- * Collapses a responsive <picture> to one inlined source. Weight matters more
- * than art direction here, so the smallest derivative that still reads well is
- * used, and hero backgrounds are capped harder than product artwork.
+ * Collapses a responsive <picture> to inlined sources.
+ *
+ * Weight matters more than art direction between widths of the same picture,
+ * so a plain picture keeps one derivative. Art direction between different
+ * pictures is not the same thing: the campaign artwork is supplied as a
+ * landscape cut and a portrait cut, and dropping the portrait one would leave a
+ * phone showing the landscape composition cropped to a slot it was never
+ * composed for. So a source carrying a media query survives, one per query.
  */
 function inlinePictures(html) {
   return html
-    // Only the picture sources collapse; the video keeps its own.
-    .replace(/<source(?![^>]*type="video\/)[^>]*>/g, '')
+    .replace(/<picture([^>]*)>([\s\S]*?)<\/picture>/g, (whole, attrs, inner) => {
+      const kept = [];
+      const seen = new Set();
+
+      for (const [tag] of inner.matchAll(/<source[^>]*>/g)) {
+        const media = /media="([^"]*)"/.exec(tag)?.[1];
+        // WebP is carried rather than JPEG: it is a third of the weight and
+        // every browser this file will be opened in decodes it, so the source
+        // can keep its type attribute and still be certain to render.
+        if (!media || seen.has(media) || !/type="image\/webp"/.test(tag)) continue;
+        const srcset = /srcset="([^"]*)"/.exec(tag)?.[1];
+        if (!srcset) continue;
+        const chosen = chooseFrom(srcset, 720);
+        if (!chosen) continue;
+        seen.add(media);
+        kept.push(`<source media="${media}" type="image/webp" srcset="${inlineImage(chosen)}">`);
+      }
+
+      return `<picture${attrs}>${kept.join('')}${inner.replace(/<source[^>]*>/g, '')}</picture>`;
+    })
     .replace(/<img([^>]*)>/g, (tag, attrsStr) => {
       const srcset = /srcset="([^"]*)"/.exec(attrsStr)?.[1];
       let chosen = /src="([^"]*)"/.exec(attrsStr)?.[1];
-      const isHero = /assets\/heroes\/hero-/.test(attrsStr);
+      const isHero = /assets\/(?:heroes|campaign)\//.test(attrsStr);
 
-      if (srcset) {
-        const candidates = srcset
-          .split(',')
-          .map((s) => {
-            const [url, w] = s.trim().split(/\s+/);
-            return { url, w: parseInt(w, 10) || 0 };
-          })
-          .sort((a, b) => a.w - b.w);
-        const target = isHero ? 960 : 800;
-        chosen = (candidates.find((c) => c.w >= target) ?? candidates[candidates.length - 1]).url;
-      }
+      // An image already inlined by the pass above is left alone.
+      if (chosen && chosen.startsWith('data:')) return tag;
+      if (srcset) chosen = chooseFrom(srcset, isHero ? 960 : 800) ?? chosen;
 
       const cleaned = attrsStr
         .replace(/\ssrcset="[^"]*"/g, '')
@@ -313,6 +340,17 @@ ${css}
       if (vk === key) a.setAttribute('aria-current', 'page');
       else a.removeAttribute('aria-current');
     });
+
+    // Views change in place here rather than by loading a document, so the
+    // mobile menu is closed by hand the way a page load would have closed it.
+    var toggle = document.querySelector('[data-chrome="' + lang + '"] .nav-toggle');
+    var panel = document.querySelector('[data-chrome="' + lang + '"] .masthead__panel');
+    if (toggle && panel && window.matchMedia('(max-width: 52rem)').matches) {
+      toggle.setAttribute('aria-expanded', 'false');
+      panel.hidden = true;
+      var header = toggle.closest('.masthead');
+      if (header) header.classList.remove('is-open');
+    }
 
     window.scrollTo(0, 0);
 
