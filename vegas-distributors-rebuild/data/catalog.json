@@ -1,0 +1,2982 @@
+{
+  "generatedFrom": "https://www.vegasdistributors.bz/",
+  "collectedAt": "2026-09-08",
+  "generatedAt": "2026-09-08",
+  "verificationNote": "Every brand, product name and pack size below was published on the public Vega's Distributors website when the pack was collected. None has been confirmed as current by the business.",
+  "categories": [
+    {
+      "id": "food-pantry",
+      "en": "Food and pantry staples",
+      "es": "Alimentos y básicos de despensa"
+    },
+    {
+      "id": "snacks-confectionery",
+      "en": "Snacks and confectionery",
+      "es": "Snacks y confitería"
+    },
+    {
+      "id": "beverages",
+      "en": "Beverages and powdered drinks",
+      "es": "Bebidas y refrescos en polvo"
+    },
+    {
+      "id": "cleaning-household",
+      "en": "Cleaning and household products",
+      "es": "Limpieza y productos para el hogar"
+    },
+    {
+      "id": "hotel-institutional",
+      "en": "Hotel and institutional supplies",
+      "es": "Suministros hoteleros e institucionales"
+    },
+    {
+      "id": "construction",
+      "en": "Construction-related products",
+      "es": "Productos para construcción"
+    },
+    {
+      "id": "wines-spirits",
+      "en": "Wines and spirits",
+      "es": "Vinos y licores"
+    },
+    {
+      "id": "lubricants",
+      "en": "Oils, coolants and lubricants",
+      "es": "Aceites, refrigerantes y lubricantes"
+    }
+  ],
+  "brands": [
+    {
+      "slug": "ambar",
+      "name": "Ambar",
+      "division": "vegas-distributors",
+      "category": "cleaning-household",
+      "categories": [
+        "cleaning-household"
+      ],
+      "logo": {
+        "file": "4c76b4dd626c22c3ea580a1e0f5858de-ambar-692c2cb3.jpg",
+        "width": 180,
+        "height": 120
+      },
+      "photos": [
+        {
+          "file": "ambarsoap-2d5a587e.jpg",
+          "width": 750,
+          "height": 333,
+          "alt": ""
+        }
+      ],
+      "sections": [
+        {
+          "label": "BALL SOAP",
+          "category": "cleaning-household",
+          "products": [
+            {
+              "name": "JABON AMBAR",
+              "size": "300g"
+            },
+            {
+              "name": "JABON AMBAR FLORAL MARQUETA",
+              "size": "350g"
+            },
+            {
+              "name": "JABON AMBAR FRESCURA NATURAL",
+              "size": "300g"
+            },
+            {
+              "name": "JABON AMBAR MANZANILLA (4)",
+              "size": "1,275g"
+            },
+            {
+              "name": "JABON AMBAR MANZANILLA (6)",
+              "size": "1,275g"
+            }
+          ]
+        }
+      ],
+      "productCount": 5,
+      "related": [
+        "espumil",
+        "ultraklin"
+      ],
+      "sourceUrl": "https://www.vegasdistributors.bz/products/ambar",
+      "sourceNote": null,
+      "verification": "published-online-unconfirmed"
+    },
+    {
+      "slug": "bop",
+      "name": "Bop",
+      "division": "vegas-distributors",
+      "category": "cleaning-household",
+      "categories": [
+        "cleaning-household"
+      ],
+      "logo": {
+        "file": "c40ee336ffe5ddae49d2005698a2862c-boplogo-d598d794.jpg",
+        "width": 180,
+        "height": 120
+      },
+      "photos": [
+        {
+          "file": "bop-99a2c773.jpg",
+          "width": null,
+          "height": null,
+          "alt": ""
+        }
+      ],
+      "sections": [
+        {
+          "label": "INSECTICIDE",
+          "category": "cleaning-household",
+          "products": [
+            {
+              "name": "CITRONELLA",
+              "size": "250ml / 400ml / 600ml"
+            },
+            {
+              "name": "EVERGREEN",
+              "size": "250ml / 400ml / 600ml"
+            },
+            {
+              "name": "ORIGINAL",
+              "size": "250ml / 400ml / 600ml"
+            }
+          ]
+        }
+      ],
+      "productCount": 3,
+      "related": [],
+      "sourceUrl": "https://www.vegasdistributors.bz/products/bop",
+      "sourceNote": null,
+      "verification": "published-online-unconfirmed"
+    },
+    {
+      "slug": "cashitas",
+      "name": "Cashitas",
+      "division": "vegas-distributors",
+      "category": "snacks-confectionery",
+      "categories": [
+        "snacks-confectionery"
+      ],
+      "logo": {
+        "file": "11e176586a6fd8ddb91df69ac2f9010f-cashitaslogo-e22e0bc0.jpg",
+        "width": 180,
+        "height": 120
+      },
+      "photos": [
+        {
+          "file": "cashitas-64c8c5c6.jpg",
+          "width": 750,
+          "height": 333,
+          "alt": ""
+        },
+        {
+          "file": "pistachio-47ec33aa.jpg",
+          "width": 1280,
+          "height": 720,
+          "alt": ""
+        }
+      ],
+      "sections": [
+        {
+          "label": "PRODUCTS",
+          "category": "snacks-confectionery",
+          "products": [
+            {
+              "name": "MANI CON LIMON Y SAL",
+              "size": "55g"
+            },
+            {
+              "name": "TUBO MANI CON SAL 24X55GR",
+              "size": "55g"
+            },
+            {
+              "name": "MANI ON FIRE CASHITAS TUBO",
+              "size": "55g"
+            },
+            {
+              "name": "MARANON ON FIRE CASHITAS",
+              "size": "40g / 60g"
+            },
+            {
+              "name": "PEPITORIA ENTERA SASSON",
+              "size": "50g"
+            },
+            {
+              "name": "ROASTED CASHEWS",
+              "size": "40g / 60g"
+            },
+            {
+              "name": "SALTED CASHEWS",
+              "size": "40g / 60g"
+            },
+            {
+              "name": "TRAIL MIX & BLUEBERRIES",
+              "size": "70g"
+            },
+            {
+              "name": "TRAIL MIX NUTS & CRANBERRIES",
+              "size": "40g / 70g"
+            },
+            {
+              "name": "TRAIL MIX NUTS & RAISINS",
+              "size": "40g / 70g"
+            },
+            {
+              "name": "PISTACHIOS 24X70",
+              "size": "70g"
+            }
+          ]
+        }
+      ],
+      "productCount": 11,
+      "related": [],
+      "sourceUrl": "https://www.vegasdistributors.bz/products/cashitas",
+      "sourceNote": null,
+      "verification": "published-online-unconfirmed"
+    },
+    {
+      "slug": "castilla",
+      "name": "Castilla",
+      "division": "vegas-distributors",
+      "category": "food-pantry",
+      "categories": [
+        "food-pantry",
+        "snacks-confectionery"
+      ],
+      "logo": {
+        "file": "62e7c45ff791c7b268ca8a123a806010-castillalogo-c7da9c59.jpg",
+        "width": 180,
+        "height": 120
+      },
+      "photos": [
+        {
+          "file": "castilla-a9346446.jpg",
+          "width": 750,
+          "height": 333,
+          "alt": ""
+        }
+      ],
+      "sections": [
+        {
+          "label": "IDEAL ESSENCE",
+          "category": "food-pantry",
+          "products": [
+            {
+              "name": "ESENCIA CASTILLA ALMENDRA",
+              "size": "250cc"
+            },
+            {
+              "name": "ESENCIA CASTILLA APPLE",
+              "size": "250cc / 3750cc"
+            },
+            {
+              "name": "ESENCIA CASTILLA CAFE",
+              "size": "250cc / 3750cc"
+            },
+            {
+              "name": "ESENCIA CASTILLA CHICLE",
+              "size": "3750cc"
+            },
+            {
+              "name": "ESENCIA CASTILLA COCO",
+              "size": "250cc / 3750cc"
+            },
+            {
+              "name": "ESENCIA CASTILLA CREMA",
+              "size": "250cc / 3750cc"
+            },
+            {
+              "name": "ESENCIA CASTILLA FRAMBUESA",
+              "size": "250cc / 3750cc"
+            },
+            {
+              "name": "ESENCIA CASTILLA FRESA",
+              "size": "250cc / 3750cc"
+            },
+            {
+              "name": "ESENCIA CASTILLA GRANADINA",
+              "size": "250cc / 3750cc"
+            },
+            {
+              "name": "ESENCIA CASTILLA JAMAICA",
+              "size": "250cc"
+            },
+            {
+              "name": "ESENCIA CASTILLA KOLA",
+              "size": "250cc / 3750cc"
+            },
+            {
+              "name": "ESENCIA CASTILLA LIMON",
+              "size": "250cc / 3750cc"
+            },
+            {
+              "name": "ESENCIA CASTILLA MANDARINA",
+              "size": "250cc"
+            },
+            {
+              "name": "ESENCIA CASTILLA NARANJA",
+              "size": "250cc / 3750cc"
+            },
+            {
+              "name": "ESENCIA CASTILLA PINA AMARILLA",
+              "size": "250cc / 3750cc"
+            },
+            {
+              "name": "ESENCIA CASTILLA PIÑA OBSCURA",
+              "size": "250cc"
+            },
+            {
+              "name": "ESENCIA CASTILLA SOLUCION DE YEMA",
+              "size": "250cc"
+            },
+            {
+              "name": "ESENCIA CASTILLA TAMARINDO",
+              "size": "250cc"
+            },
+            {
+              "name": "ESENCIA CASTILLA UVA",
+              "size": "250cc / 3750cc"
+            },
+            {
+              "name": "ESENCIA CASTILLA VANILLA BLANCA",
+              "size": "250cc"
+            },
+            {
+              "name": "ESENCIA CASTILLA VANILLA OBSCURA",
+              "size": "250cc"
+            }
+          ]
+        },
+        {
+          "label": "JELLO",
+          "category": "snacks-confectionery",
+          "products": [
+            {
+              "name": "CHANTILLY CASTILLA CHOCOLATE",
+              "size": "100g"
+            },
+            {
+              "name": "CHANTILLY CASTILLA VAINILLA",
+              "size": "100gr"
+            },
+            {
+              "name": "CHANTILLY VAINILLA",
+              "size": "1lb"
+            },
+            {
+              "name": "GELATINA CASTILLA FRESA",
+              "size": "84g"
+            },
+            {
+              "name": "GELATINA CASTILLA LIMON",
+              "size": "84g"
+            },
+            {
+              "name": "GELATINA CASTILLA NARANJA",
+              "size": "84g"
+            },
+            {
+              "name": "GELATINA CASTILLA",
+              "size": "84g"
+            },
+            {
+              "name": "GELATINA CASTILLA",
+              "size": "84g"
+            },
+            {
+              "name": "GELATINA CASTILLA",
+              "size": "84g"
+            },
+            {
+              "name": "GELATINA LIGHT CASTILLA",
+              "size": "12g"
+            },
+            {
+              "name": "GELATINA LIGHT CASTILLA",
+              "size": "12g"
+            },
+            {
+              "name": "GELATINA LIGHT CASTILLA",
+              "size": "12g"
+            },
+            {
+              "name": "GELATINA LIGHT CASTILLA",
+              "size": "12g"
+            },
+            {
+              "name": "GELATINA LIGHT CASTILLA",
+              "size": "12g"
+            },
+            {
+              "name": "GELATINA LIGHT CASTILLA",
+              "size": "12g"
+            }
+          ]
+        }
+      ],
+      "productCount": 36,
+      "related": [],
+      "sourceUrl": "https://www.vegasdistributors.bz/products/castilla",
+      "sourceNote": null,
+      "verification": "published-online-unconfirmed"
+    },
+    {
+      "slug": "diana",
+      "name": "Diana",
+      "division": "vegas-distributors",
+      "category": "snacks-confectionery",
+      "categories": [
+        "snacks-confectionery"
+      ],
+      "logo": {
+        "file": "48ee7f367d26598eb3bed6b4be786fe8-dianalogo-5fd89feb.jpg",
+        "width": 180,
+        "height": 120
+      },
+      "photos": [
+        {
+          "file": "diana-f28135be.jpg",
+          "width": 750,
+          "height": 333,
+          "alt": ""
+        }
+      ],
+      "sections": [
+        {
+          "label": "CHIPS",
+          "category": "snacks-confectionery",
+          "products": [
+            {
+              "name": "ALBOROTO PEQUEÑO DE SUPERMERCADO",
+              "size": ""
+            },
+            {
+              "name": "CANDY MAIZ PEQUEÑO DE SUPERMERCADO",
+              "size": ""
+            },
+            {
+              "name": "CENTAVITOS PEQUEÑO DE SUPERMERCADO",
+              "size": ""
+            },
+            {
+              "name": "CHURRITO PEQUEÑO DE SUPERMERCADO",
+              "size": ""
+            },
+            {
+              "name": "JALAPENO PEQUEÑO DE SUPERMERCADO",
+              "size": ""
+            },
+            {
+              "name": "JALAPENOS RISTRA DE 12",
+              "size": ""
+            },
+            {
+              "name": "KORCHIPS C/CHILE RISTRA DE 12",
+              "size": ""
+            },
+            {
+              "name": "KORCHIPS CON CHILE PEQUEÑO DE SUPERMERCADO",
+              "size": ""
+            },
+            {
+              "name": "KORCHIPS CON LIMON PEQUEÑO DE SUPERMERCADO",
+              "size": ""
+            },
+            {
+              "name": "KORCHIPS CON QUESO PEQUEÑO DE SUPERMERCADO",
+              "size": ""
+            },
+            {
+              "name": "MAIZ CHINO PICANTE PEQUEÑO DE SUPERMERCADO",
+              "size": ""
+            },
+            {
+              "name": "NACHO PEQUEÑO DE SUPERMERCADO",
+              "size": ""
+            },
+            {
+              "name": "NACHO RISTRA DE 12",
+              "size": ""
+            },
+            {
+              "name": "QUESITO PEQUEÑO DE SUPERMERCADO",
+              "size": ""
+            },
+            {
+              "name": "TOCINO PEQUEÑO DE SUPERMERCADO",
+              "size": ""
+            },
+            {
+              "name": "TOSTECAS RISTRA DE 12",
+              "size": ""
+            },
+            {
+              "name": "TOZTECAS PEQUEÑO DE SUPERMERCADO",
+              "size": ""
+            },
+            {
+              "name": "YUCA PEQUEÑO DE SUPERMERCADO",
+              "size": ""
+            },
+            {
+              "name": "YUCATEKAS C/VINAGRE Y CHILE PEQUEÑO DE SUPERMERCADO",
+              "size": ""
+            }
+          ]
+        },
+        {
+          "label": "ICE CREAM CONES",
+          "category": "snacks-confectionery",
+          "products": [
+            {
+              "name": "CONOS GRANDE VAINILLA 23/50 UNIDADES",
+              "size": ""
+            }
+          ]
+        }
+      ],
+      "productCount": 20,
+      "related": [],
+      "sourceUrl": "https://www.vegasdistributors.bz/products/diana",
+      "sourceNote": null,
+      "verification": "published-online-unconfirmed"
+    },
+    {
+      "slug": "ducal",
+      "name": "Ducal",
+      "division": "vegas-distributors",
+      "category": "food-pantry",
+      "categories": [
+        "food-pantry"
+      ],
+      "logo": {
+        "file": "be4e3f3c29d591577f1b10d68d7350d0-ducallogo-3b2fd453.jpg",
+        "width": 180,
+        "height": 120
+      },
+      "photos": [
+        {
+          "file": "ducal-c3c78694.jpg",
+          "width": 750,
+          "height": 333,
+          "alt": ""
+        }
+      ],
+      "sections": [
+        {
+          "label": "REFRIED BEANS",
+          "category": "food-pantry",
+          "products": [
+            {
+              "name": "DUCAL BLACK REFRIED BEANS",
+              "size": "10.5oz / 15oz / 29oz"
+            },
+            {
+              "name": "DUCAL BLACK REFRIED BEANS DOY PACK",
+              "size": "8oz / 14.1oz"
+            },
+            {
+              "name": "DUCAL BLACK REFRIED BEANS with CHEESE",
+              "size": "15oz"
+            },
+            {
+              "name": "DUCAL BLACK REFRIED BEANS with JALAPEÑO",
+              "size": "15oz"
+            },
+            {
+              "name": "DUCAL READY BLACK BEANS - GARLIC & ONION",
+              "size": "15oz"
+            },
+            {
+              "name": "DUCAL RED REFRIED BEANS",
+              "size": "15oz / 29oz"
+            },
+            {
+              "name": "DUCAL RED REFRIED BEANS with CHORIZO",
+              "size": "15oz"
+            },
+            {
+              "name": "DUCAL RED REFRIED BEANS DOY PACK",
+              "size": "8oz / 14.1oz"
+            },
+            {
+              "name": "FRIJOL NEGRO ENTERO DUCAL",
+              "size": "1.82Kg"
+            },
+            {
+              "name": "FRIJOL NEGRO LICUADO DUCAL",
+              "size": "1.82Kg"
+            },
+            {
+              "name": "FRIJOL ROJO ENTERO DUCAL",
+              "size": "1.82Kg"
+            }
+          ]
+        }
+      ],
+      "productCount": 11,
+      "related": [],
+      "sourceUrl": "https://www.vegasdistributors.bz/products/ducal",
+      "sourceNote": null,
+      "verification": "published-online-unconfirmed"
+    },
+    {
+      "slug": "ducal-juice",
+      "name": "Ducal Juice",
+      "division": "vegas-distributors",
+      "category": "beverages",
+      "categories": [
+        "beverages"
+      ],
+      "logo": {
+        "file": "365471531ebaeb99b42dd530f3ddf452-ducaljuicelogo-23862791.jpg",
+        "width": 180,
+        "height": 120
+      },
+      "photos": [
+        {
+          "file": "ducaljuice-c55d0a67.jpg",
+          "width": 750,
+          "height": 333,
+          "alt": ""
+        }
+      ],
+      "sections": [
+        {
+          "label": "JUICE",
+          "category": "beverages",
+          "products": [
+            {
+              "name": "DUCAL BEBIDA CON JUGO DE MANZANA 1X24X200ML",
+              "size": "200ml"
+            },
+            {
+              "name": "DUCAL BEBIDA CON JUGO DE MANZANA 1X24X330ML",
+              "size": "300ml"
+            },
+            {
+              "name": "DUCAL BEBIDA CON JUGO MELOCOTON 1X24X200ML",
+              "size": "200ml"
+            },
+            {
+              "name": "DUCAL BEBIDA CON JUGO DE MELOCOTON 1X24X330ML",
+              "size": "300ml"
+            }
+          ]
+        }
+      ],
+      "productCount": 4,
+      "related": [],
+      "sourceUrl": "https://www.vegasdistributors.bz/products/ducal-juice",
+      "sourceNote": null,
+      "verification": "published-online-unconfirmed"
+    },
+    {
+      "slug": "escocesa",
+      "name": "Escocesa",
+      "division": "vegas-distributors",
+      "category": "cleaning-household",
+      "categories": [
+        "cleaning-household"
+      ],
+      "logo": {
+        "file": "27d1622c3e694a6acd6db98570290919-escocesalogo-ad3ab252.jpg",
+        "width": 180,
+        "height": 120
+      },
+      "photos": [
+        {
+          "file": "kaly-e0d65bb2.jpg",
+          "width": 750,
+          "height": 333,
+          "alt": ""
+        }
+      ],
+      "sections": [
+        {
+          "label": null,
+          "category": "cleaning-household",
+          "products": [
+            {
+              "name": "CEPILLO DE MANO OVALIN",
+              "size": ""
+            },
+            {
+              "name": "CEPILLO ESCOCESA PLANCHA",
+              "size": ""
+            },
+            {
+              "name": "ESCOBA NENA SUAVE",
+              "size": ""
+            },
+            {
+              "name": "ESCOBA SUPER NENA",
+              "size": ""
+            },
+            {
+              "name": "TOILET BRUSH WITH CUP",
+              "size": ""
+            }
+          ]
+        }
+      ],
+      "productCount": 5,
+      "related": [],
+      "sourceUrl": "https://www.vegasdistributors.bz/products/escocesa",
+      "sourceNote": null,
+      "verification": "published-online-unconfirmed"
+    },
+    {
+      "slug": "espumil",
+      "name": "Espumil",
+      "division": "vegas-distributors",
+      "category": "cleaning-household",
+      "categories": [
+        "cleaning-household"
+      ],
+      "logo": {
+        "file": "69e41606aa9955fe999420583efeec1c-espumillogo-9c6e8ccc.jpg",
+        "width": 180,
+        "height": 120
+      },
+      "photos": [
+        {
+          "file": "espumil-f44d1d69.jpg",
+          "width": null,
+          "height": null,
+          "alt": ""
+        }
+      ],
+      "sections": [
+        {
+          "label": "BALL SOAP",
+          "category": "cleaning-household",
+          "products": [
+            {
+              "name": "JABON ESPUMIL CITRICA MARQUETA",
+              "size": "350g"
+            },
+            {
+              "name": "JABON ESPUMIL FLORAL MARQUETA",
+              "size": "350g"
+            },
+            {
+              "name": "JABON ESPUMIL ULTRALIMPIEZA MARQUETA",
+              "size": "350g"
+            }
+          ]
+        },
+        {
+          "label": "POWDERED DETERGENT",
+          "category": "cleaning-household",
+          "products": [
+            {
+              "name": "ESPUMIL CITRICA (GREEN)",
+              "size": "250g / 1Kg / 2Kg"
+            },
+            {
+              "name": "ESPUMIL EXP FLORES (PINK)",
+              "size": "1Kg / 2Kg / 5Kg"
+            },
+            {
+              "name": "ESPUMIL FLORAL (PINK) 1 X 9KG",
+              "size": "250g / 500g / 9Kg"
+            },
+            {
+              "name": "ESPUMIL LIMON (GREEN)",
+              "size": "1Kg"
+            },
+            {
+              "name": "ESPUMIL TOQUE SUAVIZANTE",
+              "size": "100g"
+            }
+          ]
+        }
+      ],
+      "productCount": 8,
+      "related": [
+        "ambar",
+        "ultraklin"
+      ],
+      "sourceUrl": "https://www.vegasdistributors.bz/products/espumil",
+      "sourceNote": null,
+      "verification": "published-online-unconfirmed"
+    },
+    {
+      "slug": "favora",
+      "name": "Favora",
+      "division": "vegas-distributors",
+      "category": "food-pantry",
+      "categories": [
+        "food-pantry"
+      ],
+      "logo": {
+        "file": "aeea609789c05e0a3533d996b801e061-favoralogo-aedcd0d9.jpg",
+        "width": 180,
+        "height": 120
+      },
+      "photos": [
+        {
+          "file": "favora-23bb5c22.jpg",
+          "width": null,
+          "height": null,
+          "alt": ""
+        }
+      ],
+      "sections": [
+        {
+          "label": "Seasoning",
+          "category": "food-pantry",
+          "products": [
+            {
+              "name": "COMPLETE SEASONING FAVORA BOTE",
+              "size": "200g"
+            },
+            {
+              "name": "COMPLETE SEASONING FAVORA CARTON",
+              "size": "12g"
+            },
+            {
+              "name": "CONSOME DE POLLO FAVORA",
+              "size": "200g / 350g / 454g / 908g / 3300g"
+            },
+            {
+              "name": "CONSOME DE POLLO FAVORA BOLSA",
+              "size": "144g / 200g"
+            },
+            {
+              "name": "CONSOME DE POLLO FAVORA CARTON",
+              "size": "12g"
+            },
+            {
+              "name": "CONSOME DE RES FAVORA CARTON",
+              "size": "12g"
+            },
+            {
+              "name": "CONSOME FAVORA CARTON SURTIDO",
+              "size": "12g"
+            },
+            {
+              "name": "SABORIN FAVORA CARTON",
+              "size": "12g"
+            },
+            {
+              "name": "SAL DE AJO FAVORA CARTON",
+              "size": "12g"
+            },
+            {
+              "name": "SAL DE CEBOLLA FAVORA",
+              "size": "12g"
+            },
+            {
+              "name": "SAZONADOR/ABLANDADOR FAVORA CARTON",
+              "size": "12g"
+            },
+            {
+              "name": "SOPITA FAVORA SURTIDA CARTON",
+              "size": "30g"
+            }
+          ]
+        },
+        {
+          "label": "Spices and Condiments",
+          "category": "food-pantry",
+          "products": [
+            {
+              "name": "CANELA FAVORA CARTON",
+              "size": "12g"
+            },
+            {
+              "name": "PIMIENTA FAVORA CARTON",
+              "size": "12g"
+            }
+          ]
+        }
+      ],
+      "productCount": 14,
+      "related": [
+        "tropi-kuhl"
+      ],
+      "sourceUrl": "https://www.vegasdistributors.bz/products/favora",
+      "sourceNote": null,
+      "verification": "published-online-unconfirmed"
+    },
+    {
+      "slug": "ferrero-rocher",
+      "name": "FERRERO ROCHER",
+      "division": "vegas-distributors",
+      "category": "snacks-confectionery",
+      "categories": [
+        "snacks-confectionery"
+      ],
+      "logo": {
+        "file": "b16cc9f895b43c35b1e33dccdc1a712a-ferrerologo-047b41c4.jpg",
+        "width": 180,
+        "height": 120
+      },
+      "photos": [
+        {
+          "file": "ferrero-8354aaf9.jpg",
+          "width": null,
+          "height": null,
+          "alt": ""
+        },
+        {
+          "file": "ferrerocollection-d52f5062.jpg",
+          "width": null,
+          "height": null,
+          "alt": ""
+        }
+      ],
+      "sections": [
+        {
+          "label": null,
+          "category": "snacks-confectionery",
+          "products": [
+            {
+              "name": "FERRERO ROCHER",
+              "size": "T16X5X4"
+            },
+            {
+              "name": "FERRERO ROCHER",
+              "size": "T3X16X6"
+            },
+            {
+              "name": "FERRERO ROCHER",
+              "size": "T8X10X2"
+            },
+            {
+              "name": "FERRERO COLLECTION",
+              "size": "T7X10X2"
+            },
+            {
+              "name": "FERRERO COLLECTION",
+              "size": "T11X10X2"
+            }
+          ]
+        }
+      ],
+      "productCount": 5,
+      "related": [
+        "tictac",
+        "nutella",
+        "kinder-sorpresa",
+        "raffaello"
+      ],
+      "sourceUrl": "https://www.vegasdistributors.bz/products/ferrero-rocher",
+      "sourceNote": null,
+      "verification": "published-online-unconfirmed"
+    },
+    {
+      "slug": "fun-c",
+      "name": "Fun C",
+      "division": "vegas-distributors",
+      "category": "beverages",
+      "categories": [
+        "beverages"
+      ],
+      "logo": {
+        "file": "bb2691eed5da7325b7254189a9da868d-funclogo-5e72cd4c.jpg",
+        "width": 180,
+        "height": 120
+      },
+      "photos": [
+        {
+          "file": "func-1560ca7f.jpg",
+          "width": 750,
+          "height": 333,
+          "alt": ""
+        }
+      ],
+      "sections": [
+        {
+          "label": "JUICE",
+          "category": "beverages",
+          "products": [
+            {
+              "name": "FUN C REFRESCO MANZANA TETRA 1X24X200ML",
+              "size": "200ml"
+            },
+            {
+              "name": "FUN C REFRESCO MELOCOTON TETRA 1X24X200ML",
+              "size": "200ml"
+            }
+          ]
+        }
+      ],
+      "productCount": 2,
+      "related": [],
+      "sourceUrl": "https://www.vegasdistributors.bz/products/fun-c",
+      "sourceNote": null,
+      "verification": "published-online-unconfirmed"
+    },
+    {
+      "slug": "gama",
+      "name": "Gama",
+      "division": "vegas-distributors",
+      "category": "snacks-confectionery",
+      "categories": [
+        "snacks-confectionery"
+      ],
+      "logo": {
+        "file": "a06dc658f4c5fcd75a11be2cd51da5e0-gamalogo-4c9bb84a.jpg",
+        "width": 180,
+        "height": 120
+      },
+      "photos": [
+        {
+          "file": "gama-6039ff3d.jpg",
+          "width": 750,
+          "height": 333,
+          "alt": ""
+        }
+      ],
+      "sections": [
+        {
+          "label": "Biscuits",
+          "category": "snacks-confectionery",
+          "products": [
+            {
+              "name": "CANCAN EXTRA CHOCOLATE-VAINILLA",
+              "size": "37.5g"
+            },
+            {
+              "name": "GALLETA DULCE MARIA",
+              "size": "135g"
+            },
+            {
+              "name": "GALLETA RELLENA CAN CAN CHOCOMAD",
+              "size": "48g"
+            },
+            {
+              "name": "GALLETAS SALDA COCTELITAS FIESTA",
+              "size": "18g"
+            },
+            {
+              "name": "GAMA DUPLEX CHOCO-VAINILLA",
+              "size": "22g"
+            },
+            {
+              "name": "GAMA ESCOLAR CHOCOLATE",
+              "size": "22g"
+            },
+            {
+              "name": "GAMA ESCOLAR FRESA",
+              "size": "22g"
+            },
+            {
+              "name": "GAMA ESCOLAR VANILLA",
+              "size": "22g"
+            },
+            {
+              "name": "GAMA GALLETA SALADA",
+              "size": "24g"
+            },
+            {
+              "name": "GAMA GALLETA SODA",
+              "size": "24g"
+            },
+            {
+              "name": "GAMA SALADA CLUB MAX",
+              "size": "40g"
+            },
+            {
+              "name": "GAMA ZAFARI",
+              "size": "25g"
+            }
+          ]
+        }
+      ],
+      "productCount": 12,
+      "related": [
+        "ina",
+        "lucciola",
+        "gold-medal",
+        "zafari"
+      ],
+      "sourceUrl": "https://www.vegasdistributors.bz/products/gama",
+      "sourceNote": null,
+      "verification": "published-online-unconfirmed"
+    },
+    {
+      "slug": "gold-medal",
+      "name": "Gold Medal",
+      "division": "vegas-distributors",
+      "category": "food-pantry",
+      "categories": [
+        "food-pantry"
+      ],
+      "logo": {
+        "file": "88deb1246e31817aef844b685a944621-goldmedallogo-9b4a69d3.jpg",
+        "width": 180,
+        "height": 120
+      },
+      "photos": [
+        {
+          "file": "goldmedal1-f9be1539.jpg",
+          "width": 750,
+          "height": 333,
+          "alt": ""
+        }
+      ],
+      "sections": [
+        {
+          "label": null,
+          "category": "food-pantry",
+          "products": [
+            {
+              "name": "HOT CAKE MIX 24X450",
+              "size": "BANANA NUEZ"
+            },
+            {
+              "name": "HOT CAKE MIX 24X450",
+              "size": "CHOCOLATE"
+            },
+            {
+              "name": "HOT CAKE MIX 24X450",
+              "size": "ORIGINAL"
+            },
+            {
+              "name": "HOT CAKE MIX 24X450",
+              "size": "VAINILLA"
+            },
+            {
+              "name": "HOT CAKE MIX 12X1350",
+              "size": "INSTANT"
+            },
+            {
+              "name": "HOT CAKE MIX 12X165",
+              "size": "ORIGINAL"
+            }
+          ]
+        }
+      ],
+      "productCount": 6,
+      "related": [
+        "gama",
+        "ina",
+        "lucciola",
+        "zafari"
+      ],
+      "sourceUrl": "https://www.vegasdistributors.bz/products/gold-medal",
+      "sourceNote": null,
+      "verification": "published-online-unconfirmed"
+    },
+    {
+      "slug": "granada",
+      "name": "Granada",
+      "division": "vegas-distributors",
+      "category": "snacks-confectionery",
+      "categories": [
+        "snacks-confectionery"
+      ],
+      "logo": {
+        "file": "e52d282a3c2fa219279b213403dcc4f8-granadalogo-c6af8816.jpg",
+        "width": 180,
+        "height": 120
+      },
+      "photos": [
+        {
+          "file": "granada-bb931248.jpg",
+          "width": 750,
+          "height": 333,
+          "alt": ""
+        }
+      ],
+      "sections": [
+        {
+          "label": "Liquid Chocolate",
+          "category": "snacks-confectionery",
+          "products": [
+            {
+              "name": "CHOCOBANANO LIQUID CHOCOLATE",
+              "size": "800g / 1600g"
+            }
+          ]
+        }
+      ],
+      "productCount": 1,
+      "related": [
+        "melher"
+      ],
+      "sourceUrl": "https://www.vegasdistributors.bz/products/granada",
+      "sourceNote": null,
+      "verification": "published-online-unconfirmed"
+    },
+    {
+      "slug": "guandy",
+      "name": "Guandy",
+      "division": "vegas-distributors",
+      "category": "snacks-confectionery",
+      "categories": [
+        "snacks-confectionery"
+      ],
+      "logo": {
+        "file": "ecc0592e8383d77b30f1d17ead7f377e-guandylogo-a38c4fc3.jpg",
+        "width": 180,
+        "height": 120
+      },
+      "photos": [
+        {
+          "file": "guandy-18da0f48.jpg",
+          "width": 750,
+          "height": 333,
+          "alt": ""
+        },
+        {
+          "file": "zoo-bongy-5968128e.jpg",
+          "width": 1280,
+          "height": 720,
+          "alt": ""
+        }
+      ],
+      "sections": [
+        {
+          "label": null,
+          "category": "snacks-confectionery",
+          "products": [
+            {
+              "name": "ANGEL JUMBO 20X100X335 GR",
+              "size": "335g"
+            },
+            {
+              "name": "ANGEL JUMBO 20X50X335G",
+              "size": "335g"
+            },
+            {
+              "name": "ANGEL JUMBO CHOCOLATE 20X50X335 GR",
+              "size": "335g"
+            },
+            {
+              "name": "ANGELITOS BOMBONES CHOCOLATE/VAINILLA 30X200 GR",
+              "size": "200g"
+            },
+            {
+              "name": "ANGELITOS CHURRO FRESA 30X200 GR",
+              "size": "200g"
+            },
+            {
+              "name": "ANGELITOS CREAMY CHURRO CELESTE",
+              "size": "335g"
+            },
+            {
+              "name": "ANGELITOS CREAMY CHURRO ROSADO",
+              "size": "335g"
+            },
+            {
+              "name": "ANGELITOS FLOR FRUTAS 30X200 GR",
+              "size": "200g"
+            },
+            {
+              "name": "ANGELITOS STARLIGHT ROJO/VERDE 20X335 GR",
+              "size": "335g"
+            },
+            {
+              "name": "CORAZON FRESA 30X200 GR",
+              "size": "200g"
+            },
+            {
+              "name": "CREAMY FRESA 50X20X335 GR",
+              "size": "335g"
+            },
+            {
+              "name": "GIGANTE BI-COLOR 10X720 GR",
+              "size": "720g"
+            },
+            {
+              "name": "GUMMIES CORAZON 125GX25",
+              "size": "25g"
+            },
+            {
+              "name": "GUMMIES CULEBRITAS",
+              "size": "160g"
+            },
+            {
+              "name": "GUMMIES GOTITAS 125GX25",
+              "size": "125g"
+            },
+            {
+              "name": "GUMMIES GUANDY BANANA 125GX25",
+              "size": "125g"
+            },
+            {
+              "name": "GUMMIES OSITOS 125GX25",
+              "size": "125g"
+            },
+            {
+              "name": "HANGER CORAZON 24X71 GR",
+              "size": "71g"
+            },
+            {
+              "name": "MARSHMALLOW NAVIDAD 30X283 GR",
+              "size": "283g"
+            },
+            {
+              "name": "MINI MARSHMALLOW BLANCO 70X100 GR",
+              "size": "100g"
+            },
+            {
+              "name": "MINI MARSHMALLOW COLOR 20X335G",
+              "size": "335g"
+            },
+            {
+              "name": "MINI MARSHMALLOW COLOR 70X100 GR",
+              "size": "100g"
+            },
+            {
+              "name": "MIXI MALLOWS 30X200 GR",
+              "size": "200g"
+            },
+            {
+              "name": "Qs GUMMIES BLUEBERRY 30X100G",
+              "size": "100g"
+            },
+            {
+              "name": "Qs GUMMIES FRESONES 30X100G",
+              "size": "100g"
+            },
+            {
+              "name": "STRAWBERRY CREAM 24X71 GR",
+              "size": "71g"
+            },
+            {
+              "name": "TORNADO ANGEL 24X50X5G",
+              "size": "225g"
+            },
+            {
+              "name": "TORNADO FRESA 30X200 GR",
+              "size": "200g"
+            },
+            {
+              "name": "TORNADO FRUTA 30X200 GR",
+              "size": "200g"
+            },
+            {
+              "name": "TWISTER FRESA 30X200 GR",
+              "size": "200g"
+            },
+            {
+              "name": "TWISTER FRUTA 30X200 GR",
+              "size": "200g"
+            },
+            {
+              "name": "TWISTER HANGER 24X71 GR",
+              "size": "71g"
+            },
+            {
+              "name": "TORNADO FRUTA 30X200 GR",
+              "size": "200g"
+            },
+            {
+              "name": "TWISTER FRESA 30X200 GR",
+              "size": "200g"
+            },
+            {
+              "name": "TWISTER FRUTA 30X200 GR",
+              "size": "200g"
+            },
+            {
+              "name": "TWISTER HANGER 24X71 GR",
+              "size": "71g"
+            },
+            {
+              "name": "QS TWISTER FRUTA 10X720GX24G",
+              "size": "24g"
+            },
+            {
+              "name": "BOLSON ZOO BONGY 24X50X5GR",
+              "size": "5g"
+            }
+          ]
+        }
+      ],
+      "productCount": 38,
+      "related": [],
+      "sourceUrl": "https://www.vegasdistributors.bz/products/guandy",
+      "sourceNote": null,
+      "verification": "published-online-unconfirmed"
+    },
+    {
+      "slug": "ina",
+      "name": "Ina",
+      "division": "vegas-distributors",
+      "category": "food-pantry",
+      "categories": [
+        "food-pantry"
+      ],
+      "logo": {
+        "file": "545c670387459fc3307f04e724c2f071-inalogo-d753f882.jpg",
+        "width": 180,
+        "height": 120
+      },
+      "photos": [
+        {
+          "file": "ina-3771c0a6.jpg",
+          "width": null,
+          "height": null,
+          "alt": ""
+        }
+      ],
+      "sections": [
+        {
+          "label": null,
+          "category": "food-pantry",
+          "products": [
+            {
+              "name": "CODO INA",
+              "size": "200g"
+            },
+            {
+              "name": "CORBATON INA",
+              "size": "150g"
+            },
+            {
+              "name": "ENTREFINO INA",
+              "size": "150g"
+            },
+            {
+              "name": "ENTREFINO INA",
+              "size": "150g"
+            },
+            {
+              "name": "INA ORIENTAL CHOW MEIN",
+              "size": "180g"
+            },
+            {
+              "name": "INA PASTA CONCHA/CARACOLITO",
+              "size": "200g"
+            },
+            {
+              "name": "INA PASTA CORTA CARACOL",
+              "size": "200g"
+            },
+            {
+              "name": "INA PASTA CORTA CODITO",
+              "size": "230g"
+            },
+            {
+              "name": "INA PASTA CORTA CODITO MEDIANO",
+              "size": "200g"
+            },
+            {
+              "name": "INA PASTA CORTA PLUMA",
+              "size": "200g"
+            },
+            {
+              "name": "INA PASTA CORTA TORNILLO",
+              "size": "200g"
+            },
+            {
+              "name": "INA PASTA LARGA ESPAGUETTI",
+              "size": "230g"
+            },
+            {
+              "name": "INA PASTA LARGA LINGUINI",
+              "size": "200g"
+            },
+            {
+              "name": "INA PASTA LARGA MACARONI",
+              "size": "200g"
+            },
+            {
+              "name": "INA PASTA LARGA SPAGUETTI",
+              "size": "200g"
+            },
+            {
+              "name": "INA PASTA ORIENTAL CHAO MEIN",
+              "size": "4600g"
+            },
+            {
+              "name": "PASTA ESPECIAL INA LASAGNA",
+              "size": "250g"
+            },
+            {
+              "name": "PASTA LARGA SPAGUETTI INA",
+              "size": "500g"
+            },
+            {
+              "name": "CHOW MEIN INA",
+              "size": "200g"
+            }
+          ]
+        }
+      ],
+      "productCount": 19,
+      "related": [
+        "lucciola",
+        "gama",
+        "gold-medal",
+        "zafari"
+      ],
+      "sourceUrl": "https://www.vegasdistributors.bz/products/ina",
+      "sourceNote": null,
+      "verification": "published-online-unconfirmed"
+    },
+    {
+      "slug": "kelloggs",
+      "name": "Kelloggs",
+      "division": "vegas-distributors",
+      "category": "food-pantry",
+      "categories": [
+        "food-pantry"
+      ],
+      "logo": {
+        "file": "efa6f739703e9d961c4964006f598a58-kellogglogo2-e55a7903.jpg",
+        "width": 180,
+        "height": 120
+      },
+      "photos": [
+        {
+          "file": "kellogg_3p-e2972bd7.jpg",
+          "width": null,
+          "height": null,
+          "alt": ""
+        },
+        {
+          "file": "kellogg_ab-bcf37679.jpg",
+          "width": null,
+          "height": null,
+          "alt": ""
+        },
+        {
+          "file": "kellogg_cf-2e18bfad.jpg",
+          "width": null,
+          "height": null,
+          "alt": ""
+        },
+        {
+          "file": "kellogg_ck-0d028f1c.jpg",
+          "width": null,
+          "height": null,
+          "alt": ""
+        },
+        {
+          "file": "kellogg_cp-64aed73f.jpg",
+          "width": null,
+          "height": null,
+          "alt": ""
+        },
+        {
+          "file": "kellogg_fl-5dd05e25.jpg",
+          "width": null,
+          "height": null,
+          "alt": ""
+        },
+        {
+          "file": "kellogg_k-61d2be5f.jpg",
+          "width": null,
+          "height": null,
+          "alt": ""
+        },
+        {
+          "file": "kellogg_sk-6c1a8a52.jpg",
+          "width": null,
+          "height": null,
+          "alt": ""
+        },
+        {
+          "file": "kellogg_z-42dae481.jpg",
+          "width": null,
+          "height": null,
+          "alt": ""
+        }
+      ],
+      "sections": [
+        {
+          "label": null,
+          "category": "food-pantry",
+          "products": [
+            {
+              "name": "3 PK FL180+CF150+CHK",
+              "size": "620g"
+            },
+            {
+              "name": "AL BRAN",
+              "size": "300g"
+            },
+            {
+              "name": "AL BRAN FLAKES APPLE CRUNCH",
+              "size": "330g"
+            },
+            {
+              "name": "APPLE JACK CRL",
+              "size": "16g"
+            },
+            {
+              "name": "Assorted Choco Krispis Sachets",
+              "size": "100g"
+            },
+            {
+              "name": "CHOCO KRISPIS",
+              "size": "290g / 450g / 690g"
+            },
+            {
+              "name": "CHOCO ZUCARITAS MARSHMALLOW",
+              "size": "260g / 700g"
+            },
+            {
+              "name": "CINAMON CRL",
+              "size": "12g"
+            },
+            {
+              "name": "CORN FLAKES",
+              "size": "150g / 300g / 400g / 430g / 530g / 560g / 680g"
+            },
+            {
+              "name": "CORN FLAKES SACHET",
+              "size": "100g"
+            },
+            {
+              "name": "CORNS POPS",
+              "size": "210g"
+            },
+            {
+              "name": "FROOT LOOP DUO PACK",
+              "size": "750g"
+            },
+            {
+              "name": "FROOT LOOPS",
+              "size": "180g / 450g"
+            },
+            {
+              "name": "HONEY SMACK",
+              "size": "16g"
+            },
+            {
+              "name": "KOMPLETE ALMENDRAS",
+              "size": "410g / 610g"
+            },
+            {
+              "name": "KOMPLETE ARANDANOS",
+              "size": "310g"
+            },
+            {
+              "name": "KOMPLETE MANZANA PASAS",
+              "size": "460g"
+            },
+            {
+              "name": "KOMPLETE MIEL",
+              "size": "425g"
+            },
+            {
+              "name": "KOMPLETE PASAS",
+              "size": "435g"
+            },
+            {
+              "name": "MINI FROOT LOOPS",
+              "size": "15g"
+            },
+            {
+              "name": "MINI SACHET CHOCO KRISPIS 60X",
+              "size": "22g"
+            },
+            {
+              "name": "MINI ZUCARITAS SACHET 60X",
+              "size": "20g"
+            },
+            {
+              "name": "RAISIN BRAN CRUNCH",
+              "size": "12g"
+            },
+            {
+              "name": "RICE KRISPIS",
+              "size": "14g"
+            },
+            {
+              "name": "SACHET CHOCO KRISPIS 48X",
+              "size": "150g"
+            },
+            {
+              "name": "SACHET FROOT LOOPS 30X",
+              "size": "110g"
+            },
+            {
+              "name": "SACHET ZUCARITAS 48X",
+              "size": "130g"
+            },
+            {
+              "name": "SPECIAL K CHOCOLATE",
+              "size": "380g"
+            },
+            {
+              "name": "SPECIAL K COSECHA ROJA",
+              "size": "300g / 340g"
+            },
+            {
+              "name": "SPECIAL K PROTEINA CALCIO",
+              "size": "340g"
+            },
+            {
+              "name": "SPECIAL K VAINILLA",
+              "size": "370g / 400g"
+            },
+            {
+              "name": "ZUCARITAS",
+              "size": "260g / 360g / 490g / 840g"
+            },
+            {
+              "name": "ZUCARITAS CANELA",
+              "size": "360g"
+            }
+          ]
+        }
+      ],
+      "productCount": 33,
+      "related": [],
+      "sourceUrl": "https://www.vegasdistributors.bz/products/kelloggs",
+      "sourceNote": null,
+      "verification": "published-online-unconfirmed"
+    },
+    {
+      "slug": "kerns",
+      "name": "Kerns",
+      "division": "vegas-distributors",
+      "category": "beverages",
+      "categories": [
+        "beverages",
+        "food-pantry"
+      ],
+      "logo": {
+        "file": "7586643e5a6ae74f1280a66e9dd027db-kernsjuicelogo-95ca996f.jpg",
+        "width": 180,
+        "height": 120
+      },
+      "photos": [
+        {
+          "file": "kernsjuice-61434af6.jpg",
+          "width": null,
+          "height": null,
+          "alt": ""
+        },
+        {
+          "file": "kernsjuice1-607a8905.jpg",
+          "width": null,
+          "height": null,
+          "alt": ""
+        },
+        {
+          "file": "kernsketchup-e248d5de.jpg",
+          "width": null,
+          "height": null,
+          "alt": ""
+        }
+      ],
+      "sections": [
+        {
+          "label": "JUICE",
+          "category": "beverages",
+          "products": [
+            {
+              "name": "KERNS COCTEL DE VEGALES 1X48X157ML",
+              "size": "157ml"
+            },
+            {
+              "name": "KERNS COCTEL DE VEGATLES 1X24X330ML",
+              "size": "300ml"
+            },
+            {
+              "name": "KERNS NECTAR MANZANA 1X24X330ML",
+              "size": "300ml"
+            },
+            {
+              "name": "KERNS NECTAR MELOCOTON 1X24X330ML",
+              "size": "300ml"
+            }
+          ]
+        },
+        {
+          "label": "KETCHUP",
+          "category": "food-pantry",
+          "products": [
+            {
+              "name": "KERNS KETCHUP 1X24X375GR",
+              "size": "375g"
+            }
+          ]
+        }
+      ],
+      "productCount": 5,
+      "related": [],
+      "sourceUrl": "https://www.vegasdistributors.bz/products/kerns",
+      "sourceNote": null,
+      "verification": "published-online-unconfirmed"
+    },
+    {
+      "slug": "kerns-jr",
+      "name": "Kerns Jr",
+      "division": "vegas-distributors",
+      "category": "beverages",
+      "categories": [
+        "beverages"
+      ],
+      "logo": {
+        "file": "5732580627e3a3de2867d5f82a03396f-kernsjrlogo-90ad70a4.jpg",
+        "width": 180,
+        "height": 120
+      },
+      "photos": [
+        {
+          "file": "kernsjr-394564f0.jpg",
+          "width": 750,
+          "height": 333,
+          "alt": ""
+        }
+      ],
+      "sections": [
+        {
+          "label": "JUICE",
+          "category": "beverages",
+          "products": [
+            {
+              "name": "KERNS JUNIOR MANZANA TETRA 1X24X200ML",
+              "size": "200ml"
+            },
+            {
+              "name": "KERNS JUNIOR MELOCOTON 1X24X200ML",
+              "size": "200ml"
+            }
+          ]
+        }
+      ],
+      "productCount": 2,
+      "related": [],
+      "sourceUrl": "https://www.vegasdistributors.bz/products/kerns-jr",
+      "sourceNote": null,
+      "verification": "published-online-unconfirmed"
+    },
+    {
+      "slug": "kinder-sorpresa",
+      "name": "KINDER SORPRESA",
+      "division": "vegas-distributors",
+      "category": "snacks-confectionery",
+      "categories": [
+        "snacks-confectionery"
+      ],
+      "logo": {
+        "file": "ef6507aefd7a49b6581691f552c1e369-kinderlogo-987a6d0d.jpg",
+        "width": 180,
+        "height": 120
+      },
+      "photos": [
+        {
+          "file": "kinder2-343819d0.jpg",
+          "width": 750,
+          "height": 333,
+          "alt": ""
+        },
+        {
+          "file": "kindermax-a00ac70b.jpg",
+          "width": null,
+          "height": null,
+          "alt": ""
+        },
+        {
+          "file": "kinderxmas-77f6e230.jpg",
+          "width": null,
+          "height": null,
+          "alt": ""
+        }
+      ],
+      "sections": [
+        {
+          "label": null,
+          "category": "snacks-confectionery",
+          "products": [
+            {
+              "name": "KINDER SORPRESA",
+              "size": "T1X48 NIÑO"
+            },
+            {
+              "name": "KINDER SORPRESA",
+              "size": "T1X48 NIÑA"
+            },
+            {
+              "name": "KINDER SORPRESA",
+              "size": "T1X48 NATOONS"
+            }
+          ]
+        }
+      ],
+      "productCount": 3,
+      "related": [
+        "tictac",
+        "nutella",
+        "ferrero-rocher",
+        "raffaello"
+      ],
+      "sourceUrl": "https://www.vegasdistributors.bz/products/kinder-sorpresa",
+      "sourceNote": null,
+      "verification": "published-online-unconfirmed"
+    },
+    {
+      "slug": "laky",
+      "name": "Laky",
+      "division": "vegas-distributors",
+      "category": "food-pantry",
+      "categories": [
+        "food-pantry"
+      ],
+      "logo": {
+        "file": "e5f64e14ca0d42cdf278334c936a307b-lakylogo-4c34f6b6.jpg",
+        "width": 180,
+        "height": 120
+      },
+      "photos": [
+        {
+          "file": "laky-14da2e5c.jpg",
+          "width": null,
+          "height": null,
+          "alt": ""
+        }
+      ],
+      "sections": [
+        {
+          "label": "PRODUCTS",
+          "category": "food-pantry",
+          "products": [
+            {
+              "name": "SOBRE CAMARON NORMAL",
+              "size": "80g"
+            },
+            {
+              "name": "SOBRE POLLO NORMAL",
+              "size": "80g"
+            },
+            {
+              "name": "SOBRE RES NORMAL",
+              "size": "80g"
+            },
+            {
+              "name": "SOPA SIX PK SOBRE CAMARON",
+              "size": "80g"
+            },
+            {
+              "name": "SOPA SIX PK SOBRE POLLO",
+              "size": "80g"
+            },
+            {
+              "name": "SOPA SIX PK SOBRE RES",
+              "size": "80g"
+            },
+            {
+              "name": "SOPA VASO CAMARON",
+              "size": "64g"
+            },
+            {
+              "name": "SOPA VASO GALLINA",
+              "size": "64g"
+            },
+            {
+              "name": "SOPA VASO JAIBA CON LIMON",
+              "size": "64g"
+            },
+            {
+              "name": "SOPA VASO MARISCO",
+              "size": "64g"
+            },
+            {
+              "name": "SOPA VASO POLLO",
+              "size": "64g"
+            },
+            {
+              "name": "SOPA VASO RES",
+              "size": "64g"
+            }
+          ]
+        }
+      ],
+      "productCount": 12,
+      "related": [],
+      "sourceUrl": "https://www.vegasdistributors.bz/products/laky",
+      "sourceNote": null,
+      "verification": "published-online-unconfirmed"
+    },
+    {
+      "slug": "lucciola",
+      "name": "Lucciola",
+      "division": "vegas-distributors",
+      "category": "food-pantry",
+      "categories": [
+        "food-pantry"
+      ],
+      "logo": {
+        "file": "1b49a5057a9dc87b271e34fa52d8ddf9-lucciolalogo-cba2ffe3.jpg",
+        "width": 180,
+        "height": 120
+      },
+      "photos": [
+        {
+          "file": "lucciola-276e637c.jpg",
+          "width": 750,
+          "height": 333,
+          "alt": ""
+        }
+      ],
+      "sections": [
+        {
+          "label": null,
+          "category": "food-pantry",
+          "products": [
+            {
+              "name": "LUCCIOLA INA PASTA CANELON",
+              "size": "245g"
+            },
+            {
+              "name": "LUCCIOLA INA PASTA CORTA PLUMA",
+              "size": "500g"
+            },
+            {
+              "name": "LUCCIOLA INA PASTA CORTA TORNILLO NP",
+              "size": "500g"
+            },
+            {
+              "name": "LUCCIOLA INA PASTA LARGA LINGUINI NP",
+              "size": "500g"
+            },
+            {
+              "name": "LUCCIOLA INA PASTA LARGA SPAGHETTI",
+              "size": "500g"
+            },
+            {
+              "name": "LUCCIOLA INA PASTA LASAGNA",
+              "size": "500g"
+            }
+          ]
+        }
+      ],
+      "productCount": 6,
+      "related": [
+        "ina",
+        "gama",
+        "gold-medal",
+        "zafari"
+      ],
+      "sourceUrl": "https://www.vegasdistributors.bz/products/lucciola",
+      "sourceNote": null,
+      "verification": "published-online-unconfirmed"
+    },
+    {
+      "slug": "melher",
+      "name": "Melher",
+      "division": "vegas-distributors",
+      "category": "snacks-confectionery",
+      "categories": [
+        "snacks-confectionery"
+      ],
+      "logo": {
+        "file": "b3399119c3d42b02ba1b2d24c8a8d0c0-melherlogo-bddbe8be.jpg",
+        "width": 180,
+        "height": 120
+      },
+      "photos": [
+        {
+          "file": "chocomelher-db00e130.jpg",
+          "width": 750,
+          "height": 333,
+          "alt": ""
+        }
+      ],
+      "sections": [
+        {
+          "label": "Liquid Chocolate",
+          "category": "snacks-confectionery",
+          "products": [
+            {
+              "name": "CHOCOMELHER CLASICO",
+              "size": "375g / 400g / 800g"
+            },
+            {
+              "name": "CHOCOMELHER MANI",
+              "size": "400g"
+            },
+            {
+              "name": "PALITOS CONTINENTAL",
+              "size": "400g"
+            }
+          ]
+        }
+      ],
+      "productCount": 3,
+      "related": [
+        "granada"
+      ],
+      "sourceUrl": "https://www.vegasdistributors.bz/products/melher",
+      "sourceNote": null,
+      "verification": "published-online-unconfirmed"
+    },
+    {
+      "slug": "naledo",
+      "name": "Naledo",
+      "division": "vegas-distributors",
+      "category": "food-pantry",
+      "categories": [
+        "food-pantry"
+      ],
+      "logo": {
+        "file": "03d6b219f7f0ef8a35da4cfd6052a172-Naledo_logo-67b03be0.jpg",
+        "width": 180,
+        "height": 120
+      },
+      "photos": [
+        {
+          "file": "Product-3de2191f.jpg",
+          "width": null,
+          "height": null,
+          "alt": ""
+        }
+      ],
+      "sections": [
+        {
+          "label": "PASTE",
+          "category": "food-pantry",
+          "products": [
+            {
+              "name": "TURMERIC WHOLE ROOT PASTE-BLACK PEPPER 12*235g",
+              "size": "235g"
+            },
+            {
+              "name": "TURMERIC WHOLE ROOT PASTE-ORIGINAL 12*470g",
+              "size": "470g"
+            },
+            {
+              "name": "TURMERIC WHOLE ROOT PASTE-ORIGINAL 24*125g",
+              "size": "125g"
+            }
+          ]
+        }
+      ],
+      "productCount": 3,
+      "related": [],
+      "sourceUrl": "https://www.vegasdistributors.bz/products/naledo",
+      "sourceNote": null,
+      "verification": "published-online-unconfirmed"
+    },
+    {
+      "slug": "naturas",
+      "name": "Natura's",
+      "division": "vegas-distributors",
+      "category": "food-pantry",
+      "categories": [
+        "food-pantry"
+      ],
+      "logo": {
+        "file": "dca23b8aa1ee9905c090ec46bfa1ce1e-naturaslogo-65b66d3f.jpg",
+        "width": 180,
+        "height": 120
+      },
+      "photos": [
+        {
+          "file": "naturasbeans-5b2ce397.jpg",
+          "width": null,
+          "height": null,
+          "alt": ""
+        },
+        {
+          "file": "naturas-99e8c5cd.jpg",
+          "width": null,
+          "height": null,
+          "alt": ""
+        }
+      ],
+      "sections": [
+        {
+          "label": "Refried Beans",
+          "category": "food-pantry",
+          "products": [
+            {
+              "name": "NATURAS FRIJOL NEGRO VOLTEADO",
+              "size": "227g / 400g"
+            }
+          ]
+        },
+        {
+          "label": "Tomato Sauce",
+          "category": "food-pantry",
+          "products": [
+            {
+              "name": "NATURAS SALSA CON HONGOS",
+              "size": "106g"
+            },
+            {
+              "name": "NATURAS SALSA CON QUESO",
+              "size": "106g"
+            },
+            {
+              "name": "NATURAS SALSA ITALIANA CLASICA",
+              "size": "106g"
+            },
+            {
+              "name": "NATURAS SALSA RANCHERA",
+              "size": "106g"
+            }
+          ]
+        },
+        {
+          "label": "Tomato Paste",
+          "category": "food-pantry",
+          "products": [
+            {
+              "name": "NATURAS PASTA DE TOMATE",
+              "size": "106g / 113g"
+            }
+          ]
+        }
+      ],
+      "productCount": 6,
+      "related": [],
+      "sourceUrl": "https://www.vegasdistributors.bz/products/natura-s",
+      "sourceNote": null,
+      "verification": "published-online-unconfirmed"
+    },
+    {
+      "slug": "nutella",
+      "name": "NUTELLA",
+      "division": "vegas-distributors",
+      "category": "snacks-confectionery",
+      "categories": [
+        "snacks-confectionery"
+      ],
+      "logo": {
+        "file": "a12025f0a768c170d304870d36dfc3b6-nutellalogo-12c20b99.jpg",
+        "width": 180,
+        "height": 120
+      },
+      "photos": [
+        {
+          "file": "nutella-c0536819.jpg",
+          "width": 750,
+          "height": 333,
+          "alt": ""
+        }
+      ],
+      "sections": [
+        {
+          "label": null,
+          "category": "snacks-confectionery",
+          "products": [
+            {
+              "name": "NUTELLA",
+              "size": "G350X15"
+            },
+            {
+              "name": "NUTELLA GO",
+              "size": "4X12XT1"
+            }
+          ]
+        }
+      ],
+      "productCount": 2,
+      "related": [
+        "tictac",
+        "kinder-sorpresa",
+        "ferrero-rocher",
+        "raffaello"
+      ],
+      "sourceUrl": "https://www.vegasdistributors.bz/products/nutella",
+      "sourceNote": null,
+      "verification": "published-online-unconfirmed"
+    },
+    {
+      "slug": "olmeca",
+      "name": "Olmeca",
+      "division": "vegas-distributors",
+      "category": "food-pantry",
+      "categories": [
+        "food-pantry"
+      ],
+      "logo": {
+        "file": "d1c9df904498f78dc8d47f03c96fdecb-olmecalogo-82b27b99.jpg",
+        "width": 180,
+        "height": 120
+      },
+      "photos": [
+        {
+          "file": "olmeca-8c26821e.jpg",
+          "width": 750,
+          "height": 333,
+          "alt": ""
+        }
+      ],
+      "sections": [
+        {
+          "label": "COOKING OIL",
+          "category": "food-pantry",
+          "products": [
+            {
+              "name": "OLMECA COOKING OIL",
+              "size": "1350ml"
+            },
+            {
+              "name": "OLMECA COOKING OIL",
+              "size": "800ml"
+            },
+            {
+              "name": "OLMECA COOKING OIL",
+              "size": "400ml"
+            },
+            {
+              "name": "OLMECA COOKING OIL",
+              "size": "2700ml"
+            },
+            {
+              "name": "OLMECA OLEINA BIDON",
+              "size": "34.5lbs"
+            }
+          ]
+        },
+        {
+          "label": "SHORTENING",
+          "category": "food-pantry",
+          "products": [
+            {
+              "name": "OLMECA CREAMY SHORTENING",
+              "size": "1lb"
+            },
+            {
+              "name": "OLMECA SHORTENING",
+              "size": "3lbs"
+            },
+            {
+              "name": "OLMECA SHORTENING",
+              "size": "50lbs"
+            },
+            {
+              "name": "OLMECA SHORTENING BUCKET",
+              "size": "15lbs"
+            },
+            {
+              "name": "OLMECA SHORTENING BUCKET",
+              "size": "30lbs"
+            },
+            {
+              "name": "OLMECA SHORTENING BUCKET",
+              "size": "6lbs"
+            },
+            {
+              "name": "REGIA SHORTENING TUBE",
+              "size": "2lbs"
+            },
+            {
+              "name": "REGIA SHORTENING TUBE",
+              "size": "1lb"
+            }
+          ]
+        },
+        {
+          "label": "MARGARINE",
+          "category": "food-pantry",
+          "products": [
+            {
+              "name": "OLMECA MARGARINE BULK",
+              "size": "30lbs"
+            }
+          ]
+        }
+      ],
+      "productCount": 14,
+      "related": [],
+      "sourceUrl": "https://www.vegasdistributors.bz/products/olmeca",
+      "sourceNote": null,
+      "verification": "published-online-unconfirmed"
+    },
+    {
+      "slug": "oreo",
+      "name": "Oreo",
+      "division": "vegas-distributors",
+      "category": "snacks-confectionery",
+      "categories": [
+        "snacks-confectionery"
+      ],
+      "logo": {
+        "file": "2c9b8ee6474b08a52fc3bba315f3f8e0-oreologo-0b99f233.jpg",
+        "width": 180,
+        "height": 120
+      },
+      "photos": [
+        {
+          "file": "oreo-a42917a7.jpg",
+          "width": 750,
+          "height": 333,
+          "alt": ""
+        }
+      ],
+      "sections": [
+        {
+          "label": null,
+          "category": "snacks-confectionery",
+          "products": [
+            {
+              "name": "OREO REGULAR",
+              "size": "36g / 54g"
+            },
+            {
+              "name": "OREO CHOCO",
+              "size": "36g"
+            },
+            {
+              "name": "OREO COOKIES AND CREAM",
+              "size": "36g"
+            },
+            {
+              "name": "OREO MILKSHAKE DE FRESA",
+              "size": "36g"
+            }
+          ]
+        }
+      ],
+      "productCount": 4,
+      "related": [],
+      "sourceUrl": "https://www.vegasdistributors.bz/products/oreo",
+      "sourceNote": null,
+      "verification": "published-online-unconfirmed"
+    },
+    {
+      "slug": "pringles",
+      "name": "Pringles",
+      "division": "vegas-distributors",
+      "category": "snacks-confectionery",
+      "categories": [
+        "snacks-confectionery"
+      ],
+      "logo": {
+        "file": "53a34a0f37d3dbbda1d80b739333326c-pringleslogo-ad0413cd.jpg",
+        "width": 180,
+        "height": 120
+      },
+      "photos": [
+        {
+          "file": "pringles-b6d4a5da.jpg",
+          "width": null,
+          "height": null,
+          "alt": ""
+        }
+      ],
+      "sections": [
+        {
+          "label": "CHIPS",
+          "category": "snacks-confectionery",
+          "products": [
+            {
+              "name": "PRINGLES BBQ 12X71G",
+              "size": "71g / 137g"
+            },
+            {
+              "name": "PRINGLES CHEDAR CHEEZE 14X158G",
+              "size": "40g / 71g / 158g"
+            },
+            {
+              "name": "PRINGLES ORIGINAL 14 X 137GR",
+              "size": "19g / 37g / 67g / 137g / 149g / 158g"
+            },
+            {
+              "name": "PRINGLES PIZZA 14X158G",
+              "size": "158g"
+            },
+            {
+              "name": "PRINGLES SOUR CREAM & ONIONS 14 X 137GR",
+              "size": "21g / 40g / 71g / 158g"
+            },
+            {
+              "name": "MEGA STACKS",
+              "size": ""
+            },
+            {
+              "name": "PRINGLES BBQ 14X203G",
+              "size": "203g"
+            },
+            {
+              "name": "PRINGLES CHEDAR CHEEZE 14X203G",
+              "size": "203g"
+            },
+            {
+              "name": "PRINGLES ORIGINAL 14 X 194GR",
+              "size": "194g"
+            },
+            {
+              "name": "PRINGLES SOUR CREAM & ONIONS 14 X 203GR",
+              "size": "203g"
+            }
+          ]
+        }
+      ],
+      "productCount": 10,
+      "related": [],
+      "sourceUrl": "https://www.vegasdistributors.bz/products/pringles",
+      "sourceNote": null,
+      "verification": "published-online-unconfirmed"
+    },
+    {
+      "slug": "raffaello",
+      "name": "RAFFAELLO",
+      "division": "vegas-distributors",
+      "category": "snacks-confectionery",
+      "categories": [
+        "snacks-confectionery"
+      ],
+      "logo": {
+        "file": "raffaellologo-1fdaa108.jpg",
+        "width": 260,
+        "height": 200
+      },
+      "photos": [
+        {
+          "file": "raffaello-11d9d3bc.jpg",
+          "width": null,
+          "height": null,
+          "alt": ""
+        }
+      ],
+      "sections": [
+        {
+          "label": null,
+          "category": "snacks-confectionery",
+          "products": [
+            {
+              "name": "CONFETTERIA RAFFAELLO COCONUT",
+              "size": "4X16XT3"
+            },
+            {
+              "name": "CONFETTERIA RAFFAELLO COCONUT",
+              "size": "10XT6"
+            }
+          ]
+        }
+      ],
+      "productCount": 2,
+      "related": [
+        "tictac",
+        "nutella",
+        "kinder-sorpresa",
+        "ferrero-rocher"
+      ],
+      "sourceUrl": "https://www.vegasdistributors.bz/products/raffaello",
+      "sourceNote": null,
+      "verification": "published-online-unconfirmed"
+    },
+    {
+      "slug": "regia",
+      "name": "Regia",
+      "division": "vegas-distributors",
+      "category": "food-pantry",
+      "categories": [
+        "food-pantry"
+      ],
+      "logo": {
+        "file": "regialogo-170b62e2.jpg",
+        "width": 260,
+        "height": 200
+      },
+      "photos": [
+        {
+          "file": "regia-72484514.jpg",
+          "width": 750,
+          "height": 333,
+          "alt": ""
+        }
+      ],
+      "sections": [
+        {
+          "label": "SHORTENING",
+          "category": "food-pantry",
+          "products": [
+            {
+              "name": "REGIA SHORTENING TUBE",
+              "size": "1lb / 2lbs"
+            }
+          ]
+        },
+        {
+          "label": "TOMATO PASTE",
+          "category": "food-pantry",
+          "products": [
+            {
+              "name": "REGIA PASTA DE TOMATE DOY PACK",
+              "size": "4oz"
+            },
+            {
+              "name": "REGIA SALSITA QUESO DOY PACK",
+              "size": "4oz"
+            },
+            {
+              "name": "REGIA SALSITA RANCHERA DOY PACK",
+              "size": "4oz"
+            }
+          ]
+        },
+        {
+          "label": "KETCHUP",
+          "category": "food-pantry",
+          "products": [
+            {
+              "name": "REGIA KETCHUP CRIOLLA",
+              "size": "3850g"
+            },
+            {
+              "name": "REGIA KETCHUP CRIOLLA GL",
+              "size": "3850g"
+            },
+            {
+              "name": "REGIA KETCHUP HOT SQUEEZE",
+              "size": "14oz / 28oz"
+            },
+            {
+              "name": "REGIA KETCHUP REGULAR SQUEEZE",
+              "size": "14oz / 28oz"
+            },
+            {
+              "name": "SALSA DULCE CRIOLLA",
+              "size": "435g / 850g"
+            }
+          ]
+        },
+        {
+          "label": "SAUCES AND DRESSINGS",
+          "category": "food-pantry",
+          "products": [
+            {
+              "name": "MAYONESA MAYOLIVA LIGHT DOY PACK",
+              "size": "100g / 400g"
+            },
+            {
+              "name": "REGIA MAYONESA CON JUGO DE LIMON",
+              "size": "200g / 400g"
+            },
+            {
+              "name": "REGIA MAYONESA DOY PACK LIMON",
+              "size": "4oz"
+            },
+            {
+              "name": "REGIA MAYONESA REDUCIDA EN LIPIDOS",
+              "size": "3500g"
+            },
+            {
+              "name": "REGIA MAYONESA SQUEEZE",
+              "size": "14oz"
+            },
+            {
+              "name": "REGIA MAYOLIVA LIGHT",
+              "size": "400g"
+            },
+            {
+              "name": "REGIA MAYONESA CONTAINING OMEGA 3",
+              "size": "3465g"
+            },
+            {
+              "name": "REGIA MOSTAZA SQUEEZE",
+              "size": "14oz"
+            },
+            {
+              "name": "REGIA MOSTAZA DOYPACK",
+              "size": "100g"
+            },
+            {
+              "name": "REGIA SANDWICH SPREAD SQUEEZE",
+              "size": "14oz"
+            },
+            {
+              "name": "REGIA SANDWICH SPREAD DOYPACK",
+              "size": "100g"
+            },
+            {
+              "name": "REGIA SALSA DE QUESO (SPREAD)",
+              "size": "200g"
+            }
+          ]
+        }
+      ],
+      "productCount": 21,
+      "related": [],
+      "sourceUrl": "https://www.vegasdistributors.bz/products/regia",
+      "sourceNote": null,
+      "verification": "published-online-unconfirmed"
+    },
+    {
+      "slug": "tang",
+      "name": "Tang",
+      "division": "vegas-distributors",
+      "category": "beverages",
+      "categories": [
+        "beverages"
+      ],
+      "logo": {
+        "file": "tanglogo-69b5044a.jpg",
+        "width": 260,
+        "height": 200
+      },
+      "photos": [
+        {
+          "file": "tang-94d462b6.jpg",
+          "width": 750,
+          "height": 333,
+          "alt": ""
+        }
+      ],
+      "sections": [
+        {
+          "label": null,
+          "category": "beverages",
+          "products": [
+            {
+              "name": "TANG FRESA 12X12X20 GR [ 10947 ]",
+              "size": "20g"
+            },
+            {
+              "name": "TANG LIMON 12X12X20 GR [ 10951 ]",
+              "size": "20g"
+            },
+            {
+              "name": "TANG MANZANA 12X12X20 GR [ 10948 ]",
+              "size": "20g"
+            },
+            {
+              "name": "TANG NARANJA 12X12X20 GR [ 10950 ]",
+              "size": "20g"
+            },
+            {
+              "name": "TANG PIÑA 12X12X20 GR [ 10952 ]",
+              "size": "20g"
+            },
+            {
+              "name": "TANG UVA 12X12X20 GR [ 10949 ]",
+              "size": "20g"
+            }
+          ]
+        }
+      ],
+      "productCount": 6,
+      "related": [],
+      "sourceUrl": "https://www.vegasdistributors.bz/products/tang",
+      "sourceNote": null,
+      "verification": "published-online-unconfirmed"
+    },
+    {
+      "slug": "tictac",
+      "name": "TICTAC",
+      "division": "vegas-distributors",
+      "category": "snacks-confectionery",
+      "categories": [
+        "snacks-confectionery"
+      ],
+      "logo": {
+        "file": "tictaclogo-1d4a9ee0.jpg",
+        "width": 260,
+        "height": 200
+      },
+      "photos": [
+        {
+          "file": "tictac2-e7ea2507.jpg",
+          "width": 750,
+          "height": 333,
+          "alt": ""
+        }
+      ],
+      "sections": [
+        {
+          "label": null,
+          "category": "snacks-confectionery",
+          "products": [
+            {
+              "name": "TIC TAC T1X12X12",
+              "size": "MENTA"
+            },
+            {
+              "name": "TIC TAC T1x12x12",
+              "size": "NARANJA MUSIC"
+            },
+            {
+              "name": "TIC TAC T1x12x12",
+              "size": "YERBABUENA"
+            },
+            {
+              "name": "TIC TAC T1x12x12",
+              "size": "FRESA"
+            }
+          ]
+        }
+      ],
+      "productCount": 4,
+      "related": [
+        "nutella",
+        "kinder-sorpresa",
+        "ferrero-rocher",
+        "raffaello"
+      ],
+      "sourceUrl": "https://www.vegasdistributors.bz/products/tictac",
+      "sourceNote": null,
+      "verification": "published-online-unconfirmed"
+    },
+    {
+      "slug": "tropi-kuhl",
+      "name": "Tropi-Kuhl",
+      "division": "vegas-distributors",
+      "category": "beverages",
+      "categories": [
+        "beverages"
+      ],
+      "logo": {
+        "file": "tropikuhllogo-c2ee2c42.jpg",
+        "width": 260,
+        "height": 200
+      },
+      "photos": [
+        {
+          "file": "tropikuhl2-d9daf855.jpg",
+          "width": 750,
+          "height": 333,
+          "alt": ""
+        }
+      ],
+      "sections": [
+        {
+          "label": "Seasoning",
+          "category": "beverages",
+          "products": [
+            {
+              "name": "DRINKI ASSORTED",
+              "size": "24g"
+            },
+            {
+              "name": "REFRESCO ENDULZADO TROPI-KUHL TROPICAL PUNCH",
+              "size": "12g"
+            },
+            {
+              "name": "REFRESCO TROPI-KUHL SURTIDO",
+              "size": "12g"
+            }
+          ]
+        }
+      ],
+      "productCount": 3,
+      "related": [
+        "favora"
+      ],
+      "sourceUrl": "https://www.vegasdistributors.bz/products/tropi-kuhl",
+      "sourceNote": "The published page heads this list \"Seasoning\" while the items listed are powdered drinks. Grouped under beverages for discovery; the published heading is retained below. Confirm with the business.",
+      "verification": "published-online-unconfirmed"
+    },
+    {
+      "slug": "ultraklin",
+      "name": "Ultraklin",
+      "division": "vegas-distributors",
+      "category": "cleaning-household",
+      "categories": [
+        "cleaning-household"
+      ],
+      "logo": {
+        "file": "ultraklinlogo-9986020d.jpg",
+        "width": 260,
+        "height": 200
+      },
+      "photos": [
+        {
+          "file": "ultraklin-3cf4c50f.jpg",
+          "width": 750,
+          "height": 333,
+          "alt": ""
+        }
+      ],
+      "sections": [
+        {
+          "label": "POWDERED DETERGENT",
+          "category": "cleaning-household",
+          "products": [
+            {
+              "name": "ULTRAKLIN FUERZA EXTREMA (RED) 10 X 1KG",
+              "size": "440g / 454g / 1Kg"
+            },
+            {
+              "name": "ULTRAKLIN FUERZA INTENSA (PURPLE) 10 X 1KG",
+              "size": "275g / 440g / 454g / 1Kg"
+            },
+            {
+              "name": "ULTRAKLIN FUERZA SOLAR (ORANGE)",
+              "size": "1Kg"
+            },
+            {
+              "name": "ULTRAKLIN FUERZA TOTAL (BLUE) 10 X 1KG",
+              "size": "440g / 454g / 1Kg"
+            }
+          ]
+        }
+      ],
+      "productCount": 4,
+      "related": [
+        "espumil",
+        "ambar"
+      ],
+      "sourceUrl": "https://www.vegasdistributors.bz/products/ultraklin",
+      "sourceNote": null,
+      "verification": "published-online-unconfirmed"
+    },
+    {
+      "slug": "zafari",
+      "name": "Zafari",
+      "division": "vegas-distributors",
+      "category": "snacks-confectionery",
+      "categories": [
+        "snacks-confectionery"
+      ],
+      "logo": {
+        "file": "zafarilogo-ceb8e495.jpg",
+        "width": 281,
+        "height": 281
+      },
+      "photos": [
+        {
+          "file": "zafari-bea64da6.jpg",
+          "width": 1280,
+          "height": 720,
+          "alt": ""
+        },
+        {
+          "file": "zafari-chocolate-ee7f2853.jpg",
+          "width": 1280,
+          "height": 720,
+          "alt": ""
+        },
+        {
+          "file": "zafari-minion-d6c6fc53.jpg",
+          "width": 1280,
+          "height": 720,
+          "alt": ""
+        }
+      ],
+      "sections": [
+        {
+          "label": "Biscuits",
+          "category": "snacks-confectionery",
+          "products": [
+            {
+              "name": "GAMA ZAFARI 24X12X25",
+              "size": "25g"
+            },
+            {
+              "name": "GAMA ZAFARI CHOCOLATE 24X12X25",
+              "size": "25g"
+            },
+            {
+              "name": "GAMA ZAFARI MINIONS 24X12X25",
+              "size": "25g"
+            }
+          ]
+        }
+      ],
+      "productCount": 3,
+      "related": [
+        "gama",
+        "ina",
+        "lucciola",
+        "gold-medal"
+      ],
+      "sourceUrl": "https://www.vegasdistributors.bz/products/zafari",
+      "sourceNote": null,
+      "verification": "published-online-unconfirmed"
+    }
+  ],
+  "totals": {
+    "brands": 37,
+    "products": 346
+  }
+}

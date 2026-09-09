@@ -1,0 +1,273 @@
+/**
+ * Generates the static site into dist/.
+ *
+ * Every route is a real directory with its own index.html, so there is no
+ * client-side router and no redirect rules are needed for direct visits or
+ * refreshes. All asset and link references are relative, so the output works
+ * from a domain root, a subdirectory, or the filesystem.
+ *
+ * Usage: node scripts/build.mjs
+ */
+import { readFileSync, writeFileSync, mkdirSync, rmSync, cpSync, existsSync, readdirSync, statSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+import { ROUTES, routePath, absoluteUrl, page } from './lib/layout.mjs';
+import * as core from './lib/pages.mjs';
+import * as cat from './lib/pages-catalog.mjs';
+
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
+const DIST = join(ROOT, 'dist');
+const read = (p) => JSON.parse(readFileSync(join(ROOT, p), 'utf8'));
+
+const site = read('data/site.json');
+const company = read('data/company.json');
+const catalog = read('data/catalog.json');
+const images = read('data/images.json');
+const locales = { en: read('i18n/en.json'), es: read('i18n/es.json') };
+
+const LOCALES = ['en', 'es'];
+
+rmSync(DIST, { recursive: true, force: true });
+mkdirSync(DIST, { recursive: true });
+
+const written = [];
+
+function writePage(outPath, html) {
+  const dir = outPath ? join(DIST, outPath) : DIST;
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(join(dir, 'index.html'), html);
+  written.push(outPath ? `${outPath}/index.html` : 'index.html');
+}
+
+/* ------------------------------------------------------------------ *
+ * Structured data — verified fields only.
+ * No Product schema: the source carries no price, SKU, rating or availability,
+ * and inventing those is explicitly out of bounds.
+ * ------------------------------------------------------------------ */
+
+const organizationSchema = () => ({
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: company.legalName,
+  url: site.siteUrl,
+  logo: `${site.siteUrl}/assets/images/company/vegas-logo-318.png`,
+  slogan: company.tagline,
+  foundingDate: String(company.foundedYear),
+  founder: { '@type': 'Person', name: company.founder },
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: company.address.street,
+    addressLocality: company.address.town,
+    addressRegion: company.address.district,
+    addressCountry: 'BZ',
+  },
+  email: company.email,
+  telephone: company.phones,
+  sameAs: [company.facebook],
+  subOrganization: company.divisions.map((d) => ({ '@type': 'Organization', name: d.name })),
+});
+
+const breadcrumbSchema = (locale, trail) => ({
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: trail.map((item, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: item.name,
+    item: absoluteUrl(site, locale, item.path),
+  })),
+});
+
+/* ------------------------------------------------------------------ *
+ * Route rendering
+ * ------------------------------------------------------------------ */
+
+for (const locale of LOCALES) {
+  const i18n = locales[locale];
+  const base = { site, i18n, locale, company, catalog, images };
+
+  const render = (key, path, meta, result, structuredData = []) => {
+    const outPath = routePath(locale, path);
+    writePage(
+      outPath,
+      page({
+        ...base,
+        current: key,
+        path,
+        outPath,
+        title: meta.title,
+        description: meta.description,
+        structuredData,
+        body: result.body,
+        pageScripts: result.pageScripts,
+      })
+    );
+  };
+
+  const crumbTrail = (...parts) => [{ name: i18n.nav.home, path: ROUTES.home }, ...parts];
+
+  render('home', ROUTES.home, i18n.home, core.home(base), [organizationSchema()]);
+
+  render('about', ROUTES.about, i18n.about, core.about(base), [
+    breadcrumbSchema(locale, crumbTrail({ name: i18n.nav.about, path: ROUTES.about })),
+  ]);
+
+  render('divisions', ROUTES.divisions, i18n.divisions, core.divisions(base), [
+    breadcrumbSchema(locale, crumbTrail({ name: i18n.nav.divisions, path: ROUTES.divisions })),
+  ]);
+
+  render(
+    'industries', ROUTES.industries,
+    { title: i18n.divisions.industriesTitle, description: i18n.divisions.industriesDescription },
+    core.industries(base),
+    [breadcrumbSchema(locale, crumbTrail(
+      { name: i18n.nav.divisions, path: ROUTES.divisions },
+      { name: i18n.divisions.industriesTitle, path: ROUTES.industries }
+    ))]
+  );
+
+  render(
+    'lubricants', ROUTES.lubricants,
+    { title: i18n.divisions.lubricantsTitle, description: i18n.divisions.lubricantsDescription },
+    core.lubricants(base),
+    [breadcrumbSchema(locale, crumbTrail(
+      { name: i18n.nav.divisions, path: ROUTES.divisions },
+      { name: i18n.divisions.lubricantsTitle, path: ROUTES.lubricants }
+    ))]
+  );
+
+  render('products', ROUTES.products, i18n.products, cat.products(base), [
+    breadcrumbSchema(locale, crumbTrail({ name: i18n.nav.products, path: ROUTES.products })),
+  ]);
+
+  for (const b of catalog.brands) {
+    const path = `${ROUTES.products}/${b.slug}`;
+    const categoryName =
+      catalog.categories.find((x) => x.id === b.category)?.[locale] ?? b.category;
+    const description =
+      locale === 'es'
+        ? `${b.name}: ${b.productCount} listados publicados por Vega's en Belice. Categoría: ${categoryName}. Consulte la disponibilidad con su representante.`
+        : `${b.name}: ${b.productCount} listings published by Vega's Distributors in Belize. Category: ${categoryName}. Request availability from your representative.`;
+
+    render('products', path, { title: b.name, description }, cat.brand({ ...base, brand: b }), [
+      breadcrumbSchema(locale, crumbTrail(
+        { name: i18n.nav.products, path: ROUTES.products },
+        { name: b.name, path }
+      )),
+    ]);
+  }
+
+  render('network', ROUTES.network, i18n.network, cat.network(base), [
+    breadcrumbSchema(locale, crumbTrail({ name: i18n.nav.salesNetwork, path: ROUTES.network })),
+  ]);
+
+  render('contact', ROUTES.contact, i18n.contact, cat.contact(base), [
+    breadcrumbSchema(locale, crumbTrail({ name: i18n.nav.contact, path: ROUTES.contact })),
+  ]);
+}
+
+/* ------------------------------------------------------------------ *
+ * Error page — Netlify serves /404.html for unmatched paths.
+ * ------------------------------------------------------------------ */
+{
+  const locale = 'en';
+  const i18n = locales[locale];
+  const result = cat.notFound({ site, i18n, locale, company, catalog, images });
+  const html = page({
+    site, i18n, locale, company, catalog, images,
+    current: null,
+    path: '404',
+    // Rendered as if it sits at the root so its relative asset paths resolve
+    // from any URL depth the visitor happened to mistype.
+    outPath: '',
+    title: i18n.notFound.title,
+    description: i18n.notFound.description,
+    body: result.body,
+  });
+  writeFileSync(join(DIST, '404.html'), html);
+  written.push('404.html');
+}
+
+/* ------------------------------------------------------------------ *
+ * Assets
+ * ------------------------------------------------------------------ */
+
+mkdirSync(join(DIST, 'assets'), { recursive: true });
+cpSync(join(ROOT, 'src', 'styles'), join(DIST, 'assets', 'styles'), { recursive: true });
+cpSync(join(ROOT, 'src', 'js'), join(DIST, 'assets', 'js'), { recursive: true });
+cpSync(join(ROOT, 'src', 'assets', 'fonts'), join(DIST, 'assets', 'fonts'), { recursive: true });
+cpSync(join(ROOT, 'src', 'assets', 'images'), join(DIST, 'assets', 'images'), { recursive: true });
+
+/* ------------------------------------------------------------------ *
+ * sitemap.xml, robots.txt, Netlify config
+ * ------------------------------------------------------------------ */
+
+const routeList = [
+  ROUTES.home, ROUTES.about, ROUTES.divisions, ROUTES.industries, ROUTES.lubricants,
+  ROUTES.products, ...catalog.brands.map((b) => `${ROUTES.products}/${b.slug}`),
+  ROUTES.network, ROUTES.contact,
+];
+
+const today = new Date().toISOString().slice(0, 10);
+
+const sitemap =
+  `<?xml version="1.0" encoding="UTF-8"?>\n` +
+  `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n` +
+  LOCALES.flatMap((locale) =>
+    routeList.map((path) => {
+      const alternates = LOCALES.map(
+        (l) => `    <xhtml:link rel="alternate" hreflang="${l}" href="${absoluteUrl(site, l, path)}"/>`
+      ).join('\n');
+      const priority = path === ROUTES.home ? '1.0' : path.includes('/') ? '0.6' : '0.8';
+      return (
+        `  <url>\n    <loc>${absoluteUrl(site, locale, path)}</loc>\n` +
+        `${alternates}\n` +
+        `    <lastmod>${today}</lastmod>\n    <priority>${priority}</priority>\n  </url>`
+      );
+    })
+  ).join('\n') +
+  `\n</urlset>\n`;
+
+writeFileSync(join(DIST, 'sitemap.xml'), sitemap);
+
+// robots.txt follows the same flag as the noindex meta tag, so a preview host
+// can never be indexed by accident.
+const robots = site.noindex
+  ? `# Concept build. Indexing is disabled until the business approves a launch.\n` +
+    `# Flip "noindex" to false in data/site.json to publish the directives below.\n` +
+    `User-agent: *\nDisallow: /\n`
+  : `User-agent: *\nAllow: /\n\nSitemap: ${site.siteUrl}/sitemap.xml\n`;
+
+writeFileSync(join(DIST, 'robots.txt'), robots);
+
+writeFileSync(
+  join(DIST, '_headers'),
+  `/assets/*\n  Cache-Control: public, max-age=31536000, immutable\n\n` +
+    `/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n` +
+    `  X-Frame-Options: SAMEORIGIN\n`
+);
+
+writeFileSync(
+  join(DIST, 'netlify.toml'),
+  `# Static multi-page output: every route is a real directory with its own\n` +
+    `# index.html, so no SPA redirect rule is required. Unmatched paths fall\n` +
+    `# through to 404.html, which Netlify serves automatically.\n\n` +
+    `[build]\n  publish = "."\n\n` +
+    `[[headers]]\n  for = "/assets/*"\n  [headers.values]\n    Cache-Control = "public, max-age=31536000, immutable"\n\n` +
+    `[[headers]]\n  for = "/*"\n  [headers.values]\n    X-Content-Type-Options = "nosniff"\n    Referrer-Policy = "strict-origin-when-cross-origin"\n    X-Frame-Options = "SAMEORIGIN"\n`
+);
+
+/* ------------------------------------------------------------------ */
+
+const dirSize = (dir) =>
+  readdirSync(dir, { withFileTypes: true }).reduce((n, e) => {
+    const p = join(dir, e.name);
+    return n + (e.isDirectory() ? dirSize(p) : statSync(p).size);
+  }, 0);
+
+console.log(`Pages:    ${written.length}`);
+console.log(`Locales:  ${LOCALES.join(', ')}`);
+console.log(`Brands:   ${catalog.brands.length} x ${LOCALES.length}`);
+console.log(`Output:   ${DIST}`);
+console.log(`Size:     ${(dirSize(DIST) / 1024 / 1024).toFixed(1)} MB`);

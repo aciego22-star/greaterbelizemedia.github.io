@@ -1,0 +1,23 @@
+{
+  "name": "vegas-distributors-rebuild",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Concept rebuild of the Vega's Distributors Ltd. website. Static site generated from a structured content dataset.",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "serve": "node scripts/serve.mjs",
+    "dev": "node scripts/build.mjs && node scripts/serve.mjs",
+    "check": "node scripts/check.mjs",
+    "images": "node scripts/optimize-images.mjs",
+    "extract": "node scripts/extract-catalog.mjs",
+    "package": "node scripts/build.mjs && node scripts/check.mjs && node scripts/package.mjs",
+    "fonts": "node scripts/fetch-fonts.mjs"
+  },
+  "devDependencies": {
+    "sharp": "^0.34.5"
+  }
+}

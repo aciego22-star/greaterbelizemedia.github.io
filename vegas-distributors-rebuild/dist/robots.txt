@@ -1,0 +1,4 @@
+# Concept build. Indexing is disabled until the business approves a launch.
+# Flip "noindex" to false in data/site.json to publish the directives below.
+User-agent: *
+Disallow: /

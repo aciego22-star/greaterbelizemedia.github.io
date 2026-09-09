@@ -1,0 +1,344 @@
+{
+  "locale": "es",
+  "htmlLang": "es",
+  "label": "Español",
+  "shortLabel": "ES",
+  "dir": "ltr",
+  "site": {
+    "name": "Vega's Distributors Ltd.",
+    "conceptBar": "Sitio conceptual",
+    "conceptBarText": "Este es un sitio conceptual no aprobado, construido con información publicada públicamente. Los detalles de producto son provisionales.",
+    "skipLink": "Saltar al contenido principal"
+  },
+  "nav": {
+    "home": "Inicio",
+    "about": "Nosotros",
+    "divisions": "Divisiones",
+    "products": "Productos",
+    "salesNetwork": "Red de Ventas",
+    "contact": "Contacto",
+    "menu": "Menú",
+    "primaryLabel": "Principal",
+    "breadcrumbLabel": "Ruta de navegación",
+    "languageLabel": "Idioma"
+  },
+  "actions": {
+    "findRep": "Buscar un Representante",
+    "requestQuote": "Solicitar Cotización",
+    "exploreProducts": "Explorar Nuestros Productos",
+    "findYourRep": "Encuentre a su Representante de Ventas",
+    "requestAvailability": "Consultar Disponibilidad",
+    "contactRep": "Contactar a un Representante",
+    "readMore": "Leer más",
+    "viewBrand": "Ver marca",
+    "viewProducts": "Ver productos",
+    "backToProducts": "Todas las marcas",
+    "call": "Llamar",
+    "email": "Correo",
+    "enquire": "Enviar una consulta"
+  },
+  "home": {
+    "title": "Distribución Mayorista en Belice",
+    "description": "Desde 1980, Vega's abastece a supermercados, mayoristas y empresas en todo Belice desde tres divisiones con sede en Benque Viejo.",
+    "heroEyebrow": "Distribución en todo Belice desde 1980",
+    "heroHeadline": "Abasteciendo a Belice con Productos de Confianza desde 1980",
+    "heroLead": "Vega's Distributors conecta a supermercados, mayoristas y empresas de todo Belice con marcas de consumo establecidas, productos fabricados localmente y un soporte de distribución confiable.",
+    "heroProof": [
+      "Fundada en 1980",
+      "Benque Viejo del Carmen, Cayo",
+      "Tres divisiones operativas"
+    ],
+    "compositionAlt": "Una composición de imágenes de productos de marcas distribuidas por Vega's.",
+    "factsEyebrow": "La empresa en resumen",
+    "factsHeading": "Un grupo distribuidor beliceño consolidado",
+    "facts": [
+      {
+        "term": "En operación desde",
+        "value": "1980",
+        "detail": "Fundada por Eduardo Vega."
+      },
+      {
+        "term": "Sede",
+        "value": "Benque Viejo",
+        "detail": "Distrito de Cayo, Belice."
+      },
+      {
+        "term": "Divisiones operativas",
+        "value": "Tres",
+        "detail": "Distribución, manufactura y lubricantes."
+      },
+      {
+        "term": "Clientes",
+        "value": "Todo el país",
+        "detail": "Supermercados y mayoristas en todo Belice."
+      }
+    ],
+    "divisionsEyebrow": "Nuestras divisiones",
+    "divisionsHeading": "Un grupo, tres negocios especializados",
+    "divisionsLead": "Vega's opera un negocio de distribución de consumo y comercial, un fabricante beliceño de cloro y un distribuidor de lubricantes. Cada uno atiende una necesidad distinta desde la misma sede en Benque Viejo.",
+    "categoriesEyebrow": "Descubrir productos",
+    "categoriesHeading": "Encuentre lo que necesita, por categoría",
+    "categoriesLead": "Explore las categorías que Vega's publica y luego consulte la disponibilidad con el representante de su distrito.",
+    "categoriesAction": "Ver el directorio completo de marcas",
+    "networkEyebrow": "Red nacional de ventas",
+    "networkHeading": "Un representante para cada distrito",
+    "networkLead": "Vega's cubre Belice mediante representantes por territorio. Contacte directamente a la persona responsable de su zona.",
+    "networkAction": "Ver la red de ventas completa",
+    "whyEyebrow": "Por qué Vega's",
+    "whyHeading": "Basado en valores publicados y apoyo práctico",
+    "why": [
+      {
+        "title": "Integridad, trabajo en equipo y respeto",
+        "body": "Los tres valores que publica la empresa y la base de cómo sus equipos trabajan con los clientes."
+      },
+      {
+        "title": "Amplia experiencia en distribución",
+        "body": "En operación desde 1980 y con sede en Benque Viejo del Carmen desde el año siguiente a su fundación."
+      },
+      {
+        "title": "Múltiples categorías de producto",
+        "body": "Abarrotes, suministros hoteleros, material de construcción, lubricantes, chocolates, vinos y licores."
+      },
+      {
+        "title": "Atención por territorio",
+        "body": "Representantes designados por distrito, para que los pedidos y las consultas lleguen a la persona correcta."
+      }
+    ],
+    "ctaHeading": "¿Necesita un Producto o un Representante de Ventas?",
+    "ctaLead": "Explore el directorio de marcas, contacte al representante de su distrito o envíe una consulta estructurada y el equipo correspondiente la atenderá.",
+    "ctaOptions": [
+      {
+        "title": "Explorar productos",
+        "body": "37 marcas y 346 listados publicados.",
+        "href": "/products"
+      },
+      {
+        "title": "Encuentre a su representante",
+        "body": "Nueve territorios en todo Belice.",
+        "href": "/sales-network"
+      },
+      {
+        "title": "Enviar una consulta",
+        "body": "Cotizaciones, cuentas mayoristas y disponibilidad.",
+        "href": "/contact"
+      }
+    ]
+  },
+  "about": {
+    "title": "Acerca de Vega's Distributors",
+    "description": "Fundada en 1980 por Eduardo Vega y con sede en Benque Viejo del Carmen, Vega's importa y distribuye productos en todo Belice.",
+    "heading": "Servicio con Orgullo, desde 1980",
+    "lead": "Vega's Distributors Ltd. comenzó como una empresa unipersonal que importaba productos de México y Guatemala. Hoy es un grupo de tres divisiones que abastece a supermercados, mayoristas y clientes comerciales en todo Belice.",
+    "historyHeading": "Nuestra historia",
+    "visionHeading": "Visión",
+    "missionHeading": "Misión",
+    "valuesHeading": "Nuestros valores",
+    "valuesLead": "Los tres valores que publica la empresa.",
+    "valueDetail": {
+      "integrity": "Tratar con transparencia a clientes, proveedores y colegas.",
+      "teamwork": "Almacén, ventas y administración trabajando con el mismo estándar.",
+      "respect": "Respeto por los clientes, el personal y las comunidades a las que Vega's sirve."
+    },
+    "sourcingHeading": "De dónde vienen los productos",
+    "sourcingLead": "Vega's publica importaciones desde Centroamérica, Asia y regiones de la Commonwealth, junto con manufactura beliceña a través de Vega's Industries.",
+    "importList": "Categorías de importación publicadas",
+    "photographyHeading": "Fotografía pendiente de suministrar",
+    "photographyBody": "El sitio web público actual no ofrece fotografía auténtica de las instalaciones de distribución, la flota de reparto ni del personal en su trabajo. En lugar de usar imágenes de banco que representarían mal al negocio, esos espacios quedan reservados para fotografía aprobada.",
+    "photographyItems": [
+      "Instalaciones de distribución y almacén",
+      "Flota de reparto",
+      "Personal en su trabajo",
+      "Carga de producto y exhibición en tienda",
+      "La sede en Benque Viejo",
+      "Actividad de servicio al cliente y ventas"
+    ],
+    "managementHeading": "Contactos de gerencia",
+    "managementLead": "Contactos publicados en el sitio web de la empresa. Confirme que siguen vigentes antes de usarlos en producción.",
+    "tableArea": "Área",
+    "tableName": "Nombre",
+    "tableEmail": "Correo"
+  },
+  "divisions": {
+    "title": "Nuestras Divisiones",
+    "description": "Tres divisiones: distribución de consumo y comercial, Vega's Industries que fabrica el cloro Blanca Max, e International Lubricants of Belize.",
+    "heading": "Nuestras Divisiones",
+    "lead": "Nuestra empresa tiene tres divisiones: Vega's Distributors, que distribuye marcas de consumo establecidas; Vega's Industries, que fabrica el cloro Blanca Max; e International Lubricants of Belize, que distribuye aceites y lubricantes.",
+    "industriesTitle": "Vega's Industries Ltd.",
+    "industriesDescription": "Vega's Industries fabrica el cloro Blanca Max en Belice, disponible en presentaciones de un litro y medio litro.",
+    "lubricantsTitle": "International Lubricants of Belize Ltd.",
+    "lubricantsDescription": "ILB distribuye aceites de motor, refrigerantes, grasas, fluidos hidráulicos y de transmisión, y lubricantes para engranajes en Belice.",
+    "portfolioHeading": "Portafolio Blanca Max",
+    "aboutBleachHeading": "Cómo actúa el cloro",
+    "missionHeading": "Misión de la división",
+    "productLinesHeading": "Líneas de producto",
+    "applicationsHeading": "Aplicaciones",
+    "orderFormatsHeading": "Presentaciones de pedido",
+    "orderFormatsLead": "Los clientes pueden pedir los productos requeridos en las siguientes presentaciones.",
+    "chevronHeading": "Lubricantes Chevron",
+    "contactDivision": "Contactar a esta división"
+  },
+  "products": {
+    "title": "Productos y Marcas",
+    "description": "Busque las marcas y listados que publica Vega's, por categoría o división, y consulte la disponibilidad con su representante de territorio.",
+    "heading": "Productos y Marcas",
+    "lead": "Busque las marcas que Vega's publica, filtre por categoría y consulte la disponibilidad con el representante que cubre su distrito.",
+    "searchLabel": "Buscar marcas y productos",
+    "searchPlaceholder": "Busque el nombre de una marca o producto",
+    "categoryLabel": "Categoría",
+    "divisionLabel": "División",
+    "allCategories": "Todas las categorías",
+    "allDivisions": "Todas las divisiones",
+    "resultsCount": "{count} marcas",
+    "resultsCountOne": "1 marca",
+    "productsCount": "{count} listados",
+    "clearFilters": "Limpiar filtros",
+    "noResultsHeading": "Ninguna marca coincide con esa búsqueda",
+    "noResultsBody": "Pruebe con un término más corto o limpie los filtros para ver el directorio completo. Si busca algo que Vega's no publica en línea, envíe una consulta y el equipo de ventas podrá confirmarlo.",
+    "categoriesHeading": "Explorar por categoría",
+    "brandsHeading": "Directorio de marcas",
+    "enquiryOnly": "Solo por consulta",
+    "enquiryOnlyBody": "Publicado en la lista de importación de la empresa, sin detalle de producto en línea. Contacte al equipo de ventas para conocer la disponibilidad.",
+    "verificationNotice": "Cada marca, nombre de producto y presentación de este sitio estaba publicada en el sitio web de Vega's cuando se construyó este concepto. La empresa no ha confirmado que sigan vigentes, así que considere los listados provisionales y confirme la disponibilidad antes de pedir.",
+    "brandCount": "{count} marcas",
+    "listingCount": "{count} listados"
+  },
+  "brand": {
+    "productsHeading": "Listados publicados",
+    "productName": "Producto",
+    "productSize": "Tamaño o presentación",
+    "sectionUngrouped": "Listados",
+    "relatedHeading": "Marcas relacionadas",
+    "galleryHeading": "Imágenes de producto",
+    "sourceNote": "Nota sobre la fuente",
+    "provisionalNotice": "Estos listados estaban publicados en el sitio web de Vega's y no se ha confirmado que sigan vigentes. Consulte la disponibilidad antes de pedir.",
+    "ctaHeading": "¿Necesita esta marca para su negocio?",
+    "ctaBody": "Pida al representante de su distrito que confirme la disponibilidad actual y las presentaciones.",
+    "categoryLabel": "Categoría",
+    "divisionLabel": "División",
+    "listingsLabel": "Listados"
+  },
+  "network": {
+    "title": "Red de Ventas",
+    "description": "Vega's cubre Belice con representantes de territorio en el norte, centro, oeste y sur, además de un contacto dedicado de ILB.",
+    "heading": "Red Nacional de Ventas",
+    "lead": "Vega's cubre Belice mediante representantes de territorio designados. Encuentre su distrito y contacte directamente al representante.",
+    "territoryLabel": "Territorio",
+    "repLabel": "Representante",
+    "noPhone": "No hay un número de teléfono publicado para este territorio. Use el correo electrónico o contacte a la oficina principal.",
+    "headOfficeHeading": "Oficina principal",
+    "coverageHeading": "Cobertura por región",
+    "coverageLead": "Los territorios están agrupados por región. Cada uno cuenta con un representante designado.",
+    "territoryCount": "{count} territorios",
+    "territoryCountOne": "1 territorio"
+  },
+  "contact": {
+    "title": "Contactar a Vega's Distributors",
+    "description": "Contacte a Vega's en Benque Viejo del Carmen para disponibilidad de productos, cuentas mayoristas, cotizaciones y consultas de proveedores.",
+    "heading": "Contactar a Vega's",
+    "lead": "Díganos qué necesita y su consulta llegará al equipo correcto. Para pedidos y disponibilidad, lo más rápido suele ser contactar directamente al representante de su territorio.",
+    "enquiryTypeHeading": "¿Sobre qué es su consulta?",
+    "enquiryTypes": [
+      {
+        "id": "availability",
+        "title": "Disponibilidad de producto",
+        "body": "Consulte si un producto o presentación está disponible actualmente."
+      },
+      {
+        "id": "wholesale",
+        "title": "Consulta mayorista o de cuenta",
+        "body": "Abrir una cuenta comercial o revisar las condiciones existentes."
+      },
+      {
+        "id": "quote",
+        "title": "Solicitar una cotización",
+        "body": "Precios para una lista de productos y cantidad específicas."
+      },
+      {
+        "id": "representative",
+        "title": "Buscar un representante de ventas",
+        "body": "Que le pongan en contacto con el representante de su distrito."
+      },
+      {
+        "id": "supplier",
+        "title": "Consulta de proveedor o internacional",
+        "body": "Ofrecer una línea de producto o hablar sobre distribución en Belice."
+      },
+      {
+        "id": "general",
+        "title": "Servicio al cliente general",
+        "body": "Cualquier otro tema, incluidas entregas y facturas."
+      }
+    ],
+    "formHeading": "Sus datos",
+    "fields": {
+      "name": "Su nombre",
+      "business": "Nombre del negocio",
+      "businessHint": "Si consulta en nombre de una empresa.",
+      "email": "Correo electrónico",
+      "phone": "Teléfono",
+      "phoneHint": "Opcional. Incluya el código de país si está fuera de Belice.",
+      "territory": "Distrito o territorio",
+      "territoryHint": "Ayuda a dirigir su consulta al representante correcto.",
+      "category": "Categoría de producto",
+      "product": "Producto o marca",
+      "quantity": "Cantidad",
+      "quantityHint": "Cajas, unidades o tambores, si los conoce.",
+      "message": "Mensaje",
+      "preferredContact": "Método de respuesta preferido",
+      "selectPlaceholder": "Seleccione una opción",
+      "optional": "opcional",
+      "required": "obligatorio"
+    },
+    "preferredContactOptions": [
+      {
+        "id": "email",
+        "label": "Correo electrónico"
+      },
+      {
+        "id": "phone",
+        "label": "Teléfono"
+      }
+    ],
+    "submit": "Enviar consulta",
+    "errors": {
+      "name": "Escriba su nombre para saber quién consulta.",
+      "email": "Escriba un correo electrónico válido, por ejemplo nombre@ejemplo.com.",
+      "message": "Díganos qué necesita.",
+      "enquiryType": "Elija el tema de su consulta.",
+      "summary": "Revise los campos marcados e inténtelo de nuevo."
+    },
+    "devNotice": "Este sitio conceptual no tiene un backend de consultas conectado. No se envía ni se guarda nada. El formulario valida sus datos y muestra exactamente los datos que se enviarían, para que la integración pueda conectarse más adelante.",
+    "devResultHeading": "Modo de desarrollo: no se envió nada",
+    "devResultBody": "Estos son los datos que recibiría un backend conectado:",
+    "officeHeading": "Oficina principal",
+    "addressHeading": "Dirección",
+    "phoneHeading": "Teléfono",
+    "emailHeading": "Correo electrónico",
+    "socialHeading": "Redes sociales",
+    "ilbHeading": "International Lubricants of Belize",
+    "mapNote": "Vega's publica una dirección pero no un mapa incrustado. Se añadirá un mapa cuando la empresa confirme la ubicación exacta."
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "heading": "No encontramos esa página",
+    "lead": "Es posible que la página se haya movido o que la dirección esté mal escrita. Pruebe con el directorio de productos o la red de ventas.",
+    "description": "No se pudo encontrar la página solicitada en el sitio conceptual de Vega's Distributors."
+  },
+  "footer": {
+    "tagline": "Servicio con Orgullo.",
+    "exploreHeading": "Explorar",
+    "divisionsHeading": "Divisiones",
+    "contactHeading": "Contacto",
+    "followUs": "Síganos en Facebook",
+    "conceptHeading": "Estado del concepto",
+    "conceptBody": "Un sitio conceptual no aprobado que utiliza información publicada por Vega's Distributors el 8 de septiembre de 2026.",
+    "copyright": "Vega's Distributors Ltd.",
+    "rightsNote": "Los nombres y logotipos de terceros son propiedad de sus respectivos dueños y se muestran únicamente con fines de identificación."
+  },
+  "misc": {
+    "provisional": "Provisional",
+    "unconfirmed": "No confirmado por la empresa",
+    "needsApprovalHeading": "Pendiente de aprobación de la empresa",
+    "reviewNeeded": "La terminología de producto en español está pendiente de revisión"
+  }
+}

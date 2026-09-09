@@ -1,0 +1,18 @@
+# Static multi-page output: every route is a real directory with its own
+# index.html, so no SPA redirect rule is required. Unmatched paths fall
+# through to 404.html, which Netlify serves automatically.
+
+[build]
+  publish = "."
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "SAMEORIGIN"

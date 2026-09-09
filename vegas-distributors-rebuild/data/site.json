@@ -1,0 +1,20 @@
+{
+  "siteUrl": "https://www.vegasdistributors.bz",
+  "siteUrlNote": "Canonical host for an eventual approved migration. The concept build is not deployed there.",
+  "noindex": true,
+  "noindexNote": "The concept build must not be indexed while it lives on a preview or staging host. Set to false only when the business approves a production launch on siteUrl; robots.txt follows this same flag.",
+  "themeColor": "#fdcb0a",
+  "twitterCard": "summary_large_image",
+  "analytics": {
+    "provider": null,
+    "note": "No analytics is loaded. Add a deferred script tag at the integration point marked in scripts/lib/layout.mjs."
+  },
+  "assistant": {
+    "enabled": false,
+    "note": "Integration point for a future AI Employee. When enabled, the build emits a mount node and a deferred module hook. No vendor is named or contacted, and nothing is advertised on the site while this is false."
+  },
+  "forms": {
+    "endpoint": null,
+    "note": "No enquiry backend is connected. src/js/enquiry.js posts to this endpoint when set; until then it runs in development mode and never reports success."
+  }
+}

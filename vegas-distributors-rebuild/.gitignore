@@ -1,0 +1,4 @@
+node_modules/
+
+# Build outputs. `npm run package` regenerates both from committed sources.
+release/
