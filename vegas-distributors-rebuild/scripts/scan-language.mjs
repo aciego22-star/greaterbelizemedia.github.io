@@ -65,6 +65,20 @@ for (const file of walk(DIST)) {
     ? [['rendered text', strip(raw)], ['metadata', metaText(raw)], ['raw html', raw]]
     : [['file', raw]];
 
+  // Em dashes are not wanted anywhere a visitor can read them. They are
+  // checked separately from the phrase list because they are punctuation
+  // rather than a word, so the whole-word rule below does not apply.
+  for (const [where, text] of haystacks) {
+    if (where !== 'raw html') {
+      const dash = text.indexOf('\u2014');
+      if (dash !== -1) {
+        problems.push(
+          `${rel} [${where}] em dash ... ${text.slice(Math.max(0, dash - 50), dash + 60).trim()}`
+        );
+      }
+    }
+  }
+
   for (const [where, text] of haystacks) {
     const lower = text.toLowerCase();
     const list = where === 'raw html' ? BANNED : BANNED.concat(BANNED_TEXT_ONLY);

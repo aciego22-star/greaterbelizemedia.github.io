@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Vega's Distributors — design system
+   Vega's Distributors design system
    Palette and typography direction follow BRAND-AND-VISUAL-GUIDE.md.
    Yellow is a navigational accent, never a background for long copy.
    ========================================================================== */
@@ -678,21 +678,20 @@ ul, ol { margin: 0; padding: 0; }
    Editorial section headings
    -------------------------------------------------------------------------- */
 
+/* No rule under the heading. A hard line across the page cut every section off
+   from the artwork and the cards below it; the space does the separating. */
 .band-head {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
   justify-content: space-between;
   gap: 1rem 2rem;
-  padding-bottom: 1.1rem;
   margin-bottom: clamp(1.75rem, 3.5vw, 2.75rem);
-  border-bottom: 2px solid var(--ink);
 }
 .band-head__text { max-width: 54ch; min-width: 0; }
 .band-head .eyebrow { margin-bottom: 0.5rem; }
 .band-head h2 { margin-bottom: 0.55rem; }
 .band-head p { margin: 0; color: var(--slate); }
-.band--deep .band-head { border-bottom-color: rgba(255, 255, 255, 0.35); }
 
 /* --------------------------------------------------------------------------
    Division bands
@@ -1181,7 +1180,7 @@ table.products thead th {
 table.products tbody tr:last-child td { border-bottom: 0; }
 table.products tbody tr:hover td { background: var(--yellow-wash); }
 table.products td.size { white-space: nowrap; color: var(--ink-soft); }
-table.products td.size:empty::after { content: '—'; color: var(--line-strong); }
+table.products td.size:empty::after { content: '-'; color: var(--line-strong); }
 
 /* --------------------------------------------------------------------------
    Sales network
@@ -1455,7 +1454,7 @@ table.products td.size:empty::after { content: '—'; color: var(--line-strong);
 .placeholder-note strong { color: var(--ink-soft); font-family: var(--display); }
 
 /* --------------------------------------------------------------------------
-   Motion — restrained, and fully optional
+   Motion: restrained, and fully optional
    -------------------------------------------------------------------------- */
 
 /* Content is visible by default. Script arms the effect, so a failed or absent
