@@ -1755,6 +1755,13 @@ table.products td.size:empty::after { content: '-'; color: var(--line-strong); }
 
 .crumbs { padding-block: 1.1rem 0; }
 .crumbs ol { display: flex; flex-wrap: wrap; gap: 0.4rem; list-style: none; font-size: 0.87rem; color: var(--slate); }
+
+/* Every step of the trail sits on the same line, whether it is a link or the
+   page you are already on. The links alone used to carry the height that makes
+   them big enough to hit, which centred their text in a taller box and left
+   the name of the current page riding several pixels above the rest of the
+   trail. Giving every step the same box puts them back on one line. */
+.crumbs li { display: inline-flex; align-items: center; min-height: 32px; }
 .crumbs li + li::before { content: '/'; margin-right: 0.4rem; color: var(--line-strong); }
 .crumbs a { color: var(--slate); text-decoration: none; }
 .crumbs a:hover { color: var(--ink); text-decoration: underline; }
