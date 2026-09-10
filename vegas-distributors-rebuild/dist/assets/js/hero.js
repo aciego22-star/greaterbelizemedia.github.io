@@ -102,14 +102,15 @@
       });
     });
 
-    // Only where there is a pointer that can be moved away again: a touch
-    // screen sends mouseenter when a finger lands and never the mouseleave
-    // that would start it again, which stopped the hero on whichever slide was
-    // showing the moment anyone touched it.
-    if (window.matchMedia('(hover: hover)').matches) {
-      hero.addEventListener('mouseenter', stop);
-      hero.addEventListener('mouseleave', start);
-    }
+    /* Tabbing into the hero holds it, so a link is never pulled out from under
+       someone reaching for it. Pointing at it deliberately does not.
+
+       A cursor resting over the hero is no signal that anyone is reading it,
+       and the hero fills the top of the window, so an idle pointer held the
+       carousel indefinitely. Worse, a cursor that merely crossed it restarted
+       the beat from zero on the way out, which is what turned a seven second
+       hold into an unpredictable nine or more. The arrows, the dots and the
+       arrow keys are the controls; an idle mouse is not one. */
     hero.addEventListener('focusin', stop);
     hero.addEventListener('focusout', function (e) {
       if (!hero.contains(e.relatedTarget)) start();

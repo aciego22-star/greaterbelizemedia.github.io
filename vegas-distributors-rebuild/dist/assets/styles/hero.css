@@ -44,15 +44,18 @@
    absolute either way: the track already reserves the height. */
 .hero:not([data-ready]) .hero-slide[data-inert] { display: none; }
 
+/* The changeover is deliberately brisk: the beat between campaigns is seven
+   seconds, and a long dissolve eats into the time the artwork is actually
+   readable at full strength. */
 .hero[data-ready] .hero-slide {
   opacity: 0;
   visibility: hidden;
-  transition: opacity 700ms cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear 700ms;
+  transition: opacity 560ms cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear 560ms;
 }
 .hero[data-ready] .hero-slide.is-current {
   opacity: 1;
   visibility: visible;
-  transition: opacity 700ms cubic-bezier(0.4, 0, 0.2, 1), visibility 0s;
+  transition: opacity 560ms cubic-bezier(0.4, 0, 0.2, 1), visibility 0s;
 }
 
 .hero-slide__media {

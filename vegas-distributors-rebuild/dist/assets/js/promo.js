@@ -5,9 +5,9 @@
  * a page whose script never arrives, and a visitor who has asked for less
  * motion, sees one complete, still product rather than a stack of three.
  *
- * There are no controls on the showcase. Pointing at it or tabbing into it
- * holds it where it is, it stands still while it is off screen or the tab is in
- * the background, and asking for less motion stops it entirely.
+ * There are no controls on the showcase. Tabbing into it holds it where it is,
+ * it stands still while it is off screen or the tab is in the background, and
+ * asking for less motion stops it entirely.
  */
 (function () {
   'use strict';
@@ -93,18 +93,16 @@
 
     function restart() { stop(); start(); }
 
-    // Reading or pointing at the panel holds it, so nothing changes out from
-    // under someone part way through a sentence.
+    // Tabbing into the panel holds it, so a link is never pulled out from
+    // under someone reaching for it.
+    //
+    // Pointing at it deliberately does not. A cursor left resting anywhere
+    // over the showcase is no signal that anyone is reading, and holding on
+    // that signal stopped the queue outright for as long as the cursor sat
+    // there. Keyboard focus is a real statement of intent; an idle mouse is
+    // not, so only focus holds now.
     var hold = function () { held = true; stop(); };
     var release = function () { held = false; start(); };
-    // Only where there is a pointer that can be moved away again. A touch
-    // screen sends mouseenter when a finger lands and never sends the
-    // mouseleave that would let go, which left the showcase stopped for good
-    // on the first product the moment anyone touched it.
-    if (window.matchMedia('(hover: hover)').matches) {
-      promo.addEventListener('mouseenter', hold);
-      promo.addEventListener('mouseleave', release);
-    }
     promo.addEventListener('focusin', hold);
     promo.addEventListener('focusout', function (e) {
       if (!promo.contains(e.relatedTarget)) release();
