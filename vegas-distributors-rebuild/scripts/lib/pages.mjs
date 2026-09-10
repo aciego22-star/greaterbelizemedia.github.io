@@ -2,7 +2,7 @@
 import { esc, picture, telLink, mailLink, t, cx } from './html.mjs';
 import { ROUTES, link, absoluteUrl } from './layout.mjs';
 import {
-  sectionHead, crumbs, notice, brandCard, categoryCard, divisionPanel, repCard, placeholderNote, plate,
+  sectionHead, crumbs, notice, brandCard, categoryCard, repCard, placeholderNote, plate,
 } from './partials.mjs';
 import { heroCarousel } from './hero.mjs';
 import { promoShowcase } from './promo.mjs';
@@ -319,18 +319,85 @@ export function about(ctx) {
  * ------------------------------------------------------------------ */
 
 export function divisions(ctx) {
-  const { i18n, locale, company, images } = ctx;
+  const { i18n, locale, company, divisionArt } = ctx;
   const c = i18n.divisions;
+
+  /* Each division is one chapter: a wide photograph with the words set into
+     it. The three are ordered as the company is, and each carries the same
+     shape so the page reads as one portfolio rather than three treatments. */
+  const CHAPTERS = [
+    {
+      key: 'distributors',
+      slug: 'vegas-distributors',
+      art: 'vegas-distributors-immersive-1672',
+      route: ROUTES.products,
+    },
+    {
+      key: 'industries',
+      slug: 'vegas-industries',
+      art: 'vegas-industries-aqua-max-immersive-1672',
+      route: ROUTES.industries,
+    },
+    {
+      key: 'lubricants',
+      slug: 'international-lubricants-belize',
+      art: 'ilb-immersive-1672',
+      route: ROUTES.lubricants,
+    },
+  ];
+
+  const chapter = (spec, i) => {
+    const division = company.divisions.find((d) => d.slug === spec.slug);
+    const copy = c.chapters[spec.key];
+    const art = divisionArt[spec.art];
+
+    // The chips say what the division sells, in its own words. Nothing here is
+    // invented: the lines and the formats are the ones already on record.
+    const chips =
+      division.productLines
+        ? `<ul class="chapter__chips">${division.productLines
+            .map((l) => `<li>${esc(l[locale] ?? l.en)}</li>`)
+            .join('')}</ul>`
+        : division.products
+          ? `<ul class="chapter__chips">${division.products
+              .map((p) => `<li>${esc(copy.product ?? p.name)} \u00b7 ${esc(locale === 'es' ? p.sizeEs : p.size)}</li>`)
+              .join('')}</ul>`
+          : '';
+
+    return (
+      `<article class="chapter chapter--${esc(spec.key)} reveal" data-chapter>` +
+      `<div class="chapter__media">` +
+      (art
+        ? picture(art, {
+            alt: copy.alt,
+            sizes: '(min-width: 77.5rem) 1160px, 100vw',
+            // The first chapter is at the top of the page, so it is fetched
+            // straight away; the other two wait until they are needed.
+            loading: i === 0 ? 'eager' : 'lazy',
+            fetchpriority: i === 0 ? 'high' : undefined,
+          })
+        : '') +
+      `</div>` +
+      `<div class="chapter__panel"><div class="chapter__text">` +
+      `<p class="chapter__tag">${esc(copy.tag)}</p>` +
+      `<h2>${esc(division.name)}</h2>` +
+      `<p class="chapter__body">${esc(copy.body)}</p>` +
+      chips +
+      `<div class="chapter__actions">` +
+      `<a class="btn btn--primary" href="${link(locale, spec.route)}">${esc(copy.action)}</a>` +
+      `</div>` +
+      `</div></div>` +
+      `</article>`
+    );
+  };
 
   const body =
     crumbs({ i18n, locale, trail: [{ label: i18n.nav.home, href: link(locale, ROUTES.home) }, { label: i18n.nav.divisions }] }) +
-    `<section class="page-head"><div class="shell">` +
-    `<hr class="rule"><h1>${esc(c.heading)}</h1><p class="lead">${esc(c.lead)}</p>` +
+    `<section class="page-head page-head--divisions"><div class="shell">` +
+    `<h1>${esc(c.heading)}</h1><p class="lead">${esc(c.lead)}</p>` +
     `</div></section>` +
-    `<section class="band band--tight"><div class="shell">` +
-    company.divisions
-      .map((d, i) => divisionPanel({ division: d, i18n, locale, images, flip: i % 2 === 1, level: 2 }))
-      .join('') +
+    `<section class="band band--tight"><div class="shell chapters">` +
+    CHAPTERS.map(chapter).join('') +
     `</div></section>`;
 
   return { body };

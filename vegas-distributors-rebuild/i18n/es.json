@@ -219,9 +219,9 @@
   },
   "divisions": {
     "title": "Nuestras Divisiones",
-    "description": "Tres divisiones: distribución de consumo y comercial, Vega's Industries que fabrica el cloro Blanca Max, e International Lubricants of Belize.",
+    "description": "Tres divisiones: distribución de consumo y comercial, Vega's Industries que fabrica el cloro Aqua Max, e International Lubricants of Belize.",
     "heading": "Nuestras Divisiones",
-    "lead": "Nuestra empresa tiene tres divisiones: Vega's Distributors, que distribuye marcas de consumo establecidas; Vega's Industries, que fabrica el cloro Blanca Max; e International Lubricants of Belize, que distribuye aceites y lubricantes.",
+    "lead": "Un grupo, tres negocios. Vega's Distributors lleva marcas de consumo establecidas a todo el país, Vega's Industries fabrica el cloro Aqua Max en Belice, e International Lubricants of Belize suministra aceites y lubricantes.",
     "industriesTitle": "Vega's Industries Ltd.",
     "industriesDescription": "Vega's Industries fabrica el cloro Blanca Max en Belice, disponible en presentaciones de un litro y medio litro.",
     "lubricantsTitle": "International Lubricants of Belize Ltd.",
@@ -234,7 +234,28 @@
     "orderFormatsHeading": "Presentaciones de pedido",
     "orderFormatsLead": "Los clientes pueden pedir los productos requeridos en las siguientes presentaciones.",
     "chevronHeading": "Lubricantes Chevron",
-    "contactDivision": "Contactar a esta división"
+    "contactDivision": "Contactar a esta división",
+    "chapters": {
+      "distributors": {
+        "tag": "Distribución de productos de consumo y comerciales",
+        "body": "La empresa matriz de distribución, que abastece a supermercados, mayoristas y clientes comerciales en todo Belice con marcas de consumo establecidas y productos fabricados localmente.",
+        "action": "Explorar productos",
+        "alt": "Productos Kellogg's, Pasta Ina y Regia sobre una tarima en la bodega de Vega's Distributors, con un camión de reparto en el portón de carga."
+      },
+      "industries": {
+        "tag": "Fabricante del cloro Aqua Max",
+        "body": "La división manufacturera de Vega's, que produce el cloro Aqua Max en Belice en botellas de un litro y medio litro.",
+        "action": "Explorar Vega's Industries",
+        "alt": "Botellas de cloro Aqua Max avanzando por la línea de llenado en la planta de Vega’s Industries en Belice.",
+        "product": "Aqua Max"
+      },
+      "lubricants": {
+        "tag": "Aceites y lubricantes para vehículos, equipos, industria y uso marino",
+        "body": "ILB distribuye aceites y lubricantes en todo Belice para transporte comercial, equipo industrial y todoterreno, vehículos de pasajeros y uso marino.",
+        "action": "Explorar ILB",
+        "alt": "Lubricantes Chevron en un muelle, con un camión cisterna, una excavadora y una embarcación de trabajo detrás."
+      }
+    }
   },
   "products": {
     "title": "Productos y Marcas",

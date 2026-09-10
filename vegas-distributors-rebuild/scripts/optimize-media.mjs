@@ -25,6 +25,8 @@ const PRODUCT_SRC = join(ROOT, 'src', 'assets', 'product-sources');
 const ART_OUT = join(ROOT, 'src', 'assets', 'product-art');
 const GALLERY_OUT = join(ROOT, 'src', 'assets', 'gallery');
 const CAMPAIGN_OUT = join(ROOT, 'src', 'assets', 'campaign');
+const DIVISION_SRC = join(ROOT, 'src', 'assets', 'division-sources');
+const DIVISION_OUT = join(ROOT, 'src', 'assets', 'images', 'divisions');
 const FLYER_OUT = join(ROOT, 'src', 'assets', 'whats-new');
 
 let bytes = 0;
@@ -145,6 +147,60 @@ for (const file of readdirSync(CAMPAIGN_SRC).filter((f) => /\.(png|jpe?g)$/i.tes
 }
 
 writeFileSync(join(ROOT, 'data', 'campaign-images.json'), JSON.stringify(campaignArt, null, 2) + '\n');
+
+/* ------------------------------------------------------------------ *
+ * Division chapter artwork
+ *
+ * Each division is introduced by one wide photograph that carries the
+ * chapter. They run the width of the page, so they are carried up to their
+ * full supplied size and down to a width that suits a phone.
+ * ------------------------------------------------------------------ */
+
+const DIVISION_WIDTHS = [480, 720, 960, 1280, 1672];
+// A photograph this wide is served as AVIF or WebP to every browser in use;
+// the JPEG is the last resort, so it is carried at two sizes rather than five.
+const DIVISION_JPEG = [960, 1672];
+const divisionArt = {};
+
+if (existsSync(DIVISION_SRC)) {
+  mkdirSync(DIVISION_OUT, { recursive: true });
+  for (const file of readdirSync(DIVISION_SRC).filter((f) => /\.(png|jpe?g)$/i.test(f)).sort()) {
+    const id = basename(file).replace(/\.[a-z]+$/i, '');
+    const src = join(DIVISION_SRC, file);
+    const meta = await sharp(src).metadata();
+    const widths = DIVISION_WIDTHS.filter((w) => w <= meta.width);
+
+    const entry = {
+      dir: 'divisions',
+      width: meta.width,
+      height: meta.height,
+      avif: [], webp: [], fallback: [],
+    };
+
+    for (const w of widths) {
+      const h = Math.round((meta.height / meta.width) * w);
+      const base = () => sharp(src).resize({ width: w, withoutEnlargement: true });
+      const small = w <= 720;
+      const jobs = [
+        ['avif', `${id}-${w}.avif`, base().avif({ quality: small ? 46 : 54, effort: 4 })],
+        ['webp', `${id}-${w}.webp`, base().webp({ quality: small ? 70 : 78, effort: 5 })],
+      ];
+      if (DIVISION_JPEG.includes(w)) {
+        jobs.push(['fallback', `${id}-${w}.jpg`, base().jpeg({ quality: small ? 76 : 84, mozjpeg: true })]);
+      }
+      for (const [kind, name, pipeline] of jobs) {
+        await pipeline.toFile(join(DIVISION_OUT, name));
+        entry[kind].push({ file: name, width: w, height: h });
+        track(join(DIVISION_OUT, name));
+      }
+    }
+
+    divisionArt[id] = entry;
+    console.log(`  division ${id.padEnd(42)} ${meta.width}x${meta.height} -> ${widths.join(', ')}`);
+  }
+}
+
+writeFileSync(join(ROOT, 'data', 'division-images.json'), JSON.stringify(divisionArt, null, 2) + '\n');
 
 /* ------------------------------------------------------------------ *
  * What's New card artwork

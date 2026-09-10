@@ -219,9 +219,9 @@
   },
   "divisions": {
     "title": "Our Divisions",
-    "description": "Three divisions: consumer and commercial distribution, Vega's Industries making Blanca Max bleach, and International Lubricants of Belize.",
+    "description": "Three divisions: consumer and commercial distribution, Vega's Industries making Aqua Max bleach, and International Lubricants of Belize.",
     "heading": "Our Divisions",
-    "lead": "Our company has three divisions: Vega's Distributors, which distributes established consumer brands; Vega's Industries, which manufactures Blanca Max bleach; and International Lubricants of Belize, distributing oils and lubricants.",
+    "lead": "One group, three businesses. Vega's Distributors carries established consumer brands across the country, Vega's Industries manufactures Aqua Max bleach in Belize, and International Lubricants of Belize supplies oils and lubricants.",
     "industriesTitle": "Vega's Industries Ltd.",
     "industriesDescription": "Vega's Industries manufactures Blanca Max bleach in Belize, available in one-litre and half-litre formats.",
     "lubricantsTitle": "International Lubricants of Belize Ltd.",
@@ -234,7 +234,28 @@
     "orderFormatsHeading": "Order formats",
     "orderFormatsLead": "Customers can order required products in the following formats.",
     "chevronHeading": "Chevron lubricants",
-    "contactDivision": "Contact this division"
+    "contactDivision": "Contact this division",
+    "chapters": {
+      "distributors": {
+        "tag": "Consumer and commercial distribution",
+        "body": "The parent distribution business, supplying supermarkets, wholesalers and commercial customers across Belize with established consumer brands and locally manufactured products.",
+        "action": "Explore products",
+        "alt": "Kellogg's, Pasta Ina and Regia products on a pallet inside the Vega's Distributors warehouse, with a delivery truck at the loading door."
+      },
+      "industries": {
+        "tag": "Manufacturer of Aqua Max bleach",
+        "body": "Vega's manufacturing division, producing Aqua Max bleach in Belize in one-litre and half-litre bottles.",
+        "action": "Explore Vega's Industries",
+        "alt": "Aqua Max bleach bottles moving along the filling line at the Vega’s Industries plant in Belize.",
+        "product": "Aqua Max"
+      },
+      "lubricants": {
+        "tag": "Oils and lubricants for vehicles, equipment, industry and marine use",
+        "body": "ILB distributes oils and lubricants across Belize for commercial transportation, industrial and off-highway equipment, passenger vehicles and marine use.",
+        "action": "Explore ILB",
+        "alt": "Chevron lubricants on a quayside, with a tanker truck, an excavator and a working vessel behind them."
+      }
+    }
   },
   "products": {
     "title": "Products and Brands",

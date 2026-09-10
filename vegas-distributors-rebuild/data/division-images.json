@@ -1,0 +1,215 @@
+{
+  "ilb-immersive-1672": {
+    "dir": "divisions",
+    "width": 1672,
+    "height": 941,
+    "avif": [
+      {
+        "file": "ilb-immersive-1672-480.avif",
+        "width": 480,
+        "height": 270
+      },
+      {
+        "file": "ilb-immersive-1672-720.avif",
+        "width": 720,
+        "height": 405
+      },
+      {
+        "file": "ilb-immersive-1672-960.avif",
+        "width": 960,
+        "height": 540
+      },
+      {
+        "file": "ilb-immersive-1672-1280.avif",
+        "width": 1280,
+        "height": 720
+      },
+      {
+        "file": "ilb-immersive-1672-1672.avif",
+        "width": 1672,
+        "height": 941
+      }
+    ],
+    "webp": [
+      {
+        "file": "ilb-immersive-1672-480.webp",
+        "width": 480,
+        "height": 270
+      },
+      {
+        "file": "ilb-immersive-1672-720.webp",
+        "width": 720,
+        "height": 405
+      },
+      {
+        "file": "ilb-immersive-1672-960.webp",
+        "width": 960,
+        "height": 540
+      },
+      {
+        "file": "ilb-immersive-1672-1280.webp",
+        "width": 1280,
+        "height": 720
+      },
+      {
+        "file": "ilb-immersive-1672-1672.webp",
+        "width": 1672,
+        "height": 941
+      }
+    ],
+    "fallback": [
+      {
+        "file": "ilb-immersive-1672-960.jpg",
+        "width": 960,
+        "height": 540
+      },
+      {
+        "file": "ilb-immersive-1672-1672.jpg",
+        "width": 1672,
+        "height": 941
+      }
+    ]
+  },
+  "vegas-distributors-immersive-1672": {
+    "dir": "divisions",
+    "width": 1672,
+    "height": 941,
+    "avif": [
+      {
+        "file": "vegas-distributors-immersive-1672-480.avif",
+        "width": 480,
+        "height": 270
+      },
+      {
+        "file": "vegas-distributors-immersive-1672-720.avif",
+        "width": 720,
+        "height": 405
+      },
+      {
+        "file": "vegas-distributors-immersive-1672-960.avif",
+        "width": 960,
+        "height": 540
+      },
+      {
+        "file": "vegas-distributors-immersive-1672-1280.avif",
+        "width": 1280,
+        "height": 720
+      },
+      {
+        "file": "vegas-distributors-immersive-1672-1672.avif",
+        "width": 1672,
+        "height": 941
+      }
+    ],
+    "webp": [
+      {
+        "file": "vegas-distributors-immersive-1672-480.webp",
+        "width": 480,
+        "height": 270
+      },
+      {
+        "file": "vegas-distributors-immersive-1672-720.webp",
+        "width": 720,
+        "height": 405
+      },
+      {
+        "file": "vegas-distributors-immersive-1672-960.webp",
+        "width": 960,
+        "height": 540
+      },
+      {
+        "file": "vegas-distributors-immersive-1672-1280.webp",
+        "width": 1280,
+        "height": 720
+      },
+      {
+        "file": "vegas-distributors-immersive-1672-1672.webp",
+        "width": 1672,
+        "height": 941
+      }
+    ],
+    "fallback": [
+      {
+        "file": "vegas-distributors-immersive-1672-960.jpg",
+        "width": 960,
+        "height": 540
+      },
+      {
+        "file": "vegas-distributors-immersive-1672-1672.jpg",
+        "width": 1672,
+        "height": 941
+      }
+    ]
+  },
+  "vegas-industries-aqua-max-immersive-1672": {
+    "dir": "divisions",
+    "width": 1672,
+    "height": 941,
+    "avif": [
+      {
+        "file": "vegas-industries-aqua-max-immersive-1672-480.avif",
+        "width": 480,
+        "height": 270
+      },
+      {
+        "file": "vegas-industries-aqua-max-immersive-1672-720.avif",
+        "width": 720,
+        "height": 405
+      },
+      {
+        "file": "vegas-industries-aqua-max-immersive-1672-960.avif",
+        "width": 960,
+        "height": 540
+      },
+      {
+        "file": "vegas-industries-aqua-max-immersive-1672-1280.avif",
+        "width": 1280,
+        "height": 720
+      },
+      {
+        "file": "vegas-industries-aqua-max-immersive-1672-1672.avif",
+        "width": 1672,
+        "height": 941
+      }
+    ],
+    "webp": [
+      {
+        "file": "vegas-industries-aqua-max-immersive-1672-480.webp",
+        "width": 480,
+        "height": 270
+      },
+      {
+        "file": "vegas-industries-aqua-max-immersive-1672-720.webp",
+        "width": 720,
+        "height": 405
+      },
+      {
+        "file": "vegas-industries-aqua-max-immersive-1672-960.webp",
+        "width": 960,
+        "height": 540
+      },
+      {
+        "file": "vegas-industries-aqua-max-immersive-1672-1280.webp",
+        "width": 1280,
+        "height": 720
+      },
+      {
+        "file": "vegas-industries-aqua-max-immersive-1672-1672.webp",
+        "width": 1672,
+        "height": 941
+      }
+    ],
+    "fallback": [
+      {
+        "file": "vegas-industries-aqua-max-immersive-1672-960.jpg",
+        "width": 960,
+        "height": 540
+      },
+      {
+        "file": "vegas-industries-aqua-max-immersive-1672-1672.jpg",
+        "width": 1672,
+        "height": 941
+      }
+    ]
+  }
+}
