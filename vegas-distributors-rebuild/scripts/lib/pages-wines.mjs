@@ -7,12 +7,12 @@
  * the supplied campaign film. Nothing here claims availability, sizes, prices,
  * strengths, distribution rights or that any campaign is currently running.
  */
-import { esc } from './html.mjs';
+import { esc, picture } from './html.mjs';
 import { ROUTES, routeIn, link } from './layout.mjs';
 import { socialLinks } from './partials.mjs';
 
 export function winesPage(ctx) {
-  const { i18n, locale, wines, campaignImages, video, company } = ctx;
+  const { i18n, locale, wines, campaignImages, video, company, winesArt } = ctx;
   const c = i18n.wines;
 
   const desktop = campaignImages['wines-and-spirits-desktop'];
@@ -44,17 +44,30 @@ export function winesPage(ctx) {
     `</div></section>`;
 
   const brandCards = wines.brands
-    .map(
-      (b) =>
+    .map((b) => {
+      // One studio photograph at the head of the card, shown whole.
+      const art = winesArt?.[`${b.id}-display`];
+      const shot = art
+        ? picture(art, {
+            alt: c.displayAlt?.[b.id] ?? b.name,
+            className: 'ws-brand__media',
+            sizes: '(max-width: 47.999rem) 92vw, (max-width: 75rem) 44vw, 25vw',
+          })
+        : '';
+      return (
         `<li class="ws-brand">` +
+        shot +
+        `<div class="ws-brand__body">` +
         `<p class="ws-brand__kind">${esc(c.kinds[b.kind] ?? b.kind)}</p>` +
         `<h3>${esc(b.name)}</h3>` +
         `<p class="ws-brand__label">${esc(c.variantsLabel)}</p>` +
         `<ul class="ws-brand__variants">` +
         b.variants.map((v) => `<li>${esc(v)}</li>`).join('') +
         `</ul>` +
+        `</div>` +
         `</li>`
-    )
+      );
+    })
     .join('');
 
   const brands =

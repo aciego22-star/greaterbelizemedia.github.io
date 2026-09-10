@@ -1,0 +1,43 @@
+{
+  "international-lubricants-logo": {
+    "dir": "divisions",
+    "width": 1200,
+    "height": 442,
+    "avif": [
+      {
+        "file": "international-lubricants-logo-320.avif",
+        "width": 320,
+        "height": 118
+      },
+      {
+        "file": "international-lubricants-logo-640.avif",
+        "width": 640,
+        "height": 236
+      }
+    ],
+    "webp": [
+      {
+        "file": "international-lubricants-logo-320.webp",
+        "width": 320,
+        "height": 118
+      },
+      {
+        "file": "international-lubricants-logo-640.webp",
+        "width": 640,
+        "height": 236
+      }
+    ],
+    "fallback": [
+      {
+        "file": "international-lubricants-logo-320.png",
+        "width": 320,
+        "height": 118
+      },
+      {
+        "file": "international-lubricants-logo-640.png",
+        "width": 640,
+        "height": 236
+      }
+    ]
+  }
+}

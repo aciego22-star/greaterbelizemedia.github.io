@@ -473,6 +473,12 @@
     "contactHeading": "Distribuir Vega's Wines & Spirits",
     "contactBody": "Bares, restaurantes, hoteles y comercios pueden hacer pedidos a través del representante de ventas de su distrito.",
     "findRep": "Encuentre a su representante",
-    "contactSales": "Contactar a ventas"
+    "contactSales": "Contactar a ventas",
+    "displayAlt": {
+      "jarana": "Botellas de Tequila Jarana Blanco y Reposado",
+      "whitley-neill": "Colección de botellas de ginebra Whitley Neill",
+      "flamingo": "Licores Flamingo Triple Sec, Fresa y Blue Curacao",
+      "santa-carolina": "Botella de vino Santa Carolina Reservado Sweet"
+    }
   }
 }

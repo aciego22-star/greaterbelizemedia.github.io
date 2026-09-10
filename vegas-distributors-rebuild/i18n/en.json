@@ -473,6 +473,12 @@
     "contactHeading": "Stocking Vega’s Wines & Spirits",
     "contactBody": "Bars, restaurants, hotels and retailers can order through the sales representative for their district.",
     "findRep": "Find your representative",
-    "contactSales": "Contact Sales"
+    "contactSales": "Contact Sales",
+    "displayAlt": {
+      "jarana": "Tequila Jarana Blanco and Reposado bottles",
+      "whitley-neill": "Whitley Neill gin bottle collection",
+      "flamingo": "Flamingo Triple Sec, Fresa and Blue Curacao liqueurs",
+      "santa-carolina": "Santa Carolina Reservado Sweet wine bottle"
+    }
   }
 }

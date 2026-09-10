@@ -27,6 +27,9 @@ const GALLERY_OUT = join(ROOT, 'src', 'assets', 'gallery');
 const CAMPAIGN_OUT = join(ROOT, 'src', 'assets', 'campaign');
 const DIVISION_SRC = join(ROOT, 'src', 'assets', 'division-sources');
 const DIVISION_OUT = join(ROOT, 'src', 'assets', 'images', 'divisions');
+const WINES_SRC = join(ROOT, 'src', 'assets', 'wines-sources');
+const WINES_OUT = join(ROOT, 'src', 'assets', 'images', 'wines-spirits');
+const MARK_SRC = join(ROOT, 'src', 'assets', 'mark-sources');
 const FLYER_OUT = join(ROOT, 'src', 'assets', 'whats-new');
 
 let bytes = 0;
@@ -207,6 +210,92 @@ if (existsSync(DIVISION_SRC)) {
 }
 
 writeFileSync(join(ROOT, 'data', 'division-images.json'), JSON.stringify(divisionArt, null, 2) + '\n');
+
+/* ------------------------------------------------------------------ *
+ * Wines and spirits display shots
+ *
+ * One studio photograph per brand, shown whole at the top of its card. They
+ * are never cropped, so they are carried at the sizes a card is actually
+ * drawn at rather than at the size they arrived.
+ * ------------------------------------------------------------------ */
+
+const WINES_WIDTHS = [400, 800, 1200];
+const winesArt = {};
+
+if (existsSync(WINES_SRC)) {
+  mkdirSync(WINES_OUT, { recursive: true });
+  for (const file of readdirSync(WINES_SRC).filter((f) => /\.(png|jpe?g)$/i.test(f)).sort()) {
+    const id = basename(file).replace(/\.[a-z]+$/i, '').replace(/-1200$/, '');
+    const src = join(WINES_SRC, file);
+    const meta = await sharp(src).metadata();
+    const widths = WINES_WIDTHS.filter((w) => w <= meta.width);
+
+    const entry = { dir: 'wines-spirits', width: meta.width, height: meta.height, avif: [], webp: [], fallback: [] };
+    for (const w of widths) {
+      const h = Math.round((meta.height / meta.width) * w);
+      const base = () => sharp(src).resize({ width: w, withoutEnlargement: true });
+      const jobs = [
+        ['avif', `${id}-${w}.avif`, base().avif({ quality: 52, effort: 4 })],
+        ['webp', `${id}-${w}.webp`, base().webp({ quality: 80, effort: 5 })],
+      ];
+      // As elsewhere: the JPEG is only ever reached by a browser that can
+      // decode neither of those, so it is carried once, at full size.
+      if (w === widths[widths.length - 1]) {
+        jobs.push(['fallback', `${id}-${w}.jpg`, base().jpeg({ quality: 84, mozjpeg: true })]);
+      }
+      for (const [kind, name, pipeline] of jobs) {
+        await pipeline.toFile(join(WINES_OUT, name));
+        entry[kind].push({ file: name, width: w, height: h });
+        track(join(WINES_OUT, name));
+      }
+    }
+    winesArt[id] = entry;
+    console.log(`  wines    ${id.padEnd(30)} ${meta.width}x${meta.height} -> ${widths.join(', ')}`);
+  }
+}
+
+writeFileSync(join(ROOT, 'data', 'wines-images.json'), JSON.stringify(winesArt, null, 2) + '\n');
+
+/* ------------------------------------------------------------------ *
+ * Division marks
+ *
+ * A replacement mark supplied after the original image pack was put away.
+ * It goes out beside the rest of the division imagery and keeps its
+ * transparency, so it sits on whatever ground the page gives it.
+ * ------------------------------------------------------------------ */
+
+const MARK_WIDTHS = [320, 640];
+const markArt = {};
+
+if (existsSync(MARK_SRC)) {
+  mkdirSync(DIVISION_OUT, { recursive: true });
+  for (const file of readdirSync(MARK_SRC).filter((f) => /\.png$/i.test(f)).sort()) {
+    const id = basename(file).replace(/\.[a-z]+$/i, '');
+    const src = join(MARK_SRC, file);
+    const meta = await sharp(src).metadata();
+    const widths = MARK_WIDTHS.filter((w) => w <= meta.width);
+
+    const entry = { dir: 'divisions', width: meta.width, height: meta.height, avif: [], webp: [], fallback: [] };
+    for (const w of widths) {
+      const h = Math.round((meta.height / meta.width) * w);
+      const base = () => sharp(src).resize({ width: w, withoutEnlargement: true });
+      const jobs = [
+        ['avif', `${id}-${w}.avif`, base().avif({ quality: 60, effort: 4 })],
+        ['webp', `${id}-${w}.webp`, base().webp({ quality: 88, effort: 5, alphaQuality: 100 })],
+        ['fallback', `${id}-${w}.png`, base().png({ compressionLevel: 9, palette: true })],
+      ];
+      for (const [kind, name, pipeline] of jobs) {
+        await pipeline.toFile(join(DIVISION_OUT, name));
+        entry[kind].push({ file: name, width: w, height: h });
+        track(join(DIVISION_OUT, name));
+      }
+    }
+    markArt[id] = entry;
+    console.log(`  mark     ${id.padEnd(30)} ${meta.width}x${meta.height} -> ${widths.join(', ')}`);
+  }
+}
+
+writeFileSync(join(ROOT, 'data', 'mark-images.json'), JSON.stringify(markArt, null, 2) + '\n');
 
 /* ------------------------------------------------------------------ *
  * What's New card artwork

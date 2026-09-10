@@ -1216,14 +1216,13 @@ ul, ol { margin: 0; padding: 0; }
 .division--industries { --accent: var(--industries); --accent-wash: var(--industries-wash); }
 .division--lubricants { --accent: var(--lubricants); --accent-wash: var(--lubricants-wash); }
 
+/* The mark sits straight on the page here. The ground behind it is already
+   white and the artwork carries its own transparency, so a white card around
+   it drew a box and nothing else. */
 .division__mark {
   display: flex;
   align-items: center;
   width: fit-content;
-  padding: 0.55rem 0.85rem;
-  background: #fff;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-sm);
   margin-bottom: 1.15rem;
 }
 .division__mark img { width: auto; height: 40px; }

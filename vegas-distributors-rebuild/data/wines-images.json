@@ -1,0 +1,186 @@
+{
+  "flamingo-display": {
+    "dir": "wines-spirits",
+    "width": 1200,
+    "height": 900,
+    "avif": [
+      {
+        "file": "flamingo-display-400.avif",
+        "width": 400,
+        "height": 300
+      },
+      {
+        "file": "flamingo-display-800.avif",
+        "width": 800,
+        "height": 600
+      },
+      {
+        "file": "flamingo-display-1200.avif",
+        "width": 1200,
+        "height": 900
+      }
+    ],
+    "webp": [
+      {
+        "file": "flamingo-display-400.webp",
+        "width": 400,
+        "height": 300
+      },
+      {
+        "file": "flamingo-display-800.webp",
+        "width": 800,
+        "height": 600
+      },
+      {
+        "file": "flamingo-display-1200.webp",
+        "width": 1200,
+        "height": 900
+      }
+    ],
+    "fallback": [
+      {
+        "file": "flamingo-display-1200.jpg",
+        "width": 1200,
+        "height": 900
+      }
+    ]
+  },
+  "jarana-display": {
+    "dir": "wines-spirits",
+    "width": 1200,
+    "height": 900,
+    "avif": [
+      {
+        "file": "jarana-display-400.avif",
+        "width": 400,
+        "height": 300
+      },
+      {
+        "file": "jarana-display-800.avif",
+        "width": 800,
+        "height": 600
+      },
+      {
+        "file": "jarana-display-1200.avif",
+        "width": 1200,
+        "height": 900
+      }
+    ],
+    "webp": [
+      {
+        "file": "jarana-display-400.webp",
+        "width": 400,
+        "height": 300
+      },
+      {
+        "file": "jarana-display-800.webp",
+        "width": 800,
+        "height": 600
+      },
+      {
+        "file": "jarana-display-1200.webp",
+        "width": 1200,
+        "height": 900
+      }
+    ],
+    "fallback": [
+      {
+        "file": "jarana-display-1200.jpg",
+        "width": 1200,
+        "height": 900
+      }
+    ]
+  },
+  "santa-carolina-display": {
+    "dir": "wines-spirits",
+    "width": 1200,
+    "height": 900,
+    "avif": [
+      {
+        "file": "santa-carolina-display-400.avif",
+        "width": 400,
+        "height": 300
+      },
+      {
+        "file": "santa-carolina-display-800.avif",
+        "width": 800,
+        "height": 600
+      },
+      {
+        "file": "santa-carolina-display-1200.avif",
+        "width": 1200,
+        "height": 900
+      }
+    ],
+    "webp": [
+      {
+        "file": "santa-carolina-display-400.webp",
+        "width": 400,
+        "height": 300
+      },
+      {
+        "file": "santa-carolina-display-800.webp",
+        "width": 800,
+        "height": 600
+      },
+      {
+        "file": "santa-carolina-display-1200.webp",
+        "width": 1200,
+        "height": 900
+      }
+    ],
+    "fallback": [
+      {
+        "file": "santa-carolina-display-1200.jpg",
+        "width": 1200,
+        "height": 900
+      }
+    ]
+  },
+  "whitley-neill-display": {
+    "dir": "wines-spirits",
+    "width": 1200,
+    "height": 900,
+    "avif": [
+      {
+        "file": "whitley-neill-display-400.avif",
+        "width": 400,
+        "height": 300
+      },
+      {
+        "file": "whitley-neill-display-800.avif",
+        "width": 800,
+        "height": 600
+      },
+      {
+        "file": "whitley-neill-display-1200.avif",
+        "width": 1200,
+        "height": 900
+      }
+    ],
+    "webp": [
+      {
+        "file": "whitley-neill-display-400.webp",
+        "width": 400,
+        "height": 300
+      },
+      {
+        "file": "whitley-neill-display-800.webp",
+        "width": 800,
+        "height": 600
+      },
+      {
+        "file": "whitley-neill-display-1200.webp",
+        "width": 1200,
+        "height": 900
+      }
+    ],
+    "fallback": [
+      {
+        "file": "whitley-neill-display-1200.jpg",
+        "width": 1200,
+        "height": 900
+      }
+    ]
+  }
+}

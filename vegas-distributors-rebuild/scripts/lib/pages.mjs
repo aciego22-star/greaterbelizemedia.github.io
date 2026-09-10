@@ -15,7 +15,7 @@ const localeCopy = (obj, locale) => obj[locale] ?? obj.en;
 
 export function home(ctx) {
   const { i18n, locale, company, catalog, images, productArt, campaign, campaignImages, video, featured,
-    divisionArt } = ctx;
+    divisionArt, markArt } = ctx;
   const c = i18n.home;
 
   // The document heading is stable; the carousel headlines are section-level,
@@ -79,6 +79,14 @@ export function home(ctx) {
     ) +
     `</div></div></section>`;
 
+  /* A division's mark, preferring artwork supplied after the original image
+     pack was put away. */
+  const mark = (division) => {
+    if (!division.logo) return null;
+    const id = division.logo.replace(/\.[a-z]+$/, '');
+    return markArt?.[id] ?? images.divisions[id] ?? null;
+  };
+
   /* Divisions as three visually distinct editorial bands. */
   const divisionBand = (division, variant, media, flip) => {
     const copy = localeCopy(division, locale);
@@ -97,8 +105,8 @@ export function home(ctx) {
       `<section class="dband dband--${variant}${flip ? ' dband--flip' : ''} reveal">` +
       `<div class="shell dband__inner">` +
       `<div class="dband__content">` +
-      (division.logo && images.divisions[division.logo.replace(/\.[a-z]+$/, '')]
-        ? `<span class="dband__mark plate" style="padding:0.5rem 0.7rem">${picture(images.divisions[division.logo.replace(/\.[a-z]+$/, '')], { alt: division.name, sizes: '150px' })}</span>`
+      (mark(division)
+        ? `<span class="dband__mark plate" style="padding:0.5rem 0.7rem">${picture(mark(division), { alt: division.name, sizes: '150px' })}</span>`
         : '') +
       `<p class="dband__label">${esc(copy.role)}</p>` +
       `<h3>${esc(division.name)}</h3>` +
@@ -474,7 +482,7 @@ export function industries(ctx) {
  * ------------------------------------------------------------------ */
 
 export function lubricants(ctx) {
-  const { i18n, locale, company, images } = ctx;
+  const { i18n, locale, company, images, markArt } = ctx;
   const c = i18n.divisions;
   const d = company.divisions.find((x) => x.slug === 'international-lubricants-belize');
   const copy = localeCopy(d, locale);
@@ -492,7 +500,7 @@ export function lubricants(ctx) {
       ],
     }) +
     `<section class="page-head"><div class="shell">` +
-    `<span class="division__mark">${picture(images.divisions['international-lubricants-logo'], { alt: d.name, sizes: '160px' })}</span>` +
+    `<span class="division__mark">${picture(markArt['international-lubricants-logo'] ?? images.divisions['international-lubricants-logo'], { alt: d.name, sizes: '160px' })}</span>` +
     `<hr class="rule"><h1>${esc(d.name)}</h1>` +
     `<p class="lead">${esc(copy.tagline)} ${esc(copy.summary)}</p>` +
     `</div></section>` +

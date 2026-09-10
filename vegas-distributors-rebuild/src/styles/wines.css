@@ -35,10 +35,35 @@
 }
 
 .ws-brand {
-  padding: clamp(1.1rem, 2.2vw, 1.6rem);
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
   border-radius: var(--radius);
   background: #fff;
   border: 1px solid var(--line);
+}
+
+/* The bottles are shown whole: contained on the white the photograph already
+   has, never cropped to fill the box. */
+.ws-brand__media {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #fff;
+  border-bottom: 1px solid var(--line);
+}
+.ws-brand__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.ws-brand__body {
+  padding: clamp(1.1rem, 2.2vw, 1.6rem);
+  flex: 1;
 }
 .ws-brand__kind {
   margin: 0 0 0.3rem;
