@@ -289,7 +289,13 @@
       "rep": "Juan Cubas",
       "email": "sales.belize@vegasdistributors.bz",
       "phone": "+501 626-9197",
-      "region": "central"
+      "region": "central",
+      "mapDistrict": "belize",
+      "mapPin": "juan",
+      "mapPlace": {
+        "en": "Belize City",
+        "es": "Ciudad de Belice"
+      }
     },
     {
       "id": "belize-city-south",
@@ -298,7 +304,13 @@
       "rep": "Earl Anderson",
       "email": "earl@vegasdistributors.bz",
       "phone": "+501 671-0923",
-      "region": "central"
+      "region": "central",
+      "mapDistrict": "belize",
+      "mapPin": "earl",
+      "mapPlace": {
+        "en": "Belize City",
+        "es": "Ciudad de Belice"
+      }
     },
     {
       "id": "cayo-belmopan",
@@ -307,7 +319,13 @@
       "rep": "Luis Miguel Del Cid",
       "email": "miguel@vegasdistributors.bz",
       "phone": "+501 624-3551",
-      "region": "west"
+      "region": "west",
+      "mapDistrict": "cayo",
+      "mapPin": "miguel",
+      "mapPlace": {
+        "en": "Belmopan",
+        "es": "Belmopán"
+      }
     },
     {
       "id": "cayo-benque-san-ignacio",
@@ -316,7 +334,13 @@
       "rep": "Luis Perez",
       "email": "luis@vegasdistributors.bz",
       "phone": "+501 615-0627",
-      "region": "west"
+      "region": "west",
+      "mapDistrict": "cayo",
+      "mapPin": "luis",
+      "mapPlace": {
+        "en": "San Ignacio",
+        "es": "San Ignacio"
+      }
     },
     {
       "id": "north-orange-walk-corozal",
@@ -325,7 +349,13 @@
       "rep": "Zane Robinson",
       "email": "zane@vegasdistributors.bz",
       "phone": "+501 615-6631",
-      "region": "north"
+      "region": "north",
+      "mapDistrict": "corozal",
+      "mapPin": "zane",
+      "mapPlace": {
+        "en": "Corozal",
+        "es": "Corozal"
+      }
     },
     {
       "id": "orange-walk-depot",
@@ -334,7 +364,13 @@
       "rep": "Azet Awe",
       "email": "azet@vegasdistributors.bz",
       "phone": "+501 610-1842",
-      "region": "north"
+      "region": "north",
+      "mapDistrict": "orange-walk",
+      "mapPin": "azet",
+      "mapPlace": {
+        "en": "Orange Walk",
+        "es": "Orange Walk"
+      }
     },
     {
       "id": "south-stann-creek",
@@ -343,7 +379,13 @@
       "rep": "Bradley Bell",
       "email": "sales.sc@vegasdistributors.bz",
       "phone": null,
-      "region": "south"
+      "region": "south",
+      "mapDistrict": "stann-creek",
+      "mapPin": "bradley",
+      "mapPlace": {
+        "en": "Stann Creek",
+        "es": "Stann Creek"
+      }
     },
     {
       "id": "south-punta-gorda",
@@ -352,7 +394,13 @@
       "rep": "Rhaheem Martinez",
       "email": "sales.pg@vegasdistributors.bz",
       "phone": "+501 627-4467",
-      "region": "south"
+      "region": "south",
+      "mapDistrict": "toledo",
+      "mapPin": "rhaheem",
+      "mapPlace": {
+        "en": "Punta Gorda",
+        "es": "Punta Gorda"
+      }
     },
     {
       "id": "international-lubricants",
@@ -362,7 +410,13 @@
       "email": "gilroy@vegasdistributors.bz",
       "phone": "+501 615-9983",
       "region": "national",
-      "division": "international-lubricants-belize"
+      "division": "international-lubricants-belize",
+      "mapDistrict": "national",
+      "mapPin": "gilroy",
+      "mapPlace": {
+        "en": "Nationwide coverage",
+        "es": "Cobertura nacional"
+      }
     }
   ],
   "regions": [

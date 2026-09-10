@@ -2,6 +2,7 @@
 import { esc, picture, telLink, mailLink, t } from './html.mjs';
 import { ROUTES, link, absoluteUrl } from './layout.mjs';
 import { sectionHead, crumbs, brandCard, categoryCard, repCard, plate, socialLinks } from './partials.mjs';
+import { belizeMap } from './sales-map.mjs';
 
 const categoryLabel = (catalog, id, locale) => {
   const c = catalog.categories.find((x) => x.id === id);
@@ -221,6 +222,54 @@ export function network(ctx) {
   const { i18n, locale, company } = ctx;
   const c = i18n.network;
 
+  /* Coverage by district.
+   *
+   * Every representative is written into the page as a complete card, which is
+   * what a browser running no script shows: the same nine people, the same
+   * telephone numbers and addresses, grouped by region exactly as before. The
+   * script marks the section ready, and that is what folds the cards down to
+   * one and puts the map in charge of which is showing. Nothing here depends
+   * on the script arriving. */
+
+  const place = (territory) => territory.mapPlace?.[locale] ?? territory.mapPlace?.en ?? '';
+
+  const repPanel = (territory, index) =>
+    `<li class="sales-map-rep" data-rep="${esc(territory.mapPin)}"` +
+    ` data-district="${esc(territory.mapDistrict)}"${index === 0 ? '' : ' hidden'}>` +
+    `<p class="sales-map-rep__territory">${esc(territory[locale] ?? territory.en)}</p>` +
+    `<h3 class="sales-map-rep__name">${esc(territory.rep)}</h3>` +
+    // The nationwide representative is not based anywhere in particular, so
+    // his line states the coverage rather than a town.
+    (territory.mapDistrict === 'national'
+      ? `<p class="sales-map-rep__place">${esc(place(territory))}</p>`
+      : `<p class="sales-map-rep__place"><span class="sales-map-rep__place-label">${esc(c.placeLabel)}</span> ${esc(place(territory))}</p>`) +
+    `<div class="sales-map-rep__actions">` +
+    (territory.phone ? telLink(territory.phone, territory.phone) : '') +
+    mailLink(territory.email) +
+    `</div>` +
+    (territory.phone ? '' : `<p class="sales-map-rep__note">${esc(c.noPhone)}</p>`) +
+    `</li>`;
+
+  // The map leads with the north, so the northern representative is the one
+  // already showing when the page arrives.
+  const ordered = [
+    ...company.territories.filter((tt) => tt.mapDistrict === 'corozal'),
+    ...company.territories.filter((tt) => tt.mapDistrict !== 'corozal'),
+  ];
+
+  const map =
+    `<div class="sales-map" data-sales-map` +
+    ` data-national-label="${esc(c.nationalAction)}"` +
+    ` data-choices-label="${esc(c.choicesLabel)}">` +
+    `<div class="sales-map__stage">` +
+    `<div class="sales-map__canvas">${belizeMap({ locale, i18n, territories: company.territories })}</div>` +
+    `<p class="sales-map__hint" data-sales-map-hint hidden>${esc(c.mapHint)}</p>` +
+    `</div>` +
+    `<div class="sales-map__panel">` +
+    `<ul class="sales-map__reps" data-sales-map-reps>${ordered.map(repPanel).join('')}</ul>` +
+    `</div>` +
+    `</div>`;
+
   const regions = company.regions
     .map((region) => {
       const list = company.territories.filter((tt) => tt.region === region.id);
@@ -253,10 +302,14 @@ export function network(ctx) {
     `<section class="band band--tight"><div class="shell">${head}</div></section>` +
     `<section class="band band--sunken"><div class="shell">` +
     sectionHead({ heading: c.coverageHeading, lead: c.coverageLead }) +
+    map +
+    `<div class="sales-map__list" data-sales-map-list>` +
+    `<h3 class="sales-map__list-heading">${esc(c.allRepsHeading)}</h3>` +
     regions +
+    `</div>` +
     `</div></section>`;
 
-  return { body };
+  return { body, pageStyles: ['sales-map.css'], pageScripts: ['sales-map.js'] };
 }
 
 /* ------------------------------------------------------------------ *

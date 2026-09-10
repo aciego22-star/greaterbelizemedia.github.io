@@ -1,0 +1,223 @@
+/* The sales network map.
+ *
+ * Everything here is scoped to the coverage section of the sales network page
+ * and used nowhere else on the site.
+ *
+ * The rules are written so the page is right before the script runs: the map
+ * sits above a plain list of every representative, and only once the section
+ * is marked ready do the cards fold down to one with the map in charge. */
+
+.sales-map {
+  margin-top: clamp(1.4rem, 3vw, 2.4rem);
+}
+
+.sales-map[data-ready] {
+  display: grid;
+  grid-template-columns: minmax(17rem, 0.95fr) minmax(18rem, 1.05fr);
+  gap: clamp(1.25rem, 4vw, 3.25rem);
+  align-items: center;
+}
+
+/* ---- the artwork ---- */
+
+.sales-map__stage {
+  position: relative;
+  isolation: isolate;
+  max-width: 30rem;
+  margin-inline: auto;
+}
+
+.sales-map__stage::before {
+  content: "";
+  position: absolute;
+  inset: 6% -6% 2% 6%;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(253, 203, 10, 0.24), transparent 68%);
+  filter: blur(28px);
+}
+
+.sales-map__canvas {
+  display: grid;
+  place-items: center;
+}
+
+.sales-map__canvas svg {
+  display: block;
+  width: 100%;
+  max-width: 28rem;
+  height: auto;
+}
+
+/* The pins fly in only where the map is live and motion is welcome. */
+.sales-map__canvas svg.is-enhanced .map-pin__motion {
+  opacity: 0;
+  animation: sales-map-pin 0.72s cubic-bezier(0.2, 0.8, 0.2, 1) var(--pin-delay, 0ms) forwards;
+}
+
+@keyframes sales-map-pin {
+  from { opacity: 0; transform: translateY(-120px) scale(0.72); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.sales-map__hint {
+  max-width: 30rem;
+  margin: 0.85rem auto 0;
+  color: var(--slate);
+  font-size: 0.92rem;
+  text-align: center;
+}
+
+/* ---- the representative beside it ---- */
+
+.sales-map__reps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 1rem;
+}
+
+/* Before the script runs there is no way to change who the panel is showing,
+   so it stays out of the way and the full list below does the work. */
+.sales-map:not([data-ready]) .sales-map__reps { display: none; }
+
+.sales-map-rep {
+  padding: clamp(1.2rem, 3vw, 2rem);
+  border: 1px solid var(--line);
+  border-top: 5px solid var(--yellow);
+  border-radius: var(--radius);
+  background: #fff;
+}
+
+.sales-map[data-ready] .sales-map-rep {
+  min-height: 22rem;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 24px 70px rgba(14, 27, 38, 0.14);
+}
+
+.sales-map-rep__territory {
+  margin: 0 0 0.45rem;
+  color: var(--red);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.sales-map-rep__name {
+  margin: 0;
+  font-size: clamp(1.6rem, 4vw, 2.5rem);
+  line-height: 1.04;
+}
+
+.sales-map-rep__place {
+  margin: 0.8rem 0 0;
+  color: var(--ink-soft);
+  font-size: 1.05rem;
+}
+
+.sales-map-rep__place-label {
+  color: var(--slate);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.sales-map-rep__actions {
+  display: grid;
+  gap: 0.7rem;
+  margin-top: 1.4rem;
+}
+
+.sales-map-rep__actions .action-link {
+  width: 100%;
+  justify-content: flex-start;
+  overflow-wrap: anywhere;
+}
+
+.sales-map-rep__note {
+  margin: 1rem 0 0;
+  padding: 0.75rem 0.9rem;
+  border-radius: var(--radius-sm);
+  background: var(--surface-sunken);
+  color: var(--slate);
+  font-size: 0.9rem;
+}
+
+.sales-map[data-ready] .sales-map-rep__note { margin-top: auto; }
+
+/* ---- the controls ---- */
+
+.sales-map__choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 1rem;
+}
+
+.sales-map__choice,
+.sales-map__national {
+  min-height: 44px;
+  padding: 0.58rem 0.95rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+.sales-map__national { margin-bottom: 1rem; }
+
+.sales-map__choice:hover,
+.sales-map__national:hover,
+.sales-map__choice[aria-pressed="true"],
+.sales-map__national[aria-pressed="true"] {
+  border-color: var(--yellow);
+  background: var(--yellow);
+  color: #17212b;
+}
+
+.sales-map__choice:focus-visible,
+.sales-map__national:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 2px;
+}
+
+/* ---- the plain list underneath ---- */
+
+.sales-map__list { margin-top: clamp(2rem, 5vw, 3.25rem); }
+
+.sales-map__list-heading {
+  margin: 0 0 1.2rem;
+  font-size: 1.35rem;
+}
+
+@media (max-width: 62rem) {
+  .sales-map[data-ready] { grid-template-columns: minmax(0, 1fr); }
+  .sales-map[data-ready] .sales-map-rep { min-height: 0; }
+  .sales-map__stage { max-width: 26rem; }
+}
+
+@media (max-width: 38rem) {
+  .sales-map[data-ready] { gap: 1.1rem; }
+  .sales-map__canvas svg { max-width: 21rem; }
+
+  /* Narrow enough that the map fills the column, so the glow behind it has
+     nowhere to spread into: reaching past the edge here is what put a stray
+     pixel or three of sideways scroll on the page. It stays within its bounds,
+     where the map covers it anyway. */
+  .sales-map__stage::before { inset: 6% 0 2% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sales-map__canvas svg.is-enhanced .map-pin__motion {
+    opacity: 1;
+    animation: none;
+  }
+}

@@ -295,7 +295,15 @@
     "coverageHeading": "Cobertura por región",
     "coverageLead": "Los territorios están agrupados por región. Cada uno cuenta con un representante designado.",
     "territoryCount": "{count} territorios",
-    "territoryCountOne": "1 territorio"
+    "territoryCountOne": "1 territorio",
+    "mapTitle": "Mapa interactivo de la red de ventas de Vega's en Belice",
+    "mapDesc": "Los seis distritos de Belice, cada uno con los puntos de ubicación de los representantes que lo cubren.",
+    "districtLabel": "Distrito de {name}",
+    "mapHint": "Elija un distrito o un punto. Tab y Enter funcionan igual.",
+    "nationalAction": "Representante nacional de ILB",
+    "choicesLabel": "Representantes de este distrito",
+    "placeLabel": "Con base en",
+    "allRepsHeading": "Todos los representantes"
   },
   "contact": {
     "title": "Contactar a Vega's Distributors",

@@ -295,7 +295,15 @@
     "coverageHeading": "Coverage by region",
     "coverageLead": "Territories are grouped by region. Each is served by a named representative.",
     "territoryCount": "{count} territories",
-    "territoryCountOne": "1 territory"
+    "territoryCountOne": "1 territory",
+    "mapTitle": "Interactive map of the Vega's sales network across Belize",
+    "mapDesc": "The six districts of Belize, each carrying the location pins of the representatives who cover it.",
+    "districtLabel": "{name} District",
+    "mapHint": "Choose a district or a pin. Tab and Enter work the same way.",
+    "nationalAction": "Nationwide ILB representative",
+    "choicesLabel": "Representatives in this district",
+    "placeLabel": "Based in",
+    "allRepsHeading": "Every representative"
   },
   "contact": {
     "title": "Contact Vega's Distributors",
