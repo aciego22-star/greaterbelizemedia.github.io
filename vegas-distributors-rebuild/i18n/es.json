@@ -336,9 +336,10 @@
     "divisionsHeading": "Divisiones",
     "contactHeading": "Contacto",
     "copyright": "Vega's Distributors Ltd.",
-    "rightsNote": "Los nombres y logotipos de terceros son propiedad de sus respectivos dueños y se muestran únicamente con fines de identificación.",
     "brandsHeading": "Marcas",
-    "socialHeading": "Síganos"
+    "socialHeading": "Síganos",
+    "colophon": "Sitio web desarrollado por Austere Automations",
+    "colophonUrl": "https://austereautomations.com/website-development-belize"
   },
   "misc": {},
   "hero": {

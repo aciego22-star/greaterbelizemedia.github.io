@@ -102,8 +102,14 @@
       });
     });
 
-    hero.addEventListener('mouseenter', stop);
-    hero.addEventListener('mouseleave', start);
+    // Only where there is a pointer that can be moved away again: a touch
+    // screen sends mouseenter when a finger lands and never the mouseleave
+    // that would start it again, which stopped the hero on whichever slide was
+    // showing the moment anyone touched it.
+    if (window.matchMedia('(hover: hover)').matches) {
+      hero.addEventListener('mouseenter', stop);
+      hero.addEventListener('mouseleave', start);
+    }
     hero.addEventListener('focusin', stop);
     hero.addEventListener('focusout', function (e) {
       if (!hero.contains(e.relatedTarget)) start();

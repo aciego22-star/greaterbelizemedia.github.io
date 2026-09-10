@@ -97,8 +97,14 @@
     // under someone part way through a sentence.
     var hold = function () { held = true; stop(); };
     var release = function () { held = false; start(); };
-    promo.addEventListener('mouseenter', hold);
-    promo.addEventListener('mouseleave', release);
+    // Only where there is a pointer that can be moved away again. A touch
+    // screen sends mouseenter when a finger lands and never sends the
+    // mouseleave that would let go, which left the showcase stopped for good
+    // on the first product the moment anyone touched it.
+    if (window.matchMedia('(hover: hover)').matches) {
+      promo.addEventListener('mouseenter', hold);
+      promo.addEventListener('mouseleave', release);
+    }
     promo.addEventListener('focusin', hold);
     promo.addEventListener('focusout', function (e) {
       if (!promo.contains(e.relatedTarget)) release();

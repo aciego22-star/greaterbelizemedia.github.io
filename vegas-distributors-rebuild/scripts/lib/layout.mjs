@@ -235,7 +235,8 @@ function footer({ site, i18n, locale, company, images }) {
     `</div>` +
     `<div class="footer-note">` +
     `<span>&copy; ${year} ${esc(i18n.footer.copyright)}</span>` +
-    `<span>${esc(i18n.footer.rightsNote)}</span>` +
+    `<a class="colophon" href="${esc(i18n.footer.colophonUrl)}"` +
+    ` target="_blank" rel="noopener">${esc(i18n.footer.colophon)}</a>` +
     `</div>` +
     `</div></footer>`
   );

@@ -1053,7 +1053,8 @@ ul, ol { margin: 0; padding: 0; }
 .dband h3 { font-size: clamp(1.6rem, 1.2rem + 1.6vw, 2.4rem); margin-bottom: 0.85rem; }
 .dband__body { max-width: 46ch; }
 .dband .actions { margin-top: 1.5rem; }
-.dband__mark { display: block; width: fit-content; margin-bottom: 1.2rem; }
+/* The division's own mark, centred over the words it introduces. */
+.dband__mark { display: block; width: fit-content; margin: 0 auto 1.2rem; }
 .dband__mark img { height: 42px; width: auto; }
 
 /* Parent: charcoal ground with a yellow light wash. */
@@ -1130,10 +1131,6 @@ ul, ol { margin: 0; padding: 0; }
 @media (max-width: 60rem) {
   .dband__inner { grid-template-columns: 1fr; }
   .dband--flip .dband__media { order: 0; }
-  /* Stacked, the mark is the thing at the top of the band rather than a label
-     beside a picture, so it sits in the middle of it. Alongside a picture it
-     stays lined up with the words it introduces. */
-  .dband__mark { margin-inline: auto; }
 }
 
 /* --------------------------------------------------------------------------
@@ -1687,6 +1684,18 @@ table.products td.size:empty::after { content: '-'; color: var(--line-strong); }
   font-size: 0.85rem;
   color: #9c9990;
 }
+
+/* Who built it. Yellow so it reads as a signature rather than as more of the
+   small print beside it. */
+.footer-note .colophon {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  color: var(--yellow);
+  text-decoration-color: rgba(253, 203, 10, 0.5);
+}
+.footer-note .colophon:hover { text-decoration-color: var(--yellow); }
+
 
 /* --------------------------------------------------------------------------
    Touch targets
