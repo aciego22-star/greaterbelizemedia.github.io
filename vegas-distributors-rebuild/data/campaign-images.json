@@ -40,16 +40,6 @@
     ],
     "fallback": [
       {
-        "file": "bop-campaign-desktop-960.jpg",
-        "width": 960,
-        "height": 540
-      },
-      {
-        "file": "bop-campaign-desktop-1280.jpg",
-        "width": 1280,
-        "height": 720
-      },
-      {
         "file": "bop-campaign-desktop-1672.jpg",
         "width": 1672,
         "height": 941
@@ -96,16 +86,6 @@
       }
     ],
     "fallback": [
-      {
-        "file": "bop-campaign-mobile-480.jpg",
-        "width": 480,
-        "height": 853
-      },
-      {
-        "file": "bop-campaign-mobile-720.jpg",
-        "width": 720,
-        "height": 1279
-      },
       {
         "file": "bop-campaign-mobile-941.jpg",
         "width": 941,
@@ -154,16 +134,6 @@
     ],
     "fallback": [
       {
-        "file": "whats-new-desktop-960.jpg",
-        "width": 960,
-        "height": 540
-      },
-      {
-        "file": "whats-new-desktop-1280.jpg",
-        "width": 1280,
-        "height": 720
-      },
-      {
         "file": "whats-new-desktop-1672.jpg",
         "width": 1672,
         "height": 941
@@ -210,16 +180,6 @@
       }
     ],
     "fallback": [
-      {
-        "file": "whats-new-mobile-480.jpg",
-        "width": 480,
-        "height": 853
-      },
-      {
-        "file": "whats-new-mobile-720.jpg",
-        "width": 720,
-        "height": 1279
-      },
       {
         "file": "whats-new-mobile-941.jpg",
         "width": 941,
@@ -268,16 +228,6 @@
     ],
     "fallback": [
       {
-        "file": "wines-and-spirits-desktop-960.jpg",
-        "width": 960,
-        "height": 540
-      },
-      {
-        "file": "wines-and-spirits-desktop-1280.jpg",
-        "width": 1280,
-        "height": 720
-      },
-      {
         "file": "wines-and-spirits-desktop-1672.jpg",
         "width": 1672,
         "height": 941
@@ -324,16 +274,6 @@
       }
     ],
     "fallback": [
-      {
-        "file": "wines-and-spirits-mobile-480.jpg",
-        "width": 480,
-        "height": 853
-      },
-      {
-        "file": "wines-and-spirits-mobile-720.jpg",
-        "width": 720,
-        "height": 1279
-      },
       {
         "file": "wines-and-spirits-mobile-941.jpg",
         "width": 941,

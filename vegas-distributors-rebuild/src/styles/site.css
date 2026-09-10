@@ -1084,6 +1084,16 @@ ul, ol { margin: 0; padding: 0; }
 .dband__media img { border-radius: var(--radius); }
 .dband--flip .dband__media { order: -1; }
 
+/* A photograph, not a packshot, so it fills its own rounded frame rather than
+   sitting on a white plate. */
+.dband__shot {
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.28);
+}
+.dband__shot picture { display: block; }
+.dband__shot img { display: block; width: 100%; height: auto; border-radius: 0; }
+
 .dband__products { display: flex; gap: 1rem; align-items: flex-end; }
 .dband__products .plate { flex: 1 1 0; max-width: 13rem; }
 
@@ -1120,6 +1130,10 @@ ul, ol { margin: 0; padding: 0; }
 @media (max-width: 60rem) {
   .dband__inner { grid-template-columns: 1fr; }
   .dband--flip .dband__media { order: 0; }
+  /* Stacked, the mark is the thing at the top of the band rather than a label
+     beside a picture, so it sits in the middle of it. Alongside a picture it
+     stays lined up with the words it introduces. */
+  .dband__mark { margin-inline: auto; }
 }
 
 /* --------------------------------------------------------------------------

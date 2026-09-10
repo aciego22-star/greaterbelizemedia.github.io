@@ -13,10 +13,6 @@
   "hasAudio": true,
   "sources": [
     {
-      "file": "score-with-jarana.webm",
-      "type": "video/webm"
-    },
-    {
       "file": "score-with-jarana.mp4",
       "type": "video/mp4"
     }

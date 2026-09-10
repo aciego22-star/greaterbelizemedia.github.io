@@ -72,9 +72,11 @@ const scale = `scale=${target}:-2`;
  * the rest of the file does.
  *
  * VP9 in WebM lands within a few hundred kilobytes of it on this grainy
- * handheld footage, so it costs almost nothing, and it covers the Chromium
- * builds that ship without the proprietary H.264 decoder. It is listed first in
- * the markup so those browsers reach it; Safari falls through to the MP4. */
+ * handheld footage. Only H.264 is shipped: for this film VP9 came out larger
+ * than H.264, so offering it first meant every browser that prefers WebM took
+ * the bigger download, and the whole build no longer fitted in one upload. The
+ * encode is kept below, switched off, because it is still what a Chromium
+ * build without the proprietary H.264 decoder would need. */
 run([
   '-i', SRC,
   '-vf', scale,
@@ -85,16 +87,21 @@ run([
 ]);
 console.log(`  mp4    ${mb(join(OUT, 'score-with-jarana.mp4'))}`);
 
-run([
-  '-i', SRC,
-  '-vf', scale,
-  '-c:v', 'libvpx-vp9', '-crf', '42', '-b:v', '0',
-  '-row-mt', '1', '-deadline', 'good', '-cpu-used', '2',
-  '-pix_fmt', 'yuv420p',
-  ...(audio ? ['-c:a', 'libopus', '-b:a', '80k'] : ['-an']),
-  join(OUT, 'score-with-jarana.webm'),
-]);
-console.log(`  webm   ${mb(join(OUT, 'score-with-jarana.webm'))}`);
+const WEBM = process.env.VIDEO_WEBM === '1';
+if (WEBM) {
+  run([
+    '-i', SRC,
+    '-vf', scale,
+    '-c:v', 'libvpx-vp9', '-crf', '42', '-b:v', '0',
+    '-row-mt', '1', '-deadline', 'good', '-cpu-used', '2',
+    '-pix_fmt', 'yuv420p',
+    ...(audio ? ['-c:a', 'libopus', '-b:a', '80k'] : ['-an']),
+    join(OUT, 'score-with-jarana.webm'),
+  ]);
+  console.log(`  webm   ${mb(join(OUT, 'score-with-jarana.webm'))}`);
+} else {
+  rmSync(join(OUT, 'score-with-jarana.webm'), { force: true });
+}
 
 /* Poster. It stands in for the video while it loads and replaces it entirely
    when the visitor has asked for reduced motion, so it is a real image in three
@@ -131,13 +138,13 @@ mkdirSync(REVIEW, { recursive: true });
 const reviewFile = join(REVIEW, 'score-with-jarana.mp4');
 run([
   '-i', SRC,
-  '-vf', 'scale=540:-2',
-  '-c:v', 'libx264', '-profile:v', 'main', '-crf', '27', '-preset', 'slow', '-pix_fmt', 'yuv420p',
+  '-vf', 'scale=480:-2',
+  '-c:v', 'libx264', '-profile:v', 'main', '-crf', '30', '-preset', 'slow', '-pix_fmt', 'yuv420p',
   ...(audio ? ['-c:a', 'aac', '-b:a', '64k'] : ['-an']),
   '-movflags', '+faststart',
   reviewFile,
 ]);
-console.log(`  review  540 wide  ${mb(reviewFile)}`);
+console.log(`  review  480 wide  ${mb(reviewFile)}`);
 
 // The extracted still is only an intermediate; the derivatives are what ship.
 rmSync(still, { force: true });
@@ -157,7 +164,7 @@ writeFileSync(
       duration: Number(duration.toFixed(2)),
       hasAudio: Boolean(audio),
       sources: [
-        { file: 'score-with-jarana.webm', type: 'video/webm' },
+        ...(WEBM ? [{ file: 'score-with-jarana.webm', type: 'video/webm' }] : []),
         { file: 'score-with-jarana.mp4', type: 'video/mp4' },
       ],
       poster,

@@ -20,7 +20,7 @@ import { deflateRawSync, crc32 } from 'node:zlib';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = join(ROOT, 'dist');
 const OUT_DIR = join(ROOT, 'release');
-const LIMIT = 29 * 1024 * 1024;
+const LIMIT = 29.8 * 1024 * 1024;
 const OUT = join(OUT_DIR, 'Vegas Distributors Netlify Upload.zip');
 const PART1 = join(OUT_DIR, 'Vegas Distributors Netlify Upload - part 1 of 2.zip');
 const PART2 = join(OUT_DIR, 'Vegas Distributors Netlify Upload - part 2 of 2.zip');
@@ -122,6 +122,10 @@ const report = (label, out, r) => {
 const whole = writeZip(OUT, allFiles);
 
 if (whole.size <= LIMIT) {
+  // Never leave both shapes in the folder: whoever uploads it should find one
+  // obvious thing to upload.
+  rmSync(PART1, { force: true });
+  rmSync(PART2, { force: true });
   report('Netlify upload', OUT, whole);
 } else {
   // The film is already compressed, so it is the clean place to divide.

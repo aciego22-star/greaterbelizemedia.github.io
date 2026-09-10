@@ -14,7 +14,8 @@ const localeCopy = (obj, locale) => obj[locale] ?? obj.en;
  * ------------------------------------------------------------------ */
 
 export function home(ctx) {
-  const { i18n, locale, company, catalog, images, productArt, campaign, campaignImages, video, featured } = ctx;
+  const { i18n, locale, company, catalog, images, productArt, campaign, campaignImages, video, featured,
+    divisionArt } = ctx;
   const c = i18n.home;
 
   // The document heading is stable; the carousel headlines are section-level,
@@ -141,7 +142,14 @@ export function home(ctx) {
     ) +
     divisionBand(
       lubricants, 'lubricants',
-      plate(images.divisions['international-lubricants-chevron-artwork'], { alt: 'Chevron lubricants artwork published by International Lubricants of Belize' }),
+      // The photograph the division chapters are built on, rather than the
+      // small piece of published artwork this band used to carry.
+      `<div class="dband__shot">` +
+      picture(divisionArt['ilb-immersive-1672'], {
+        alt: i18n.divisions.chapters.lubricants.alt,
+        sizes: '(max-width: 60rem) 92vw, 46vw',
+      }) +
+      `</div>`,
       false
     );
 

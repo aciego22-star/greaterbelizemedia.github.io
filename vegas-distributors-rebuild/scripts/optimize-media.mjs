@@ -133,8 +133,14 @@ for (const file of readdirSync(CAMPAIGN_SRC).filter((f) => /\.(png|jpe?g)$/i.tes
     const jobs = [
       ['avif', `${id}-${w}.avif`, base().avif({ quality: small ? 44 : 52, effort: 4 })],
       ['webp', `${id}-${w}.webp`, base().webp({ quality: small ? 68 : 76, effort: 5 })],
-      ['fallback', `${id}-${w}.jpg`, base().jpeg({ quality: small ? 74 : 82, mozjpeg: true })],
     ];
+    // JPEG is only ever reached by a browser that can decode neither of the
+    // above, which now means a very old one. It is carried once, at full size,
+    // rather than at every width: a whole set of them is weight that all but a
+    // handful of visitors pay for in the download and never use.
+    if (w === widths[widths.length - 1]) {
+      jobs.push(['fallback', `${id}-${w}.jpg`, base().jpeg({ quality: small ? 74 : 82, mozjpeg: true })]);
+    }
     for (const [kind, name, pipeline] of jobs) {
       await pipeline.toFile(join(CAMPAIGN_OUT, name));
       entry[kind].push({ file: name, width: w, height: h });
