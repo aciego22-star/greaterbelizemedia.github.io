@@ -137,6 +137,18 @@ function chooseFrom(srcset, target) {
  * phone showing the landscape composition cropped to a slot it was never
  * composed for. So a source carrying a media query survives, one per query.
  */
+/* How large a picture is carried into this file.
+ *
+ * Everything here is base64, which costs a third again on top of the bytes,
+ * and the whole file has to arrive in one piece. The campaign artwork carries
+ * its own headline so it is kept sharp; everything else is carried at a size
+ * that reads on screen without paying for detail nobody will look for.
+ *
+ * preview-fit.mjs turns these down, a step at a time, until the file is small
+ * enough to be handed over, so a review file is never refused for its size. */
+const PREVIEW_HERO = Number(process.env.PREVIEW_HERO) || 960;
+const PREVIEW_ART = Number(process.env.PREVIEW_ART) || 800;
+
 function inlinePictures(html) {
   return html
     .replace(/<picture([^>]*)>([\s\S]*?)<\/picture>/g, (whole, attrs, inner) => {
@@ -151,7 +163,7 @@ function inlinePictures(html) {
         if (!media || seen.has(media) || !/type="image\/webp"/.test(tag)) continue;
         const srcset = /srcset="([^"]*)"/.exec(tag)?.[1];
         if (!srcset) continue;
-        const chosen = chooseFrom(srcset, 720);
+        const chosen = chooseFrom(srcset, PREVIEW_ART);
         if (!chosen) continue;
         seen.add(media);
         kept.push(`<source media="${media}" type="image/webp" srcset="${inlineImage(chosen)}">`);
@@ -166,7 +178,7 @@ function inlinePictures(html) {
 
       // An image already inlined by the pass above is left alone.
       if (chosen && chosen.startsWith('data:')) return tag;
-      if (srcset) chosen = chooseFrom(srcset, isHero ? 960 : 800) ?? chosen;
+      if (srcset) chosen = chooseFrom(srcset, isHero ? PREVIEW_HERO : PREVIEW_ART) ?? chosen;
 
       const cleaned = attrsStr
         .replace(/\ssrcset="[^"]*"/g, '')
@@ -189,6 +201,12 @@ function inlineVideo(html) {
     .replace(/<source[^>]*type="video\/webm"[^>]*>/g, '')
     .replace(/<source([^>]*)src="([^"]*\.mp4)"([^>]*)>/g, (whole, a, ref, b) => {
       const file = resolveAsset(ref);
+      // A lighter copy of the film is kept for this file; see optimize-video.
+      const review = join(ROOT, 'src', 'assets', 'video-review', ref.split('/').pop());
+      if (existsSync(review)) {
+        const uri = `data:video/mp4;base64,${readFileSync(review).toString('base64')}`;
+        return `<source${a}src="${uri}"${b}>`;
+      }
       if (!existsSync(join(DIST, file))) return whole;
       return `<source${a}src="${dataUri(file, 'video/mp4')}"${b}>`;
     })

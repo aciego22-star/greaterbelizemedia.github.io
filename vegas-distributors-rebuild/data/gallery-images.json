@@ -668,5 +668,655 @@
         "height": 178
       }
     ]
+  },
+  "ambar-1": {
+    "base": "assets/gallery",
+    "width": 400,
+    "height": 178,
+    "avif": [
+      {
+        "file": "ambar-1-400.avif",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "webp": [
+      {
+        "file": "ambar-1-400.webp",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "fallback": [
+      {
+        "file": "ambar-1-400.jpg",
+        "width": 400,
+        "height": 178
+      }
+    ]
+  },
+  "castilla-1": {
+    "base": "assets/gallery",
+    "width": 400,
+    "height": 178,
+    "avif": [
+      {
+        "file": "castilla-1-400.avif",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "webp": [
+      {
+        "file": "castilla-1-400.webp",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "fallback": [
+      {
+        "file": "castilla-1-400.jpg",
+        "width": 400,
+        "height": 178
+      }
+    ]
+  },
+  "diana-1": {
+    "base": "assets/gallery",
+    "width": 400,
+    "height": 178,
+    "avif": [
+      {
+        "file": "diana-1-400.avif",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "webp": [
+      {
+        "file": "diana-1-400.webp",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "fallback": [
+      {
+        "file": "diana-1-400.jpg",
+        "width": 400,
+        "height": 178
+      }
+    ]
+  },
+  "ducal-1": {
+    "base": "assets/gallery",
+    "width": 400,
+    "height": 178,
+    "avif": [
+      {
+        "file": "ducal-1-400.avif",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "webp": [
+      {
+        "file": "ducal-1-400.webp",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "fallback": [
+      {
+        "file": "ducal-1-400.jpg",
+        "width": 400,
+        "height": 178
+      }
+    ]
+  },
+  "ducal-juice-1": {
+    "base": "assets/gallery",
+    "width": 400,
+    "height": 178,
+    "avif": [
+      {
+        "file": "ducal-juice-1-400.avif",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "webp": [
+      {
+        "file": "ducal-juice-1-400.webp",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "fallback": [
+      {
+        "file": "ducal-juice-1-400.jpg",
+        "width": 400,
+        "height": 178
+      }
+    ]
+  },
+  "escocesa-1": {
+    "base": "assets/gallery",
+    "width": 400,
+    "height": 178,
+    "avif": [
+      {
+        "file": "escocesa-1-400.avif",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "webp": [
+      {
+        "file": "escocesa-1-400.webp",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "fallback": [
+      {
+        "file": "escocesa-1-400.jpg",
+        "width": 400,
+        "height": 178
+      }
+    ]
+  },
+  "espumil-1": {
+    "base": "assets/gallery",
+    "width": 400,
+    "height": 178,
+    "avif": [
+      {
+        "file": "espumil-1-400.avif",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "webp": [
+      {
+        "file": "espumil-1-400.webp",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "fallback": [
+      {
+        "file": "espumil-1-400.jpg",
+        "width": 400,
+        "height": 178
+      }
+    ]
+  },
+  "favora-1": {
+    "base": "assets/gallery",
+    "width": 400,
+    "height": 178,
+    "avif": [
+      {
+        "file": "favora-1-400.avif",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "webp": [
+      {
+        "file": "favora-1-400.webp",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "fallback": [
+      {
+        "file": "favora-1-400.jpg",
+        "width": 400,
+        "height": 178
+      }
+    ]
+  },
+  "fun-c-1": {
+    "base": "assets/gallery",
+    "width": 400,
+    "height": 178,
+    "avif": [
+      {
+        "file": "fun-c-1-400.avif",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "webp": [
+      {
+        "file": "fun-c-1-400.webp",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "fallback": [
+      {
+        "file": "fun-c-1-400.jpg",
+        "width": 400,
+        "height": 178
+      }
+    ]
+  },
+  "gama-1": {
+    "base": "assets/gallery",
+    "width": 400,
+    "height": 178,
+    "avif": [
+      {
+        "file": "gama-1-400.avif",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "webp": [
+      {
+        "file": "gama-1-400.webp",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "fallback": [
+      {
+        "file": "gama-1-400.jpg",
+        "width": 400,
+        "height": 178
+      }
+    ]
+  },
+  "gold-medal-1": {
+    "base": "assets/gallery",
+    "width": 400,
+    "height": 178,
+    "avif": [
+      {
+        "file": "gold-medal-1-400.avif",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "webp": [
+      {
+        "file": "gold-medal-1-400.webp",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "fallback": [
+      {
+        "file": "gold-medal-1-400.jpg",
+        "width": 400,
+        "height": 178
+      }
+    ]
+  },
+  "granada-1": {
+    "base": "assets/gallery",
+    "width": 400,
+    "height": 178,
+    "avif": [
+      {
+        "file": "granada-1-400.avif",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "webp": [
+      {
+        "file": "granada-1-400.webp",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "fallback": [
+      {
+        "file": "granada-1-400.jpg",
+        "width": 400,
+        "height": 178
+      }
+    ]
+  },
+  "ina-1": {
+    "base": "assets/gallery",
+    "width": 400,
+    "height": 178,
+    "avif": [
+      {
+        "file": "ina-1-400.avif",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "webp": [
+      {
+        "file": "ina-1-400.webp",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "fallback": [
+      {
+        "file": "ina-1-400.jpg",
+        "width": 400,
+        "height": 178
+      }
+    ]
+  },
+  "kerns-jr-1": {
+    "base": "assets/gallery",
+    "width": 400,
+    "height": 178,
+    "avif": [
+      {
+        "file": "kerns-jr-1-400.avif",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "webp": [
+      {
+        "file": "kerns-jr-1-400.webp",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "fallback": [
+      {
+        "file": "kerns-jr-1-400.jpg",
+        "width": 400,
+        "height": 178
+      }
+    ]
+  },
+  "kinder-sorpresa-1": {
+    "base": "assets/gallery",
+    "width": 400,
+    "height": 178,
+    "avif": [
+      {
+        "file": "kinder-sorpresa-1-400.avif",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "webp": [
+      {
+        "file": "kinder-sorpresa-1-400.webp",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "fallback": [
+      {
+        "file": "kinder-sorpresa-1-400.jpg",
+        "width": 400,
+        "height": 178
+      }
+    ]
+  },
+  "laky-1": {
+    "base": "assets/gallery",
+    "width": 400,
+    "height": 178,
+    "avif": [
+      {
+        "file": "laky-1-400.avif",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "webp": [
+      {
+        "file": "laky-1-400.webp",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "fallback": [
+      {
+        "file": "laky-1-400.jpg",
+        "width": 400,
+        "height": 178
+      }
+    ]
+  },
+  "lucciola-1": {
+    "base": "assets/gallery",
+    "width": 400,
+    "height": 178,
+    "avif": [
+      {
+        "file": "lucciola-1-400.avif",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "webp": [
+      {
+        "file": "lucciola-1-400.webp",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "fallback": [
+      {
+        "file": "lucciola-1-400.jpg",
+        "width": 400,
+        "height": 178
+      }
+    ]
+  },
+  "melher-1": {
+    "base": "assets/gallery",
+    "width": 400,
+    "height": 178,
+    "avif": [
+      {
+        "file": "melher-1-400.avif",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "webp": [
+      {
+        "file": "melher-1-400.webp",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "fallback": [
+      {
+        "file": "melher-1-400.jpg",
+        "width": 400,
+        "height": 178
+      }
+    ]
+  },
+  "naledo-1": {
+    "base": "assets/gallery",
+    "width": 400,
+    "height": 400,
+    "avif": [
+      {
+        "file": "naledo-1-400.avif",
+        "width": 400,
+        "height": 400
+      }
+    ],
+    "webp": [
+      {
+        "file": "naledo-1-400.webp",
+        "width": 400,
+        "height": 400
+      }
+    ],
+    "fallback": [
+      {
+        "file": "naledo-1-400.jpg",
+        "width": 400,
+        "height": 400
+      }
+    ]
+  },
+  "olmeca-1": {
+    "base": "assets/gallery",
+    "width": 400,
+    "height": 178,
+    "avif": [
+      {
+        "file": "olmeca-1-400.avif",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "webp": [
+      {
+        "file": "olmeca-1-400.webp",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "fallback": [
+      {
+        "file": "olmeca-1-400.jpg",
+        "width": 400,
+        "height": 178
+      }
+    ]
+  },
+  "raffaello-1": {
+    "base": "assets/gallery",
+    "width": 400,
+    "height": 178,
+    "avif": [
+      {
+        "file": "raffaello-1-400.avif",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "webp": [
+      {
+        "file": "raffaello-1-400.webp",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "fallback": [
+      {
+        "file": "raffaello-1-400.jpg",
+        "width": 400,
+        "height": 178
+      }
+    ]
+  },
+  "regia-1": {
+    "base": "assets/gallery",
+    "width": 400,
+    "height": 178,
+    "avif": [
+      {
+        "file": "regia-1-400.avif",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "webp": [
+      {
+        "file": "regia-1-400.webp",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "fallback": [
+      {
+        "file": "regia-1-400.jpg",
+        "width": 400,
+        "height": 178
+      }
+    ]
+  },
+  "tictac-1": {
+    "base": "assets/gallery",
+    "width": 400,
+    "height": 178,
+    "avif": [
+      {
+        "file": "tictac-1-400.avif",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "webp": [
+      {
+        "file": "tictac-1-400.webp",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "fallback": [
+      {
+        "file": "tictac-1-400.jpg",
+        "width": 400,
+        "height": 178
+      }
+    ]
+  },
+  "tropi-kuhl-1": {
+    "base": "assets/gallery",
+    "width": 400,
+    "height": 178,
+    "avif": [
+      {
+        "file": "tropi-kuhl-1-400.avif",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "webp": [
+      {
+        "file": "tropi-kuhl-1-400.webp",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "fallback": [
+      {
+        "file": "tropi-kuhl-1-400.jpg",
+        "width": 400,
+        "height": 178
+      }
+    ]
+  },
+  "ultraklin-1": {
+    "base": "assets/gallery",
+    "width": 400,
+    "height": 178,
+    "avif": [
+      {
+        "file": "ultraklin-1-400.avif",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "webp": [
+      {
+        "file": "ultraklin-1-400.webp",
+        "width": 400,
+        "height": 178
+      }
+    ],
+    "fallback": [
+      {
+        "file": "ultraklin-1-400.jpg",
+        "width": 400,
+        "height": 178
+      }
+    ]
   }
 }

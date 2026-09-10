@@ -160,6 +160,206 @@
       "span": "normal",
       "en": "Kellogg's family cereal products",
       "es": "Cereales familiares Kellogg's"
+    },
+    {
+      "id": "ambar-1",
+      "file": "ambar-1-400.jpg",
+      "brand": "ambar",
+      "span": "normal",
+      "en": "Ambar laundry soap product artwork",
+      "es": "Presentación del jabón para lavar Ambar"
+    },
+    {
+      "id": "castilla-1",
+      "file": "castilla-1-400.jpg",
+      "brand": "castilla",
+      "span": "normal",
+      "en": "Castilla flavouring and dessert products",
+      "es": "Productos de esencias y postres Castilla"
+    },
+    {
+      "id": "diana-1",
+      "file": "diana-1-400.jpg",
+      "brand": "diana",
+      "span": "normal",
+      "en": "Diana chips and snack selection",
+      "es": "Selección de chips y boquitas Diana"
+    },
+    {
+      "id": "ducal-1",
+      "file": "ducal-1-400.jpg",
+      "brand": "ducal",
+      "span": "normal",
+      "en": "Ducal refried bean product range",
+      "es": "Gama de frijoles volteados Ducal"
+    },
+    {
+      "id": "ducal-juice-1",
+      "file": "ducal-juice-1-400.jpg",
+      "brand": "ducal-juice",
+      "span": "normal",
+      "en": "Ducal fruit beverage selection",
+      "es": "Selección de bebidas de frutas Ducal"
+    },
+    {
+      "id": "escocesa-1",
+      "file": "escocesa-1-400.jpg",
+      "brand": "escocesa",
+      "span": "normal",
+      "en": "Escocesa household cleaning tools",
+      "es": "Utensilios de limpieza para el hogar Escocesa"
+    },
+    {
+      "id": "espumil-1",
+      "file": "espumil-1-400.jpg",
+      "brand": "espumil",
+      "span": "normal",
+      "en": "Espumil household cleaning brand artwork",
+      "es": "Presentación de la marca de limpieza Espumil"
+    },
+    {
+      "id": "favora-1",
+      "file": "favora-1-400.jpg",
+      "brand": "favora",
+      "span": "normal",
+      "en": "Favora seasonings sauces and condiments",
+      "es": "Condimentos salsas y sazonadores Favora"
+    },
+    {
+      "id": "fun-c-1",
+      "file": "fun-c-1-400.jpg",
+      "brand": "fun-c",
+      "span": "normal",
+      "en": "Fun C fruit drink selection",
+      "es": "Selección de bebidas de frutas Fun C"
+    },
+    {
+      "id": "gama-1",
+      "file": "gama-1-400.jpg",
+      "brand": "gama",
+      "span": "normal",
+      "en": "Gama biscuit and cookie selection",
+      "es": "Selección de galletas Gama"
+    },
+    {
+      "id": "gold-medal-1",
+      "file": "gold-medal-1-400.jpg",
+      "brand": "gold-medal",
+      "span": "normal",
+      "en": "Gold Medal hot cake mix range",
+      "es": "Gama de mezclas para panqueques Gold Medal"
+    },
+    {
+      "id": "granada-1",
+      "file": "granada-1-400.jpg",
+      "brand": "granada",
+      "span": "normal",
+      "en": "Granada chocolate product selection",
+      "es": "Selección de productos de chocolate Granada"
+    },
+    {
+      "id": "ina-1",
+      "file": "ina-1-400.jpg",
+      "brand": "ina",
+      "span": "normal",
+      "en": "Ina pasta meal artwork",
+      "es": "Presentación de comida con pasta Ina"
+    },
+    {
+      "id": "kerns-jr-1",
+      "file": "kerns-jr-1-400.jpg",
+      "brand": "kerns-jr",
+      "span": "normal",
+      "en": "Kerns Jr juice box selection",
+      "es": "Selección de jugos en caja Kerns Jr"
+    },
+    {
+      "id": "kinder-sorpresa-1",
+      "file": "kinder-sorpresa-1-400.jpg",
+      "brand": "kinder-sorpresa",
+      "span": "normal",
+      "en": "Kinder Sorpresa egg selection",
+      "es": "Selección de huevos Kinder Sorpresa"
+    },
+    {
+      "id": "laky-1",
+      "file": "laky-1-400.jpg",
+      "brand": "laky",
+      "span": "normal",
+      "en": "Laky instant noodle cup selection",
+      "es": "Selección de sopas instantáneas Laky"
+    },
+    {
+      "id": "lucciola-1",
+      "file": "lucciola-1-400.jpg",
+      "brand": "lucciola",
+      "span": "normal",
+      "en": "Lucciola prepared-food artwork",
+      "es": "Presentación de alimentos preparados Lucciola"
+    },
+    {
+      "id": "melher-1",
+      "file": "melher-1-400.jpg",
+      "brand": "melher",
+      "span": "normal",
+      "en": "Melher liquid chocolate product artwork",
+      "es": "Presentación del chocolate líquido Melher"
+    },
+    {
+      "id": "naledo-1",
+      "file": "naledo-1-400.jpg",
+      "brand": "naledo",
+      "span": "normal",
+      "en": "Naledo Belizean turmeric paste",
+      "es": "Pasta de cúrcuma beliceña Naledo"
+    },
+    {
+      "id": "olmeca-1",
+      "file": "olmeca-1-400.jpg",
+      "brand": "olmeca",
+      "span": "normal",
+      "en": "Olmeca cooking oil selection",
+      "es": "Selección de aceites de cocina Olmeca"
+    },
+    {
+      "id": "raffaello-1",
+      "file": "raffaello-1-400.jpg",
+      "brand": "raffaello",
+      "span": "normal",
+      "en": "Raffaello coconut confectionery",
+      "es": "Confitería de coco Raffaello"
+    },
+    {
+      "id": "regia-1",
+      "file": "regia-1-400.jpg",
+      "brand": "regia",
+      "span": "normal",
+      "en": "Regia sauce served with fries",
+      "es": "Salsa Regia servida con papas fritas"
+    },
+    {
+      "id": "tictac-1",
+      "file": "tictac-1-400.jpg",
+      "brand": "tictac",
+      "span": "normal",
+      "en": "Tic Tac mint selection",
+      "es": "Selección de mentas Tic Tac"
+    },
+    {
+      "id": "tropi-kuhl-1",
+      "file": "tropi-kuhl-1-400.jpg",
+      "brand": "tropi-kuhl",
+      "span": "normal",
+      "en": "Tropi-Kuhl strawberry product selection",
+      "es": "Selección de productos de fresa Tropi-Kuhl"
+    },
+    {
+      "id": "ultraklin-1",
+      "file": "ultraklin-1-400.jpg",
+      "brand": "ultraklin",
+      "span": "normal",
+      "en": "Ultraklin powdered detergent range",
+      "es": "Gama de detergentes en polvo Ultraklin"
     }
   ]
 }

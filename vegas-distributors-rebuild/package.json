@@ -14,9 +14,9 @@
     "check": "node scripts/check.mjs",
     "images": "node scripts/optimize-media.mjs",
     "extract": "node scripts/extract-catalog.mjs",
-    "package": "node scripts/build.mjs && node scripts/check.mjs && node scripts/scan-language.mjs && node scripts/package.mjs && node scripts/preview.mjs",
+    "package": "node scripts/build.mjs && node scripts/check.mjs && node scripts/scan-language.mjs && node scripts/package.mjs && node scripts/preview-fit.mjs",
     "fonts": "node scripts/fetch-fonts.mjs",
-    "preview": "node scripts/build.mjs && node scripts/preview.mjs",
+    "preview": "node scripts/build.mjs && node scripts/preview-fit.mjs",
     "scan": "node scripts/scan-language.mjs"
   },
   "devDependencies": {

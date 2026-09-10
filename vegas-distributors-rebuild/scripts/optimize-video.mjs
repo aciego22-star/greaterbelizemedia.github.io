@@ -119,6 +119,26 @@ for (const w of [...new Set([480, 720].filter((x) => x < meta.width)), meta.widt
     poster[kind].push({ file: name, width: w, height: h });
   }
 }
+/* A lighter copy for the review file.
+ *
+ * That file carries the whole site as one document and is refused above a
+ * fixed size, and the film is the single heaviest thing in it. It plays there
+ * in a contained portrait frame no wider than about 455 points, so half the
+ * width costs nothing that can be seen and leaves room for the campaign
+ * artwork to stay sharp. It is never served from the built site. */
+const REVIEW = join(ROOT, 'src', 'assets', 'video-review');
+mkdirSync(REVIEW, { recursive: true });
+const reviewFile = join(REVIEW, 'score-with-jarana.mp4');
+run([
+  '-i', SRC,
+  '-vf', 'scale=540:-2',
+  '-c:v', 'libx264', '-profile:v', 'main', '-crf', '27', '-preset', 'slow', '-pix_fmt', 'yuv420p',
+  ...(audio ? ['-c:a', 'aac', '-b:a', '64k'] : ['-an']),
+  '-movflags', '+faststart',
+  reviewFile,
+]);
+console.log(`  review  540 wide  ${mb(reviewFile)}`);
+
 // The extracted still is only an intermediate; the derivatives are what ship.
 rmSync(still, { force: true });
 console.log(`  poster ${meta.width}x${meta.height} at ${POSTER_AT}s`);
