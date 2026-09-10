@@ -49,23 +49,27 @@ const PRODUCTS = [
   { id: 'bop-cans', file: 'bop-cans-product.jpg', widths: [360, 650] },
   // The promoted products turn on their own axis, so they are carried a little
   // larger than the box they sit in: the corners sweep past the edges mid turn.
-  { id: 'promo-bop', file: 'promo-bop.png', widths: [420, 840] },
-  { id: 'promo-aqua-max', file: 'promo-aqua-max.png', widths: [420, 840] },
-  { id: 'promo-kelloggs', file: 'promo-kelloggs.png', widths: [420, 840] },
-  { id: 'promo-ina', file: 'promo-ina.png', widths: [420, 840] },
-  { id: 'promo-regia', file: 'promo-regia.png', widths: [420, 840] },
+  // The box is never wider than about 260 points, so 840 covers a dense screen
+  // three times over; the supplied renders run to 1536 and carrying them at
+  // that size only makes the download bigger, never the picture sharper.
+  { id: 'promo-bop', file: 'promo-bop.png', widths: [420, 840], max: 840 },
+  { id: 'promo-aqua-max', file: 'promo-aqua-max.png', widths: [420, 840], max: 840 },
+  { id: 'promo-kelloggs', file: 'promo-kelloggs.png', widths: [420, 840], max: 840 },
+  { id: 'promo-ina', file: 'promo-ina.png', widths: [420, 840], max: 840 },
+  { id: 'promo-regia', file: 'promo-regia.png', widths: [420, 840], max: 840 },
 ];
 
 for (const item of PRODUCTS) {
   const file = join(PRODUCT_SRC, item.file);
   if (!existsSync(file)) { console.warn(`  missing product source: ${item.file}`); continue; }
   const meta = await sharp(file).metadata();
-  const widths = [...new Set([...item.widths.filter((w) => w < meta.width), meta.width])];
+  const cap = Math.min(item.max || meta.width, meta.width);
+  const widths = [...new Set([...item.widths.filter((w) => w < cap), cap])];
 
   const entry = {
     base: 'assets/product-art',
-    width: meta.width,
-    height: meta.height,
+    width: cap,
+    height: Math.round((meta.height / meta.width) * cap),
     avif: [], webp: [], fallback: [],
   };
 
