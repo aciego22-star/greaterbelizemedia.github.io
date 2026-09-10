@@ -1,8 +1,8 @@
 /* Brands in Motion.
  *
- * Three independent pieces: the scroll-driven showcase, the lightbox and the
- * back-to-top control. The page is complete without any of them, so each one
- * only enhances what is already rendered.
+ * Two independent pieces: the scroll-driven showcase and the lightbox. The
+ * page is complete without either of them, so each one only enhances what is
+ * already rendered.
  *
  * Each piece is initialised per element rather than once per document, so a
  * page that happens to carry more than one gallery gets working controls on
@@ -114,21 +114,6 @@
   }
 
   /* ---------------------------------------------------------------- *
-   * Back to top
-   * ---------------------------------------------------------------- */
-
-  function initToTop(toTop) {
-    var toggleTop = function () {
-      toTop.hidden = window.scrollY < window.innerHeight * 0.9;
-    };
-    window.addEventListener('scroll', toggleTop, { passive: true });
-    toTop.addEventListener('click', function () {
-      window.scrollTo({ top: 0, behavior: reduced.matches ? 'auto' : 'smooth' });
-    });
-    toggleTop();
-  }
-
-  /* ---------------------------------------------------------------- *
    * Lightbox
    * ---------------------------------------------------------------- */
 
@@ -207,6 +192,5 @@
   }
 
   if (!reduced.matches) each('[data-showcase]', initShowcase);
-  each('[data-to-top]', initToTop);
   each('[data-gallery]', initLightbox);
 })();

@@ -215,33 +215,6 @@
    Back to top
    -------------------------------------------------------------------------- */
 
-.to-top {
-  position: fixed;
-  right: clamp(1rem, 3vw, 2rem);
-  bottom: clamp(1rem, 3vw, 2rem);
-  z-index: 90;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  min-height: 48px;
-  padding: 0 1.05rem;
-  border: 0;
-  border-radius: 999px;
-  background: var(--red);
-  color: #fff;
-  font: inherit;
-  font-size: 0.85rem;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: var(--shadow);
-}
-.to-top:hover { background: #b92a17; }
-.to-top svg { width: 17px; height: 17px; }
-.to-top:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
-@media (max-width: 30rem) {
-  .to-top span { display: none; }
-  .to-top { padding: 0; width: 48px; justify-content: center; }
-}
 
 /* --------------------------------------------------------------------------
    Lightbox

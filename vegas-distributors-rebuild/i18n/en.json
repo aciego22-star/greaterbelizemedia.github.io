@@ -37,7 +37,8 @@
     "email": "Email",
     "enquire": "Send an enquiry",
     "contactSales": "Contact Sales",
-    "emailUs": "Email Us"
+    "emailUs": "Email Us",
+    "backToTop": "Back to top"
   },
   "home": {
     "title": "Wholesale Distribution in Belize",
@@ -419,7 +420,6 @@
     "skip": "Skip to gallery",
     "gridHeading": "The full gallery",
     "gridLead": "Every piece, laid out to browse.",
-    "top": "Back to top",
     "counter": "{n} of {total}",
     "openLabel": "View {name}",
     "lightboxLabel": "Brand artwork viewer",

@@ -37,7 +37,8 @@
     "email": "Correo",
     "enquire": "Enviar una consulta",
     "contactSales": "Contactar Ventas",
-    "emailUs": "Escríbanos"
+    "emailUs": "Escríbanos",
+    "backToTop": "Volver arriba"
   },
   "home": {
     "title": "Distribución Mayorista en Belice",
@@ -419,7 +420,6 @@
     "skip": "Ir a la galería",
     "gridHeading": "La galería completa",
     "gridLead": "Todas las piezas, listas para explorar.",
-    "top": "Volver arriba",
     "counter": "{n} de {total}",
     "openLabel": "Ver {name}",
     "lightboxLabel": "Visor de arte de marca",

@@ -247,6 +247,25 @@ function footer({ site, i18n, locale, company, images }) {
  * Assembles a complete document and resolves {{BASE}} to the relative prefix
  * for this page's depth.
  */
+/**
+ * Back to top.
+ *
+ * A page long enough to lose the menu off the top gets a way back to it. The
+ * control is written into every page but starts hidden, and the script shows it
+ * once there is something to come back from, so a short page never carries a
+ * button with nothing to do.
+ */
+function toTop(i18n) {
+  const label = esc(i18n.actions.backToTop);
+  return (
+    `<button type="button" class="to-top" data-to-top hidden aria-label="${label}">` +
+    `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">` +
+    `<path d="M12 19V6M6 12l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2.2"` +
+    ` stroke-linecap="round" stroke-linejoin="round"/></svg>` +
+    `<span>${label}</span></button>`
+  );
+}
+
 export function page(ctx) {
   const { i18n, locale, outPath, body, bodyClass } = ctx;
   // The error page is reachable from any URL, so its language control points at
@@ -260,7 +279,7 @@ export function page(ctx) {
     `<body${bodyClass ? ` class="${esc(bodyClass)}"` : ''}>` +
     `<a class="skip-link" href="#main">${esc(i18n.site.skipLink)}</a>` +
     masthead({ ...ctx, switchPath }) +
-    `<main id="main">${body}</main>` +
+    `<main id="main">${body}${toTop(i18n)}</main>` +
     footer(ctx) +
     // Integration point: analytics. Load deferred, after consent, here.
     `<script src="{{BASE}}assets/js/site.js" defer></script>` +

@@ -16,7 +16,16 @@
     Array.prototype.forEach.call(document.querySelectorAll('.masthead'), fn);
   };
 
-  var mobile = window.matchMedia('(max-width: 52rem)');
+  /* Whether the bar is folded away is the stylesheet's decision, and asking
+     the menu button whether it is on screen is how this file finds out. It
+     used to carry a width of its own, which drifted from the stylesheet's:
+     between the two the button was on screen while this file still believed
+     it was on a wide window, so it held the panel open and left a header six
+     hundred pixels tall with a button that could not shut it. Reading the
+     button means the two cannot disagree again. */
+  var folded = function (button) {
+    return window.getComputedStyle(button).display !== 'none';
+  };
 
   eachMasthead(function (header) {
     var toggle = header.querySelector('.nav-toggle');
@@ -28,16 +37,16 @@
     var markOpen = function () {
       header.classList.toggle(
         'is-open',
-        mobile.matches && toggle.getAttribute('aria-expanded') === 'true'
+        folded(toggle) && toggle.getAttribute('aria-expanded') === 'true'
       );
     };
 
     var apply = function () {
-      if (mobile.matches) {
+      if (folded(toggle)) {
         var open = toggle.getAttribute('aria-expanded') === 'true';
         nav.hidden = !open;
       } else {
-        // Above the breakpoint the nav is always visible and the button is hidden.
+        // Unfolded, the nav is always on show and the button is not there.
         nav.hidden = false;
         toggle.setAttribute('aria-expanded', 'false');
       }
@@ -64,7 +73,7 @@
     // Choosing somewhere to go closes the menu behind you.
     nav.addEventListener('click', function (e) {
       var link = e.target.closest && e.target.closest('a[href]');
-      if (link && mobile.matches) close();
+      if (link && folded(toggle)) close();
     });
 
     // Escape closes the menu and returns focus to the control that opened it.
@@ -75,9 +84,8 @@
       }
     });
 
-    if (mobile.addEventListener) {
-      mobile.addEventListener('change', function () { apply(); markOpen(); });
-    }
+    // A window that changes width can cross the fold in either direction.
+    window.addEventListener('resize', function () { apply(); markOpen(); }, { passive: true });
     apply();
     markOpen();
   });
@@ -182,4 +190,36 @@
       }
     }
   }
+
+  /* ---------------------------------------------------------------- *
+   * Back to top
+   * ---------------------------------------------------------------- */
+
+  /* The control is written into every page but starts hidden, so a page too
+     short to scroll never shows a button with nothing to do. It appears once
+     the masthead is a screen or so behind, and a visitor who has asked for
+     less motion is taken straight there rather than swept. */
+  Array.prototype.forEach.call(document.querySelectorAll('[data-to-top]'), function (toTop) {
+    var lessMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    var sync = function () {
+      toTop.hidden = window.scrollY < window.innerHeight * 0.9;
+    };
+
+    window.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', sync, { passive: true });
+
+    toTop.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: lessMotion.matches ? 'auto' : 'smooth' });
+      // The reading position goes back with the view, so a visitor stepping
+      // through with a keyboard carries on from the masthead rather than from
+      // the foot of the page where the button sits. Focus lands on the first
+      // real control rather than the skip link, which would otherwise flash
+      // its bar open on the way past.
+      var first = document.querySelector('.masthead .brand');
+      if (first) first.focus({ preventScroll: true });
+    });
+
+    sync();
+  });
 })();

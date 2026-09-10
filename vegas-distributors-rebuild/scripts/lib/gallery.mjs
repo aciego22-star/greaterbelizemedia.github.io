@@ -121,9 +121,6 @@ export function galleryPage({ i18n, locale, gallery, galleryImages, catalog }) {
     showcase +
     grid +
     lightbox +
-    `<button type="button" class="to-top" data-to-top hidden aria-label="${esc(c.top)}">` +
-    `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 19V6M6 12l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>` +
-    `<span>${esc(c.top)}</span></button>` +
     `<script type="application/json" data-gallery-data>${JSON.stringify(payload).replace(/</g, '\\u003c')}</script>`;
 
   return { body, pageStyles: ['gallery.css'], pageScripts: ['gallery.js'] };

@@ -362,6 +362,38 @@ ul, ol { margin: 0; padding: 0; }
   box-shadow: inset 0 -3px 0 var(--yellow);
 }
 
+/* Back to top.
+   Sits below the masthead and below the gallery lightbox, so it never floats
+   over either of them. The phone drops the words and keeps the arrow, at the
+   full target size. */
+.to-top {
+  position: fixed;
+  right: clamp(1rem, 3vw, 2rem);
+  bottom: clamp(1rem, 3vw, 2rem);
+  z-index: 90;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 48px;
+  padding: 0 1.05rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--red);
+  color: #fff;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+.to-top:hover { background: #b92a17; }
+.to-top svg { width: 17px; height: 17px; }
+.to-top:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+@media (max-width: 30rem) {
+  .to-top span { display: none; }
+  .to-top { padding: 0; width: 48px; justify-content: center; }
+}
+
 /* Language control */
 .lang {
   display: inline-flex;
@@ -1845,18 +1877,30 @@ table.products td.size:empty::after { content: '-'; color: var(--line-strong); }
    Responsive
    -------------------------------------------------------------------------- */
 
-/* Between the desktop and mobile headers the bar is tight, and it is Spanish
-   that decides how tight: nine items, and the longer of the two sets of
-   labels. The band reaches up to 84rem because the full size bar does not fit
-   nine Spanish labels until about 1340px. Below 65rem the bar folds into the
-   menu button, which is the width at which the tightened Spanish bar stops
-   fitting. Both languages use the same width so they behave alike. */
-@media (min-width: 65.0625rem) and (max-width: 84rem) {
-  .nav-list a { padding: 0 0.34rem; font-size: 0.84rem; letter-spacing: -0.005em; }
-  .masthead__panel { gap: 0.6rem; }
-  .brand img { width: 108px; }
-  .masthead__cta .btn { padding: 0.5rem 0.8rem; font-size: 0.85rem; }
-  .lang > * { padding: 0 0.55rem; }
+/* The width of the bar is settled by Spanish: nine items, and the longer of
+   the two sets of labels.
+
+   The page column stops growing at 1240px, so a wider window gives the bar no
+   more room than a 1240px one does. Sizing the bar in fixed steps therefore
+   went wrong in both directions: the nav went back to full size above 1344px
+   and, having nowhere to go, ran leftwards underneath the logo, and the one
+   tight size was still too wide just above the fold-away point. It scales with
+   the window instead, between what fits at the narrowest bar and what the
+   widest column can hold. Both languages use the same sizes so they behave
+   alike, and the bar folds into the menu button below 67.5rem, which is where
+   nine Spanish labels stop leaving daylight beside the logo. */
+@media (min-width: 67.5625rem) {
+  .nav-list a {
+    padding: 0 clamp(0.28rem, 0.52vw, 0.4rem);
+    font-size: clamp(0.8rem, 1.12vw, 0.87rem);
+    letter-spacing: -0.004em;
+  }
+  .nav-list { gap: clamp(0.04rem, 0.16vw, 0.12rem); }
+  .masthead__bar { gap: clamp(0.85rem, 1.3vw, 1rem); }
+  .masthead__panel { gap: clamp(0.5rem, 0.85vw, 0.66rem); }
+  .brand img { width: clamp(100px, 9.5vw, 118px); }
+  .masthead__cta .btn { padding: 0.5rem clamp(0.62rem, 0.9vw, 0.7rem); font-size: clamp(0.82rem, 1.05vw, 0.87rem); }
+  .lang > * { padding: 0 clamp(0.44rem, 0.6vw, 0.52rem); }
 }
 
 @media (max-width: 62rem) {
@@ -1868,7 +1912,7 @@ table.products td.size:empty::after { content: '-'; color: var(--line-strong); }
   .filter-row .field:first-child { grid-column: 1 / -1; }
 }
 
-@media (max-width: 65rem) {
+@media (max-width: 67.5rem) {
   .masthead__bar { min-height: 60px; flex-wrap: wrap; gap: 0.6rem; }
   .brand img { width: 104px; }
   .lang { order: 0; margin-left: auto; }
