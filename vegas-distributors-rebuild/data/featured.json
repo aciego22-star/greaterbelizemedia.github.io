@@ -2,8 +2,45 @@
   "$comment": "The promoted products on the homepage. Each turns on its own axis and hands over to the next. Copy lives in i18n under home.promo. The Aqua Max artwork was supplied by the client and its packaging reads AQUA MAX, while company.json records Blanca Max as the bleach Vega's Industries makes; the name here follows the packaging and is flagged for the client to confirm.",
   "intervalMs": 5000,
   "items": [
-    { "id": "bop", "image": "promo-bop", "route": { "type": "brand", "slug": "bop" } },
-    { "id": "kelloggs", "image": "promo-kelloggs", "route": { "type": "brand", "slug": "kelloggs" } },
-    { "id": "aquaMax", "image": "promo-aqua-max", "route": { "type": "route", "key": "industries" } }
+    {
+      "id": "bop",
+      "image": "promo-bop",
+      "route": {
+        "type": "brand",
+        "slug": "bop"
+      }
+    },
+    {
+      "id": "kelloggs",
+      "image": "promo-kelloggs",
+      "route": {
+        "type": "brand",
+        "slug": "kelloggs"
+      }
+    },
+    {
+      "id": "aquaMax",
+      "image": "promo-aqua-max",
+      "route": {
+        "type": "route",
+        "key": "industries"
+      }
+    },
+    {
+      "id": "ina",
+      "image": "promo-ina",
+      "route": {
+        "type": "brand",
+        "slug": "ina"
+      }
+    },
+    {
+      "id": "regia",
+      "image": "promo-regia",
+      "route": {
+        "type": "brand",
+        "slug": "regia"
+      }
+    }
   ]
 }

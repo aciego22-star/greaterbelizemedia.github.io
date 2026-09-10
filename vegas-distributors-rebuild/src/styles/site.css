@@ -646,9 +646,16 @@ ul, ol { margin: 0; padding: 0; }
   height: 100%;
   /* Tall enough to hold the product in the light and the queue below it
      without either being clipped at the foot. */
-  min-height: 24.5rem;
+  min-height: 25rem;
   padding: clamp(1rem, 2.5vw, 1.75rem);
   overflow: hidden;
+  /* The gap between neighbours in the queue, as a fraction of a product's own
+     width. Each one is placed at its distance from the middle of the line
+     times this, so the line is centred whatever its length. */
+  --promo-step: 30%;
+  /* One size for everyone in the queue, so the line is symmetric about the
+     middle. Which one is up next is said with brightness instead. */
+  --promo-wait: 0.27;
 }
 
 /* Every product stands in the same square arena, so the three photographs, one
@@ -689,11 +696,12 @@ ul, ol { margin: 0; padding: 0; }
 .promo:not([data-ready]) .promo__panel:not(.is-current) { display: none; }
 
 /* The queue. The product in the light stands a little above centre; the rest
-   wait along the foot in the order they will be shown. */
+   wait along the foot, centred as a line, in the order they will be shown. */
 .promo[data-ready] .promo__slot {
   opacity: 0;
   visibility: hidden;
-  transform: translate(19%, 58%) scale(0.28);
+  transform: translate(calc(var(--lane, 0) * var(--promo-step)), 58%)
+    scale(var(--promo-wait));
 }
 .promo[data-ready] .promo__slot.is-current {
   opacity: 1;
@@ -702,15 +710,17 @@ ul, ol { margin: 0; padding: 0; }
   z-index: 3;
 }
 .promo[data-ready] .promo__slot.is-next {
-  opacity: 0.52;
+  opacity: 0.6;
   visibility: visible;
-  transform: translate(-19%, 58%) scale(0.36);
+  transform: translate(calc(var(--lane, 0) * var(--promo-step)), 58%)
+    scale(var(--promo-wait));
   z-index: 2;
 }
 .promo[data-ready] .promo__slot.is-queued {
-  opacity: 0.3;
+  opacity: 0.32;
   visibility: visible;
-  transform: translate(19%, 58%) scale(0.28);
+  transform: translate(calc(var(--lane, 0) * var(--promo-step)), 58%)
+    scale(var(--promo-wait));
   z-index: 1;
 }
 /* Handing over: down to the back of the queue, dimmed out along the way so it
@@ -794,8 +804,13 @@ ul, ol { margin: 0; padding: 0; }
 }
 
 @media (max-width: 60rem) {
-  .promo__stage { min-height: 23.5rem; }
+  .promo__stage { min-height: 23.5rem; --promo-step: 28%; --promo-wait: 0.25; }
   .promo__slot { width: min(88%, 14rem); }
+}
+/* On the narrowest phones the line is drawn in closer so it still stands clear
+   of both edges. */
+@media (max-width: 22.5rem) {
+  .promo__stage { --promo-step: 25%; --promo-wait: 0.22; }
 }
 
 .featured__item {
@@ -831,8 +846,11 @@ ul, ol { margin: 0; padding: 0; }
   .featured__lead { grid-template-columns: 1fr; }
   /* A shape that suits a square product photograph: 16/9 leaves it small and
      stranded between two wide margins. The height comes from the ratio rather
-     than from the row, so the picture inside has a definite box to fit into. */
-  .featured__lead figure { aspect-ratio: 5 / 4; height: auto; }
+     than from the row, so the picture inside has a definite box to fit into.
+     The showcase is excepted: it states its own height, and a ratio applied on
+     top of that resolved to a box wider than the phone, which the card then
+     clipped, leaving everything inside it looking pushed to the right. */
+  .featured__lead figure:not(.promo__stage) { aspect-ratio: 5 / 4; height: auto; }
   .featured__lead { grid-template-rows: auto auto; }
 }
 @media (max-width: 44rem) {

@@ -159,7 +159,6 @@
     "featuredLeadBody": "Citronella, Evergreen and original BOP sprays, stocked by retailers across the country and delivered through our national network.",
     "promo": {
       "label": "Promoted products",
-      "goTo": "Show {name}",
       "items": {
         "bop": {
           "name": "BOP insecticide",
@@ -178,6 +177,18 @@
           "body": "Aqua Max household bleach in the one litre bottle, carried alongside the cleaning lines that move through our warehouses every week.",
           "alt": "A one litre bottle of Aqua Max bleach with a blue cap.",
           "action": "See the division"
+        },
+        "ina": {
+          "name": "Pasta Ina",
+          "body": "Caracolito small shell, spaghetti and the Chao Mein noodle that is ready in three minutes, each one enriched with vitamins and iron, on shelves in supermarkets and shops across Belize.",
+          "alt": "Three Pasta Ina packs: Caracolito small shell, Chao Mein noodles and spaghetti.",
+          "action": "View brand"
+        },
+        "regia": {
+          "name": "Regia mayonnaise",
+          "body": "Regia mayonnaise in the 400 g pouch with a resealable spout, made without trans fats, supplied to supermarkets, wholesalers and commercial customers.",
+          "alt": "A 400 gram pouch of Regia mayonnaise with a white screw cap spout.",
+          "action": "View brand"
         }
       }
     }

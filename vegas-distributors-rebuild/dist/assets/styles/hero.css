@@ -19,6 +19,11 @@
    is known before the image arrives, so nothing shifts. */
 .hero-track {
   position: relative;
+  /* The width is stated so the ratio only ever works out the height. Left to
+     itself, a height pinned by one of the bounds below turns the ratio round
+     and works out a width instead, which came out narrower than the hero on a
+     tablet held upright and wider than it on one held on its side. */
+  width: 100%;
   aspect-ratio: 1672 / 941;
   max-height: min(880px, 100svh);
   min-height: 30rem;

@@ -52,6 +52,8 @@ const PRODUCTS = [
   { id: 'promo-bop', file: 'promo-bop.png', widths: [420, 840] },
   { id: 'promo-aqua-max', file: 'promo-aqua-max.png', widths: [420, 840] },
   { id: 'promo-kelloggs', file: 'promo-kelloggs.png', widths: [420, 840] },
+  { id: 'promo-ina', file: 'promo-ina.png', widths: [420, 840] },
+  { id: 'promo-regia', file: 'promo-regia.png', widths: [420, 840] },
 ];
 
 for (const item of PRODUCTS) {

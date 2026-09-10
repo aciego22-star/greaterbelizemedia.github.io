@@ -23,7 +23,7 @@
     var next = hero.querySelector('[data-hero-next]');
     if (slides.length < 2) return;
 
-    var HOLD = 8000;
+    var HOLD = 7000;
     var index = 0;
     var timer = null;
     var started = false;

@@ -159,7 +159,6 @@
     "featuredLeadBody": "Aerosoles BOP Citronella, Evergreen y original, disponibles en comercios de todo el país y distribuidos por nuestra red nacional.",
     "promo": {
       "label": "Productos promocionados",
-      "goTo": "Mostrar {name}",
       "items": {
         "bop": {
           "name": "Insecticida BOP",
@@ -178,6 +177,18 @@
           "body": "Cloro para el hogar Aqua Max en botella de un litro, distribuido junto con las líneas de limpieza que pasan por nuestras bodegas cada semana.",
           "alt": "Botella de un litro de cloro Aqua Max con tapa azul.",
           "action": "Ver la división"
+        },
+        "ina": {
+          "name": "Pasta Ina",
+          "body": "Caracolito, spaguetti y el fideo para Chao Mein listo en tres minutos, cada uno con vitaminas y hierro, en supermercados y comercios de todo Belice.",
+          "alt": "Tres paquetes de Pasta Ina: caracolito, fideo para Chao Mein y spaguetti.",
+          "action": "Ver la marca"
+        },
+        "regia": {
+          "name": "Mayonesa Regia",
+          "body": "Mayonesa Regia en doypack de 400 g con tapa resellable, sin grasas trans, distribuida a supermercados, mayoristas y clientes comerciales.",
+          "alt": "Doypack de 400 g de mayonesa Regia con tapa de rosca blanca.",
+          "action": "Ver la marca"
         }
       }
     }

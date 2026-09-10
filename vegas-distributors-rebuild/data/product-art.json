@@ -207,5 +207,117 @@
         "height": 1024
       }
     ]
+  },
+  "promo-ina": {
+    "base": "assets/product-art",
+    "width": 1536,
+    "height": 1024,
+    "avif": [
+      {
+        "file": "promo-ina-420.avif",
+        "width": 420,
+        "height": 280
+      },
+      {
+        "file": "promo-ina-840.avif",
+        "width": 840,
+        "height": 560
+      },
+      {
+        "file": "promo-ina-1536.avif",
+        "width": 1536,
+        "height": 1024
+      }
+    ],
+    "webp": [
+      {
+        "file": "promo-ina-420.webp",
+        "width": 420,
+        "height": 280
+      },
+      {
+        "file": "promo-ina-840.webp",
+        "width": 840,
+        "height": 560
+      },
+      {
+        "file": "promo-ina-1536.webp",
+        "width": 1536,
+        "height": 1024
+      }
+    ],
+    "fallback": [
+      {
+        "file": "promo-ina-420.jpg",
+        "width": 420,
+        "height": 280
+      },
+      {
+        "file": "promo-ina-840.jpg",
+        "width": 840,
+        "height": 560
+      },
+      {
+        "file": "promo-ina-1536.jpg",
+        "width": 1536,
+        "height": 1024
+      }
+    ]
+  },
+  "promo-regia": {
+    "base": "assets/product-art",
+    "width": 1024,
+    "height": 1536,
+    "avif": [
+      {
+        "file": "promo-regia-420.avif",
+        "width": 420,
+        "height": 630
+      },
+      {
+        "file": "promo-regia-840.avif",
+        "width": 840,
+        "height": 1260
+      },
+      {
+        "file": "promo-regia-1024.avif",
+        "width": 1024,
+        "height": 1536
+      }
+    ],
+    "webp": [
+      {
+        "file": "promo-regia-420.webp",
+        "width": 420,
+        "height": 630
+      },
+      {
+        "file": "promo-regia-840.webp",
+        "width": 840,
+        "height": 1260
+      },
+      {
+        "file": "promo-regia-1024.webp",
+        "width": 1024,
+        "height": 1536
+      }
+    ],
+    "fallback": [
+      {
+        "file": "promo-regia-420.jpg",
+        "width": 420,
+        "height": 630
+      },
+      {
+        "file": "promo-regia-840.jpg",
+        "width": 840,
+        "height": 1260
+      },
+      {
+        "file": "promo-regia-1024.jpg",
+        "width": 1024,
+        "height": 1536
+      }
+    ]
   }
 }

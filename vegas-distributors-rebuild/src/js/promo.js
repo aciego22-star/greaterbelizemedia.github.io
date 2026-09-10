@@ -42,6 +42,9 @@
         // light, one is next up, the rest are waiting behind it.
         var place = (i - index + count) % count;
         var current = place === 0;
+        // Where along the queue this one stands, counted out from the middle,
+        // so the line stays centred however many products there are.
+        slot.style.setProperty('--lane', current ? 0 : place - 1 - (count - 2) / 2);
         slot.classList.toggle('is-current', current);
         slot.classList.toggle('is-next', place === 1);
         slot.classList.toggle('is-queued', place > 1);
