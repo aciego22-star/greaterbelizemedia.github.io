@@ -1843,10 +1843,14 @@ table.products td.size:empty::after { content: '-'; color: var(--line-strong); }
    Responsive
    -------------------------------------------------------------------------- */
 
-/* Between the desktop and mobile headers the bar is tight, especially in
-   Spanish where the labels are longer and there are seven of them. */
-@media (min-width: 52.0625rem) and (max-width: 78rem) {
-  .nav-list a { padding: 0 0.5rem; font-size: 0.88rem; }
+/* Between the desktop and mobile headers the bar is tight, and it is Spanish
+   that decides how tight: nine items, and the longer of the two sets of
+   labels. The band reaches up to 84rem because the full size bar does not fit
+   nine Spanish labels until about 1340px. Below 65rem the bar folds into the
+   menu button, which is the width at which the tightened Spanish bar stops
+   fitting. Both languages use the same width so they behave alike. */
+@media (min-width: 65.0625rem) and (max-width: 84rem) {
+  .nav-list a { padding: 0 0.34rem; font-size: 0.84rem; letter-spacing: -0.005em; }
   .masthead__panel { gap: 0.6rem; }
   .brand img { width: 108px; }
   .masthead__cta .btn { padding: 0.5rem 0.8rem; font-size: 0.85rem; }
@@ -1862,7 +1866,7 @@ table.products td.size:empty::after { content: '-'; color: var(--line-strong); }
   .filter-row .field:first-child { grid-column: 1 / -1; }
 }
 
-@media (max-width: 52rem) {
+@media (max-width: 65rem) {
   .masthead__bar { min-height: 60px; flex-wrap: wrap; gap: 0.6rem; }
   .brand img { width: 104px; }
   .lang { order: 0; margin-left: auto; }

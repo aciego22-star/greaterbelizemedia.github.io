@@ -123,6 +123,7 @@ function masthead({ i18n, locale, images, current, switchPath, bodyClass, locale
     ['about', i18n.nav.about],
     ['divisions', i18n.nav.divisions],
     ['brands', i18n.nav.brands],
+    ['wines', i18n.nav.wines],
     ['gallery', i18n.nav.gallery],
     ['whatsNew', i18n.nav.whatsNew, i18n.nav.whatsNewFull],
     ['network', i18n.nav.salesNetwork],
