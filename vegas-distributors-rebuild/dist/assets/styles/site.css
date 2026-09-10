@@ -633,8 +633,10 @@ ul, ol { margin: 0; padding: 0; }
 /* --------------------------------------------------------------------------
    Promoted products
 
-   One product at a time turns on its own axis. Every few seconds it sinks out
-   of view and the next rises to take its place, carrying its own words with it.
+   A queue waits along the foot of the stage. The next in line rises into the
+   light, turns on its own axis, then sinks away and joins the back of the
+   queue, carrying its own words with it. There are no controls: pointing at it
+   or tabbing into it holds it, and asking for less motion stops it.
    -------------------------------------------------------------------------- */
 
 .promo__stage {
@@ -642,98 +644,128 @@ ul, ol { margin: 0; padding: 0; }
   display: grid;
   background: #fff;
   height: 100%;
-  min-height: 20rem;
+  /* Tall enough to hold the product in the light and the queue below it
+     without either being clipped at the foot. */
+  min-height: 24.5rem;
+  padding: clamp(1rem, 2.5vw, 1.75rem);
   overflow: hidden;
-  /* Depth for the turn. Without it the picture only ever squashes. */
-  perspective: 1100px;
 }
 
+/* Every product stands in the same square arena, so the three photographs, one
+   square, one landscape and one portrait, all read at the same scale and turn
+   about the same centre. The slot is sized rather than stretched, so the moves
+   below can be written as a fraction of the product's own size. */
 .promo__slot {
   grid-area: 1 / 1;
-  display: grid;
-  place-items: center;
-  padding: clamp(1rem, 2.5vw, 1.75rem);
-  transform-style: preserve-3d;
+  place-self: center;
+  width: min(100%, 14rem);
 }
-
-/* Every product turns inside the same square arena. The three photographs are
-   a square, a landscape and a portrait, and sizing them by width alone left the
-   cereal small and pushed the bottle past the edges of the panel. Given one box
-   to fit inside, they all read at the same scale and turn about the same
-   centre. The picture is positioned because a percentage height inside a box
-   sized by its ratio is indefinite. */
 .promo__turn {
   position: relative;
-  width: min(100%, 19rem);
+  width: 100%;
   aspect-ratio: 1;
-  transform-style: preserve-3d;
 }
 .promo__turn picture {
   position: absolute;
   inset: 0;
   display: block;
 }
+/* Sized and placed outright: a picture is an unsized inline wrapper and an
+   image is a replaced element, so neither fills its box on its own. */
 .promo__turn img {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;
+  max-width: none;
   object-fit: contain;
 }
 
 /* Before the script runs only the first product is rendered, so the panel is
-   never a stack of three overlapping pictures. */
+   never a stack of three overlapping pictures. The other two are listed
+   directly below the showcase, so neither is out of reach. */
 .promo:not([data-ready]) .promo__slot:not(.is-current),
 .promo:not([data-ready]) .promo__panel:not(.is-current) { display: none; }
-.promo:not([data-ready]) .promo__dots { display: none; }
 
+/* The queue. The product in the light stands a little above centre; the rest
+   wait along the foot in the order they will be shown. */
 .promo[data-ready] .promo__slot {
   opacity: 0;
   visibility: hidden;
-  transform: translateY(42%);
+  transform: translate(19%, 58%) scale(0.28);
 }
 .promo[data-ready] .promo__slot.is-current {
   opacity: 1;
   visibility: visible;
-  transform: translateY(0);
+  transform: translate(0, -12%) scale(1);
+  z-index: 3;
 }
-
-/* The product that is leaving sinks; the one arriving rises into its place. */
+.promo[data-ready] .promo__slot.is-next {
+  opacity: 0.52;
+  visibility: visible;
+  transform: translate(-19%, 58%) scale(0.36);
+  z-index: 2;
+}
+.promo[data-ready] .promo__slot.is-queued {
+  opacity: 0.3;
+  visibility: visible;
+  transform: translate(19%, 58%) scale(0.28);
+  z-index: 1;
+}
+/* Handing over: down to the back of the queue, dimmed out along the way so it
+   is not seen crossing the one rising past it, then quietly back in. */
 .promo[data-ready] .promo__slot.is-leaving {
   opacity: 0;
   visibility: visible;
-  transform: translateY(-42%);
+  z-index: 1;
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .promo[data-ready] .promo__slot {
-    transition: opacity 420ms ease, transform 620ms cubic-bezier(0.22, 0.68, 0.24, 1),
-      visibility 0s linear 620ms;
+    transition: transform 720ms cubic-bezier(0.22, 0.68, 0.24, 1), opacity 380ms ease,
+      visibility 0s linear 720ms;
   }
   .promo[data-ready] .promo__slot.is-current,
+  .promo[data-ready] .promo__slot.is-next {
+    transition: transform 720ms cubic-bezier(0.22, 0.68, 0.24, 1), opacity 420ms ease 120ms,
+      visibility 0s;
+  }
+  .promo[data-ready] .promo__slot.is-queued {
+    transition: transform 720ms cubic-bezier(0.22, 0.68, 0.24, 1), opacity 360ms ease 480ms,
+      visibility 0s;
+  }
   .promo[data-ready] .promo__slot.is-leaving {
-    transition: opacity 480ms ease, transform 620ms cubic-bezier(0.22, 0.68, 0.24, 1), visibility 0s;
+    transition: transform 720ms cubic-bezier(0.22, 0.68, 0.24, 1), opacity 320ms ease,
+      visibility 0s;
   }
 
-  /* The turn itself, and the flip that keeps the label the right way round. */
   .promo[data-ready] .promo__slot.is-current .promo__turn {
     animation: promo-turn var(--promo-turn, 5s) linear infinite;
-  }
-  .promo[data-ready] .promo__slot.is-current .promo__turn img {
-    animation: promo-face var(--promo-turn, 5s) linear infinite;
+    will-change: transform;
   }
 }
 
+/* The turn.
+   The artwork is a flat render, so turning it in real three dimensions leaves
+   it edge on and invisible twice a revolution. It is turned instead the way a
+   product is turned on a photographer's turntable: the face narrows and widens
+   as it comes round, and never thins to nothing. The lean alternates a quarter
+   turn at a time, which is what gives the turn its direction.
+
+   Only the shape is animated. Each render is a photograph on its own opaque
+   white ground, so shading the picture would shade that ground with it and
+   draw a grey plate around the product. */
 @keyframes promo-turn {
-  from { transform: rotateY(0deg); }
-  to { transform: rotateY(360deg); }
-}
-
-/* Flipped at the quarter and three quarter turns, where the picture is edge on
-   and a metre wide change is a pixel wide one. */
-@keyframes promo-face {
-  0%, 24.9% { transform: scaleX(1); }
-  25%, 74.9% { transform: scaleX(-1); }
-  75%, 100% { transform: scaleX(1); }
+  0%     { transform: scaleX(1)    skewY(0deg); }
+  12.5%  { transform: scaleX(0.80) skewY(1.4deg); }
+  25%    { transform: scaleX(0.34) skewY(0deg); }
+  37.5%  { transform: scaleX(0.80) skewY(-1.4deg); }
+  50%    { transform: scaleX(1)    skewY(0deg); }
+  62.5%  { transform: scaleX(0.80) skewY(1.4deg); }
+  75%    { transform: scaleX(0.34) skewY(0deg); }
+  87.5%  { transform: scaleX(0.80) skewY(-1.4deg); }
+  100%   { transform: scaleX(1)    skewY(0deg); }
 }
 
 .promo__panels { display: grid; }
@@ -741,7 +773,7 @@ ul, ol { margin: 0; padding: 0; }
 .promo[data-ready] .promo__panel {
   opacity: 0;
   visibility: hidden;
-  transform: translateY(0.6rem);
+  transform: translateY(0.9rem);
   pointer-events: none;
 }
 .promo[data-ready] .promo__panel.is-current {
@@ -753,43 +785,17 @@ ul, ol { margin: 0; padding: 0; }
 
 @media (prefers-reduced-motion: no-preference) {
   .promo[data-ready] .promo__panel {
-    transition: opacity 360ms ease, transform 420ms ease, visibility 0s linear 420ms;
+    transition: opacity 320ms ease, transform 420ms ease, visibility 0s linear 420ms;
   }
   .promo[data-ready] .promo__panel.is-current {
-    transition: opacity 420ms ease 120ms, transform 480ms ease 120ms, visibility 0s;
+    transition: opacity 420ms ease 200ms, transform 520ms cubic-bezier(0.22, 0.68, 0.24, 1) 200ms,
+      visibility 0s;
   }
 }
 
-.promo__dots {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  margin-top: 1.25rem;
-}
-.promo__dot {
-  width: 34px;
-  height: 34px;
-  display: grid;
-  place-items: center;
-  padding: 0;
-  background: none;
-  border: 0;
-  cursor: pointer;
-}
-.promo__dot-bar {
-  display: block;
-  width: 22px;
-  height: 4px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.3);
-  transition: background-color 200ms ease, width 200ms ease;
-}
-.promo__dot:hover .promo__dot-bar { background: rgba(255, 255, 255, 0.6); }
-.promo__dot[aria-current='true'] .promo__dot-bar { background: var(--yellow); width: 34px; }
-
 @media (max-width: 60rem) {
-  .promo__stage { min-height: 17rem; }
-  .promo__turn { width: min(82%, 15rem); }
+  .promo__stage { min-height: 23.5rem; }
+  .promo__slot { width: min(88%, 14rem); }
 }
 
 .featured__item {

@@ -2,8 +2,12 @@
  *
  * The markup already carries every product and every description, and the
  * stylesheet shows only the first until this file marks the showcase ready. So
- * a page whose script never arrives shows one complete, still product rather
- * than a stack of three.
+ * a page whose script never arrives, and a visitor who has asked for less
+ * motion, sees one complete, still product rather than a stack of three.
+ *
+ * There are no controls on the showcase. Pointing at it or tabbing into it
+ * holds it where it is, it stands still while it is off screen or the tab is in
+ * the background, and asking for less motion stops it entirely.
  */
 (function () {
   'use strict';
@@ -15,31 +19,44 @@
   function setup(promo) {
     var slots = Array.prototype.slice.call(promo.querySelectorAll('[data-promo-slot]'));
     var panels = Array.prototype.slice.call(promo.querySelectorAll('[data-promo-panel]'));
-    var dots = Array.prototype.slice.call(promo.querySelectorAll('[data-promo-dot]'));
-    var status = promo.querySelector('[data-promo-status]');
     if (slots.length < 2 || slots.length !== panels.length) return;
 
     var interval = Number(promo.getAttribute('data-promo-interval')) || 5000;
+    // Long enough for the product to reach the back of the queue before it is
+    // faded back in there.
+    var travel = 720;
     var index = 0;
     var timer = null;
+    var settle = null;
     var held = false;
     var onScreen = true;
 
-    promo.setAttribute('data-ready', '');
     // The turn takes exactly as long as a product is shown, so each one comes
     // to rest facing forward at the moment it hands over.
     promo.style.setProperty('--promo-turn', interval + 'ms');
 
     function render(from) {
+      var count = slots.length;
       slots.forEach(function (slot, i) {
-        var current = i === index;
+        // How far down the queue this product now stands: nought is in the
+        // light, one is next up, the rest are waiting behind it.
+        var place = (i - index + count) % count;
+        var current = place === 0;
         slot.classList.toggle('is-current', current);
-        // The one being replaced keeps its place for the length of the move,
-        // so it can be seen sinking rather than simply vanishing.
+        slot.classList.toggle('is-next', place === 1);
+        slot.classList.toggle('is-queued', place > 1);
+        // The one handing over sinks away and is dimmed out on the way, so it
+        // is not seen crossing the one rising past it.
         slot.classList.toggle('is-leaving', i === from && !current);
         if (current) slot.removeAttribute('aria-hidden');
         else slot.setAttribute('aria-hidden', 'true');
       });
+
+      if (settle) window.clearTimeout(settle);
+      settle = window.setTimeout(function () {
+        settle = null;
+        slots.forEach(function (slot) { slot.classList.remove('is-leaving'); });
+      }, travel);
 
       panels.forEach(function (panel, i) {
         var current = i === index;
@@ -52,21 +69,12 @@
           else el.setAttribute('tabindex', '-1');
         });
       });
-
-      dots.forEach(function (dot, i) {
-        if (i === index) dot.setAttribute('aria-current', 'true');
-        else dot.removeAttribute('aria-current');
-      });
     }
 
-    function go(to, announce) {
+    function go(to) {
       var from = index;
       index = (to + slots.length) % slots.length;
       render(from);
-      if (announce && status) {
-        var heading = panels[index].querySelector('h3');
-        if (heading) status.textContent = heading.textContent;
-      }
       restart();
     }
 
@@ -77,15 +85,10 @@
       timer = window.setTimeout(function () {
         timer = null;
         go(index + 1);
-        start();
       }, interval);
     }
 
     function restart() { stop(); start(); }
-
-    dots.forEach(function (dot, i) {
-      dot.addEventListener('click', function () { go(i, true); });
-    });
 
     // Reading or pointing at the panel holds it, so nothing changes out from
     // under someone part way through a sentence.
@@ -109,13 +112,22 @@
       }, { threshold: 0.2 }).observe(promo);
     }
 
-    if (reduced.addEventListener) {
-      reduced.addEventListener('change', function () {
-        if (reduced.matches) stop(); else start();
-      });
+    function arm() {
+      if (reduced.matches) {
+        // Back to the plain, still first product, which is what the stylesheet
+        // shows on its own.
+        stop();
+        promo.removeAttribute('data-ready');
+        index = 0;
+        render(-1);
+        return;
+      }
+      promo.setAttribute('data-ready', '');
+      render(-1);
+      start();
     }
 
-    render(-1);
-    start();
+    if (reduced.addEventListener) reduced.addEventListener('change', arm);
+    arm();
   }
 })();
