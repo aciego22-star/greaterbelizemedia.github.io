@@ -282,7 +282,8 @@ export function contact(ctx) {
         heading: c.whatsappHeading,
         body: c.whatsappBody,
         actions:
-          `<a class="btn btn--primary" href="${esc(company.generalWhatsappUrl)}" rel="noopener noreferrer">` +
+          `<a class="btn btn--primary" href="${esc(company.generalWhatsappUrl)}"` +
+          ` target="_blank" rel="noopener noreferrer">` +
           `${esc(c.whatsappAction)}</a>`,
       })
     : '';
@@ -324,7 +325,7 @@ export function contact(ctx) {
     `<div class="band-head"><div class="band-head__text">` +
     `<h2>${esc(c.mapHeading)}</h2><p>${esc(c.mapBody)}</p>` +
     `</div>` +
-    `<a class="btn btn--outline" href="${esc(company.maps.link)}" rel="noopener noreferrer">${esc(c.openInMaps)}</a>` +
+    `<a class="btn btn--outline" href="${esc(company.maps.link)}" target="_blank" rel="noopener noreferrer">${esc(c.openInMaps)}</a>` +
     `</div>` +
     `<div class="map-frame">` +
     `<iframe src="${esc(company.maps.embed)}" title="${esc(c.mapTitle)}" loading="lazy" ` +

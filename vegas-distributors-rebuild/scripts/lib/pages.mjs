@@ -143,8 +143,8 @@ export function home(ctx) {
     divisionBand(
       industries, 'industries',
       `<div class="dband__products">` +
-      plate(images.divisions['blanca-max-1-litre'], { alt: 'Blanca Max bleach, 1 litre bottle', sizes: '(max-width: 60rem) 42vw, 200px' }) +
-      plate(images.divisions['blanca-max-half-litre'], { alt: 'Blanca Max bleach, half litre bottle', sizes: '(max-width: 60rem) 42vw, 200px' }) +
+      plate(images.divisions['blanca-max-1-litre'], { alt: 'Aqua Max bleach, 1 litre bottle', sizes: '(max-width: 60rem) 42vw, 200px' }) +
+      plate(images.divisions['blanca-max-half-litre'], { alt: 'Aqua Max bleach, half litre bottle', sizes: '(max-width: 60rem) 42vw, 200px' }) +
       `</div>`,
       true
     ) +
@@ -452,7 +452,7 @@ export function industries(ctx) {
       ],
     }) +
     `<section class="page-head"><div class="shell">` +
-    `<span class="division__mark">${picture(images.divisions['blanca-max-logo'], { alt: 'Blanca Max', sizes: '160px' })}</span>` +
+    `<span class="division__mark">${picture(images.divisions['blanca-max-logo'], { alt: 'Aqua Max', sizes: '160px' })}</span>` +
     `<hr class="rule"><h1>${esc(d.name)}</h1>` +
     `<p class="lead">${esc(copy.tagline)}</p>` +
     `</div></section>` +

@@ -95,8 +95,8 @@ export function divisionPanel({ division, i18n, locale, images, flip, level = 3,
   if (division.slug === 'vegas-industries') {
     // Portrait product shots are contained on white rather than cropped.
     media =
-      `<div class="tile tile--product">${picture(images.divisions['blanca-max-1-litre'], { alt: 'Blanca Max bleach, 1 litre bottle', sizes: '(max-width: 62rem) 45vw, 260px' })}</div>` +
-      `<div class="tile tile--product">${picture(images.divisions['blanca-max-half-litre'], { alt: 'Blanca Max bleach, half litre bottle', sizes: '(max-width: 62rem) 45vw, 260px' })}</div>`;
+      `<div class="tile tile--product">${picture(images.divisions['blanca-max-1-litre'], { alt: 'Aqua Max bleach, 1 litre bottle', sizes: '(max-width: 62rem) 45vw, 260px' })}</div>` +
+      `<div class="tile tile--product">${picture(images.divisions['blanca-max-half-litre'], { alt: 'Aqua Max bleach, half litre bottle', sizes: '(max-width: 62rem) 45vw, 260px' })}</div>`;
   } else if (division.slug === 'international-lubricants-belize') {
     media = plate(images.divisions['international-lubricants-chevron-artwork'], {
       alt: 'Chevron lubricants artwork published by International Lubricants of Belize',
@@ -203,7 +203,10 @@ export function socialLinks({ company, i18n, className = '' }) {
     entries
       .map(
         ([id, href, label]) =>
-          `<li><a class="social__link social__link--${id}" href="${esc(href)}" rel="noopener noreferrer">` +
+          // These lead off the site, so they open alongside it rather than
+          // taking the visitor away from the page they were reading.
+          `<li><a class="social__link social__link--${id}" href="${esc(href)}"` +
+          ` target="_blank" rel="noopener noreferrer">` +
           `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="currentColor">${ICONS[id]}</svg>` +
           `<span class="visually-hidden">${esc(label)}</span></a></li>`
       )
