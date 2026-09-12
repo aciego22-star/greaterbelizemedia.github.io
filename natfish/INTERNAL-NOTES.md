@@ -1463,3 +1463,80 @@ No review, rating, award, certification or social-profile markup. All of them
 are strong signals and all of them would be unsupported. If NATFISH supplies
 verified certifications or social profiles, they are a small addition to
 `org_node()`.
+
+---
+
+## Desktop header and AI panel, September 2026
+
+Two changes asked for after launch, both desktop-only. The phone layout was
+diffed before and after at 320, 360, 390, 414, 430 and 540px - panel, close
+button, panel body, header, nav type, padding and overflow - and comes back
+byte-identical. Nothing in this section touches a phone.
+
+### A live bug found on the way: the Spanish nav overlapped the CTA
+
+Not caused by these changes; it is on the deployed site now. The header
+tightening band was written as `min-width: 1366px and max-width: 1399px`, and
+1399 is too low for Spanish. Measured in Chromium against the live CSS, with
+Spanish selected, "Contacto" ran underneath the Buyer Enquiry button by:
+
+| width | overlap |
+|---|---|
+| 1400 | 71px |
+| 1420 | 54px |
+| 1440 | 37px |
+| 1460 | 20px |
+| 1480 | 2px |
+| 1500+ | clear |
+
+It never produced a horizontal scrollbar, which is why nobody caught it: the
+row slid under the button rather than widening the page. `min-width: 0` on
+`.nav` - added to absorb a 1px rounding overflow - is what let it happen
+silently.
+
+The band is now scoped to the language rather than to width alone,
+`[lang|="es"]`, matching the `es` the switch writes onto `<html>`, and runs to
+1535px where Spanish genuinely clears. That fixes the overlap AND frees the
+English row to grow, which is what was asked for.
+
+### The nav row
+
+`.nav` now takes the space it already had (`flex: 1 1 auto`) and the list
+distributes it (`space-between`, with the existing `gap` as the floor so the
+row can never close tighter than today). The header gutter went 40px to 24px.
+Type went to 0.92rem with 0.7rem of vertical padding.
+
+At 1366x625 in English: type 13.12px to 14.72px, hit area 36px to 46px,
+average gap 8px to 13px, and the row spans 804px to 935px - the dead space
+between the language button and the first link drops from 116px to 18px, which
+is the "extend them out to the language button" that was asked for.
+
+Verified at 1366, 1380, 1399, 1400, 1420, 1440, 1460, 1480, 1499, 1500, 1536,
+1600, 1728, 1920 and 2560 in both languages: clearance to the Buyer Enquiry
+button is 15-16px everywhere and no page picks up a horizontal scrollbar.
+
+### The AI panel
+
+It was 420px wide and, on a 1366x768 laptop, 369px tall - about half the
+height available. Three things were wrong with the geometry:
+
+1. The 16rem height reserve included 76px held for the launcher pill sitting
+   below the panel. The pill is now hidden while the panel is open, at every
+   width, as it already was on phones - it launches something already on
+   screen. Reserve is 11rem: 20px offset, the close button's 62px, the
+   header's 88px.
+2. 420px was a narrow column for a conversation. Now `min(560px, 100vw - 3rem)`.
+3. The 720px cap stopped a tall monitor short. Now 860px.
+
+| viewport | was | now | area |
+|---|---|---|---|
+| 1366x625 | 420x369 | 560x449 | +62% |
+| 1440x720 | 420x464 | 560x544 | +56% |
+| 1920x940 | 420x684 | 560x764 | +49% |
+
+The close button still lands clear of the sticky header at every viewport
+tested, which is the one thing that reserve exists to guarantee. Hiding the
+pill is safe for its swim animation: closePanel() removes `.ai-panel-open`
+from `<html>` before it calls resumeSwim(), so the pill is laid out again by
+the time that measures its width - confirmed by measuring `--ai-travel` before
+opening and after closing, unchanged at 1366, 1440 and 390.

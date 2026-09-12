@@ -3616,12 +3616,37 @@ body.nav-open {
 }
 
 @media (min-width: 1366px) {
+  /* 40px of gutter on each side of a header that is already the tightest row
+     on the site. 24px reads the same against a 1366px window and hands 32px
+     back to the nav, which is the difference between the links being spread
+     and being bunched. */
+  .site-header .container {
+    padding-inline: 24px;
+  }
+
+  /* The links spread across the whole band between the language control and
+     the Buyer Enquiry button instead of bunching against the right-hand end
+     with dead space to their left - 100px of it at 1366 in English.
+
+     `flex: 1 1 auto` lets .nav take that space; `space-between` distributes it
+     between the items, with the `gap` below as the floor so the row can never
+     close up tighter than it is today. No width is added: this is the same row
+     using the space it already had. */
+  .nav {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
   .nav__list {
+    justify-content: space-between;
     gap: clamp(0.4rem, 0.95vw, 0.9rem);
   }
 
+  /* Bigger, and a real target rather than a line of text: the vertical padding
+     costs nothing horizontally, and takes the hit area from 36px to 44px. */
   .nav__link {
-    font-size: 0.88rem;
+    font-size: 0.92rem;
+    padding: 0.7rem 0.1rem;
   }
 
   .header-cta .btn {
@@ -3629,28 +3654,56 @@ body.nav-open {
   }
 }
 
-/* The band between the drawer breakpoint and roughly 1400px is where the
-   header is tightest: nine nav items, the language control, the logo and the
-   Buyer Enquiry button all on one line. Measured in Chromium at 1280 with
-   Spanish selected, the nav overran its content box by 53px once NATFISH AI
-   was added as the ninth item. These three reductions recover about 80px,
-   which clears it with room to spare and leaves 1400px and above untouched. */
+/* The 1366-1399 band is the tightest desktop row there is, in either language.
+   The nav type grows there like everywhere else; these two controls keep the
+   trims they have always had, because they are what buys the nav the room to
+   do it. Measured: without them English loses 28px and "Contact" lands on the
+   Buyer Enquiry button at 1366. */
 @media (min-width: 1366px) and (max-width: 1399px) {
-  .nav__list {
-    gap: 0.5rem;
-  }
-
-  .nav__link {
-    font-size: 0.82rem;
-    letter-spacing: 0;
-  }
-
   .header-cta .btn {
     padding-inline: 0.8rem;
     font-size: 0.82rem;
   }
 
   .lang-toggle {
+    padding-inline: 0.6rem;
+    font-size: 0.8rem;
+  }
+}
+
+/* ---- Spanish, which does not fit the same row ----
+   The Spanish labels are markedly longer than the English ones ("Temporadas
+   de Mariscos" against "Seafood Seasons"), and ten of them plus the logo, the
+   language control and the Buyer Enquiry button do not fit one line below
+   about 1500px at the size English runs at.
+
+   This used to be a width-only band that stopped at 1399px, and stopping there
+   was a bug that is visible on the live site: measured in Chromium, with
+   Spanish selected, "Contacto" overlapped the Buyer Enquiry button by 71px at
+   1400, 37px at 1440 and 2px at 1480, clearing only from about 1500 up. The
+   page never picked up a horizontal scrollbar, which is why it went unnoticed
+   - the row silently slid underneath the button instead.
+
+   Scoping it to the language rather than to the width alone is what lets the
+   English row grow: [lang|="es"] matches the "es" the language switch writes
+   onto <html>, and nothing else. */
+@media (min-width: 1366px) and (max-width: 1535px) {
+  [lang|="es"] .nav__list {
+    gap: 0.4rem;
+  }
+
+  [lang|="es"] .nav__link {
+    font-size: 0.82rem;
+    padding-inline: 0.1rem;
+    letter-spacing: 0;
+  }
+
+  [lang|="es"] .header-cta .btn {
+    padding-inline: 0.8rem;
+    font-size: 0.82rem;
+  }
+
+  [lang|="es"] .lang-toggle {
     padding-inline: 0.6rem;
     font-size: 0.8rem;
   }
@@ -5495,8 +5548,15 @@ body.nav-open {
      should win if they are opened over it. */
   z-index: 150;
   right: max(1rem, env(safe-area-inset-right));
-  bottom: calc(max(1rem, env(safe-area-inset-bottom)) + 76px);
-  width: min(420px, calc(100vw - 2rem));
+  /* The launcher used to sit below the open panel, and the 76px here was the
+     room it needed. It is hidden while the panel is open now - it launches
+     something that is already on screen - so the panel starts where the
+     launcher used to and is 76px taller for it. */
+  bottom: max(1.25rem, env(safe-area-inset-bottom));
+  /* 420px was a narrow column for a conversation: the agent's own replies
+     wrapped every few words and the suggestion chips stacked. 560px is a
+     third wider and still reads as a corner panel rather than a takeover. */
+  width: min(560px, calc(100vw - 3rem));
   /* dvh, with vh as the fallback for browsers without it. On a phone 100vh is
      the LARGE viewport - it ignores the browser's own toolbars - so sizing
      against it can push the top of the sheet, and with it the close control,
@@ -5508,11 +5568,23 @@ body.nav-open {
      bottom offset, an 88px header and the button's 62px: 16rem, measured, and
      12 was tried and put the button through the header at 1440x900.
 
-     The cap is what moved. 660px left a tall desktop with the panel ending
-     well short of the space available; 720px uses it, and on any window short
-     enough for the reserve to bind, the reserve still wins. */
-  height: min(720px, calc(100vh - 16rem));
-  height: min(720px, calc(100dvh - 16rem));
+     The reserve is what moved, and it is the whole reason the panel looked
+     cramped on a laptop. It was 16rem: a 92px bottom offset, an 88px header
+     and the close button's 62px. On a 1366x768 screen, once the browser's own
+     chrome is taken out, that left about 620px of viewport and a 364px panel -
+     barely more than half the height available.
+
+     It is now 11rem. The bottom offset lost the 76px it was holding for the
+     launcher (hidden while the panel is open), leaving 20px + the button's
+     62px + the header's 88px = 170px, and 11rem is 176. The button still
+     lands clear of the sticky header, which is the one thing this reserve
+     exists to guarantee.
+
+     The cap moved with it, 720 to 860, so a tall monitor uses the room it has
+     rather than stopping short. On any window short enough for the reserve to
+     bind, the reserve still wins. */
+  height: min(860px, calc(100vh - 11rem));
+  height: min(860px, calc(100dvh - 11rem));
   display: flex;
   flex-direction: column;
   /* NOT overflow:hidden. The close button sits above the panel's top edge so
@@ -5630,10 +5702,16 @@ body.nav-open {
     right: 0.85rem;
   }
 
-  /* The launcher would sit on top of the sheet it just opened. */
-  .ai-panel-open .ai-pill {
-    display: none;
-  }
+}
+
+/* The launcher would sit on top of the panel it just opened, and on a phone it
+   would sit on top of the sheet. It is hidden at every width while the panel
+   is open, which is also what lets the panel start 76px lower down the screen.
+   Safe for the swim: closePanel() takes .ai-panel-open off <html> before it
+   calls resumeSwim(), so the pill is laid out again by the time that measures
+   its width. */
+.ai-panel-open .ai-pill {
+  display: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
