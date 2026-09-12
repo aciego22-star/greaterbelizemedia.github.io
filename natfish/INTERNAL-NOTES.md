@@ -1540,3 +1540,54 @@ pill is safe for its swim animation: closePanel() removes `.ai-panel-open`
 from `<html>` before it calls resumeSwim(), so the pill is laid out again by
 the time that measures its width - confirmed by measuring `--ai-travel` before
 opening and after closing, unchanged at 1366, 1440 and 390.
+
+---
+
+## The stylesheets are now inlined into every page
+
+Asked for by the client: "please put the stylesheet in the HTML". Done in
+`inline_css()` in tools/build_shell.py, which replaces the two `<link>` tags.
+
+**The one thing that had to be handled.** fonts.css writes its faces as
+`url("../fonts/x.woff2")`, relative to /assets/css/. Inlined into a page at the
+site root, `../fonts/` walks above the root and all four woff2 files 404 in
+silence: the pages still render, in Georgia and Arial, which is the kind of
+breakage nobody reports because it looks like a decision. inline_css() rewrites
+them to `assets/fonts/` and raises if any path survives the rewrite. Nothing
+else in either stylesheet is path-relative - the only other `url()` in 140KB is
+an inline SVG data URI - so that rewrite is the whole difference between linked
+and inlined.
+
+**Guards added to tools/make-netlify-zip.sh**, because both failures are silent:
+
+- the package refuses to build if any page links an external stylesheet, since
+  assets/css is no longer shipped;
+- it refuses to build if a webfont named by the inlined CSS is not in the
+  package at the path it names, or if an unrewritten `../fonts/` survives.
+
+**assets/css is no longer packaged.** Nothing references it, and shipping it
+would leave two copies of the design to drift apart. It stays in the repo as
+the source the generators read.
+
+**Cost, measured on the packaged copy at 390px on throttled 4G.** It is
+cheaper, not dearer, on a first visit - two render-blocking requests per page
+disappear:
+
+| | linked | inlined |
+|---|---|---|
+| requests, home | 18 | 16 |
+| LCP range | 872-1124ms | 564-1024ms |
+| load range | 858-1008ms | 711-1135ms |
+
+Total bytes are unchanged; the CSS moved rather than multiplied. What it does
+cost is cross-page caching: the stylesheet used to be fetched once and reused
+for a year across all eleven pages, and now each page carries its own copy,
+about 35KB gzipped. At a measured second per page against a three second
+target there is room for that, and the client asked for it knowing the pages
+would grow.
+
+**What this does NOT change: the site is still more than its HTML.** The
+JavaScript, the fonts, every photograph, the video, the favicons and the
+manifest are separate files under assets/. Uploading only the .html files
+would leave a site with no language switch, no NATFISH AI, no gallery
+lightbox, no images and no webfonts. The zip is still the unit of deployment.

@@ -1042,6 +1042,39 @@ def graph_jsonld(nodes):
     return f'  <script type="application/ld+json">\n{body}\n  </script>\n'
 
 
+def inline_css():
+    """Both stylesheets, as one <style> block for the page to carry itself.
+
+    The client asked for the CSS to live in the HTML rather than beside it.
+    Two things have to be handled for that to be safe:
+
+    1. fonts.css writes its faces as url("../fonts/x.woff2"), which is relative
+       to /assets/css/. Inlined into a page at the site root, "../fonts/" walks
+       above the root and the four woff2 files 404 in silence - the pages still
+       render, in Georgia and Arial, which is the kind of breakage nobody
+       reports because it looks deliberate. The paths are rewritten to
+       "assets/fonts/", which is what they resolve to from a page.
+
+    2. Order matters: the faces have to be declared before the rules that use
+       them, same as the two <link> tags they replace.
+
+    Nothing else in either file is path-relative - the only other url() in the
+    whole stylesheet is an inline SVG data URI - so this rewrite is the entire
+    difference between linked and inlined.
+    """
+    fonts = (ASSETS / "assets/css/fonts.css").read_text()
+    fonts = fonts.replace('url("../fonts/', 'url("assets/fonts/')
+    if "../fonts/" in fonts:
+        raise SystemExit("inline_css: a font path was not rewritten")
+    main = (ASSETS / "assets/css/natfish.css").read_text()
+    # A literal "</style>" anywhere in the CSS would end the block early. There
+    # is none, and this is the check that keeps it that way.
+    body = fonts + "\n" + main
+    if "</style>" in body.lower():
+        raise SystemExit("inline_css: CSS contains a literal </style>")
+    return "  <style>\n" + body + "\n  </style>"
+
+
 def head(title, description, path, og_image="official/og-card", preload="",
          extra_nodes=(), og_type="website", extra_head="", trail=None,
          faq=None):
@@ -1116,8 +1149,7 @@ def head(title, description, path, og_image="official/og-card", preload="",
        swap means the fallback shows immediately and nothing is ever invisible. -->
   <link rel="preload" href="assets/fonts/bitter-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/source-sans-3-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="{asset('assets/css/fonts.css')}">
-  <link rel="stylesheet" href="{asset('assets/css/natfish.css')}">
+{inline_css()}
 {preload}{jsonld}</head>
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>

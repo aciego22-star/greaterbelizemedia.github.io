@@ -66,7 +66,11 @@ done
 
 cp -- "${PAGES[@]}" "${ROOTFILES[@]}" netlify.toml "$STAGE/"
 mkdir -p "$STAGE/assets"
-cp -R assets/css assets/js assets/img assets/fonts assets/video "$STAGE/assets/"
+# No assets/css. Both stylesheets are inlined into every page by
+# build_shell.py's inline_css(), so shipping them again would put 140KB of
+# dead weight in the package and leave two copies of the design to drift
+# apart. The guard below fails the build if a page ever links one again.
+cp -R assets/js assets/img assets/fonts assets/video "$STAGE/assets/"
 
 # The approved logo master is the source the display sizes are generated from,
 # not something any page loads. It stays in the repository and out of the
@@ -87,7 +91,7 @@ for f in "$STAGE"/assets/img/*.png "$STAGE"/assets/img/*/*.webp \
          "$STAGE"/assets/img/*/*.jpg "$STAGE"/assets/img/*/*.png; do
   [ -e "$f" ] || continue
   name="${f#"$STAGE"/}"
-  if ! grep -qF "$name" "$STAGE"/*.html "$STAGE"/assets/css/*.css 2>/dev/null; then
+  if ! grep -qF "$name" "$STAGE"/*.html 2>/dev/null; then
     freed=$((freed + $(stat -c%s "$f")))
     rm -f "$f"
     dropped=$((dropped + 1))
@@ -127,8 +131,35 @@ echo "OK: only the approved logo derivatives are packaged"
 # stylesheet afterwards and packaging without re-running it would ship an
 # update that no returning visitor ever sees. That failure is silent in
 # testing - a fresh browser looks perfect - so it is checked here.
+# The stylesheets are inlined. A page that links one instead would be asking
+# for a file this package no longer carries: unstyled on a hard refresh, and
+# fine in the browser that still has the old CSS cached, which is the worst
+# way to find out.
+if grep -l 'rel="stylesheet"' "$STAGE"/*.html 2>/dev/null | grep -q .; then
+  echo "ERROR: a page links an external stylesheet, which this package does" >&2
+  echo "       not ship. The CSS is inlined by inline_css(); re-run" >&2
+  echo "       'python3 tools/build_pages.py'." >&2
+  exit 1
+fi
+echo "OK: every page carries its own stylesheet"
+
+# Every font the inlined CSS names has to be in the package, and the rewrite
+# from ../fonts/ to assets/fonts/ has to have happened. A missed rewrite is
+# silent: the pages render in Georgia and Arial and nobody files a bug.
+for face in $(grep -ho 'url("assets/fonts/[^"]*")' "$STAGE"/index.html | sed 's/url("//; s/")//' | sort -u); do
+  if [ ! -f "$STAGE/$face" ]; then
+    echo "ERROR: inlined CSS names $face, which is not in the package" >&2
+    exit 1
+  fi
+done
+if grep -q '\.\./fonts/' "$STAGE"/*.html 2>/dev/null; then
+  echo "ERROR: a page carries an unrewritten ../fonts/ path" >&2
+  exit 1
+fi
+echo "OK: every webfont the inlined CSS names is packaged at the path it names"
+
 bad=0
-for f in "$STAGE"/assets/css/*.css "$STAGE"/assets/js/*.js; do
+for f in "$STAGE"/assets/js/*.js; do
   [ -e "$f" ] || continue
   name="${f#"$STAGE"/}"
   # Only assets the pages actually link with a hash are checked.
