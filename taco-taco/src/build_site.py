@@ -13,7 +13,11 @@ WA_NUMBER  = "5016134677"          # 613-4677
 
 # Social profiles. Leave a value empty and that button simply does not render,
 # so the live site never shows a dead link.
-SOCIAL = {"facebook": "", "instagram": "", "tiktok": ""}
+SOCIAL = {
+ "facebook":  "https://www.facebook.com/share/1BvEg2CSYc/?mibextid=wwXIfr",
+ "instagram": "https://www.instagram.com/tacotacomexicanrestaurant",
+ "tiktok":    "https://www.tiktok.com/@tacotacomexicanfood",
+}
 
 # YouTube/Vimeo entries. Empty list hides the whole video section.
 # Add like: {"src":"https://www.youtube.com/embed/XXXX","title":"Birria tacos"}
@@ -106,11 +110,22 @@ def main():
     menu = menu.replace('<div class="menu-grid">', quick + '<div class="menu-grid">', 1)
 
     # ---------- video section ----------
-    if VIDEOS:
+    # TT_PREVIEW=1 fills the section with sample cards so the layout can be reviewed
+    # before real clips exist. The deployed build leaves it out until VIDEOS is set,
+    # because an empty "coming soon" section on a live restaurant site reads as unfinished.
+    vids = VIDEOS
+    if not vids and os.environ.get("TT_PREVIEW"):
+        vids = [{"title":"Sample - your clip goes here","poster":"assets/img/dish-09.jpg"},
+                {"title":"Sample - your clip goes here","poster":"assets/img/badge-02.jpg"},
+                {"title":"Sample - your clip goes here","poster":"assets/img/fav-02.jpg"}]
+    VIDEOS_ACTIVE = vids
+    if vids:
         cards = "".join(
-          '<div class="vid" data-src="%s"><button type="button" class="vid-play" '
+          '<div class="vid"%s%s><button type="button" class="vid-play" '
           'aria-label="Play %s"></button><span class="vid-title">%s</span></div>'
-          % (v["src"], v["title"], v["title"]) for v in VIDEOS)
+          % ((' data-src="%s"'%v["src"]) if v.get("src") else "",
+             (' style="background-image:url(\'%s\')"'%v["poster"]) if v.get("poster") else "",
+             v["title"], v["title"]) for v in vids)
         video = ('\n <!-- ===== VIDEOS ===== -->\n <section class="blk" id="videos">\n  <div class="container">\n'
                  '   <div class="sec-head"><span class="sec-kicker">Watch</span>'
                  '<h2 class="sec-title">In The <span class="deco">Kitchen</span></h2></div>\n'
@@ -170,13 +185,40 @@ def main():
       "about.html":   ("About | %s"%BRAND, about,
                        "About %s: authentic Mexicali style food made fresh daily in West Belmopan."%BRAND),
     }
+    built = {}
     for fn,(title,body,desc) in out.items():
         p = page(fn, title, body, desc)
         p = p.replace("Taco Taco Mexican Style Food", BRAND).replace("Mexican Style Food", BRAND_SHORT)
+        built[fn] = p
+
+    # Sections moved onto their own pages when the site went multi-page, so any
+    # href="#section" left over from the single-page build now points at nothing.
+    # Send each one to the page that actually holds that id.
+    where = {}
+    for fn, p in built.items():
+        for i in re.findall(r'id="([^"]+)"', p): where.setdefault(i, set()).add(fn)
+    fixed = 0
+    for fn in list(built):
+        def retarget(m):
+            global_fixed = None
+            tgt = m.group(1)
+            pages_with = where.get(tgt, set())
+            if fn in pages_with or not pages_with:
+                return m.group(0)
+            dest = sorted(pages_with)[0]
+            # a page's own headline section just links to the page
+            return 'href="%s"' % dest if tgt in ("menu","gallery","about","order") else 'href="%s#%s"' % (dest, tgt)
+        new, n = re.subn(r'href="#([^"]+)"', retarget, built[fn])
+        changed = sum(1 for a,b in zip(re.findall(r'href="#?[^"]+"',built[fn]),
+                                       re.findall(r'href="#?[^"]+"',new)) if a!=b)
+        built[fn] = new; fixed += changed
+    print("  cross-page links retargeted:", fixed)
+
+    for fn, p in built.items():
         open(os.path.join(DIST,fn),"w",encoding="utf-8").write(p)
         print("  wrote %-14s %5d KB" % (fn, len(p)//1024 or 1))
 
-    print("videos:", len(VIDEOS), "| socials:", [k for k,v in SOCIAL.items() if v] or "none set")
+    print("videos:", len(VIDEOS_ACTIVE), "| socials:", [k for k,v in SOCIAL.items() if v] or "none set")
     print("menu photos attached:", len(set(ITEM_IMG.values())), "images across", len(ITEM_IMG), "items")
 
 if __name__ == "__main__":
