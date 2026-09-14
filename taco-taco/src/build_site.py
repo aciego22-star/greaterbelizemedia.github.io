@@ -19,6 +19,20 @@ SOCIAL = {
  "tiktok":    "https://www.tiktok.com/@tacotacomexicanfood",
 }
 
+ADDRESS   = "11 Aloe Vera Street, West Belmopan, Belize"
+MAPS_Q    = "Taco+Taco+Mexican+Restaurant+11+Aloe+Vera+Street+West+Belmopan+Belize"
+MAPS_LINK = "https://www.google.com/maps/search/?api=1&query=" + MAPS_Q
+MAPS_EMBED= "https://www.google.com/maps?q=" + MAPS_Q + "&output=embed"
+
+# Google rating. RATING/COUNT are facts from the listing; REVIEWS holds the real
+# quotes. Nothing here is invented - an empty list simply renders the rating
+# summary and a link out to Google.
+RATING       = 4.9
+REVIEW_COUNT = 10
+REVIEWS = [
+ # {"name":"Jane D.", "stars":5, "date":"June 2026", "text":"..."},
+]
+
 # YouTube/Vimeo entries. Empty list hides the whole video section.
 # Add like: {"src":"https://www.youtube.com/embed/XXXX","title":"Birria tacos"}
 VIDEOS = []
@@ -42,8 +56,65 @@ ITEM_IMG = {
  "Frappés":               "fav-04.jpg",
 }
 
-PAGES = [("index.html","Home"),("menu.html","Menu"),
-         ("gallery.html","Gallery"),("about.html","About")]
+PAGES = [("index.html","Home"),("menu.html","Menu"),("gallery.html","Gallery"),
+         ("reviews.html","Reviews"),("about.html","About")]
+
+def stars(v):
+    """Five stars with the last one part-filled to the real average."""
+    return ('<span class="stars" aria-label="%s out of 5"><span class="fill" style="width:%.1f%%">'
+            '\u2605\u2605\u2605\u2605\u2605</span></span>' % (v, v/5*100))
+
+def rating_block(cls=""):
+    return ('<div class="rating %s"><span class="rating-num">%s</span>%s'
+            '<span class="rating-sub">Based on %d Google reviews</span></div>'
+            % (cls, RATING, stars(RATING), REVIEW_COUNT))
+
+def reviews_band():
+    """Home page: social proof, plus a way through to the full page."""
+    return ('\n <!-- ===== REVIEWS BAND ===== -->\n <section class="blk rev-band">\n  <div class="container">\n'
+            '   <div class="rev-band-in">%s<div class="rev-band-copy">'
+            '<h2 class="sec-title">What Belmopan <span class="deco">Says</span></h2>'
+            '<p class="sec-sub">Our neighbours keep coming back, and they tell us why.</p>'
+            '<a href="reviews.html" class="btn btn-red">Read The Reviews</a></div></div>\n'
+            '  </div>\n </section>' % rating_block())
+
+def visit_band():
+    """Home page: where we are and how to get here, without loading a map."""
+    return ('\n <!-- ===== VISIT ===== -->\n <section class="blk visit-sec">\n  <div class="container">\n'
+            '   <div class="sec-head"><span class="sec-kicker">Find Us</span>'
+            '<h2 class="sec-title">Come <span class="deco">Say Hello</span></h2></div>\n'
+            '   <div class="visit-grid">'
+            '<div class="visit-card"><h4>Address</h4><p>%s</p>'
+            '<a class="btn btn-green" href="%s" target="_blank" rel="noopener">Get Directions</a></div>'
+            '<div class="visit-card"><h4>Hours</h4><p>Mon to Thu: 10:00 AM to 8:00 PM<br>'
+            'Fri to Sun: 6:00 AM to 8:00 PM</p></div>'
+            '<div class="visit-card"><h4>Call</h4><p><a href="tel:6134677">613-4677</a><br>'
+            '<a href="tel:8022332">802-2332</a></p></div>'
+            '</div>\n  </div>\n </section>' % (ADDRESS, MAPS_LINK))
+
+def map_section():
+    return ('\n <!-- ===== MAP ===== -->\n <section class="blk map-sec" id="find-us">\n  <div class="container">\n'
+            '   <div class="sec-head"><span class="sec-kicker">Find Us</span>'
+            '<h2 class="sec-title">Where To <span class="deco">Find Us</span></h2>'
+            '<p class="sec-sub">%s</p></div>\n'
+            '   <div class="map-wrap"><iframe src="%s" loading="lazy" title="Map to %s" '
+            'referrerpolicy="no-referrer-when-downgrade"></iframe></div>\n'
+            '   <p class="map-cta"><a class="btn btn-red" href="%s" target="_blank" rel="noopener">Open In Google Maps</a></p>\n'
+            '  </div>\n </section>' % (ADDRESS, MAPS_EMBED, BRAND, MAPS_LINK))
+
+def reviews_page_body():
+    head = ('\n <section class="blk rev-hero">\n  <div class="container">\n'
+            '   <div class="sec-head"><span class="sec-kicker">Reviews</span>'
+            '<h2 class="sec-title">What Our <span class="deco">Customers Say</span></h2></div>\n'
+            '   %s\n   <p class="map-cta"><a class="btn btn-red" href="%s" target="_blank" rel="noopener">'
+            'Read Them On Google</a></p>\n  </div>\n </section>' % (rating_block("big"), MAPS_LINK))
+    if not REVIEWS:
+        return head
+    cards = "".join(
+      '<figure class="rev"><div class="rev-top">%s<span class="rev-date">%s</span></div>'
+      '<blockquote>%s</blockquote><figcaption>%s</figcaption></figure>'
+      % (stars(r.get("stars",5)), r.get("date",""), r["text"], r["name"]) for r in REVIEWS)
+    return head + ('\n <section class="blk"><div class="container"><div class="rev-grid">%s</div></div></section>' % cards)
 
 def frag(html, marker, endmarker="</section>"):
     i = html.find(marker)
@@ -176,13 +247,15 @@ def main():
     shutil.copytree(os.path.join(os.path.dirname(__file__),"assets"), os.path.join(DIST,"assets"))
 
     out = {
-      "index.html":   ("%s | Belmopan"%BRAND, hero+favs+order,
+      "index.html":   ("%s | Belmopan"%BRAND, hero+favs+reviews_band()+order+visit_band(),
                        "%s in West Belmopan. Authentic Mexicali style tacos, birria, tortas and breakfast. Order online and send your order on WhatsApp."%BRAND),
       "menu.html":    ("Menu | %s"%BRAND, menu,
                        "The full %s menu with prices in Belize dollars. Build your basket and send your order on WhatsApp."%BRAND),
+      "reviews.html": ("Reviews | %s"%BRAND, reviews_page_body(),
+                       "Read what customers say about %s. Rated %s out of 5 from %d Google reviews."%(BRAND,RATING,REVIEW_COUNT)),
       "gallery.html": ("Gallery | %s"%BRAND, galler+video,
                        "Photos of the food we serve at %s in West Belmopan."%BRAND),
-      "about.html":   ("About | %s"%BRAND, about,
+      "about.html":   ("About | %s"%BRAND, about+map_section(),
                        "About %s: authentic Mexicali style food made fresh daily in West Belmopan."%BRAND),
     }
     built = {}
