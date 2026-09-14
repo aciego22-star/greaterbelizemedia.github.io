@@ -20,7 +20,7 @@ SOCIAL = {
 }
 
 ADDRESS   = "11 Aloe Vera Street, West Belmopan, Belize"
-MAPS_Q    = "Taco+Taco+Mexican+Restaurant+11+Aloe+Vera+Street+West+Belmopan+Belize"
+MAPS_Q    = "Taco+Taco+Mexican+Restaurant,+Belmopan,+Belize"
 MAPS_LINK = "https://www.google.com/maps/search/?api=1&query=" + MAPS_Q
 MAPS_EMBED= "https://www.google.com/maps?q=" + MAPS_Q + "&output=embed"
 
@@ -79,18 +79,19 @@ def reviews_band():
             '  </div>\n </section>' % rating_block())
 
 def visit_band():
-    """Home page: where we are and how to get here, without loading a map."""
-    return ('\n <!-- ===== VISIT ===== -->\n <section class="blk visit-sec">\n  <div class="container">\n'
+    """Home page: the real map with the pin, plus the details beside it."""
+    return ('\n <!-- ===== VISIT ===== -->\n <section class="blk visit-sec" id="find-us">\n  <div class="container">\n'
             '   <div class="sec-head"><span class="sec-kicker">Find Us</span>'
             '<h2 class="sec-title">Come <span class="deco">Say Hello</span></h2></div>\n'
-            '   <div class="visit-grid">'
-            '<div class="visit-card"><h4>Address</h4><p>%s</p>'
-            '<a class="btn btn-green" href="%s" target="_blank" rel="noopener">Get Directions</a></div>'
-            '<div class="visit-card"><h4>Hours</h4><p>Mon to Thu: 10:00 AM to 8:00 PM<br>'
+            '   <div class="visit-split">\n'
+            '    <div class="map-wrap"><iframe src="%s" loading="lazy" title="Map to %s" '
+            'referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>\n'
+            '    <div class="visit-facts">'
+            '<div class="fact"><h4>Address</h4><p>%s</p></div>'
+            '<div class="fact"><h4>Hours</h4><p>Mon to Thu: 10:00 AM to 8:00 PM<br>'
             'Fri to Sun: 6:00 AM to 8:00 PM</p></div>'
-            '<div class="visit-card"><h4>Call</h4><p><a href="tel:6134677">613-4677</a><br>'
-            '<a href="tel:8022332">802-2332</a></p></div>'
-            '</div>\n  </div>\n </section>' % (ADDRESS, MAPS_LINK))
+            '<div class="fact"><h4>Service</h4><p>Dine-In &middot; Takeout &middot; Delivery</p></div>'
+            '</div>\n   </div>\n  </div>\n </section>' % (MAPS_EMBED, BRAND, ADDRESS))
 
 def map_section():
     return ('\n <!-- ===== MAP ===== -->\n <section class="blk map-sec" id="find-us">\n  <div class="container">\n'
@@ -98,9 +99,8 @@ def map_section():
             '<h2 class="sec-title">Where To <span class="deco">Find Us</span></h2>'
             '<p class="sec-sub">%s</p></div>\n'
             '   <div class="map-wrap"><iframe src="%s" loading="lazy" title="Map to %s" '
-            'referrerpolicy="no-referrer-when-downgrade"></iframe></div>\n'
-            '   <p class="map-cta"><a class="btn btn-red" href="%s" target="_blank" rel="noopener">Open In Google Maps</a></p>\n'
-            '  </div>\n </section>' % (ADDRESS, MAPS_EMBED, BRAND, MAPS_LINK))
+            'referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>\n'
+            '  </div>\n </section>' % (ADDRESS, MAPS_EMBED, BRAND))
 
 def reviews_page_body():
     head = ('\n <section class="blk rev-hero">\n  <div class="container">\n'

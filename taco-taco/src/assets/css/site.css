@@ -638,3 +638,14 @@ html.js.scrub-on .gal-label{display:block}
 @media(max-width:640px){.map-wrap{aspect-ratio:4/5}}
 .map-wrap iframe{width:100%;height:100%;border:0;display:block}
 .map-cta{text-align:center;margin:18px 0 0}
+
+/* ================= find us: map beside the details ================= */
+.visit-split{display:grid;grid-template-columns:1.35fr .65fr;gap:22px;align-items:stretch}
+@media(max-width:760px){.visit-split{grid-template-columns:1fr}}
+.visit-split .map-wrap{aspect-ratio:auto;min-height:340px}
+.visit-facts{display:flex;flex-direction:column;gap:12px}
+.fact{background:var(--paper);border:1px solid var(--border);border-radius:16px;padding:16px 18px;flex:1;
+ display:flex;flex-direction:column;justify-content:center}
+.fact h4{margin:0 0 5px;font-family:var(--font-display);text-transform:uppercase;letter-spacing:.5px;
+ color:var(--green-d);font-size:.92rem}
+.fact p{margin:0;color:var(--muted);line-height:1.5;font-size:.94rem}
