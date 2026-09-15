@@ -9,7 +9,10 @@ reviews that have a rating but no written text; those still appear on the
 reviews page, as rating-only entries.
 """
 
-HOME_ORDER = ['melisa-alvarenga', 'klerysa-heredia', 'jesus-ortega', 'david-funez', 'isridio-hernandez', 'hern-mar', 'hector-tiul', 'garden-tree-apt']
+# Long and short alternate so the four visible cards always read as a mix
+# rather than four long paragraphs followed by four one-liners.
+HOME_ORDER = ['melisa-alvarenga', 'isridio-hernandez', 'klerysa-heredia', 'hern-mar',
+              'jesus-ortega', 'hector-tiul', 'david-funez', 'garden-tree-apt']
 
 REVIEWS = [
  {

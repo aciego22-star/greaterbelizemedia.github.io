@@ -435,7 +435,10 @@ def main():
     socblock = '<div class="socials">%s</div>'%socbtns if socbtns else ""
 
     foot = footer.replace('<a href="#order">Order Online</a>', '<a href="menu.html">Order Online</a>')
-    foot = foot.replace('</div>\n  <div class="foot-bottom">', socblock+'</div>\n  <div class="foot-bottom">')
+    # Sibling of .foot-grid, not a fourth grid item, so the row spans the footer
+    # and the icons sit on the centre line rather than under the first column.
+    foot = foot.replace('</div>\n  <div class="foot-bottom">',
+                        '</div>\n  '+socblock+'\n  <div class="foot-bottom">')
 
     def head_meta(fname, title, desc):
         url = SITE_URL + ("/" if fname == "index.html" else "/" + fname)
