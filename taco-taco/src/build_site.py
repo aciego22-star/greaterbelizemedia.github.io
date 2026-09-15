@@ -17,7 +17,7 @@ WA_NUMBER  = "5016134677"          # 613-4677
 # Social profiles. Leave a value empty and that button simply does not render,
 # so the live site never shows a dead link.
 SOCIAL = {
- "facebook":  "https://www.facebook.com/share/1BvEg2CSYc/?mibextid=wwXIfr",
+ "facebook":  "https://www.facebook.com/share/14ymmYxdZTu/?mibextid=wwXIfr",
  "instagram": "https://www.instagram.com/tacotacomexicanrestaurant",
  "tiktok":    "https://www.tiktok.com/@tacotacomexicanfood",
 }
