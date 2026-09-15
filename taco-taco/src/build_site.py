@@ -55,6 +55,17 @@ ITEM_IMG = {
  "Torta":                      "fav-01.jpg",
  "Nachos":                     "fav-02.jpg",
  "Frappés":               "fav-04.jpg",
+ # from the restaurant's own gallery, each checked against the dish it names
+ "Burrito":                    "menu-burrito.jpg",
+ "Carne Asada Fries":          "menu-carne-asada-fries.jpg",
+ "Mexican Pizza":              "menu-mexican-pizza.jpg",
+ "Crunch Wrap":                "menu-crunch-wrap.jpg",
+ "Chilaquiles":                "menu-chilaquiles.jpg",
+ "Pancakes or Waffles":        "menu-pancakes-or-waffles.jpg",
+ "Pancakes & Bacon":           "menu-pancakes-bacon.jpg",
+ "Only Pancakes":              "menu-only-pancakes.jpg",
+ "Arroz con Leche":            "menu-arroz-con-leche.jpg",
+ "Churros":                    "menu-churros.jpg",
 }
 
 PAGES = [("index.html","Home"),("menu.html","Menu"),("gallery.html","Gallery"),
