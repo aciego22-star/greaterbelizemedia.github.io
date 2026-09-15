@@ -7,6 +7,7 @@ SRC  = os.path.join(os.path.dirname(__file__), "_single.html")
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 DIST = os.path.join(ROOT, "dist")
 
+SITE_URL   = "https://tacotaco.bz"
 BRAND      = "Taco Taco Mexican Restaurant"
 BRAND_SHORT= "Mexican Restaurant"
 WA_NUMBER  = "5016134677"          # 613-4677
@@ -234,10 +235,56 @@ def main():
     foot = footer.replace('<a href="#order">Order Online</a>', '<a href="menu.html">Order Online</a>')
     foot = foot.replace('</div>\n  <div class="foot-bottom">', socblock+'</div>\n  <div class="foot-bottom">')
 
+    def head_meta(fname, title, desc):
+        url = SITE_URL + ("/" if fname == "index.html" else "/" + fname)
+        return (
+ '\n<link rel="canonical" href="%s">'
+ '\n<meta name="theme-color" content="#1f5c2e">'
+ '\n<link rel="icon" href="favicon.ico" sizes="any">'
+ '\n<link rel="icon" type="image/png" sizes="32x32" href="icon-32.png">'
+ '\n<link rel="icon" type="image/png" sizes="16x16" href="icon-16.png">'
+ '\n<link rel="apple-touch-icon" href="apple-touch-icon.png">'
+ '\n<link rel="manifest" href="site.webmanifest">'
+ '\n<meta property="og:type" content="website">'
+ '\n<meta property="og:site_name" content="%s">'
+ '\n<meta property="og:title" content="%s">'
+ '\n<meta property="og:description" content="%s">'
+ '\n<meta property="og:url" content="%s">'
+ '\n<meta property="og:image" content="%s/share-card.jpg">'
+ '\n<meta property="og:image:width" content="1200">'
+ '\n<meta property="og:image:height" content="630">'
+ '\n<meta name="twitter:card" content="summary_large_image">'
+ '\n<meta name="twitter:title" content="%s">'
+ '\n<meta name="twitter:description" content="%s">'
+ '\n<meta name="twitter:image" content="%s/share-card.jpg">'
+ % (url, BRAND, title, desc, url, SITE_URL, title, desc, SITE_URL))
+
+    def schema_jsonld():
+        """Restaurant markup. Deliberately no aggregateRating: Google's review
+        snippet guidelines forbid re-publishing ratings gathered on another site,
+        and hers live on Google, so marking them up here would risk a penalty."""
+        import json as _j
+        data = {
+          "@context":"https://schema.org","@type":"Restaurant",
+          "name":BRAND,"url":SITE_URL+"/","image":SITE_URL+"/share-card.jpg",
+          "telephone":"+501-613-4677","servesCuisine":"Mexican",
+          "hasMenu":SITE_URL+"/menu.html",
+          "address":{"@type":"PostalAddress","streetAddress":"11 Aloe Vera Street",
+                     "addressLocality":"West Belmopan","addressCountry":"BZ"},
+          "openingHoursSpecification":[
+            {"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday"],
+             "opens":"10:00","closes":"20:00"},
+            {"@type":"OpeningHoursSpecification","dayOfWeek":["Friday","Saturday","Sunday"],
+             "opens":"06:00","closes":"20:00"}],
+          "sameAs":[v for v in SOCIAL.values() if v],
+        }
+        return '\n<script type="application/ld+json">%s</script>' % _j.dumps(data, ensure_ascii=False)
+
     def page(fname, title, body, desc):
         h = head_extra
         h = re.sub(r'<title>.*?</title>', '<title>%s</title>'%title, h, flags=re.S)
         h = re.sub(r'(<meta name="description" content=")[^"]*(")', r'\1'+desc+r'\2', h)
+        h = h + head_meta(fname, title, desc) + (schema_jsonld() if fname == "index.html" else "")
         return ("<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n%s\n</head>\n<body>\n%s\n<main id=\"top\">\n%s\n</main>\n%s\n%s\n%s\n%s\n<script src=\"assets/js/site.js\" defer></script>\n</body>\n</html>\n"
                 % (h, header_for(fname), body, banner, foot, dock, basket))
 
@@ -290,6 +337,49 @@ def main():
     for fn, p in built.items():
         open(os.path.join(DIST,fn),"w",encoding="utf-8").write(p)
         print("  wrote %-14s %5d KB" % (fn, len(p)//1024 or 1))
+
+    # icons and the share card
+    stat = os.path.join(os.path.dirname(__file__), "static")
+    for f in os.listdir(stat):
+        shutil.copy2(os.path.join(stat,f), os.path.join(DIST,f))
+
+    open(os.path.join(DIST,"site.webmanifest"),"w",encoding="utf-8").write(json.dumps({
+      "name":BRAND,"short_name":"Taco Taco","start_url":"/","display":"standalone",
+      "background_color":"#f7f0e0","theme_color":"#1f5c2e",
+      "icons":[{"src":"/icon-192.png","sizes":"192x192","type":"image/png"},
+               {"src":"/icon-512.png","sizes":"512x512","type":"image/png"}]}, indent=1))
+
+    today = __import__("datetime").date.today().isoformat()
+    urls = "".join('\n <url><loc>%s</loc><lastmod>%s</lastmod></url>'
+                   % (SITE_URL + ("/" if f=="index.html" else "/"+f), today) for f,_ in PAGES)
+    open(os.path.join(DIST,"sitemap.xml"),"w",encoding="utf-8").write(
+      '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">%s\n</urlset>\n'%urls)
+    open(os.path.join(DIST,"robots.txt"),"w",encoding="utf-8").write(
+      "User-agent: *\nAllow: /\n\nSitemap: %s/sitemap.xml\n"%SITE_URL)
+    open(os.path.join(DIST,"netlify.toml"),"w",encoding="utf-8").write(
+      '[build]\n  publish = "."\n\n'
+      '[[headers]]\n  for = "/assets/*"\n  [headers.values]\n'
+      '    Cache-Control = "public, max-age=604800"\n\n'
+      '[[headers]]\n  for = "/*.html"\n  [headers.values]\n'
+      '    Cache-Control = "public, max-age=0, must-revalidate"\n'
+      '    X-Content-Type-Options = "nosniff"\n'
+      '    Referrer-Policy = "strict-origin-when-cross-origin"\n')
+
+    # A real 404: no canonical (it would tell Google this page is the home page),
+    # no Restaurant markup, and noindex so it never enters the index.
+    nf_body = ('\n <section class="blk nf-sec">\n  <div class="container">\n'
+               '   <div class="sec-head"><span class="sec-kicker">404</span>'
+               '<h2 class="sec-title">Page <span class="deco">Not Found</span></h2>'
+               '<p class="sec-sub">That page has moved or never existed. The menu is still right here.</p></div>\n'
+               '   <p class="map-cta"><a class="btn btn-red" href="menu.html">See The Menu</a> '
+               '<a class="btn btn-green" href="index.html">Back Home</a></p>\n'
+               '  </div>\n </section>')
+    nf = page("404.html", "Page not found | %s"%BRAND, nf_body, "That page could not be found.")
+    nf = nf.replace("Taco Taco Mexican Style Food", BRAND).replace("Mexican Style Food", BRAND_SHORT)
+    nf = re.sub(r'\n<link rel="canonical"[^>]*>', '', nf)
+    nf = re.sub(r'\n<script type="application/ld\+json">.*?</script>', '', nf, flags=re.S)
+    nf = nf.replace("</head>", '<meta name="robots" content="noindex">\n</head>')
+    open(os.path.join(DIST,"404.html"),"w",encoding="utf-8").write(nf)
 
     print("videos:", len(VIDEOS_ACTIVE), "| socials:", [k for k,v in SOCIAL.items() if v] or "none set")
     print("menu photos attached:", len(set(ITEM_IMG.values())), "images across", len(ITEM_IMG), "items")

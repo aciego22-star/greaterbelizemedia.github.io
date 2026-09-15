@@ -649,3 +649,7 @@ html.js.scrub-on .gal-label{display:block}
 .fact h4{margin:0 0 5px;font-family:var(--font-display);text-transform:uppercase;letter-spacing:.5px;
  color:var(--green-d);font-size:.92rem}
 .fact p{margin:0;color:var(--muted);line-height:1.5;font-size:.94rem}
+
+/* ================= 404 ================= */
+.nf-sec{padding:72px 0 88px}
+.nf-sec .map-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
