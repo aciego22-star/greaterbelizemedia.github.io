@@ -1,6 +1,6 @@
 (function(){
  var H=document.documentElement; H.classList.add('js');
- var WA_NUMBER='5016134677';   // Taco Taco WhatsApp: 613-4677 (Belize +501)
+ var WA_NUMBER='5016108859';   // TESTING line. Switch to 5016134677 (613-4677) for go-live.
  var basket=[];                // {name, meat, price(number), label, qty}
  var $=function(id){return document.getElementById(id);};
  var barCount=$('bb-count'), barTotal=$('bb-total');
@@ -15,7 +15,7 @@
  var BKEY='tt_basket_v1';
  function saveBasket(){try{localStorage.setItem(BKEY,JSON.stringify(basket));}catch(e){}}
  function loadBasket(){try{var v=JSON.parse(localStorage.getItem(BKEY)||'null');
-  if(v&&v.length){basket=v;renderBar();}}catch(e){}}
+  if(v&&v.length){basket=v;basket.forEach(function(it){if(!it.key)it.key=keyOf(it.name,it.meat);});renderBar();}}catch(e){}}
 
  function renderBar(){var c=count();H.classList.toggle('has-items',c>0);
   barCount.textContent=c+(c===1?' item':' items');barTotal.textContent=money(total());}
@@ -30,15 +30,28 @@
     '<span class="qn">'+it.qty+'</span>'+
     '<button type="button" class="qbtn" data-a="inc" data-i="'+i+'" aria-label="Increase">+</button></div>';
    row.querySelector('.bp-name').textContent=it.name+(it.meat?' ('+it.meat+')':'');
+   if(it.opts&&it.opts.length){
+    var o=document.createElement('span'); o.className='bp-opts';
+    o.textContent=it.opts.join(' \u00b7 ');
+    row.querySelector('.bp-info').appendChild(o);
+   }
    row.querySelector('.bp-price').textContent=money(it.qty*it.price);
    list.appendChild(row);
   });
   panelTotal.textContent=money(total());
  }
  function add(name,priceStr,meat,img){
-  var k=keyOf(name,meat),f=basket.filter(function(b){return keyOf(b.name,b.meat)===k;})[0];
-  if(f){f.qty++;}else{basket.push({name:name,meat:meat||'',price:priceNum(priceStr),label:priceStr,qty:1,img:img||''});}
+  var k=keyOf(name,meat),f=basket.filter(function(b){return (b.key||keyOf(b.name,b.meat))===k;})[0];
+  if(f){f.qty++;}else{basket.push({key:k,name:name,meat:meat||'',price:priceNum(priceStr),
+   label:priceStr,qty:1,img:img||''});}
   renderBar();saveBasket();
+ }
+ // A promotional deal. `wa` is the real food the kitchen receives; the flyer never goes to them.
+ function addDeal(o){
+  var f=basket.filter(function(b){return b.key===o.key;})[0];
+  if(f){f.qty++;}else{basket.push({key:o.key,name:o.name,meat:'',price:o.price,label:'$'+o.price,
+   qty:1,img:o.img||'',deal:true,opts:o.opts||[],wa:o.wa||[]});}
+  renderBar();saveBasket();renderPanel();
  }
  // Send a copy of the dish arcing across the page into the basket.
  function flyToBasket(btn){
@@ -92,7 +105,18 @@
 
  // Build the order message and hand it to WhatsApp. The customer taps send on their own device.
  function waText(){
-  var lines=basket.map(function(it){return '- '+it.qty+'x '+it.name+(it.meat?' ('+it.meat+')':'')+': '+money(it.qty*it.price);});
+  var lines=[];
+  basket.forEach(function(it){
+   if(it.deal&&it.wa&&it.wa.length){
+    lines.push(it.name+' - '+money(it.price)+':');
+    it.wa.forEach(function(l){lines.push('  - '+l);});
+    lines.push('  Qty: '+it.qty);
+    lines.push('');
+   }else{
+    lines.push('- '+it.qty+'x '+it.name+(it.meat?' ('+it.meat+')':'')+': '+money(it.qty*it.price));
+   }
+  });
+  while(lines.length&&lines[lines.length-1]==='')lines.pop();
   return 'Hi Taco Taco! I would like to place this order:\n\n'+lines.join('\n')+'\n\nTotal: '+money(total())+' BZD';
  }
  $('bp-send').addEventListener('click',function(){
@@ -108,6 +132,7 @@
   if(!open){var sec=document.getElementById('menu');if(sec)sec.scrollIntoView({behavior:'smooth',block:'start'});}
  });}
 
+ window.TTBasket={addDeal:addDeal,money:money};
  loadBasket();
 })();
 /* ---------- depth pass: hero parallax, card tilt, scroll reveal ----------
@@ -275,4 +300,139 @@
    v.innerHTML=''; v.appendChild(f);
   });
  });
+})();
+
+/* ================= Deals & Combos =================
+   The home carousel and the deal configurator. Selections are validated before a
+   deal can be added, and each deal carries the real food description that the
+   WhatsApp order is built from. */
+(function(){
+ var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+ /* ---------- home carousel ---------- */
+ var car=document.getElementById('dcar');
+ if(car){
+  var track=car.querySelector('.dcar-track'),
+      slides=[].slice.call(car.querySelectorAll('.dcar-slide')),
+      dots=[].slice.call(car.querySelectorAll('.dcar-dot')),
+      i=0, timer=null, held=false;
+  function show(n){
+   i=(n+slides.length)%slides.length;
+   track.style.transform='translateX('+(-i*100)+'%)';
+   dots.forEach(function(d,k){d.classList.toggle('on',k===i);});
+  }
+  function play(){ if(reduce||held||slides.length<2) return; stop(); timer=setInterval(function(){show(i+1);},5000); }
+  function stop(){ if(timer){clearInterval(timer);timer=null;} }
+  function hold(){ held=true; stop(); }                 // user took over
+  car.querySelector('.dcar-next').addEventListener('click',function(){hold();show(i+1);});
+  car.querySelector('.dcar-prev').addEventListener('click',function(){hold();show(i-1);});
+  dots.forEach(function(d,k){d.addEventListener('click',function(){hold();show(k);});});
+  car.addEventListener('mouseenter',stop);
+  car.addEventListener('mouseleave',function(){if(!held)play();});
+  car.addEventListener('focusin',hold);
+  var x0=null,y0=null;
+  car.addEventListener('touchstart',function(e){x0=e.touches[0].clientX;y0=e.touches[0].clientY;stop();},{passive:true});
+  car.addEventListener('touchend',function(e){
+   if(x0===null)return;
+   var dx=e.changedTouches[0].clientX-x0, dy=e.changedTouches[0].clientY-y0;
+   if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)){hold();show(dx<0?i+1:i-1);}
+   x0=y0=null;
+  },{passive:true});
+  document.addEventListener('visibilitychange',function(){document.hidden?stop():play();});
+  show(0); play();
+ }
+
+ /* ---------- deal cards ---------- */
+ var DEALS=window.TT_DEALS||[], STR=window.TT_STR||{};
+ if(!DEALS.length||!document.querySelector('.deal')) return;
+ var byId={}; DEALS.forEach(function(d){byId[d.id]=d;});
+
+ function val(card,cid){
+  var wrap=card.querySelector('.opt[data-choice="'+cid+'"]');
+  if(!wrap||wrap.hidden) return '';
+  var r=wrap.querySelector('input[type=radio]:checked');
+  if(r) return r.value;
+  var sels=[].slice.call(wrap.querySelectorAll('.opt-sel'));
+  if(!sels.length) return '';
+  var vals=sels.map(function(s){return s.value;});
+  return vals.every(function(v){return v;}) ? vals.join(', ') : '';
+ }
+ function applyVisibility(card,d){
+  d.choices.forEach(function(c){
+   if(!c.showIf) return;
+   var wrap=card.querySelector('.opt[data-choice="'+c.id+'"]');
+   if(wrap) wrap.hidden = (val(card,c.showIf.choice)!==c.showIf.equals);
+  });
+ }
+ function priceOf(card,d){
+  if(typeof d.price==='number') return d.price;
+  var r=card.querySelector('input[type=radio][data-price]:checked');
+  return r?parseFloat(r.getAttribute('data-price')):null;
+ }
+ function paint(card,d){
+  applyVisibility(card,d);
+  var p=priceOf(card,d), el=card.querySelector('.deal-price');
+  if(el&&p!=null) el.textContent='$'+p;
+ }
+ function fill(tpl,card,d){
+  return tpl.replace(/\{(\w+)\}/g,function(_,k){return val(card,k);}).replace(/\s+/g,' ').trim();
+ }
+
+ document.querySelectorAll('.deal').forEach(function(card){
+  var d=byId[card.getAttribute('data-deal')]; if(!d) return;
+  card.addEventListener('change',function(){paint(card,d);
+   card.querySelectorAll('.opt-sel.bad').forEach(function(s){if(s.value)s.classList.remove('bad');});});
+  paint(card,d);
+
+  card.querySelector('.deal-add').addEventListener('click',function(){
+   var warn=card.querySelector('.deal-warn'), missing=[];
+   d.choices.forEach(function(c){
+    var wrap=card.querySelector('.opt[data-choice="'+c.id+'"]');
+    if(!wrap||wrap.hidden) return;
+    if(!val(card,c.id)){
+     missing.push(c.label);
+     wrap.querySelectorAll('.opt-sel').forEach(function(s){if(!s.value)s.classList.add('bad');});
+    }
+   });
+   var price=priceOf(card,d);
+   if(price==null) missing.push((d.choices[0]||{}).label||'an option');
+   if(missing.length){
+    warn.textContent=(STR.pick_one||'Please choose')+': '+missing.join(', ');
+    warn.hidden=false;
+    var f=card.querySelector('.opt-sel.bad,.opt:not([hidden]) input[type=radio]');
+    if(f&&f.focus)f.focus();
+    return;
+   }
+   warn.hidden=true;
+
+   var opts=[], sel={};
+   d.choices.forEach(function(c){
+    var v=val(card,c.id); if(!v) return;
+    sel[c.id]=v; opts.push(c.label+': '+v);
+   });
+   var wa=(d.wa||[]).map(function(t){return fill(t,card,d);})
+                    .filter(function(l){return l && !/\{\w+\}/.test(l) && !/:\s*$/.test(l);});
+   window.TTBasket.addDeal({
+    key:'deal:'+d.id+':'+JSON.stringify(sel),
+    name:d.title, price:price, img:'assets/img/'+d.flyer, opts:opts, wa:wa
+   });
+   var b=this; b.classList.add('added'); b.textContent=STR.added||'Added';
+   setTimeout(function(){b.classList.remove('added');b.textContent=STR.add||'Add To Basket';},1100);
+  });
+ });
+
+ /* arriving from the carousel: bring that deal forward */
+ function focusHash(){
+  var h=location.hash.replace('#','');
+  if(h.indexOf('deal-')!==0) return;
+  var el=document.getElementById(h);
+  if(!el) return;
+  document.querySelectorAll('.deal.is-target').forEach(function(x){x.classList.remove('is-target');});
+  el.classList.add('is-target');
+  el.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});
+ }
+ if(location.hash){ setTimeout(focusHash,120);
+  // run again once images have settled, in case anything above shifted
+  window.addEventListener('load',function(){setTimeout(focusHash,60);}); }
+ window.addEventListener('hashchange',focusHash);
 })();

@@ -653,3 +653,73 @@ html.js.scrub-on .gal-label{display:block}
 /* ================= 404 ================= */
 .nf-sec{padding:72px 0 88px}
 .nf-sec .map-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+/* ================= deals: home carousel ================= */
+.deals-band{background:var(--cream2)}
+.dcar{position:relative;max-width:520px;margin:0 auto}
+.dcar-view{height:min(72vh,560px);border-radius:20px;overflow:hidden;background:var(--green-dd);
+ box-shadow:0 18px 44px rgba(44,33,24,.26)}
+.dcar-track{display:flex;height:100%;transition:transform .55s cubic-bezier(.22,.9,.3,1)}
+.dcar-slide{flex:0 0 100%;position:relative;display:block;height:100%;text-decoration:none}
+.dcar-slide img{width:100%;height:100%;object-fit:contain;display:block}
+.dcar-cap{position:absolute;left:0;right:0;bottom:0;padding:26px 16px 14px;display:flex;
+ align-items:baseline;gap:10px;flex-wrap:wrap;justify-content:center;text-align:center;
+ background:linear-gradient(transparent,rgba(0,0,0,.82))}
+.dcar-cap b{color:#fff;font-family:var(--font-display);text-transform:uppercase;letter-spacing:.4px;font-size:1rem}
+.dcar-cap em{color:var(--yellow);font-style:normal;font-weight:900}
+.dcar-nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;
+ border:0;cursor:pointer;background:rgba(255,255,255,.92);color:var(--green-dd);font-size:1.7rem;line-height:1;
+ box-shadow:0 8px 20px rgba(0,0,0,.28)}
+.dcar-nav:hover{background:var(--yellow)}
+.dcar-prev{left:-10px}.dcar-next{right:-10px}
+@media(max-width:560px){.dcar-prev{left:4px}.dcar-next{right:4px}}
+.dcar-dots{display:flex;gap:8px;justify-content:center;margin-top:14px}
+.dcar-dot{width:9px;height:9px;padding:0;border-radius:50%;border:0;cursor:pointer;
+ background:rgba(44,33,24,.24)}
+.dcar-dot.on{background:var(--red);transform:scale(1.25)}
+
+/* ================= deals page ================= */
+.deal-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:22px;align-items:start}
+.deal{background:var(--paper);border:1px solid var(--border);border-radius:20px;overflow:hidden;
+ box-shadow:0 10px 26px rgba(44,33,24,.10);transition:transform .3s cubic-bezier(.22,.9,.3,1),box-shadow .3s ease;
+ scroll-margin-top:96px}
+.deal:hover{transform:translateY(-4px);box-shadow:0 22px 46px rgba(44,33,24,.20)}
+.deal.is-target{border-color:var(--red);box-shadow:0 0 0 3px rgba(212,58,43,.28),0 22px 46px rgba(44,33,24,.22)}
+.deal-flyer{background:var(--green-dd);display:block}
+.deal-flyer img{width:100%;height:auto;display:block}
+.deal-body{padding:18px}
+.deal-day{display:inline-block;background:var(--red);color:#fff;font-weight:800;font-size:.7rem;
+ text-transform:uppercase;letter-spacing:1px;padding:4px 10px;border-radius:999px;margin-bottom:8px}
+.deal-title{font-family:var(--font-display);text-transform:uppercase;color:var(--green-d);
+ font-size:1.15rem;margin:0 0 6px;line-height:1.1}
+.deal-desc{color:var(--muted);margin:0 0 10px;font-size:.92rem;line-height:1.5}
+.deal-price{font-family:var(--font-display);color:var(--red);font-size:1.5rem;margin-bottom:4px}
+.deal-note{margin:0 0 10px;color:var(--red-d);font-weight:800;font-size:.8rem;text-transform:uppercase;letter-spacing:.5px}
+.deal-opts{border-top:1px dashed rgba(44,33,24,.18);padding-top:12px;margin-top:10px;
+ display:flex;flex-direction:column;gap:12px}
+.opt-head{font-family:var(--font-display);text-transform:uppercase;font-size:.78rem;letter-spacing:1px;color:var(--green-d)}
+.opt{display:flex;flex-direction:column;gap:6px}
+.opt-label{font-weight:800;font-size:.84rem;color:var(--ink)}
+.opt-selects{display:flex;flex-wrap:wrap;gap:8px}
+.opt-sel{flex:1 1 130px;min-height:44px;font-family:var(--font-body);font-size:.88rem;padding:8px 10px;
+ border:1px solid var(--border);border-radius:12px;background:#fff;color:var(--ink)}
+.opt-sel:focus{outline:2px solid var(--green);outline-offset:1px}
+.opt-sel.bad{border-color:var(--red);background:#fff6f5}
+.opt-radios{display:flex;flex-wrap:wrap;gap:8px}
+.opt-radios input{position:absolute;opacity:0;pointer-events:none}
+.opt-radios label{cursor:pointer;min-height:44px;display:inline-flex;align-items:center;gap:6px;
+ border:2px solid var(--border);background:#fff;border-radius:999px;padding:8px 14px;font-weight:700;font-size:.86rem}
+.opt-radios label em{font-style:normal;color:var(--green);font-weight:900}
+.opt-radios input:checked+label{border-color:var(--green);background:var(--green);color:#fff}
+.opt-radios input:checked+label em{color:var(--yellow)}
+.opt-radios input:focus-visible+label{outline:2px solid var(--green);outline-offset:2px}
+.deal-warn{margin:10px 0 0;color:var(--red-d);font-weight:800;font-size:.82rem}
+.deal-add{width:100%;margin-top:12px;min-height:48px}
+.deal-add.added{background:var(--green)}
+
+/* basket lines for a deal: show the chosen options */
+.bp-opts{display:block;color:var(--muted);font-size:.78rem;line-height:1.45;margin-top:2px}
+
+/* .opt sets display:flex, which beats the UA's [hidden]{display:none};
+   without this a hidden option group stays visible. */
+.opt[hidden]{display:none}

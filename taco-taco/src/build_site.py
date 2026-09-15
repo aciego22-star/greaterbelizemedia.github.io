@@ -2,6 +2,7 @@
 """Generates the Taco Taco site (multi-page, external assets) from the fragments
 in _single.html. Run:  python3 src/build_site.py"""
 import re, os, sys, json, shutil
+from deals_data import DEALS, FEATURED, STR
 
 SRC  = os.path.join(os.path.dirname(__file__), "_single.html")
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -68,8 +69,107 @@ ITEM_IMG = {
  "Churros":                    "menu-churros.jpg",
 }
 
-PAGES = [("index.html","Home"),("menu.html","Menu"),("gallery.html","Gallery"),
-         ("reviews.html","Reviews"),("about.html","About")]
+PAGES = [("index.html","Home"),("menu.html","Menu"),("deals-combos.html","Deals"),
+         ("gallery.html","Gallery"),("reviews.html","Reviews"),("about.html","About")]
+
+
+def esc(t):
+    return (str(t).replace("&","&amp;").replace("<","&lt;").replace(">","&gt;").replace('"',"&quot;"))
+
+def deal_price_label(d):
+    if "price" in d: return "$%d" % d["price"]
+    ps = [o["price"] for c in d["choices"] if c.get("priced") for o in c["options"]]
+    return "%s $%d" % (STR["from"], min(ps)) if ps else ""
+
+def choice_control(d, c):
+    """One labelled control (or a row of them when the choice repeats)."""
+    wrap_attrs = ' data-choice="%s"' % c["id"]
+    if c.get("showIf"):
+        wrap_attrs += ' data-showif="%s" data-showif-eq="%s" hidden' % (
+            esc(c["showIf"]["choice"]), esc(c["showIf"]["equals"]))
+    out = ['<div class="opt"%s>' % wrap_attrs,
+           '<span class="opt-label">%s</span>' % esc(c["label"])]
+    if c.get("type") == "radio":
+        out.append('<div class="opt-radios">')
+        for i, o in enumerate(c["options"]):
+            lab = o["label"] if isinstance(o, dict) else o
+            pr  = ' data-price="%d"' % o["price"] if isinstance(o, dict) else ''
+            extra = ' <em>$%d</em>' % o["price"] if isinstance(o, dict) else ''
+            rid = "r-%s-%s-%d" % (d["id"], c["id"], i)
+            out.append('<input type="radio" id="%s" name="%s-%s" value="%s"%s>'
+                       '<label for="%s">%s%s</label>' % (rid, d["id"], c["id"], esc(lab), pr, rid, esc(lab), extra))
+        out.append('</div>')
+    else:
+        n = c.get("repeat", 1)
+        out.append('<div class="opt-selects">')
+        for i in range(n):
+            opts = "".join('<option value="%s">%s</option>' % (esc(o), esc(o)) for o in c["options"])
+            out.append('<select class="opt-sel" data-part="%d" aria-label="%s%s">'
+                       '<option value="">%s...</option>%s</select>'
+                       % (i, esc(c["label"]), (" %d" % (i+1)) if n > 1 else "", esc(STR["pick_one"]), opts))
+        out.append('</div>')
+    out.append('</div>')
+    return "".join(out)
+
+_FLYER_DIM={}
+def flyer_dim(fn):
+    if fn not in _FLYER_DIM:
+        try:
+            from PIL import Image
+            with Image.open(os.path.join(os.path.dirname(__file__),"assets","img",fn)) as im:
+                _FLYER_DIM[fn]=im.size
+        except Exception:
+            _FLYER_DIM[fn]=(760,1013)
+    return _FLYER_DIM[fn]
+
+def deal_card(d):
+    day = ('<span class="deal-day">%s</span>' % esc(STR["only_on"] % d["day"])) if d.get("day") else ""
+    note = ('<p class="deal-note">%s</p>' % esc(d["note"])) if d.get("note") else ""
+    opts = "".join(choice_control(d, c) for c in d["choices"])
+    return (
+     '<article class="deal" id="deal-%s" data-deal="%s">'
+     '<div class="deal-flyer"><img src="assets/img/%s" alt="%s offer" loading="lazy" width="%d" height="%d"></div>'
+     '<div class="deal-body">%s<h3 class="deal-title">%s</h3>'
+     '<p class="deal-desc">%s</p><div class="deal-price">%s</div>%s'
+     '<div class="deal-opts"><span class="opt-head">%s</span>%s</div>'
+     '<p class="deal-warn" role="alert" hidden></p>'
+     '<button type="button" class="btn btn-red deal-add">%s</button>'
+     '</div></article>'
+     % (d["id"], d["id"], d["flyer"], esc(d["title"]), flyer_dim(d["flyer"])[0], flyer_dim(d["flyer"])[1], day, esc(d["title"]), esc(d["desc"]),
+        deal_price_label(d), note, esc(STR["choose"]), opts, esc(STR["add"])))
+
+def deals_page_body():
+    cards = "".join(deal_card(d) for d in DEALS)
+    return ('\n <section class="blk" id="deals-all">\n  <div class="container">\n'
+            '   <div class="sec-head"><span class="sec-kicker">%s</span>'
+            '<h2 class="sec-title">Deals &amp; <span class="deco">Combos</span></h2>'
+            '<p class="sec-sub">%s</p></div>\n   <div class="deal-grid">%s</div>\n'
+            '  </div>\n </section>' % (esc(STR["section_kicker"]), esc(STR["page_sub"]), cards))
+
+def deals_band():
+    """Home page carousel of the featured flyers."""
+    by = {d["id"]: d for d in DEALS}
+    feat = [by[i] for i in FEATURED if i in by]
+    slides = "".join(
+      '<a class="dcar-slide" href="deals-combos.html#deal-%s" aria-label="%s">'
+      '<img src="assets/img/%s" alt="%s offer" loading="lazy">'
+      '<span class="dcar-cap"><b>%s</b><em>%s</em></span></a>'
+      % (d["id"], esc(d["title"]), d["flyer"], esc(d["title"]), esc(d["title"]), deal_price_label(d))
+      for d in feat)
+    dots = "".join('<button type="button" class="dcar-dot" aria-label="Deal %d"></button>' % (i+1)
+                   for i in range(len(feat)))
+    return ('\n <!-- ===== DEALS ===== -->\n <section class="blk deals-band" id="deals">\n  <div class="container">\n'
+            '   <div class="sec-head"><span class="sec-kicker">%s</span>'
+            '<h2 class="sec-title">Deals &amp; <span class="deco">Combos</span></h2>'
+            '<p class="sec-sub">%s</p></div>\n'
+            '   <div class="dcar" id="dcar"><div class="dcar-view"><div class="dcar-track">%s</div></div>'
+            '<button type="button" class="dcar-nav dcar-prev" aria-label="%s">&#8249;</button>'
+            '<button type="button" class="dcar-nav dcar-next" aria-label="%s">&#8250;</button>'
+            '<div class="dcar-dots">%s</div></div>\n'
+            '   <p class="map-cta"><a class="btn btn-red" href="deals-combos.html">%s</a></p>\n'
+            '  </div>\n </section>'
+            % (esc(STR["section_kicker"]), esc(STR["section_sub"]), slides,
+               esc(STR["prev"]), esc(STR["next"]), dots, esc(STR["view_all"])))
 
 def stars(v):
     """Five stars with the last one part-filled to the real average."""
@@ -296,7 +396,7 @@ def main():
         h = re.sub(r'<title>.*?</title>', '<title>%s</title>'%title, h, flags=re.S)
         h = re.sub(r'(<meta name="description" content=")[^"]*(")', r'\1'+desc+r'\2', h)
         h = h + head_meta(fname, title, desc) + (schema_jsonld() if fname == "index.html" else "")
-        return ("<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n%s\n</head>\n<body>\n%s\n<main id=\"top\">\n%s\n</main>\n%s\n%s\n%s\n%s\n<script src=\"assets/js/site.js\" defer></script>\n</body>\n</html>\n"
+        return ("<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n%s\n</head>\n<body>\n%s\n<main id=\"top\">\n%s\n</main>\n%s\n%s\n%s\n%s\n<script src=\"assets/js/deals.js\" defer></script>\n<script src=\"assets/js/site.js\" defer></script>\n</body>\n</html>\n"
                 % (h, header_for(fname), body, banner, foot, dock, basket))
 
     os.makedirs(DIST, exist_ok=True)
@@ -305,8 +405,10 @@ def main():
     shutil.copytree(os.path.join(os.path.dirname(__file__),"assets"), os.path.join(DIST,"assets"))
 
     out = {
-      "index.html":   ("%s | Belmopan"%BRAND, hero+favs+reviews_band()+order+visit_band(),
+      "index.html":   ("%s | Belmopan"%BRAND, hero+favs+deals_band()+reviews_band()+order+visit_band(),
                        "%s in West Belmopan. Authentic Mexicali style tacos, birria, tortas and breakfast. Order online and send your order on WhatsApp."%BRAND),
+      "deals-combos.html": ("Deals & Combos | %s"%BRAND, deals_page_body(),
+                       "Taco Taco deals and combos in Belmopan: lunch combos, the Mega Combo, and Monday and Tuesday specials. Pick your options and order on WhatsApp."),
       "menu.html":    ("Menu | %s"%BRAND, menu,
                        "The full %s menu with prices in Belize dollars. Build your basket and send your order on WhatsApp."%BRAND),
       "reviews.html": ("Reviews | %s"%BRAND, reviews_page_body(),
@@ -348,6 +450,10 @@ def main():
     for fn, p in built.items():
         open(os.path.join(DIST,fn),"w",encoding="utf-8").write(p)
         print("  wrote %-14s %5d KB" % (fn, len(p)//1024 or 1))
+
+    open(os.path.join(DIST,"assets","js","deals.js"),"w",encoding="utf-8").write(
+      "window.TT_DEALS=%s;\nwindow.TT_STR=%s;\n"
+      % (json.dumps(DEALS, ensure_ascii=False), json.dumps(STR, ensure_ascii=False)))
 
     # icons and the share card
     stat = os.path.join(os.path.dirname(__file__), "static")
