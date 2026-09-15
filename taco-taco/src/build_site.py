@@ -3,6 +3,7 @@
 in _single.html. Run:  python3 src/build_site.py"""
 import re, os, sys, json, shutil
 from deals_data import DEALS, FEATURED, STR
+from blog_data import HUB, ARTICLES
 
 SRC  = os.path.join(os.path.dirname(__file__), "_single.html")
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -70,7 +71,8 @@ ITEM_IMG = {
 }
 
 PAGES = [("index.html","Home"),("menu.html","Menu"),("deals-combos.html","Deals"),
-         ("gallery.html","Gallery"),("reviews.html","Reviews"),("about.html","About")]
+         ("gallery.html","Gallery"),("fresh-from-our-kitchen.html","Kitchen"),
+         ("reviews.html","Reviews"),("about.html","About")]
 
 
 def esc(t):
@@ -170,6 +172,79 @@ def deals_band():
             '  </div>\n </section>'
             % (esc(STR["section_kicker"]), esc(STR["section_sub"]), slides,
                esc(STR["prev"]), esc(STR["next"]), dots, esc(STR["view_all"])))
+
+
+def has_img(fn):
+    return os.path.isfile(os.path.join(os.path.dirname(__file__), "assets", "img", fn))
+
+def inline(t):
+    t = esc(t)
+    t = re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", t)
+    t = re.sub(r"\*([^*]+)\*", r"<em>\1</em>", t)
+    return t
+
+def article_body(a, socblock):
+    out = []
+    for b in a["blocks"]:
+        k = b["t"]
+        if k == "p":        out.append("<p>%s</p>" % inline(b["x"]))
+        elif k == "h":      out.append('<h3 class="art-h">%s</h3>' % esc(b["x"]))
+        elif k == "kicker": out.append('<p class="art-kicker">%s</p>' % esc(b["x"]))
+        elif k == "img":
+            # the photo may not be in the repo yet; omit rather than ship a broken image
+            if has_img(b["src"]):
+                out.append('<figure class="art-fig"><img src="assets/img/%s" alt="%s" '
+                           'loading="lazy"></figure>' % (b["src"], esc(b["x"])))
+        elif k == "cta":
+            out.append('<p class="art-cta"><a class="btn btn-red" href="%s">%s</a></p>'
+                       % (b["href"], esc(b["x"])))
+        elif k == "social" and socblock:
+            out.append('<div class="art-social">%s</div>' % socblock)
+    return "".join(out)
+
+def article_hero(a):
+    return a["hero"] if has_img(a["hero"]) else a.get("hero_fallback", "hero-plate.jpg")
+
+def article_page(a, socblock):
+    return ('\n <article class="blk art">\n  <div class="container art-wrap">\n'
+            '   <p class="art-back"><a href="%s">&#8249; %s</a></p>\n'
+            '   <span class="sec-kicker">%s</span>\n'
+            '   <h1 class="art-title">%s</h1>\n'
+            '   <p class="art-date"><time datetime="%s">%s</time></p>\n'
+            '   <figure class="art-hero"><img src="assets/img/%s" alt="%s"></figure>\n'
+            '   %s\n  </div>\n </article>'
+            % (HUB["slug"], esc(HUB["back"]), esc(HUB["kicker"]), esc(a["title"]),
+               a["date"], esc(a["date_label"]), article_hero(a), esc(a["hero_alt"]),
+               article_body(a, socblock)))
+
+def hub_page():
+    cards = "".join(
+      '<a class="post" href="%s">'
+      '<span class="post-img"><img src="assets/img/%s" alt="%s" loading="lazy"></span>'
+      '<span class="post-body"><time class="post-date" datetime="%s">%s</time>'
+      '<span class="post-title">%s</span><span class="post-ex">%s</span>'
+      '<span class="post-more">%s</span></span></a>'
+      % (a["slug"], article_hero(a), esc(a["hero_alt"]), a["date"], esc(a["date_label"]),
+         esc(a["title"]), esc(a["excerpt"]), esc(HUB["read"]))
+      for a in ARTICLES)
+    return ('\n <section class="blk" id="kitchen">\n  <div class="container">\n'
+            '   <div class="sec-head"><span class="sec-kicker">%s</span>'
+            '<h2 class="sec-title">%s <span class="deco">%s</span></h2>'
+            '<p class="sec-sub">%s</p></div>\n   <div class="post-grid">%s</div>\n'
+            '  </div>\n </section>'
+            % (esc(HUB["kicker"]), esc(HUB["title_a"]), esc(HUB["title_b"]),
+               esc(HUB["sub"]), cards))
+
+def article_jsonld(a):
+    return '\n<script type="application/ld+json">%s</script>' % json.dumps({
+      "@context":"https://schema.org","@type":"Article",
+      "headline":a["title"],"datePublished":a["date"],
+      "image":SITE_URL+"/assets/img/"+article_hero(a),
+      "author":{"@type":"Organization","name":BRAND},
+      "publisher":{"@type":"Organization","name":BRAND,
+                   "logo":{"@type":"ImageObject","url":SITE_URL+"/icon-512.png"}},
+      "mainEntityOfPage":SITE_URL+"/"+a["slug"],
+    }, ensure_ascii=False)
 
 def stars(v):
     """Five stars with the last one part-filled to the real average."""
@@ -391,13 +466,13 @@ def main():
         }
         return '\n<script type="application/ld+json">%s</script>' % _j.dumps(data, ensure_ascii=False)
 
-    def page(fname, title, body, desc):
+    def page(fname, title, body, desc, nav_as=None):
         h = head_extra
         h = re.sub(r'<title>.*?</title>', '<title>%s</title>'%title, h, flags=re.S)
         h = re.sub(r'(<meta name="description" content=")[^"]*(")', r'\1'+desc+r'\2', h)
         h = h + head_meta(fname, title, desc) + (schema_jsonld() if fname == "index.html" else "")
         return ("<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n%s\n</head>\n<body>\n%s\n<main id=\"top\">\n%s\n</main>\n%s\n%s\n%s\n%s\n<script src=\"assets/js/deals.js\" defer></script>\n<script src=\"assets/js/site.js\" defer></script>\n</body>\n</html>\n"
-                % (h, header_for(fname), body, banner, foot, dock, basket))
+                % (h, header_for(nav_as or fname), body, banner, foot, dock, basket))
 
     os.makedirs(DIST, exist_ok=True)
     for sub in ("assets",):
@@ -413,14 +488,21 @@ def main():
                        "The full %s menu with prices in Belize dollars. Build your basket and send your order on WhatsApp."%BRAND),
       "reviews.html": ("Reviews | %s"%BRAND, reviews_page_body(),
                        "Read what customers say about %s. Rated %s out of 5 from %d Google reviews."%(BRAND,RATING,REVIEW_COUNT)),
+      "fresh-from-our-kitchen.html": ("%s | %s"%(HUB["name"],BRAND), hub_page(),
+                       "Stories and specials from the Taco Taco kitchen in West Belmopan."),
       "gallery.html": ("Gallery | %s"%BRAND, galler+video,
                        "Photos of the food we serve at %s in West Belmopan."%BRAND),
       "about.html":   ("About | %s"%BRAND, about+map_section(),
                        "About %s: authentic Mexicali style food made fresh daily in West Belmopan."%BRAND),
     }
+    for _a in ARTICLES:
+        out[_a["slug"]] = (_a["seo_title"], article_page(_a, socblock), _a["meta"])
+
     built = {}
     for fn,(title,body,desc) in out.items():
-        p = page(fn, title, body, desc)
+        art = [a for a in ARTICLES if a["slug"] == fn]
+        p = page(fn, title, body, desc, nav_as=HUB["slug"] if art else None)
+        if art: p = p.replace("</head>", article_jsonld(art[0]) + "\n</head>")
         p = p.replace("Taco Taco Mexican Style Food", BRAND).replace("Mexican Style Food", BRAND_SHORT)
         built[fn] = p
 

@@ -723,3 +723,46 @@ html.js.scrub-on .gal-label{display:block}
 /* .opt sets display:flex, which beats the UA's [hidden]{display:none};
    without this a hidden option group stays visible. */
 .opt[hidden]{display:none}
+
+/* ================= content hub: post cards ================= */
+.post-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px}
+.post{display:flex;flex-direction:column;background:var(--paper);border:1px solid var(--border);
+ border-radius:20px;overflow:hidden;text-decoration:none;box-shadow:0 10px 26px rgba(44,33,24,.10);
+ transition:transform .3s cubic-bezier(.22,.9,.3,1),box-shadow .3s ease}
+.post:hover{transform:translateY(-4px);box-shadow:0 22px 46px rgba(44,33,24,.20)}
+.post-img{display:block;background:var(--cream2)}
+.post-img img{width:100%;height:auto;display:block}
+.post-body{display:flex;flex-direction:column;gap:8px;padding:18px}
+.post-date{color:var(--muted);font-weight:800;font-size:.74rem;text-transform:uppercase;letter-spacing:.8px}
+.post-title{font-family:var(--font-display);text-transform:uppercase;color:var(--green-d);
+ font-size:1.12rem;line-height:1.15}
+.post-ex{color:var(--muted);font-size:.92rem;line-height:1.5}
+.post-more{color:var(--red);font-weight:800;font-size:.84rem;text-transform:uppercase;letter-spacing:.6px}
+
+/* ================= article ================= */
+.art-wrap{max-width:720px}
+.art-back{margin:0 0 14px}
+.art-back a{color:var(--muted);font-weight:800;font-size:.82rem;text-transform:uppercase;letter-spacing:.6px}
+.art-back a:hover{color:var(--red)}
+.art-title{font-family:var(--font-display);text-transform:uppercase;color:var(--green-d);
+ font-size:clamp(1.7rem,4.4vw,2.6rem);line-height:1.05;margin:6px 0 10px;text-wrap:balance}
+.art-date{color:var(--muted);font-weight:700;font-size:.86rem;margin:0 0 22px}
+.art-hero{margin:0 0 26px;border-radius:20px;overflow:hidden;box-shadow:0 16px 36px rgba(44,33,24,.20)}
+.art-hero img{width:100%;height:auto;display:block}
+.art p{color:var(--ink);line-height:1.72;font-size:1.04rem;margin:0 0 18px}
+.art p strong{color:var(--green-d)}
+.art-h{font-family:var(--font-display);text-transform:uppercase;color:var(--red);
+ font-size:1.25rem;letter-spacing:.3px;margin:32px 0 12px}
+.art-fig{margin:24px 0;border-radius:18px;overflow:hidden;box-shadow:0 12px 30px rgba(44,33,24,.18)}
+.art-fig img{width:100%;height:auto;display:block}
+.art-kicker{font-family:var(--font-display);text-transform:uppercase;color:var(--green-d);
+ font-size:1.15rem;letter-spacing:.5px;text-align:center;background:var(--cream2);
+ border-radius:16px;padding:18px;margin:26px 0}
+.art-cta{margin:26px 0;text-align:center}
+.art-social{display:flex;justify-content:center;margin:26px 0}
+.art-social .socials{margin-top:0}
+.art-social .soc{background:var(--green-d);border-color:var(--green-d);color:#fff}
+.art-social .soc:hover{background:var(--yellow);border-color:var(--yellow);color:var(--green-dd)}
+
+/* seven nav items: tighten the gap on mid widths so they stay on one line */
+@media(min-width:861px) and (max-width:1120px){.nav-links{gap:18px}.nav-links a{font-size:.82rem}}
