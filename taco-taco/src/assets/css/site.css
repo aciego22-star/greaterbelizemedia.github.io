@@ -558,10 +558,14 @@ html.js.scrub-on .gal-label{display:block}
  background:url('../img/logo.jpg') center/56% no-repeat}
 
 /* ================= socials ================= */
-.socials{display:flex;gap:10px;margin-top:16px}
-.soc{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:50%;
- background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.24);color:#fff;transition:.25s}
-.soc:hover{background:var(--yellow);border-color:var(--yellow);color:var(--green-dd);transform:translateY(-2px)}
+.socials{display:flex;gap:12px;margin-top:18px;justify-content:center;width:100%}
+.soc{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;
+ border:0;color:#fff;transition:transform .25s ease,box-shadow .25s ease,filter .25s ease;
+ box-shadow:0 6px 16px rgba(0,0,0,.28)}
+.soc:hover{transform:translateY(-3px);filter:brightness(1.08);color:#fff}
+.soc-facebook{background:#1877f2}
+.soc-instagram{background:radial-gradient(circle at 30% 107%,#fdf497 0%,#fdf497 5%,#fd5949 45%,#d6249f 60%,#285aeb 90%)}
+.soc-tiktok{background:#010101}
 .soc svg{width:19px;height:19px;fill:currentColor}
 
 /* ================= video gallery ================= */
@@ -766,3 +770,24 @@ html.js.scrub-on .gal-label{display:block}
 
 /* seven nav items: tighten the gap on mid widths so they stay on one line */
 @media(min-width:861px) and (max-width:1120px){.nav-links{gap:18px}.nav-links a{font-size:.82rem}}
+
+/* ================= rotating review cards (home) ================= */
+.rcard-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));gap:14px;margin-top:24px}
+.rcard{margin:0;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.20);
+ border-radius:18px;padding:16px;overflow:hidden;min-height:208px;display:flex}
+.rcard-in{display:flex;flex-direction:column;gap:9px;width:100%;
+ transition:transform .5s cubic-bezier(.22,.9,.3,1),opacity .45s ease}
+.rcard-in.out{transform:translateY(-16px);opacity:0}   /* leaves upward */
+.rcard-in.in{transform:translateY(16px);opacity:0}     /* arrives from below */
+.rcard blockquote{margin:0;color:rgba(255,255,255,.93);font-size:.9rem;line-height:1.5;flex:1}
+.rcard figcaption{color:var(--yellow);font-weight:800;font-size:.86rem}
+.rcard .stars{font-size:1rem;color:rgba(255,255,255,.26)}
+.rev-band .rev-band-in{margin-bottom:4px}
+
+/* shared review chrome */
+.rev-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.rev-src{font-size:.66rem;text-transform:uppercase;letter-spacing:.9px;font-weight:800;opacity:.72}
+.rev-notext{margin:0;color:var(--muted);font-style:italic;font-size:.9rem;flex:1}
+.rev figcaption{color:var(--green-d);font-weight:800;font-size:.9rem}
+
+@media (prefers-reduced-motion: reduce){.rcard-in{transition:none}}

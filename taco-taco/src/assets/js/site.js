@@ -436,3 +436,51 @@
   window.addEventListener('load',function(){setTimeout(focusHash,60);}); }
  window.addEventListener('hashchange',focusHash);
 })();
+
+/* ================= rotating reviews (home) =================
+   Vertical only: the outgoing review leaves upward and the incoming one arrives
+   from below, one card at a time so the grid height never moves. Pauses on
+   hover, focus, touch and when the tab is hidden, and resumes by itself. */
+(function(){
+ var grid=document.getElementById('rcards');
+ if(!grid||!window.TT_REVIEWS) return;
+ var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+ var by={}; window.TT_REVIEWS.forEach(function(r){by[r.id]=r;});
+ var queue=(window.TT_REV_ORDER||[]).map(function(id){return by[id];})
+            .filter(function(r){return r&&r.en;});
+ var cards=[].slice.call(grid.querySelectorAll('.rcard'));
+ if(reduce||!cards.length||queue.length<=cards.length) return;   // nothing left to rotate in
+
+ var nextRev=cards.length, slot=0, timer=null, held=false;
+ function render(card,r){
+  var inn=card.querySelector('.rcard-in');
+  inn.querySelector('blockquote').textContent=r.en;
+  inn.querySelector('figcaption').textContent=r.name;
+  var st=inn.querySelector('.stars'), fill=st&&st.querySelector('.fill');
+  if(st) st.setAttribute('aria-label', r.rating+' out of 5');
+  if(fill) fill.style.width=(r.rating/5*100).toFixed(1)+'%';
+ }
+ function step(){
+  var card=cards[slot%cards.length], inn=card.querySelector('.rcard-in');
+  var r=queue[nextRev%queue.length];
+  inn.classList.add('out');
+  setTimeout(function(){
+   render(card,r);
+   inn.classList.remove('out'); inn.classList.add('in');
+   requestAnimationFrame(function(){requestAnimationFrame(function(){inn.classList.remove('in');});});
+  },480);
+  slot++; nextRev++;
+ }
+ function play(){ if(held||timer) return; timer=setInterval(step,5000); }
+ function stop(){ if(timer){clearInterval(timer);timer=null;} }
+ grid.addEventListener('mouseenter',stop);
+ grid.addEventListener('mouseleave',function(){if(!held)play();});
+ grid.addEventListener('focusin',stop);
+ grid.addEventListener('focusout',function(){if(!held)play();});
+ grid.addEventListener('touchstart',function(){
+  held=true; stop();
+  setTimeout(function(){held=false;play();},8000);      // resume after the reader moves on
+ },{passive:true});
+ document.addEventListener('visibilitychange',function(){document.hidden?stop():play();});
+ play();
+})();

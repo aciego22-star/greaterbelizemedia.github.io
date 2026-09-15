@@ -4,6 +4,7 @@ in _single.html. Run:  python3 src/build_site.py"""
 import re, os, sys, json, shutil
 from deals_data import DEALS, FEATURED, STR
 from blog_data import HUB, ARTICLES
+from reviews_data import REVIEWS, HOME_ORDER, STR_REVIEWS
 
 SRC  = os.path.join(os.path.dirname(__file__), "_single.html")
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -27,14 +28,11 @@ MAPS_Q    = "Taco+Taco+Mexican+Restaurant,+Belmopan,+Belize"
 MAPS_LINK = "https://www.google.com/maps/search/?api=1&query=" + MAPS_Q
 MAPS_EMBED= "https://www.google.com/maps?q=" + MAPS_Q + "&output=embed"
 
-# Google rating. RATING/COUNT are facts from the listing; REVIEWS holds the real
-# quotes. Nothing here is invented - an empty list simply renders the rating
-# summary and a link out to Google.
+# Google rating. These two are facts from the listing; the reviews themselves
+# live in reviews_data.py. No aggregateRating is emitted anywhere: Google's own
+# guidelines forbid republishing ratings gathered on another site.
 RATING       = 4.9
 REVIEW_COUNT = 10
-REVIEWS = [
- # {"name":"Jane D.", "stars":5, "date":"June 2026", "text":"..."},
-]
 
 # YouTube/Vimeo entries. Empty list hides the whole video section.
 # Add like: {"src":"https://www.youtube.com/embed/XXXX","title":"Birria tacos"}
@@ -71,7 +69,7 @@ ITEM_IMG = {
 }
 
 PAGES = [("index.html","Home"),("menu.html","Menu"),("deals-combos.html","Deals"),
-         ("gallery.html","Gallery"),("fresh-from-our-kitchen.html","Kitchen"),
+         ("gallery.html","Gallery"),("fresh-from-our-kitchen.html","Blog"),
          ("reviews.html","Reviews"),("about.html","About")]
 
 
@@ -257,13 +255,25 @@ def rating_block(cls=""):
             % (cls, RATING, stars(RATING), REVIEW_COUNT))
 
 def reviews_band():
-    """Home page: social proof, plus a way through to the full page."""
+    """Home page: the rating, then four real reviews that rotate vertically."""
+    by = {r["id"]: r for r in REVIEWS}
+    first = [by[i] for i in HOME_ORDER[:4] if i in by]
+    slots = "".join(
+      '<figure class="rcard" data-slot="%d"><div class="rcard-in">'
+      '<div class="rev-top">%s<span class="rev-src">%s</span></div>'
+      '<blockquote>%s</blockquote><figcaption>%s</figcaption></div></figure>'
+      % (n, stars(r["rating"]), esc(STR_REVIEWS["via"]), esc(r["en"]), esc(r["name"]))
+      for n, r in enumerate(first))
     return ('\n <!-- ===== REVIEWS BAND ===== -->\n <section class="blk rev-band">\n  <div class="container">\n'
-            '   <div class="rev-band-in">%s<div class="rev-band-copy">'
-            '<h2 class="sec-title">What Belmopan <span class="deco">Says</span></h2>'
-            '<p class="sec-sub">Our neighbours keep coming back, and they tell us why.</p>'
-            '<a href="reviews.html" class="btn btn-red">Read The Reviews</a></div></div>\n'
-            '  </div>\n </section>' % rating_block())
+            '   <div class="sec-head"><span class="sec-kicker">%s</span>'
+            '<h2 class="sec-title">%s <span class="deco">%s</span></h2>'
+            '<p class="sec-sub">Our neighbours keep coming back, and they tell us why.</p></div>\n'
+            '   <div class="rev-band-in">%s</div>\n'
+            '   <div class="rcard-grid" id="rcards">%s</div>\n'
+            '   <p class="map-cta"><a href="reviews.html" class="btn btn-red">Read The Reviews</a></p>\n'
+            '  </div>\n </section>'
+            % (esc(STR_REVIEWS["home_kicker"]), esc(STR_REVIEWS["home_title_a"]),
+               esc(STR_REVIEWS["home_title_b"]), rating_block(), slots))
 
 def visit_band():
     """Home page: the real map with the pin, plus the details beside it."""
@@ -289,19 +299,25 @@ def map_section():
             'referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>\n'
             '  </div>\n </section>' % (ADDRESS, MAPS_EMBED, BRAND))
 
+def review_card(r, lang="en"):
+    txt = r.get(lang) or ""
+    body = ('<blockquote>%s</blockquote>' % esc(txt)) if txt else (
+           '<p class="rev-notext">%s</p>' % esc(STR_REVIEWS["no_text"]))
+    return ('<figure class="rev"><div class="rev-top">%s<span class="rev-src">%s</span></div>'
+            '%s<figcaption>%s</figcaption></figure>'
+            % (stars(r["rating"]), esc(STR_REVIEWS["via"]), body, esc(r["name"])))
+
 def reviews_page_body():
     head = ('\n <section class="blk rev-hero">\n  <div class="container">\n'
             '   <div class="sec-head"><span class="sec-kicker">Reviews</span>'
             '<h2 class="sec-title">What Our <span class="deco">Customers Say</span></h2></div>\n'
             '   %s\n   <p class="map-cta"><a class="btn btn-red" href="%s" target="_blank" rel="noopener">'
             'Read Them On Google</a></p>\n  </div>\n </section>' % (rating_block("big"), MAPS_LINK))
-    if not REVIEWS:
-        return head
-    cards = "".join(
-      '<figure class="rev"><div class="rev-top">%s<span class="rev-date">%s</span></div>'
-      '<blockquote>%s</blockquote><figcaption>%s</figcaption></figure>'
-      % (stars(r.get("stars",5)), r.get("date",""), r["text"], r["name"]) for r in REVIEWS)
-    return head + ('\n <section class="blk"><div class="container"><div class="rev-grid">%s</div></div></section>' % cards)
+    withtext = [r for r in REVIEWS if r.get("en")]
+    notext   = [r for r in REVIEWS if not r.get("en")]
+    cards = "".join(review_card(r) for r in withtext + notext)
+    return head + ('\n <section class="blk"><div class="container"><div class="rev-grid">%s</div>'
+                   '</div></section>' % cards)
 
 def frag(html, marker, endmarker="</section>"):
     i = html.find(marker)
@@ -534,8 +550,9 @@ def main():
         print("  wrote %-14s %5d KB" % (fn, len(p)//1024 or 1))
 
     open(os.path.join(DIST,"assets","js","deals.js"),"w",encoding="utf-8").write(
-      "window.TT_DEALS=%s;\nwindow.TT_STR=%s;\n"
-      % (json.dumps(DEALS, ensure_ascii=False), json.dumps(STR, ensure_ascii=False)))
+      "window.TT_DEALS=%s;\nwindow.TT_STR=%s;\nwindow.TT_REVIEWS=%s;\nwindow.TT_REV_ORDER=%s;\n"
+      % (json.dumps(DEALS, ensure_ascii=False), json.dumps(STR, ensure_ascii=False),
+         json.dumps(REVIEWS, ensure_ascii=False), json.dumps(HOME_ORDER, ensure_ascii=False)))
 
     # icons and the share card
     stat = os.path.join(os.path.dirname(__file__), "static")
