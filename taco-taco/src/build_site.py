@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Generates the Taco Taco site (multi-page, external assets) from the fragments
 in _single.html. Run:  python3 src/build_site.py"""
-import re, os, sys, json, shutil
+import re, os, sys, json, shutil, hashlib
 from deals_data import DEALS, FEATURED, STR
 from blog_data import HUB, ARTICLES
 from reviews_data import REVIEWS, HOME_ORDER, STR_REVIEWS
@@ -498,6 +498,11 @@ def main():
         if os.path.isdir(os.path.join(DIST,sub)): shutil.rmtree(os.path.join(DIST,sub))
     shutil.copytree(os.path.join(os.path.dirname(__file__),"assets"), os.path.join(DIST,"assets"))
 
+    open(os.path.join(DIST,"assets","js","deals.js"),"w",encoding="utf-8").write(
+      "window.TT_DEALS=%s;\nwindow.TT_STR=%s;\nwindow.TT_REVIEWS=%s;\nwindow.TT_REV_ORDER=%s;\n"
+      % (json.dumps(DEALS, ensure_ascii=False), json.dumps(STR, ensure_ascii=False),
+         json.dumps(REVIEWS, ensure_ascii=False), json.dumps(HOME_ORDER, ensure_ascii=False)))
+
     out = {
       "index.html":   ("%s | Belmopan"%BRAND, hero+favs+deals_band()+reviews_band()+order+visit_band(),
                        "%s in West Belmopan. Authentic Mexicali style tacos, birria, tortas and breakfast. Order online and send your order on WhatsApp."%BRAND),
@@ -548,14 +553,21 @@ def main():
         built[fn] = new; fixed += changed
     print("  cross-page links retargeted:", fixed)
 
-    for fn, p in built.items():
-        open(os.path.join(DIST,fn),"w",encoding="utf-8").write(p)
-        print("  wrote %-14s %5d KB" % (fn, len(p)//1024 or 1))
+    # Netlify holds /assets/* for a week, so a deploy that only changes the CSS or
+    # the JS would keep serving the old file from the browser cache. Stamping each
+    # reference with its own content hash makes the URL change whenever the file
+    # does, which forces the fetch. The HTML itself revalidates on every request.
+    def stamp(p):
+        for rel in ("assets/css/site.css", "assets/js/site.js", "assets/js/deals.js"):
+            full = os.path.join(DIST, *rel.split("/"))
+            if not os.path.exists(full): continue
+            h = hashlib.md5(open(full,"rb").read()).hexdigest()[:10]
+            p = p.replace('"%s"' % rel, '"%s?v=%s"' % (rel, h))
+        return p
 
-    open(os.path.join(DIST,"assets","js","deals.js"),"w",encoding="utf-8").write(
-      "window.TT_DEALS=%s;\nwindow.TT_STR=%s;\nwindow.TT_REVIEWS=%s;\nwindow.TT_REV_ORDER=%s;\n"
-      % (json.dumps(DEALS, ensure_ascii=False), json.dumps(STR, ensure_ascii=False),
-         json.dumps(REVIEWS, ensure_ascii=False), json.dumps(HOME_ORDER, ensure_ascii=False)))
+    for fn, p in built.items():
+        open(os.path.join(DIST,fn),"w",encoding="utf-8").write(stamp(p))
+        print("  wrote %-14s %5d KB" % (fn, len(p)//1024 or 1))
 
     # icons and the share card
     stat = os.path.join(os.path.dirname(__file__), "static")
@@ -598,7 +610,7 @@ def main():
     nf = re.sub(r'\n<link rel="canonical"[^>]*>', '', nf)
     nf = re.sub(r'\n<script type="application/ld\+json">.*?</script>', '', nf, flags=re.S)
     nf = nf.replace("</head>", '<meta name="robots" content="noindex">\n</head>')
-    open(os.path.join(DIST,"404.html"),"w",encoding="utf-8").write(nf)
+    open(os.path.join(DIST,"404.html"),"w",encoding="utf-8").write(stamp(nf))
 
     print("videos:", len(VIDEOS_ACTIVE), "| socials:", [k for k,v in SOCIAL.items() if v] or "none set")
     print("menu photos attached:", len(set(ITEM_IMG.values())), "images across", len(ITEM_IMG), "items")
