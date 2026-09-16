@@ -489,12 +489,14 @@ html.js.has-items #basket-bar{display:flex}
  .ostep.d3-tilt:hover{box-shadow:0 20px 40px rgba(44,33,24,.16)}
  .gitem.d3-tilt:hover{box-shadow:0 26px 50px rgba(44,33,24,.30)}
 }
+/* An unrevealed block is invisible but still shifted 38px down over its
+   neighbour, where it used to swallow the tap meant for what you can see. */
 html.js .d3-rv{opacity:0;transform:perspective(900px) rotateX(12deg) translateY(38px) scale(.955);
- transform-origin:50% 100%;
+ transform-origin:50% 100%;pointer-events:none;
  transition:opacity .7s ease,transform .85s cubic-bezier(.22,.9,.3,1)}
-html.js .d3-rv.in{opacity:1;transform:none}
+html.js .d3-rv.in{opacity:1;transform:none;pointer-events:auto}
 @media (prefers-reduced-motion: reduce){
- html.js .d3-rv{opacity:1;transform:none;transition:none}
+ html.js .d3-rv{opacity:1;transform:none;transition:none;pointer-events:auto}
  .d3-tilt{transition:none}
 }
 

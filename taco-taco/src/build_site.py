@@ -150,12 +150,20 @@ def deals_band():
     """Home page carousel of the featured flyers."""
     by = {d["id"]: d for d in DEALS}
     feat = [by[i] for i in FEATURED if i in by]
-    slides = "".join(
-      '<a class="dcar-slide" href="deals-combos.html#deal-%s" aria-label="%s">'
-      '<img src="assets/img/%s" alt="%s offer" loading="lazy">'
-      '<span class="dcar-cap"><b>%s</b><em>%s</em></span></a>'
-      % (d["id"], esc(d["title"]), d["flyer"], esc(d["title"]), esc(d["title"]), deal_price_label(d))
-      for d in feat)
+    # Only the first flyer is on screen. The rest carry their source in data-src so
+    # the home page does not pull about 600KB of artwork nobody is looking at yet;
+    # the carousel fetches each one just before it slides in.
+    def slide(n, d):
+        src = ('src="assets/img/%s" fetchpriority="high"' % d["flyer"] if n == 0
+               else 'data-src="assets/img/%s" loading="lazy"' % d["flyer"])
+        wh = img_size(d["flyer"])
+        dims = ' width="%d" height="%d"' % wh if wh else ""
+        return ('<a class="dcar-slide" href="deals-combos.html#deal-%s" aria-label="%s">'
+                '<img %s alt="%s offer"%s decoding="async">'
+                '<span class="dcar-cap"><b>%s</b><em>%s</em></span></a>'
+                % (d["id"], esc(d["title"]), src, esc(d["title"]), dims,
+                   esc(d["title"]), deal_price_label(d)))
+    slides = "".join(slide(n, d) for n, d in enumerate(feat))
     dots = "".join('<button type="button" class="dcar-dot" aria-label="Deal %d"></button>' % (i+1)
                    for i in range(len(feat)))
     return ('\n <!-- ===== DEALS ===== -->\n <section class="blk deals-band" id="deals">\n  <div class="container">\n'
@@ -174,6 +182,16 @@ def deals_band():
 
 def has_img(fn):
     return os.path.isfile(os.path.join(os.path.dirname(__file__), "assets", "img", fn))
+
+def img_size(fn):
+    """Real pixel size, so the browser can reserve the right box before it loads.
+    Returns None if Pillow is missing, and the caller simply omits the attributes."""
+    try:
+        from PIL import Image
+        with Image.open(os.path.join(os.path.dirname(__file__), "assets", "img", fn)) as im:
+            return im.size
+    except Exception:
+        return None
 
 def inline(t):
     t = esc(t)
@@ -443,6 +461,13 @@ def main():
     def head_meta(fname, title, desc):
         url = SITE_URL + ("/" if fname == "index.html" else "/" + fname)
         return (
+ # In the head, not at the end of the body. A defer script sitting after all the
+ # markup is discovered last, so on a slow connection the browser fetched every
+ # photograph before it fetched the 21KB that makes the page work: no basket, no
+ # carousel, no tap handlers until the images were done. Discovered here, they
+ # queue ahead of the images and still execute after parsing, as defer promises.
+ '\n<script src="assets/js/deals.js" defer fetchpriority="high"></script>'
+ '\n<script src="assets/js/site.js" defer fetchpriority="high"></script>'
  '\n<link rel="canonical" href="%s">'
  '\n<meta name="theme-color" content="#1f5c2e">'
  '\n<link rel="icon" href="favicon.ico" sizes="any">'
@@ -490,7 +515,7 @@ def main():
         h = re.sub(r'<title>.*?</title>', '<title>%s</title>'%title, h, flags=re.S)
         h = re.sub(r'(<meta name="description" content=")[^"]*(")', r'\1'+desc+r'\2', h)
         h = h + head_meta(fname, title, desc) + (schema_jsonld() if fname == "index.html" else "")
-        return ("<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n%s\n</head>\n<body>\n%s\n<main id=\"top\">\n%s\n</main>\n%s\n%s\n%s\n%s\n<script src=\"assets/js/deals.js\" defer></script>\n<script src=\"assets/js/site.js\" defer></script>\n</body>\n</html>\n"
+        return ("<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n%s\n</head>\n<body>\n%s\n<main id=\"top\">\n%s\n</main>\n%s\n%s\n%s\n%s\n</body>\n</html>\n"
                 % (h, header_for(nav_as or fname), body, banner, foot, dock, basket))
 
     os.makedirs(DIST, exist_ok=True)
@@ -554,19 +579,45 @@ def main():
     print("  cross-page links retargeted:", fixed)
 
     # Netlify holds /assets/* for a week, so a deploy that only changes the CSS or
-    # the JS would keep serving the old file from the browser cache. Stamping each
-    # reference with its own content hash makes the URL change whenever the file
-    # does, which forces the fetch. The HTML itself revalidates on every request.
+    # the JS would keep serving the old file from the browser cache. The hash goes
+    # in the filename rather than a ?query, because a query is only a cache key by
+    # convention and some static hosts ignore or drop it. A new name is a new file
+    # everywhere. The HTML itself revalidates on every request.
+    fingerprint = {}
+    for rel in ("assets/css/site.css", "assets/js/site.js", "assets/js/deals.js"):
+        full = os.path.join(DIST, *rel.split("/"))
+        if not os.path.exists(full): continue
+        h = hashlib.md5(open(full,"rb").read()).hexdigest()[:10]
+        stem, ext = rel.rsplit(".", 1)
+        hashed = "%s.%s.%s" % (stem, h, ext)
+        os.rename(full, os.path.join(DIST, *hashed.split("/")))
+        fingerprint[rel] = hashed
+
     def stamp(p):
-        for rel in ("assets/css/site.css", "assets/js/site.js", "assets/js/deals.js"):
-            full = os.path.join(DIST, *rel.split("/"))
-            if not os.path.exists(full): continue
-            h = hashlib.md5(open(full,"rb").read()).hexdigest()[:10]
-            p = p.replace('"%s"' % rel, '"%s?v=%s"' % (rel, h))
+        for rel, hashed in fingerprint.items():
+            p = p.replace('"%s"' % rel, '"%s"' % hashed)
         return p
 
+    # An image with no width/height reserves no space, so everything below it jumps
+    # when it finally arrives. On a slow phone that means the button you are aiming
+    # at moves out from under your thumb. The gallery was the worst of it.
+    IMG_TAG = re.compile(r"<img\b([^>]*?)/?>")
+    def reserve_space(p):
+        def fix(m):
+            attrs = m.group(1)
+            if "width=" in attrs and "height=" in attrs:
+                return m.group(0)
+            src = re.search(r'(?:data-)?src="assets/img/([^"]+)"', attrs)
+            if not src:
+                return m.group(0)
+            wh = img_size(src.group(1))
+            if not wh:
+                return m.group(0)
+            return '<img%s width="%d" height="%d">' % (attrs.rstrip().rstrip("/"), wh[0], wh[1])
+        return IMG_TAG.sub(fix, p)
+
     for fn, p in built.items():
-        open(os.path.join(DIST,fn),"w",encoding="utf-8").write(stamp(p))
+        open(os.path.join(DIST,fn),"w",encoding="utf-8").write(reserve_space(stamp(p)))
         print("  wrote %-14s %5d KB" % (fn, len(p)//1024 or 1))
 
     # icons and the share card
@@ -610,7 +661,7 @@ def main():
     nf = re.sub(r'\n<link rel="canonical"[^>]*>', '', nf)
     nf = re.sub(r'\n<script type="application/ld\+json">.*?</script>', '', nf, flags=re.S)
     nf = nf.replace("</head>", '<meta name="robots" content="noindex">\n</head>')
-    open(os.path.join(DIST,"404.html"),"w",encoding="utf-8").write(stamp(nf))
+    open(os.path.join(DIST,"404.html"),"w",encoding="utf-8").write(reserve_space(stamp(nf)))
 
     print("videos:", len(VIDEOS_ACTIVE), "| socials:", [k for k,v in SOCIAL.items() if v] or "none set")
     print("menu photos attached:", len(set(ITEM_IMG.values())), "images across", len(ITEM_IMG), "items")

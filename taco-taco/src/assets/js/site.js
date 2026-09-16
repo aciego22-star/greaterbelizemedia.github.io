@@ -315,31 +315,47 @@
   var track=car.querySelector('.dcar-track'),
       slides=[].slice.call(car.querySelectorAll('.dcar-slide')),
       dots=[].slice.call(car.querySelectorAll('.dcar-dot')),
-      i=0, timer=null, held=false;
+      i=0, timer=null, held=false, resume=null;
+  function wake(n){                       // pull a deferred flyer in before it shows
+   var img=slides[(n+slides.length)%slides.length];
+   img=img&&img.querySelector('img[data-src]');
+   if(img){img.src=img.getAttribute('data-src');img.removeAttribute('data-src');}
+  }
   function show(n){
    i=(n+slides.length)%slides.length;
+   wake(i); wake(i+1);
    track.style.transform='translateX('+(-i*100)+'%)';
    dots.forEach(function(d,k){d.classList.toggle('on',k===i);});
   }
   function play(){ if(reduce||held||slides.length<2) return; stop(); timer=setInterval(function(){show(i+1);},5000); }
   function stop(){ if(timer){clearInterval(timer);timer=null;} }
-  function hold(){ held=true; stop(); }                 // user took over
-  car.querySelector('.dcar-next').addEventListener('click',function(){hold();show(i+1);});
-  car.querySelector('.dcar-prev').addEventListener('click',function(){hold();show(i-1);});
-  dots.forEach(function(d,k){d.addEventListener('click',function(){hold();show(k);});});
+  // Every interaction only borrows the carousel. A finger landing here on the way
+  // past used to stop it for good, which is why it sat still on a phone.
+  function pauseFor(ms){
+   held=true; stop();
+   clearTimeout(resume); resume=setTimeout(function(){held=false;play();},ms);
+  }
+  car.querySelector('.dcar-next').addEventListener('click',function(){pauseFor(9000);show(i+1);});
+  car.querySelector('.dcar-prev').addEventListener('click',function(){pauseFor(9000);show(i-1);});
+  dots.forEach(function(d,k){d.addEventListener('click',function(){pauseFor(9000);show(k);});});
   car.addEventListener('mouseenter',stop);
   car.addEventListener('mouseleave',function(){if(!held)play();});
-  car.addEventListener('focusin',hold);
+  car.addEventListener('focusin',function(){pauseFor(9000);});
   var x0=null,y0=null;
-  car.addEventListener('touchstart',function(e){x0=e.touches[0].clientX;y0=e.touches[0].clientY;stop();},{passive:true});
-  car.addEventListener('touchend',function(e){
-   if(x0===null)return;
-   var dx=e.changedTouches[0].clientX-x0, dy=e.changedTouches[0].clientY-y0;
-   if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)){hold();show(dx<0?i+1:i-1);}
-   x0=y0=null;
+  car.addEventListener('touchstart',function(e){
+   x0=e.touches[0].clientX; y0=e.touches[0].clientY; stop();
   },{passive:true});
+  car.addEventListener('touchend',function(e){
+   var dx=0,dy=0;
+   if(x0!==null){ dx=e.changedTouches[0].clientX-x0; dy=e.changedTouches[0].clientY-y0; }
+   x0=y0=null;
+   if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)){ pauseFor(9000); show(dx<0?i+1:i-1); }
+   else pauseFor(2500);        // a scroll went past, so pick back up shortly
+  },{passive:true});
+  car.addEventListener('touchcancel',function(){x0=y0=null;pauseFor(2500);},{passive:true});
   document.addEventListener('visibilitychange',function(){document.hidden?stop():play();});
   show(0); play();
+  addEventListener('load',function(){setTimeout(function(){slides.forEach(function(_,k){wake(k);});},2500);});
  }
 
  /* ---------- deal cards ---------- */
@@ -451,7 +467,7 @@
  var cards=[].slice.call(grid.querySelectorAll('.rcard'));
  if(reduce||!cards.length||queue.length<=cards.length) return;   // nothing left to rotate in
 
- var nextRev=cards.length, slot=0, timer=null, held=false;
+ var nextRev=cards.length, slot=0, timer=null, held=false, resume=null;
  function render(card,r){
   var inn=card.querySelector('.rcard-in');
   inn.querySelector('blockquote').textContent=r.en;
@@ -473,14 +489,19 @@
  }
  function play(){ if(held||timer) return; timer=setInterval(step,5000); }
  function stop(){ if(timer){clearInterval(timer);timer=null;} }
+ function pauseFor(ms){
+  held=true; stop();
+  clearTimeout(resume); resume=setTimeout(function(){held=false;play();},ms);
+ }
  grid.addEventListener('mouseenter',stop);
  grid.addEventListener('mouseleave',function(){if(!held)play();});
  grid.addEventListener('focusin',stop);
  grid.addEventListener('focusout',function(){if(!held)play();});
- grid.addEventListener('touchstart',function(){
-  held=true; stop();
-  setTimeout(function(){held=false;play();},8000);      // resume after the reader moves on
- },{passive:true});
+ // Hold it while the finger is down so nothing changes under the reader, then
+ // pick back up. A long hold reads as broken when you are only scrolling past.
+ grid.addEventListener('touchstart',function(){held=true;stop();clearTimeout(resume);},{passive:true});
+ grid.addEventListener('touchend',function(){pauseFor(2500);},{passive:true});
+ grid.addEventListener('touchcancel',function(){pauseFor(2500);},{passive:true});
  document.addEventListener('visibilitychange',function(){document.hidden?stop():play();});
  play();
 })();
