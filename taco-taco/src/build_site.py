@@ -50,9 +50,9 @@ VIDEOS = []
 # Photos we can honestly attach to a menu item. Only unmistakable matches:
 # a wrong photo on a menu misrepresents the food a customer is paying for.
 ITEM_IMG = {
- # Each pairing was checked against the photograph the restaurant printed beside
- # that item on its own menu. Anything we could not match confidently is left
- # blank rather than filled with a lookalike.
+ # Every pairing is checked against the photograph the restaurant printed beside
+ # that item on its own menu. Anything we cannot match confidently is left blank
+ # rather than filled with a lookalike.
  "1 Corn Taco":                    "hero-plate.jpg",
  "1 Flour Taco":                   "hero-plate.jpg",
  "Order of Tacos (4)":             "dish-09.jpg",
@@ -60,7 +60,7 @@ ITEM_IMG = {
  "Two Mexican Tacos Plato Combo":  "badge-01.jpg",
  "1 Birria Taco":                  "badge-02.jpg",
  "Order of Birria Tacos (4)":      "badge-02.jpg",
- "Birria Tacos Plato Combo":       "badge-02.jpg",
+ "Birria Tacos Plato Combo":       "gal-birria-combo.jpg",
  "Taco Bowl Grande":               "dish-01.jpg",
  "1 Tostada":                      "dish-10.jpg",
  "Order of Tostadas (4)":          "dish-10.jpg",
@@ -70,16 +70,117 @@ ITEM_IMG = {
  "Mexican Pizza":                  "menu-mexican-pizza.jpg",
  "Crunch Wrap":                    "menu-crunch-wrap.jpg",
  "Chilaquiles":                    "menu-chilaquiles.jpg",
- "Waffle or Pancake Breakfast":    "menu-pancakes-bacon.jpg",
  "Waffle or Pancake Sandwich":     "dish-03.jpg",
  "Pancakes or Waffle Only":        "menu-only-pancakes.jpg",
  "Order of Churros":               "menu-churros.jpg",
  "Frapp\u00e9":                      "fav-04.jpg",
+
+ # From the two photo packages, each checked against the printed menu.
+ "Order of Flautas":               "menu-flautas.jpg",
+ "Fajitas Plato Combo":            "menu-fajitas-plato.jpg",
+ "Mexican Hot Dog":                "menu-mexican-hotdog.jpg",
+ "Birria Ramen":                   "menu-birria-ramen.jpg",
+ "Birria Pizza":                   "menu-birria-pizza.jpg",
+ "Two Birria Quesadillas":         "menu-birria-quesadillas.jpg",
+ "Chimichanga":                    "menu-chimichanga.jpg",
+ "Mini Chimichanga Plato Combo":   "menu-mini-chimichanga.jpg",
+ "Fresh Natural Juice":            "menu-jugo-natural.jpg",
+ "Natural Juice":                  "menu-jugo-natural.jpg",
+ "Huevos Rancheros":               "menu-huevos-rancheros.jpg",
+ "Mexican Quesadilla":             "menu-quesadilla.jpg",
+ "Waffle or Pancake Breakfast":    "menu-pancake-breakfast.jpg",
+ # The package called this one chilaquiles. It is the nachos plate: same photo the
+ # menu prints beside Nachos, and chilaquiles on this menu come topped with eggs.
+ "Nachos":                         "menu-nachos.jpg",
+ # A smothered burrito under salsa roja, which is what sets Burrito de Mojado
+ # apart from the plain Mexican Style Burrito.
+ "Burrito de Mojado":              "menu-burrito-mojado.jpg",
+ "Mini Taco Bowl":                 "menu-mini-taco-bowl.jpg",
+ "Order of Mini Taco Bowls (4)":   "menu-mini-taco-bowl.jpg",
+ "Menudo Soup, Small":             "menu-menudo.jpg",
+ "Menudo Soup, Large":             "menu-menudo.jpg",
 }
+
+# The gallery grid, with a real description of each plate rather than a generic
+# label: it is what a screen reader reads out and what search engines index.
+# Shrimp tostadas are not on the current menu, so that photograph is not shown.
+GALLERY = [
+ ("badge-01.jpg", "Two Mexican tacos with rice and refried beans"),
+ ("badge-02.jpg", "Birria tacos served with consomé for dipping"),
+ ("hero-plate.jpg", "A plate of Mexican tacos with avocado salsa"),
+ ("gal-street-tacos.jpg", "Street tacos topped with onion, cilantro and avocado salsa"),
+ ("dish-09.jpg", "Street tacos with onion, cilantro and avocado salsa, with a natural juice"),
+ ("gal-tacos-lime.jpg", "Tacos served with a wedge of lime"),
+ ("gal-birria-combo.jpg", "Birria tacos plato combo with rice, beans and consomé"),
+ ("gal-crispy-tacos.jpg", "Crispy folded birria tacos with consomé"),
+ ("menu-birria-pizza.jpg", "Birria pizza cut into wedges, with consomé in the centre"),
+ ("gal-birria-ramen.jpg", "Birria ramen in a rich red broth"),
+ ("menu-birria-quesadillas.jpg", "Birria quesadillas with a cup of consomé"),
+ ("menu-menudo.jpg", "Menudo soup served with lime"),
+ ("dish-10.jpg", "Mexican tostadas topped with lettuce, cheese, sour cream and avocado salsa"),
+ ("gal-tostadas.jpg", "Four tostadas topped with meat, lettuce and cream"),
+ ("menu-mini-taco-bowl.jpg", "Mini taco bowls topped with meat and salsa"),
+ ("dish-01.jpg", "Taco bowl grande in a fried tortilla shell"),
+ ("gal-taco-bowl.jpg", "Taco salad served in a fried tortilla bowl"),
+ ("menu-quesadilla.jpg", "Mexican quesadilla with melted cheese, served with sour cream"),
+ ("menu-chimichanga.jpg", "Chimichanga with a lettuce salad"),
+ ("menu-mini-chimichanga.jpg", "Mini chimichanga plato combo with rice and beans"),
+ ("gal-smothered-burrito.jpg", "Burritos smothered in salsa roja and melted cheese"),
+ ("menu-burrito.jpg", "Grilled burrito cut in half"),
+ ("dish-07.jpg", "Crunch wrap cut open, layered with beef and melted cheese"),
+ ("menu-flautas.jpg", "Flautas topped with lettuce, pico de gallo and cream"),
+ ("menu-fajitas-plato.jpg", "Fajitas plato combo with peppers, rice and beans"),
+ ("menu-mexican-hotdog.jpg", "Mexican hot dog wrapped in bacon, served with fries"),
+ ("dish-04.jpg", "Carne asada fries loaded with meat, cheese and sauces"),
+ ("gal-loaded-fries.jpg", "Loaded fries with meat, cheese and sauces"),
+ ("gal-loaded-chips.jpg", "Two plates of loaded corn chips"),
+ ("menu-nachos.jpg", "Nachos topped with jalapeños, cream and pico de gallo"),
+ ("fav-01.jpg", "Torta with fries, served in a basket"),
+ ("dish-08.jpg", "Torta with grilled meat and a roasted chile, served with fries"),
+ ("dish-05.jpg", "Torta served in a basket"),
+ ("menu-huevos-rancheros.jpg", "Huevos rancheros with rice and refried beans"),
+ ("dish-06.jpg", "Chorizo con huevo breakfast plate with refried beans, avocado and fried tortillas"),
+ ("menu-pancake-breakfast.jpg", "Pancakes with bacon and eggs"),
+ ("gal-pancakes.jpg", "Pancake breakfast plate with bacon and eggs"),
+ ("dish-03.jpg", "Waffle sandwiches with bacon and egg"),
+ ("gal-waffle-sandwich.jpg", "Waffle breakfast sandwich with bacon, egg and cheese"),
+ ("menu-jugo-natural.jpg", "Two natural juices"),
+ ("gal-drinks.jpg", "Three cold drinks"),
+ ("fav-04.jpg", "Frappés topped with whipped cream"),
+ ("fav-02.jpg", "A tray of Taco Taco sides and salsas"),
+]
 
 PAGES = [("index.html","Home"),("menu.html","Menu"),("deals-combos.html","Deals"),
          ("gallery.html","Gallery"),("fresh-from-our-kitchen.html","Blog"),
          ("reviews.html","Reviews"),("about.html","About")]
+
+
+# Small copies for the places a photo is shown small. A 62px menu thumbnail has
+# no business downloading a 1600px photograph, and a gallery page of 43 full-size
+# plates is several megabytes. The full file is still what the lightbox opens.
+_DERIV = {}
+def derivative(fn, maxw, sub):
+    """Write a downscaled copy under dist/assets/img/<sub>/ and return (path,w,h)."""
+    key = (fn, maxw, sub)
+    if key in _DERIV: return _DERIV[key]
+    src = os.path.join(os.path.dirname(__file__), "assets", "img", fn)
+    out_rel = "assets/img/%s/%s" % (sub, fn)
+    try:
+        from PIL import Image
+        dst = os.path.join(DIST, *out_rel.split("/"))
+        os.makedirs(os.path.dirname(dst), exist_ok=True)
+        with Image.open(src) as im:
+            im = im.convert("RGB")
+            if im.width > maxw:
+                im = im.resize((maxw, round(im.height * maxw / im.width)), Image.LANCZOS)
+            im.save(dst, "JPEG", quality=82, optimize=True, progressive=True)
+            res = (out_rel, im.width, im.height)
+    except Exception as e:
+        print("  !! derivative failed for %s: %s: %s" % (fn, type(e).__name__, e))
+        wh = img_size(fn) or (0, 0)
+        res = ("assets/img/" + fn, wh[0], wh[1])
+    _DERIV[key] = res
+    return res
 
 
 def hours_html():
@@ -424,11 +525,38 @@ def frag(html, marker, endmarker="</section>"):
 def main():
     html = open(SRC, encoding="utf-8").read()
 
+    # Copy the assets first: the page builders below write downscaled copies into
+    # dist/assets/img, and a later copytree would wipe them.
+    os.makedirs(DIST, exist_ok=True)
+    for sub in ("assets",):
+        if os.path.isdir(os.path.join(DIST,sub)): shutil.rmtree(os.path.join(DIST,sub))
+    shutil.copytree(os.path.join(os.path.dirname(__file__),"assets"), os.path.join(DIST,"assets"))
+
     # ---------- fragments ----------
     hero   = frag(html, "<!-- ===== HERO ===== -->")
     favs   = frag(html, "<!-- ===== FEATURED FAVORITES ===== -->")
+    # The favourite cards show a photo a few hundred pixels wide, so they take the
+    # grid-sized copy and data-zoom still points at the full file. The hero above
+    # them already downloads its own photographs at full size, so those are left
+    # alone rather than fetched a second time at another size.
+    HERO_IMGS = {"hero-plate.jpg", "badge-01.jpg", "badge-02.jpg", "side-01.jpg"}
+    favs = re.sub(r"background-image:url\('assets/img/([^']+)'\)",
+                  lambda m: m.group(0) if (m.group(1) in HERO_IMGS or not has_img(m.group(1)))
+                            else "background-image:url('%s')" % derivative(m.group(1), 600, "g")[0],
+                  favs)
     menu   = menu_section()
     galler = frag(html, "<!-- ===== GALLERY ===== -->")
+    # Rebuild the grid from GALLERY so the tiles and their descriptions live in
+    # one list rather than as hand-maintained markup.
+    def tile(f, a):
+        grid, w, h = derivative(f, 600, "g")   # tiles render at ~166px phone, ~279px desktop
+        return ('<div class="gitem"><img src="%s" alt="%s" loading="lazy" width="%d" height="%d" '
+                'data-zoom="assets/img/%s" tabindex="0" role="button"></div>'
+                % (grid, esc(a), w, h, f))
+    tiles = "\n".join(tile(f, a) for f, a in GALLERY if has_img(f))
+    galler = re.sub(r'(<div class="gal">)(.*?)(</div>\s*</div>\s*</section>)',
+                    lambda m: m.group(1) + "\n    " + tiles + "\n   " + m.group(3),
+                    galler, count=1, flags=re.S)
     about  = frag(html, "<!-- ===== ABOUT ===== -->")
     order  = frag(html, "<!-- ===== ORDER ===== -->")
     def between(a, b):
@@ -451,10 +579,11 @@ def main():
         name = nm.group(1)
         img = ITEM_IMG.get(name.replace("&amp;","&"), None)
         if img:
+            small = derivative(img, 200, "t")[0]
             th = ('<button type="button" class="mi-thumb" '
-                  'style="background-image:url(\'assets/img/%s\')" '
+                  'style="background-image:url(\'%s\')" '
                   'data-zoom="assets/img/%s" data-zoom-title="%s" '
-                  'aria-label="View photo of %s"></button>' % (img, img, name, name))
+                  'aria-label="View photo of %s"></button>' % (small, img, name, name))
         else:
             th = '<span class="mi-thumb mi-thumb-none" aria-hidden="true"></span>'
         return row.replace('<div class="mi-l">', th + '<div class="mi-l">', 1)
@@ -596,10 +725,6 @@ def main():
         return ("<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n%s\n</head>\n<body>\n%s\n<main id=\"top\">\n%s\n</main>\n%s\n%s\n%s\n%s\n</body>\n</html>\n"
                 % (h, header_for(nav_as or fname), body, banner, foot, dock, basket))
 
-    os.makedirs(DIST, exist_ok=True)
-    for sub in ("assets",):
-        if os.path.isdir(os.path.join(DIST,sub)): shutil.rmtree(os.path.join(DIST,sub))
-    shutil.copytree(os.path.join(os.path.dirname(__file__),"assets"), os.path.join(DIST,"assets"))
 
     open(os.path.join(DIST,"assets","js","deals.js"),"w",encoding="utf-8").write(
       "window.TT_DEALS=%s;\nwindow.TT_STR=%s;\nwindow.TT_REVIEWS=%s;\nwindow.TT_REV_ORDER=%s;\n"

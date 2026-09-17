@@ -241,6 +241,10 @@
  if(!sec||!gal) return;
  var imgs=[].slice.call(gal.querySelectorAll('img'));
  if(imgs.length<4) return;
+ // The showcase is a highlight reel, not the whole archive. Every frame adds
+ // about 12vh of pinned scrolling, so a full gallery would trap the reader for
+ // several screens. The grid below still holds every photograph.
+ imgs=imgs.slice(0,12);
 
  var scrub=document.createElement('div'); scrub.className='scrub';
  var stage=document.createElement('div'); stage.className='scrub-stage';
