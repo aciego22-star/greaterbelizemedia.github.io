@@ -59,6 +59,10 @@ VIDEOS = [
   "alt": "Two guests dancing in the dining room at Taco Taco"},
  {"id": "come-see-us",     "title": "Come see us",
   "alt": "The dining room, the drinks jars and a taco bowl at Taco Taco"},
+ {"id": "the-spread",      "title": "The spread",
+  "alt": "A table laid for a group at Taco Taco, and plates of chimichangas, nachos and a torta"},
+ {"id": "sweet-trays",     "title": "Sweet trays",
+  "alt": "Trays of iced cinnamon rolls and pastries at Taco Taco"},
 ]
 for _v in VIDEOS:
     _v.setdefault("src",    "assets/video/%s.mp4" % _v["id"])
