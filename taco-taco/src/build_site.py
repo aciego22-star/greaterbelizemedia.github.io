@@ -99,6 +99,19 @@ ITEM_IMG = {
  "Order of Mini Taco Bowls (4)":   "menu-mini-taco-bowl.jpg",
  "Menudo Soup, Small":             "menu-menudo.jpg",
  "Menudo Soup, Large":             "menu-menudo.jpg",
+
+ # Drinks. These are studio product renders rather than the brands' own photos,
+ # so they are close likenesses rather than exact trade dress. Belikin Stout is
+ # deliberately left without one: the supplied image is a Belikin Chocolate
+ # Stout, which is a different bottle from the stout this item sells.
+ "Belikin Beer":                   "menu-belikin-beer.jpg",
+ "Lighthouse":                     "menu-lighthouse.jpg",
+ "Guinness Stout":                 "menu-guinness-stout.jpg",
+ "Landshark":                      "menu-landshark.jpg",
+ "Ova Drive":                      "menu-ova-drive.jpg",
+ "Red Stripe":                     "menu-red-stripe.jpg",
+ "Heineken":                       "menu-heineken.jpg",
+ "Soft Drinks":                    "menu-soft-drinks.jpg",
 }
 
 # The gallery grid, with a real description of each plate rather than a generic

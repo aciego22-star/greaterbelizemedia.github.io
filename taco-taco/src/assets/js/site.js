@@ -357,17 +357,29 @@
   car.addEventListener('mouseleave',function(){if(!held)play();});
   car.addEventListener('focusin',function(){pauseFor(9000);});
   var x0=null,y0=null;
+  // Remember which flyer the finger went down on. A tap that lands while the
+  // track is still sliding used to hit nothing at all, because the slide had
+  // moved on by the time the finger lifted and no click was ever raised.
+  var touchedSlide=null;
   car.addEventListener('touchstart',function(e){
    x0=e.touches[0].clientX; y0=e.touches[0].clientY; stop();
+   var el=document.elementFromPoint(x0,y0);
+   touchedSlide=el&&el.closest?el.closest('.dcar-slide'):null;
   },{passive:true});
   car.addEventListener('touchend',function(e){
    var dx=0,dy=0;
    if(x0!==null){ dx=e.changedTouches[0].clientX-x0; dy=e.changedTouches[0].clientY-y0; }
    x0=y0=null;
-   if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)){ pauseFor(9000); show(dx<0?i+1:i-1); }
-   else pauseFor(2500);        // a scroll went past, so pick back up shortly
-  },{passive:true});
-  car.addEventListener('touchcancel',function(){x0=y0=null;pauseFor(2500);},{passive:true});
+   var slide=touchedSlide; touchedSlide=null;
+   if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)){ pauseFor(9000); show(dx<0?i+1:i-1); return; }
+   if(slide&&slide.href&&Math.abs(dx)<12&&Math.abs(dy)<12){
+    e.preventDefault();          // stop the browser raising its own click as well
+    location.href=slide.href;
+    return;
+   }
+   pauseFor(2500);               // a scroll went past, so pick back up shortly
+  });
+  car.addEventListener('touchcancel',function(){x0=y0=null;touchedSlide=null;pauseFor(2500);},{passive:true});
   document.addEventListener('visibilitychange',function(){document.hidden?stop():play();});
   show(0); play();
   addEventListener('load',function(){setTimeout(function(){slides.forEach(function(_,k){wake(k);});},2500);});
