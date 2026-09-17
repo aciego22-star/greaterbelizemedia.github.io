@@ -241,10 +241,7 @@
  if(!sec||!gal) return;
  var imgs=[].slice.call(gal.querySelectorAll('img'));
  if(imgs.length<4) return;
- // The showcase is a highlight reel, not the whole archive. Every frame adds
- // about 12vh of pinned scrolling, so a full gallery would trap the reader for
- // several screens. The grid below still holds every photograph.
- imgs=imgs.slice(0,12);
+ // Every photograph in the gallery gets a frame.
 
  var scrub=document.createElement('div'); scrub.className='scrub';
  var stage=document.createElement('div'); stage.className='scrub-stage';
@@ -272,7 +269,12 @@
   try{window.scrollTo({top:y,behavior:'smooth'});}catch(e){window.scrollTo(0,y);}
  });
 
- function sizeIt(){ scrub.style.height=(window.innerHeight + (N-1)*window.innerHeight*0.12)+'px'; }
+ // Pinned scrolling is budgeted rather than fixed per frame: at a flat 12vh each,
+ // forty-odd photographs would hold the reader for six screens. The whole run is
+ // kept to roughly three and a half, and a short gallery still gets the slower,
+ // more deliberate pace it had.
+ function step(){ return Math.min(0.12, 2.6/Math.max(1,N-1)); }
+ function sizeIt(){ scrub.style.height=(window.innerHeight + (N-1)*window.innerHeight*step())+'px'; }
  var last=-1, queued=false;
  function draw(){
   queued=false;

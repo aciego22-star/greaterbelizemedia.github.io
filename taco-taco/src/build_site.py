@@ -112,6 +112,8 @@ ITEM_IMG = {
  "Red Stripe":                     "menu-red-stripe.jpg",
  "Heineken":                       "menu-heineken.jpg",
  "Soft Drinks":                    "menu-soft-drinks.jpg",
+ "Soda Water":                     "menu-soda-water.jpg",
+ "Hot Coffee":                     "menu-hot-coffee.jpg",
 }
 
 # The gallery grid, with a real description of each plate rather than a generic
@@ -629,9 +631,9 @@ def main():
     # because an empty "coming soon" section on a live restaurant site reads as unfinished.
     vids = VIDEOS
     if not vids and os.environ.get("TT_PREVIEW"):
-        vids = [{"title":"Sample - your clip goes here","poster":"assets/img/dish-09.jpg"},
-                {"title":"Sample - your clip goes here","poster":"assets/img/badge-02.jpg"},
-                {"title":"Sample - your clip goes here","poster":"assets/img/fav-02.jpg"}]
+        vids = [{"title":"Your clip goes here","poster":"assets/img/g/gal-birria-ramen.jpg"},
+                {"title":"Your clip goes here","poster":"assets/img/g/gal-crispy-tacos.jpg"},
+                {"title":"Your clip goes here","poster":"assets/img/g/menu-chimichanga.jpg"}]
     VIDEOS_ACTIVE = vids
     if vids:
         cards = "".join(
