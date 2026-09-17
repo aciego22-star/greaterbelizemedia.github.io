@@ -5,6 +5,7 @@ import re, os, sys, json, shutil, hashlib
 from deals_data import DEALS, FEATURED, STR
 from blog_data import HUB, ARTICLES
 from reviews_data import REVIEWS, HOME_ORDER, STR_REVIEWS
+from menu_data import CATEGORIES as MENU_CATS, INTRO as MENU_INTRO, MEATS, MEAT_SURCHARGE
 
 SRC  = os.path.join(os.path.dirname(__file__), "_single.html")
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -41,31 +42,31 @@ VIDEOS = []
 # Photos we can honestly attach to a menu item. Only unmistakable matches:
 # a wrong photo on a menu misrepresents the food a customer is paying for.
 ITEM_IMG = {
- "Street Tacos":               "dish-09.jpg",
- "2 Tacos, Arroz y Frijoles":  "badge-01.jpg",
- "Quesabirria con Consomé":"badge-02.jpg",
- "2 Quesabirria Tacos":        "badge-02.jpg",
- "4 Quesabirria Tacos":        "badge-02.jpg",
- "Mini Taco Bowl":             "dish-01.jpg",
- "Waffle Breakfast":           "dish-03.jpg",
- "Huevos Rancheros":           "dish-06.jpg",
- "Quesadilla":                 "dish-07.jpg",
- "Torta Del Rey":              "dish-08.jpg",
- "Tostada":                    "dish-10.jpg",
- "Torta":                      "fav-01.jpg",
- "Nachos":                     "fav-02.jpg",
- "Frappés":               "fav-04.jpg",
- # from the restaurant's own gallery, each checked against the dish it names
- "Burrito":                    "menu-burrito.jpg",
- "Carne Asada Fries":          "menu-carne-asada-fries.jpg",
- "Mexican Pizza":              "menu-mexican-pizza.jpg",
- "Crunch Wrap":                "menu-crunch-wrap.jpg",
- "Chilaquiles":                "menu-chilaquiles.jpg",
- "Pancakes or Waffles":        "menu-pancakes-or-waffles.jpg",
- "Pancakes & Bacon":           "menu-pancakes-bacon.jpg",
- "Only Pancakes":              "menu-only-pancakes.jpg",
- "Arroz con Leche":            "menu-arroz-con-leche.jpg",
- "Churros":                    "menu-churros.jpg",
+ # Each pairing was checked against the photograph the restaurant printed beside
+ # that item on its own menu. Anything we could not match confidently is left
+ # blank rather than filled with a lookalike.
+ "1 Corn Taco":                    "hero-plate.jpg",
+ "1 Flour Taco":                   "hero-plate.jpg",
+ "Order of Tacos (4)":             "dish-09.jpg",
+ "Order of Flour Tacos (4)":       "dish-09.jpg",
+ "Two Mexican Tacos Plato Combo":  "badge-01.jpg",
+ "1 Birria Taco":                  "badge-02.jpg",
+ "Order of Birria Tacos (4)":      "badge-02.jpg",
+ "Birria Tacos Plato Combo":       "badge-02.jpg",
+ "Taco Bowl Grande":               "dish-01.jpg",
+ "1 Tostada":                      "dish-10.jpg",
+ "Order of Tostadas (4)":          "dish-10.jpg",
+ "Regular Torta":                  "dish-08.jpg",
+ "Mexican Style Burrito":          "menu-burrito.jpg",
+ "Carne Asada Fries":              "menu-carne-asada-fries.jpg",
+ "Mexican Pizza":                  "menu-mexican-pizza.jpg",
+ "Crunch Wrap":                    "menu-crunch-wrap.jpg",
+ "Chilaquiles":                    "menu-chilaquiles.jpg",
+ "Waffle or Pancake Breakfast":    "menu-pancakes-bacon.jpg",
+ "Waffle or Pancake Sandwich":     "dish-03.jpg",
+ "Pancakes or Waffle Only":        "menu-only-pancakes.jpg",
+ "Order of Churros":               "menu-churros.jpg",
+ "Frapp\u00e9":                      "fav-04.jpg",
 }
 
 PAGES = [("index.html","Home"),("menu.html","Menu"),("deals-combos.html","Deals"),
@@ -145,6 +146,65 @@ def deals_page_body():
             '<h2 class="sec-title">Deals &amp; <span class="deco">Combos</span></h2>'
             '<p class="sec-sub">%s</p></div>\n   <div class="deal-grid">%s</div>\n'
             '  </div>\n </section>' % (esc(STR["section_kicker"]), esc(STR["page_sub"]), cards))
+
+def menu_section():
+    """The whole menu, built from menu_data so one file holds every string."""
+    def item_row(it):
+        bits = ['<div class="mi"><div class="mi-l"><span class="mi-name">%s</span>' % esc(it["name"])]
+        if it.get("desc"):
+            bits.append('<span class="mi-desc">%s</span>' % esc(it["desc"]))
+        bits.append("</div>")
+        if it.get("price") is not None:
+            label = "$%d%s" % (it["price"], " ea" if it.get("each") else "")
+            bits.append('<span class="mi-price">%s</span>' % label)
+            opts = it.get("options") or (MEATS if it.get("meat") else None)
+            bits.append('<div class="mi-controls">')
+            if opts:
+                bits.append('<select class="mi-meat" aria-label="%s">%s</select>'
+                            % (esc(MENU_INTRO["choose_meat"] % it["name"]),
+                               "".join(
+                                 # value stays the plain meat name, so the kitchen
+                                 # reads "Birria", not "Birria (+$1)"
+                                 '<option value="%s"%s>%s</option>'
+                                 % (esc(o),
+                                    (' data-add="%d"' % MEAT_SURCHARGE[o]) if o in MEAT_SURCHARGE else "",
+                                    esc(o + (" (+$%d)" % MEAT_SURCHARGE[o] if o in MEAT_SURCHARGE else "")))
+                                 for o in opts)))
+            bits.append('<button type="button" class="add-btn" data-name="%s" data-price="%s"%s>Add</button>'
+                        % (esc(it["name"]), label, ' data-meat="1"' if opts else ""))
+            bits.append("</div>")
+        bits.append("</div>")
+        return "".join(bits)
+
+    cats = []
+    for c in MENU_CATS:
+        bar = '<div class="cat-bar"><span class="cat-name">%s</span>%s</div>' % (
+              esc(c["name"]),
+              '<span class="cat-sub">%s</span>' % esc(c["sub"]) if c.get("sub") else "")
+        # A description shared by every item in the group reads as shouting inside
+        # the uppercase bar, so it sits under it in normal case.
+        note = '<p class="cat-note">%s</p>' % esc(c["note"]) if c.get("note") else ""
+        cats.append('<div class="mcat">%s%s%s</div>'
+                    % (bar, note, "".join(item_row(i) for i in c["items"])))
+
+    return (
+ '<!-- ===== MENU ===== -->\n <section class="blk menu-sec" id="menu">\n  <div class="container">\n'
+ '   <div class="sec-head">\n'
+ '    <span class="sec-kicker">%s</span>\n'
+ '    <h2 class="sec-title">%s <span class="deco">%s</span></h2>\n'
+ '    <p class="sec-sub">%s</p>\n'
+ '   </div>\n'
+ '   <div class="menu-collapse" id="menu-collapse">\n    <div class="menu-grid">\n     %s\n    </div>\n'
+ '    <p class="menu-note">%s</p>\n'
+ '    <p class="menu-hint">%s</p>\n'
+ '   </div>\n'
+ '   <div class="menu-toggle-wrap"><button type="button" id="menu-toggle" class="btn btn-green">%s</button></div>\n'
+ '   <div class="menu-cta"><button type="button" class="btn btn-red js-open-basket">%s</button></div>\n'
+ '  </div>\n </section>'
+ % (esc(MENU_INTRO["kicker"]), esc(MENU_INTRO["title_a"]), esc(MENU_INTRO["title_b"]),
+    esc(MENU_INTRO["sub"]), "\n".join(cats), esc(MENU_INTRO["note"]),
+    esc(MENU_INTRO["hint"]), esc(MENU_INTRO["full"]), esc(MENU_INTRO["basket"])))
+
 
 def deals_band():
     """Home page carousel of the featured flyers."""
@@ -349,7 +409,7 @@ def main():
     # ---------- fragments ----------
     hero   = frag(html, "<!-- ===== HERO ===== -->")
     favs   = frag(html, "<!-- ===== FEATURED FAVORITES ===== -->")
-    menu   = frag(html, "<!-- ===== MENU ===== -->")
+    menu   = menu_section()
     galler = frag(html, "<!-- ===== GALLERY ===== -->")
     about  = frag(html, "<!-- ===== ABOUT ===== -->")
     order  = frag(html, "<!-- ===== ORDER ===== -->")
@@ -664,7 +724,14 @@ def main():
     open(os.path.join(DIST,"404.html"),"w",encoding="utf-8").write(reserve_space(stamp(nf)))
 
     print("videos:", len(VIDEOS_ACTIVE), "| socials:", [k for k,v in SOCIAL.items() if v] or "none set")
+    names = {i["name"] for c in MENU_CATS for i in c["items"]}
+    stray = sorted(set(ITEM_IMG) - names)
+    if stray:
+        print("  !! photo pinned to an item that is not on the menu:", ", ".join(stray))
+    missing = [i["name"] for c in MENU_CATS for i in c["items"]
+               if i.get("price") is not None and i["name"] not in ITEM_IMG]
     print("menu photos attached:", len(set(ITEM_IMG.values())), "images across", len(ITEM_IMG), "items")
+    print("menu items still without a photo:", len(missing))
 
 if __name__ == "__main__":
     main()

@@ -216,6 +216,7 @@ section.blk{padding:56px 0}
 .cat-name{font-family:var(--font-display);text-transform:uppercase;color:var(--green-d);
  font-size:1.15rem;letter-spacing:.3px}
 .cat-sub{color:var(--red-d);font-weight:700;font-size:.82rem;text-transform:uppercase;letter-spacing:.5px}
+.cat-note{margin:10px 16px 2px;color:var(--muted);font-size:.86rem;line-height:1.5}
 .mi{display:flex;justify-content:space-between;gap:14px;align-items:baseline;padding:7px 0;
  border-bottom:1px dashed rgba(44,33,24,.14)}
 .mi:last-child{border-bottom:none}

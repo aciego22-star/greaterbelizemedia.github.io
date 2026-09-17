@@ -40,10 +40,14 @@
   });
   panelTotal.textContent=money(total());
  }
- function add(name,priceStr,meat,img){
+ function add(name,priceStr,meat,img,extra){
+  // A meat can carry a surcharge of its own: the menu prices birria a dollar up.
+  extra=extra||0;
+  var price=priceNum(priceStr)+extra;
+  var label=extra?('$'+price+(/\bea\b/.test(priceStr||'')?' ea':'')):priceStr;
   var k=keyOf(name,meat),f=basket.filter(function(b){return (b.key||keyOf(b.name,b.meat))===k;})[0];
-  if(f){f.qty++;}else{basket.push({key:k,name:name,meat:meat||'',price:priceNum(priceStr),
-   label:priceStr,qty:1,img:img||''});}
+  if(f){f.qty++;}else{basket.push({key:k,name:name,meat:meat||'',price:price,
+   label:label,qty:1,img:img||''});}
   renderBar();saveBasket();
  }
  // A promotional deal. `wa` is the real food the kitchen receives; the flyer never goes to them.
@@ -80,9 +84,16 @@
  }
  document.querySelectorAll('.add-btn').forEach(function(btn){
   btn.addEventListener('click',function(){
-   var meat='';
-   if(btn.getAttribute('data-meat')){var sel=btn.parentNode.querySelector('.mi-meat');if(sel)meat=sel.value;}
-   add(btn.getAttribute('data-name'),btn.getAttribute('data-price'),meat,btn.getAttribute('data-img'));
+   var meat='', extra=0;
+   if(btn.getAttribute('data-meat')){
+    var sel=btn.parentNode.querySelector('.mi-meat');
+    if(sel){
+     meat=sel.value;
+     var o=sel.options[sel.selectedIndex];
+     extra=o?(parseFloat(o.getAttribute('data-add'))||0):0;
+    }
+   }
+   add(btn.getAttribute('data-name'),btn.getAttribute('data-price'),meat,btn.getAttribute('data-img'),extra);
    flyToBasket(btn);
    btn.classList.add('added');btn.textContent='Added';
    setTimeout(function(){btn.classList.remove('added');btn.textContent='Add';},900);
