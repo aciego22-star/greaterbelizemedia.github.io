@@ -952,5 +952,28 @@ def main():
                 sys.exit("STALE BUSINESS DETAIL %r still in %s" % (bad, fn))
     print("address and hours: single source, no stale copies")
 
+    # A photograph nobody links to still lands in the deploy folder and in the
+    # visitor's download budget. Drop the ones no page, script or stylesheet asks
+    # for; they stay in src, ready for whenever an item needs one again.
+    refs = set()
+    for fn in sorted(os.listdir(DIST)):
+        if fn.endswith((".html", ".xml", ".webmanifest")):
+            refs |= set(re.findall(r"assets/img/([A-Za-z0-9._/-]+)",
+                                   open(os.path.join(DIST, fn), encoding="utf-8").read()))
+    for sub in ("assets/js", "assets/css"):
+        d = os.path.join(DIST, *sub.split("/"))
+        for fn in (os.listdir(d) if os.path.isdir(d) else []):
+            refs |= set(re.findall(r"assets/img/([A-Za-z0-9._/-]+)",
+                                   open(os.path.join(d, fn), encoding="utf-8", errors="ignore").read()))
+    keep = {os.path.basename(r) for r in refs}
+    dropped = freed = 0
+    imgdir = os.path.join(DIST, "assets", "img")
+    for fn in sorted(os.listdir(imgdir)):
+        full = os.path.join(imgdir, fn)
+        if os.path.isfile(full) and fn not in keep:
+            freed += os.path.getsize(full); os.remove(full); dropped += 1
+    if dropped:
+        print("unreferenced images left out of the deploy: %d (%d KB)" % (dropped, freed // 1024))
+
 if __name__ == "__main__":
     main()
