@@ -797,3 +797,32 @@ html.js.scrub-on .gal-label{display:block}
 .rev figcaption{color:var(--green-d);font-weight:800;font-size:.9rem}
 
 @media (prefers-reduced-motion: reduce){.rcard-in{transition:none}}
+
+
+/* ================= photo lightbox =================
+   Tap any dish photograph to see it full size. The thumbnails are small by
+   design; this is how a guest actually inspects the food before ordering. */
+[data-zoom]{cursor:zoom-in}
+button.mi-thumb,button.fav-img{border:0;padding:0;font:inherit;color:inherit;display:block}
+button.mi-thumb:focus-visible,button.fav-img:focus-visible,
+[data-zoom]:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+html.lb-open,html.lb-open body{overflow:hidden}
+
+.lb{position:fixed;inset:0;z-index:120;display:flex;align-items:center;justify-content:center;
+ padding:26px 18px;background:rgba(24,16,8,.88);opacity:0;visibility:hidden;
+ transition:opacity .28s ease,visibility .28s ease}
+.lb.on{opacity:1;visibility:visible}
+.lb-fig{margin:0;display:flex;flex-direction:column;align-items:center;gap:14px;
+ max-width:min(1040px,100%);max-height:100%;
+ transform:scale(.94);transition:transform .34s cubic-bezier(.22,.9,.3,1)}
+.lb.on .lb-fig{transform:none}
+.lb-img{display:block;max-width:100%;max-height:76vh;object-fit:contain;
+ border-radius:18px;background:var(--cream);box-shadow:0 30px 70px rgba(0,0,0,.52)}
+.lb-cap{color:#fff;font-weight:800;font-size:1rem;text-align:center;line-height:1.4;
+ text-shadow:0 2px 10px rgba(0,0,0,.5)}
+.lb-close{position:absolute;top:14px;right:14px;width:46px;height:46px;border-radius:50%;
+ border:0;background:rgba(255,255,255,.16);color:#fff;font-size:1.6rem;line-height:1;
+ cursor:pointer;transition:background .2s ease}
+.lb-close:hover{background:rgba(255,255,255,.3)}
+.lb-close:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+@media (prefers-reduced-motion: reduce){.lb,.lb-fig{transition:none}}

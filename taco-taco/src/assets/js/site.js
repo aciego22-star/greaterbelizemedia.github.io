@@ -516,3 +516,74 @@
  document.addEventListener('visibilitychange',function(){document.hidden?stop():play();});
  play();
 })();
+
+/* ================= photo lightbox =================
+   Anything carrying data-zoom opens full size on click, tap or Enter. The
+   scroll-scrubbed showcase is left alone: a tap there belongs to the scrub. */
+(function(){
+ var lb=null, img=null, cap=null, lastFocus=null;
+
+ function build(){
+  lb=document.createElement('div');
+  lb.className='lb';
+  lb.setAttribute('role','dialog');
+  lb.setAttribute('aria-modal','true');
+  lb.setAttribute('aria-label','Photo');
+  lb.innerHTML='<button type="button" class="lb-close" aria-label="Close photo">×</button>'+
+   '<figure class="lb-fig"><img class="lb-img" alt=""><figcaption class="lb-cap"></figcaption></figure>';
+  document.body.appendChild(lb);
+  img=lb.querySelector('.lb-img');
+  cap=lb.querySelector('.lb-cap');
+  lb.addEventListener('click',function(e){
+   if(e.target===lb||(e.target.closest&&e.target.closest('.lb-close'))) close();
+  });
+ }
+
+ function open(src,title,alt){
+  if(!src) return;
+  if(!lb) build();
+  lastFocus=document.activeElement;
+  img.src=src;
+  img.alt=alt||title||'';
+  cap.textContent=title||'';
+  cap.hidden=!title;
+  document.documentElement.classList.add('lb-open');
+  lb.classList.add('on');
+  lb.querySelector('.lb-close').focus();
+ }
+
+ function close(){
+  if(!lb||!lb.classList.contains('on')) return;
+  lb.classList.remove('on');
+  document.documentElement.classList.remove('lb-open');
+  if(lastFocus&&lastFocus.focus) try{lastFocus.focus();}catch(e){}
+ }
+
+ function target(el){
+  if(!el||!el.closest) return null;
+  var t=el.closest('[data-zoom]');
+  return (t&&!t.closest('.scrub'))?t:null;
+ }
+ function fire(t){
+  open(t.getAttribute('data-zoom'), t.getAttribute('data-zoom-title')||'', t.getAttribute('alt'));
+ }
+
+ document.addEventListener('click',function(e){
+  var t=target(e.target);
+  if(!t) return;
+  e.preventDefault();
+  fire(t);
+ });
+ // An <img> is not focusable on its own, so it carries tabindex and answers Enter.
+ document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){close();return;}
+  if(e.key!=='Enter') return;
+  var a=document.activeElement;
+  if(!a||a.tagName==='BUTTON') return;          // a real button already gets a click
+  var t=target(a);
+  if(!t) return;
+  e.preventDefault();
+  fire(t);
+ });
+ addEventListener('popstate',close);
+})();

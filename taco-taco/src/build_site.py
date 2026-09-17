@@ -24,7 +24,15 @@ SOCIAL = {
  "tiktok":    "https://www.tiktok.com/@tacotacomexicanfood",
 }
 
-ADDRESS   = "11 Aloe Vera Street, West Belmopan, Belize"
+# Address and hours come from the menu the restaurant printed most recently,
+# which is the authority. They are defined once here and swept through every
+# page below, because keeping copies in the template is how they drifted before.
+ADDRESS   = "11 Aloe Vera Ave, West Belmopan, Belize"
+ADDRESS_SHORT = "11 Aloe Vera Ave, West Belmopan"
+HOURS     = [("Mon to Thu", "10:00 AM to 8:00 PM"),
+             ("Fri to Sun", "8:00 AM to 8:00 PM")]
+HOURS_SCHEMA = [(["Monday","Tuesday","Wednesday","Thursday"], "10:00", "20:00"),
+                (["Friday","Saturday","Sunday"],              "08:00", "20:00")]
 MAPS_Q    = "Taco+Taco+Mexican+Restaurant,+Belmopan,+Belize"
 MAPS_LINK = "https://www.google.com/maps/search/?api=1&query=" + MAPS_Q
 MAPS_EMBED= "https://www.google.com/maps?q=" + MAPS_Q + "&output=embed"
@@ -72,6 +80,10 @@ ITEM_IMG = {
 PAGES = [("index.html","Home"),("menu.html","Menu"),("deals-combos.html","Deals"),
          ("gallery.html","Gallery"),("fresh-from-our-kitchen.html","Blog"),
          ("reviews.html","Reviews"),("about.html","About")]
+
+
+def hours_html():
+    return "<br>".join("%s: %s" % h for h in HOURS)
 
 
 def esc(t):
@@ -129,14 +141,17 @@ def deal_card(d):
     opts = "".join(choice_control(d, c) for c in d["choices"])
     return (
      '<article class="deal" id="deal-%s" data-deal="%s">'
-     '<div class="deal-flyer"><img src="assets/img/%s" alt="%s offer" loading="lazy" width="%d" height="%d"></div>'
+     '<div class="deal-flyer"><img src="assets/img/%s" alt="%s offer" loading="lazy" width="%d" height="%d" '
+     'data-zoom="assets/img/%s" data-zoom-title="%s" tabindex="0" role="button"></div>'
      '<div class="deal-body">%s<h3 class="deal-title">%s</h3>'
      '<p class="deal-desc">%s</p><div class="deal-price">%s</div>%s'
      '<div class="deal-opts"><span class="opt-head">%s</span>%s</div>'
      '<p class="deal-warn" role="alert" hidden></p>'
      '<button type="button" class="btn btn-red deal-add">%s</button>'
      '</div></article>'
-     % (d["id"], d["id"], d["flyer"], esc(d["title"]), flyer_dim(d["flyer"])[0], flyer_dim(d["flyer"])[1], day, esc(d["title"]), esc(d["desc"]),
+     % (d["id"], d["id"], d["flyer"], esc(d["title"]),
+        flyer_dim(d["flyer"])[0], flyer_dim(d["flyer"])[1], d["flyer"], esc(d["title"]),
+        day, esc(d["title"]), esc(d["desc"]),
         deal_price_label(d), note, esc(STR["choose"]), opts, esc(STR["add"])))
 
 def deals_page_body():
@@ -270,7 +285,8 @@ def article_body(a, socblock):
             # the photo may not be in the repo yet; omit rather than ship a broken image
             if has_img(b["src"]):
                 out.append('<figure class="art-fig"><img src="assets/img/%s" alt="%s" '
-                           'loading="lazy"></figure>' % (b["src"], esc(b["x"])))
+                           'loading="lazy" data-zoom="assets/img/%s" tabindex="0" '
+                           'role="button"></figure>' % (b["src"], esc(b["x"]), b["src"]))
         elif k == "cta":
             out.append('<p class="art-cta"><a class="btn btn-red" href="%s">%s</a></p>'
                        % (b["href"], esc(b["x"])))
@@ -287,10 +303,12 @@ def article_page(a, socblock):
             '   <span class="sec-kicker">%s</span>\n'
             '   <h1 class="art-title">%s</h1>\n'
             '   <p class="art-date"><time datetime="%s">%s</time></p>\n'
-            '   <figure class="art-hero"><img src="assets/img/%s" alt="%s"></figure>\n'
+            '   <figure class="art-hero"><img src="assets/img/%s" alt="%s" '
+            'data-zoom="assets/img/%s" tabindex="0" role="button"></figure>\n'
             '   %s\n  </div>\n </article>'
             % (HUB["slug"], esc(HUB["back"]), esc(HUB["kicker"]), esc(a["title"]),
                a["date"], esc(a["date_label"]), article_hero(a), esc(a["hero_alt"]),
+               article_hero(a),
                article_body(a, socblock)))
 
 def hub_page():
@@ -363,10 +381,10 @@ def visit_band():
             'referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>\n'
             '    <div class="visit-facts">'
             '<div class="fact"><h4>Address</h4><p>%s</p></div>'
-            '<div class="fact"><h4>Hours</h4><p>Mon to Thu: 10:00 AM to 8:00 PM<br>'
-            'Fri to Sun: 6:00 AM to 8:00 PM</p></div>'
+            '<div class="fact"><h4>Hours</h4><p>%s</p></div>'
             '<div class="fact"><h4>Service</h4><p>Dine-In &middot; Takeout &middot; Delivery</p></div>'
-            '</div>\n   </div>\n  </div>\n </section>' % (MAPS_EMBED, BRAND, ADDRESS))
+            '</div>\n   </div>\n  </div>\n </section>'
+            % (MAPS_EMBED, BRAND, ADDRESS, hours_html()))
 
 def map_section():
     return ('\n <!-- ===== MAP ===== -->\n <section class="blk map-sec" id="find-us">\n  <div class="container">\n'
@@ -433,8 +451,10 @@ def main():
         name = nm.group(1)
         img = ITEM_IMG.get(name.replace("&amp;","&"), None)
         if img:
-            th = ('<span class="mi-thumb" style="background-image:url(\'assets/img/%s\')" '
-                  'role="img" aria-label="%s"></span>' % (img, name))
+            th = ('<button type="button" class="mi-thumb" '
+                  'style="background-image:url(\'assets/img/%s\')" '
+                  'data-zoom="assets/img/%s" data-zoom-title="%s" '
+                  'aria-label="View photo of %s"></button>' % (img, img, name, name))
         else:
             th = '<span class="mi-thumb mi-thumb-none" aria-hidden="true"></span>'
         return row.replace('<div class="mi-l">', th + '<div class="mi-l">', 1)
@@ -559,13 +579,11 @@ def main():
           "name":BRAND,"url":SITE_URL+"/","image":SITE_URL+"/share-card.jpg",
           "telephone":"+501-613-4677","servesCuisine":"Mexican",
           "hasMenu":SITE_URL+"/menu.html",
-          "address":{"@type":"PostalAddress","streetAddress":"11 Aloe Vera Street",
+          "address":{"@type":"PostalAddress","streetAddress":ADDRESS.split(",")[0],
                      "addressLocality":"West Belmopan","addressCountry":"BZ"},
           "openingHoursSpecification":[
-            {"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday"],
-             "opens":"10:00","closes":"20:00"},
-            {"@type":"OpeningHoursSpecification","dayOfWeek":["Friday","Saturday","Sunday"],
-             "opens":"06:00","closes":"20:00"}],
+            {"@type":"OpeningHoursSpecification","dayOfWeek":d,"opens":o,"closes":c}
+            for d,o,c in HOURS_SCHEMA],
           "sameAs":[v for v in SOCIAL.values() if v],
         }
         return '\n<script type="application/ld+json">%s</script>' % _j.dumps(data, ensure_ascii=False)
@@ -732,6 +750,17 @@ def main():
                if i.get("price") is not None and i["name"] not in ITEM_IMG]
     print("menu photos attached:", len(set(ITEM_IMG.values())), "images across", len(ITEM_IMG), "items")
     print("menu items still without a photo:", len(missing))
+
+    # Address and opening hours are claims about the business, so a copy left over
+    # from an older version must never ship. Fail loudly rather than quietly.
+    STALE = ["Aloe Vera Street", "6:00 AM", "Fri to Sun 6AM", "\"opens\":\"06:00\""]
+    for fn in sorted(os.listdir(DIST)):
+        if not fn.endswith((".html", ".xml", ".webmanifest")): continue
+        body = open(os.path.join(DIST, fn), encoding="utf-8").read()
+        for bad in STALE:
+            if bad in body:
+                sys.exit("STALE BUSINESS DETAIL %r still in %s" % (bad, fn))
+    print("address and hours: single source, no stale copies")
 
 if __name__ == "__main__":
     main()
