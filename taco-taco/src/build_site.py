@@ -45,7 +45,24 @@ REVIEW_COUNT = 10
 
 # YouTube/Vimeo entries. Empty list hides the whole video section.
 # Add like: {"src":"https://www.youtube.com/embed/XXXX","title":"Birria tacos"}
-VIDEOS = []
+# His words, with the punctuation tidied.
+REEL_SUB  = ("Touch play and see what is cooking in our kitchen, and what the staff "
+             "and customers of Taco Taco are up to.")
+VIDEO_SUB = "Straight from the restaurant. Turn the sound up."
+
+VIDEOS = [
+ {"id": "meet-the-team",   "title": "Meet the team",
+  "alt": "The Taco Taco kitchen team in their aprons behind the counter"},
+ {"id": "on-the-griddle",  "title": "On the griddle",
+  "alt": "Patties and a burrito cooking on the flat top at Taco Taco"},
+ {"id": "dance-for-tacos", "title": "Dance for free tacos",
+  "alt": "Two guests dancing in the dining room at Taco Taco"},
+ {"id": "come-see-us",     "title": "Come see us",
+  "alt": "The dining room, the drinks jars and a taco bowl at Taco Taco"},
+]
+for _v in VIDEOS:
+    _v.setdefault("src",    "assets/video/%s.mp4" % _v["id"])
+    _v.setdefault("poster", "assets/img/video-%s.jpg" % _v["id"])
 
 # Photos we can honestly attach to a menu item. Only unmistakable matches:
 # a wrong photo on a menu misrepresents the food a customer is paying for.
@@ -487,6 +504,32 @@ def reviews_band():
             % (esc(STR_REVIEWS["home_kicker"]), esc(STR_REVIEWS["home_title_a"]),
                esc(STR_REVIEWS["home_title_b"]), rating_block(), slots))
 
+def reel_band():
+    """Home page: video thumbnails drifting round a square, bumping off each other.
+    Each one is a link, so it works as a plain grid of links with no JavaScript."""
+    if not VIDEOS:
+        return ""
+    chips = "".join(
+      '<a class="chip" href="gallery.html#v-%s" data-id="%s" aria-label="Watch: %s">'
+      '<span class="chip-img" style="background-image:url(\'%s\')"></span>'
+      '<span class="chip-play" aria-hidden="true"></span>'
+      '<span class="chip-cap">%s</span></a>'
+      % (v["id"], v["id"], esc(v["title"]), derivative(v["poster"].split("/")[-1], 480, "g")[0],
+         esc(v["title"]))
+      for v in VIDEOS[:4])
+    spare = "".join(
+      '<template class="chip-spare" data-id="%s" data-title="%s" data-img="%s"></template>'
+      % (v["id"], esc(v["title"]), derivative(v["poster"].split("/")[-1], 480, "g")[0])
+      for v in VIDEOS[4:])
+    return ('\n <!-- ===== REEL ===== -->\n <section class="blk reel-sec" id="whats-cooking">\n'
+            '  <div class="container">\n'
+            '   <div class="sec-head"><span class="sec-kicker">Watch</span>'
+            '<h2 class="sec-title">What Is <span class="deco">Cooking</span></h2>'
+            '<p class="sec-sub">%s</p></div>\n'
+            '   <div class="reel" id="reel">%s%s</div>\n'
+            '  </div>\n </section>' % (esc(REEL_SUB), chips, spare))
+
+
 def visit_band():
     """Home page: the real map with the pin, plus the details beside it."""
     return ('\n <!-- ===== VISIT ===== -->\n <section class="blk visit-sec" id="find-us">\n  <div class="container">\n'
@@ -626,26 +669,29 @@ def main():
     menu = menu.replace('<div class="menu-grid">', quick + '<div class="menu-grid">', 1)
 
     # ---------- video section ----------
-    # TT_PREVIEW=1 fills the section with sample cards so the layout can be reviewed
-    # before real clips exist. The deployed build leaves it out until VIDEOS is set,
-    # because an empty "coming soon" section on a live restaurant site reads as unfinished.
+    # Real players, not thumbnails that pretend. Nothing is fetched until the
+    # reader presses play, and the clips carry their sound: controls are native so
+    # the volume is where a viewer expects it.
     vids = VIDEOS
-    if not vids and os.environ.get("TT_PREVIEW"):
-        vids = [{"title":"Your clip goes here","poster":"assets/img/g/gal-birria-ramen.jpg"},
-                {"title":"Your clip goes here","poster":"assets/img/g/gal-crispy-tacos.jpg"},
-                {"title":"Your clip goes here","poster":"assets/img/g/menu-chimichanga.jpg"}]
     VIDEOS_ACTIVE = vids
     if vids:
-        cards = "".join(
-          '<div class="vid"%s%s><button type="button" class="vid-play" '
-          'aria-label="Play %s"></button><span class="vid-title">%s</span></div>'
-          % ((' data-src="%s"'%v["src"]) if v.get("src") else "",
-             (' style="background-image:url(\'%s\')"'%v["poster"]) if v.get("poster") else "",
-             v["title"], v["title"]) for v in vids)
+        def player(v):
+            w, h = img_size(v["poster"].split("/")[-1]) or (720, 1280)
+            return ('<figure class="vplay" id="v-%s">'
+                    '<video preload="none" playsinline controls poster="%s" '
+                    'width="%d" height="%d" aria-label="%s">'
+                    '<source src="%s" type="video/mp4">'
+                    'Your browser cannot play this clip. '
+                    '<a href="%s">Download it instead</a>.'
+                    '</video>'
+                    '<figcaption>%s</figcaption></figure>'
+                    % (v["id"], v["poster"], w, h, esc(v["alt"]), v["src"], v["src"], esc(v["title"])))
         video = ('\n <!-- ===== VIDEOS ===== -->\n <section class="blk" id="videos">\n  <div class="container">\n'
                  '   <div class="sec-head"><span class="sec-kicker">Watch</span>'
-                 '<h2 class="sec-title">In The <span class="deco">Kitchen</span></h2></div>\n'
-                 '   <div class="vid-grid">%s</div>\n  </div>\n </section>' % cards)
+                 '<h2 class="sec-title">In The <span class="deco">Kitchen</span></h2>'
+                 '<p class="sec-sub">%s</p></div>\n'
+                 '   <div class="vplay-grid">%s</div>\n  </div>\n </section>'
+                 % (esc(VIDEO_SUB), "".join(player(v) for v in vids)))
     else:
         video = ""
 
@@ -747,7 +793,7 @@ def main():
          json.dumps(REVIEWS, ensure_ascii=False), json.dumps(HOME_ORDER, ensure_ascii=False)))
 
     out = {
-      "index.html":   ("%s | Belmopan"%BRAND, hero+favs+deals_band()+reviews_band()+order+visit_band(),
+      "index.html":   ("%s | Belmopan"%BRAND, hero+favs+deals_band()+reviews_band()+order+reel_band()+visit_band(),
                        "%s in West Belmopan. Authentic Mexicali style tacos, birria, tortas and breakfast. Order online and send your order on WhatsApp."%BRAND),
       "deals-combos.html": ("Deals & Combos | %s"%BRAND, deals_page_body(),
                        "Taco Taco deals and combos in Belmopan: lunch combos, the Mega Combo, and Monday and Tuesday specials. Pick your options and order on WhatsApp."),

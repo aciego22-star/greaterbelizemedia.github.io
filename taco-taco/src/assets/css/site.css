@@ -826,3 +826,50 @@ html.lb-open,html.lb-open body{overflow:hidden}
 .lb-close:hover{background:rgba(255,255,255,.3)}
 .lb-close:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
 @media (prefers-reduced-motion: reduce){.lb,.lb-fig{transition:none}}
+
+/* ================= what is cooking: drifting video chips =================
+   A square stage with the clip thumbnails floating round it, bumping off the
+   walls and each other. Without JavaScript they simply sit in a grid, and every
+   chip is a real link, so the section works either way. */
+.reel-sec .sec-sub{max-width:640px;margin-left:auto;margin-right:auto}
+.reel{position:relative;width:min(100%,560px);margin:26px auto 0;aspect-ratio:1;
+ border-radius:28px;overflow:hidden;
+ background:radial-gradient(120% 100% at 50% 0%,rgba(31,92,46,.10),rgba(31,92,46,.02) 60%),
+            linear-gradient(160deg,var(--cream),var(--cream2));
+ border:1px solid var(--border);
+ display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:16px;place-items:center}
+html.js .reel{display:block;padding:0}
+
+.chip{position:relative;display:block;width:100%;max-width:190px;aspect-ratio:1;border-radius:50%;
+ overflow:hidden;text-decoration:none;background:var(--cream2);
+ box-shadow:0 14px 30px rgba(44,33,24,.22);border:3px solid rgba(255,255,255,.9)}
+html.js .chip{position:absolute;top:0;left:0;width:42%;max-width:none;
+ will-change:transform;transition:box-shadow .25s ease}
+.chip-img{position:absolute;inset:0;background-size:cover;background-position:center}
+.chip::after{content:"";position:absolute;inset:0;border-radius:50%;
+ background:linear-gradient(to top,rgba(0,0,0,.55),rgba(0,0,0,0) 55%)}
+.chip-play{position:absolute;top:50%;left:50%;width:46px;height:46px;margin:-23px 0 0 -23px;
+ border-radius:50%;background:var(--red);box-shadow:0 6px 18px rgba(0,0,0,.35);z-index:2}
+.chip-play::after{content:"";position:absolute;top:50%;left:54%;transform:translate(-50%,-50%);
+ border-left:14px solid #fff;border-top:9px solid transparent;border-bottom:9px solid transparent}
+.chip-cap{position:absolute;left:8%;right:8%;bottom:11%;z-index:2;text-align:center;color:#fff;
+ font-weight:800;font-size:.78rem;line-height:1.25;text-shadow:0 2px 8px rgba(0,0,0,.6)}
+.chip:hover{box-shadow:0 20px 40px rgba(44,33,24,.34)}
+.chip:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+.chip-spare{display:none}
+@media (max-width:420px){.chip-play{width:38px;height:38px;margin:-19px 0 0 -19px}
+ .chip-cap{font-size:.7rem}}
+
+/* the clip swapping in when there are more clips than places to show them */
+.chip-img{transition:opacity .45s ease}
+.chip.swapping .chip-img{opacity:0}
+@media (prefers-reduced-motion: reduce){.chip-img{transition:none}}
+
+/* ================= gallery: the players themselves ================= */
+.vplay-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;
+ margin-top:22px}
+.vplay{margin:0;background:#141210;border-radius:18px;overflow:hidden;
+ box-shadow:0 14px 34px rgba(44,33,24,.22)}
+.vplay video{display:block;width:100%;height:auto;aspect-ratio:9/16;object-fit:cover;background:#141210}
+.vplay figcaption{padding:11px 14px 13px;color:#fff;font-weight:800;font-size:.9rem}
+.vplay.cued{outline:3px solid var(--yellow);outline-offset:3px}

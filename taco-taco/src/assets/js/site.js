@@ -605,3 +605,149 @@
  });
  addEventListener('popstate',close);
 })();
+
+/* ================= what is cooking: drifting video chips =================
+   Four thumbnails wander round a square stage, bounce off the walls and off each
+   other, and where there are more clips than places, a chip quietly swaps to one
+   that is not on show. Reduced motion leaves them still, and they stop moving
+   whenever the section is off screen so a phone is not animating for nothing. */
+(function(){
+ var stage=document.getElementById('reel');
+ if(!stage) return;
+ var chips=[].slice.call(stage.querySelectorAll('.chip'));
+ if(!chips.length) return;
+ var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+ var spares=[].slice.call(stage.querySelectorAll('.chip-spare')).map(function(t){
+  return {id:t.getAttribute('data-id'), title:t.getAttribute('data-title'), img:t.getAttribute('data-img')};
+ });
+
+ if(reduce){                                  // lay them out and leave them alone
+  stage.classList.add('reel-still');
+  chips.forEach(function(c,i){
+   c.style.position='absolute';
+   c.style.left=(i%2?54:4)+'%'; c.style.top=(i<2?4:54)+'%'; c.style.width='42%';
+  });
+  return;
+ }
+
+ var W=0,H=0,R=0, running=false, raf=null;
+ var P=chips.map(function(){return {x:0,y:0,vx:0,vy:0};});
+
+ function measure(){
+  W=stage.clientWidth; H=stage.clientHeight;
+  R=chips[0].offsetWidth/2;
+ }
+ function seed(){
+  measure();
+  var spots=[[0.26,0.26],[0.74,0.28],[0.28,0.74],[0.72,0.72]];
+  P.forEach(function(p,i){
+   var s=spots[i%spots.length];
+   p.x=s[0]*W; p.y=s[1]*H;
+   var a=Math.random()*Math.PI*2, sp=18+Math.random()*14;   // px per second
+   p.vx=Math.cos(a)*sp; p.vy=Math.sin(a)*sp;
+  });
+ }
+ function place(){
+  P.forEach(function(p,i){
+   chips[i].style.transform='translate('+(p.x-R).toFixed(1)+'px,'+(p.y-R).toFixed(1)+'px)';
+  });
+ }
+
+ var last=0;
+ function frame(t){
+  if(!running) return;
+  var dt=Math.min(0.05,(t-(last||t))/1000); last=t;
+  P.forEach(function(p){
+   p.x+=p.vx*dt; p.y+=p.vy*dt;
+   if(p.x<R){p.x=R;p.vx=Math.abs(p.vx);} else if(p.x>W-R){p.x=W-R;p.vx=-Math.abs(p.vx);}
+   if(p.y<R){p.y=R;p.vy=Math.abs(p.vy);} else if(p.y>H-R){p.y=H-R;p.vy=-Math.abs(p.vy);}
+  });
+  // equal masses, so a collision simply trades the velocity along the line of centres
+  for(var i=0;i<P.length;i++)for(var j=i+1;j<P.length;j++){
+   var a=P[i],b=P[j], dx=b.x-a.x, dy=b.y-a.y, d=Math.hypot(dx,dy)||0.001, min=R*2;
+   if(d>=min) continue;
+   var nx=dx/d, ny=dy/d, overlap=(min-d)/2;
+   a.x-=nx*overlap; a.y-=ny*overlap; b.x+=nx*overlap; b.y+=ny*overlap;
+   var av=a.vx*nx+a.vy*ny, bv=b.vx*nx+b.vy*ny, diff=bv-av;
+   a.vx+=diff*nx; a.vy+=diff*ny; b.vx-=diff*nx; b.vy-=diff*ny;
+  }
+  place();
+  raf=requestAnimationFrame(frame);
+ }
+ function start(){ if(running) return; running=true; last=0; raf=requestAnimationFrame(frame); }
+ function stop(){ running=false; if(raf) cancelAnimationFrame(raf); raf=null; }
+
+ // Swap a chip for a clip that is not currently on show.
+ var swap=null;
+ function rotate(){
+  if(!spares.length) return;
+  var c=chips[Math.floor(Math.random()*chips.length)];
+  var out={id:c.getAttribute('data-id'),
+           title:c.querySelector('.chip-cap').textContent,
+           img:c.querySelector('.chip-img').style.backgroundImage.slice(5,-2)};
+  var next=spares.shift();
+  c.classList.add('swapping');
+  setTimeout(function(){
+   c.setAttribute('data-id',next.id);
+   c.setAttribute('href','gallery.html#v-'+next.id);
+   c.setAttribute('aria-label','Watch: '+next.title);
+   c.querySelector('.chip-cap').textContent=next.title;
+   c.querySelector('.chip-img').style.backgroundImage="url('"+next.img+"')";
+   c.classList.remove('swapping');
+   spares.push(out);
+  },460);
+ }
+
+ seed(); place();
+ addEventListener('resize',function(){var ox=W,oy=H;measure();
+  if(ox&&oy)P.forEach(function(p){p.x*=W/ox;p.y*=H/oy;});place();});
+
+ // A moving target is hard to tap, and a chip that shifts between finger down and
+ // finger up loses the click entirely. Freeze the moment anyone reaches for one.
+ var held=false, resume=null, visible=true;
+ function hold(){ held=true; clearTimeout(resume); stop(); }
+ function release(ms){ clearTimeout(resume);
+  resume=setTimeout(function(){held=false; if(visible) start();}, ms||900); }
+ stage.addEventListener('pointerdown',hold);
+ stage.addEventListener('pointerup',function(){release(900);});
+ stage.addEventListener('pointercancel',function(){release(900);});
+ stage.addEventListener('mouseenter',hold);
+ stage.addEventListener('mouseleave',function(){release(150);});
+ stage.addEventListener('focusin',hold);
+ stage.addEventListener('focusout',function(){release(400);});
+
+ var realStart=start;
+ start=function(){ if(held) return; realStart(); };
+
+ if('IntersectionObserver' in window){
+  new IntersectionObserver(function(es){
+   es.forEach(function(e){
+    visible=e.isIntersecting;
+    if(visible){ start(); if(!swap&&spares.length) swap=setInterval(rotate,6000); }
+    else { stop(); if(swap){clearInterval(swap);swap=null;} }
+   });
+  },{threshold:0.15}).observe(stage);
+ } else { start(); if(spares.length) swap=setInterval(rotate,6000); }
+ document.addEventListener('visibilitychange',function(){document.hidden?stop():start();});
+})();
+
+/* Arriving at the gallery from a chip: go to that clip and offer it up.
+   Playback is not forced with the sound on, because a browser will refuse it and
+   the clip would be muted, which is the one thing we were asked not to do. */
+(function(){
+ if(!/gallery\.html$|gallery\.html#/.test(location.pathname+location.hash)) return;
+ function cue(){
+  var id=location.hash.replace('#','');
+  if(!/^v-/.test(id)) return;
+  var fig=document.getElementById(id);
+  if(!fig) return;
+  fig.scrollIntoView({block:'center'});
+  fig.classList.add('cued');
+  var v=fig.querySelector('video');
+  if(v){ v.preload='auto'; v.load(); try{v.focus({preventScroll:true});}catch(e){} }
+  setTimeout(function(){fig.classList.remove('cued');},4000);
+ }
+ addEventListener('load',function(){setTimeout(cue,60);});
+ addEventListener('hashchange',cue);
+})();
