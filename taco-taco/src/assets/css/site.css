@@ -873,3 +873,38 @@ html.js .chip{position:absolute;top:0;left:0;width:42%;max-width:none;
 .vplay video{display:block;width:100%;height:auto;aspect-ratio:9/16;object-fit:cover;background:#141210}
 .vplay figcaption{padding:11px 14px 13px;color:#fff;font-weight:800;font-size:.9rem}
 .vplay.cued{outline:3px solid var(--yellow);outline-offset:3px}
+
+/* ================= about: the spread beside the copy =================
+   Two columns on a wide screen with the photograph taking a little under half.
+   On a phone it stacks: heading, copy, the tall photograph, then the points. */
+.about-wrap{display:grid;grid-template-columns:1fr;gap:24px;align-items:center}
+@media (min-width:900px){
+ .about-wrap{grid-template-columns:1fr 0.85fr;gap:40px}
+ .about-copy .sec-kicker,.about-copy .sec-title{text-align:left}
+ .about-copy .sec-title{margin-left:0}
+}
+.about-copy .sec-kicker{display:block;margin-bottom:8px}
+.about-copy .sec-title{margin:0 0 14px}
+.about-lead{margin:0 0 14px;color:rgba(255,255,255,.90);font-size:1rem;line-height:1.65}
+.about .sec-kicker{color:var(--yellow)}
+.about-lead:last-child{margin-bottom:0}
+
+.about-shot{margin:0;border-radius:22px;overflow:hidden;
+ box-shadow:0 20px 44px rgba(44,33,24,.24);background:var(--cream2)}
+.about-shot img{display:block;width:100%;height:auto}
+
+/* three compact points, not the old oversized boxes */
+.about-points{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+ gap:14px;margin-top:30px}
+.apoint{background:var(--paper);border:1px solid var(--border);border-radius:16px;
+ padding:18px 18px 16px}
+.apoint h3{margin:10px 0 6px;font-size:1rem;color:var(--green-d);letter-spacing:.2px}
+.apoint p{margin:0;color:var(--muted);font-size:.9rem;line-height:1.55}
+.apoint-ico{display:inline-flex;align-items:center;justify-content:center;
+ width:42px;height:42px;border-radius:12px;background:rgba(31,92,46,.09)}
+.apoint-ico svg{width:25px;height:25px;fill:none;stroke:var(--green-d);stroke-width:1.9;
+ stroke-linecap:round;stroke-linejoin:round}
+
+.about-cta{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:28px 0 0}
+@media (min-width:900px){.about-cta{justify-content:flex-start}}
+.about-cta .btn{margin:0}

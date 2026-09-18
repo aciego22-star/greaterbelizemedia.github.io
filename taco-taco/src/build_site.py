@@ -6,6 +6,7 @@ from deals_data import DEALS, FEATURED, STR
 from blog_data import HUB, ARTICLES
 from reviews_data import REVIEWS, HOME_ORDER, STR_REVIEWS
 from menu_data import CATEGORIES as MENU_CATS, INTRO as MENU_INTRO, MEATS, MEAT_SURCHARGE
+from about_data import ABOUT
 
 SRC  = os.path.join(os.path.dirname(__file__), "_single.html")
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -298,6 +299,65 @@ def deals_page_body():
             '<h2 class="sec-title">Deals &amp; <span class="deco">Combos</span></h2>'
             '<p class="sec-sub">%s</p></div>\n   <div class="deal-grid">%s</div>\n'
             '  </div>\n </section>' % (esc(STR["section_kicker"]), esc(STR["page_sub"]), cards))
+
+# Drawn marks, not emoji: they take the brand colours and stay crisp at any size.
+ABOUT_ICONS = {
+ # Simple silhouettes: at 23px a detailed outline turns to mush.
+ "flame": '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
+          '<path d="M12 2.6s5.4 4 5.4 9.2a5.4 5.4 0 0 1-10.8 0C6.6 6.6 12 2.6 12 2.6z"/>'
+          '<path d="M12 20a2.6 2.6 0 0 1-2.6-2.6c0-2 2.6-3.6 2.6-3.6s2.6 1.6 2.6 3.6A2.6 2.6 0 0 1 12 20z"/>'
+          '</svg>',
+ "chili": '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
+          '<path d="M15.6 7.4c1.1 6-3.1 12.2-8.2 12.2A3.6 3.6 0 0 1 3.8 16c0-4.7 4.3-8.6 9.3-8.6h2.5z"/>'
+          '<path d="M15.6 7.4c2 0 3.6-1.6 3.6-3.6"/>'
+          '<path d="M19.2 3.8c-1.5 0-2.8-.7-3.6-1.8"/>'
+          '</svg>',
+ "bag":   '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
+          '<path d="M5.4 7.8h13.2l-1.1 12.4H6.5L5.4 7.8z"/>'
+          '<path d="M9 7.8V6.4a3 3 0 0 1 6 0v1.4"/>'
+          '</svg>',
+}
+
+
+def about_section(lang="en"):
+    """About: the food spread beside the copy, three compact points, two ways to order.
+    The wide photograph is for the two column layout and the tall one for a phone,
+    picked by the browser rather than cropped down from one file."""
+    L = lambda d: esc(d[lang])
+    lead = "".join('<p class="about-lead">%s</p>' % L(p) for p in ABOUT["lead"])
+    cards = "".join(
+      '<div class="apoint"><span class="apoint-ico">%s</span>'
+      '<h3>%s</h3><p>%s</p></div>'
+      % (ABOUT_ICONS.get(pt["icon"], ""), L(pt["title"]), L(pt["body"]))
+      for pt in ABOUT["points"])
+    wide_w, wide_h = img_size("about-spread-wide.jpg") or (1200, 675)
+    shot = (
+      '<figure class="about-shot">'
+      '<picture>'
+      '<source media="(max-width:760px)" type="image/webp" srcset="assets/img/about-spread-tall.webp">'
+      '<source media="(max-width:760px)" type="image/jpeg" srcset="assets/img/about-spread-tall.jpg">'
+      '<source type="image/webp" srcset="assets/img/about-spread-wide.webp">'
+      '<img src="assets/img/about-spread-wide.jpg" alt="%s" loading="lazy" decoding="async" '
+      'width="%d" height="%d" data-zoom="assets/img/about-spread-wide.jpg" tabindex="0" role="button">'
+      '</picture></figure>' % (L(ABOUT["image_alt"]), wide_w, wide_h))
+    return (
+ '<!-- ===== ABOUT ===== -->\n <section class="blk about" id="about">\n  <div class="container">\n'
+ '   <div class="about-wrap">\n'
+ '    <div class="about-copy">\n'
+ '     <span class="sec-kicker">%s</span>\n'
+ '     <h2 class="sec-title">%s <span class="deco">%s</span></h2>\n'
+ '     %s\n'
+ '    </div>\n'
+ '    %s\n'
+ '   </div>\n'
+ '   <div class="about-points">%s</div>\n'
+ '   <p class="about-cta">'
+ '<a class="btn btn-green" href="menu.html">%s</a>'
+ '<button type="button" class="btn btn-red wa-send js-wa-start">%s</button></p>\n'
+ '  </div>\n </section>'
+ % (L(ABOUT["kicker"]), L(ABOUT["title_a"]), L(ABOUT["title_b"]), lead, shot, cards,
+    L(ABOUT["cta_menu"]), L(ABOUT["cta_wa"])))
+
 
 def menu_section():
     """The whole menu, built from menu_data so one file holds every string."""
@@ -619,7 +679,7 @@ def main():
     galler = re.sub(r'(<div class="gal">)(.*?)(</div>\s*</div>\s*</section>)',
                     lambda m: m.group(1) + "\n    " + tiles + "\n   " + m.group(3),
                     galler, count=1, flags=re.S)
-    about  = frag(html, "<!-- ===== ABOUT ===== -->")
+    about  = about_section()
     order  = frag(html, "<!-- ===== ORDER ===== -->")
     def between(a, b):
         i = html.find(a); j = html.find(b, i)

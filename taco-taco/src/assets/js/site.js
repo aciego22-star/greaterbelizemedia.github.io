@@ -111,6 +111,16 @@
  $('bp-close').addEventListener('click',function(){panel.classList.remove('open');});
  panel.addEventListener('click',function(e){if(e.target===panel)panel.classList.remove('open');});
  $('bp-clear').addEventListener('click',function(){basket=[];renderBar();renderPanel();saveBasket();});
+ // "Order on WhatsApp" from a page with no basket on it: open the same chat the
+ // basket sends to, with an opening line, rather than inventing a second route.
+ document.querySelectorAll('.js-wa-start').forEach(function(b){
+  b.addEventListener('click',function(){
+   var t=count()
+     ? waText()
+     : 'Hello Taco Taco, I would like to place an order.';
+   window.open('https://wa.me/'+WA_NUMBER+'?text='+encodeURIComponent(t),'_blank');
+  });
+ });
  document.querySelectorAll('.js-open-basket').forEach(function(a){
   a.addEventListener('click',function(e){e.preventDefault();openBasket();});});
 
