@@ -128,6 +128,7 @@ ITEM_IMG = {
  "Tres Leches":                    "menu-tres-leches.jpg",
  "Cheesecake":                     "menu-cheesecake.jpg",
  "Cinnamon Rolls":                 "menu-cinnamon-rolls.jpg",
+ "Cookies":                        "menu-cookies.jpg",
  "Frapp\u00e9":                      "fav-04.jpg",
 
  # From the two photo packages, each checked against the printed menu.
