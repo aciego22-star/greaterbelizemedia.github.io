@@ -948,3 +948,34 @@ html.js .chip{position:absolute;top:0;left:0;width:42%;max-width:none;
 @media (prefers-reduced-motion: reduce){
  .pop-in,.pop-in.popped,.pop-done{opacity:1;transform:none;animation:none}
  .pop-jump{animation:none}}
+
+/* ===== language switch =====
+   Between the logo and the menu options, as asked, which on a phone is between
+   the logo and Browse. Both languages are always shown with the current one
+   filled in, so the reader can see which they are on and reach the other in one
+   tap, rather than guessing what a single flag or code would do. */
+.lang-switch{display:inline-flex;flex:0 0 auto;margin:0 10px 0 auto;
+ border:1.5px solid var(--green-d);border-radius:999px;overflow:hidden;
+ background:rgba(255,255,255,.55)}
+.lang-switch a{display:block;padding:5px 11px;font-weight:800;font-size:.72rem;
+ letter-spacing:.08em;color:var(--green-d);text-decoration:none;line-height:1.15;
+ transition:background .18s ease,color .18s ease}
+.lang-switch a + a{border-left:1.5px solid var(--green-d)}
+.lang-switch a.on{background:var(--green-d);color:#fff}
+.lang-switch a:not(.on):hover{background:rgba(31,92,46,.12)}
+.lang-switch a:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+/* Desktop puts the links in the middle of the bar, so the switch stops being
+   the thing that pushes them off centre. */
+@media(min-width:861px){.lang-switch{margin:0 0 0 16px}}
+/* On a phone the bar is logo, switch, Browse, and the wordmark was losing its
+   second line to the switch. Trim the switch, not the brand. */
+@media(max-width:860px){
+ .lang-switch{margin:0 auto 0 14px}
+ .lang-switch a{padding:5px 8px;font-size:.66rem;letter-spacing:.06em}
+ .brand-full{white-space:nowrap}
+ .brand{min-width:0}}
+@media(max-width:380px){.lang-switch a{padding:4px 7px;font-size:.62rem}}
+/* Spanish words are longer than English ones. Keep the two header buttons on
+   one line rather than letting the bar grow a second row. */
+.mnav-toggle,.info-toggle{white-space:nowrap}
+@media(max-width:430px){.mnav-toggle{padding-left:14px;padding-right:14px;font-size:.82rem}}

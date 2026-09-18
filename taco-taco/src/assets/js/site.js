@@ -1,6 +1,13 @@
+/* Every word this file puts on the page comes from the language payload that
+   ships beside the deals data, so the Spanish site has no English of ours left
+   in its interface. Declared before anything else here because the basket, the
+   lightbox and the reel all reach for it. */
+var TT_TXT=window.TT_T||{};
+function t(k,d){return TT_TXT[k]||d;}
+
 (function(){
  var H=document.documentElement; H.classList.add('js');
- var WA_NUMBER='5016108859';   // TESTING line. Switch to 5016134677 (613-4677) for go-live.
+ var WA_NUMBER='5016108859';   // set by build_site.py; do not edit here
  var basket=[];                // {name, meat, price(number), label, qty}
  var $=function(id){return document.getElementById(id);};
  var barCount=$('bb-count'), barTotal=$('bb-total');
@@ -18,18 +25,22 @@
   if(v&&v.length){basket=v;basket.forEach(function(it){if(!it.key)it.key=keyOf(it.name,it.meat);});renderBar();}}catch(e){}}
 
  function renderBar(){var c=count();H.classList.toggle('has-items',c>0);
-  barCount.textContent=c+(c===1?' item':' items');barTotal.textContent=money(total());}
+  barCount.textContent=c+' '+(c===1?t('item','item'):t('items','items'));barTotal.textContent=money(total());}
  function renderPanel(){
   list.innerHTML='';
-  if(!basket.length){list.innerHTML='<p class="bp-empty">Your basket is empty. Tap Add on any menu item.</p>';}
+  if(!basket.length){list.innerHTML='<p class="bp-empty"></p>';
+   list.firstChild.textContent=t('basket_empty','Your basket is empty. Tap Add on any menu item.');}
   basket.forEach(function(it,i){
    var row=document.createElement('div');row.className='bp-row';
    row.innerHTML='<span class="bp-thumb'+(it.img?'':' none')+'"'+(it.img?' style="background-image:url(\''+it.img+'\')"':'')+'></span>'+
     '<div class="bp-info"><span class="bp-name"></span><span class="bp-price"></span></div>'+
-    '<div class="bp-qty"><button type="button" class="qbtn" data-a="dec" data-i="'+i+'" aria-label="Decrease">−</button>'+
+    '<div class="bp-qty"><button type="button" class="qbtn" data-a="dec" data-i="'+i+'" aria-label="'+t('decrease','Decrease')+'">−</button>'+
     '<span class="qn">'+it.qty+'</span>'+
-    '<button type="button" class="qbtn" data-a="inc" data-i="'+i+'" aria-label="Increase">+</button></div>';
-   row.querySelector('.bp-name').textContent=it.name+(it.meat?' ('+it.meat+')':'');
+    '<button type="button" class="qbtn" data-a="inc" data-i="'+i+'" aria-label="'+t('increase','Increase')+'">+</button></div>';
+   // What the guest reads, which on the Spanish site is not what the kitchen
+   // receives: the order keeps the name printed on the restaurant's own menu.
+   var shownMeat=it.meatDisp||it.meat;
+   row.querySelector('.bp-name').textContent=(it.disp||it.name)+(shownMeat?' ('+shownMeat+')':'');
    if(it.opts&&it.opts.length){
     var o=document.createElement('span'); o.className='bp-opts';
     o.textContent=it.opts.join(' \u00b7 ');
@@ -40,14 +51,14 @@
   });
   panelTotal.textContent=money(total());
  }
- function add(name,priceStr,meat,img,extra){
+ function add(name,priceStr,meat,img,extra,disp,meatDisp){
   // A meat can carry a surcharge of its own: the menu prices birria a dollar up.
   extra=extra||0;
   var price=priceNum(priceStr)+extra;
   var label=extra?('$'+price+(/\bea\b/.test(priceStr||'')?' ea':'')):priceStr;
   var k=keyOf(name,meat),f=basket.filter(function(b){return (b.key||keyOf(b.name,b.meat))===k;})[0];
   if(f){f.qty++;}else{basket.push({key:k,name:name,meat:meat||'',price:price,
-   label:label,qty:1,img:img||''});}
+   label:label,qty:1,img:img||'',disp:disp||'',meatDisp:meatDisp||''});}
   renderBar();saveBasket();
  }
  // A promotional deal. `wa` is the real food the kitchen receives; the flyer never goes to them.
@@ -84,19 +95,24 @@
  }
  document.querySelectorAll('.add-btn').forEach(function(btn){
   btn.addEventListener('click',function(){
-   var meat='', extra=0;
+   var meat='', meatLabel='', extra=0;
    if(btn.getAttribute('data-meat')){
     var sel=btn.parentNode.querySelector('.mi-meat');
     if(sel){
+     // value is the kitchen's word for the meat, text is the reader's
      meat=sel.value;
      var o=sel.options[sel.selectedIndex];
+     meatLabel=o?o.text:meat;
      extra=o?(parseFloat(o.getAttribute('data-add'))||0):0;
     }
    }
-   add(btn.getAttribute('data-name'),btn.getAttribute('data-price'),meat,btn.getAttribute('data-img'),extra);
+   add(btn.getAttribute('data-name'),btn.getAttribute('data-price'),meat,btn.getAttribute('data-img'),extra,
+      btn.getAttribute('data-disp')||'',meatLabel);
    flyToBasket(btn);
-   btn.classList.add('added');btn.textContent='Added';
-   setTimeout(function(){btn.classList.remove('added');btn.textContent='Add';},900);
+   var was=btn.getAttribute('data-label')||btn.textContent;
+   btn.setAttribute('data-label',was);
+   btn.classList.add('added');btn.textContent=t('added','Added');
+   setTimeout(function(){btn.classList.remove('added');btn.textContent=was;},900);
   });
  });
  list.addEventListener('click',function(e){
@@ -117,7 +133,7 @@
   b.addEventListener('click',function(){
    var t=count()
      ? waText()
-     : 'Hello Taco Taco, I would like to place an order.';
+     : t('wa_open','Hello Taco Taco, I would like to place an order.');
    window.open('https://wa.me/'+WA_NUMBER+'?text='+encodeURIComponent(t),'_blank');
   });
  });
@@ -138,7 +154,8 @@
    }
   });
   while(lines.length&&lines[lines.length-1]==='')lines.pop();
-  return 'Hi Taco Taco! I would like to place this order:\n\n'+lines.join('\n')+'\n\nTotal: '+money(total())+' BZD';
+  return t('wa_intro','Hi Taco Taco! I would like to place this order:')+'\n\n'+lines.join('\n')
+         +'\n\n'+t('wa_total','Total')+': '+money(total())+' BZD';
  }
  $('bp-send').addEventListener('click',function(){
   if(!basket.length)return;
@@ -149,7 +166,7 @@
  var mc=$('menu-collapse'), mtog=$('menu-toggle');
  if(mc&&mtog){mtog.addEventListener('click',function(){
   var open=mc.classList.toggle('open');
-  mtog.textContent=open?'Collapse Menu':'View Full Menu';
+  mtog.textContent=open?t('menu_close','Collapse Menu'):t('menu_open','View Full Menu');
   if(!open){var sec=document.getElementById('menu');if(sec)sec.scrollIntoView({behavior:'smooth',block:'start'});}
  });}
 
@@ -452,7 +469,7 @@
    var price=priceOf(card,d);
    if(price==null) missing.push((d.choices[0]||{}).label||'an option');
    if(missing.length){
-    warn.textContent=(STR.pick_one||'Please choose')+': '+missing.join(', ');
+    warn.textContent=(STR.pick_one||t('pick_one','Please choose'))+': '+missing.join(', ');
     warn.hidden=false;
     var f=card.querySelector('.opt-sel.bad,.opt:not([hidden]) input[type=radio]');
     if(f&&f.focus)f.focus();
@@ -557,7 +574,7 @@
   lb.setAttribute('role','dialog');
   lb.setAttribute('aria-modal','true');
   lb.setAttribute('aria-label','Photo');
-  lb.innerHTML='<button type="button" class="lb-close" aria-label="Close photo">×</button>'+
+  lb.innerHTML='<button type="button" class="lb-close" aria-label="'+t('close_photo','Close photo')+'">×</button>'+
    '<figure class="lb-fig"><img class="lb-img" alt=""><figcaption class="lb-cap"></figcaption></figure>';
   document.body.appendChild(lb);
   img=lb.querySelector('.lb-img');
@@ -736,7 +753,7 @@
    setTimeout(function(){
     c.setAttribute('data-id',next.id);
     c.setAttribute('href','gallery.html#v-'+next.id);
-    c.setAttribute('aria-label','Watch: '+next.title);
+    c.setAttribute('aria-label',t('watch','Watch')+': '+next.title);
     c.querySelector('.chip-cap').textContent=next.title;
     c.querySelector('.chip-img').style.backgroundImage="url('"+next.img+"')";
     c.classList.remove('swapping');
@@ -941,4 +958,17 @@
  function q(sel){ return [].slice.call(document.querySelectorAll(sel)); }
  popGroup(q('.about-points .apoint'));   // About: the three feature cards
  popGroup(q('.rev-grid .rev'));          // Reviews page: the Google reviews
+})();
+
+/* ================= language =================
+   The switch itself is a plain link, so it works with no JavaScript at all.
+   This only records the choice, so that the next landing on an English page
+   does not send a Spanish-phone reader back to Spanish against their wishes,
+   and the other way round. Their choice outranks their phone's setting. */
+(function(){
+ [].slice.call(document.querySelectorAll('.lang-switch a')).forEach(function(a){
+  a.addEventListener('click',function(){
+   try{localStorage.setItem('tt_lang',a.getAttribute('data-lang'));}catch(e){}
+  });
+ });
 })();

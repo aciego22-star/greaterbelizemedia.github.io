@@ -7,6 +7,25 @@ from blog_data import HUB, ARTICLES
 from reviews_data import REVIEWS, HOME_ORDER, STR_REVIEWS
 from menu_data import CATEGORIES as MENU_CATS, INTRO as MENU_INTRO, MEATS, MEAT_SURCHARGE
 from about_data import ABOUT
+import i18n
+from es import ES, JS as JS_ES
+
+# The reviews and the About copy were written in both languages from the start.
+# Fold them into the same table the rest of the site is translated through, so
+# there is one lookup and one missing-strings report rather than three.
+for _r in REVIEWS:
+    if _r.get("en") and _r.get("es"):
+        ES.setdefault(_r["en"], _r["es"])
+def _fold_about(node):
+    if isinstance(node, dict):
+        if "en" in node and "es" in node and isinstance(node["en"], str):
+            ES.setdefault(node["en"], node["es"]); return
+        for v in node.values(): _fold_about(v)
+    elif isinstance(node, list):
+        for v in node: _fold_about(v)
+_fold_about(ABOUT)
+
+LANGS = [("en", "", "English"), ("es", "es/", "Espa\u00f1ol")]
 
 SRC  = os.path.join(os.path.dirname(__file__), "_single.html")
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -15,7 +34,10 @@ DIST = os.path.join(ROOT, "dist")
 SITE_URL   = "https://tacotaco.bz"
 BRAND      = "Taco Taco Mexican Restaurant"
 BRAND_SHORT= "Mexican Restaurant"
-WA_NUMBER  = "5016134677"          # 613-4677
+WA_NUMBER  = "5016108859"   # TEST line. The restaurant is 5016134677 (613-4677).
+                            # Stamped into site.js at build time so the number
+                            # lives in one place, and printed at the end of every
+                            # build so it cannot go live on the wrong line.
 
 # Social profiles. Leave a value empty and that button simply does not render,
 # so the live site never shows a dead link.
@@ -656,6 +678,16 @@ def main():
         if os.path.isdir(os.path.join(DIST,sub)): shutil.rmtree(os.path.join(DIST,sub))
     shutil.copytree(os.path.join(os.path.dirname(__file__),"assets"), os.path.join(DIST,"assets"))
 
+    # The number lives in build_site and nowhere else. site.js used to carry its
+    # own copy, which is how the site ended up with a test line in one file and
+    # the restaurant's line in another.
+    _js = os.path.join(DIST, "assets", "js", "site.js")
+    _b  = open(_js, encoding="utf-8").read()
+    _b, _n = re.subn(r"var WA_NUMBER='[0-9]+';", "var WA_NUMBER='%s';" % WA_NUMBER, _b, count=1)
+    if not _n:
+        sys.exit("site.js no longer declares WA_NUMBER: the build cannot set the number")
+    open(_js, "w", encoding="utf-8").write(_b)
+
     # ---------- fragments ----------
     hero   = frag(html, "<!-- ===== HERO ===== -->")
     favs   = frag(html, "<!-- ===== FEATURED FAVORITES ===== -->")
@@ -773,6 +805,11 @@ def main():
     def header_for(cur):
         h = header
         h = h.replace('href="#top"', 'href="index.html"', 1)          # brand link
+        # The switch sits between the logo and the menu options, as asked: on a
+        # phone that is between the logo and Browse, on a desktop between the
+        # logo and the links. Filled in per language after the page is built.
+        h = h.replace('<div class="nav-links">',
+                      '<!--LANGSW:%s--><div class="nav-links">' % cur, 1)
         h = re.sub(r'<div class="nav-links">.*?</div>',
                    '<div class="nav-links">%s</div>'%nav(cur), h, flags=re.S)
         h = re.sub(r'<div class="mnav-drop">.*?</div>',
@@ -805,6 +842,8 @@ def main():
  '\n<script src="assets/js/deals.js" defer fetchpriority="high"></script>'
  '\n<script src="assets/js/site.js" defer fetchpriority="high"></script>'
  '\n<link rel="canonical" href="%s">'
+ '<!--HREFLANG:{FN}-->'
+ '<!--AUTOLANG-->'
  '\n<meta name="theme-color" content="#1f5c2e">'
  '\n<link rel="icon" href="favicon.ico" sizes="any">'
  '\n<link rel="icon" type="image/png" sizes="32x32" href="icon-32.png">'
@@ -823,7 +862,7 @@ def main():
  '\n<meta name="twitter:title" content="%s">'
  '\n<meta name="twitter:description" content="%s">'
  '\n<meta name="twitter:image" content="%s/share-card.jpg">'
- % (url, BRAND, title, desc, url, SITE_URL, title, desc, SITE_URL))
+ % (url, BRAND, title, desc, url, SITE_URL, title, desc, SITE_URL)).replace("{FN}", fname)
 
     def schema_jsonld():
         """Restaurant markup. Deliberately no aggregateRating: Google's review
@@ -853,10 +892,23 @@ def main():
                 % (h, header_for(nav_as or fname), body, banner, foot, dock, basket))
 
 
-    open(os.path.join(DIST,"assets","js","deals.js"),"w",encoding="utf-8").write(
-      "window.TT_DEALS=%s;\nwindow.TT_STR=%s;\nwindow.TT_REVIEWS=%s;\nwindow.TT_REV_ORDER=%s;\n"
-      % (json.dumps(DEALS, ensure_ascii=False), json.dumps(STR, ensure_ascii=False),
-         json.dumps(REVIEWS, ensure_ascii=False), json.dumps(HOME_ORDER, ensure_ascii=False)))
+    # The deals carousel and the rotating reviews are drawn in the browser, so
+    # their words never pass through the page translator. They get their own
+    # copy of the data instead, one file per language, and site.js reads its
+    # run-time strings from the same payload rather than carrying English.
+    def payload(lang):
+        deals = DEALS if lang == "en" else i18n.translate_json(DEALS)
+        strs  = STR   if lang == "en" else i18n.translate_json(STR)
+        revs  = [dict(r, en=(r.get(lang) or r.get("en") or "")) for r in REVIEWS]
+        txt   = {} if lang == "en" else JS_ES
+        return ("window.TT_DEALS=%s;\nwindow.TT_STR=%s;\nwindow.TT_REVIEWS=%s;\n"
+                "window.TT_REV_ORDER=%s;\nwindow.TT_T=%s;\nwindow.TT_WA='%s';\n"
+                % (json.dumps(deals, ensure_ascii=False), json.dumps(strs, ensure_ascii=False),
+                   json.dumps(revs, ensure_ascii=False), json.dumps(HOME_ORDER, ensure_ascii=False),
+                   json.dumps(txt, ensure_ascii=False), WA_NUMBER))
+    for _lang, _, _ in LANGS:
+        open(os.path.join(DIST,"assets","js","deals%s.js" % ("" if _lang=="en" else "."+_lang)),
+             "w",encoding="utf-8").write(payload(_lang))
 
     out = {
       "index.html":   ("%s | Belmopan"%BRAND, hero+favs+deals_band()+reviews_band()+order+reel_band()+visit_band(),
@@ -914,7 +966,8 @@ def main():
     # convention and some static hosts ignore or drop it. A new name is a new file
     # everywhere. The HTML itself revalidates on every request.
     fingerprint = {}
-    for rel in ("assets/css/site.css", "assets/js/site.js", "assets/js/deals.js"):
+    for rel in ("assets/css/site.css", "assets/js/site.js", "assets/js/deals.js",
+                "assets/js/deals.es.js"):
         full = os.path.join(DIST, *rel.split("/"))
         if not os.path.exists(full): continue
         h = hashlib.md5(open(full,"rb").read()).hexdigest()[:10]
@@ -946,9 +999,78 @@ def main():
             return '<img%s width="%d" height="%d">' % (attrs.rstrip().rstrip("/"), wh[0], wh[1])
         return IMG_TAG.sub(fix, p)
 
+    # ---------- the two language trees ----------
+    # English at the root, Spanish under /es/ with the same filenames, so the
+    # switch is always the same page in the other language and a search engine
+    # can pair them with hreflang.
+
+    def lang_switch(lang, fn):
+        """EN | ES, with the page you are on marked. One tap either way."""
+        to_en = fn if lang == "en" else "../" + fn
+        to_es = "es/" + fn if lang == "en" else fn
+        lab   = {"en": ("Read this site in English" if lang == "en" else "Lea este sitio en ingl\u00e9s"),
+                 "es": ("Read this site in Spanish" if lang == "en" else "Lea este sitio en espa\u00f1ol")}
+        def one(code, href, text):
+            on = ' class="on" aria-current="true"' if code == lang else ""
+            return ('<a%s href="%s" hreflang="%s" lang="%s" data-lang="%s" title="%s">%s</a>'
+                    % (on, href, code, code, code, lab[code], text))
+        return ('<div class="lang-switch" role="group" aria-label="%s">%s%s</div>'
+                % ("Language" if lang == "en" else "Idioma",
+                   one("en", to_en, "EN"), one("es", to_es, "ES")))
+
+    def hreflang(lang, fn):
+        en = SITE_URL + ("/" if fn == "index.html" else "/" + fn)
+        es = SITE_URL + "/es/" + ("" if fn == "index.html" else fn)
+        return ('\n<link rel="alternate" hreflang="en" href="%s">'
+                '\n<link rel="alternate" hreflang="es" href="%s">'
+                '\n<link rel="alternate" hreflang="x-default" href="%s">' % (en, es, en))
+
+    # Land in the reader's own language, and never argue with them about it.
+    # It runs before anything is painted, it only ever fires on an English page,
+    # and a choice made with the switch is remembered and wins from then on.
+    AUTOLANG = ("\n<script>(function(){try{"
+      "var k='tt_lang',s=localStorage.getItem(k);"
+      "if(s==='en')return;"
+      "var l=(navigator.languages&&navigator.languages[0])||navigator.language||'';"
+      "if(s!=='es'&&!/^es\\b|^es-/i.test(l))return;"
+      "var f=location.pathname.split('/').pop();"
+      "if(!/\\.html$/.test(f))f='index.html';"
+      "location.replace('es/'+f+location.search+location.hash);"
+      "}catch(e){}})();</script>")
+
+    def to_spanish_tree(page, fn):
+        """Same page, one directory down: every relative asset gains a ../."""
+        page = page.replace('<html lang="en">', '<html lang="es">')
+        page = re.sub(r'(["\'(])assets/', r'\1../assets/', page)
+        for f in ("favicon.ico", "icon-16.png", "icon-32.png", "apple-touch-icon.png",
+                  "site.webmanifest"):
+            page = page.replace('href="%s"' % f, 'href="../%s"' % f)
+        # its own data payload, and its own canonical address
+        if "assets/js/deals.es.js" in fingerprint or True:
+            en_js = os.path.basename(fingerprint.get("assets/js/deals.js", "deals.js"))
+            es_js = os.path.basename(fingerprint.get("assets/js/deals.es.js", "deals.es.js"))
+            page = page.replace("js/" + en_js, "js/" + es_js)
+        canon = SITE_URL + "/es/" + ("" if fn == "index.html" else fn)
+        page = re.sub(r'(<link rel="canonical" href=")[^"]*(")', lambda m: m.group(1)+canon+m.group(2), page)
+        page = re.sub(r'(<meta property="og:url" content=")[^"]*(")', lambda m: m.group(1)+canon+m.group(2), page)
+        return page
+
+    def finish(page, lang, fn):
+        page = page.replace("<!--LANGSW:%s-->" % fn, lang_switch(lang, fn))
+        page = re.sub(r"<!--LANGSW:[^>]*-->", lang_switch(lang, fn), page)   # 404 and articles
+        page = page.replace("<!--HREFLANG:%s-->" % fn, hreflang(lang, fn))
+        page = re.sub(r"<!--HREFLANG:[^>]*-->", "", page)
+        page = page.replace("<!--AUTOLANG-->", AUTOLANG if lang == "en" else "")
+        return page
+
+    os.makedirs(os.path.join(DIST,"es"), exist_ok=True)
     for fn, p in built.items():
-        open(os.path.join(DIST,fn),"w",encoding="utf-8").write(reserve_space(stamp(p)))
-        print("  wrote %-14s %5d KB" % (fn, len(p)//1024 or 1))
+        en = finish(reserve_space(stamp(p)), "en", fn)
+        open(os.path.join(DIST,fn),"w",encoding="utf-8").write(en)
+        sp = i18n.translate_html(p, fn)
+        sp = to_spanish_tree(finish(reserve_space(stamp(sp)), "es", fn), fn)
+        open(os.path.join(DIST,"es",fn),"w",encoding="utf-8").write(sp)
+        print("  wrote %-14s %5d KB  + es/%s" % (fn, len(en)//1024 or 1, fn))
 
     # icons and the share card
     stat = os.path.join(os.path.dirname(__file__), "static")
@@ -962,10 +1084,18 @@ def main():
                {"src":"/icon-512.png","sizes":"512x512","type":"image/png"}]}, indent=1))
 
     today = __import__("datetime").date.today().isoformat()
-    urls = "".join('\n <url><loc>%s</loc><lastmod>%s</lastmod></url>'
-                   % (SITE_URL + ("/" if f=="index.html" else "/"+f), today) for f,_ in PAGES)
+    # Both languages, each naming the other, so a search engine serves the right
+    # one instead of guessing.
+    def sm(f, sub):
+        loc = SITE_URL + "/" + sub + ("" if f == "index.html" else f)
+        alt = "".join('\n  <xhtml:link rel="alternate" hreflang="%s" href="%s"/>'
+                      % (c, SITE_URL + "/" + sb + ("" if f == "index.html" else f))
+                      for c, sb, _ in LANGS)
+        return ('\n <url><loc>%s</loc><lastmod>%s</lastmod>%s\n </url>' % (loc, today, alt))
+    urls = "".join(sm(f, sub) for _c, sub, _n in LANGS for f, _t in PAGES)
     open(os.path.join(DIST,"sitemap.xml"),"w",encoding="utf-8").write(
-      '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">%s\n</urlset>\n'%urls)
+      '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" '
+      'xmlns:xhtml="http://www.w3.org/1999/xhtml">%s\n</urlset>\n'%urls)
     open(os.path.join(DIST,"robots.txt"),"w",encoding="utf-8").write(
       "User-agent: *\nAllow: /\n\nSitemap: %s/sitemap.xml\n"%SITE_URL)
     open(os.path.join(DIST,"netlify.toml"),"w",encoding="utf-8").write(
@@ -973,6 +1103,13 @@ def main():
       '[[headers]]\n  for = "/assets/*"\n  [headers.values]\n'
       '    Cache-Control = "public, max-age=604800"\n\n'
       '[[headers]]\n  for = "/*.html"\n  [headers.values]\n'
+      '    Cache-Control = "public, max-age=0, must-revalidate"\n'
+      '    X-Content-Type-Options = "nosniff"\n'
+      '    Referrer-Policy = "strict-origin-when-cross-origin"\n\n'
+      # The Spanish pages are a directory down, and a rule written for the root
+      # is not worth trusting to reach them. Cached HTML is what stopped the
+      # reviews rotating after the last deploy; it does not get a second go.
+      '[[headers]]\n  for = "/es/*"\n  [headers.values]\n'
       '    Cache-Control = "public, max-age=0, must-revalidate"\n'
       '    X-Content-Type-Options = "nosniff"\n'
       '    Referrer-Policy = "strict-origin-when-cross-origin"\n')
@@ -991,7 +1128,11 @@ def main():
     nf = re.sub(r'\n<link rel="canonical"[^>]*>', '', nf)
     nf = re.sub(r'\n<script type="application/ld\+json">.*?</script>', '', nf, flags=re.S)
     nf = nf.replace("</head>", '<meta name="robots" content="noindex">\n</head>')
-    open(os.path.join(DIST,"404.html"),"w",encoding="utf-8").write(reserve_space(stamp(nf)))
+    open(os.path.join(DIST,"404.html"),"w",encoding="utf-8").write(
+      finish(reserve_space(stamp(nf)), "en", "404.html"))
+    nf_es = to_spanish_tree(
+      finish(reserve_space(stamp(i18n.translate_html(nf, "404.html"))), "es", "404.html"), "404.html")
+    open(os.path.join(DIST,"es","404.html"),"w",encoding="utf-8").write(nf_es)
 
     print("videos:", len(VIDEOS_ACTIVE), "| socials:", [k for k,v in SOCIAL.items() if v] or "none set")
     names = {i["name"] for c in MENU_CATS for i in c["items"]}
@@ -1006,22 +1147,25 @@ def main():
     # Address and opening hours are claims about the business, so a copy left over
     # from an older version must never ship. Fail loudly rather than quietly.
     STALE = ["Aloe Vera Street", "6:00 AM", "Fri to Sun 6AM", "\"opens\":\"06:00\""]
-    for fn in sorted(os.listdir(DIST)):
-        if not fn.endswith((".html", ".xml", ".webmanifest")): continue
-        body = open(os.path.join(DIST, fn), encoding="utf-8").read()
+    def pages_on_disk():
+        for root, _d, files in os.walk(DIST):
+            for fn in sorted(files):
+                if fn.endswith((".html", ".xml", ".webmanifest")):
+                    yield os.path.join(root, fn), os.path.relpath(os.path.join(root, fn), DIST)
+    for full, rel in pages_on_disk():
+        body = open(full, encoding="utf-8").read()
         for bad in STALE:
             if bad in body:
-                sys.exit("STALE BUSINESS DETAIL %r still in %s" % (bad, fn))
+                sys.exit("STALE BUSINESS DETAIL %r still in %s" % (bad, rel))
     print("address and hours: single source, no stale copies")
 
     # A photograph nobody links to still lands in the deploy folder and in the
     # visitor's download budget. Drop the ones no page, script or stylesheet asks
     # for; they stay in src, ready for whenever an item needs one again.
     refs = set()
-    for fn in sorted(os.listdir(DIST)):
-        if fn.endswith((".html", ".xml", ".webmanifest")):
-            refs |= set(re.findall(r"assets/img/([A-Za-z0-9._/-]+)",
-                                   open(os.path.join(DIST, fn), encoding="utf-8").read()))
+    for full, _rel in pages_on_disk():
+        refs |= set(re.findall(r"assets/img/([A-Za-z0-9._/-]+)",
+                               open(full, encoding="utf-8").read()))
     for sub in ("assets/js", "assets/css"):
         d = os.path.join(DIST, *sub.split("/"))
         for fn in (os.listdir(d) if os.path.isdir(d) else []):
@@ -1087,14 +1231,37 @@ def main():
             if not fn.endswith((".html", ".css")): continue
             full = os.path.join(root, fn)
             body = open(full, encoding="utf-8").read()
+            body = body.replace("&#x27;", "'").replace("&quot;", '"')   # see below
             for ref in re.findall(r"""["'(]([A-Za-z0-9._/-]+\.(?:jpg|jpeg|png|webp|svg|ico|mp4|woff2?))["')]""", body):
                 if ref.startswith(("http", "//", "data:")): continue
                 target = os.path.normpath(os.path.join(os.path.dirname(full), ref))
                 if not os.path.exists(target):
                     missing.add("%s -> %s" % (os.path.relpath(full, DIST), ref))
+    # A page one directory down must never ask for assets/ without the ../ that
+    # gets it back to the root. This is the mistake that escaped the check above
+    # once already, because the path was hiding inside an escaped quote.
+    for root, _dirs, files in os.walk(os.path.join(DIST, "es")):
+        for fn in files:
+            if not fn.endswith(".html"): continue
+            body = open(os.path.join(root, fn), encoding="utf-8").read()
+            body = body.replace("&#x27;", "'").replace("&quot;", '"')
+            for m in re.finditer(r'(?<![./\w])assets/', body):
+                if body[max(0, m.start()-3):m.start()] != "../":
+                    missing.add("es/%s -> %s (missing ../)" % (fn, body[m.start():m.start()+40]))
     if missing:
         sys.exit("BROKEN ASSET REFERENCES:\n  " + "\n  ".join(sorted(missing)))
     print("asset references: every file a page asks for exists")
+
+    # A page that is half English is worse than no Spanish page at all, so the
+    # build refuses to finish while anything on it has no translation. The
+    # report names the string and the page it was found on.
+    gaps = i18n.report()
+    if gaps:
+        lines = ["%r  (%s)" % (t, ", ".join(sorted(w))) for t, w in gaps[:40]]
+        sys.exit("NO SPANISH FOR %d STRING(S):\n  " % len(gaps) + "\n  ".join(lines))
+    print("spanish: every string on every page has a translation")
+    print("whatsapp orders go to:", WA_NUMBER,
+          "(TEST line)" if WA_NUMBER != "5016134677" else "(the restaurant)")
 
 if __name__ == "__main__":
     main()
