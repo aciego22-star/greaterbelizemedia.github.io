@@ -162,15 +162,20 @@ ITEM_IMG = {
  "Heineken":                       "menu-heineken.jpg",
  "Soft Drinks":                    "menu-soft-drinks.jpg",
  "Soda Water":                     "menu-soda-water.jpg",
- # Extras. The two chip plates are the ones that come with chips; the plain
- # Salsa and Guacamole Sauce lines are a different, smaller thing on the printed
- # menu and are left without a photo rather than shown with a plate of chips
- # they do not come with.
+ # Extras and sides, all nine of them. The two $8 plates are shown with the
+ # chips they come with; the $4 sauces are shown in the bowl on their own, which
+ # is what that price buys. Pico de Gallo is the chopped one and Salsa is the
+ # saucier one: both are tomato, onion, chilli and cilantro, and the difference
+ # on a plate is how far the tomato has been broken down.
  "Fries":                          "menu-fries.jpg",
  "Guacamole and Chips":            "menu-guac-chips.jpg",
  "Salsa and Chips":                "menu-salsa-chips.jpg",
  "Beans":                          "menu-beans.jpg",
  "Rice":                           "menu-rice.jpg",
+ "Salsa":                          "menu-salsa.jpg",
+ "Sour Cream":                     "menu-sour-cream.jpg",
+ "Guacamole Sauce":                "menu-guac-sauce.jpg",
+ "Pico de Gallo":                  "menu-pico-de-gallo.jpg",
 
  "Hot Coffee":                     "menu-hot-coffee.jpg",
  "Hot Tea":                        "menu-hot-tea.jpg",
