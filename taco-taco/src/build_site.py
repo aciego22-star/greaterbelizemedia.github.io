@@ -355,9 +355,9 @@ def about_section(lang="en"):
     L = lambda d: esc(d[lang])
     lead = "".join('<p class="about-lead">%s</p>' % L(p) for p in ABOUT["lead"])
     cards = "".join(
-      '<div class="apoint"><span class="apoint-ico">%s</span>'
+      '<div class="apoint"><span class="apoint-ico ico-%s">%s</span>'
       '<h3>%s</h3><p>%s</p></div>'
-      % (ABOUT_ICONS.get(pt["icon"], ""), L(pt["title"]), L(pt["body"]))
+      % (pt["icon"], ABOUT_ICONS.get(pt["icon"], ""), L(pt["title"]), L(pt["body"]))
       for pt in ABOUT["points"])
     wide_w, wide_h = img_size("about-spread-wide.webp") or (1200, 675)
     shot = (

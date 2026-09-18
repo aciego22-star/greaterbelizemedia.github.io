@@ -606,14 +606,19 @@ function t(k,d){return TT_TXT[k]||d;}
   var card=cards[slot%cards.length], inn=card.querySelector('.rcard-in');
   var r=queue[nextRev%queue.length];
   inn.classList.add('out');
+  // Matches the .out transition: swap the words only once the old review has
+  // left the card, so nobody sees the text change mid-slide.
   setTimeout(function(){
    render(card,r);
    inn.classList.remove('out'); inn.classList.add('in');
    requestAnimationFrame(function(){requestAnimationFrame(function(){inn.classList.remove('in');});});
-  },480);
+  },310);
   slot++; nextRev++;
  }
- function play(){ if(held||timer) return; timer=setInterval(step,5000); }
+ // One card changes per turn, so at three seconds a turn any given card holds
+ // its review for twelve, which is long enough to read and short enough that
+ // the band is plainly doing something.
+ function play(){ if(held||timer) return; timer=setInterval(step,3000); }
  function stop(){ if(timer){clearInterval(timer);timer=null;} }
  function pauseFor(ms){
   held=true; stop();
