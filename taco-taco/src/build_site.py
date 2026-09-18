@@ -149,10 +149,11 @@ ITEM_IMG = {
  "Menudo Soup, Large":             "menu-menudo.jpg",
 
  # Drinks. These are studio product renders rather than the brands' own photos,
- # so they are close likenesses rather than exact trade dress. Belikin Stout is
- # deliberately left without one: the supplied image is a Belikin Chocolate
- # Stout, which is a different bottle from the stout this item sells.
+ # so they are close likenesses rather than exact trade dress. Belikin Stout
+ # now has the plain stout rather than the Chocolate Stout that was supplied
+ # first, which is a different bottle from the one this item sells.
  "Belikin Beer":                   "menu-belikin-beer.jpg",
+ "Belikin Stout":                  "menu-belikin-stout.jpg",
  "Lighthouse":                     "menu-lighthouse.jpg",
  "Guinness Stout":                 "menu-guinness-stout.jpg",
  "Landshark":                      "menu-landshark.jpg",
@@ -162,6 +163,9 @@ ITEM_IMG = {
  "Soft Drinks":                    "menu-soft-drinks.jpg",
  "Soda Water":                     "menu-soda-water.jpg",
  "Hot Coffee":                     "menu-hot-coffee.jpg",
+ "Hot Tea":                        "menu-hot-tea.jpg",
+ "Iced Coffee":                    "menu-iced-coffee.jpg",
+ "Water":                          "menu-water.jpg",
 }
 
 # The gallery grid, with a real description of each plate rather than a generic
