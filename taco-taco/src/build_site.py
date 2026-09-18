@@ -162,6 +162,16 @@ ITEM_IMG = {
  "Heineken":                       "menu-heineken.jpg",
  "Soft Drinks":                    "menu-soft-drinks.jpg",
  "Soda Water":                     "menu-soda-water.jpg",
+ # Extras. The two chip plates are the ones that come with chips; the plain
+ # Salsa and Guacamole Sauce lines are a different, smaller thing on the printed
+ # menu and are left without a photo rather than shown with a plate of chips
+ # they do not come with.
+ "Fries":                          "menu-fries.jpg",
+ "Guacamole and Chips":            "menu-guac-chips.jpg",
+ "Salsa and Chips":                "menu-salsa-chips.jpg",
+ "Beans":                          "menu-beans.jpg",
+ "Rice":                           "menu-rice.jpg",
+
  "Hot Coffee":                     "menu-hot-coffee.jpg",
  "Hot Tea":                        "menu-hot-tea.jpg",
  "Iced Coffee":                    "menu-iced-coffee.jpg",
