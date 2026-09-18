@@ -330,15 +330,13 @@ def about_section(lang="en"):
       '<h3>%s</h3><p>%s</p></div>'
       % (ABOUT_ICONS.get(pt["icon"], ""), L(pt["title"]), L(pt["body"]))
       for pt in ABOUT["points"])
-    wide_w, wide_h = img_size("about-spread-wide.jpg") or (1200, 675)
+    wide_w, wide_h = img_size("about-spread-wide.webp") or (1200, 675)
     shot = (
       '<figure class="about-shot">'
       '<picture>'
-      '<source media="(max-width:760px)" type="image/webp" srcset="assets/img/about-spread-tall.webp">'
-      '<source media="(max-width:760px)" type="image/jpeg" srcset="assets/img/about-spread-tall.jpg">'
-      '<source type="image/webp" srcset="assets/img/about-spread-wide.webp">'
-      '<img src="assets/img/about-spread-wide.jpg" alt="%s" loading="lazy" decoding="async" '
-      'width="%d" height="%d" data-zoom="assets/img/about-spread-wide.jpg" tabindex="0" role="button">'
+      '<source media="(max-width:760px)" srcset="assets/img/about-spread-tall.webp">'
+      '<img src="assets/img/about-spread-wide.webp" alt="%s" loading="lazy" decoding="async" '
+      'width="%d" height="%d" data-zoom="assets/img/about-spread-wide.webp" tabindex="0" role="button">'
       '</picture></figure>' % (L(ABOUT["image_alt"]), wide_w, wide_h))
     return (
  '<!-- ===== ABOUT ===== -->\n <section class="blk about" id="about">\n  <div class="container">\n'
@@ -1034,6 +1032,65 @@ def main():
             freed += os.path.getsize(full); os.remove(full); dropped += 1
     if dropped:
         print("unreferenced images left out of the deploy: %d (%d KB)" % (dropped, freed // 1024))
+
+    # Photographs ship as WebP. At quality 80 it is visually the same picture as
+    # the JPEG it came from and a little over half the weight, and every browser
+    # in use has read it for years. The sources stay JPEG; only the deploy changes.
+    #
+    # share-card.jpg is the one exception: it is what WhatsApp and Facebook fetch
+    # for a link preview, and their crawlers are not reliable with WebP.
+    KEEP_JPEG = {"share-card.jpg"}
+    try:
+        from PIL import Image
+    except Exception:
+        Image = None
+    if Image:
+        swapped, before, after = {}, 0, 0
+        for root, _dirs, files in os.walk(os.path.join(DIST, "assets", "img")):
+            for fn in sorted(files):
+                if not fn.endswith(".jpg") or fn in KEEP_JPEG: continue
+                src = os.path.join(root, fn)
+                dst = src[:-4] + ".webp"
+                with Image.open(src) as im:
+                    im.convert("RGB").save(dst, "WEBP", quality=80, method=6)
+                before += os.path.getsize(src); after += os.path.getsize(dst)
+                rel = os.path.relpath(src, DIST).replace(os.sep, "/")
+                swapped[rel] = rel[:-4] + ".webp"
+                os.remove(src)
+        if swapped:
+            # Match on the filename after a slash, not on the full path: the
+            # stylesheet reaches images as ../img/x.jpg while the pages use
+            # assets/img/x.jpg, and only one of those was being caught.
+            subs = [(re.compile(r"(?<=/)" + re.escape(os.path.basename(a)) + r"\b"),
+                     os.path.basename(b)) for a, b in swapped.items()]
+            for root, _dirs, files in os.walk(DIST):
+                for fn in files:
+                    if not fn.endswith((".html", ".css", ".js", ".xml", ".webmanifest")): continue
+                    full = os.path.join(root, fn)
+                    body = open(full, encoding="utf-8").read()
+                    new = body
+                    for rx, rep in subs:
+                        new = rx.sub(rep, new)
+                    if new != body:
+                        open(full, "w", encoding="utf-8").write(new)
+            print("photographs converted to webp: %d files, %d KB -> %d KB"
+                  % (len(swapped), before // 1024, after // 1024))
+
+    # Last word: every local asset a page asks for has to exist on disk.
+    missing = set()
+    for root, _dirs, files in os.walk(DIST):
+        for fn in files:
+            if not fn.endswith((".html", ".css")): continue
+            full = os.path.join(root, fn)
+            body = open(full, encoding="utf-8").read()
+            for ref in re.findall(r"""["'(]([A-Za-z0-9._/-]+\.(?:jpg|jpeg|png|webp|svg|ico|mp4|woff2?))["')]""", body):
+                if ref.startswith(("http", "//", "data:")): continue
+                target = os.path.normpath(os.path.join(os.path.dirname(full), ref))
+                if not os.path.exists(target):
+                    missing.add("%s -> %s" % (os.path.relpath(full, DIST), ref))
+    if missing:
+        sys.exit("BROKEN ASSET REFERENCES:\n  " + "\n  ".join(sorted(missing)))
+    print("asset references: every file a page asks for exists")
 
 if __name__ == "__main__":
     main()
