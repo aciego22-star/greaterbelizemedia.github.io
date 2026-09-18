@@ -302,19 +302,23 @@ def deals_page_body():
 
 # Drawn marks, not emoji: they take the brand colours and stay crisp at any size.
 ABOUT_ICONS = {
- # Simple silhouettes: at 23px a detailed outline turns to mush.
+ # Solid silhouettes with one stroked detail each. An outline-only mark turns to
+ # mush at 26px; a filled shape still reads as a flame, a chilli and a bag.
  "flame": '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
-          '<path d="M12 2.6s5.4 4 5.4 9.2a5.4 5.4 0 0 1-10.8 0C6.6 6.6 12 2.6 12 2.6z"/>'
-          '<path d="M12 20a2.6 2.6 0 0 1-2.6-2.6c0-2 2.6-3.6 2.6-3.6s2.6 1.6 2.6 3.6A2.6 2.6 0 0 1 12 20z"/>'
+          '<path class="f" fill-rule="evenodd" d="M12 1.6c3.4 2.9 6.4 6.5 6.4 10.3a6.4 6.4 0 1 1-12.8 0'
+          'C5.6 8.1 8.6 4.5 12 1.6zm0 16.9a2.7 2.7 0 0 0 2.7-2.7c0-1.9-2.7-4-2.7-4s-2.7 2.1-2.7 4'
+          'A2.7 2.7 0 0 0 12 18.5z"/>'
           '</svg>',
  "chili": '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
-          '<path d="M15.6 7.4c1.1 6-3.1 12.2-8.2 12.2A3.6 3.6 0 0 1 3.8 16c0-4.7 4.3-8.6 9.3-8.6h2.5z"/>'
-          '<path d="M15.6 7.4c2 0 3.6-1.6 3.6-3.6"/>'
-          '<path d="M19.2 3.8c-1.5 0-2.8-.7-3.6-1.8"/>'
-          '</svg>',
+          '<g transform="translate(-1.4 -1.8)">'   # the drawn mass sits low and right; centre it
+          '<path class="f" d="M17.9 6.9 c2 2.6 1.5 6.4 -1 9.4 c-2.5 3 -6.4 4.6 -9.9 4.3 '
+          'c3.3 -1.2 6.2 -3.3 7.9 -6.2 c1.5 -2.4 1.7 -5.1 1 -7.5 z"/>'
+          '<path class="s" d="M16.9 6.6 c-.7 -1.2 -.6 -2.5 .3 -3.4"/>'
+          '<path class="s" d="M17.2 3.2 c1.4 0 2.5 .8 3 2.1"/>'
+          '</g></svg>',
  "bag":   '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
-          '<path d="M5.4 7.8h13.2l-1.1 12.4H6.5L5.4 7.8z"/>'
-          '<path d="M9 7.8V6.4a3 3 0 0 1 6 0v1.4"/>'
+          '<path class="s" d="M8.8 8.1V6.2a3.2 3.2 0 0 1 6.4 0v1.9"/>'
+          '<path class="f" d="M4.9 8.3h14.2l-1.1 11.8a1.1 1.1 0 0 1-1.1 1H7.1a1.1 1.1 0 0 1-1.1-1L4.9 8.3z"/>'
           '</svg>',
 }
 

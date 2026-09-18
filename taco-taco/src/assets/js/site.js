@@ -618,9 +618,25 @@
 
 /* ================= what is cooking: drifting video chips =================
    Four thumbnails wander round a square stage, bounce off the walls and off each
-   other, and where there are more clips than places, a chip quietly swaps to one
-   that is not on show. Reduced motion leaves them still, and they stop moving
-   whenever the section is off screen so a phone is not animating for nothing. */
+   other, and where there are more clips than places a chip quietly swaps to one
+   that is not on show.
+
+   The three things that went wrong on a real phone, and what stops them here:
+
+   1. The chips piled into the top corner, cut in half. The stage is sized by
+      aspect-ratio, and on iOS that height is sometimes still 0 when a deferred
+      script runs, so every chip was seeded at y=0 and drawn half above the top
+      edge. Nothing recovered because a zero-height target never reaches an
+      IntersectionObserver threshold, so the loop that would have clamped them
+      back inside was never started. Now the stage cannot measure as zero, the
+      animation starts on its own rather than waiting to be seen, and any frame
+      that finds a position outside the box or not a number re-seeds.
+   2. The flicker. A resize, which iOS fires every time the address bar slides,
+      rescaled every position by the new size over the old one: one zero-height
+      reading turned all four into 0 or NaN for a frame. Size changes now go
+      through a clamp instead of a multiply, and are watched on the stage itself.
+   3. The swap flashed the empty stage. The picture is loaded before the fade,
+      not after it, and the chips take turns rather than being picked at random. */
 (function(){
  var stage=document.getElementById('reel');
  if(!stage) return;
@@ -643,24 +659,39 @@
 
  var W=0,H=0,R=0, running=false, raf=null;
  var P=chips.map(function(){return {x:0,y:0,vx:0,vy:0};});
+ var SPOTS=[[0.26,0.26],[0.74,0.28],[0.28,0.74],[0.72,0.72]];
 
+ function num(v,fb){ return (typeof v==='number'&&isFinite(v)&&v>0)?v:fb; }
  function measure(){
-  W=stage.clientWidth; H=stage.clientHeight;
-  R=chips[0].offsetWidth/2;
+  var r=stage.getBoundingClientRect();
+  W=num(stage.clientWidth,  num(r.width, 300));
+  // The stage is square by design, so its own width is a better answer for the
+  // height than the 0 the browser sometimes hands back mid-layout.
+  H=num(stage.clientHeight, num(r.height, W));
+  if(H<W*0.5) H=W;                            // a flat reading is a wrong reading
+  R=num(chips[0].offsetWidth,W*0.42)/2;
+  if(R>W/2) R=W/2;
  }
- function seed(){
-  measure();
-  var spots=[[0.26,0.26],[0.74,0.28],[0.28,0.74],[0.72,0.72]];
+ function seedOne(p,i){
+  var s=SPOTS[i%SPOTS.length];
+  p.x=s[0]*W; p.y=s[1]*H;
+  var a=Math.random()*Math.PI*2, sp=18+Math.random()*14;      // px per second
+  p.vx=Math.cos(a)*sp; p.vy=Math.sin(a)*sp;
+ }
+ function seed(){ measure(); P.forEach(seedOne); }
+
+ // One guard for every way a position can go wrong: a stray NaN, a stale value
+ // from before a resize, a chip nudged through a wall by an overlap correction.
+ function contain(){
   P.forEach(function(p,i){
-   var s=spots[i%spots.length];
-   p.x=s[0]*W; p.y=s[1]*H;
-   var a=Math.random()*Math.PI*2, sp=18+Math.random()*14;   // px per second
-   p.vx=Math.cos(a)*sp; p.vy=Math.sin(a)*sp;
+   if(!isFinite(p.x)||!isFinite(p.y)||!isFinite(p.vx)||!isFinite(p.vy)){ seedOne(p,i); return; }
+   if(p.x<R)     p.x=R;     else if(p.x>W-R) p.x=W-R;
+   if(p.y<R)     p.y=R;     else if(p.y>H-R) p.y=H-R;
   });
  }
  function place(){
   P.forEach(function(p,i){
-   chips[i].style.transform='translate('+(p.x-R).toFixed(1)+'px,'+(p.y-R).toFixed(1)+'px)';
+   chips[i].style.transform='translate3d('+(p.x-R).toFixed(1)+'px,'+(p.y-R).toFixed(1)+'px,0)';
   });
  }
 
@@ -682,64 +713,90 @@
    var av=a.vx*nx+a.vy*ny, bv=b.vx*nx+b.vy*ny, diff=bv-av;
    a.vx+=diff*nx; a.vy+=diff*ny; b.vx-=diff*nx; b.vy-=diff*ny;
   }
+  contain();
   place();
   raf=requestAnimationFrame(frame);
  }
- function start(){ if(running) return; running=true; last=0; raf=requestAnimationFrame(frame); }
+ function start(){ if(running||held) return; running=true; last=0; raf=requestAnimationFrame(frame); }
  function stop(){ running=false; if(raf) cancelAnimationFrame(raf); raf=null; }
 
- // Swap a chip for a clip that is not currently on show.
- var swap=null;
+ // Swap a chip for a clip that is not currently on show. The picture is fetched
+ // and decoded first, so the fade lands on a loaded image instead of a gap.
+ var swap=null, turn=0;
  function rotate(){
   if(!spares.length) return;
-  var c=chips[Math.floor(Math.random()*chips.length)];
-  var out={id:c.getAttribute('data-id'),
-           title:c.querySelector('.chip-cap').textContent,
-           img:c.querySelector('.chip-img').style.backgroundImage.slice(5,-2)};
+  var c=chips[turn++ % chips.length];          // in turn, not at random: calmer
   var next=spares.shift();
-  c.classList.add('swapping');
-  setTimeout(function(){
-   c.setAttribute('data-id',next.id);
-   c.setAttribute('href','gallery.html#v-'+next.id);
-   c.setAttribute('aria-label','Watch: '+next.title);
-   c.querySelector('.chip-cap').textContent=next.title;
-   c.querySelector('.chip-img').style.backgroundImage="url('"+next.img+"')";
-   c.classList.remove('swapping');
-   spares.push(out);
-  },460);
+  var pre=new Image();
+  pre.onload=pre.onerror=function(){
+   var out={id:c.getAttribute('data-id'),
+            title:c.querySelector('.chip-cap').textContent,
+            img:c.querySelector('.chip-img').style.backgroundImage.slice(5,-2)};
+   c.classList.add('swapping');
+   setTimeout(function(){
+    c.setAttribute('data-id',next.id);
+    c.setAttribute('href','gallery.html#v-'+next.id);
+    c.setAttribute('aria-label','Watch: '+next.title);
+    c.querySelector('.chip-cap').textContent=next.title;
+    c.querySelector('.chip-img').style.backgroundImage="url('"+next.img+"')";
+    c.classList.remove('swapping');
+    spares.push(out);
+   },440);
+  };
+  pre.src=next.img;
  }
 
- seed(); place();
- addEventListener('resize',function(){var ox=W,oy=H;measure();
-  if(ox&&oy)P.forEach(function(p){p.x*=W/ox;p.y*=H/oy;});place();});
+ seed(); contain(); place();
+
+ // Watch the stage, not the window. iOS fires a window resize every time the
+ // address bar slides, and rescaling by old-size-over-new was how one bad
+ // reading turned into four chips in the corner.
+ function resize(){
+  measure(); contain(); place();
+  if(!running) start();
+ }
+ if('ResizeObserver' in window){ new ResizeObserver(resize).observe(stage); }
+ addEventListener('resize', resize);
+ addEventListener('orientationchange', function(){ setTimeout(resize, 250); });
 
  // A moving target is hard to tap, and a chip that shifts between finger down and
- // finger up loses the click entirely. Freeze the moment anyone reaches for one.
+ // finger up loses the click entirely. Freeze the moment anyone reaches for one,
+ // and always arm a release, so a scroll that begins on the stage cannot leave it
+ // frozen for the rest of the visit.
  var held=false, resume=null, visible=true;
- function hold(){ held=true; clearTimeout(resume); stop(); }
+ // safety: a touch arms its own release, because iOS drops pointerup and
+ // pointercancel often enough that a scroll begun on the stage used to freeze it
+ // for good. A mouse or a keyboard has a reliable partner event, so those hold
+ // until they get it.
+ function hold(safety){ held=true; clearTimeout(resume); stop();
+  if(safety) resume=setTimeout(function(){held=false; if(visible) start();}, safety); }
  function release(ms){ clearTimeout(resume);
   resume=setTimeout(function(){held=false; if(visible) start();}, ms||900); }
- stage.addEventListener('pointerdown',hold);
+ stage.addEventListener('pointerdown',function(){hold(2500);});
  stage.addEventListener('pointerup',function(){release(900);});
- stage.addEventListener('pointercancel',function(){release(900);});
- stage.addEventListener('mouseenter',hold);
+ stage.addEventListener('pointercancel',function(){release(600);});
+ stage.addEventListener('pointerleave',function(){release(300);});
+ stage.addEventListener('mouseenter',function(){hold(0);});
  stage.addEventListener('mouseleave',function(){release(150);});
- stage.addEventListener('focusin',hold);
+ stage.addEventListener('focusin',function(){hold(0);});
  stage.addEventListener('focusout',function(){release(400);});
 
- var realStart=start;
- start=function(){ if(held) return; realStart(); };
-
+ // Start now. Being seen only decides whether to keep going: a stage that has
+ // not been measured yet cannot satisfy a ratio threshold, and waiting on one is
+ // what left the chips stacked in the corner with nothing running to free them.
+ start();
+ if(spares.length) swap=setInterval(rotate,7000);
  if('IntersectionObserver' in window){
   new IntersectionObserver(function(es){
    es.forEach(function(e){
     visible=e.isIntersecting;
-    if(visible){ start(); if(!swap&&spares.length) swap=setInterval(rotate,6000); }
-    else { stop(); if(swap){clearInterval(swap);swap=null;} }
+    if(visible){ resize(); } else { stop(); }
    });
-  },{threshold:0.15}).observe(stage);
- } else { start(); if(spares.length) swap=setInterval(rotate,6000); }
- document.addEventListener('visibilitychange',function(){document.hidden?stop():start();});
+  },{threshold:0}).observe(stage);
+ }
+ document.addEventListener('visibilitychange',function(){
+  if(document.hidden){ stop(); } else { resize(); }
+ });
 })();
 
 /* Arriving at the gallery from a chip: go to that clip and offer it up.
@@ -760,4 +817,128 @@
  }
  addEventListener('load',function(){setTimeout(cue,60);});
  addEventListener('hashchange',cue);
+})();
+
+/* ================= fly in with a pop =================
+   Cards spring up as they reach the screen, and every few seconds the ones on
+   screen break rank top to bottom and jump at the reader.
+
+   About the sound: a browser will not let a page make a noise until the visitor
+   has touched it at least once, so the pop is armed on the first tap, key press
+   or click anywhere on the site and stays armed after that. Before that first
+   touch the cards still fly in, silently, because the alternative is a console
+   full of blocked-autoplay errors and no sound either way. Nothing is
+   downloaded: the pop is three lines of arithmetic in the browser's own audio
+   engine, so it costs no bytes and never has to load in time. */
+(function(){
+ var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+ var AC = window.AudioContext || window.webkitAudioContext, ctx = null;
+ function arm(){
+  if(!AC) return;
+  try{
+   if(!ctx) ctx = new AC();
+   if(ctx.state === 'suspended') ctx.resume();
+  }catch(e){ ctx = null; }
+ }
+ // Not once(): iOS suspends the audio context again when the tab goes away, so
+ // the next real gesture has to be able to wake it back up.
+ ['pointerdown','touchend','keydown','click'].forEach(function(ev){
+  addEventListener(ev, arm, {passive:true, capture:true});
+ });
+
+ function pop(){
+  if(reduce || !ctx || ctx.state !== 'running') return;
+  try{
+   var t = ctx.currentTime;
+   var o = ctx.createOscillator(), g = ctx.createGain();
+   o.type = 'sine';
+   o.frequency.setValueAtTime(880, t);                        // cork out of a bottle:
+   o.frequency.exponentialRampToValueAtTime(190, t + 0.075);  // fast drop, short tail
+   g.gain.setValueAtTime(0.0001, t);
+   g.gain.exponentialRampToValueAtTime(0.13, t + 0.006);
+   g.gain.exponentialRampToValueAtTime(0.0001, t + 0.12);
+   o.connect(g); g.connect(ctx.destination);
+   o.start(t); o.stop(t + 0.14);
+  }catch(e){}
+ }
+
+ function topFirst(a,b){
+  var ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect();
+  return (ra.top - rb.top) || (ra.left - rb.left);
+ }
+
+ function popGroup(cards){
+  if(!cards.length) return;
+
+  if(reduce){ cards.forEach(function(c){ c.classList.add('pop-done'); }); return; }
+
+  cards.forEach(function(c){ c.classList.add('pop-in'); });
+
+  function settle(c){
+   c.classList.remove('pop-in','popped');
+   c.classList.add('pop-done');
+  }
+  function enter(c, i, sound){
+   if(c._popped) return;
+   c._popped = true;
+   setTimeout(function(){
+    c.classList.add('popped');
+    var done = function(){
+     clearTimeout(c._popTimer);
+     c.removeEventListener('animationend', done);
+     settle(c);
+    };
+    c.addEventListener('animationend', done);
+    c._popTimer = setTimeout(done, 1000);   // in case animationend never arrives
+    if(sound) setTimeout(pop, 310);         // on the settle, not the launch
+   }, i * 130);
+  }
+
+  // Bottom margin rather than a share of the card: a card taller than the screen
+  // would never reach a percentage threshold and would never fly in at all.
+  var opts = {threshold: 0.01, rootMargin: '0px 0px -60px 0px'};
+
+  if(!('IntersectionObserver' in window)){
+   cards.slice().sort(topFirst).forEach(function(c,i){ enter(c, i, false); });
+  } else {
+   var io = new IntersectionObserver(function(entries){
+    var hits = [];
+    entries.forEach(function(e){
+     if(e.isIntersecting && !e.target._popped){ hits.push(e.target); io.unobserve(e.target); }
+    });
+    hits.sort(topFirst);
+    // A long grid can bring a dozen cards over the line at once. Three pops is a
+    // flourish; a dozen is a noise, so only the front of the wave is audible.
+    hits.forEach(function(c,i){ enter(c, i, i < 3); });
+   }, opts);
+   cards.forEach(function(c){ io.observe(c); });
+  }
+
+  // Break rank every few seconds, top to bottom, but only the cards on screen.
+  setInterval(function(){
+   if(document.hidden) return;
+   var vis = cards.filter(function(c){
+    if(!c._popped) return false;
+    var r = c.getBoundingClientRect();
+    return r.bottom > 40 && r.top < (innerHeight || 800) - 40;
+   }).sort(topFirst);
+   if(!vis.length) return;
+   vis.forEach(function(c,i){
+    setTimeout(function(){
+     c.classList.remove('pop-jump');
+     void c.offsetWidth;                    // rewind the animation so it replays
+     c.classList.add('pop-jump');
+    }, i * 150);
+   });
+  }, 3600);
+
+  document.addEventListener('animationend', function(e){
+   if(e.animationName === 'ttPopJump') e.target.classList.remove('pop-jump');
+  });
+ }
+
+ function q(sel){ return [].slice.call(document.querySelectorAll(sel)); }
+ popGroup(q('.about-points .apoint'));   // About: the three feature cards
+ popGroup(q('.rev-grid .rev'));          // Reviews page: the Google reviews
 })();
