@@ -5,6 +5,61 @@
 var TT_TXT=window.TT_T||{};
 function t(k,d){return TT_TXT[k]||d;}
 
+/* ================= land at the top of the page you asked for =================
+   Tapping Reviews should show the top of the reviews page. Two things get in
+   the way of that and neither is the link:
+
+   A browser remembers where you were on a page and puts you back there when you
+   return to it. That is the behaviour you want from the Back button and not at
+   all what you want from a menu, and iOS applies it more eagerly than a desktop
+   browser does, which is why this only happened sometimes: the first visit to a
+   page landed at the top, and every visit after that landed wherever you had
+   scrolled to last time.
+
+   And when the site is sitting inside someone else's frame, a preview panel or
+   the in-app browser inside Instagram or Facebook, scrolling ourselves to the
+   top does nothing to the page around us, and that page is the one actually
+   holding the scrollbar. We cannot script it, it is not ours. But
+   scrollIntoView is a scroll the browser performs rather than one we perform,
+   so it walks up through the frames on its own and brings the top of the site
+   into view wherever the frame happens to be sitting.
+
+   Back still returns you where you were, a reload keeps your place, a link to a
+   section still goes to that section, and if you have already started scrolling
+   we leave you alone rather than yanking you back. */
+(function(){
+ if(location.hash) return;          // #deal-, #v-, #c- all mean "take me there"
+
+ var kind = null;
+ try{ kind = (performance.getEntriesByType('navigation')||[])[0].type; }catch(e){}
+ if(kind === 'back_forward' || kind === 'reload') return;
+
+ var moved = false;
+ ['wheel','touchmove','keydown','pointerdown'].forEach(function(ev){
+  addEventListener(ev, function(){ moved = true; }, {passive:true, once:true});
+ });
+
+ function top(){
+  if(moved) return;
+  var root = document.documentElement, prev = root.style.scrollBehavior;
+  root.style.scrollBehavior = 'auto';   // the stylesheet asks for smooth; not here
+  try{ window.scrollTo(0,0); }catch(e){}
+  if(window.top !== window.self){
+   try{
+    (document.querySelector('header') || document.body)
+      .scrollIntoView({block:'start', inline:'nearest'});
+   }catch(e){}
+  }
+  root.style.scrollBehavior = prev;
+ }
+
+ // A browser that is going to restore a position does it around and after the
+ // load event, so check again once everything has settled rather than only once.
+ top();
+ addEventListener('DOMContentLoaded', top);
+ addEventListener('load', function(){ top(); setTimeout(top,120); setTimeout(top,450); });
+})();
+
 (function(){
  var H=document.documentElement; H.classList.add('js');
  var WA_NUMBER='5016108859';   // set by build_site.py; do not edit here
