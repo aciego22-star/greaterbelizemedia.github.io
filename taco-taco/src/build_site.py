@@ -42,7 +42,10 @@ WA_NUMBER  = "5016108859"   # TEST line. The restaurant is 5016134677 (613-4677)
 # Social profiles. Leave a value empty and that button simply does not render,
 # so the live site never shows a dead link.
 SOCIAL = {
- "facebook":  "https://www.facebook.com/share/14ymmYxdZTu/?mibextid=wwXIfr",
+ "facebook":  "https://www.facebook.com/share/19WWfiQNEV/?mibextid=wwXIfr",
+              # Supplied 18 Sep 2026 and it replaces the two sent before it.
+              # A facebook.com/share/ link is a redirect, not the page itself,
+              # so it cannot be read from here to check where it lands.
  "instagram": "https://www.instagram.com/tacotacomexicanrestaurant",
  "tiktok":    "https://www.tiktok.com/@tacotacomexicanfood",
 }

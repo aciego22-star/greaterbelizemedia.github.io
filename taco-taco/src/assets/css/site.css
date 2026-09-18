@@ -163,6 +163,10 @@ nav{display:flex;align-items:center;justify-content:space-between;gap:16px;min-h
 
 @media (prefers-reduced-motion: no-preference){
  .fav-img{animation:favDrift 12s ease-in-out infinite}
+ /* The photo drifts forever, which is a nice touch and a poor thing to aim a
+    thumb at. Freeze it the instant a finger lands, so what gets tapped is
+    exactly what was under the finger when it came down. */
+ .fav-img:active,.fav-img:focus-visible{animation-play-state:paused}
  .fav:nth-child(2) .fav-img{animation-duration:14s;animation-delay:-2.5s}
  .fav:nth-child(3) .fav-img{animation-duration:13s;animation-delay:-5s}
  .fav:nth-child(4) .fav-img{animation-duration:15s;animation-delay:-7s}

@@ -252,19 +252,34 @@ function t(k,d){return TT_TXT[k]||d;}
    rvQueued=false;
    var vh=window.innerHeight, next=[];
    pending.forEach(function(el){
-    if(el.getBoundingClientRect().top < vh*0.94){el.classList.add('in');} else {next.push(el);}
+    // An unrevealed block is not there as far as a finger is concerned, so the
+    // rule has to be "anything with any part of it on screen", not "anything
+    // nearly on screen". The 60 covers the 38px the hidden state is shifted
+    // down by, which is counted in the rectangle we measure here: without it a
+    // gallery tile poking into the bottom of the screen was visible enough to
+    // aim at and still not taking the tap.
+    if(el.getBoundingClientRect().top < vh + 60){el.classList.add('in');} else {next.push(el);}
    });
    pending=next;
    if(!pending.length){
     window.removeEventListener('scroll',rvTick); window.removeEventListener('resize',rvTick);
     document.removeEventListener('click',rvTick);
+    document.removeEventListener('pointerdown',rvTick,true);
+    document.removeEventListener('touchstart',rvTick,true);
    }
   }
   function rvTick(){ if(!rvQueued){rvQueued=true;rAF(sweep);} }
   window.addEventListener('scroll',rvTick,{passive:true});
   window.addEventListener('resize',rvTick);
   document.addEventListener('click',rvTick);   // layout shifts, e.g. expanding the menu
+  // A finger coming down anywhere sweeps first. pointerdown and touchstart both
+  // land before the browser decides what the tap hit, so whatever is under the
+  // thumb is awake by the time it matters.
+  document.addEventListener('pointerdown',rvTick,true);
+  document.addEventListener('touchstart',rvTick,true);
   sweep();
+  // One more once the images have arrived and the page has stopped moving.
+  addEventListener('load',function(){ rvTick(); setTimeout(rvTick,300); });
  }
 
  /* 2) hero parallax: each layer drifts at its own rate so the stage reads as a diorama.
@@ -844,6 +859,28 @@ function t(k,d){return TT_TXT[k]||d;}
   if(safety) resume=setTimeout(function(){held=false; if(visible) start();}, safety); }
  function release(ms){ clearTimeout(resume);
   resume=setTimeout(function(){held=false; if(visible) start();}, ms||900); }
+ // Belt and braces for a moving target. The chips freeze the moment a finger
+ // lands, but that depends on pointerdown arriving, and a browser that does not
+ // send it leaves the chip drifting through the gesture, which is exactly when a
+ // browser decides the tap was not a tap and drops the click. So note which chip
+ // was under the finger and follow it ourselves if the finger barely moved.
+ var tx=null, ty=null, tapped=null;
+ stage.addEventListener('touchstart',function(e){
+  var t=e.touches[0]; tx=t.clientX; ty=t.clientY;
+  var el=document.elementFromPoint(tx,ty);
+  tapped=el&&el.closest?el.closest('.chip'):null;
+ },{passive:true});
+ stage.addEventListener('touchend',function(e){
+  var c=tapped; tapped=null;
+  if(!c||tx===null){ tx=ty=null; return; }
+  var t=e.changedTouches[0], dx=t.clientX-tx, dy=t.clientY-ty;
+  tx=ty=null;
+  if(Math.abs(dx)<12 && Math.abs(dy)<12 && c.href){
+   e.preventDefault();          // and do not let the browser raise its own click
+   location.href=c.href;
+  }
+ });
+ stage.addEventListener('touchcancel',function(){tapped=null;tx=ty=null;},{passive:true});
  stage.addEventListener('pointerdown',function(){hold(2500);});
  stage.addEventListener('pointerup',function(){release(900);});
  stage.addEventListener('pointercancel',function(){release(600);});
@@ -1025,5 +1062,24 @@ function t(k,d){return TT_TXT[k]||d;}
   a.addEventListener('click',function(){
    try{localStorage.setItem('tt_lang',a.getAttribute('data-lang'));}catch(e){}
   });
+ });
+})();
+
+/* ================= tapping the page you are already on =================
+   Reviews, from the Reviews page, used to be a tap that did nothing: the
+   browser sees the same address and stays put, and the reader is left halfway
+   down wondering whether they missed. Take them to the top of it instead, and
+   close the Browse drawer on the way so they can see they arrived. */
+(function(){
+ function here(){ return location.pathname.split('/').pop() || 'index.html'; }
+ document.addEventListener('click', function(e){
+  var a = e.target.closest && e.target.closest('a[href]');
+  if(!a) return;
+  var href = a.getAttribute('href') || '';
+  if(!/\.html$/.test(href) || href.indexOf('/') !== -1) return;   // same folder only
+  if(href !== here()) return;
+  e.preventDefault();
+  var d = a.closest('details'); if(d) d.open = false;
+  try{ window.scrollTo({top:0, behavior:'smooth'}); }catch(err){ window.scrollTo(0,0); }
  });
 })();
