@@ -716,8 +716,8 @@ ES.update({
    "Historias y especiales de la cocina de Taco Taco en el oeste de Belmopán.",
  "Photos of the food we serve at Taco Taco Mexican Restaurant in West Belmopan.":
    "Fotos de la comida que servimos en Taco Taco Mexican Restaurant, en el oeste de Belmopán.",
- "About Taco Taco Mexican Restaurant: authentic Mexicali style food made fresh daily in West Belmopan.":
-   "Sobre Taco Taco Mexican Restaurant: comida auténtica estilo mexicali hecha fresca a diario en el oeste de Belmopán.",
+ "About Taco Taco Mexican Restaurant in West Belmopan: hours, address, how to order, what meats you can choose, and answers to the questions we are asked most.":
+   "Sobre Taco Taco Mexican Restaurant en el oeste de Belmopán: horario, dirección, cómo ordenar, qué carnes puede elegir y las respuestas a lo que más nos preguntan.",
  "That page could not be found.": "No se pudo encontrar esa página.",
  "Discover Taco Taco Mexican Restaurant in Belmopan, Belize. Explore Mexican tacos, birria, burritos, quesadillas, flautas, lunch combos and more, fresh from the Taco Taco kitchen.":
    "Descubra Taco Taco Mexican Restaurant en Belmopán, Belice. Explore tacos mexicanos, birria, burritos, quesadillas, flautas, combos de almuerzo y más, frescos de la cocina de Taco Taco.",

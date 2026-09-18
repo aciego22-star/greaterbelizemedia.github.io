@@ -7,6 +7,7 @@ from blog_data import HUB, ARTICLES
 from reviews_data import REVIEWS, HOME_ORDER, STR_REVIEWS
 from menu_data import CATEGORIES as MENU_CATS, INTRO as MENU_INTRO, MEATS, MEAT_SURCHARGE
 from about_data import ABOUT
+from faq_data import FAQ, HEAD as FAQ_HEAD
 import i18n
 from es import ES, JS as JS_ES
 
@@ -386,6 +387,66 @@ def about_section(lang="en"):
     L(ABOUT["cta_menu"]), L(ABOUT["cta_wa"])))
 
 
+# Spanish for the day labels in HOURS, so the sentence the FAQ speaks is built
+# from the same single source as the footer rather than typed out again.
+DAYS_ES = {"Mon to Thu": "de lunes a jueves", "Fri to Sun": "de viernes a domingo"}
+for _lab, _ in HOURS:
+    if _lab not in DAYS_ES:
+        sys.exit("HOURS label %r has no Spanish in DAYS_ES" % _lab)
+
+DAYS_EN = {"Mon to Thu": "Monday to Thursday", "Fri to Sun": "Friday to Sunday"}
+for _lab, _ in HOURS:
+    if _lab not in DAYS_EN:
+        sys.exit("HOURS label %r has no long form in DAYS_EN" % _lab)
+
+def _cap(t):
+    return t[:1].upper() + t[1:]
+
+def hours_sentence(lang):
+    """One plain sentence a person, or an answer engine, can quote, built from
+    the same HOURS the footer and the opening-hours markup are built from."""
+    if lang == "en":
+        return " ".join("%s, %s." % (DAYS_EN[lab], win) for lab, win in HOURS)
+    return " ".join(_cap("%s, de %s." % (DAYS_ES[lab], win.replace(" to ", " a ")))
+                    for lab, win in HOURS)
+
+PHONES     = {"en": "613-4677 or 802-2332", "es": "613-4677 o 802-2332"}
+
+def faq_fill(text, lang):
+    return text.format(addr=ADDRESS, hours_short=hours_sentence(lang), phone=PHONES[lang])
+
+# Both languages of every answer go into the same table the rest of the site is
+# translated through, so the Spanish page gets the Spanish answer rather than a
+# machine pass over the English one.
+for _f in FAQ:
+    for _k in ("q", "a"):
+        ES.setdefault(faq_fill(_f[_k]["en"], "en"), faq_fill(_f[_k]["es"], "es"))
+for _k, _v in FAQ_HEAD.items():
+    ES.setdefault(_v["en"], _v["es"])
+
+
+def faq_section(lang="en"):
+    """The questions people ask, answered in the open.
+
+    Not an accordion. An answer engine will read text inside a closed panel, but
+    a person scanning on a phone will not, and the whole point of this section is
+    that the answer is right there without a second tap."""
+    L = lambda d: esc(d[lang])
+    items = "".join(
+      '<div class="qa" id="q-%s"><h3>%s</h3><p>%s</p></div>'
+      % (f["id"], esc(faq_fill(f["q"][lang], lang)), esc(faq_fill(f["a"][lang], lang)))
+      for f in FAQ)
+    return ('\n <!-- ===== FAQ ===== -->\n <section class="blk faq-sec" id="faq">\n  <div class="container">\n'
+            '   <div class="sec-head"><span class="sec-kicker">%s</span>'
+            '<h2 class="sec-title">%s <span class="deco">%s</span></h2>'
+            '<p class="sec-sub">%s</p></div>\n'
+            '   <div class="qa-grid">%s</div>\n'
+            '   <p class="map-cta"><a class="btn btn-red" href="menu.html">%s</a></p>\n'
+            '  </div>\n </section>'
+            % (L(FAQ_HEAD["kicker"]), L(FAQ_HEAD["title_a"]), L(FAQ_HEAD["title_b"]),
+               L(FAQ_HEAD["sub"]), items, L(FAQ_HEAD["more"])))
+
+
 def menu_section():
     """The whole menu, built from menu_data so one file holds every string."""
     def item_row(it):
@@ -503,7 +564,7 @@ def article_body(a, socblock):
     for b in a["blocks"]:
         k = b["t"]
         if k == "p":        out.append("<p>%s</p>" % inline(b["x"]))
-        elif k == "h":      out.append('<h3 class="art-h">%s</h3>' % esc(b["x"]))
+        elif k == "h":      out.append('<h2 class="art-h">%s</h2>' % esc(b["x"]))
         elif k == "kicker": out.append('<p class="art-kicker">%s</p>' % esc(b["x"]))
         elif k == "img":
             # the photo may not be in the repo yet; omit rather than ship a broken image
@@ -671,6 +732,33 @@ def frag(html, marker, endmarker="</section>"):
     j = html.find(endmarker, i)
     return html[i:j+len(endmarker)]
 
+# Heading levels describe the shape of a page, and every stylesheet rule that
+# touched a heading has been rewritten to key off the surrounding class instead
+# of the tag, so the levels are free to say what is actually true.
+#
+# Eight of the nine pages had no h1 at all. Every one of them opened at h2,
+# which leaves the single strongest heading on the page unsaid, and several
+# then jumped straight from h2 to h4. This walks the headings in the order a
+# reader meets them: the first is the page's h1, and no later one may drop more
+# than one level below the one before it. Going back up is always allowed, and a
+# second h1 is not.
+_HTAG = re.compile(r"<h([1-6])([^>]*)>(.*?)</h\1>", re.S)
+
+def normalise_headings(page):
+    out, last, prev, had_h1 = [], 0, 0, False
+    for m in _HTAG.finditer(page):
+        lvl = min(int(m.group(1)), prev + 1)
+        if lvl <= 1:
+            lvl = 2 if had_h1 else 1
+        if lvl == 1:
+            had_h1 = True
+        out.append(page[last:m.start()])
+        out.append("<h%d%s>%s</h%d>" % (lvl, m.group(2), m.group(3), lvl))
+        last, prev = m.end(), lvl
+    out.append(page[last:])
+    return "".join(out)
+
+
 def main():
     html = open(SRC, encoding="utf-8").read()
 
@@ -829,6 +917,12 @@ def main():
     socblock = '<div class="socials">%s</div>'%socbtns if socbtns else ""
 
     foot = footer.replace('<a href="#order">Order Online</a>', '<a href="menu.html">Order Online</a>')
+    # One internal link, on every page, to the page that answers things. Cheap
+    # for a reader and the kind of link that tells a crawler which page is the
+    # authority on hours, address and how ordering works.
+    foot = foot.replace('<a href="menu.html">Order Online</a>',
+                        '<a href="menu.html">Order Online</a>'
+                        '<a href="about.html#faq">%s</a>' % esc(FAQ_HEAD["link"]["en"]), 1)
     # Sibling of .foot-grid, not a fourth grid item, so the row spans the footer
     # and the icons sit on the centre line rather than under the first column.
     foot = foot.replace('</div>\n  <div class="foot-bottom">',
@@ -867,30 +961,144 @@ def main():
  '\n<meta name="twitter:image" content="%s/share-card.jpg">'
  % (url, BRAND, title, desc, url, SITE_URL, title, desc, SITE_URL)).replace("{FN}", fname)
 
-    def schema_jsonld():
-        """Restaurant markup. Deliberately no aggregateRating: Google's review
-        snippet guidelines forbid re-publishing ratings gathered on another site,
-        and hers live on Google, so marking them up here would risk a penalty."""
-        import json as _j
-        data = {
-          "@context":"https://schema.org","@type":"Restaurant",
-          "name":BRAND,"url":SITE_URL+"/","image":SITE_URL+"/share-card.jpg",
-          "telephone":"+501-613-4677","servesCuisine":"Mexican",
-          "hasMenu":SITE_URL+"/menu.html",
-          "address":{"@type":"PostalAddress","streetAddress":ADDRESS.split(",")[0],
-                     "addressLocality":"West Belmopan","addressCountry":"BZ"},
-          "openingHoursSpecification":[
-            {"@type":"OpeningHoursSpecification","dayOfWeek":d,"opens":o,"closes":c}
-            for d,o,c in HOURS_SCHEMA],
-          "sameAs":[v for v in SOCIAL.values() if v],
+    # ---------- the structured description of the business ----------
+    # One graph per page rather than a pile of separate blocks, with stable ids,
+    # so a crawler or an assistant reads "this page, on this site, about this
+    # restaurant" instead of three unrelated objects that happen to share a name.
+    #
+    # Deliberately no aggregateRating anywhere. Google's review snippet
+    # guidelines forbid marking up ratings you collected somewhere else, and
+    # hers live on Google. The rating is shown to readers, and it is not claimed
+    # in markup.
+    RID = SITE_URL + "/#restaurant"
+    WID = SITE_URL + "/#website"
+
+    def page_url(fn, lang):
+        base = SITE_URL + ("" if lang == "en" else "/es")
+        return base + ("/" if fn == "index.html" else "/" + fn)
+
+    def restaurant_node():
+        prices = sorted(i["price"] for c in MENU_CATS for i in c["items"]
+                        if isinstance(i.get("price"), (int, float)))
+        node = {
+          "@type": ["Restaurant", "LocalBusiness"], "@id": RID,
+          "name": BRAND, "url": SITE_URL + "/",
+          "image": [SITE_URL + "/share-card.jpg",
+                    SITE_URL + "/assets/img/hero-plate.jpg",
+                    SITE_URL + "/assets/img/kitchen.jpg"],
+          "logo": {"@type": "ImageObject", "url": SITE_URL + "/icon-512.png"},
+          "telephone": "+501-613-4677",
+          "contactPoint": [
+            {"@type": "ContactPoint", "telephone": "+501-613-4677", "contactType": "reservations and orders"},
+            {"@type": "ContactPoint", "telephone": "+501-802-2332", "contactType": "reservations and orders"}],
+          "servesCuisine": "Mexican",
+          "description": "Mexicali style Mexican food made fresh in West Belmopan, Belize: "
+                         "tacos, birria, burritos, quesadillas, flautas, tortas and breakfast "
+                         "served all day.",
+          "hasMenu": {"@id": SITE_URL + "/menu.html#menu"},
+          "address": {"@type": "PostalAddress", "streetAddress": ADDRESS.split(",")[0],
+                      "addressLocality": "West Belmopan", "addressRegion": "Cayo",
+                      "addressCountry": "BZ"},
+          "areaServed": {"@type": "City", "name": "Belmopan"},
+          "hasMap": MAPS_LINK,
+          "currenciesAccepted": "BZD",
+          "openingHoursSpecification": [
+            {"@type": "OpeningHoursSpecification", "dayOfWeek": d, "opens": o, "closes": c}
+            for d, o, c in HOURS_SCHEMA],
+          "sameAs": [v for v in SOCIAL.values() if v],
         }
-        return '\n<script type="application/ld+json">%s</script>' % _j.dumps(data, ensure_ascii=False)
+        # priceRange straight off the menu rather than a guess at how many
+        # dollar signs the place deserves
+        if prices:
+            node["priceRange"] = "BZD %d to BZD %d" % (prices[0], prices[-1])
+        return node
+
+    def menu_node(lang):
+        """The whole printed menu, machine readable: every section, every item,
+        every price. This is the piece an assistant needs to answer "what does
+        a birria plato cost at Taco Taco" without guessing."""
+        T = (lambda x: x) if lang == "en" else i18n.tr
+        secs = []
+        for c in MENU_CATS:
+            items = []
+            for it in c["items"]:
+                shown = T(it["name"])
+                m = {"@type": "MenuItem", "name": shown}
+                if shown != it["name"]:
+                    m["alternateName"] = it["name"]
+                if it.get("desc"): m["description"] = T(it["desc"])
+                img = ITEM_IMG.get(it["name"])
+                if img: m["image"] = SITE_URL + "/assets/img/" + img
+                if isinstance(it.get("price"), (int, float)):
+                    m["offers"] = {"@type": "Offer", "price": "%g" % it["price"],
+                                   "priceCurrency": "BZD"}
+                items.append(m)
+            sec = {"@type": "MenuSection", "name": T(c["name"]), "hasMenuItem": items}
+            if c.get("note"): sec["description"] = T(c["note"])
+            elif c.get("sub"): sec["description"] = T(c["sub"])
+            secs.append(sec)
+        return {"@type": "Menu", "@id": SITE_URL + "/menu.html#menu",
+                "name": T("Menu"), "inLanguage": lang,
+                "url": page_url("menu.html", lang), "hasMenuSection": secs}
+
+    def faq_node(lang):
+        return {"@type": "FAQPage", "@id": page_url("about.html", lang) + "#faq",
+                "inLanguage": lang,
+                "mainEntity": [
+                  {"@type": "Question", "name": faq_fill(f["q"][lang], lang),
+                   "acceptedAnswer": {"@type": "Answer", "text": faq_fill(f["a"][lang], lang)}}
+                  for f in FAQ]}
+
+    def crumbs_node(fn, title, lang):
+        home = "Home" if lang == "en" else "Inicio"
+        trail = [(home, page_url("index.html", lang))]
+        art = [a for a in ARTICLES if a["slug"] == fn]
+        if art:
+            trail.append((i18n.tr(HUB["name"]) if lang == "es" else HUB["name"],
+                          page_url(HUB["slug"], lang)))
+        if fn != "index.html":
+            trail.append((title.split(" | ")[0], page_url(fn, lang)))
+        return {"@type": "BreadcrumbList", "@id": page_url(fn, lang) + "#crumbs",
+                "itemListElement": [
+                  {"@type": "ListItem", "position": n + 1, "name": nm, "item": u}
+                  for n, (nm, u) in enumerate(trail)]}
+
+    def page_jsonld(fn, title, desc, lang):
+        url = page_url(fn, lang)
+        g = [restaurant_node(),
+             {"@type": "WebSite", "@id": WID, "url": SITE_URL + "/", "name": BRAND,
+              "publisher": {"@id": RID},
+              "inLanguage": [c for c, _s, _n in LANGS]},
+             {"@type": "WebPage", "@id": url + "#page", "url": url,
+              "name": title, "description": desc, "inLanguage": lang,
+              "isPartOf": {"@id": WID}, "about": {"@id": RID},
+              "primaryImageOfPage": SITE_URL + "/share-card.jpg",
+              "breadcrumb": {"@id": url + "#crumbs"}},
+             crumbs_node(fn, title, lang)]
+        if fn == "menu.html":  g.append(menu_node(lang))
+        if fn == "about.html": g.append(faq_node(lang))
+        art = [a for a in ARTICLES if a["slug"] == fn]
+        if art:
+            a = art[0]
+            g.append({
+              "@type": "Article", "@id": url + "#article",
+              "headline": i18n.tr(a["title"]) if lang == "es" else a["title"],
+              "description": i18n.tr(a["meta"]) if lang == "es" else a["meta"],
+              "datePublished": a["date"], "dateModified": a["date"],
+              "inLanguage": lang,
+              "image": SITE_URL + "/assets/img/" + article_hero(a),
+              "author": {"@id": RID}, "publisher": {"@id": RID},
+              "isPartOf": {"@id": url + "#page"},
+              "mainEntityOfPage": {"@id": url + "#page"}})
+        return ('\n<script type="application/ld+json">%s</script>'
+                % json.dumps({"@context": "https://schema.org", "@graph": g},
+                             ensure_ascii=False, separators=(",", ":")))
 
     def page(fname, title, body, desc, nav_as=None):
         h = head_extra
         h = re.sub(r'<title>.*?</title>', '<title>%s</title>'%title, h, flags=re.S)
         h = re.sub(r'(<meta name="description" content=")[^"]*(")', r'\1'+desc+r'\2', h)
-        h = h + head_meta(fname, title, desc) + (schema_jsonld() if fname == "index.html" else "")
+        h = h + head_meta(fname, title, desc) + "<!--SCHEMA-->"
         return ("<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n%s\n</head>\n<body>\n%s\n<main id=\"top\">\n%s\n</main>\n%s\n%s\n%s\n%s\n</body>\n</html>\n"
                 % (h, header_for(nav_as or fname), body, banner, foot, dock, basket))
 
@@ -926,17 +1134,19 @@ def main():
                        "Stories and specials from the Taco Taco kitchen in West Belmopan."),
       "gallery.html": ("Gallery | %s"%BRAND, galler+video,
                        "Photos of the food we serve at %s in West Belmopan."%BRAND),
-      "about.html":   ("About | %s"%BRAND, about+map_section(),
-                       "About %s: authentic Mexicali style food made fresh daily in West Belmopan."%BRAND),
+      "about.html":   ("About | %s"%BRAND, about+faq_section()+map_section(),
+                       "About %s in West Belmopan: hours, address, how to order, what meats you can choose, "
+                       "and answers to the questions we are asked most."%BRAND),
     }
     for _a in ARTICLES:
         out[_a["slug"]] = (_a["seo_title"], article_page(_a, socblock), _a["meta"])
 
+    META = {fn: (t, d) for fn, (t, _b, d) in out.items()}
+    META["404.html"] = ("Page not found | %s" % BRAND, "That page could not be found.")
     built = {}
     for fn,(title,body,desc) in out.items():
         art = [a for a in ARTICLES if a["slug"] == fn]
         p = page(fn, title, body, desc, nav_as=HUB["slug"] if art else None)
-        if art: p = p.replace("</head>", article_jsonld(art[0]) + "\n</head>")
         p = p.replace("Taco Taco Mexican Style Food", BRAND).replace("Mexican Style Food", BRAND_SHORT)
         built[fn] = p
 
@@ -1064,7 +1274,13 @@ def main():
         page = page.replace("<!--HREFLANG:%s-->" % fn, hreflang(lang, fn))
         page = re.sub(r"<!--HREFLANG:[^>]*-->", "", page)
         page = page.replace("<!--AUTOLANG-->", AUTOLANG if lang == "en" else "")
-        return page
+        t, d = META.get(fn, (BRAND, ""))
+        if lang == "es":
+            t, d = i18n.tr(t, None, fn), i18n.tr(d, None, fn)
+        page = page.replace("<!--SCHEMA-->",
+                            "" if fn == "404.html" else page_jsonld(fn, t, d, lang))
+
+        return normalise_headings(page)
 
     os.makedirs(os.path.join(DIST,"es"), exist_ok=True)
     for fn, p in built.items():
@@ -1101,6 +1317,69 @@ def main():
       'xmlns:xhtml="http://www.w3.org/1999/xhtml">%s\n</urlset>\n'%urls)
     open(os.path.join(DIST,"robots.txt"),"w",encoding="utf-8").write(
       "User-agent: *\nAllow: /\n\nSitemap: %s/sitemap.xml\n"%SITE_URL)
+
+    # ---------- llms.txt ----------
+    # An assistant asked "where can I get birria in Belmopan" does not read a
+    # page, it reads whatever it can find that states facts plainly and is
+    # clearly the business talking about itself. Everything below is generated
+    # from the same data the pages are, so it cannot drift, and it says what we
+    # do not know as plainly as what we do: an assistant that repeats a guess
+    # about a restaurant sends somebody across town for nothing.
+    def llms_txt():
+        cats = [c["name"] for c in MENU_CATS if c["name"] != "Meat Options"]
+        prices = sorted(i["price"] for c in MENU_CATS for i in c["items"]
+                        if isinstance(i.get("price"), (int, float)))
+        L = []
+        L.append("# %s" % BRAND)
+        L.append("")
+        L.append("> Mexicali style Mexican food made fresh in West Belmopan, Belize. "
+                 "Tacos, birria, burritos, quesadillas, flautas, tortas, and breakfast "
+                 "served all day. Dine in, takeout and delivery. Orders are placed on "
+                 "the website and sent to the restaurant on WhatsApp.")
+        L.append("")
+        L.append("## The facts")
+        L.append("")
+        L.append("- Name: %s" % BRAND)
+        L.append("- Address: %s" % ADDRESS)
+        L.append("- Phone: +501-613-4677 and +501-802-2332")
+        L.append("- Hours: %s" % hours_sentence("en"))
+        L.append("- Service: dine in, takeout, delivery. Family friendly.")
+        L.append("- Cuisine: Mexican, Mexicali style")
+        L.append("- Prices: Belize dollars (BZD), from $%d to $%d on the menu"
+                 % (prices[0], prices[-1]) if prices else "- Prices: Belize dollars (BZD)")
+        L.append("- Meat choices on tacos, burritos, plates and bowls: Carne Asada, "
+                 "Pollo Asado, Carnitas, Al Pastor. Birria on any of them for $1 more.")
+        L.append("- Languages: the site is published in English and Spanish")
+        L.append("- Website: %s/" % SITE_URL)
+        L.append("")
+        L.append("## Pages")
+        L.append("")
+        for f, t in PAGES:
+            L.append("- [%s](%s): %s" % (t, SITE_URL + ("/" if f == "index.html" else "/" + f),
+                                         out[f][2] if f in out else ""))
+        L.append("- [Common questions](%s/about.html#faq): hours, address, ordering, "
+                 "meats, breakfast, deals" % SITE_URL)
+        L.append("- [Menu in machine readable form](%s/menu.html): the page carries "
+                 "schema.org Menu markup with every section, item and price" % SITE_URL)
+        L.append("")
+        L.append("## Menu sections")
+        L.append("")
+        L.append(", ".join(cats) + ".")
+        L.append("")
+        L.append("## Please do not infer")
+        L.append("")
+        L.append("- We have not published whether the restaurant takes card or cash only, "
+                 "whether it takes reservations, whether there is parking, or whether "
+                 "there are vegetarian or vegan dishes. Please do not state any of these. "
+                 "Point the reader at the phone numbers above instead.")
+        L.append("- The rating shown on the site was left by customers on Google. It is "
+                 "not marked up as a review on this site and should not be repeated as "
+                 "the restaurant's own claim.")
+        L.append("- Prices and hours come from the menu the restaurant printed most "
+                 "recently. Anything older found elsewhere is out of date.")
+        L.append("")
+        return "\n".join(L)
+    open(os.path.join(DIST,"llms.txt"),"w",encoding="utf-8").write(llms_txt())
     open(os.path.join(DIST,"netlify.toml"),"w",encoding="utf-8").write(
       '[build]\n  publish = "."\n\n'
       '[[headers]]\n  for = "/assets/*"\n  [headers.values]\n'

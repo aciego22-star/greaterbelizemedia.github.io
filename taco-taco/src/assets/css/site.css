@@ -255,7 +255,7 @@ html.js .menu-toggle-wrap{display:block}
 .about-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);
  border-radius:16px;padding:24px;text-align:center}
 .about-card .ac-ic{font-size:2rem;margin-bottom:8px;color:var(--yellow);display:flex;justify-content:center}
-.about-card h4{margin:0 0 6px;text-transform:uppercase;letter-spacing:.5px;font-size:1.05rem;color:var(--yellow)}
+.about-card h2,.about-card h3,.about-card h4,.about-card h5,.about-card h6{margin:0 0 6px;text-transform:uppercase;letter-spacing:.5px;font-size:1.05rem;color:var(--yellow)}
 .about-card p{margin:0;color:rgba(255,255,255,.85);font-size:.95rem}
 
 /* order CTA */
@@ -265,7 +265,7 @@ html.js .menu-toggle-wrap{display:block}
  box-shadow:var(--shadow);padding:44px;text-align:center;position:relative;overflow:hidden}
 .order-card .mascot-sm{width:74px;height:74px;border-radius:50%;background-size:cover;background-position:center;
  border:3px solid var(--green);margin:0 auto 14px;box-shadow:0 8px 18px rgba(0,0,0,.18)}
-.order-card h2{font-family:var(--font-display);text-transform:uppercase;color:var(--green-d);
+.order-card h2,.order-card h3,.order-card h4,.order-card h5,.order-card h6{font-family:var(--font-display);text-transform:uppercase;color:var(--green-d);
  font-size:clamp(1.7rem,3.4vw,2.5rem);margin:0 0 10px}
 .order-card p{color:var(--muted);max-width:56ch;margin:0 auto 24px;font-size:1.08rem;text-align:justify}
 .order-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:720px;margin:26px auto 0;text-align:left}
@@ -370,7 +370,7 @@ footer{background:var(--green-dd);color:#fff;padding:44px 0 28px}
 .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:26px}
 .foot-brand .wordmark{font-size:1.7rem;margin-bottom:10px}
 .foot-brand p{color:rgba(255,255,255,.8);max-width:38ch;margin:0}
-.foot-col h4{text-transform:uppercase;letter-spacing:.5px;color:var(--yellow);margin:0 0 12px;font-size:1rem}
+.foot-col h2,.foot-col h3,.foot-col h4,.foot-col h5,.foot-col h6{text-transform:uppercase;letter-spacing:.5px;color:var(--yellow);margin:0 0 12px;font-size:1rem}
 .foot-col p,.foot-col a{color:rgba(255,255,255,.85);margin:0 0 8px;font-size:.95rem;display:block}
 .foot-col a:hover{color:var(--yellow)}
 .foot-bottom{border-top:1px solid rgba(255,255,255,.15);margin-top:30px;padding-top:20px;
@@ -639,7 +639,7 @@ html.js.scrub-on .gal-label{display:block}
 .visit-sec{background:var(--cream2)}
 .visit-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
 .visit-card{background:var(--paper);border:1px solid var(--border);border-radius:18px;padding:22px;text-align:center}
-.visit-card h4{margin:0 0 8px;font-family:var(--font-display);text-transform:uppercase;letter-spacing:.5px;
+.visit-card h2,.visit-card h3,.visit-card h4,.visit-card h5,.visit-card h6{margin:0 0 8px;font-family:var(--font-display);text-transform:uppercase;letter-spacing:.5px;
  color:var(--green-d);font-size:1rem}
 .visit-card p{margin:0 0 14px;color:var(--muted);line-height:1.5}
 .visit-card a[href^="tel"]{color:var(--green);font-weight:800}
@@ -658,7 +658,7 @@ html.js.scrub-on .gal-label{display:block}
 .visit-facts{display:flex;flex-direction:column;gap:12px}
 .fact{background:var(--paper);border:1px solid var(--border);border-radius:16px;padding:16px 18px;flex:1;
  display:flex;flex-direction:column;justify-content:center}
-.fact h4{margin:0 0 5px;font-family:var(--font-display);text-transform:uppercase;letter-spacing:.5px;
+.fact h2,.fact h3,.fact h4,.fact h5,.fact h6{margin:0 0 5px;font-family:var(--font-display);text-transform:uppercase;letter-spacing:.5px;
  color:var(--green-d);font-size:.92rem}
 .fact p{margin:0;color:var(--muted);line-height:1.5;font-size:.94rem}
 
@@ -914,7 +914,7 @@ html.js .chip{position:absolute;top:0;left:0;width:42%;max-width:none;
  gap:14px;margin-top:30px}
 .apoint{background:var(--paper);border:1px solid var(--border);border-radius:16px;
  padding:18px 18px 16px}
-.apoint h3{margin:10px 0 6px;text-align:center;font-size:1rem;color:var(--green-d);letter-spacing:.2px}
+.apoint h2,.apoint h3,.apoint h4,.apoint h5,.apoint h6{margin:10px 0 6px;text-align:center;font-size:1rem;color:var(--green-d);letter-spacing:.2px}
 .apoint p{margin:0;color:var(--muted);font-size:.9rem;line-height:1.55}
 .apoint-ico{display:flex;align-items:center;justify-content:center;margin:0 auto 2px;
  width:46px;height:46px;border-radius:14px;background:rgba(31,92,46,.09)}
@@ -1002,3 +1002,16 @@ html.js .chip{position:absolute;top:0;left:0;width:42%;max-width:none;
    one line rather than letting the bar grow a second row. */
 .mnav-toggle,.info-toggle{white-space:nowrap}
 @media(max-width:430px){.mnav-toggle{padding-left:14px;padding-right:14px;font-size:.82rem}}
+
+/* ===== common questions =====
+   Answers in the open, not folded into an accordion. A reader scanning on a
+   phone will not open ten panels to find the one about delivery, and the whole
+   point of the section is that the answer is there without a second tap. */
+.faq-sec{background:linear-gradient(180deg,var(--cream2),var(--cream))}
+.qa-grid{display:grid;grid-template-columns:1fr;gap:14px;margin-top:26px}
+@media(min-width:820px){.qa-grid{grid-template-columns:1fr 1fr;gap:16px 26px}}
+.qa{background:var(--paper);border:1px solid var(--border);border-radius:16px;
+ padding:18px 18px 16px}
+.qa h2,.qa h3,.qa h4,.qa h5,.qa h6{margin:0 0 7px;font-family:var(--font-display);font-size:1rem;line-height:1.35;
+ color:var(--green-d)}
+.qa p{margin:0;color:var(--muted);font-size:.93rem;line-height:1.6}
