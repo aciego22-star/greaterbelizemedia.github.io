@@ -605,6 +605,8 @@ ES.update({
  "Three cold drinks": "Tres bebidas frías",
  "Frappés topped with whipped cream": "Frappés coronados con crema batida",
  "A tray of Taco Taco sides and salsas": "Una bandeja de acompañamientos y salsas de Taco Taco",
+ "A slice of strawberry tres leches, sitting in its milk":
+   "Una rebanada de tres leches de fresa, reposando en su leche",
  "Fresh Mexicali style street tacos at Taco Taco":
    "Tacos callejeros frescos estilo mexicali en Taco Taco",
  "Taco Taco combo plate with tacos, fries and rice":

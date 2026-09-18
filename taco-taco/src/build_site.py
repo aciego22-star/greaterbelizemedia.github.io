@@ -120,7 +120,14 @@ ITEM_IMG = {
  "Chilaquiles":                    "menu-chilaquiles.jpg",
  "Waffle or Pancake Sandwich":     "dish-03.jpg",
  "Pancakes or Waffle Only":        "menu-only-pancakes.jpg",
+ # Desserts. These are the restaurant's own photographs rather than studio
+ # renders, which is why they are framed the way they are: this is the cake that
+ # actually comes out of that kitchen. Tres Leches is made in more than one
+ # flavour, so the menu shows one and the gallery carries another.
  "Order of Churros":               "menu-churros.jpg",
+ "Tres Leches":                    "menu-tres-leches.jpg",
+ "Cheesecake":                     "menu-cheesecake.jpg",
+ "Cinnamon Rolls":                 "menu-cinnamon-rolls.jpg",
  "Frapp\u00e9":                      "fav-04.jpg",
 
  # From the two photo packages, each checked against the printed menu.
@@ -230,6 +237,7 @@ GALLERY = [
  ("gal-drinks.jpg", "Three cold drinks"),
  ("fav-04.jpg", "Frappés topped with whipped cream"),
  ("fav-02.jpg", "A tray of Taco Taco sides and salsas"),
+ ("gal-tres-leches-pink.jpg", "A slice of strawberry tres leches, sitting in its milk"),
 ]
 
 PAGES = [("index.html","Home"),("menu.html","Menu"),("deals-combos.html","Deals"),
