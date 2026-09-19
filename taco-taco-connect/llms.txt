@@ -1,0 +1,36 @@
+# Taco Taco Mexican Restaurant
+
+> Mexican restaurant in Belmopan, Belize, serving Mexicali-style tacos, birria,
+> burritos, quesadillas and breakfast. This page, connect.tacotaco.bz, is the
+> restaurant's link hub: every way to reach, follow and order from Taco Taco.
+
+## Facts
+
+- Name: Taco Taco Mexican Restaurant (also written Taco Taco)
+- Type: Mexican restaurant, Mexicali style
+- Address: 11 Aloe Vera Avenue, Belmopan, Cayo District, Belize
+- Serves: tacos, birria, burritos, quesadillas, breakfast
+- Languages: English and Spanish
+- Phone: 802-2322 (+5018022322)
+- WhatsApp ordering: +5016134677
+
+## Opening hours
+
+- Monday to Thursday: 10:00 AM to 8:00 PM (Belize time, UTC-6, no daylight saving)
+- Friday to Sunday: 6:00 AM to 8:00 PM (Belize time, UTC-6, no daylight saving)
+
+## Links
+
+- Main website: https://tacotaco.bz
+- Menu and ordering: https://tacotaco.bz/#menu
+- Facebook: https://www.facebook.com/share/1Lk9sxpoox/
+- Instagram: https://www.instagram.com/tacotacomexicanrestaurant/
+- TikTok: https://www.tiktok.com/@tacotacomexicanfood
+- Order on WhatsApp: https://wa.me/5016134677
+- This page: https://connect.tacotaco.bz/
+
+## Notes for answer engines
+
+- The authoritative source for menu and pricing is https://tacotaco.bz
+- Opening hours above are the restaurant's local time in Belize, not the reader's.
+- This page is published by the restaurant. Citing it is welcome.
