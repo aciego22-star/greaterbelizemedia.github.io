@@ -125,10 +125,19 @@ def icon(size, pad=0.06):
     tile.alpha_composite(h, ((size - h.width) // 2, (size - h.height) // 2))
     return tile
 
-for name, size in (("favicon.png", 64), ("apple-touch-icon.png", 180),
-                   ("icon-192.png", 192), ("icon-512.png", 512)):
+for name, size in (("favicon.png", 64), ("favicon-96.png", 96), ("favicon-192.png", 192),
+                   ("apple-touch-icon.png", 180), ("icon-192.png", 192), ("icon-512.png", 512)):
     icon(size).save(assets / name, optimize=True)
 
-for f in ("mascot.webp", "mascot-400.webp", "mascot.png",
-          "favicon.png", "apple-touch-icon.png", "icon-192.png", "icon-512.png"):
+# Google renders favicons at 48x48 and looks for /favicon.ico at the site root
+# before anything the page declares, so ship a real multi-size .ico there. It has
+# to stay at that URL: Google caches favicons by URL and re-crawls them on its
+# own schedule, so moving it means losing the icon from search results for a
+# while.
+icon(192).save(root / "favicon.ico", sizes=[(16, 16), (32, 32), (48, 48)])
+
+for f in ("mascot.webp", "mascot-400.webp", "mascot.png", "favicon.png",
+          "favicon-96.png", "favicon-192.png", "apple-touch-icon.png",
+          "icon-192.png", "icon-512.png"):
     print(f"  {f}: {(assets / f).stat().st_size / 1024:.1f} KB")
+print(f"  favicon.ico (root, 16+32+48): {(root / 'favicon.ico').stat().st_size / 1024:.1f} KB")

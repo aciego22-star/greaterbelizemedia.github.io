@@ -77,6 +77,8 @@ assets/
   mascot-400.webp         same at 392w, for the srcset
   mascot.png              quantised fallback for browsers without WebP
   favicon.png             64px app icon
+  favicon-96.png          96px and 192px, the sizes Google prefers
+  favicon-192.png
   apple-touch-icon.png    180px
   icon-192.png            manifest icons
   icon-512.png
@@ -220,6 +222,23 @@ Adding a string: add the key to **both** `en` and `es`, then put
 `data-i18n-alt` for image alt text.
 
 ---
+
+## Favicon
+
+`/favicon.ico` sits at the site root with 16, 32 and 48px frames inside it,
+because Google checks that path before anything the page declares, and renders
+whatever it finds at 48x48. The page also declares 96px and 192px PNGs, both
+multiples of 48, which is what Google's own guidance asks for. All of them are
+square and none are blocked by `robots.txt`.
+
+**Do not move or rename these files.** Google caches favicons by URL and
+re-crawls them on its own schedule, so changing the path drops the icon out of
+search results until it comes back round. Regenerate them in place with
+`tools/extract-mascot.py` instead.
+
+It will not appear in search results the day you deploy: the page has to be
+indexed first, and Google then fetches the icon separately. Days to weeks is
+normal.
 
 ## Opening hours
 

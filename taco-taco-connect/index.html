@@ -37,7 +37,12 @@
 <meta name="twitter:description" content="Connect with Taco Taco Mexican Restaurant in Belmopan. View the menu, order on WhatsApp, visit our website and follow Taco Taco on Facebook, Instagram and TikTok.">
 <meta name="twitter:image" content="https://connect.tacotaco.bz/assets/og-image.jpg">
 
-<link rel="icon" href="assets/favicon.png" type="image/png" sizes="64x64">
+<!-- Google looks for /favicon.ico at the site root first, then the head links,
+     and renders whatever it finds at 48x48. These URLs must stay put: it caches
+     favicons by URL and re-crawls on its own schedule. -->
+<link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48">
+<link rel="icon" type="image/png" sizes="96x96" href="assets/favicon-96.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/favicon-192.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 
