@@ -734,6 +734,32 @@ ES.update({
    "Descubra Taco Taco Mexican Restaurant en Belmopán, Belice. Explore tacos mexicanos, birria, burritos, quesadillas, flautas, combos de almuerzo y más, frescos de la cocina de Taco Taco.",
 })
 
+# ---------------------------------------------------------------- happy hour
+# "Happy hour" is what the restaurant's own card says and what people in
+# Belmopan say, so the Spanish page keeps the phrase rather than translating it
+# into something nobody asks for at the counter.
+ES.update({
+ "Happy Hour": "Happy Hour",
+ "Tacos From": "Tacos desde las",
+ "2PM to 6PM": "2PM a 6PM",
+ "Our first official happy hour. These are the taco prices from 2:00 PM to 6:00 PM.":
+   "Nuestro primer happy hour oficial. Estos son los precios de los tacos de 2:00 PM a 6:00 PM.",
+ "each": "cada uno",
+ "See The Full Menu": "Ver el men\u00fa completo",
+ "Taco Taco deals and combos in Belmopan: happy hour tacos 2PM to 6PM, lunch combos, "
+ "the Mega Combo, and Monday and Tuesday specials. Pick your options and order on WhatsApp.":
+   "Ofertas y combos de Taco Taco en Belmop\u00e1n: tacos de happy hour de 2PM a 6PM, combos de "
+   "almuerzo, el Mega combo y especiales de lunes y martes. Elija sus opciones y pida por WhatsApp.",
+})
+
+# ---------------------------------------------------------------- the reviews page photograph
+ES.update({
+ "The Taco Taco Mexican Restaurant building on Aloe Vera Ave in West Belmopan, with "
+ "covered seating out front and the Taco Taco road sign by the gate":
+   "El edificio de Taco Taco Mexican Restaurant en Aloe Vera Ave, Belmop\u00e1n Oeste, con "
+   "asientos techados al frente y el letrero de Taco Taco junto al port\u00f3n",
+})
+
 # ---------------------------------------------------------------- the language switch
 ES.update({
  "English": "English",

@@ -92,15 +92,31 @@ FAQ = [
   "a": {"en": "Every price on this site is in Belize dollars (BZD).",
         "es": "Todos los precios de este sitio están en dólares beliceños (BZD)."}},
 
+ # Added 2026-09-19 from the restaurant's own happy hour announcement. The card
+ # names the window and two prices and stops there, so this answer does too: no
+ # days of the week, because it does not say which, and no "normally $x",
+ # because it does not say which taco the $4 replaces.
+ {"id": "happy-hour",
+  "q": {"en": "Do you have a happy hour?",
+        "es": "¿Tienen happy hour?"},
+  "a": {"en": "Yes. Happy hour runs from 2:00 PM to 6:00 PM. Mexican tacos are $4 each "
+              "and birria tacos are $5 each during that window. Call {phone} to check "
+              "it is on before you set out.",
+        "es": "Sí. El happy hour es de 2:00 PM a 6:00 PM. Durante esa franja los tacos "
+              "mexicanos cuestan $4 cada uno y los tacos de birria $5 cada uno. Llame al "
+              "{phone} para confirmar antes de salir."}},
+
  {"id": "deals",
   "q": {"en": "Do you have specials or combos?",
         "es": "¿Tienen especiales o combos?"},
-  "a": {"en": "Yes. There are Monday specials, a Taco Tuesday special, several lunch "
-              "combos that come with fries and a drink, and a Mega Combo built for "
-              "sharing. They are all on the deals page with their current prices.",
-        "es": "Sí. Hay especiales de lunes, un especial de martes de tacos, varios combos "
-              "de almuerzo que vienen con papas fritas y bebida, y un Mega combo hecho "
-              "para compartir. Todos están en la página de ofertas con sus precios vigentes."}},
+  "a": {"en": "Yes. There is a happy hour from 2:00 PM to 6:00 PM, Monday specials, a "
+              "Taco Tuesday special, several lunch combos that come with fries and a "
+              "drink, and a Mega Combo built for sharing. They are all on the deals page "
+              "with their current prices.",
+        "es": "Sí. Hay happy hour de 2:00 PM a 6:00 PM, especiales de lunes, un especial "
+              "de martes de tacos, varios combos de almuerzo que vienen con papas fritas y "
+              "bebida, y un Mega combo hecho para compartir. Todos están en la página de "
+              "ofertas con sus precios vigentes."}},
 ]
 
 HEAD = {
