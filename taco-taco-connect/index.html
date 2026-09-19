@@ -1038,7 +1038,9 @@ footer{
 }
 .footer__credit a{
   display:inline-block;
-  padding:13px 10px 11px;
+  /* 13 + 12 + the line box = 44. Removing the underline took a pixel of
+     height with it, which dropped this under the tap minimum. */
+  padding:13px 10px 12px;
   color:var(--on-warm);
   font-weight:700;
   text-underline-offset:3px;
