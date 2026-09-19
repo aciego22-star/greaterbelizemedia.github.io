@@ -222,6 +222,15 @@ ITEM_IMG = {
  "Hot Tea":                        "menu-hot-tea.jpg",
  "Iced Coffee":                    "menu-iced-coffee.jpg",
  "Water":                          "menu-water.jpg",
+
+ # The five meats, photographed in the pans they are held in. Sent 2026-09-19
+ # and named by the restaurant one by one, so each of these is the meat the
+ # kitchen means by that word, not a lookalike from a plate shot.
+ "Pollo Asado":                    "menu-pollo-asado.jpg",
+ "Carne Asada":                    "menu-carne-asada.jpg",
+ "Birria":                         "menu-birria.jpg",
+ "Carnitas":                       "menu-carnitas.jpg",
+ "Al Pastor":                      "menu-al-pastor.jpg",
 }
 
 # The gallery grid, with a real description of each plate rather than a generic
