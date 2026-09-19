@@ -1,20 +1,13 @@
 <!DOCTYPE html>
 <!--
   ===========================================================================
-  TACO TACO CONNECT  —  connect.tacotaco.bz
+  TACO TACO CONNECT  /  connect.tacotaco.bz
 
-  BEFORE THIS GOES LIVE: five contact values still need filling in.
-  Search this file for "BUSINESS DETAILS" (near the bottom, in the <script>)
-  and replace the whatsapp, phone, phoneDisplay, facebook, instagram and
-  tiktok placeholders with the real ones.
+  Every contact detail lives in one place: search this file for
+  "BUSINESS DETAILS" (near the bottom, inside the <script>). Opening hours
+  are in the HOURS table right below it.
 
-  Until you do, those links DO NOT APPEAR on the live site -- including the
-  big "Order on WhatsApp" button. That is deliberate: a wrong phone number
-  on a restaurant page is worse than a missing one. Open the page from your
-  computer (or a Netlify preview URL) and every unfilled link is shown
-  greyed out and labelled, so you can see exactly what is still outstanding.
-
-  See README.md for everything else.
+  See README.md for the rest.
   ===========================================================================
 -->
 <html lang="en" data-lang="en">
@@ -25,7 +18,7 @@
 <meta name="color-scheme" content="dark">
 
 <title>Taco Taco Connect | Taco Taco Mexican Restaurant Belize</title>
-<meta name="description" content="Connect with Taco Taco Mexican Restaurant in West Belmopan. View the menu, order on WhatsApp, visit our website and follow Taco Taco on Facebook, Instagram and TikTok.">
+<meta name="description" content="Connect with Taco Taco Mexican Restaurant in Belmopan. View the menu, order on WhatsApp, visit our website and follow Taco Taco on Facebook, Instagram and TikTok.">
 <link rel="canonical" href="https://connect.tacotaco.bz/">
 
 <meta property="og:type" content="website">
@@ -34,14 +27,14 @@
 <meta property="og:locale:alternate" content="es_BZ">
 <meta property="og:url" content="https://connect.tacotaco.bz/">
 <meta property="og:title" content="Taco Taco Connect | Taco Taco Mexican Restaurant Belize">
-<meta property="og:description" content="Connect with Taco Taco Mexican Restaurant in West Belmopan. View the menu, order on WhatsApp, visit our website and follow Taco Taco on Facebook, Instagram and TikTok.">
+<meta property="og:description" content="Connect with Taco Taco Mexican Restaurant in Belmopan. View the menu, order on WhatsApp, visit our website and follow Taco Taco on Facebook, Instagram and TikTok.">
 <meta property="og:image" content="https://connect.tacotaco.bz/assets/og-image.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Taco Taco Connect — everything Taco Taco in one place.">
+<meta property="og:image:alt" content="Taco Taco Connect. Everything Taco Taco in one place.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Taco Taco Connect | Taco Taco Mexican Restaurant Belize">
-<meta name="twitter:description" content="Connect with Taco Taco Mexican Restaurant in West Belmopan. View the menu, order on WhatsApp, visit our website and follow Taco Taco on Facebook, Instagram and TikTok.">
+<meta name="twitter:description" content="Connect with Taco Taco Mexican Restaurant in Belmopan. View the menu, order on WhatsApp, visit our website and follow Taco Taco on Facebook, Instagram and TikTok.">
 <meta name="twitter:image" content="https://connect.tacotaco.bz/assets/og-image.jpg">
 
 <link rel="icon" href="assets/favicon.png" type="image/png" sizes="64x64">
@@ -65,7 +58,7 @@
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "11 Aloe Vera Avenue",
-    "addressLocality": "West Belmopan",
+    "addressLocality": "Belmopan",
     "addressRegion": "Cayo District",
     "addressCountry": "BZ"
   },
@@ -75,7 +68,7 @@
 
 <style>
 /* ============================================================
-   TACO TACO CONNECT — design tokens
+   TACO TACO CONNECT: design tokens
    ============================================================ */
 :root{
   --gold:#F5B301;
@@ -88,6 +81,16 @@
   --cream:#FFF6E5;
   --ink:#08221A;
   --ink-deep:#04100C;
+
+  /* Warm zone, sampled from the logo artwork: red at the top left through
+     orange to gold at the bottom right. */
+  --warm-red:#F23A0C;
+  --warm-orange:#FA9A10;
+  --warm-gold:#F6B205;
+  --on-warm:#123328;
+  --on-warm-dim:rgba(18,51,40,.84);
+  --surface:#FFF8EC;
+  --surface-line:rgba(18,51,40,.13);
 
   --text:var(--cream);
   --text-dim:rgba(255,246,229,.68);
@@ -126,10 +129,8 @@ body::before{
   inset:0;
   z-index:-2;
   background:
-    radial-gradient(90% 55% at 50% 4%, rgba(242,115,33,.30), transparent 62%),
-    radial-gradient(70% 45% at 50% 0%, rgba(245,179,1,.22), transparent 70%),
-    radial-gradient(120% 80% at 50% 100%, rgba(18,115,74,.16), transparent 70%),
-    linear-gradient(175deg,#0E3B2E 0%,#08221A 42%,#04100C 100%);
+    radial-gradient(120% 70% at 50% 108%, rgba(245,179,1,.15), transparent 68%),
+    linear-gradient(178deg,#10412F 0%,#0A2A20 46%,#05130A 100%);
 }
 /* faint woven-tortilla texture so the flat dark never looks empty */
 body::after{
@@ -170,6 +171,49 @@ button{font:inherit;color:inherit}
 }
 
 /* ============================================================
+   THE WARM ZONE
+   The hero and the link cards sit on the logo's own orange, which
+   then dissolves into the deep green the rest of the page runs on.
+   Its own stacking context keeps these two layers above the body's
+   background but behind its content, and the mask does the
+   transition so there is no seam where the two grounds meet.
+   ============================================================ */
+.warm{
+  --fade:clamp(150px,24vw,230px);
+  position:relative;
+  isolation:isolate;
+  color:var(--on-warm);
+  padding-bottom:var(--fade);
+}
+/* the fade band already separates the zones, so the next section starts flush */
+.warm + section{margin-top:0}
+.warm::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-2;
+  background:
+    radial-gradient(88% 58% at 6% -8%, rgba(242,58,12,.94), transparent 58%),
+    radial-gradient(72% 52% at 97% 4%, rgba(255,216,116,.85), transparent 62%),
+    linear-gradient(168deg,var(--warm-red) 0%,#FC8614 22%,var(--warm-orange) 52%,var(--warm-gold) 82%,#EFA70D 100%);
+  -webkit-mask:linear-gradient(to bottom,#000 0 calc(100% - var(--fade)),transparent 100%);
+  mask:linear-gradient(to bottom,#000 0 calc(100% - var(--fade)),transparent 100%);
+}
+/* the logo's own scattered taco outlines, at the logo's own weight */
+.warm::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27132%27%20height%3D%27132%27%20viewBox%3D%270%200%20132%20132%27%3E%3Cg%20fill%3D%27none%27%20stroke%3D%27%23FFF6E5%27%20stroke-width%3D%272.1%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%3Cg%20transform%3D%27translate%286%2010%29%20rotate%28-11%2020%2020%29%27%3E%3Cpath%20d%3D%27M4%2028a16%2016%200%200%201%2032%200c0%202-1.3%203-3%203H7c-1.7%200-3-1-3-3ZM9.5%2026.5c.5-7%205-12%2010.5-12s10%205%2010.5%2012M12%2019.5c2-2.2%204.6-3%206.4-1.3M21.5%2017.6c2-1.4%204.3-.6%205.6%201.5%27%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%27translate%2872%2042%29%20rotate%2815%2020%2020%29%27%3E%3Cpath%20d%3D%27M4%2028a16%2016%200%200%201%2032%200c0%202-1.3%203-3%203H7c-1.7%200-3-1-3-3ZM9.5%2026.5c.5-7%205-12%2010.5-12s10%205%2010.5%2012M12%2019.5c2-2.2%204.6-3%206.4-1.3M21.5%2017.6c2-1.4%204.3-.6%205.6%201.5%27%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%27translate%2826%2078%29%20rotate%286%2020%2020%29%27%3E%3Cpath%20d%3D%27M4%2028a16%2016%200%200%201%2032%200c0%202-1.3%203-3%203H7c-1.7%200-3-1-3-3ZM9.5%2026.5c.5-7%205-12%2010.5-12s10%205%2010.5%2012M12%2019.5c2-2.2%204.6-3%206.4-1.3M21.5%2017.6c2-1.4%204.3-.6%205.6%201.5%27%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+  background-size:132px 132px;
+  opacity:.17;
+  -webkit-mask:linear-gradient(to bottom,#000 0 calc(100% - var(--fade)),transparent calc(100% - var(--fade) * .25));
+  mask:linear-gradient(to bottom,#000 0 calc(100% - var(--fade)),transparent calc(100% - var(--fade) * .25));
+}
+
+/* ============================================================
    Language switch
    ============================================================ */
 .lang{
@@ -180,9 +224,9 @@ button{font:inherit;color:inherit}
   display:flex;
   align-items:center;
   padding:3px;
-  border:1px solid var(--line);
+  border:1px solid rgba(255,246,229,.2);
   border-radius:var(--r-pill);
-  background:rgba(4,16,12,.55);
+  background:rgba(14,43,33,.82);
   backdrop-filter:blur(10px);
   -webkit-backdrop-filter:blur(10px);
 }
@@ -197,18 +241,18 @@ button{font:inherit;color:inherit}
   font-size:.78rem;
   font-weight:700;
   letter-spacing:.08em;
-  color:var(--text-dim);
+  color:rgba(255,246,229,.78);
   transition:color .25s var(--ease),background-color .25s var(--ease);
 }
 .lang__btn[aria-pressed="true"]{
-  color:var(--ink-deep);
-  background:linear-gradient(145deg,var(--gold-light),var(--gold));
+  color:var(--on-warm);
+  background:var(--surface);
 }
-.lang__sep{width:1px;height:16px;background:var(--line)}
+.lang__sep{width:1px;height:16px;background:rgba(255,246,229,.22)}
 </style>
 <style>
 /* ============================================================
-   THE TACO ORBIT — signature hero
+   THE TACO ORBIT: signature hero
    Pure CSS transforms on a small number of composited layers.
    --px / --py are pointer position in the range -1..1 (desktop only);
    they stay at 0 on touch devices, where the drift keyframes carry
@@ -243,12 +287,12 @@ button{font:inherit;color:inherit}
   position:absolute;
   left:50%;
   top:47%;
-  width:min(84%,360px);
-  aspect-ratio:1.35;
+  width:min(62%,270px);
+  aspect-ratio:1.3;
   transform:translate3d(-50%,-50%,-140px);
   border-radius:50%;
-  background:radial-gradient(closest-side,rgba(255,215,107,.62),rgba(242,115,33,.34) 48%,transparent 74%);
-  filter:blur(26px);
+  background:radial-gradient(closest-side,rgba(255,250,235,.4),rgba(255,224,150,.18) 48%,transparent 76%);
+  filter:blur(34px);
   animation:pulse 7s var(--ease) infinite;
 }
 
@@ -269,14 +313,14 @@ button{font:inherit;color:inherit}
   margin:calc(var(--ring-size) / -2) 0 0 calc(var(--ring-size) / -2);
   border:0;
   background:conic-gradient(from 200deg,
-    #F5B301 0%, #FFD76B 14%, #F27321 34%, #D62828 50%,
-    #F27321 66%, #FFD76B 86%, #F5B301 100%);
+    #FFFDF5 0%, #FFF0C4 16%, #FFFFFF 36%, #FFE39A 56%,
+    #FFFFFF 76%, #FFF6DC 90%, #FFFDF5 100%);
   -webkit-mask:radial-gradient(closest-side,transparent 0 90%,#000 92%);
   mask:radial-gradient(closest-side,transparent 0 90%,#000 92%);
   filter:
-    drop-shadow(0 0 10px rgba(245,179,1,.85))
-    drop-shadow(0 0 28px rgba(242,115,33,.6))
-    drop-shadow(0 0 60px rgba(242,115,33,.35));
+    drop-shadow(0 0 9px rgba(255,255,255,.9))
+    drop-shadow(0 5px 14px rgba(120,38,0,.5))
+    drop-shadow(0 0 44px rgba(255,236,180,.55));
   transform:translateZ(-40px) rotateX(68deg);
   animation:spin 26s linear infinite;
 }
@@ -286,7 +330,7 @@ button{font:inherit;color:inherit}
   aspect-ratio:1;
   margin:calc(var(--ring-size) / -2) 0 0 calc(var(--ring-size) / -2);
   border-width:1px;
-  border-color:rgba(255,246,229,.22);
+  border-color:rgba(255,251,240,.6);
   border-style:dashed;
   transform:translateZ(-90px) rotateX(72deg);
   animation:spin-rev 44s linear infinite;
@@ -297,8 +341,8 @@ button{font:inherit;color:inherit}
   aspect-ratio:1;
   margin:calc(var(--ring-size) / -2) 0 0 calc(var(--ring-size) / -2);
   border-width:2px;
-  border-color:rgba(255,215,107,.55);
-  box-shadow:0 0 16px rgba(245,179,1,.35), inset 0 0 18px rgba(242,115,33,.28);
+  border-color:rgba(18,51,40,.5);
+  box-shadow:0 0 14px rgba(18,51,40,.2), inset 0 0 18px rgba(255,255,255,.3);
   transform:translateZ(10px) rotateX(66deg);
   animation:spin 17s linear infinite reverse;
 }
@@ -319,25 +363,25 @@ button{font:inherit;color:inherit}
 /* --- drifting line-art produce at three depths --- */
 .drift{
   position:absolute;
-  color:var(--gold);
+  color:#FFF6E5;
   pointer-events:none;
   transform:translateZ(var(--z,-100px));
   will-change:transform;
 }
 .drift svg{width:100%;height:auto;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 
-.drift--far{opacity:.20;width:34px;filter:blur(.6px)}
-.drift--mid{opacity:.34;width:46px}
-.drift--near{opacity:.52;width:58px}
+.drift--far{opacity:.32;width:34px;filter:blur(.6px)}
+.drift--mid{opacity:.46;width:46px}
+.drift--near{opacity:.64;width:58px}
 
 .d1{--z:-170px; left:4%;  top:14%; animation:drift-a 17s ease-in-out infinite}
-.d2{--z:-210px; right:6%; top:8%;  animation:drift-b 21s ease-in-out infinite; color:var(--orange)}
+.d2{--z:-210px; right:6%; top:8%;  animation:drift-b 21s ease-in-out infinite; color:#FFE9B6}
 .d3{--z:-120px; left:11%; bottom:16%; animation:drift-b 19s ease-in-out infinite 1.4s}
-.d4{--z:-150px; right:9%; bottom:22%; animation:drift-a 23s ease-in-out infinite .8s; color:#8FBE4F}
-.d5{--z:-60px; left:-2%; top:52%;  animation:drift-a 15s ease-in-out infinite 2.1s; color:#8FBE4F}
-.d6{--z:-70px; right:-1%;top:44%;  animation:drift-b 18s ease-in-out infinite 1.1s; color:var(--red)}
+.d4{--z:-150px; right:9%; bottom:22%; animation:drift-a 23s ease-in-out infinite .8s; color:#EDF7DC}
+.d5{--z:-60px; left:-2%; top:52%;  animation:drift-a 15s ease-in-out infinite 2.1s; color:#EDF7DC}
+.d6{--z:-70px; right:-1%;top:44%;  animation:drift-b 18s ease-in-out infinite 1.1s; color:#FFDCCC}
 .d7{--z:-30px; left:22%; top:2%;   animation:drift-b 20s ease-in-out infinite 2.6s}
-.d8{--z:-45px; right:20%;bottom:4%;animation:drift-a 22s ease-in-out infinite 1.8s; color:var(--orange)}
+.d8{--z:-45px; right:20%;bottom:4%;animation:drift-a 22s ease-in-out infinite 1.8s; color:#FFE9B6}
 
 /* --- the mascot, floating above the ring --- */
 .orbit picture{display:contents}
@@ -350,9 +394,8 @@ button{font:inherit;color:inherit}
   transform:translate3d(-50%,-50%,70px);
   animation:float 6.5s ease-in-out infinite;
   filter:
-    drop-shadow(0 14px 18px rgba(0,0,0,.55))
-    drop-shadow(0 34px 54px rgba(4,16,12,.7))
-    drop-shadow(0 0 40px rgba(245,179,1,.28));
+    drop-shadow(0 12px 16px rgba(120,38,0,.45))
+    drop-shadow(0 30px 46px rgba(96,30,0,.4));
   will-change:transform;
 }
 /* contact shadow cast down onto the ring plane */
@@ -364,7 +407,7 @@ button{font:inherit;color:inherit}
   aspect-ratio:3.6;
   transform:translate3d(-50%,-50%,-38px) rotateX(68deg);
   border-radius:50%;
-  background:radial-gradient(closest-side,rgba(4,16,12,.78),transparent 75%);
+  background:radial-gradient(closest-side,rgba(128,44,2,.55),transparent 75%);
   filter:blur(9px);
   animation:cast 6.5s ease-in-out infinite;
 }
@@ -412,23 +455,26 @@ button{font:inherit;color:inherit}
   letter-spacing:-.015em;
   margin:0 0 12px;
   text-transform:uppercase;
-  background:linear-gradient(170deg,#FFF6E5 6%,var(--gold-light) 44%,var(--orange) 96%);
-  -webkit-background-clip:text;
-  background-clip:text;
-  color:transparent;
-  /* the gradient kills text-shadow, so depth comes from a stacked ghost */
-  filter:drop-shadow(0 3px 0 rgba(146,50,8,.45)) drop-shadow(0 14px 30px rgba(0,0,0,.5));
+  /* cream inside a deep green keyline, the way the logo's own wordmark is
+     drawn, which is also what keeps it legible on the orange */
+  color:#FFF8EC;
+  text-shadow:
+     2px 0 0 var(--on-warm), -2px 0 0 var(--on-warm),
+     0 2px 0 var(--on-warm), 0 -2px 0 var(--on-warm),
+     2px 2px 0 var(--on-warm), -2px -2px 0 var(--on-warm),
+     2px -2px 0 var(--on-warm), -2px 2px 0 var(--on-warm),
+     0 11px 26px rgba(92,28,0,.4);
 }
 .hero__tagline{
   font-family:var(--display);
   font-size:clamp(.95rem,4.2vw,1.2rem);
   letter-spacing:.02em;
-  color:var(--cream);
+  color:var(--on-warm);
   margin:0 0 14px;
 }
 .hero__lede{
   font-size:clamp(.94rem,3.6vw,1.02rem);
-  color:var(--text-dim);
+  color:var(--on-warm-dim);
   margin:0 auto 20px;
   max-width:38ch;
   text-wrap:pretty;
@@ -444,25 +490,36 @@ button{font:inherit;color:inherit}
   align-items:center;
   gap:8px;
   font-size:.88rem;
-  color:var(--cream);
+  font-weight:600;
+  color:var(--on-warm);
   margin:0;
 }
-.hero__address svg{width:15px;height:15px;flex:none;color:var(--orange)}
+.hero__address svg{width:15px;height:15px;flex:none;color:#B32D10}
 .chip{
   display:inline-flex;
   align-items:center;
   gap:8px;
   padding:8px 16px;
   border-radius:var(--r-pill);
-  border:1px solid rgba(245,179,1,.34);
-  background:rgba(245,179,1,.10);
+  border:1px solid rgba(18,51,40,.9);
+  background:rgba(18,51,40,.9);
   font-size:.82rem;
   font-weight:600;
-  color:var(--gold-light);
+  color:var(--cream);
+}
+.hero__chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.chip--status[data-state="open"]{background:#12734A;border-color:#12734A}
+.chip--status[data-state="closed"]{background:#A32C14;border-color:#A32C14}
+.chip__dot{
+  width:8px;height:8px;border-radius:50%;
+  background:#8BEFB6;box-shadow:0 0 0 3px rgba(139,239,182,.25);
+}
+.chip--status[data-state="closed"] .chip__dot{
+  background:#FFC9B4;box-shadow:0 0 0 3px rgba(255,201,180,.22);
 }
 
 /* ============================================================
-   Primary CTA — the single loudest thing on the page
+   Primary CTA: the single loudest thing on the page
    ============================================================ */
 .cta{
   position:relative;
@@ -509,7 +566,7 @@ button{font:inherit;color:inherit}
 .cta:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(255,255,255,.18) inset,0 10px 22px -12px rgba(29,163,95,.7),0 1px 0 #08422A}
 .cta__note{
   font-size:.78rem;
-  color:var(--text-dim);
+  color:var(--on-warm-dim);
   margin:0 0 4px;
 }
 
@@ -531,10 +588,10 @@ button{font:inherit;color:inherit}
   width:100%;
   min-height:72px;
   padding:14px 16px;
-  border:1px solid var(--line);
+  border:1px solid var(--surface-line);
   border-radius:var(--r-lg);
-  background:linear-gradient(150deg,var(--card-hi),var(--card));
-  box-shadow:var(--shadow-card);
+  background:var(--surface);
+  box-shadow:0 1px 0 rgba(255,255,255,.85) inset, 0 12px 26px -14px rgba(120,42,0,.7);
   transform:perspective(760px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(var(--ty,0));
   transition:transform .3s var(--ease),border-color .3s var(--ease),background-color .3s var(--ease);
   will-change:transform;
@@ -549,7 +606,7 @@ button{font:inherit;color:inherit}
   border-radius:14px;
   background:var(--tint,rgba(245,179,1,.16));
   color:var(--accent,var(--gold));
-  box-shadow:0 1px 0 rgba(255,246,229,.12) inset;
+  box-shadow:0 1px 0 rgba(255,255,255,.7) inset;
   transition:transform .3s var(--ease);
 }
 .card__icon svg{width:23px;height:23px}
@@ -560,12 +617,12 @@ button{font:inherit;color:inherit}
   font-size:1rem;
   letter-spacing:.005em;
   line-height:1.25;
-  color:var(--cream);
+  color:var(--on-warm);
 }
 .card__sub{
   display:block;
   font-size:.8rem;
-  color:var(--text-dim);
+  color:rgba(18,51,40,.66);
   line-height:1.4;
   margin-top:2px;
 }
@@ -573,13 +630,14 @@ button{font:inherit;color:inherit}
   width:19px;
   height:19px;
   flex:none;
-  color:var(--text-dim);
+  color:rgba(18,51,40,.4);
   transition:transform .3s var(--ease),color .3s var(--ease);
 }
 @media (hover:hover){
   .card:hover{
     border-color:var(--accent,var(--gold));
-    background:linear-gradient(150deg,rgba(255,246,229,.14),rgba(255,246,229,.07));
+    background:#FFFDF7;
+    box-shadow:0 1px 0 rgba(255,255,255,.9) inset, 0 18px 34px -16px rgba(120,42,0,.8);
   }
   .card:hover .card__icon{transform:scale(1.08) rotate(-4deg)}
   .card:hover .card__arrow{transform:translateX(4px);color:var(--accent,var(--gold))}
@@ -588,13 +646,13 @@ button{font:inherit;color:inherit}
 
 /* the WhatsApp card echoes the CTA colour so the ordering path is unmistakable */
 .card--whatsapp{
-  border-color:rgba(29,163,95,.42);
-  background:linear-gradient(150deg,rgba(29,163,95,.20),rgba(18,115,74,.09));
+  border-color:rgba(18,115,74,.4);
+  background:linear-gradient(150deg,#EAF8F0,#FFF8EC 70%);
 }
 
 /* setup states: a value still left as a placeholder in BUSINESS */
 .card[data-pending]{opacity:.45;cursor:not-allowed}
-.card[data-pending] .card__sub::after{content:" — link not set";color:var(--red)}
+.card[data-pending] .card__sub::after{content:", link not set";color:var(--red)}
 [hidden]{display:none !important}
 </style>
 <style>
@@ -643,6 +701,43 @@ section{margin-top:clamp(32px,8vw,52px)}
 .flavour-bar i:nth-child(2){background:var(--orange)}
 .flavour-bar i:nth-child(3){background:var(--red)}
 .flavour-bar i:nth-child(4){background:var(--green-bright)}
+
+/* ============================================================
+   Opening hours
+   ============================================================ */
+.hours{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  margin:18px 0 14px;
+  text-align:left;
+}
+.hours__row{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:6px 16px;
+  padding:13px 4px;
+  border-bottom:1px solid var(--line);
+}
+.hours__row:last-child{border-bottom:0}
+.hours__row dt{font-weight:600;color:var(--cream)}
+.hours__row dd{
+  margin:0;
+  font-variant-numeric:tabular-nums;
+  letter-spacing:.01em;
+  color:var(--gold-light);
+  font-weight:600;
+}
+.hours__note{
+  font-size:.78rem;
+  color:var(--text-dim);
+  margin:0;
+}
+@media (min-width:520px){
+  .hours{max-width:420px;margin-inline:auto}
+}
 
 /* ============================================================
    Follow the Flavor
@@ -729,14 +824,42 @@ footer{
   border-top:1px solid var(--line);
   text-align:center;
 }
-.footer__socials{display:flex;justify-content:center;gap:12px;margin-bottom:16px}
+.footer__socials{display:flex;justify-content:center;gap:12px;margin-bottom:22px}
 .footer__socials .social{width:44px;height:44px;border-radius:14px}
 .footer__socials .social svg{width:19px;height:19px}
-.footer__line{font-size:.82rem;color:var(--text-dim);margin:0 0 4px}
-.footer__line strong{color:var(--cream);font-weight:600}
+.footer__brand{
+  font-family:var(--display);
+  font-size:.92rem;
+  letter-spacing:.01em;
+  color:var(--cream);
+  margin:0 0 8px;
+}
+.footer__line{font-size:.82rem;color:var(--text-dim);margin:0}
+/* the build credit gets its own quiet register below a rule, so the footer
+   reads as two short blocks rather than one stack of four lines */
+.footer__credit{
+  margin:26px auto 0;
+  padding-top:20px;
+  border-top:1px solid var(--line);
+  max-width:320px;
+  font-size:.76rem;
+  letter-spacing:.04em;
+  color:rgba(255,246,229,.5);
+}
+.footer__credit a{
+  display:inline-block;
+  padding:7px 4px 5px;
+  color:rgba(255,246,229,.82);
+  font-weight:600;
+  border-bottom:1px solid rgba(255,246,229,.28);
+  transition:color .25s var(--ease),border-color .25s var(--ease);
+}
+@media (hover:hover){
+  .footer__credit a:hover{color:var(--gold-light);border-color:var(--gold-light)}
+}
 
 /* ============================================================
-   Short viewports — keep orbit + CTA above the fold by demoting
+   Short viewports: keep orbit + CTA above the fold by demoting
    the supporting copy below the button rather than shrinking it.
    ============================================================ */
 @media (max-height:820px) and (max-width:859px){
@@ -752,7 +875,7 @@ footer{
 }
 
 /* ============================================================
-   Desktop — expand the layout rather than stretch it
+   Desktop: expand the layout rather than stretch it
    ============================================================ */
 @media (min-width:860px){
   :root{--wrap:min(100% - 64px, 960px)}
@@ -790,7 +913,7 @@ footer{
   .ring--main{--ring-size:min(80%,450px)}
   .ring--outer{--ring-size:min(86%,520px)}
   .ring--inner{--ring-size:min(52%,290px)}
-  .orbit__glow{width:min(78%,430px)}
+  .orbit__glow{width:min(58%,330px)}
   .orbit__cast{width:min(42%,230px)}
   /* more parallax depth where there is room for it */
   .orbit__scene{transform:rotateX(calc(var(--py) * -11deg)) rotateY(calc(var(--px) * 15deg))}
@@ -805,7 +928,7 @@ footer{
 
 /* ============================================================
    Entrance
-   Transform on .orbit only — every layer inside owns its own
+   Transform on .orbit only: every layer inside owns its own
    transform via keyframes and must not be fought over.
    ============================================================ */
 .orbit,.reveal{
@@ -818,7 +941,7 @@ footer{
 .is-ready .reveal{opacity:1;transform:none}
 
 /* ============================================================
-   Reduced motion — a composed static state, not a broken one
+   Reduced motion: a composed static state, not a broken one
    ============================================================ */
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
@@ -838,10 +961,10 @@ footer{
 }
 
 /* translated "link not set" badge; the value is set from JS per language */
-.card[data-pending] .card__sub::after{content:var(--pending-label," — link not set")}
+.card[data-pending] .card__sub::after{content:var(--pending-label,", link not set")}
 
 /* ============================================================
-   Print — the screen page is not the print artefact.
+   Print: the screen page is not the print artefact.
    print.html is, so keep this to a usable fallback.
    ============================================================ */
 @media print{
@@ -863,7 +986,7 @@ footer{
   <symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18"/></symbol>
   <symbol id="i-taco" viewBox="0 0 24 24"><path fill="currentColor" d="M2 16.2a10 10 0 0 1 20 0c0 1.3-.9 2.1-2.2 2.1H4.2C2.9 18.3 2 17.5 2 16.2Z" opacity=".55"/><path fill="currentColor" d="M4.6 13.6a8.6 8.6 0 0 1 14.8 0 5 5 0 0 0-2.7.9 4.6 4.6 0 0 0-4.7-.4 4.6 4.6 0 0 0-4.7.4 5 5 0 0 0-2.7-.9Z"/><path fill="currentColor" d="M6.2 11.1A7.4 7.4 0 0 1 12 8.4a7.4 7.4 0 0 1 5.8 2.7 4 4 0 0 1-2.4.4 3.8 3.8 0 0 1-3.4.5 3.8 3.8 0 0 1-3.4-.5 4 4 0 0 1-2.4-.4Z" opacity=".75"/></symbol>
   <symbol id="i-facebook" viewBox="0 0 24 24"><path fill="currentColor" d="M24 12.07C24 5.44 18.63.07 12 .07S0 5.44 0 12.07c0 5.99 4.39 10.95 10.13 11.85v-8.38H7.08v-3.47h3.05V9.43c0-3.01 1.79-4.67 4.53-4.67 1.31 0 2.69.24 2.69.24v2.95h-1.52c-1.49 0-1.95.93-1.95 1.87v2.25h3.33l-.54 3.47h-2.79v8.38C19.61 23.02 24 18.06 24 12.07"/></symbol>
-  <symbol id="i-instagram" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><rect x="2.8" y="2.8" width="18.4" height="18.4" rx="5.4"/><circle cx="12" cy="12" r="4.1"/><circle cx="17.4" cy="6.6" r="1.15" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-instagram" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.43.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.43.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41-.56-.22-.96-.48-1.38-.9-.42-.42-.68-.82-.9-1.38-.16-.43-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.43-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16M12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63a5.9 5.9 0 0 0-2.13 1.38A5.9 5.9 0 0 0 .63 4.14C.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.31.8.72 1.47 1.38 2.13a5.9 5.9 0 0 0 2.13 1.38c.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56a5.9 5.9 0 0 0 2.13-1.38 5.9 5.9 0 0 0 1.38-2.13c.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91a5.9 5.9 0 0 0-1.38-2.13A5.9 5.9 0 0 0 19.86.63c-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0m0 5.84a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32M12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8m7.85-10.41a1.44 1.44 0 1 1-2.88 0 1.44 1.44 0 0 1 2.88 0"/></symbol>
   <symbol id="i-tiktok" viewBox="0 0 24 24"><path fill="currentColor" d="M12.53.02c1.3-.02 2.6-.01 3.9-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03a10.4 10.4 0 0 1-4.2-.97c-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94a7.36 7.36 0 0 1-5.91 3.21 7.3 7.3 0 0 1-4.08-1.03A7.38 7.38 0 0 1 1.6 17.25c-.02-.5-.03-1-.01-1.49a7.42 7.42 0 0 1 2.58-4.96 7.28 7.28 0 0 1 6.15-1.72c.02 1.48-.04 2.96-.04 4.44a3.33 3.33 0 0 0-3.02.37c-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61a3.42 3.42 0 0 0 3.5 2.87 3.3 3.3 0 0 0 2.77-1.61c.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07"/></symbol>
   <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10.2c0 5.4-8 12.3-8 12.3s-8-6.9-8-12.3a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.9"/></symbol>
   <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21.3 16.7v2.8a1.9 1.9 0 0 1-2.1 1.9 18.7 18.7 0 0 1-8.2-2.9 18.4 18.4 0 0 1-5.7-5.7A18.7 18.7 0 0 1 2.4 4.5 1.9 1.9 0 0 1 4.3 2.4h2.8a1.9 1.9 0 0 1 1.9 1.6c.12.92.35 1.82.68 2.68a1.9 1.9 0 0 1-.43 2L8.1 9.8a15 15 0 0 0 5.7 5.7l1.1-1.1a1.9 1.9 0 0 1 2-.43c.86.33 1.76.56 2.68.68a1.9 1.9 0 0 1 1.62 1.94Z"/></symbol>
@@ -888,6 +1011,7 @@ footer{
 </div>
 
 <main>
+ <div class="warm">
   <!-- ========================================================
        THE TACO ORBIT
        ======================================================== -->
@@ -900,8 +1024,8 @@ footer{
 
           <div class="ring ring--outer" aria-hidden="true"></div>
           <div class="ring ring--main" aria-hidden="true">
-            <span class="ring__rider ring__rider--a"><svg viewBox="0 0 40 40" fill="none" stroke="#8FBE4F" stroke-width="2.4"><use href="#la-lime"/></svg></span>
-            <span class="ring__rider ring__rider--b"><svg viewBox="0 0 40 40" fill="none" stroke="#D62828" stroke-width="2.4"><use href="#la-chilli"/></svg></span>
+            <span class="ring__rider ring__rider--a"><svg viewBox="0 0 40 40" fill="none" stroke="#123328" stroke-width="2.4"><use href="#la-lime"/></svg></span>
+            <span class="ring__rider ring__rider--b"><svg viewBox="0 0 40 40" fill="none" stroke="#123328" stroke-width="2.4"><use href="#la-chilli"/></svg></span>
           </div>
           <div class="ring ring--inner" aria-hidden="true"></div>
 
@@ -928,14 +1052,20 @@ footer{
 
       <h1 class="hero__title reveal" style="--d:.1s" data-i18n="hero_title">Taco Taco Connect</h1>
       <p class="hero__tagline reveal" style="--d:.18s" data-i18n="hero_tagline">Everything Taco Taco. One place.</p>
-      <p class="hero__lede reveal" style="--d:.26s" data-i18n="hero_lede">Explore our menu, order your favourites, find us online and stay connected with Taco Taco Mexican Restaurant in West Belmopan.</p>
+      <p class="hero__lede reveal" style="--d:.26s" data-i18n="hero_lede">Explore our menu, order your favourites, find us online and stay connected with Taco Taco Mexican Restaurant in Belmopan.</p>
 
       <div class="hero__meta reveal" style="--d:.32s">
         <p class="hero__address">
           <svg aria-hidden="true"><use href="#i-pin"/></svg>
-          <span data-i18n="address">11 Aloe Vera Ave, West Belmopan, Belize</span>
+          <span data-i18n="address">11 Aloe Vera Ave, Belmopan, Belize</span>
         </p>
-        <span class="chip"><span aria-hidden="true">🌮</span> <span data-i18n="chip">Authentic Mexicali-Style Food</span></span>
+        <div class="hero__chips">
+          <span class="chip"><span aria-hidden="true">🌮</span> <span data-i18n="chip">Authentic Mexicali-Style Food</span></span>
+          <span class="chip chip--status" id="status-chip" hidden>
+            <span class="chip__dot" aria-hidden="true"></span>
+            <span id="status-text"></span>
+          </span>
+        </div>
       </div>
 
       <!-- PRIMARY ACTION -->
@@ -944,7 +1074,7 @@ footer{
         <svg class="cta__icon" aria-hidden="true"><use href="#i-whatsapp"/></svg>
         <span data-i18n="cta">Order on WhatsApp</span>
       </a>
-      <p class="cta__note reveal" style="--d:.52s" data-i18n="cta_note">Tap to message us — we reply during opening hours.</p>
+      <p class="cta__note reveal" style="--d:.52s" data-i18n="cta_note">Tap to message us. We reply during opening hours.</p>
     </div>
   </header>
 
@@ -960,7 +1090,7 @@ footer{
         <span class="card__icon" aria-hidden="true"><svg><use href="#i-taco"/></svg></span>
         <span class="card__body">
           <span class="card__label" data-i18n="card_menu">View Menu &amp; Order</span>
-          <span class="card__sub" data-i18n="card_menu_sub">Tacos, birria, burritos, quesadillas &amp; breakfast</span>
+          <span class="card__sub" data-i18n="card_menu_sub">Tacos, birria, burritos, quesadillas, breakfast and much more</span>
         </span>
         <svg class="card__arrow" aria-hidden="true"><use href="#i-arrow"/></svg>
       </a></li>
@@ -992,7 +1122,7 @@ footer{
         <span class="card__icon" aria-hidden="true"><svg><use href="#i-pin"/></svg></span>
         <span class="card__body">
           <span class="card__label" data-i18n="card_maps">Find Taco Taco</span>
-          <span class="card__sub" data-i18n="card_maps_sub">11 Aloe Vera Ave, West Belmopan</span>
+          <span class="card__sub" data-i18n="card_maps_sub">11 Aloe Vera Ave, Belmopan</span>
         </span>
         <svg class="card__arrow" aria-hidden="true"><use href="#i-arrow"/></svg>
       </a></li>
@@ -1042,6 +1172,28 @@ footer{
 
     </ul>
   </section>
+ </div><!-- /.warm -->
+
+  <!-- ========================================================
+       OPENING HOURS
+       ======================================================== -->
+  <section class="wrap" aria-labelledby="hours-title">
+    <div class="panel">
+      <p class="eyebrow" data-i18n="hours_eyebrow">When We Are Open</p>
+      <h2 class="section__title" id="hours-title" data-i18n="hours_title">Opening Hours</h2>
+      <dl class="hours">
+        <div class="hours__row">
+          <dt data-i18n="hours_mon">Monday to Thursday</dt>
+          <dd data-i18n="hours_mon_time">10:00 AM - 8:00 PM</dd>
+        </div>
+        <div class="hours__row">
+          <dt data-i18n="hours_fri">Friday to Sunday</dt>
+          <dd data-i18n="hours_fri_time">6:00 AM - 8:00 PM</dd>
+        </div>
+      </dl>
+      <p class="hours__note" data-i18n="hours_note">All times are Belize time.</p>
+    </div>
+  </section>
 
   <!-- ========================================================
        BRAND
@@ -1050,7 +1202,7 @@ footer{
     <div class="panel">
       <div class="flavour-bar" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
       <h2 class="section__title" id="brand-title" data-i18n="brand_title">Made Fresh. Bold Flavor. <em>Taco Taco.</em></h2>
-      <p class="section__copy" data-i18n="brand_copy">From tacos and birria to burritos, quesadillas, breakfast favourites and more, Taco Taco brings bold Mexican-inspired flavours to West Belmopan with food made to be enjoyed together.</p>
+      <p class="section__copy" data-i18n="brand_copy">From tacos and birria to burritos, quesadillas, breakfast favourites and more, Taco Taco brings bold Mexican-inspired flavours to Belmopan with food made to be enjoyed together.</p>
     </div>
   </section>
 
@@ -1122,8 +1274,13 @@ footer{
       <a class="social" href="#" target="_blank" rel="noopener" data-link="tiktok" data-track="connect_tiktok_click"
          data-i18n-label="social_tiktok" aria-label="Taco Taco on TikTok" style="--accent:#FFF6E5"><svg aria-hidden="true"><use href="#i-tiktok"/></svg></a>
     </div>
-    <p class="footer__line"><strong>&copy; 2026 Taco Taco Mexican Restaurant</strong></p>
-    <p class="footer__line" data-i18n="footer_address">11 Aloe Vera Ave &middot; West Belmopan &middot; Belize</p>
+    <p class="footer__brand">&copy; 2026 Taco Taco Mexican Restaurant</p>
+    <p class="footer__line" data-i18n="footer_address">11 Aloe Vera Ave &middot; Belmopan &middot; Belize</p>
+    <p class="footer__credit">
+      <span data-i18n="credit">Powered by</span>
+      <a href="https://austereautomations.com/website-development-belize"
+         target="_blank" rel="noopener" data-track="connect_austere_click">Austere Automations</a>
+    </p>
   </div>
 </footer>
 
@@ -1132,7 +1289,7 @@ footer{
   "use strict";
 
   /* ============================================================
-     1. BUSINESS DETAILS — THE ONLY PLACE TO EDIT
+     1. BUSINESS DETAILS: THE ONLY PLACE TO EDIT
      ------------------------------------------------------------
      Any value still containing "XXXX" or "PLACEHOLDER" is treated
      as unset: the card is hidden on the live domain and shown in a
@@ -1141,25 +1298,36 @@ footer{
      or wrong tap. Fill these in from the main Taco Taco site.
      ============================================================ */
   var BUSINESS = {
-    // Digits only, full international format, no "+" and no spaces.
-    // Belize country code is 501, e.g. "5016XXXXXX".
-    whatsapp: "501XXXXXXX",                                   // TODO: verify from tacotaco.bz
+    // Digits only, international format, no "+" and no spaces.
+    whatsapp: "5016134677",
+    phone:    "+5018022322",
+    phoneDisplay: "802-2322",
 
-    // Dialable number for the tel: link.
-    phone:    "+501XXXXXXX",                                  // TODO: verify from tacotaco.bz
-    phoneDisplay: "+501 XXX-XXXX",                            // TODO: how it is shown on the site
+    facebook:  "https://www.facebook.com/share/1Lk9sxpoox/",
+    instagram: "https://www.instagram.com/tacotacomexicanrestaurant/",
+    tiktok:    "https://www.tiktok.com/@tacotacomexicanfood",
 
-    facebook:  "https://www.facebook.com/PLACEHOLDER",        // TODO: verify from tacotaco.bz
-    instagram: "https://www.instagram.com/PLACEHOLDER",       // TODO: verify from tacotaco.bz
-    tiktok:    "https://www.tiktok.com/@PLACEHOLDER",         // TODO: verify from tacotaco.bz
-
-    // These are derived from information already confirmed for the
-    // restaurant, so they work as shipped.
     website: "https://tacotaco.bz",
-    menu:    "https://tacotaco.bz/#menu",                     // confirm the real menu anchor/path
+    menu:    "https://tacotaco.bz/#menu",
     maps:    "https://www.google.com/maps/search/?api=1&query=" +
-             encodeURIComponent("Taco Taco Mexican Restaurant, 11 Aloe Vera Avenue, West Belmopan, Belize")
+             encodeURIComponent("Taco Taco Mexican Restaurant, 11 Aloe Vera Avenue, Belmopan, Belize")
   };
+
+  /* ============================================================
+     1b. Opening hours, in local Belize time.
+     Belize is UTC-6 all year with no daylight saving, so the only
+     correct clock is the restaurant's, never the visitor's.
+     Index 0 is Sunday, to match Date.getDay().
+     ============================================================ */
+  var HOURS = [
+    { open: 6,  close: 20 },   // Sunday
+    { open: 10, close: 20 },   // Monday
+    { open: 10, close: 20 },   // Tuesday
+    { open: 10, close: 20 },   // Wednesday
+    { open: 10, close: 20 },   // Thursday
+    { open: 6,  close: 20 },   // Friday
+    { open: 6,  close: 20 }    // Saturday
+  ];
 
   /* ============================================================
      2. Translations. Every visible string lives here.
@@ -1167,31 +1335,31 @@ footer{
   var I18N = {
     en: {
       doc_title: "Taco Taco Connect | Taco Taco Mexican Restaurant Belize",
-      meta_desc: "Connect with Taco Taco Mexican Restaurant in West Belmopan. View the menu, order on WhatsApp, visit our website and follow Taco Taco on Facebook, Instagram and TikTok.",
+      meta_desc: "Connect with Taco Taco Mexican Restaurant in Belmopan. View the menu, order on WhatsApp, visit our website and follow Taco Taco on Facebook, Instagram and TikTok.",
       mascot_alt: "Taco Taco Mexican Restaurant mascot",
       hero_title: "Taco Taco Connect",
       hero_tagline: "Everything Taco Taco. One place.",
-      hero_lede: "Explore our menu, order your favourites, find us online and stay connected with Taco Taco Mexican Restaurant in West Belmopan.",
-      address: "11 Aloe Vera Ave, West Belmopan, Belize",
+      hero_lede: "Explore our menu, order your favourites, find us online and stay connected with Taco Taco Mexican Restaurant in Belmopan.",
+      address: "11 Aloe Vera Ave, Belmopan, Belize",
       chip: "Authentic Mexicali-Style Food",
       cta: "Order on WhatsApp",
-      cta_note: "Tap to message us — we reply during opening hours.",
+      cta_note: "Tap to message us. We reply during opening hours.",
       links_title: "Connect with Taco Taco",
       card_menu: "View Menu & Order",
-      card_menu_sub: "Tacos, birria, burritos, quesadillas & breakfast",
+      card_menu_sub: "Tacos, birria, burritos, quesadillas, breakfast and much more",
       card_website: "Visit Our Website",
       card_website_sub: "tacotaco.bz",
       card_whatsapp: "Order on WhatsApp",
       card_whatsapp_sub: "Fastest way to place an order",
       card_maps: "Find Taco Taco",
-      card_maps_sub: "11 Aloe Vera Ave, West Belmopan",
+      card_maps_sub: "11 Aloe Vera Ave, Belmopan",
       card_call: "Call Us",
       card_call_sub: "Speak to the restaurant directly",
       card_facebook_sub: "Daily specials & announcements",
       card_instagram_sub: "See what is coming out of the kitchen",
       card_tiktok_sub: "Behind the counter at Taco Taco",
       brand_title: "Made Fresh. Bold Flavor. <em>Taco Taco.</em>",
-      brand_copy: "From tacos and birria to burritos, quesadillas, breakfast favourites and more, Taco Taco brings bold Mexican-inspired flavours to West Belmopan with food made to be enjoyed together.",
+      brand_copy: "From tacos and birria to burritos, quesadillas, breakfast favourites and more, Taco Taco brings bold Mexican-inspired flavours to Belmopan with food made to be enjoyed together.",
       social_eyebrow: "Taco Taco Social",
       social_title: "Follow the Flavor",
       social_copy: "New specials, fresh drops and everything happening at the restaurant.",
@@ -1203,37 +1371,52 @@ footer{
       qr_copy: "Scan to explore Taco Taco, view our menu, order, follow us and stay connected.",
       qr_alt: "QR code linking to connect.tacotaco.bz",
       print_cta: "Printable Taco Taco cards",
-      footer_address: "11 Aloe Vera Ave · West Belmopan · Belize",
-      pending: " — link not set",
-      wa_text: "Hi Taco Taco! I would like to place an order."
+      footer_address: "11 Aloe Vera Ave · Belmopan · Belize",
+      pending: ", link not set",
+      wa_text: "Hi Taco Taco! I would like to place an order.",
+      hours_eyebrow: "When We Are Open",
+      hours_title: "Opening Hours",
+      hours_mon: "Monday to Thursday",
+      hours_fri: "Friday to Sunday",
+      hours_mon_time: "10:00 AM - 8:00 PM",
+      hours_fri_time: "6:00 AM - 8:00 PM",
+      hours_note: "All times are Belize time.",
+      open_now: "Open now",
+      closed_now: "Closed",
+      closes_at: "Closes {time}",
+      opens_at: "Opens {time}",
+      opens_day: "Opens {day} at {time}",
+      credit: "Powered by",
+      day_0: "Sunday", day_1: "Monday", day_2: "Tuesday", day_3: "Wednesday",
+      day_4: "Thursday", day_5: "Friday", day_6: "Saturday"
     },
     es: {
       doc_title: "Taco Taco Connect | Taco Taco Mexican Restaurant Belice",
-      meta_desc: "Conéctate con Taco Taco Mexican Restaurant en West Belmopan. Mira el menú, ordena por WhatsApp, visita nuestro sitio web y sigue a Taco Taco en Facebook, Instagram y TikTok.",
+      meta_desc: "Conéctate con Taco Taco Mexican Restaurant en Belmopan. Mira el menú, ordena por WhatsApp, visita nuestro sitio web y sigue a Taco Taco en Facebook, Instagram y TikTok.",
       mascot_alt: "Mascota de Taco Taco Mexican Restaurant",
       hero_title: "Taco Taco Connect",
       hero_tagline: "Todo Taco Taco. En un solo lugar.",
-      hero_lede: "Explora nuestro menú, ordena tus favoritos, encuéntranos en línea y mantente conectado con Taco Taco Mexican Restaurant en West Belmopan.",
-      address: "11 Aloe Vera Ave, West Belmopan, Belice",
+      hero_lede: "Explora nuestro menú, ordena tus favoritos, encuéntranos en línea y mantente conectado con Taco Taco Mexican Restaurant en Belmopan.",
+      address: "11 Aloe Vera Ave, Belmopan, Belice",
       chip: "Auténtica Comida Estilo Mexicali",
       cta: "Ordenar por WhatsApp",
-      cta_note: "Tócalo para escribirnos — respondemos en horario de atención.",
+      cta_note: "Tócalo para escribirnos. Respondemos en horario de atención.",
       links_title: "Conéctate con Taco Taco",
       card_menu: "Ver Menú y Ordenar",
-      card_menu_sub: "Tacos, birria, burritos, quesadillas y desayunos",
+      card_menu_sub: "Tacos, birria, burritos, quesadillas, desayunos y mucho más",
       card_website: "Visita Nuestro Sitio Web",
       card_website_sub: "tacotaco.bz",
       card_whatsapp: "Ordenar por WhatsApp",
       card_whatsapp_sub: "La forma más rápida de ordenar",
       card_maps: "Encuentra Taco Taco",
-      card_maps_sub: "11 Aloe Vera Ave, West Belmopan",
+      card_maps_sub: "11 Aloe Vera Ave, Belmopan",
       card_call: "Llámanos",
       card_call_sub: "Habla directamente con el restaurante",
       card_facebook_sub: "Especiales del día y novedades",
       card_instagram_sub: "Mira lo que sale de la cocina",
       card_tiktok_sub: "Detrás del mostrador en Taco Taco",
       brand_title: "Hecho Fresco. Sabor Intenso. <em>Taco Taco.</em>",
-      brand_copy: "Desde tacos y birria hasta burritos, quesadillas, desayunos favoritos y más, Taco Taco trae sabores mexicanos intensos a West Belmopan con comida hecha para compartir.",
+      brand_copy: "Desde tacos y birria hasta burritos, quesadillas, desayunos favoritos y más, Taco Taco trae sabores mexicanos intensos a Belmopan con comida hecha para compartir.",
       social_eyebrow: "Taco Taco en Redes",
       social_title: "Sigue el Sabor",
       social_copy: "Nuevos especiales, novedades y todo lo que pasa en el restaurante.",
@@ -1245,14 +1428,29 @@ footer{
       qr_copy: "Escanea para explorar Taco Taco, ver nuestro menú, ordenar, seguirnos y mantenerte conectado.",
       qr_alt: "Código QR que lleva a connect.tacotaco.bz",
       print_cta: "Tarjetas Taco Taco para imprimir",
-      footer_address: "11 Aloe Vera Ave · West Belmopan · Belice",
-      pending: " — enlace no configurado",
-      wa_text: "¡Hola Taco Taco! Quisiera hacer un pedido."
+      footer_address: "11 Aloe Vera Ave · Belmopan · Belice",
+      pending: ", enlace no configurado",
+      wa_text: "¡Hola Taco Taco! Quisiera hacer un pedido.",
+      hours_eyebrow: "Nuestro Horario",
+      hours_title: "Horario de Atención",
+      hours_mon: "Lunes a Jueves",
+      hours_fri: "Viernes a Domingo",
+      hours_mon_time: "10:00 AM - 8:00 PM",
+      hours_fri_time: "6:00 AM - 8:00 PM",
+      hours_note: "Todos los horarios son hora de Belice.",
+      open_now: "Abierto ahora",
+      closed_now: "Cerrado",
+      closes_at: "Cierra a las {time}",
+      opens_at: "Abre a las {time}",
+      opens_day: "Abre el {day} a las {time}",
+      credit: "Desarrollado por",
+      day_0: "domingo", day_1: "lunes", day_2: "martes", day_3: "miércoles",
+      day_4: "jueves", day_5: "viernes", day_6: "sábado"
     }
   };
 
   /* ============================================================
-     3. Analytics — one hook, provider-agnostic.
+     3. Analytics: one hook, provider-agnostic.
      Each button reports its own event name via data-track, so
      Website / Menu / WhatsApp / Facebook / Instagram / TikTok /
      Maps / Call can all be counted separately.
@@ -1343,7 +1541,74 @@ footer{
       .filter(function (v) { return !isUnset(v); });
     if (same.length) data.sameAs = same;
     if (!isUnset(BUSINESS.menu)) data.hasMenu = BUSINESS.menu;
+    var DAYS = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+    var spec = [], i;
+    for (i = 0; i < 7; i++) {
+      var h = HOURS[i], last = spec[spec.length - 1];
+      var o = pad(h.open) + ":00", c = pad(h.close) + ":00";
+      if (last && last.opens === o && last.closes === c) last.dayOfWeek.push(DAYS[i]);
+      else spec.push({ "@type": "OpeningHoursSpecification", dayOfWeek: [DAYS[i]], opens: o, closes: c });
+    }
+    data.openingHoursSpecification = spec;
     node.textContent = JSON.stringify(data);
+  }
+
+  /* ============================================================
+     4b. Open / closed, on the restaurant's clock.
+     The visitor may be in any timezone, so the only honest answer
+     comes from Belize local time. If the browser cannot resolve that
+     timezone the chip stays hidden rather than guessing: a wrong
+     "Open now" sends someone to a closed restaurant.
+     ============================================================ */
+  function pad(n) { return (n < 10 ? "0" : "") + n; }
+
+  function belizeTime() {
+    try {
+      var parts = new Intl.DateTimeFormat("en-US", {
+        timeZone: "America/Belize", weekday: "short",
+        hour: "2-digit", minute: "2-digit", hour12: false
+      }).formatToParts(new Date());
+      var got = {};
+      parts.forEach(function (x) { got[x.type] = x.value; });
+      var day = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].indexOf(got.weekday);
+      var hour = parseInt(got.hour, 10) % 24;
+      var minute = parseInt(got.minute, 10);
+      if (day < 0 || isNaN(hour) || isNaN(minute)) return null;
+      return { day: day, minutes: hour * 60 + minute };
+    } catch (e) { return null; }
+  }
+
+  function clock(hour24, dict) {
+    var h = hour24 % 24, suffix = h < 12 ? "AM" : "PM";
+    var display = h % 12 === 0 ? 12 : h % 12;
+    return display + ":00 " + suffix;
+  }
+
+  function updateStatus(lang) {
+    var chip = document.getElementById("status-chip");
+    var label = document.getElementById("status-text");
+    if (!chip || !label) return;
+    var now = belizeTime();
+    if (!now) { chip.hidden = true; return; }
+
+    var dict = I18N[lang] || I18N.en;
+    var today = HOURS[now.day];
+    var isOpen = now.minutes >= today.open * 60 && now.minutes < today.close * 60;
+    var text;
+
+    if (isOpen) {
+      text = dict.open_now + " · " + dict.closes_at.replace("{time}", clock(today.close));
+    } else if (now.minutes < today.open * 60) {
+      text = dict.closed_now + " · " + dict.opens_at.replace("{time}", clock(today.open));
+    } else {
+      var next = (now.day + 1) % 7;
+      text = dict.closed_now + " · " + dict.opens_day
+        .replace("{day}", dict["day_" + next])
+        .replace("{time}", clock(HOURS[next].open));
+    }
+    label.textContent = text;
+    chip.dataset.state = isOpen ? "open" : "closed";
+    chip.hidden = false;
   }
 
   /* ============================================================
@@ -1382,6 +1647,7 @@ footer{
 
     applyLinks(lang);
     applyPhoneDisplay();
+    updateStatus(lang);
 
     if (remember) {
       try { localStorage.setItem("tt-connect-lang", lang); } catch (e) {}
@@ -1405,6 +1671,7 @@ footer{
 
   setLang(initialLang(), false);
   applyStructuredData();
+  setInterval(function () { updateStatus(document.documentElement.lang); }, 60000);
 
   /* ============================================================
      6. Click tracking
@@ -1417,7 +1684,7 @@ footer{
   });
 
   /* ============================================================
-     7. Motion — parallax and card tilt.
+     7. Motion: parallax and card tilt.
      Pointer-driven motion is desktop-only; on touch the orbit's
      own keyframes carry it. All of it is skipped outright when the
      visitor asks for reduced motion.

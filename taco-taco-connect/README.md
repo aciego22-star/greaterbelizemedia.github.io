@@ -1,7 +1,7 @@
 # Taco Taco Connect
 
 A standalone, mobile-first digital connect page for **Taco Taco Mexican Restaurant**,
-11 Aloe Vera Ave, West Belmopan, Belize — built for deployment to
+11 Aloe Vera Ave, Belmopan, Belize, built for deployment to
 **https://connect.tacotaco.bz**.
 
 This is an independent project. It shares Taco Taco's branding but has no code,
@@ -9,36 +9,41 @@ build step or dependency in common with the main tacotaco.bz site.
 
 ---
 
-## ⚠️ Before you deploy: five values must be filled in
+## Contact details
 
-The page ships with five contact values left as placeholders, because they could
-not be verified from the main site (see *Unverified data* below). **Open
-`index.html`, find the `BUSINESS` object at the top of the inline `<script>` near
-the end of the file, and replace these:**
+Every link is live. They all come from one `BUSINESS` object at the top of the
+inline `<script>` near the end of `index.html`, which feeds the hero button, the
+link cards, the social rows, the footer and the structured data. Change a number
+there and it changes everywhere.
 
-| Key | What it needs | Example |
-|---|---|---|
-| `whatsapp` | Ordering number, digits only, country code first, no `+` or spaces | `5016123456` |
-| `phone` | Dialable number for the `tel:` link | `+5016123456` |
-| `phoneDisplay` | How the number is written on the main site | `+501 612-3456` |
-| `facebook` | Full page URL | `https://www.facebook.com/tacotacobz` |
-| `instagram` | Full profile URL | `https://www.instagram.com/tacotacobz` |
-| `tiktok` | Full profile URL | `https://www.tiktok.com/@tacotacobz` |
+| Key | Value |
+|---|---|
+| `whatsapp` | `5016134677` |
+| `phone` / `phoneDisplay` | `+5018022322` / `802-2322` |
+| `facebook` | `https://www.facebook.com/share/1Lk9sxpoox/` |
+| `instagram` | `https://www.instagram.com/tacotacomexicanrestaurant/` |
+| `tiktok` | `https://www.tiktok.com/@tacotacomexicanfood` |
+| `website` | `https://tacotaco.bz` |
+| `menu` | `https://tacotaco.bz/#menu` |
 
-Also confirm `menu` points at the real menu page or anchor on tacotaco.bz. It
-currently defaults to `https://tacotaco.bz/#menu`.
+Two of those are worth a second look before this runs for long:
 
-**Until a value is filled in, that link does not go live.** On the real domain the
-whole card is removed, so a customer can never tap a dead or wrong link. On
-`localhost` or a `*.netlify.app` preview the card is shown greyed out and labelled
-"link not set", and the browser console lists everything still outstanding. That
-is deliberate: a wrong phone number on a restaurant page is worse than a missing
-one.
+- **Facebook** is a `/share/` redirect link, which is what the Share sheet hands
+  you. It works, but those links are tied to a share session rather than to the
+  page itself. A permanent page URL (`facebook.com/YourPageName` or
+  `facebook.com/profile.php?id=…`) is the safer thing to ship. Two share links
+  were supplied; this is the first of them.
+- **Instagram** arrived with a `?stkn=` share token on it. That token is personal
+  and expires, so it was stripped. The plain profile URL above is the one that
+  keeps working.
 
-Nothing else needs editing. There is one `BUSINESS` object and it feeds the hero
-CTA, the link cards, the social rows, the footer and the structured data.
+Opening hours live in the `HOURS` table right below `BUSINESS`, indexed Sunday
+first to match `Date.getDay()`.
 
----
+A value left as a placeholder (anything containing `XXXX` or `PLACEHOLDER`) is
+still handled the way it was: hidden on the live domain, shown greyed out and
+labelled on `localhost` and Netlify previews. That safety net stays in place for
+whatever you change next.
 
 ## Deploying to Netlify
 
@@ -53,7 +58,7 @@ Static files, no build step.
 3. **Domain settings → Add custom domain → `connect.tacotaco.bz`**, then add the
    `CNAME` record Netlify shows you at your DNS provider.
 4. Let Netlify provision the Let's Encrypt certificate. **HTTPS must be working
-   before any cards are printed** — the QR encodes an `https://` URL.
+   before any cards are printed**, the QR encodes an `https://` URL.
 
 `netlify.toml` already sets caching, security headers and a couple of redirects.
 Note the caching rule: `/assets/*` is cached for a year, but HTML is
@@ -64,7 +69,7 @@ Note the caching rule: `/assets/*` is cached for a year, but HTML is
 ## Files
 
 ```
-index.html                the whole page — markup, styles and script in one file
+index.html                the whole page, markup, styles and script in one file
 print.html                print-ready cards (5 formats, EN/ES)
 assets/
   logo-source.jpg         the supplied Taco Taco artwork; everything below is cut from it
@@ -100,7 +105,7 @@ ever updated.
 
 Two things in that script are worth knowing before you touch it. The source is a
 JPEG, so the mascot's black linework has softened edges and a plain flood fill
-walks straight through the right boot and eats the leg — the script pre-marks the
+walks straight through the right boot and eats the leg, the script pre-marks the
 linework as an impermeable wall to stop that. And the mascot overlaps the white
 "sticker" edging of the TACO wordmarks behind it, which a fill happily keeps; that
 edging is removed afterwards using the one property that separates it from the
@@ -108,18 +113,36 @@ mascot's own whites (eyes, teeth, cuffs): it touches the background, they are
 sealed inside the outline.
 
 The app icons use the mascot's **head** on a gold tile, not the whole figure. The
-full figure is unreadable by 32px, and the dark sombrero needs a light ground —
+full figure is unreadable by 32px, and the dark sombrero needs a light ground 
 green, gold, orange and cream were compared at 16px before settling on gold.
 
 ---
 
+## The two zones
+
+The page runs on the logo's own orange and then transitions into the deep Taco
+Taco green. The hero and the link cards sit in a `.warm` block carrying a
+gradient sampled straight from the artwork (red at the top left through orange to
+gold) plus a tile of the logo's scattered taco outlines. That block's background
+is masked so its bottom band dissolves into the green the rest of the page runs
+on, and its padding matches the mask exactly, so no card ever sits in the fade.
+
+The transition is why some things are styled twice. On the orange, text is deep
+green and the cards are solid cream, because translucent white over a saturated
+ground muddies both the surface and the type on it. Below the fade, on the green,
+text is cream and the panels are translucent. The `--fade` custom property on
+`.warm` drives the padding and both masks together, so the transition stays in
+one place if you change it.
+
 ## The Taco Orbit
 
-The hero is the signature element: the mascot floats above a glowing
-yellow-to-orange gradient ring, with line-art tacos, limes, chillies, corn and
-cilantro drifting at three different depths.
+The hero is the signature element: the mascot floats above a bright ring, with
+line-art tacos, limes, chillies, corn and cilantro drifting at three different
+depths. The ring was a glowing gold gradient when the page ran on near black; on
+the orange it would have vanished, so the ring became the bright element (cream
+and white with a deep shadow) and the ground became the warm one.
 
-It is pure CSS — a conic gradient masked into a ring, `transform` on a handful of
+It is pure CSS, a conic gradient masked into a ring, `transform` on a handful of
 composited layers, and keyframes. No WebGL, no animation library, no canvas.
 On desktop the pointer drives a light parallax (a single rAF-throttled handler);
 on touch devices the layers move on their own. Cards lean up to 3.5° toward the
@@ -154,14 +177,14 @@ zone (41 across) and needs roughly 0.6 mm per module to scan reliably off paper.
 Every format above lands between 0.63 mm and 1.71 mm per module; all five were
 rendered and decoded as a check. An earlier draft scaled the QR with the card and
 put the business card at 0.45 mm and the insert at 0.42 mm, where the code stopped
-decoding — so **if you resize a card, re-check the QR** rather than letting it
+decoding, so **if you resize a card, re-check the QR** rather than letting it
 scale along with it.
 
 The QR encodes `https://connect.tacotaco.bz/` at error-correction level H, which
 is what allows the small taco emblem in the centre (13% of the area, well inside
 what level H recovers). Printed cards outlive deploys, so **this URL must never
 change**. If it ever has to, run `pip install segno && python3 tools/make-qr.py`
-and re-paste `assets/qr-path.txt` into both HTML files — and reprint everything.
+and re-paste `assets/qr-path.txt` into both HTML files, and reprint everything.
 
 ---
 
@@ -182,9 +205,26 @@ Adding a string: add the key to **both** `en` and `es`, then put
 
 ---
 
+## Opening hours
+
+Monday to Thursday 10:00 AM to 8:00 PM, Friday to Sunday 6:00 AM to 8:00 PM.
+
+They appear in three places, all fed by the same `HOURS` table: the panel under
+the link cards, the `openingHoursSpecification` in the structured data (built by
+collapsing consecutive days with matching hours into one entry), and the live
+chip in the hero.
+
+That chip is computed in **America/Belize**, never the visitor's own timezone.
+Belize is UTC-6 year round with no daylight saving, so the restaurant's clock is
+the only correct one, and a QR code gets scanned by people whose phones are set
+to anywhere. If the browser cannot resolve that timezone the chip hides itself
+rather than guessing: a wrong "Open now" sends somebody to a closed restaurant.
+It refreshes every minute, so it stays right across an opening or closing time
+without a reload.
+
 ## Analytics
 
-No analytics provider is installed — the page just emits events, so you can drop
+No analytics provider is installed, the page just emits events, so you can drop
 in whatever you use later without touching the markup.
 
 Every tracked element carries `data-track="<event name>"`, and one delegated
@@ -195,13 +235,13 @@ any of them are present, and also fires a `connect:track` DOM event.
 connect_whatsapp_click     connect_facebook_click     connect_call_click
 connect_menu_click         connect_instagram_click    connect_maps_click
 connect_website_click      connect_tiktok_click       connect_print_click
-connect_language_switch
+connect_language_switch    connect_austere_click
 ```
 
 Both the hero CTA and the WhatsApp card report `connect_whatsapp_click`; each
 event carries the destination URL and the current page language.
 
-To add GA4, put the gtag snippet in `<head>` — everything else is already wired.
+To add GA4, put the gtag snippet in `<head>`, everything else is already wired.
 
 ---
 
@@ -210,8 +250,8 @@ To add GA4, put the gtag snippet in `<head>` — everything else is already wire
 First view is **4 requests**: the HTML (18.7 KB gzipped, 15.6 KB brotli), the
 mascot, and the Archivo Black webfont from Google Fonts. The mascot is served
 through a `srcset`, so a standard-density phone pulls the 392w WebP (23 KB) and a
-retina screen the 784w (47 KB) — roughly 58 KB and 82 KB over the wire in total.
-Everything else — all icons, the QR, the background texture, the entire orbit —
+retina screen the 784w (47 KB), roughly 58 KB and 82 KB over the wire in total.
+Everything else, all icons, the QR, the background texture, the entire orbit 
 is inline SVG or CSS. No images to lazy-load, no video, no framework.
 
 The font is loaded non-blocking and the page renders in the system stack until it
@@ -219,27 +259,20 @@ arrives, so nothing waits on it.
 
 ---
 
-## Unverified data
+## Sources
 
-`tacotaco.bz` is blocked by the network policy of the environment this was built
-in, and the restaurant has no public listing that could be trusted as a source.
-So the following came from the project brief and are treated as verified: the
-business name, the street address, the website URL, "Mexicali-style", and the menu
-categories named in the brand copy.
-
-The WhatsApp number, phone number, Facebook, Instagram and TikTok URLs, and the
-exact menu path **could not be verified and were not guessed**. They are the
-placeholders listed at the top of this file.
-
-The artwork is the real thing — supplied directly and stored at
+The business name, address, website, "Mexicali-style", the menu categories, the
+phone and WhatsApp numbers, the three social links and the opening hours were all
+supplied directly. The artwork is the real logo, stored at
 `assets/logo-source.jpg`.
 
-Two values *are* derived rather than copied, and are worth a glance before launch:
+Two values are derived rather than supplied, and are worth a glance:
 
-- **Maps link** — built as a Google Maps search for the business name and address
-  rather than a Place ID. It works, but if Taco Taco has a Google Business
-  Profile, its share link is better and should replace `BUSINESS.maps`.
-- **Structured data** — the `Restaurant` JSON-LD carries only the name, address,
-  website and cuisine. Phone and social profiles are added automatically once you
-  fill them in. Opening hours are deliberately absent, and the page never claims
-  the restaurant is currently open, because nothing here checks hours.
+- **Maps link** is built as a Google Maps search for the business name and
+  address rather than a Place ID. It works, but if Taco Taco has a Google
+  Business Profile, its share link is better and should replace `BUSINESS.maps`.
+- **Menu link** points at `https://tacotaco.bz/#menu`. Confirm that anchor exists
+  once the revised main site goes up.
+
+The footer credits Austere Automations and links to
+`austereautomations.com/website-development-belize`.
