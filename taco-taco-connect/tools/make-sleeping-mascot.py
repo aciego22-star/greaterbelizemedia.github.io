@@ -39,6 +39,8 @@ SWING = 118.0                      # degrees; 70 reads as "arms out", 145 hides 
 CUT_GROW = 15                      # px; smaller leaves a pale wedge at the shoulder
 EYES = ((325, 288, 44, 40), (419, 290, 44, 36))   # cx, cy, rx, ry
 MOUSTACHE_TOP = 322                # eye mask never reaches below this
+MOUSTACHE_SEED = (390, 335)        # a point inside the moustache
+GRIN_TOP, GRIN_BOTTOM = 344, 425   # rows the grin mask may occupy
 INK = (28, 22, 40)
 
 root = pathlib.Path(__file__).resolve().parent.parent
@@ -127,16 +129,28 @@ for cx, cy, rx, ry in EYES:
 mask[MOUSTACHE_TOP:, :] = 0
 
 band = np.zeros((h, w), np.uint8)
-band[350:430, 258:534] = 255
+band[340:430, 250:542] = 255
 teeth = ((hsv[..., 1] < 55) & (hsv[..., 2] > 195) & (band > 0)).astype(np.uint8) * 255
 lower = np.zeros((h, w), np.uint8)
-lower[398:416, 262:530] = ((hsv[398:416, 262:530, 2] < 95) * 255).astype(np.uint8)
+lower[398:418, 258:536] = ((hsv[398:418, 258:536, 2] < 95) * 255).astype(np.uint8)
 grin = cv2.dilate(teeth, np.ones((21, 21), np.uint8)) | cv2.dilate(lower, np.ones((13, 13), np.uint8))
-# hold the whole thing inside the face, away from the chin and the shell edge
-inside = np.zeros((h, w), np.uint8)
-cv2.ellipse(inside, (392, 383), (118, 38), 0, 0, 360, 255, -1)
-grin &= inside
-grin[:346, :] = 0
+
+# The grin is bounded above by the moustache, not by a tidy shape. An ellipse
+# was too narrow where the smile curls up at the corners and left a white sliver
+# of it showing under the moustache's right end, so the bound is taken from the
+# moustache itself, column by column.
+dark = ((hsv[..., 2] < 95) & (alpha0 > 200)).astype(np.uint8)
+nm, lm, sm, _ = cv2.connectedComponentsWithStats(dark, 8)
+mous_id = lm[MOUSTACHE_SEED[1], MOUSTACHE_SEED[0]]
+if mous_id == 0:
+    sys.exit("moustache seed point missed; check MOUSTACHE_SEED")
+mous = lm == mous_id
+allow = np.zeros((h, w), bool)
+for x in range(w):
+    col = np.where(mous[:, x])[0]
+    top = (col.max() + 3) if len(col) else GRIN_TOP
+    allow[max(top, GRIN_TOP):GRIN_BOTTOM, x] = True
+grin &= (allow.astype(np.uint8) * 255)
 mask |= grin
 
 filled = seam_fill(rgb, mask)
