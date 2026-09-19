@@ -90,6 +90,10 @@ VIDEOS = [
   "alt": "A table laid for a group at Taco Taco, and plates of chimichangas, nachos and a torta"},
  {"id": "sweet-trays",     "title": "Sweet trays",
   "alt": "Trays of iced cinnamon rolls and pastries at Taco Taco"},
+ {"id": "dance-for-tacos-2", "title": "Dance for tacos 2.0",
+  "alt": "Staff and customers dancing through the dining room at Taco Taco under the party lights"},
+ {"id": "happy-hour",      "title": "Happy hour",
+  "alt": "A card announcing Taco Taco's first official happy hour, 2PM to 6PM"},
 ]
 for _v in VIDEOS:
     _v.setdefault("src",    "assets/video/%s.mp4" % _v["id"])
@@ -713,11 +717,11 @@ def reel_band():
       '<span class="chip-cap">%s</span></a>'
       % (v["id"], v["id"], esc(v["title"]), derivative(v["poster"].split("/")[-1], 480, "g")[0],
          esc(v["title"]))
-      for v in VIDEOS[:4])
+      for v in VIDEOS[:6])
     spare = "".join(
       '<template class="chip-spare" data-id="%s" data-title="%s" data-img="%s"></template>'
       % (v["id"], esc(v["title"]), derivative(v["poster"].split("/")[-1], 480, "g")[0])
-      for v in VIDEOS[4:])
+      for v in VIDEOS[6:])
     return ('\n <!-- ===== REEL ===== -->\n <section class="blk reel-sec" id="whats-cooking">\n'
             '  <div class="container">\n'
             '   <div class="sec-head"><span class="sec-kicker">Watch</span>'
@@ -841,10 +845,29 @@ def main():
     # Rebuild the grid from GALLERY so the tiles and their descriptions live in
     # one list rather than as hand-maintained markup.
     def tile(f, a):
-        grid, w, h = derivative(f, 600, "g")   # tiles render at ~166px phone, ~279px desktop
-        return ('<div class="gitem"><img src="%s" alt="%s" loading="lazy" width="%d" height="%d" '
-                'data-zoom="assets/img/%s" tabindex="0" role="button"></div>'
-                % (grid, esc(a), w, h, f))
+        """A gallery tile.
+
+        Two sizes and no src. A tile is 186px on a phone and 279px on a desktop,
+        so one 600px file served everywhere is between two and three times more
+        picture than any screen can show.
+
+        The address goes in data-src and this file's own script fills it in as
+        the tile comes near. That is not what loading="lazy" is for, and
+        normally it would be the wrong thing to do, but the browser's own rule
+        widens its idea of "near" to thousands of pixels on a slow connection,
+        which is precisely the connection this matters on: the whole page was
+        being fetched before the reader had moved. A noscript copy keeps the
+        gallery working with no JavaScript at all."""
+        grid,  w, h = derivative(f, 600, "g")
+        small, _, _ = derivative(f, 400, "s")
+        return ('<div class="gitem">'
+                '<img class="lz" alt="%s" width="%d" height="%d" '
+                'data-src="%s" data-srcset="%s 400w, %s 600w" '
+                'sizes="(min-width:900px) 300px, 46vw" '
+                'data-zoom="assets/img/%s" tabindex="0" role="button">'
+                '<noscript><img src="%s" alt="%s" width="%d" height="%d" loading="lazy"></noscript>'
+                '</div>'
+                % (esc(a), w, h, small, small, grid, f, small, esc(a), w, h))
     tiles = "\n".join(tile(f, a) for f, a in GALLERY if has_img(f))
     galler = re.sub(r'(<div class="gal">)(.*?)(</div>\s*</div>\s*</section>)',
                     lambda m: m.group(1) + "\n    " + tiles + "\n   " + m.group(3),
@@ -1299,7 +1322,10 @@ def main():
     def to_spanish_tree(page, fn):
         """Same page, one directory down: every relative asset gains a ../."""
         page = page.replace('<html lang="en">', '<html lang="es">')
-        page = re.sub(r'(["\'(])assets/', r'\1../assets/', page)
+        # Any assets/ that is not already relative, whatever is in front of it.
+        # A srcset is a comma separated list, so only its first address sits
+        # behind a quote and a rule written around quotes missed the rest.
+        page = re.sub(r'(?<![./\w])assets/', '../assets/', page)
         for f in ("favicon.ico", "icon-16.png", "icon-32.png", "apple-touch-icon.png",
                   "site.webmanifest"):
             page = page.replace('href="%s"' % f, 'href="../%s"' % f)

@@ -542,6 +542,12 @@ ES.update({
  "A table laid for a group at Taco Taco, and plates of chimichangas, nachos and a torta":
    "Una mesa servida para un grupo en Taco Taco, con platos de chimichangas, nachos y una torta",
  "Sweet trays": "Bandejas dulces",
+ "Dance for tacos 2.0": "Baile por tacos 2.0",
+ "Staff and customers dancing through the dining room at Taco Taco under the party lights":
+   "Personal y clientes bailando por el comedor de Taco Taco bajo las luces de fiesta",
+ "Happy hour": "Happy hour",
+ "A card announcing Taco Taco's first official happy hour, 2PM to 6PM":
+   "Un anuncio del primer happy hour oficial de Taco Taco, de 2PM a 6PM",
  "Trays of iced cinnamon rolls and pastries at Taco Taco":
    "Bandejas de roles de canela glaseados y panecillos en Taco Taco",
 })

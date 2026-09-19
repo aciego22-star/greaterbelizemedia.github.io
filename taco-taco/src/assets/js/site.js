@@ -343,11 +343,30 @@ function t(k,d){return TT_TXT[k]||d;}
  var scrub=document.createElement('div'); scrub.className='scrub';
  var stage=document.createElement('div'); stage.className='scrub-stage';
  var deck=document.createElement('div'); deck.className='scrub-deck';
+ // The frame keeps the address of its photograph but does not ask for it yet.
+ // Cloning these with their src is what made the gallery take twenty seconds on
+ // a slow line: forty-four copies of the grid, all of them sitting inside a
+ // pinned stage at the top of the page, so every photograph on the page was
+ // fetched before the reader had scrolled a pixel and the lazy loading on the
+ // grid below counted for nothing. They load as the showcase reaches them now.
  var frames=imgs.map(function(im){
   var f=document.createElement('figure'); f.className='sf';
-  var c=im.cloneNode(false); c.removeAttribute('class'); c.setAttribute('alt',im.getAttribute('alt')||'');
+  var c=im.cloneNode(false);
+  c.removeAttribute('class'); c.removeAttribute('loading');
+  c.setAttribute('alt',im.getAttribute('alt')||'');
+  c.setAttribute('data-src',im.getAttribute('src')||im.getAttribute('data-src'));
+  c.removeAttribute('src'); c.removeAttribute('srcset');
+  c.removeAttribute('data-srcset'); c.removeAttribute('sizes');
   f.appendChild(c); deck.appendChild(f); return f;
  });
+ function want(i){
+  // the one on show, and enough either side that a fast scroll never lands on
+  // an empty frame
+  for(var k=Math.max(0,i-2);k<=Math.min(frames.length-1,i+3);k++){
+   var im=frames[k].firstChild, d=im&&im.getAttribute('data-src');
+   if(d){ im.setAttribute('src',d); im.removeAttribute('data-src'); }
+  }
+ }
  var N=frames.length;
  var hud=document.createElement('div'); hud.className='scrub-hud';
  hud.innerHTML='<span class="scrub-num"><b>01</b> / '+(N<10?'0':'')+N+'</span>'+
@@ -391,12 +410,13 @@ function t(k,d){return TT_TXT[k]||d;}
   }
   var idx=Math.round(pos)+1;
   if(idx!==last){ last=idx; num.textContent=(idx<10?'0':'')+idx; }
+  want(Math.round(pos));
   bar.style.width=(p*100).toFixed(1)+'%';
  }
  function tick(){ if(!queued){queued=true;rAF(draw);} }
  window.addEventListener('scroll',tick,{passive:true});
  window.addEventListener('resize',function(){sizeIt();tick();});
- sizeIt(); draw();
+ sizeIt(); want(0); draw();
 })();
 
 /* ---------- video gallery: the iframe is only created on tap, so no third-party
@@ -744,14 +764,17 @@ function t(k,d){return TT_TXT[k]||d;}
   stage.classList.add('reel-still');
   chips.forEach(function(c,i){
    c.style.position='absolute';
-   c.style.left=(i%2?54:4)+'%'; c.style.top=(i<2?4:54)+'%'; c.style.width='42%';
+   var col=i%3, row=(i/3)|0;
+   c.style.left=(4+col*33)+'%'; c.style.top=(6+row*48)+'%'; c.style.width='30%';
   });
   return;
  }
 
  var W=0,H=0,R=0, running=false, raf=null;
  var P=chips.map(function(){return {x:0,y:0,vx:0,vy:0};});
- var SPOTS=[[0.26,0.26],[0.74,0.28],[0.28,0.74],[0.72,0.72]];
+ // Six starting places round a ring rather than four in the corners, so they
+ // begin spread out instead of shuffling apart in front of the reader.
+ var SPOTS=[[0.26,0.22],[0.72,0.24],[0.82,0.58],[0.56,0.82],[0.24,0.76],[0.16,0.48]];
 
  function num(v,fb){ return (typeof v==='number'&&isFinite(v)&&v>0)?v:fb; }
  function measure(){
@@ -1087,4 +1110,33 @@ function t(k,d){return TT_TXT[k]||d;}
   var d = a.closest('details'); if(d) d.open = false;
   try{ window.scrollTo({top:0, behavior:'smooth'}); }catch(err){ window.scrollTo(0,0); }
  });
+})();
+
+
+/* ================= tiles that wait their turn =================
+   The gallery grid is forty-four photographs a long way below the fold, and
+   loading="lazy" was not holding them back: the browser widens its own idea of
+   "near the screen" to thousands of pixels when the connection is slow, so on
+   the one connection where it matters the entire page was fetched before the
+   reader had moved. On a phone that read as a gallery that took forever.
+
+   So the tiles carry their address rather than their picture, and this fills it
+   in eight hundred pixels before they arrive, which is far enough that nobody
+   scrolling normally sees a gap. Without JavaScript the noscript copy in the
+   markup shows instead, so the gallery still works. */
+(function(){
+ var lz=[].slice.call(document.querySelectorAll('img.lz'));
+ if(!lz.length) return;
+ function load(im){
+  var ss=im.getAttribute('data-srcset'), s=im.getAttribute('data-src');
+  if(ss){ im.setAttribute('srcset',ss); im.removeAttribute('data-srcset'); }
+  if(s){ im.setAttribute('src',s); im.removeAttribute('data-src'); }
+  im.classList.remove('lz-wait');
+ }
+ lz.forEach(function(i){ i.classList.add('lz-wait'); });
+ if(!('IntersectionObserver' in window)){ lz.forEach(load); return; }
+ var io=new IntersectionObserver(function(es){
+  es.forEach(function(e){ if(e.isIntersecting){ load(e.target); io.unobserve(e.target); } });
+ },{rootMargin:'800px 0px'});
+ lz.forEach(function(i){ io.observe(i); });
 })();
