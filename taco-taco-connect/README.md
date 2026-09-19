@@ -64,30 +64,52 @@ Note the caching rule: `/assets/*` is cached for a year, but HTML is
 ## Files
 
 ```
-index.html          the whole page — markup, styles and script in one file
-print.html          print-ready cards (5 formats, EN/ES)
+index.html                the whole page — markup, styles and script in one file
+print.html                print-ready cards (5 formats, EN/ES)
 assets/
-  mascot.svg        PLACEHOLDER mascot — see below
-  favicon.svg       browser tab mark
-  apple-touch-icon.png
-  og-image.jpg      1200x630 social sharing image
-  qr.svg            standalone QR, if you need the code on its own
-  qr-path.txt       the generated path data, pasted inline into both pages
-tools/make-qr.py    regenerates the QR (only needed if the URL ever changes)
-netlify.toml        deploy config, headers, redirects
+  logo-source.jpg         the supplied Taco Taco artwork; everything below is cut from it
+  mascot.webp             hero mascot, 784x620, transparent
+  mascot-400.webp         same at 392w, for the srcset
+  mascot.png              quantised fallback for browsers without WebP
+  favicon.png             64px app icon
+  apple-touch-icon.png    180px
+  icon-192.png            manifest icons
+  icon-512.png
+  og-image.jpg            1200x630 social sharing image
+  qr.svg                  standalone QR, if you need the code on its own
+  qr-path.txt             the generated path data, pasted inline into both pages
+tools/extract-mascot.py   cuts the mascot out of logo-source.jpg and builds every icon
+tools/make-qr.py          regenerates the QR (only if the URL ever changes)
+netlify.toml              deploy config, headers, redirects
 site.webmanifest, robots.txt, sitemap.xml
 ```
 
-### Replacing the mascot
+### The mascot and icons
 
-`assets/mascot.svg` is an **original placeholder** drawn for this project, not
-Taco Taco's real artwork — the real file could not be retrieved (see below).
-To swap it in, replace `assets/mascot.svg` with the official mascot and nothing
-else changes; the hero references that one path. If the official art is a PNG,
-save it as `assets/mascot.svg`'s replacement and update the two `src` references
-in `index.html` (the `<link rel="preload">` in `<head>` and the `<img
-class="orbit__mascot">`). Use a square, transparent-background export around
-800×800 so the floating shadow reads correctly.
+All of it is cut from the official Taco Taco artwork at
+`assets/logo-source.jpg` by `tools/extract-mascot.py`:
+
+```
+pip install opencv-python-headless numpy pillow
+python3 tools/extract-mascot.py assets/logo-source.jpg
+```
+
+That one command rewrites the mascot (WebP at two widths plus a PNG fallback)
+and every app icon. Replace `logo-source.jpg` and re-run it if the artwork is
+ever updated.
+
+Two things in that script are worth knowing before you touch it. The source is a
+JPEG, so the mascot's black linework has softened edges and a plain flood fill
+walks straight through the right boot and eats the leg — the script pre-marks the
+linework as an impermeable wall to stop that. And the mascot overlaps the white
+"sticker" edging of the TACO wordmarks behind it, which a fill happily keeps; that
+edging is removed afterwards using the one property that separates it from the
+mascot's own whites (eyes, teeth, cuffs): it touches the background, they are
+sealed inside the outline.
+
+The app icons use the mascot's **head** on a gold tile, not the whole figure. The
+full figure is unreadable by 32px, and the dark sombrero needs a light ground —
+green, gold, orange and cream were compared at 16px before settling on gold.
 
 ---
 
@@ -112,6 +134,10 @@ a collapsed one.
 ## Print cards
 
 `print.html` produces five formats, all on A4 with dashed cut guides:
+
+The mascot appears on the table card, tent and poster; the business card and the
+insert leave it out, because neither has room for it once the QR is at a
+scannable size.
 
 | Format | Card size | Per A4 | QR |
 |---|---|---|---|
@@ -181,8 +207,10 @@ To add GA4, put the gtag snippet in `<head>` — everything else is already wire
 
 ## Performance
 
-First view is **4 requests, ~91 KB uncompressed**: the HTML (18.5 KB gzipped,
-15.4 KB brotli), the mascot SVG, and the Archivo Black webfont from Google Fonts.
+First view is **4 requests**: the HTML (18.7 KB gzipped, 15.6 KB brotli), the
+mascot, and the Archivo Black webfont from Google Fonts. The mascot is served
+through a `srcset`, so a standard-density phone pulls the 392w WebP (23 KB) and a
+retina screen the 784w (47 KB) — roughly 58 KB and 82 KB over the wire in total.
 Everything else — all icons, the QR, the background texture, the entire orbit —
 is inline SVG or CSS. No images to lazy-load, no video, no framework.
 
@@ -201,8 +229,10 @@ categories named in the brand copy.
 
 The WhatsApp number, phone number, Facebook, Instagram and TikTok URLs, and the
 exact menu path **could not be verified and were not guessed**. They are the
-placeholders listed at the top of this file. The mascot is likewise an original
-placeholder, not Taco Taco's real artwork.
+placeholders listed at the top of this file.
+
+The artwork is the real thing — supplied directly and stored at
+`assets/logo-source.jpg`.
 
 Two values *are* derived rather than copied, and are worth a glance before launch:
 

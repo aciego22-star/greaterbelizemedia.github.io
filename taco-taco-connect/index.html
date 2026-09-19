@@ -26,11 +26,11 @@
 <meta name="twitter:description" content="Connect with Taco Taco Mexican Restaurant in West Belmopan. View the menu, order on WhatsApp, visit our website and follow Taco Taco on Facebook, Instagram and TikTok.">
 <meta name="twitter:image" content="https://connect.tacotaco.bz/assets/og-image.jpg">
 
-<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon.png" type="image/png" sizes="64x64">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 
-<link rel="preload" as="image" href="assets/mascot.svg" fetchpriority="high">
+<link rel="preload" as="image" href="assets/mascot.webp" imagesrcset="assets/mascot-400.webp 392w, assets/mascot.webp 784w" imagesizes="(min-width:860px) 300px, min(74vw, 300px)" type="image/webp" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" media="print" onload="this.media='all'">
@@ -245,9 +245,10 @@ button{font:inherit;color:inherit}
   pointer-events:none;
 }
 .ring--main{
-  width:min(88%,360px);
+  --ring-size:min(88%,360px);
+  width:var(--ring-size);
   aspect-ratio:1;
-  margin:calc(min(88%,360px) / -2) 0 0 calc(min(88%,360px) / -2);
+  margin:calc(var(--ring-size) / -2) 0 0 calc(var(--ring-size) / -2);
   border:0;
   background:conic-gradient(from 200deg,
     #F5B301 0%, #FFD76B 14%, #F27321 34%, #D62828 50%,
@@ -262,9 +263,10 @@ button{font:inherit;color:inherit}
   animation:spin 26s linear infinite;
 }
 .ring--outer{
-  width:min(90%,400px);
+  --ring-size:min(90%,400px);
+  width:var(--ring-size);
   aspect-ratio:1;
-  margin:calc(min(90%,400px) / -2) 0 0 calc(min(90%,400px) / -2);
+  margin:calc(var(--ring-size) / -2) 0 0 calc(var(--ring-size) / -2);
   border-width:1px;
   border-color:rgba(255,246,229,.22);
   border-style:dashed;
@@ -272,9 +274,10 @@ button{font:inherit;color:inherit}
   animation:spin-rev 44s linear infinite;
 }
 .ring--inner{
-  width:min(56%,232px);
+  --ring-size:min(56%,232px);
+  width:var(--ring-size);
   aspect-ratio:1;
-  margin:calc(min(56%,232px) / -2) 0 0 calc(min(56%,232px) / -2);
+  margin:calc(var(--ring-size) / -2) 0 0 calc(var(--ring-size) / -2);
   border-width:2px;
   border-color:rgba(255,215,107,.55);
   box-shadow:0 0 16px rgba(245,179,1,.35), inset 0 0 18px rgba(242,115,33,.28);
@@ -319,11 +322,12 @@ button{font:inherit;color:inherit}
 .d8{--z:-45px; right:20%;bottom:4%;animation:drift-a 22s ease-in-out infinite 1.8s; color:var(--orange)}
 
 /* --- the mascot, floating above the ring --- */
+.orbit picture{display:contents}
 .orbit__mascot{
   position:absolute;
   left:50%;
-  top:44%;
-  width:min(62%,250px);
+  top:46%;
+  width:min(74%,300px);
   height:auto;
   transform:translate3d(-50%,-50%,70px);
   animation:float 6.5s ease-in-out infinite;
@@ -736,7 +740,7 @@ footer{
   :root{--wrap:min(100% - 64px, 960px)}
   .hero{padding-top:104px}
   .orbit{height:460px;margin-bottom:10px}
-  .orbit__mascot{width:260px}
+  .orbit__mascot{width:min(76%,300px)}
   .hero__title{font-size:4.1rem}
   .hero__lede{max-width:52ch;font-size:1.06rem}
   .cta{width:min(480px,100%);margin-inline:auto}
@@ -764,7 +768,12 @@ footer{
   .hero__meta{align-items:flex-start}
   .cta{width:min(420px,100%);margin:26px 0 8px}
   .cta__note{margin-bottom:0}
-  .orbit__mascot{width:min(58%,286px)}
+  .orbit__mascot{width:min(72%,360px)}
+  .ring--main{--ring-size:min(80%,450px)}
+  .ring--outer{--ring-size:min(86%,520px)}
+  .ring--inner{--ring-size:min(52%,290px)}
+  .orbit__glow{width:min(78%,430px)}
+  .orbit__cast{width:min(42%,230px)}
   /* more parallax depth where there is room for it */
   .orbit__scene{transform:rotateX(calc(var(--py) * -11deg)) rotateY(calc(var(--px) * 15deg))}
   .drift--far{width:44px}
@@ -888,9 +897,14 @@ footer{
           <div class="drift drift--mid  d8" aria-hidden="true"><svg viewBox="0 0 40 40"><use href="#la-taco"/></svg></div>
 
           <div class="orbit__cast" aria-hidden="true"></div>
-          <img class="orbit__mascot" src="assets/mascot.svg" width="400" height="400"
-               alt="Taco Taco Mexican Restaurant mascot" data-i18n-alt="mascot_alt"
-               fetchpriority="high" decoding="async">
+          <picture>
+            <source type="image/webp"
+                    srcset="assets/mascot-400.webp 392w, assets/mascot.webp 784w"
+                    sizes="(min-width:860px) 300px, min(74vw, 300px)">
+            <img class="orbit__mascot" src="assets/mascot.png" width="784" height="620"
+                 alt="Taco Taco Mexican Restaurant mascot" data-i18n-alt="mascot_alt"
+                 fetchpriority="high" decoding="async">
+          </picture>
         </div>
       </div>
 
