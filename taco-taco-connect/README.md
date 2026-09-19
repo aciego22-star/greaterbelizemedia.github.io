@@ -118,29 +118,41 @@ green, gold, orange and cream were compared at 16px before settling on gold.
 
 ---
 
-## The two zones
+## Colour and the taco field
 
-The page runs on the logo's own orange and then transitions into the deep Taco
-Taco green. The hero and the link cards sit in a `.warm` block carrying a
-gradient sampled straight from the artwork (red at the top left through orange to
-gold) plus a tile of the logo's scattered taco outlines. That block's background
-is masked so its bottom band dissolves into the green the rest of the page runs
-on, and its padding matches the mask exactly, so no card ever sits in the fade.
+The whole document sits on one gradient, painted by `.page::before`: the logo's
+red at the top, through orange to gold across the middle, and back to red at the
+foot. There is no second background and no fade band. The deep Taco Taco green is
+still everywhere, but as the *surface* colour, not the ground: every panel in the
+lower half is solid green, which is what gives the page its contrast now that the
+colour runs top to bottom.
 
-The transition is why some things are styled twice. On the orange, text is deep
-green and the cards are solid cream, because translucent white over a saturated
-ground muddies both the surface and the type on it. Below the fade, on the green,
-text is cream and the panels are translucent. The `--fade` custom property on
-`.warm` drives the padding and both masks together, so the transition stays in
-one place if you change it.
+That flip is why some things are styled the way they are. On the orange, text is
+deep green and the link cards are solid cream, because translucent white over a
+saturated ground muddies both the surface and the type on it. Inside the green
+panels the original cream-on-dark treatment stands. Social buttons are cream
+tiles carrying each brand's own colour, which is also what stops TikTok's
+near-black mark from disappearing.
+
+`.taco-field` sits between the ground and the content, spanning the full document
+height, and holds two things: a tiled layer of the logo's outlines that drifts
+diagonally (travelling exactly one tile, so the loop is seamless), and 22 loose
+tacos, limes, chillies and corn that turn slowly, alternating direction, the
+whole way down the page. Both are transform animations on composited layers.
+
+The z-order is the part to be careful with: `.page` is the stacking context, the
+ground is at `-3`, the taco field at `-2`, and everything else stacks normally
+above them. The zones deliberately do **not** create their own stacking contexts,
+because that is what would trap the taco field behind a section's background.
 
 ## The Taco Orbit
 
 The hero is the signature element: the mascot floats above a bright ring, with
-line-art tacos, limes, chillies, corn and cilantro drifting at three different
-depths. The ring was a glowing gold gradient when the page ran on near black; on
-the orange it would have vanished, so the ring became the bright element (cream
-and white with a deep shadow) and the ground became the warm one.
+line-art produce drifting at three different depths behind it (separate from the
+page-wide taco field, and closer in). The ring was a glowing gold gradient when
+the page ran on near black; on the orange it would have vanished, so the ring
+became the bright element (cream and white with a deep shadow) and the ground
+became the warm one.
 
 It is pure CSS, a conic gradient masked into a ring, `transform` on a handful of
 composited layers, and keyframes. No WebGL, no animation library, no canvas.
@@ -148,9 +160,9 @@ On desktop the pointer drives a light parallax (a single rAF-throttled handler);
 on touch devices the layers move on their own. Cards lean up to 3.5° toward the
 cursor on desktop and depress on tap.
 
-`prefers-reduced-motion: reduce` disables all of it and restores an explicit
-resting pose for every layer, so the static state is a composed image rather than
-a collapsed one.
+`prefers-reduced-motion: reduce` disables all of it, the page-wide taco field and
+the bobbing social buttons included, and restores an explicit resting pose for
+every layer, so the static state is a composed image rather than a collapsed one.
 
 ---
 
@@ -181,8 +193,9 @@ decoding, so **if you resize a card, re-check the QR** rather than letting it
 scale along with it.
 
 The QR encodes `https://connect.tacotaco.bz/` at error-correction level H, which
-is what allows the small taco emblem in the centre (13% of the area, well inside
-what level H recovers). Printed cards outlive deploys, so **this URL must never
+is what allows the mascot in the centre (13% of the area, well inside what level H
+recovers). The white plate behind it is what costs modules; the artwork inside
+costs nothing extra. Every format was re-decoded after the mascot went in. Printed cards outlive deploys, so **this URL must never
 change**. If it ever has to, run `pip install segno && python3 tools/make-qr.py`
 and re-paste `assets/qr-path.txt` into both HTML files, and reprint everything.
 

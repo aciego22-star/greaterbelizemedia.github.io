@@ -128,22 +128,9 @@ body::before{
   position:fixed;
   inset:0;
   z-index:-2;
-  background:
-    radial-gradient(120% 70% at 50% 108%, rgba(245,179,1,.15), transparent 68%),
-    linear-gradient(178deg,#10412F 0%,#0A2A20 46%,#05130A 100%);
+  background:var(--warm-gold);
 }
-/* faint woven-tortilla texture so the flat dark never looks empty */
-body::after{
-  content:"";
-  position:fixed;
-  inset:0;
-  z-index:-1;
-  pointer-events:none;
-  opacity:.055;
-  background-image:
-    repeating-linear-gradient(45deg,var(--cream) 0 1px,transparent 1px 11px),
-    repeating-linear-gradient(-45deg,var(--cream) 0 1px,transparent 1px 11px);
-}
+
 
 img,svg{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
@@ -171,47 +158,88 @@ button{font:inherit;color:inherit}
 }
 
 /* ============================================================
-   THE WARM ZONE
-   The hero and the link cards sit on the logo's own orange, which
-   then dissolves into the deep green the rest of the page runs on.
-   Its own stacking context keeps these two layers above the body's
-   background but behind its content, and the mask does the
-   transition so there is no seam where the two grounds meet.
+   THE PAGE GROUND
+   One gradient over the whole document: the logo's red at the top,
+   through orange to gold in the middle, and back to red at the foot.
+   .page is the stacking context that lets the ground sit at -3, the
+   drifting tacos at -2, and every section's content above both.
    ============================================================ */
-.warm{
-  --fade:clamp(150px,24vw,230px);
-  position:relative;
-  isolation:isolate;
-  color:var(--on-warm);
-  padding-bottom:var(--fade);
-}
-/* the fade band already separates the zones, so the next section starts flush */
-.warm + section{margin-top:0}
-.warm::before{
+.page{position:relative;z-index:0}
+.page::before{
   content:"";
+  position:absolute;
+  inset:0;
+  z-index:-3;
+  background:
+    radial-gradient(64% 20% at 6% 1%, rgba(242,58,12,.95), transparent 62%),
+    radial-gradient(56% 16% at 97% 3%, rgba(255,216,116,.85), transparent 64%),
+    radial-gradient(70% 14% at 50% 99%, rgba(242,58,12,.6), transparent 66%),
+    linear-gradient(180deg,
+      var(--warm-red) 0%, #FB7A15 9%, var(--warm-orange) 22%,
+      var(--warm-gold) 38%, #F19A0C 54%, var(--warm-gold) 68%,
+      var(--warm-orange) 82%, #F4600F 94%, #E8340A 100%);
+}
+
+/* ============================================================
+   THE TACO FIELD
+   A drifting tile of the logo's own outlines, plus loose tacos,
+   limes and chillies turning slowly the whole way down the page.
+   Both are transform animations on composited layers, and the tile
+   travels exactly one tile width so the loop is seamless.
+   ============================================================ */
+.taco-field{
   position:absolute;
   inset:0;
   z-index:-2;
-  background:
-    radial-gradient(88% 58% at 6% -8%, rgba(242,58,12,.94), transparent 58%),
-    radial-gradient(72% 52% at 97% 4%, rgba(255,216,116,.85), transparent 62%),
-    linear-gradient(168deg,var(--warm-red) 0%,#FC8614 22%,var(--warm-orange) 52%,var(--warm-gold) 82%,#EFA70D 100%);
-  -webkit-mask:linear-gradient(to bottom,#000 0 calc(100% - var(--fade)),transparent 100%);
-  mask:linear-gradient(to bottom,#000 0 calc(100% - var(--fade)),transparent 100%);
-}
-/* the logo's own scattered taco outlines, at the logo's own weight */
-.warm::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  z-index:-1;
+  overflow:hidden;
   pointer-events:none;
+}
+.taco-field__tile{
+  position:absolute;
+  inset:-170px;
   background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27132%27%20height%3D%27132%27%20viewBox%3D%270%200%20132%20132%27%3E%3Cg%20fill%3D%27none%27%20stroke%3D%27%23FFF6E5%27%20stroke-width%3D%272.1%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%3Cg%20transform%3D%27translate%286%2010%29%20rotate%28-11%2020%2020%29%27%3E%3Cpath%20d%3D%27M4%2028a16%2016%200%200%201%2032%200c0%202-1.3%203-3%203H7c-1.7%200-3-1-3-3ZM9.5%2026.5c.5-7%205-12%2010.5-12s10%205%2010.5%2012M12%2019.5c2-2.2%204.6-3%206.4-1.3M21.5%2017.6c2-1.4%204.3-.6%205.6%201.5%27%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%27translate%2872%2042%29%20rotate%2815%2020%2020%29%27%3E%3Cpath%20d%3D%27M4%2028a16%2016%200%200%201%2032%200c0%202-1.3%203-3%203H7c-1.7%200-3-1-3-3ZM9.5%2026.5c.5-7%205-12%2010.5-12s10%205%2010.5%2012M12%2019.5c2-2.2%204.6-3%206.4-1.3M21.5%2017.6c2-1.4%204.3-.6%205.6%201.5%27%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%27translate%2826%2078%29%20rotate%286%2020%2020%29%27%3E%3Cpath%20d%3D%27M4%2028a16%2016%200%200%201%2032%200c0%202-1.3%203-3%203H7c-1.7%200-3-1-3-3ZM9.5%2026.5c.5-7%205-12%2010.5-12s10%205%2010.5%2012M12%2019.5c2-2.2%204.6-3%206.4-1.3M21.5%2017.6c2-1.4%204.3-.6%205.6%201.5%27%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E");
   background-size:132px 132px;
-  opacity:.17;
-  -webkit-mask:linear-gradient(to bottom,#000 0 calc(100% - var(--fade)),transparent calc(100% - var(--fade) * .25));
-  mask:linear-gradient(to bottom,#000 0 calc(100% - var(--fade)),transparent calc(100% - var(--fade) * .25));
+  opacity:.16;
+  animation:tile-drift 90s linear infinite;
+  will-change:transform;
 }
+@keyframes tile-drift{
+  from{transform:translate3d(0,0,0)}
+  to  {transform:translate3d(-132px,-132px,0)}
+}
+.tf{
+  position:absolute;
+  top:var(--t);
+  left:var(--l);
+  width:var(--s);
+  color:#FFF6E5;
+  opacity:var(--o,.24);
+  animation:tumble var(--d,36s) linear infinite var(--dl,0s);
+  will-change:transform;
+}
+.tf:nth-child(even){animation-name:tumble-rev}
+.tf svg{
+  width:100%;height:auto;
+  fill:none;stroke:currentColor;stroke-width:1.6;
+  stroke-linecap:round;stroke-linejoin:round;
+}
+@keyframes tumble{
+  0%  {transform:translate3d(0,0,0) rotate(0deg)}
+  25% {transform:translate3d(18px,-16px,0) rotate(90deg)}
+  50% {transform:translate3d(2px,-28px,0) rotate(180deg)}
+  75% {transform:translate3d(-16px,-14px,0) rotate(270deg)}
+  100%{transform:translate3d(0,0,0) rotate(360deg)}
+}
+@keyframes tumble-rev{
+  0%  {transform:translate3d(0,0,0) rotate(0deg)}
+  25% {transform:translate3d(-17px,-13px,0) rotate(-90deg)}
+  50% {transform:translate3d(-3px,-26px,0) rotate(-180deg)}
+  75% {transform:translate3d(15px,-15px,0) rotate(-270deg)}
+  100%{transform:translate3d(0,0,0) rotate(-360deg)}
+}
+
+/* the hero and the link cards read dark on the orange */
+.warm{position:relative;color:var(--on-warm);padding-bottom:clamp(20px,5vw,34px)}
 
 /* ============================================================
    Language switch
@@ -661,12 +689,13 @@ button{font:inherit;color:inherit}
    ============================================================ */
 section{margin-top:clamp(32px,8vw,52px)}
 .panel{
-  padding:clamp(22px,6vw,30px);
-  border:1px solid var(--line);
+  padding:clamp(24px,6vw,34px);
+  border:1px solid rgba(255,246,229,.13);
   border-radius:26px;
-  background:linear-gradient(160deg,rgba(255,246,229,.07),rgba(255,246,229,.028));
-  box-shadow:var(--shadow-card);
+  background:linear-gradient(165deg,#17483800,#0E3B2E) , linear-gradient(165deg,#1A5140,#0C3125);
+  box-shadow:0 1px 0 rgba(255,246,229,.09) inset, 0 18px 38px -18px rgba(96,30,0,.75);
   text-align:center;
+  color:var(--cream);
 }
 .section__title{
   font-family:var(--display);
@@ -755,22 +784,31 @@ section{margin-top:clamp(32px,8vw,52px)}
   width:58px;
   height:58px;
   border-radius:19px;
-  border:1px solid var(--line);
-  background:linear-gradient(150deg,var(--card-hi),var(--card));
-  color:var(--cream);
-  transition:transform .3s var(--ease),border-color .3s var(--ease),box-shadow .3s var(--ease),color .3s var(--ease);
+  border:1px solid rgba(18,51,40,.1);
+  background:var(--surface);
+  color:var(--accent,var(--on-warm));
+  box-shadow:0 8px 18px -10px rgba(96,30,0,.7);
+  transition:box-shadow .3s var(--ease),color .3s var(--ease);
   -webkit-tap-highlight-color:transparent;
+  /* a slow bob, offset per icon so the row never moves as one block */
+  animation:social-bob 5.4s ease-in-out infinite;
+}
+.social[data-bob="1"]{animation-delay:-1.8s}
+.social[data-bob="2"]{animation-delay:-3.6s}
+@keyframes social-bob{
+  0%,100%{transform:translateY(0) rotate(0deg)}
+  50%    {transform:translateY(-7px) rotate(-3.5deg)}
 }
 .social svg{width:25px;height:25px}
 @media (hover:hover){
+  /* dropping the animation lets the hover transform take over cleanly */
   .social:hover{
-    transform:translateY(-5px) rotate(-5deg) scale(1.06);
-    border-color:var(--accent,var(--gold));
-    color:var(--accent,var(--gold));
-    box-shadow:0 14px 26px -10px var(--glow,rgba(245,179,1,.6));
+    animation:none;
+    transform:translateY(-6px) rotate(-5deg) scale(1.07);
+    box-shadow:0 16px 28px -10px var(--glow,rgba(96,30,0,.6));
   }
 }
-.social:active{transform:translateY(1px) scale(.96);transition-duration:.08s}
+.social:active{animation:none;transform:translateY(1px) scale(.96);transition-duration:.08s}
 
 /* ============================================================
    QR block
@@ -787,7 +825,6 @@ section{margin-top:clamp(32px,8vw,52px)}
 }
 .qr svg{width:clamp(164px,44vw,196px);height:auto}
 .qr__emblem{fill:#fff}
-.qr__emblem-mark{fill:#0E3B2E}
 .qr-url{
   font-family:var(--display);
   font-size:.86rem;
@@ -820,9 +857,10 @@ section{margin-top:clamp(32px,8vw,52px)}
    ============================================================ */
 footer{
   margin:clamp(40px,10vw,64px) 0 0;
-  padding:26px 0 calc(30px + env(safe-area-inset-bottom));
-  border-top:1px solid var(--line);
+  padding:30px 0 calc(34px + env(safe-area-inset-bottom));
+  border-top:1px solid rgba(18,51,40,.18);
   text-align:center;
+  color:var(--on-warm);
 }
 .footer__socials{display:flex;justify-content:center;gap:12px;margin-bottom:22px}
 .footer__socials .social{width:44px;height:44px;border-radius:14px}
@@ -831,31 +869,31 @@ footer{
   font-family:var(--display);
   font-size:.92rem;
   letter-spacing:.01em;
-  color:var(--cream);
+  color:var(--on-warm);
   margin:0 0 8px;
 }
-.footer__line{font-size:.82rem;color:var(--text-dim);margin:0}
+.footer__line{font-size:.82rem;color:rgba(18,51,40,.92);margin:0}
 /* the build credit gets its own quiet register below a rule, so the footer
    reads as two short blocks rather than one stack of four lines */
 .footer__credit{
   margin:26px auto 0;
   padding-top:20px;
-  border-top:1px solid var(--line);
+  border-top:1px solid rgba(18,51,40,.18);
   max-width:320px;
   font-size:.76rem;
   letter-spacing:.04em;
-  color:rgba(255,246,229,.5);
+  color:rgba(18,51,40,.8);
 }
 .footer__credit a{
   display:inline-block;
   padding:7px 4px 5px;
-  color:rgba(255,246,229,.82);
-  font-weight:600;
-  border-bottom:1px solid rgba(255,246,229,.28);
+  color:var(--on-warm);
+  font-weight:700;
+  border-bottom:1px solid rgba(18,51,40,.35);
   transition:color .25s var(--ease),border-color .25s var(--ease);
 }
 @media (hover:hover){
-  .footer__credit a:hover{color:var(--gold-light);border-color:var(--gold-light)}
+  .footer__credit a:hover{color:#7A1A05;border-color:#7A1A05}
 }
 
 /* ============================================================
@@ -958,6 +996,9 @@ footer{
   .ring--outer{transform:translateZ(-90px) rotateX(72deg) rotateZ(-12deg) !important}
   .ring--inner{transform:translateZ(10px) rotateX(66deg) rotateZ(40deg) !important}
   .cta::after{display:none}
+  .taco-field__tile,.tf,.social{animation:none !important}
+  .tf{transform:none !important}
+  .social{transform:none !important}
 }
 
 /* translated "link not set" badge; the value is set from JS per language */
@@ -1008,6 +1049,36 @@ footer{
   <button class="lang__btn" type="button" data-set-lang="en" aria-pressed="true">EN</button>
   <span class="lang__sep" aria-hidden="true"></span>
   <button class="lang__btn" type="button" data-set-lang="es" aria-pressed="false">ES</button>
+</div>
+
+<div class="page">
+
+<!-- Tacos drifting and turning the whole way down the page, over every
+     section rather than only behind the hero. -->
+<div class="taco-field" aria-hidden="true">
+  <i class="taco-field__tile"></i>
+  <span class="tf" style="--t:2.5%;--l:6%;--s:30px;--d:44s;--dl:-3s;--o:.18"><svg viewBox="0 0 40 40"><use href="#la-taco"/></svg></span>
+  <span class="tf" style="--t:7.02%;--l:82%;--s:26px;--d:38s;--dl:-37s;--o:.18"><svg viewBox="0 0 40 40"><use href="#la-taco"/></svg></span>
+  <span class="tf" style="--t:11.55%;--l:28%;--s:30px;--d:26s;--dl:-5s;--o:.3"><svg viewBox="0 0 40 40"><use href="#la-taco"/></svg></span>
+  <span class="tf" style="--t:16.07%;--l:64%;--s:26px;--d:32s;--dl:-5s;--o:.3"><svg viewBox="0 0 40 40"><use href="#la-lime"/></svg></span>
+  <span class="tf" style="--t:20.6%;--l:8%;--s:44px;--d:26s;--dl:-14s;--o:.18"><svg viewBox="0 0 40 40"><use href="#la-chilli"/></svg></span>
+  <span class="tf" style="--t:25.12%;--l:90%;--s:26px;--d:32s;--dl:-2s;--o:.22"><svg viewBox="0 0 40 40"><use href="#la-taco"/></svg></span>
+  <span class="tf" style="--t:29.64%;--l:40%;--s:38px;--d:32s;--dl:-34s;--o:.18"><svg viewBox="0 0 40 40"><use href="#la-tortilla"/></svg></span>
+  <span class="tf" style="--t:34.17%;--l:70%;--s:44px;--d:32s;--dl:-6s;--o:.22"><svg viewBox="0 0 40 40"><use href="#la-taco"/></svg></span>
+  <span class="tf" style="--t:38.69%;--l:6%;--s:26px;--d:50s;--dl:-4s;--o:.18"><svg viewBox="0 0 40 40"><use href="#la-chilli"/></svg></span>
+  <span class="tf" style="--t:43.21%;--l:77%;--s:38px;--d:50s;--dl:-27s;--o:.26"><svg viewBox="0 0 40 40"><use href="#la-taco"/></svg></span>
+  <span class="tf" style="--t:47.74%;--l:27%;--s:44px;--d:44s;--dl:-23s;--o:.26"><svg viewBox="0 0 40 40"><use href="#la-lime"/></svg></span>
+  <span class="tf" style="--t:52.26%;--l:61%;--s:30px;--d:32s;--dl:-5s;--o:.26"><svg viewBox="0 0 40 40"><use href="#la-taco"/></svg></span>
+  <span class="tf" style="--t:56.79%;--l:16%;--s:38px;--d:38s;--dl:-28s;--o:.26"><svg viewBox="0 0 40 40"><use href="#la-corn"/></svg></span>
+  <span class="tf" style="--t:61.31%;--l:85%;--s:26px;--d:50s;--dl:-26s;--o:.22"><svg viewBox="0 0 40 40"><use href="#la-taco"/></svg></span>
+  <span class="tf" style="--t:65.83%;--l:41%;--s:30px;--d:44s;--dl:-26s;--o:.18"><svg viewBox="0 0 40 40"><use href="#la-chilli"/></svg></span>
+  <span class="tf" style="--t:70.36%;--l:67%;--s:44px;--d:50s;--dl:-20s;--o:.26"><svg viewBox="0 0 40 40"><use href="#la-taco"/></svg></span>
+  <span class="tf" style="--t:74.88%;--l:6%;--s:44px;--d:44s;--dl:-37s;--o:.3"><svg viewBox="0 0 40 40"><use href="#la-lime"/></svg></span>
+  <span class="tf" style="--t:79.4%;--l:75%;--s:26px;--d:38s;--dl:-30s;--o:.18"><svg viewBox="0 0 40 40"><use href="#la-taco"/></svg></span>
+  <span class="tf" style="--t:83.93%;--l:20%;--s:34px;--d:50s;--dl:-28s;--o:.26"><svg viewBox="0 0 40 40"><use href="#la-taco"/></svg></span>
+  <span class="tf" style="--t:88.45%;--l:64%;--s:34px;--d:26s;--dl:-29s;--o:.26"><svg viewBox="0 0 40 40"><use href="#la-pepper"/></svg></span>
+  <span class="tf" style="--t:92.98%;--l:10%;--s:44px;--d:26s;--dl:-31s;--o:.18"><svg viewBox="0 0 40 40"><use href="#la-taco"/></svg></span>
+  <span class="tf" style="--t:97.5%;--l:87%;--s:34px;--d:32s;--dl:-15s;--o:.3"><svg viewBox="0 0 40 40"><use href="#la-cilantro"/></svg></span>
 </div>
 
 <main>
@@ -1086,7 +1157,7 @@ footer{
     <ul class="links">
 
       <li><a class="card" href="#" data-link="menu" data-track="connect_menu_click"
-             style="--accent:#F27321;--tint:rgba(242,115,33,.16)">
+             style="--accent:#E2600F;--tint:rgba(242,115,33,.16)">
         <span class="card__icon" aria-hidden="true"><svg><use href="#i-taco"/></svg></span>
         <span class="card__body">
           <span class="card__label" data-i18n="card_menu">View Menu &amp; Order</span>
@@ -1096,7 +1167,7 @@ footer{
       </a></li>
 
       <li><a class="card" href="#" data-link="website" data-track="connect_website_click"
-             style="--accent:#F5B301;--tint:rgba(245,179,1,.16)">
+             style="--accent:#C98A00;--tint:rgba(245,179,1,.2)">
         <span class="card__icon" aria-hidden="true"><svg><use href="#i-globe"/></svg></span>
         <span class="card__body">
           <span class="card__label" data-i18n="card_website">Visit Our Website</span>
@@ -1107,7 +1178,7 @@ footer{
 
       <li><a class="card card--whatsapp" href="#" target="_blank" rel="noopener"
              data-link="whatsapp" data-track="connect_whatsapp_click"
-             style="--accent:#1DA35F;--tint:rgba(29,163,95,.20)">
+             style="--accent:#12734A;--tint:rgba(29,163,95,.18)">
         <span class="card__icon" aria-hidden="true"><svg><use href="#i-whatsapp"/></svg></span>
         <span class="card__body">
           <span class="card__label" data-i18n="card_whatsapp">Order on WhatsApp</span>
@@ -1118,7 +1189,7 @@ footer{
 
       <li><a class="card" href="#" target="_blank" rel="noopener"
              data-link="maps" data-track="connect_maps_click"
-             style="--accent:#D62828;--tint:rgba(214,40,40,.18)">
+             style="--accent:#C42121;--tint:rgba(214,40,40,.16)">
         <span class="card__icon" aria-hidden="true"><svg><use href="#i-pin"/></svg></span>
         <span class="card__body">
           <span class="card__label" data-i18n="card_maps">Find Taco Taco</span>
@@ -1128,7 +1199,7 @@ footer{
       </a></li>
 
       <li><a class="card" href="#" data-link="phone" data-track="connect_call_click"
-             style="--accent:#FFD25E;--tint:rgba(255,210,94,.16)">
+             style="--accent:#0E3B2E;--tint:rgba(14,59,46,.12)">
         <span class="card__icon" aria-hidden="true"><svg><use href="#i-phone"/></svg></span>
         <span class="card__body">
           <span class="card__label" data-i18n="card_call">Call Us</span>
@@ -1139,7 +1210,7 @@ footer{
 
       <li><a class="card" href="#" target="_blank" rel="noopener"
              data-link="facebook" data-track="connect_facebook_click"
-             style="--accent:#4A9BF0;--tint:rgba(74,155,240,.16)">
+             style="--accent:#1877F2;--tint:rgba(24,119,242,.14)">
         <span class="card__icon" aria-hidden="true"><svg><use href="#i-facebook"/></svg></span>
         <span class="card__body">
           <span class="card__label">Facebook</span>
@@ -1150,7 +1221,7 @@ footer{
 
       <li><a class="card" href="#" target="_blank" rel="noopener"
              data-link="instagram" data-track="connect_instagram_click"
-             style="--accent:#E86AA6;--tint:rgba(232,106,166,.16)">
+             style="--accent:#C13584;--tint:rgba(193,53,132,.14)">
         <span class="card__icon" aria-hidden="true"><svg><use href="#i-instagram"/></svg></span>
         <span class="card__body">
           <span class="card__label">Instagram</span>
@@ -1161,7 +1232,7 @@ footer{
 
       <li><a class="card" href="#" target="_blank" rel="noopener"
              data-link="tiktok" data-track="connect_tiktok_click"
-             style="--accent:#FFF6E5;--tint:rgba(255,246,229,.14)">
+             style="--accent:#111418;--tint:rgba(17,20,24,.1)">
         <span class="card__icon" aria-hidden="true"><svg><use href="#i-tiktok"/></svg></span>
         <span class="card__body">
           <span class="card__label">TikTok</span>
@@ -1217,13 +1288,13 @@ footer{
       <div class="socials">
         <a class="social" href="#" target="_blank" rel="noopener" data-link="facebook" data-track="connect_facebook_click"
            data-i18n-label="social_facebook" aria-label="Taco Taco on Facebook"
-           style="--accent:#4A9BF0;--glow:rgba(74,155,240,.55)"><svg aria-hidden="true"><use href="#i-facebook"/></svg></a>
+           style="--accent:#1877F2;--glow:rgba(24,119,242,.5)" data-bob="0"><svg aria-hidden="true"><use href="#i-facebook"/></svg></a>
         <a class="social" href="#" target="_blank" rel="noopener" data-link="instagram" data-track="connect_instagram_click"
            data-i18n-label="social_instagram" aria-label="Taco Taco on Instagram"
-           style="--accent:#E86AA6;--glow:rgba(232,106,166,.55)"><svg aria-hidden="true"><use href="#i-instagram"/></svg></a>
+           style="--accent:#C13584;--glow:rgba(193,53,132,.5)" data-bob="1"><svg aria-hidden="true"><use href="#i-instagram"/></svg></a>
         <a class="social" href="#" target="_blank" rel="noopener" data-link="tiktok" data-track="connect_tiktok_click"
            data-i18n-label="social_tiktok" aria-label="Taco Taco on TikTok"
-           style="--accent:#FFF6E5;--glow:rgba(255,246,229,.4)"><svg aria-hidden="true"><use href="#i-tiktok"/></svg></a>
+           style="--accent:#111418;--glow:rgba(17,20,24,.35)" data-bob="2"><svg aria-hidden="true"><use href="#i-tiktok"/></svg></a>
       </div>
     </div>
   </section>
@@ -1242,12 +1313,11 @@ footer{
           <rect x="-4" y="-4" width="41" height="41" fill="#fff"/>
           <path d="M0 0h7v1h-7zM9 0h1v1h-1zM11 0h2v1h-2zM14 0h1v1h-1zM16 0h7v1h-7zM24 0h1v1h-1zM26 0h7v1h-7zM0 1h1v1h-1zM6 1h1v1h-1zM9 1h6v1h-6zM17 1h1v1h-1zM20 1h1v1h-1zM22 1h1v1h-1zM24 1h1v1h-1zM26 1h1v1h-1zM32 1h1v1h-1zM0 2h1v1h-1zM2 2h3v1h-3zM6 2h1v1h-1zM8 2h1v1h-1zM11 2h1v1h-1zM15 2h10v1h-10zM26 2h1v1h-1zM28 2h3v1h-3zM32 2h1v1h-1zM0 3h1v1h-1zM2 3h3v1h-3zM6 3h1v1h-1zM8 3h1v1h-1zM13 3h1v1h-1zM15 3h1v1h-1zM19 3h6v1h-6zM26 3h1v1h-1zM28 3h3v1h-3zM32 3h1v1h-1zM0 4h1v1h-1zM2 4h3v1h-3zM6 4h1v1h-1zM9 4h1v1h-1zM14 4h2v1h-2zM17 4h2v1h-2zM20 4h1v1h-1zM23 4h1v1h-1zM26 4h1v1h-1zM28 4h3v1h-3zM32 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM12 5h1v1h-1zM14 5h2v1h-2zM17 5h1v1h-1zM19 5h3v1h-3zM24 5h1v1h-1zM26 5h1v1h-1zM32 5h1v1h-1zM0 6h7v1h-7zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h1v1h-1zM24 6h1v1h-1zM26 6h7v1h-7zM10 7h3v1h-3zM14 7h2v1h-2zM22 7h2v1h-2zM3 8h2v1h-2zM6 8h2v1h-2zM9 8h1v1h-1zM13 8h1v1h-1zM15 8h1v1h-1zM17 8h3v1h-3zM22 8h3v1h-3zM29 8h2v1h-2zM0 9h1v1h-1zM3 9h1v1h-1zM5 9h1v1h-1zM8 9h3v1h-3zM13 9h1v1h-1zM17 9h1v1h-1zM20 9h1v1h-1zM22 9h2v1h-2zM25 9h1v1h-1zM27 9h2v1h-2zM30 9h1v1h-1zM1 10h2v1h-2zM6 10h4v1h-4zM11 10h1v1h-1zM13 10h1v1h-1zM15 10h1v1h-1zM18 10h2v1h-2zM21 10h1v1h-1zM23 10h1v1h-1zM25 10h1v1h-1zM27 10h1v1h-1zM30 10h3v1h-3zM1 11h1v1h-1zM3 11h1v1h-1zM5 11h1v1h-1zM7 11h1v1h-1zM9 11h1v1h-1zM12 11h4v1h-4zM17 11h1v1h-1zM24 11h1v1h-1zM26 11h3v1h-3zM30 11h3v1h-3zM2 12h2v1h-2zM5 12h3v1h-3zM9 12h1v1h-1zM11 12h2v1h-2zM14 12h1v1h-1zM16 12h3v1h-3zM21 12h3v1h-3zM26 12h4v1h-4zM31 12h2v1h-2zM0 13h5v1h-5zM7 13h1v1h-1zM9 13h1v1h-1zM14 13h2v1h-2zM18 13h1v1h-1zM21 13h3v1h-3zM25 13h1v1h-1zM31 13h1v1h-1zM1 14h1v1h-1zM3 14h7v1h-7zM11 14h3v1h-3zM15 14h2v1h-2zM19 14h1v1h-1zM27 14h2v1h-2zM1 15h1v1h-1zM4 15h1v1h-1zM8 15h2v1h-2zM11 15h1v1h-1zM14 15h1v1h-1zM19 15h1v1h-1zM23 15h2v1h-2zM26 15h1v1h-1zM28 15h1v1h-1zM30 15h1v1h-1zM32 15h1v1h-1zM1 16h1v1h-1zM3 16h1v1h-1zM6 16h4v1h-4zM20 16h1v1h-1zM23 16h1v1h-1zM25 16h2v1h-2zM28 16h2v1h-2zM31 16h1v1h-1zM0 17h1v1h-1zM3 17h2v1h-2zM8 17h3v1h-3zM12 17h2v1h-2zM15 17h2v1h-2zM19 17h4v1h-4zM24 17h1v1h-1zM26 17h4v1h-4zM31 17h2v1h-2zM4 18h1v1h-1zM6 18h4v1h-4zM11 18h1v1h-1zM13 18h2v1h-2zM16 18h1v1h-1zM23 18h1v1h-1zM29 18h2v1h-2zM32 18h1v1h-1zM0 19h1v1h-1zM4 19h1v1h-1zM7 19h1v1h-1zM11 19h5v1h-5zM17 19h1v1h-1zM19 19h2v1h-2zM23 19h3v1h-3zM27 19h5v1h-5zM1 20h1v1h-1zM5 20h3v1h-3zM9 20h1v1h-1zM11 20h2v1h-2zM17 20h1v1h-1zM26 20h2v1h-2zM29 20h1v1h-1zM31 20h1v1h-1zM0 21h2v1h-2zM3 21h1v1h-1zM5 21h1v1h-1zM8 21h2v1h-2zM13 21h1v1h-1zM18 21h4v1h-4zM24 21h1v1h-1zM26 21h4v1h-4zM0 22h1v1h-1zM3 22h1v1h-1zM5 22h3v1h-3zM9 22h2v1h-2zM13 22h1v1h-1zM15 22h1v1h-1zM20 22h1v1h-1zM22 22h2v1h-2zM26 22h3v1h-3zM31 22h2v1h-2zM0 23h1v1h-1zM4 23h2v1h-2zM7 23h2v1h-2zM14 23h1v1h-1zM17 23h3v1h-3zM22 23h3v1h-3zM27 23h1v1h-1zM30 23h1v1h-1zM0 24h10v1h-10zM11 24h4v1h-4zM20 24h1v1h-1zM23 24h7v1h-7zM32 24h1v1h-1zM8 25h2v1h-2zM15 25h2v1h-2zM18 25h1v1h-1zM21 25h1v1h-1zM24 25h1v1h-1zM28 25h1v1h-1zM30 25h2v1h-2zM0 26h7v1h-7zM8 26h1v1h-1zM10 26h1v1h-1zM12 26h1v1h-1zM17 26h2v1h-2zM20 26h1v1h-1zM23 26h2v1h-2zM26 26h1v1h-1zM28 26h2v1h-2zM0 27h1v1h-1zM6 27h1v1h-1zM11 27h2v1h-2zM14 27h1v1h-1zM18 27h1v1h-1zM21 27h4v1h-4zM28 27h4v1h-4zM0 28h1v1h-1zM2 28h3v1h-3zM6 28h1v1h-1zM8 28h1v1h-1zM13 28h1v1h-1zM15 28h2v1h-2zM18 28h12v1h-12zM31 28h1v1h-1zM0 29h1v1h-1zM2 29h3v1h-3zM6 29h1v1h-1zM8 29h1v1h-1zM11 29h5v1h-5zM17 29h1v1h-1zM21 29h2v1h-2zM24 29h2v1h-2zM27 29h1v1h-1zM31 29h1v1h-1zM0 30h1v1h-1zM2 30h3v1h-3zM6 30h1v1h-1zM9 30h1v1h-1zM13 30h2v1h-2zM17 30h1v1h-1zM22 30h3v1h-3zM28 30h1v1h-1zM31 30h2v1h-2zM0 31h1v1h-1zM6 31h1v1h-1zM9 31h4v1h-4zM18 31h1v1h-1zM22 31h1v1h-1zM26 31h1v1h-1zM30 31h3v1h-3zM0 32h7v1h-7zM9 32h1v1h-1zM12 32h1v1h-1zM14 32h1v1h-1zM16 32h1v1h-1zM18 32h1v1h-1zM23 32h2v1h-2zM28 32h1v1h-1zM30 32h1v1h-1z" fill="#000"/>
           <!-- centre emblem: 12 of 33 modules square (13% of area), well inside
-               what error-correction level H recovers -->
+               what error-correction level H recovers. The white plate is what
+               costs modules; the mascot inside it costs nothing extra. -->
           <rect class="qr__emblem" x="10.5" y="10.5" width="12" height="12" rx="1.7"/>
-          <g class="qr__emblem-mark" transform="translate(11.7 12.3) scale(0.24)">
-            <path d="M2 30a18 18 0 0 1 36 0c0 2.4-1.5 3.6-3.6 3.6H5.6C3.5 33.6 2 32.4 2 30Z"/>
-            <path d="M6.5 25.6a13.8 13.8 0 0 1 27 0 6.6 6.6 0 0 0-4.6 1.4 7.4 7.4 0 0 0-8.9-.6 7.4 7.4 0 0 0-8.9.6 6.6 6.6 0 0 0-4.6-1.4Z" opacity=".55"/>
-          </g>
+          <image href="assets/mascot.png" x="11.1" y="12.05" width="10.8" height="8.9"
+                 preserveAspectRatio="xMidYMid meet"/>
         </svg>
       </div>
 
@@ -1268,11 +1338,11 @@ footer{
   <div class="wrap">
     <div class="footer__socials">
       <a class="social" href="#" target="_blank" rel="noopener" data-link="facebook" data-track="connect_facebook_click"
-         data-i18n-label="social_facebook" aria-label="Taco Taco on Facebook" style="--accent:#4A9BF0"><svg aria-hidden="true"><use href="#i-facebook"/></svg></a>
+         data-i18n-label="social_facebook" aria-label="Taco Taco on Facebook" style="--accent:#1877F2" data-bob="2"><svg aria-hidden="true"><use href="#i-facebook"/></svg></a>
       <a class="social" href="#" target="_blank" rel="noopener" data-link="instagram" data-track="connect_instagram_click"
-         data-i18n-label="social_instagram" aria-label="Taco Taco on Instagram" style="--accent:#E86AA6"><svg aria-hidden="true"><use href="#i-instagram"/></svg></a>
+         data-i18n-label="social_instagram" aria-label="Taco Taco on Instagram" style="--accent:#C13584" data-bob="0"><svg aria-hidden="true"><use href="#i-instagram"/></svg></a>
       <a class="social" href="#" target="_blank" rel="noopener" data-link="tiktok" data-track="connect_tiktok_click"
-         data-i18n-label="social_tiktok" aria-label="Taco Taco on TikTok" style="--accent:#FFF6E5"><svg aria-hidden="true"><use href="#i-tiktok"/></svg></a>
+         data-i18n-label="social_tiktok" aria-label="Taco Taco on TikTok" style="--accent:#111418" data-bob="1"><svg aria-hidden="true"><use href="#i-tiktok"/></svg></a>
     </div>
     <p class="footer__brand">&copy; 2026 Taco Taco Mexican Restaurant</p>
     <p class="footer__line" data-i18n="footer_address">11 Aloe Vera Ave &middot; Belmopan &middot; Belize</p>
@@ -1283,6 +1353,8 @@ footer{
     </p>
   </div>
 </footer>
+
+</div><!-- /.page -->
 
 <script>
 (function () {
