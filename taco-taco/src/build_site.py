@@ -118,10 +118,13 @@ ITEM_IMG = {
  "Torta del Rey":                  "menu-torta-del-rey.jpg",
  "California Style Burrito":       "menu-california-burrito.jpg",
  "Fry Jack Breakfast":             "menu-fry-jack.jpg",
- # Both of these are an order in the photograph, so they go on the order lines
- # and not on the single-item ones: a $6 taco should not be pictured as six.
+ # Each of these photographs is an order rather than one item. The single lines
+ # share them on the restaurant's say-so: it is the same food, and a picture of
+ # the plate beats the house placeholder on a line a customer is choosing from.
  "Order of Mexican Chalupas":      "menu-chalupas.jpg",
+ "1 Mexican Chalupa":              "menu-chalupas.jpg",
  "Order of Hardshell Tacos":       "menu-hardshell-tacos.jpg",
+ "1 Hardshell Taco":               "menu-hardshell-tacos.jpg",
  "Birria Soup":                    "menu-birria-soup.jpg",
  "Breakfast Burrito":              "menu-breakfast-burrito.jpg",
  "Burger":                         "menu-burger.jpg",
