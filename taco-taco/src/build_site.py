@@ -118,9 +118,10 @@ ITEM_IMG = {
  "Torta del Rey":                  "menu-torta-del-rey.jpg",
  "California Style Burrito":       "menu-california-burrito.jpg",
  "Fry Jack Breakfast":             "menu-fry-jack.jpg",
- # Three to a basket in the photograph, so it goes on the order rather than on
- # the single chalupa line.
+ # Both of these are an order in the photograph, so they go on the order lines
+ # and not on the single-item ones: a $6 taco should not be pictured as six.
  "Order of Mexican Chalupas":      "menu-chalupas.jpg",
+ "Order of Hardshell Tacos":       "menu-hardshell-tacos.jpg",
  "Mexican Style Burrito":          "menu-burrito.jpg",
  "Carne Asada Fries":              "menu-carne-asada-fries.jpg",
  "Mexican Pizza":                  "menu-mexican-pizza.jpg",
