@@ -238,6 +238,8 @@ button{font:inherit;color:inherit}
   outline-offset:3px;
   border-radius:6px;
 }
+/* one tap, never a wait to see whether a second is coming */
+a,button,[tabindex],label,summary{touch-action:manipulation}
 
 .wrap{width:var(--wrap);margin-inline:auto}
 .sr-only{
@@ -389,6 +391,7 @@ button{font:inherit;color:inherit}
   color:var(--on-warm);
   background:var(--surface);
 }
+.lang__btn:active{transform:scale(.94);transition-duration:.08s}
 .lang__sep{width:1px;height:16px;background:rgba(255,246,229,.22)}
 </style>
 <style>
@@ -1014,8 +1017,8 @@ footer{
   color:var(--on-warm);
 }
 .footer__socials{display:flex;justify-content:center;gap:12px;margin-bottom:22px}
-.footer__socials .social{width:44px;height:44px;border-radius:14px}
-.footer__socials .social svg{width:19px;height:19px}
+.footer__socials .social{width:50px;height:50px;border-radius:16px}
+.footer__socials .social svg{width:21px;height:21px}
 .footer__brand{
   font-family:var(--display);
   font-size:.92rem;
@@ -1027,8 +1030,8 @@ footer{
 /* the build credit gets its own quiet register below a rule, so the footer
    reads as two short blocks rather than one stack of four lines */
 .footer__credit{
-  margin:26px auto 0;
-  padding-top:20px;
+  margin:22px auto 0;
+  padding-top:10px;
   border-top:1px solid rgba(18,51,40,.18);
   max-width:320px;
   font-size:.76rem;
@@ -1037,12 +1040,13 @@ footer{
 }
 .footer__credit a{
   display:inline-block;
-  padding:7px 4px 5px;
+  padding:13px 10px 11px;
   color:var(--on-warm);
   font-weight:700;
   border-bottom:1px solid rgba(18,51,40,.35);
-  transition:color .25s var(--ease),border-color .25s var(--ease);
+  transition:color .25s var(--ease),border-color .25s var(--ease),transform .12s var(--ease);
 }
+.footer__credit a:active{transform:scale(.96)}
 @media (hover:hover){
   .footer__credit a:hover{color:#7A1A05;border-color:#7A1A05}
 }
