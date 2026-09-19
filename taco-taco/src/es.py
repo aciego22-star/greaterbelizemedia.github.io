@@ -286,6 +286,9 @@ ES.update({
  "Menudo Soup, Small": "Sopa de menudo, pequeña",
  "Menudo Soup, Large": "Sopa de menudo, grande",
  "Regular Torta": "Torta regular",
+ "Torta del Rey": "Torta del Rey",
+ "Bread, meat of your choice, beans, lettuce, bacon, sausage, egg, pico de gallo, sour cream and guacamole sauce, served with fries and a fried jalapeno":
+   "Pan, la carne de su elecci\u00f3n, frijoles, lechuga, tocino, salchicha, huevo, pico de gallo, crema y salsa de guacamole, servida con papas fritas y un jalape\u00f1o frito",
  "Two Mexican Tacos Plato Combo": "Combo de plato con dos tacos mexicanos",
  "Carne Plato Combo": "Combo de plato de carne",
  "Fajitas Plato Combo": "Combo de plato de fajitas",

@@ -87,6 +87,11 @@ CATEGORIES = [
    {"name": "Regular Torta", "price": 20, "meat": True,
     "desc": "Telera bread, beans, meat of your choice, pico de gallo, lettuce and cheese, "
             "served with fries"},
+   # Not on the printed menu we transcribed. Added on the restaurant's word,
+   # 19 September 2026, with the price and the fillings as they gave them.
+   {"name": "Torta del Rey", "price": 30, "meat": True,
+    "desc": "Bread, meat of your choice, beans, lettuce, bacon, sausage, egg, pico de gallo, "
+            "sour cream and guacamole sauce, served with fries and a fried jalapeno"},
   ]},
 
  {"name": "Plato Combos", "items": [

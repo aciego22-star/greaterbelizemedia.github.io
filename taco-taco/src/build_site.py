@@ -112,7 +112,15 @@ ITEM_IMG = {
  "Taco Bowl Grande":               "dish-01.jpg",
  "1 Tostada":                      "dish-10.jpg",
  "Order of Tostadas (4)":          "dish-10.jpg",
- "Regular Torta":                  "dish-08.jpg",
+ # The restaurant's own photographs of its own plates, which beat a stock-looking
+ # one every time on a menu.
+ "Regular Torta":                  "menu-torta.jpg",
+ "Torta del Rey":                  "menu-torta-del-rey.jpg",
+ "California Style Burrito":       "menu-california-burrito.jpg",
+ "Fry Jack Breakfast":             "menu-fry-jack.jpg",
+ # Three to a basket in the photograph, so it goes on the order rather than on
+ # the single chalupa line.
+ "Order of Mexican Chalupas":      "menu-chalupas.jpg",
  "Mexican Style Burrito":          "menu-burrito.jpg",
  "Carne Asada Fries":              "menu-carne-asada-fries.jpg",
  "Mexican Pizza":                  "menu-mexican-pizza.jpg",
