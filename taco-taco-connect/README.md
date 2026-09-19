@@ -73,8 +73,8 @@ index.html                the whole page, markup, styles and script in one file
 print.html                print-ready cards (5 formats, EN/ES)
 assets/
   logo-source.jpg         the supplied Taco Taco artwork; everything below is cut from it
-  mascot.webp             hero mascot, 784x620, transparent
-  mascot-400.webp         same at 392w, for the srcset
+  mascot.webp             hero mascot, 1114x824, transparent
+  mascot-400.webp         same at 557w, for the srcset
   mascot.png              quantised fallback for browsers without WebP
   favicon.png             64px app icon
   favicon-96.png          96px and 192px, the sizes Google prefers
@@ -90,6 +90,9 @@ assets/
 tools/extract-mascot.py   cuts the mascot out of logo-source.jpg and builds every icon
 tools/make-sleeping-mascot.py  derives the sleeping mascot from the awake one
 tools/make-qr.py          regenerates the QR (only if the URL ever changes)
+tools/make-og-image.js    re-renders og-image.jpg from tools/og-image.html
+tools/og-image.html       the sharing card, rendered at 1200x630
+tools/archivo-black-latin.woff2  the card's headline font, build-time only
 tools/make-llms-txt.py    rewrites llms.txt from BUSINESS and HOURS
 netlify.toml              deploy config, headers, redirects
 site.webmanifest, robots.txt, sitemap.xml
@@ -105,9 +108,17 @@ pip install opencv-python-headless numpy pillow
 python3 tools/extract-mascot.py assets/logo-source.jpg
 ```
 
-That one command rewrites the mascot (WebP at two widths plus a PNG fallback)
-and every app icon. Replace `logo-source.jpg` and re-run it if the artwork is
-ever updated.
+That one command rewrites the mascot (WebP at two widths plus a PNG fallback),
+the small copy that sits in the middle of the QR, and every app icon. Replace
+`logo-source.jpg` and re-run it if the artwork is ever updated, then re-run
+`tools/make-sleeping-mascot.py` and `tools/make-og-image.js`, which both derive
+from it, and update the mascot's `width`/`height` and `srcset` widths in
+`index.html` and `print.html` to the new pixel size the script prints.
+
+The script needs one hand-set value: `MASCOT_SEED`, a point inside the mascot in
+source-image pixels. The mascot sits somewhere different each time the logo is
+redrawn and the image centre is not reliably inside it, so the script exits
+rather than guess.
 
 Two things in that script are worth knowing before you touch it. The source is a
 JPEG, so the mascot's black linework has softened edges and a plain flood fill
@@ -298,17 +309,27 @@ a browser that cannot work out the time never shows it, because the awake mascot
 is the default.
 
 `tools/make-sleeping-mascot.py` derives that image from the awake one, so it can
-be rebuilt whenever the artwork changes. Three things in it are worth knowing
-before touching the numbers. The arms are cut from the top corners (where the
-artwork has nothing else) and rotated about the shoulder; the cut is dilated
-first or the anti-aliased rim of the raised fists is left behind as a ghost, and
-the rotated arms composite behind the body, which is where a resting arm sits.
-The eyes and grin are removed by interpolating each row between its nearest
-clean pixels left and right rather than by inpainting, which dragged the dark
-moustache across the mouth; the interpolation also refuses to run when the
-nearest clean pixel is the shell's outline or the background, which is what was
-putting a dark streak across the chin. And the moustache is left alone, because
-the face stops reading as Taco Taco without it.
+be rebuilt whenever the artwork changes. Only the arms are measured by hand,
+two corner boxes and the two shoulders they pivot about; the eyes, the moustache
+and the grin are found in the artwork, so a redraw usually needs four numbers
+updated rather than a dozen. Run it with `--debug` to write
+`mascot-sleep-debug.png`, which paints what it found.
+
+Four things in it are worth knowing before touching the numbers. The arms are
+cut from the top corners (where the artwork has nothing else) and rotated about
+the shoulder; the cut is dilated first or the anti-aliased rim of the raised
+fists is left behind as a ghost, and the rotated arms composite behind the body,
+which is where a resting arm sits. The face is one connected mass of dark
+linework, eye outlines, moustache and mouth all touching, so the moustache is
+found by elimination rather than by a flood fill: it is the dark blob left once
+the eyes and everything at or below the teeth are taken away. The eyes and grin
+are removed by interpolating each row between its nearest clean pixels left and
+right rather than by inpainting, which dragged the dark moustache across the
+mouth; at the corners of the smile the only face tone is on one side, so that
+one is carried across rather than leaving a white sliver of the grin behind. And
+the moustache is left alone, because the face stops reading as Taco Taco without
+it, which is also why the grin is bounded by the moustache's own lower edge,
+column by column: a single ellipse is too narrow where the smile curls up.
 
 The status chip is computed in **America/Belize**, never the visitor's own timezone.
 Belize is UTC-6 year round with no daylight saving, so the restaurant's clock is
@@ -345,8 +366,8 @@ To add GA4, put the gtag snippet in `<head>`, everything else is already wired.
 
 First view is **4 requests**: the HTML (18.7 KB gzipped, 15.6 KB brotli), the
 mascot, and the Archivo Black webfont from Google Fonts. The mascot is served
-through a `srcset`, so a standard-density phone pulls the 392w WebP (23 KB) and a
-retina screen the 784w (47 KB), roughly 58 KB and 82 KB over the wire in total.
+through a `srcset`, so a standard-density phone pulls the 557w WebP (45 KB) and a
+retina screen the 1114w (92 KB), roughly 80 KB and 127 KB over the wire in total.
 Everything else, all icons, the QR, the background texture, the entire orbit 
 is inline SVG or CSS. No images to lazy-load, no video, no framework.
 

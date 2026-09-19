@@ -22,6 +22,14 @@ import cv2
 import numpy as np
 from PIL import Image
 
+# A point inside the mascot's body, in source-image pixels. The mascot sits
+# somewhere different each time the logo is redrawn, and the image centre is not
+# reliably inside it: in the 2026 artwork the centre lands on background between
+# the wordmark and the mascot, which silently produced a wordmark instead. To
+# re-find it after an artwork change, open the source and read off any coordinate
+# on the taco's shell or face.
+MASCOT_SEED = (646, 560)
+
 DARK = 105       # below this grey the pixel is treated as linework
 TOL = 28         # flood-fill tolerance against the neighbouring pixel
 UPSCALE = 2      # the mascot is only ~366px wide in the source
@@ -46,7 +54,13 @@ for s in seeds:
 
 background = mask[1:-1, 1:-1] == 255
 n, lbl, stats, _ = cv2.connectedComponentsWithStats((~background).astype(np.uint8) * 255, 8)
-idx = lbl[h // 2, w // 2] or max(range(1, n), key=lambda i: stats[i, cv2.CC_STAT_AREA])
+idx = lbl[MASCOT_SEED[1], MASCOT_SEED[0]]
+if idx == 0:
+    sys.exit(f"MASCOT_SEED {MASCOT_SEED} landed on background rather than the mascot.\n"
+             f"Open {src} and pick a point on the taco's shell or face.")
+print(f"mascot component: {stats[idx, cv2.CC_STAT_AREA]}px at "
+      f"({stats[idx, cv2.CC_STAT_LEFT]},{stats[idx, cv2.CC_STAT_TOP]}) "
+      f"{stats[idx, cv2.CC_STAT_WIDTH]}x{stats[idx, cv2.CC_STAT_HEIGHT]}")
 m = (lbl == idx).astype(np.uint8) * 255
 
 pad = cv2.copyMakeBorder(m, 1, 1, 1, 1, cv2.BORDER_CONSTANT, value=0)
@@ -99,6 +113,13 @@ im.quantize(colors=255, method=Image.FASTOCTREE).save(assets / "mascot.png", opt
 
 print(f"mascot {im.width}x{im.height} (half: {half.width}x{half.height})")
 
+# The QR's centre emblem shows the mascot in a slot about 57px wide on screen.
+# Pointing it at the full-size PNG cost 84KB on every first view, so it gets its
+# own 320px copy. Keep it a plain resize: the emblem sits on the white plate the
+# QR already reserves, so its aspect ratio does not have to match anything.
+im.resize((320, max(1, round(320 * im.height / im.width))), Image.LANCZOS) \
+  .quantize(colors=255, method=Image.FASTOCTREE).save(assets / "mascot-qr.png", optimize=True)
+
 # ---------------------------------------------------------------------------
 # App icons. At 16-32px the whole figure turns to mush, so the icon uses the
 # head -- sombrero, eyes, moustache -- on a gold tile. Gold was picked over the
@@ -136,7 +157,7 @@ for name, size in (("favicon.png", 64), ("favicon-96.png", 96), ("favicon-192.pn
 # while.
 icon(192).save(root / "favicon.ico", sizes=[(16, 16), (32, 32), (48, 48)])
 
-for f in ("mascot.webp", "mascot-400.webp", "mascot.png", "favicon.png",
+for f in ("mascot.webp", "mascot-400.webp", "mascot.png", "mascot-qr.png", "favicon.png",
           "favicon-96.png", "favicon-192.png", "apple-touch-icon.png",
           "icon-192.png", "icon-512.png"):
     print(f"  {f}: {(assets / f).stat().st_size / 1024:.1f} KB")

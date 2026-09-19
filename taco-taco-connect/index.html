@@ -58,7 +58,7 @@
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 
-<link rel="preload" as="image" href="assets/mascot.webp" imagesrcset="assets/mascot-400.webp 392w, assets/mascot.webp 784w" imagesizes="(min-width:860px) 300px, min(74vw, 300px)" type="image/webp" fetchpriority="high">
+<link rel="preload" as="image" href="assets/mascot.webp" imagesrcset="assets/mascot-400.webp 557w, assets/mascot.webp 1114w" imagesizes="(min-width:860px) 300px, min(74vw, 300px)" type="image/webp" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" media="print" onload="this.media='all'">
@@ -1275,10 +1275,10 @@ footer{
           <div class="orbit__mascot">
             <picture>
               <source id="mascot-webp" type="image/webp"
-                      srcset="assets/mascot-400.webp 392w, assets/mascot.webp 784w"
+                      srcset="assets/mascot-400.webp 557w, assets/mascot.webp 1114w"
                       sizes="(min-width:860px) 300px, min(74vw, 300px)">
               <source id="mascot-png" type="image/png" srcset="assets/mascot.png">
-              <img id="mascot-img" src="assets/mascot.png" width="784" height="620"
+              <img id="mascot-img" src="assets/mascot.png" width="1114" height="824"
                    alt="Taco Taco Mexican Restaurant mascot" data-i18n-alt="mascot_alt"
                    fetchpriority="high" decoding="async">
             </picture>
@@ -1855,9 +1855,9 @@ footer{
   // than shipping both states to everyone. Awake is the default, so a browser
   // that cannot resolve the timezone never shows a sleeping mascot by mistake.
   var MASCOT = {
-    open:   { webp: "assets/mascot-400.webp 392w, assets/mascot.webp 784w",
+    open:   { webp: "assets/mascot-400.webp 557w, assets/mascot.webp 1114w",
               png: "assets/mascot.png", alt: "mascot_alt" },
-    closed: { webp: "assets/mascot-sleep-400.webp 392w, assets/mascot-sleep.webp 784w",
+    closed: { webp: "assets/mascot-sleep-400.webp 557w, assets/mascot-sleep.webp 1114w",
               png: "assets/mascot-sleep.png", alt: "mascot_alt_sleep" }
   };
   var mascotState = null;
