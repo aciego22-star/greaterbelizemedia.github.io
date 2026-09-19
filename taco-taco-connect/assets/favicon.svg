@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Taco Taco">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#12734A"/><stop offset="1" stop-color="#0E3B2E"/>
+    </linearGradient>
+    <linearGradient id="shell" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFD25E"/><stop offset="1" stop-color="#E08A1E"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="15" fill="url(#bg)"/>
+  <path d="M10 41a22 22 0 0 1 44 0c0 2.8-1.8 4.4-4.5 4.4h-35C11.8 45.4 10 43.8 10 41Z" fill="#C87A18"/>
+  <path d="M14 31.5c4-4.5 9.5-6 13-3.5 3.5-3.5 8.5-3.5 12 0 3-2.5 7-2 9.5 1.5-9-2.5-19-3-34.5 2Z" fill="#2E7D4F"/>
+  <path d="M15.5 34c5-2.5 11-3.5 16.5-3.5s11 1 15.5 3c-2.5 2.5-6 3.5-9.5 2-3 2-7 2-10.5 0-2.5 1.5-6.5 1.5-12-1.5Z" fill="#C8382B"/>
+  <path d="M10 35.5c0-2.4 1.5-3.6 3.8-3.1A93 93 0 0 0 32 34a93 93 0 0 0 18.2-1.6c2.3-.5 3.8.7 3.8 3.1C54 46.5 44.2 55 32 55S10 46.5 10 35.5Z" fill="url(#shell)"/>
+  <ellipse cx="25" cy="40" rx="3.2" ry="3.8" fill="#26140A"/>
+  <ellipse cx="39" cy="40" rx="3.2" ry="3.8" fill="#26140A"/>
+  <path d="M25.5 47c1.9 2.9 4.2 4.4 6.5 4.4s4.6-1.5 6.5-4.4c-1.6 5-4.2 7-6.5 7s-4.9-2-6.5-7Z" fill="#26140A"/>
+</svg>

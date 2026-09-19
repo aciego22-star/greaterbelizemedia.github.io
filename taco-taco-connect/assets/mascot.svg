@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" aria-label="Taco Taco mascot">
+  <title>Taco Taco mascot</title>
+  <defs>
+    <linearGradient id="shellFront" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFD76B"/>
+      <stop offset="0.48" stop-color="#F7B733"/>
+      <stop offset="1" stop-color="#DA7F15"/>
+    </linearGradient>
+    <linearGradient id="shellBack" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#E5A027"/>
+      <stop offset="1" stop-color="#B86E12"/>
+    </linearGradient>
+    <linearGradient id="hatTop" x1="0.2" y1="0" x2="0.8" y2="1">
+      <stop offset="0" stop-color="#E8463B"/>
+      <stop offset="1" stop-color="#AE1B1F"/>
+    </linearGradient>
+    <linearGradient id="hatBrim" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#D62828"/>
+      <stop offset="1" stop-color="#8E1418"/>
+    </linearGradient>
+    <radialGradient id="cheek" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#E8523F" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#E8523F" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- arms, behind the shell -->
+  <path d="M78 236c-20 1-35 13-43 32-4 10 9 18 15 9 8-13 18-21 30-22Z" fill="#C97D14"/>
+  <circle cx="44" cy="276" r="14" fill="#E5A027"/>
+  <path d="M322 236c20 1 35 13 43 32 4 10-9 18-15 9-8-13-18-21-30-22Z" fill="#C97D14"/>
+  <circle cx="356" cy="276" r="14" fill="#E5A027"/>
+
+  <!-- back half of the folded tortilla: tips ride high, the rim sags at centre -->
+  <path d="M44 150c0 100 70 172 156 172s156-72 156-172c-12 28-58 44-108 49q-48 5-96 0c-50-5-96-21-108-49Z" fill="url(#shellBack)"/>
+  <path d="M44 150c12 28 58 44 108 49q48 5 96 0c50-5 96-21 108-49" fill="none" stroke="#F3B94E" stroke-opacity=".55" stroke-width="7" stroke-linecap="round"/>
+
+  <!-- the filling, mounded well above the rim -->
+  <g>
+    <path d="M86 200C94 142 138 118 200 118s106 24 114 82Z" fill="#8E1F1C"/>
+    <path d="M102 200C108 154 144 134 200 134s92 20 98 66Z" fill="#C8382B"/>
+    <g fill="#2E7D4F">
+      <ellipse cx="110" cy="172" rx="27" ry="15" transform="rotate(-46 110 172)"/>
+      <ellipse cx="290" cy="172" rx="27" ry="15" transform="rotate(46 290 172)"/>
+    </g>
+    <g fill="#57A55F">
+      <ellipse cx="140" cy="149" rx="28" ry="16" transform="rotate(-30 140 149)"/>
+      <ellipse cx="260" cy="149" rx="28" ry="16" transform="rotate(30 260 149)"/>
+      <ellipse cx="200" cy="131" rx="30" ry="16"/>
+    </g>
+    <g fill="#8FBE4F">
+      <ellipse cx="170" cy="135" rx="24" ry="13" transform="rotate(-14 170 135)"/>
+      <ellipse cx="230" cy="135" rx="24" ry="13" transform="rotate(14 230 135)"/>
+    </g>
+    <g fill="#F5B301">
+      <rect x="112" y="158" width="30" height="9" rx="4.5" transform="rotate(-34 127 162)"/>
+      <rect x="258" y="158" width="30" height="9" rx="4.5" transform="rotate(34 273 162)"/>
+      <rect x="186" y="150" width="30" height="9" rx="4.5"/>
+    </g>
+    <path d="M124 184c26-17 126-17 152 0" fill="none" stroke="#F7F1DF" stroke-width="13" stroke-linecap="round"/>
+    <circle cx="146" cy="163" r="9" fill="#E8523F"/>
+    <circle cx="254" cy="163" r="9" fill="#E8523F"/>
+    <circle cx="200" cy="150" r="8" fill="#E8523F"/>
+  </g>
+
+  <!-- front half of the folded tortilla -->
+  <path d="M52 196c0 4 0 8 1 12 11 58 74 104 147 104s136-46 147-104c1-4 1-8 1-12-8-6-16-7-24-3Q200 220 76 193c-8-4-16-3-24 3Z" fill="url(#shellFront)"/>
+  <path d="M60 199q140 26 280 0" fill="none" stroke="#FFE7A6" stroke-opacity="0.6" stroke-width="8" stroke-linecap="round"/>
+  <path d="M82 232c8 42 46 70 94 70" fill="none" stroke="#FFE7A6" stroke-opacity="0.38" stroke-width="11" stroke-linecap="round"/>
+
+  <!-- face -->
+  <g>
+    <ellipse cx="128" cy="270" rx="26" ry="18" fill="url(#cheek)"/>
+    <ellipse cx="272" cy="270" rx="26" ry="18" fill="url(#cheek)"/>
+    <ellipse cx="164" cy="248" rx="15" ry="17" fill="#26140A"/>
+    <ellipse cx="236" cy="248" rx="15" ry="17" fill="#26140A"/>
+    <circle cx="169" cy="242" r="5" fill="#FFFFFF"/>
+    <circle cx="241" cy="242" r="5" fill="#FFFFFF"/>
+    <path d="M169 282c10 14 21 21 31 21s21-7 31-21c-7 24-23 34-31 34s-24-10-31-34Z" fill="#26140A"/>
+    <path d="M183 299h34c-5 7-11 10-17 10s-12-3-17-10Z" fill="#E8523F"/>
+  </g>
+
+  <!-- sombrero, tilted, resting on the filling -->
+  <g transform="rotate(-12 200 84)">
+    <ellipse cx="200" cy="90" rx="96" ry="24" fill="url(#hatBrim)"/>
+    <ellipse cx="200" cy="84" rx="96" ry="24" fill="url(#hatTop)"/>
+    <path d="M159 82c2-32 18-50 41-50s39 18 41 50c-12 7-25 10-41 10s-29-3-41-10Z" fill="url(#hatTop)"/>
+    <path d="M158 77c13 7 26 10 42 10s29-3 42-10c1 4 1 7 1 11-13 7-26 10-43 10s-30-3-43-10c0-4 0-7 1-11Z" fill="#F5B301"/>
+    <ellipse cx="200" cy="84" rx="96" ry="24" fill="none" stroke="#F5B301" stroke-width="4" stroke-dasharray="12 9" stroke-opacity="0.9"/>
+  </g>
+</svg>

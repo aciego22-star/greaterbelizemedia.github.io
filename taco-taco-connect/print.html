@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Taco Taco Connect | Printable Cards</title>
+<meta name="description" content="Print-ready Taco Taco Connect cards — table tents, countertop cards, business cards, packaging inserts and a poster, all carrying the connect.tacotaco.bz QR code.">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="https://connect.tacotaco.bz/print.html">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap">
+<style>
+:root{
+  --gold:#F5B301; --gold-light:#FFD25E; --orange:#F27321; --red:#D62828;
+  --green-deep:#0E3B2E; --green:#12734A; --cream:#FFF6E5; --ink:#08221A;
+  --display:"Archivo Black",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --body:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:#141a18;color:var(--cream);font-family:var(--body);line-height:1.55}
+svg,img{display:block;max-width:100%}
+a{color:inherit}
+:where(a,button):focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+
+/* ============================================================
+   Screen-only control bar
+   ============================================================ */
+.bar{
+  position:sticky; top:0; z-index:10;
+  display:flex; flex-wrap:wrap; align-items:center; gap:12px;
+  padding:14px clamp(14px,4vw,28px);
+  background:rgba(8,34,26,.94);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(255,246,229,.14);
+}
+.bar__title{font-family:var(--display);font-size:.96rem;letter-spacing:.04em;text-transform:uppercase;margin:0;margin-right:auto}
+.bar__title span{color:var(--gold)}
+.bar label{font-size:.82rem;color:rgba(255,246,229,.72)}
+select,.btn{
+  font:inherit; font-size:.86rem; min-height:44px;
+  padding:9px 16px; border-radius:999px;
+  border:1px solid rgba(255,246,229,.24);
+  background:rgba(255,246,229,.07); color:var(--cream);
+  cursor:pointer;
+}
+.btn--go{
+  border:0; font-weight:700; color:#fff;
+  background:linear-gradient(160deg,#1DA35F,#12734A);
+  box-shadow:0 8px 20px -8px rgba(29,163,95,.8);
+}
+.hint{
+  padding:14px clamp(14px,4vw,28px);
+  font-size:.84rem; color:rgba(255,246,229,.66);
+  border-bottom:1px solid rgba(255,246,229,.1);
+}
+.hint b{color:var(--gold-light)}
+.stage{padding:clamp(16px,4vw,32px);display:flex;flex-direction:column;align-items:center;gap:24px}
+
+/* ============================================================
+   THE CARD — one component, scaled by --u (its base unit).
+   Every dimension below is expressed in --u so the identical
+   markup renders correctly on a 55mm business card and an A4
+   poster without a second stylesheet.
+   ============================================================ */
+.tt{
+  --u:1mm;
+  position:relative;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:calc(var(--u) * 2.4);
+  padding:calc(var(--u) * 5) calc(var(--u) * 4);
+  text-align:center;
+  background:var(--cream);
+  color:var(--green-deep);
+  border-radius:calc(var(--u) * 3);
+  overflow:hidden;
+  -webkit-print-color-adjust:exact;
+  print-color-adjust:exact;
+}
+/* flavour keyline down both edges — survives as ink even if a printer
+   drops background graphics, because it is a border, not a fill */
+.tt::before{
+  content:""; position:absolute; inset:0;
+  border:calc(var(--u) * .9) solid var(--red);
+  border-radius:inherit;
+  pointer-events:none;
+}
+.tt__bar{display:flex;width:calc(var(--u) * 26);height:calc(var(--u) * 1.4);border-radius:999px;overflow:hidden}
+.tt__bar i{flex:1}
+.tt__bar i:nth-child(1){background:var(--gold)}
+.tt__bar i:nth-child(2){background:var(--orange)}
+.tt__bar i:nth-child(3){background:var(--red)}
+.tt__bar i:nth-child(4){background:var(--green)}
+
+.tt__name{
+  font-family:var(--display);
+  font-size:calc(var(--u) * 6.4);
+  line-height:.92;
+  letter-spacing:-.01em;
+  text-transform:uppercase;
+  color:var(--green-deep);
+  margin:0;
+}
+.tt__action{
+  font-family:var(--display);
+  font-size:calc(var(--u) * 2.9);
+  letter-spacing:.09em;
+  text-transform:uppercase;
+  color:var(--red);
+  margin:0;
+}
+/* QR: pure black on pure white with a white frame on top of the
+   4 modules of quiet zone already inside the SVG */
+.tt__qr{
+  background:#fff;
+  padding:calc(var(--u) * 2.2);
+  border-radius:calc(var(--u) * 1.6);
+  line-height:0;
+}
+.tt__qr svg{width:calc(var(--u) * 30);height:calc(var(--u) * 30)}
+.tt__url{
+  font-family:var(--display);
+  font-size:calc(var(--u) * 2.6);
+  letter-spacing:.02em;
+  color:var(--green);
+  margin:0;
+  word-break:break-all;
+}
+.tt__socials{display:flex;gap:calc(var(--u) * 2.2);align-items:center}
+.tt__socials svg{width:calc(var(--u) * 3.6);height:calc(var(--u) * 3.6);color:var(--green-deep)}
+.tt__tag{
+  font-size:calc(var(--u) * 2);
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:rgba(14,59,46,.66);
+  margin:0;
+}
+
+/* ============================================================
+   Sheets. Each is an A4 page of cut-out cards; only the sheet
+   matching the current selection is printed.
+   ============================================================ */
+.sheet{
+  width:210mm;
+  min-height:297mm;
+  padding:10mm;
+  margin:0 auto;
+  background:#fff;
+  display:grid;
+  gap:4mm;
+  align-content:start;
+  justify-items:center;
+  box-shadow:0 20px 60px -20px rgba(0,0,0,.8);
+}
+.sheet__label{
+  grid-column:1 / -1;
+  font-family:var(--display);
+  font-size:10pt;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:#8a8a8a;
+  text-align:center;
+  margin:0 0 2mm;
+}
+/* dashed cut guides, screen and paper alike */
+.cut{outline:.3mm dashed #c9c9c9;outline-offset:1.4mm}
+
+#sheet-tent   {grid-template-columns:1fr}
+#sheet-tent   .tt{--u:1.28mm;width:180mm;height:128mm}
+#sheet-table  {grid-template-columns:repeat(2,1fr)}
+#sheet-table  .tt{--u:1mm;width:88mm;height:118mm}
+#sheet-biz    {grid-template-columns:repeat(2,1fr);gap:3mm}
+#sheet-biz    .tt{--u:.62mm;width:85mm;height:55mm;gap:calc(var(--u) * 1.6);padding:calc(var(--u)*3) calc(var(--u)*3)}
+#sheet-biz    .tt__name{font-size:calc(var(--u) * 5.4)}
+#sheet-insert {grid-template-columns:repeat(3,1fr);gap:3mm}
+#sheet-insert .tt{--u:.58mm;width:58mm;height:58mm;gap:calc(var(--u)*1.6);padding:calc(var(--u)*3)}
+#sheet-insert .tt__name{font-size:calc(var(--u) * 5)}
+#sheet-poster {grid-template-columns:1fr;padding:0}
+#sheet-poster .tt{--u:2.1mm;width:210mm;height:297mm;border-radius:0}
+
+/* landscape tent sheet needs a landscape page */
+@media print{
+  @page{size:A4 portrait;margin:0}
+  html,body{background:#fff}
+  .bar,.hint{display:none !important}
+  .stage{padding:0;gap:0;display:block}
+  .sheet{display:none;box-shadow:none;margin:0;break-inside:avoid}
+  .sheet__label{display:none}
+  .cut{outline-color:#dcdcdc}
+  html[data-sheet="tent"]   #sheet-tent,
+  html[data-sheet="table"]  #sheet-table,
+  html[data-sheet="biz"]    #sheet-biz,
+  html[data-sheet="insert"] #sheet-insert,
+  html[data-sheet="poster"] #sheet-poster{display:grid}
+}
+/* on screen, show only the chosen sheet too, so what you see is what prints */
+.stage .sheet{display:none}
+html[data-sheet="tent"]   #sheet-tent,
+html[data-sheet="table"]  #sheet-table,
+html[data-sheet="biz"]    #sheet-biz,
+html[data-sheet="insert"] #sheet-insert,
+html[data-sheet="poster"] #sheet-poster{display:grid}
+
+@media (max-width:840px){
+  .sheet{width:100%;min-height:0;transform-origin:top center}
+  .stage{overflow-x:auto}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="i-whatsapp" viewBox="0 0 24 24"><path fill="currentColor" d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.39-1.48-.88-.79-1.48-1.76-1.66-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.2-.25-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.03 1.02-1.03 2.48s1.06 2.87 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.42-.08-.12-.28-.2-.57-.35M12.05 21.79a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26 9.89 9.89 0 0 1 16.88-6.99 9.83 9.83 0 0 1 2.89 6.99 9.89 9.89 0 0 1-9.89 9.89m8.41-18.3A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.69 1.45c6.55 0 11.89-5.34 11.89-11.9a11.82 11.82 0 0 0-3.48-8.41"/></symbol>
+  <symbol id="i-facebook" viewBox="0 0 24 24"><path fill="currentColor" d="M24 12.07C24 5.44 18.63.07 12 .07S0 5.44 0 12.07c0 5.99 4.39 10.95 10.13 11.85v-8.38H7.08v-3.47h3.05V9.43c0-3.01 1.79-4.67 4.53-4.67 1.31 0 2.69.24 2.69.24v2.95h-1.52c-1.49 0-1.95.93-1.95 1.87v2.25h3.33l-.54 3.47h-2.79v8.38C19.61 23.02 24 18.06 24 12.07"/></symbol>
+  <symbol id="i-instagram" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><rect x="2.8" y="2.8" width="18.4" height="18.4" rx="5.4"/><circle cx="12" cy="12" r="4.1"/><circle cx="17.4" cy="6.6" r="1.2" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-tiktok" viewBox="0 0 24 24"><path fill="currentColor" d="M12.53.02c1.3-.02 2.6-.01 3.9-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03a10.4 10.4 0 0 1-4.2-.97c-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94a7.36 7.36 0 0 1-5.91 3.21 7.3 7.3 0 0 1-4.08-1.03A7.38 7.38 0 0 1 1.6 17.25c-.02-.5-.03-1-.01-1.49a7.42 7.42 0 0 1 2.58-4.96 7.28 7.28 0 0 1 6.15-1.72c.02 1.48-.04 2.96-.04 4.44a3.33 3.33 0 0 0-3.02.37c-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61a3.42 3.42 0 0 0 3.5 2.87 3.3 3.3 0 0 0 2.77-1.61c.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07"/></symbol>
+  <symbol id="qr-code" viewBox="-4 -4 41 41">
+    <rect x="-4" y="-4" width="41" height="41" fill="#fff"/>
+    <path d="M0 0h7v1h-7zM9 0h1v1h-1zM11 0h2v1h-2zM14 0h1v1h-1zM16 0h7v1h-7zM24 0h1v1h-1zM26 0h7v1h-7zM0 1h1v1h-1zM6 1h1v1h-1zM9 1h6v1h-6zM17 1h1v1h-1zM20 1h1v1h-1zM22 1h1v1h-1zM24 1h1v1h-1zM26 1h1v1h-1zM32 1h1v1h-1zM0 2h1v1h-1zM2 2h3v1h-3zM6 2h1v1h-1zM8 2h1v1h-1zM11 2h1v1h-1zM15 2h10v1h-10zM26 2h1v1h-1zM28 2h3v1h-3zM32 2h1v1h-1zM0 3h1v1h-1zM2 3h3v1h-3zM6 3h1v1h-1zM8 3h1v1h-1zM13 3h1v1h-1zM15 3h1v1h-1zM19 3h6v1h-6zM26 3h1v1h-1zM28 3h3v1h-3zM32 3h1v1h-1zM0 4h1v1h-1zM2 4h3v1h-3zM6 4h1v1h-1zM9 4h1v1h-1zM14 4h2v1h-2zM17 4h2v1h-2zM20 4h1v1h-1zM23 4h1v1h-1zM26 4h1v1h-1zM28 4h3v1h-3zM32 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM12 5h1v1h-1zM14 5h2v1h-2zM17 5h1v1h-1zM19 5h3v1h-3zM24 5h1v1h-1zM26 5h1v1h-1zM32 5h1v1h-1zM0 6h7v1h-7zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h1v1h-1zM24 6h1v1h-1zM26 6h7v1h-7zM10 7h3v1h-3zM14 7h2v1h-2zM22 7h2v1h-2zM3 8h2v1h-2zM6 8h2v1h-2zM9 8h1v1h-1zM13 8h1v1h-1zM15 8h1v1h-1zM17 8h3v1h-3zM22 8h3v1h-3zM29 8h2v1h-2zM0 9h1v1h-1zM3 9h1v1h-1zM5 9h1v1h-1zM8 9h3v1h-3zM13 9h1v1h-1zM17 9h1v1h-1zM20 9h1v1h-1zM22 9h2v1h-2zM25 9h1v1h-1zM27 9h2v1h-2zM30 9h1v1h-1zM1 10h2v1h-2zM6 10h4v1h-4zM11 10h1v1h-1zM13 10h1v1h-1zM15 10h1v1h-1zM18 10h2v1h-2zM21 10h1v1h-1zM23 10h1v1h-1zM25 10h1v1h-1zM27 10h1v1h-1zM30 10h3v1h-3zM1 11h1v1h-1zM3 11h1v1h-1zM5 11h1v1h-1zM7 11h1v1h-1zM9 11h1v1h-1zM12 11h4v1h-4zM17 11h1v1h-1zM24 11h1v1h-1zM26 11h3v1h-3zM30 11h3v1h-3zM2 12h2v1h-2zM5 12h3v1h-3zM9 12h1v1h-1zM11 12h2v1h-2zM14 12h1v1h-1zM16 12h3v1h-3zM21 12h3v1h-3zM26 12h4v1h-4zM31 12h2v1h-2zM0 13h5v1h-5zM7 13h1v1h-1zM9 13h1v1h-1zM14 13h2v1h-2zM18 13h1v1h-1zM21 13h3v1h-3zM25 13h1v1h-1zM31 13h1v1h-1zM1 14h1v1h-1zM3 14h7v1h-7zM11 14h3v1h-3zM15 14h2v1h-2zM19 14h1v1h-1zM27 14h2v1h-2zM1 15h1v1h-1zM4 15h1v1h-1zM8 15h2v1h-2zM11 15h1v1h-1zM14 15h1v1h-1zM19 15h1v1h-1zM23 15h2v1h-2zM26 15h1v1h-1zM28 15h1v1h-1zM30 15h1v1h-1zM32 15h1v1h-1zM1 16h1v1h-1zM3 16h1v1h-1zM6 16h4v1h-4zM20 16h1v1h-1zM23 16h1v1h-1zM25 16h2v1h-2zM28 16h2v1h-2zM31 16h1v1h-1zM0 17h1v1h-1zM3 17h2v1h-2zM8 17h3v1h-3zM12 17h2v1h-2zM15 17h2v1h-2zM19 17h4v1h-4zM24 17h1v1h-1zM26 17h4v1h-4zM31 17h2v1h-2zM4 18h1v1h-1zM6 18h4v1h-4zM11 18h1v1h-1zM13 18h2v1h-2zM16 18h1v1h-1zM23 18h1v1h-1zM29 18h2v1h-2zM32 18h1v1h-1zM0 19h1v1h-1zM4 19h1v1h-1zM7 19h1v1h-1zM11 19h5v1h-5zM17 19h1v1h-1zM19 19h2v1h-2zM23 19h3v1h-3zM27 19h5v1h-5zM1 20h1v1h-1zM5 20h3v1h-3zM9 20h1v1h-1zM11 20h2v1h-2zM17 20h1v1h-1zM26 20h2v1h-2zM29 20h1v1h-1zM31 20h1v1h-1zM0 21h2v1h-2zM3 21h1v1h-1zM5 21h1v1h-1zM8 21h2v1h-2zM13 21h1v1h-1zM18 21h4v1h-4zM24 21h1v1h-1zM26 21h4v1h-4zM0 22h1v1h-1zM3 22h1v1h-1zM5 22h3v1h-3zM9 22h2v1h-2zM13 22h1v1h-1zM15 22h1v1h-1zM20 22h1v1h-1zM22 22h2v1h-2zM26 22h3v1h-3zM31 22h2v1h-2zM0 23h1v1h-1zM4 23h2v1h-2zM7 23h2v1h-2zM14 23h1v1h-1zM17 23h3v1h-3zM22 23h3v1h-3zM27 23h1v1h-1zM30 23h1v1h-1zM0 24h10v1h-10zM11 24h4v1h-4zM20 24h1v1h-1zM23 24h7v1h-7zM32 24h1v1h-1zM8 25h2v1h-2zM15 25h2v1h-2zM18 25h1v1h-1zM21 25h1v1h-1zM24 25h1v1h-1zM28 25h1v1h-1zM30 25h2v1h-2zM0 26h7v1h-7zM8 26h1v1h-1zM10 26h1v1h-1zM12 26h1v1h-1zM17 26h2v1h-2zM20 26h1v1h-1zM23 26h2v1h-2zM26 26h1v1h-1zM28 26h2v1h-2zM0 27h1v1h-1zM6 27h1v1h-1zM11 27h2v1h-2zM14 27h1v1h-1zM18 27h1v1h-1zM21 27h4v1h-4zM28 27h4v1h-4zM0 28h1v1h-1zM2 28h3v1h-3zM6 28h1v1h-1zM8 28h1v1h-1zM13 28h1v1h-1zM15 28h2v1h-2zM18 28h12v1h-12zM31 28h1v1h-1zM0 29h1v1h-1zM2 29h3v1h-3zM6 29h1v1h-1zM8 29h1v1h-1zM11 29h5v1h-5zM17 29h1v1h-1zM21 29h2v1h-2zM24 29h2v1h-2zM27 29h1v1h-1zM31 29h1v1h-1zM0 30h1v1h-1zM2 30h3v1h-3zM6 30h1v1h-1zM9 30h1v1h-1zM13 30h2v1h-2zM17 30h1v1h-1zM22 30h3v1h-3zM28 30h1v1h-1zM31 30h2v1h-2zM0 31h1v1h-1zM6 31h1v1h-1zM9 31h4v1h-4zM18 31h1v1h-1zM22 31h1v1h-1zM26 31h1v1h-1zM30 31h3v1h-3zM0 32h7v1h-7zM9 32h1v1h-1zM12 32h1v1h-1zM14 32h1v1h-1zM16 32h1v1h-1zM18 32h1v1h-1zM23 32h2v1h-2zM28 32h1v1h-1zM30 32h1v1h-1z" fill="#000"/>
+    <rect x="10.5" y="10.5" width="12" height="12" rx="1.7" fill="#fff"/>
+    <g fill="#0E3B2E" transform="translate(11.7 12.3) scale(0.24)">
+      <path d="M2 30a18 18 0 0 1 36 0c0 2.4-1.5 3.6-3.6 3.6H5.6C3.5 33.6 2 32.4 2 30Z"/>
+      <path d="M6.5 25.6a13.8 13.8 0 0 1 27 0 6.6 6.6 0 0 0-4.6 1.4 7.4 7.4 0 0 0-8.9-.6 7.4 7.4 0 0 0-8.9.6 6.6 6.6 0 0 0-4.6-1.4Z" opacity=".55"/>
+    </g>
+  </symbol>
+</defs></svg>
+
+<div class="bar">
+  <p class="bar__title">Taco Taco <span>Connect</span> — Print</p>
+  <label for="sheet">Format</label>
+  <select id="sheet">
+    <option value="table">Countertop / table card — 2 per A4</option>
+    <option value="tent">Table tent — fold, 1 per A4</option>
+    <option value="biz">Business card — 85×55mm, 8 per A4</option>
+    <option value="insert">Packaging insert — 58mm, 9 per A4</option>
+    <option value="poster">Poster — full A4</option>
+  </select>
+  <label for="lang">Language</label>
+  <select id="lang"><option value="en">English</option><option value="es">Español</option></select>
+  <button class="btn btn--go" type="button" id="print">Print</button>
+  <a class="btn" href="index.html">&larr; Back</a>
+</div>
+
+<p class="hint">
+  Print at <b>100% scale</b> with <b>Background graphics</b> switched on and margins set to <b>None</b>.
+  Cut along the dashed guides. Every card carries the same permanent code for
+  <b>connect.tacotaco.bz</b> — printed cards keep working no matter how the page changes.
+</p>
+
+<div class="stage">
+
+  <section class="sheet" id="sheet-table" aria-label="Countertop / table card — 88 x 118 mm, 2 per A4">
+    <p class="sheet__label">Countertop / table card — 88 x 118 mm, 2 per A4</p>
+    <div class="tt cut"><div class="tt__bar" aria-hidden="true"><i></i><i></i><i></i><i></i></div><p class="tt__name">Taco Taco</p><p class="tt__action" data-i18n="action">Scan. Connect. Order.</p><div class="tt__qr"><svg viewBox="-4 -4 41 41" shape-rendering="crispEdges" role="img" aria-label="QR code linking to connect.tacotaco.bz" data-i18n-label="qr_alt"><use href="#qr-code"/></svg></div><p class="tt__url">connect.tacotaco.bz</p><div class="tt__socials" aria-label="Taco Taco social accounts"><svg viewBox="0 0 24 24" role="img" aria-label="Facebook"><use href="#i-facebook"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Instagram"><use href="#i-instagram"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Tiktok"><use href="#i-tiktok"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Whatsapp"><use href="#i-whatsapp"/></svg></div><p class="tt__tag" data-i18n="tag">Mexicali-Style Food · West Belmopan</p></div>
+    <div class="tt cut"><div class="tt__bar" aria-hidden="true"><i></i><i></i><i></i><i></i></div><p class="tt__name">Taco Taco</p><p class="tt__action" data-i18n="action">Scan. Connect. Order.</p><div class="tt__qr"><svg viewBox="-4 -4 41 41" shape-rendering="crispEdges" role="img" aria-label="QR code linking to connect.tacotaco.bz" data-i18n-label="qr_alt"><use href="#qr-code"/></svg></div><p class="tt__url">connect.tacotaco.bz</p><div class="tt__socials" aria-label="Taco Taco social accounts"><svg viewBox="0 0 24 24" role="img" aria-label="Facebook"><use href="#i-facebook"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Instagram"><use href="#i-instagram"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Tiktok"><use href="#i-tiktok"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Whatsapp"><use href="#i-whatsapp"/></svg></div><p class="tt__tag" data-i18n="tag">Mexicali-Style Food · West Belmopan</p></div>
+  </section>
+  <section class="sheet" id="sheet-tent" aria-label="Table tent — fold along the centre line">
+    <p class="sheet__label">Table tent — fold along the centre line</p>
+    <div class="tt cut"><div class="tt__bar" aria-hidden="true"><i></i><i></i><i></i><i></i></div><p class="tt__name">Taco Taco</p><p class="tt__action" data-i18n="action">Scan. Connect. Order.</p><div class="tt__qr"><svg viewBox="-4 -4 41 41" shape-rendering="crispEdges" role="img" aria-label="QR code linking to connect.tacotaco.bz" data-i18n-label="qr_alt"><use href="#qr-code"/></svg></div><p class="tt__url">connect.tacotaco.bz</p><div class="tt__socials" aria-label="Taco Taco social accounts"><svg viewBox="0 0 24 24" role="img" aria-label="Facebook"><use href="#i-facebook"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Instagram"><use href="#i-instagram"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Tiktok"><use href="#i-tiktok"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Whatsapp"><use href="#i-whatsapp"/></svg></div><p class="tt__tag" data-i18n="tag">Mexicali-Style Food · West Belmopan</p></div>
+    <div class="fold" aria-hidden="true"><span>fold</span></div>
+    <div class="tt cut"><div class="tt__bar" aria-hidden="true"><i></i><i></i><i></i><i></i></div><p class="tt__name">Taco Taco</p><p class="tt__action" data-i18n="action">Scan. Connect. Order.</p><div class="tt__qr"><svg viewBox="-4 -4 41 41" shape-rendering="crispEdges" role="img" aria-label="QR code linking to connect.tacotaco.bz" data-i18n-label="qr_alt"><use href="#qr-code"/></svg></div><p class="tt__url">connect.tacotaco.bz</p><div class="tt__socials" aria-label="Taco Taco social accounts"><svg viewBox="0 0 24 24" role="img" aria-label="Facebook"><use href="#i-facebook"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Instagram"><use href="#i-instagram"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Tiktok"><use href="#i-tiktok"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Whatsapp"><use href="#i-whatsapp"/></svg></div><p class="tt__tag" data-i18n="tag">Mexicali-Style Food · West Belmopan</p></div>
+  </section>
+  <section class="sheet" id="sheet-biz" aria-label="Business card — 85 x 55 mm, 8 per A4">
+    <p class="sheet__label">Business card — 85 x 55 mm, 8 per A4</p>
+    <div class="tt cut"><div class="tt__bar" aria-hidden="true"><i></i><i></i><i></i><i></i></div><p class="tt__name">Taco Taco</p><p class="tt__action" data-i18n="action">Scan. Connect. Order.</p><div class="tt__qr"><svg viewBox="-4 -4 41 41" shape-rendering="crispEdges" role="img" aria-label="QR code linking to connect.tacotaco.bz" data-i18n-label="qr_alt"><use href="#qr-code"/></svg></div><p class="tt__url">connect.tacotaco.bz</p><div class="tt__socials" aria-label="Taco Taco social accounts"><svg viewBox="0 0 24 24" role="img" aria-label="Facebook"><use href="#i-facebook"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Instagram"><use href="#i-instagram"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Tiktok"><use href="#i-tiktok"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Whatsapp"><use href="#i-whatsapp"/></svg></div><p class="tt__tag" data-i18n="tag">Mexicali-Style Food · West Belmopan</p></div>
+    <div class="tt cut"><div class="tt__bar" aria-hidden="true"><i></i><i></i><i></i><i></i></div><p class="tt__name">Taco Taco</p><p class="tt__action" data-i18n="action">Scan. Connect. Order.</p><div class="tt__qr"><svg viewBox="-4 -4 41 41" shape-rendering="crispEdges" role="img" aria-label="QR code linking to connect.tacotaco.bz" data-i18n-label="qr_alt"><use href="#qr-code"/></svg></div><p class="tt__url">connect.tacotaco.bz</p><div class="tt__socials" aria-label="Taco Taco social accounts"><svg viewBox="0 0 24 24" role="img" aria-label="Facebook"><use href="#i-facebook"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Instagram"><use href="#i-instagram"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Tiktok"><use href="#i-tiktok"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Whatsapp"><use href="#i-whatsapp"/></svg></div><p class="tt__tag" data-i18n="tag">Mexicali-Style Food · West Belmopan</p></div>
+    <div class="tt cut"><div class="tt__bar" aria-hidden="true"><i></i><i></i><i></i><i></i></div><p class="tt__name">Taco Taco</p><p class="tt__action" data-i18n="action">Scan. Connect. Order.</p><div class="tt__qr"><svg viewBox="-4 -4 41 41" shape-rendering="crispEdges" role="img" aria-label="QR code linking to connect.tacotaco.bz" data-i18n-label="qr_alt"><use href="#qr-code"/></svg></div><p class="tt__url">connect.tacotaco.bz</p><div class="tt__socials" aria-label="Taco Taco social accounts"><svg viewBox="0 0 24 24" role="img" aria-label="Facebook"><use href="#i-facebook"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Instagram"><use href="#i-instagram"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Tiktok"><use href="#i-tiktok"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Whatsapp"><use href="#i-whatsapp"/></svg></div><p class="tt__tag" data-i18n="tag">Mexicali-Style Food · West Belmopan</p></div>
+    <div class="tt cut"><div class="tt__bar" aria-hidden="true"><i></i><i></i><i></i><i></i></div><p class="tt__name">Taco Taco</p><p class="tt__action" data-i18n="action">Scan. Connect. Order.</p><div class="tt__qr"><svg viewBox="-4 -4 41 41" shape-rendering="crispEdges" role="img" aria-label="QR code linking to connect.tacotaco.bz" data-i18n-label="qr_alt"><use href="#qr-code"/></svg></div><p class="tt__url">connect.tacotaco.bz</p><div class="tt__socials" aria-label="Taco Taco social accounts"><svg viewBox="0 0 24 24" role="img" aria-label="Facebook"><use href="#i-facebook"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Instagram"><use href="#i-instagram"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Tiktok"><use href="#i-tiktok"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Whatsapp"><use href="#i-whatsapp"/></svg></div><p class="tt__tag" data-i18n="tag">Mexicali-Style Food · West Belmopan</p></div>
+    <div class="tt cut"><div class="tt__bar" aria-hidden="true"><i></i><i></i><i></i><i></i></div><p class="tt__name">Taco Taco</p><p class="tt__action" data-i18n="action">Scan. Connect. Order.</p><div class="tt__qr"><svg viewBox="-4 -4 41 41" shape-rendering="crispEdges" role="img" aria-label="QR code linking to connect.tacotaco.bz" data-i18n-label="qr_alt"><use href="#qr-code"/></svg></div><p class="tt__url">connect.tacotaco.bz</p><div class="tt__socials" aria-label="Taco Taco social accounts"><svg viewBox="0 0 24 24" role="img" aria-label="Facebook"><use href="#i-facebook"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Instagram"><use href="#i-instagram"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Tiktok"><use href="#i-tiktok"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Whatsapp"><use href="#i-whatsapp"/></svg></div><p class="tt__tag" data-i18n="tag">Mexicali-Style Food · West Belmopan</p></div>
+    <div class="tt cut"><div class="tt__bar" aria-hidden="true"><i></i><i></i><i></i><i></i></div><p class="tt__name">Taco Taco</p><p class="tt__action" data-i18n="action">Scan. Connect. Order.</p><div class="tt__qr"><svg viewBox="-4 -4 41 41" shape-rendering="crispEdges" role="img" aria-label="QR code linking to connect.tacotaco.bz" data-i18n-label="qr_alt"><use href="#qr-code"/></svg></div><p class="tt__url">connect.tacotaco.bz</p><div class="tt__socials" aria-label="Taco Taco social accounts"><svg viewBox="0 0 24 24" role="img" aria-label="Facebook"><use href="#i-facebook"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Instagram"><use href="#i-instagram"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Tiktok"><use href="#i-tiktok"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Whatsapp"><use href="#i-whatsapp"/></svg></div><p class="tt__tag" data-i18n="tag">Mexicali-Style Food · West Belmopan</p></div>
+    <div class="tt cut"><div class="tt__bar" aria-hidden="true"><i></i><i></i><i></i><i></i></div><p class="tt__name">Taco Taco</p><p class="tt__action" data-i18n="action">Scan. Connect. Order.</p><div class="tt__qr"><svg viewBox="-4 -4 41 41" shape-rendering="crispEdges" role="img" aria-label="QR code linking to connect.tacotaco.bz" data-i18n-label="qr_alt"><use href="#qr-code"/></svg></div><p class="tt__url">connect.tacotaco.bz</p><div class="tt__socials" aria-label="Taco Taco social accounts"><svg viewBox="0 0 24 24" role="img" aria-label="Facebook"><use href="#i-facebook"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Instagram"><use href="#i-instagram"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Tiktok"><use href="#i-tiktok"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Whatsapp"><use href="#i-whatsapp"/></svg></div><p class="tt__tag" data-i18n="tag">Mexicali-Style Food · West Belmopan</p></div>
+    <div class="tt cut"><div class="tt__bar" aria-hidden="true"><i></i><i></i><i></i><i></i></div><p class="tt__name">Taco Taco</p><p class="tt__action" data-i18n="action">Scan. Connect. Order.</p><div class="tt__qr"><svg viewBox="-4 -4 41 41" shape-rendering="crispEdges" role="img" aria-label="QR code linking to connect.tacotaco.bz" data-i18n-label="qr_alt"><use href="#qr-code"/></svg></div><p class="tt__url">connect.tacotaco.bz</p><div class="tt__socials" aria-label="Taco Taco social accounts"><svg viewBox="0 0 24 24" role="img" aria-label="Facebook"><use href="#i-facebook"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Instagram"><use href="#i-instagram"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Tiktok"><use href="#i-tiktok"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Whatsapp"><use href="#i-whatsapp"/></svg></div><p class="tt__tag" data-i18n="tag">Mexicali-Style Food · West Belmopan</p></div>
+  </section>
+  <section class="sheet" id="sheet-insert" aria-label="Packaging insert — 58 x 58 mm, 9 per A4">
+    <p class="sheet__label">Packaging insert — 58 x 58 mm, 9 per A4</p>
+    <div class="tt cut"><div class="tt__bar" aria-hidden="true"><i></i><i></i><i></i><i></i></div><p class="tt__name">Taco Taco</p><p class="tt__action" data-i18n="action">Scan. Connect. Order.</p><div class="tt__qr"><svg viewBox="-4 -4 41 41" shape-rendering="crispEdges" role="img" aria-label="QR code linking to connect.tacotaco.bz" data-i18n-label="qr_alt"><use href="#qr-code"/></svg></div><p class="tt__url">connect.tacotaco.bz</p><div class="tt__socials" aria-label="Taco Taco social accounts"><svg viewBox="0 0 24 24" role="img" aria-label="Facebook"><use href="#i-facebook"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Instagram"><use href="#i-instagram"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Tiktok"><use href="#i-tiktok"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Whatsapp"><use href="#i-whatsapp"/></svg></div><p class="tt__tag" data-i18n="tag">Mexicali-Style Food · West Belmopan</p></div>
+    <div class="tt cut"><div class="tt__bar" aria-hidden="true"><i></i><i></i><i></i><i></i></div><p class="tt__name">Taco Taco</p><p class="tt__action" data-i18n="action">Scan. Connect. Order.</p><div class="tt__qr"><svg viewBox="-4 -4 41 41" shape-rendering="crispEdges" role="img" aria-label="QR code linking to connect.tacotaco.bz" data-i18n-label="qr_alt"><use href="#qr-code"/></svg></div><p class="tt__url">connect.tacotaco.bz</p><div class="tt__socials" aria-label="Taco Taco social accounts"><svg viewBox="0 0 24 24" role="img" aria-label="Facebook"><use href="#i-facebook"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Instagram"><use href="#i-instagram"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Tiktok"><use href="#i-tiktok"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Whatsapp"><use href="#i-whatsapp"/></svg></div><p class="tt__tag" data-i18n="tag">Mexicali-Style Food · West Belmopan</p></div>
+    <div class="tt cut"><div class="tt__bar" aria-hidden="true"><i></i><i></i><i></i><i></i></div><p class="tt__name">Taco Taco</p><p class="tt__action" data-i18n="action">Scan. Connect. Order.</p><div class="tt__qr"><svg viewBox="-4 -4 41 41" shape-rendering="crispEdges" role="img" aria-label="QR code linking to connect.tacotaco.bz" data-i18n-label="qr_alt"><use href="#qr-code"/></svg></div><p class="tt__url">connect.tacotaco.bz</p><div class="tt__socials" aria-label="Taco Taco social accounts"><svg viewBox="0 0 24 24" role="img" aria-label="Facebook"><use href="#i-facebook"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Instagram"><use href="#i-instagram"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Tiktok"><use href="#i-tiktok"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Whatsapp"><use href="#i-whatsapp"/></svg></div><p class="tt__tag" data-i18n="tag">Mexicali-Style Food · West Belmopan</p></div>
+    <div class="tt cut"><div class="tt__bar" aria-hidden="true"><i></i><i></i><i></i><i></i></div><p class="tt__name">Taco Taco</p><p class="tt__action" data-i18n="action">Scan. Connect. Order.</p><div class="tt__qr"><svg viewBox="-4 -4 41 41" shape-rendering="crispEdges" role="img" aria-label="QR code linking to connect.tacotaco.bz" data-i18n-label="qr_alt"><use href="#qr-code"/></svg></div><p class="tt__url">connect.tacotaco.bz</p><div class="tt__socials" aria-label="Taco Taco social accounts"><svg viewBox="0 0 24 24" role="img" aria-label="Facebook"><use href="#i-facebook"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Instagram"><use href="#i-instagram"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Tiktok"><use href="#i-tiktok"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Whatsapp"><use href="#i-whatsapp"/></svg></div><p class="tt__tag" data-i18n="tag">Mexicali-Style Food · West Belmopan</p></div>
+    <div class="tt cut"><div class="tt__bar" aria-hidden="true"><i></i><i></i><i></i><i></i></div><p class="tt__name">Taco Taco</p><p class="tt__action" data-i18n="action">Scan. Connect. Order.</p><div class="tt__qr"><svg viewBox="-4 -4 41 41" shape-rendering="crispEdges" role="img" aria-label="QR code linking to connect.tacotaco.bz" data-i18n-label="qr_alt"><use href="#qr-code"/></svg></div><p class="tt__url">connect.tacotaco.bz</p><div class="tt__socials" aria-label="Taco Taco social accounts"><svg viewBox="0 0 24 24" role="img" aria-label="Facebook"><use href="#i-facebook"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Instagram"><use href="#i-instagram"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Tiktok"><use href="#i-tiktok"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Whatsapp"><use href="#i-whatsapp"/></svg></div><p class="tt__tag" data-i18n="tag">Mexicali-Style Food · West Belmopan</p></div>
+    <div class="tt cut"><div class="tt__bar" aria-hidden="true"><i></i><i></i><i></i><i></i></div><p class="tt__name">Taco Taco</p><p class="tt__action" data-i18n="action">Scan. Connect. Order.</p><div class="tt__qr"><svg viewBox="-4 -4 41 41" shape-rendering="crispEdges" role="img" aria-label="QR code linking to connect.tacotaco.bz" data-i18n-label="qr_alt"><use href="#qr-code"/></svg></div><p class="tt__url">connect.tacotaco.bz</p><div class="tt__socials" aria-label="Taco Taco social accounts"><svg viewBox="0 0 24 24" role="img" aria-label="Facebook"><use href="#i-facebook"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Instagram"><use href="#i-instagram"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Tiktok"><use href="#i-tiktok"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Whatsapp"><use href="#i-whatsapp"/></svg></div><p class="tt__tag" data-i18n="tag">Mexicali-Style Food · West Belmopan</p></div>
+    <div class="tt cut"><div class="tt__bar" aria-hidden="true"><i></i><i></i><i></i><i></i></div><p class="tt__name">Taco Taco</p><p class="tt__action" data-i18n="action">Scan. Connect. Order.</p><div class="tt__qr"><svg viewBox="-4 -4 41 41" shape-rendering="crispEdges" role="img" aria-label="QR code linking to connect.tacotaco.bz" data-i18n-label="qr_alt"><use href="#qr-code"/></svg></div><p class="tt__url">connect.tacotaco.bz</p><div class="tt__socials" aria-label="Taco Taco social accounts"><svg viewBox="0 0 24 24" role="img" aria-label="Facebook"><use href="#i-facebook"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Instagram"><use href="#i-instagram"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Tiktok"><use href="#i-tiktok"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Whatsapp"><use href="#i-whatsapp"/></svg></div><p class="tt__tag" data-i18n="tag">Mexicali-Style Food · West Belmopan</p></div>
+    <div class="tt cut"><div class="tt__bar" aria-hidden="true"><i></i><i></i><i></i><i></i></div><p class="tt__name">Taco Taco</p><p class="tt__action" data-i18n="action">Scan. Connect. Order.</p><div class="tt__qr"><svg viewBox="-4 -4 41 41" shape-rendering="crispEdges" role="img" aria-label="QR code linking to connect.tacotaco.bz" data-i18n-label="qr_alt"><use href="#qr-code"/></svg></div><p class="tt__url">connect.tacotaco.bz</p><div class="tt__socials" aria-label="Taco Taco social accounts"><svg viewBox="0 0 24 24" role="img" aria-label="Facebook"><use href="#i-facebook"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Instagram"><use href="#i-instagram"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Tiktok"><use href="#i-tiktok"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Whatsapp"><use href="#i-whatsapp"/></svg></div><p class="tt__tag" data-i18n="tag">Mexicali-Style Food · West Belmopan</p></div>
+    <div class="tt cut"><div class="tt__bar" aria-hidden="true"><i></i><i></i><i></i><i></i></div><p class="tt__name">Taco Taco</p><p class="tt__action" data-i18n="action">Scan. Connect. Order.</p><div class="tt__qr"><svg viewBox="-4 -4 41 41" shape-rendering="crispEdges" role="img" aria-label="QR code linking to connect.tacotaco.bz" data-i18n-label="qr_alt"><use href="#qr-code"/></svg></div><p class="tt__url">connect.tacotaco.bz</p><div class="tt__socials" aria-label="Taco Taco social accounts"><svg viewBox="0 0 24 24" role="img" aria-label="Facebook"><use href="#i-facebook"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Instagram"><use href="#i-instagram"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Tiktok"><use href="#i-tiktok"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Whatsapp"><use href="#i-whatsapp"/></svg></div><p class="tt__tag" data-i18n="tag">Mexicali-Style Food · West Belmopan</p></div>
+  </section>
+  <section class="sheet" id="sheet-poster" aria-label="Poster — full A4">
+    <p class="sheet__label">Poster — full A4</p>
+    <div class="tt cut"><div class="tt__bar" aria-hidden="true"><i></i><i></i><i></i><i></i></div><p class="tt__name">Taco Taco</p><p class="tt__action" data-i18n="action">Scan. Connect. Order.</p><div class="tt__qr"><svg viewBox="-4 -4 41 41" shape-rendering="crispEdges" role="img" aria-label="QR code linking to connect.tacotaco.bz" data-i18n-label="qr_alt"><use href="#qr-code"/></svg></div><p class="tt__url">connect.tacotaco.bz</p><div class="tt__socials" aria-label="Taco Taco social accounts"><svg viewBox="0 0 24 24" role="img" aria-label="Facebook"><use href="#i-facebook"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Instagram"><use href="#i-instagram"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Tiktok"><use href="#i-tiktok"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Whatsapp"><use href="#i-whatsapp"/></svg></div><p class="tt__tag" data-i18n="tag">Mexicali-Style Food · West Belmopan</p></div>
+  </section>
+</div>
+
+<style>
+  /* ----------------------------------------------------------
+     QR sizing is set in millimetres per format, NOT from --u.
+     The code is 33 modules plus 4 of quiet zone = 41 across, and
+     a phone needs roughly 0.6mm per module to scan a printed card
+     reliably. Scaling the QR with the card put the business card
+     and packaging insert at 0.45mm and 0.42mm, where the code
+     stopped decoding. These sizes hold every format at 0.63mm or
+     better. Re-run the decode check if you change them.
+     ---------------------------------------------------------- */
+  #sheet-table  .tt__qr svg{width:32mm;height:32mm}   /* 0.78mm per module */
+  #sheet-tent   .tt__qr svg{width:40mm;height:40mm}   /* 0.98mm */
+  #sheet-biz    .tt__qr svg{width:26mm;height:26mm}   /* 0.63mm */
+  #sheet-insert .tt__qr svg{width:30mm;height:30mm}   /* 0.73mm */
+  #sheet-poster .tt__qr svg{width:70mm;height:70mm}   /* 1.71mm */
+
+  /* small formats drop the secondary lines rather than cramming them in */
+  #sheet-biz .tt__tag, #sheet-insert .tt__tag, #sheet-insert .tt__bar{display:none}
+  #sheet-insert .tt__socials{gap:calc(var(--u) * 1.8)}
+  #sheet-insert .tt{gap:calc(var(--u) * 1.4);padding:calc(var(--u) * 2.4)}
+
+  /* A business card is landscape, so the enlarged QR sits beside the wordmark
+     rather than above it. */
+  #sheet-biz .tt{
+    display:grid;
+    grid-template-columns:auto minmax(0,1fr);
+    grid-template-rows:repeat(4,auto);
+    column-gap:5mm;
+    row-gap:1mm;
+    align-content:center;
+    justify-items:start;
+    text-align:left;
+    padding:4mm 5mm;
+  }
+  #sheet-biz .tt__bar{display:none}
+  #sheet-biz .tt__qr{grid-column:1;grid-row:1 / span 4;align-self:center;padding:2mm}
+  #sheet-biz .tt__name{grid-column:2;grid-row:1;font-size:7mm}
+  #sheet-biz .tt__action{grid-column:2;grid-row:2;font-size:3.1mm}
+  #sheet-biz .tt__url{grid-column:2;grid-row:3;font-size:3mm}
+  #sheet-biz .tt__socials{grid-column:2;grid-row:4;gap:2.4mm;margin-top:.6mm}
+  #sheet-biz .tt__socials svg{width:4mm;height:4mm}
+  /* table tent: the upper panel is inverted so both faces stand upright once folded */
+  #sheet-tent .tt{width:180mm;height:124mm}
+  #sheet-tent .tt:first-of-type{transform:rotate(180deg)}
+  #sheet-tent .fold{
+    grid-column:1 / -1; width:100%; height:0;
+    border-top:.3mm dashed #b5b5b5;
+    margin:3mm 0; position:relative;
+  }
+  #sheet-tent .fold span{
+    position:absolute; left:50%; top:-1.6mm; transform:translateX(-50%);
+    background:#fff; padding:0 3mm;
+    font-size:7pt; letter-spacing:.22em; text-transform:uppercase; color:#9a9a9a;
+  }
+</style>
+
+<script>
+(function(){
+  "use strict";
+  var I18N = {
+    en: {action:"Scan. Connect. Order.", tag:"Mexicali-Style Food \u00b7 West Belmopan",
+         qr_alt:"QR code linking to connect.tacotaco.bz", doc:"Taco Taco Connect | Printable Cards"},
+    es: {action:"Escanea. Conecta. Ordena.", tag:"Comida Estilo Mexicali \u00b7 West Belmopan",
+         qr_alt:"C\u00f3digo QR que lleva a connect.tacotaco.bz", doc:"Taco Taco Connect | Tarjetas para Imprimir"}
+  };
+  var sheetSel = document.getElementById("sheet");
+  var langSel  = document.getElementById("lang");
+  var params   = new URLSearchParams(location.search);
+
+  function setSheet(v){
+    document.documentElement.dataset.sheet = v;
+    sheetSel.value = v;
+    try { localStorage.setItem("tt-print-sheet", v); } catch(e){}
+  }
+  function setLang(v){
+    if(!I18N[v]) v = "en";
+    var d = I18N[v];
+    document.documentElement.lang = v;
+    document.documentElement.dataset.lang = v;
+    document.title = d.doc;
+    langSel.value = v;
+    document.querySelectorAll("[data-i18n]").forEach(function(el){
+      if(d[el.dataset.i18n] !== undefined) el.textContent = d[el.dataset.i18n];
+    });
+    document.querySelectorAll("[data-i18n-label]").forEach(function(el){
+      if(d[el.dataset.i18nLabel] !== undefined) el.setAttribute("aria-label", d[el.dataset.i18nLabel]);
+    });
+    try { localStorage.setItem("tt-connect-lang", v); } catch(e){}
+  }
+  function stored(key, fallback){
+    try { return localStorage.getItem(key) || fallback; } catch(e){ return fallback; }
+  }
+
+  sheetSel.addEventListener("change", function(){ setSheet(sheetSel.value); });
+  langSel.addEventListener("change", function(){ setLang(langSel.value); });
+  document.getElementById("print").addEventListener("click", function(){ window.print(); });
+
+  setSheet(params.get("sheet") || stored("tt-print-sheet", "table"));
+  setLang(params.get("lang") || stored("tt-connect-lang", "en"));
+})();
+</script>
+
+</body>
+</html>

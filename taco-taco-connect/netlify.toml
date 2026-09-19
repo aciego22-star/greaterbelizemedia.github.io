@@ -1,0 +1,43 @@
+# Taco Taco Connect — connect.tacotaco.bz
+#
+# Netlify settings: Base directory = taco-taco-connect
+#                   Build command  = (none)
+#                   Publish dir    = taco-taco-connect
+# The site is plain static files; there is nothing to build.
+
+[build]
+  publish = "."
+  command = ""
+
+# Long cache for fingerprint-stable assets. The QR points at the bare domain,
+# so index.html itself must never be cached hard or a printed card could keep
+# serving a stale page.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=(), interest-cohort=()"
+    Content-Security-Policy = "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; connect-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'none'"
+
+# Anything the printed cards might have been given a path for still lands
+# on the page rather than a 404.
+[[redirects]]
+  from = "/menu"
+  to = "/"
+  status = 302
+[[redirects]]
+  from = "/print"
+  to = "/print.html"
+  status = 301
