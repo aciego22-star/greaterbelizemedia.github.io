@@ -367,8 +367,8 @@ ES.update({
    "La carne de su elección, servida con arroz, frijoles, ensalada de pico de gallo y tortillas de maíz",
  "Fajitas beef meat with onions and sweet peppers, served with rice, beans and tortillas":
    "Fajitas de res con cebolla y chile dulce, servidas con arroz, frijoles y tortillas",
- "Burger bread, beef patty, bacon, lettuce, tomato, onions, cheese, mayo, mustard and ketchup, with fries":
-   "Pan de hamburguesa, carne de res, tocino, lechuga, tomate, cebolla, queso, mayonesa, mostaza y salsa de tomate, con papas fritas",
+ "Burger bread stuffed with a homemade beef patty, cheese, lettuce, tomato, grilled onions, mayo, ketchup and mustard, served with fries":
+   "Pan de hamburguesa relleno de carne de res casera, queso, lechuga, tomate, cebolla a la parrilla, mayonesa, salsa de tomate y mostaza, servida con papas fritas",
  "Corn chips topped with meat of your choice, cheese, beans, pico de gallo, sour cream and guac sauce":
    "Totopos cubiertos con la carne de su elección, queso, frijoles, pico de gallo, crema y salsa de guacamole",
  "Hot dog bread, sausage wrapped in bacon, topped with onions and sweet peppers, mayo, ketchup and mustard, served with fries":

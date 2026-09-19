@@ -104,9 +104,12 @@ CATEGORIES = [
   ]},
 
  {"name": "Beef Burgers", "items": [
+   # Description corrected on the restaurant's word, 19 September 2026. The
+   # transcription from the printed menu listed bacon; it does not come with
+   # bacon, the patty is house made and the onions are grilled.
    {"name": "Burger", "price": 25,
-    "desc": "Burger bread, beef patty, bacon, lettuce, tomato, onions, cheese, mayo, mustard "
-            "and ketchup, with fries"},
+    "desc": "Burger bread stuffed with a homemade beef patty, cheese, lettuce, tomato, "
+            "grilled onions, mayo, ketchup and mustard, served with fries"},
   ]},
 
  {"name": "Nachos", "items": [
