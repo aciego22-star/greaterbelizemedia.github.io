@@ -72,6 +72,13 @@ HAPPY_HOUR = {
  "items":  [("Mexican Tacos", 4), ("Birria Tacos", 5)],
 }
 
+# The widest a deployed photograph is allowed to be. Nothing on the site ever
+# draws a master larger than the lightbox, and the lightbox is bounded by the
+# viewport, so the 1600px copies some of these were shipped at were paying for
+# pixels no phone and no laptop ever displayed. The originals in src/ keep their
+# full size, because the thumbnails and grid copies are cut from them.
+MASTER_MAX = 1400
+
 MAPS_Q    = "Taco+Taco+Mexican+Restaurant,+Belmopan,+Belize"
 MAPS_LINK = "https://www.google.com/maps/search/?api=1&query=" + MAPS_Q
 MAPS_EMBED= "https://www.google.com/maps?q=" + MAPS_Q + "&output=embed"
@@ -618,7 +625,10 @@ def img_size(fn):
     Returns None if Pillow is missing, and the caller simply omits the attributes."""
     try:
         from PIL import Image
-        with Image.open(os.path.join(os.path.dirname(__file__), "assets", "img", fn)) as im:
+        here = os.path.join(DIST, "assets", "img", fn)
+        if not os.path.exists(here):
+            here = os.path.join(os.path.dirname(__file__), "assets", "img", fn)
+        with Image.open(here) as im:
             return im.size
     except Exception:
         return None
@@ -882,6 +892,31 @@ def main():
     for sub in ("assets",):
         if os.path.isdir(os.path.join(DIST,sub)): shutil.rmtree(os.path.join(DIST,sub))
     shutil.copytree(os.path.join(os.path.dirname(__file__),"assets"), os.path.join(DIST,"assets"))
+
+    # Cap the deployed masters. This runs before the page builders, so img_size
+    # below reads the capped copy and the width and height a page states are the
+    # width and height the browser will actually receive.
+    try:
+        from PIL import Image as _Im
+        _capped, _saved = 0, 0
+        _imgdir = os.path.join(DIST, "assets", "img")
+        for _fn in sorted(os.listdir(_imgdir)):
+            if not _fn.lower().endswith((".jpg", ".jpeg", ".png", ".webp")): continue
+            _full = os.path.join(_imgdir, _fn)
+            if not os.path.isfile(_full): continue
+            _was = os.path.getsize(_full)
+            with _Im.open(_full) as _im:
+                if _im.width <= MASTER_MAX: continue
+                _fmt = _im.format
+                _im = _im.convert("RGB").resize(
+                    (MASTER_MAX, round(_im.height * MASTER_MAX / _im.width)), _Im.LANCZOS)
+                if _fmt == "WEBP": _im.save(_full, "WEBP", quality=82, method=6)
+                else:              _im.save(_full, "JPEG", quality=86, optimize=True, progressive=True)
+            _capped += 1; _saved += _was - os.path.getsize(_full)
+        if _capped:
+            print("masters capped at %dpx: %d files, %d KB saved" % (MASTER_MAX, _capped, _saved // 1024))
+    except Exception as _e:
+        print("  !! master cap skipped: %s: %s" % (type(_e).__name__, _e))
 
     # The number lives in build_site and nowhere else. site.js used to carry its
     # own copy, which is how the site ended up with a test line in one file and
