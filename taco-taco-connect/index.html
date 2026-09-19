@@ -222,7 +222,7 @@ body{
   font-family:var(--body);
   color:var(--text);
   line-height:1.6;
-  background:var(--warm-gold);
+  background:#EE380B;   /* matches both ends of the page gradient, so overscroll never flashes */
   overflow-x:hidden;
   -webkit-font-smoothing:antialiased;
 }
@@ -1012,7 +1012,6 @@ section{margin-top:clamp(32px,8vw,52px)}
 footer{
   margin:clamp(40px,10vw,64px) 0 0;
   padding:30px 0 calc(34px + env(safe-area-inset-bottom));
-  border-top:1px solid rgba(18,51,40,.18);
   text-align:center;
   color:var(--on-warm);
 }
@@ -1030,9 +1029,8 @@ footer{
 /* the build credit gets its own quiet register below a rule, so the footer
    reads as two short blocks rather than one stack of four lines */
 .footer__credit{
-  margin:22px auto 0;
-  padding-top:10px;
-  border-top:1px solid rgba(18,51,40,.18);
+  margin:20px auto 0;
+  padding-top:6px;
   max-width:320px;
   font-size:.76rem;
   letter-spacing:.04em;
@@ -1043,12 +1041,13 @@ footer{
   padding:13px 10px 11px;
   color:var(--on-warm);
   font-weight:700;
-  border-bottom:1px solid rgba(18,51,40,.35);
-  transition:color .25s var(--ease),border-color .25s var(--ease),transform .12s var(--ease);
+  text-underline-offset:3px;
+  transition:color .25s var(--ease),transform .12s var(--ease);
 }
 .footer__credit a:active{transform:scale(.96)}
+.footer__credit a:focus-visible{text-decoration:underline}
 @media (hover:hover){
-  .footer__credit a:hover{color:#7A1A05;border-color:#7A1A05}
+  .footer__credit a:hover{color:#7A1A05;text-decoration:underline}
 }
 
 /* ============================================================
