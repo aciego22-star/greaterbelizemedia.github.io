@@ -578,7 +578,8 @@ button{font:inherit;color:inherit}
   pointer-events:none;
 }
 [data-open="closed"] .zzz{opacity:1}
-.zzz b{
+.zzz i::before{content:"z"}
+.zzz i{
   position:absolute;
   font-family:var(--display);
   font-style:italic;
@@ -590,9 +591,9 @@ button{font:inherit;color:inherit}
     0 6px 14px rgba(92,28,0,.45);
   opacity:0;
 }
-.zzz b:nth-child(1){font-size:1.45rem;animation:zzz 4.2s ease-in-out infinite}
-.zzz b:nth-child(2){font-size:1.15rem;animation:zzz 4.2s ease-in-out infinite 1.4s}
-.zzz b:nth-child(3){font-size:.92rem;animation:zzz 4.2s ease-in-out infinite 2.8s}
+.zzz i:nth-child(1){font-size:1.45rem;animation:zzz 4.2s ease-in-out infinite}
+.zzz i:nth-child(2){font-size:1.15rem;animation:zzz 4.2s ease-in-out infinite 1.4s}
+.zzz i:nth-child(3){font-size:.92rem;animation:zzz 4.2s ease-in-out infinite 2.8s}
 @keyframes zzz{
   0%  {opacity:0;   transform:translate3d(0,6px,0) rotate(-6deg) scale(.7)}
   18% {opacity:.98; transform:translate3d(6px,-6px,0) rotate(2deg) scale(1)}
@@ -1142,10 +1143,10 @@ footer{
   .orbit,.reveal{opacity:1 !important;transform:none !important;filter:none !important}
   /* keyframes are frozen at their first frame, so restate the resting pose */
   .orbit__mascot{transform:translate3d(-50%,-50%,70px) rotateZ(-1.2deg) !important}
-  .zzz b{animation:none !important;opacity:.95;transform:none !important}
-  .zzz b:nth-child(1){left:30px;top:-46px}
-  .zzz b:nth-child(2){left:15px;top:-18px}
-  .zzz b:nth-child(3){left:0;top:4px}
+  .zzz i{animation:none !important;opacity:.95;transform:none !important}
+  .zzz i:nth-child(1){left:30px;top:-46px}
+  .zzz i:nth-child(2){left:15px;top:-18px}
+  .zzz i:nth-child(3){left:0;top:4px}
   .ring--main{transform:translateZ(-40px) rotateX(68deg) rotateZ(18deg) !important}
   .ring--outer{transform:translateZ(-90px) rotateX(72deg) rotateZ(-12deg) !important}
   .ring--inner{transform:translateZ(10px) rotateX(66deg) rotateZ(40deg) !important}
@@ -1276,7 +1277,7 @@ footer{
                    alt="Taco Taco Mexican Restaurant mascot" data-i18n-alt="mascot_alt"
                    fetchpriority="high" decoding="async">
             </picture>
-            <span class="zzz" aria-hidden="true"><b>z</b><b>z</b><b>z</b></span>
+            <span class="zzz" aria-hidden="true"><i></i><i></i><i></i></span>
           </div>
         </div>
       </div>
