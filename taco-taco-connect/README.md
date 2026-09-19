@@ -83,7 +83,10 @@ assets/
   og-image.jpg            1200x630 social sharing image
   qr.svg                  standalone QR, if you need the code on its own
   qr-path.txt             the generated path data, pasted inline into both pages
+  mascot-sleep*.webp/png  the sleeping mascot, only fetched when the restaurant is shut
+  mascot-qr.png           320px copy for the QR centre
 tools/extract-mascot.py   cuts the mascot out of logo-source.jpg and builds every icon
+tools/make-sleeping-mascot.py  derives the sleeping mascot from the awake one
 tools/make-qr.py          regenerates the QR (only if the URL ever changes)
 netlify.toml              deploy config, headers, redirects
 site.webmanifest, robots.txt, sitemap.xml
@@ -222,12 +225,32 @@ Adding a string: add the key to **both** `en` and `es`, then put
 
 Monday to Thursday 10:00 AM to 8:00 PM, Friday to Sunday 6:00 AM to 8:00 PM.
 
-They appear in three places, all fed by the same `HOURS` table: the panel under
+They appear in four places, all fed by the same `HOURS` table: the panel under
 the link cards, the `openingHoursSpecification` in the structured data (built by
-collapsing consecutive days with matching hours into one entry), and the live
-chip in the hero.
+collapsing consecutive days with matching hours into one entry), the live chip in
+the hero, and whether the mascot is awake or asleep.
 
-That chip is computed in **America/Belize**, never the visitor's own timezone.
+When the restaurant is shut the mascot falls asleep: arms down, eyes closed, a
+small open mouth and a z drifting up from it, and the hero's float slows to
+something more like breathing. The moment it opens he is back to normal. The
+sleeping artwork is a second image, only fetched when it is actually needed, and
+a browser that cannot work out the time never shows it, because the awake mascot
+is the default.
+
+`tools/make-sleeping-mascot.py` derives that image from the awake one, so it can
+be rebuilt whenever the artwork changes. Three things in it are worth knowing
+before touching the numbers. The arms are cut from the top corners (where the
+artwork has nothing else) and rotated about the shoulder; the cut is dilated
+first or the anti-aliased rim of the raised fists is left behind as a ghost, and
+the rotated arms composite behind the body, which is where a resting arm sits.
+The eyes and grin are removed by interpolating each row between its nearest
+clean pixels left and right rather than by inpainting, which dragged the dark
+moustache across the mouth; the interpolation also refuses to run when the
+nearest clean pixel is the shell's outline or the background, which is what was
+putting a dark streak across the chin. And the moustache is left alone, because
+the face stops reading as Taco Taco without it.
+
+The status chip is computed in **America/Belize**, never the visitor's own timezone.
 Belize is UTC-6 year round with no daylight saving, so the restaurant's clock is
 the only correct one, and a QR code gets scanned by people whose phones are set
 to anywhere. If the browser cannot resolve that timezone the chip hides itself

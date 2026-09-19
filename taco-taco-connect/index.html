@@ -14,7 +14,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#08221A">
+<meta name="theme-color" content="#FA9A10">
 <meta name="color-scheme" content="dark">
 
 <title>Taco Taco Connect | Taco Taco Mexican Restaurant Belize</title>
@@ -118,18 +118,11 @@ body{
   font-family:var(--body);
   color:var(--text);
   line-height:1.6;
-  background:var(--ink-deep);
+  background:var(--warm-gold);
   overflow-x:hidden;
   -webkit-font-smoothing:antialiased;
 }
 /* fixed atmosphere layer: deep green -> near black, with warm light from the orbit */
-body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  z-index:-2;
-  background:var(--warm-gold);
-}
 
 
 img,svg{display:block;max-width:100%}
@@ -443,6 +436,48 @@ button{font:inherit;color:inherit}
 @keyframes float{
   0%,100%{transform:translate3d(-50%,-50%,70px) translateY(0) rotateZ(-1.6deg)}
   50%    {transform:translate3d(-50%,-50%,70px) translateY(-15px) rotateZ(1.6deg)}
+}
+/* asleep: a slower, smaller rise and fall, like breathing */
+@keyframes doze{
+  0%,100%{transform:translate3d(-50%,-50%,70px) translateY(2px) rotateZ(-2.6deg)}
+  50%    {transform:translate3d(-50%,-50%,70px) translateY(-7px) rotateZ(-1.4deg)}
+}
+[data-open="closed"] .orbit__mascot{animation-name:doze;animation-duration:5.2s}
+
+.orbit__mascot picture{display:block}
+.orbit__mascot img{display:block;width:100%;height:auto}
+
+/* zzz drifting up from the mouth, only while the restaurant is closed */
+.zzz{
+  position:absolute;
+  left:58%;
+  top:53%;
+  display:block;
+  opacity:0;
+  transition:opacity .45s var(--ease);
+  pointer-events:none;
+}
+[data-open="closed"] .zzz{opacity:1}
+.zzz b{
+  position:absolute;
+  font-family:var(--display);
+  font-style:italic;
+  color:#FFF8EC;
+  text-shadow:
+    2px 0 0 var(--on-warm), -2px 0 0 var(--on-warm),
+    0 2px 0 var(--on-warm), 0 -2px 0 var(--on-warm),
+    1px 1px 0 var(--on-warm), -1px -1px 0 var(--on-warm),
+    0 6px 14px rgba(92,28,0,.45);
+  opacity:0;
+}
+.zzz b:nth-child(1){font-size:1.45rem;animation:zzz 4.2s ease-in-out infinite}
+.zzz b:nth-child(2){font-size:1.15rem;animation:zzz 4.2s ease-in-out infinite 1.4s}
+.zzz b:nth-child(3){font-size:.92rem;animation:zzz 4.2s ease-in-out infinite 2.8s}
+@keyframes zzz{
+  0%  {opacity:0;   transform:translate3d(0,6px,0) rotate(-6deg) scale(.7)}
+  18% {opacity:.98; transform:translate3d(6px,-6px,0) rotate(2deg) scale(1)}
+  70% {opacity:.85; transform:translate3d(22px,-46px,0) rotate(10deg) scale(1.18)}
+  100%{opacity:0;   transform:translate3d(34px,-76px,0) rotate(16deg) scale(1.3)}
 }
 @keyframes cast{
   0%,100%{opacity:.85;width:min(46%,190px)}
@@ -759,11 +794,6 @@ section{margin-top:clamp(32px,8vw,52px)}
   color:var(--gold-light);
   font-weight:600;
 }
-.hours__note{
-  font-size:.78rem;
-  color:var(--text-dim);
-  margin:0;
-}
 @media (min-width:520px){
   .hours{max-width:420px;margin-inline:auto}
 }
@@ -992,6 +1022,10 @@ footer{
   .orbit,.reveal{opacity:1 !important;transform:none !important;filter:none !important}
   /* keyframes are frozen at their first frame, so restate the resting pose */
   .orbit__mascot{transform:translate3d(-50%,-50%,70px) rotateZ(-1.2deg) !important}
+  .zzz b{animation:none !important;opacity:.95;transform:none !important}
+  .zzz b:nth-child(1){left:30px;top:-46px}
+  .zzz b:nth-child(2){left:15px;top:-18px}
+  .zzz b:nth-child(3){left:0;top:4px}
   .ring--main{transform:translateZ(-40px) rotateX(68deg) rotateZ(18deg) !important}
   .ring--outer{transform:translateZ(-90px) rotateX(72deg) rotateZ(-12deg) !important}
   .ring--inner{transform:translateZ(10px) rotateX(66deg) rotateZ(40deg) !important}
@@ -1110,14 +1144,18 @@ footer{
           <div class="drift drift--mid  d8" aria-hidden="true"><svg viewBox="0 0 40 40"><use href="#la-taco"/></svg></div>
 
           <div class="orbit__cast" aria-hidden="true"></div>
-          <picture>
-            <source type="image/webp"
-                    srcset="assets/mascot-400.webp 392w, assets/mascot.webp 784w"
-                    sizes="(min-width:860px) 300px, min(74vw, 300px)">
-            <img class="orbit__mascot" src="assets/mascot.png" width="784" height="620"
-                 alt="Taco Taco Mexican Restaurant mascot" data-i18n-alt="mascot_alt"
-                 fetchpriority="high" decoding="async">
-          </picture>
+          <div class="orbit__mascot">
+            <picture>
+              <source id="mascot-webp" type="image/webp"
+                      srcset="assets/mascot-400.webp 392w, assets/mascot.webp 784w"
+                      sizes="(min-width:860px) 300px, min(74vw, 300px)">
+              <source id="mascot-png" type="image/png" srcset="assets/mascot.png">
+              <img id="mascot-img" src="assets/mascot.png" width="784" height="620"
+                   alt="Taco Taco Mexican Restaurant mascot" data-i18n-alt="mascot_alt"
+                   fetchpriority="high" decoding="async">
+            </picture>
+            <span class="zzz" aria-hidden="true"><b>z</b><b>z</b><b>z</b></span>
+          </div>
         </div>
       </div>
 
@@ -1262,7 +1300,6 @@ footer{
           <dd data-i18n="hours_fri_time">6:00 AM - 8:00 PM</dd>
         </div>
       </dl>
-      <p class="hours__note" data-i18n="hours_note">All times are Belize time.</p>
     </div>
   </section>
 
@@ -1316,7 +1353,7 @@ footer{
                what error-correction level H recovers. The white plate is what
                costs modules; the mascot inside it costs nothing extra. -->
           <rect class="qr__emblem" x="10.5" y="10.5" width="12" height="12" rx="1.7"/>
-          <image href="assets/mascot.png" x="11.1" y="12.05" width="10.8" height="8.9"
+          <image href="assets/mascot-qr.png" x="11.1" y="12.05" width="10.8" height="8.9"
                  preserveAspectRatio="xMidYMid meet"/>
         </svg>
       </div>
@@ -1409,6 +1446,7 @@ footer{
       doc_title: "Taco Taco Connect | Taco Taco Mexican Restaurant Belize",
       meta_desc: "Connect with Taco Taco Mexican Restaurant in Belmopan. View the menu, order on WhatsApp, visit our website and follow Taco Taco on Facebook, Instagram and TikTok.",
       mascot_alt: "Taco Taco Mexican Restaurant mascot",
+      mascot_alt_sleep: "The Taco Taco mascot asleep, because the restaurant is closed",
       hero_title: "Taco Taco Connect",
       hero_tagline: "Everything Taco Taco. One place.",
       hero_lede: "Explore our menu, order your favourites, find us online and stay connected with Taco Taco Mexican Restaurant in Belmopan.",
@@ -1452,7 +1490,6 @@ footer{
       hours_fri: "Friday to Sunday",
       hours_mon_time: "10:00 AM - 8:00 PM",
       hours_fri_time: "6:00 AM - 8:00 PM",
-      hours_note: "All times are Belize time.",
       open_now: "Open now",
       closed_now: "Closed",
       closes_at: "Closes {time}",
@@ -1466,6 +1503,7 @@ footer{
       doc_title: "Taco Taco Connect | Taco Taco Mexican Restaurant Belice",
       meta_desc: "Conéctate con Taco Taco Mexican Restaurant en Belmopan. Mira el menú, ordena por WhatsApp, visita nuestro sitio web y sigue a Taco Taco en Facebook, Instagram y TikTok.",
       mascot_alt: "Mascota de Taco Taco Mexican Restaurant",
+      mascot_alt_sleep: "La mascota de Taco Taco dormida, porque el restaurante está cerrado",
       hero_title: "Taco Taco Connect",
       hero_tagline: "Todo Taco Taco. En un solo lugar.",
       hero_lede: "Explora nuestro menú, ordena tus favoritos, encuéntranos en línea y mantente conectado con Taco Taco Mexican Restaurant en Belmopan.",
@@ -1509,7 +1547,6 @@ footer{
       hours_fri: "Viernes a Domingo",
       hours_mon_time: "10:00 AM - 8:00 PM",
       hours_fri_time: "6:00 AM - 8:00 PM",
-      hours_note: "Todos los horarios son hora de Belice.",
       open_now: "Abierto ahora",
       closed_now: "Cerrado",
       closes_at: "Cierra a las {time}",
@@ -1656,12 +1693,39 @@ footer{
     return display + ":00 " + suffix;
   }
 
+  // The sleeping artwork is only fetched when it is actually needed, rather
+  // than shipping both states to everyone. Awake is the default, so a browser
+  // that cannot resolve the timezone never shows a sleeping mascot by mistake.
+  var MASCOT = {
+    open:   { webp: "assets/mascot-400.webp 392w, assets/mascot.webp 784w",
+              png: "assets/mascot.png", alt: "mascot_alt" },
+    closed: { webp: "assets/mascot-sleep-400.webp 392w, assets/mascot-sleep.webp 784w",
+              png: "assets/mascot-sleep.png", alt: "mascot_alt_sleep" }
+  };
+  var mascotState = null;
+
+  function setMascot(state, lang) {
+    var webp = document.getElementById("mascot-webp");
+    var png = document.getElementById("mascot-png");
+    var img = document.getElementById("mascot-img");
+    if (!webp || !png || !img) return;
+    var want = MASCOT[state] || MASCOT.open;
+    if (mascotState !== state) {
+      webp.srcset = want.webp;
+      png.srcset = want.png;
+      mascotState = state;
+    }
+    img.dataset.i18nAlt = want.alt;
+    var dict = I18N[lang] || I18N.en;
+    if (dict[want.alt]) img.alt = dict[want.alt];
+  }
+
   function updateStatus(lang) {
     var chip = document.getElementById("status-chip");
     var label = document.getElementById("status-text");
     if (!chip || !label) return;
     var now = belizeTime();
-    if (!now) { chip.hidden = true; return; }
+    if (!now) { chip.hidden = true; setMascot("open", lang); return; }
 
     var dict = I18N[lang] || I18N.en;
     var today = HOURS[now.day];
@@ -1681,6 +1745,8 @@ footer{
     label.textContent = text;
     chip.dataset.state = isOpen ? "open" : "closed";
     chip.hidden = false;
+    document.documentElement.dataset.open = isOpen ? "open" : "closed";
+    setMascot(isOpen ? "open" : "closed", lang);
   }
 
   /* ============================================================
