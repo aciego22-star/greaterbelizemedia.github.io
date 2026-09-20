@@ -522,14 +522,16 @@ a,button,[tabindex],label,summary{touch-action:manipulation}
   .snore:hover .snore__badge{animation:none;transform:scale(1.12)}
 }
 
-/* one deep breath in, one out, timed to the 2.24s sample */
-.is-snoring .orbit__mascot picture{animation:snore-breath 1.12s var(--ease) 2}
+/* One breath per snore, three of them, matching the 2.31s the sample gives
+   each one. The peak sits at 52% because that is where the drawing-in ends
+   and the letting-go starts in the audio. */
+.is-snoring .orbit__mascot picture{animation:snore-breath 2.31s var(--ease) 3}
 @keyframes snore-breath{
   0%,100%{transform:scale(1)}
-  42%    {transform:scale(1.045,.972)}
-  74%    {transform:scale(.993,1.012)}
+  52%    {transform:scale(1.05,.968)}
+  84%    {transform:scale(.992,1.014)}
 }
-.is-snoring .zzz{animation:zzz-burst 2.24s var(--ease)}
+.is-snoring .zzz{animation:zzz-burst 2.31s var(--ease) 3}
 @keyframes zzz-burst{
   0%  {transform:scale(1)}
   16% {transform:scale(1.4)}
@@ -2070,7 +2072,7 @@ footer{
      Tap the sleeping taco and he snores.
 
      The audio element is built on the first tap and not before, so the
-     13 KB costs nothing for the many visitors who never ask for it, and
+     41 KB costs nothing for the many visitors who never ask for it, and
      nothing is fetched at all while the restaurant is open.
 
      play() is allowed to fail and is expected to: a phone on silent, a
@@ -2080,7 +2082,7 @@ footer{
      ------------------------------------------------------------------ */
   var snoreAudio = null;
   var snoreTimer = null;
-  var SNORE_MS = 2300;              // the sample is 2.24s
+  var SNORE_MS = 7050;              // the sample is 6.94s: three breaths of 2.31s
 
   function snore() {
     var orbit = document.querySelector(".orbit");

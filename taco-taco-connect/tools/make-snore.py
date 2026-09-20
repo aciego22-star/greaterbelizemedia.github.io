@@ -6,7 +6,7 @@ Synthesise the mascot's snore: assets/snore.mp3.
     python3 tools/make-snore.py
 
 Why synthesised rather than a stock sample: a licensed recording means an
-account, a receipt and a renewal for two seconds of audio, and a real snore
+account, a receipt and a renewal for seven seconds of audio, and a real snore
 recorded off a person sounds like a person, not like a cartoon taco. This is
 built from the two parts a cartoon snore actually has, so it can be retuned
 here instead of re-bought.
@@ -15,6 +15,13 @@ The rattle is the whole trick. A snore reads as a snore because a low buzz is
 chopped by the soft palate at around thirty times a second; without that
 flutter the same buzz is just a hum. RATTLE_HZ is the first thing to change if
 it sounds wrong.
+
+It is three breaths in one file rather than one breath looped. Looping would be
+smaller, but an mp3 is not reliably gapless across browsers, so the seam would
+tick; and three identical breaths sound like a machine. BREATHS below varies
+the pitch, length and weight of each one, the way real breathing does. Change
+the number of entries to change how long a tap lasts, and keep SNORE_MS in
+index.html a little longer than the total this prints.
 
 If they would rather have a real recording, drop it in at assets/snore.mp3 and
 nothing else has to change: the page only ever asks for that one path.
@@ -26,15 +33,20 @@ import sys
 import numpy as np
 
 SR = 22050           # a snore has nothing above ~4kHz; 22.05k halves the file
-INHALE = 1.28        # seconds of the drawn-in "rrrrh"
-GAP = 0.10
-EXHALE = 0.80        # the softer sigh back out
 RATTLE_HZ = 29.0     # palate flutter: below ~22 it gurgles, above ~40 it buzzes
-F0_START, F0_END = 84.0, 104.0    # the buzz rises slightly as the breath fills
 PEAK = 0.89          # leave headroom so the mp3 encoder has room to work
+
+# one entry per breath: (inhale s, exhale s, f0 start, f0 end, gain, pause after)
+BREATHS = [
+    (1.28, 0.80, 84.0, 104.0, 1.00, 0.16),
+    (1.36, 0.86, 78.0,  96.0, 0.94, 0.16),   # deeper and a little slower
+    (1.20, 0.74, 88.0, 110.0, 0.86, 0.00),   # lighter, trailing off
+]
+GAP = 0.10           # the catch between drawing in and letting go
 
 root = pathlib.Path(__file__).resolve().parent.parent
 out = root / "assets" / "snore.mp3"
+rng = np.random.default_rng(7)      # fixed, so a rebuild is byte-identical
 
 
 def resonator(x, freq, q):
@@ -55,44 +67,48 @@ def resonator(x, freq, q):
     return y
 
 
-def buzz(t, f0):
+def buzz(f0):
     """A glottal-ish rasp: the first eight harmonics, rolled off."""
     phase = 2 * np.pi * np.cumsum(f0) / SR
     return sum(np.sin(k * phase) / (k ** 1.35) for k in range(1, 9))
 
 
-rng = np.random.default_rng(7)      # fixed, so a rebuild is byte-identical
+def breath(inhale, exhale, f0a, f0b, gain):
+    # ---- drawing in: a rising buzz, chopped by the palate --------------------
+    n = int(inhale * SR)
+    t = np.arange(n) / SR
+    body = buzz(np.linspace(f0a, f0b, n))
 
-# ---- the inhale: a rising buzz, chopped by the palate ------------------------
-n = int(INHALE * SR)
-t = np.arange(n) / SR
-f0 = np.linspace(F0_START, F0_END, n)
-body = buzz(t, f0)
+    # the flutter never closes completely, or it reads as a stutter
+    flutter = 0.5 + 0.5 * np.sin(2 * np.pi * RATTLE_HZ * t - np.pi / 2)
+    body *= 0.34 + 0.66 * flutter ** 1.7
 
-# the flutter never closes completely, or it reads as a stutter rather than a snore
-flutter = 0.5 + 0.5 * np.sin(2 * np.pi * RATTLE_HZ * t - np.pi / 2)
-body *= 0.34 + 0.66 * flutter ** 1.7
+    air = resonator(rng.normal(0, 1, n), np.linspace(380, 620, n), 1.6)
+    air *= 0.30 + 0.70 * flutter ** 1.3
+    body = body * 0.78 + air * 0.5
 
-# breath behind the buzz, tracking the same flutter
-breath = resonator(rng.normal(0, 1, n), np.linspace(380, 620, n), 1.6)
-breath *= 0.30 + 0.70 * flutter ** 1.3
-body = body * 0.78 + breath * 0.5
+    env = np.clip(np.linspace(0, 2.6, n), 0, 1) ** 1.5
+    env *= np.clip(np.linspace(3.0, 0, n), 0, 1) ** 0.6
+    drawn = body * env
 
-# slow swell, then hold: a snore does not start at full volume
-env = np.clip(np.linspace(0, 2.6, n), 0, 1) ** 1.5
-env *= np.clip(np.linspace(3.0, 0, n), 0, 1) ** 0.6
-inhale = body * env
+    # ---- letting go: a softer sigh, falling away -----------------------------
+    n2 = int(exhale * SR)
+    t2 = np.arange(n2) / SR
+    sigh = resonator(rng.normal(0, 1, n2), np.linspace(700, 430, n2), 2.4)
+    sigh += 0.35 * buzz(np.linspace(f0a * 0.93, f0a * 0.74, n2)) * (
+        0.45 + 0.55 * (0.5 + 0.5 * np.sin(2 * np.pi * (RATTLE_HZ * 0.62) * t2)))
+    sigh *= np.clip(np.linspace(0, 5, n2), 0, 1) * np.linspace(1, 0, n2) ** 1.4
 
-# ---- the exhale: a softer sigh, falling away ---------------------------------
-n2 = int(EXHALE * SR)
-t2 = np.arange(n2) / SR
-sigh = resonator(rng.normal(0, 1, n2), np.linspace(700, 430, n2), 2.4)
-sigh += 0.35 * buzz(t2, np.linspace(78, 62, n2)) * (
-    0.45 + 0.55 * (0.5 + 0.5 * np.sin(2 * np.pi * (RATTLE_HZ * 0.62) * t2)))
-sigh *= np.clip(np.linspace(0, 5, n2), 0, 1) * np.linspace(1, 0, n2) ** 1.4
-exhale = sigh * 0.42
+    return np.concatenate([drawn, np.zeros(int(GAP * SR)), sigh * 0.42]) * gain
 
-sig = np.concatenate([inhale, np.zeros(int(GAP * SR)), exhale, np.zeros(int(0.06 * SR))])
+
+parts = []
+for inhale, exhale, f0a, f0b, gain, pause in BREATHS:
+    parts.append(breath(inhale, exhale, f0a, f0b, gain))
+    if pause:
+        parts.append(np.zeros(int(pause * SR)))
+parts.append(np.zeros(int(0.08 * SR)))
+sig = np.concatenate(parts)
 
 # gentle high cut: a cartoon snore is warm, and the hiss only costs bitrate
 sig = resonator(sig, 340.0, 0.62) * 1.6 + sig * 0.45
@@ -119,5 +135,6 @@ try:
 except FileNotFoundError:
     sys.exit("ffmpeg not found: pip install imageio-ffmpeg")
 
+per = len(sig) / SR / len(BREATHS)
 print(f"  snore.mp3: {out.stat().st_size / 1024:.1f} KB, "
-      f"{len(sig) / SR:.2f}s, {SR} Hz mono")
+      f"{len(sig) / SR:.2f}s, {len(BREATHS)} breaths, {per:.2f}s each, {SR} Hz mono")

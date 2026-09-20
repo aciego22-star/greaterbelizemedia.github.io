@@ -87,7 +87,7 @@ assets/
   qr-path.txt             the generated path data, pasted inline into both pages
   mascot-sleep*.webp/png  the sleeping mascot, only fetched when the restaurant is shut
   mascot-qr.png           320px copy for the QR centre
-  snore.mp3               2.2s, fetched only when somebody taps the sleeping mascot
+  snore.mp3               6.9s, fetched only when somebody taps the sleeping mascot
 tools/extract-mascot.py   cuts the mascot out of logo-source.jpg and builds every icon
 tools/make-sleeping-mascot.py  derives the sleeping mascot from the awake one
 tools/make-qr.py          regenerates the QR (only if the URL ever changes)
@@ -335,7 +335,7 @@ badge in the corner so it reads as tappable, and it only exists while he is
 asleep: the script sets `hidden` the moment he wakes, which takes it out of the
 tab order and the accessibility tree as well as off the screen.
 
-The audio element is built on the first tap and not before, so the 13 KB costs
+The audio element is built on the first tap and not before, so the 41 KB costs
 nothing for the many visitors who never ask for it, and nothing is fetched at
 all during opening hours. `play()` is allowed to fail and is expected to: a
 phone on silent, a tab the browser has muted, a battery saver. That is why the
@@ -344,8 +344,16 @@ he takes one deep breath and the z's puff out - because a large share of the
 phones reaching this page are muted, and a tap that appears to do nothing reads
 as a broken page.
 
+A tap runs for about seven seconds: three breaths of 2.31s. It is one file of
+three rather than one breath looped, because an mp3 is not reliably gapless
+across browsers and the seam would tick, and because three identical breaths
+sound like a machine. The `BREATHS` table in the generator varies the pitch,
+length and weight of each one; add or remove an entry to change how long a tap
+lasts, and keep `SNORE_MS` in `index.html` a little longer than the total the
+script prints.
+
 `tools/make-snore.py` synthesises the sound rather than buying one. A licensed
-sample means an account, a receipt and a renewal for two seconds of audio, and
+sample means an account, a receipt and a renewal for seven seconds of audio, and
 a real snore recorded off a person sounds like a person rather than a cartoon
 taco. The rattle is the whole trick: a snore reads as a snore because a low buzz
 is chopped by the soft palate around thirty times a second, and `RATTLE_HZ` is
