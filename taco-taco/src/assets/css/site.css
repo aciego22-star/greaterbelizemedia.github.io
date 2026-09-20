@@ -624,30 +624,6 @@ html.js.scrub-on .gal-label{display:block}
 .rev-band .rating-num{color:var(--yellow)}
 .rev-band .rating-sub{color:rgba(255,255,255,.78)}
 
-/* ================= happy hour band ================= */
-/* Dark so it reads as a moment rather than another card in the stack, and the
-   price is the biggest thing in it because the price is the news. */
-.hh-band{background:
-  radial-gradient(circle at 12% 18%,rgba(224,123,40,.34),transparent 46%),
-  radial-gradient(circle at 88% 82%,rgba(212,58,43,.28),transparent 48%),
-  var(--green-dd);color:#fff}
-.hh-band .sec-title{color:#fff}
-.hh-band .deco{color:var(--yellow)}
-.hh-band .sec-sub{color:rgba(255,255,255,.82)}
-.hh-band .sec-kicker{background:var(--red);color:#fff}
-.hh-grid{display:flex;gap:18px;justify-content:center;flex-wrap:wrap}
-.hh-card{flex:0 1 260px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);
- border-radius:20px;padding:22px 20px 20px;text-align:center;
- box-shadow:0 14px 34px rgba(0,0,0,.24)}
-.hh-price{display:block;font-family:var(--font-display);font-size:clamp(2.6rem,9vw,3.4rem);
- line-height:1;color:var(--yellow);letter-spacing:-1px;text-shadow:2px 3px 0 rgba(0,0,0,.28)}
-.hh-card h2,.hh-card h3,.hh-card h4,.hh-card h5,.hh-card h6{margin:10px 0 2px;
- font-family:var(--font-display);text-transform:uppercase;letter-spacing:.6px;
- font-size:1.02rem;color:#fff}
-.hh-each{margin:0;color:rgba(255,255,255,.7);font-weight:600;font-size:.86rem;
- text-transform:uppercase;letter-spacing:1px}
-.hh-cta{text-align:center;margin:22px 0 0}
-
 /* ================= reviews page ================= */
 .rev-hero{background:var(--cream2)}
 /* One file, two shapes. 1200/696 on a wide screen is the whole frame; 3/2 on a

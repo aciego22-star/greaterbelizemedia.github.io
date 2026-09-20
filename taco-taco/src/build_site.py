@@ -35,7 +35,8 @@ DIST = os.path.join(ROOT, "dist")
 SITE_URL   = "https://tacotaco.bz"
 BRAND      = "Taco Taco Mexican Restaurant"
 BRAND_SHORT= "Mexican Restaurant"
-WA_NUMBER  = "5016108859"   # TEST line. The restaurant is 5016134677 (613-4677).
+WA_NUMBER  = "5016134677"   # The restaurant. 613-4677, the number on the road sign.
+                            # Switched off the test line 2026-09-20, for launch.
                             # Stamped into site.js at build time so the number
                             # lives in one place, and printed at the end of every
                             # build so it cannot go live on the wrong line.
@@ -60,18 +61,6 @@ HOURS     = [("Mon to Thu", "10:00 AM to 8:00 PM"),
              ("Fri to Sun", "8:00 AM to 8:00 PM")]
 HOURS_SCHEMA = [(["Monday","Tuesday","Wednesday","Thursday"], "10:00", "20:00"),
                 (["Friday","Saturday","Sunday"],              "08:00", "20:00")]
-# Happy hour, transcribed from the restaurant's own announcement video
-# (assets/video/happy-hour.mp4, added 2026-09-19). The card states three things
-# and only three: the window, and a price for each of two tacos. It does not say
-# which days it runs, so neither does this site, and it does not say what the
-# tacos normally cost, so no "was" price is shown next to them. Ask the
-# restaurant before adding either.
-HAPPY_HOUR = {
- "window": "2:00 PM to 6:00 PM",
- "short":  "2PM to 6PM",
- "items":  [("Mexican Tacos", 4), ("Birria Tacos", 5)],
-}
-
 # The widest a deployed photograph is allowed to be. Nothing on the site ever
 # draws a master larger than the lightbox, and the lightbox is bounded by the
 # viewport, so the 1600px copies some of these were shipped at were paying for
@@ -397,7 +386,7 @@ def deal_card(d):
 
 def deals_page_body():
     cards = "".join(deal_card(d) for d in DEALS)
-    return happy_hour_band() + ('\n <section class="blk" id="deals-all">\n  <div class="container">\n'
+    return ('\n <section class="blk" id="deals-all">\n  <div class="container">\n'
             '   <div class="sec-head"><span class="sec-kicker">%s</span>'
             '<h2 class="sec-title">Deals &amp; <span class="deco">Combos</span></h2>'
             '<p class="sec-sub">%s</p></div>\n   <div class="deal-grid">%s</div>\n'
@@ -761,31 +750,6 @@ def reel_band():
             '   <div class="reel" id="reel">%s%s</div>\n'
             '  </div>\n </section>' % (esc(REEL_SUB), chips, spare))
 
-
-def happy_hour_band():
-    """Happy hour: the window and the two taco prices, and nothing beyond them.
-
-    The announcement card names a start, an end and two prices. It does not name
-    the days, so the copy here never says "every day" or "weekdays", and it does
-    not give a regular price to strike through, because the menu sells a corn
-    taco and a flour taco at different prices and the card does not say which
-    one the $4 is. Everything a reader could take away from this block is on
-    the card the restaurant published."""
-    cards = "".join(
-      '<div class="hh-card"><span class="hh-price">$%d</span>'
-      '<h3>%s</h3><p class="hh-each">each</p></div>' % (price, esc(name))
-      for name, price in HAPPY_HOUR["items"])
-    cta = '<p class="hh-cta"><a class="btn btn-yellow" href="menu.html">See The Full Menu</a></p>'
-    return (
- '\n <!-- ===== HAPPY HOUR ===== -->\n <section class="blk hh-band" id="happy-hour">\n  <div class="container">\n'
- '   <div class="sec-head">\n'
- '    <span class="sec-kicker">Happy Hour</span>\n'
- '    <h2 class="sec-title">Tacos From <span class="deco">%s</span></h2>\n'
- '    <p class="sec-sub">Our first official happy hour. These are the taco prices from %s.</p>\n'
- '   </div>\n'
- '   <div class="hh-grid">%s</div>\n'
- '   %s\n  </div>\n </section>'
- % (esc(HAPPY_HOUR["short"]), esc(HAPPY_HOUR["window"]), cards, cta))
 
 def storefront_shot():
     """The reviews page opens on the restaurant itself.
@@ -1290,10 +1254,10 @@ def main():
              "w",encoding="utf-8").write(payload(_lang))
 
     out = {
-      "index.html":   ("%s | Belmopan"%BRAND, hero+favs+deals_band()+happy_hour_band()+reviews_band()+order+reel_band()+visit_band(),
+      "index.html":   ("%s | Belmopan"%BRAND, hero+favs+deals_band()+reviews_band()+order+reel_band()+visit_band(),
                        "%s in West Belmopan. Authentic Mexicali style tacos, birria, tortas and breakfast. Order online and send your order on WhatsApp."%BRAND),
       "deals-combos.html": ("Deals & Combos | %s"%BRAND, deals_page_body(),
-                       "Taco Taco deals and combos in Belmopan: happy hour tacos %s, lunch combos, the Mega Combo, and Monday and Tuesday specials. Pick your options and order on WhatsApp." % HAPPY_HOUR["short"]),
+                       "Taco Taco deals and combos in Belmopan: lunch combos, the Mega Combo, and Monday and Tuesday specials. Pick your options and order on WhatsApp."),
       "menu.html":    ("Menu | %s"%BRAND, menu,
                        "The full %s menu with prices in Belize dollars. Build your basket and send your order on WhatsApp."%BRAND),
       "reviews.html": ("Reviews | %s"%BRAND, reviews_page_body(),
@@ -1514,9 +1478,6 @@ def main():
         L.append("- Address: %s" % ADDRESS)
         L.append("- Phone: +501-613-4677 and +501-802-2332")
         L.append("- Hours: %s" % hours_sentence("en"))
-        L.append("- Happy hour: %s. Mexican tacos $4 each, birria tacos $5 each. "
-                 "The restaurant has not said which days it runs, so do not state any."
-                 % HAPPY_HOUR["window"])
         L.append("- Service: dine in, takeout, delivery. Family friendly.")
         L.append("- Cuisine: Mexican, Mexicali style")
         L.append("- Prices: Belize dollars (BZD), from $%d to $%d on the menu"
@@ -1551,10 +1512,6 @@ def main():
                  "the restaurant's own claim.")
         L.append("- Prices and hours come from the menu the restaurant printed most "
                  "recently. Anything older found elsewhere is out of date.")
-        L.append("- The happy hour window above is the whole of what the restaurant has "
-                 "announced. Which days it runs, and whether it applies to takeout and "
-                 "delivery as well as dining in, have not been stated. Please do not "
-                 "state them.")
         L.append("")
         return "\n".join(L)
     open(os.path.join(DIST,"llms.txt"),"w",encoding="utf-8").write(llms_txt())

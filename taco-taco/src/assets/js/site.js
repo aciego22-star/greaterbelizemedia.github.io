@@ -186,10 +186,12 @@ function t(k,d){return TT_TXT[k]||d;}
  // basket sends to, with an opening line, rather than inventing a second route.
  document.querySelectorAll('.js-wa-start').forEach(function(b){
   b.addEventListener('click',function(){
-   var t=count()
+   // Not named t: var t would be hoisted over the t() translation helper, and
+   // the empty-basket branch is the one that needs to call it.
+   var msg=count()
      ? waText()
      : t('wa_open','Hello Taco Taco, I would like to place an order.');
-   window.open('https://wa.me/'+WA_NUMBER+'?text='+encodeURIComponent(t),'_blank');
+   window.open('https://wa.me/'+WA_NUMBER+'?text='+encodeURIComponent(msg),'_blank');
   });
  });
  document.querySelectorAll('.js-open-basket').forEach(function(a){
