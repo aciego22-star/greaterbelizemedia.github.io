@@ -87,9 +87,11 @@ assets/
   qr-path.txt             the generated path data, pasted inline into both pages
   mascot-sleep*.webp/png  the sleeping mascot, only fetched when the restaurant is shut
   mascot-qr.png           320px copy for the QR centre
+  snore.mp3               2.2s, fetched only when somebody taps the sleeping mascot
 tools/extract-mascot.py   cuts the mascot out of logo-source.jpg and builds every icon
 tools/make-sleeping-mascot.py  derives the sleeping mascot from the awake one
 tools/make-qr.py          regenerates the QR (only if the URL ever changes)
+tools/make-snore.py       synthesises assets/snore.mp3
 tools/make-og-image.js    re-renders og-image.jpg from tools/og-image.html
 tools/og-image.html       the sharing card, rendered at 1200x630
 tools/archivo-black-latin.woff2  the card's headline font, build-time only
@@ -307,6 +309,48 @@ something more like breathing. The moment it opens he is back to normal. The
 sleeping artwork is a second image, only fetched when it is actually needed, and
 a browser that cannot work out the time never shows it, because the awake mascot
 is the default.
+
+The whole page goes with him. After close a second ground layer fades in over
+the day gradient, taking it into the plum and ember range a Belmopan sky
+actually goes at dusk; a moon and a scatter of stars come up behind the orbit,
+and the tacos drifting down the page slow to about two fifths of their daytime
+pace. It is a fade rather than a swap because at eight o'clock the page is
+already open in somebody's hand. It does not fade on load, though: the script
+reads the clock after first paint, and without the `can-dusk` guard a visitor
+arriving at ten at night would watch the page start bright orange and sink.
+
+Everything keys off the one `[data-open]` attribute on `<html>`, so there is a
+single source of truth for the hour and no second clock to drift.
+
+Two colour tokens exist that look like one. `--on-warm` is ink on a cream
+surface, a link card or the language pill, and stays dark at every hour.
+`--on-ground` is type sitting directly on the page gradient, and that one goes
+cream after dark. They were the same value until the night palette needed them
+apart, which is worth remembering before reaching for either.
+
+### The snore
+
+Tap the sleeping mascot and he snores. The whole figure is the button, with a
+badge in the corner so it reads as tappable, and it only exists while he is
+asleep: the script sets `hidden` the moment he wakes, which takes it out of the
+tab order and the accessibility tree as well as off the screen.
+
+The audio element is built on the first tap and not before, so the 13 KB costs
+nothing for the many visitors who never ask for it, and nothing is fetched at
+all during opening hours. `play()` is allowed to fail and is expected to: a
+phone on silent, a tab the browser has muted, a battery saver. That is why the
+animation is not conditional on it. **The tap always does something visible** -
+he takes one deep breath and the z's puff out - because a large share of the
+phones reaching this page are muted, and a tap that appears to do nothing reads
+as a broken page.
+
+`tools/make-snore.py` synthesises the sound rather than buying one. A licensed
+sample means an account, a receipt and a renewal for two seconds of audio, and
+a real snore recorded off a person sounds like a person rather than a cartoon
+taco. The rattle is the whole trick: a snore reads as a snore because a low buzz
+is chopped by the soft palate around thirty times a second, and `RATTLE_HZ` is
+the first thing to change if it sounds wrong. To use a real recording instead,
+drop it in at `assets/snore.mp3`; the page only ever asks for that one path.
 
 `tools/make-sleeping-mascot.py` derives that image from the awake one, so it can
 be rebuilt whenever the artwork changes. Only the arms are measured by hand,

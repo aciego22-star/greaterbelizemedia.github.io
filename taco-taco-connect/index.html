@@ -191,8 +191,20 @@
   --warm-red:#F23A0C;
   --warm-orange:#FA9A10;
   --warm-gold:#F6B205;
+  /* Two different jobs that happened to share a colour. --on-warm is ink on a
+     cream surface: a link card, the language pill, the keyline around the
+     display type. It stays dark whatever the hour. --on-ground is type sitting
+     directly on the page gradient, and that one has to go light after dark. */
   --on-warm:#123328;
   --on-warm-dim:rgba(18,51,40,.84);
+  --on-ground:#123328;
+  /* the strongest value of each group these replaced, so folding several
+     hand-set alphas into two tokens never made any line lighter */
+  --on-ground-dim:rgba(18,51,40,.92);
+  --on-ground-soft:rgba(18,51,40,.8);
+  --ground-accent:#B32D10;
+  --ground-accent-hi:#7A1A05;
+  --ring-ink:rgba(18,51,40,.5);
   --surface:#FFF8EC;
   --surface-line:rgba(18,51,40,.13);
 
@@ -353,8 +365,179 @@ a,button,[tabindex],label,summary{touch-action:manipulation}
   100%{transform:translate3d(0,0,0) rotate(-360deg)}
 }
 
+/* ============================================================
+   AFTER CLOSE: the page turns to dusk
+   The same ramp as the day ground, dropped into the plum and ember range
+   it would actually go at sunset over Belmopan, so it still reads as this
+   brand rather than as a different site.
+
+   It is a second layer rather than an override of .page::before, because a
+   background-image cannot be transitioned: at eight o'clock the page is
+   already open in somebody's hand, and dusk should fall over a few seconds
+   rather than snap. Everything else keys off the same [data-open] attribute
+   the mascot already uses, so there is one source of truth for the hour.
+   ============================================================ */
+.nightfall{
+  position:absolute;
+  inset:0;
+  z-index:-3;
+  opacity:0;
+  pointer-events:none;
+  background:
+    radial-gradient(52% 18% at 26% 4%, rgba(150,170,255,.22), transparent 66%),
+    radial-gradient(60% 22% at 92% 8%, rgba(96,60,150,.5), transparent 68%),
+    radial-gradient(70% 16% at 50% 99%, rgba(20,8,26,.7), transparent 70%),
+    linear-gradient(180deg,
+      #241033 0%, #351437 11%, #571F27 26%, #7C2E13 42%,
+      #8A3A0E 57%, #6E250F 72%, #3C1329 88%, #1C0B22 100%);
+}
+[data-open="closed"] .nightfall{opacity:1}
+
+[data-open="closed"]{
+  --on-ground:#FFEFD8;
+  --on-ground-dim:rgba(255,239,216,.86);
+  --on-ground-soft:rgba(255,239,216,.7);
+  --ground-accent:#FF9E72;
+  --ground-accent-hi:#FFC9A8;
+  --ring-ink:rgba(255,238,214,.34);
+}
+/* both ends of the night ramp, so overscroll never flashes daylight */
+[data-open="closed"] body{background:#1E0B26}
+/* the chip is a dark fill on what is now a dark ground, so it needs an edge */
+[data-open="closed"] .chip{border-color:rgba(255,239,216,.26)}
+
+/* the field keeps drifting, but at something closer to a sleeping pace, and
+   dimmer: cream linework that reads as a whisper on orange shouts on plum */
+[data-open="closed"] .taco-field__tile{animation-duration:190s;opacity:.09}
+[data-open="closed"] .tf{
+  animation-duration:calc(var(--d,36s) * 2.4);
+  opacity:calc(var(--o,.24) * .6);
+}
+
+/* the hero's own warm lamp cools down, and the mascot's contact shadow with it */
+[data-open="closed"] .orbit__glow{
+  background:radial-gradient(closest-side,rgba(226,231,255,.34),rgba(150,160,225,.16) 48%,transparent 76%);
+}
+[data-open="closed"] .orbit__cast{
+  background:radial-gradient(closest-side,rgba(18,6,28,.6),transparent 75%);
+}
+
+/* ============================================================
+   THE MOON AND THE STARS
+   Both live inside the 3D scene and sit further back than the outer ring,
+   so the parallax carries them with everything else. They are painted at
+   all hours and revealed by opacity, which costs nothing and means no
+   layout happens when the restaurant closes.
+   ============================================================ */
+.moon,.stars{
+  position:absolute;
+  opacity:0;
+  pointer-events:none;
+}
+[data-open="closed"] .moon,[data-open="closed"] .stars{opacity:1}
+/* Dusk falls over a couple of seconds for somebody who is already on the page
+   at closing time, but it must not animate on load: the script reads the clock
+   after first paint, and without this a visitor arriving at ten at night would
+   watch the page start bright orange and sink. The class goes on once that
+   first reading has been applied. */
+.can-dusk .nightfall,.can-dusk .moon,.can-dusk .stars{transition:opacity 2.4s var(--ease)}
+.moon{
+  left:1%;
+  top:3%;
+  width:clamp(58px,15%,104px);
+  aspect-ratio:1;
+  border-radius:50%;
+  transform:translateZ(-240px);
+  background:
+    radial-gradient(circle at 62% 70%, rgba(214,196,168,.55) 0 9%, transparent 10%),
+    radial-gradient(circle at 38% 40%, rgba(214,196,168,.45) 0 6%, transparent 7%),
+    radial-gradient(circle at 54% 32%, rgba(214,196,168,.38) 0 4%, transparent 5%),
+    radial-gradient(circle at 36% 34%, #FFF9EA, #FBEBC8 62%, #E9CE9B 100%);
+  box-shadow:
+    0 0 18px rgba(255,244,214,.75),
+    0 0 60px rgba(255,226,160,.35),
+    0 0 130px rgba(190,170,255,.28);
+}
+.stars{inset:-15%;transform:translateZ(-300px)}
+.stars i{
+  position:absolute;
+  left:var(--sl);
+  top:var(--st);
+  width:var(--ss,3px);
+  aspect-ratio:1;
+  border-radius:50%;
+  background:#FFF6E5;
+  box-shadow:0 0 6px rgba(255,246,229,.9);
+  animation:twinkle var(--sd,4s) ease-in-out infinite var(--sdl,0s);
+}
+@keyframes twinkle{
+  0%,100%{opacity:.42;transform:scale(.82)}
+  50%    {opacity:1;  transform:scale(1.18)}
+}
+
+/* ============================================================
+   THE SNORE
+   The whole mascot is the button, with a badge in the corner so it reads as
+   tappable. It only exists while he is asleep: the script sets [hidden] the
+   moment he wakes, which takes it out of the tab order and the screen
+   reader as well as off the screen.
+
+   The visual snore runs whether or not the sound does. Half the phones that
+   reach this page are on silent, and a tap that appears to do nothing reads
+   as a broken page.
+   ============================================================ */
+.snore{
+  position:absolute;
+  inset:0;
+  margin:0;
+  padding:0;
+  border:0;
+  background:none;
+  cursor:pointer;
+  border-radius:24px;
+  -webkit-tap-highlight-color:transparent;
+}
+.snore[hidden]{display:none}
+.snore__badge{
+  position:absolute;
+  right:2%;
+  bottom:4%;
+  display:grid;
+  place-items:center;
+  width:44px;
+  height:44px;
+  border-radius:50%;
+  background:var(--surface);
+  color:var(--on-warm);
+  box-shadow:0 6px 16px -6px rgba(10,4,16,.85), 0 0 0 1px rgba(18,51,40,.12) inset;
+  animation:badge-breathe 3.6s var(--ease) infinite;
+}
+.snore__badge svg{width:20px;height:20px}
+@keyframes badge-breathe{
+  0%,100%{transform:scale(1);box-shadow:0 6px 16px -6px rgba(10,4,16,.85), 0 0 0 1px rgba(18,51,40,.12) inset}
+  50%    {transform:scale(1.09);box-shadow:0 8px 22px -6px rgba(10,4,16,.9), 0 0 0 7px rgba(255,246,229,.16)}
+}
+.snore:active .snore__badge{transform:scale(.9);animation:none}
+@media (hover:hover){
+  .snore:hover .snore__badge{animation:none;transform:scale(1.12)}
+}
+
+/* one deep breath in, one out, timed to the 2.24s sample */
+.is-snoring .orbit__mascot picture{animation:snore-breath 1.12s var(--ease) 2}
+@keyframes snore-breath{
+  0%,100%{transform:scale(1)}
+  42%    {transform:scale(1.045,.972)}
+  74%    {transform:scale(.993,1.012)}
+}
+.is-snoring .zzz{animation:zzz-burst 2.24s var(--ease)}
+@keyframes zzz-burst{
+  0%  {transform:scale(1)}
+  16% {transform:scale(1.4)}
+  100%{transform:scale(1)}
+}
+
 /* the hero and the link cards read dark on the orange */
-.warm{position:relative;color:var(--on-warm);padding-bottom:clamp(20px,5vw,34px)}
+.warm{position:relative;color:var(--on-ground);padding-bottom:clamp(20px,5vw,34px)}
 
 /* ============================================================
    Language switch
@@ -485,7 +668,7 @@ a,button,[tabindex],label,summary{touch-action:manipulation}
   aspect-ratio:1;
   margin:calc(var(--ring-size) / -2) 0 0 calc(var(--ring-size) / -2);
   border-width:2px;
-  border-color:rgba(18,51,40,.5);
+  border-color:var(--ring-ink);
   box-shadow:0 0 14px rgba(18,51,40,.2), inset 0 0 18px rgba(255,255,255,.3);
   transform:translateZ(10px) rotateX(66deg);
   animation:spin 17s linear infinite reverse;
@@ -664,12 +847,12 @@ a,button,[tabindex],label,summary{touch-action:manipulation}
   font-family:var(--display);
   font-size:clamp(.95rem,4.2vw,1.2rem);
   letter-spacing:.02em;
-  color:var(--on-warm);
+  color:var(--on-ground);
   margin:0 0 14px;
 }
 .hero__lede{
   font-size:clamp(.94rem,3.6vw,1.02rem);
-  color:var(--on-warm-dim);
+  color:var(--on-ground-dim);
   margin:0 auto 20px;
   max-width:38ch;
   text-wrap:pretty;
@@ -686,10 +869,10 @@ a,button,[tabindex],label,summary{touch-action:manipulation}
   gap:8px;
   font-size:.88rem;
   font-weight:600;
-  color:var(--on-warm);
+  color:var(--on-ground);
   margin:0;
 }
-.hero__address svg{width:15px;height:15px;flex:none;color:#B32D10}
+.hero__address svg{width:15px;height:15px;flex:none;color:var(--ground-accent)}
 .chip{
   display:inline-flex;
   align-items:center;
@@ -761,7 +944,7 @@ a,button,[tabindex],label,summary{touch-action:manipulation}
 .cta:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(255,255,255,.18) inset,0 10px 22px -12px rgba(29,163,95,.7),0 1px 0 #08422A}
 .cta__note{
   font-size:.78rem;
-  color:var(--on-warm-dim);
+  color:var(--on-ground-dim);
   margin:0 0 4px;
 }
 
@@ -1021,7 +1204,7 @@ footer{
   margin:clamp(40px,10vw,64px) 0 0;
   padding:30px 0 calc(34px + env(safe-area-inset-bottom));
   text-align:center;
-  color:var(--on-warm);
+  color:var(--on-ground);
 }
 .footer__socials{display:flex;justify-content:center;gap:12px;margin-bottom:22px}
 .footer__socials .social{width:50px;height:50px;border-radius:16px}
@@ -1030,10 +1213,10 @@ footer{
   font-family:var(--display);
   font-size:.92rem;
   letter-spacing:.01em;
-  color:var(--on-warm);
+  color:var(--on-ground);
   margin:0 0 8px;
 }
-.footer__line{font-size:.82rem;color:rgba(18,51,40,.92);margin:0}
+.footer__line{font-size:.82rem;color:var(--on-ground-dim);margin:0}
 /* the build credit gets its own quiet register below a rule, so the footer
    reads as two short blocks rather than one stack of four lines */
 .footer__credit{
@@ -1042,14 +1225,14 @@ footer{
   max-width:320px;
   font-size:.76rem;
   letter-spacing:.04em;
-  color:rgba(18,51,40,.8);
+  color:var(--on-ground-soft);
 }
 .footer__credit a{
   display:inline-block;
   /* 13 + 12 + the line box = 44. Removing the underline took a pixel of
      height with it, which dropped this under the tap minimum. */
   padding:13px 10px 12px;
-  color:var(--on-warm);
+  color:var(--on-ground);
   font-weight:700;
   text-underline-offset:3px;
   transition:color .25s var(--ease),transform .12s var(--ease);
@@ -1057,7 +1240,7 @@ footer{
 .footer__credit a:active{transform:scale(.96)}
 .footer__credit a:focus-visible{text-decoration:underline}
 @media (hover:hover){
-  .footer__credit a:hover{color:#7A1A05;text-decoration:underline}
+  .footer__credit a:hover{color:var(--ground-accent-hi);text-decoration:underline}
 }
 
 /* ============================================================
@@ -1112,6 +1295,7 @@ footer{
   .cta{width:min(420px,100%);margin:26px 0 8px}
   .cta__note{margin-bottom:0}
   .orbit__mascot{width:min(72%,360px)}
+  .moon{left:9%;top:6%}
   .zzz{--zs:1.35}
   .ring--main{--ring-size:min(80%,450px)}
   .ring--outer{--ring-size:min(86%,520px)}
@@ -1201,6 +1385,7 @@ footer{
   <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10.2c0 5.4-8 12.3-8 12.3s-8-6.9-8-12.3a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.9"/></symbol>
   <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21.3 16.7v2.8a1.9 1.9 0 0 1-2.1 1.9 18.7 18.7 0 0 1-8.2-2.9 18.4 18.4 0 0 1-5.7-5.7A18.7 18.7 0 0 1 2.4 4.5 1.9 1.9 0 0 1 4.3 2.4h2.8a1.9 1.9 0 0 1 1.9 1.6c.12.92.35 1.82.68 2.68a1.9 1.9 0 0 1-.43 2L8.1 9.8a15 15 0 0 0 5.7 5.7l1.1-1.1a1.9 1.9 0 0 1 2-.43c.86.33 1.76.56 2.68.68a1.9 1.9 0 0 1 1.62 1.94Z"/></symbol>
   <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></symbol>
+  <symbol id="i-sound" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6.5 9H3v6h3.5L11 19z"/><path d="M15.4 8.6a4.8 4.8 0 0 1 0 6.8"/><path d="M18.4 5.6a9 9 0 0 1 0 12.8"/></symbol>
   <symbol id="i-print" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M7 8V3h10v5"/><path d="M7 18H5a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="7" y="14" width="10" height="7" rx="1"/></symbol>
 
   <!-- line-art produce for the orbit -->
@@ -1223,6 +1408,8 @@ footer{
 </div>
 
 <div class="page">
+
+<div class="nightfall" aria-hidden="true"></div>
 
 <!-- Tacos drifting and turning the whole way down the page, over every
      section rather than only behind the hero. -->
@@ -1262,6 +1449,8 @@ footer{
 
       <div class="orbit" id="orbit">
         <div class="orbit__scene">
+          <div class="stars" aria-hidden="true"><i style="--sl:7%;--st:12%;--ss:3px;--sd:6.0s;--sdl:-5.2s"></i><i style="--sl:22%;--st:5%;--ss:2px;--sd:6.0s;--sdl:-2.7s"></i><i style="--sl:31%;--st:21%;--ss:3px;--sd:4.2s;--sdl:-1.1s"></i><i style="--sl:44%;--st:7%;--ss:2px;--sd:6.0s;--sdl:-3.8s"></i><i style="--sl:58%;--st:17%;--ss:2px;--sd:4.2s;--sdl:-0.6s"></i><i style="--sl:69%;--st:4%;--ss:3px;--sd:5.1s;--sdl:-0.9s"></i><i style="--sl:79%;--st:14%;--ss:2px;--sd:3.4s;--sdl:-3.6s"></i><i style="--sl:88%;--st:25%;--ss:3px;--sd:6.0s;--sdl:-5.8s"></i><i style="--sl:12%;--st:31%;--ss:2px;--sd:4.2s;--sdl:-3.7s"></i><i style="--sl:93%;--st:8%;--ss:2px;--sd:3.4s;--sdl:-0.4s"></i><i style="--sl:36%;--st:3%;--ss:2px;--sd:4.2s;--sdl:-5.3s"></i><i style="--sl:64%;--st:28%;--ss:2px;--sd:3.4s;--sdl:-4.7s"></i><i style="--sl:18%;--st:22%;--ss:2px;--sd:5.1s;--sdl:-2.6s"></i><i style="--sl:84%;--st:35%;--ss:2px;--sd:4.2s;--sdl:-3.1s"></i><i style="--sl:50%;--st:26%;--ss:2px;--sd:5.1s;--sdl:-3.0s"></i></div>
+          <div class="moon" aria-hidden="true"></div>
           <div class="orbit__glow" aria-hidden="true"></div>
 
           <div class="ring ring--outer" aria-hidden="true"></div>
@@ -1292,6 +1481,10 @@ footer{
                    fetchpriority="high" decoding="async">
             </picture>
             <span class="zzz" aria-hidden="true"><i></i><i></i><i></i></span>
+            <button class="snore" type="button" id="snore-btn" hidden
+                    aria-label="Tap the taco to hear him snore" data-i18n-label="snore_label">
+              <span class="snore__badge" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-sound"/></svg></span>
+            </button>
           </div>
         </div>
       </div>
@@ -1584,6 +1777,7 @@ footer{
       meta_desc: "Connect with Taco Taco Mexican Restaurant in Belmopan. View the menu, order on WhatsApp, visit our website and follow Taco Taco on Facebook, Instagram and TikTok.",
       mascot_alt: "Taco Taco Mexican Restaurant mascot",
       mascot_alt_sleep: "The Taco Taco mascot asleep, because the restaurant is closed",
+      snore_label: "Tap the taco to hear him snore",
       hero_title: "Taco Taco Connect",
       hero_tagline: "Everything Taco Taco. One place.",
       hero_lede: "Explore our menu, order your favourites, find us online and stay connected with Taco Taco Mexican Restaurant in Belmopan.",
@@ -1642,6 +1836,7 @@ footer{
       meta_desc: "Conéctate con Taco Taco Mexican Restaurant en Belmopan. Mira el menú, ordena por WhatsApp, visita nuestro sitio web y sigue a Taco Taco en Facebook, Instagram y TikTok.",
       mascot_alt: "Mascota de Taco Taco Mexican Restaurant",
       mascot_alt_sleep: "La mascota de Taco Taco dormida, porque el restaurante está cerrado",
+      snore_label: "Toca el taco para oírlo roncar",
       hero_title: "Taco Taco Connect",
       hero_tagline: "Todo Taco Taco. En un solo lugar.",
       hero_lede: "Explora nuestro menú, ordena tus favoritos, encuéntranos en línea y mantente conectado con Taco Taco Mexican Restaurant en Belmopan.",
@@ -1871,6 +2066,52 @@ footer{
   };
   var mascotState = null;
 
+  /* ------------------------------------------------------------------
+     Tap the sleeping taco and he snores.
+
+     The audio element is built on the first tap and not before, so the
+     13 KB costs nothing for the many visitors who never ask for it, and
+     nothing is fetched at all while the restaurant is open.
+
+     play() is allowed to fail and is expected to: a phone on silent, a
+     tab the browser has muted, a battery-saver mode. That is why the
+     animation is not conditional on it. The tap always does something
+     visible.
+     ------------------------------------------------------------------ */
+  var snoreAudio = null;
+  var snoreTimer = null;
+  var SNORE_MS = 2300;              // the sample is 2.24s
+
+  function snore() {
+    var orbit = document.querySelector(".orbit");
+    if (orbit) {
+      orbit.classList.remove("is-snoring");
+      void orbit.offsetWidth;       // so a second tap restarts the breath
+      orbit.classList.add("is-snoring");
+      clearTimeout(snoreTimer);
+      snoreTimer = setTimeout(function () {
+        orbit.classList.remove("is-snoring");
+      }, SNORE_MS);
+    }
+    if (!snoreAudio) {
+      snoreAudio = new Audio("assets/snore.mp3");
+      snoreAudio.preload = "auto";
+    }
+    try {
+      snoreAudio.currentTime = 0;
+      var played = snoreAudio.play();
+      if (played && played.catch) played.catch(function () {});
+    } catch (e) { /* no audio on this device: the animation carries it */ }
+    track("connect_snore_tap");
+  }
+
+  var snoreBtn = document.getElementById("snore-btn");
+  if (snoreBtn) snoreBtn.addEventListener("click", snore);
+
+  // The browser chrome follows the page, so the phone's status bar is dusk
+  // after close rather than a strip of daylight above a night page.
+  var themeMeta = document.querySelector('meta[name="theme-color"]');
+
   function setMascot(state, lang) {
     var webp = document.getElementById("mascot-webp");
     var png = document.getElementById("mascot-png");
@@ -1885,6 +2126,11 @@ footer{
     img.dataset.i18nAlt = want.alt;
     var dict = I18N[lang] || I18N.en;
     if (dict[want.alt]) img.alt = dict[want.alt];
+
+    // He is only tappable while he is asleep. [hidden] takes the button out
+    // of the tab order and the accessibility tree, not just off the screen.
+    if (snoreBtn) snoreBtn.hidden = state !== "closed";
+    if (themeMeta) themeMeta.setAttribute("content", state === "closed" ? "#241033" : "#FA9A10");
   }
 
   function updateStatus(lang) {
@@ -1985,6 +2231,13 @@ footer{
 
   setLang(initialLang(), false);
   applyStructuredData();
+  // The first reading of the clock lands instantly; only the ones after it
+  // fade, which is the eight o'clock case.
+  requestAnimationFrame(function () {
+    requestAnimationFrame(function () {
+      document.documentElement.classList.add("can-dusk");
+    });
+  });
   setInterval(function () { updateStatus(document.documentElement.lang); }, 60000);
 
   /* ============================================================
