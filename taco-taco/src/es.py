@@ -735,6 +735,20 @@ ES.update({
    "Descubra Taco Taco Mexican Restaurant en Belmopán, Belice. Explore tacos mexicanos, birria, burritos, quesadillas, flautas, combos de almuerzo y más, frescos de la cocina de Taco Taco.",
 })
 
+# ---------------------------------------------------------------- who the order is for
+# The three options are labels here and kitchen words in the value attribute,
+# which the translator does not touch. So a Spanish customer taps "Domicilio"
+# and the ticket the kitchen reads says Delivery, exactly the way the menu item
+# names already work.
+ES.update({
+ "Your name":                "Su nombre",
+ "Who is this order for?":   "\u00bfA nombre de qui\u00e9n?",
+ "How are you getting it?":  "\u00bfC\u00f3mo lo va a recibir?",
+ "Pickup":                   "Recoger",
+ "Dine-In":                  "Comer aqu\u00ed",
+ "Delivery":                 "Domicilio",
+})
+
 # ---------------------------------------------------------------- Taco Taco Connect
 ES.update({
  "One Link": "Un solo enlace",
@@ -818,5 +832,9 @@ JS = {
  "menu_open": "Ver el menú completo", "menu_close": "Ocultar el menú",
  "pick_one": "Por favor elija",
  "watch": "Ver",
+ "who_name": "Su nombre",
+ "who_how": "\u00bfC\u00f3mo lo va a recibir?",
+ "wa_name": "Nombre",
+ "wa_how": "Pedido para",
  "added": "Agregado",
 }

@@ -285,6 +285,22 @@
   <div class="bp-head"><span>Your Basket</span><button type="button" id="bp-close" aria-label="Close basket">Close</button></div>
   <div class="bp-list" id="bp-list"></div>
   <div class="bp-foot">
+   <div class="bp-who">
+    <label class="bp-field">
+     <span class="bp-lab">Your name</span>
+     <input type="text" id="bp-who-name" autocomplete="name" enterkeyhint="done"
+            maxlength="40" placeholder="Who is this order for?">
+    </label>
+    <fieldset class="bp-field bp-how">
+     <legend class="bp-lab">How are you getting it?</legend>
+     <div class="bp-how-row">
+      <label class="bp-opt"><input type="radio" name="bp-fulfil" value="Pickup"><span>Pickup</span></label>
+      <label class="bp-opt"><input type="radio" name="bp-fulfil" value="Dine-In"><span>Dine-In</span></label>
+      <label class="bp-opt"><input type="radio" name="bp-fulfil" value="Delivery"><span>Delivery</span></label>
+     </div>
+    </fieldset>
+    <p class="bp-warn" id="bp-warn" hidden></p>
+   </div>
    <div class="bp-sum" id="bp-sum" hidden>
     <div class="bp-line"><span id="bp-sub-l">Subtotal</span><span id="bp-sub">$0.00</span></div>
     <div class="bp-line bp-disc"><span id="bp-disc-l">Website Discount</span><span id="bp-disc">-$0.00</span></div>

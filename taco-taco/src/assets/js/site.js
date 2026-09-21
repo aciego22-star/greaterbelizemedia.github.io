@@ -106,6 +106,63 @@ function t(k,d){return TT_TXT[k]||d;}
   return {sub:sub, off:off, total:round2(sub-off), on:off>0};
  }
 
+ /* ---- who the order is for, and how they are getting it ----
+    Two things the kitchen used to have to ask for in a reply. The name is what
+    gets called across the counter and the fulfilment is what decides whether
+    anybody boxes it, so both belong in the first message rather than the third.
+
+    What the customer reads is translated; what travels to the kitchen is the
+    English word, the same rule the menu item names already follow, so a ticket
+    reads the same whichever language it was ordered in.
+
+    Both are remembered on this device. A regular should not retype their own
+    name every Friday. */
+ var WKEY='tt_who_v1';
+ var nameEl=$('bp-who-name'), warnEl=$('bp-warn');
+ function fulfilEl(){return document.querySelector('input[name=bp-fulfil]:checked');}
+ function who(){
+  var f=fulfilEl();
+  return {name:(nameEl&&nameEl.value||'').trim(), how:f?f.value:''};
+ }
+ function saveWho(){
+  try{localStorage.setItem(WKEY,JSON.stringify(who()));}catch(e){}
+ }
+ function loadWho(){
+  try{
+   var v=JSON.parse(localStorage.getItem(WKEY)||'null'); if(!v) return;
+   if(v.name&&nameEl) nameEl.value=v.name;
+   if(v.how){
+    var r=document.querySelector('input[name=bp-fulfil][value="'+v.how+'"]');
+    if(r) r.checked=true;
+   }
+  }catch(e){}
+ }
+ if(nameEl) nameEl.addEventListener('input',function(){
+  nameEl.classList.remove('bad'); if(warnEl) warnEl.hidden=true; saveWho();
+ });
+ document.querySelectorAll('input[name=bp-fulfil]').forEach(function(r){
+  r.addEventListener('change',function(){
+   var g=document.querySelector('.bp-how'); if(g) g.classList.remove('bad');
+   if(warnEl) warnEl.hidden=true; saveWho();
+  });
+ });
+ /* Nothing is sent half answered: the kitchen cannot cook "for someone, somehow".
+    The wording follows the deals form, which already stops on a missing choice. */
+ function whoReady(){
+  var w=who(), missing=[];
+  if(!w.name){ missing.push(t('who_name','Your name')); if(nameEl) nameEl.classList.add('bad'); }
+  if(!w.how){ missing.push(t('who_how','How are you getting it?'));
+              var g=document.querySelector('.bp-how'); if(g) g.classList.add('bad'); }
+  if(!missing.length) return true;
+  if(warnEl){
+   warnEl.textContent=t('pick_one','Please choose')+': '+missing.join(', ');
+   warnEl.hidden=false;
+  }
+  var focus=!w.name?nameEl:document.querySelector('input[name=bp-fulfil]');
+  if(focus&&focus.focus) focus.focus();
+  return false;
+ }
+
  var BKEY='tt_basket_v1';
  function saveBasket(){try{localStorage.setItem(BKEY,JSON.stringify(basket));}catch(e){}}
  function loadBasket(){try{var v=JSON.parse(localStorage.getItem(BKEY)||'null');
@@ -228,7 +285,7 @@ function t(k,d){return TT_TXT[k]||d;}
   else{basket[i].qty--;if(basket[i].qty<=0)basket.splice(i,1);}
   renderBar();renderPanel();saveBasket();
  });
- function openBasket(){renderPanel();panel.classList.add('open');}
+ function openBasket(){renderPanel();loadWho();panel.classList.add('open');}
  $('bb-view').addEventListener('click',openBasket);
  $('bp-close').addEventListener('click',function(){panel.classList.remove('open');});
  panel.addEventListener('click',function(e){if(e.target===panel)panel.classList.remove('open');});
@@ -239,6 +296,7 @@ function t(k,d){return TT_TXT[k]||d;}
   b.addEventListener('click',function(){
    // Not named t: var t would be hoisted over the t() translation helper, and
    // the empty-basket branch is the one that needs to call it.
+   if(count()&&!whoReady()){ openBasket(); return; }
    var msg=count()
      ? waText()
      : t('wa_open','Hello Taco Taco, I would like to place an order.');
@@ -273,10 +331,18 @@ function t(k,d){return TT_TXT[k]||d;}
   }else{
    tail='\n\n'+t('wa_total','Total')+': '+money(b.total)+' BZD';
   }
-  return t('wa_intro','Hi Taco Taco! I would like to place this order:')+'\n\n'+lines.join('\n')+tail;
+  // Who and how go first. A ticket the kitchen reads top down should say whose
+  // it is and where it is going before it says what is in it.
+  var w=who(), head='';
+  if(w.name) head+='\n'+t('wa_name','Name')+': '+w.name;
+  if(w.how)  head+='\n'+t('wa_how','Order for')+': '+w.how;
+  if(head) head+='\n';
+  return t('wa_intro','Hi Taco Taco! I would like to place this order:')+'\n'+head+'\n'+lines.join('\n')+tail;
  }
  $('bp-send').addEventListener('click',function(){
   if(!basket.length)return;
+  if(!whoReady())return;
+  saveWho();
   window.open('https://wa.me/'+WA_NUMBER+'?text='+encodeURIComponent(waText()),'_blank');
  });
 
