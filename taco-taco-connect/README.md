@@ -86,10 +86,13 @@ assets/
   qr.svg                  standalone QR, if you need the code on its own
   qr-path.txt             the generated path data, pasted inline into both pages
   mascot-sleep*.webp/png  the sleeping mascot, only fetched when the restaurant is shut
+  mascot-coffee*.webp/png the morning mascot, only fetched during the coffee window
   mascot-qr.png           320px copy for the QR centre
   snore.mp3               6.9s, fetched only when somebody taps the sleeping mascot
 tools/extract-mascot.py   cuts the mascot out of logo-source.jpg and builds every icon
 tools/make-sleeping-mascot.py  derives the sleeping mascot from the awake one
+tools/make-coffee-mascot.py    derives the morning mascot from the awake one
+tools/mascot_lib.py            the arm, face and seam-fill machinery both share
 tools/make-qr.py          regenerates the QR (only if the URL ever changes)
 tools/make-snore.py       synthesises assets/snore.mp3
 tools/make-og-image.js    re-renders og-image.jpg from tools/og-image.html
@@ -320,6 +323,26 @@ sleeping artwork is a second image, only fetched when it is actually needed, and
 a browser that cannot work out the time never shows it, because the awake mascot
 is the default.
 
+### Three times of day
+
+The page has three states, not two, driven by one `[data-phase]` attribute on
+`<html>`:
+
+| phase | when | mascot |
+|---|---|---|
+| `open` | trading | arms up, wide awake |
+| `dawn` | 7am until opening | one arm down, coffee in hand, heavy lids |
+| `night` | everything else | arms down, eyes closed, z's |
+
+`dawn` is defined as *from seven until today's opening time*, not as a list of
+days. Monday to Thursday open at ten and get the window; Friday to Sunday open
+at six and never see it. Change the hours and the window follows on its own.
+
+`data-open` still carries open/closed for the status chip and anything that only
+cares whether you can order. `data-phase` carries the mood. They are not the
+same question: at half past eight on a Monday the restaurant is closed but the
+mascot is very much awake.
+
 The whole page goes with him. After close a second ground layer fades in over
 the day gradient, taking it into the plum and ember range a Belmopan sky
 actually goes at dusk; a moon and a scatter of stars come up behind the orbit,
@@ -337,6 +360,39 @@ surface, a link card or the language pill, and stays dark at every hour.
 `--on-ground` is type sitting directly on the page gradient, and that one goes
 cream after dark. They were the same value until the night palette needed them
 apart, which is worth remembering before reaching for either.
+
+### The morning mascot
+
+`tools/make-coffee-mascot.py` builds him from the awake artwork. Three decisions
+are worth knowing before touching it.
+
+**The raised arm does not move.** Every rotation that brings the right fist down
+to mug height pushes the elbow past the right edge of the canvas, and widening
+the canvas would give this pose a different aspect ratio from the other two,
+which would jump the hero layout when the clock rolls over. A mug held up in the
+hand that is already up costs nothing. Only the left arm comes down, which is
+what stops the pose reading as a cheer.
+
+**The lids are clipped to the eye whites**, not drawn as free shapes, so they
+follow the real outline and land correctly whatever the logo does next. They
+cover the top 55% and leave the pupils showing, which is what separates
+"heavy-lidded" from "asleep" at a glance.
+
+**The grin is left alone.** Erasing it means interpolating the face tone across
+the whole lower half; the sleeping pose gets away with that because everything
+else there has changed too, but on an otherwise crisp face it reads as a smear.
+He is pleased about the coffee.
+
+The mug is the one element with no source in the artwork, so it is drawn: flat
+fills inside a heavy outline, which is the grammar the rest of the logo already
+uses, and brand colours. Its steam is CSS on the page, like the z's, so it
+drifts and no crawler ever sees it.
+
+`tools/mascot_lib.py` holds what this and the sleeping tool share: the arms cut
+from the corners and rotated about the shoulder, the face found in the artwork
+rather than measured, and the seam fill. It was extracted from the sleeping tool
+without changing a line of its logic, and the sleeping images it produces are
+byte-identical to the ones from before the split.
 
 ### The snore
 

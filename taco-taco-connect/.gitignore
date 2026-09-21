@@ -1,2 +1,6 @@
 # written by tools/make-sleeping-mascot.py --debug
 mascot-sleep-debug.png
+# written by tools/make-coffee-mascot.py --debug
+mascot-coffee-debug.png
+# python bytecode from tools/mascot_lib.py
+tools/__pycache__/

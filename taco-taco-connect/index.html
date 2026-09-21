@@ -396,9 +396,9 @@ a,button,[tabindex],label,summary{touch-action:manipulation}
       #241033 0%, #351437 11%, #571F27 26%, #7C2E13 42%,
       #8A3A0E 57%, #6E250F 72%, #3C1329 88%, #1C0B22 100%);
 }
-[data-open="closed"] .nightfall{opacity:1}
+[data-phase="night"] .nightfall{opacity:1}
 
-[data-open="closed"]{
+[data-phase="night"],[data-phase="dawn"]{
   --on-ground:#FFEFD8;
   --on-ground-dim:rgba(255,239,216,.86);
   --on-ground-soft:rgba(255,239,216,.7);
@@ -407,24 +407,122 @@ a,button,[tabindex],label,summary{touch-action:manipulation}
   --ring-ink:rgba(255,238,214,.34);
 }
 /* both ends of the night ramp, so overscroll never flashes daylight */
-[data-open="closed"] body{background:#1E0B26}
+[data-phase="night"] body{background:#1E0B26}
 /* the chip is a dark fill on what is now a dark ground, so it needs an edge */
-[data-open="closed"] .chip{border-color:rgba(255,239,216,.26)}
+[data-phase="night"] .chip,[data-phase="dawn"] .chip{border-color:rgba(255,239,216,.26)}
 
 /* the field keeps drifting, but at something closer to a sleeping pace, and
    dimmer: cream linework that reads as a whisper on orange shouts on plum */
-[data-open="closed"] .taco-field__tile{animation-duration:190s;opacity:.09}
-[data-open="closed"] .tf{
+[data-phase="night"] .taco-field__tile{animation-duration:190s;opacity:.09}
+[data-phase="night"] .tf{
   animation-duration:calc(var(--d,36s) * 2.4);
   opacity:calc(var(--o,.24) * .6);
 }
 
 /* the hero's own warm lamp cools down, and the mascot's contact shadow with it */
-[data-open="closed"] .orbit__glow{
+[data-phase="night"] .orbit__glow{
   background:radial-gradient(closest-side,rgba(226,231,255,.34),rgba(150,160,225,.16) 48%,transparent 76%);
 }
-[data-open="closed"] .orbit__cast{
+[data-phase="night"] .orbit__cast{
   background:radial-gradient(closest-side,rgba(18,6,28,.6),transparent 75%);
+}
+
+/* ============================================================
+   FIRST LIGHT
+   Monday to Thursday they open at ten, so between seven and then the page
+   is neither night nor open for business. It gets its own sky: pre-dawn
+   blue overhead, through violet into a rose and coral horizon, with the
+   moon recoloured as a low sun and the stars gone.
+
+   The other four days open at six, so by seven they are already trading
+   and this never fires. The window is defined as "from seven until today's
+   opening time", which means it follows the hours table rather than a
+   hard-coded list of days.
+   ============================================================ */
+.daybreak{
+  position:absolute;
+  inset:0;
+  z-index:-3;
+  opacity:0;
+  pointer-events:none;
+  background:
+    radial-gradient(46% 16% at 76% 15%, rgba(255,206,130,.45), transparent 66%),
+    radial-gradient(60% 20% at 12% 2%, rgba(70,92,190,.4), transparent 68%),
+    linear-gradient(180deg,
+      #1B2551 0%, #33285F 12%, #5C3260 26%, #8F4358 40%,
+      #B85A3F 55%, #C9682F 68%, #A8462A 80%, #66263A 92%, #3A1730 100%);
+}
+[data-phase="dawn"] .daybreak{opacity:1}
+[data-phase="dawn"] .nightfall{opacity:0}
+[data-phase="dawn"] body{background:#2B1638}
+
+/* the field wakes up a little: quicker than night, still slower than trading */
+[data-phase="dawn"] .taco-field__tile{animation-duration:140s;opacity:.11}
+[data-phase="dawn"] .tf{
+  animation-duration:calc(var(--d,36s) * 1.7);
+  opacity:calc(var(--o,.24) * .7);
+}
+[data-phase="dawn"] .orbit__glow{
+  background:radial-gradient(closest-side,rgba(255,224,170,.42),rgba(240,150,90,.2) 48%,transparent 76%);
+}
+[data-phase="dawn"] .orbit__cast{
+  background:radial-gradient(closest-side,rgba(60,20,40,.5),transparent 75%);
+}
+
+/* the same disc, warmed and dropped toward the horizon */
+[data-phase="dawn"] .moon{
+  opacity:1;
+  /* Same corner as the moon, only lower: anywhere further in and the 3D
+     push-back drags it toward the middle of the frame and the mascot's own
+     arm covers it. */
+  left:2%;
+  top:15%;
+  background:radial-gradient(circle at 42% 38%, #FFF3D0, #FFC65E 58%, #F7913A 100%);
+  box-shadow:
+    0 0 26px rgba(255,190,110,.9),
+    0 0 80px rgba(255,150,70,.5),
+    0 0 160px rgba(255,120,60,.3);
+}
+[data-phase="dawn"] .stars{opacity:0}
+
+/* ============================================================
+   THE STEAM
+   Three wisps off the mug, the morning's answer to the z's. Same trick:
+   drawn by CSS so nothing extra is fetched and no text reaches a crawler.
+   Positioned over the mug in the artwork, which sits at about 90% across
+   and 13% down the mascot's own box.
+   ============================================================ */
+.steam{
+  position:absolute;
+  left:88%;
+  top:11%;
+  display:block;
+  opacity:0;
+  transition:opacity .45s var(--ease);
+  pointer-events:none;
+}
+[data-phase="dawn"] .steam{opacity:1}
+.steam i{
+  position:absolute;
+  display:block;
+  width:calc(13px * var(--zs,1));
+  color:#FFF3DC;
+  opacity:0;
+  animation:steam 3.4s ease-in-out infinite;
+}
+.steam i svg{
+  width:100%;height:auto;
+  fill:none;stroke:currentColor;stroke-width:2.6;
+  stroke-linecap:round;
+  filter:drop-shadow(0 2px 5px rgba(90,30,10,.45));
+}
+.steam i:nth-child(2){animation-delay:1.13s;width:calc(11px * var(--zs,1))}
+.steam i:nth-child(3){animation-delay:2.26s;width:calc(9px * var(--zs,1))}
+@keyframes steam{
+  0%  {opacity:0;  transform:translate3d(0,4px,0) scale(.6)}
+  22% {opacity:.9; transform:translate3d(-2px,-10px,0) scale(.9)}
+  65% {opacity:.6; transform:translate3d(3px,-30px,0) scale(1.2)}
+  100%{opacity:0;  transform:translate3d(-2px,-52px,0) scale(1.45)}
 }
 
 /* ============================================================
@@ -439,13 +537,13 @@ a,button,[tabindex],label,summary{touch-action:manipulation}
   opacity:0;
   pointer-events:none;
 }
-[data-open="closed"] .moon,[data-open="closed"] .stars{opacity:1}
+[data-phase="night"] .moon,[data-phase="night"] .stars{opacity:1}
 /* Dusk falls over a couple of seconds for somebody who is already on the page
    at closing time, but it must not animate on load: the script reads the clock
    after first paint, and without this a visitor arriving at ten at night would
    watch the page start bright orange and sink. The class goes on once that
    first reading has been applied. */
-.can-dusk .nightfall,.can-dusk .moon,.can-dusk .stars{transition:opacity 2.4s var(--ease)}
+.can-dusk .nightfall,.can-dusk .daybreak,.can-dusk .moon,.can-dusk .stars{transition:opacity 2.4s var(--ease)}
 .moon{
   left:1%;
   top:3%;
@@ -755,7 +853,7 @@ a,button,[tabindex],label,summary{touch-action:manipulation}
   0%,100%{transform:translate3d(-50%,-50%,70px) translateY(2px) rotateZ(-2.6deg)}
   50%    {transform:translate3d(-50%,-50%,70px) translateY(-7px) rotateZ(-1.4deg)}
 }
-[data-open="closed"] .orbit__mascot{animation-name:doze;animation-duration:5.2s}
+[data-phase="night"] .orbit__mascot{animation-name:doze;animation-duration:5.2s}
 
 .orbit__mascot picture{display:block}
 .orbit__mascot img{display:block;width:100%;height:auto}
@@ -771,7 +869,7 @@ a,button,[tabindex],label,summary{touch-action:manipulation}
   transition:opacity .45s var(--ease);
   pointer-events:none;
 }
-[data-open="closed"] .zzz{opacity:1}
+[data-phase="night"] .zzz{opacity:1}
 .zzz i::before{content:"z"}
 .zzz i{
   position:absolute;
@@ -1349,6 +1447,10 @@ footer{
   /* keyframes are frozen at their first frame, so restate the resting pose */
   .orbit__mascot{transform:translate3d(-50%,-50%,70px) rotateZ(-1.2deg) !important}
   .zzz i{animation:none !important;opacity:.95;transform:none !important}
+  .steam i{animation:none !important;opacity:.9;transform:none !important}
+  .steam i:nth-child(1){left:2px;top:-34px}
+  .steam i:nth-child(2){left:-6px;top:-16px}
+  .steam i:nth-child(3){left:0;top:0}
   .zzz i:nth-child(1){left:calc(42px * var(--zs));top:calc(-64px * var(--zs))}
   .zzz i:nth-child(2){left:calc(21px * var(--zs));top:calc(-26px * var(--zs))}
   .zzz i:nth-child(3){left:0;top:calc(6px * var(--zs))}
@@ -1392,6 +1494,7 @@ footer{
   <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10.2c0 5.4-8 12.3-8 12.3s-8-6.9-8-12.3a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.9"/></symbol>
   <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21.3 16.7v2.8a1.9 1.9 0 0 1-2.1 1.9 18.7 18.7 0 0 1-8.2-2.9 18.4 18.4 0 0 1-5.7-5.7A18.7 18.7 0 0 1 2.4 4.5 1.9 1.9 0 0 1 4.3 2.4h2.8a1.9 1.9 0 0 1 1.9 1.6c.12.92.35 1.82.68 2.68a1.9 1.9 0 0 1-.43 2L8.1 9.8a15 15 0 0 0 5.7 5.7l1.1-1.1a1.9 1.9 0 0 1 2-.43c.86.33 1.76.56 2.68.68a1.9 1.9 0 0 1 1.62 1.94Z"/></symbol>
   <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></symbol>
+  <symbol id="i-steam" viewBox="0 0 14 34"><path d="M7 33c-4-4 4-7 0-11S3 14 7 10s0-6-1.5-9"/></symbol>
   <symbol id="i-sound" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6.5 9H3v6h3.5L11 19z"/><path d="M15.4 8.6a4.8 4.8 0 0 1 0 6.8"/><path d="M18.4 5.6a9 9 0 0 1 0 12.8"/></symbol>
   <symbol id="i-print" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M7 8V3h10v5"/><path d="M7 18H5a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="7" y="14" width="10" height="7" rx="1"/></symbol>
 
@@ -1417,6 +1520,7 @@ footer{
 <div class="page">
 
 <div class="nightfall" aria-hidden="true"></div>
+<div class="daybreak" aria-hidden="true"></div>
 
 <!-- Tacos drifting and turning the whole way down the page, over every
      section rather than only behind the hero. -->
@@ -1488,6 +1592,7 @@ footer{
                    fetchpriority="high" decoding="async">
             </picture>
             <span class="zzz" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="steam" aria-hidden="true"><i><svg viewBox="0 0 14 34"><use href="#i-steam"/></svg></i><i><svg viewBox="0 0 14 34"><use href="#i-steam"/></svg></i><i><svg viewBox="0 0 14 34"><use href="#i-steam"/></svg></i></span>
             <button class="snore" type="button" id="snore-btn" hidden
                     aria-label="Tap the taco to hear him snore" data-i18n-label="snore_label">
               <span class="snore__badge" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-sound"/></svg></span>
@@ -1785,6 +1890,7 @@ footer{
       mascot_alt: "Taco Taco Mexican Restaurant mascot",
       mascot_alt_sleep: "The Taco Taco mascot asleep, because the restaurant is closed",
       snore_label: "Tap the taco to hear him snore",
+      mascot_alt_coffee: "The Taco Taco mascot with a morning coffee, waiting to open",
       hero_title: "Taco Taco Connect",
       hero_tagline: "Everything Taco Taco. One place.",
       hero_lede: "Explore our menu, order your favourites, find us online and stay connected with Taco Taco Mexican Restaurant in Belmopan.",
@@ -1844,6 +1950,7 @@ footer{
       mascot_alt: "Mascota de Taco Taco Mexican Restaurant",
       mascot_alt_sleep: "La mascota de Taco Taco dormida, porque el restaurante está cerrado",
       snore_label: "Toca el taco para oírlo roncar",
+      mascot_alt_coffee: "La mascota de Taco Taco con un café, esperando para abrir",
       hero_title: "Taco Taco Connect",
       hero_tagline: "Todo Taco Taco. En un solo lugar.",
       hero_lede: "Explora nuestro menú, ordena tus favoritos, encuéntranos en línea y mantente conectado con Taco Taco Mexican Restaurant en Belmopan.",
@@ -2066,11 +2173,27 @@ footer{
   // than shipping both states to everyone. Awake is the default, so a browser
   // that cannot resolve the timezone never shows a sleeping mascot by mistake.
   var MASCOT = {
-    open:   { webp: "assets/mascot-400.webp 557w, assets/mascot.webp 1114w",
-              png: "assets/mascot.png", alt: "mascot_alt" },
-    closed: { webp: "assets/mascot-sleep-400.webp 557w, assets/mascot-sleep.webp 1114w",
-              png: "assets/mascot-sleep.png", alt: "mascot_alt_sleep" }
+    open:  { webp: "assets/mascot-400.webp 557w, assets/mascot.webp 1114w",
+             png: "assets/mascot.png", alt: "mascot_alt" },
+    dawn:  { webp: "assets/mascot-coffee-400.webp 557w, assets/mascot-coffee.webp 1114w",
+             png: "assets/mascot-coffee.png", alt: "mascot_alt_coffee" },
+    night: { webp: "assets/mascot-sleep-400.webp 557w, assets/mascot-sleep.webp 1114w",
+             png: "assets/mascot-sleep.png", alt: "mascot_alt_sleep" }
   };
+
+  // Shut, but morning: he is up with a coffee rather than asleep. Defined as
+  // "from seven until today's opening", so it follows the HOURS table instead
+  // of a hard-coded list of days. Monday to Thursday open at ten and get the
+  // window; the other four open at six and never see it.
+  var DAWN_FROM = 7 * 60;
+
+  function phaseFor(now, today) {
+    if (now.minutes >= today.open * 60 && now.minutes < today.close * 60) return "open";
+    if (now.minutes >= DAWN_FROM && now.minutes < today.open * 60) return "dawn";
+    return "night";
+  }
+
+  var THEME = { open: "#FA9A10", dawn: "#1B2551", night: "#241033" };
   var mascotState = null;
 
   /* ------------------------------------------------------------------
@@ -2136,8 +2259,10 @@ footer{
 
     // He is only tappable while he is asleep. [hidden] takes the button out
     // of the tab order and the accessibility tree, not just off the screen.
-    if (snoreBtn) snoreBtn.hidden = state !== "closed";
-    if (themeMeta) themeMeta.setAttribute("content", state === "closed" ? "#241033" : "#FA9A10");
+    // He is only tappable while he is actually asleep, not while he is awake
+    // with a coffee.
+    if (snoreBtn) snoreBtn.hidden = state !== "night";
+    if (themeMeta) themeMeta.setAttribute("content", THEME[state] || THEME.open);
   }
 
   function updateStatus(lang) {
@@ -2145,7 +2270,12 @@ footer{
     var label = document.getElementById("status-text");
     if (!chip || !label) return;
     var now = belizeTime();
-    if (!now) { chip.hidden = true; setMascot("open", lang); return; }
+    if (!now) {
+      chip.hidden = true;
+      document.documentElement.dataset.phase = "open";
+      setMascot("open", lang);
+      return;
+    }
 
     var dict = I18N[lang] || I18N.en;
     var today = HOURS[now.day];
@@ -2165,8 +2295,10 @@ footer{
     label.textContent = text;
     chip.dataset.state = isOpen ? "open" : "closed";
     chip.hidden = false;
+    var phase = phaseFor(now, today);
     document.documentElement.dataset.open = isOpen ? "open" : "closed";
-    setMascot(isOpen ? "open" : "closed", lang);
+    document.documentElement.dataset.phase = phase;
+    setMascot(phase, lang);
   }
 
   /* ============================================================
