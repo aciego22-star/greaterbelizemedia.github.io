@@ -328,11 +328,11 @@ is the default.
 The page has three states, not two, driven by one `[data-phase]` attribute on
 `<html>`:
 
-| phase | when | mascot |
-|---|---|---|
-| `open` | trading | arms up, wide awake |
-| `dawn` | 7am until opening | one arm down, coffee in hand, heavy lids |
-| `night` | everything else | arms down, eyes closed, z's |
+| phase | when | mascot | callout |
+|---|---|---|---|
+| `open` | trading | arms up, wide awake | we're open, or closing soon in the last two hours |
+| `dawn` | 7am until opening | one arm down, coffee in hand, heavy lids | opening soon |
+| `night` | everything else | arms down, eyes closed, z's | none |
 
 `dawn` is defined as *from seven until today's opening time*, not as a list of
 days. Monday to Thursday open at ten and get the window; Friday to Sunday open
@@ -360,6 +360,36 @@ surface, a link card or the language pill, and stays dark at every hour.
 `--on-ground` is type sitting directly on the page gradient, and that one goes
 cream after dark. They were the same value until the night palette needed them
 apart, which is worth remembering before reaching for either.
+
+### The callout
+
+A small badge announces the moment rather than the hours: **Opening soon** in
+gold through the coffee window, **We're open, stop on by** in green while
+trading, and **Closing soon, last call** in red for the final two hours.
+Nothing at night, which is what gives the other three meaning.
+
+It pops in, holds about five and a half seconds, pops out and comes back
+somewhere else, touring three spots. The mascot fills the middle three quarters
+of the orbit and the side margins are narrower than the badge, so the only
+positions that do not cover his face are above him and below him; top right is
+out because that is where the coffee is. That leaves top left, bottom right and
+bottom left.
+
+Three things keep it from costing anything. It is `pointer-events:none`, so a
+tap always reaches whatever is under it, which matters because the one control
+it must never interfere with is the WhatsApp button. It is absolutely
+positioned inside the orbit, so nothing reflows when it moves. And it is
+`aria-hidden`, because the status chip already states the same thing once and a
+looping element that keeps re-announcing itself is miserable on a screen
+reader.
+
+It runs on a timer rather than a long keyframe, because a timer is the readable
+version and can be stopped: it stops when the tab is hidden, and it does not
+run at all for a visitor who asked for reduced motion. For them the badge is
+simply there, in one place, not flickering.
+
+`LAST_CALL` is the number of minutes before closing that "soon" starts, and it
+reads the hours table, so it follows if the hours change.
 
 ### The morning mascot
 
