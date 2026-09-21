@@ -818,6 +818,5 @@ JS = {
  "menu_open": "Ver el menú completo", "menu_close": "Ocultar el menú",
  "pick_one": "Por favor elija",
  "watch": "Ver",
- "wa_check": "Copia para la cocina",
  "added": "Agregado",
 }
