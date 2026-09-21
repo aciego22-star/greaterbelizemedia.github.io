@@ -149,7 +149,13 @@ const articleLd = article
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="/favicon.ico" sizes="any" />
+    {/*
+      Google wants a square favicon whose size is a multiple of 48. Name the
+      sizes the .ico actually contains rather than `sizes="any"`: "any" is the
+      idiom that tells a picker to prefer the SVG, and it leaves the compliant
+      48 and 96 inside the .ico to be discovered by parsing the binary.
+    */}
+    <link rel="icon" href="/favicon.ico" sizes="96x96 48x48" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
     <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png" />
