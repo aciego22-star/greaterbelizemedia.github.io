@@ -49,6 +49,7 @@ KEEP = {
  # the address is the address, in either language
  "11 Aloe Vera Ave, West Belmopan", "11 Aloe Vera Ave, West Belmopan, Belize",
  "11 Aloe Vera Ave., West Belmopan",
+ "connect.tacotaco.bz", "Taco Taco Connect",
  "Belikin Beer", "Belikin Stout", "Lighthouse", "Guinness Stout", "Landshark",
  "Ova Drive", "Red Stripe", "Heineken", "Coke", "Ginger Ale",
  "Carne Asada", "Pollo Asado", "Carnitas", "Al Pastor", "Birria", "Horchata",
@@ -732,6 +733,21 @@ ES.update({
  "That page could not be found.": "No se pudo encontrar esa página.",
  "Discover Taco Taco Mexican Restaurant in Belmopan, Belize. Explore Mexican tacos, birria, burritos, quesadillas, flautas, lunch combos and more, fresh from the Taco Taco kitchen.":
    "Descubra Taco Taco Mexican Restaurant en Belmopán, Belice. Explore tacos mexicanos, birria, burritos, quesadillas, flautas, combos de almuerzo y más, frescos de la cocina de Taco Taco.",
+})
+
+# ---------------------------------------------------------------- Taco Taco Connect
+ES.update({
+ "One Link": "Un solo enlace",
+ "Connect":  "Connect",
+ "Everything Taco Taco in one place.": "Todo Taco Taco en un solo lugar.",
+ "Everything Taco Taco in one place. Save it, share it, and you will never have to "
+ "hunt for us again.":
+   "Todo Taco Taco en un solo lugar. Gu\u00e1rdelo, comp\u00e1rtalo y nunca m\u00e1s tendr\u00e1 que "
+   "buscarnos.",
+ "Open Taco Taco Connect": "Abrir Taco Taco Connect",
+ "Directions": "C\u00f3mo llegar",
+ "Socials":    "Redes sociales",
+ "QR code":    "C\u00f3digo QR",
 })
 
 # ---------------------------------------------------------------- September promotion

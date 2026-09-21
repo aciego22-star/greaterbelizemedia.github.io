@@ -90,6 +90,11 @@ def promo_live():
 
 MASTER_MAX = 1400
 
+# The one-link page. It is its own site on its own subdomain, so it is named
+# here once and every mention on this site is built from these two lines.
+CONNECT_URL  = "https://connect.tacotaco.bz"
+CONNECT_HOST = "connect.tacotaco.bz"
+
 MAPS_Q    = "Taco+Taco+Mexican+Restaurant,+Belmopan,+Belize"
 MAPS_LINK = "https://www.google.com/maps/search/?api=1&query=" + MAPS_Q
 MAPS_EMBED= "https://www.google.com/maps?q=" + MAPS_Q + "&output=embed"
@@ -813,6 +818,34 @@ def promo_modal(fname):
     esc(C["welcome"]), body, esc(C["nocode"]), href, esc(C["cta"]),
     esc(C["thanks"]), esc(C["signoff"])))
 
+def connect_band():
+    """Taco Taco Connect, announced rather than linked.
+
+    It sits directly under the map because that is the end of the "how do I
+    reach you" run on the home page: address, hours, service, and then the one
+    address that holds all of it. The six chips name what is behind the link so
+    it is not a bare URL asking to be trusted, and the host is set in type
+    large enough to be read off a screen and typed into a phone by somebody who
+    is looking at the page over a friend's shoulder.
+
+    It is a plain external link. Nothing here needs JavaScript."""
+    chips = ["Menu", "Order on WhatsApp", "Directions", "Hours", "Socials", "QR code"]
+    row = "".join('<span class="cn-chip">%s</span>' % esc(c) for c in chips)
+    return (
+ '\n <!-- ===== CONNECT ===== -->\n <section class="blk cn-band" id="connect">\n  <div class="container">\n'
+ '   <div class="cn-card">\n'
+ '    <span class="cn-mark" style="background-image:url(\'assets/img/logo.webp\')" aria-hidden="true"></span>\n'
+ '    <span class="sec-kicker cn-kicker">One Link</span>\n'
+ '    <h2 class="sec-title cn-title">Taco Taco <span class="deco">Connect</span></h2>\n'
+ '    <p class="cn-sub">Everything Taco Taco in one place. Save it, share it, '
+ 'and you will never have to hunt for us again.</p>\n'
+ '    <div class="cn-chips">%s</div>\n'
+ '    <p class="cn-go"><a class="btn btn-yellow" href="%s" target="_blank" rel="noopener">'
+ 'Open Taco Taco Connect</a></p>\n'
+ '    <p class="cn-url"><a href="%s" target="_blank" rel="noopener">%s</a></p>\n'
+ '   </div>\n  </div>\n </section>'
+ % (row, CONNECT_URL, CONNECT_URL, esc(CONNECT_HOST)))
+
 def storefront_shot():
     """The reviews page opens on the restaurant itself.
 
@@ -1328,7 +1361,7 @@ def main():
              "w",encoding="utf-8").write(payload(_lang))
 
     out = {
-      "index.html":   ("%s | Belmopan"%BRAND, hero+favs+deals_band()+reviews_band()+order+reel_band()+visit_band(),
+      "index.html":   ("%s | Belmopan"%BRAND, hero+favs+deals_band()+reviews_band()+order+reel_band()+visit_band()+connect_band(),
                        "%s in West Belmopan. Authentic Mexicali style tacos, birria, tortas and breakfast. Order online and send your order on WhatsApp."%BRAND),
       "deals-combos.html": ("Deals & Combos | %s"%BRAND, deals_page_body(),
                        "Taco Taco deals and combos in Belmopan: lunch combos, the Mega Combo, and Monday and Tuesday specials. Pick your options and order on WhatsApp."),

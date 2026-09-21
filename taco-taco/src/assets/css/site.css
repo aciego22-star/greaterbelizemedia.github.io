@@ -690,6 +690,43 @@ html.promo-open,html.promo-open body{overflow:hidden}
 .bp-line.bp-disc{color:var(--green-d);font-weight:800}
 .bp-line.bp-disc span:last-child{white-space:nowrap}
 
+/* ================= Taco Taco Connect ================= */
+/* Deep green so it lifts off the cream the map band sits on, and the mascot on
+   the rim so it is recognisably the same brand rather than a link to somewhere
+   else. The host is the second loudest thing after the button, because half
+   the point of a one-link page is that somebody can read it aloud. */
+.cn-band{background:var(--cream2);padding-top:0}
+.cn-card{position:relative;text-align:center;border-radius:26px;
+ padding:54px 22px 30px;color:#fff;
+ background:
+  radial-gradient(circle at 14% 16%,rgba(244,195,61,.26),transparent 46%),
+  radial-gradient(circle at 86% 84%,rgba(212,58,43,.28),transparent 48%),
+  var(--green-dd);
+ box-shadow:0 22px 48px rgba(44,33,24,.26)}
+.cn-mark{position:absolute;top:-34px;left:50%;transform:translateX(-50%);
+ width:68px;height:68px;border-radius:50%;background-size:cover;background-position:center;
+ border:3px solid var(--yellow);background-color:var(--paper);
+ box-shadow:0 8px 20px rgba(0,0,0,.3)}
+.cn-kicker{background:var(--red);color:#fff}
+.cn-band .cn-title{color:#fff;margin-bottom:8px}
+.cn-band .deco{color:var(--yellow)}
+.cn-sub{margin:0 auto 18px;max-width:46ch;color:rgba(255,255,255,.84);line-height:1.55}
+.cn-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:0 0 22px}
+.cn-chip{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);
+ border-radius:999px;padding:7px 14px;font-size:.82rem;font-weight:700;
+ color:rgba(255,255,255,.92)}
+.cn-go{margin:0 0 14px}
+.cn-go .btn{width:100%;max-width:340px}
+.cn-url{margin:0}
+.cn-url a{font-family:var(--font-display);text-transform:lowercase;
+ font-size:clamp(1.05rem,4.6vw,1.35rem);letter-spacing:.5px;color:var(--yellow);
+ border-bottom:2px solid rgba(244,195,61,.45);padding-bottom:2px}
+.cn-url a:hover{border-bottom-color:var(--yellow)}
+@media(max-width:420px){
+ .cn-card{padding:50px 16px 26px;border-radius:22px}
+ .cn-chip{font-size:.76rem;padding:6px 11px}
+}
+
 /* ================= reviews page ================= */
 .rev-hero{background:var(--cream2)}
 /* One file, two shapes. 1200/696 on a wide screen is the whole frame; 3/2 on a
