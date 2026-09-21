@@ -299,6 +299,22 @@
       <label class="bp-opt"><input type="radio" name="bp-fulfil" value="Delivery"><span>Delivery</span></label>
      </div>
     </fieldset>
+    <div class="bp-del" id="bp-del" hidden>
+     <label class="bp-field">
+      <span class="bp-lab">Delivery address</span>
+      <textarea id="bp-addr" rows="2" maxlength="160" autocomplete="street-address"
+                placeholder="Street, area, and anything that helps us find you"></textarea>
+     </label>
+     <fieldset class="bp-field bp-del-when">
+      <legend class="bp-lab">When do you want it?</legend>
+      <div class="bp-when-row">
+       <label class="bp-opt"><input type="radio" name="bp-when" value="ASAP"><span>As soon as possible</span></label>
+       <label class="bp-opt"><input type="radio" name="bp-when" value="At a time"><span>At a time</span></label>
+      </div>
+      <input type="time" id="bp-time" hidden>
+     </fieldset>
+     <p class="bp-del-note">The delivery charge is arranged with you on WhatsApp and is not in the total below.</p>
+    </div>
     <p class="bp-warn" id="bp-warn" hidden></p>
    </div>
    <div class="bp-sum" id="bp-sum" hidden>

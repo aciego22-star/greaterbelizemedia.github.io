@@ -119,33 +119,71 @@ function t(k,d){return TT_TXT[k]||d;}
     name every Friday. */
  var WKEY='tt_who_v1';
  var nameEl=$('bp-who-name'), warnEl=$('bp-warn');
+ var delBox=$('bp-del'), addrEl=$('bp-addr'), timeEl=$('bp-time');
  function fulfilEl(){return document.querySelector('input[name=bp-fulfil]:checked');}
+ function whenEl(){return document.querySelector('input[name=bp-when]:checked');}
  function who(){
-  var f=fulfilEl();
-  return {name:(nameEl&&nameEl.value||'').trim(), how:f?f.value:''};
+  var f=fulfilEl(), w=whenEl();
+  var o={name:(nameEl&&nameEl.value||'').trim(), how:f?f.value:''};
+  if(o.how==='Delivery'){
+   o.addr=(addrEl&&addrEl.value||'').trim().replace(/\s*\n\s*/g,', ');
+   o.when=w?w.value:'';
+   o.at=(timeEl&&timeEl.value)||'';
+  }
+  return o;
+ }
+ /* The address and the time only exist for a delivery, so they only appear for
+    one. Asking somebody eating at a table for their street is how a form earns
+    a reputation. */
+ function syncDelivery(){
+  var f=fulfilEl(), on=!!f&&f.value==='Delivery';
+  if(delBox) delBox.hidden=!on;
+  var w=whenEl();
+  if(timeEl) timeEl.hidden=!(on&&w&&w.value==='At a time');
  }
  function saveWho(){
   try{localStorage.setItem(WKEY,JSON.stringify(who()));}catch(e){}
  }
  function loadWho(){
   try{
-   var v=JSON.parse(localStorage.getItem(WKEY)||'null'); if(!v) return;
-   if(v.name&&nameEl) nameEl.value=v.name;
-   if(v.how){
-    var r=document.querySelector('input[name=bp-fulfil][value="'+v.how+'"]');
-    if(r) r.checked=true;
+   var v=JSON.parse(localStorage.getItem(WKEY)||'null');
+   if(v){
+    if(v.name&&nameEl) nameEl.value=v.name;
+    if(v.how){
+     var r=document.querySelector('input[name=bp-fulfil][value="'+v.how+'"]');
+     if(r) r.checked=true;
+    }
+    if(v.addr&&addrEl) addrEl.value=v.addr;
+    if(v.when){
+     var q=document.querySelector('input[name=bp-when][value="'+v.when+'"]');
+     if(q) q.checked=true;
+    }
+    if(v.at&&timeEl) timeEl.value=v.at;
    }
   }catch(e){}
+  syncDelivery();
  }
  if(nameEl) nameEl.addEventListener('input',function(){
   nameEl.classList.remove('bad'); if(warnEl) warnEl.hidden=true; saveWho();
  });
+ function clearMarks(){
+  if(nameEl) nameEl.classList.remove('bad');
+  if(addrEl) addrEl.classList.remove('bad');
+  ['.bp-how','.bp-del-when'].forEach(function(sel){
+   var g=document.querySelector(sel); if(g) g.classList.remove('bad');
+  });
+  if(warnEl) warnEl.hidden=true;
+ }
  document.querySelectorAll('input[name=bp-fulfil]').forEach(function(r){
-  r.addEventListener('change',function(){
-   var g=document.querySelector('.bp-how'); if(g) g.classList.remove('bad');
-   if(warnEl) warnEl.hidden=true; saveWho();
+  r.addEventListener('change',function(){ syncDelivery(); clearMarks(); saveWho(); });
+ });
+ document.querySelectorAll('input[name=bp-when]').forEach(function(r){
+  r.addEventListener('change',function(){ syncDelivery(); clearMarks(); saveWho();
+   if(timeEl&&!timeEl.hidden&&timeEl.focus) timeEl.focus();
   });
  });
+ if(addrEl) addrEl.addEventListener('input',function(){ clearMarks(); saveWho(); });
+ if(timeEl) timeEl.addEventListener('change',function(){ clearMarks(); saveWho(); });
  /* Nothing is sent half answered: the kitchen cannot cook "for someone, somehow".
     The wording follows the deals form, which already stops on a missing choice. */
  function whoReady(){
@@ -153,12 +191,24 @@ function t(k,d){return TT_TXT[k]||d;}
   if(!w.name){ missing.push(t('who_name','Your name')); if(nameEl) nameEl.classList.add('bad'); }
   if(!w.how){ missing.push(t('who_how','How are you getting it?'));
               var g=document.querySelector('.bp-how'); if(g) g.classList.add('bad'); }
+  if(w.how==='Delivery'){
+   if(!w.addr){ missing.push(t('who_addr','Delivery address')); if(addrEl) addrEl.classList.add('bad'); }
+   // "At a time" with no time on it is the same as not having answered
+   if(!w.when||(w.when==='At a time'&&!w.at)){
+    missing.push(t('who_when','When do you want it?'));
+    var d=document.querySelector('.bp-del-when'); if(d) d.classList.add('bad');
+   }
+  }
   if(!missing.length) return true;
   if(warnEl){
    warnEl.textContent=t('pick_one','Please choose')+': '+missing.join(', ');
    warnEl.hidden=false;
   }
-  var focus=!w.name?nameEl:document.querySelector('input[name=bp-fulfil]');
+  var focus=!w.name?nameEl
+           :!w.how?document.querySelector('input[name=bp-fulfil]')
+           :(w.how==='Delivery'&&!w.addr)?addrEl
+           :(w.how==='Delivery')?document.querySelector('input[name=bp-when]')
+           :nameEl;
   if(focus&&focus.focus) focus.focus();
   return false;
  }
@@ -180,8 +230,23 @@ function t(k,d){return TT_TXT[k]||d;}
   }}
  function renderPanel(){
   list.innerHTML='';
-  if(!basket.length){list.innerHTML='<p class="bp-empty"></p>';
-   list.firstChild.textContent=t('basket_empty','Your basket is empty. Tap Add on any menu item.');}
+  if(!basket.length){
+   var last=lastOrder();
+   if(last){
+    list.innerHTML='<div class="bp-sent"><p></p>'+
+      '<button type="button" class="btn-ghost" id="bp-undo"></button></div>';
+    list.querySelector('p').textContent=t('sent_ok','Order sent to WhatsApp.');
+    var ub=list.querySelector('#bp-undo');
+    ub.textContent=t('sent_undo','Put it back in my basket');
+    ub.addEventListener('click',function(){
+     basket=last.items.slice(); dropLast();
+     renderBar();saveBasket();renderPanel();
+    });
+   }else{
+    list.innerHTML='<p class="bp-empty"></p>';
+    list.firstChild.textContent=t('basket_empty','Your basket is empty. Tap Add on any menu item.');
+   }
+  }
   basket.forEach(function(it,i){
    var row=document.createElement('div');row.className='bp-row';
    row.innerHTML='<span class="bp-thumb'+(it.img?'':' none')+'"'+(it.img?' style="background-image:url(\''+it.img+'\')"':'')+'></span>'+
@@ -222,7 +287,7 @@ function t(k,d){return TT_TXT[k]||d;}
   var k=keyOf(name,meat),f=basket.filter(function(b){return (b.key||keyOf(b.name,b.meat))===k;})[0];
   if(f){f.qty++;}else{basket.push({key:k,name:name,meat:meat||'',price:price,
    label:label,qty:1,img:img||'',disp:disp||'',meatDisp:meatDisp||''});}
-  renderBar();saveBasket();
+  renderBar();saveBasket();dropLast();
  }
  // A promotional deal. `wa` is the real food the kitchen receives; the flyer never goes to them.
  function addDeal(o){
@@ -300,7 +365,8 @@ function t(k,d){return TT_TXT[k]||d;}
    var msg=count()
      ? waText()
      : t('wa_open','Hello Taco Taco, I would like to place an order.');
-   window.open('https://wa.me/'+WA_NUMBER+'?text='+encodeURIComponent(msg),'_blank');
+   var win=window.open('https://wa.me/'+WA_NUMBER+'?text='+encodeURIComponent(msg),'_blank');
+   if(win&&count()) armClear();
   });
  });
  document.querySelectorAll('.js-open-basket').forEach(function(a){
@@ -336,14 +402,76 @@ function t(k,d){return TT_TXT[k]||d;}
   var w=who(), head='';
   if(w.name) head+='\n'+t('wa_name','Name')+': '+w.name;
   if(w.how)  head+='\n'+t('wa_how','Order for')+': '+w.how;
+  if(w.how==='Delivery'){
+   if(w.addr) head+='\n'+t('wa_addr','Address')+': '+w.addr;
+   if(w.when) head+='\n'+t('wa_when','When')+': '+(w.when==='At a time'&&w.at?w.at:w.when);
+  }
   if(head) head+='\n';
+  if(w.how==='Delivery') tail+='\n'+t('wa_fee','Delivery charge to be confirmed on WhatsApp.');
   return t('wa_intro','Hi Taco Taco! I would like to place this order:')+'\n'+head+'\n'+lines.join('\n')+tail;
  }
+ /* ---- the basket empties once the order has gone ----------------------
+    It used to survive the handoff, so somebody who sent an order and then came
+    back to the site found it still sitting there and sent it twice.
+
+    The clearing waits for the page to actually be hidden rather than firing on
+    the tap. If WhatsApp never opens, because a browser blocked the popup or the
+    app is not installed, nothing was sent and the basket is still there to try
+    again with. Only once the customer has genuinely left for WhatsApp does it
+    empty.
+
+    And because "left for WhatsApp" is not quite the same as "pressed send",
+    the order is held for ten minutes and the empty basket offers it back. A
+    customer who opened the draft, changed their mind and returned should not
+    have to rebuild six lines from memory. */
+ var clearTimer=null;
+ var LKEY='tt_last_order_v1';
+ function stashOrder(){
+  try{localStorage.setItem(LKEY,JSON.stringify({at:Date.now(),items:basket}));}catch(e){}
+ }
+ function lastOrder(){
+  try{
+   var v=JSON.parse(localStorage.getItem(LKEY)||'null');
+   if(v&&v.items&&v.items.length&&Date.now()-v.at<600000) return v;
+  }catch(e){}
+  return null;
+ }
+ function dropLast(){try{localStorage.removeItem(LKEY);}catch(e){}}
+ function clearAfterSend(){
+  if(clearTimer){clearTimeout(clearTimer);clearTimer=null;}
+  if(!basket.length) return;
+  stashOrder();
+  basket=[];
+  renderBar();saveBasket();renderPanel();
+ }
+ /* Armed only once WhatsApp has actually been handed the order. window.open
+    returns nothing when a browser blocks the popup, and in that case nothing
+    was sent and the basket must survive for a second try.
+
+    Whichever comes first: the customer leaving for WhatsApp, or a short wait.
+    Leaving is the honest signal and covers the phone, where the app takes over
+    the screen. The wait covers a desktop where WhatsApp Web opened alongside
+    and this page never went anywhere. */
+ function armClear(){
+  if(clearTimer) clearTimeout(clearTimer);
+  clearTimer=setTimeout(clearAfterSend,1500);
+ }
+ addEventListener('visibilitychange',function(){
+  if(document.visibilityState==='hidden'&&clearTimer) clearAfterSend();
+ });
+ addEventListener('pagehide',function(){ if(clearTimer) clearAfterSend(); });
+
+ function sendToWhatsApp(text){
+  var win=window.open('https://wa.me/'+WA_NUMBER+'?text='+encodeURIComponent(text),'_blank');
+  if(win) armClear();
+  return win;
+ }
+
  $('bp-send').addEventListener('click',function(){
   if(!basket.length)return;
   if(!whoReady())return;
   saveWho();
-  window.open('https://wa.me/'+WA_NUMBER+'?text='+encodeURIComponent(waText()),'_blank');
+  sendToWhatsApp(waText());
  });
 
  // Collapsible menu: expand/collapse; when collapsing, jump back to the menu top.

@@ -752,6 +752,27 @@ html.promo-open,html.promo-open body{overflow:hidden}
 .bp-opt input:focus-visible+span{outline:3px solid var(--yellow);outline-offset:2px}
 .bp-how.bad .bp-opt span{border-color:var(--red)}
 .bp-warn{margin:0;color:var(--red-d);font-weight:700;font-size:.86rem}
+/* delivery only: address, when, and the one thing the total cannot include */
+.bp-del{display:flex;flex-direction:column;gap:12px;padding:12px 0 0;
+ border-top:1px dashed var(--border)}
+.bp-del[hidden]{display:none}
+#bp-addr{width:100%;min-height:70px;padding:11px 14px;border-radius:14px;resize:vertical;
+ border:2px solid var(--border);background:var(--paper);color:var(--ink);
+ font:inherit;font-size:1rem;line-height:1.45}
+#bp-addr:focus{outline:none;border-color:var(--green)}
+#bp-addr.bad{border-color:var(--red);background:#fff5f3}
+.bp-when-row{display:flex;gap:8px}
+.bp-del-when.bad .bp-opt span{border-color:var(--red)}
+#bp-time{width:100%;min-height:48px;margin-top:8px;padding:10px 14px;border-radius:14px;
+ border:2px solid var(--border);background:var(--paper);color:var(--ink);font:inherit;font-size:1rem}
+#bp-time[hidden]{display:none}
+#bp-time:focus{outline:none;border-color:var(--green)}
+.bp-del-note{margin:0;color:var(--muted);font-size:.8rem;line-height:1.5;
+ background:rgba(244,195,61,.18);border-radius:12px;padding:10px 12px}
+/* what the basket says once the order has gone */
+.bp-sent{text-align:center;padding:22px 8px}
+.bp-sent p{margin:0 0 14px;color:var(--green-d);font-weight:800}
+#bp-undo{cursor:pointer}
 .bp-warn[hidden]{display:none}
 @media(max-width:380px){
  .bp-opt span{font-size:.78rem;padding:8px 3px}

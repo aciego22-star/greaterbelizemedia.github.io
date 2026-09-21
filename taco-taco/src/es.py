@@ -747,6 +747,16 @@ ES.update({
  "Pickup":                   "Recoger",
  "Dine-In":                  "Comer aqu\u00ed",
  "Delivery":                 "Domicilio",
+ # delivery only
+ "Delivery address":         "Direcci\u00f3n de entrega",
+ "Street, area, and anything that helps us find you":
+   "Calle, \u00e1rea y cualquier se\u00f1a que nos ayude a encontrarlo",
+ "When do you want it?":     "\u00bfPara cu\u00e1ndo lo quiere?",
+ "As soon as possible":      "Lo antes posible",
+ "At a time":                "A una hora",
+ "The delivery charge is arranged with you on WhatsApp and is not in the total below.":
+   "El costo de la entrega se acuerda con usted por WhatsApp y no est\u00e1 incluido en el "
+   "total de abajo.",
 })
 
 # ---------------------------------------------------------------- Taco Taco Connect
@@ -836,5 +846,12 @@ JS = {
  "who_how": "\u00bfC\u00f3mo lo va a recibir?",
  "wa_name": "Nombre",
  "wa_how": "Pedido para",
+ "wa_addr": "Direcci\u00f3n",
+ "wa_when": "Para",
+ "wa_fee": "El costo de la entrega se confirma por WhatsApp.",
+ "who_addr": "Direcci\u00f3n de entrega",
+ "who_when": "\u00bfPara cu\u00e1ndo lo quiere?",
+ "sent_ok": "Pedido enviado por WhatsApp.",
+ "sent_undo": "Devolverlo a mi carrito",
  "added": "Agregado",
 }
