@@ -99,6 +99,8 @@ tools/make-og-image.js    re-renders og-image.jpg from tools/og-image.html
 tools/og-image.html       the sharing card, rendered at 1200x630
 tools/archivo-black-latin.woff2  the card's headline font, build-time only
 tools/make-llms-txt.py    rewrites llms.txt from BUSINESS and HOURS
+promo/connect-promo-block.html  a paste-in block for tacotaco.bz that
+                          announces this page; not part of this deploy
 netlify.toml              deploy config, headers, redirects
 site.webmanifest, robots.txt, sitemap.xml
 ```
@@ -360,6 +362,24 @@ surface, a link card or the language pill, and stays dark at every hour.
 `--on-ground` is type sitting directly on the page gradient, and that one goes
 cream after dark. They were the same value until the night palette needed them
 apart, which is worth remembering before reaching for either.
+
+### Language
+
+The page reads the visitor's phone. `navigator.language` starting with `es`
+gets Spanish, everything else gets English, so a phone set to `es-MX`,
+`es-ES`, `es-419` or plain `es` all land in Spanish and `fr-FR` or `pt-BR`
+fall back to English rather than to nothing.
+
+Order of precedence: a `?lang=` in the URL wins, then a choice the visitor
+made before, then the phone. **That middle one is worth remembering when you
+test:** tap EN once on your own phone and that choice is saved, and the page
+will keep showing you English no matter what your phone is set to. It is
+stored under `tt-connect-lang`. To see the detection behave, open the page in
+a private tab.
+
+The EN/ES switch stays because an explicit choice should beat a guess: a
+Spanish speaker on a borrowed English phone, or the other way round, needs a
+way through.
 
 ### The callout
 

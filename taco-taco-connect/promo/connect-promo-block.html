@@ -1,0 +1,161 @@
+<!-- ===================================================================
+     TACO TACO CONNECT promo block, for tacotaco.bz
+     Paste this whole thing wherever you want it. Below "Open in Google
+     Maps" in the VISIT / CONTACT panel is the spot it was designed for,
+     but it carries its own background so it also sits happily on the
+     cream sections.
+
+     It is self-contained on purpose:
+       * every class is prefixed ttc- so it cannot collide with the site's
+         own CSS, and it sets its own font stack and box-sizing so it does
+         not inherit anything unexpected
+       * it picks English or Spanish from the visitor's phone by itself,
+         so it does not need wiring into the site's language switch
+       * it honours prefers-reduced-motion
+       * no build step, no dependency, one image from the Connect site
+
+     To drop the mascot, delete the <img> line. Everything else still works.
+     =================================================================== -->
+<section class="ttc-promo" aria-labelledby="ttc-promo-title">
+  <div class="ttc-promo__card">
+    <div class="ttc-promo__art" aria-hidden="true">
+      <img src="https://connect.tacotaco.bz/assets/mascot-400.webp"
+           alt="" width="557" height="412" loading="lazy" decoding="async">
+    </div>
+    <div class="ttc-promo__body">
+      <p class="ttc-promo__eyebrow" data-ttc="eyebrow">Now live</p>
+      <h3 class="ttc-promo__title" id="ttc-promo-title" data-ttc="title">
+        Everything Taco Taco. One link.
+      </h3>
+      <p class="ttc-promo__copy" data-ttc="copy">
+        Our menu, WhatsApp ordering, directions, opening hours and every one of
+        our socials, together in one place.
+      </p>
+      <a class="ttc-promo__cta" href="https://connect.tacotaco.bz/"
+         data-ttc-label="cta_aria" aria-label="Open connect.tacotaco.bz">
+        <span class="ttc-promo__cta-text">connect.tacotaco.bz</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path
+          d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4"
+          stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <p class="ttc-promo__note" data-ttc="note">Free to use. Nothing to install.</p>
+    </div>
+  </div>
+</section>
+
+<style>
+.ttc-promo,.ttc-promo *{box-sizing:border-box}
+.ttc-promo{
+  margin:28px auto;
+  max-width:760px;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+.ttc-promo__card{
+  position:relative;
+  display:flex;
+  align-items:center;
+  gap:clamp(12px,3vw,26px);
+  padding:clamp(18px,4vw,26px);
+  border-radius:24px;
+  overflow:hidden;
+  color:#1B2F14;
+  background:
+    radial-gradient(70% 120% at 100% 0%, rgba(255,214,120,.95), transparent 62%),
+    linear-gradient(135deg,#F5B301 0%,#F79A12 46%,#EF6C14 100%);
+  box-shadow:0 18px 40px -18px rgba(120,60,0,.65),0 0 0 1px rgba(255,255,255,.35) inset;
+}
+/* the Connect page's own taco watermark, so the two read as one family */
+.ttc-promo__card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  opacity:.16;
+  pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27132%27%20height%3D%27132%27%20viewBox%3D%270%200%20132%20132%27%3E%3Cg%20fill%3D%27none%27%20stroke%3D%27%23FFF6E5%27%20stroke-width%3D%272.1%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%3Cg%20transform%3D%27translate%286%2010%29%20rotate%28-11%2020%2020%29%27%3E%3Cpath%20d%3D%27M4%2028a16%2016%200%200%201%2032%200c0%202-1.3%203-3%203H7c-1.7%200-3-1-3-3ZM9.5%2026.5c.5-7%205-12%2010.5-12s10%205%2010.5%2012M12%2019.5c2-2.2%204.6-3%206.4-1.3M21.5%2017.6c2-1.4%204.3-.6%205.6%201.5%27%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%27translate%2872%2042%29%20rotate%2815%2020%2020%29%27%3E%3Cpath%20d%3D%27M4%2028a16%2016%200%200%201%2032%200c0%202-1.3%203-3%203H7c-1.7%200-3-1-3-3ZM9.5%2026.5c.5-7%205-12%2010.5-12s10%205%2010.5%2012M12%2019.5c2-2.2%204.6-3%206.4-1.3M21.5%2017.6c2-1.4%204.3-.6%205.6%201.5%27%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%27translate%2826%2078%29%20rotate%286%2020%2020%29%27%3E%3Cpath%20d%3D%27M4%2028a16%2016%200%200%201%2032%200c0%202-1.3%203-3%203H7c-1.7%200-3-1-3-3ZM9.5%2026.5c.5-7%205-12%2010.5-12s10%205%2010.5%2012M12%2019.5c2-2.2%204.6-3%206.4-1.3M21.5%2017.6c2-1.4%204.3-.6%205.6%201.5%27%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+  background-size:132px 132px;
+}
+.ttc-promo__art{flex:none;width:clamp(96px,26%,190px);position:relative}
+.ttc-promo__art img{
+  display:block;width:100%;height:auto;
+  filter:drop-shadow(0 10px 14px rgba(120,50,0,.4));
+  animation:ttc-float 6.5s ease-in-out infinite;
+}
+@keyframes ttc-float{
+  0%,100%{transform:translateY(0) rotate(-1.6deg)}
+  50%    {transform:translateY(-9px) rotate(1.6deg)}
+}
+.ttc-promo__body{position:relative;flex:1;min-width:0}
+.ttc-promo__eyebrow{
+  margin:0 0 6px;
+  font-size:.7rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;
+  color:#8A3B00;
+}
+.ttc-promo__title{
+  margin:0 0 8px;
+  font-size:clamp(1.15rem,4.4vw,1.6rem);
+  line-height:1.15;font-weight:800;letter-spacing:-.01em;
+  color:#14331F;
+}
+.ttc-promo__copy{
+  margin:0 0 16px;
+  font-size:clamp(.88rem,2.7vw,.98rem);
+  line-height:1.5;color:rgba(20,51,31,.85);
+}
+.ttc-promo__cta{
+  position:relative;
+  display:inline-flex;align-items:center;gap:10px;
+  min-height:50px;padding:13px 22px;
+  border-radius:999px;
+  overflow:hidden;
+  background:linear-gradient(160deg,#1DA35F,#12734A 58%,#0B5A38);
+  color:#fff;font-weight:800;font-size:clamp(.9rem,2.8vw,1rem);
+  letter-spacing:.01em;text-decoration:none;
+  box-shadow:0 2px 0 rgba(255,255,255,.25) inset,0 12px 24px -10px rgba(11,90,56,.85);
+  transition:transform .2s ease,box-shadow .2s ease;
+}
+.ttc-promo__cta svg{width:17px;height:17px;flex:none}
+.ttc-promo__cta::after{
+  content:"";position:absolute;top:0;left:-60%;width:45%;height:100%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent);
+  transform:skewX(-18deg);
+  animation:ttc-sheen 4.6s ease-in-out infinite;
+}
+@keyframes ttc-sheen{0%,62%{left:-60%}100%{left:130%}}
+.ttc-promo__cta:hover{transform:translateY(-2px);box-shadow:0 2px 0 rgba(255,255,255,.25) inset,0 18px 32px -10px rgba(11,90,56,.9)}
+.ttc-promo__cta:active{transform:translateY(1px)}
+.ttc-promo__cta:focus-visible{outline:3px solid #14331F;outline-offset:3px}
+.ttc-promo__note{margin:10px 0 0;font-size:.76rem;color:rgba(20,51,31,.7)}
+
+@media (max-width:520px){
+  .ttc-promo__card{flex-direction:column;text-align:center}
+  .ttc-promo__art{width:clamp(120px,46%,180px)}
+  .ttc-promo__cta{width:100%;justify-content:center}
+}
+@media (prefers-reduced-motion:reduce){
+  .ttc-promo__art img,.ttc-promo__cta::after{animation:none!important}
+  .ttc-promo__cta{transition:none}
+}
+</style>
+
+<script>
+/* Picks the language off the visitor's phone. Self-contained so it does not
+   have to be wired into the site's own EN/ES switch. */
+(function () {
+  var ES = {
+    eyebrow: "Ya disponible",
+    title: "Todo Taco Taco. Un solo enlace.",
+    copy: "Nuestro menú, pedidos por WhatsApp, cómo llegar, horarios y todas nuestras redes, juntos en un solo lugar.",
+    note: "Gratis. Nada que instalar.",
+    cta_aria: "Abrir connect.tacotaco.bz"
+  };
+  if ((navigator.language || "en").toLowerCase().indexOf("es") !== 0) return;
+  document.querySelectorAll(".ttc-promo [data-ttc]").forEach(function (el) {
+    var v = ES[el.getAttribute("data-ttc")];
+    if (v) el.textContent = v;
+  });
+  document.querySelectorAll(".ttc-promo [data-ttc-label]").forEach(function (el) {
+    var v = ES[el.getAttribute("data-ttc-label")];
+    if (v) el.setAttribute("aria-label", v);
+  });
+})();
+</script>
