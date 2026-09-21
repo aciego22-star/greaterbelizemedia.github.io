@@ -19,7 +19,7 @@ there and it changes everywhere.
 | Key | Value |
 |---|---|
 | `whatsapp` | `5016134677` |
-| `phone` / `phoneDisplay` | `+5018022322` / `802-2322` |
+| `phone` / `phoneDisplay` | `+5018022332` / `802-2332` |
 | `facebook` | `https://www.facebook.com/share/1Lk9sxpoox/` |
 | `instagram` | `https://www.instagram.com/tacotacomexicanrestaurant/` |
 | `tiktok` | `https://www.tiktok.com/@tacotacomexicanfood` |
@@ -99,8 +99,6 @@ tools/make-og-image.js    re-renders og-image.jpg from tools/og-image.html
 tools/og-image.html       the sharing card, rendered at 1200x630
 tools/archivo-black-latin.woff2  the card's headline font, build-time only
 tools/make-llms-txt.py    rewrites llms.txt from BUSINESS and HOURS
-promo/connect-promo-block.html  a paste-in block for tacotaco.bz that
-                          announces this page; not part of this deploy
 netlify.toml              deploy config, headers, redirects
 site.webmanifest, robots.txt, sitemap.xml
 ```
@@ -311,7 +309,7 @@ normal.
 
 ## Opening hours
 
-Monday to Thursday 10:00 AM to 8:00 PM, Friday to Sunday 6:00 AM to 8:00 PM.
+Monday to Thursday 10:00 AM to 8:00 PM, Friday to Sunday 8:00 AM to 8:00 PM.
 
 They appear in four places, all fed by the same `HOURS` table: the panel under
 the link cards, the `openingHoursSpecification` in the structured data (built by
@@ -337,8 +335,9 @@ The page has three states, not two, driven by one `[data-phase]` attribute on
 | `night` | everything else | arms down, eyes closed, z's | none |
 
 `dawn` is defined as *from seven until today's opening time*, not as a list of
-days. Monday to Thursday open at ten and get the window; Friday to Sunday open
-at six and never see it. Change the hours and the window follows on its own.
+days, which is why correcting the Friday to Sunday opening from six to eight
+needed no code change: those days now get a one hour window from seven, and
+Monday to Thursday still get three. Change the hours and the window follows.
 
 `data-open` still carries open/closed for the status chip and anything that only
 cares whether you can order. `data-phase` carries the mood. They are not the
