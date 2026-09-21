@@ -99,6 +99,56 @@ function t(k,d){return TT_TXT[k]||d;}
   if(PROMO.deals!==false) return total();
   return basket.reduce(function(a,b){return a+(b.deal?0:b.qty*b.price);},0);
  }
+ /* ---- the kitchen's copy ----------------------------------------------
+    The WhatsApp draft opens in the customer's own app, so they can type over
+    any figure in it before they press send. Nothing a website does can stop
+    that; it is their keyboard.
+
+    So the figures stop being the thing that has to be trusted. Every order
+    carries a link to a page on our own domain, and that link holds only what
+    was ordered: names, meats, quantities, and the moment it was placed. Not
+    one price. The page works the prices out for itself from the same menu
+    this site is built from, and applies whichever promotion was running at
+    that moment. There is no number in the customer's hands for it to believe.
+
+    The seal is a plain hash, and the key sits in this file where anyone can
+    read it. It exists so that a link altered by hand fails loudly rather than
+    quietly decoding to something wrong. It is not protection against somebody
+    who reads our source and forges one, and it does not need to be, because
+    even a perfectly forged link cannot state a price. */
+ function seal(str){
+  var h1=0x811c9dc5, h2=0x01000193, m=str+(PROMO.seal||'');
+  for(var i=0;i<m.length;i++){
+   var c=m.charCodeAt(i);
+   h1=((h1^c)>>>0)*16777619>>>0;
+   h2=((h2+c*31)>>>0)^((h2<<7)|(h2>>>25));h2=h2>>>0;
+  }
+  return (h1>>>0).toString(36).slice(-4)+(h2>>>0).toString(36).slice(-4);
+ }
+ function b64url(str){
+  return btoa(unescape(encodeURIComponent(str)))
+         .replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+ }
+ function orderLink(){
+  if(!basket.length||!PROMO.check) return '';
+  var o=basket.map(function(it){
+   if(it.deal){
+    // the id survives translation; the title does not
+    var id=(it.key||'').split(':')[1]||'';
+    return {d:id,n:it.name,q:it.qty,p:it.price};
+   }
+   return {n:it.name,m:it.meat||'',q:it.qty};
+  });
+  var b=bill();
+  // Only the generated total travels, and only so the page can say whether the
+  // link was left alone. The subtotal and the discount are not carried: the
+  // page works both out for itself, and data nobody reads is data that can
+  // disagree with the truth.
+  var body=JSON.stringify({v:1,t:Date.now(),o:o,g:b.total});
+  var pay=b64url(body);
+  return PROMO.check+'#'+pay+'.'+seal(pay);
+ }
+
  function bill(){
   var sub=round2(total());
   var off=(promoOn()&&basket.length&&sub>0)?round2(promoBase()*PROMO.pct/100):0;
@@ -273,6 +323,8 @@ function t(k,d){return TT_TXT[k]||d;}
   }else{
    tail='\n\n'+t('wa_total','Total')+': '+money(b.total)+' BZD';
   }
+  var link=orderLink();
+  if(link) tail+='\n\n'+t('wa_check','Kitchen copy')+': '+link;
   return t('wa_intro','Hi Taco Taco! I would like to place this order:')+'\n\n'+lines.join('\n')+tail;
  }
  $('bp-send').addEventListener('click',function(){

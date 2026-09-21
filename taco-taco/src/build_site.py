@@ -818,6 +818,76 @@ def promo_modal(fname):
     esc(C["welcome"]), body, esc(C["nocode"]), href, esc(C["cta"]),
     esc(C["thanks"]), esc(C["signoff"])))
 
+# The order the kitchen can trust. See ORDER_CHECK_NOTE below for why this
+# exists and exactly how far it goes.
+ORDER_CHECK_PAGE = "order-check.html"
+# Baked into both the encoder and the reader. It is in public JavaScript, so it
+# is a seal on an envelope and not a lock on a door: it makes a hand-edited link
+# fail loudly, it does not stop somebody who reads our source and forges one.
+# That is fine, because the prices on the check page are never read from the
+# link in the first place.
+ORDER_CHECK_KEY = "tt-order-seal-v1"
+
+def order_check_data():
+    """Everything the check page needs to price an order for itself.
+
+    The link a customer carries holds what they ordered. It does not hold what
+    it costs: the page works that out from this table, which is generated from
+    the same menu the site is built from. So there is no number in the
+    customer's hands for the page to be fooled by."""
+    prices = {}
+    for c in MENU_CATS:
+        for i in c["items"]:
+            if isinstance(i.get("price"), (int, float)):
+                prices[i["name"]] = i["price"]
+    deals = {}
+    for d in DEALS:
+        if isinstance(d.get("price"), (int, float)):
+            allowed = [d["price"]]
+        else:
+            allowed = []
+            for ch in d.get("choices", []):
+                if ch.get("priced"):
+                    allowed += [o["price"] for o in ch["options"] if isinstance(o, dict)]
+        deals[d["id"]] = {"t": d["title"], "p": sorted(set(allowed))}
+    promos = [{"id": h["id"], "from": _promo_ms(h["starts"]), "to": _promo_ms(h["ends"]) + 999,
+               "pct": h["percent"], "deals": h["deals"], "label": h["label"]}
+              for h in promo_data.HISTORY]
+    return {"prices": prices, "surcharge": MEAT_SURCHARGE, "deals": deals,
+            "promos": promos, "key": ORDER_CHECK_KEY, "wa": WA_NUMBER}
+
+ORDER_CHECK_NOTE = """Why this page exists, and how far it goes.
+
+The order a customer sends arrives as a WhatsApp draft in their own app. They
+can type over any figure in it before pressing send, and no website can stop
+that. So this page removes the need to trust those figures at all.
+
+The link at the foot of every order carries what was ordered and when. It
+carries no prices. This page holds its own copy of the menu, works out what
+that order costs, and applies whichever promotion was running at the moment it
+was placed, which is why an order sent on 30 September still shows its five
+percent when it is opened on 1 October.
+
+What it catches: anything typed over in the message. The figures here were
+never taken from the customer.
+What it does not catch: an order whose link was deleted before sending. There
+is no link to open, so price it from the menu by hand.
+"""
+
+def order_check_page():
+    """The kitchen's copy. Reachable only from the link inside an order."""
+    D = json.dumps(order_check_data(), ensure_ascii=False, separators=(",", ":"))
+    return (
+ '\n <section class="blk chk-sec">\n  <div class="container">\n'
+ '   <div class="sec-head"><span class="sec-kicker">Staff</span>'
+ '<h2 class="sec-title">Order <span class="deco">Check</span></h2>'
+ '<p class="sec-sub">Prices worked out here from the menu, not taken from the message.</p></div>\n'
+ '   <div id="chk-out" class="chk-out"><p class="chk-wait">Open this from the link at the '
+ 'bottom of a customer order.</p></div>\n'
+ '  </div>\n </section>\n'
+ '<script>window.TT_CHECK=%s;</script>\n'
+ '<script src="assets/js/check.js" defer></script>' % D)
+
 def connect_band():
     """Taco Taco Connect, announced rather than linked.
 
@@ -1328,7 +1398,10 @@ def main():
         h = h + head_meta(fname, title, desc) + "<!--SCHEMA-->"
         return ("<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n%s\n</head>\n<body>\n%s\n<main id=\"top\">\n%s\n</main>\n%s\n%s\n%s\n%s%s\n</body>\n</html>\n"
                 % (h, header_for(nav_as or fname), body, banner, foot, dock, basket,
-                   promo_modal(fname) if promo_live() else ""))
+                   # not on the staff check page: somebody opening an order
+                   # is working, not shopping
+                   promo_modal(fname)
+                   if promo_live() and fname != ORDER_CHECK_PAGE else ""))
 
 
     # The deals carousel and the rotating reviews are drawn in the browser, so
@@ -1348,7 +1421,10 @@ def main():
                  "pct": promo_data.PERCENT, "deals": promo_data.APPLY_TO_DEALS,
                  "from": PROMO_FROM, "to": PROMO_TO,
                  "line": C["line"], "subtotal": C["subtotal"],
-                 "final": C["final"], "badge": C["badge"]}
+                 "final": C["final"], "badge": C["badge"],
+                 # where the kitchen's copy lives, and the seal it is seen with
+                 "check": SITE_URL + "/" + ORDER_CHECK_PAGE,
+                 "seal": ORDER_CHECK_KEY}
         return ("window.TT_DEALS=%s;\nwindow.TT_STR=%s;\nwindow.TT_REVIEWS=%s;\n"
                 "window.TT_REV_ORDER=%s;\nwindow.TT_T=%s;\nwindow.TT_WA='%s';\n"
                 "window.TT_PROMO=%s;\n"
@@ -1637,6 +1713,19 @@ def main():
       '    Cache-Control = "public, max-age=0, must-revalidate"\n'
       '    X-Content-Type-Options = "nosniff"\n'
       '    Referrer-Policy = "strict-origin-when-cross-origin"\n')
+
+    # The staff order check. Written straight to disk rather than through `out`,
+    # so it never reaches the navigation, the sitemap, llms.txt or the language
+    # switch. It is not a secret page and does not need to be: it shows a
+    # customer their own order at the price the menu says, which is the same
+    # price the basket already showed them. It is simply not advertised.
+    oc = page(ORDER_CHECK_PAGE, "Order check | %s" % BRAND, order_check_page(),
+              "Staff order check.")
+    oc = re.sub(r'\n<link rel="canonical"[^>]*>', '', oc)
+    oc = re.sub(r'\n<script type="application/ld\+json">.*?</script>', '', oc, flags=re.S)
+    oc = oc.replace("</head>", '<meta name="robots" content="noindex,nofollow">\n</head>')
+    open(os.path.join(DIST, ORDER_CHECK_PAGE), "w", encoding="utf-8").write(
+      finish(reserve_space(stamp(oc)), "en", ORDER_CHECK_PAGE))
 
     # A real 404: no canonical (it would tell Google this page is the home page),
     # no Restaurant markup, and noindex so it never enters the index.

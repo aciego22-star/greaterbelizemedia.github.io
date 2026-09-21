@@ -58,3 +58,15 @@ COPY = {
  "final":    "Final Order Total",
  "badge":    "5% off",
 }
+
+
+# ---------------------------------------------------------------- the calendar
+# Every promotion this site has ever run, so the staff check page can price an
+# order the way it was priced at the moment it was placed rather than the way it
+# would be priced today. An order sent at half past eleven on 30 September and
+# opened by the kitchen on 1 October still shows its 5% off, and an order sent
+# in October shows none. Append to this list, never edit a past entry.
+HISTORY = [
+ {"id": PROMO_ID, "starts": STARTS, "ends": ENDS,
+  "percent": PERCENT, "deals": APPLY_TO_DEALS, "label": COPY["line"]},
+]
