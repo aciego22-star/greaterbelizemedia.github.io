@@ -1730,10 +1730,15 @@ def main():
                 swapped[rel] = rel[:-4] + ".webp"
                 os.remove(src)
         if swapped:
-            # Match on the filename after a slash, not on the full path: the
-            # stylesheet reaches images as ../img/x.jpg while the pages use
-            # assets/img/x.jpg, and only one of those was being caught.
-            subs = [(re.compile(r"(?<=/)" + re.escape(os.path.basename(a)) + r"\b"),
+            # Match the filename wherever it sits, not only after a slash. The
+            # stylesheet reaches images as ../img/x.jpg and the pages as
+            # assets/img/x.jpg, but the deals payload carries a bare
+            # "flyer": "flyer-any2.jpg" with a quote in front of it, and a
+            # lookbehind for a slash walked straight past it. The basket built
+            # its thumbnail from that name and asked for a .jpg that the
+            # conversion had already deleted, so every combo in the basket
+            # showed an empty square.
+            subs = [(re.compile(r"(?<![\w.-])" + re.escape(os.path.basename(a)) + r"\b"),
                      os.path.basename(b)) for a, b in swapped.items()]
             for root, _dirs, files in os.walk(DIST):
                 for fn in files:
@@ -1752,13 +1757,21 @@ def main():
     missing = set()
     for root, _dirs, files in os.walk(DIST):
         for fn in files:
-            if not fn.endswith((".html", ".css")): continue
+            # .js too: the deals payload names its flyers, and a broken name in
+            # there is a blank square in the basket that no page-level check saw.
+            if not fn.endswith((".html", ".css", ".js")): continue
             full = os.path.join(root, fn)
             body = open(full, encoding="utf-8").read()
             body = body.replace("&#x27;", "'").replace("&quot;", '"')   # see below
             for ref in re.findall(r"""["'(]([A-Za-z0-9._/-]+\.(?:jpg|jpeg|png|webp|svg|ico|mp4|woff2?))["')]""", body):
                 if ref.startswith(("http", "//", "data:")): continue
                 target = os.path.normpath(os.path.join(os.path.dirname(full), ref))
+                # A bare filename in a data payload is not relative to the
+                # script that carries it: the deals payload names its flyer and
+                # the page builds assets/img/ in front of it. Check there too
+                # before calling it broken.
+                if not os.path.exists(target) and "/" not in ref:
+                    target = os.path.join(DIST, "assets", "img", ref)
                 if not os.path.exists(target):
                     missing.add("%s -> %s" % (os.path.relpath(full, DIST), ref))
     # A page one directory down must never ask for assets/ without the ../ that

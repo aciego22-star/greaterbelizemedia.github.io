@@ -747,6 +747,16 @@ ES.update({
  "Pickup":                   "Recoger",
  "Dine-In":                  "Comer aqu\u00ed",
  "Delivery":                 "Domicilio",
+ # the last tap before it goes
+ "Is this your final order?": "\u00bfEs este su pedido final?",
+ "It goes to Taco Taco on WhatsApp as soon as you tap send.":
+   "Se env\u00eda a Taco Taco por WhatsApp en cuanto toque enviar.",
+ "Not yet":                  "Todav\u00eda no",
+ "Yes, send it":             "S\u00ed, enviarlo",
+ "Prices in Belize dollars (BZD). Any final details we still need are confirmed "
+ "with you on WhatsApp.":
+   "Precios en d\u00f3lares belice\u00f1os (BZD). Cualquier detalle final que haga falta se "
+   "confirma con usted por WhatsApp.",
  # delivery only
  "Delivery address":         "Direcci\u00f3n de entrega",
  "Street, area, and anything that helps us find you":
@@ -853,5 +863,9 @@ JS = {
  "who_when": "\u00bfPara cu\u00e1ndo lo quiere?",
  "sent_ok": "Pedido enviado por WhatsApp.",
  "sent_undo": "Devolverlo a mi carrito",
+ # the fulfilment word as the customer reads it, for the confirmation summary
+ "how_pickup": "Recoger",
+ "how_dinein": "Comer aqu\u00ed",
+ "how_delivery": "Domicilio",
  "added": "Agregado",
 }

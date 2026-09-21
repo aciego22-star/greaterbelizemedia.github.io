@@ -431,7 +431,7 @@ html.js.has-items #basket-bar{display:flex}
 #basket-panel,#order-chat{display:none;position:fixed;inset:0;z-index:115;background:rgba(20,12,8,.55)}
 #basket-panel.open,#order-chat.open{display:flex}
 #basket-panel{align-items:flex-end;justify-content:center}
-.bp-inner{background:var(--paper);width:min(560px,100%);max-height:86vh;border-radius:20px 20px 0 0;
+.bp-inner{position:relative;background:var(--paper);width:min(560px,100%);max-height:86vh;border-radius:20px 20px 0 0;
  display:flex;flex-direction:column;overflow:hidden;box-shadow:0 -14px 60px rgba(0,0,0,.4)}
 @media(min-width:768px){#basket-panel{align-items:center}.bp-inner{border-radius:20px}}
 .bp-head,.oc-head{display:flex;align-items:center;gap:10px;padding:15px 18px;background:var(--green-d);color:#fff}
@@ -440,7 +440,15 @@ html.js.has-items #basket-bar{display:flex}
 #bp-close,#oc-close{cursor:pointer;border:0;background:rgba(255,255,255,.18);color:#fff;font-weight:700;
  font-size:.78rem;padding:6px 12px;border-radius:999px}
 #bp-close:hover,#oc-close:hover{background:rgba(255,255,255,.32)}
-.bp-list{padding:8px 18px;overflow-y:auto;flex:1}
+/* The panel is a head that stays, a middle that scrolls, and a foot that
+   stays. It used to be a scrolling list with a fixed block under it, and once
+   that block grew a name, a fulfilment, an address and a time, it pushed the
+   send button off the bottom of the screen: on a short phone the delivery
+   fields were there but unreachable. Now everything scrolls together and the
+   two things you always need, the total and the button, are pinned. */
+.bp-body{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;
+ overscroll-behavior:contain}
+.bp-list{padding:8px 18px;flex:none}
 .bp-empty{color:var(--muted);text-align:center;padding:26px 0}
 .bp-row{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px dashed rgba(44,33,24,.14)}
 .bp-row:last-child{border-bottom:none}
@@ -453,6 +461,9 @@ html.js.has-items #basket-bar{display:flex}
 .qbtn:hover{background:var(--cream)}
 .qn{min-width:20px;text-align:center;font-weight:800}
 .bp-foot{padding:14px 18px 18px;border-top:1px solid var(--border);background:var(--cream)}
+.bp-pay{flex:none;padding:12px 18px calc(14px + env(safe-area-inset-bottom));
+ border-top:1px solid var(--border);background:var(--cream);
+ box-shadow:0 -8px 18px rgba(44,33,24,.07)}
 .bp-total-row{display:flex;justify-content:space-between;font-family:var(--font-display);font-size:1.15rem;
  color:var(--green-d);margin-bottom:12px}
 .bp-actions{display:flex;gap:10px}
@@ -777,6 +788,23 @@ html.promo-open,html.promo-open body{overflow:hidden}
 @media(max-width:380px){
  .bp-opt span{font-size:.78rem;padding:8px 3px}
 }
+
+/* ================= "is this your final order?" ================= */
+/* One more tap before the order leaves, because the next thing that happens is
+   a WhatsApp draft and a customer who forgot the drinks is now in a back and
+   forth with the kitchen. It sits inside the basket panel, above it, so the
+   order is still behind it rather than replaced by it. */
+.bp-ask{position:absolute;inset:0;z-index:2;display:grid;place-items:center;
+ padding:18px;background:rgba(18,63,29,.55);backdrop-filter:blur(2px)}
+.bp-ask[hidden]{display:none}
+.bp-ask-card{width:min(420px,100%);background:var(--paper);border:3px solid var(--green);
+ border-radius:20px;padding:22px 20px 18px;text-align:center;
+ box-shadow:0 22px 50px rgba(0,0,0,.34)}
+.bp-ask-t{margin:0 0 8px;font-family:var(--font-display);text-transform:uppercase;
+ letter-spacing:.4px;font-size:1.12rem;line-height:1.15;color:var(--green-d)}
+.bp-ask-sum{margin:0 0 6px;font-weight:800;color:var(--ink);font-size:.98rem;line-height:1.45}
+.bp-ask-note{margin:0 0 16px;color:var(--muted);font-size:.84rem;line-height:1.45}
+.bp-ask .bp-actions{margin:0}
 
 /* ================= reviews page ================= */
 .rev-hero{background:var(--cream2)}

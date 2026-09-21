@@ -175,7 +175,16 @@ function t(k,d){return TT_TXT[k]||d;}
   if(warnEl) warnEl.hidden=true;
  }
  document.querySelectorAll('input[name=bp-fulfil]').forEach(function(r){
-  r.addEventListener('change',function(){ syncDelivery(); clearMarks(); saveWho(); });
+  r.addEventListener('change',function(){
+   syncDelivery(); clearMarks(); saveWho();
+   // Three fields appear out of nowhere below the fold otherwise, and on a
+   // short phone the customer never learns they are there.
+   if(r.value==='Delivery'&&delBox&&!delBox.hidden){
+    setTimeout(function(){
+     try{delBox.scrollIntoView({behavior:'smooth',block:'nearest'});}catch(e){}
+    },60);
+   }
+  });
  });
  document.querySelectorAll('input[name=bp-when]').forEach(function(r){
   r.addEventListener('change',function(){ syncDelivery(); clearMarks(); saveWho();
@@ -442,6 +451,7 @@ function t(k,d){return TT_TXT[k]||d;}
   if(!basket.length) return;
   stashOrder();
   basket=[];
+  if(ask) ask.hidden=true;
   renderBar();saveBasket();renderPanel();
  }
  /* Armed only once WhatsApp has actually been handed the order. window.open
@@ -467,11 +477,46 @@ function t(k,d){return TT_TXT[k]||d;}
   return win;
  }
 
+ /* One more tap before it goes. The next thing the customer sees is a
+    WhatsApp draft, and somebody who forgot the drinks is then in a back and
+    forth with the kitchen. The summary repeats what is about to leave so the
+    answer is informed rather than reflexive.
+
+    window.open still runs inside a click, which is what browsers require, it
+    is just the second click rather than the first. */
+ var ask=$('bp-ask'), askSum=$('bp-ask-sum');
+ function closeAsk(){
+  if(!ask) return;
+  ask.hidden=true;
+  var back=$('bp-send'); if(back&&back.focus) try{back.focus({preventScroll:true});}catch(e){}
+ }
+ function openAsk(){
+  if(!ask){ sendToWhatsApp(waText()); return; }
+  var b=bill(), c=count(), w=who();
+  var bits=[c+' '+(c===1?t('item','item'):t('items','items'))+' \u00b7 '+money(b.total)];
+  if(w.name) bits.push(w.name);
+  if(w.how)  bits.push(t('how_'+w.how.replace(/\W/g,'').toLowerCase(), w.how));
+  askSum.textContent=bits.join(' \u00b7 ');
+  ask.hidden=false;
+  var go=$('bp-ask-go'); if(go&&go.focus) go.focus({preventScroll:true});
+ }
+ if(ask){
+  $('bp-ask-no').addEventListener('click',closeAsk);
+  ask.addEventListener('click',function(e){ if(e.target===ask) closeAsk(); });
+  $('bp-ask-go').addEventListener('click',function(){
+   ask.hidden=true;
+   sendToWhatsApp(waText());
+  });
+  addEventListener('keydown',function(e){
+   if(e.key==='Escape'&&!ask.hidden){ e.preventDefault(); closeAsk(); }
+  });
+ }
+
  $('bp-send').addEventListener('click',function(){
   if(!basket.length)return;
   if(!whoReady())return;
   saveWho();
-  sendToWhatsApp(waText());
+  openAsk();
  });
 
  // Collapsible menu: expand/collapse; when collapsing, jump back to the menu top.
