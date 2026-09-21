@@ -76,8 +76,8 @@ assets/
   mascot.webp             hero mascot, 1114x824, transparent
   mascot-400.webp         same at 557w, for the srcset
   mascot.png              quantised fallback for browsers without WebP
-  favicon.png             64px app icon
-  favicon-96.png          96px and 192px, the sizes Google prefers
+  favicon-48.png          48, 96 and 192px: every size Google might pick is a
+  favicon-96.png          multiple of 48, which is what its guidance asks for
   favicon-192.png
   apple-touch-icon.png    180px
   icon-192.png            manifest icons
@@ -279,11 +279,21 @@ Nothing here adds a question-and-answer section, by request.
 
 ## Favicon
 
-`/favicon.ico` sits at the site root with 16, 32 and 48px frames inside it,
-because Google checks that path before anything the page declares, and renders
-whatever it finds at 48x48. The page also declares 96px and 192px PNGs, both
-multiples of 48, which is what Google's own guidance asks for. All of them are
-square and none are blocked by `robots.txt`.
+`/favicon.ico` sits at the site root, because Google checks that path before
+anything the page declares. Google's rule is that the icon must be a square
+that is a multiple of 48px, so every size it could land on here is one: the
+page declares 48, 96 and 192px PNGs, and the .ico carries 96 and 48 alongside
+the 32 and 16 that browser tabs render more crisply.
+
+**Order inside the .ico matters.** Pillow writes the directory smallest first,
+which put a 16x16 in front, and anything that takes the first entry would have
+been handed a size that fails Google's rule. `tools/extract-mascot.py` writes
+the directory by hand instead, largest first, so a reader gets a compliant icon
+whether it takes the first entry or the biggest. The same applies to
+`site.webmanifest`: its first icon is a 192, not the 64px one that used to sit
+there.
+
+All of them are square and none are blocked by `robots.txt`.
 
 **Do not move or rename these files.** Google caches favicons by URL and
 re-crawls them on its own schedule, so changing the path drops the icon out of

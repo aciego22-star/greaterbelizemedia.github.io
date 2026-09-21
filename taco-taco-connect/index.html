@@ -49,10 +49,15 @@
 <meta name="twitter:image" content="https://connect.tacotaco.bz/assets/og-image.jpg">
 <meta name="twitter:image:alt" content="Taco Taco Connect. Everything Taco Taco in one place.">
 
-<!-- Google looks for /favicon.ico at the site root first, then the head links,
+<!-- Google wants a square that is a multiple of 48px, so every icon it is
+     offered here is one, and the .ico's own directory lists 96 first: Pillow
+     used to sort it smallest first, which handed a 16x16 to anything that
+     takes the first entry.
+     Google looks for /favicon.ico at the site root first, then the head links,
      and renders whatever it finds at 48x48. These URLs must stay put: it caches
      favicons by URL and re-crawls on its own schedule. -->
-<link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48">
+<link rel="icon" href="favicon.ico" sizes="96x96 48x48 32x32 16x16">
+<link rel="icon" type="image/png" sizes="48x48" href="assets/favicon-48.png">
 <link rel="icon" type="image/png" sizes="96x96" href="assets/favicon-96.png">
 <link rel="icon" type="image/png" sizes="192x192" href="assets/favicon-192.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">

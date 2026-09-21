@@ -16,6 +16,7 @@ separates it from the mascot's own whites (eyes, teeth, cuffs) -- it touches the
 background, they are sealed inside the outline.
 """
 import pathlib
+import struct
 import sys
 
 import cv2
@@ -146,7 +147,10 @@ def icon(size, pad=0.06):
     tile.alpha_composite(h, ((size - h.width) // 2, (size - h.height) // 2))
     return tile
 
-for name, size in (("favicon.png", 64), ("favicon-96.png", 96), ("favicon-192.png", 192),
+# Google asks for a square that is a multiple of 48px, so every icon it might
+# choose is one: 48, 96, 192. The Apple and PWA sizes are fixed by their own
+# platforms and Google is never pointed at them.
+for name, size in (("favicon-48.png", 48), ("favicon-96.png", 96), ("favicon-192.png", 192),
                    ("apple-touch-icon.png", 180), ("icon-192.png", 192), ("icon-512.png", 512)):
     icon(size).save(assets / name, optimize=True)
 
@@ -155,10 +159,35 @@ for name, size in (("favicon.png", 64), ("favicon-96.png", 96), ("favicon-192.pn
 # to stay at that URL: Google caches favicons by URL and re-crawls them on its
 # own schedule, so moving it means losing the icon from search results for a
 # while.
-icon(192).save(root / "favicon.ico", sizes=[(16, 16), (32, 32), (48, 48)])
+#
+# The directory is written by hand rather than by Pillow because ORDER MATTERS
+# here. Pillow sorts the entries small to large, which put a 16x16 first, and
+# Google's rule is that the icon must be a square that is a multiple of 48px. A
+# reader that takes the first entry would have been handed a 16 and could
+# reasonably reject it. Largest first means whatever a reader picks, first or
+# biggest, it gets a compliant one. 32 and 16 stay at the back because browser
+# tabs still render them more crisply than a downscaled 96.
+def write_ico(path, sizes):
+    import io
+    blobs = []
+    for size in sizes:
+        buf = io.BytesIO()
+        icon(size).save(buf, format="PNG", optimize=True)
+        blobs.append(buf.getvalue())
+    offset = 6 + 16 * len(blobs)
+    header = struct.pack("<HHH", 0, 1, len(blobs))
+    entries = b""
+    for size, blob in zip(sizes, blobs):
+        entries += struct.pack("<BBBBHHII", size % 256, size % 256, 0, 0, 1, 32,
+                               len(blob), offset)
+        offset += len(blob)
+    path.write_bytes(header + entries + b"".join(blobs))
 
-for f in ("mascot.webp", "mascot-400.webp", "mascot.png", "mascot-qr.png", "favicon.png",
+
+write_ico(root / "favicon.ico", [96, 48, 32, 16])
+
+for f in ("mascot.webp", "mascot-400.webp", "mascot.png", "mascot-qr.png", "favicon-48.png",
           "favicon-96.png", "favicon-192.png", "apple-touch-icon.png",
           "icon-192.png", "icon-512.png"):
     print(f"  {f}: {(assets / f).stat().st_size / 1024:.1f} KB")
-print(f"  favicon.ico (root, 16+32+48): {(root / 'favicon.ico').stat().st_size / 1024:.1f} KB")
+print(f"  favicon.ico (root, 96+48+32+16): {(root / 'favicon.ico').stat().st_size / 1024:.1f} KB")
