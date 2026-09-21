@@ -69,18 +69,58 @@ function t(k,d){return TT_TXT[k]||d;}
  var panel=$('basket-panel'), list=$('bp-list'), panelTotal=$('bp-total');
 
  function priceNum(s){var m=(s||'').match(/\$(\d+(?:\.\d+)?)/);return m?parseFloat(m[1]):0;}
- function money(n){return '$'+(Math.round(n*100)/100);}
+ // Belize dollars, always two places. A discount of five percent turns whole
+ // menu prices into cents, and a total reading $37.5 next to a line reading
+ // $2.05 is the kind of thing a customer queries at the counter.
+ function round2(n){return Math.round((n+Number.EPSILON)*100)/100;}
+ function money(n){return '$'+round2(n).toFixed(2);}
  function keyOf(n,m){return n+'|'+(m||'');}
  function count(){return basket.reduce(function(a,b){return a+b.qty;},0);}
  function total(){return basket.reduce(function(a,b){return a+b.qty*b.price;},0);}
+
+ /* ===================== the September promotion =====================
+    Every number the customer sees and every number the restaurant receives
+    comes out of bill(). Nothing else in this file works out a discount, so the
+    basket and the WhatsApp message cannot drift apart: there is only one sum.
+
+    The window is checked against the browser's clock on every call rather than
+    once at load, so a page left open past midnight on the 30th stops applying
+    the discount by itself, and the site needs no redeploy to end the offer. */
+ var PROMO=window.TT_PROMO||{on:false};
+ function promoOn(){
+  if(!PROMO.on) return false;
+  var now=Date.now();
+  return now>=PROMO.from && now<=PROMO.to;
+ }
+ // What the percentage comes off. A deal already carries its own reduced
+ // price, so whether those are included is a decision, and it is made once, in
+ // promo_data.py, not here.
+ function promoBase(){
+  if(PROMO.deals!==false) return total();
+  return basket.reduce(function(a,b){return a+(b.deal?0:b.qty*b.price);},0);
+ }
+ function bill(){
+  var sub=round2(total());
+  var off=(promoOn()&&basket.length&&sub>0)?round2(promoBase()*PROMO.pct/100):0;
+  if(off>sub) off=sub;                       // belt and braces; cannot happen at 5%
+  return {sub:sub, off:off, total:round2(sub-off), on:off>0};
+ }
 
  var BKEY='tt_basket_v1';
  function saveBasket(){try{localStorage.setItem(BKEY,JSON.stringify(basket));}catch(e){}}
  function loadBasket(){try{var v=JSON.parse(localStorage.getItem(BKEY)||'null');
   if(v&&v.length){basket=v;basket.forEach(function(it){if(!it.key)it.key=keyOf(it.name,it.meat);});renderBar();}}catch(e){}}
 
+ var barPromo=$('bb-promo');
  function renderBar(){var c=count();H.classList.toggle('has-items',c>0);
-  barCount.textContent=c+' '+(c===1?t('item','item'):t('items','items'));barTotal.textContent=money(total());}
+  var b=bill();
+  barCount.textContent=c+' '+(c===1?t('item','item'):t('items','items'));
+  barTotal.textContent=money(b.total);
+  if(barPromo){
+   // The offer stays in front of the customer after the popup is gone.
+   barPromo.hidden=!b.on;
+   barPromo.textContent=b.on?(PROMO.badge||''):'';
+  }}
  function renderPanel(){
   list.innerHTML='';
   if(!basket.length){list.innerHTML='<p class="bp-empty"></p>';
@@ -104,7 +144,18 @@ function t(k,d){return TT_TXT[k]||d;}
    row.querySelector('.bp-price').textContent=money(it.qty*it.price);
    list.appendChild(row);
   });
-  panelTotal.textContent=money(total());
+  var b=bill();
+  var sum=$('bp-sum');
+  if(sum){
+   sum.hidden=!b.on;
+   if(b.on){
+    $('bp-sub-l').textContent=PROMO.subtotal||'Subtotal';
+    $('bp-sub').textContent=money(b.sub);
+    $('bp-disc-l').textContent=PROMO.line||'';
+    $('bp-disc').textContent='\u2212'+money(b.off);
+   }
+  }
+  panelTotal.textContent=money(b.total);
  }
  function add(name,priceStr,meat,img,extra,disp,meatDisp){
   // A meat can carry a surcharge of its own: the menu prices birria a dollar up.
@@ -211,8 +262,18 @@ function t(k,d){return TT_TXT[k]||d;}
    }
   });
   while(lines.length&&lines[lines.length-1]==='')lines.pop();
-  return t('wa_intro','Hi Taco Taco! I would like to place this order:')+'\n\n'+lines.join('\n')
-         +'\n\n'+t('wa_total','Total')+': '+money(total())+' BZD';
+  // Same bill() the basket just drew, so the restaurant is quoted the figures
+  // the customer was shown, to the cent. When the promotion is not running this
+  // is the single total line the site has always sent.
+  var b=bill(), tail;
+  if(b.on){
+   tail='\n\n'+(PROMO.subtotal||'Subtotal')+': BZD '+money(b.sub)
+      + '\n\uD83C\uDDE7\uD83C\uDDFF '+(PROMO.line||'')+': \u2212BZD '+money(b.off)
+      + '\n'+(PROMO.final||'Final Order Total')+': BZD '+money(b.total);
+  }else{
+   tail='\n\n'+t('wa_total','Total')+': '+money(b.total)+' BZD';
+  }
+  return t('wa_intro','Hi Taco Taco! I would like to place this order:')+'\n\n'+lines.join('\n')+tail;
  }
  $('bp-send').addEventListener('click',function(){
   if(!basket.length)return;
@@ -226,6 +287,73 @@ function t(k,d){return TT_TXT[k]||d;}
   mtog.textContent=open?t('menu_close','Collapse Menu'):t('menu_open','View Full Menu');
   if(!open){var sec=document.getElementById('menu');if(sec)sec.scrollIntoView({behavior:'smooth',block:'start'});}
  });}
+
+ /* ===================== the promotion popup =====================
+    Shown once. "Once" is the browser session, so walking from the home page to
+    the menu to the gallery does not mean meeting it three times, and closing
+    the tab and coming back tomorrow does mean seeing it again.
+
+    It opens as soon as this script runs, which is the end of HTML parsing, and
+    that timing is deliberate rather than casual. A modal that covers the
+    viewport becomes the largest contentful paint whenever it arrives, and the
+    browser keeps revising that measurement until the visitor first touches the
+    page. Opening it on a timer after load therefore does not avoid the cost,
+    it moves the site's headline metric out to whenever the timer fires: on a
+    trial here, waiting 700ms past load took the home page from 1.85s to 4.02s
+    on a 4G connection while the page itself finished at exactly the same
+    moment. Painting it with everything else costs nothing and the greeting
+    arrives when the visitor arrives, which is what a greeting is for.
+
+    Keyboard and screen reader: focus moves into the card and is kept there
+    while it is open, Escape closes it, and focus goes back where it came from.
+    Behind it the page cannot scroll, and it is the last thing in the DOM so a
+    reader that ignores all of this still meets the page first. */
+ (function(){
+  var box=$('promo'); if(!box||!promoOn()) return;
+  var card=box.querySelector('.promo-card');
+  var key='tt_promo_'+(PROMO.id||'x');
+  var shown=false, opener=null;
+
+  function seen(){ try{return sessionStorage.getItem(key)==='1';}catch(e){return shown;} }
+  function mark(){ shown=true; try{sessionStorage.setItem(key,'1');}catch(e){} }
+
+  function focusables(){
+   return card.querySelectorAll('a[href],button:not([disabled])');
+  }
+  function keep(e){
+   if(e.key==='Escape'){ e.preventDefault(); close(); return; }
+   if(e.key!=='Tab') return;
+   var f=focusables(); if(!f.length) return;
+   var first=f[0], last=f[f.length-1];
+   if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
+   else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
+  }
+  function open(){
+   if(seen()) return;
+   mark();
+   opener=document.activeElement;
+   box.hidden=false;
+   requestAnimationFrame(function(){ box.classList.add('on'); });
+   H.classList.add('promo-open');
+   document.addEventListener('keydown',keep,true);
+   var go=$('promo-go'); if(go) go.focus({preventScroll:true});
+  }
+  function close(){
+   box.classList.remove('on');
+   H.classList.remove('promo-open');
+   document.removeEventListener('keydown',keep,true);
+   setTimeout(function(){ box.hidden=true; },260);
+   if(opener&&opener.focus) try{opener.focus({preventScroll:true});}catch(e){}
+  }
+  $('promo-x').addEventListener('click',close);
+  // The button is a real link to the menu. Close first so the page behind is
+  // scrollable again whether the browser navigates or stays put on #menu.
+  $('promo-go').addEventListener('click',function(){ close(); });
+  // Tapping the backdrop closes it, the card itself does not.
+  box.addEventListener('click',function(e){ if(e.target===box) close(); });
+
+  requestAnimationFrame(open);
+ })();
 
  window.TTBasket={addDeal:addDeal,money:money};
  loadBasket();

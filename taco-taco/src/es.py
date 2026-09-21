@@ -734,6 +734,43 @@ ES.update({
    "Descubra Taco Taco Mexican Restaurant en Belmopán, Belice. Explore tacos mexicanos, birria, burritos, quesadillas, flautas, combos de almuerzo y más, frescos de la cocina de Taco Taco.",
 })
 
+# ---------------------------------------------------------------- September promotion
+# Belize's Independence Day is a Belizean occasion first, so the Spanish keeps
+# the day's own name rather than a literal translation of the English phrase,
+# and "happy hour"-style loanwords are avoided: "el Mes de la Patria" is what
+# the September celebrations are called.
+ES.update({
+ "Happy Independence Day, Belize!": "\u00a1Feliz D\u00eda de la Independencia, Belice!",
+ "Happy Independence Day!":         "\u00a1Feliz D\u00eda de la Independencia!",
+ "Welcome to our brand-new website!": "\u00a1Bienvenido a nuestro nuevo sitio web!",
+ "In celebration of Belize's Independence Day, the September Celebrations, and the "
+ "launch of Taco Taco's new website, we're giving you 5% OFF every order placed "
+ "through our website for the remainder of September!":
+   "Para celebrar el D\u00eda de la Independencia de Belice, las Fiestas de Septiembre y "
+   "el lanzamiento del nuevo sitio web de Taco Taco, le damos un 5% DE DESCUENTO en "
+   "cada pedido hecho por nuestro sitio web durante el resto de septiembre.",
+ "Whether you're dining in, picking up, or requesting delivery, simply use our new "
+ "online menu, add your favorites to your basket, and send your order directly to "
+ "us on WhatsApp.":
+   "Ya sea que coma aqu\u00ed, lo recoja o pida a domicilio, use nuestro nuevo men\u00fa en "
+   "l\u00ednea, agregue sus favoritos al carrito y env\u00edenos el pedido directamente por "
+   "WhatsApp.",
+ "NO CODE NEEDED \u2014 your 5% discount is automatically calculated.":
+   "NO NECESITA C\u00d3DIGO \u2014 su 5% de descuento se calcula autom\u00e1ticamente.",
+ "Thank you, Belize, for your continued support of Taco Taco.":
+   "Gracias, Belice, por su apoyo constante a Taco Taco.",
+ "Start My Order":   "Comenzar mi pedido",
+ "Close this offer": "Cerrar esta oferta",
+ # The basket and the WhatsApp message. These two have to read the same in
+ # either language, and the build checks that they do.
+ "September Celebration \u2014 5% Website Discount":
+   "Fiestas de Septiembre \u2014 5% de descuento por la web",
+ "Subtotal":          "Subtotal",
+ "Website Discount":  "Descuento web",
+ "Final Order Total": "Total final del pedido",
+ "5% off":            "5% desc.",
+})
+
 # ---------------------------------------------------------------- the reviews page photograph
 ES.update({
  "The Taco Taco Mexican Restaurant building on Aloe Vera Ave in West Belmopan, with "

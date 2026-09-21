@@ -270,6 +270,7 @@
  <a class="to-top" href="#top" aria-label="Back to top">Top</a>
  <div id="basket-bar" role="region" aria-label="Your basket">
   <span class="bb-count" id="bb-count">0 items</span>
+  <span class="bb-promo" id="bb-promo" hidden></span>
   <span class="bb-total" id="bb-total">$0</span>
   <button type="button" id="bb-view">View</button>
  </div>
@@ -279,6 +280,10 @@
   <div class="bp-head"><span>Your Basket</span><button type="button" id="bp-close" aria-label="Close basket">Close</button></div>
   <div class="bp-list" id="bp-list"></div>
   <div class="bp-foot">
+   <div class="bp-sum" id="bp-sum" hidden>
+    <div class="bp-line"><span id="bp-sub-l">Subtotal</span><span id="bp-sub">$0.00</span></div>
+    <div class="bp-line bp-disc"><span id="bp-disc-l">Website Discount</span><span id="bp-disc">-$0.00</span></div>
+   </div>
    <div class="bp-total-row"><span>Total</span><span id="bp-total">$0</span></div>
    <div class="bp-actions">
     <button type="button" id="bp-clear" class="btn-ghost">Clear</button>

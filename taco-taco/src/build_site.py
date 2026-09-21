@@ -8,6 +8,7 @@ from reviews_data import REVIEWS, HOME_ORDER, STR_REVIEWS
 from menu_data import CATEGORIES as MENU_CATS, INTRO as MENU_INTRO, MEATS, MEAT_SURCHARGE
 from about_data import ABOUT
 from faq_data import FAQ, HEAD as FAQ_HEAD
+import promo_data
 import i18n
 from es import ES, JS as JS_ES
 
@@ -66,6 +67,27 @@ HOURS_SCHEMA = [(["Monday","Tuesday","Wednesday","Thursday"], "10:00", "20:00"),
 # viewport, so the 1600px copies some of these were shipped at were paying for
 # pixels no phone and no laptop ever displayed. The originals in src/ keep their
 # full size, because the thumbnails and grid copies are cut from them.
+# The promotion window, turned into plain UTC milliseconds here so the browser
+# never has to reason about a timezone. Belize is UTC-6 all year.
+def _promo_ms(stamp):
+    import datetime as _dt
+    d = _dt.datetime.strptime(stamp, "%Y-%m-%d %H:%M:%S")
+    d = d.replace(tzinfo=_dt.timezone(_dt.timedelta(hours=promo_data.TZ_OFFSET_HOURS)))
+    return int(d.timestamp() * 1000)
+
+PROMO_FROM = _promo_ms(promo_data.STARTS)
+PROMO_TO   = _promo_ms(promo_data.ENDS) + 999     # inclusive of that last second
+
+def promo_live():
+    """Is the promotion worth putting on the page at all?
+
+    A build made after the window has closed leaves the popup out of the HTML
+    entirely rather than shipping markup that can never be shown. Inside the
+    window the browser is still the one that decides, by its own clock, which is
+    what lets the promotion end on the night of the 30th without a redeploy."""
+    import time as _t
+    return promo_data.ACTIVE and _t.time() * 1000 <= PROMO_TO
+
 MASTER_MAX = 1400
 
 MAPS_Q    = "Taco+Taco+Mexican+Restaurant,+Belmopan,+Belize"
@@ -751,6 +773,46 @@ def reel_band():
             '  </div>\n </section>' % (esc(REEL_SUB), chips, spare))
 
 
+def promo_modal(fname):
+    """The entry popup, rendered into the page rather than built in the browser.
+
+    Two reasons it is server-side. The Spanish pass walks finished HTML, so copy
+    that lives here gets translated by the same machinery as everything else and
+    the build stops if a line has no Spanish. And the words are in the markup
+    for anyone reading the page without running our JavaScript.
+
+    It carries no heading tags on purpose. normalise_headings() walks every
+    h1-h6 on the page to work out the document outline, and an advertisement
+    that opens on top of the page is not part of that outline: a real <h2> in
+    here would push the page's own headings down a level. The title is a <p>
+    that looks like a heading and is named as one through aria-labelledby.
+
+    The button is a real link to the menu so that it works, and works in one
+    tap, whether or not the script ever runs."""
+    C = promo_data.COPY
+    href = "menu.html#menu" if fname == "menu.html" else "menu.html"
+    body = "".join("<p>%s</p>" % esc(p) for p in C["body"])
+    return (
+ '\n<div id="promo" class="promo" hidden>\n'
+ ' <div class="promo-card" role="dialog" aria-modal="true" aria-labelledby="promo-t">\n'
+ '  <button type="button" id="promo-x" class="promo-x" aria-label="%s">'
+ '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
+ '<path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>'
+ '</svg></button>\n'
+ '  <span class="promo-mark" style="background-image:url(\'assets/img/logo.webp\')" aria-hidden="true"></span>\n'
+ '  <p class="promo-flag" aria-hidden="true">\U0001F1E7\U0001F1FF \U0001F1E7\U0001F1FF</p>\n'
+ '  <p class="promo-t" id="promo-t">%s</p>\n'
+ '  <p class="promo-welcome">%s<span aria-hidden="true"> \U0001F32E</span></p>\n'
+ '  <div class="promo-body">%s</div>\n'
+ '  <p class="promo-nocode">%s</p>\n'
+ '  <p class="promo-cta"><a class="btn btn-red" id="promo-go" href="%s">%s <span aria-hidden="true">&rarr;</span></a></p>\n'
+ '  <p class="promo-thanks">%s</p>\n'
+ '  <p class="promo-sign">%s<span aria-hidden="true"> \U0001F1E7\U0001F1FF\U0001F32E</span></p>\n'
+ ' </div>\n</div>'
+ % (esc(C["close"]), esc(C["title"]),
+    esc(C["welcome"]), body, esc(C["nocode"]), href, esc(C["cta"]),
+    esc(C["thanks"]), esc(C["signoff"])))
+
 def storefront_shot():
     """The reviews page opens on the restaurant itself.
 
@@ -1231,8 +1293,9 @@ def main():
         h = re.sub(r'<title>.*?</title>', '<title>%s</title>'%title, h, flags=re.S)
         h = re.sub(r'(<meta name="description" content=")[^"]*(")', r'\1'+desc+r'\2', h)
         h = h + head_meta(fname, title, desc) + "<!--SCHEMA-->"
-        return ("<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n%s\n</head>\n<body>\n%s\n<main id=\"top\">\n%s\n</main>\n%s\n%s\n%s\n%s\n</body>\n</html>\n"
-                % (h, header_for(nav_as or fname), body, banner, foot, dock, basket))
+        return ("<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n%s\n</head>\n<body>\n%s\n<main id=\"top\">\n%s\n</main>\n%s\n%s\n%s\n%s%s\n</body>\n</html>\n"
+                % (h, header_for(nav_as or fname), body, banner, foot, dock, basket,
+                   promo_modal(fname) if promo_live() else ""))
 
 
     # The deals carousel and the rotating reviews are drawn in the browser, so
@@ -1244,11 +1307,22 @@ def main():
         strs  = STR   if lang == "en" else i18n.translate_json(STR)
         revs  = [dict(r, en=(r.get(lang) or r.get("en") or "")) for r in REVIEWS]
         txt   = {} if lang == "en" else JS_ES
+        # The promotion travels beside the deals, one copy per language, because
+        # the basket and the WhatsApp message both need its words and its
+        # numbers and neither should be reading them from two places.
+        C = promo_data.COPY if lang == "en" else i18n.translate_json(promo_data.COPY)
+        promo = {"on": promo_live(), "id": promo_data.PROMO_ID,
+                 "pct": promo_data.PERCENT, "deals": promo_data.APPLY_TO_DEALS,
+                 "from": PROMO_FROM, "to": PROMO_TO,
+                 "line": C["line"], "subtotal": C["subtotal"],
+                 "final": C["final"], "badge": C["badge"]}
         return ("window.TT_DEALS=%s;\nwindow.TT_STR=%s;\nwindow.TT_REVIEWS=%s;\n"
                 "window.TT_REV_ORDER=%s;\nwindow.TT_T=%s;\nwindow.TT_WA='%s';\n"
+                "window.TT_PROMO=%s;\n"
                 % (json.dumps(deals, ensure_ascii=False), json.dumps(strs, ensure_ascii=False),
                    json.dumps(revs, ensure_ascii=False), json.dumps(HOME_ORDER, ensure_ascii=False),
-                   json.dumps(txt, ensure_ascii=False), WA_NUMBER))
+                   json.dumps(txt, ensure_ascii=False), WA_NUMBER,
+                   json.dumps(promo, ensure_ascii=False)))
     for _lang, _, _ in LANGS:
         open(os.path.join(DIST,"assets","js","deals%s.js" % ("" if _lang=="en" else "."+_lang)),
              "w",encoding="utf-8").write(payload(_lang))

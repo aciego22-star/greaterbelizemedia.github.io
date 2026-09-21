@@ -624,6 +624,72 @@ html.js.scrub-on .gal-label{display:block}
 .rev-band .rating-num{color:var(--yellow)}
 .rev-band .rating-sub{color:rgba(255,255,255,.78)}
 
+/* ================= September promotion ================= */
+/* The card is the site's own cream and green, not a generic overlay: it should
+   read as a page of the website that happens to be on top, which is also why
+   the mascot sits on the rim rather than inside the text. */
+.promo{position:fixed;inset:0;z-index:120;display:grid;place-items:center;
+ padding:calc(16px + env(safe-area-inset-top)) 16px calc(16px + env(safe-area-inset-bottom));
+ background:rgba(18,63,29,.62);backdrop-filter:blur(3px);
+ opacity:0;transition:opacity .26s ease;overflow-y:auto}
+.promo.on{opacity:1}
+.promo[hidden]{display:none}
+html.promo-open,html.promo-open body{overflow:hidden}
+.promo-card{position:relative;width:min(520px,100%);margin:auto;
+ background:linear-gradient(180deg,var(--paper) 0%,var(--cream2) 100%);
+ border:3px solid var(--green);border-radius:24px;
+ padding:46px 24px 26px;text-align:center;
+ box-shadow:0 30px 70px rgba(0,0,0,.42);
+ transform:translateY(14px) scale(.97);transition:transform .3s cubic-bezier(.2,.9,.3,1.2)}
+.promo.on .promo-card{transform:none}
+.promo-mark{position:absolute;top:-34px;left:50%;transform:translateX(-50%);
+ width:68px;height:68px;border-radius:50%;background-size:cover;background-position:center;
+ border:3px solid var(--green);background-color:var(--paper);
+ box-shadow:0 8px 20px rgba(0,0,0,.25)}
+.promo-x{position:absolute;top:10px;right:10px;width:40px;height:40px;
+ display:grid;place-items:center;border:0;border-radius:50%;cursor:pointer;
+ background:rgba(44,33,24,.08);color:var(--ink)}
+.promo-x:hover{background:rgba(44,33,24,.16)}
+.promo-x svg{width:19px;height:19px;fill:none}
+.promo-flag{margin:4px 0 6px;font-size:1.25rem;letter-spacing:10px;line-height:1}
+.promo-t{margin:0 0 6px;font-family:var(--font-display);text-transform:uppercase;
+ font-size:clamp(1.35rem,5.6vw,1.9rem);line-height:1.04;color:var(--green-d)}
+.promo-welcome{margin:0 0 14px;font-weight:800;color:var(--orange-d);font-size:1rem}
+.promo-body p{margin:0 0 11px;color:var(--muted);line-height:1.55;font-size:.95rem}
+.promo-body strong,.promo-nocode{color:var(--ink)}
+.promo-nocode{margin:14px 0 4px;font-weight:800;font-size:.92rem;
+ background:var(--yellow);color:var(--green-dd);border-radius:12px;padding:10px 14px}
+.promo-cta{margin:18px 0 12px}
+.promo-cta .btn{width:100%;max-width:330px;font-size:1.02rem}
+.promo-thanks{margin:0 0 4px;color:var(--muted);font-size:.86rem}
+.promo-sign{margin:0;font-weight:800;color:var(--green-d);font-size:.92rem}
+@media(max-width:420px){
+ .promo-card{padding:42px 17px 22px;border-radius:20px}
+ .promo-body p{font-size:.9rem}
+ .promo-nocode{font-size:.85rem}
+}
+/* Short screens: let the card scroll inside the backdrop instead of clipping. */
+@media(max-height:680px){
+ .promo{place-items:start center}
+ .promo-card{padding-top:44px}
+}
+@media(prefers-reduced-motion:reduce){
+ .promo,.promo-card{transition:none}
+ .promo-card{transform:none}
+}
+
+/* the offer, still in front of the customer once the popup is gone */
+.bb-promo{background:var(--yellow);color:var(--green-dd);font-weight:800;
+ font-size:.7rem;text-transform:uppercase;letter-spacing:.5px;
+ padding:4px 9px;border-radius:999px;white-space:nowrap}
+.bb-promo[hidden]{display:none}
+.bp-sum{margin:0 0 6px}
+.bp-sum[hidden]{display:none}
+.bp-line{display:flex;justify-content:space-between;gap:12px;align-items:baseline;
+ padding:5px 0;color:var(--muted);font-size:.9rem}
+.bp-line.bp-disc{color:var(--green-d);font-weight:800}
+.bp-line.bp-disc span:last-child{white-space:nowrap}
+
 /* ================= reviews page ================= */
 .rev-hero{background:var(--cream2)}
 /* One file, two shapes. 1200/696 on a wide screen is the whole frame; 3/2 on a
