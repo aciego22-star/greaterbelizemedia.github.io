@@ -107,6 +107,57 @@ media and robots.txt logic. No network or API key needed.
 
 ---
 
+## Mode 3 — `site_age.py`: websites built before 2020
+
+```bash
+python3 site_age.py "Belize City, Belize" "hotel"
+python3 site_age.py --input candidates_belize_all.csv --output site_age_belize.csv
+```
+
+Reads the same `candidates_{city}_{category}.csv` that mode 2's discover stage
+writes, then judges how old each website looks. Two kinds of evidence:
+
+**From the Internet Archive** — the year the site was first and last captured,
+and whether today's homepage still matches its 2019 capture. That last check is
+the strongest evidence there is: *"your website has not changed since 2019."*
+
+**From the live homepage** — points are added for each dating signal:
+
+| Signal | Points |
+| --- | --- |
+| No mobile viewport tag (not responsive) | 3 |
+| Flash content (Flash died end of 2020) | 3 |
+| 1990s/2000s HTML (`<font>`, `<center>`, `<marquee>`, `<frameset>`) | 3 |
+| Copyright year before 2020 | 3 |
+| Homepage unchanged since its 2019 capture | 3 |
+| Universal Analytics `UA-` tag (shut down July 2023) | 2 |
+| Dated builder (WordPress 4.x, Joomla 3, Drupal 7, FrontPage, Muse...) | 2 |
+| jQuery 1.x / 2.x | 2 / 1 |
+| No HTTPS | 2 |
+| First archived before 2020 | 2 |
+| Internet Explorer compatibility tag | 1 |
+| Copyright year 2020-2022 | 1 |
+
+6 or more points reads `likely pre-2020 build`, 3-5 `possibly dated`, under 3
+`modern`. Sites that could not be reached read `not checked` with the reason.
+
+**An old domain is not the same as an old site.** A business may have
+registered its domain in 2004 and rebuilt the site last year, so the archive
+date alone never produces a pre-2020 verdict — it only adds to what the live
+page shows. Always open a site before pitching it.
+
+This stage needs unrestricted internet access, to both the business's website
+and `web.archive.org`. Archive requests are spaced 2 seconds apart.
+
+```bash
+python3 site_age.py --self-test
+```
+
+runs 20 offline checks of the scoring, copyright parsing, archive-response
+handling and page-comparison logic.
+
+---
+
 ## Cost
 
 Both tools request only four fields (name, address, phone, website), which keeps
