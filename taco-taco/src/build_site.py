@@ -965,10 +965,16 @@ def main():
             if not os.path.isfile(_full): continue
             _was = os.path.getsize(_full)
             with _Im.open(_full) as _im:
-                if _im.width <= MASTER_MAX: continue
+                # The longest side, not the width. A portrait photograph at
+                # 1200 wide is 1600 tall and slipped through a width-only cap
+                # carrying more pixels than the landscape ones it sits beside,
+                # and no lightbox has ever shown 1600 pixels of height.
+                _long = max(_im.width, _im.height)
+                if _long <= MASTER_MAX: continue
                 _fmt = _im.format
+                _sc = MASTER_MAX / float(_long)
                 _im = _im.convert("RGB").resize(
-                    (MASTER_MAX, round(_im.height * MASTER_MAX / _im.width)), _Im.LANCZOS)
+                    (max(1, round(_im.width * _sc)), max(1, round(_im.height * _sc))), _Im.LANCZOS)
                 if _fmt == "WEBP": _im.save(_full, "WEBP", quality=82, method=6)
                 else:              _im.save(_full, "JPEG", quality=86, optimize=True, progressive=True)
             _capped += 1; _saved += _was - os.path.getsize(_full)
