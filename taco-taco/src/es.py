@@ -570,7 +570,8 @@ ES.update({
    "Pizza de birria cortada en rebanadas, con consomé en el centro",
  "Birria ramen in a rich red broth": "Ramen de birria en un caldo rojo espeso",
  "Birria quesadillas with a cup of consomé": "Quesadillas de birria con una taza de consomé",
- "Menudo soup served with lime": "Sopa de menudo servida con limón",
+ "Menudo soup with a bread roll, chopped onion, salsa and lime":
+   "Sopa de menudo con pan, cebolla picada, salsa y lim\u00f3n",
  "Mexican tostadas topped with lettuce, cheese, sour cream and avocado salsa":
    "Tostadas mexicanas con lechuga, queso, crema y salsa de aguacate",
  "Four tostadas topped with meat, lettuce and cream": "Cuatro tostadas con carne, lechuga y crema",

@@ -271,7 +271,7 @@ GALLERY = [
  ("menu-birria-pizza.jpg", "Birria pizza cut into wedges, with consomé in the centre"),
  ("gal-birria-ramen.jpg", "Birria ramen in a rich red broth"),
  ("menu-birria-quesadillas.jpg", "Birria quesadillas with a cup of consomé"),
- ("menu-menudo.jpg", "Menudo soup served with lime"),
+ ("menu-menudo.jpg", "Menudo soup with a bread roll, chopped onion, salsa and lime"),
  ("dish-10.jpg", "Mexican tostadas topped with lettuce, cheese, sour cream and avocado salsa"),
  ("gal-tostadas.jpg", "Four tostadas topped with meat, lettuce and cream"),
  ("menu-mini-taco-bowl.jpg", "Mini taco bowls topped with meat and salsa"),
