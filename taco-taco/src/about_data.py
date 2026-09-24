@@ -15,19 +15,19 @@ ABOUT = {
    "es": "Sobre nosotros"},
 
  "title_a": {
-   "en": "Authentic Mexicali Flavor,",
-   "es": "Auténtico sabor mexicali,"},
+   "en": "Authentic Mexican Flavor,",
+   "es": "Auténtico sabor mexicano,"},
  "title_b": {
    "en": "Made Fresh in Belmopan",
    "es": "hecho fresco en Belmopán"},
 
  "lead": [
   {"en": "At Taco Taco Mexican Restaurant, we bring the bold, comforting flavors of "
-         "Mexicali-style cooking to West Belmopan. From tacos and birria to burritos, "
+         "Mexican-style cooking to West Belmopan. From tacos and birria to burritos, "
          "quesadillas, breakfast favorites and more, our menu is built around fresh "
          "preparation, generous portions and food made to satisfy.",
    "es": "En Taco Taco Mexican Restaurant traemos los sabores intensos y reconfortantes "
-         "de la cocina estilo mexicali al oeste de Belmopán. Desde tacos y birria hasta "
+         "de la cocina estilo mexicano al oeste de Belmopán. Desde tacos y birria hasta "
          "burritos, quesadillas, desayunos y mucho más, nuestro menú se basa en "
          "preparación fresca, porciones generosas y comida que satisface."},
   {"en": "Whether you are stopping in for breakfast, grabbing lunch, feeding the family "
@@ -53,7 +53,7 @@ ABOUT = {
              "es": "Tortillas recién preparadas, carnes a la parrilla, salsas, complementos "
                    "y guarniciones se unen para crear platillos llenos de sabor."}},
   {"icon": "chili",
-   "title": {"en": "Bold Mexicali Flavor", "es": "Sabor mexicali intenso"},
+   "title": {"en": "Bold Mexican Flavor", "es": "Sabor mexicano intenso"},
    "body":  {"en": "From classic Mexican tacos to birria, quesadillas, burritos and house "
                    "favorites, every plate brings something worth coming back for.",
              "es": "Desde tacos mexicanos clásicos hasta birria, quesadillas, burritos y las "

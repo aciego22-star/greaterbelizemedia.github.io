@@ -1225,7 +1225,7 @@ def main():
             {"@type": "ContactPoint", "telephone": "+501-613-4677", "contactType": "reservations and orders"},
             {"@type": "ContactPoint", "telephone": "+501-802-2332", "contactType": "reservations and orders"}],
           "servesCuisine": "Mexican",
-          "description": "Mexicali style Mexican food made fresh in West Belmopan, Belize: "
+          "description": "Mexican food made fresh in West Belmopan, Belize: "
                          "tacos, birria, burritos, quesadillas, flautas, tortas and breakfast "
                          "served all day.",
           "hasMenu": {"@id": SITE_URL + "/menu.html#menu"},
@@ -1368,7 +1368,7 @@ def main():
 
     out = {
       "index.html":   ("%s | Belmopan"%BRAND, hero+favs+deals_band()+reviews_band()+order+reel_band()+visit_band()+connect_band(),
-                       "%s in West Belmopan. Authentic Mexicali style tacos, birria, tortas and breakfast. Order online and send your order on WhatsApp."%BRAND),
+                       "%s in West Belmopan. Authentic Mexican style tacos, birria, tortas and breakfast. Order online and send your order on WhatsApp."%BRAND),
       "deals-combos.html": ("Deals & Combos | %s"%BRAND, deals_page_body(),
                        "Taco Taco deals and combos in Belmopan: lunch combos, the Mega Combo, and Monday and Tuesday specials. Pick your options and order on WhatsApp."),
       "menu.html":    ("Menu | %s"%BRAND, menu,
@@ -1580,7 +1580,7 @@ def main():
         L = []
         L.append("# %s" % BRAND)
         L.append("")
-        L.append("> Mexicali style Mexican food made fresh in West Belmopan, Belize. "
+        L.append("> Mexican food made fresh in West Belmopan, Belize. "
                  "Tacos, birria, burritos, quesadillas, flautas, tortas, and breakfast "
                  "served all day. Dine in, takeout and delivery. Orders are placed on "
                  "the website and sent to the restaurant on WhatsApp.")
@@ -1592,7 +1592,7 @@ def main():
         L.append("- Phone: +501-613-4677 and +501-802-2332")
         L.append("- Hours: %s" % hours_sentence("en"))
         L.append("- Service: dine in, takeout, delivery. Family friendly.")
-        L.append("- Cuisine: Mexican, Mexicali style")
+        L.append("- Cuisine: Mexican")
         L.append("- Prices: Belize dollars (BZD), from $%d to $%d on the menu"
                  % (prices[0], prices[-1]) if prices else "- Prices: Belize dollars (BZD)")
         L.append("- Meat choices on tacos, burritos, plates and bowls: Carne Asada, "

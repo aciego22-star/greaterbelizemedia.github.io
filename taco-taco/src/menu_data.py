@@ -26,7 +26,7 @@ MEAT_SURCHARGE = {"Birria": 1}
 BREAKFAST_MEATS = ["Bacon", "Ham"]
 
 INTRO = {
- "kicker": "Bold Flavor · Authentic Mexicali Style",
+ "kicker": "Bold Flavor · Authentic Mexican Style",
  "title_a": "The",
  "title_b": "Menu",
  "sub": "Mexican style food made fresh in Belmopan. Prices in Belize dollars (BZD).",

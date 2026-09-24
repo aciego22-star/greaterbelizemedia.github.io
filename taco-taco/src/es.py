@@ -56,7 +56,7 @@ KEEP = {
  "Chocoflan", "Tres Leches", "Chorizo", "Pico de Gallo", "Menudo Soup",
  "Klerysa Heredia", "Melisa Alvarenga", "Jesus Ortega", "Isridio Hernandez",
  "Hector Tiul", "David Funez", "Hern Mar", "Garden Tree Apt", "John Dunn",
- "K. Jevon .D", "Mexicali", "Top", "Info",
+ "K. Jevon .D", "Top", "Info",
 }
 
 ES = {}
@@ -104,21 +104,21 @@ ES.update({
  # hero and the ribbons that run across it
  "Order Authentic": "Ordene auténtico",
  "l1:Order Authentic": "Ordene auténticos",
- "l2:Mexicali": "tacos",
- "l3:Style Tacos": "estilo mexicali",
+ "l2:Mexican": "tacos",
+ "l3:Style Tacos": "estilo mexicano",
  "Style Tacos": "Tacos Estilo",
  "deco:Style Tacos": "Tacos Estilo",
- "Mexicali": "Mexicali",
- "Authentic Mexicali style tacos in Belmopan. Made fresh, made for you.":
-   "Tacos auténticos estilo mexicali en Belmopán. Hechos frescos, hechos para usted.",
+ "Mexican": "Mexicano",
+ "Authentic Mexican style tacos in Belmopan. Made fresh, made for you.":
+   "Tacos auténticos estilo mexicano en Belmopán. Hechos frescos, hechos para usted.",
  "View Menu": "Ver el menú",
  "Now taking orders online": "Ahora tomamos pedidos en línea",
  "Come Hungry · Leave Happy": "Venga con hambre · Salga feliz",
- "AUTHENTIC MEXICALI STYLE •": "AUTÉNTICO ESTILO MEXICALI •",
+ "AUTHENTIC MEXICAN STYLE •": "AUTÉNTICO ESTILO MEXICANO •",
  "MADE FRESH DAILY • MADE FRESH DAILY •":
    "HECHO FRESCO A DIARIO • HECHO FRESCO A DIARIO •",
- "Bold Flavor. Authentic Mexicali Style.  ·  Come Hungry. Leave Happy.":
-   "Sabor intenso. Auténtico estilo mexicali.  ·  Venga con hambre. Salga feliz.",
+ "Bold Flavor. Authentic Mexican Style.  ·  Come Hungry. Leave Happy.":
+   "Sabor intenso. Auténtico estilo mexicano.  ·  Venga con hambre. Salga feliz.",
 
  # section headings, including the two halves of each split title
  "Crowd": "Los favoritos",
@@ -208,8 +208,8 @@ ES.update({
  "Created by": "Creado por",
  "© 2026 Taco Taco Mexican Restaurant. All rights reserved.":
    "© 2026 Taco Taco Mexican Restaurant. Todos los derechos reservados.",
- "Taco Taco Mexican Restaurant. Authentic Mexicali style food, made fresh daily.":
-   "Taco Taco Mexican Restaurant. Comida auténtica estilo mexicali, hecha fresca a diario.",
+ "Taco Taco Mexican Restaurant. Authentic Mexican style food, made fresh daily.":
+   "Taco Taco Mexican Restaurant. Comida auténtica estilo mexicano, hecha fresca a diario.",
  "Come see us": "Venga a vernos",
  "Download it instead": "Descárguelo en su lugar",
  "Your browser cannot play this clip.": "Su navegador no puede reproducir este video.",
@@ -217,7 +217,7 @@ ES.update({
 
 # ---------------------------------------------------------------- the menu
 ES.update({
- "Bold Flavor · Authentic Mexicali Style": "Sabor intenso · Auténtico estilo mexicali",
+ "Bold Flavor · Authentic Mexican Style": "Sabor intenso · Auténtico estilo mexicano",
  "The": "El",
  "deco:Menu": "menú",
  "Mexican style food made fresh in Belmopan. Prices in Belize dollars (BZD).":
@@ -618,8 +618,8 @@ ES.update({
  "A tray of Taco Taco sides and salsas": "Una bandeja de acompañamientos y salsas de Taco Taco",
  "A slice of strawberry tres leches, sitting in its milk":
    "Una rebanada de tres leches de fresa, reposando en su leche",
- "Fresh Mexicali style street tacos at Taco Taco":
-   "Tacos callejeros frescos estilo mexicali en Taco Taco",
+ "Fresh Mexican style street tacos at Taco Taco":
+   "Tacos callejeros frescos estilo mexicano en Taco Taco",
  "Taco Taco combo plate with tacos, fries and rice":
    "Plato combo de Taco Taco con tacos, papas fritas y arroz",
 })
@@ -717,8 +717,8 @@ ES.update({
    "Taco Taco Mexican Restaurant | Comida mexicana en Belmopán, Belice",
  "Page not found | Taco Taco Mexican Restaurant": "Página no encontrada | Taco Taco Mexican Restaurant",
 
- "Taco Taco Mexican Restaurant in West Belmopan. Authentic Mexicali style tacos, birria, tortas and breakfast. Order online and send your order on WhatsApp.":
-   "Taco Taco Mexican Restaurant en el oeste de Belmopán. Tacos auténticos estilo mexicali, birria, tortas y desayunos. Ordene en línea y envíe su pedido por WhatsApp.",
+ "Taco Taco Mexican Restaurant in West Belmopan. Authentic Mexican style tacos, birria, tortas and breakfast. Order online and send your order on WhatsApp.":
+   "Taco Taco Mexican Restaurant en el oeste de Belmopán. Tacos auténticos estilo mexicano, birria, tortas y desayunos. Ordene en línea y envíe su pedido por WhatsApp.",
  "Taco Taco deals and combos in Belmopan: lunch combos, the Mega Combo, and Monday and Tuesday specials. Pick your options and order on WhatsApp.":
    "Ofertas y combos de Taco Taco en Belmopán: combos de almuerzo, el Mega combo y los especiales de lunes y martes. Elija sus opciones y ordene por WhatsApp.",
  "The full Taco Taco Mexican Restaurant menu with prices in Belize dollars. Build your basket and send your order on WhatsApp.":
