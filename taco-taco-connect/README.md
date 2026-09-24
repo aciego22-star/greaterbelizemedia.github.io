@@ -545,7 +545,7 @@ arrives, so nothing waits on it.
 
 ## Sources
 
-The business name, address, website, "Mexicali-style", the menu categories, the
+The business name, address, website, "Mexican-style", the menu categories, the
 phone and WhatsApp numbers, the three social links and the opening hours were all
 supplied directly. The artwork is the real logo, stored at
 `assets/logo-source.jpg`.
