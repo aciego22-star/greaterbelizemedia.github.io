@@ -437,9 +437,11 @@ ES.update({
 
 # ---------------------------------------------------------------- deals
 ES.update({
- "Any 2 for $15 + Free Coke": "Cualquier 2 por $15 + Coca-Cola gratis",
- "Pick two Taco Taco favourites and make it a combo. Choose from burritos or quesadillas with your preferred filling, and enjoy a complimentary Coke with the deal.":
-   "Elija dos favoritos de Taco Taco y hágalos combo. Escoja entre burritos o quesadillas con el relleno que prefiera, y disfrute una Coca-Cola de cortesía con la oferta.",
+ "Any 2 for $16 + Free Coke": "Cualquier 2 por $16 + Coca-Cola gratis",
+ "Pick two Taco Taco favourites and make it a combo. Choose burritos or quesadillas filled with birria or carnitas pork, and enjoy a complimentary Coke with the deal.":
+   "Elija dos favoritos de Taco Taco y hágalos combo. Escoja burritos o quesadillas "
+   "rellenos de birria o carnitas de cerdo, y disfrute una Coca-Cola de cortesía "
+   "con la oferta.",
  "First item": "Primer platillo",
  "First item filling": "Relleno del primer platillo",
  "Second item": "Segundo platillo",

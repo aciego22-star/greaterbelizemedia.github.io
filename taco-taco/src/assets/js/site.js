@@ -224,8 +224,60 @@ function t(k,d){return TT_TXT[k]||d;}
 
  var BKEY='tt_basket_v1';
  function saveBasket(){try{localStorage.setItem(BKEY,JSON.stringify(basket));}catch(e){}}
+ /* A basket outlives the menu it was filled from. It is kept on the device, so
+    somebody who added a deal last week and comes back today is still holding
+    whatever that deal was then: the old price, and options the kitchen may have
+    stopped offering. The $15 version of Any 2 became the $16 version with two
+    fillings instead of four, and without this a customer would have sent the
+    restaurant an order for a deal it no longer runs at a price it no longer
+    honours.
+
+    So a saved deal line has to still be orderable. The deal must exist, its
+    price must be one this deal can charge, and every option chosen must still
+    be on offer. Anything else is dropped rather than quietly repriced: the
+    customer picks again and sees the real price while they do it. Ordinary
+    menu items are left alone, because they are matched by name at the counter
+    and a changed price is caught by the basket total either way. */
+ function dealNow(id){
+  var ds=window.TT_DEALS||[];
+  for(var i=0;i<ds.length;i++) if(ds[i].id===id) return ds[i];
+  return null;
+ }
+ function stillOrderable(it){
+  if(!it.deal) return true;
+  var k=it.key||'', a=k.indexOf(':'), b=k.indexOf(':',a+1);
+  if(a<0||b<0) return false;
+  var d=dealNow(k.slice(a+1,b));
+  if(!d) return false;
+  // the price has to be one this deal can actually charge
+  var ok=[];
+  if(typeof d.price==='number') ok.push(d.price);
+  (d.choices||[]).forEach(function(c){
+   if(c.priced) (c.options||[]).forEach(function(o){
+    if(o&&typeof o.price==='number') ok.push(o.price); });
+  });
+  if(ok.indexOf(it.price)<0) return false;
+  // and every choice made has to still be offered
+  var sel; try{ sel=JSON.parse(k.slice(b+1)); }catch(e){ return false; }
+  for(var id in sel){
+   if(!Object.prototype.hasOwnProperty.call(sel,id)) continue;
+   var c=null;
+   (d.choices||[]).forEach(function(x){ if(x.id===id) c=x; });
+   if(!c) return false;
+   var vals=(c.options||[]).map(function(o){ return (o&&o.label!=null)?o.label:o; });
+   var chosen=[].concat(sel[id]);
+   for(var j=0;j<chosen.length;j++) if(vals.indexOf(chosen[j])<0) return false;
+  }
+  return true;
+ }
  function loadBasket(){try{var v=JSON.parse(localStorage.getItem(BKEY)||'null');
-  if(v&&v.length){basket=v;basket.forEach(function(it){if(!it.key)it.key=keyOf(it.name,it.meat);});renderBar();}}catch(e){}}
+  if(v&&v.length){
+   var keep=v.filter(stillOrderable);
+   basket=keep;
+   basket.forEach(function(it){if(!it.key)it.key=keyOf(it.name,it.meat);});
+   if(keep.length!==v.length) saveBasket();
+   renderBar();
+  }}catch(e){}}
 
  var barPromo=$('bb-promo');
  function renderBar(){var c=count();H.classList.toggle('has-items',c>0);

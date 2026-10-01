@@ -12,23 +12,30 @@ LUNCH_DRINKS = ["Watermelon", "Horchata", "Sorrel", "Lime", "Orange Juice",
 MEGA_DRINKS  = ["Watermelon", "Lime", "Orange", "Horchata", "Sorrel", "Mango",
                 "Pineapple", "Dragon Fruit Lime", "Cucumber Lime"]
 DESSERTS     = ["Chocoflan", "Tres Leches", "Cinnamon Rolls", "Bread Pudding"]
-FILLINGS     = ["Birria", "Chicken", "Beef", "Pork"]
+# Anything birria based is served with one of two meats and no others. The
+# restaurant said so on 1 October: "any birria option is birria and carnitas
+# pork only". Carnitas rather than "Carnitas Pork" because that is the word
+# the printed menu uses, where it already reads Carnitas / Pork.
+BIRRIA_MEATS = ["Birria", "Carnitas"]
 LUNCH_MEATS  = ["Al Pastor", "Carnitas", "Carne Asada", "Chicken"]
 
 # Which four appear in the home page carousel, in order. Reorder or swap ids here.
-FEATURED = ["any-2-for-15", "mega-combo", "grande-burrito", "birria-quesadillas"]
+FEATURED = ["any-2-for-16", "mega-combo", "grande-burrito", "birria-quesadillas"]
 
 DEALS = [
+ # Replaced the $15 version on 1 October. The price moved and the fillings
+ # narrowed to the two the kitchen actually makes this with.
  {
-  "id": "any-2-for-15", "flyer": "flyer-any2.jpg", "price": 15,
-  "title": "Any 2 for $15 + Free Coke",
-  "desc": "Pick two Taco Taco favourites and make it a combo. Choose from burritos or "
-          "quesadillas with your preferred filling, and enjoy a complimentary Coke with the deal.",
+  "id": "any-2-for-16", "flyer": "flyer-any2.jpg", "price": 16,
+  "title": "Any 2 for $16 + Free Coke",
+  "desc": "Pick two Taco Taco favourites and make it a combo. Choose burritos or "
+          "quesadillas filled with birria or carnitas pork, and enjoy a complimentary "
+          "Coke with the deal.",
   "choices": [
     {"id":"item1","label":"First item","options":["Burrito","Quesadilla"]},
-    {"id":"meat1","label":"First item filling","options":FILLINGS},
+    {"id":"meat1","label":"First item filling","options":BIRRIA_MEATS},
     {"id":"item2","label":"Second item","options":["Burrito","Quesadilla"]},
-    {"id":"meat2","label":"Second item filling","options":FILLINGS},
+    {"id":"meat2","label":"Second item filling","options":BIRRIA_MEATS},
   ],
   "wa": ["1 {meat1} {item1}", "1 {meat2} {item2}", "Free Coke"],
  },
@@ -113,7 +120,7 @@ DEALS = [
   "desc": "Golden, cheesy birria quesadillas served with rich dipping consomme, small fries and "
           "a refreshing small drink.",
   "choices": [
-    {"id":"meat","label":"Meat","options":["Beef","Pork"]},
+    {"id":"meat","label":"Meat","options":BIRRIA_MEATS},
     {"id":"drink","label":"Small drink","options":LUNCH_DRINKS},
   ],
   "wa": ["Birria Quesadillas: {meat}", "Consomme", "Small Fries", "Small Drink: {drink}"],
