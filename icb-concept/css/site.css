@@ -3496,15 +3496,29 @@ select,
   letter-spacing: 0.01em;
   cursor: pointer;
   box-shadow: 0 10px 30px rgba(10, 10, 11, 0.32);
+  /* No transform in that list, and the omission is deliberate.
+     js/assistant.js writes this element's transform on every frame, and a
+     transition on the same property means the browser starts a fresh one
+     each time, toward a value the script has already moved past: the bee
+     renders permanently behind where it is, the motion goes mushy, and
+     when the writes stop it carries on gliding for another fifth of a
+     second. Measured at fifteen pixels of travel after the flight had
+     already been told to stop. The script owns this property. */
   transition: background-color var(--t-fast) var(--ease),
-              box-shadow var(--t-fast) var(--ease),
-              transform var(--t-fast) var(--ease);
+              box-shadow var(--t-fast) var(--ease);
 }
 .bee-pill:hover { background: var(--red-700); }
 .bee-pill:focus-visible { outline: 2px solid var(--c-cta); outline-offset: 3px; }
+/* No lift on hover any more. js/assistant.js owns this element's
+   transform now, writing the bee's position into it every frame, and an
+   inline transform outranks a stylesheet one regardless. The shadow still
+   answers the pointer, and the bee easing to a stop under it is a far
+   louder acknowledgement than a one pixel lift ever was. */
 @media (hover: hover) and (pointer: fine) {
-  .bee-pill:hover { transform: translateY(-1px); box-shadow: 0 14px 34px rgba(10, 10, 11, 0.38); }
+  .bee-pill:hover { box-shadow: 0 14px 34px rgba(10, 10, 11, 0.38); }
 }
+/* Told in advance, since this moves on nearly every frame. */
+.bee-pill { will-change: transform; }
 
 /* The mark sits on white: the ICB logo is black and red, and neither
    reads on the red pill. */
@@ -3596,7 +3610,11 @@ select,
    panel on their way in. */
 body.sheet-open .bee { display: none; }
 
+/* Asked for less motion, given none. js/assistant.js never starts the
+   flight loop under this setting, so the pill simply sits in its corner;
+   the !important is the belt to that braces, in case anything else ever
+   writes a transform here. */
 @media (prefers-reduced-motion: reduce) {
-  .bee-pill { transition: background-color var(--t-fast) var(--ease); }
-  .bee-pill:hover { transform: none; }
+  .bee-pill { transition: background-color var(--t-fast) var(--ease); will-change: auto; }
+  .bee-pill, .bee-pill:hover { transform: none !important; }
 }
