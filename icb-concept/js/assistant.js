@@ -171,9 +171,10 @@ window.ICB = window.ICB || {};
   function setOpen(next, fromEl) {
     if (next === open) return;
     open = next;
-    /* Home before the panel appears, so it never opens off a pill that is
-       halfway across the screen. */
-    goHome(open);
+    /* Opening grounds it for good. It flies home first, so the panel never
+       opens off a pill that is halfway across the screen, and it is still
+       there when the panel closes. */
+    if (open) ground();
     panel.hidden = !open;
     root.classList.toggle("is-open", open);
     pill.setAttribute("aria-expanded", String(open));
@@ -263,6 +264,7 @@ window.ICB = window.ICB || {};
     speed: 1, wanted: 1,
     x: 0, y: 0,
     homing: false,
+    grounded: false,
     box: null
   };
 
@@ -341,6 +343,17 @@ window.ICB = window.ICB || {};
     if (Math.abs(tx - flight.x) < 0.05) flight.x = tx;
     if (Math.abs(ty - flight.y) < 0.05) flight.y = ty;
 
+    /* Parked, and nothing left to animate: drop the frame loop and hand
+       the position back to the stylesheet, so the pill sits in its corner
+       on its own rather than being held there sixty times a second. */
+    if (flight.grounded && flight.x === 0 && flight.y === 0) {
+      cancelAnimationFrame(flight.raf);
+      flight.raf = null;
+      pill.style.transform = "";
+      pill.style.willChange = "auto";
+      return;
+    }
+
     pill.style.transform = "translate3d(" + flight.x.toFixed(1) + "px," +
       flight.y.toFixed(1) + "px,0)";
   }
@@ -350,7 +363,7 @@ window.ICB = window.ICB || {};
   }
 
   function takeOff() {
-    if (!pill || flight.raf || stillness()) return;
+    if (!pill || flight.raf || flight.grounded || stillness()) return;
     measure();
     /* A random phase, so two people looking at the site are not watching
        the same bee fly the same path. */
@@ -361,13 +374,26 @@ window.ICB = window.ICB || {};
 
   /* Ease to a hover rather than stopping dead: the bee is a target, and a
      target you have to chase is a bad one. */
-  function settle(yes) { flight.wanted = yes ? 0 : 1; }
-
-  /* Fly home and stay there, so the panel has something still to hang off. */
-  function goHome(yes) {
-    flight.homing = yes;
+  function settle(yes) {
+    if (flight.grounded) return;
     flight.wanted = yes ? 0 : 1;
-    if (!yes) flight.last = null;
+  }
+
+  /* Grounded for good, the moment the assistant is opened.
+     The flight is an introduction. Someone who has opened the chat has
+     already met the bee and come for something else, and a launcher still
+     looping across their reading is in the way rather than a greeting. So
+     it flies home to the bottom right corner it started in and parks
+     there for the rest of the visit.
+     This also retires the one discontinuity the flight had. Leaving the
+     homing state used to hand the pill a target from a clock that had been
+     frozen mid flight, which on a phone, where no pointerleave follows a
+     tap to resume the flight and hide it, stranded the bee out in the
+     middle of the screen. There is no longer any way back out of homing. */
+  function ground() {
+    flight.grounded = true;
+    flight.homing = true;
+    flight.wanted = 0;
   }
 
   ICB.assistant = {
