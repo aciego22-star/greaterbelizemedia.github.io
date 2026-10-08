@@ -24,23 +24,27 @@
   Cache-Control: public, max-age=86400, stale-while-revalidate=604800
 
 # Icons change very rarely but are not hashed either, so they get a week.
-/favicon.ico
+/duke-icon.ico
   Cache-Control: public, max-age=604800
-/favicon.svg
+/duke-icon-48.png
   Cache-Control: public, max-age=604800
-/favicon-16.png
+/duke-icon-96.png
   Cache-Control: public, max-age=604800
-/favicon-32.png
+/duke-icon-192.png
   Cache-Control: public, max-age=604800
-/favicon-48.png
-  Cache-Control: public, max-age=604800
-/favicon-96.png
-  Cache-Control: public, max-age=604800
-/favicon-192.png
-  Cache-Control: public, max-age=604800
-/favicon-512.png
+/duke-icon-512.png
   Cache-Control: public, max-age=604800
 /apple-touch-icon.png
+  Cache-Control: public, max-age=604800
+
+# The conventional path. Google probes it whatever the page declares, so it
+# carries the same artwork as /duke-icon.ico.
+/favicon.ico
+  Cache-Control: public, max-age=604800
+
+# Not an icon: this is the organisation logo used in the structured data,
+# where the full crest is read at size and is the right mark to show.
+/favicon-512.png
   Cache-Control: public, max-age=604800
 
 # robots.txt and the sitemaps deliberately get no rule here. They keep

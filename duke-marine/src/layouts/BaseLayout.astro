@@ -150,16 +150,24 @@ const articleLd = article
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     {/*
-      Google wants a square favicon whose size is a multiple of 48. Name the
-      sizes the .ico actually contains rather than `sizes="any"`: "any" is the
-      idiom that tells a picker to prefer the SVG, and it leaves the compliant
-      48 and 96 inside the .ico to be discovered by parsing the binary.
+      These point at /duke-icon-* rather than /favicon-*, and the names are
+      deliberate. The old URLs served a bad icon from launch on 8 August, and
+      the favicon never appeared in search results across six weeks of correct
+      files at those same addresses. A new path is one Google has no stored
+      result for, which is the position every other site of ours was in when
+      its icon appeared on the first crawl.
+
+      No SVG is declared. The sites whose favicons do show declare either a
+      plain .ico or a true vector; an SVG wrapping a 180px raster was the one
+      thing this site had that they did not.
+
+      Sizes are named rather than left to `sizes="any"`, so the compliant 48
+      and 96 are offered outright instead of being found by parsing the .ico.
     */}
-    <link rel="icon" href="/favicon.ico" sizes="96x96 48x48" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
-    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png" />
-    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+    <link rel="icon" href="/duke-icon.ico" sizes="96x96 48x48" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/duke-icon-48.png" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/duke-icon-96.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/duke-icon-192.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="generator" content={Astro.generator} />
