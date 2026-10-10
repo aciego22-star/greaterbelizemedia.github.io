@@ -22,7 +22,8 @@ from build_shell import (
     SRC_FISHERIES_DEPT, SRC_FISHERYPROGRESS, SRC_FISHSOURCE, SRC_FISHWISE,
     AI_PAGE, HOURS, MARKET_HOURS, OFFICE_HOURS, RULE_WAVE, SITE_URL,
     NAV_LABEL, ORG_ID, _plain, faq_node, page_url, shipped_jpeg,
-    contact_strip, cta_band, faq_section, footer, head, header, hero_picture,
+    about_hero_preload, contact_strip, cta_band, faq_section, footer, head,
+    header, hero_picture,
     hero_preload, hero_tiers, identity_ribbon, logo_full, page_hero, picture,
 )
 from video_dims import VIDEO_DIMS
@@ -577,6 +578,7 @@ def about():
             f"{COMMITTEE}-member Managing Committee elected from the membership.",
             "about.html",
             faq=FAQ_ABOUT,
+            preload=about_hero_preload("about-facility"),
         )
         + header("about.html")
         + page_hero(
@@ -585,6 +587,7 @@ def about():
             "NATFISH was built so that Belizean fishers could combine their "
             "effort and reach markets no single fisher could reach alone.",
             "About NATFISH",
+            photo="about-facility",
         )
         + f"""
     <section class="section">

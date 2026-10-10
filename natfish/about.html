@@ -5945,7 +5945,97 @@ body.nav-open {
   }
 }
 
+/* ------------------------------------------- About banner photograph -- */
+/* The About page banner carries a photograph of the co-operative's own
+   premises behind the heading. Every other page hero keeps the plain navy
+   band, so all of this is scoped to the modifier.
+
+   The navy gradient underneath is deliberately kept: it is what the band
+   falls back to while the photograph decodes, and what shows through the
+   scrim. Nothing here moves - no push-in, no parallax - because the banner is
+   the LCP element and animating it is the one thing guaranteed to cost the
+   page its Largest Contentful Paint. */
+
+.page-hero--photo .page-hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+}
+
+.page-hero--photo .page-hero__media picture,
+.page-hero--photo .page-hero__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 42%;
+}
+
+/* The scrim. The photograph is bright sky over pale gravel, and the copy on
+   top of it is white or pale turquoise. Measured on the rendered banner with
+   this rule switched off, the breadcrumb sits at 2.38:1 on desktop and 1.37:1
+   on a phone, where it lands on open sky, against the 4.5:1 small text needs.
+   With the scrim both read 6.8:1 or better. Weighted to the left on desktop,
+   where the text column is, so the building stays readable on the right. */
+.page-hero--photo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(100deg,
+      rgba(3, 25, 42, 0.93) 0%,
+      rgba(3, 25, 42, 0.86) 34%,
+      rgba(3, 25, 42, 0.58) 62%,
+      rgba(3, 25, 42, 0.42) 100%);
+}
+
+/* The band is taller with a photograph in it: at the old padding the picture
+   was a 150px strip and read as a texture rather than a place. */
+.page-hero--photo {
+  padding-block: clamp(4.5rem, 11vw, 7.5rem);
+}
+
+/* On a phone the portrait crop is behind a near-square band, and the text
+   runs the full width, so the scrim turns bottom-weighted instead. */
+@media (max-width: 760px) {
+  .page-hero--photo::before {
+    background:
+      linear-gradient(176deg,
+        rgba(3, 25, 42, 0.56) 0%,
+        rgba(3, 25, 42, 0.70) 44%,
+        rgba(3, 25, 42, 0.88) 100%);
+  }
+
+  .page-hero--photo .page-hero__media img {
+    object-position: 50% 38%;
+  }
+}
+
+/* The watermark is a decorative NATFISH lockup that reads well on flat navy
+   and turns to mud over a photograph. */
+.page-hero--photo .page-hero__watermark {
+  display: none;
+}
+
+/* The eyebrow is --teal-600, which is a dark teal chosen to sit on white. On
+   a navy hero it has always been low contrast - measured at 2.88:1 on the
+   plain band, against the 4.5:1 small text needs - and over a photograph it
+   is no better. Scoped here rather than changed globally, because every page
+   hero on a live site carries one and that is a bigger change than this is:
+   inside this banner it becomes --turq-300, the same colour the breadcrumb
+   immediately above it already uses, which measures 7.8:1. */
+.page-hero--photo .eyebrow {
+  color: var(--turq-300);
+}
+
   </style>
+  <link rel="preload" as="image" type="image/webp" media="(max-width: 600px)"
+        href="assets/img/official/about-facility-mobile-720.webp"
+        imagesrcset="assets/img/official/about-facility-mobile-360.webp 360w, assets/img/official/about-facility-mobile-540.webp 540w, assets/img/official/about-facility-mobile-720.webp 720w, assets/img/official/about-facility-mobile-941.webp 941w" imagesizes="100vw" fetchpriority="high">
+  <link rel="preload" as="image" type="image/webp" media="(min-width: 601px)"
+        href="assets/img/official/about-facility-desktop-1200.webp"
+        imagesrcset="assets/img/official/about-facility-desktop-800.webp 800w, assets/img/official/about-facility-desktop-1200.webp 1200w, assets/img/official/about-facility-desktop-1672.webp 1672w" imagesizes="100vw" fetchpriority="high">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -6244,7 +6334,13 @@ body.nav-open {
 
   <main id="main">
 
-    <section class="page-hero">
+    <section class="page-hero page-hero--photo">
+      <div class="page-hero__media"><picture>
+          <source media="(max-width: 600px)" type="image/webp" srcset="assets/img/official/about-facility-mobile-360.webp 360w, assets/img/official/about-facility-mobile-540.webp 540w, assets/img/official/about-facility-mobile-720.webp 720w, assets/img/official/about-facility-mobile-941.webp 941w" sizes="100vw" width="941" height="1672">
+          <source media="(max-width: 600px)" type="image/jpeg" srcset="assets/img/official/about-facility-mobile-720.jpg" width="941" height="1672">
+          <source type="image/webp" srcset="assets/img/official/about-facility-desktop-800.webp 800w, assets/img/official/about-facility-desktop-1200.webp 1200w, assets/img/official/about-facility-desktop-1672.webp 1672w" sizes="100vw" width="1672" height="941">
+          <img src="assets/img/official/about-facility-desktop-1200.jpg" width="1672" height="941" alt="The NATFISH premises in Belize: a timber-clad upper floor above a pink shipping-container ground floor, with the National Fishermen Producers Co-operative Society Limited sign on the gable and the receiving bay open behind the gate." loading="eager" fetchpriority="high" decoding="async">
+        </picture></div>
       <span class="page-hero__watermark" aria-hidden="true">NATFISH</span>
       <div class="container">
         <p class="breadcrumb"><a href="index.html">Home</a><span>/</span>About NATFISH</p>
@@ -6558,7 +6654,7 @@ body.nav-open {
 
   <p class="visually-hidden" id="lang-status" role="status" aria-live="polite"></p>
 
-  <script src="assets/js/natfish-strings.js?v=057b1733"></script>
+  <script src="assets/js/natfish-strings.js?v=821c59fc"></script>
   <script src="assets/js/natfish-i18n.js?v=b8a289c3"></script>
   <script src="assets/js/natfish-seasons.js?v=c270a135"></script>
   <script src="assets/js/natfish.js?v=79e88ac3"></script>

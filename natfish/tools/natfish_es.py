@@ -2453,3 +2453,17 @@ ES.update({
         "que mantiene funcionando la pesquería, y los medios de vida que "
         "dependen de ella, temporada tras temporada.",
 })
+
+# The About page banner photograph. The registered name on the building's own
+# sign is not translated - it is the name on the register, and it is what the
+# sign in the photograph actually reads.
+ES.update({
+    "The NATFISH premises in Belize: a timber-clad upper floor above a pink "
+    "shipping-container ground floor, with the National Fishermen Producers "
+    "Co-operative Society Limited sign on the gable and the receiving bay "
+    "open behind the gate.":
+        "Las instalaciones de NATFISH en Belice: un piso superior revestido "
+        "de madera sobre una planta baja de contenedores rosados, con el "
+        "letrero de National Fishermen Producers Co-operative Society Limited "
+        "en el frontón y la bahía de recepción abierta detrás del portón.",
+})

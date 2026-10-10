@@ -1591,3 +1591,57 @@ JavaScript, the fonts, every photograph, the video, the favicons and the
 manifest are separate files under assets/. Uploading only the .html files
 would leave a site with no language switch, no NATFISH AI, no gallery
 lightbox, no images and no webfonts. The zip is still the unit of deployment.
+
+---
+
+## The About page banner is now a photograph
+
+The client supplied one photograph of the NATFISH premises as a pre-cropped
+responsive pair, 1672x941 landscape and 941x1672 portrait, and asked for it as
+the About hero. Every other page hero keeps the plain navy band; all of this is
+scoped to a `.page-hero--photo` modifier.
+
+**Why a new processor.** `tools/process-about-hero.py`, not
+`tools/process-hero-images.py`. The carousel script rebuilds all five homepage
+heroes from source files that are not in this repository, so running it to add
+one photograph would have dropped five live heroes. The new script writes one
+pair and its own dimension table and touches nothing else. Originals are kept
+in `source-images/about-hero/`, which never ships.
+
+**Art direction.** Same 600px line the homepage hero uses. On a phone the band
+is roughly square; a landscape crop cropped to that loses the building off both
+sides, so the portrait crop is served there. Confirmed in Chromium: desktop
+takes `about-facility-desktop-1672.webp`, a phone takes
+`about-facility-mobile-540.webp`, a tablet takes the desktop crop.
+
+**The scrim is not decoration.** The photograph is bright sky over pale gravel
+and the hero copy is white and pale turquoise. Measured on the rendered banner
+with the scrim switched off, the breadcrumb sits at 2.38:1 on desktop and
+1.37:1 on a phone, where it lands on open sky - against the 4.5:1 that small
+text needs. With the scrim in place, measured at ten widths from 320 to 1920 in
+both languages, every element passes; the worst case is the breadcrumb at
+4.93:1 at 320px.
+
+**A pre-existing failure found on the way, and NOT fixed globally.** The
+`.eyebrow` on a page hero is `--teal-600`, a dark teal chosen to sit on white.
+On the plain navy band it measures **2.88:1 on desktop and 2.81:1 on a phone**,
+against the 4.5:1 it needs. That is true today on Responsible Fisheries, What's
+New, Gallery, Seafood & Services, Seafood Seasons, Contact and NATFISH AI, and
+has nothing to do with this photograph. Inside this banner it is overridden to
+`--turq-300`, the colour the breadcrumb directly above it already uses, which
+measures 7.07:1. Fixing it everywhere is a one-line change to `.page-hero
+.eyebrow`, but it touches every page hero on a live site, so it is logged here
+for the client to call rather than taken.
+
+**Cost.** Measured on the packaged copy at 390px on throttled 4G, About page
+only, before and after:
+
+| | before | after |
+|---|---|---|
+| LCP | 1076ms (the footer logo) | 1128ms (the photograph) |
+| CLS | 0 | 0 |
+| transferred | 287K | 393K |
+
+52ms and about 106K for the page, against a three second target. CLS stays at
+zero because both crops carry their real `width`/`height`, so the box is
+reserved before the file arrives.

@@ -177,8 +177,9 @@ from hero_dims import HERO_DIMS, HERO_TIERS_BY_STEM  # noqa: E402
 from gallery_dims import (GALLERY_DIMS, GALLERY_GROUPS,  # noqa: E402
                           GALLERY_TIERS)
 from news_dims import NEWS_DIMS  # noqa: E402
+from about_dims import ABOUT_DIMS, ABOUT_TIERS  # noqa: E402
 
-DIMS = {**DIMS, **HERO_DIMS, **GALLERY_DIMS, **NEWS_DIMS}
+DIMS = {**DIMS, **HERO_DIMS, **GALLERY_DIMS, **NEWS_DIMS, **ABOUT_DIMS}
 
 # A photo credit, not a disclaimer. The four Belizean Pride carton photographs
 # in products/ are recreations built from NATFISH product material rather than
@@ -190,6 +191,15 @@ RECREATION_NOTE = (
 )
 
 ALT = {
+    # The two crops of the About hero are the same photograph, so they carry
+    # the same description. It says what is in the frame and nothing more: the
+    # sign on the gable is the co-operative's own, which is the whole reason
+    # this photograph can open the page about who NATFISH is.
+    "about-facility":
+        "The NATFISH premises in Belize: a timber-clad upper floor above a "
+        "pink shipping-container ground floor, with the National Fishermen "
+        "Producers Co-operative Society Limited sign on the gable and the "
+        "receiving bay open behind the gate.",
     "01-lobster-packing-team-wide":
         "NATFISH workers in hairnets, masks and aprons preparing lobster along a "
         "stainless steel bench in the co-operative&rsquo;s processing room.",
@@ -1428,16 +1438,76 @@ def footer(with_lightbox=False, with_ai_pill=True):
 """
 
 
-def page_hero(eyebrow, title, lede, crumb, actions=""):
+def about_hero_tiers(stem):
+    return ABOUT_TIERS[stem]
+
+
+def about_hero_picture(stem):
+    """The About banner photograph, art-directed.
+
+    The client cropped the same photograph twice - 1672x941 landscape for the
+    banner and 941x1672 portrait for the phone - so the browser is handed both
+    and picks on the same 600px line the homepage hero uses. On a phone the
+    band is roughly square, and a landscape crop cropped to that loses the
+    building off both sides; the portrait crop keeps it centred.
+
+    Not decorative, so not aria-hidden: this is the co-operative's own premises
+    with its own sign on the gable, on the page about the co-operative. It gets
+    a real description.
+    """
+    d = img_dir(f"{stem}-desktop")
+    mob, desk = f"{stem}-mobile", f"{stem}-desktop"
+    mw, mh = DIMS[mob]
+    dw, dh = DIMS[desk]
+    phone = f"(max-width: {HERO_PHONE_BP}px)"
+    return f"""<picture>
+          <source media="{phone}" type="image/webp" srcset="{_srcset(d, mob, about_hero_tiers(mob), 'webp')}" sizes="100vw" width="{mw}" height="{mh}">
+          <source media="{phone}" type="image/jpeg" srcset="{d}/{mob}-720.jpg" width="{mw}" height="{mh}">
+          <source type="image/webp" srcset="{_srcset(d, desk, about_hero_tiers(desk), 'webp')}" sizes="100vw" width="{dw}" height="{dh}">
+          <img src="{d}/{desk}-1200.jpg" width="{dw}" height="{dh}" alt="{ALT[stem]}" loading="eager" fetchpriority="high" decoding="async">
+        </picture>"""
+
+
+def about_hero_preload(stem):
+    """The banner is the largest thing painted on that page, so it is the LCP.
+
+    Both crops are preloaded behind their own `media`, so a phone fetches the
+    portrait file and a desktop the landscape one. Without `media` the browser
+    speculatively fetches one crop and then the other - two full downloads
+    before the first paint.
+    """
+    d = img_dir(f"{stem}-desktop")
+    mob, desk = f"{stem}-mobile", f"{stem}-desktop"
+    phone = f"(max-width: {HERO_PHONE_BP}px)"
+    return (f'  <link rel="preload" as="image" type="image/webp" media="{phone}"\n'
+            f'        href="{d}/{mob}-720.webp"\n'
+            f'        imagesrcset="{_srcset(d, mob, about_hero_tiers(mob), "webp")}"'
+            f' imagesizes="100vw" fetchpriority="high">\n'
+            f'  <link rel="preload" as="image" type="image/webp"'
+            f' media="(min-width: {HERO_PHONE_BP + 1}px)"\n'
+            f'        href="{d}/{desk}-1200.webp"\n'
+            f'        imagesrcset="{_srcset(d, desk, about_hero_tiers(desk), "webp")}"'
+            f' imagesizes="100vw" fetchpriority="high">\n')
+
+
+def page_hero(eyebrow, title, lede, crumb, actions="", photo=None):
     """The inner-page banner.
 
     `actions` renders inside the band rather than as a block underneath it. A
     call to action stranded on white below the hero reads as a leftover strip,
     which is exactly the complaint that removed the previous one.
+
+    `photo` puts a photograph behind the band. The navy gradient stays beneath
+    it and a scrim goes over it, because the copy here is white and this
+    photograph is bright sky and pale gravel - without the scrim the breadcrumb
+    and the lede fall below readable contrast.
     """
     block = f'\n        <div class="page-hero__actions">{actions}</div>' if actions else ""
+    media = (f'\n      <div class="page-hero__media">{about_hero_picture(photo)}</div>'
+             if photo else "")
+    mod = " page-hero--photo" if photo else ""
     return f"""
-    <section class="page-hero">
+    <section class="page-hero{mod}">{media}
       <span class="page-hero__watermark" aria-hidden="true">NATFISH</span>
       <div class="container">
         <p class="breadcrumb"><a href="index.html">Home</a><span>/</span>{crumb}</p>

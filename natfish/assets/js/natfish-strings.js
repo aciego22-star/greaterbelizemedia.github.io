@@ -505,6 +505,7 @@ window.NATFISH_STRINGS = {
   "The Co-operative gives a fisher more than a buyer for the day’s catch. It gives a share in the organization, a vote in how it is run, and a route to markets that would otherwise be out of reach.": "La Cooperativa le da a un pescador más que un comprador para la captura del día. Le da una participación en la organización, un voto en cómo se dirige y una ruta a mercados que de otro modo estarían fuera de su alcance.",
   "The Managing Committee is selected from the general membership and governs the Society on the members' behalf.": "El Comité Administrativo se elige entre los socios y dirige la Sociedad en nombre de ellos.",
   "The NATFISH delegation representing Belizean seafood products.": "La delegación de NATFISH representando los productos del mar de Belice.",
+  "The NATFISH premises in Belize: a timber-clad upper floor above a pink shipping-container ground floor, with the National Fishermen Producers Co-operative Society Limited sign on the gable and the receiving bay open behind the gate.": "Las instalaciones de NATFISH en Belice: un piso superior revestido de madera sobre una planta baja de contenedores rosados, con el letrero de National Fishermen Producers Co-operative Society Limited en el frontón y la bahía de recepción abierta detrás del portón.",
   "The NATFISH team confirms": "El equipo de NATFISH confirma",
   "The National Fishermen Co-operative of Belize": "La Cooperativa National Fishermen de Belice",
   "The Office": "La Oficina",
