@@ -88,7 +88,14 @@ def promo_live():
     import time as _t
     return promo_data.ACTIVE and _t.time() * 1000 <= PROMO_TO
 
-MASTER_MAX = 1400
+# The widest a deployed photograph is allowed to be, on its longest side.
+#
+# 1400 to 1200 on 11 October. The lightbox is bounded by the viewport: a phone
+# shows about 390 of these pixels and a laptop about 1100, so 1200 is already
+# generous, and the flyers that have been on the site since launch are 760 wide
+# and nobody has ever remarked on them. It saves 2MB across the build, which is
+# the difference between a deploy that fits in one upload and one that does not.
+MASTER_MAX = 1200
 
 # The one-link page. It is its own site on its own subdomain, so it is named
 # here once and every mention on this site is built from these two lines.
