@@ -455,6 +455,14 @@ ES.update({
    "Ocho tacos de birria, y un postre de cortes\u00eda con ellos: tres leches, roles de canela "
    "o chocoflan.",
  "Your free dessert":                    "Su postre de cortes\u00eda",
+
+ "Birria Promotion":                     "Promoci\u00f3n de birria",
+ "Everything birria in one order: two birria quesadillas, two birria burritos, "
+ "a birria ramen, an order of four birria tacos and a birria pizza, with four "
+ "Cokes on the house.":
+   "Todo de birria en un solo pedido: dos quesadillas de birria, dos burritos de "
+   "birria, un ramen de birria, una orden de cuatro tacos de birria y una pizza de "
+   "birria, con cuatro Coca-Colas de cortes\u00eda.",
 })
 
 # ---------------------------------------------------------------- deals

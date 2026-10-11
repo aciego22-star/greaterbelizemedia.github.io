@@ -403,20 +403,23 @@ def deal_card(d):
     day = ('<span class="deal-day">%s</span>' % esc(STR["only_on"] % d["day"])) if d.get("day") else ""
     note = ('<p class="deal-note">%s</p>' % esc(d["note"])) if d.get("note") else ""
     opts = "".join(choice_control(d, c) for c in d["choices"])
+    # A set bundle has nothing to pick, so it gets no options block rather than a
+    # "Choose your options" heading with empty space under it.
+    optblk = ('<div class="deal-opts"><span class="opt-head">%s</span>%s</div>'
+              % (esc(STR["choose"]), opts)) if opts else ""
     return (
      '<article class="deal" id="deal-%s" data-deal="%s">'
      '<div class="deal-flyer"><img src="assets/img/%s" alt="%s offer" loading="lazy" width="%d" height="%d" '
      'data-zoom="assets/img/%s" data-zoom-title="%s" tabindex="0" role="button"></div>'
      '<div class="deal-body">%s<h3 class="deal-title">%s</h3>'
-     '<p class="deal-desc">%s</p><div class="deal-price">%s</div>%s'
-     '<div class="deal-opts"><span class="opt-head">%s</span>%s</div>'
+     '<p class="deal-desc">%s</p><div class="deal-price">%s</div>%s%s'
      '<p class="deal-warn" role="alert" hidden></p>'
      '<button type="button" class="btn btn-red deal-add">%s</button>'
      '</div></article>'
      % (d["id"], d["id"], d["flyer"], esc(d["title"]),
         flyer_dim(d["flyer"])[0], flyer_dim(d["flyer"])[1], d["flyer"], esc(d["title"]),
         day, esc(d["title"]), esc(d["desc"]),
-        deal_price_label(d), note, esc(STR["choose"]), opts, esc(STR["add"])))
+        deal_price_label(d), note, optblk, esc(STR["add"])))
 
 def deals_page_body():
     cards = "".join(deal_card(d) for d in DEALS)

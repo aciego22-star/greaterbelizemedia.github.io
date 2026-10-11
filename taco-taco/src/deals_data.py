@@ -19,13 +19,28 @@ DESSERTS     = ["Chocoflan", "Tres Leches", "Cinnamon Rolls", "Bread Pudding"]
 BIRRIA_MEATS = ["Birria", "Carnitas"]
 LUNCH_MEATS  = ["Al Pastor", "Carnitas", "Carne Asada", "Chicken"]
 
-# Which four appear in the home page carousel, in order. Reorder or swap ids here.
-# The home page carousel. Any 2 came out of it on 11 October to make room for
-# the two new flyers; it is still on the deals page, still orderable.
-FEATURED = ["mexican-tacos-10", "sunday-funday-birria", "mega-combo",
-            "grande-burrito", "birria-quesadillas"]
+# The home page carousel, in order. Reorder or swap ids here. Any 2 came out of
+# it on 11 October to make room for the new flyers; it is still on the deals
+# page, still orderable.
+FEATURED = ["birria-promotion", "mexican-tacos-10", "sunday-funday-birria",
+            "mega-combo", "grande-burrito", "birria-quesadillas"]
 
 DEALS = [
+ # Added 11 October. A fixed bundle: the flyer names every item and leaves the
+ # customer nothing to pick, so this is the first deal with no choices at all.
+ # The wa lines use the printed menu's own names, which is why they read "Two
+ # Birria Quesadillas" where the flyer reads "2 Birria Quesadillas": that is one
+ # portion of the $16 menu item, not two of them.
+ {
+  "id": "birria-promotion", "flyer": "flyer-birria-promo.jpg", "price": 100,
+  "title": "Birria Promotion",
+  "desc": "Everything birria in one order: two birria quesadillas, two birria burritos, "
+          "a birria ramen, an order of four birria tacos and a birria pizza, with four "
+          "Cokes on the house.",
+  "choices": [],
+  "wa": ["Two Birria Quesadillas", "Two Birria Burritos", "1 Birria Ramen",
+         "1 Order of Birria Tacos (4)", "1 Birria Pizza", "4 Free Cokes"],
+ },
  # Added 11 October from the restaurant's own flyers. The four meats are the
  # four the flyer prints, which are the same four LUNCH_MEATS already holds.
  {
