@@ -36,7 +36,7 @@ PATTERNS = [
  (r"^(?P<x>.+) offer$",           "Oferta: {x}"),
  (r"^Deal (?P<n>\d+)$",           "Oferta {n}"),
  (r"^(?P<n>[\d.]+) out of 5$",    "{n} de 5"),
- (r"^(?P<x>Choose \d+ (?:drinks|desserts)) (?P<n>\d+)$", "{x} {n}"),
+ (r"^(?P<x>Choose \d+ (?:drinks|desserts|juices)) (?P<n>\d+)$", "{x} {n}"),
  (r"^from \$(?P<n>\d+)$",         "desde ${n}"),
  (r"^\$(?P<n>\d+) ea$",           "${n} c/u"),
  (r"^(?P<n>\d+) items?$",         "{n} artículos"),
@@ -433,6 +433,28 @@ ES.update({
    "Café o chocolate, licuado y coronado con crema",
  "Carne asada, al pastor, carnitas & more": "Carne asada, al pastor, carnitas y más",
  "With rich beef consomé for dipping": "Con consomé de res para remojar",
+})
+
+# ---------------------------------------------------------------- the October flyers
+ES.update({
+ "Mexican Tacos, 10 for $50":            "Tacos mexicanos, 10 por $50",
+ "Ten Mexican tacos with the meat of your choice, and drinks on the house: two small "
+ "natural juices, or one medium drink.":
+   "Diez tacos mexicanos con la carne de su elecci\u00f3n, y bebidas de cortes\u00eda: dos jugos "
+   "naturales peque\u00f1os, o una bebida mediana.",
+ "Tacos meat":                           "Carne de los tacos",
+ "Your free drinks":                     "Sus bebidas de cortes\u00eda",
+ "2 Small Natural Juices":               "2 jugos naturales peque\u00f1os",
+ "1 Medium Drink":                       "1 bebida mediana",
+ "Choose 2 juices":                      "Elija 2 jugos",
+ "Choose your medium drink":             "Elija su bebida mediana",
+
+ "Sunday Funday: 8 Birria Tacos for $50": "Sunday Funday: 8 tacos de birria por $50",
+ "Eight birria tacos, and a dessert on the house with them: tres leches, cinnamon rolls "
+ "or chocoflan.":
+   "Ocho tacos de birria, y un postre de cortes\u00eda con ellos: tres leches, roles de canela "
+   "o chocoflan.",
+ "Your free dessert":                    "Su postre de cortes\u00eda",
 })
 
 # ---------------------------------------------------------------- deals

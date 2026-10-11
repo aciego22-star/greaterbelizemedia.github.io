@@ -3,6 +3,9 @@
    in its interface. Declared before anything else here because the basket, the
    lightbox and the reel all reach for it. */
 var TT_TXT=window.TT_T||{};
+/* '' at the root, '../' under /es/. Any asset path this file builds at run
+   time has to carry it: the rewrite that fixes the markup never sees these. */
+var ASSETS=window.TT_BASE||'';
 function t(k,d){return TT_TXT[k]||d;}
 
 /* ================= land at the top of the page you asked for =================
@@ -997,7 +1000,7 @@ function t(k,d){return TT_TXT[k]||d;}
                     .filter(function(l){return l && !/\{\w+\}/.test(l) && !/:\s*$/.test(l);});
    window.TTBasket.addDeal({
     key:'deal:'+d.id+':'+JSON.stringify(sel),
-    name:d.title, price:price, img:'assets/img/'+d.flyer, opts:opts, wa:wa
+    name:d.title, price:price, img:ASSETS+'assets/img/'+d.flyer, opts:opts, wa:wa
    });
    var b=this; b.classList.add('added'); b.textContent=STR.added||'Added';
    setTimeout(function(){b.classList.remove('added');b.textContent=STR.add||'Add To Basket';},1100);

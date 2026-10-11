@@ -20,9 +20,46 @@ BIRRIA_MEATS = ["Birria", "Carnitas"]
 LUNCH_MEATS  = ["Al Pastor", "Carnitas", "Carne Asada", "Chicken"]
 
 # Which four appear in the home page carousel, in order. Reorder or swap ids here.
-FEATURED = ["any-2-for-16", "mega-combo", "grande-burrito", "birria-quesadillas"]
+# The home page carousel. Any 2 came out of it on 11 October to make room for
+# the two new flyers; it is still on the deals page, still orderable.
+FEATURED = ["mexican-tacos-10", "sunday-funday-birria", "mega-combo",
+            "grande-burrito", "birria-quesadillas"]
 
 DEALS = [
+ # Added 11 October from the restaurant's own flyers. The four meats are the
+ # four the flyer prints, which are the same four LUNCH_MEATS already holds.
+ {
+  "id": "mexican-tacos-10", "flyer": "flyer-tacos10.jpg", "price": 50,
+  "title": "Mexican Tacos, 10 for $50",
+  "desc": "Ten Mexican tacos with the meat of your choice, and drinks on the house: "
+          "two small natural juices, or one medium drink.",
+  "choices": [
+    {"id":"meat","label":"Tacos meat","options":LUNCH_MEATS},
+    {"id":"drinkOpt","label":"Your free drinks","type":"radio",
+     "options":["2 Small Natural Juices","1 Medium Drink"]},
+    {"id":"juices","label":"Choose 2 juices","options":MEGA_DRINKS,"repeat":2,
+     "showIf":{"choice":"drinkOpt","equals":"2 Small Natural Juices"}},
+    {"id":"medium","label":"Choose your medium drink","options":LUNCH_DRINKS,
+     "showIf":{"choice":"drinkOpt","equals":"1 Medium Drink"}},
+  ],
+  "wa": ["10 Mexican Tacos - {meat}", "Free drinks: {drinkOpt}",
+         "Juices: {juices}", "Medium Drink: {medium}"],
+ },
+ # The flyer names the day in its headline but states no restriction in words,
+ # so the day is in the title and no "Sunday only" badge is claimed. Ask the
+ # restaurant before adding one. No meat choice either: the flyer offers none,
+ # and the dish is eight birria tacos.
+ {
+  "id": "sunday-funday-birria", "flyer": "flyer-sunday-birria.jpg", "price": 50,
+  "title": "Sunday Funday: 8 Birria Tacos for $50",
+  "desc": "Eight birria tacos, and a dessert on the house with them: tres leches, "
+          "cinnamon rolls or chocoflan.",
+  "choices": [
+    {"id":"dessert","label":"Your free dessert",
+     "options":["Tres Leches","Cinnamon Rolls","Chocoflan"]},
+  ],
+  "wa": ["8 Birria Tacos", "Free Dessert: {dessert}"],
+ },
  # Replaced the $15 version on 1 October. The price moved and the fillings
  # narrowed to the two the kitchen actually makes this with.
  {

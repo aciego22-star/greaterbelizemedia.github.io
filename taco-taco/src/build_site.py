@@ -1355,13 +1355,18 @@ def main():
                  "from": PROMO_FROM, "to": PROMO_TO,
                  "line": C["line"], "subtotal": C["subtotal"],
                  "final": C["final"], "badge": C["badge"]}
+        # Where this payload's pages sit relative to assets/. The Spanish tree is
+        # one directory down, and a path the browser builds at run time gets no
+        # help from the rewrite that fixes the markup: every deal added to the
+        # basket from /es/ asked for /es/assets/img/ and showed a blank square.
         return ("window.TT_DEALS=%s;\nwindow.TT_STR=%s;\nwindow.TT_REVIEWS=%s;\n"
                 "window.TT_REV_ORDER=%s;\nwindow.TT_T=%s;\nwindow.TT_WA='%s';\n"
-                "window.TT_PROMO=%s;\n"
+                "window.TT_PROMO=%s;\nwindow.TT_BASE='%s';\n"
                 % (json.dumps(deals, ensure_ascii=False), json.dumps(strs, ensure_ascii=False),
                    json.dumps(revs, ensure_ascii=False), json.dumps(HOME_ORDER, ensure_ascii=False),
                    json.dumps(txt, ensure_ascii=False), WA_NUMBER,
-                   json.dumps(promo, ensure_ascii=False)))
+                   json.dumps(promo, ensure_ascii=False),
+                   "" if lang == "en" else "../"))
     for _lang, _, _ in LANGS:
         open(os.path.join(DIST,"assets","js","deals%s.js" % ("" if _lang=="en" else "."+_lang)),
              "w",encoding="utf-8").write(payload(_lang))
