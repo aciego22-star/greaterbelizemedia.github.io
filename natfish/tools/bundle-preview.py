@@ -148,13 +148,22 @@ def stub_event_video(html):
     def note(m):
         poster = ROOT / "assets" / "video" / m.group(1)
         uri = base64.b64encode(poster.read_bytes()).decode()
+        # Self-contained, and deliberately NOT .video-card__stub. That class is
+        # `position: absolute; inset: 0`, written for a stub that sits inside
+        # the positioned .video-card__frame on the Shorts. Reused here, inside
+        # .event-video, which establishes no containing block, it escaped and
+        # landed across the page hero. Inline styles rather than a new rule in
+        # natfish.css, because this markup only ever exists in the preview and
+        # has no business adding dead CSS to twelve production pages.
         return (
-            '<div class="video-card__stub video-card__stub--event">'
+            '<div class="event-video__stub" style="position:static">'
             f'<img src="data:image/webp;base64,{uri}" alt="" '
-            'style="width:100%;height:auto;border-radius:14px;display:block">'
-            '<span class="video-card__stub-note">This shareable preview is a '
-            'single file and cannot carry the full feature. The video plays on '
-            'the published site.</span></div>')
+            'style="display:block;width:100%;height:auto;'
+            'border-radius:14px">'
+            '<p style="margin:0.9rem 0 0;font-size:0.9rem;line-height:1.5;'
+            'color:#4a6376">This shareable preview is a single file and cannot '
+            'carry the full feature. The video plays on the published '
+            'site.</p></div>')
     return EVENT_VIDEO_RE.sub(note, html)
 
 
