@@ -6075,6 +6075,65 @@ body.nav-open {
   color: var(--navy-800);
 }
 
+/* ------------------------------------------- Miami 2026 event block ---- */
+/* One event collection inside the existing gallery: nine photographs and the
+   video of the same event, under one heading. Everything here is scoped to
+   the block - the gallery grid, the figures, the lightbox and the filter bar
+   below it are all untouched. */
+
+.event-kicker {
+  margin: 0.35rem 0 0;
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--teal-700);
+}
+
+.event-link {
+  margin-top: 1.1rem;
+}
+
+.event-video {
+  margin-top: clamp(2rem, 4.5vw, 3rem);
+  padding: clamp(1.4rem, 3vw, 2rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--sand);
+}
+
+.event-video__title {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.05rem, 2.2vw, 1.3rem);
+}
+
+.event-video__body {
+  margin: 0 0 1.1rem;
+  max-width: 68ch;
+  color: var(--ink-soft);
+}
+
+/* The full frame, always. A BELTRAIDE feature with burnt-in captions along the
+   bottom edge: object-fit:cover would take those captions off on a phone,
+   which is the one thing this must not do. `height: auto` against the real
+   width and height attributes keeps the whole 854x480 frame visible at every
+   width, and reserves its box before the poster loads. */
+.event-video__player {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  aspect-ratio: 854 / 480;
+  border-radius: var(--radius);
+  background: var(--navy-900);
+}
+
+.event-video__credit {
+  margin: 0.9rem 0 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
   </style>
   <script type="application/ld+json">
   {
@@ -6387,7 +6446,7 @@ body.nav-open {
             "value": "Panulirus argus"
           }
         ],
-        "image": "https://natfish.bz/assets/img/official/09-lobster-processing-table-800.jpg"
+        "image": "https://natfish.bz/assets/img/official/09-lobster-processing-table-1400.webp"
       },
       {
         "@type": "Product",
@@ -6408,7 +6467,7 @@ body.nav-open {
             "value": "Panulirus argus"
           }
         ],
-        "image": "https://natfish.bz/assets/img/gallery/04-belizean-pride-lobster-head-meat-800.jpg"
+        "image": "https://natfish.bz/assets/img/gallery/04-belizean-pride-lobster-head-meat-1400.webp"
       },
       {
         "@type": "Product",
@@ -6429,7 +6488,7 @@ body.nav-open {
             "value": "Panulirus argus"
           }
         ],
-        "image": "https://natfish.bz/assets/img/products/03-belizean-pride-raw-lobster-tails-800.jpg"
+        "image": "https://natfish.bz/assets/img/products/03-belizean-pride-raw-lobster-tails-1400.webp"
       },
       {
         "@type": "Product",
@@ -6470,7 +6529,7 @@ body.nav-open {
             "value": "Strombus gigas"
           }
         ],
-        "image": "https://natfish.bz/assets/img/products/04-wild-caught-frozen-conch-800.jpg"
+        "image": "https://natfish.bz/assets/img/products/04-wild-caught-frozen-conch-1400.webp"
       },
       {
         "@type": "Product",
@@ -6491,7 +6550,7 @@ body.nav-open {
             "value": "Pterois volitans"
           }
         ],
-        "image": "https://natfish.bz/assets/img/gallery/lionfish-fillets-4x3-800.jpg"
+        "image": "https://natfish.bz/assets/img/gallery/lionfish-fillets-4x3-1400.webp"
       }
     ]
   }
@@ -6596,7 +6655,7 @@ body.nav-open {
             <div class="product__media">
               <picture>
           <source type="image/webp" srcset="assets/img/official/09-lobster-processing-table-480.webp 480w, assets/img/official/09-lobster-processing-table-800.webp 800w, assets/img/official/09-lobster-processing-table-1400.webp 1400w" sizes="(max-width: 640px) 92vw, (max-width: 1024px) 46vw, 31vw">
-          <img src="assets/img/official/09-lobster-processing-table-800.jpg" width="1054" height="1400" alt="NATFISH workers sorting spiny lobster tails across a stainless processing table." class="is-portrait" style="--ratio:1054 / 1400" loading="lazy" decoding="async" data-full="assets/img/official/09-lobster-processing-table-1400.webp">
+          <img src="assets/img/official/09-lobster-processing-table-800.webp" width="1054" height="1400" alt="NATFISH workers sorting spiny lobster tails across a stainless processing table." class="is-portrait" style="--ratio:1054 / 1400" loading="lazy" decoding="async" data-full="assets/img/official/09-lobster-processing-table-1400.webp">
         </picture>
             </div>
             <div class="product__body">
@@ -6612,7 +6671,7 @@ body.nav-open {
             <div class="product__media">
               <picture>
           <source type="image/webp" srcset="assets/img/gallery/04-belizean-pride-lobster-head-meat-480.webp 480w, assets/img/gallery/04-belizean-pride-lobster-head-meat-800.webp 800w, assets/img/gallery/04-belizean-pride-lobster-head-meat-1400.webp 1400w" sizes="(max-width: 640px) 92vw, (max-width: 1024px) 46vw, 31vw">
-          <img src="assets/img/gallery/04-belizean-pride-lobster-head-meat-800.jpg" width="1400" height="1050" alt="Belizean Pride packaged spiny lobster head meat" style="--ratio:1400 / 1050" loading="lazy" decoding="async" data-full="assets/img/gallery/04-belizean-pride-lobster-head-meat-1400.webp">
+          <img src="assets/img/gallery/04-belizean-pride-lobster-head-meat-800.webp" width="1400" height="1050" alt="Belizean Pride packaged spiny lobster head meat" style="--ratio:1400 / 1050" loading="lazy" decoding="async" data-full="assets/img/gallery/04-belizean-pride-lobster-head-meat-1400.webp">
         </picture>
             </div>
             <div class="product__body">
@@ -6628,7 +6687,7 @@ body.nav-open {
             <div class="product__media">
               <picture>
           <source type="image/webp" srcset="assets/img/products/03-belizean-pride-raw-lobster-tails-480.webp 480w, assets/img/products/03-belizean-pride-raw-lobster-tails-800.webp 800w, assets/img/products/03-belizean-pride-raw-lobster-tails-1400.webp 1400w" sizes="(max-width: 640px) 92vw, (max-width: 1024px) 46vw, 31vw">
-          <img src="assets/img/products/03-belizean-pride-raw-lobster-tails-800.jpg" width="1254" height="602" alt="A carton of whole raw spiny lobster, frozen and packed for market." style="--ratio:1254 / 602" loading="lazy" decoding="async" data-full="assets/img/products/03-belizean-pride-raw-lobster-tails-1400.webp">
+          <img src="assets/img/products/03-belizean-pride-raw-lobster-tails-800.webp" width="1254" height="602" alt="A carton of whole raw spiny lobster, frozen and packed for market." style="--ratio:1254 / 602" loading="lazy" decoding="async" data-full="assets/img/products/03-belizean-pride-raw-lobster-tails-1400.webp">
         </picture>
             </div>
             <div class="product__body">
@@ -6657,7 +6716,7 @@ body.nav-open {
             <div class="product__media">
               <picture>
           <source type="image/webp" srcset="assets/img/products/04-wild-caught-frozen-conch-480.webp 480w, assets/img/products/04-wild-caught-frozen-conch-800.webp 800w, assets/img/products/04-wild-caught-frozen-conch-1400.webp 1400w" sizes="(max-width: 640px) 92vw, (max-width: 1024px) 46vw, 31vw">
-          <img src="assets/img/products/04-wild-caught-frozen-conch-800.jpg" width="1400" height="532" alt="A carton of frozen queen conch meat, bagged for shipping." style="--ratio:1400 / 532" loading="lazy" decoding="async" data-full="assets/img/products/04-wild-caught-frozen-conch-1400.webp">
+          <img src="assets/img/products/04-wild-caught-frozen-conch-800.webp" width="1400" height="532" alt="A carton of frozen queen conch meat, bagged for shipping." style="--ratio:1400 / 532" loading="lazy" decoding="async" data-full="assets/img/products/04-wild-caught-frozen-conch-1400.webp">
         </picture>
             </div>
             <div class="product__body">
@@ -6673,7 +6732,7 @@ body.nav-open {
             <div class="product__media">
               <picture>
           <source type="image/webp" srcset="assets/img/gallery/lionfish-fillets-4x3-480.webp 480w, assets/img/gallery/lionfish-fillets-4x3-800.webp 800w, assets/img/gallery/lionfish-fillets-4x3-1400.webp 1400w" sizes="(max-width: 640px) 92vw, (max-width: 1024px) 46vw, 31vw">
-          <img src="assets/img/gallery/lionfish-fillets-4x3-800.jpg" width="1400" height="1050" alt="Frozen lionfish fillets individually packaged in a white food-grade tray." style="--ratio:1400 / 1050;object-position:50% 58%" loading="lazy" decoding="async" data-full="assets/img/gallery/lionfish-fillets-4x3-1400.webp">
+          <img src="assets/img/gallery/lionfish-fillets-4x3-800.webp" width="1400" height="1050" alt="Frozen lionfish fillets individually packaged in a white food-grade tray." style="--ratio:1400 / 1050;object-position:50% 58%" loading="lazy" decoding="async" data-full="assets/img/gallery/lionfish-fillets-4x3-1400.webp">
         </picture>
             </div>
             <div class="product__body">
@@ -6702,7 +6761,7 @@ body.nav-open {
           <div class="split__media reveal">
             <picture>
           <source type="image/webp" srcset="assets/img/official/03-lobster-processing-room-wide-480.webp 480w, assets/img/official/03-lobster-processing-room-wide-800.webp 800w, assets/img/official/03-lobster-processing-room-wide-1400.webp 1400w" sizes="(max-width: 860px) 92vw, 46vw">
-          <img src="assets/img/official/03-lobster-processing-room-wide-800.jpg" width="1400" height="876" alt="A wide view of the NATFISH processing hall, with workers at stainless benches and packing cartons stacked along the wall." class="focus-centre" style="--ratio:1400 / 876" loading="lazy" decoding="async">
+          <img src="assets/img/official/03-lobster-processing-room-wide-800.webp" width="1400" height="876" alt="A wide view of the NATFISH processing hall, with workers at stainless benches and packing cartons stacked along the wall." class="focus-centre" style="--ratio:1400 / 876" loading="lazy" decoding="async">
         </picture>
           </div>
           <div class="reveal">
@@ -6880,7 +6939,7 @@ body.nav-open {
 
   <p class="visually-hidden" id="lang-status" role="status" aria-live="polite"></p>
 
-  <script src="assets/js/natfish-strings.js?v=49c301ce"></script>
+  <script src="assets/js/natfish-strings.js?v=37d769dc"></script>
   <script src="assets/js/natfish-i18n.js?v=b8a289c3"></script>
   <script src="assets/js/natfish-seasons.js?v=c270a135"></script>
   <script src="assets/js/natfish.js?v=79e88ac3"></script>

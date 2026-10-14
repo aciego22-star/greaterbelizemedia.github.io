@@ -1715,3 +1715,79 @@ package itself, not findings of mine:
 - the digital business cards and QR codes at the event;
 - that no title or role is implied for the other three people in the
   photograph, and none is stated anywhere.
+
+---
+
+## WebP everywhere, and the Miami 2026 gallery collection
+
+Two jobs in one pass, because the second needed the room the first freed.
+
+### The site now serves WebP only
+
+The client asked for WebP "for all of them", believing the site was not using
+it. It already was: every image has shipped a full WebP responsive ladder
+since the V2 image work. What it ALSO shipped was one JPEG per image as a
+`<picture>` fallback - 57 files, 7.09 MB - and that is what has gone.
+
+The fallback was only ever reachable by a browser with no WebP support, which
+means Safari 13 and earlier or IE. Those browsers cannot render this site
+anyway: it uses `:has()`, `aspect-ratio`, `dvh` and `clamp()` throughout, so
+the JPEG was insurance for visitors who would have seen a broken page with or
+without it.
+
+JPEG is KEPT in exactly three places, deliberately: `og-card`,
+`og-article-spiny-lobster` and the Miami news photograph. Those are read by
+Facebook, LinkedIn, WhatsApp and Slack scrapers rather than by browsers, and
+those are the one audience that still cannot be relied on for WebP.
+
+`shipped_jpeg()` became `shipped_image()` and now names the largest WebP, which
+is what structured data should carry anyway.
+
+**Package: 30.74 MiB before, 22.85 MiB after the switch alone.**
+
+### The Miami 2026 collection
+
+Nine photographs and the BELTRAIDE event video, as one collection directly
+under the gallery hero - which is what makes it discoverable without touching
+the filter bar below it.
+
+The nine are deliberately NOT in `GALLERY_GROUPS`. That dict builds the
+filterable grid further down the page, and putting them in would have printed
+the same nine photographs twice on one page. They live in their own event
+section instead, with the video, the BELTRAIDE credit and a link to the Miami
+news article.
+
+**Nothing is cropped.** Five of the nine are portrait and four landscape, and
+the pack is explicit that no person, product text, QR code or Belize flag may
+be cut. Every figure renders at its own ratio - measured at five viewports from
+320 to 1440, zero of nine deviate from their native proportions.
+
+**A bug the QA caught, not the code review.** `img_dir()` routes any stem
+containing "belizean-pride" to products/, and one of the nine is
+`miami-2026-belizean-pride-booth`. The processor wrote it to official/ and the
+markup asked products/ for it: a silent 404 on the gallery page, visible only
+as one console error at desktop widths. `miami-2026-` is now matched first.
+
+**The video.** The supplied 6.37 MB MP4 re-encoded to 4.03 MB at CRF 33,
+audio 56k. Compared frame for frame against the original at a point carrying
+burnt-in captions: the captions, the Belizean Pride packaging text and the
+speaker are indistinguishable. BELTRAIDE's branding, narration, graphics and
+subtitles are all intact, `preload="none"` so four megabytes do not land on
+someone opening the gallery for photographs, and the full 854x480 frame is
+visible at every width - measured 1.779 from 320px up, because burnt-in
+captions sit on the bottom edge and a cover-crop would take them off.
+
+The tier ladder for these nine stops at 1400 and encodes at quality 80. The
+card asks for at most 30vw, about 1150 device pixels on a retina desktop, so a
+1600 tier was a quarter-megabyte a photograph that nothing would request.
+
+**Package: 29.06 MiB.** Smaller than it was this morning, with nine
+photographs and a four-megabyte video added.
+
+### Still the client's to confirm
+
+The pack states the site owner instructed direct publication of the BELTRAIDE
+video and told us not to gate on a permission check, so it is published with
+the credit "Video originally published by BELTRAIDE" and no claim of
+endorsement or permission. If BELTRAIDE's position is ever in doubt, the video
+is one file and one section.

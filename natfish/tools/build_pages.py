@@ -21,7 +21,7 @@ from build_shell import (
     VIDEO_ID, VIDEO_SOURCE, VIDEO_TITLE, WHATSAPP, SRC_BELTRAIDE,
     SRC_FISHERIES_DEPT, SRC_FISHERYPROGRESS, SRC_FISHSOURCE, SRC_FISHWISE,
     AI_PAGE, HOURS, MARKET_HOURS, OFFICE_HOURS, RULE_WAVE, SITE_URL,
-    NAV_LABEL, ORG_ID, _plain, faq_node, page_url, shipped_jpeg,
+    NAV_LABEL, ORG_ID, _plain, faq_node, page_url, shipped_image,
     about_hero_preload, contact_strip, cta_band, faq_section, footer, head,
     header, hero_picture,
     hero_preload, hero_tiers, identity_ribbon, logo_full, page_hero, picture,
@@ -1161,7 +1161,7 @@ def catalogue_nodes():
             }],
         }
         if prod["img"]:
-            node["image"] = f"{SITE_URL}/{shipped_jpeg(prod['img'])}"
+            node["image"] = f"{SITE_URL}/{shipped_image(prod['img'])}"
         products.append(node)
     catalogue = {
         "@type": "ItemList",
@@ -1848,6 +1848,98 @@ def short_card(video):
           </figure>"""
 
 
+# ===================================== Miami 2026 event collection ======
+
+# The nine photographs, in the client's manifest order. They are deliberately
+# NOT in GALLERY_GROUPS: that dict drives the filterable grid lower down the
+# page, and these belong to one event, shown together with the video of it.
+# Keeping them out is what stops the same nine photographs appearing twice on
+# one page.
+MIAMI_PHOTOS = [
+    "miami-2026-product-display-qr",
+    "miami-2026-delegation-at-booth",
+    "miami-2026-representatives-at-show",
+    "miami-2026-conversation-with-attendee",
+    "miami-2026-team-at-exhibition",
+    "miami-2026-belizean-pride-booth",
+    "miami-2026-show-conversation",
+    "miami-2026-delegation-in-miami",
+    "miami-2026-convention-center",
+]
+
+MIAMI_VIDEO = "beltraide-natfish-miami-2026"
+MIAMI_VIDEO_DIMS = (854, 480)
+
+
+def miami_collection():
+    """The Miami 2026 event collection: nine photographs and the event video.
+
+    One section rather than two, and placed directly under the page hero so it
+    is the first thing in the gallery - which is what makes it discoverable
+    without touching the filter bar below it.
+
+    The photographs render at their own proportions. Five of the nine are
+    portrait and four landscape, and the brief is explicit that nothing may be
+    cropped away: not a person, not product text, not a QR code, not the Belize
+    flag. The grid already aligns to the top, so mixed heights sit fine.
+
+    The video is the client's supplied BELTRAIDE feature, self-hosted. It keeps
+    its own branding, narration and burnt-in captions, and carries the credit
+    the pack specifies. `preload="none"` so four megabytes do not land on
+    anyone opening the gallery to look at photographs.
+    """
+    sizes = "(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw"
+    figures = "\n          ".join(
+        f"""<figure class="gallery__figure">
+            <button class="gallery__item" type="button"
+                    aria-label="View larger: {SHORT[stem]}">
+              {picture(stem, sizes, full=True)}
+            </button>
+            <figcaption>{CAPTION[stem]}</figcaption>
+          </figure>"""
+        for stem in MIAMI_PHOTOS
+    )
+    vw, vh = MIAMI_VIDEO_DIMS
+    return f"""
+    <section class="section" aria-labelledby="miami-2026-h" id="miami-2026">
+      <div class="container">
+        <div class="section-head section-head--rule reveal section-head--center">
+          <span class="eyebrow">Trade Shows &amp; Representation</span>
+          <h2 id="miami-2026-h">NATFISH at the Americas Food &amp; Beverage Show 2026</h2>
+          <p class="event-kicker">Miami Beach, Florida &middot; September 14&ndash;16, 2026</p>
+          <p class="lede">With participation facilitated by BELTRAIDE through the
+          inaugural Belize Country Pavilion, NATFISH presented Belizean Pride
+          seafood and the work of Belizean fishers to an international food and
+          beverage audience. Explore moments from the exhibition, including the
+          co-operative&rsquo;s delegates, product displays, visitor conversations
+          and digital information cards.</p>
+          <p class="event-link">
+            <a class="arrow-link" href="{NEWS_ARTICLE_PAGE}">Read the Miami 2026 story</a>
+          </p>
+        </div>
+        <div class="gallery reveal">
+          {figures}
+        </div>
+
+        <div class="event-video reveal">
+          <h3 class="event-video__title">NATFISH at the Americas Food &amp; Beverage Show 2026 | BELTRAIDE feature</h3>
+          <p class="event-video__body">A BELTRAIDE-produced feature highlighting
+          NATFISH, Belizean Pride seafood and the co-operative&rsquo;s
+          international trade-show participation. The segment includes remarks
+          about putting a face to the Belizean products reaching markets abroad.</p>
+          <video class="event-video__player"
+                 src="assets/video/{MIAMI_VIDEO}.mp4"
+                 poster="assets/video/{MIAMI_VIDEO}-poster.webp"
+                 width="{vw}" height="{vh}"
+                 controls playsinline preload="none"
+                 aria-label="NATFISH at the Americas Food &amp; Beverage Show 2026, a BELTRAIDE feature"></video>
+          <p class="event-video__credit">Video originally published by BELTRAIDE.</p>
+        </div>
+      </div>
+    </section>
+"""
+
+
 def gallery():
     return (
         head(
@@ -1867,6 +1959,7 @@ def gallery():
             '<a href="#natfish-in-motion">NATFISH in Motion</a>.',
             "Gallery",
         )
+        + miami_collection()
         + f"""
     <section class="section" aria-labelledby="gal-supplied-h">
       <div class="container">
@@ -2872,11 +2965,9 @@ def news_article_nodes():
         "author": {"@id": ORG_ID},
         "publisher": {"@id": ORG_ID},
         "inLanguage": "en-BZ",
-        # The 1400 derivative, not the one shipped_jpeg() names. That helper
-        # returns the small fallback the <img> carries, which is 800x600 - and
-        # declaring 1400x1050 beside an 800px file is simply wrong. The 1400
-        # jpg is the same file the og:image tag points at, so it ships, and it
-        # is the width Google wants for a news image.
+        # The JPEG, deliberately, where everything else on the site is WebP:
+        # this is the same file og:image names, and the social scrapers that
+        # read it are the one audience that still cannot be trusted with WebP.
         "image": {
             "@type": "ImageObject",
             "url": f"{SITE_URL}/assets/img/official/{a['img']}-1400.jpg",

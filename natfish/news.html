@@ -6075,6 +6075,65 @@ body.nav-open {
   color: var(--navy-800);
 }
 
+/* ------------------------------------------- Miami 2026 event block ---- */
+/* One event collection inside the existing gallery: nine photographs and the
+   video of the same event, under one heading. Everything here is scoped to
+   the block - the gallery grid, the figures, the lightbox and the filter bar
+   below it are all untouched. */
+
+.event-kicker {
+  margin: 0.35rem 0 0;
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--teal-700);
+}
+
+.event-link {
+  margin-top: 1.1rem;
+}
+
+.event-video {
+  margin-top: clamp(2rem, 4.5vw, 3rem);
+  padding: clamp(1.4rem, 3vw, 2rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--sand);
+}
+
+.event-video__title {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.05rem, 2.2vw, 1.3rem);
+}
+
+.event-video__body {
+  margin: 0 0 1.1rem;
+  max-width: 68ch;
+  color: var(--ink-soft);
+}
+
+/* The full frame, always. A BELTRAIDE feature with burnt-in captions along the
+   bottom edge: object-fit:cover would take those captions off on a phone,
+   which is the one thing this must not do. `height: auto` against the real
+   width and height attributes keeps the whole 854x480 frame visible at every
+   width, and reserves its box before the poster loads. */
+.event-video__player {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  aspect-ratio: 854 / 480;
+  border-radius: var(--radius);
+  background: var(--navy-900);
+}
+
+.event-video__credit {
+  margin: 0.9rem 0 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
   </style>
   <script type="application/ld+json">
   {
@@ -6345,7 +6404,7 @@ body.nav-open {
           <div class="feature-update__media feature-update__media--natural">
             <picture>
           <source type="image/webp" srcset="assets/img/official/news-americas-food-beverage-show-2026-480.webp 480w, assets/img/official/news-americas-food-beverage-show-2026-800.webp 800w, assets/img/official/news-americas-food-beverage-show-2026-1400.webp 1400w" sizes="(max-width: 860px) 92vw, 52vw">
-          <img src="assets/img/official/news-americas-food-beverage-show-2026-800.jpg" width="1400" height="1050" alt="Four members of the NATFISH delegation standing beside the welcome signage at the Americas Food &amp; Beverage Show 2026 in Miami." style="--ratio:1400 / 1050" loading="lazy" decoding="async">
+          <img src="assets/img/official/news-americas-food-beverage-show-2026-800.webp" width="1400" height="1050" alt="Four members of the NATFISH delegation standing beside the welcome signage at the Americas Food &amp; Beverage Show 2026 in Miami." style="--ratio:1400 / 1050" loading="lazy" decoding="async">
         </picture>
           </div>
           <div class="feature-update__body">
@@ -6371,7 +6430,7 @@ body.nav-open {
           <article class="update-card reveal">
             <div class="update-card__media"><picture>
           <source type="image/webp" srcset="assets/img/official/news-food-taipei-2026-delegation-480.webp 480w, assets/img/official/news-food-taipei-2026-delegation-800.webp 800w, assets/img/official/news-food-taipei-2026-delegation-1400.webp 1400w" sizes="(max-width: 640px) 92vw, (max-width: 900px) 46vw, 30vw">
-          <img src="assets/img/official/news-food-taipei-2026-delegation-800.jpg" width="1280" height="720" alt="National Fishermen delegation at Food Taipei Mega Shows 2026 in Taiwan." style="--ratio:1280 / 720" loading="lazy" decoding="async">
+          <img src="assets/img/official/news-food-taipei-2026-delegation-800.webp" width="1280" height="720" alt="National Fishermen delegation at Food Taipei Mega Shows 2026 in Taiwan." style="--ratio:1280 / 720" loading="lazy" decoding="async">
         </picture></div>
             <div class="update-card__body">
               <p class="update-card__meta">
@@ -6386,7 +6445,7 @@ body.nav-open {
           <article class="update-card reveal">
             <div class="update-card__media"><picture>
           <source type="image/webp" srcset="assets/img/products/01-belizean-pride-lobster-cases-480.webp 480w, assets/img/products/01-belizean-pride-lobster-cases-800.webp 800w, assets/img/products/01-belizean-pride-lobster-cases-1400.webp 1400w" sizes="(max-width: 640px) 92vw, (max-width: 900px) 46vw, 30vw">
-          <img src="assets/img/products/01-belizean-pride-lobster-cases-800.jpg" width="1400" height="920" alt="Cartons of frozen Belizean spiny lobster tails packed for cold storage." style="--ratio:1400 / 920" loading="lazy" decoding="async">
+          <img src="assets/img/products/01-belizean-pride-lobster-cases-800.webp" width="1400" height="920" alt="Cartons of frozen Belizean spiny lobster tails packed for cold storage." style="--ratio:1400 / 920" loading="lazy" decoding="async">
         </picture></div>
             <div class="update-card__body">
               <p class="update-card__meta">
@@ -6403,7 +6462,7 @@ body.nav-open {
           <article class="update-card reveal">
             <div class="update-card__media"><picture>
           <source type="image/webp" srcset="assets/img/official/01-lobster-packing-team-wide-480.webp 480w, assets/img/official/01-lobster-packing-team-wide-800.webp 800w, assets/img/official/01-lobster-packing-team-wide-1400.webp 1400w" sizes="(max-width: 640px) 92vw, (max-width: 900px) 46vw, 30vw">
-          <img src="assets/img/official/01-lobster-packing-team-wide-800.jpg" width="1400" height="876" alt="NATFISH workers in hairnets, masks and aprons preparing lobster along a stainless steel bench in the co-operative&rsquo;s processing room." class="focus-left" style="--ratio:1400 / 876" loading="lazy" decoding="async">
+          <img src="assets/img/official/01-lobster-packing-team-wide-800.webp" width="1400" height="876" alt="NATFISH workers in hairnets, masks and aprons preparing lobster along a stainless steel bench in the co-operative&rsquo;s processing room." class="focus-left" style="--ratio:1400 / 876" loading="lazy" decoding="async">
         </picture></div>
             <div class="update-card__body">
               <p class="update-card__meta">
@@ -6420,7 +6479,7 @@ body.nav-open {
           <article class="update-card reveal">
             <div class="update-card__media"><picture>
           <source type="image/webp" srcset="assets/img/official/08-lobster-weighing-and-sorting-480.webp 480w, assets/img/official/08-lobster-weighing-and-sorting-800.webp 800w, assets/img/official/08-lobster-weighing-and-sorting-1400.webp 1400w" sizes="(max-width: 640px) 92vw, (max-width: 900px) 46vw, 30vw">
-          <img src="assets/img/official/08-lobster-weighing-and-sorting-800.jpg" width="1054" height="1400" alt="A NATFISH worker weighing lobster on a digital scale beside sorting bins." class="is-portrait" style="--ratio:1054 / 1400" loading="lazy" decoding="async">
+          <img src="assets/img/official/08-lobster-weighing-and-sorting-800.webp" width="1054" height="1400" alt="A NATFISH worker weighing lobster on a digital scale beside sorting bins." class="is-portrait" style="--ratio:1054 / 1400" loading="lazy" decoding="async">
         </picture></div>
             <div class="update-card__body">
               <p class="update-card__meta">
@@ -6524,7 +6583,7 @@ body.nav-open {
 
   <p class="visually-hidden" id="lang-status" role="status" aria-live="polite"></p>
 
-  <script src="assets/js/natfish-strings.js?v=49c301ce"></script>
+  <script src="assets/js/natfish-strings.js?v=37d769dc"></script>
   <script src="assets/js/natfish-i18n.js?v=b8a289c3"></script>
   <script src="assets/js/natfish-seasons.js?v=c270a135"></script>
   <script src="assets/js/natfish.js?v=79e88ac3"></script>

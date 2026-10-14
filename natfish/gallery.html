@@ -6075,6 +6075,65 @@ body.nav-open {
   color: var(--navy-800);
 }
 
+/* ------------------------------------------- Miami 2026 event block ---- */
+/* One event collection inside the existing gallery: nine photographs and the
+   video of the same event, under one heading. Everything here is scoped to
+   the block - the gallery grid, the figures, the lightbox and the filter bar
+   below it are all untouched. */
+
+.event-kicker {
+  margin: 0.35rem 0 0;
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--teal-700);
+}
+
+.event-link {
+  margin-top: 1.1rem;
+}
+
+.event-video {
+  margin-top: clamp(2rem, 4.5vw, 3rem);
+  padding: clamp(1.4rem, 3vw, 2rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--sand);
+}
+
+.event-video__title {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.05rem, 2.2vw, 1.3rem);
+}
+
+.event-video__body {
+  margin: 0 0 1.1rem;
+  max-width: 68ch;
+  color: var(--ink-soft);
+}
+
+/* The full frame, always. A BELTRAIDE feature with burnt-in captions along the
+   bottom edge: object-fit:cover would take those captions off on a phone,
+   which is the one thing this must not do. `height: auto` against the real
+   width and height attributes keeps the whole 854x480 frame visible at every
+   width, and reserves its box before the poster loads. */
+.event-video__player {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  aspect-ratio: 854 / 480;
+  border-radius: var(--radius);
+  background: var(--navy-900);
+}
+
+.event-video__credit {
+  margin: 0.9rem 0 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
   </style>
   <script type="application/ld+json">
   {
@@ -6338,6 +6397,132 @@ body.nav-open {
       </div>
     </section>
 
+    <section class="section" aria-labelledby="miami-2026-h" id="miami-2026">
+      <div class="container">
+        <div class="section-head section-head--rule reveal section-head--center">
+          <span class="eyebrow">Trade Shows &amp; Representation</span>
+          <h2 id="miami-2026-h">NATFISH at the Americas Food &amp; Beverage Show 2026</h2>
+          <p class="event-kicker">Miami Beach, Florida &middot; September 14&ndash;16, 2026</p>
+          <p class="lede">With participation facilitated by BELTRAIDE through the
+          inaugural Belize Country Pavilion, NATFISH presented Belizean Pride
+          seafood and the work of Belizean fishers to an international food and
+          beverage audience. Explore moments from the exhibition, including the
+          co-operative&rsquo;s delegates, product displays, visitor conversations
+          and digital information cards.</p>
+          <p class="event-link">
+            <a class="arrow-link" href="news-americas-food-beverage-show-2026.html">Read the Miami 2026 story</a>
+          </p>
+        </div>
+        <div class="gallery reveal">
+          <figure class="gallery__figure">
+            <button class="gallery__item" type="button"
+                    aria-label="View larger: Product display and QR cards">
+              <picture>
+          <source type="image/webp" srcset="assets/img/official/miami-2026-product-display-qr-480.webp 480w, assets/img/official/miami-2026-product-display-qr-800.webp 800w, assets/img/official/miami-2026-product-display-qr-1200.webp 1200w, assets/img/official/miami-2026-product-display-qr-1400.webp 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
+          <img src="assets/img/official/miami-2026-product-display-qr-800.webp" width="1600" height="1200" alt="NATFISH exhibition display featuring Belizean Pride seafood, a model sailboat and QR-code information cards." style="--ratio:1600 / 1200" loading="lazy" decoding="async" data-full="assets/img/official/miami-2026-product-display-qr-1400.webp">
+        </picture>
+            </button>
+            <figcaption>NATFISH exhibition display featuring Belizean Pride seafood, a model sailboat and QR-code information cards.</figcaption>
+          </figure>
+          <figure class="gallery__figure">
+            <button class="gallery__item" type="button"
+                    aria-label="View larger: Representatives at the Belize pavilion">
+              <picture>
+          <source type="image/webp" srcset="assets/img/official/miami-2026-delegation-at-booth-480.webp 480w, assets/img/official/miami-2026-delegation-at-booth-800.webp 800w, assets/img/official/miami-2026-delegation-at-booth-1200.webp 1200w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
+          <img src="assets/img/official/miami-2026-delegation-at-booth-800.webp" width="1200" height="1600" alt="NATFISH representatives and partners at the Belize Country Pavilion in Miami." class="is-portrait" style="--ratio:1200 / 1600" loading="lazy" decoding="async" data-full="assets/img/official/miami-2026-delegation-at-booth-1200.webp">
+        </picture>
+            </button>
+            <figcaption>NATFISH representatives and partners at the Belize Country Pavilion in Miami.</figcaption>
+          </figure>
+          <figure class="gallery__figure">
+            <button class="gallery__item" type="button"
+                    aria-label="View larger: Three representatives at the show">
+              <picture>
+          <source type="image/webp" srcset="assets/img/official/miami-2026-representatives-at-show-480.webp 480w, assets/img/official/miami-2026-representatives-at-show-800.webp 800w, assets/img/official/miami-2026-representatives-at-show-1200.webp 1200w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
+          <img src="assets/img/official/miami-2026-representatives-at-show-800.webp" width="1200" height="1600" alt="Three NATFISH representatives at the Americas Food &amp; Beverage Show 2026." class="is-portrait" style="--ratio:1200 / 1600" loading="lazy" decoding="async" data-full="assets/img/official/miami-2026-representatives-at-show-1200.webp">
+        </picture>
+            </button>
+            <figcaption>Three NATFISH representatives at the Americas Food &amp; Beverage Show 2026.</figcaption>
+          </figure>
+          <figure class="gallery__figure">
+            <button class="gallery__item" type="button"
+                    aria-label="View larger: Visitors at the NATFISH booth">
+              <picture>
+          <source type="image/webp" srcset="assets/img/official/miami-2026-conversation-with-attendee-480.webp 480w, assets/img/official/miami-2026-conversation-with-attendee-800.webp 800w, assets/img/official/miami-2026-conversation-with-attendee-1200.webp 1200w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
+          <img src="assets/img/official/miami-2026-conversation-with-attendee-800.webp" width="1200" height="1600" alt="Exhibition visitors learn about NATFISH and Belizean Pride products at the booth." class="is-portrait" style="--ratio:1200 / 1600" loading="lazy" decoding="async" data-full="assets/img/official/miami-2026-conversation-with-attendee-1200.webp">
+        </picture>
+            </button>
+            <figcaption>Exhibition visitors learn about NATFISH and Belizean Pride products at the booth.</figcaption>
+          </figure>
+          <figure class="gallery__figure">
+            <button class="gallery__item" type="button"
+                    aria-label="View larger: The team at the exhibition display">
+              <picture>
+          <source type="image/webp" srcset="assets/img/official/miami-2026-team-at-exhibition-480.webp 480w, assets/img/official/miami-2026-team-at-exhibition-800.webp 800w, assets/img/official/miami-2026-team-at-exhibition-1200.webp 1200w, assets/img/official/miami-2026-team-at-exhibition-1400.webp 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
+          <img src="assets/img/official/miami-2026-team-at-exhibition-800.webp" width="1600" height="1200" alt="NATFISH representatives at their display inside the international trade exhibition." style="--ratio:1600 / 1200" loading="lazy" decoding="async" data-full="assets/img/official/miami-2026-team-at-exhibition-1400.webp">
+        </picture>
+            </button>
+            <figcaption>NATFISH representatives at their display inside the international trade exhibition.</figcaption>
+          </figure>
+          <figure class="gallery__figure">
+            <button class="gallery__item" type="button"
+                    aria-label="View larger: The Belizean Pride stand">
+              <picture>
+          <source type="image/webp" srcset="assets/img/official/miami-2026-belizean-pride-booth-480.webp 480w, assets/img/official/miami-2026-belizean-pride-booth-800.webp 800w, assets/img/official/miami-2026-belizean-pride-booth-1200.webp 1200w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
+          <img src="assets/img/official/miami-2026-belizean-pride-booth-800.webp" width="1200" height="1600" alt="Belizean Pride seafood packaging, traditional sailboat and representatives at NATFISH&rsquo;s stand." class="is-portrait" style="--ratio:1200 / 1600" loading="lazy" decoding="async" data-full="assets/img/official/miami-2026-belizean-pride-booth-1200.webp">
+        </picture>
+            </button>
+            <figcaption>Belizean Pride seafood packaging, traditional sailboat and representatives at NATFISH&rsquo;s stand.</figcaption>
+          </figure>
+          <figure class="gallery__figure">
+            <button class="gallery__item" type="button"
+                    aria-label="View larger: A conversation beside the Belize flag">
+              <picture>
+          <source type="image/webp" srcset="assets/img/official/miami-2026-show-conversation-480.webp 480w, assets/img/official/miami-2026-show-conversation-800.webp 800w, assets/img/official/miami-2026-show-conversation-1200.webp 1200w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
+          <img src="assets/img/official/miami-2026-show-conversation-800.webp" width="1200" height="1600" alt="A NATFISH representative speaks with an attendee beside the Belize flag and model sailboat." class="is-portrait" style="--ratio:1200 / 1600" loading="lazy" decoding="async" data-full="assets/img/official/miami-2026-show-conversation-1200.webp">
+        </picture>
+            </button>
+            <figcaption>A NATFISH representative speaks with an attendee beside the Belize flag and model sailboat.</figcaption>
+          </figure>
+          <figure class="gallery__figure">
+            <button class="gallery__item" type="button"
+                    aria-label="View larger: The delegation in Miami">
+              <picture>
+          <source type="image/webp" srcset="assets/img/official/miami-2026-delegation-in-miami-480.webp 480w, assets/img/official/miami-2026-delegation-in-miami-800.webp 800w, assets/img/official/miami-2026-delegation-in-miami-1200.webp 1200w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
+          <img src="assets/img/official/miami-2026-delegation-in-miami-800.webp" width="1200" height="1600" alt="NATFISH delegates photographed together during their visit to Miami." class="is-portrait" style="--ratio:1200 / 1600" loading="lazy" decoding="async" data-full="assets/img/official/miami-2026-delegation-in-miami-1200.webp">
+        </picture>
+            </button>
+            <figcaption>NATFISH delegates photographed together during their visit to Miami.</figcaption>
+          </figure>
+          <figure class="gallery__figure">
+            <button class="gallery__item" type="button"
+                    aria-label="View larger: Outside the convention center">
+              <picture>
+          <source type="image/webp" srcset="assets/img/official/miami-2026-convention-center-480.webp 480w, assets/img/official/miami-2026-convention-center-800.webp 800w, assets/img/official/miami-2026-convention-center-1200.webp 1200w, assets/img/official/miami-2026-convention-center-1400.webp 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
+          <img src="assets/img/official/miami-2026-convention-center-800.webp" width="1600" height="1200" alt="NATFISH delegation outside the Miami Beach Convention Center." style="--ratio:1600 / 1200" loading="lazy" decoding="async" data-full="assets/img/official/miami-2026-convention-center-1400.webp">
+        </picture>
+            </button>
+            <figcaption>NATFISH delegation outside the Miami Beach Convention Center.</figcaption>
+          </figure>
+        </div>
+
+        <div class="event-video reveal">
+          <h3 class="event-video__title">NATFISH at the Americas Food &amp; Beverage Show 2026 | BELTRAIDE feature</h3>
+          <p class="event-video__body">A BELTRAIDE-produced feature highlighting
+          NATFISH, Belizean Pride seafood and the co-operative&rsquo;s
+          international trade-show participation. The segment includes remarks
+          about putting a face to the Belizean products reaching markets abroad.</p>
+          <video class="event-video__player"
+                 src="assets/video/beltraide-natfish-miami-2026.mp4"
+                 poster="assets/video/beltraide-natfish-miami-2026-poster.webp"
+                 width="854" height="480"
+                 controls playsinline preload="none"
+                 aria-label="NATFISH at the Americas Food &amp; Beverage Show 2026, a BELTRAIDE feature"></video>
+          <p class="event-video__credit">Video originally published by BELTRAIDE.</p>
+        </div>
+      </div>
+    </section>
+
     <section class="section" aria-labelledby="gal-supplied-h">
       <div class="container">
         <div class="section-head section-head--rule reveal section-head--center">
@@ -6363,7 +6548,7 @@ body.nav-open {
                     aria-label="View larger: A Belizean lobster fisher displaying part of a fresh harvest">
               <picture>
           <source type="image/webp" srcset="assets/img/gallery/01-lobster-fisher-boat-catch-480.webp 480w, assets/img/gallery/01-lobster-fisher-boat-catch-800.webp 800w, assets/img/gallery/01-lobster-fisher-boat-catch-1400.webp 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
-          <img src="assets/img/gallery/01-lobster-fisher-boat-catch-800.jpg" width="1400" height="1050" alt="Belizean lobster fisher aboard a boat filled with a fresh spiny lobster catch" style="--ratio:1400 / 1050" loading="lazy" decoding="async" data-full="assets/img/gallery/01-lobster-fisher-boat-catch-1400.webp">
+          <img src="assets/img/gallery/01-lobster-fisher-boat-catch-800.webp" width="1400" height="1050" alt="Belizean lobster fisher aboard a boat filled with a fresh spiny lobster catch" style="--ratio:1400 / 1050" loading="lazy" decoding="async" data-full="assets/img/gallery/01-lobster-fisher-boat-catch-1400.webp">
         </picture>
             </button>
             <figcaption>A Belizean lobster fisher displaying part of a fresh harvest.</figcaption>
@@ -6373,7 +6558,7 @@ body.nav-open {
                     aria-label="View larger: Lobster fishers displaying their catch aboard a harvest boat">
               <picture>
           <source type="image/webp" srcset="assets/img/gallery/02-lobster-harvest-boat-480.webp 480w, assets/img/gallery/02-lobster-harvest-boat-800.webp 800w, assets/img/gallery/02-lobster-harvest-boat-1400.webp 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
-          <img src="assets/img/gallery/02-lobster-harvest-boat-800.jpg" width="1400" height="1050" alt="Two Belizean lobster fishers displaying their catch aboard a harvest boat" style="--ratio:1400 / 1050" loading="lazy" decoding="async" data-full="assets/img/gallery/02-lobster-harvest-boat-1400.webp">
+          <img src="assets/img/gallery/02-lobster-harvest-boat-800.webp" width="1400" height="1050" alt="Two Belizean lobster fishers displaying their catch aboard a harvest boat" style="--ratio:1400 / 1050" loading="lazy" decoding="async" data-full="assets/img/gallery/02-lobster-harvest-boat-1400.webp">
         </picture>
             </button>
             <figcaption>Lobster fishers displaying their catch aboard a harvest boat.</figcaption>
@@ -6383,7 +6568,7 @@ body.nav-open {
                     aria-label="View larger: Coastal fishing structures near mangroves">
               <picture>
           <source type="image/webp" srcset="assets/img/gallery/coastal-fishing-structures-480.webp 480w, assets/img/gallery/coastal-fishing-structures-800.webp 800w, assets/img/gallery/coastal-fishing-structures-1400.webp 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
-          <img src="assets/img/gallery/coastal-fishing-structures-800.jpg" width="1400" height="646" alt="Wooden fishing structures in coastal water beside mangroves in Belize." style="--ratio:1400 / 646" loading="lazy" decoding="async" data-full="assets/img/gallery/coastal-fishing-structures-1400.webp">
+          <img src="assets/img/gallery/coastal-fishing-structures-800.webp" width="1400" height="646" alt="Wooden fishing structures in coastal water beside mangroves in Belize." style="--ratio:1400 / 646" loading="lazy" decoding="async" data-full="assets/img/gallery/coastal-fishing-structures-1400.webp">
         </picture>
             </button>
             <figcaption>Coastal fishing structures near mangroves in Belize.</figcaption>
@@ -6393,7 +6578,7 @@ body.nav-open {
                     aria-label="View larger: A fresh catch in Belizean waters">
               <picture>
           <source type="image/webp" srcset="assets/img/gallery/fisher-with-catch-in-belizean-waters-480.webp 480w, assets/img/gallery/fisher-with-catch-in-belizean-waters-800.webp 800w, assets/img/gallery/fisher-with-catch-in-belizean-waters-960.webp 960w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
-          <img src="assets/img/gallery/fisher-with-catch-in-belizean-waters-800.jpg" width="960" height="1280" alt="Fisher in clear Caribbean water holding a freshly caught fish." class="is-portrait" style="--ratio:960 / 1280" loading="lazy" decoding="async" data-full="assets/img/gallery/fisher-with-catch-in-belizean-waters-960.webp">
+          <img src="assets/img/gallery/fisher-with-catch-in-belizean-waters-800.webp" width="960" height="1280" alt="Fisher in clear Caribbean water holding a freshly caught fish." class="is-portrait" style="--ratio:960 / 1280" loading="lazy" decoding="async" data-full="assets/img/gallery/fisher-with-catch-in-belizean-waters-960.webp">
         </picture>
             </button>
             <figcaption>A fisher displaying a fresh catch in Belizean waters.</figcaption>
@@ -6403,7 +6588,7 @@ body.nav-open {
                     aria-label="View larger: A Belizean fisherman at sea">
               <picture>
           <source type="image/webp" srcset="assets/img/gallery/fisherman-at-sea-480.webp 480w, assets/img/gallery/fisherman-at-sea-800.webp 800w, assets/img/gallery/fisherman-at-sea-1152.webp 1152w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
-          <img src="assets/img/gallery/fisherman-at-sea-800.jpg" width="1152" height="864" alt="Belizean fisherman standing aboard a fishing vessel at sea." style="--ratio:1152 / 864" loading="lazy" decoding="async" data-full="assets/img/gallery/fisherman-at-sea-1152.webp">
+          <img src="assets/img/gallery/fisherman-at-sea-800.webp" width="1152" height="864" alt="Belizean fisherman standing aboard a fishing vessel at sea." style="--ratio:1152 / 864" loading="lazy" decoding="async" data-full="assets/img/gallery/fisherman-at-sea-1152.webp">
         </picture>
             </button>
             <figcaption>A Belizean fisherman working at sea.</figcaption>
@@ -6413,7 +6598,7 @@ body.nav-open {
                     aria-label="View larger: A fisher with a spiny lobster">
               <picture>
           <source type="image/webp" srcset="assets/img/gallery/fisherman-spiny-lobster-480.webp 480w, assets/img/gallery/fisherman-spiny-lobster-800.webp 800w, assets/img/gallery/fisherman-spiny-lobster-1200.webp 1200w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
-          <img src="assets/img/gallery/fisherman-spiny-lobster-800.jpg" width="1200" height="1600" alt="Belizean fisher standing at sea and holding a Caribbean spiny lobster." class="focus-diver is-portrait" style="--ratio:1200 / 1600" loading="lazy" decoding="async" data-full="assets/img/gallery/fisherman-spiny-lobster-1200.webp">
+          <img src="assets/img/gallery/fisherman-spiny-lobster-800.webp" width="1200" height="1600" alt="Belizean fisher standing at sea and holding a Caribbean spiny lobster." class="focus-diver is-portrait" style="--ratio:1200 / 1600" loading="lazy" decoding="async" data-full="assets/img/gallery/fisherman-spiny-lobster-1200.webp">
         </picture>
             </button>
             <figcaption>A Belizean fisher with a Caribbean spiny lobster.</figcaption>
@@ -6423,7 +6608,7 @@ body.nav-open {
                     aria-label="View larger: A fisher holding two spiny lobsters">
               <picture>
           <source type="image/webp" srcset="assets/img/gallery/fisherman-two-spiny-lobsters-480.webp 480w, assets/img/gallery/fisherman-two-spiny-lobsters-720.webp 720w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
-          <img src="assets/img/gallery/fisherman-two-spiny-lobsters-720.jpg" width="720" height="960" alt="Belizean fisher seated on a boat and holding two Caribbean spiny lobsters." class="focus-boat is-portrait" style="--ratio:720 / 960" loading="lazy" decoding="async" data-full="assets/img/gallery/fisherman-two-spiny-lobsters-720.webp">
+          <img src="assets/img/gallery/fisherman-two-spiny-lobsters-720.webp" width="720" height="960" alt="Belizean fisher seated on a boat and holding two Caribbean spiny lobsters." class="focus-boat is-portrait" style="--ratio:720 / 960" loading="lazy" decoding="async" data-full="assets/img/gallery/fisherman-two-spiny-lobsters-720.webp">
         </picture>
             </button>
             <figcaption>A Belizean fisher holding two Caribbean spiny lobsters at sea.</figcaption>
@@ -6433,7 +6618,7 @@ body.nav-open {
                     aria-label="View larger: A lobster catch and transport crates">
               <picture>
           <source type="image/webp" srcset="assets/img/gallery/lobster-catch-and-transport-crates-480.webp 480w, assets/img/gallery/lobster-catch-and-transport-crates-720.webp 720w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
-          <img src="assets/img/gallery/lobster-catch-and-transport-crates-720.jpg" width="720" height="1280" alt="Caribbean spiny lobsters and ventilated transport crates inside a fishing boat." class="is-portrait" style="--ratio:720 / 1280" loading="lazy" decoding="async" data-full="assets/img/gallery/lobster-catch-and-transport-crates-720.webp">
+          <img src="assets/img/gallery/lobster-catch-and-transport-crates-720.webp" width="720" height="1280" alt="Caribbean spiny lobsters and ventilated transport crates inside a fishing boat." class="is-portrait" style="--ratio:720 / 1280" loading="lazy" decoding="async" data-full="assets/img/gallery/lobster-catch-and-transport-crates-720.webp">
         </picture>
             </button>
             <figcaption>A lobster catch and transport crates aboard a fishing vessel.</figcaption>
@@ -6443,7 +6628,7 @@ body.nav-open {
                     aria-label="View larger: A spiny lobster catch handled at sea">
               <picture>
           <source type="image/webp" srcset="assets/img/gallery/spiny-lobster-catch-on-boat-480.webp 480w, assets/img/gallery/spiny-lobster-catch-on-boat-800.webp 800w, assets/img/gallery/spiny-lobster-catch-on-boat-1200.webp 1200w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
-          <img src="assets/img/gallery/spiny-lobster-catch-on-boat-800.jpg" width="1200" height="1600" alt="Fishers aboard a boat handling a large catch of Caribbean spiny lobsters." class="focus-catch-top is-portrait" style="--ratio:1200 / 1600" loading="lazy" decoding="async" data-full="assets/img/gallery/spiny-lobster-catch-on-boat-1200.webp">
+          <img src="assets/img/gallery/spiny-lobster-catch-on-boat-800.webp" width="1200" height="1600" alt="Fishers aboard a boat handling a large catch of Caribbean spiny lobsters." class="focus-catch-top is-portrait" style="--ratio:1200 / 1600" loading="lazy" decoding="async" data-full="assets/img/gallery/spiny-lobster-catch-on-boat-1200.webp">
         </picture>
             </button>
             <figcaption>Fishers handling a Caribbean spiny lobster catch at sea.</figcaption>
@@ -6453,7 +6638,7 @@ body.nav-open {
                     aria-label="View larger: Handling spiny lobster aboard a vessel">
               <picture>
           <source type="image/webp" srcset="assets/img/gallery/spiny-lobster-handling-at-sea-480.webp 480w, assets/img/gallery/spiny-lobster-handling-at-sea-800.webp 800w, assets/img/gallery/spiny-lobster-handling-at-sea-900.webp 900w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
-          <img src="assets/img/gallery/spiny-lobster-handling-at-sea-800.jpg" width="900" height="1600" alt="Gloved fishers handling Caribbean spiny lobsters aboard a boat." class="focus-gunwale is-portrait" style="--ratio:900 / 1600" loading="lazy" decoding="async" data-full="assets/img/gallery/spiny-lobster-handling-at-sea-900.webp">
+          <img src="assets/img/gallery/spiny-lobster-handling-at-sea-800.webp" width="900" height="1600" alt="Gloved fishers handling Caribbean spiny lobsters aboard a boat." class="focus-gunwale is-portrait" style="--ratio:900 / 1600" loading="lazy" decoding="async" data-full="assets/img/gallery/spiny-lobster-handling-at-sea-900.webp">
         </picture>
             </button>
             <figcaption>Careful handling of a Caribbean spiny lobster catch aboard a fishing vessel.</figcaption>
@@ -6463,7 +6648,7 @@ body.nav-open {
                     aria-label="View larger: Belizean Pride wild-caught Caribbean spiny lobster">
               <picture>
           <source type="image/webp" srcset="assets/img/gallery/03-belizean-pride-frozen-lobster-10kg-480.webp 480w, assets/img/gallery/03-belizean-pride-frozen-lobster-10kg-800.webp 800w, assets/img/gallery/03-belizean-pride-frozen-lobster-10kg-1400.webp 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
-          <img src="assets/img/gallery/03-belizean-pride-frozen-lobster-10kg-800.jpg" width="1400" height="1050" alt="Belizean Pride wild-caught Caribbean spiny lobster in a 10-kilogram box" style="--ratio:1400 / 1050" loading="lazy" decoding="async" data-full="assets/img/gallery/03-belizean-pride-frozen-lobster-10kg-1400.webp">
+          <img src="assets/img/gallery/03-belizean-pride-frozen-lobster-10kg-800.webp" width="1400" height="1050" alt="Belizean Pride wild-caught Caribbean spiny lobster in a 10-kilogram box" style="--ratio:1400 / 1050" loading="lazy" decoding="async" data-full="assets/img/gallery/03-belizean-pride-frozen-lobster-10kg-1400.webp">
         </picture>
             </button>
             <figcaption>Belizean Pride wild-caught Caribbean spiny lobster.</figcaption>
@@ -6473,7 +6658,7 @@ body.nav-open {
                     aria-label="View larger: Belizean Pride spiny lobster head meat">
               <picture>
           <source type="image/webp" srcset="assets/img/gallery/04-belizean-pride-lobster-head-meat-480.webp 480w, assets/img/gallery/04-belizean-pride-lobster-head-meat-800.webp 800w, assets/img/gallery/04-belizean-pride-lobster-head-meat-1400.webp 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
-          <img src="assets/img/gallery/04-belizean-pride-lobster-head-meat-800.jpg" width="1400" height="1050" alt="Belizean Pride packaged spiny lobster head meat" style="--ratio:1400 / 1050" loading="lazy" decoding="async" data-full="assets/img/gallery/04-belizean-pride-lobster-head-meat-1400.webp">
+          <img src="assets/img/gallery/04-belizean-pride-lobster-head-meat-800.webp" width="1400" height="1050" alt="Belizean Pride packaged spiny lobster head meat" style="--ratio:1400 / 1050" loading="lazy" decoding="async" data-full="assets/img/gallery/04-belizean-pride-lobster-head-meat-1400.webp">
         </picture>
             </button>
             <figcaption>Belizean Pride spiny lobster head meat.</figcaption>
@@ -6483,7 +6668,7 @@ body.nav-open {
                     aria-label="View larger: Frozen fish fillets prepared for distribution">
               <picture>
           <source type="image/webp" srcset="assets/img/gallery/05-frozen-fish-fillets-box-480.webp 480w, assets/img/gallery/05-frozen-fish-fillets-box-800.webp 800w, assets/img/gallery/05-frozen-fish-fillets-box-1400.webp 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
-          <img src="assets/img/gallery/05-frozen-fish-fillets-box-800.jpg" width="1400" height="1050" alt="Individually packaged frozen fish fillets prepared for distribution" style="--ratio:1400 / 1050" loading="lazy" decoding="async" data-full="assets/img/gallery/05-frozen-fish-fillets-box-1400.webp">
+          <img src="assets/img/gallery/05-frozen-fish-fillets-box-800.webp" width="1400" height="1050" alt="Individually packaged frozen fish fillets prepared for distribution" style="--ratio:1400 / 1050" loading="lazy" decoding="async" data-full="assets/img/gallery/05-frozen-fish-fillets-box-1400.webp">
         </picture>
             </button>
             <figcaption>Frozen fish fillets prepared for distribution.</figcaption>
@@ -6493,7 +6678,7 @@ body.nav-open {
                     aria-label="View larger: Frozen fish portions prepared for distribution">
               <picture>
           <source type="image/webp" srcset="assets/img/gallery/06-frozen-fish-portions-box-480.webp 480w, assets/img/gallery/06-frozen-fish-portions-box-800.webp 800w, assets/img/gallery/06-frozen-fish-portions-box-1400.webp 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
-          <img src="assets/img/gallery/06-frozen-fish-portions-box-800.jpg" width="1400" height="1050" alt="Individually packaged frozen fish portions in a distribution box" style="--ratio:1400 / 1050" loading="lazy" decoding="async" data-full="assets/img/gallery/06-frozen-fish-portions-box-1400.webp">
+          <img src="assets/img/gallery/06-frozen-fish-portions-box-800.webp" width="1400" height="1050" alt="Individually packaged frozen fish portions in a distribution box" style="--ratio:1400 / 1050" loading="lazy" decoding="async" data-full="assets/img/gallery/06-frozen-fish-portions-box-1400.webp">
         </picture>
             </button>
             <figcaption>Frozen fish portions prepared for distribution.</figcaption>
@@ -6503,7 +6688,7 @@ body.nav-open {
                     aria-label="View larger: Belizean Pride products, boxed">
               <picture>
           <source type="image/webp" srcset="assets/img/gallery/belizean-pride-packaged-products-480.webp 480w, assets/img/gallery/belizean-pride-packaged-products-720.webp 720w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
-          <img src="assets/img/gallery/belizean-pride-packaged-products-720.jpg" width="720" height="1280" alt="Boxes of Belizean Pride seafood products arranged for distribution." class="focus-pride-boxes is-portrait" style="--ratio:720 / 1280" loading="lazy" decoding="async" data-full="assets/img/gallery/belizean-pride-packaged-products-720.webp">
+          <img src="assets/img/gallery/belizean-pride-packaged-products-720.webp" width="720" height="1280" alt="Boxes of Belizean Pride seafood products arranged for distribution." class="focus-pride-boxes is-portrait" style="--ratio:720 / 1280" loading="lazy" decoding="async" data-full="assets/img/gallery/belizean-pride-packaged-products-720.webp">
         </picture>
             </button>
             <figcaption>Belizean Pride seafood products prepared for distribution.</figcaption>
@@ -6513,7 +6698,7 @@ body.nav-open {
                     aria-label="View larger: Packaged frozen lionfish fillets">
               <picture>
           <source type="image/webp" srcset="assets/img/gallery/lionfish-fillets-4x3-480.webp 480w, assets/img/gallery/lionfish-fillets-4x3-800.webp 800w, assets/img/gallery/lionfish-fillets-4x3-1400.webp 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
-          <img src="assets/img/gallery/lionfish-fillets-4x3-800.jpg" width="1400" height="1050" alt="Frozen lionfish fillets individually packaged in a white food-grade tray." style="--ratio:1400 / 1050" loading="lazy" decoding="async" data-full="assets/img/gallery/lionfish-fillets-4x3-1400.webp">
+          <img src="assets/img/gallery/lionfish-fillets-4x3-800.webp" width="1400" height="1050" alt="Frozen lionfish fillets individually packaged in a white food-grade tray." style="--ratio:1400 / 1050" loading="lazy" decoding="async" data-full="assets/img/gallery/lionfish-fillets-4x3-1400.webp">
         </picture>
             </button>
             <figcaption>Packaged frozen lionfish fillets.</figcaption>
@@ -6523,7 +6708,7 @@ body.nav-open {
                     aria-label="View larger: Cartons loaded for cold transport">
               <picture>
           <source type="image/webp" srcset="assets/img/gallery/seafood-shipment-cold-storage-480.webp 480w, assets/img/gallery/seafood-shipment-cold-storage-800.webp 800w, assets/img/gallery/seafood-shipment-cold-storage-960.webp 960w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
-          <img src="assets/img/gallery/seafood-shipment-cold-storage-800.jpg" width="960" height="1280" alt="Sealed seafood cartons stacked inside a refrigerated transport compartment." class="is-portrait" style="--ratio:960 / 1280" loading="lazy" decoding="async" data-full="assets/img/gallery/seafood-shipment-cold-storage-960.webp">
+          <img src="assets/img/gallery/seafood-shipment-cold-storage-800.webp" width="960" height="1280" alt="Sealed seafood cartons stacked inside a refrigerated transport compartment." class="is-portrait" style="--ratio:960 / 1280" loading="lazy" decoding="async" data-full="assets/img/gallery/seafood-shipment-cold-storage-960.webp">
         </picture>
             </button>
             <figcaption>Packaged seafood prepared for temperature-controlled transport.</figcaption>
@@ -6533,7 +6718,7 @@ body.nav-open {
                     aria-label="View larger: Belizean Pride products presented at an international exhibition">
               <picture>
           <source type="image/webp" srcset="assets/img/gallery/07-belizean-pride-exhibition-display-480.webp 480w, assets/img/gallery/07-belizean-pride-exhibition-display-800.webp 800w, assets/img/gallery/07-belizean-pride-exhibition-display-1400.webp 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
-          <img src="assets/img/gallery/07-belizean-pride-exhibition-display-800.jpg" width="1400" height="1050" alt="Belizean Pride lobster and conch products displayed at an international exhibition" style="--ratio:1400 / 1050" loading="lazy" decoding="async" data-full="assets/img/gallery/07-belizean-pride-exhibition-display-1400.webp">
+          <img src="assets/img/gallery/07-belizean-pride-exhibition-display-800.webp" width="1400" height="1050" alt="Belizean Pride lobster and conch products displayed at an international exhibition" style="--ratio:1400 / 1050" loading="lazy" decoding="async" data-full="assets/img/gallery/07-belizean-pride-exhibition-display-1400.webp">
         </picture>
             </button>
             <figcaption>Belizean Pride products presented at an international exhibition.</figcaption>
@@ -6543,7 +6728,7 @@ body.nav-open {
                     aria-label="View larger: NATFISH representatives presenting Belizean Pride products">
               <picture>
           <source type="image/webp" srcset="assets/img/gallery/08-natfish-delegation-black-uniforms-480.webp 480w, assets/img/gallery/08-natfish-delegation-black-uniforms-800.webp 800w, assets/img/gallery/08-natfish-delegation-black-uniforms-1400.webp 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
-          <img src="assets/img/gallery/08-natfish-delegation-black-uniforms-800.jpg" width="1400" height="1050" alt="NATFISH representatives standing behind a Belizean Pride product display" style="--ratio:1400 / 1050" loading="lazy" decoding="async" data-full="assets/img/gallery/08-natfish-delegation-black-uniforms-1400.webp">
+          <img src="assets/img/gallery/08-natfish-delegation-black-uniforms-800.webp" width="1400" height="1050" alt="NATFISH representatives standing behind a Belizean Pride product display" style="--ratio:1400 / 1050" loading="lazy" decoding="async" data-full="assets/img/gallery/08-natfish-delegation-black-uniforms-1400.webp">
         </picture>
             </button>
             <figcaption>NATFISH representatives presenting Belizean Pride products.</figcaption>
@@ -6553,7 +6738,7 @@ body.nav-open {
                     aria-label="View larger: The NATFISH delegation representing Belizean seafood products">
               <picture>
           <source type="image/webp" srcset="assets/img/gallery/09-natfish-delegation-white-uniforms-480.webp 480w, assets/img/gallery/09-natfish-delegation-white-uniforms-800.webp 800w, assets/img/gallery/09-natfish-delegation-white-uniforms-1400.webp 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
-          <img src="assets/img/gallery/09-natfish-delegation-white-uniforms-800.jpg" width="1400" height="1050" alt="NATFISH delegation in white uniforms behind a Belizean Pride exhibition display" style="--ratio:1400 / 1050" loading="lazy" decoding="async" data-full="assets/img/gallery/09-natfish-delegation-white-uniforms-1400.webp">
+          <img src="assets/img/gallery/09-natfish-delegation-white-uniforms-800.webp" width="1400" height="1050" alt="NATFISH delegation in white uniforms behind a Belizean Pride exhibition display" style="--ratio:1400 / 1050" loading="lazy" decoding="async" data-full="assets/img/gallery/09-natfish-delegation-white-uniforms-1400.webp">
         </picture>
             </button>
             <figcaption>The NATFISH delegation representing Belizean seafood products.</figcaption>
@@ -6563,7 +6748,7 @@ body.nav-open {
                     aria-label="View larger: NATFISH team members and partners">
               <picture>
           <source type="image/webp" srcset="assets/img/gallery/10-natfish-team-group-480.webp 480w, assets/img/gallery/10-natfish-team-group-800.webp 800w, assets/img/gallery/10-natfish-team-group-1400.webp 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
-          <img src="assets/img/gallery/10-natfish-team-group-800.jpg" width="1400" height="1050" alt="NATFISH team members and partners gathered for a group photograph" style="--ratio:1400 / 1050" loading="lazy" decoding="async" data-full="assets/img/gallery/10-natfish-team-group-1400.webp">
+          <img src="assets/img/gallery/10-natfish-team-group-800.webp" width="1400" height="1050" alt="NATFISH team members and partners gathered for a group photograph" style="--ratio:1400 / 1050" loading="lazy" decoding="async" data-full="assets/img/gallery/10-natfish-team-group-1400.webp">
         </picture>
             </button>
             <figcaption>NATFISH team members and partners.</figcaption>
@@ -6573,7 +6758,7 @@ body.nav-open {
                     aria-label="View larger: NatFish at Food Taipei Mega Shows 2026">
               <picture>
           <source type="image/webp" srcset="assets/img/gallery/natfish-food-taipei-2026-480.webp 480w, assets/img/gallery/natfish-food-taipei-2026-800.webp 800w, assets/img/gallery/natfish-food-taipei-2026-1280.webp 1280w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
-          <img src="assets/img/gallery/natfish-food-taipei-2026-800.jpg" width="1280" height="720" alt="Four NatFish representatives at the Food Taipei Mega Shows 2026 display." style="--ratio:1280 / 720" loading="lazy" decoding="async" data-full="assets/img/gallery/natfish-food-taipei-2026-1280.webp">
+          <img src="assets/img/gallery/natfish-food-taipei-2026-800.webp" width="1280" height="720" alt="Four NatFish representatives at the Food Taipei Mega Shows 2026 display." style="--ratio:1280 / 720" loading="lazy" decoding="async" data-full="assets/img/gallery/natfish-food-taipei-2026-1280.webp">
         </picture>
             </button>
             <figcaption>NatFish representatives at Food Taipei Mega Shows 2026.</figcaption>
@@ -6583,7 +6768,7 @@ body.nav-open {
                     aria-label="View larger: A NatFish workshop in progress">
               <picture>
           <source type="image/webp" srcset="assets/img/gallery/natfish-workshop-480.webp 480w, assets/img/gallery/natfish-workshop-800.webp 800w, assets/img/gallery/natfish-workshop-1280.webp 1280w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
-          <img src="assets/img/gallery/natfish-workshop-800.jpg" width="1280" height="720" alt="NatFish representatives seated around a conference table during a workshop." style="--ratio:1280 / 720" loading="lazy" decoding="async" data-full="assets/img/gallery/natfish-workshop-1280.webp">
+          <img src="assets/img/gallery/natfish-workshop-800.webp" width="1280" height="720" alt="NatFish representatives seated around a conference table during a workshop." style="--ratio:1280 / 720" loading="lazy" decoding="async" data-full="assets/img/gallery/natfish-workshop-1280.webp">
         </picture>
             </button>
             <figcaption>NatFish representatives participating in a workshop.</figcaption>
@@ -6593,7 +6778,7 @@ body.nav-open {
                     aria-label="View larger: NatFish participants after a workshop">
               <picture>
           <source type="image/webp" srcset="assets/img/gallery/natfish-workshop-group-480.webp 480w, assets/img/gallery/natfish-workshop-group-800.webp 800w, assets/img/gallery/natfish-workshop-group-1280.webp 1280w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
-          <img src="assets/img/gallery/natfish-workshop-group-800.jpg" width="1280" height="720" alt="NatFish participants standing together for a group photograph after a workshop." class="focus-group" style="--ratio:1280 / 720" loading="lazy" decoding="async" data-full="assets/img/gallery/natfish-workshop-group-1280.webp">
+          <img src="assets/img/gallery/natfish-workshop-group-800.webp" width="1280" height="720" alt="NatFish participants standing together for a group photograph after a workshop." class="focus-group" style="--ratio:1280 / 720" loading="lazy" decoding="async" data-full="assets/img/gallery/natfish-workshop-group-1280.webp">
         </picture>
             </button>
             <figcaption>NatFish participants gathered after a workshop.</figcaption>
@@ -6618,7 +6803,7 @@ body.nav-open {
                     aria-label="View larger: The packing team at work">
               <picture>
           <source type="image/webp" srcset="assets/img/official/01-lobster-packing-team-wide-480.webp 480w, assets/img/official/01-lobster-packing-team-wide-800.webp 800w, assets/img/official/01-lobster-packing-team-wide-1400.webp 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
-          <img src="assets/img/official/01-lobster-packing-team-wide-800.jpg" width="1400" height="876" alt="NATFISH workers in hairnets, masks and aprons preparing lobster along a stainless steel bench in the co-operative&rsquo;s processing room." class="focus-left" style="--ratio:1400 / 876" loading="lazy" decoding="async" data-full="assets/img/official/01-lobster-packing-team-wide-1400.webp">
+          <img src="assets/img/official/01-lobster-packing-team-wide-800.webp" width="1400" height="876" alt="NATFISH workers in hairnets, masks and aprons preparing lobster along a stainless steel bench in the co-operative&rsquo;s processing room." class="focus-left" style="--ratio:1400 / 876" loading="lazy" decoding="async" data-full="assets/img/official/01-lobster-packing-team-wide-1400.webp">
         </picture>
             </button>
             <figcaption>The packing team at work.</figcaption>
@@ -6628,7 +6813,7 @@ body.nav-open {
                     aria-label="View larger: Sorting spiny lobster tails">
               <picture>
           <source type="image/webp" srcset="assets/img/official/09-lobster-processing-table-480.webp 480w, assets/img/official/09-lobster-processing-table-800.webp 800w, assets/img/official/09-lobster-processing-table-1400.webp 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
-          <img src="assets/img/official/09-lobster-processing-table-800.jpg" width="1054" height="1400" alt="NATFISH workers sorting spiny lobster tails across a stainless processing table." class="is-portrait" style="--ratio:1054 / 1400" loading="lazy" decoding="async" data-full="assets/img/official/09-lobster-processing-table-1400.webp">
+          <img src="assets/img/official/09-lobster-processing-table-800.webp" width="1054" height="1400" alt="NATFISH workers sorting spiny lobster tails across a stainless processing table." class="is-portrait" style="--ratio:1054 / 1400" loading="lazy" decoding="async" data-full="assets/img/official/09-lobster-processing-table-1400.webp">
         </picture>
             </button>
             <figcaption>Sorting spiny lobster tails.</figcaption>
@@ -6638,7 +6823,7 @@ body.nav-open {
                     aria-label="View larger: Rinsing at the washing station">
               <picture>
           <source type="image/webp" srcset="assets/img/official/07-lobster-washing-station-480.webp 480w, assets/img/official/07-lobster-washing-station-800.webp 800w, assets/img/official/07-lobster-washing-station-1400.webp 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
-          <img src="assets/img/official/07-lobster-washing-station-800.jpg" width="1054" height="1400" alt="NATFISH workers in aprons and gloves rinsing lobster at the stainless washing station." class="is-portrait" style="--ratio:1054 / 1400" loading="lazy" decoding="async" data-full="assets/img/official/07-lobster-washing-station-1400.webp">
+          <img src="assets/img/official/07-lobster-washing-station-800.webp" width="1054" height="1400" alt="NATFISH workers in aprons and gloves rinsing lobster at the stainless washing station." class="is-portrait" style="--ratio:1054 / 1400" loading="lazy" decoding="async" data-full="assets/img/official/07-lobster-washing-station-1400.webp">
         </picture>
             </button>
             <figcaption>Rinsing at the washing station.</figcaption>
@@ -6648,7 +6833,7 @@ body.nav-open {
                     aria-label="View larger: Inside the processing room">
               <picture>
           <source type="image/webp" srcset="assets/img/official/03-lobster-processing-room-wide-480.webp 480w, assets/img/official/03-lobster-processing-room-wide-800.webp 800w, assets/img/official/03-lobster-processing-room-wide-1400.webp 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
-          <img src="assets/img/official/03-lobster-processing-room-wide-800.jpg" width="1400" height="876" alt="A wide view of the NATFISH processing hall, with workers at stainless benches and packing cartons stacked along the wall." class="focus-centre" style="--ratio:1400 / 876" loading="lazy" decoding="async" data-full="assets/img/official/03-lobster-processing-room-wide-1400.webp">
+          <img src="assets/img/official/03-lobster-processing-room-wide-800.webp" width="1400" height="876" alt="A wide view of the NATFISH processing hall, with workers at stainless benches and packing cartons stacked along the wall." class="focus-centre" style="--ratio:1400 / 876" loading="lazy" decoding="async" data-full="assets/img/official/03-lobster-processing-room-wide-1400.webp">
         </picture>
             </button>
             <figcaption>Inside the processing room.</figcaption>
@@ -6658,7 +6843,7 @@ body.nav-open {
                     aria-label="View larger: Weighing and sorting the catch">
               <picture>
           <source type="image/webp" srcset="assets/img/official/08-lobster-weighing-and-sorting-480.webp 480w, assets/img/official/08-lobster-weighing-and-sorting-800.webp 800w, assets/img/official/08-lobster-weighing-and-sorting-1400.webp 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
-          <img src="assets/img/official/08-lobster-weighing-and-sorting-800.jpg" width="1054" height="1400" alt="A NATFISH worker weighing lobster on a digital scale beside sorting bins." class="is-portrait" style="--ratio:1054 / 1400" loading="lazy" decoding="async" data-full="assets/img/official/08-lobster-weighing-and-sorting-1400.webp">
+          <img src="assets/img/official/08-lobster-weighing-and-sorting-800.webp" width="1054" height="1400" alt="A NATFISH worker weighing lobster on a digital scale beside sorting bins." class="is-portrait" style="--ratio:1054 / 1400" loading="lazy" decoding="async" data-full="assets/img/official/08-lobster-weighing-and-sorting-1400.webp">
         </picture>
             </button>
             <figcaption>Weighing and sorting the catch.</figcaption>
@@ -6668,7 +6853,7 @@ body.nav-open {
                     aria-label="View larger: Bagging and boxing lobster tails">
               <picture>
           <source type="image/webp" srcset="assets/img/official/02-lobster-packing-line-portrait-480.webp 480w, assets/img/official/02-lobster-packing-line-portrait-800.webp 800w, assets/img/official/02-lobster-packing-line-portrait-1400.webp 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
-          <img src="assets/img/official/02-lobster-packing-line-portrait-800.jpg" width="874" height="1400" alt="NATFISH workers bagging lobster tails and packing them into cartons at the end of the processing line." class="is-portrait" style="--ratio:874 / 1400" loading="lazy" decoding="async" data-full="assets/img/official/02-lobster-packing-line-portrait-1400.webp">
+          <img src="assets/img/official/02-lobster-packing-line-portrait-800.webp" width="874" height="1400" alt="NATFISH workers bagging lobster tails and packing them into cartons at the end of the processing line." class="is-portrait" style="--ratio:874 / 1400" loading="lazy" decoding="async" data-full="assets/img/official/02-lobster-packing-line-portrait-1400.webp">
         </picture>
             </button>
             <figcaption>Bagging and boxing lobster tails.</figcaption>
@@ -6678,7 +6863,7 @@ body.nav-open {
                     aria-label="View larger: Queen conch during processing">
               <picture>
           <source type="image/webp" srcset="assets/img/official/04-fresh-conch-processing-closeup-480.webp 480w, assets/img/official/04-fresh-conch-processing-closeup-800.webp 800w, assets/img/official/04-fresh-conch-processing-closeup-1400.webp 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
-          <img src="assets/img/official/04-fresh-conch-processing-closeup-800.jpg" width="1400" height="876" alt="Freshly landed queen conch meat spread across a stainless steel table during processing at NATFISH." class="focus-centre" style="--ratio:1400 / 876" loading="lazy" decoding="async" data-full="assets/img/official/04-fresh-conch-processing-closeup-1400.webp">
+          <img src="assets/img/official/04-fresh-conch-processing-closeup-800.webp" width="1400" height="876" alt="Freshly landed queen conch meat spread across a stainless steel table during processing at NATFISH." class="focus-centre" style="--ratio:1400 / 876" loading="lazy" decoding="async" data-full="assets/img/official/04-fresh-conch-processing-closeup-1400.webp">
         </picture>
             </button>
             <figcaption>Queen conch during processing.</figcaption>
@@ -6688,7 +6873,7 @@ body.nav-open {
                     aria-label="View larger: Packing lobster tails into cartons">
               <picture>
           <source type="image/webp" srcset="assets/img/official/05-lobster-tail-packing-boxes-480.webp 480w, assets/img/official/05-lobster-tail-packing-boxes-800.webp 800w, assets/img/official/05-lobster-tail-packing-boxes-1400.webp 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
-          <img src="assets/img/official/05-lobster-tail-packing-boxes-800.jpg" width="1053" height="1400" alt="Individually bagged lobster tails being packed into cartons at NATFISH." class="is-portrait" style="--ratio:1053 / 1400" loading="lazy" decoding="async" data-full="assets/img/official/05-lobster-tail-packing-boxes-1400.webp">
+          <img src="assets/img/official/05-lobster-tail-packing-boxes-800.webp" width="1053" height="1400" alt="Individually bagged lobster tails being packed into cartons at NATFISH." class="is-portrait" style="--ratio:1053 / 1400" loading="lazy" decoding="async" data-full="assets/img/official/05-lobster-tail-packing-boxes-1400.webp">
         </picture>
             </button>
             <figcaption>Packing lobster tails into cartons.</figcaption>
@@ -6698,7 +6883,7 @@ body.nav-open {
                     aria-label="View larger: Bagged tails, carton by carton">
               <picture>
           <source type="image/webp" srcset="assets/img/official/06-lobster-tail-packing-close-480.webp 480w, assets/img/official/06-lobster-tail-packing-close-800.webp 800w, assets/img/official/06-lobster-tail-packing-close-1400.webp 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
-          <img src="assets/img/official/06-lobster-tail-packing-close-800.jpg" width="1053" height="1400" alt="A close view of gloved hands placing bagged lobster tails into a carton." class="is-portrait" style="--ratio:1053 / 1400" loading="lazy" decoding="async" data-full="assets/img/official/06-lobster-tail-packing-close-1400.webp">
+          <img src="assets/img/official/06-lobster-tail-packing-close-800.webp" width="1053" height="1400" alt="A close view of gloved hands placing bagged lobster tails into a carton." class="is-portrait" style="--ratio:1053 / 1400" loading="lazy" decoding="async" data-full="assets/img/official/06-lobster-tail-packing-close-1400.webp">
         </picture>
             </button>
             <figcaption>Bagged tails, carton by carton.</figcaption>
@@ -6708,7 +6893,7 @@ body.nav-open {
                     aria-label="View larger: The cold storage room">
               <picture>
           <source type="image/webp" srcset="assets/img/official/10-cold-storage-room-480.webp 480w, assets/img/official/10-cold-storage-room-800.webp 800w, assets/img/official/10-cold-storage-room-1400.webp 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
-          <img src="assets/img/official/10-cold-storage-room-800.jpg" width="788" height="1400" alt="Racked trays inside the NATFISH cold storage room, cold vapour drifting between the shelves." class="focus-top is-portrait" style="--ratio:788 / 1400" loading="lazy" decoding="async" data-full="assets/img/official/10-cold-storage-room-1400.webp">
+          <img src="assets/img/official/10-cold-storage-room-800.webp" width="788" height="1400" alt="Racked trays inside the NATFISH cold storage room, cold vapour drifting between the shelves." class="focus-top is-portrait" style="--ratio:788 / 1400" loading="lazy" decoding="async" data-full="assets/img/official/10-cold-storage-room-1400.webp">
         </picture>
             </button>
             <figcaption>The cold storage room.</figcaption>
@@ -6731,7 +6916,7 @@ body.nav-open {
                     aria-label="View larger: Frozen lobster tails, cased">
               <picture>
           <source type="image/webp" srcset="assets/img/products/01-belizean-pride-lobster-cases-480.webp 480w, assets/img/products/01-belizean-pride-lobster-cases-800.webp 800w, assets/img/products/01-belizean-pride-lobster-cases-1400.webp 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
-          <img src="assets/img/products/01-belizean-pride-lobster-cases-800.jpg" width="1400" height="920" alt="Cartons of frozen Belizean spiny lobster tails packed for cold storage." style="--ratio:1400 / 920" loading="lazy" decoding="async" data-full="assets/img/products/01-belizean-pride-lobster-cases-1400.webp">
+          <img src="assets/img/products/01-belizean-pride-lobster-cases-800.webp" width="1400" height="920" alt="Cartons of frozen Belizean spiny lobster tails packed for cold storage." style="--ratio:1400 / 920" loading="lazy" decoding="async" data-full="assets/img/products/01-belizean-pride-lobster-cases-1400.webp">
         </picture>
             </button>
             <figcaption>Frozen lobster tails, cased.</figcaption>
@@ -6741,7 +6926,7 @@ body.nav-open {
                     aria-label="View larger: Cooked lobster tails, bagged">
               <picture>
           <source type="image/webp" srcset="assets/img/products/02-belizean-pride-orange-lobster-tails-480.webp 480w, assets/img/products/02-belizean-pride-orange-lobster-tails-800.webp 800w, assets/img/products/02-belizean-pride-orange-lobster-tails-1400.webp 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
-          <img src="assets/img/products/02-belizean-pride-orange-lobster-tails-800.jpg" width="1254" height="677" alt="A carton of individually bagged cooked spiny lobster tails." style="--ratio:1254 / 677" loading="lazy" decoding="async" data-full="assets/img/products/02-belizean-pride-orange-lobster-tails-1400.webp">
+          <img src="assets/img/products/02-belizean-pride-orange-lobster-tails-800.webp" width="1254" height="677" alt="A carton of individually bagged cooked spiny lobster tails." style="--ratio:1254 / 677" loading="lazy" decoding="async" data-full="assets/img/products/02-belizean-pride-orange-lobster-tails-1400.webp">
         </picture>
             </button>
             <figcaption>Cooked lobster tails, bagged.</figcaption>
@@ -6751,7 +6936,7 @@ body.nav-open {
                     aria-label="View larger: Whole raw lobster, cased">
               <picture>
           <source type="image/webp" srcset="assets/img/products/03-belizean-pride-raw-lobster-tails-480.webp 480w, assets/img/products/03-belizean-pride-raw-lobster-tails-800.webp 800w, assets/img/products/03-belizean-pride-raw-lobster-tails-1400.webp 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
-          <img src="assets/img/products/03-belizean-pride-raw-lobster-tails-800.jpg" width="1254" height="602" alt="A carton of whole raw spiny lobster, frozen and packed for market." style="--ratio:1254 / 602" loading="lazy" decoding="async" data-full="assets/img/products/03-belizean-pride-raw-lobster-tails-1400.webp">
+          <img src="assets/img/products/03-belizean-pride-raw-lobster-tails-800.webp" width="1254" height="602" alt="A carton of whole raw spiny lobster, frozen and packed for market." style="--ratio:1254 / 602" loading="lazy" decoding="async" data-full="assets/img/products/03-belizean-pride-raw-lobster-tails-1400.webp">
         </picture>
             </button>
             <figcaption>Whole raw lobster, cased.</figcaption>
@@ -6761,7 +6946,7 @@ body.nav-open {
                     aria-label="View larger: Frozen queen conch meat">
               <picture>
           <source type="image/webp" srcset="assets/img/products/04-wild-caught-frozen-conch-480.webp 480w, assets/img/products/04-wild-caught-frozen-conch-800.webp 800w, assets/img/products/04-wild-caught-frozen-conch-1400.webp 1400w" sizes="(max-width: 460px) 92vw, (max-width: 860px) 46vw, 30vw">
-          <img src="assets/img/products/04-wild-caught-frozen-conch-800.jpg" width="1400" height="532" alt="A carton of frozen queen conch meat, bagged for shipping." style="--ratio:1400 / 532" loading="lazy" decoding="async" data-full="assets/img/products/04-wild-caught-frozen-conch-1400.webp">
+          <img src="assets/img/products/04-wild-caught-frozen-conch-800.webp" width="1400" height="532" alt="A carton of frozen queen conch meat, bagged for shipping." style="--ratio:1400 / 532" loading="lazy" decoding="async" data-full="assets/img/products/04-wild-caught-frozen-conch-1400.webp">
         </picture>
             </button>
             <figcaption>Frozen queen conch meat.</figcaption>
@@ -6828,7 +7013,7 @@ body.nav-open {
           <button class="video__poster" type="button" aria-label="Play the video: The National Fishermen Co-operative of Belize">
             <picture>
           <source type="image/webp" srcset="assets/img/concept/hero-2-boat-leaving-harbour-480.webp 480w, assets/img/concept/hero-2-boat-leaving-harbour-800.webp 800w, assets/img/concept/hero-2-boat-leaving-harbour-1400.webp 1400w" sizes="(max-width: 900px) 96vw, 880px">
-          <img src="assets/img/concept/hero-2-boat-leaving-harbour-800.jpg" width="1400" height="787" alt="" style="--ratio:1400 / 787" loading="lazy" decoding="async">
+          <img src="assets/img/concept/hero-2-boat-leaving-harbour-800.webp" width="1400" height="787" alt="" style="--ratio:1400 / 787" loading="lazy" decoding="async">
         </picture>
             <span class="video__play"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8.4 5.1v13.8a.9.9 0 0 0 1.36.77l11.1-6.9a.9.9 0 0 0 0-1.54L9.76 4.34A.9.9 0 0 0 8.4 5.1z" fill="currentColor" stroke="none"/></svg></span>
             <span class="video__label">The National Fishermen Co-operative of Belize</span>
@@ -6942,7 +7127,7 @@ body.nav-open {
 
   <p class="visually-hidden" id="lang-status" role="status" aria-live="polite"></p>
 
-  <script src="assets/js/natfish-strings.js?v=49c301ce"></script>
+  <script src="assets/js/natfish-strings.js?v=37d769dc"></script>
   <script src="assets/js/natfish-i18n.js?v=b8a289c3"></script>
   <script src="assets/js/natfish-seasons.js?v=c270a135"></script>
   <script src="assets/js/natfish.js?v=79e88ac3"></script>

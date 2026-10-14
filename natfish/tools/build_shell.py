@@ -178,8 +178,15 @@ from gallery_dims import (GALLERY_DIMS, GALLERY_GROUPS,  # noqa: E402
                           GALLERY_TIERS)
 from news_dims import NEWS_DIMS  # noqa: E402
 from about_dims import ABOUT_DIMS, ABOUT_TIERS  # noqa: E402
+from miami_dims import MIAMI_DIMS, MIAMI_TIERS  # noqa: E402
 
-DIMS = {**DIMS, **HERO_DIMS, **GALLERY_DIMS, **NEWS_DIMS, **ABOUT_DIMS}
+DIMS = {**DIMS, **HERO_DIMS, **GALLERY_DIMS, **NEWS_DIMS, **ABOUT_DIMS,
+        **MIAMI_DIMS}
+
+# The Miami collection reads its tiers through the same table picture() already
+# consults, but stays OUT of GALLERY_GROUPS: that dict is what builds the
+# filterable grid, and these nine live in their own event section instead.
+GALLERY_TIERS = {**GALLERY_TIERS, **MIAMI_TIERS}
 
 # A photo credit, not a disclaimer. The four Belizean Pride carton photographs
 # in products/ are recreations built from NATFISH product material rather than
@@ -191,6 +198,30 @@ RECREATION_NOTE = (
 )
 
 ALT = {
+    # ---- Miami 2026, the Americas Food & Beverage Show ----
+    # Captions supplied in the client's manifest and used verbatim, in both
+    # languages. They describe only what is visible: no name, title or role
+    # is attached to anyone in these photographs, and nothing is claimed
+    # about orders, buyers or agreements.
+    "miami-2026-product-display-qr":
+        "NATFISH exhibition display featuring Belizean Pride seafood, a model sailboat and QR-code information cards.",
+    "miami-2026-delegation-at-booth":
+        "NATFISH representatives and partners at the Belize Country Pavilion in Miami.",
+    "miami-2026-representatives-at-show":
+        "Three NATFISH representatives at the Americas Food &amp; Beverage Show 2026.",
+    "miami-2026-conversation-with-attendee":
+        "Exhibition visitors learn about NATFISH and Belizean Pride products at the booth.",
+    "miami-2026-team-at-exhibition":
+        "NATFISH representatives at their display inside the international trade exhibition.",
+    "miami-2026-belizean-pride-booth":
+        "Belizean Pride seafood packaging, traditional sailboat and representatives at NATFISH&rsquo;s stand.",
+    "miami-2026-show-conversation":
+        "A NATFISH representative speaks with an attendee beside the Belize flag and model sailboat.",
+    "miami-2026-delegation-in-miami":
+        "NATFISH delegates photographed together during their visit to Miami.",
+    "miami-2026-convention-center":
+        "NATFISH delegation outside the Miami Beach Convention Center.",
+
     # Four delegates beside the show's own welcome, thank-you and show-rules
     # boards. Described as what it is - attendees at event signage - because
     # the package is explicit that it is not a booth or a product display, and
@@ -357,6 +388,25 @@ ALT = {
 # gallery template ends with a full stop of its own; these are finished
 # sentences and must not have one appended.
 CAPTION = {
+    "miami-2026-product-display-qr":
+        "NATFISH exhibition display featuring Belizean Pride seafood, a model sailboat and QR-code information cards.",
+    "miami-2026-delegation-at-booth":
+        "NATFISH representatives and partners at the Belize Country Pavilion in Miami.",
+    "miami-2026-representatives-at-show":
+        "Three NATFISH representatives at the Americas Food &amp; Beverage Show 2026.",
+    "miami-2026-conversation-with-attendee":
+        "Exhibition visitors learn about NATFISH and Belizean Pride products at the booth.",
+    "miami-2026-team-at-exhibition":
+        "NATFISH representatives at their display inside the international trade exhibition.",
+    "miami-2026-belizean-pride-booth":
+        "Belizean Pride seafood packaging, traditional sailboat and representatives at NATFISH&rsquo;s stand.",
+    "miami-2026-show-conversation":
+        "A NATFISH representative speaks with an attendee beside the Belize flag and model sailboat.",
+    "miami-2026-delegation-in-miami":
+        "NATFISH delegates photographed together during their visit to Miami.",
+    "miami-2026-convention-center":
+        "NATFISH delegation outside the Miami Beach Convention Center.",
+
     "01-lobster-fisher-boat-catch":
         "A Belizean lobster fisher displaying part of a fresh harvest.",
     "02-lobster-harvest-boat":
@@ -424,6 +474,16 @@ GALLERY_CLASSES = [
 
 # Short labels for the carousel status region and gallery captions.
 SHORT = {
+    "miami-2026-product-display-qr": "Product display and QR cards",
+    "miami-2026-delegation-at-booth": "Representatives at the Belize pavilion",
+    "miami-2026-representatives-at-show": "Three representatives at the show",
+    "miami-2026-conversation-with-attendee": "Visitors at the NATFISH booth",
+    "miami-2026-team-at-exhibition": "The team at the exhibition display",
+    "miami-2026-belizean-pride-booth": "The Belizean Pride stand",
+    "miami-2026-show-conversation": "A conversation beside the Belize flag",
+    "miami-2026-delegation-in-miami": "The delegation in Miami",
+    "miami-2026-convention-center": "Outside the convention center",
+
     "01-lobster-packing-team-wide": "The packing team at work",
     "02-lobster-packing-line-portrait": "Bagging and boxing lobster tails",
     "03-lobster-processing-room-wide": "Inside the processing room",
@@ -510,6 +570,13 @@ def img_dir(stem):
     if stem.startswith("hero-"):
         base = stem.rsplit("-desktop", 1)[0].rsplit("-mobile", 1)[0]
         return OFFICIAL if base in HERO_PAIRS else CONCEPT
+    # Before the brand check below. One of the nine Miami photographs is
+    # "miami-2026-belizean-pride-booth", and the substring test would have
+    # routed it to products/ while the processor wrote it to official/ - a 404
+    # on the gallery page, caught by the sweep rather than by reading the code.
+    # These are the client's own event photography and belong in official/.
+    if stem.startswith("miami-2026-"):
+        return OFFICIAL
     if "belizean-pride" in stem or "wild-caught" in stem:
         return PRODUCTS
     return OFFICIAL
@@ -531,17 +598,17 @@ def gallery_tiers(stem):
     return tuple(GALLERY_TIERS.get(stem, PICTURE_TIERS))
 
 
-def shipped_jpeg(stem):
-    """The one JPEG derivative of `stem` that actually ships, as a site path.
+def shipped_image(stem):
+    """The largest derivative of `stem` that actually ships, as a site path.
 
-    make-netlify-zip.sh deletes every image the markup does not reference, so a
-    schema URL naming any other width would be a 404 in the deployed package.
-    This reads the same tier picture() writes into the <img>, which means the
-    two cannot drift apart.
+    Used by structured data, which wants the biggest version available rather
+    than the one the card happens to render. WebP, like everything else the
+    pages reference now; Google reads WebP for structured data and image
+    results, and every tier in the ladder is named in a srcset, so the largest
+    is guaranteed to survive the packaging sweep.
     """
     tiers = gallery_tiers(stem) if stem in GALLERY_TIERS else PICTURE_TIERS
-    fallback = tiers[min(1, len(tiers) - 1)]
-    return f"{img_dir(stem)}/{stem}-{fallback}.jpg"
+    return f"{img_dir(stem)}/{stem}-{tiers[-1]}.webp"
 
 
 def picture(stem, sizes, css="", *, eager=False, alt=None, full=False,
@@ -607,7 +674,7 @@ def picture(stem, sizes, css="", *, eager=False, alt=None, full=False,
     fallback = tiers[min(1, len(tiers) - 1)]
     return f"""<picture>
           <source type="image/webp" srcset="{webp}" sizes="{sizes}">
-          <img src="{d}/{stem}-{fallback}.jpg" width="{w}" height="{h}" alt="{alt_text}"{cls}{style}{loading}{data_full}>
+          <img src="{d}/{stem}-{fallback}.webp" width="{w}" height="{h}" alt="{alt_text}"{cls}{style}{loading}{data_full}>
         </picture>"""
 
 
@@ -703,7 +770,7 @@ def hero_picture(stem, index, *, eager):
         w, h = DIMS[stem]
         return f"""<picture>
             <source type="image/webp" srcset="{_srcset(d, stem, hero_tiers(stem), 'webp')}" sizes="{HERO_SIZES_SINGLE}">
-            <img src="{d}/{stem}-800.jpg" width="{w}" height="{h}" alt="{ALT[stem]}"{loading}>
+            <img src="{d}/{stem}-800.webp" width="{w}" height="{h}" alt="{ALT[stem]}"{loading}>
           </picture>"""
 
     mob, desk = f"{stem}-mobile", f"{stem}-desktop"
@@ -712,9 +779,8 @@ def hero_picture(stem, index, *, eager):
     phone = f"(max-width: {HERO_PHONE_BP}px)"
     return f"""<picture>
             <source media="{phone}" type="image/webp" srcset="{_srcset(d, mob, hero_tiers(mob), 'webp')}" sizes="100vw" width="{mw}" height="{mh}">
-            <source media="{phone}" type="image/jpeg" srcset="{d}/{mob}-{HERO_PHONE_FALLBACK}.jpg" width="{mw}" height="{mh}">
             <source type="image/webp" srcset="{_srcset(d, desk, hero_tiers(desk), 'webp')}" sizes="{HERO_SIZES}">
-            <img src="{d}/{desk}-1400.jpg" width="{dw}" height="{dh}" alt="{ALT[stem]}"{loading}>
+            <img src="{d}/{desk}-1400.webp" width="{dw}" height="{dh}" alt="{ALT[stem]}"{loading}>
           </picture>"""
 
 
@@ -1471,9 +1537,8 @@ def about_hero_picture(stem):
     phone = f"(max-width: {HERO_PHONE_BP}px)"
     return f"""<picture>
           <source media="{phone}" type="image/webp" srcset="{_srcset(d, mob, about_hero_tiers(mob), 'webp')}" sizes="100vw" width="{mw}" height="{mh}">
-          <source media="{phone}" type="image/jpeg" srcset="{d}/{mob}-720.jpg" width="{mw}" height="{mh}">
           <source type="image/webp" srcset="{_srcset(d, desk, about_hero_tiers(desk), 'webp')}" sizes="100vw" width="{dw}" height="{dh}">
-          <img src="{d}/{desk}-1200.jpg" width="{dw}" height="{dh}" alt="{ALT[stem]}" loading="eager" fetchpriority="high" decoding="async">
+          <img src="{d}/{desk}-1200.webp" width="{dw}" height="{dh}" alt="{ALT[stem]}" loading="eager" fetchpriority="high" decoding="async">
         </picture>"""
 
 

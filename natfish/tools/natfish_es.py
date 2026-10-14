@@ -2626,3 +2626,52 @@ ES.update({
         "participación de Belice en el Pabellón y apoyar esta oportunidad de "
         "mostrar los productos beliceños en el escenario internacional.",
 })
+
+# ------------------------------ Miami 2026 gallery collection ------------
+# Captions are the client's own Spanish from IMAGE_MANIFEST.csv, used as
+# supplied. The "View larger" labels are the lightbox button names a screen
+# reader announces, so they are translated too rather than left English.
+ES.update({
+    "NATFISH exhibition display featuring Belizean Pride seafood, a model sailboat and QR-code information cards.":
+        "Exhibición de NATFISH con productos Belizean Pride, un velero a escala y tarjetas informativas con códigos QR.",
+    "View larger: Product display and QR cards": "Ver más grande: Exhibición de productos y tarjetas QR",
+    "NATFISH representatives and partners at the Belize Country Pavilion in Miami.":
+        "Representantes de NATFISH y colaboradores en el Pabellón de Belice en Miami.",
+    "View larger: Representatives at the Belize pavilion": "Ver más grande: Representantes en el Pabellón de Belice",
+    "Three NATFISH representatives at the Americas Food & Beverage Show 2026.":
+        "Tres representantes de NATFISH en la feria Americas Food & Beverage Show 2026.",
+    "View larger: Three representatives at the show": "Ver más grande: Tres representantes en la feria",
+    "Exhibition visitors learn about NATFISH and Belizean Pride products at the booth.":
+        "Visitantes de la feria conocen NATFISH y sus productos Belizean Pride en el puesto.",
+    "View larger: Visitors at the NATFISH booth": "Ver más grande: Visitantes en el puesto de NATFISH",
+    "NATFISH representatives at their display inside the international trade exhibition.":
+        "Representantes de NATFISH en su exhibición durante la feria comercial internacional.",
+    "View larger: The team at the exhibition display": "Ver más grande: El equipo en la exhibición",
+    "Belizean Pride seafood packaging, traditional sailboat and representatives at NATFISH’s stand.":
+        "Empaques de mariscos Belizean Pride, un velero tradicional y representantes en el puesto de NATFISH.",
+    "View larger: The Belizean Pride stand": "Ver más grande: El puesto de Belizean Pride",
+    "A NATFISH representative speaks with an attendee beside the Belize flag and model sailboat.":
+        "Un representante de NATFISH conversa con un asistente junto a la bandera de Belice y un velero a escala.",
+    "View larger: A conversation beside the Belize flag": "Ver más grande: Una conversación junto a la bandera de Belice",
+    "NATFISH delegates photographed together during their visit to Miami.":
+        "Delegados de NATFISH fotografiados juntos durante su visita a Miami.",
+    "View larger: The delegation in Miami": "Ver más grande: La delegación en Miami",
+    "NATFISH delegation outside the Miami Beach Convention Center.":
+        "Delegación de NATFISH frente al Centro de Convenciones de Miami Beach.",
+    "View larger: Outside the convention center": "Ver más grande: Frente al centro de convenciones",
+    "NATFISH at the Americas Food & Beverage Show 2026":
+        "NATFISH en Americas Food & Beverage Show 2026",
+    "Miami Beach, Florida · September 14–16, 2026":
+        "Miami Beach, Florida · 14–16 de septiembre de 2026",
+    "With participation facilitated by BELTRAIDE through the inaugural Belize Country Pavilion, NATFISH presented Belizean Pride seafood and the work of Belizean fishers to an international food and beverage audience. Explore moments from the exhibition, including the co-operative’s delegates, product displays, visitor conversations and digital information cards.":
+        "Con la participación facilitada por BELTRAIDE a través del primer Pabellón de Belice, NATFISH presentó los productos del mar Belizean Pride y la labor de los pescadores beliceños ante un público internacional del sector de alimentos y bebidas. Descubra momentos de la feria, incluidos los representantes de la cooperativa, las exhibiciones de productos, las conversaciones con visitantes y las tarjetas informativas digitales.",
+    "Read the Miami 2026 story": "Leer la noticia de Miami 2026",
+    "NATFISH at the Americas Food & Beverage Show 2026 | BELTRAIDE feature":
+        "NATFISH en Americas Food & Beverage Show 2026 | Reportaje de BELTRAIDE",
+    "A BELTRAIDE-produced feature highlighting NATFISH, Belizean Pride seafood and the co-operative’s international trade-show participation. The segment includes remarks about putting a face to the Belizean products reaching markets abroad.":
+        "Reportaje producido por BELTRAIDE que destaca a NATFISH, los productos del mar Belizean Pride y su participación en una feria comercial internacional. Incluye comentarios sobre la importancia de dar a conocer a las personas detrás de los productos beliceños que llegan a mercados extranjeros.",
+    "Video originally published by BELTRAIDE.":
+        "Video publicado originalmente por BELTRAIDE.",
+    "NATFISH at the Americas Food & Beverage Show 2026, a BELTRAIDE feature":
+        "NATFISH en Americas Food & Beverage Show 2026, un reportaje de BELTRAIDE",
+})

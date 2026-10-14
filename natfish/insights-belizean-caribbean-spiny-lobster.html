@@ -6078,6 +6078,65 @@ body.nav-open {
   color: var(--navy-800);
 }
 
+/* ------------------------------------------- Miami 2026 event block ---- */
+/* One event collection inside the existing gallery: nine photographs and the
+   video of the same event, under one heading. Everything here is scoped to
+   the block - the gallery grid, the figures, the lightbox and the filter bar
+   below it are all untouched. */
+
+.event-kicker {
+  margin: 0.35rem 0 0;
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--teal-700);
+}
+
+.event-link {
+  margin-top: 1.1rem;
+}
+
+.event-video {
+  margin-top: clamp(2rem, 4.5vw, 3rem);
+  padding: clamp(1.4rem, 3vw, 2rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--sand);
+}
+
+.event-video__title {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.05rem, 2.2vw, 1.3rem);
+}
+
+.event-video__body {
+  margin: 0 0 1.1rem;
+  max-width: 68ch;
+  color: var(--ink-soft);
+}
+
+/* The full frame, always. A BELTRAIDE feature with burnt-in captions along the
+   bottom edge: object-fit:cover would take those captions off on a phone,
+   which is the one thing this must not do. `height: auto` against the real
+   width and height attributes keeps the whole 854x480 frame visible at every
+   width, and reserves its box before the poster loads. */
+.event-video__player {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  aspect-ratio: 854 / 480;
+  border-radius: var(--radius);
+  background: var(--navy-900);
+}
+
+.event-video__credit {
+  margin: 0.9rem 0 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
   </style>
   <script type="application/ld+json">
   {
@@ -6403,9 +6462,8 @@ body.nav-open {
         <figure class="article__figure reveal">
           <picture>
             <source media="(max-width: 600px)" type="image/webp" srcset="assets/img/official/hero-belizean-pride-range-mobile-360.webp 360w, assets/img/official/hero-belizean-pride-range-mobile-540.webp 540w, assets/img/official/hero-belizean-pride-range-mobile-720.webp 720w, assets/img/official/hero-belizean-pride-range-mobile-1080.webp 1080w" sizes="100vw" width="1080" height="1920">
-            <source media="(max-width: 600px)" type="image/jpeg" srcset="assets/img/official/hero-belizean-pride-range-mobile-720.jpg" width="1080" height="1920">
             <source type="image/webp" srcset="assets/img/official/hero-belizean-pride-range-desktop-800.webp 800w, assets/img/official/hero-belizean-pride-range-desktop-1400.webp 1400w, assets/img/official/hero-belizean-pride-range-desktop-1920.webp 1920w" sizes="(max-width: 900px) 100vw, 60vw">
-            <img src="assets/img/official/hero-belizean-pride-range-desktop-1400.jpg" width="1920" height="1080" alt="Belizean Pride packaging beside the NATFISH mark: a carton of wild-caught Caribbean spiny lobster, a box of spiny lobster head meat and individually wrapped tails." loading="eager" fetchpriority="high">
+            <img src="assets/img/official/hero-belizean-pride-range-desktop-1400.webp" width="1920" height="1080" alt="Belizean Pride packaging beside the NATFISH mark: a carton of wild-caught Caribbean spiny lobster, a box of spiny lobster head meat and individually wrapped tails." loading="eager" fetchpriority="high">
           </picture>
         </figure>
       </div>
@@ -6535,7 +6593,7 @@ body.nav-open {
 
   <p class="visually-hidden" id="lang-status" role="status" aria-live="polite"></p>
 
-  <script src="assets/js/natfish-strings.js?v=49c301ce"></script>
+  <script src="assets/js/natfish-strings.js?v=37d769dc"></script>
   <script src="assets/js/natfish-i18n.js?v=b8a289c3"></script>
   <script src="assets/js/natfish-seasons.js?v=c270a135"></script>
   <script src="assets/js/natfish.js?v=79e88ac3"></script>

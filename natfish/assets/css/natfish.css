@@ -5996,3 +5996,62 @@ body.nav-open {
   font-weight: 600;
   color: var(--navy-800);
 }
+
+/* ------------------------------------------- Miami 2026 event block ---- */
+/* One event collection inside the existing gallery: nine photographs and the
+   video of the same event, under one heading. Everything here is scoped to
+   the block - the gallery grid, the figures, the lightbox and the filter bar
+   below it are all untouched. */
+
+.event-kicker {
+  margin: 0.35rem 0 0;
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--teal-700);
+}
+
+.event-link {
+  margin-top: 1.1rem;
+}
+
+.event-video {
+  margin-top: clamp(2rem, 4.5vw, 3rem);
+  padding: clamp(1.4rem, 3vw, 2rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--sand);
+}
+
+.event-video__title {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.05rem, 2.2vw, 1.3rem);
+}
+
+.event-video__body {
+  margin: 0 0 1.1rem;
+  max-width: 68ch;
+  color: var(--ink-soft);
+}
+
+/* The full frame, always. A BELTRAIDE feature with burnt-in captions along the
+   bottom edge: object-fit:cover would take those captions off on a phone,
+   which is the one thing this must not do. `height: auto` against the real
+   width and height attributes keeps the whole 854x480 frame visible at every
+   width, and reserves its box before the poster loads. */
+.event-video__player {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  aspect-ratio: 854 / 480;
+  border-radius: var(--radius);
+  background: var(--navy-900);
+}
+
+.event-video__credit {
+  margin: 0.9rem 0 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
