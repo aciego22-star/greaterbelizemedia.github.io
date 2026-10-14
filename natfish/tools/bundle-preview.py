@@ -96,7 +96,12 @@ PICTURE_RE = re.compile(
 # gallery set first came out blank in the preview.
 IMG_DIRS = "official|products|concept|gallery"
 
-STEM_RE = re.compile(rf"assets/img/((?:{IMG_DIRS})/[\w-]+?)-\d+\.jpg")
+# .webp, not .jpg. The <img> inside every <picture> used to carry a JPEG
+# fallback and this matched it; the site serves WebP only now, so matching
+# .jpg silently inlined nothing and the preview came out with no images at
+# all - which is exactly the failure the comment above describes, arrived at
+# from the opposite direction.
+STEM_RE = re.compile(rf"assets/img/((?:{IMG_DIRS})/[\w-]+?)-\d+\.webp")
 # The phone crop of an art-directed hero, and the media query that selects it.
 PHONE_SOURCE_RE = re.compile(
     rf'<source media="([^"]*)"[^>]*srcset="assets/img/'
@@ -122,13 +127,48 @@ SHORT_IFRAME_RE = re.compile(
 VIDEO_RE = re.compile(r'(src|poster)="assets/video/([\w.-]+)"')
 
 
+# The BELTRAIDE feature is 110 seconds and 4.2 MB. Inlining it alongside the
+# Short costs 11 MB of base64 against a 16 MB ceiling, which the nine Miami
+# photographs then push over. The Short is inlined because it is short; this
+# one is stubbed to its poster and a line of text, the same bargain the blocked
+# YouTube Shorts get. It plays on the deployed site, which is where a 110
+# second film belongs anyway.
+PREVIEW_STUB_VIDEOS = {"beltraide-natfish-miami-2026.mp4"}
+
+MIME = {".mp4": "video/mp4", ".webp": "image/webp", ".jpg": "image/jpeg",
+        ".jpeg": "image/jpeg", ".png": "image/png"}
+
+EVENT_VIDEO_RE = re.compile(
+    r'<video class="event-video__player"[^>]*?'
+    r'poster="assets/video/([\w.-]+)"[^>]*></video>', re.S)
+
+
+def stub_event_video(html):
+    """Poster plus an honest line, in place of the long feature."""
+    def note(m):
+        poster = ROOT / "assets" / "video" / m.group(1)
+        uri = base64.b64encode(poster.read_bytes()).decode()
+        return (
+            '<div class="video-card__stub video-card__stub--event">'
+            f'<img src="data:image/webp;base64,{uri}" alt="" '
+            'style="width:100%;height:auto;border-radius:14px;display:block">'
+            '<span class="video-card__stub-note">This shareable preview is a '
+            'single file and cannot carry the full feature. The video plays on '
+            'the published site.</span></div>')
+    return EVENT_VIDEO_RE.sub(note, html)
+
+
 def inline_video(html):
     def swap(m):
         attr, name = m.group(1), m.group(2)
+        if name in PREVIEW_STUB_VIDEOS:
+            return m.group(0)          # handled by stub_event_video
         path = ROOT / "assets" / "video" / name
         if not path.is_file():
             raise SystemExit(f"ERROR: no video asset to inline for {name}")
-        mime = "video/mp4" if name.endswith(".mp4") else "image/jpeg"
+        mime = MIME.get(path.suffix.lower())
+        if mime is None:
+            raise SystemExit(f"ERROR: unknown media type for {name}")
         uri = base64.b64encode(path.read_bytes()).decode()
         return f'{attr}="data:{mime};base64,{uri}"'
     return VIDEO_RE.sub(swap, html)
@@ -424,7 +464,8 @@ def main():
 
     routes = []
     for slug, body in pages:
-        body = route_links(inline_png(inline_video(swap_shorts(inline_images(body)))))
+        body = route_links(inline_png(inline_video(stub_event_video(
+            swap_shorts(inline_images(body))))))
         routes.append(f'<div data-route="{slug}">{body}</div>')
 
     # json.dumps, not manual quoting: the legal name carries an apostrophe that
