@@ -6029,6 +6029,52 @@ body.nav-open {
   color: var(--turq-300);
 }
 
+/* ------------------------------------- news media at its own ratio ----- */
+/* The update card and the featured update both hold their picture in a fixed
+   box - 16/9 for a card, 4/3 falling to 16/9 on a phone for the feature - and
+   crop the photograph to fit. That is right for a landscape press photograph
+   and wrong for one where the subject fills the frame vertically: the Miami
+   delegation photograph is 4:3 with four people standing full height in it,
+   and a 16/9 box takes a quarter of its height away, which on a phone cut the
+   group off at the knees.
+
+   These hold the box at the photograph's own ratio instead. `--ratio` is
+   already written onto the <img> by picture(), so the box matches the file
+   exactly and `cover` has nothing to crop - no letterboxing either. Opt-in per
+   item, so every other news photograph keeps the fixed frame it was composed
+   for. */
+
+.update-card__media--natural,
+.feature-update__media--natural {
+  aspect-ratio: auto;
+}
+
+.update-card__media--natural img,
+.feature-update__media--natural img {
+  aspect-ratio: var(--ratio);
+  height: auto;
+}
+
+@media (max-width: 860px) {
+  .feature-update__media--natural img {
+    aspect-ratio: var(--ratio);
+  }
+}
+
+/* The BELTRAIDE facilitation credit that closes the Miami article. Set apart
+   from the body copy because it is an acknowledgement rather than part of the
+   story, and the package asks for it to stay accurate and prominent. */
+
+.article__credit {
+  margin-top: clamp(1.8rem, 3.6vw, 2.4rem);
+  padding: 1.15rem 1.3rem;
+  border-left: 3px solid var(--teal-600);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: var(--sand);
+  font-weight: 600;
+  color: var(--navy-800);
+}
+
   </style>
   <script type="application/ld+json">
   {
@@ -6296,20 +6342,20 @@ body.nav-open {
       <div class="container">
         <h2 id="news-featured-h" class="visually-hidden">Featured update</h2>
         <article class="feature-update reveal">
-          <div class="feature-update__media">
+          <div class="feature-update__media feature-update__media--natural">
             <picture>
-          <source type="image/webp" srcset="assets/img/official/news-food-taipei-2026-delegation-480.webp 480w, assets/img/official/news-food-taipei-2026-delegation-800.webp 800w, assets/img/official/news-food-taipei-2026-delegation-1400.webp 1400w" sizes="(max-width: 860px) 92vw, 52vw">
-          <img src="assets/img/official/news-food-taipei-2026-delegation-800.jpg" width="1280" height="720" alt="National Fishermen delegation at Food Taipei Mega Shows 2026 in Taiwan." style="--ratio:1280 / 720" loading="lazy" decoding="async">
+          <source type="image/webp" srcset="assets/img/official/news-americas-food-beverage-show-2026-480.webp 480w, assets/img/official/news-americas-food-beverage-show-2026-800.webp 800w, assets/img/official/news-americas-food-beverage-show-2026-1400.webp 1400w" sizes="(max-width: 860px) 92vw, 52vw">
+          <img src="assets/img/official/news-americas-food-beverage-show-2026-800.jpg" width="1400" height="1050" alt="Four members of the NATFISH delegation standing beside the welcome signage at the Americas Food &amp; Beverage Show 2026 in Miami." style="--ratio:1400 / 1050" loading="lazy" decoding="async">
         </picture>
           </div>
           <div class="feature-update__body">
             <p class="update-card__meta">
               <span class="update-card__tag">Trade &amp; Markets</span>
-              <span class="update-card__date">June 2026</span>
+              <span class="update-card__date">September 2026</span>
             </p>
-            <h3>NATFISH Represents Belize at Food Taipei 2026</h3>
-            <p class="lede">From June 20 to 29, 2026, a NATFISH delegation travelled to Taiwan to represent Belize and its fishing community. During the visit, National Fishermen participated as an official exhibitor at Food Taipei 2026, held from June 24 to 27, helping showcase Belizean seafood to an international audience.</p>
-            <p class="update-card__cta"><a class="btn btn--primary btn--sm" href="https://focustaiwan.tw/society/202606240017" target="_blank" rel="noopener noreferrer">Read the Full Event Coverage<span class="visually-hidden"> (opens in a new tab)</span></a></p>
+            <h3>NATFISH Showcases Belizean Seafood at the Americas Food &amp; Beverage Show 2026</h3>
+            <p class="lede">NATFISH represented Belize at the Americas Food &amp; Beverage Show 2026 in Miami, joining the country&rsquo;s first-ever Belize Country Pavilion, facilitated by BELTRAIDE. The event offered an international platform to showcase Belizean seafood, introduce the people behind its products and strengthen visibility for the Co-operative and its fisher members.</p>
+            <p class="update-card__cta"><a class="btn btn--primary btn--sm" href="news-americas-food-beverage-show-2026.html">Read the Article</a></p>
           </div>
         </article>
       </div>
@@ -6322,6 +6368,21 @@ body.nav-open {
           <h2 id="news-more-h">Also happening</h2>
         </div>
         <div class="grid grid--2">
+          <article class="update-card reveal">
+            <div class="update-card__media"><picture>
+          <source type="image/webp" srcset="assets/img/official/news-food-taipei-2026-delegation-480.webp 480w, assets/img/official/news-food-taipei-2026-delegation-800.webp 800w, assets/img/official/news-food-taipei-2026-delegation-1400.webp 1400w" sizes="(max-width: 640px) 92vw, (max-width: 900px) 46vw, 30vw">
+          <img src="assets/img/official/news-food-taipei-2026-delegation-800.jpg" width="1280" height="720" alt="National Fishermen delegation at Food Taipei Mega Shows 2026 in Taiwan." style="--ratio:1280 / 720" loading="lazy" decoding="async">
+        </picture></div>
+            <div class="update-card__body">
+              <p class="update-card__meta">
+                <span class="update-card__tag">Trade &amp; Markets</span>
+                <span class="update-card__date">June 2026</span>
+              </p>
+              <h3>NATFISH Represents Belize at Food Taipei 2026</h3>
+              <p>From June 20 to 29, 2026, a NATFISH delegation travelled to Taiwan to represent Belize and its fishing community. During the visit, National Fishermen participated as an official exhibitor at Food Taipei 2026, held from June 24 to 27, helping showcase Belizean seafood to an international audience.</p>
+              <p class="update-card__cta"><a class="btn btn--primary btn--sm" href="https://focustaiwan.tw/society/202606240017" target="_blank" rel="noopener noreferrer">Read the Full Event Coverage<span class="visually-hidden"> (opens in a new tab)</span></a></p>
+            </div>
+          </article>
           <article class="update-card reveal">
             <div class="update-card__media"><picture>
           <source type="image/webp" srcset="assets/img/products/01-belizean-pride-lobster-cases-480.webp 480w, assets/img/products/01-belizean-pride-lobster-cases-800.webp 800w, assets/img/products/01-belizean-pride-lobster-cases-1400.webp 1400w" sizes="(max-width: 640px) 92vw, (max-width: 900px) 46vw, 30vw">
@@ -6463,7 +6524,7 @@ body.nav-open {
 
   <p class="visually-hidden" id="lang-status" role="status" aria-live="polite"></p>
 
-  <script src="assets/js/natfish-strings.js?v=821c59fc"></script>
+  <script src="assets/js/natfish-strings.js?v=49c301ce"></script>
   <script src="assets/js/natfish-i18n.js?v=b8a289c3"></script>
   <script src="assets/js/natfish-seasons.js?v=c270a135"></script>
   <script src="assets/js/natfish.js?v=79e88ac3"></script>

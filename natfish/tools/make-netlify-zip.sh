@@ -32,6 +32,7 @@ PAGES=(
   contact.html
   insights.html
   insights-belizean-caribbean-spiny-lobster.html
+  news-americas-food-beverage-show-2026.html
 )
 
 # Root-level files the site serves directly: the favicon set, the manifest and

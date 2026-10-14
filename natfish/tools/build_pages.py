@@ -107,6 +107,8 @@ def whatsapp_href():
 
 # Three publicly sourced items. No dates, quotes, speakers or outcomes are
 # added beyond what the sources support.
+NEWS_ARTICLE_PAGE = "news-americas-food-beverage-show-2026.html"
+
 UPDATES = [
     # Newest first. UPDATES[0] is the featured item on What's New and the first
     # of the two the homepage carries.
@@ -116,6 +118,37 @@ UPDATES = [
     # took part as an official exhibitor. It does not say a contract, a sale, a
     # partnership or an agreement came of it, because none has been evidenced -
     # and the client asked explicitly that none be claimed. Do not add one.
+    # Miami, September 2026. The one item on this page with its own article on
+    # the site rather than a link off it: the client supplied the full copy, so
+    # there is something to publish. `internal` keeps update_link() from
+    # sending it out to a new tab, and `uncrop` holds the card at the
+    # photograph's own 4:3 instead of the 16:9 the card defaults to - a 16:9
+    # box cuts a quarter off a 4:3 frame, and the four people in this one stand
+    # full height in it.
+    #
+    # What this says and does not say is the package's instruction, not a
+    # judgement call: it took part, BELTRAIDE facilitated the pavilion, and no
+    # sale, order, buyer, contract or agreement is claimed, because none has
+    # been evidenced.
+    {
+        "tag": "Trade &amp; Markets",
+        "title": ("NATFISH Showcases Belizean Seafood at the Americas Food "
+                  "&amp; Beverage Show 2026"),
+        "date": "September 2026",
+        "img": "news-americas-food-beverage-show-2026",
+        "uncrop": True,
+        "body": (
+            "NATFISH represented Belize at the Americas Food &amp; Beverage "
+            "Show 2026 in Miami, joining the country&rsquo;s first-ever Belize "
+            "Country Pavilion, facilitated by BELTRAIDE. The event offered an "
+            "international platform to showcase Belizean seafood, introduce "
+            "the people behind its products and strengthen visibility for the "
+            "Co-operative and its fisher members."
+        ),
+        "cta": "Read the Article",
+        "url": NEWS_ARTICLE_PAGE,
+        "internal": True,
+    },
     {
         "tag": "Trade &amp; Markets",
         "title": "NATFISH Represents Belize at Food Taipei 2026",
@@ -182,10 +215,18 @@ def update_link(u, *, button_class="btn btn--primary btn--sm"):
     page honest about what is NATFISH's own announcement and what is somebody
     else's reporting. An item with a `cta` gets a named button instead, for the
     cases where the client has supplied the label and the destination
-    themselves. Either way the link leaves the site, so both open in a new tab
-    with `rel="noopener noreferrer"`.
+    themselves. An item marked `internal` has its own article here and is linked
+    normally; everything else leaves the site, so it opens in a new tab with
+    `rel="noopener noreferrer"`.
     """
     if u.get("cta"):
+        # An item with its own article on this site stays on this site: no new
+        # tab, and no "opens in a new tab" for a screen reader to announce
+        # about a link that does not.
+        if u.get("internal"):
+            return (f'<p class="update-card__cta">'
+                    f'<a class="{button_class}" href="{u["url"]}">{u["cta"]}'
+                    f'</a></p>')
         return (f'<p class="update-card__cta">'
                 f'<a class="{button_class}" href="{u["url"]}"'
                 f' target="_blank" rel="noopener noreferrer">{u["cta"]}'
@@ -201,7 +242,9 @@ def update_card(u, *, compact=False):
     media = ""
     if not compact:
         sizes = "(max-width: 640px) 92vw, (max-width: 900px) 46vw, 30vw"
-        media = f'<div class="update-card__media">{picture(u["img"], sizes)}</div>'
+        nat = " update-card__media--natural" if u.get("uncrop") else ""
+        media = (f'<div class="update-card__media{nat}">'
+                 f'{picture(u["img"], sizes)}</div>')
     return f"""<article class="update-card reveal">
             {media}
             <div class="update-card__body">
@@ -1419,6 +1462,8 @@ def responsible():
 
 def news():
     featured, rest = UPDATES[0], UPDATES[1:]
+    featured_nat = (" feature-update__media--natural"
+                    if featured.get("uncrop") else "")
     others = "\n          ".join(update_card(u) for u in rest)
 
     return (
@@ -1441,7 +1486,7 @@ def news():
       <div class="container">
         <h2 id="news-featured-h" class="visually-hidden">Featured update</h2>
         <article class="feature-update reveal">
-          <div class="feature-update__media">
+          <div class="feature-update__media{featured_nat}">
             {picture(featured["img"], "(max-width: 860px) 92vw, 52vw")}
           </div>
           <div class="feature-update__body">
@@ -2716,6 +2761,208 @@ def insights():
     )
 
 
+# ============================================ Miami 2026 news article ===
+
+# Published today, which is what datePublished has to say. September 14 is when
+# the show opened, and it is the DATE LABEL on the card - two different things,
+# and the package is explicit that they must not be conflated.
+NEWS_ARTICLE = {
+    "slug": NEWS_ARTICLE_PAGE,
+    "category": "Trade &amp; Markets",
+    "title": ("NATFISH Showcases Belizean Seafood at the Americas Food "
+              "&amp; Beverage Show 2026"),
+    "author": "NATFISH",
+    "published_iso": "2026-10-14",
+    "event_display": "September 2026",
+    "img": "news-americas-food-beverage-show-2026",
+    "title_seo": "NATFISH at Americas Food &amp; Beverage Show 2026 | Belize",
+    "meta": ("NATFISH joined Belize&rsquo;s first Country Pavilion at the 2026 "
+             "Americas Food &amp; Beverage Show in Miami, with participation "
+             "facilitated by BELTRAIDE."),
+}
+
+# The article, as supplied in the package. Section headings become <h2>.
+# Nothing is reworded, sharpened or padded, and no outcome is added: the one
+# sentence about sales says plainly that none has been announced, and it stays.
+NEWS_ARTICLE_BODY = [
+    ("p", "The National Fishermen Producers Co-operative Society Ltd. "
+          "(NATFISH) represented Belize at the <strong>Americas Food &amp; "
+          "Beverage Show &amp; Conference 2026</strong>, held from "
+          "<strong>September 14 to 16</strong> at the Miami Beach Convention "
+          "Center in Florida. NATFISH participated as part of the "
+          "<strong>first-ever Belize Country Pavilion</strong>, an initiative "
+          "facilitated by <strong>BELTRAIDE through its EXPORTBelize unit</strong> "
+          "to connect Belizean businesses with international food and beverage "
+          "markets."),
+    ("h2", "Bringing Belizean seafood to an international audience"),
+    ("p", "The exhibition brought together food producers, buyers, importers, "
+          "distributors and other industry representatives. For NATFISH, "
+          "participation provided an opportunity to introduce the "
+          "Co-operative, highlight Belizean seafood and raise awareness of the "
+          "work behind products reaching customers beyond Belize&rsquo;s "
+          "shores."),
+    ("p", "The NATFISH delegation included <strong>Ms. Denise O&rsquo;Brien</strong> "
+          "alongside other Co-operative representatives and stakeholders. "
+          "Reflecting on the exhibition, Ms. Denise emphasized the importance "
+          "of <strong>putting a face to the Belizean seafood products</strong> "
+          "that reach markets in the Americas, Taiwan and elsewhere. It was an "
+          "opportunity to connect the product with the people, knowledge and "
+          "fishing communities behind it."),
+    ("h2", "Belize&rsquo;s first Country Pavilion"),
+    ("p", "Through BELTRAIDE&rsquo;s facilitation, NATFISH joined other "
+          "Belizean exporters in a shared national presentation. The inaugural "
+          "pavilion placed Belize&rsquo;s food and beverage producers within a "
+          "wider international trade environment, where products and business "
+          "stories could be introduced to a global audience."),
+    ("p", "NATFISH also made use of its digital presentation materials, "
+          "including <strong>digital business cards and QR codes</strong>, to "
+          "help people discover more about the Co-operative beyond the "
+          "exhibition floor. These materials complemented the product and "
+          "institutional information presented during the event."),
+    ("h2", "Building visibility for the future"),
+    ("p", "For NATFISH, the visit was a positive step in making the "
+          "Co-operative and Belizean seafood more visible internationally. "
+          "Trade exhibitions create opportunities for conversations, stronger "
+          "recognition and future commercial relationships, although specific "
+          "sales or agreements from this event have not been announced."),
+    ("p", "The Co-operative&rsquo;s work continues beyond the exhibition "
+          "itself. By bringing Belizean seafood and the people behind it to "
+          "international audiences, NATFISH supports a larger goal: "
+          "strengthening recognition of Belize&rsquo;s fishing industry and "
+          "creating new possibilities for the members and communities it "
+          "represents."),
+]
+
+# The acknowledgement the package asks to be kept accurate and prominent. It
+# is a facilitation credit and says exactly that - not funding, not financing.
+NEWS_ARTICLE_CREDIT = (
+    "NATFISH acknowledges BELTRAIDE and EXPORTBelize for facilitating "
+    "Belize&rsquo;s participation in the Country Pavilion and supporting the "
+    "opportunity to showcase Belizean products on an international stage."
+)
+
+
+def news_article_body_html():
+    out = []
+    for kind, text in NEWS_ARTICLE_BODY:
+        out.append(f"<{kind}>{text}</{kind}>" if kind == "h2"
+                   else f"<p>{text}</p>")
+    return "\n          ".join(out)
+
+
+def news_article_nodes():
+    """NewsArticle, following the same @graph convention as the Insights piece.
+
+    datePublished is the day this went up. The September dates in the copy are
+    the event's, and live in the body and the card label where they belong.
+    """
+    a = NEWS_ARTICLE
+    url = page_url(a["slug"])
+    w, h = DIMS[a["img"]]
+    return [{
+        "@type": "NewsArticle",
+        "@id": url + "#article",
+        "isPartOf": {"@id": url + "#webpage"},
+        "mainEntityOfPage": {"@id": url + "#webpage"},
+        "headline": _plain(a["title"]),
+        "description": _plain(a["meta"]),
+        "articleSection": _plain(a["category"]),
+        "datePublished": a["published_iso"],
+        "dateModified": a["published_iso"],
+        "author": {"@id": ORG_ID},
+        "publisher": {"@id": ORG_ID},
+        "inLanguage": "en-BZ",
+        # The 1400 derivative, not the one shipped_jpeg() names. That helper
+        # returns the small fallback the <img> carries, which is 800x600 - and
+        # declaring 1400x1050 beside an 800px file is simply wrong. The 1400
+        # jpg is the same file the og:image tag points at, so it ships, and it
+        # is the width Google wants for a news image.
+        "image": {
+            "@type": "ImageObject",
+            "url": f"{SITE_URL}/assets/img/official/{a['img']}-1400.jpg",
+            "width": w,
+            "height": h,
+        },
+        "about": {"@id": ORG_ID},
+    }]
+
+
+def news_article_page():
+    a = NEWS_ARTICLE
+    w, h = DIMS[a["img"]]
+    return (
+        head(
+            a["title_seo"],
+            a["meta"],
+            a["slug"],
+            og_image=f"official/{a['img']}-1400",
+            og_size=(w, h),
+            og_alt=ALT[a["img"]],
+            og_type="article",
+            extra_head="\n".join([
+                f'  <meta property="article:published_time" content="{a["published_iso"]}">',
+                f'  <meta property="article:modified_time" content="{a["published_iso"]}">',
+                '  <meta property="article:section" content="Trade &amp; Markets">',
+                f'  <meta name="author" content="{a["author"]}">',
+            ]),
+            extra_nodes=news_article_nodes(),
+            trail=[("Home", "index.html"), ("What&rsquo;s New", "news.html"),
+                   (a["title"], a["slug"])],
+        )
+        + header("news.html")
+        + f"""
+    <article class="article">
+      <div class="container container--narrow">
+        <nav class="breadcrumb reveal" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="news.html">What&rsquo;s New</a></li>
+            <li aria-current="page">{a['title']}</li>
+          </ol>
+        </nav>
+
+        <header class="article__head reveal">
+          <p class="update-card__meta">
+            <span class="update-card__tag">{a['category']}</span>
+            <span class="update-card__date">{a['event_display']}</span>
+          </p>
+          <h1>{a['title']}</h1>
+          <p class="article__byline">September 14&ndash;16, 2026
+            <span class="article__dot" aria-hidden="true">&middot;</span>
+            <span>Miami Beach Convention Center, Florida, USA</span>
+          </p>
+        </header>
+      </div>
+
+      <div class="container">
+        <figure class="article__figure reveal">
+          {picture(a['img'], "(max-width: 900px) 92vw, 860px", eager=True)}
+        </figure>
+      </div>
+
+      <div class="container container--narrow">
+        <div class="article__body reveal">
+          {news_article_body_html()}
+          <p class="article__credit">{NEWS_ARTICLE_CREDIT}</p>
+        </div>
+      </div>
+    </article>
+"""
+        + cta_band(
+            "Next",
+            "Explore NATFISH",
+            "See what the Co-operative brings to market, learn how it is run, "
+            "or get in touch with the team.",
+            [
+                '<a class="btn btn--primary" href="seafood-services.html">Seafood &amp; Services</a>',
+                '<a class="btn btn--ghost" href="about.html">About NATFISH</a>',
+                '<a class="btn btn--ghost" href="contact.html">Contact NATFISH</a>',
+            ],
+        )
+        + footer()
+    )
+
+
 def article_page():
     a = ARTICLE
     mins = reading_time()
@@ -2803,6 +3050,7 @@ PAGES = {
     "natfish-ai.html": natfish_ai,
     "contact.html": contact,
     "insights.html": insights,
+    NEWS_ARTICLE_PAGE: news_article_page,
     ARTICLE["slug"]: article_page,
 }
 
@@ -2851,6 +3099,9 @@ PAGE_SUMMARY = {
         "plus how to start an order.",
     "insights.html":
         "Evergreen writing on Belizean seafood and how it is handled.",
+    NEWS_ARTICLE_PAGE:
+        "NATFISH at the Americas Food & Beverage Show 2026 in Miami, as part "
+        "of Belize's first Country Pavilion, facilitated by BELTRAIDE.",
     ARTICLE["slug"]:
         "What distinguishes Belizean Caribbean spiny lobster, how it is "
         "handled and what buyers should know.",

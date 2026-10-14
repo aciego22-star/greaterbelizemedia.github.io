@@ -29,6 +29,8 @@ TIERS = (480, 800, 1400)
 # (published stem, source filename)
 NEWS = [
     ("news-food-taipei-2026-delegation", "IMG_1125.jpeg"),
+    ("news-americas-food-beverage-show-2026",
+     "natfish_miami_2026_original.jpg"),
 ]
 
 
@@ -45,10 +47,28 @@ def main():
     src = pathlib.Path(sys.argv[1])
     OFFICIAL.mkdir(parents=True, exist_ok=True)
 
+    # Incremental, not a rebuild. A news photograph arrives one at a time and
+    # its original is not kept in the repository, so regenerating the whole
+    # table from whatever happens to be in one source directory would delete
+    # the dimensions of every photograph already published - and with them the
+    # width and height attributes that stop those cards shifting as they load.
+    # Entries whose source is absent keep the dimensions already recorded.
     dims = {}
+    table = ROOT / "tools" / "news_dims.py"
+    if table.is_file():
+        # Read rather than import: this script is run with -I, which strips its
+        # own directory from the import path, and a silent import failure here
+        # would look exactly like "there was nothing to keep".
+        scope = {}
+        exec(compile(table.read_text(), str(table), "exec"), scope)
+        dims.update(scope.get("NEWS_DIMS", {}))
+
     for stem, filename in NEWS:
         path = src / filename
         if not path.is_file():
+            if stem in dims:
+                print(f"  {stem:38s} source not supplied, keeping {dims[stem]}")
+                continue
             raise SystemExit(f"ERROR: missing source {path}")
         im = strip(Image.open(path).convert("RGB"))
         written = []

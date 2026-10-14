@@ -191,6 +191,15 @@ RECREATION_NOTE = (
 )
 
 ALT = {
+    # Four delegates beside the show's own welcome, thank-you and show-rules
+    # boards. Described as what it is - attendees at event signage - because
+    # the package is explicit that it is not a booth or a product display, and
+    # because no title or name is attached to anyone in it beyond the one the
+    # client has confirmed in the article copy.
+    "news-americas-food-beverage-show-2026":
+        "Four members of the NATFISH delegation standing beside the welcome "
+        "signage at the Americas Food &amp; Beverage Show 2026 in Miami.",
+
     # The two crops of the About hero are the same photograph, so they carry
     # the same description. It says what is in the frame and nothing more: the
     # sign on the gable is the co-operative's own, which is the whole reason
@@ -1087,7 +1096,7 @@ def inline_css():
 
 def head(title, description, path, og_image="official/og-card", preload="",
          extra_nodes=(), og_type="website", extra_head="", trail=None,
-         faq=None):
+         faq=None, og_size=(1200, 630), og_alt=None):
     """The shared document head.
 
     `path` is the page's own filename, and everything absolute is built from
@@ -1144,14 +1153,14 @@ def head(title, description, path, og_image="official/og-card", preload="",
   <meta property="og:description" content="{description}">
   <meta property="og:url" content="{url}">
   <meta property="og:image" content="{img}">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="{OG_CARD_ALT}">
+  <meta property="og:image:width" content="{og_size[0]}">
+  <meta property="og:image:height" content="{og_size[1]}">
+  <meta property="og:image:alt" content="{og_alt or OG_CARD_ALT}">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{title}">
   <meta name="twitter:description" content="{description}">
   <meta name="twitter:image" content="{img}">
-  <meta name="twitter:image:alt" content="{OG_CARD_ALT}">
+  <meta name="twitter:image:alt" content="{og_alt or OG_CARD_ALT}">
 {extra_head}
 {FAVICONS}
   <!-- Self-hosted Bitter and Source Sans 3. The latin subsets are preloaded

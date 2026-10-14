@@ -2467,3 +2467,162 @@ ES.update({
         "letrero de National Fishermen Producers Co-operative Society Limited "
         "en el frontón y la bahía de recepción abierta detrás del portón.",
 })
+
+# ---------------------------------------- Miami 2026 news article --------
+#
+# The article copy is the client's supplied Spanish, matched fragment for
+# fragment against the English. The <strong> runs split each paragraph into
+# several text nodes, and the runtime looks each one up on its own, so the
+# translations are written to join back up in order.
+#
+# Two rules the runtime imposes, and both bite here:
+#   * it preserves the whitespace around a node and looks up the trimmed
+#     middle, so a translation must never START with punctuation where the
+#     English fragment began with a space - that renders " , para conectar".
+#   * a fragment is translated out of context, so each one has to stand on
+#     its own in Spanish rather than rely on the English word order.
+ES.update({
+    # headings, labels and metadata
+    "NATFISH Showcases Belizean Seafood at the Americas Food & Beverage Show 2026":
+        "NATFISH presenta los productos del mar de Belice en Americas Food & "
+        "Beverage Show 2026",
+    "NATFISH at Americas Food & Beverage Show 2026 | Belize":
+        "NATFISH en Americas Food & Beverage Show 2026 | Belice",
+    "Read the Article": "Leer el artículo",
+    "September 2026": "Septiembre de 2026",
+    "September 14–16, 2026": "14 al 16 de septiembre de 2026",
+    "Miami Beach Convention Center, Florida, USA":
+        "Miami Beach Convention Center, Florida, Estados Unidos",
+    "Bringing Belizean seafood to an international audience":
+        "Productos del mar de Belice ante un público internacional",
+    "Belize’s first Country Pavilion": "El primer Pabellón de Belice",
+    "Building visibility for the future":
+        "Mayor visibilidad de cara al futuro",
+    "Explore NATFISH": "Conozca NATFISH",
+    "See what the Co-operative brings to market, learn how it is run, or get "
+    "in touch with the team.":
+        "Vea lo que la cooperativa lleva al mercado, conozca cómo se gobierna "
+        "o comuníquese con el equipo.",
+    "Four members of the NATFISH delegation standing beside the welcome "
+    "signage at the Americas Food & Beverage Show 2026 in Miami.":
+        "Cuatro integrantes de la delegación de NATFISH junto a los letreros "
+        "de bienvenida de Americas Food & Beverage Show 2026 en Miami.",
+
+    # the card teaser, on What's New and on the homepage
+    "NATFISH represented Belize at the Americas Food & Beverage Show 2026 in "
+    "Miami, joining the country’s first-ever Belize Country Pavilion, "
+    "facilitated by BELTRAIDE. The event offered an international platform to "
+    "showcase Belizean seafood, introduce the people behind its products and "
+    "strengthen visibility for the Co-operative and its fisher members.":
+        "NATFISH representó a Belice en Americas Food & Beverage Show 2026, "
+        "celebrado en Miami, como parte del primer Pabellón de Belice, una "
+        "iniciativa facilitada por BELTRAIDE. El evento ofreció una "
+        "plataforma internacional para mostrar los productos del mar "
+        "beliceños, dar a conocer a las personas detrás de ellos y fortalecer "
+        "la visibilidad de la cooperativa y sus socios pescadores.",
+
+    # first paragraph, in the order the fragments appear
+    "The National Fishermen Producers Co-operative Society Ltd. (NATFISH) "
+    "represented Belize at the":
+        "La National Fishermen Producers Co-operative Society Ltd. (NATFISH) "
+        "representó a Belice en",
+    ", held from": ", celebrado del",
+    "September 14 to 16": "14 al 16 de septiembre",
+    "at the Miami Beach Convention Center in Florida. NATFISH participated as "
+    "part of the":
+        "en el Miami Beach Convention Center, Florida. NATFISH participó como "
+        "parte del",
+    "first-ever Belize Country Pavilion": "primer Pabellón de Belice",
+    ", an initiative facilitated by": ", una iniciativa facilitada por",
+    # no internal comma: the closing one would land inside the bold run.
+    "BELTRAIDE through its EXPORTBelize unit":
+        "BELTRAIDE a través de su unidad EXPORTBelize",
+    "to connect Belizean businesses with international food and beverage "
+    "markets.":
+        "para conectar a las empresas beliceñas con los mercados "
+        "internacionales de alimentos y bebidas.",
+
+    "The exhibition brought together food producers, buyers, importers, "
+    "distributors and other industry representatives. For NATFISH, "
+    "participation provided an opportunity to introduce the Co-operative, "
+    "highlight Belizean seafood and raise awareness of the work behind "
+    "products reaching customers beyond Belize’s shores.":
+        "La exposición reunió a productores de alimentos, compradores, "
+        "importadores, distribuidores y otros representantes de la industria. "
+        "Para NATFISH, participar representó una oportunidad para dar a "
+        "conocer la cooperativa, destacar los productos del mar de Belice y "
+        "aumentar la visibilidad del trabajo que hay detrás de los productos "
+        "que llegan a consumidores más allá de las fronteras del país.",
+
+    "The NATFISH delegation included":
+        "La delegación de NATFISH contó con la presencia de",
+    "alongside other Co-operative representatives and stakeholders. "
+    "Reflecting on the exhibition, Ms. Denise emphasized the importance of":
+        "junto con otros representantes de la cooperativa y personas "
+        "vinculadas a la organización. Al reflexionar sobre la exposición, la "
+        "Sra. Denise destacó la importancia de",
+    "putting a face to the Belizean seafood products":
+        "ponerles rostro a los productos del mar beliceños",
+    "that reach markets in the Americas, Taiwan and elsewhere. It was an "
+    "opportunity to connect the product with the people, knowledge and "
+    "fishing communities behind it.":
+        "que llegan a mercados de las Américas, Taiwán y otros destinos. Fue "
+        "una oportunidad para relacionar los productos con las personas, los "
+        "conocimientos y las comunidades pesqueras que los hacen posibles.",
+
+    "Through BELTRAIDE’s facilitation, NATFISH joined other Belizean "
+    "exporters in a shared national presentation. The inaugural pavilion "
+    "placed Belize’s food and beverage producers within a wider international "
+    "trade environment, where products and business stories could be "
+    "introduced to a global audience.":
+        "Gracias a la gestión de BELTRAIDE, NATFISH participó junto a otros "
+        "exportadores beliceños en una presentación nacional conjunta. Este "
+        "primer pabellón permitió que los productores de alimentos y bebidas "
+        "de Belice estuvieran presentes en un entorno comercial internacional "
+        "más amplio, donde pudieron dar a conocer sus productos y sus "
+        "historias empresariales.",
+
+    "NATFISH also made use of its digital presentation materials, including":
+        "NATFISH también utilizó sus materiales de presentación digital, "
+        "incluidas",
+    "digital business cards and QR codes":
+        "tarjetas de presentación digitales y códigos QR",
+    ", to help people discover more about the Co-operative beyond the "
+    "exhibition floor. These materials complemented the product and "
+    "institutional information presented during the event.":
+        ", para facilitar que los visitantes conocieran más sobre la "
+        "cooperativa después de recorrer la exposición. Estos recursos "
+        "complementaron la información sobre sus productos y su trayectoria "
+        "institucional.",
+
+    "For NATFISH, the visit was a positive step in making the Co-operative "
+    "and Belizean seafood more visible internationally. Trade exhibitions "
+    "create opportunities for conversations, stronger recognition and future "
+    "commercial relationships, although specific sales or agreements from "
+    "this event have not been announced.":
+        "Para NATFISH, la visita fue un paso positivo hacia una mayor "
+        "visibilidad internacional de la cooperativa y de los productos del "
+        "mar de Belice. Las ferias comerciales ofrecen oportunidades para "
+        "entablar conversaciones, fortalecer el reconocimiento y crear "
+        "futuras relaciones comerciales, aunque no se han anunciado ventas ni "
+        "acuerdos específicos derivados de este evento.",
+
+    "The Co-operative’s work continues beyond the exhibition itself. By "
+    "bringing Belizean seafood and the people behind it to international "
+    "audiences, NATFISH supports a larger goal: strengthening recognition of "
+    "Belize’s fishing industry and creating new possibilities for the members "
+    "and communities it represents.":
+        "La labor de la cooperativa continúa más allá de la exposición. Al "
+        "presentar los productos del mar de Belice y a las personas que los "
+        "hacen posibles ante públicos internacionales, NATFISH contribuye a "
+        "un objetivo más amplio: fortalecer el reconocimiento del sector "
+        "pesquero beliceño y abrir nuevas posibilidades para sus socios y las "
+        "comunidades que representa.",
+
+    "NATFISH acknowledges BELTRAIDE and EXPORTBelize for facilitating "
+    "Belize’s participation in the Country Pavilion and supporting the "
+    "opportunity to showcase Belizean products on an international stage.":
+        "NATFISH agradece a BELTRAIDE y EXPORTBelize por facilitar la "
+        "participación de Belice en el Pabellón y apoyar esta oportunidad de "
+        "mostrar los productos beliceños en el escenario internacional.",
+})

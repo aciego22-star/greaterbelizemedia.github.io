@@ -1645,3 +1645,73 @@ only, before and after:
 52ms and about 106K for the page, against a three second target. CLS stays at
 zero because both crops carry their real `width`/`height`, so the box is
 reserved before the file arrives.
+
+---
+
+## Miami 2026: a What's New story with its own article
+
+The client supplied the full EN and ES copy, one photograph and a detailed
+package. One item added, one page created, nothing else touched.
+
+**Route.** `news-americas-food-beverage-show-2026.html`. The package preferred
+`/news/americas-food-beverage-show-2026`; this site serves flat files at the
+root with no directory routing, so the slug is the closest match that fits the
+convention, which is what the package asked for where routing differs.
+
+**It is the newest item, which is all that was needed.** `UPDATES[0]` is the
+featured card on What's New AND the first of the two the homepage carries, so
+inserting Miami at the top of that list fed both through the existing
+component. No new widget, and Taiwan moved down intact - still its own card,
+still linking out to Focus Taiwan in a new tab.
+
+**The card links inward.** Every other update credits an outside source and
+opens a new tab. This one has an article here, so `update_link()` gained an
+`internal` flag: no `target="_blank"`, and no "opens in a new tab" for a
+screen reader to announce about a link that does not.
+
+**The photograph is never cropped.** `.update-card__media` is a fixed 16/9 box
+and `.feature-update__media` is 4/3 falling to 16/9 on a phone. The Miami
+photograph is 4:3 with four people standing full height in it, and a 16/9 box
+takes a quarter of its height - on a phone it cut the group off at the knees,
+which the package explicitly forbids. An opt-in `--natural` modifier holds the
+box at `var(--ratio)`, the value `picture()` already writes onto the image, so
+the frame matches the file exactly. Measured at 390, 1440 and on both pages:
+box ratio 1.333 against a native 1.333, no crop anywhere.
+
+**process-news-images.py is now incremental.** It regenerated `news_dims.py`
+from whatever was in one source directory, and the Taiwan original is not in
+this repository - so adding Miami the obvious way would have deleted Taiwan's
+recorded dimensions and with them the width and height that stop its card
+shifting as it loads. It now merges, and keeps entries whose source is absent.
+
+**datePublished is 2026-10-14, the day it went up.** September 14-16 is the
+event, and it appears where it belongs: the card's date label, the byline and
+the body. The package was explicit that the two must not be conflated.
+
+**Two things that disagreed and now do not.** `head()` hard-coded
+`og:image:width` 1200 and `og:image:height` 630 for every page. This photograph
+is 4:3, so it now takes real dimensions and its own alt. And the NewsArticle
+schema was pointing at the 800px JPEG while declaring 1400x1050 - it now names
+the 1400 file, which is the same one `og:image` uses, so the tags, the schema
+and the file on disk all agree at 1400x1050.
+
+**Spanish.** 34 new strings. The `<strong>` runs split each paragraph into
+several text nodes and the runtime looks each up separately, so the fragments
+are translated to join back up in order. Two constraints came out of reading
+the runtime rather than guessing: it preserves the whitespace around a node and
+looks up the trimmed middle, so a translation must not start with punctuation
+where the English began with a space, and the comma that Spanish wants around
+"a través de su unidad EXPORTBelize" was dropped rather than bolded.
+Verified in the browser: the rebuilt paragraph reads correctly end to end.
+
+**Speed.** Article LCP 788-952ms, What's New 1040-1140ms, throttled 4G at
+390px. CLS 0 on repeated runs.
+
+**For NATFISH to confirm before this is considered final** - flagged by the
+package itself, not findings of mine:
+
+- the paraphrase of Ms. Denise O'Brien's remarks, which is a paraphrase and is
+  deliberately not set as a quotation;
+- the digital business cards and QR codes at the event;
+- that no title or role is implied for the other three people in the
+  photograph, and none is stated anywhere.

@@ -6029,6 +6029,52 @@ body.nav-open {
   color: var(--turq-300);
 }
 
+/* ------------------------------------- news media at its own ratio ----- */
+/* The update card and the featured update both hold their picture in a fixed
+   box - 16/9 for a card, 4/3 falling to 16/9 on a phone for the feature - and
+   crop the photograph to fit. That is right for a landscape press photograph
+   and wrong for one where the subject fills the frame vertically: the Miami
+   delegation photograph is 4:3 with four people standing full height in it,
+   and a 16/9 box takes a quarter of its height away, which on a phone cut the
+   group off at the knees.
+
+   These hold the box at the photograph's own ratio instead. `--ratio` is
+   already written onto the <img> by picture(), so the box matches the file
+   exactly and `cover` has nothing to crop - no letterboxing either. Opt-in per
+   item, so every other news photograph keeps the fixed frame it was composed
+   for. */
+
+.update-card__media--natural,
+.feature-update__media--natural {
+  aspect-ratio: auto;
+}
+
+.update-card__media--natural img,
+.feature-update__media--natural img {
+  aspect-ratio: var(--ratio);
+  height: auto;
+}
+
+@media (max-width: 860px) {
+  .feature-update__media--natural img {
+    aspect-ratio: var(--ratio);
+  }
+}
+
+/* The BELTRAIDE facilitation credit that closes the Miami article. Set apart
+   from the body copy because it is an acknowledgement rather than part of the
+   story, and the package asks for it to stay accurate and prominent. */
+
+.article__credit {
+  margin-top: clamp(1.8rem, 3.6vw, 2.4rem);
+  padding: 1.15rem 1.3rem;
+  border-left: 3px solid var(--teal-600);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: var(--sand);
+  font-weight: 600;
+  color: var(--navy-800);
+}
+
   </style>
   <script type="application/ld+json">
   {
@@ -6539,7 +6585,7 @@ body.nav-open {
 
   <p class="visually-hidden" id="lang-status" role="status" aria-live="polite"></p>
 
-  <script src="assets/js/natfish-strings.js?v=821c59fc"></script>
+  <script src="assets/js/natfish-strings.js?v=49c301ce"></script>
   <script src="assets/js/natfish-i18n.js?v=b8a289c3"></script>
   <script src="assets/js/natfish-seasons.js?v=c270a135"></script>
   <script src="assets/js/natfish.js?v=79e88ac3"></script>

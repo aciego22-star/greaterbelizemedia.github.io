@@ -34,6 +34,7 @@
 - [Gallery](https://natfish.bz/gallery.html): Photographs and video from inside the NatFish facility and the waters its members fish.
 - [NATFISH AI](https://natfish.bz/natfish-ai.html): NATFISH AI, the assistant that answers questions and starts an order request in English or Spanish.
 - [Insights](https://natfish.bz/insights.html): Evergreen writing on Belizean seafood and how it is handled.
+- [news-americas-food-beverage-show-2026.html](https://natfish.bz/news-americas-food-beverage-show-2026.html): NATFISH at the Americas Food & Beverage Show 2026 in Miami, as part of Belize's first Country Pavilion, facilitated by BELTRAIDE.
 - [insights-belizean-caribbean-spiny-lobster.html](https://natfish.bz/insights-belizean-caribbean-spiny-lobster.html): What distinguishes Belizean Caribbean spiny lobster, how it is handled and what buyers should know.
 
 ## What this site does not state

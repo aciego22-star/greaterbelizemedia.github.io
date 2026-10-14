@@ -58,6 +58,9 @@ SHORT_LABELS = [
 # Shorts: the card title has to match the title on the video itself, or a
 # Spanish reader clicks through to something that looks like a different clip.
 KEEP_ENGLISH = {
+    # The exhibition's registered name. The client's own Spanish copy keeps it
+    # in English, because that is what the event is called.
+    "Americas Food & Beverage Show & Conference 2026",
     # Linnaean binomials. They are the same in every language by definition, so
     # a "missing translation" for one is not a gap.
     "Panulirus argus, Strombus gigas, Pterois volitans",
