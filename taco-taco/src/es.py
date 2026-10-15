@@ -560,6 +560,11 @@ ES.update({
 
 # ---------------------------------------------------------------- the clips
 ES.update({
+ "The taco mascots": "Las mascotas de Taco Taco",
+ "Two inflatable taco mascots in sombreros moving through the dining "
+ "room at Taco Taco under the party lights":
+   "Dos mascotas inflables de taco con sombreros recorriendo el comedor de "
+   "Taco Taco bajo las luces de fiesta",
  "Meet the team": "Conozca al equipo",
  "The Taco Taco kitchen team in their aprons behind the counter":
    "El equipo de cocina de Taco Taco con sus delantales detrás del mostrador",

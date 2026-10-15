@@ -1091,6 +1091,23 @@ html.js .chip-cap{font-size:.6rem;line-height:1.15}
 .vplay video{display:block;width:100%;height:auto;aspect-ratio:9/16;object-fit:cover;background:#141210}
 .vplay figcaption{padding:11px 14px 13px;color:#fff;font-weight:800;font-size:.9rem}
 .vplay.cued{outline:3px solid var(--yellow);outline-offset:3px}
+/* A clip we host on YouTube rather than in the deploy. The face is our own
+   poster at the same 9:16 as the players beside it, so the grid does not jump,
+   and the YouTube player is only fetched once somebody taps it. */
+.ytface{position:relative;display:block;width:100%;aspect-ratio:9/16;
+ background:#141210 center/cover no-repeat;cursor:pointer}
+.ytface::after{content:"";position:absolute;inset:0;
+ background:linear-gradient(to top,rgba(0,0,0,.45),rgba(0,0,0,0) 55%)}
+.ytface-play{position:absolute;top:50%;left:50%;width:62px;height:62px;margin:-31px 0 0 -31px;
+ border-radius:50%;background:var(--red);box-shadow:0 8px 22px rgba(0,0,0,.42);z-index:2;
+ transition:transform .18s ease}
+.ytface-play::after{content:"";position:absolute;top:50%;left:55%;transform:translate(-50%,-50%);
+ border-left:19px solid #fff;border-top:12px solid transparent;border-bottom:12px solid transparent}
+.ytface:hover .ytface-play{transform:scale(1.07)}
+.ytface:focus-visible{outline:3px solid var(--yellow);outline-offset:-3px}
+.vplay iframe{display:block;width:100%;height:auto;aspect-ratio:9/16;border:0;background:#141210}
+@media (prefers-reduced-motion: reduce){.ytface-play{transition:none}
+ .ytface:hover .ytface-play{transform:none}}
 
 /* ================= about: the spread beside the copy =================
    Two columns on a wide screen with the photograph taking a little under half.

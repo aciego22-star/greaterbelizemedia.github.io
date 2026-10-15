@@ -120,6 +120,13 @@ REEL_SUB  = ("Touch play and see what is cooking in our kitchen, and what the st
 VIDEO_SUB = "Straight from the restaurant. Turn the sound up."
 
 VIDEOS = [
+ # Hosted on YouTube rather than in the deploy: the eight clips below already
+ # carry 11.5MB and a ninth would put the drag-and-drop ZIP over its limit. A
+ # clip with a "yt" id keeps its poster here, so the gallery and the reel look
+ # the same as the rest and nothing reaches YouTube until a visitor taps play.
+ {"id": "taco-mascots",    "title": "The taco mascots", "yt": "RLuUFTNdI7M",
+  "alt": "Two inflatable taco mascots in sombreros moving through the dining "
+         "room at Taco Taco under the party lights"},
  {"id": "meet-the-team",   "title": "Meet the team",
   "alt": "The Taco Taco kitchen team in their aprons behind the counter"},
  {"id": "on-the-griddle",  "title": "On the griddle",
@@ -138,8 +145,16 @@ VIDEOS = [
   "alt": "A card announcing Taco Taco's first official happy hour, 2PM to 6PM"},
 ]
 for _v in VIDEOS:
-    _v.setdefault("src",    "assets/video/%s.mp4" % _v["id"])
+    # A YouTube clip has no file of ours to play, so it gets no src.
+    if not _v.get("yt"):
+        _v.setdefault("src", "assets/video/%s.mp4" % _v["id"])
     _v.setdefault("poster", "assets/img/video-%s.jpg" % _v["id"])
+
+YT_WATCH = "https://www.youtube.com/watch?v=%s"
+# rel=0 keeps the end screen on our own channel, playsinline stops iOS taking
+# the clip fullscreen over the page, and autoplay is honest here: the visitor
+# has just tapped play.
+YT_EMBED = "https://www.youtube-nocookie.com/embed/%s?autoplay=1&rel=0&playsinline=1"
 
 # Photos we can honestly attach to a menu item. Only unmistakable matches:
 # a wrong photo on a menu misrepresents the food a customer is paying for.
@@ -762,6 +777,8 @@ def reviews_band():
             % (esc(STR_REVIEWS["home_kicker"]), esc(STR_REVIEWS["home_title_a"]),
                esc(STR_REVIEWS["home_title_b"]), rating_block(), slots))
 
+REEL_CHIPS = 7   # how many drift at once; the rest wait their turn as spares
+
 def reel_band():
     """Home page: video thumbnails drifting round a square, bumping off each other.
     Each one is a link, so it works as a plain grid of links with no JavaScript."""
@@ -774,11 +791,11 @@ def reel_band():
       '<span class="chip-cap">%s</span></a>'
       % (v["id"], v["id"], esc(v["title"]), derivative(v["poster"].split("/")[-1], 480, "g")[0],
          esc(v["title"]))
-      for v in VIDEOS[:6])
+      for v in VIDEOS[:REEL_CHIPS])
     spare = "".join(
       '<template class="chip-spare" data-id="%s" data-title="%s" data-img="%s"></template>'
       % (v["id"], esc(v["title"]), derivative(v["poster"].split("/")[-1], 480, "g")[0])
-      for v in VIDEOS[6:])
+      for v in VIDEOS[REEL_CHIPS:])
     return ('\n <!-- ===== REEL ===== -->\n <section class="blk reel-sec" id="whats-cooking">\n'
             '  <div class="container">\n'
             '   <div class="sec-head"><span class="sec-kicker">Watch</span>'
@@ -1109,6 +1126,17 @@ def main():
     if vids:
         def player(v):
             w, h = img_size(v["poster"].split("/")[-1]) or (720, 1280)
+            if v.get("yt"):
+                # A link first, so the clip is reachable with no JavaScript at
+                # all. The script turns the tap into an inline player instead.
+                return ('<figure class="vplay" id="v-%s">'
+                        '<a class="ytface" href="%s" data-yt="%s" target="_blank" rel="noopener" '
+                        'style="background-image:url(\'%s\')" aria-label="%s">'
+                        '<span class="ytface-play" aria-hidden="true"></span></a>'
+                        '<figcaption>%s</figcaption></figure>'
+                        % (v["id"], YT_WATCH % v["yt"], v["yt"],
+                           derivative(v["poster"].split("/")[-1], 600, "g")[0],
+                           esc(v["alt"]), esc(v["title"])))
             return ('<figure class="vplay" id="v-%s">'
                     '<video preload="none" playsinline controls poster="%s" '
                     'width="%d" height="%d" aria-label="%s">'

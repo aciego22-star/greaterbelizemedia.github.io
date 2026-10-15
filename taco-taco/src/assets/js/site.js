@@ -1196,9 +1196,18 @@ function t(k,d){return TT_TXT[k]||d;}
 
  var W=0,H=0,R=0, running=false, raf=null;
  var P=chips.map(function(){return {x:0,y:0,vx:0,vy:0};});
- // Six starting places round a ring rather than four in the corners, so they
- // begin spread out instead of shuffling apart in front of the reader.
- var SPOTS=[[0.26,0.22],[0.72,0.24],[0.82,0.58],[0.56,0.82],[0.24,0.76],[0.16,0.48]];
+ // Starting places round a ring rather than in the corners, so they begin
+ // spread out instead of shuffling apart in front of the reader. Worked out
+ // from the number of chips: the count changes every time a clip is added, and
+ // a fixed list quietly starts stacking two of them on the same spot.
+ // The ring widens as clips are added, to the point where neighbours just
+ // touch rather than start inside one another, and stops at the stage wall.
+ function spotFor(i){
+  var n=chips.length,
+      r=Math.min(0.35, n>2 ? 0.15/Math.sin(Math.PI/n) : 0.22),
+      a=(i/n)*Math.PI*2 - Math.PI/2;
+  return [0.5+r*Math.cos(a), 0.5+r*Math.sin(a)];
+ }
 
  function num(v,fb){ return (typeof v==='number'&&isFinite(v)&&v>0)?v:fb; }
  function measure(){
@@ -1212,7 +1221,7 @@ function t(k,d){return TT_TXT[k]||d;}
   if(R>W/2) R=W/2;
  }
  function seedOne(p,i){
-  var s=SPOTS[i%SPOTS.length];
+  var s=spotFor(i);
   p.x=s[0]*W; p.y=s[1]*H;
   var a=Math.random()*Math.PI*2, sp=18+Math.random()*14;      // px per second
   p.vx=Math.cos(a)*sp; p.vy=Math.sin(a)*sp;
@@ -1378,6 +1387,29 @@ function t(k,d){return TT_TXT[k]||d;}
  }
  addEventListener('load',function(){setTimeout(cue,60);});
  addEventListener('hashchange',cue);
+})();
+
+/* A clip hosted on YouTube shows our own poster until it is tapped, and only
+   then is the player fetched. Without this script the face stays a plain link
+   to the clip on YouTube, which still works. */
+(function(){
+ var faces=[].slice.call(document.querySelectorAll('.ytface[data-yt]'));
+ if(!faces.length) return;
+ faces.forEach(function(a){
+  a.addEventListener('click',function(e){
+   if(e.metaKey||e.ctrlKey||e.shiftKey||e.button) return;   // let them open a tab
+   e.preventDefault();
+   var f=document.createElement('iframe');
+   f.src='https://www.youtube-nocookie.com/embed/'+a.getAttribute('data-yt')+
+         '?autoplay=1&rel=0&playsinline=1';
+   f.title=a.getAttribute('aria-label')||'';
+   f.allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture';
+   f.setAttribute('allowfullscreen','');
+   f.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+   a.parentNode.replaceChild(f,a);
+   try{f.focus({preventScroll:true});}catch(err){}
+  });
+ });
 })();
 
 /* ================= fly in with a pop =================
