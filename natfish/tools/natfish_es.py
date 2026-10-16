@@ -909,6 +909,25 @@ ES.update({
         "detrás de una mesa con cajas de langosta espinosa y caracol.",
 })
 
+# The two Miami 2026 hero slides. "Delegados" and "representante" follow the
+# wording already used for the Miami gallery photographs, and neither line
+# names or titles anyone, because the alt text they translate does not.
+ES.update({
+    "Four NATFISH delegates in matching light blue shirts bearing the "
+    "co-operative crest, standing together on a palm lined street in "
+    "Miami Beach.":
+        "Cuatro delegados de NATFISH con camisas celestes iguales que llevan "
+        "el escudo de la cooperativa, de pie juntos en una calle bordeada de "
+        "palmeras en Miami Beach.",
+    "The delegation in Miami Beach": "La delegación en Miami Beach",
+    "A NATFISH representative seated at the exhibition stand beside a "
+    "model Belizean sailboat flying two Belize flags.":
+        "Un representante de NATFISH sentado en el stand de la exposición "
+        "junto a un velero beliceño a escala que ondea dos banderas de "
+        "Belice.",
+    "Beside the model Belizean sailboat": "Junto al velero beliceño a escala",
+})
+
 # The Operations section added to Seafood & Services, where the wide
 # processing-hall photograph now sits.
 ES.update({

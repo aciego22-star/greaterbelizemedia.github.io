@@ -1791,3 +1791,103 @@ video and told us not to gate on a permission check, so it is published with
 the credit "Video originally published by BELTRAIDE" and no claim of
 endorsement or permission. If BELTRAIDE's position is ever in doubt, the video
 is one file and one section.
+
+## The hero carousel: Food Taipei out, two Miami 2026 frames in
+
+The client sent two photographs and one instruction: take the Taiwan stand out
+of the hero, put the four delegates in blue in its place, and give the man
+beside the model sailboat a slide of his own.
+
+**Six slides now, not five.** The order still runs from the water to the
+market: diver on the dock, diver at sea, the boat catch, the two Miami frames,
+then the Belizean Pride range. `hero-trade-show-stand` is out of `HERO_SLIDES`
+and out of `HERO_PAIRS`, but its derivatives and its alt text are still in the
+repository, so putting Food Taipei back is one line in each list.
+
+**Neither photograph names anybody.** The client's own words for the second
+one were "the counselor or the chairman, whoever he is", so the alt text says
+"a NATFISH representative" and stops there. The standing rule holds: nobody is
+identified unless the co-operative supplies and approves the name.
+
+### The phone crops are ours, and that is worth knowing
+
+The five original hero slides are pairs the client cropped themselves: a
+landscape frame for the desktop hero and a 9:16 portrait frame for the phone,
+where `.hero__media` is `100vw x 100vw*16/9`. These two arrived as landscape
+only, 1672x941 each, so the portrait crop had to come from somewhere.
+
+**The delegation.** Four people side by side span about two thirds of the
+landscape frame's width. A 9:16 window of it is 529px out of 1672, so there is
+no crop of that file that holds all four - whichever window you choose, two of
+them fall outside it. What saved it is that the client had already supplied a
+portrait photograph of the same four people, in the same clothes, on the same
+street corner: `08_delegation_in_miami.jpg`, which is already in this
+repository as a gallery photograph. The phone crop is cut from that instead,
+so both crops of this slide are still the client's own photography of one
+moment, which is all art direction is meant to be.
+
+Even there the window is forced. The four of them span x 271 to 1142 of 1200,
+and 900 is the widest 9:16 window a 1600px-tall source can give, so the crop
+is 265..1165 with about ten pixels of air on the left and twenty on the right.
+The pavement in the lower half comes with it: cropping the foreground out
+would narrow the window and start cutting the people at the ends.
+
+**The sailboat.** No portrait counterpart exists. The cap and face occupy
+x 230..780 of the 1672px frame and the model sailboat x 950..1550, so holding
+both would take a window about 1300px wide and a 9:16 window is 529. The phone crop is the
+man: the whole cap, the face in profile and the co-operative crest on the
+chest, which is where the right edge sits. The sailboat and its two Belize
+flags stay in the desktop crop, where they read clearly.
+
+That crop is 529px wide, which is every pixel the source has. On a 390px
+phone at DPR 3 the browser wants about 1170, so this one slide is softer on a
+high-density phone than the client's own 1080-wide crops are. **If they send
+their own 1080x1920 crops of either photograph, drop them in
+`source-images/hero-miami-2026/` and point the processor at them; nothing else
+changes.**
+
+### Three traps this turned up
+
+**`tools/process-hero-images.py` was not run, on purpose.** It rebuilds all
+five original slides from a delivery folder that is not in this repository, so
+running it to add a slide would have silently dropped four live heroes.
+`tools/process-miami-heroes.py` touches only the two stems it names, which is
+the same rule the news, About and Miami gallery processors already follow.
+
+**`img_dir()` would have started 404ing on the client's own photography.** It
+asked whether a `hero-*` stem was in `HERO_PAIRS` and sent everything else to
+concept/ - true only while the one concept hero was also the only hero outside
+that set. Drop a hero out of the carousel and it would route a client
+photograph to concept/. It now names the concept set instead, which is one
+stem: `hero-2-boat-leaving-harbour`, still built because the Gallery's video
+facade uses it as a poster.
+
+**Two places hard-coded a 720px phone tier** that every client crop happened
+to have and the 529px sailboat crop does not: `hero_preload()`, which would
+have preloaded a 404, and the preview bundler's `data_uri()`, which would have
+aborted the whole bundle. Both now pick the widest tier they can actually use.
+
+**And one that was already there.** `tools/build_site_files.py` regenerates
+`robots.txt` without the `llms.txt` pointer at the end of the shipped file -
+so anyone re-running it quietly deleted that block, which is exactly what
+happened here before it was caught. The pointer is in the generator now, and
+the generator reproduces the shipped file byte for byte.
+
+### Measured
+
+Six slides, both languages, twelve pages at 1440 and 390: no console errors,
+no failed requests, no horizontal overflow. Alt text swaps to Spanish on all
+six. Core Web Vitals measured against the pre-change build on an identical
+throttled profile - desktop LCP 5056ms against 5064ms, phone 3236ms against
+3244ms, CLS 0 in both. The change is performance-neutral; the absolute figures
+are a deliberately harsh 4x CPU and 1.6Mbps profile, not the client's network.
+
+**Package: 29.26 MiB.** The Taiwan slide's files were 1.2 MB and the two new
+slides are 1.1 MB, so this came in slightly under where it started.
+
+### Worth raising with the client
+
+The delegation photograph is now in two places: the hero, and the gallery's
+Miami collection, where their portrait shot of the same moment is one of the
+nine. Nobody sees both at once, but it is a repeat. Say the word and the
+gallery one comes out.

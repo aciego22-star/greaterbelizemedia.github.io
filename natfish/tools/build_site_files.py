@@ -64,12 +64,22 @@ def robots():
     The temporary preview host is kept out of the index by an X-Robots-Tag
     header in netlify.toml, not by this file, so that going live is a matter of
     deleting one clearly marked block rather than remembering to rewrite this.
+
+    The llms.txt pointer at the end was added to the shipped file when that
+    file was written, but not to this function, so re-running this script
+    deleted it without saying so. It is here now, which is the only place it
+    survives a rebuild.
     """
     data = f"""# {LEGAL}
 User-agent: *
 Allow: /
 
 Sitemap: {SITE_URL}/sitemap.xml
+
+# A plain-language summary of the co-operative and its pages, for language
+# models and answer engines. Not a crawl directive - just the shortest honest
+# route to the facts, so they are quoted from here rather than inferred.
+# {SITE_URL}/llms.txt
 """
     (ROOT / "robots.txt").write_text(data, encoding="utf-8")
     return "robots.txt"

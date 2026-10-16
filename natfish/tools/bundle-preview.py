@@ -72,15 +72,24 @@ def data_uri(rel):
     since anything that can open an artifact can decode WebP.
     """
     if rel not in _IMG_CACHE:
-        # 800w for everything that has it. The hero's portrait crop does not:
-        # it is only ever served to a phone, so its tiers are 360 to 1080 and
-        # 720 is the one closest to the same visual budget.
-        for tier in (800, 720):
-            path = ROOT / "assets" / "img" / f"{rel}-{tier}.webp"
-            if path.is_file():
-                break
-        else:
+        # 800w where it exists, otherwise the widest tier under it. This used
+        # to be a two-item list, (800, 720), which covered every stem only
+        # while every phone crop came from the client at 1080 wide. One of the
+        # Miami crops tops out at 529 - it is a 9:16 window cut from a
+        # landscape frame, so that is every pixel there is - and a fixed list
+        # would have aborted the whole bundle on it. If nothing is at or under
+        # 800, the narrowest tier above it is inlined rather than nothing.
+        tiers = sorted(
+            int(f.stem.rsplit("-", 1)[1])
+            for f in (ROOT / "assets" / "img" / rel).parent.glob(
+                f"{pathlib.Path(rel).name}-*.webp")
+            if f.stem.rsplit("-", 1)[1].isdigit()
+        )
+        if not tiers:
             raise SystemExit(f"ERROR: no derivative to inline for {rel}")
+        under = [t for t in tiers if t <= 800]
+        tier = max(under) if under else min(tiers)
+        path = ROOT / "assets" / "img" / f"{rel}-{tier}.webp"
         _IMG_CACHE[rel] = ("data:image/webp;base64,"
                            + base64.b64encode(path.read_bytes()).decode())
     return _IMG_CACHE[rel]

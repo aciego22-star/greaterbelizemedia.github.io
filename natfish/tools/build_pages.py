@@ -336,19 +336,23 @@ def process_step(stem, ico, title, body, n):
           </li>"""
 
 
-# The five approved hero images, in the approved order.
+# The six approved hero images, in the approved order.
 #
-# All five are photographs the client supplied specifically for the hero, each
-# as a pre-cropped pair: a landscape frame for the desktop hero and a 9:16
-# portrait frame for the phone. Because the client composed both crops, the
-# desktop side takes no focal point at all - the browser simply picks the crop
-# that matches the frame it is filling.
+# All six are photographs the client supplied specifically for the hero, each
+# rendered as a pair: a landscape frame for the desktop hero and a 9:16
+# portrait frame for the phone, so the browser picks the crop that matches the
+# frame it is filling rather than cropping one frame to fit both.
 #
 # The order is theirs: the diver on the dock opens, because it is the one frame
 # where a Belizean fisher, the dock and the lobster itself all read at a glance.
 # The diver at sea took the slot vacated by the last V1 concept image, a boat
-# leaving the harbour. The trade-show stand and the packed Belizean Pride range
-# close the rotation, so it runs from the water to the market.
+# leaving the harbour. The two Miami 2026 frames sit together in the middle, and
+# the packed Belizean Pride range closes the rotation, so it still runs from the
+# water, through the people who sell it, to the market.
+#
+# The Food Taipei stand that used to hold slot four came out when the client
+# sent the Miami photographs to replace it. Its derivatives and alt text are
+# still in the repository, so it can come back by name.
 #
 # No concept imagery is left in the hero. `hero-2-boat-leaving-harbour` still
 # exists because the Gallery's video facade uses it as a poster, but it is no
@@ -357,7 +361,8 @@ HERO_SLIDES = [
     "hero-lobster-diver-dock",
     "hero-diver-lobster-catch",
     "hero-lobster-boat-catch",
-    "hero-trade-show-stand",
+    "hero-miami-delegation",
+    "hero-miami-representative-sailboat",
     "hero-belizean-pride-range",
 ]
 

@@ -161,6 +161,13 @@ PRODUCTS = "assets/img/products"
 # rule from the original brief and never asserts that a person, vessel or catch
 # belongs to NATFISH.
 CONCEPT = "assets/img/concept"
+
+# Every hero stem that lives in concept/ rather than official/. One is left:
+# `hero-2-boat-leaving-harbour`, which is no longer a carousel slide but is
+# still built because the Gallery's video facade uses it as a poster. Anything
+# else named `hero-*` is the client's own photography.
+HERO_CONCEPT = {"hero-2-boat-leaving-harbour"}
+
 # GALLERY  ten photographs the client supplied for the Gallery page, already
 #          standardised by them to 1600x1200 and sorted into three named
 #          classifications. Their own folder because the supplied filenames
@@ -179,9 +186,15 @@ from gallery_dims import (GALLERY_DIMS, GALLERY_GROUPS,  # noqa: E402
 from news_dims import NEWS_DIMS  # noqa: E402
 from about_dims import ABOUT_DIMS, ABOUT_TIERS  # noqa: E402
 from miami_dims import MIAMI_DIMS, MIAMI_TIERS  # noqa: E402
+from miami_hero_dims import MIAMI_HERO_DIMS, MIAMI_HERO_TIERS  # noqa: E402
 
 DIMS = {**DIMS, **HERO_DIMS, **GALLERY_DIMS, **NEWS_DIMS, **ABOUT_DIMS,
-        **MIAMI_DIMS}
+        **MIAMI_DIMS, **MIAMI_HERO_DIMS}
+
+# The two Miami hero slides were processed on their own, so their tiers arrive
+# in their own table rather than in hero_dims.py. hero_tiers() reads one dict,
+# so they are folded in here instead of being a second lookup at the call site.
+HERO_TIERS_BY_STEM = {**HERO_TIERS_BY_STEM, **MIAMI_HERO_TIERS}
 
 # The Miami collection reads its tiers through the same table picture() already
 # consults, but stays OUT of GALLERY_GROUPS: that dict is what builds the
@@ -287,6 +300,16 @@ ALT = {
         "A seafood trade show stand hung with Belizean Pride banners, four "
         "people in matching shirts standing behind a table of spiny lobster "
         "and conch cartons.",
+    # The two Miami 2026 slides. Neither names anyone: the co-operative has
+    # not supplied names or roles for these photographs, so the alt text says
+    # what a sighted visitor sees and stops there.
+    "hero-miami-delegation":
+        "Four NATFISH delegates in matching light blue shirts bearing the "
+        "co-operative crest, standing together on a palm lined street in "
+        "Miami Beach.",
+    "hero-miami-representative-sailboat":
+        "A NATFISH representative seated at the exhibition stand beside a "
+        "model Belizean sailboat flying two Belize flags.",
     "hero-2-boat-leaving-harbour":
         "A small fishing boat heading out of the harbour past moored skiffs and "
         "the waterfront.",
@@ -500,6 +523,8 @@ SHORT = {
     "hero-diver-lobster-catch": "A spiny lobster brought up from the reef",
     "hero-belizean-pride-range": "The Belizean Pride range",
     "hero-trade-show-stand": "Belizean Pride on show at a seafood trade show",
+    "hero-miami-delegation": "The delegation in Miami Beach",
+    "hero-miami-representative-sailboat": "Beside the model Belizean sailboat",
     "hero-2-boat-leaving-harbour": "Heading out of the harbour",
     # The client's set uses its supplied caption as its label too, so the
     # "View larger" announcement matches the caption a sighted visitor reads.
@@ -568,8 +593,14 @@ def img_dir(stem):
     if stem in GALLERY_GROUPS:
         return GALLERY
     if stem.startswith("hero-"):
+        # Named rather than inferred. This used to ask whether the stem was a
+        # client pair and send everything else to concept/, which was true
+        # only while the one concept hero was also the only single-source one.
+        # Drop a hero out of the carousel and that test would start routing
+        # the client's own photograph to concept/ - a silent 404. The concept
+        # imagery is a closed set of one, so that is what is listed.
         base = stem.rsplit("-desktop", 1)[0].rsplit("-mobile", 1)[0]
-        return OFFICIAL if base in HERO_PAIRS else CONCEPT
+        return CONCEPT if base in HERO_CONCEPT else OFFICIAL
     # Before the brand check below. One of the nine Miami photographs is
     # "miami-2026-belizean-pride-booth", and the substring test would have
     # routed it to products/ while the processor wrote it to official/ - a 404
@@ -730,14 +761,34 @@ def hero_tiers(stem):
 # the widest of these files that is not most of a megabyte.
 HERO_PHONE_FALLBACK = 720
 
+
+def hero_phone_fallback(mob):
+    """The widest phone tier at or under HERO_PHONE_FALLBACK.
+
+    This used to be the constant itself, which was safe only while every
+    phone crop came from the client at 1080 wide and therefore had a 720
+    derivative. One of the Miami crops is 529 wide - it is a 9:16 window cut
+    out of a landscape frame, so that is all the pixels there are - and
+    naming a 720 file for it would have been a preload straight to a 404.
+    """
+    tiers = hero_tiers(mob)
+    under = [t for t in tiers if t <= HERO_PHONE_FALLBACK]
+    return max(under) if under else min(tiers)
+
 # Heroes the client supplied as a pre-cropped desktop/phone pair. Anything in
 # this set is published as `<stem>-desktop-*` and `<stem>-mobile-*` and is
 # rendered with a `media`-switched <source>, not with a focal point.
+# `hero-trade-show-stand`, the Food Taipei stand, left this set when the
+# client replaced it with the Miami delegation. Its derivatives are still in
+# official/ and its alt text is still below, so it can be put back in one
+# line, but nothing references it and the packaging sweep leaves it out of the
+# deployment.
 HERO_PAIRS = {
     "hero-lobster-diver-dock",
     "hero-diver-lobster-catch",
     "hero-lobster-boat-catch",
-    "hero-trade-show-stand",
+    "hero-miami-delegation",
+    "hero-miami-representative-sailboat",
     "hero-belizean-pride-range",
 }
 
@@ -806,7 +857,7 @@ def hero_preload(stem):
     mob, desk = f"{stem}-mobile", f"{stem}-desktop"
     phone = f"(max-width: {HERO_PHONE_BP}px)"
     return (f'  <link rel="preload" as="image" type="image/webp" media="{phone}"\n'
-            f'        href="{d}/{mob}-720.webp"\n'
+            f'        href="{d}/{mob}-{hero_phone_fallback(mob)}.webp"\n'
             f'        imagesrcset="{_srcset(d, mob, hero_tiers(mob), "webp")}"'
             f' imagesizes="100vw" fetchpriority="high">\n'
             f'  <link rel="preload" as="image" type="image/webp"'
