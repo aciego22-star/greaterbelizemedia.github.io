@@ -158,8 +158,6 @@ VIDEOS = [
   "alt": "Trays of iced cinnamon rolls and pastries at Taco Taco"},
  {"id": "dance-for-tacos-2", "title": "Dance for tacos 2.0",
   "alt": "Staff and customers dancing through the dining room at Taco Taco under the party lights"},
- {"id": "happy-hour",      "title": "Happy hour",
-  "alt": "A card announcing Taco Taco's first official happy hour, 2PM to 6PM"},
 ]
 for _v in VIDEOS:
     # A YouTube clip has no file of ours to play, so it gets no src.

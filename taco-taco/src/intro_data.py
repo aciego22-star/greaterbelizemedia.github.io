@@ -20,11 +20,15 @@ ACTIVE   = True
 # Belize is UTC-6 the whole year round, so a plain offset is enough.
 TZ_OFFSET_HOURS = -6
 STARTS = "2026-10-16 00:00:00"
-# A PLACEHOLDER end date. "While supplies last" has no date in it, and an offer
-# for free food that runs until somebody remembers to take it down is the kind
-# that gets expensive. Move this to whatever the restaurant actually means.
-ENDS   = "2026-10-31 23:59:59"
+# The restaurant's own date, given on 16 October. The offer takes itself off at
+# midnight on the 30th by the visitor's clock, with no redeploy.
+ENDS   = "2026-11-30 23:59:59"
 
+# The clip is the full six seconds the restaurant sent, which opens on about
+# three and a half seconds of Minions footage. That is Universal's, and the
+# licence TikTok has for it does not extend to this domain. Flagged on
+# 16 October and kept in at the client's direction. The poster is a still from
+# the restaurant's own half of the clip.
 VIDEO  = "intro-free-carnitas.mp4"
 POSTER = "intro-free-carnitas.jpg"
 
