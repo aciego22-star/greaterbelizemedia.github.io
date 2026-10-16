@@ -9,6 +9,7 @@ from menu_data import CATEGORIES as MENU_CATS, INTRO as MENU_INTRO, MEATS, MEAT_
 from about_data import ABOUT
 from faq_data import FAQ, HEAD as FAQ_HEAD
 import promo_data
+import intro_data
 import i18n
 from es import ES, JS as JS_ES
 
@@ -87,6 +88,22 @@ def promo_live():
     what lets the promotion end on the night of the 30th without a redeploy."""
     import time as _t
     return promo_data.ACTIVE and _t.time() * 1000 <= PROMO_TO
+
+def _intro_ms(stamp):
+    import datetime as _dt
+    d = _dt.datetime.strptime(stamp, "%Y-%m-%d %H:%M:%S")
+    d = d.replace(tzinfo=_dt.timezone(_dt.timedelta(hours=intro_data.TZ_OFFSET_HOURS)))
+    return int(d.timestamp() * 1000)
+
+INTRO_FROM = _intro_ms(intro_data.STARTS)
+INTRO_TO   = _intro_ms(intro_data.ENDS) + 999
+
+def intro_live():
+    """Same rule as promo_live(): a build made after the window has closed
+    leaves the clip out of the HTML rather than shipping markup nobody can be
+    shown, and inside the window the browser's own clock has the last word."""
+    import time as _t
+    return intro_data.ACTIVE and _t.time() * 1000 <= INTRO_TO
 
 # The widest a deployed photograph is allowed to be, on its longest side.
 #
@@ -845,6 +862,49 @@ def promo_modal(fname):
     esc(C["welcome"]), body, esc(C["nocode"]), href, esc(C["cta"]),
     esc(C["thanks"]), esc(C["signoff"])))
 
+def intro_modal(fname):
+    """The entry clip, rendered server-side for the same two reasons the
+    discount popup is: the Spanish pass only sees finished HTML, and the words
+    are in the markup for anyone reading without our JavaScript.
+
+    No heading tags, same as promo_modal: an advertisement that opens on top of
+    the page is not part of the page's outline. The line under the clip is the
+    dialog's accessible name through aria-labelledby.
+
+    The video is muted because every browser refuses to autoplay a clip with
+    sound, and carries a poster so the card does not open on a black rectangle
+    while the first frame arrives. The sound is one tap away on the speaker
+    button. The button under it is a real link to the menu, so it works in one
+    tap whether or not the script runs."""
+    C = intro_data.COPY
+    href = "menu.html#menu" if fname == "menu.html" else "menu.html"
+    return (
+ '\n<div id="intro" class="promo intro" hidden>\n'
+ ' <div class="promo-card intro-card" role="dialog" aria-modal="true" aria-labelledby="intro-t">\n'
+ '  <button type="button" id="intro-x" class="promo-x" aria-label="%s">'
+ '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
+ '<path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>'
+ '</svg></button>\n'
+ '  <div class="intro-stage">\n'
+ '   <video id="intro-v" class="intro-v" autoplay muted loop playsinline preload="auto" '
+ 'poster="assets/img/%s" width="720" height="946" aria-label="%s">'
+ '<source src="assets/video/%s" type="video/mp4"></video>\n'
+ '   <button type="button" id="intro-snd" class="intro-snd" aria-label="%s" aria-pressed="false">'
+ '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
+ '<path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/>'
+ '<path class="intro-wave" d="M16.5 8.5a5 5 0 010 7M19 6a8.5 8.5 0 010 12" '
+ 'stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>'
+ '<path class="intro-cross" d="M16.5 9.5l5 5M21.5 9.5l-5 5" '
+ 'stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>'
+ '</svg></button>\n'
+ '  </div>\n'
+ '  <p class="intro-line" id="intro-t">%s</p>\n'
+ '  <p class="promo-cta"><a class="btn btn-red" id="intro-go" href="%s">%s '
+ '<span aria-hidden="true">&rarr;</span></a></p>\n'
+ ' </div>\n</div>'
+ % (esc(C["close"]), intro_data.POSTER, esc(C["line"]), intro_data.VIDEO,
+    esc(C["unmute"]), esc(C["line"]), href, esc(C["cta"])))
+
 def connect_band():
     """Taco Taco Connect, announced rather than linked.
 
@@ -1372,7 +1432,8 @@ def main():
         h = h + head_meta(fname, title, desc) + "<!--SCHEMA-->"
         return ("<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n%s\n</head>\n<body>\n%s\n<main id=\"top\">\n%s\n</main>\n%s\n%s\n%s\n%s%s\n</body>\n</html>\n"
                 % (h, header_for(nav_as or fname), body, banner, foot, dock, basket,
-                   promo_modal(fname) if promo_live() else ""))
+                   promo_modal(fname) if promo_live()
+                   else (intro_modal(fname) if intro_live() else "")))
 
 
     # The deals carousel and the rotating reviews are drawn in the browser, so
@@ -1397,13 +1458,18 @@ def main():
         # one directory down, and a path the browser builds at run time gets no
         # help from the rewrite that fixes the markup: every deal added to the
         # basket from /es/ asked for /es/assets/img/ and showed a blank square.
+        IC = intro_data.COPY if lang == "en" else i18n.translate_json(intro_data.COPY)
+        intro = {"on": intro_live(), "id": intro_data.INTRO_ID,
+                 "from": INTRO_FROM, "to": INTRO_TO,
+                 "unmute": IC["unmute"], "mute": IC["mute"]}
         return ("window.TT_DEALS=%s;\nwindow.TT_STR=%s;\nwindow.TT_REVIEWS=%s;\n"
                 "window.TT_REV_ORDER=%s;\nwindow.TT_T=%s;\nwindow.TT_WA='%s';\n"
-                "window.TT_PROMO=%s;\nwindow.TT_BASE='%s';\n"
+                "window.TT_PROMO=%s;\nwindow.TT_INTRO=%s;\nwindow.TT_BASE='%s';\n"
                 % (json.dumps(deals, ensure_ascii=False), json.dumps(strs, ensure_ascii=False),
                    json.dumps(revs, ensure_ascii=False), json.dumps(HOME_ORDER, ensure_ascii=False),
                    json.dumps(txt, ensure_ascii=False), WA_NUMBER,
                    json.dumps(promo, ensure_ascii=False),
+                   json.dumps(intro, ensure_ascii=False),
                    "" if lang == "en" else "../"))
     for _lang, _, _ in LANGS:
         open(os.path.join(DIST,"assets","js","deals%s.js" % ("" if _lang=="en" else "."+_lang)),

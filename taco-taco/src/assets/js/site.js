@@ -95,6 +95,12 @@ function t(k,d){return TT_TXT[k]||d;}
   var now=Date.now();
   return now>=PROMO.from && now<=PROMO.to;
  }
+ var INTRO=window.TT_INTRO||{on:false};
+ function introOn(){
+  if(!INTRO.on) return false;
+  var now=Date.now();
+  return now>=INTRO.from && now<=INTRO.to;
+ }
  // What the percentage comes off. A deal already carries its own reduced
  // price, so whether those are included is a decision, and it is made once, in
  // promo_data.py, not here.
@@ -602,10 +608,45 @@ function t(k,d){return TT_TXT[k]||d;}
     while it is open, Escape closes it, and focus goes back where it came from.
     Behind it the page cannot scroll, and it is the last thing in the DOM so a
     reader that ignores all of this still meets the page first. */
- (function(){
-  var box=$('promo'); if(!box||!promoOn()) return;
+ /* The entry clip. It is muted because no browser will autoplay a clip with
+    sound, so the speaker button is how a visitor asks to hear it. Somebody who
+    has asked their browser for less motion gets the still and a tap to play
+    instead of a loop starting on its own. */
+ function startIntro(box){
+  var v=box.querySelector('video'), b=$('intro-snd'),
+      stage=box.querySelector('.intro-stage');
+  if(!v||!stage) return;
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce){
+   v.removeAttribute('loop'); v.autoplay=false;
+   try{ v.pause(); }catch(e){}
+   stage.classList.add('paused');
+  }else{
+   var p=v.play();
+   // A browser is within its rights to refuse even a muted clip. If it does,
+   // the poster stays up with a play button on it rather than nothing at all.
+   if(p&&p.catch) p.catch(function(){ stage.classList.add('paused'); });
+  }
+  stage.addEventListener('click',function(e){
+   if(b&&(e.target===b||b.contains(e.target))) return;    // the speaker is its own button
+   if(v.paused){ v.play(); stage.classList.remove('paused'); }
+   else{ v.pause(); stage.classList.add('paused'); }
+  });
+  if(!b) return;
+  b.addEventListener('click',function(){
+   v.muted=!v.muted;
+   b.setAttribute('aria-pressed', v.muted?'false':'true');
+   b.setAttribute('aria-label', v.muted?(INTRO.unmute||'Turn the sound on')
+                                       :(INTRO.mute||'Turn the sound off'));
+   b.classList.toggle('on', !v.muted);
+   // Asking for the sound is also asking for it to be running.
+   if(!v.muted&&v.paused){ v.play(); stage.classList.remove('paused'); }
+  });
+ }
+
+ function entryPopup(boxId, xId, goId, key, onOpen){
+  var box=$(boxId); if(!box) return;
   var card=box.querySelector('.promo-card');
-  var key='tt_promo_'+(PROMO.id||'x');
   var shown=false, opener=null;
 
   function seen(){ try{return sessionStorage.getItem(key)==='1';}catch(e){return shown;} }
@@ -630,24 +671,33 @@ function t(k,d){return TT_TXT[k]||d;}
    requestAnimationFrame(function(){ box.classList.add('on'); });
    H.classList.add('promo-open');
    document.addEventListener('keydown',keep,true);
-   var go=$('promo-go'); if(go) go.focus({preventScroll:true});
+   var go=$(goId); if(go) go.focus({preventScroll:true});
+   if(onOpen) onOpen(box);
   }
   function close(){
    box.classList.remove('on');
    H.classList.remove('promo-open');
    document.removeEventListener('keydown',keep,true);
+   // A clip in here keeps playing behind a closed card otherwise, sound and all.
+   var v=box.querySelector('video');
+   if(v){ try{ v.pause(); }catch(e){} }
    setTimeout(function(){ box.hidden=true; },260);
    if(opener&&opener.focus) try{opener.focus({preventScroll:true});}catch(e){}
   }
-  $('promo-x').addEventListener('click',close);
+  $(xId).addEventListener('click',close);
   // The button is a real link to the menu. Close first so the page behind is
   // scrollable again whether the browser navigates or stays put on #menu.
-  $('promo-go').addEventListener('click',function(){ close(); });
+  $(goId).addEventListener('click',function(){ close(); });
   // Tapping the backdrop closes it, the card itself does not.
   box.addEventListener('click',function(e){ if(e.target===box) close(); });
 
   requestAnimationFrame(open);
- })();
+ }
+
+ // Only ever one of these. The discount popup wins if both are running, which
+ // is also the order the markup is built in.
+ if(promoOn())      entryPopup('promo','promo-x','promo-go','tt_promo_'+(PROMO.id||'x'));
+ else if(introOn()) entryPopup('intro','intro-x','intro-go','tt_intro_'+(INTRO.id||'x'), startIntro);
 
  window.TTBasket={addDeal:addDeal,money:money};
  loadBasket();

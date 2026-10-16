@@ -653,6 +653,37 @@ html.promo-open,html.promo-open body{overflow:hidden}
  box-shadow:0 30px 70px rgba(0,0,0,.42);
  transform:translateY(14px) scale(.97);transition:transform .3s cubic-bezier(.2,.9,.3,1.2)}
 .promo.on .promo-card{transform:none}
+/* The entry clip. Narrower than the discount card, because the clip is taller
+   than it is wide, and capped against the viewport height so the line under it
+   and the button are both still on screen on a short phone. */
+.intro-card{width:min(400px,100%);padding:42px 18px 20px}
+.intro-stage{position:relative;width:fit-content;max-width:100%;margin:0 auto;
+ border-radius:16px;overflow:hidden;background:#141210;line-height:0;cursor:pointer}
+.intro-v{display:block;width:auto;height:auto;max-width:100%;max-height:min(54vh,480px)}
+/* Shown when the clip is paused, or when the browser refused to start it. */
+.intro-stage::after{content:"";position:absolute;top:50%;left:50%;
+ width:58px;height:58px;margin:-29px 0 0 -29px;border-radius:50%;
+ background:var(--red);box-shadow:0 8px 22px rgba(0,0,0,.42);
+ opacity:0;transition:opacity .2s ease;pointer-events:none}
+.intro-stage::before{content:"";position:absolute;top:50%;left:50%;z-index:2;
+ transform:translate(-46%,-50%);
+ border-left:18px solid #fff;border-top:11px solid transparent;border-bottom:11px solid transparent;
+ opacity:0;transition:opacity .2s ease;pointer-events:none}
+.intro-stage.paused::after,.intro-stage.paused::before{opacity:1}
+.intro-snd{position:absolute;right:10px;bottom:10px;z-index:3;
+ width:42px;height:42px;border:0;border-radius:50%;cursor:pointer;
+ background:rgba(0,0,0,.55);color:#fff;display:grid;place-items:center;
+ box-shadow:0 4px 14px rgba(0,0,0,.4)}
+.intro-snd svg{width:22px;height:22px}
+.intro-snd .intro-wave{opacity:0}
+.intro-snd.on{background:var(--red)}
+.intro-snd.on .intro-wave{opacity:1}
+.intro-snd.on .intro-cross{opacity:0}
+.intro-snd:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+.intro-line{margin:14px 0 4px;font-weight:800;font-size:1.02rem;line-height:1.35;
+ color:var(--ink)}
+@media (prefers-reduced-motion: reduce){
+ .intro-stage::after,.intro-stage::before{transition:none}}
 .promo-mark{position:absolute;top:-34px;left:50%;transform:translateX(-50%);
  width:68px;height:68px;border-radius:50%;background-size:cover;background-position:center;
  border:3px solid var(--green);background-color:var(--paper);

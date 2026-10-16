@@ -849,6 +849,13 @@ ES.update({
    "Gracias, Belice, por su apoyo constante a Taco Taco.",
  "Start My Order":   "Comenzar mi pedido",
  "Close this offer": "Cerrar esta oferta",
+
+ # The free carnitas clip
+ "Come get your free carnitas tacos. For a limited time, while supplies last!":
+   "\u00a1Venga por sus tacos de carnitas gratis! Por tiempo limitado, "
+   "hasta agotar existencias.",
+ "Turn the sound on":  "Activar el sonido",
+ "Turn the sound off": "Desactivar el sonido",
  # The basket and the WhatsApp message. These two have to read the same in
  # either language, and the build checks that they do.
  "September Celebration \u2014 5% Website Discount":
