@@ -92,6 +92,32 @@ The 256px file is what is served into a 46px slot, which is what keeps the
 mascot crisp on a phone. It is used only by the launcher and by the panel
 cover; the header, footer and favicon keep the plain ICB mark.
 
+## Icons
+
+`favicon.ico` at the root, plus `assets/img/icon-{48,96,144,192,512}.png`
+and `assets/img/apple-touch-icon.png`. All of them are the supplied ICB
+logo, trimmed and resized, never redrawn.
+
+The sizes are not arbitrary. Google asks for a square favicon whose side
+is a multiple of 48px, and it reads the home page to find it, so the set
+starts at 48 and climbs in multiples. Apple specifies 180 for a touch
+icon, which is why that one breaks the pattern. The root `favicon.ico`
+carries 16, 32 and 48 together, and exists because browsers and crawlers
+request `/favicon.ico` by path whether or not any markup mentions it; a
+404 there is the ordinary reason an icon never shows up in search results.
+
+The logo arrives at 480x490 with no margin to trim, so it is centred on a
+white square with four percent of breathing room, fourteen percent for the
+Apple icon since iOS clips to a rounded square and would otherwise shave
+the mark. White rather than transparency is deliberate: the mark is black
+and red, and on a dark browser tab a transparent version would disappear.
+
+To regenerate after a logo change, trim to the ink, centre on a white
+square, and resize with a Lanczos filter to each size above. At 16px a
+monogram this detailed goes soft, which is the honest cost of the rule
+that the logo is never redrawn; the 48px file, which is the one Google
+actually reads, is clean.
+
 ## Corozal Border Branch
 
 `assets/img/branches/corozal-border.*` is the supplied frame at its own

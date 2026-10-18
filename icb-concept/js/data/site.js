@@ -39,13 +39,31 @@ ICB.DATA.site = {
     email: "icb@icbinsurance.com"
   },
 
-  /* The hero's third slide plays the English campaign film muted and
-     looped as ambient motion. The films themselves, with sound and
-     controls, live in ICB.DATA.gallery.video. */
+  /* The hero's third slide plays the campaign film muted and looped as
+     ambient motion, in the language the site is being read in. Both are
+     ICB's own cuts, not one subtitled from the other: the English film
+     closes on "Life Happens Fast" and the Spanish on "La Vida Pasa
+     Rápido". The films themselves, with sound and controls, live in
+     ICB.DATA.gallery.video.
+
+     This matters more than a language toggle makes it look. Spanish is
+     the fallback language, so a visitor whose browser is not set to
+     English lands on the Spanish site without choosing anything, and
+     used to be met by the English film.
+
+     Resolved by esc() on the way into the markup, like any other
+     {en, es} pair, and the hero is rebuilt on a language change, so the
+     swap needs nothing of its own. */
   media: {
     heroVideoAvailable: true,
-    heroVideoSrc: "assets/video/icb-life-happens-fast.mp4",
-    heroVideoPoster: "assets/img/video/life-happens-fast.jpg"
+    heroVideoSrc: {
+      en: "assets/video/icb-life-happens-fast.mp4",
+      es: "assets/video/icb-life-happens-fast-es.mp4"
+    },
+    heroVideoPoster: {
+      en: "assets/img/video/life-happens-fast.jpg",
+      es: "assets/img/video/life-happens-fast-es.jpg"
+    }
   },
 
   external: {

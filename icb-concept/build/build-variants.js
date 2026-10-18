@@ -32,7 +32,13 @@ const dist = path.join(root, "dist");
 
 /* Everything a deployed site needs. The single-file preview, the docs and
    this build folder are not part of it. */
-const SHIP = ["index.html", "css", "js", "assets"];
+/* The four root files earn their place by being at the root and nowhere
+   else: a crawler probes /favicon.ico and /robots.txt by path, not by
+   following a link, so a file that ends up one directory down may as well
+   not exist. Anything added here has to be added to this list or it will
+   simply not be deployed. */
+const SHIP = ["index.html", "css", "js", "assets",
+              "favicon.ico", "site.webmanifest", "robots.txt", "sitemap.xml"];
 
 /* Carried by the folder build but not by any page: an earlier encode kept
    for reference, and the crop the Marine hero used before the boat. */

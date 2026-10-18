@@ -5,8 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ICB Concept Experience</title>
   <meta name="description" content="A next-generation digital experience concept for Insurance Corporation of Belize Ltd. Prepared by Austere Automations for private review.">
+  <!-- LAUNCH SWITCH. This single line is what keeps the concept out of
+       Google while it lives on the agency subdomain, which is deliberate:
+       a speculative ICB site should not be indexed under anyone else's
+       domain. Delete this line on the day the site goes live on ICB's own
+       domain and nothing else needs to change for indexing. -->
   <meta name="robots" content="noindex, nofollow">
-  <link rel="icon" type="image/png" href="assets/img/favicon-64.png">
+
+  <!-- Icons. Google reads the home page for a site's favicon, needs to be
+       able to crawl both, and asks for a square whose side is a multiple
+       of 48px; the old single 64px PNG met none of that last part. The
+       root favicon.ico is here because browsers and crawlers probe for it
+       by habit whether or not any markup points at it, and a 404 there is
+       the usual reason an icon never appears. Paths stay relative so the
+       folder still opens from a file:// URL. -->
+  <link rel="icon" href="favicon.ico" sizes="32x32">
+  <link rel="icon" type="image/png" sizes="48x48" href="assets/img/icon-48.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="assets/img/icon-96.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/img/icon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+
   <link rel="stylesheet" href="css/fonts.css">
   <link rel="stylesheet" href="css/site.css">
 </head>

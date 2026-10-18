@@ -90,3 +90,37 @@ or connect the Git repository for automatic deploys from a branch.
 - `node build/build-single.js` produces `dist/icb-concept.html`, a
   one-file version of the whole site for preview surfaces that need a
   single document.
+
+## Launch day: the one switch
+
+`index.html` carries
+
+    <meta name="robots" content="noindex, nofollow">
+
+and that single line is the only thing keeping the site out of Google.
+It is deliberate while the concept lives on the agency subdomain, because
+a speculative ICB site should not be indexed under anyone else's domain.
+
+Delete the line when the site goes live on ICB's own domain. Nothing else
+needs to change for indexing: `robots.txt` already allows crawling,
+`sitemap.xml` is in place, and the icons are at the paths Google expects.
+
+Two files name the host and should be pointed at the real domain at the
+same time: the `Sitemap:` line in `robots.txt` and the `<loc>` in
+`sitemap.xml`.
+
+## Icons and the favicon
+
+The favicon only appears in Google results when the home page is indexed
+and both the page and the icon are crawlable. The site ships:
+
+- `favicon.ico` at the root, carrying 16, 32 and 48px. Browsers and
+  crawlers probe this path directly, regardless of markup.
+- `assets/img/icon-{48,96,144,192,512}.png`, squares in multiples of
+  48px, which is the shape Google asks for.
+- `assets/img/apple-touch-icon.png` at 180px for iOS home screens.
+- `site.webmanifest` listing the PNG set for Android.
+
+All four root files are listed in `SHIP` in `build/build-variants.js`.
+A root file that is not in that list does not get deployed, and a
+favicon one directory down may as well not exist.

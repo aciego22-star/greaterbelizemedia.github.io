@@ -1,0 +1,12 @@
+# Google will only show a site's favicon if it can crawl both the home
+# page and the icon file, so nothing here is disallowed. Indexing itself
+# is held back by the robots meta tag in index.html while the concept
+# lives on the agency subdomain; that tag is the launch switch, not this
+# file. A page blocked here could not be crawled at all, and Google would
+# never see that tag.
+
+User-agent: *
+Allow: /
+
+# Update the host when the site moves to ICB's own domain.
+Sitemap: https://icb.austereautomations.com/sitemap.xml

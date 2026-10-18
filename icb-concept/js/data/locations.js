@@ -4,6 +4,11 @@
    map, the WhatsApp directory, the call directory, the contact flow and
    mobile quick actions.
 
+   SOURCE: ICB's own directory, "ICB | Branches, Agencies & Direct
+   Contacts", supplied by the client. Twenty-two numbered entries. Every
+   address, landline, email and WhatsApp number below is taken from it
+   verbatim. Nothing here is inferred from anywhere else.
+
    RULES
    - Every published ICB branch and agency appears here. WhatsApp
      availability does NOT decide whether a location exists.
@@ -20,20 +25,21 @@
      directory, the WhatsApp directory and the contact form.
 
    INTERNAL TODO (not client-facing):
-   - Reconcile against ICB's current Contact page and telephone directory
-     for the branches still missing a published landline, street address
-     or email: Corozal Border, Corozal, San Pedro, Santa Elena (Cayo),
-     Benque Viejo Border, Independence, Caye Caulker, San Estevan,
-     Seine Bight, San Juan.
-   - SAN NARCISO: held at active: false. It is not presented as an
-     operating branch anywhere public. Confirm its status, type and
-     contact details with ICB, then set active: true.
-   - SAN JUAN AGENCY: now verified and listed. Its map position is
-     APPROXIMATE, placed beside Independence because San Juan Village sits
-     in that part of Stann Creek; confirm the exact position with ICB.
-   - Neither Benque Town Board nor San Juan is a published payment
-     confirmation number. Their flyers verify WhatsApp service but do not
-     say those lines receive payment receipts, so neither carries
+   - SAN NARCISO (entry 19): the directory itself marks this one REVIEW
+     ONLY, with no address, telephone, email or WhatsApp confirmed and a
+     note that the premises are not published. Held at active: false and
+     presented nowhere public. Confirm with ICB, then fill in and set
+     active: true.
+   - BELLA VISTA (entry 22): contact details are confirmed, but the
+     directory gives no district for it and the village sits close to the
+     Stann Creek and Toledo boundary. District and map position are both
+     UNCONFIRMED. Ask ICB which district they file it under.
+   - SAN JUAN: map position is APPROXIMATE, placed beside Independence
+     because San Juan Village sits in that part of Stann Creek; confirm
+     the exact position with ICB.
+   - Neither Benque Town Board, San Juan nor Bella Vista is a published
+     payment confirmation number. Their entries verify WhatsApp service
+     but do not say those lines receive payment receipts, so none carries
      receipt: true. Add it only if ICB confirms.
 
    whatsapps: array of { label?, display, wa, callable?, receipt? }
@@ -48,6 +54,12 @@
                confirmations. The payments page is built from this flag,
                so a WhatsApp line is never presented as a receipt channel
                unless ICB says it is.
+
+   Where the directory gives one number as both the telephone and the
+   WhatsApp line, it is held ONCE in whatsapps and left callable, so it
+   reaches the calling surfaces and the messaging ones without being
+   listed twice on the same card.
+
    map: {x, y} are projected town coordinates inside the accurate Belize
    map SVG (viewBox 0 0 300 560), derived from real latitude/longitude.
    ========================================================================== */
@@ -65,11 +77,10 @@ ICB.DATA.locations = [
     type: "Branch",
     district: "Corozal",
     town: "Santa Elena Border, Corozal",
-    address: "Northern Border, Santa Elena, Corozal District",
-    phones: [],
-    corporateLine: true,
+    address: "Corozal Border crossing, Santa Elena Village, Corozal District",
+    phones: [{ display: "+501 423-8019", tel: "+5014238019" }],
     whatsapps: [{ display: "+501 613-0919", wa: "5016130919", receipt: true }],
-    email: null,
+    email: "icb_corozalborder@icbinsurance.com",
     mapQuery: "Santa Elena Border Crossing, Corozal, Belize",
     map: { x: 146.2, y: 68.1 },
     note: null
@@ -80,25 +91,25 @@ ICB.DATA.locations = [
     type: "Branch",
     district: "Corozal",
     town: "Corozal Town",
-    address: "Corozal Town, Corozal District",
-    phones: [],
-    corporateLine: true,
+    address: "1st Street North, Corozal Town",
+    phones: [{ display: "+501 422-2759", tel: "+5014222759" }],
     whatsapps: [{ display: "+501 613-4627", wa: "5016134627", receipt: true }],
-    email: null,
-    mapQuery: "Insurance Corporation of Belize, Corozal Town, Belize",
+    email: "icb_corozaltown@icbinsurance.com",
+    mapQuery: "Insurance Corporation of Belize, 1st Street North, Corozal Town, Belize",
     map: { x: 145.4, y: 82.6 },
     note: null
   },
-  /* HELD BACK, NOT PUBLIC. ICB's current operating status for San Narciso
-     is not verified from here, so it is not offered as a branch a visitor
-     can travel to or call. The record stays for reference only. */
+  /* HELD BACK, NOT PUBLIC. ICB's own directory marks this entry REVIEW
+     ONLY and confirms nothing about it: no street address, no telephone,
+     no email, no WhatsApp, no hours. It is not offered as a branch a
+     visitor can travel to or call. The record stays for reference only. */
   {
     id: "san-narciso",
-    name: "San Narciso",
+    name: "San Narciso Branch",
     type: "Branch",
     district: "Corozal",
     town: "San Narciso Village",
-    address: "San Narciso Village, Corozal District",
+    address: "San Narciso, Corozal District",
     phones: [],
     corporateLine: true,
     whatsapps: [],
@@ -119,7 +130,7 @@ ICB.DATA.locations = [
     address: "#48 Belize Corozal Road, Orange Walk Town",
     phones: [{ display: "+501 322-3509", tel: "+5013223509" }],
     whatsapps: [{ display: "+501 613-0817", wa: "5016130817", receipt: true }],
-    email: null,
+    email: "icb_ow@icbinsurance.com",
     mapQuery: "Insurance Corporation of Belize, 48 Belize Corozal Road, Orange Walk Town, Belize",
     map: { x: 118.0, y: 133.9 },
     note: null
@@ -130,11 +141,10 @@ ICB.DATA.locations = [
     type: "Agency",
     district: "Orange Walk",
     town: "San Estevan Village",
-    address: "San Estevan Village, Orange Walk District",
-    phones: [],
-    corporateLine: true,
+    address: "San Estevan Village",
+    phones: [{ display: "+501 322-0659", tel: "+5013220659" }],
     whatsapps: [],
-    email: null,
+    email: "icb_sanestevan@icbinsurance.com",
     mapQuery: "San Estevan Village, Orange Walk District, Belize",
     map: { x: 128.0, y: 139.3 },
     note: null
@@ -147,7 +157,7 @@ ICB.DATA.locations = [
     type: "Corporate Office",
     district: "Belize",
     town: "Belize City",
-    address: "16 Daly Street, P.O. Box 519, Belize City",
+    address: "#16 Daly Street, Belize City",
     phones: [{ display: "+501 224-5328", tel: "+5012245328" }, { display: "+501 224-5329", tel: "+5012245329" }],
     whatsapps: [
       { label: { en: "Line 1", es: "Línea 1" }, display: "+501 613-0693", wa: "5016130693", receipt: true },
@@ -167,7 +177,7 @@ ICB.DATA.locations = [
     address: "#38 Central American Boulevard, Belize City",
     phones: [{ display: "+501 222-4079", tel: "+5012224079" }],
     whatsapps: [{ display: "+501 613-1054", wa: "5016131054", receipt: true }],
-    email: null,
+    email: "icb_southside@icbinsurance.com",
     mapQuery: "Insurance Corporation of Belize, 38 Central American Boulevard, Belize City, Belize",
     map: { x: 174.6, y: 231.2 },
     note: null
@@ -178,11 +188,11 @@ ICB.DATA.locations = [
     type: "Branch",
     district: "Belize",
     town: "Ladyville",
-    address: "Airport Plaza, 8 1/2 Miles Philip Goldson Highway, Ladyville",
+    address: "Airport Plaza, 8 1/2 Miles Northern Highway, Ladyville",
     phones: [{ display: "+501 670-6970", tel: "+5016706970" }],
     whatsapps: [{ display: "+501 613-0470", wa: "5016130470", receipt: true }],
-    email: null,
-    mapQuery: "Airport Plaza, Philip Goldson Highway, Ladyville, Belize",
+    email: "icb_ladyville@icbinsurance.com",
+    mapQuery: "Airport Plaza, Northern Highway, Ladyville, Belize",
     map: { x: 160.3, y: 219.8 },
     note: null
   },
@@ -192,12 +202,11 @@ ICB.DATA.locations = [
     type: "Branch",
     district: "Belize",
     town: "San Pedro, Ambergris Caye",
-    address: "Pescador Drive, San Pedro Town, Ambergris Caye",
-    phones: [],
-    corporateLine: true,
+    address: "Coconut Drive, San Pedro Town",
+    phones: [{ display: "+501 226-4099", tel: "+5012264099" }],
     whatsapps: [{ display: "+501 610-2941", wa: "5016102941", receipt: true }],
-    email: null,
-    mapQuery: "Pescador Drive, San Pedro Town, Ambergris Caye, Belize",
+    email: "icb_sanpedro@icbinsurance.com",
+    mapQuery: "Coconut Drive, San Pedro Town, Ambergris Caye, Belize",
     map: { x: 211.6, y: 160.2 },
     note: null
   },
@@ -207,12 +216,11 @@ ICB.DATA.locations = [
     type: "Agency",
     district: "Belize",
     town: "Caye Caulker",
-    address: "Caye Caulker Village, Belize District",
-    phones: [],
-    corporateLine: true,
+    address: "Avenida Hicaco, Caye Caulker",
+    phones: [{ display: "+501 226-0398", tel: "+5012260398" }],
     whatsapps: [{ display: "+501 626-4748", wa: "5016264748" }],
-    email: null,
-    mapQuery: "Caye Caulker, Belize",
+    email: "icb_cayecaulker@icbinsurance.com",
+    mapQuery: "Avenida Hicaco, Caye Caulker, Belize",
     map: { x: 202.3, y: 189.6 },
     note: null
   },
@@ -227,7 +235,7 @@ ICB.DATA.locations = [
     address: "#6095 South Ring Road, Belmopan City",
     phones: [{ display: "+501 822-0473", tel: "+5018220473" }],
     whatsapps: [{ display: "+501 610-9178", wa: "5016109178", receipt: true }],
-    email: null,
+    email: "icb_belmopan@icbinsurance.com",
     mapQuery: "Insurance Corporation of Belize, 6095 South Ring Road, Belmopan, Belize",
     map: { x: 85.5, y: 270.3 },
     note: null
@@ -238,12 +246,11 @@ ICB.DATA.locations = [
     type: "Branch",
     district: "Cayo",
     town: "Santa Elena, Cayo",
-    address: "Santa Elena Town, Cayo District",
-    phones: [],
-    corporateLine: true,
+    address: "#74 Western Highway, Santa Elena Town",
+    phones: [{ display: "+501 824-2454", tel: "+5018242454" }],
     whatsapps: [{ display: "+501 614-0437", wa: "5016140437", receipt: true }],
-    email: null,
-    mapQuery: "Insurance Corporation of Belize, Santa Elena, Cayo, Belize",
+    email: "icb_santaelena@icbinsurance.com",
+    mapQuery: "Insurance Corporation of Belize, 74 Western Highway, Santa Elena, Cayo, Belize",
     map: { x: 44.0, y: 282.4 },
     note: null
   },
@@ -253,47 +260,63 @@ ICB.DATA.locations = [
     type: "Branch",
     district: "Cayo",
     town: "San Ignacio",
-    address: "San Ignacio Town, Cayo District",
+    address: "Buena Vista & King Streets, San Ignacio Town",
     phones: [{ display: "+501 824-3009", tel: "+5018243009" }],
     whatsapps: [{ display: "+501 613-4138", wa: "5016134138", receipt: true }],
     email: "icb_sanignacio@icbinsurance.com",
-    mapQuery: "Insurance Corporation of Belize, San Ignacio Town, Belize",
+    mapQuery: "Insurance Corporation of Belize, Buena Vista Street, San Ignacio Town, Belize",
     map: { x: 38.3, y: 288.9 },
     note: null
   },
+  /* THREE separate locations share this town, and the directory lists
+     them as three: the border branch at the crossing itself, the agency
+     on George Price Boulevard, and the town board branch on George
+     Street. An earlier draft treated the agency and the town board as one
+     record under the belief they were the same office; the directory
+     gives them different addresses, different numbers and different
+     emails, so they are not. All three carry the same town name, which
+     also means the map draws one label for the town rather than three on
+     top of each other. */
   {
     id: "benque-viejo-border",
     name: "Benque Viejo Border Branch",
     type: "Branch",
     district: "Cayo",
-    town: "Benque Viejo del Carmen",
-    address: "Western Border, Benque Viejo del Carmen, Cayo District",
-    phones: [],
-    corporateLine: true,
+    town: "Benque Viejo Town",
+    address: "Belize–Guatemala border crossing, Benque Viejo Town, Cayo District",
+    phones: [{ display: "+501 823-2319", tel: "+5018232319" }],
     whatsapps: [{ display: "+501 613-0548", wa: "5016130548", receipt: true }],
-    email: null,
+    email: "icb_benqueagency@icbinsurance.com",
     mapQuery: "Western Border Crossing, Benque Viejo del Carmen, Belize",
     map: { x: 24.2, y: 296.8 },
     note: null
   },
-  /* Was listed as "Benque Viejo Agency", a placeholder for the interior
-     Benque location we could not resolve. ICB has since verified it as
-     the Benque Town Board Branch. The border branch below is a separate
-     location and stays. The published number is an Office/WhatsApp line,
-     so it is held once here and serves both the call and WhatsApp
-     surfaces rather than being duplicated into phones. */
+  {
+    id: "benque-viejo-agency",
+    name: "Benque Viejo Agency",
+    type: "Agency",
+    district: "Cayo",
+    town: "Benque Viejo Town",
+    address: "#58 George Price Boulevard, Benque Viejo Town",
+    phones: [{ display: "+501 615-3266", tel: "+5016153266" }, { display: "+501 671-1100", tel: "+5016711100" }],
+    whatsapps: [],
+    email: "benqueagency@icbinsurance.com",
+    mapQuery: "58 George Price Boulevard, Benque Viejo del Carmen, Belize",
+    map: { x: 29.4, y: 297.9 },
+    note: null
+  },
   {
     id: "benque-town-board",
     name: "Benque Town Board Branch",
     type: "Branch",
     district: "Cayo",
-    town: "Benque Town",
-    address: "39 George Street, Benque Town",
+    town: "Benque Viejo Town",
+    address: "39 George Street, Benque Town, Cayo District",
     phones: [],
     whatsapps: [{ display: "+501 656-7521", wa: "5016567521" }],
     email: null,
     mapQuery: "39 George Street, Benque Viejo del Carmen, Belize",
-    map: { x: 27.7, y: 299.0 },
+    map: { x: 27.7, y: 300.6 },
     note: null
   },
 
@@ -318,20 +341,18 @@ ICB.DATA.locations = [
     type: "Agency",
     district: "Stann Creek",
     town: "Seine Bight Village",
-    address: "Seine Bight Village, Placencia Peninsula, Stann Creek District",
-    phones: [],
-    corporateLine: true,
+    address: "Main Street, Seine Bight Village",
+    phones: [{ display: "+501 523-3555", tel: "+5015233555" }],
     whatsapps: [],
-    email: null,
-    mapQuery: "Seine Bight Village, Stann Creek District, Belize",
+    email: "icb_seinebight@icbinsurance.com",
+    mapQuery: "Main Street, Seine Bight Village, Stann Creek District, Belize",
     map: { x: 149.0, y: 374.4 },
     note: null
   },
-  /* WhatsApp only. ICB's flyer identifies 671-7916 as a WhatsApp number
-     and does not present it as an office or voice line, so callable is
-     false and it never renders as a call action. The call directory
-     reaches this agency through the Corporate Office instead, labelled as
-     the Corporate Office.
+  /* The directory now lists 671-7916 as this agency's telephone as well
+     as its WhatsApp line. An earlier flyer presented it as WhatsApp only,
+     which is why this record used to carry callable: false; the
+     directory supersedes that, so the number dials again.
 
      INTERNAL TODO: the map position is approximate, set beside
      Independence because San Juan Village sits in that part of Stann
@@ -342,10 +363,9 @@ ICB.DATA.locations = [
     type: "Agency",
     district: "Stann Creek",
     town: "San Juan Village",
-    address: "San Juan Village, Stann Creek District",
+    address: "San Juan Village",
     phones: [],
-    corporateLine: true,
-    whatsapps: [{ display: "+501 671-7916", wa: "5016717916", callable: false }],
+    whatsapps: [{ display: "+501 671-7916", wa: "5016717916" }],
     email: "icb_sanjuan@icbinsurance.com",
     mapQuery: "San Juan Village, Stann Creek District, Belize",
     map: { x: 145.6, y: 384.2 },
@@ -357,12 +377,11 @@ ICB.DATA.locations = [
     type: "Branch",
     district: "Stann Creek",
     town: "Independence Village",
-    address: "Independence Village, Stann Creek District",
-    phones: [],
-    corporateLine: true,
+    address: "219, Corner of Hercules & Toucan Streets, Independence",
+    phones: [{ display: "+501 523-2041", tel: "+5015232041" }],
     whatsapps: [{ display: "+501 615-6951", wa: "5016156951", receipt: true }],
-    email: null,
-    mapQuery: "Insurance Corporation of Belize, Independence Village, Belize",
+    email: "icb_independence@icbinsurance.com",
+    mapQuery: "Corner of Hercules and Toucan Streets, Independence, Belize",
     map: { x: 142.4, y: 388.0 },
     note: null
   },
@@ -374,12 +393,32 @@ ICB.DATA.locations = [
     type: "Branch",
     district: "Toledo",
     town: "Punta Gorda",
-    address: "#31 Main Middle Street, Punta Gorda Town",
+    address: "George Price Street, Punta Gorda",
     phones: [{ display: "+501 722-2291", tel: "+5017222291" }],
     whatsapps: [{ display: "+501 615-8046", wa: "5016158046", receipt: true }],
-    email: null,
-    mapQuery: "31 Main Middle Street, Punta Gorda Town, Belize",
+    email: "icb_pg@icbinsurance.com",
+    mapQuery: "George Price Street, Punta Gorda Town, Belize",
     map: { x: 79.4, y: 459.3 },
+    note: null
+  },
+  /* DISTRICT UNCONFIRMED. The directory lists Bella Vista with full
+     contact details but no district, and the village sits close to the
+     Stann Creek and Toledo boundary on the Southern Highway. Filed under
+     Toledo and placed approximately, which governs both the district
+     filter and the map dot. One line to move if ICB files it under Stann
+     Creek instead. */
+  {
+    id: "bella-vista",
+    name: "Bella Vista Agency",
+    type: "Agency",
+    district: "Toledo",
+    town: "Bella Vista Village",
+    address: "Bella Vista Village",
+    phones: [],
+    whatsapps: [{ display: "+501 679-3896", wa: "5016793896" }],
+    email: "icb_bellavista@icbinsurance.com",
+    mapQuery: "Bella Vista Village, Belize",
+    map: { x: 133.6, y: 399.9 },
     note: null
   }
 ];

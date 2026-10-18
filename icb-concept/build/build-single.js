@@ -96,11 +96,25 @@ if (!result.includes(SEED)) {
 }
 result = result.replace(SEED, "ICB.ASSETS = " + JSON.stringify(assets) + ";");
 
-/* Static <head> references (the favicon) are plain attributes, not
+/* Static <head> references (the icons) are plain attributes, not
    data-asset slots, so they are substituted directly. There is one of
    each, so no duplication is introduced. */
 result = result.replace(/(href|content)="(assets\/[^"]+)"/g, (m, attr, rel) =>
   assets[rel] ? `${attr}="${assets[rel]}"` : m);
+
+/* The root files go the other way: drop them. A single file has no host
+   to serve /favicon.ico or a manifest from, so these links would be the
+   one thing in the bundle still reaching for a companion folder, and
+   would quietly 404 wherever the file was opened. The inlined PNG icons
+   above already give it a tab icon. */
+const ROOT_LINKS = /\n\s*<link rel="(?:icon" href="favicon\.ico|manifest)"[^>]*>/g;
+const dropped = (result.match(ROOT_LINKS) || []).length;
+if (dropped !== 2) {
+  console.error("Build error: expected the favicon.ico and manifest links " +
+                "in the head, found " + dropped + ". Did index.html change?");
+  process.exit(1);
+}
+result = result.replace(ROOT_LINKS, "");
 
 /* Every asset path the bundle asks for must be a key in the map,
    otherwise the single file would reach for a companion folder. */

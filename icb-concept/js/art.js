@@ -577,30 +577,204 @@ window.ICB = window.ICB || {};
   /* Belize map component (accurate)                                     */
   /* ------------------------------------------------------------------ */
 
+  var MAP_W = 300, MAP_H = 560;
+  var LABEL_GAP = 11;    /* clear air between a dot and its name */
+  var LABEL_DY = 3.5;    /* baseline nudge, so the name centres on the dot */
+  var LABEL_SEP = 1.4;   /* clear air between two names */
+  var MAP_EDGE = 3;      /* nothing closer than this to the frame */
+
+  /* District names, placed by hand in open ground. A centroid of each
+     district's pins would read as a caption dropped in the middle of the
+     cluster it is captioning, which is the one place it cannot go. The
+     solver below treats these as fixed: town names move around them.
+
+     Each sits inside the coastline at its own latitude, checked against
+     the land path rather than eyeballed: the north of the country is
+     narrow, and the first placement put two of these half in the sea.
+     Corozal and Orange Walk therefore sit lower in their districts than
+     their pins do, which is where the land is wide enough to hold them. */
+  var DISTRICT_LABELS = [
+    { name: "Corozal",     x: 150, y: 102 },
+    { name: "Orange Walk", x: 120, y: 162 },
+    { name: "Belize",      x: 124, y: 216 },
+    { name: "Cayo",        x: 52,  y: 252 },
+    { name: "Stann Creek", x: 108, y: 338 },
+    { name: "Toledo",      x: 66,  y: 424 }
+  ];
+
   function belizeMap(options) {
     options = options || {};
     var markers = options.markers || [];
     var labels = options.labels !== false;
+    /* The mini map on the home page carries no names, so it gets no
+       districts either: there is nothing there for them to caption. */
+    var districts = labels && options.districts !== false;
     var cls = options.mini ? "belize-map belize-map--mini" : "belize-map";
-    var out = '<svg viewBox="0 0 300 560" class="' + cls + '" role="img" aria-label="' +
+    var out = '<svg viewBox="0 0 ' + MAP_W + ' ' + MAP_H + '" class="' + cls +
+      '" role="img" aria-label="' +
       (options.ariaLabel || "Map of Belize showing ICB locations") + '">';
     out += '<path d="' + BELIZE_MAIN + '" class="bm-land"/>';
     for (var i = 0; i < BELIZE_ISLANDS.length; i++) {
       out += '<path d="' + BELIZE_ISLANDS[i] + '" class="bm-isle"/>';
     }
+
+    /* Districts first, so they sit behind the pins rather than over them. */
+    if (districts) {
+      out += '<g class="bm-districts" aria-hidden="true">';
+      for (var d = 0; d < DISTRICT_LABELS.length; d++) {
+        var dl = DISTRICT_LABELS[d];
+        out += '<text class="bm-district" text-anchor="middle" data-map-fixed="1"' +
+          ' x="' + dl.x + '" y="' + dl.y + '"' +
+          ' data-ax="' + dl.x + '" data-ay="' + dl.y + '">' +
+          dl.name.toUpperCase() + "</text>";
+      }
+      out += "</g>";
+    }
+
     for (var j = 0; j < markers.length; j++) {
       var m = markers[j];
-      out += '<g class="bm-marker" data-map-id="' + m.id + '">' +
-        '<circle cx="' + m.x + '" cy="' + m.y + '" r="10" class="bm-halo"/>' +
+      var named = labels && m.label;
+      out += '<g class="bm-marker" data-map-id="' + m.id + '">';
+      /* The leader is drawn before the dot so the dot covers its own
+         starting point, and stays invisible until the solver decides the
+         name has moved far enough to need one. */
+      if (named) {
+        out += '<line class="bm-leader" data-leader="' + m.id + '" x1="' + m.x +
+          '" y1="' + m.y + '" x2="' + m.x + '" y2="' + m.y + '"/>';
+      }
+      out += '<circle cx="' + m.x + '" cy="' + m.y + '" r="10" class="bm-halo"/>' +
         '<circle cx="' + m.x + '" cy="' + m.y + '" r="4.5" class="bm-dot"/>';
-      if (labels && m.label) {
-        var anchor = m.labelSide === "left" ? "end" : "start";
-        var dx = m.labelSide === "left" ? -12 : 12;
-        out += '<text x="' + (m.x + dx) + '" y="' + (m.y + 4) + '" text-anchor="' + anchor + '" class="bm-label">' + m.label + "</text>";
+      if (named) {
+        var side = m.labelSide === "left" ? "left" : "right";
+        var dx = side === "left" ? -LABEL_GAP : LABEL_GAP;
+        out += '<text x="' + (m.x + dx) + '" y="' + (m.y + LABEL_DY) + '"' +
+          ' text-anchor="' + (side === "left" ? "end" : "start") + '" class="bm-label"' +
+          ' data-side="' + side + '" data-ax="' + m.x + '" data-ay="' + m.y +
+          '" data-leader-for="' + m.id + '">' + m.label + "</text>";
       }
       out += "</g>";
     }
     return out + "</svg>";
+  }
+
+  /* --------------------------------------------------------------------
+     Map label placement.
+
+     Writing the names next to their dots and hoping is what produced
+     eight overlapping pairs on a map of twenty-two locations: Belize has
+     three ICB offices in Benque Viejo Town alone, and four more strung
+     along a few miles of the Southern Highway. So the names are measured
+     after they are in the document and nudged vertically until none of
+     them touch, with a leader line drawn to any that had to travel.
+
+     Measured, not estimated. Guessing text width from character counts
+     means a magic constant per font, per weight, per language, and the
+     Spanish place names are not the English ones. getBBox knows. This
+     runs from the view's mounted hook, in the same synchronous task that
+     wrote the markup, so the browser has not painted yet and nothing is
+     ever seen in the wrong place.
+     -------------------------------------------------------------------- */
+  function layoutMapLabels(svg) {
+    if (!svg || typeof svg.querySelectorAll !== "function") return;
+    var nodes = svg.querySelectorAll(".bm-label, .bm-district");
+    if (!nodes.length) return;
+
+    var items = [], i, j, k, box, el;
+    for (i = 0; i < nodes.length; i++) {
+      el = nodes[i];
+      /* getBBox throws in a detached tree and returns nothing useful
+         before the font is resolved. Either way, leaving the names where
+         the markup put them is better than moving them by a bad measure. */
+      try { box = el.getBBox(); } catch (e) { return; }
+      if (!box || !box.width) return;
+      var y0 = parseFloat(el.getAttribute("y"));
+      items.push({
+        el: el,
+        fixed: el.getAttribute("data-map-fixed") === "1",
+        ax: parseFloat(el.getAttribute("data-ax")),
+        ay: parseFloat(el.getAttribute("data-ay")),
+        side: el.getAttribute("data-side") || "mid",
+        home: y0, y: y0, w: box.width, h: box.height,
+        /* Baseline to the top of the glyph box, so a box can be worked
+           out for any baseline the solver lands on. */
+        top: box.y - y0,
+        leader: svg.querySelector('[data-leader="' + el.getAttribute("data-leader-for") + '"]')
+      });
+    }
+
+    function spanX(it) {
+      if (it.side === "mid") { it.x0 = it.ax - it.w / 2; it.x1 = it.ax + it.w / 2; return; }
+      if (it.side === "left") { it.x1 = it.ax - LABEL_GAP; it.x0 = it.x1 - it.w; return; }
+      it.x0 = it.ax + LABEL_GAP; it.x1 = it.x0 + it.w;
+    }
+
+    /* Side first. The preference comes in from the view and is only
+       overridden when the name would hang off the frame, which is what a
+       long name on a dot out at the cayes does. */
+    for (i = 0; i < items.length; i++) {
+      spanX(items[i]);
+      if (items[i].fixed) continue;
+      if (items[i].x1 > MAP_W - MAP_EDGE &&
+          items[i].ax - LABEL_GAP - items[i].w > MAP_EDGE) {
+        items[i].side = "left"; spanX(items[i]);
+      } else if (items[i].x0 < MAP_EDGE &&
+                 items[i].ax + LABEL_GAP + items[i].w < MAP_W - MAP_EDGE) {
+        items[i].side = "right"; spanX(items[i]);
+      }
+    }
+
+    /* Relaxation. Overlapping pairs push apart vertically; a weak pull
+       home keeps a name from drifting further than the crowding needs.
+       The pull is switched off for the last stretch so the two forces
+       cannot argue forever and leave an overlap behind. */
+    for (k = 0; k < 360; k++) {
+      var moved = false;
+      for (i = 0; i < items.length; i++) {
+        for (j = i + 1; j < items.length; j++) {
+          var a = items[i], b = items[j];
+          if (a.fixed && b.fixed) continue;
+          if (a.x1 <= b.x0 || b.x1 <= a.x0) continue;
+          var at = a.y + a.top, bt = b.y + b.top;
+          var gap = at < bt ? bt - (at + a.h) : at - (bt + b.h);
+          if (gap >= LABEL_SEP) continue;
+          var push = (LABEL_SEP - gap) / 2 + 0.01;
+          var dir = a.y <= b.y ? -1 : 1;
+          if (a.fixed) b.y -= dir * push * 2;
+          else if (b.fixed) a.y += dir * push * 2;
+          else { a.y += dir * push; b.y -= dir * push; }
+          moved = true;
+        }
+      }
+      for (i = 0; i < items.length; i++) {
+        var it = items[i];
+        if (it.fixed) continue;
+        if (k < 240) it.y += (it.home - it.y) * 0.02;
+        var lo = MAP_EDGE - it.top;
+        var hi = MAP_H - MAP_EDGE - it.top - it.h;
+        if (it.y < lo) it.y = lo;
+        if (it.y > hi) it.y = hi;
+      }
+      if (!moved) break;
+    }
+
+    for (i = 0; i < items.length; i++) {
+      var f = items[i];
+      if (f.fixed) continue;
+      f.el.setAttribute("y", f.y.toFixed(1));
+      f.el.setAttribute("text-anchor", f.side === "left" ? "end" : "start");
+      f.el.setAttribute("x", (f.side === "left" ? f.ax - LABEL_GAP : f.ax + LABEL_GAP).toFixed(1));
+      if (!f.leader) continue;
+      /* A name still beside its own dot needs no line drawn to it. */
+      if (Math.abs(f.y - f.home) > 2.5) {
+        f.leader.setAttribute("x1", f.ax.toFixed(1));
+        f.leader.setAttribute("y1", f.ay.toFixed(1));
+        f.leader.setAttribute("x2", (f.side === "left" ? f.x1 + 1.5 : f.x0 - 1.5).toFixed(1));
+        f.leader.setAttribute("y2", (f.y + f.top + f.h / 2).toFixed(1));
+        f.leader.classList.add("is-on");
+      } else {
+        f.leader.classList.remove("is-on");
+      }
+    }
   }
 
   /* ------------------------------------------------------------------ */
@@ -837,6 +1011,7 @@ window.ICB = window.ICB || {};
   ICB.art = {
     panel: panel,
     belizeMap: belizeMap,
+    layoutMapLabels: layoutMapLabels,
     glyph: glyph,
     waIcon: waIcon,
     enhance: enhance,

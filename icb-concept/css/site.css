@@ -1122,19 +1122,50 @@ button {
 .bm-halo { fill: var(--c-accent); opacity: 0; transition: opacity var(--t-fast) var(--ease); }
 .bm-marker.is-active .bm-halo, .bm-marker:hover .bm-halo { opacity: 0.22; }
 .bm-marker.is-dim { opacity: 0.28; }
+/* 9.5 rather than the 11 this started at. The map is 300 units wide and
+   carries twenty-two pins, several of them in the same town, so the
+   names were taking up more of it than the country. */
 .bm-label {
   font-family: var(--font-sans);
-  font-size: 11px;
+  font-size: 9.5px;
   font-weight: 600;
   letter-spacing: 0.04em;
   fill: var(--grey-600);
 }
 .bm-marker.is-active .bm-label { fill: var(--ink); font-weight: 700; }
 
+/* District names. Deliberately quieter than the town names and set wide:
+   they are there to tell you which part of the country you are looking
+   at, not to compete with the pins. */
+.bm-district {
+  font-family: var(--font-sans);
+  font-size: 8.5px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  /* The town names are the content and the districts are the context, so
+     the districts have to sit back. Lightened by opacity rather than by a
+     new grey, because the palette's neutral ladder stops at grey-600 and
+     the map is not the place to extend it. */
+  fill: var(--grey-600);
+  opacity: 0.55;
+}
+
+/* Drawn only for a name the solver had to move, so you can still tell
+   which dot it belongs to. */
+.bm-leader {
+  stroke: var(--grey-600);
+  stroke-width: 0.7;
+  opacity: 0;
+}
+.bm-leader.is-on { opacity: 0.6; }
+.bm-marker.is-dim .bm-leader.is-on { opacity: 0.25; }
+
 .on-dark .bm-land { fill: rgba(255, 255, 255, 0.04); stroke: var(--inv); stroke-opacity: 0.6; stroke-width: 1.1; }
 .on-dark .bm-isle { fill: none; stroke: rgba(255, 255, 255, 0.35); }
 .on-dark .bm-dot { stroke: var(--black-950); }
 .on-dark .bm-label { fill: var(--inv-soft); }
+.on-dark .bm-district { fill: rgba(255, 255, 255, 0.38); }
+.on-dark .bm-leader { stroke: rgba(255, 255, 255, 0.45); }
 
 /* ============================ Home sections ============================ */
 
