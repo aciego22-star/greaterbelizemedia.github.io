@@ -2519,6 +2519,19 @@ select.input {
 .loc-head h3 { margin: 0; font-size: var(--fs-500); }
 .loc-addr { color: var(--c-text-soft); font-size: var(--fs-300); margin-bottom: var(--sp-3); }
 .loc-note { color: var(--c-text-soft); font-size: var(--fs-300); font-style: italic; margin-bottom: var(--sp-3); }
+/* Opening hours. A fact about the branch, like the address, so it sits
+   with the address rather than among the actions: nothing here is a
+   button. */
+.loc-hours {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  color: var(--c-text-soft);
+  font-size: var(--fs-300);
+  margin-bottom: var(--sp-3);
+}
+.loc-hours .glyph { width: 16px; height: 16px; flex: none; opacity: 0.75; }
+.loc-hours b { font-weight: 600; color: var(--c-text); }
 .loc-actions { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
 .loc-map-panel {
   position: sticky;

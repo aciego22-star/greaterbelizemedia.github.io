@@ -39,6 +39,20 @@ ICB.DATA.site = {
     email: "icb@icbinsurance.com"
   },
 
+  /* ICB's directory gives the same opening hours for every branch and
+     agency, so they are held once here rather than copied twenty-one
+     times. A location can override it by setting its own hours, or opt
+     out entirely with hours: false, and neither is needed today.
+
+     Written "to" rather than with a dash, which is how the rest of the
+     site writes a range. "(Belize time)" is in the directory and is left
+     off the cards: every one of these branches is in Belize, and the
+     phrase would repeat twenty-one times down one page. */
+  hours: {
+    en: "Monday to Friday, 8:00 AM to 5:00 PM",
+    es: "Lunes a viernes, 8:00 AM a 5:00 PM"
+  },
+
   /* The hero's third slide plays the campaign film muted and looped as
      ambient motion, in the language the site is being read in. Both are
      ICB's own cuts, not one subtitled from the other: the English film

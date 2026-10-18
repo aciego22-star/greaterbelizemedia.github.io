@@ -821,6 +821,9 @@ window.ICB = window.ICB || {};
     "arrow-up": '<path d="M12 19.5v-15M5.6 10.9L12 4.5l6.4 6.4"/>',
     check: '<path d="M4.8 12.6l4.9 4.9L19.4 7.4"/>',
     compass: '<circle cx="12" cy="12" r="8.6"/><path d="M15.3 8.7l-2.1 4.6-4.5 2.1 2.1-4.6z"/><circle cx="12" cy="12" r="0.8" fill="currentColor" stroke="none"/>',
+    /* Hands at ten past eight, so neither lies along an axis and the
+       dial reads as a clock at sixteen pixels rather than a circle. */
+    clock: '<circle cx="12" cy="12" r="8.6"/><path d="M12 6.8V12l3.6 2.15"/>',
     close: '<path d="M6 6l12 12M18 6L6 18"/>',
     pause: '<path d="M9 6v12M15 6v12"/>',
     "chev-left": '<path d="M14.5 5.5L8 12l6.5 6.5"/>',

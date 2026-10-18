@@ -30,10 +30,6 @@
      note that the premises are not published. Held at active: false and
      presented nowhere public. Confirm with ICB, then fill in and set
      active: true.
-   - BELLA VISTA (entry 22): contact details are confirmed, but the
-     directory gives no district for it and the village sits close to the
-     Stann Creek and Toledo boundary. District and map position are both
-     UNCONFIRMED. Ask ICB which district they file it under.
    - SAN JUAN: map position is APPROXIMATE, placed beside Independence
      because San Juan Village sits in that part of Stann Creek; confirm
      the exact position with ICB.
@@ -401,12 +397,15 @@ ICB.DATA.locations = [
     map: { x: 79.4, y: 459.3 },
     note: null
   },
-  /* DISTRICT UNCONFIRMED. The directory lists Bella Vista with full
-     contact details but no district, and the village sits close to the
-     Stann Creek and Toledo boundary on the Southern Highway. Filed under
-     Toledo and placed approximately, which governs both the district
-     filter and the map dot. One line to move if ICB files it under Stann
-     Creek instead. */
+  /* The directory gives Bella Vista full contact details but no district,
+     and the village sits close to the Stann Creek boundary, so it was
+     worth checking rather than assuming. It is in TOLEDO: the largest
+     village in the district, at 16.50948 N, 88.53169 W, which independent
+     gazetteers agree on. Independence, fifteen hundred metres north of
+     it, is in Stann Creek; the boundary really does run between the two.
+
+     The pin is that latitude and longitude put through the same
+     projection as every other pin here, not an estimate. */
   {
     id: "bella-vista",
     name: "Bella Vista Agency",
@@ -417,8 +416,8 @@ ICB.DATA.locations = [
     phones: [],
     whatsapps: [{ display: "+501 679-3896", wa: "5016793896" }],
     email: "icb_bellavista@icbinsurance.com",
-    mapQuery: "Bella Vista Village, Belize",
-    map: { x: 133.6, y: 399.9 },
+    mapQuery: "Bella Vista Village, Toledo District, Belize",
+    map: { x: 123.8, y: 391.8 },
     note: null
   }
 ];
