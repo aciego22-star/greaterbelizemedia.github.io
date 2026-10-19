@@ -529,6 +529,13 @@ button {
 .footer-col address { font-style: normal; font-size: var(--fs-300); line-height: 1.7; }
 .footer-col address a { color: var(--c-text-inverse-soft); }
 
+/* Everything below the red line is centred: the brand block, the three
+   link columns and the closing line. The plate is an inline-flex box so
+   it centres on the text alignment alone, and the name under it is a
+   flex column, which needs telling separately. */
+.site-footer { text-align: center; }
+.footer-brand .brand-lines { align-items: center; }
+
 /* Copyright line and studio credit, stacked and centred on the base of
    the footer. They used to sit at opposite ends of a justified row, which
    read as two unrelated scraps; centred and stacked they read as one
