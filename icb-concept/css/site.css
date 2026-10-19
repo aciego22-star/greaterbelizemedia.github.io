@@ -235,6 +235,9 @@ button {
 .section-head p { color: var(--c-text-soft); font-size: var(--fs-500); }
 .section--dark .section-head p { color: var(--c-text-inverse-soft); }
 
+/* No dash before it any more. The eyebrow now starts flush with the
+   heading beneath it, which is where it should have been: the dash was
+   indenting every label on the site by 26px. */
 .eyebrow {
   display: block;
   font-family: var(--font-sans);
@@ -245,26 +248,8 @@ button {
   color: var(--c-accent-ink);
   margin-bottom: var(--sp-3);
 }
-.eyebrow::before {
-  content: "";
-  display: inline-block;
-  width: 16px;
-  height: 2px;
-  background: var(--c-accent);
-  vertical-align: middle;
-  margin-right: 10px;
-  margin-top: -2px;
-}
 .section--dark .eyebrow, .on-dark .eyebrow { color: var(--c-accent-soft); }
-.section-head--center .eyebrow::before { display: none; }
 
-.brand-rule {
-  width: 40px; height: 3px;
-  background: var(--c-accent);
-  border: 0;
-  margin: var(--sp-4) 0 0;
-}
-.section-head--center .brand-rule { margin-inline: auto; }
 
 /* ============================ Buttons ============================ */
 
@@ -3554,6 +3539,25 @@ select,
   margin-top: var(--sp-6);
   color: var(--c-text-soft);
   font-size: var(--fs-300);
+}
+
+/* ======================= Icon alignment ========================== */
+/* Icon tiles that sit ABOVE a card's text are centred over it. Two of
+   them already were, .tile-chip and .g-plate-mark, and the rest were
+   not, so a page could show both treatments at once.
+ *
+ * This is only for icons that head a card. An icon that sits BESIDE
+ * text in a row, which is .pathway-glyph, .method-icon,
+ * .prod-panel-mark, .prod-useful-mark and the two call directory
+ * icons, stays where it is: centring a flex item in a row would either
+ * do nothing or pull it away from the words it belongs to.
+ *
+ * auto margins rather than text-align, because every one of these is a
+ * block or a flex item, and auto margins centre both. */
+.bee-card-icon,
+.card-glyph,
+.official-card .official-glyph {
+  margin-inline: auto;
 }
 
 /* ======================== ICB on YouTube ========================= */

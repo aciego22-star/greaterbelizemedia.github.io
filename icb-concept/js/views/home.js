@@ -776,7 +776,6 @@ ICB.views = ICB.views || {};
               eyebrow: { en: "Resource Centre", es: "Centro de recursos" },
               title: { en: "Know your cover.", es: "Conozca su cobertura." },
               sub: { en: "Official forms, safety information and useful ICB resources in one place.", es: "Formularios oficiales, información de seguridad y recursos útiles de ICB en un solo lugar." },
-              rule: false,
               id: "res-teaser-title"
             }) +
           "</div>" +

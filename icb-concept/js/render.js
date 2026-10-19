@@ -215,9 +215,13 @@ window.ICB = window.ICB || {};
   function sectionHead(opts) {
     var out = '<div class="section-head' + (opts.center ? " section-head--center" : "") + (opts.rv === false ? "" : " rv") + '">';
     if (opts.eyebrow) out += '<span class="eyebrow">' + esc(ICB.t(opts.eyebrow)) + "</span>";
-    out += "<h2>" + esc(ICB.t(opts.title)) + "</h2>";
+    /* The id goes on the heading. Twenty-eight callers pass one and every
+       one of them wraps the section in aria-labelledby pointing at it, so
+       until now each of those sections named a heading that was not in
+       the document and announced itself as unlabelled. */
+    out += "<h2" + (opts.id ? ' id="' + esc(opts.id) + '"' : "") + ">" +
+      esc(ICB.t(opts.title)) + "</h2>";
     if (opts.sub) out += "<p>" + esc(ICB.t(opts.sub)) + "</p>";
-    if (opts.rule !== false) out += '<hr class="brand-rule" aria-hidden="true">';
     return out + "</div>";
   }
 
