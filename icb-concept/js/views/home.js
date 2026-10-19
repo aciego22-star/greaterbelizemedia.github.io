@@ -659,7 +659,7 @@ ICB.views = ICB.views || {};
         frame.className = "ytv-player";
         frame.src = "https://www.youtube-nocookie.com/embed/" + id +
           "?autoplay=1&rel=0&modestbranding=1";
-        frame.title = btn.querySelector(".ytv-label").textContent;
+        frame.title = card.getAttribute("data-yt-title") || "";
         frame.allow = "accelerometer; autoplay; encrypted-media; picture-in-picture; web-share";
         frame.setAttribute("allowfullscreen", "");
         frame.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");

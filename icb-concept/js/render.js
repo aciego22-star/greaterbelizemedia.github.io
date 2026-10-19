@@ -477,22 +477,37 @@ window.ICB = window.ICB || {};
      Pressing play swaps in the player, on youtube-nocookie.com, which is
      the same video without the tracking that the ordinary domain
      carries. */
+  /* mm:ss, the way the channel itself writes it. */
+  function clockTime(seconds) {
+    var s = Math.max(0, Math.round(seconds || 0));
+    return Math.floor(s / 60) + ":" + ("0" + (s % 60)).slice(-2);
+  }
+
   function youtubeCard(v, i) {
-    var num = i + 1;
-    var label = v.title ? ICB.t(v.title) : ICB.s("icbVideoN", { n: num });
+    var label = v.title ? ICB.t(v.title) : ICB.s("icbVideoN", { n: i + 1 });
+    /* The language the film is in, not the language of the page: a
+       Spanish film is in Spanish whoever is reading. */
+    var meta = [v.langLabel, v.seconds ? clockTime(v.seconds) : null]
+      .filter(Boolean).join(" · ");
     return '' +
-      '<figure class="ytv rv" data-yt="' + esc(v.id) + '">' +
+      '<figure class="ytv rv" data-yt="' + esc(v.id) + '" data-yt-title="' + esc(label) + '"' +
+        (v.lang ? ' lang="' + esc(v.lang) + '"' : "") + ">" +
         '<div class="ytv-frame">' +
+          /* No title written across the cover: it is the heading
+             directly underneath, and saying it twice reads as a
+             mistake. The button still carries it for a screen reader. */
           '<button type="button" class="ytv-cover" data-yt-play' +
             ' aria-label="' + esc(ICB.s("playFilm", { title: label })) + '">' +
             '<span class="ytv-play" aria-hidden="true">' + ICB.art.glyph("play") + "</span>" +
-            '<span class="ytv-label">' + esc(label) + "</span>" +
           "</button>" +
+          (v.langLabel ? '<span class="film-lang" aria-hidden="true">' +
+            esc(v.langLabel) + "</span>" : "") +
         "</div>" +
         (v.title || v.caption
           ? '<figcaption class="ytv-cap">' +
               (v.title ? "<h3>" + esc(ICB.t(v.title)) + "</h3>" : "") +
               (v.caption ? "<p>" + esc(ICB.t(v.caption)) + "</p>" : "") +
+              (meta ? '<p class="ytv-meta">' + esc(meta) + "</p>" : "") +
             "</figcaption>"
           : "") +
       "</figure>";

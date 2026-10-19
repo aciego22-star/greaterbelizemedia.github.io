@@ -85,7 +85,7 @@ const chromium = pw.chromium;
 function loadData() {
   const ctx = vm.createContext({});
   ctx.window = ctx;
-  for (const f of ["site.js", "products.js", "locations.js"]) {
+  for (const f of ["site.js", "products.js", "locations.js", "gallery.js"]) {
     vm.runInContext(fs.readFileSync(path.join(ROOT, "js/data", f), "utf8"), ctx);
   }
   return ctx.ICB.DATA;
@@ -226,6 +226,35 @@ function graph(DATA, { route, lang, title, description, crumbs }) {
         return node;
       })
     });
+  }
+
+  /* ICB's YouTube films, so a search engine knows the gallery holds
+     video rather than inferring it from a button.
+
+     name, duration, language and embed URL are all known. uploadDate and
+     description are not: the channel showed "3 yr ago", which is not a
+     date, and nobody here has watched the films. Both are left out
+     rather than guessed, which costs the video rich result and keeps the
+     markup honest. Fill them in if ICB supplies them.
+
+     The thumbnail URL is YouTube's own deterministic one for a public
+     video, so it is asserted rather than invented. */
+  if (route === "gallery") {
+    const films = (DATA.gallery.video && DATA.gallery.video.youtube) || [];
+    for (const f of films) {
+      if (!f.title) continue;
+      nodes.push({
+        "@type": "VideoObject",
+        "@id": url + "#video-" + f.id,
+        name: f.title,
+        inLanguage: f.lang || undefined,
+        duration: f.seconds ? "PT" + Math.round(f.seconds) + "S" : undefined,
+        thumbnailUrl: "https://i.ytimg.com/vi/" + f.id + "/hqdefault.jpg",
+        embedUrl: "https://www.youtube-nocookie.com/embed/" + f.id,
+        publisher: { "@id": orgId },
+        isPartOf: { "@id": url + "#page" }
+      });
+    }
   }
 
   /* Products as services ICB provides, named exactly as ICB names them. */

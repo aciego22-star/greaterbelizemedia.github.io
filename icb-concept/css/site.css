@@ -3587,15 +3587,19 @@ select,
 .ytv-play .glyph { width: 22px; height: 22px; margin-left: 2px; }
 .ytv-cover:hover .ytv-play { background: var(--red-700); }
 
-.ytv-label {
-  font-size: var(--fs-300);
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  text-align: center;
-  color: var(--c-text-inverse-soft);
-}
+/* The language badge is the one the films already use, so the two
+   sections of the page read as one set. It sits over the cover button,
+   so clicks have to fall through it to the button underneath. */
+.ytv-frame .film-lang { pointer-events: none; }
+.ytv.is-playing .film-lang { display: none; }
 
 .ytv-cap { margin-top: var(--sp-4); }
+.ytv-meta {
+  margin-top: var(--sp-2);
+  color: var(--c-text-soft);
+  font-size: var(--fs-200);
+  letter-spacing: 0.02em;
+}
 .ytv-cap h3 { margin: 0 0 var(--sp-2); }
 .ytv-cap p { margin: 0; color: var(--c-text-soft); font-size: var(--fs-300); }
 

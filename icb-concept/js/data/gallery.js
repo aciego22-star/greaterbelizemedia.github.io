@@ -127,31 +127,44 @@ ICB.DATA.gallery = {
     ],
 
     /* ICB's own YouTube channel.
-       --------------------------------------------------------------
-       CAPTIONS ARE PENDING, AND THAT IS DELIBERATE.
 
-       These five IDs are the videos the client supplied. The machine
-       this was built on has no route to youtube.com, so the titles
-       could not be read, and a caption written for a video nobody here
-       has watched would be invented copy about ICB's own work. The
-       cards render as players with no caption until ICB's own titles
-       are filled in. Wrong words under a video are worse than none.
+       Titles are ICB's, exactly as they appear on the channel, and are
+       NOT translated: a Spanish video keeps its Spanish title on the
+       English page and the other way round, the same rule the product
+       names follow. Lengths are the channel's too.
 
-       To finish: fill title and caption on each entry and rebuild.
-       Nothing else has to change. A title also becomes the player's
-       accessible name, replacing the numbered fallback.
+       ORDER IS AN ASSUMPTION, AND THE ONE THING TO SPOT CHECK. The five
+       IDs arrived as a list of links and the five titles arrived
+       separately as a screenshot of the channel; they are paired here
+       in the order each was given. Nothing on this machine can reach
+       youtube.com to confirm a title against its ID. The pairing is
+       consistent with the set, in that the two kitchen films sit next
+       to each other as a Spanish and English pair and the two outdoor
+       films do the same, but it is still an assumption. If any card
+       names the wrong film, swap the title; nothing else moves.
 
        Nothing is requested from YouTube until a visitor presses play.
        No thumbnail, no script, no cookie. That keeps the promise the
        rest of the site makes, which is that it reaches nobody until
        someone asks it to, and it is why these cards are drawn in ICB's
-       own colours rather than with a YouTube still. */
+       own colours rather than with a YouTube still.
+
+       caption is free for a line of ICB's own description if they ever
+       supply one. It is not filled in here, because describing a film
+       nobody on this side has watched would be writing copy about ICB's
+       work for them. The language and the running time are shown
+       instead, and both are facts off the channel. */
     youtube: [
-      { id: "tb1QdhdZrK8", title: null, caption: null },
-      { id: "s5H1ZSakebg", title: null, caption: null },
-      { id: "EfxAQ7qfuCs", title: null, caption: null },
-      { id: "YyCUW--4EGE", title: null, caption: null },
-      { id: "hAewzIr0sKE", title: null, caption: null }
+      { id: "tb1QdhdZrK8", title: "ICB Takes care of you",
+        lang: "en", langLabel: "English", seconds: 57, caption: null },
+      { id: "s5H1ZSakebg", title: "Insurance Corporation of Belize: Seguro de Hogar",
+        lang: "es", langLabel: "Español", seconds: 36, caption: null },
+      { id: "EfxAQ7qfuCs", title: "Insurance Corporation of Belize: Home Insurance",
+        lang: "en", langLabel: "English", seconds: 39, caption: null },
+      { id: "YyCUW--4EGE", title: "En cada paso del viaje de su vida, ICB está ahí para usted.",
+        lang: "es", langLabel: "Español", seconds: 59, caption: null },
+      { id: "hAewzIr0sKE", title: "At every step of your life's journey, ICB is there for you.",
+        lang: "en", langLabel: "English", seconds: 55, caption: null }
     ]
   }
 };
