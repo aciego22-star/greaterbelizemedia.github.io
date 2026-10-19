@@ -311,3 +311,30 @@ motion only; the films with sound live in ICB in Motion.
 Guidelines: landscape at least 1000px wide for gallery tiles, 1400px for
 feature placements; never stretch small images; never caption an image
 with a branch or event identity unless it is verified.
+
+## YouTube thumbnails
+
+`assets/img/video/youtube/<video-id>.jpg`, five frames at 480x270.
+
+These are ICB's own thumbnails from their YouTube channel, so the videos
+look the same on the site as they do there. They are shipped as site
+assets rather than loaded from YouTube, because an embed or a remote
+thumbnail would reach a third party on every visit whether or not
+anyone ever pressed play, and the video section is built not to.
+
+They were cut out of the screenshot of the channel the client supplied,
+at native size: nothing here can reach youtube.com. The rows sit on a
+318px pitch starting at y=5, each frame 480x270 at x=48, which is how
+the crop is derived rather than eyeballed.
+
+Twelve pixels come off the top and bottom of each before it is resized
+back to 480x270. YouTube draws a progress bar along the bottom of a
+thumbnail the viewer has already watched, in two forms, solid red and
+red-plus-grey, and that bar belongs to whoever took the screenshot
+rather than to ICB. A fixed trim clears both and costs under five
+percent of the frame. The duration badge stays, because matching the
+channel is the point, which is also why the card does not print the
+running time underneath as well.
+
+If ICB can supply the original thumbnail files, drop them in at the same
+paths and the trim and the screenshot provenance stop mattering.

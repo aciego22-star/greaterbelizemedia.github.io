@@ -152,19 +152,31 @@ ICB.DATA.gallery = {
        caption is free for a line of ICB's own description if they ever
        supply one. It is not filled in here, because describing a film
        nobody on this side has watched would be writing copy about ICB's
-       work for them. The language and the running time are shown
-       instead, and both are facts off the channel. */
+       work for them.
+
+       The posters are ICB's own thumbnails, cut out of the screenshot of
+       the channel at their native size, so the videos look the same here
+       as they do on YouTube. They are shipped as site assets rather than
+       loaded from YouTube, which keeps the page from reaching a third
+       party before anyone asks it to. Each one carries its running time
+       in the corner, because that is part of how the channel looks, so
+       the card does not print the time underneath as well. */
     youtube: [
       { id: "tb1QdhdZrK8", title: "ICB Takes care of you",
-        lang: "en", langLabel: "English", seconds: 57, caption: null },
+        lang: "en", langLabel: "English", seconds: 57, caption: null,
+        poster: "assets/img/video/youtube/tb1QdhdZrK8.jpg" },
       { id: "s5H1ZSakebg", title: "Insurance Corporation of Belize: Seguro de Hogar",
-        lang: "es", langLabel: "Español", seconds: 36, caption: null },
+        lang: "es", langLabel: "Español", seconds: 36, caption: null,
+        poster: "assets/img/video/youtube/s5H1ZSakebg.jpg" },
       { id: "EfxAQ7qfuCs", title: "Insurance Corporation of Belize: Home Insurance",
-        lang: "en", langLabel: "English", seconds: 39, caption: null },
+        lang: "en", langLabel: "English", seconds: 39, caption: null,
+        poster: "assets/img/video/youtube/EfxAQ7qfuCs.jpg" },
       { id: "YyCUW--4EGE", title: "En cada paso del viaje de su vida, ICB está ahí para usted.",
-        lang: "es", langLabel: "Español", seconds: 59, caption: null },
+        lang: "es", langLabel: "Español", seconds: 59, caption: null,
+        poster: "assets/img/video/youtube/YyCUW--4EGE.jpg" },
       { id: "hAewzIr0sKE", title: "At every step of your life's journey, ICB is there for you.",
-        lang: "en", langLabel: "English", seconds: 55, caption: null }
+        lang: "en", langLabel: "English", seconds: 55, caption: null,
+        poster: "assets/img/video/youtube/hAewzIr0sKE.jpg" }
     ]
   }
 };

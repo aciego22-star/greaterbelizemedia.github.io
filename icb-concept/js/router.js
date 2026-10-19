@@ -267,7 +267,15 @@ ICB.views = ICB.views || {};
     });
   }
 
-  var ANCHOR_HEADROOM = 84;
+  /* Clear of the sticky header, plus a little air. Measured rather than
+     fixed: the header is one row on a phone and two on a wide screen
+     since the logo was centred, so a constant that was right for 72px
+     would tuck the heading under a 116px header. */
+  function anchorHeadroom() {
+    var h = document.getElementById("site-header");
+    var tall = h ? h.getBoundingClientRect().height : 0;
+    return (tall || 72) + 12;
+  }
 
   /* An explicit anchor always wins: someone asking for #/claims@marine
      wants that pathway, whatever they were reading there last time. */
@@ -277,7 +285,7 @@ ICB.views = ICB.views || {};
         var el = mount.querySelector('[data-anchor="' + anchor + '"]');
         if (!el) return null;
         // Absolute document position, so it stays valid as we scroll.
-        return el.getBoundingClientRect().top + (window.pageYOffset || 0) - ANCHOR_HEADROOM;
+        return el.getBoundingClientRect().top + (window.pageYOffset || 0) - anchorHeadroom();
       });
       return;
     }

@@ -485,14 +485,20 @@ window.ICB = window.ICB || {};
 
   function youtubeCard(v, i) {
     var label = v.title ? ICB.t(v.title) : ICB.s("icbVideoN", { n: i + 1 });
-    /* The language the film is in, not the language of the page: a
-       Spanish film is in Spanish whoever is reading. */
-    var meta = [v.langLabel, v.seconds ? clockTime(v.seconds) : null]
-      .filter(Boolean).join(" · ");
+    /* No running time printed under the card: ICB's own thumbnail
+       already carries it in the corner, the way it does on the channel,
+       and the language is on the badge over the frame. The caption is
+       the title and nothing else, which is also how YouTube reads. */
+    var meta = "";
     return '' +
       '<figure class="ytv rv" data-yt="' + esc(v.id) + '" data-yt-title="' + esc(label) + '"' +
         (v.lang ? ' lang="' + esc(v.lang) + '"' : "") + ">" +
         '<div class="ytv-frame">' +
+          /* ICB's own thumbnail, shipped as a site asset rather than
+             fetched from YouTube, so the card looks exactly like the
+             channel without the page reaching a third party to do it. */
+          (v.poster ? '<img class="ytv-poster" data-asset="' + esc(v.poster) +
+            '" alt="" width="480" height="270" loading="lazy">' : "") +
           /* No title written across the cover: it is the heading
              directly underneath, and saying it twice reads as a
              mistake. The button still carries it for a screen reader. */
