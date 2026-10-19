@@ -67,5 +67,7 @@ Allow: /
 User-agent: CCBot
 Allow: /
 
-# Update the host when the site moves to ICB's own domain.
+# The host on the line below is rewritten by the build from one
+# setting, the same one that writes every canonical, so this file
+# needs no edit when the site moves to ICB's own domain.
 Sitemap: https://icb.austereautomations.com/sitemap.xml

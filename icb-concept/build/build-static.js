@@ -388,6 +388,24 @@ function serve(dir) {
   fs.rmSync(OUT, { recursive: true, force: true });
   for (const item of SHIP) copyInto(path.join(ROOT, item), path.join(OUT, item), item);
 
+  /* robots.txt ships as written, and its one absolute address is the
+     Sitemap line. Pointed at the wrong host it sends a crawler to a
+     sitemap full of URLs on a domain it was not asked to index, which
+     is the single mistake most likely to be made on launch day and the
+     hardest to notice. Rewritten here so the host is set in one place
+     for the whole build, the same as every canonical and every @id. */
+  {
+    const rp = path.join(OUT, "robots.txt");
+    if (fs.existsSync(rp)) {
+      const before = fs.readFileSync(rp, "utf8");
+      const after = before.replace(/^Sitemap:.*$/mi, "Sitemap: " + ORIGIN + "/sitemap.xml");
+      if (after === before && /^Sitemap:/mi.test(before) === false) {
+        throw new Error("robots.txt has no Sitemap line to point at " + ORIGIN);
+      }
+      fs.writeFileSync(rp, after);
+    }
+  }
+
   const DATA = loadData();
   /* Render from the SOURCE, never from the directory being written into.
      Rendering out of the output means the first page written becomes the
