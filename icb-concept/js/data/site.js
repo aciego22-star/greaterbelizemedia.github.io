@@ -109,6 +109,11 @@ ICB.DATA.site = {
     { id: "business", label: { en: "Business", es: "Empresas" }, href: "#/business" },
     { id: "about", label: { en: "About", es: "Nosotros" }, href: "#/about" },
     { id: "resources", label: { en: "Resources", es: "Recursos" }, href: "#/resources" },
+    /* Named "Bee AI" rather than "Bee": in a row of plain words with no
+       mascot beside it, "Bee" tells a first-time visitor nothing. Not
+       translated, because it is the assistant's name. Sits beside
+       Contact, since both answer the question of how to reach ICB. */
+    { id: "bee", label: "Bee AI", href: "#/bee" },
     { id: "contact", label: { en: "Contact", es: "Contacto" }, href: "#/contact" }
   ],
 

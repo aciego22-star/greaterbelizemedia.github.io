@@ -376,14 +376,22 @@ button {
 
 .site-nav ul {
   display: flex;
-  gap: clamp(0.15rem, 1vw, 0.75rem);
+  /* Tightened to carry nine items. The header is capped at the content
+     shell, so a wider screen gives the nav no more room, and the ninth
+     item pushed the Get cover button past the edge of the window.
+     Spacing came down rather than the label being cut, because "Bee"
+     alone tells a first-time visitor nothing. */
+  gap: clamp(0.1rem, 0.7vw, 0.5rem);
   list-style: none;
   margin: 0;
   padding: 0;
 }
 .site-nav a {
   display: inline-block;
-  padding: 0.45rem 0.65rem;
+  /* A two word label is one word too many for a nav item to break: in
+     Spanish "Bee AI" split across two lines and pushed the row crooked. */
+  white-space: nowrap;
+  padding: 0.45rem 0.5rem;
   border-radius: var(--r-sm);
   color: var(--c-text);
   font-weight: 600;
@@ -3163,6 +3171,22 @@ select.input {
 
 @media (min-width: 720px) and (max-width: 1099px) {
   .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* Above the menu breakpoint the full navigation takes over the header,
+   and nine items plus the language switch and the Explore insurance
+   button leave no room for the company name beside the logo. The header
+   is capped at the content shell, so a wider screen does not help: it
+   either fits in 1120px or it does not.
+
+   The name gives way rather than the navigation or the button. The mark
+   on its own is unmistakably ICB, it is what the favicon and the app
+   icon already use, and the full name is in the page title, the footer
+   and the first line of every hero. Below this width the navigation
+   collapses to a button and the name has room again. */
+@media (min-width: 1100px) {
+  .brand-lines { display: none; }
+  .brand-sep { display: none; }
 }
 
 @media (max-width: 479px) {

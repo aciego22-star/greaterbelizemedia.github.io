@@ -4,32 +4,26 @@ The site is a fully self-contained static folder. No build step, no
 server, and no external requests until someone taps Talk to Bee. Any
 static host can serve it.
 
-## Two builds, with and without the assistant
+## One build, one folder
 
-    node build/build-variants.js
+    node build/build-static.js
 
-writes `dist/with-bee/` and `dist/no-bee/`, both from the same source
-minutes apart, differing in exactly one thing. Drag either folder onto
-Netlify as its own site and ICB can compare them side by side.
+writes `dist/site`. That is the website. Drag that folder onto Netlify.
 
-Do NOT use Netlify's deploy history for this. Rolling back to an older
-deploy also rolls back the boat photograph, the Gallery banner, the
-Spanish and the mobile fixes, so the client would be looking at two
-different sites and drawing conclusions about the wrong difference. And on
-a deploy page in the Netlify dashboard, "Open production deploy" opens
-whatever is live now, not the deploy you are looking at; the "Permalink"
-link is the one that opens that specific build.
+There used to be a second build, `dist/no-bee`, so ICB could be shown
+the site with and without the assistant. That choice was made: the
+assistant stays, and the site now has a page explaining it, so a build
+with the assistant stripped out would ship a page about something that
+is not there. `build-variants.js` is gone and `build-static.js` copies
+what ships for itself.
 
-The removal is a subtraction and nothing else: the script tag, the mount
-point, `js/assistant.js`, the bee badge and the Talk to Bee stylesheet
-section come out, and no file is rewritten to compensate. Two things make
-that possible, and they are worth keeping if either is ever refactored:
-`js/main.js` starts the assistant only if it is present, and the footer
-reserves room for the launcher through `.has-bee`, a class
-`js/assistant.js` puts on the document itself.
-
-`scratchpad/check/variants.js` walks every route of both builds in both
-languages and fails if anything except the assistant differs.
+Do NOT use Netlify's deploy history to show an older version. Rolling
+back to an older deploy rolls back everything else with it, so the
+client would be looking at two different sites and drawing conclusions
+about the wrong difference. And on a deploy page in the Netlify
+dashboard, "Open production deploy" opens whatever is live now, not the
+deploy you are looking at; the "Permalink" link is the one that opens
+that specific build.
 
 ## Talk to Bee
 
@@ -121,7 +115,7 @@ and both the page and the icon are crawlable. The site ships:
 - `assets/img/apple-touch-icon.png` at 180px for iOS home screens.
 - `site.webmanifest` listing the PNG set for Android.
 
-All four root files are listed in `SHIP` in `build/build-variants.js`.
+All four root files are listed in `SHIP` in `build/build-static.js`.
 A root file that is not in that list does not get deployed, and a
 favicon one directory down may as well not exist.
 
@@ -129,8 +123,8 @@ favicon one directory down may as well not exist.
 
     node build/build-static.js
 
-`dist/site` is what goes on Netlify. Drag that folder, not `dist/with-bee`
-and not the source directory.
+`dist/site` is what goes on Netlify. Drag that folder, not the source
+directory.
 
 It is the same site, written out as real files. Each route becomes its
 own directory with its own `index.html`, in both languages:
@@ -181,15 +175,15 @@ enough to publish as a branch location. If ICB supplies real coordinates
 they belong in the location records and the structured data will carry
 them.
 
-### The other two builds still exist
+### The other build
 
 `build/build-single.js` writes `dist/icb-concept.html`, one file with
-everything inlined. That is the preview artifact and the only build that
-works from a `file://` URL, because there is no server to resolve a path
-against. The router notices and keeps hash routing there.
-
-`build/build-variants.js` writes `dist/with-bee` and `dist/no-bee`.
-`build-static.js` runs it and renders from `with-bee`.
+everything inlined. That is the preview artifact, and the only build
+that works from a `file://` URL or from a host that serves it at some
+path of its own, because there is no server there to resolve `/claims`
+against. The router notices and keeps hash routing in both cases: a
+path it does not recognise is read as the homepage, not as a missing
+page.
 
 ### Old links still work
 

@@ -237,13 +237,25 @@ ICB.views = ICB.views || {};
 
   /* Whichever source is in play, expressed in the one shape parse()
      already understands. On a real path the fragment is the anchor, so
-     /claims#marine means the same as the old #/claims@marine. */
+     /claims#marine means the same as the old #/claims@marine.
+
+     A path this app does not recognise is NOT a missing page. It means
+     the app is not being served from the root of a host: the single
+     file sitting at /artifact/<id>, or a copy opened out of a
+     subdirectory. Reading those as routes showed "That page is not
+     here." to anyone opening the preview, which is a page the visitor
+     never asked for and cannot navigate out of by reloading. So an
+     unrecognised path falls back to the homepage, and only a hash can
+     reach the not-found view. On a real deployment an unknown path is
+     the host's 404 and never reaches this code at all. */
   function currentRoute() {
     var h = hashRoute();
     if (h) return "#/" + h;
     var frag = String(location.hash || "").replace(/^#/, "");
-    return "#/" + routeFromPath(location.pathname) + (location.search || "") +
-      (frag ? "@" + frag : "");
+    var tail = (location.search || "") + (frag ? "@" + frag : "");
+    var route = routeFromPath(location.pathname);
+    if (route && resolve(parse("#/" + route)).view === "notfound") return "#/" + tail;
+    return "#/" + route + tail;
   }
 
   function setNav(navId) {

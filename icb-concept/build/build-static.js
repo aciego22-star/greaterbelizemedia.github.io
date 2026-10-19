@@ -45,9 +45,25 @@ const ORIGIN = (process.env.ICB_ORIGIN || "https://icb.austereautomations.com")
   .replace(/\/+$/, "");
 const ROOT = path.resolve(__dirname, "..");
 const DIST = path.join(ROOT, "dist");
-const SRC = path.join(DIST, "with-bee");
 const OUT = path.join(DIST, "site");
 const PORT = 8571;
+
+/* What gets deployed. Anything not in this list does not reach the
+   server, which is the point: the repository also holds build scripts,
+   notes and dist itself, and none of that is the website.
+
+   The four root files earn their place by being at the root and nowhere
+   else. A crawler probes /favicon.ico and /robots.txt by path, not by
+   following a link, so a file one directory down may as well not exist. */
+const SHIP = ["index.html", "css", "js", "assets",
+              "favicon.ico", "site.webmanifest", "robots.txt", "sitemap.xml"];
+
+/* In the repository but on no page: an earlier encode kept for
+   reference, and the crop the Marine hero used before the boat. */
+const SKIP = new Set([
+  "assets/video/icb-story.mp4",
+  "assets/img/products/marine.jpg"
+]);
 
 /* Playwright is the one thing this build needs that the site does not.
    Rendering a JavaScript app into HTML takes a browser; there is no way
@@ -338,13 +354,17 @@ function finish(html, info, DATA) {
 }
 
 /* ------------------------------------------------------------------ */
-function copyTree(from, to) {
-  fs.mkdirSync(to, { recursive: true });
-  for (const entry of fs.readdirSync(from, { withFileTypes: true })) {
-    const a = path.join(from, entry.name), b = path.join(to, entry.name);
-    if (entry.isDirectory()) copyTree(a, b);
-    else fs.copyFileSync(a, b);
+function copyInto(from, to, rel) {
+  if (fs.statSync(from).isDirectory()) {
+    fs.mkdirSync(to, { recursive: true });
+    for (const name of fs.readdirSync(from)) {
+      copyInto(path.join(from, name), path.join(to, name), rel ? rel + "/" + name : name);
+    }
+    return;
   }
+  if (SKIP.has(rel)) return;
+  fs.mkdirSync(path.dirname(to), { recursive: true });
+  fs.copyFileSync(from, to);
 }
 
 const TYPES = { ".html": "text/html; charset=utf-8", ".css": "text/css",
@@ -365,20 +385,21 @@ function serve(dir) {
 
 /* ------------------------------------------------------------------ */
 (async () => {
-  console.log("building the folder the pages are rendered from...");
-  execFileSync("node", [path.join(__dirname, "build-variants.js")], { stdio: "pipe" });
-
   fs.rmSync(OUT, { recursive: true, force: true });
-  copyTree(SRC, OUT);
+  for (const item of SHIP) copyInto(path.join(ROOT, item), path.join(OUT, item), item);
 
   const DATA = loadData();
-  /* Serve the pristine copy, NOT the one being written into. Rendering
-     out of the output directory means the first page written becomes the
+  /* Render from the SOURCE, never from the directory being written into.
+     Rendering out of the output means the first page written becomes the
      page every later one is rendered from: the English homepage was
      finished, and then every Spanish page loaded it and inherited its
      canonical and its hreflang before being given its own. Two of each,
-     the wrong one first. */
-  const server = serve(SRC);
+     the wrong one first.
+
+     The source directory also holds build scripts and notes that are not
+     in SHIP, but nothing on a page ever asks for them, so serving it is
+     the simplest pristine copy there is: the one already on disk. */
+  const server = serve(ROOT);
   const browser = await chromium.launch({
     executablePath: process.env.PLAYWRIGHT_CHROMIUM || "/opt/pw-browsers/chromium"
   });
