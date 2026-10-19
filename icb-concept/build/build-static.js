@@ -478,6 +478,53 @@ function serve(dir) {
     }
   }
 
+  /* 404.html, which Netlify and most static hosts serve for a URL that
+     does not exist. Without one the visitor gets the host's own bare
+     error page, with none of ICB on it and no way back. This is the
+     site's own not-found view, prerendered like everything else, so it
+     carries the header, the navigation and a link home.
+
+     Deliberately NOT a copy of the homepage. Answering every wrong
+     address with the homepage and a 200 tells a crawler that thousands
+     of URLs exist and are all the same page. */
+  await page.goto(base + "#/__not-found__", { waitUntil: "load" });
+  await page.waitForFunction(() => {
+    const m = document.getElementById("main");
+    return m && m.children.length > 0;
+  }, null, { timeout: 15000 });
+  await page.waitForTimeout(200);
+  const nf = await page.evaluate(() => {
+    document.querySelectorAll(".rv").forEach(n => n.classList.add("is-in"));
+    return { title: document.title,
+             h1: (document.querySelector("h1") || {}).textContent || "",
+             html: "<!DOCTYPE html>\n" + document.documentElement.outerHTML };
+  });
+  let notFound = finish(nf.html, {
+    route: "", lang: "en", title: nf.title,
+    description: nf.h1.trim(), crumbs: [{ name: "ICB", route: "" }]
+  }, DATA);
+  /* A 404 is not a page, so it claims no address. Left as finish() wrote
+     it, this would carry a canonical and an og:url pointing at the
+     homepage, which tells a crawler that every wrong URL on the site IS
+     the homepage. Out they come, and it says noindex in its own right so
+     it stays out of the index after the site-wide tag is lifted. */
+  notFound = notFound
+    .replace(/\n\s*<link rel="canonical"[^>]*>/g, "")
+    .replace(/\n\s*<link rel="alternate"[^>]*>/g, "")
+    .replace(/\n\s*<meta property="og:url"[^>]*>/g, "");
+  if (!/name="robots"/.test(notFound)) {
+    notFound = notFound.replace(/<\/head>/i,
+      '  <meta name="robots" content="noindex">\n</head>');
+  }
+  /* The host serves this one file at whatever wrong address was asked
+     for, so the app wakes up on a path it cannot match. Everywhere else
+     that means the app is not at the root of its host (the single file
+     at /artifact/<id>) and the right answer is the homepage. Here it
+     means exactly what it says. The marker tells the app which of the
+     two it is looking at; nothing else in the build carries it. */
+  notFound = notFound.replace(/<html\b/i, '<html data-notfound');
+  fs.writeFileSync(path.join(OUT, "404.html"), notFound);
+
   await browser.close();
   server.close();
 

@@ -246,15 +246,25 @@ ICB.views = ICB.views || {};
      here." to anyone opening the preview, which is a page the visitor
      never asked for and cannot navigate out of by reloading. So an
      unrecognised path falls back to the homepage, and only a hash can
-     reach the not-found view. On a real deployment an unknown path is
-     the host's 404 and never reaches this code at all. */
+     reach the not-found view.
+
+     The one exception is 404.html, which a host serves at the wrong
+     address that was asked for. There the unrecognised path is the
+     whole point, and the build marks that file so the app can tell the
+     two cases apart and leave the not-found view standing. */
+  function servedAsNotFound() {
+    return document.documentElement.hasAttribute("data-notfound");
+  }
+
   function currentRoute() {
     var h = hashRoute();
     if (h) return "#/" + h;
     var frag = String(location.hash || "").replace(/^#/, "");
     var tail = (location.search || "") + (frag ? "@" + frag : "");
     var route = routeFromPath(location.pathname);
-    if (route && resolve(parse("#/" + route)).view === "notfound") return "#/" + tail;
+    if (route && resolve(parse("#/" + route)).view === "notfound" && !servedAsNotFound()) {
+      return "#/" + tail;
+    }
     return "#/" + route + tail;
   }
 
@@ -335,13 +345,17 @@ ICB.views = ICB.views || {};
   ICB.views.notfound = {
     title: { en: "Page not found | ICB", es: "Página no encontrada | ICB" },
     render: function () {
+      var R = ICB.render;
+      /* Its own h1, rather than the h2 a section head would give it.
+         This view is also what the host serves as 404.html, and a page
+         with no first-level heading is a page a reader arriving by
+         accident has nothing to orient on. */
       return '<section class="section"><div class="shell">' +
-        ICB.render.sectionHead({
-          eyebrow: "ICB",
-          title: { en: "That page is not here.", es: "Esta página no está aquí." },
-          sub: { en: "The link may have moved. Everything on this concept site is reachable from the menu.", es: "El enlace pudo haber cambiado. Todo en este sitio de concepto se alcanza desde el menú." },
-          rv: false
-        }) +
+        '<div class="section-head">' +
+          '<span class="eyebrow">ICB</span>' +
+          "<h1>" + R.esc({ en: "That page is not here.", es: "Esta página no está aquí." }) + "</h1>" +
+          "<p>" + R.esc({ en: "The link may have moved. Everything on this concept site is reachable from the menu.", es: "El enlace pudo haber cambiado. Todo en este sitio de concepto se alcanza desde el menú." }) + "</p>" +
+        "</div>" +
         '<div class="btn-row"><a class="btn btn-primary" href="#/">' + ICB.t({ en: "Back to the homepage", es: "Volver al inicio" }) + "</a>" +
         '<a class="btn btn-outline" href="#/insurance">' + ICB.t({ en: "Explore insurance", es: "Ver seguros" }) + "</a></div>" +
         "</div></section>";
@@ -427,10 +441,43 @@ ICB.views = ICB.views || {};
     catch (e) { /* not fatal: the content is already correct */ }
   }
 
+  /* An old #/route link, rewritten to the real path it now has.
+
+     Links to the hash form are out in the world from before the site had
+     real URLs, and they still work, but they leave the address bar
+     saying something misleading. Safari on a phone shows only the
+     domain once the bar is compact, so /#/insurance reads as
+     icb.austereautomations.com while the Insurance page is on screen,
+     and the site looks as though it opened somewhere it should not
+     have. Rewriting on arrival makes the address agree with the page.
+
+     It also stops the hash form lingering as a second address for every
+     page, which is the thing the canonical and the sitemap exist to
+     prevent. A hash that resolves to nothing is left alone, so a bad
+     link still reaches the not-found view rather than being quietly
+     tidied into the homepage. */
+  function normaliseLegacyHash() {
+    if (!hosted()) return;
+    var h = hashRoute();
+    if (!h) return;
+    var ctx = parse("#/" + h);
+    if (resolve(ctx).view === "notfound") return;
+
+    var qs = Object.keys(ctx.query).map(function (k) {
+      return encodeURIComponent(k) + "=" + encodeURIComponent(ctx.query[k]);
+    }).join("&");
+    var want = pathFor(ctx.parts.join("/"), ICB.i18n.get()) +
+      (qs ? "?" + qs : location.search || "") +
+      (ctx.anchor ? "#" + ctx.anchor : "");
+    try { history.replaceState(history.state, "", want); }
+    catch (e) { /* not fatal: the page is already correct */ }
+  }
+
   ICB.router = {
     init: function () {
       mount = document.getElementById("main");
       announcer = document.getElementById("route-announcer");
+      normaliseLegacyHash();
       window.addEventListener("hashchange", render);
       window.addEventListener("popstate", render);
       document.addEventListener("click", onSameRouteClick);
