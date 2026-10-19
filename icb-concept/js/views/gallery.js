@@ -60,6 +60,11 @@ ICB.views = ICB.views || {};
           sub: { en: "ICB's campaign film, in English and Spanish.", es: "El video de campaña de ICB, en inglés y en español." }
         }) +
 
+        R.youtubeSection({
+          title: { en: "More from ICB.", es: "Más de ICB." },
+          sub: { en: "Videos from ICB's own YouTube channel.", es: "Videos del canal de YouTube de ICB." }
+        }) +
+
         '<section class="section section--flush-top" aria-label="' + T("Visit ICB", "Visite ICB") + '">' +
           '<div class="shell">' +
             R.band({
@@ -78,6 +83,7 @@ ICB.views = ICB.views || {};
     mounted: function (mount) {
       ICB.initLightbox(mount);
       ICB.initFilms(mount);
+      ICB.initYouTube(mount);
     }
   };
 })();

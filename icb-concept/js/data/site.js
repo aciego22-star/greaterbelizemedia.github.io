@@ -153,6 +153,11 @@ ICB.DATA.site = {
         heading: { en: "Claims & Support", es: "Reclamos y ayuda" },
         links: [
           { label: { en: "How claims work", es: "Cómo funcionan los reclamos" }, href: "#/claims" },
+          /* The assistant's own page. Filed here rather than in the main
+             navigation: someone looking for it is usually asking what it
+             is or what happens to what they type into it, and this is
+             where a visitor looks for that kind of answer. */
+          { label: { en: "Bee, the ICB assistant", es: "Bee, el asistente de ICB" }, href: "#/bee" },
           { label: { en: "Official claims forms", es: "Formularios oficiales de reclamo" }, href: "https://www.icbinsurance.com/claims", external: true },
           { label: { en: "How to pay ICB", es: "Cómo pagarle a ICB" }, href: "#/payments" },
           { label: { en: "Consumer resources", es: "Recursos para el cliente" }, href: "#/resources" }

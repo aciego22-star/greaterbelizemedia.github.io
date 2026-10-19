@@ -465,6 +465,58 @@ window.ICB = window.ICB || {};
       "</figure>";
   }
 
+  /* A video from ICB's YouTube channel, drawn as a card that is not yet
+     a YouTube embed.
+
+     Nothing is fetched from YouTube until the visitor presses play: no
+     iframe, no script, no thumbnail, no cookie. An embed left in the
+     page would reach a third party on every visit, for every visitor,
+     whether or not anyone ever watched anything, and the rest of this
+     site is built on not doing that.
+
+     Pressing play swaps in the player, on youtube-nocookie.com, which is
+     the same video without the tracking that the ordinary domain
+     carries. */
+  function youtubeCard(v, i) {
+    var num = i + 1;
+    var label = v.title ? ICB.t(v.title) : ICB.s("icbVideoN", { n: num });
+    return '' +
+      '<figure class="ytv rv" data-yt="' + esc(v.id) + '">' +
+        '<div class="ytv-frame">' +
+          '<button type="button" class="ytv-cover" data-yt-play' +
+            ' aria-label="' + esc(ICB.s("playFilm", { title: label })) + '">' +
+            '<span class="ytv-play" aria-hidden="true">' + ICB.art.glyph("play") + "</span>" +
+            '<span class="ytv-label">' + esc(label) + "</span>" +
+          "</button>" +
+        "</div>" +
+        (v.title || v.caption
+          ? '<figcaption class="ytv-cap">' +
+              (v.title ? "<h3>" + esc(ICB.t(v.title)) + "</h3>" : "") +
+              (v.caption ? "<p>" + esc(ICB.t(v.caption)) + "</p>" : "") +
+            "</figcaption>"
+          : "") +
+      "</figure>";
+  }
+
+  function youtubeSection(opts) {
+    opts = opts || {};
+    var list = (ICB.DATA.gallery.video && ICB.DATA.gallery.video.youtube) || [];
+    if (!list.length) return "";
+    return '' +
+      '<section class="section' + (opts.tint ? " section--tint" : "") + '" aria-labelledby="ytv-title">' +
+        '<div class="shell">' +
+          sectionHead({
+            eyebrow: ICB.s("icbInMotion"),
+            title: opts.title || ICB.s("icbOnYouTube"),
+            sub: opts.sub || null,
+            id: "ytv-title"
+          }) +
+          '<div class="ytv-grid">' + list.map(youtubeCard).join("") + "</div>" +
+          '<p class="ytv-note">' + esc(ICB.s("youtubeNote")) + "</p>" +
+        "</div>" +
+      "</section>";
+  }
+
   function motionSection(opts) {
     opts = opts || {};
     var films = ICB.DATA.gallery.video.films;
@@ -498,6 +550,8 @@ window.ICB = window.ICB || {};
     actionTile: actionTile,
     claimCard: claimCard,
     locationCard: locationCard,
+    youtubeCard: youtubeCard,
+    youtubeSection: youtubeSection,
     steps: steps,
     sectionHead: sectionHead,
     band: band,

@@ -1439,7 +1439,10 @@ button {
   margin: 0;
   border-radius: var(--r-md);
   overflow: hidden;
-  background: var(--c-ink-900);
+  /* Was --c-ink-900, which the palette never defined, so the browser
+     threw the declaration away and the tile had no backdrop at all
+     while its photograph loaded. */
+  background: var(--c-brand-deep);
 }
 .gallery-item:nth-child(6n+1) { grid-column: span 2; grid-row: span 2; }
 
@@ -3475,6 +3478,135 @@ select,
 }
 @media (max-width: 360px) {
   .lang-btn { padding: 0.3rem 0.4rem; letter-spacing: 0.02em; }
+}
+
+
+/* ========================= Bee page ============================== */
+/* The page about the assistant, not the launcher itself. Kept above
+   the Talk to Bee section below, which build-variants.js deletes from
+   its heading marker to the end of the file: anything appended after
+   that marker disappears from that build without a word. */
+
+.bee-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  gap: var(--sp-5);
+}
+.bee-card {
+  padding: var(--sp-6);
+  border: 1px solid var(--c-line-soft);
+  border-radius: var(--r-lg);
+  background: var(--c-surface);
+}
+.bee-card-icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  margin-bottom: var(--sp-4);
+  border-radius: var(--r-md);
+  background: var(--c-tint);
+  color: var(--c-cta);
+}
+.bee-card-icon .glyph { width: 22px; height: 22px; }
+.bee-card h3 { margin: 0 0 var(--sp-2); font-size: var(--fs-400); }
+.bee-card p { margin: 0; color: var(--c-text-soft); font-size: var(--fs-300); }
+
+/* The limits. Deliberately plain and deliberately high on the page. */
+.bee-not { max-width: 760px; }
+.bee-not-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-4); }
+.bee-not-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+  padding-bottom: var(--sp-4);
+  border-bottom: 1px solid var(--c-line-soft);
+}
+.bee-not-item:last-child { border-bottom: 0; padding-bottom: 0; }
+.bee-not-item .glyph {
+  width: 20px; height: 20px; flex: none; margin-top: 2px; color: var(--c-cta);
+}
+.bee-not-foot, .bee-privacy-foot {
+  margin-top: var(--sp-6);
+  color: var(--c-text-soft);
+  font-size: var(--fs-300);
+}
+
+/* ======================== ICB on YouTube ========================= */
+/* The card is a cover, not an embed. It becomes an iframe only when
+   somebody presses play, so a visit that never watches anything never
+   reaches YouTube at all. The cover is drawn in ICB's own colours
+   rather than with a YouTube still, because fetching the still would
+   be the very request this avoids. */
+
+.ytv-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+  gap: var(--sp-6);
+}
+.ytv { margin: 0; }
+.ytv-frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: var(--c-brand-deep);
+}
+.ytv-player { width: 100%; height: 100%; border: 0; display: block; }
+
+.ytv-cover {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-3);
+  padding: var(--sp-5);
+  border: 0;
+  cursor: pointer;
+  color: var(--c-text-inverse);
+  background:
+    radial-gradient(120% 100% at 50% 0%, rgba(180, 23, 28, 0.42), transparent 70%),
+    var(--c-brand-deep);
+  transition: background-color var(--t-fast) var(--ease);
+}
+.ytv-cover:hover { background-color: var(--black-800); }
+.ytv-cover:focus-visible { outline: 2px solid var(--c-cta); outline-offset: -4px; }
+
+.ytv-play {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: var(--c-cta);
+  box-shadow: 0 8px 22px rgba(10, 10, 11, 0.38);
+}
+.ytv-play .glyph { width: 22px; height: 22px; margin-left: 2px; }
+.ytv-cover:hover .ytv-play { background: var(--red-700); }
+
+.ytv-label {
+  font-size: var(--fs-300);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-align: center;
+  color: var(--c-text-inverse-soft);
+}
+
+.ytv-cap { margin-top: var(--sp-4); }
+.ytv-cap h3 { margin: 0 0 var(--sp-2); }
+.ytv-cap p { margin: 0; color: var(--c-text-soft); font-size: var(--fs-300); }
+
+.ytv-note {
+  margin-top: var(--sp-6);
+  color: var(--c-text-soft);
+  font-size: var(--fs-200);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ytv-cover, .ytv-play { transition: none; }
 }
 
 /* ============================ Talk to Bee ============================ */

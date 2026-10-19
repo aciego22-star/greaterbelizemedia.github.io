@@ -640,6 +640,38 @@ ICB.views = ICB.views || {};
       "</section>";
   }
 
+  /* ICB's YouTube videos. The card is not an embed until it is asked to
+     be one: pressing play is what creates the iframe, and until then
+     nothing has been requested from YouTube at all.
+
+     youtube-nocookie.com is the same video served without the tracking
+     the ordinary domain sets up. autoplay is on because the visitor has
+     just pressed play and would otherwise have to press it twice. */
+  ICB.initYouTube = function (mount) {
+    var cards = mount.querySelectorAll("[data-yt]");
+    Array.prototype.forEach.call(cards, function (card) {
+      var btn = card.querySelector("[data-yt-play]");
+      if (!btn) return;
+      btn.addEventListener("click", function () {
+        var id = card.getAttribute("data-yt");
+        if (!/^[\w-]{6,20}$/.test(id)) return;
+        var frame = document.createElement("iframe");
+        frame.className = "ytv-player";
+        frame.src = "https://www.youtube-nocookie.com/embed/" + id +
+          "?autoplay=1&rel=0&modestbranding=1";
+        frame.title = btn.querySelector(".ytv-label").textContent;
+        frame.allow = "accelerometer; autoplay; encrypted-media; picture-in-picture; web-share";
+        frame.setAttribute("allowfullscreen", "");
+        frame.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
+        frame.setAttribute("loading", "lazy");
+        var hole = card.querySelector(".ytv-frame");
+        hole.innerHTML = "";
+        hole.appendChild(frame);
+        card.classList.add("is-playing");
+      });
+    });
+  };
+
   /* Shared film players: used by the homepage and the Gallery page.
      Click to play with sound. Only one film plays at a time, so the two
      never talk over each other. If a source fails, a neutral note

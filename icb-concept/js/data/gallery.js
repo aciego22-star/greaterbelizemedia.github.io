@@ -124,6 +124,34 @@ ICB.DATA.gallery = {
         src: "assets/video/icb-life-happens-fast-es.mp4",
         poster: "assets/img/video/life-happens-fast-es.jpg"
       }
+    ],
+
+    /* ICB's own YouTube channel.
+       --------------------------------------------------------------
+       CAPTIONS ARE PENDING, AND THAT IS DELIBERATE.
+
+       These five IDs are the videos the client supplied. The machine
+       this was built on has no route to youtube.com, so the titles
+       could not be read, and a caption written for a video nobody here
+       has watched would be invented copy about ICB's own work. The
+       cards render as players with no caption until ICB's own titles
+       are filled in. Wrong words under a video are worse than none.
+
+       To finish: fill title and caption on each entry and rebuild.
+       Nothing else has to change. A title also becomes the player's
+       accessible name, replacing the numbered fallback.
+
+       Nothing is requested from YouTube until a visitor presses play.
+       No thumbnail, no script, no cookie. That keeps the promise the
+       rest of the site makes, which is that it reaches nobody until
+       someone asks it to, and it is why these cards are drawn in ICB's
+       own colours rather than with a YouTube still. */
+    youtube: [
+      { id: "tb1QdhdZrK8", title: null, caption: null },
+      { id: "s5H1ZSakebg", title: null, caption: null },
+      { id: "EfxAQ7qfuCs", title: null, caption: null },
+      { id: "YyCUW--4EGE", title: null, caption: null },
+      { id: "hAewzIr0sKE", title: null, caption: null }
     ]
   }
 };
