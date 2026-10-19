@@ -3232,7 +3232,10 @@ select,
 .g-open,
 .call-row,
 .wa-row,
-.method-row {
+.method-row,
+/* The map pins take a tap but are SVG groups, so none of the element
+   selectors above reach them. */
+.bm-marker {
   touch-action: manipulation;
   -webkit-tap-highlight-color: rgba(209, 33, 38, 0.14);
 }
