@@ -70,4 +70,4 @@ Allow: /
 # The host on the line below is rewritten by the build from one
 # setting, the same one that writes every canonical, so this file
 # needs no edit when the site moves to ICB's own domain.
-Sitemap: https://icb.austereautomations.com/sitemap.xml
+Sitemap: https://www.icbinsurance.com/sitemap.xml

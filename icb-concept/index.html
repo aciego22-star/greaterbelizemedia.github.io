@@ -5,11 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ICB Concept Experience</title>
   <meta name="description" content="A next-generation digital experience concept for Insurance Corporation of Belize Ltd. Prepared by Austere Automations for private review.">
-  <!-- LAUNCH SWITCH. This single line is what keeps the concept out of
-       Google while it lives on the agency subdomain, which is deliberate:
-       a speculative ICB site should not be indexed under anyone else's
-       domain. Delete this line on the day the site goes live on ICB's own
-       domain and nothing else needs to change for indexing. -->
+  <!-- LAUNCH SWITCH. This single line is the only thing keeping the site
+       out of Google, and it stays until the day it goes live on ICB's own
+       domain.
+
+       It matters more now than it did as a concept. Every page names
+       www.icbinsurance.com in its canonical, its hreflang and its
+       structured data, while the review copy is served from the agency
+       subdomain. A page on one host claiming to be a page on another is
+       not something to put in front of a crawler, and the canonical
+       would hand ICB's own domain a set of pages that are not there yet.
+
+       Delete this line on launch day. Nothing else needs to change for
+       indexing: robots.txt allows every crawler, the sitemap is
+       generated with the live host, and the icons are at the paths
+       Google expects. -->
   <meta name="robots" content="noindex, nofollow">
 
   <!-- Icons. Google reads the home page for a site's favicon, needs to be

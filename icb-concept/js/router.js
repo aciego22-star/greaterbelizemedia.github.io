@@ -447,7 +447,7 @@ ICB.views = ICB.views || {};
      real URLs, and they still work, but they leave the address bar
      saying something misleading. Safari on a phone shows only the
      domain once the bar is compact, so /#/insurance reads as
-     icb.austereautomations.com while the Insurance page is on screen,
+     www.icbinsurance.com while the Insurance page is on screen,
      and the site looks as though it opened somewhere it should not
      have. Rewriting on arrival makes the address agree with the page.
 

@@ -60,15 +60,38 @@ host.
 3. Netlify publishes it at a random `*.netlify.app` URL immediately.
    Open it and confirm the homepage loads.
 
-## Pointing icb.austereautomations.com at it
+## Pointing a domain at it
 
-1. In Netlify: Site configuration > Domain management > Add a domain,
-   and enter `icb.austereautomations.com`.
-2. At your DNS provider for `austereautomations.com`, add a CNAME record:
-   - Name/host: `icb`
-   - Value/target: your site's `*.netlify.app` hostname
-3. Wait for DNS to propagate (usually minutes), then let Netlify
-   provision the HTTPS certificate (automatic).
+The site is built for `www.icbinsurance.com`, which is where it goes
+live. Review happens on `icb.austereautomations.com` in the meantime.
+
+Netlify first, DNS second. Netlify has to be told to answer for a
+hostname before it can route that Host header or get a certificate for
+it, so changing DNS first gives visitors a certificate warning or a
+Netlify "not found" page instead of the site.
+
+1. In Netlify: Site configuration > Domain management > Add a domain.
+2. At the DNS provider for the domain, point the `www` record at the
+   site:
+   - Type: CNAME
+   - Name/host: `www`
+   - Value/target: the site's own `*.netlify.app` hostname
+3. Wait for DNS (usually minutes), then let Netlify issue the HTTPS
+   certificate, which is automatic.
+
+Two things to get right on the live domain:
+
+- **The bare domain cannot be a CNAME.** DNS does not allow one at the
+  apex. Either set the apex with an ALIAS/ANAME record if the provider
+  supports it, or Netlify's A record, or leave the apex alone and serve
+  only `www`.
+- **Do not move the nameservers without carrying the mail records.**
+  MX, SPF, DKIM and DMARC live on that domain. Changing only the `www`
+  record at the existing provider cannot break email; switching
+  nameservers to Netlify DNS without copying those records will.
+
+Record every existing record before changing anything, and lower the
+TTL a day ahead so a rollback takes minutes rather than hours.
 
 ## Updating the site
 
@@ -77,8 +100,13 @@ or connect the Git repository for automatic deploys from a branch.
 
 ## Notes
 
-- All routes are hash-based (`/#/claims`, `/#/locations`), so no
-  redirect rules are needed and every deep link works on any host.
+- Routes are real paths (`/claims`, `/es/locations`), each one a
+  directory with its own `index.html`, so Netlify serves them with no
+  redirect rules at all. The old hash form still works and rewrites
+  itself to the real path on arrival.
+- `404.html` is served automatically by Netlify for an address that does
+  not exist. It is the site's own not-found page, prerendered with the
+  header, the navigation and a way home.
 - The site also runs when `index.html` is opened directly from disk,
   which is handy as an offline backup during a live client meeting.
 - `node build/build-single.js` produces `dist/icb-concept.html`, a
@@ -99,9 +127,46 @@ Delete the line when the site goes live on ICB's own domain. Nothing else
 needs to change for indexing: `robots.txt` already allows crawling,
 `sitemap.xml` is in place, and the icons are at the paths Google expects.
 
-Two files name the host and should be pointed at the real domain at the
-same time: the `Sitemap:` line in `robots.txt` and the `<loc>` in
-`sitemap.xml`.
+The host itself needs no edit. It is set in one place, at the top of
+`build/build-static.js`, and the build writes it into every canonical,
+every hreflang pair, the social URLs, every structured-data identity,
+the generated `sitemap.xml`, the `Sitemap:` line in `robots.txt` and
+`llms.txt`. Verified by building against a different host and grepping
+the output for the old one.
+
+## Replacing a site that is already indexed
+
+This is a rebuild of a live website, not a new one, and that adds one
+job that has nothing to do with the code.
+
+ICB's existing pages are in Google and have links pointing at them from
+elsewhere. The rebuild uses its own routes. Any old URL with no new
+equivalent will answer 404 after the cutover, and the ranking and the
+inbound links that URL had go with it. Google does not transfer them on
+its own.
+
+So before go-live, each old URL needs a 301 to its nearest new page, in
+a `_redirects` file at the root of the deployed folder. The build ships
+that file if it finds one at the root of the source; it is absent until
+there is something to put in it. Netlify's own format, one rule a line,
+old path first:
+
+    /old-page-name   /insurance/motor   301!
+
+Getting the list of old URLs, best source first:
+
+1. Search Console, Indexing > Pages > export. Best because it also says
+   which pages earn traffic, so the ones that matter get attention
+   first.
+2. The live site's own `sitemap.xml`.
+3. The CMS page list.
+
+Set the primary domain in Netlify and it redirects the other hostname
+for you, so `www` versus bare needs no rule of its own. Pick whichever
+one Google already has indexed and keep it.
+
+Go live early in the week. A cutover on a Friday afternoon is a problem
+nobody notices until Monday.
 
 ## Icons and the favicon
 
@@ -162,7 +227,7 @@ into every canonical, every hreflang, the sitemap and llms.txt:
 - A canonical on every page, and `hreflang` naming the English page, the
   Spanish page and `x-default`, reciprocally. Google ignores hreflang
   that does not point back.
-- `sitemap.xml` with all 34 URLs and their language pairs.
+- `sitemap.xml` with all 36 URLs and their language pairs.
 - JSON-LD on every page: the organisation, the website, the page, its
   breadcrumbs, the twenty-one branches as entities with their addresses,
   phones, emails and hours, and each insurance product as a service.

@@ -41,7 +41,19 @@ const http = require("http");
 const vm = require("vm");
 const { execFileSync } = require("child_process");
 
-const ORIGIN = (process.env.ICB_ORIGIN || "https://icb.austereautomations.com")
+/* The live host, and the only place it is written down. It becomes
+   every canonical, every hreflang pair, the social URLs, every
+   structured-data identity, the sitemap, the Sitemap line in robots.txt
+   and llms.txt.
+
+   This is ICB's own domain, because that is where the rebuild goes. It
+   is set here even while the site is still being reviewed on the agency
+   subdomain, which means the review copy names an address it is not yet
+   served at. That is exactly why the noindex in index.html stays until
+   launch day: a page on one host claiming to be a page on another is
+   not a thing to show a crawler. Set ICB_ORIGIN to build for a staging
+   host instead. */
+const ORIGIN = (process.env.ICB_ORIGIN || "https://www.icbinsurance.com")
   .replace(/\/+$/, "");
 const ROOT = path.resolve(__dirname, "..");
 const DIST = path.join(ROOT, "dist");
@@ -56,7 +68,14 @@ const PORT = 8571;
    else. A crawler probes /favicon.ico and /robots.txt by path, not by
    following a link, so a file one directory down may as well not exist. */
 const SHIP = ["index.html", "css", "js", "assets",
-              "favicon.ico", "site.webmanifest", "robots.txt", "sitemap.xml"];
+              "favicon.ico", "site.webmanifest", "robots.txt", "sitemap.xml",
+              /* Optional, and absent until there is something to put in
+                 it. Replacing a site that is already indexed means every
+                 old URL needs a 301 to its nearest new page, or its
+                 ranking and its inbound links die with it. That belongs
+                 in a _redirects file at the root, so the build ships one
+                 if it finds one. */
+              "_redirects"];
 
 /* In the repository but on no page: an earlier encode kept for
    reference, and the crop the Marine hero used before the boat. */
@@ -386,7 +405,11 @@ function serve(dir) {
 /* ------------------------------------------------------------------ */
 (async () => {
   fs.rmSync(OUT, { recursive: true, force: true });
-  for (const item of SHIP) copyInto(path.join(ROOT, item), path.join(OUT, item), item);
+  for (const item of SHIP) {
+    const from = path.join(ROOT, item);
+    if (!fs.existsSync(from)) continue;   /* an optional one, like _redirects */
+    copyInto(from, path.join(OUT, item), item);
+  }
 
   /* robots.txt ships as written, and its one absolute address is the
      Sitemap line. Pointed at the wrong host it sends a crawler to a
