@@ -85,8 +85,21 @@ window.ICB = window.ICB || {};
     return null;
   }
 
+  /* The Spanish site has its own addresses, under /es. A page served
+     from one of them IS the Spanish page: that is what its canonical
+     says, what its hreflang pair says, and what the crawler that fetched
+     it will index. So the path outranks anything remembered from a
+     previous visit. Without this, a reader who once chose English would
+     open /es/claims and be shown English at a Spanish URL, and so would
+     Google. An explicit ?lang= still wins, because that is someone
+     asking on purpose. */
+  function fromPath() {
+    var m = /^\/(es|en)(?=\/|$)/.exec(location.pathname || "/");
+    return m ? normalise(m[1]) : null;
+  }
+
   function resolve() {
-    return fromQuery() || fromStore() || fromBrowser() || FALLBACK;
+    return fromQuery() || fromPath() || fromStore() || fromBrowser() || FALLBACK;
   }
 
   function remember(lang) {

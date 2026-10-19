@@ -8,5 +8,64 @@
 User-agent: *
 Allow: /
 
+# ---------------------------------------------------------------------
+# AI and answer engines.
+#
+# The wildcard above already allows every one of these, so naming them
+# changes nothing today. They are listed because the decision should be
+# visible and easy to reverse: a brand that wants to be quoted by an
+# assistant has to let that assistant read the site, and a brand that
+# changes its mind should be able to find the line and flip it rather
+# than go looking for which crawler is which.
+#
+# Two kinds are mixed here on purpose. Some fetch a page to answer a
+# question being asked right now and can cite the source; others collect
+# text for training and cannot. ICB may well feel differently about the
+# two. Change Allow to Disallow under any single agent to opt out of it
+# alone.
+# ---------------------------------------------------------------------
+
+# Answers and citations, live
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+# Indexing and model grounding
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: meta-externalagent
+Allow: /
+
+# Open crawl corpora
+User-agent: CCBot
+Allow: /
+
 # Update the host when the site moves to ICB's own domain.
 Sitemap: https://icb.austereautomations.com/sitemap.xml

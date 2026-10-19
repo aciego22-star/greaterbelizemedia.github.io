@@ -1,7 +1,26 @@
 /* ============================================================================
-   ICB.router — hash router.
-   Route form: #/segment[/sub][?key=value][@anchor]
-   Examples: #/  #/insurance/motor  #/contact?topic=business  #/claims@motor
+   ICB.router — routes by real path, and still understands a hash.
+
+   Route form: /segment[/sub][?key=value]  or  #/segment[/sub][@anchor]
+   Examples: /insurance/motor   /es/claims   #/claims@motor
+
+   TWO URL SHAPES, BOTH REQUIRED.
+
+   Real paths are what the site deploys as, one directory per route per
+   language, because a fragment is not a URL. Everything after a # is
+   stripped before a request is ever made, so a crawler asking for
+   #/insurance/motor is asking for the homepage: seventeen pages of
+   content would arrive as one, and the Spanish site would have no
+   address at all. Paths are what make each page its own document, with
+   its own title, its own canonical and its own hreflang pair.
+
+   Hash routes stay understood because links to them are already out in
+   the world, and because the single-file build has no server to resolve
+   a path against. A hash wins when one is present; otherwise the path is
+   read. Path interception is confined to http and https, so the
+   single file opened from disk keeps the hash behaviour it has always
+   had.
+
    Views register themselves on ICB.views as { title, render(mount, ctx) }.
    ========================================================================== */
 window.ICB = window.ICB || {};
@@ -145,6 +164,88 @@ ICB.views = ICB.views || {};
     return { view: "notfound", navId: null };
   }
 
+  /* ------------------------------------------------------------------ */
+  /* Paths                                                               */
+  /* ------------------------------------------------------------------ */
+
+  var LANG_PREFIX = /^\/(es|en)(?=\/|$)/;
+
+  /* The route, with any language prefix and any index.html stripped off:
+     "/es/insurance/motor/" and "/insurance/motor/index.html" both give
+     back "insurance/motor". */
+  function routeFromPath(pathname) {
+    return String(pathname || "/")
+      .replace(/index\.html?$/i, "")
+      .replace(LANG_PREFIX, "")
+      .replace(/^\/+|\/+$/g, "");
+  }
+
+  function langFromPath(pathname) {
+    var m = LANG_PREFIX.exec(String(pathname || "/"));
+    return m ? m[1] : null;
+  }
+
+  function pathFor(route, lang) {
+    var base = lang === "es" ? "/es" : "";
+    return route ? base + "/" + route : base + "/";
+  }
+
+  /* "#/claims@marine" is this app's own shape for a route plus an anchor.
+     As a real link that is a path and a fragment: /claims#marine. */
+  function hrefForRoute(raw, lang) {
+    var anchor = "", query = "";
+    var at = raw.indexOf("@");
+    if (at >= 0) { anchor = raw.slice(at + 1); raw = raw.slice(0, at); }
+    var qm = raw.indexOf("?");
+    if (qm >= 0) { query = raw.slice(qm); raw = raw.slice(0, qm); }
+    var route = raw.replace(/^\/+|\/+$/g, "");
+    return pathFor(route, lang) + query + (anchor ? "#" + anchor : "");
+  }
+
+  /* Every view and every piece of chrome writes its links as #/route,
+     and that is left alone: it is the one form that works from a file on
+     disk, and it keeps forty-odd call sites from having to know about
+     any of this.
+
+     On a server they are rewritten in place to real paths, after each
+     render and after the chrome is rebuilt on a language change. Without
+     this the prerendered HTML would carry real links for a crawler and
+     the app would put the hash ones back the moment it booted, so the
+     reader and the crawler would be walking two different sites. */
+  function pathifyLinks(root) {
+    if (!hosted()) return;
+    var lang = ICB.i18n.get();
+    var as = (root || document).querySelectorAll('a[href^="#/"]');
+    for (var i = 0; i < as.length; i++) {
+      as[i].setAttribute("href", hrefForRoute(as[i].getAttribute("href").slice(2), lang));
+    }
+  }
+
+  /* Only a hosted page routes by path. Opened from disk there is no
+     server to serve /claims, so the hash stays in charge. */
+  function hosted() {
+    return location.protocol === "http:" || location.protocol === "https:";
+  }
+
+  /* A route hash starts "#/". A bare "#main" is the skip link, and
+     "#marine" is an anchor on a real page: neither is a route, and
+     treating them as one lands the reader on the not-found view. */
+  function hashRoute() {
+    var h = String(location.hash || "");
+    return /^#\//.test(h) ? h.replace(/^#\//, "") : "";
+  }
+
+  /* Whichever source is in play, expressed in the one shape parse()
+     already understands. On a real path the fragment is the anchor, so
+     /claims#marine means the same as the old #/claims@marine. */
+  function currentRoute() {
+    var h = hashRoute();
+    if (h) return "#/" + h;
+    var frag = String(location.hash || "").replace(/^#/, "");
+    return "#/" + routeFromPath(location.pathname) + (location.search || "") +
+      (frag ? "@" + frag : "");
+  }
+
   function setNav(navId) {
     var links = document.querySelectorAll("[data-nav], .mm-nav a");
     Array.prototype.forEach.call(links, function (a) {
@@ -182,7 +283,7 @@ ICB.views = ICB.views || {};
     var entry = claimEntry();
     currentKey = entry.key;
 
-    var ctx = parse(location.hash);
+    var ctx = parse(currentRoute());
     var match = resolve(ctx);
     ctx.productId = match.productId || null;
 
@@ -197,6 +298,9 @@ ICB.views = ICB.views || {};
     document.title = title || "ICB Concept Experience";
 
     setNav(match.navId);
+    /* Whole document, not just the mount: the header, the mobile menu
+       and the footer are chrome and are rebuilt on their own schedule. */
+    pathifyLinks(document);
     if (view.mounted) view.mounted(mount, ctx);
     ICB.reveal(mount);
     ICB.art.enhance(mount);
@@ -246,7 +350,61 @@ ICB.views = ICB.views || {};
     var a = e.target.closest && e.target.closest('a[href^="#/"]');
     if (!a) return;
     if (normalise(a.getAttribute("href")) !== normalise(location.hash)) return;
-    scrollAfterRender(parse(location.hash).anchor, null);
+    scrollAfterRender(parse(currentRoute()).anchor, null);
+  }
+
+  /* Links to real paths are taken over rather than followed.
+
+     A full page load would work, and would even be fast on a static
+     site, but it throws the document away: the Talk to Bee panel is an
+     iframe, so anyone mid-conversation who tapped a link would lose it.
+     Everything a browser expects of a link still happens here. A modified
+     click, a new tab, a download, another origin or an unknown route all
+     fall through untouched, so the browser does what it always would. */
+  function onPathClick(e) {
+    if (!hosted() || e.defaultPrevented) return;
+    if (e.button > 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var a = e.target.closest && e.target.closest("a[href]");
+    if (!a || a.hasAttribute("download")) return;
+    if (a.target && a.target !== "_self") return;
+
+    var url;
+    try { url = new URL(a.href, location.href); } catch (err) { return; }
+    if (url.origin !== location.origin) return;
+    /* A fragment link is somebody else's job: either the hash router's
+       or the browser's own in-page scroll. */
+    if (url.hash && url.hash.length > 1) return;
+    /* A link to the page you are already on changes nothing in the URL,
+       so nothing would happen and the tap would read as broken. Take
+       them to the top, which is what it does everywhere else. */
+    if (url.pathname === location.pathname && url.search === location.search) {
+      e.preventDefault();
+      scrollAfterRender(null, null);
+      return;
+    }
+
+    var probe = parse("#/" + routeFromPath(url.pathname) + url.search);
+    if (resolve(probe).view === "notfound") return;
+
+    e.preventDefault();
+    history.pushState(null, "", url.pathname + url.search);
+    var lang = langFromPath(url.pathname);
+    /* Crossing between /claims and /es/claims is a language change as
+       well as a navigation. Render once, not twice. */
+    if (lang && ICB.i18n.get() !== lang) ICB.i18n.set(lang, { rerender: false });
+    render();
+  }
+
+  /* The address has to keep telling the truth. Switching to Spanish on
+     /claims moves the reader to /es/claims without a reload, so the URL,
+     the canonical and the content never disagree. */
+  function syncPathToLang() {
+    pathifyLinks(document);
+    if (!hosted() || hashRoute()) return;
+    var want = pathFor(routeFromPath(location.pathname), ICB.i18n.get());
+    if (want === location.pathname) return;
+    try { history.replaceState(history.state, "", want + location.search); }
+    catch (e) { /* not fatal: the content is already correct */ }
   }
 
   ICB.router = {
@@ -254,9 +412,16 @@ ICB.views = ICB.views || {};
       mount = document.getElementById("main");
       announcer = document.getElementById("route-announcer");
       window.addEventListener("hashchange", render);
+      window.addEventListener("popstate", render);
       document.addEventListener("click", onSameRouteClick);
+      document.addEventListener("click", onPathClick);
+      document.addEventListener("icb:lang", syncPathToLang);
       render();
     },
-    refresh: render
+    refresh: render,
+    /* The prerender build asks for these so the static pages it writes
+       and the router that takes over from them agree on one scheme. */
+    pathFor: pathFor,
+    routeFromPath: routeFromPath
   };
 })();

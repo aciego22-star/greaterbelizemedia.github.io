@@ -124,3 +124,74 @@ and both the page and the icon are crawlable. The site ships:
 All four root files are listed in `SHIP` in `build/build-variants.js`.
 A root file that is not in that list does not get deployed, and a
 favicon one directory down may as well not exist.
+
+## The deployable folder is now dist/site
+
+    node build/build-static.js
+
+`dist/site` is what goes on Netlify. Drag that folder, not `dist/with-bee`
+and not the source directory.
+
+It is the same site, written out as real files. Each route becomes its
+own directory with its own `index.html`, in both languages:
+
+    dist/site/index.html                   /
+    dist/site/insurance/motor/index.html   /insurance/motor
+    dist/site/es/claims/index.html         /es/claims
+
+This exists because a fragment is not a URL. Everything after a `#` is
+stripped before the request leaves the browser, so seventeen routes in
+two languages all arrived at a crawler as the homepage, and a crawler
+that does not run JavaScript saw sixty words of the entire site.
+Afterwards each page carries four hundred to nine hundred words of its
+own, before a single script runs.
+
+Google does run JavaScript, late and on a budget. The engines this site
+is being pointed at mostly do not: GPTBot, ClaudeBot, PerplexityBot and
+the rest fetch HTML and read what is there. Structured data in a page
+that has to execute first is structured data they never see.
+
+The build needs Playwright, because rendering an app into HTML takes a
+browser. It is deliberately not a dependency of this project, which
+ships no `node_modules`; it is looked up wherever it is installed:
+
+    npm install -g playwright
+
+Set `ICB_ORIGIN` to the live host before a real deploy. It is written
+into every canonical, every hreflang, the sitemap and llms.txt:
+
+    ICB_ORIGIN=https://www.icbinsurance.com node build/build-static.js
+
+### What the build writes
+
+- One HTML file per route per language, content already in it.
+- A canonical on every page, and `hreflang` naming the English page, the
+  Spanish page and `x-default`, reciprocally. Google ignores hreflang
+  that does not point back.
+- `sitemap.xml` with all 34 URLs and their language pairs.
+- JSON-LD on every page: the organisation, the website, the page, its
+  breadcrumbs, the twenty-one branches as entities with their addresses,
+  phones, emails and hours, and each insurance product as a service.
+- `llms.txt`, a plain-text summary of the company, its products and its
+  branch network, generated from the same data as the site.
+
+No geo coordinates are published. The map positions in the data are
+projected town points, fine for placing a dot and nowhere near good
+enough to publish as a branch location. If ICB supplies real coordinates
+they belong in the location records and the structured data will carry
+them.
+
+### The other two builds still exist
+
+`build/build-single.js` writes `dist/icb-concept.html`, one file with
+everything inlined. That is the preview artifact and the only build that
+works from a `file://` URL, because there is no server to resolve a path
+against. The router notices and keeps hash routing there.
+
+`build/build-variants.js` writes `dist/with-bee` and `dist/no-bee`.
+`build-static.js` runs it and renders from `with-bee`.
+
+### Old links still work
+
+`/#/insurance/motor` and the like are understood and still land on the
+right page. Anything already sent to the client keeps working.

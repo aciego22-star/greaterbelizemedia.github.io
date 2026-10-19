@@ -20,7 +20,23 @@ ICB.ASSETS = ICB.ASSETS || {};
 
 ICB.assetUrl = function (p) {
   if (!p) return p;
-  return Object.prototype.hasOwnProperty.call(ICB.ASSETS, p) ? ICB.ASSETS[p] : p;
+  if (Object.prototype.hasOwnProperty.call(ICB.ASSETS, p)) return ICB.ASSETS[p];
+  /* Nothing bundled, so this is the folder build asking for a real file.
+     Pages now live at real paths, and a relative path like the ones in
+     this file, written into a document served from /insurance/motor/,
+     resolves inside that directory, where there is no assets folder.
+     Anchor it to the site root instead.
+
+     Written without an example path on purpose: build-single.js scans
+     the bundle for anything shaped like an asset reference and fails if
+     it is not bundled, and it cannot tell prose from markup.
+
+     Only over http and https. Opened from disk a leading slash points at
+     the root of the filesystem, and the single-file build has every
+     asset inlined above anyway, so neither needs this. */
+  if (/^([a-z]+:|\/|#)/i.test(p)) return p;
+  if (location.protocol === "http:" || location.protocol === "https:") return "/" + p;
+  return p;
 };
 
 /* force: also resolve elements marked data-asset-defer. Those are the
