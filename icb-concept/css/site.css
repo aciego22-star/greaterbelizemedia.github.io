@@ -3173,6 +3173,22 @@ select.input {
   .footer-grid { grid-template-columns: 1fr 1fr; }
 }
 
+/* Above the menu breakpoint the full navigation takes over the header,
+   and nine items plus the language switch and the Explore insurance
+   button leave no room for the company name beside the logo. The header
+   is capped at the content shell, so a wider screen does not help: it
+   either fits in 1120px or it does not.
+
+   The name gives way rather than the navigation or the button. The mark
+   on its own is unmistakably ICB, it is what the favicon and the app
+   icon already use, and the full name is in the page title, the footer
+   and the first line of every hero. Below this width the navigation
+   collapses to a button and the name has room again. */
+@media (min-width: 1100px) {
+  .brand-lines { display: none; }
+  .brand-sep { display: none; }
+}
+
 @media (max-width: 479px) {
   .brand-lines { display: none; }
   .brand-sep { display: none; }
@@ -3539,60 +3555,6 @@ select,
   color: var(--c-text-soft);
   font-size: var(--fs-300);
 }
-
-/* ===================== Centred brand treatment ==================== */
-/* The logo is centred rather than sitting at the left margin. One
-   block, so the whole treatment comes out in one edit if ICB would
-   rather keep the left alignment.
- *
- * On a wide screen this needs the header to become two rows: a logo
- * cannot be centred in a row it shares with a nine item navigation and
- * a button. Row one carries the language switch, the centred lockup and
- * the button; row two carries the navigation, centred under it. That
- * also hands back the room the ninth nav item had taken from the
- * company name, so the name sits beside the logo again.
- *
- * --header-h grows with it. The header is sticky and that token is what
- * the mobile menu, the sticky side rails and the launcher all measure
- * themselves against, so leaving it at the one row height would tuck
- * content under the header. */
-@media (min-width: 1100px) {
-  :root { --header-h: 116px; }
-
-  .header-inner {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    grid-template-areas:
-      "lang brand actions"
-      "nav  nav   nav";
-    align-items: center;
-    row-gap: var(--sp-2);
-    padding-block: var(--sp-3);
-  }
-  .brand          { grid-area: brand;   justify-self: center; }
-  .lang-switch    { grid-area: lang;    justify-self: start; }
-  .header-actions { grid-area: actions; justify-self: end; }
-  .site-nav       { grid-area: nav;     justify-self: center; }
-}
-
-/* Below that the navigation is already a button, so one row is enough:
-   language on the left, logo in the middle, menu on the right. */
-@media (max-width: 1099px) {
-  .header-inner {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center;
-  }
-  .lang-switch    { justify-self: start; order: 1; }
-  .brand          { justify-self: center; order: 2; }
-  .header-actions { justify-self: end;   order: 3; }
-}
-
-/* The footer brand block, centred to match. */
-.footer-brand { text-align: center; }
-.footer-brand .footer-logo-plate { margin-inline: auto; }
-.footer-brand .brand-lines { align-items: center; }
-.footer-brand address { font-style: normal; }
 
 /* ======================== ICB on YouTube ========================= */
 /* The card is a cover, not an embed. It becomes an iframe only when
