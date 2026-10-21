@@ -549,12 +549,6 @@ ICB.views = ICB.views || {};
   }
 
   function saveBlob(blob, name) {
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement("a");
-    a.href = url; a.download = name;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    window.setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+    ICB.claimform.saveFile(blob, name);
   }
 })();

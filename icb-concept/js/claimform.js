@@ -275,7 +275,68 @@ window.ICB = window.ICB || {};
     return out;
   }
 
+  /* ------------------------------------------------------------------ */
+  /* Handing a file to the reader                                        */
+  /* ------------------------------------------------------------------ */
+
+  /* On a real host this is an anchor with a download attribute, which is
+     all it ever needs to be. Inside the preview surface the page is
+     framed and a plain download is refused, so the blank forms and the
+     completed claim would both appear to do nothing when the concept is
+     being shown to the client. Where that surface offers a save of its
+     own, it is used; everywhere else the anchor is.
+
+     Nothing here is required for the deployed site: window.claude does
+     not exist on a host, so the first branch is never taken. */
+  function hostSave(blob, name) {
+    if (!(window.claude && typeof window.claude.use === "function")) return Promise.resolve(false);
+    return window.claude.use("downloads").then(function (d) {
+      if (!d || typeof d.save !== "function") return false;
+      return d.save({ filename: name, data: blob }).then(function () { return true; },
+                                                         function () { return true; });
+    }, function () { return false; });
+  }
+
+  function anchorSave(blob, name) {
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url; a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+  }
+
+  function saveFile(blob, name) {
+    hostSave(blob, name).then(function (handled) {
+      if (!handled) anchorSave(blob, name);
+    });
+  }
+
+  /* The blank claim forms are ordinary download links, and in the
+     preview they are bundled as data URIs. Same problem, same answer,
+     and only inside that surface: elsewhere the browser is left to do
+     what it already does well. */
+  function interceptDownloadLinks() {
+    if (!(window.claude && typeof window.claude.use === "function")) return;
+    document.addEventListener("click", function (e) {
+      var a = e.target && e.target.closest ? e.target.closest("a[download]") : null;
+      if (!a || !a.getAttribute("href")) return;
+      e.preventDefault();
+      var name = a.getAttribute("download") || (a.getAttribute("href").split("/").pop() || "download.pdf");
+      window.fetch(a.href).then(function (r) { return r.blob(); })
+        .then(function (b) { saveFile(b, name); })
+        .catch(function () { anchorSave(new Blob([""], { type: "text/plain" }), name); });
+    }, true);
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", interceptDownloadLinks);
+  } else {
+    interceptDownloadLinks();
+  }
+
   ICB.claimform = {
+    saveFile: saveFile,
     formById: formById,
     formForPathway: formForPathway,
     eachField: eachField,
