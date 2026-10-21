@@ -45,7 +45,7 @@ ICB.assetUrl = function (p) {
    deferred keeps every navigation cheap. */
 ICB.hydrateAssets = function (root, force) {
   var scope = root || document;
-  var nodes = scope.querySelectorAll("[data-asset], [data-asset-poster], [data-asset-srcset]");
+  var nodes = scope.querySelectorAll("[data-asset], [data-asset-poster], [data-asset-srcset], [data-asset-href]");
   for (var i = 0; i < nodes.length; i++) {
     var el = nodes[i];
     if (!force && el.hasAttribute("data-asset-defer")) continue;
@@ -61,6 +61,14 @@ ICB.hydrateAssets = function (root, force) {
     if (src) {
       el.src = ICB.assetUrl(src);
       el.removeAttribute("data-asset");
+    }
+    /* A download link rather than something to display. Same resolution:
+       the real file on a host, the bundled copy in the single file, so
+       the claim forms download from the preview too. */
+    var href = el.getAttribute("data-asset-href");
+    if (href) {
+      el.href = ICB.assetUrl(href);
+      el.removeAttribute("data-asset-href");
     }
     var poster = el.getAttribute("data-asset-poster");
     if (poster) {

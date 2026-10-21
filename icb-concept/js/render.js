@@ -109,9 +109,14 @@ window.ICB = window.ICB || {};
     return out + "</a>";
   }
 
-  /* Claim pathway card. */
+  /* Claim pathway card.
+
+     The form button used to be a link to the site this one replaces. It
+     is now ICB's own PDF, served from here and downloaded rather than
+     opened: a claimant on a phone who taps a form wants it saved, not a
+     new tab they lose when they switch apps. data-asset-href so the
+     single-file preview downloads the bundled copy. */
   function claimCard(c) {
-    var site = ICB.DATA.site;
     return '' +
       '<article class="pathway rv" id="claim-' + esc(c.anchor) + '" data-anchor="' + esc(c.anchor) + '">' +
         '<div class="pathway-head">' +
@@ -120,8 +125,9 @@ window.ICB = window.ICB || {};
         "</div>" +
         '<p class="pathway-lead">' + esc(ICB.t(c.lead)) + "</p>" +
         '<div class="pathway-actions">' +
-          '<a class="btn btn-primary btn-sm" href="' + esc(site.external.claimsForms) + '"' + extAttrs() + ">" +
-            ICB.art.glyph("download") + "<span>" + esc(c.formLabel) + "</span>" + extNote("icbinsurance.com") + "</a>" +
+          '<a class="btn btn-primary btn-sm" data-asset-href="' + esc(c.formFile) + '"' +
+            ' href="' + esc(c.formFile) + '" download>' +
+            ICB.art.glyph("download") + "<span>" + esc(c.formLabel) + "</span></a>" +
           '<a class="btn btn-ghost btn-sm" href="#/contact?topic=claim">' + esc(ICB.s("contactICB")) + "</a>" +
         "</div>" +
         '<p class="pathway-note">' + esc(ICB.s("claimsFormNote")) + "</p>" +

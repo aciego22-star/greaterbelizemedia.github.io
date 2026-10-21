@@ -103,7 +103,7 @@ ICB.STRINGS = {
 
     /* ---- claims ---- */
     claimsFormBtn: "{form}",
-    claimsFormNote: "Opens the official form page on icbinsurance.com.",
+    claimsFormNote: "ICB's own form, downloaded to your device.",
 
     /* ---- locations ---- */
     filterByDistrict: "Filter by district",
@@ -268,7 +268,7 @@ ICB.STRINGS = {
 
     /* ---- claims ---- */
     claimsFormBtn: "{form}",
-    claimsFormNote: "Abre la página del formulario oficial en icbinsurance.com.",
+    claimsFormNote: "El formulario propio de ICB, descargado a su dispositivo.",
 
     /* ---- locations ---- */
     filterByDistrict: "Filtrar por distrito",

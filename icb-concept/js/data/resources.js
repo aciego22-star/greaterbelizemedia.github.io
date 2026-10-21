@@ -28,7 +28,7 @@ ICB.DATA.resources = {
     {
       label: { en: "Claims forms", es: "Formularios de reclamo" },
       description: { en: "The Insured Motor Accident, Claimant Motor Accident, Property, Marine and Hurricane forms published by ICB.", es: "Los formularios Insured Motor Accident, Claimant Motor Accident, Property, Marine y Hurricane publicados por ICB." },
-      hrefKey: "claimsForms",
+      route: "#/claims@forms",
       glyph: "document"
     },
     {

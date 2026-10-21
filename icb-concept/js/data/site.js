@@ -98,8 +98,10 @@ ICB.DATA.site = {
   },
 
   external: {
-    // Official ICB claims page. Replace with direct PDF links when supplied by ICB.
-    claimsForms: "https://www.icbinsurance.com/claims",
+    /* The claim forms are no longer here. ICB supplied the five PDFs on
+       21 Oct 2026 and they are served from this site, listed per claim
+       type in ICB.DATA.claims. Nothing should link a claimant to the
+       site this one replaces. */
     consumerResources: "https://www.icbinsurance.com/consumer-resourses",
     /* NO PAYMENT PORTAL. ICB does not take payments through its own
        website. Earlier drafts linked an external billing host and a
@@ -180,7 +182,7 @@ ICB.DATA.site = {
              is or what happens to what they type into it, and this is
              where a visitor looks for that kind of answer. */
           { label: { en: "Bee, the ICB assistant", es: "Bee, el asistente de ICB" }, href: "#/bee" },
-          { label: { en: "Official claims forms", es: "Formularios oficiales de reclamo" }, href: "https://www.icbinsurance.com/claims", external: true },
+          { label: { en: "Official claims forms", es: "Formularios oficiales de reclamo" }, href: "#/claims@forms" },
           { label: { en: "How to pay ICB", es: "Cómo pagarle a ICB" }, href: "#/payments" },
           { label: { en: "Consumer resources", es: "Recursos para el cliente" }, href: "#/resources" }
         ]

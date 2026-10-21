@@ -37,12 +37,15 @@ ICB.views = ICB.views || {};
           "</div>" +
         "</section>" +
 
-        '<section class="section" aria-labelledby="pathways-title">' +
+        /* data-anchor so "#/claims@forms" lands on the forms rather than
+           at the top of the page. The footer and the resources page both
+           send a claimant straight here. */
+        '<section class="section" data-anchor="forms" aria-labelledby="pathways-title">' +
           '<div class="shell">' +
             R.sectionHead({
               eyebrow: { en: "Claim pathways", es: "Vías de reclamo" },
               title: { en: "Start with your claim type.", es: "Empiece por su tipo de reclamo." },
-              sub: { en: "Each pathway uses the official ICB claim form published on icbinsurance.com.", es: "Cada vía usa el formulario oficial de reclamo de ICB publicado en icbinsurance.com." },
+              sub: { en: "Each pathway carries ICB's own claim form, ready to download.", es: "Cada vía incluye el formulario de reclamo propio de ICB, listo para descargar." },
               id: "pathways-title"
             }) +
             '<div class="pathway-grid">' + cards + "</div>" +

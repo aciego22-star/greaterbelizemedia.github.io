@@ -53,7 +53,8 @@ let result = inline(html);
    again to every byte against a 16MB single-document cap, so a lighter
    encode from build/preview is substituted when present. The deployed
    folder and ZIP always ship the full-quality files. */
-const MIME = { png: "image/png", jpg: "image/jpeg", jpeg: "image/jpeg", webp: "image/webp", mp4: "video/mp4" };
+const MIME = { png: "image/png", jpg: "image/jpeg", jpeg: "image/jpeg", webp: "image/webp",
+               mp4: "video/mp4", pdf: "application/pdf" };
 const PREVIEW_DIR = path.join(root, "build", "preview");
 const assets = {};
 
@@ -85,6 +86,10 @@ function collectAssets(dir, prefix) {
 }
 collectAssets("assets/img", "assets/img/");
 collectAssets("assets/video", "assets/video/");
+/* ICB's claim forms. Bundled so the preview downloads them like the
+   deployed site does, instead of reaching for a folder that is not
+   beside it. */
+collectAssets("assets/forms", "assets/forms/");
 
 /* The map is seeded in js/assets.js, ahead of every data file and view,
    so ICB.ASSETS is populated before anything renders. Base64 cannot
@@ -118,7 +123,7 @@ result = result.replace(ROOT_LINKS, "");
 
 /* Every asset path the bundle asks for must be a key in the map,
    otherwise the single file would reach for a companion folder. */
-const wanted = new Set((result.match(/assets\/[\w./-]+\.(?:png|jpe?g|webp|mp4)/g) || []));
+const wanted = new Set((result.match(/assets\/[\w./-]+\.(?:png|jpe?g|webp|mp4|pdf)/g) || []));
 const missing = [...wanted].filter(p => !(p in assets));
 if (missing.length) {
   console.error("Build error: referenced but not bundled:", missing.slice(0, 10));

@@ -7,9 +7,16 @@
    settlement steps a claim requires. Those instructions belong to ICB and
    are given by an ICB claims representative.
 
+   The five forms are ICB's own PDFs, supplied by the client on 21 Oct
+   2026 and served from this site rather than linked away to the site
+   being replaced. formFile is the file each pathway hands over.
+
    INTERNAL TODO (not client-facing):
-   - Replace formUrl with direct PDF links per claim type once ICB supplies
-     them; today every button opens ICB's published claims forms page.
+   - The hurricane form's own title page reads "PROPERTY CATASTROPHE
+     CLAIM FORM", while ICB's published claims listing calls it the
+     Hurricane Claim Form. The listing name is what the button says,
+     because that is the name a claimant was told to look for. Worth
+     confirming which ICB wants shown.
    - Confirm the published form titles read exactly as listed here.
    ========================================================================== */
 window.ICB = window.ICB || {};
@@ -32,6 +39,7 @@ ICB.DATA.claims = {
       anchor: "motor",
       name: { en: "Motor claim", es: "Reclamo de vehículo" },
       formLabel: "Insured Motor Accident Form",
+      formFile: "assets/forms/icb-insured-motor-accident-report-form.pdf",
       lead: { en: "For an ICB policyholder reporting an accident involving an insured vehicle.", es: "Para un asegurado de ICB que reporta un accidente con un vehículo asegurado." },
       glyph: "car"
     },
@@ -40,6 +48,7 @@ ICB.DATA.claims = {
       anchor: "third-party",
       name: { en: "Motor claim as a third party", es: "Reclamo de vehículo como tercero" },
       formLabel: "Claimant Motor Accident Form",
+      formFile: "assets/forms/icb-claimant-motor-accident-report-form.pdf",
       lead: { en: "For a claimant involved in an accident with a vehicle insured by ICB.", es: "Para un reclamante involucrado en un accidente con un vehículo asegurado por ICB." },
       glyph: "people"
     },
@@ -48,6 +57,7 @@ ICB.DATA.claims = {
       anchor: "property",
       name: { en: "Property claim", es: "Reclamo de propiedad" },
       formLabel: "Property Claim Form",
+      formFile: "assets/forms/icb-property-claim-form.pdf",
       lead: { en: "For loss or damage at a property insured with ICB.", es: "Por pérdida o daño en una propiedad asegurada con ICB." },
       glyph: "house"
     },
@@ -56,6 +66,7 @@ ICB.DATA.claims = {
       anchor: "marine",
       name: { en: "Marine claim", es: "Reclamo marítimo" },
       formLabel: "Marine Claim Form",
+      formFile: "assets/forms/icb-marine-claimant-form.pdf",
       lead: { en: "For loss or damage involving a vessel insured with ICB.", es: "Por pérdida o daño de una embarcación asegurada con ICB." },
       glyph: "boat"
     },
@@ -64,6 +75,7 @@ ICB.DATA.claims = {
       anchor: "hurricane",
       name: { en: "Hurricane claim", es: "Reclamo por huracán" },
       formLabel: "Hurricane Claim Form",
+      formFile: "assets/forms/icb-property-catastrophe-claim-form.pdf",
       lead: { en: "For property loss or damage following a hurricane.", es: "Por pérdida o daño a la propiedad después de un huracán." },
       glyph: "storm"
     }
