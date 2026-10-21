@@ -160,6 +160,15 @@ ICB.views = ICB.views || {};
         ? { view: "product", navId: "insurance", productId: p[1] }
         : { view: "notfound", navId: null };
     }
+    /* claims/form/<id>: ICB's claim forms, filled in on the device. A
+       route of its own rather than a mode of the claims page, so a
+       claimant can be sent straight to the right form and so the form
+       has its own address to come back to. */
+    if (p[0] === "claims" && p[1] === "form" && p.length === 3) {
+      return ICB.claimform && ICB.claimform.formById(p[2])
+        ? { view: "claimForm", navId: "claims", formId: p[2] }
+        : { view: "notfound", navId: null };
+    }
     if (ICB.views[p[0]] && p.length === 1) return { view: p[0], navId: p[0] };
     return { view: "notfound", navId: null };
   }
@@ -316,6 +325,7 @@ ICB.views = ICB.views || {};
     var ctx = parse(currentRoute());
     var match = resolve(ctx);
     ctx.productId = match.productId || null;
+    ctx.formId = match.formId || null;
 
     var view = ICB.views[match.view] || ICB.views.notfound;
     mount.innerHTML = view.render(ctx) || "";

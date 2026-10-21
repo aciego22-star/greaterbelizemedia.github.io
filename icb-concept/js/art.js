@@ -813,6 +813,10 @@ window.ICB = window.ICB || {};
     /* Task and product marks */
     shield: '<path d="M12 2.9l7.3 2.55v5.2c0 4.63-2.93 8.7-7.3 10.45C7.63 19.35 4.7 15.28 4.7 10.65v-5.2z"/><path d="M9.15 11.9l2 2.05 3.7-4.15"/>',
     document: '<path d="M6.6 2.9h7.05l4.35 4.35V21.1H6.6z"/><path d="M13.4 2.95v4.5h4.5"/><path d="M9.4 12.3h5.2M9.4 15.7h5.2M9.4 18.2h3"/>',
+    /* A pen on a line: the claim form filled in on the device, as
+       against the download beside it. Drawn in the same 24px box and
+       1.7 stroke as the rest, so a row of glyphs stays one set. */
+    edit: '<path d="M4.2 19.8h15.6"/><path d="M13.9 5.1l4.4 4.4"/><path d="M6.6 16.8l9.1-9.1 2.6 2.6-9.1 9.1H6.6z" />',
     card: '<rect x="2.9" y="5.6" width="18.2" height="12.8" rx="2.4"/><path d="M2.9 9.7h18.2"/><path d="M6.4 14.6h3.3"/><path d="M16.3 14.6h1.6"/>',
     marker: '<path d="M12 21.3c0 0-6.75-6.06-6.75-10.68A6.75 6.75 0 0112 3.9a6.75 6.75 0 016.75 6.72c0 4.62-6.75 10.68-6.75 10.68z"/><circle cx="12" cy="10.5" r="2.55"/>',
     briefcase: '<rect x="2.9" y="7.5" width="18.2" height="12.1" rx="2.2"/><path d="M8.85 7.5V5.9a2 2 0 012-2h2.3a2 2 0 012 2v1.6"/><path d="M2.9 12.6h18.2"/><path d="M10.4 11.7h3.2v1.9h-3.2z"/>',

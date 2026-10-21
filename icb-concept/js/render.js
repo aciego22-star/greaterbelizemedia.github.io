@@ -128,9 +128,11 @@ window.ICB = window.ICB || {};
           '<a class="btn btn-primary btn-sm" data-asset-href="' + esc(c.formFile) + '"' +
             ' href="' + esc(c.formFile) + '" download>' +
             ICB.art.glyph("download") + "<span>" + esc(c.formLabel) + "</span></a>" +
-          '<a class="btn btn-ghost btn-sm" href="#/contact?topic=claim">' + esc(ICB.s("contactICB")) + "</a>" +
+          '<a class="btn btn-gold btn-sm" href="#/claims/form/' + esc(c.id) + '">' +
+            ICB.art.glyph("edit") + "<span>" + esc(ICB.s("cfFillOnline")) + "</span></a>" +
         "</div>" +
-        '<p class="pathway-note">' + esc(ICB.s("claimsFormNote")) + "</p>" +
+        '<p class="pathway-note">' + esc(ICB.s("claimsFormNote")) + " " +
+          esc(ICB.s("cfFillOnlineNote")) + "</p>" +
       "</article>";
   }
 

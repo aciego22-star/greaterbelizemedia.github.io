@@ -3574,6 +3574,307 @@ select,
   margin-inline: auto;
 }
 
+/* ===================== Claim form, filled online ===================== */
+/* ICB's claim forms, answered and signed on the device. Long forms, so
+   the work here is all about making a hundred questions feel like
+   thirteen short ones: a step at a time, a progress bar that moves, and
+   inputs big enough to hit with a thumb at the roadside. */
+
+.cf-back { margin-bottom: var(--sp-4); font-size: var(--fs-300); }
+.cf-back a { color: var(--c-text-soft); text-decoration: none; }
+.cf-back a:hover { color: var(--c-accent-ink); text-decoration: underline; }
+
+.cf-intro {
+  margin: var(--sp-5) 0 0;
+  padding: var(--sp-5);
+  background: var(--c-tint);
+  border-radius: var(--r-lg);
+  font-size: var(--fs-300);
+  line-height: 1.6;
+}
+.cf-intro > p { margin: 0 0 var(--sp-3); }
+.cf-intro-list { margin: 0; padding-left: 1.15rem; display: grid; gap: var(--sp-2); }
+.cf-intro-list li { color: var(--c-text-soft); }
+.cf-intro-alt { margin: var(--sp-4) 0 0; color: var(--c-text-soft); }
+.cf-intro-alt a { color: var(--c-accent-ink); }
+
+.cf-progress { margin: var(--sp-5) 0 var(--sp-6); }
+.cf-bar {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--c-tint-deep);
+  overflow: hidden;
+}
+.cf-bar span {
+  display: block;
+  height: 100%;
+  background: var(--c-cta);
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+.cf-progress-text {
+  margin: var(--sp-2) 0 0;
+  font-size: var(--fs-200);
+  color: var(--c-text-soft);
+}
+
+.cf-layout { display: grid; gap: var(--sp-6); }
+/* On a phone the step list comes after the questions. Thirteen steps
+   printed above the first field push the form itself off the screen,
+   and someone who opened a claim form wants to start answering it. */
+.cf-aside { order: 2; }
+.cf-main { order: 1; }
+@media (min-width: 900px) {
+  .cf-aside { order: 0; }
+  .cf-main { order: 0; }
+  .cf-layout { grid-template-columns: 250px 1fr; align-items: start; }
+  /* The step list follows the reader down a long form rather than
+     scrolling away at the first question. */
+  .cf-aside { position: sticky; top: calc(var(--header-h) + var(--sp-4)); }
+}
+
+.cf-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.cf-step {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-2) var(--sp-3);
+  background: none;
+  border: 0;
+  border-radius: var(--r-sm);
+  text-align: left;
+  font: inherit;
+  font-size: var(--fs-300);
+  color: var(--c-text-soft);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.cf-step-n {
+  flex: none;
+  width: 22px; height: 22px;
+  display: grid; place-items: center;
+  border-radius: 999px;
+  background: var(--c-tint-deep);
+  font-size: var(--fs-200);
+  font-variant-numeric: tabular-nums;
+}
+.cf-step.is-on { background: var(--c-tint); color: var(--c-text); font-weight: 600; }
+.cf-step.is-on .cf-step-n { background: var(--c-cta); color: var(--white); }
+@media (hover: hover) and (pointer: fine) {
+  .cf-step:hover { background: var(--c-tint); color: var(--c-text); }
+}
+
+.cf-clear {
+  margin-top: var(--sp-4);
+  padding: var(--sp-2) var(--sp-3);
+  background: none;
+  border: 0;
+  font: inherit;
+  font-size: var(--fs-200);
+  color: var(--c-text-soft);
+  text-decoration: underline;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.cf-steptitle { font-size: var(--fs-600); margin: 0 0 var(--sp-5); }
+.cf-lead { color: var(--c-text-soft); margin-top: 0; }
+
+.cf-grid { display: grid; gap: var(--sp-5); }
+@media (min-width: 680px) {
+  .cf-grid { grid-template-columns: 1fr 1fr; }
+  .cf-field { grid-column: 1 / -1; }
+  .cf-field--half { grid-column: auto; }
+}
+
+.cf-label {
+  display: block;
+  font-size: var(--fs-300);
+  font-weight: 600;
+  margin-bottom: var(--sp-2);
+}
+.cf-req { color: var(--c-accent-ink); }
+.cf-hint {
+  margin: calc(var(--sp-2) * -1) 0 var(--sp-2);
+  font-size: var(--fs-200);
+  color: var(--c-text-soft);
+}
+.cf-note {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--c-tint);
+  border-radius: var(--r-md);
+  font-size: var(--fs-200);
+  color: var(--c-text-soft);
+  line-height: 1.55;
+}
+
+.cf-input {
+  width: 100%;
+  padding: 0.7rem 0.8rem;
+  font: inherit;
+  font-size: var(--fs-400);
+  color: var(--c-text);
+  background: var(--c-surface);
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-md);
+  /* 16px or larger, so iOS does not zoom the page when a field is
+     focused and leave the claimant lost halfway down a long form. */
+  min-height: 46px;
+}
+.cf-input:focus-visible {
+  outline: 2px solid var(--c-accent);
+  outline-offset: 1px;
+  border-color: var(--c-accent);
+}
+.cf-textarea { min-height: 110px; resize: vertical; line-height: 1.5; }
+
+.cf-choice { display: flex; gap: var(--sp-2); }
+.cf-choice--wrap { flex-wrap: wrap; }
+.cf-pill {
+  padding: 0.6rem 1.1rem;
+  min-height: 44px;
+  font: inherit;
+  font-size: var(--fs-300);
+  font-weight: 600;
+  color: var(--c-text);
+  background: var(--c-surface);
+  border: 1px solid var(--c-line);
+  border-radius: 999px;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.cf-pill.is-on { background: var(--c-cta); border-color: var(--c-cta); color: var(--white); }
+
+/* Tables. One card per entry rather than a grid that has to be scrolled
+   sideways: an address does not fit in a column on a phone. */
+.cf-table { display: grid; gap: var(--sp-3); }
+.cf-row {
+  padding: var(--sp-4);
+  background: var(--c-tint);
+  border-radius: var(--r-md);
+  display: grid;
+  gap: var(--sp-3);
+}
+.cf-row-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--fs-200);
+  font-weight: 600;
+  color: var(--c-text-soft);
+}
+.cf-row-del {
+  background: none; border: 0; font: inherit;
+  font-size: var(--fs-200);
+  color: var(--c-accent-ink);
+  text-decoration: underline;
+  cursor: pointer;
+  padding: var(--sp-2);
+  touch-action: manipulation;
+}
+.cf-cell { display: grid; gap: var(--sp-1); }
+.cf-cell > span { font-size: var(--fs-200); color: var(--c-text-soft); }
+.cf-empty { margin: 0; font-size: var(--fs-300); color: var(--c-text-soft); }
+
+/* Signature and sketch. */
+.cf-pad {
+  position: relative;
+  background: var(--c-surface);
+  border: 1px dashed var(--c-line);
+  border-radius: var(--r-md);
+  height: 150px;
+}
+.cf-pad--sketch { height: 260px; }
+.cf-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--r-md);
+  /* The pad has to own the gesture: without this a finger drawing a
+     signature scrolls the page instead. */
+  touch-action: none;
+  cursor: crosshair;
+}
+/* display on a hidden element wins over the browser's own rule for
+   [hidden], so the prompt has to be told twice to go away. */
+.cf-pad-hint[hidden] { display: none; }
+.cf-pad-hint {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  font-size: var(--fs-300);
+  color: var(--c-text-soft);
+}
+.cf-pad-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-top: var(--sp-2);
+}
+.cf-pad-state { font-size: var(--fs-200); color: var(--c-text-soft); }
+
+/* Attachments. */
+.cf-files { display: grid; gap: var(--sp-3); }
+.cf-filebtn { justify-self: start; cursor: pointer; }
+.cf-filelist { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-2); }
+.cf-filelist li {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--c-tint);
+  border-radius: var(--r-sm);
+  font-size: var(--fs-300);
+}
+.cf-filesize { margin-left: auto; color: var(--c-text-soft); font-size: var(--fs-200); }
+
+/* Review. */
+.cf-warn {
+  padding: var(--sp-4);
+  background: var(--red-050);
+  border: 1px solid var(--red-100);
+  border-radius: var(--r-md);
+  margin-bottom: var(--sp-5);
+  font-size: var(--fs-300);
+}
+.cf-warn ul { margin: var(--sp-2) 0 0; padding-left: 1.1rem; }
+.cf-warn li { margin-bottom: var(--sp-1); }
+.cf-of { color: var(--c-text-soft); }
+.cf-declaration {
+  padding: var(--sp-5);
+  background: var(--c-tint);
+  border-radius: var(--r-md);
+  font-size: var(--fs-200);
+  line-height: 1.6;
+  color: var(--c-text-soft);
+}
+.cf-declaration h3 { margin: 0 0 var(--sp-3); font-size: var(--fs-400); color: var(--c-text); }
+.cf-declaration p { margin: 0 0 var(--sp-3); }
+.cf-declaration p:last-child { margin-bottom: 0; }
+.cf-privacy {
+  margin: var(--sp-4) 0;
+  font-size: var(--fs-200);
+  color: var(--c-text-soft);
+  line-height: 1.6;
+}
+.cf-send { display: flex; flex-wrap: wrap; gap: var(--sp-3); margin-top: var(--sp-5); }
+.cf-status { margin-top: var(--sp-4); font-size: var(--fs-300); color: var(--c-accent-ink); min-height: 1.4em; }
+
+.cf-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  margin-top: var(--sp-7);
+  padding-top: var(--sp-5);
+  border-top: 1px solid var(--c-line-soft);
+}
+
 /* ======================== ICB on YouTube ========================= */
 /* The card is a cover, not an embed. It becomes an iframe only when
    somebody presses play, so a visit that never watches anything never

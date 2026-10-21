@@ -463,10 +463,13 @@ function serve(dir) {
   /* The app is asked what routes it has, rather than being told, so this
      cannot fall behind a route someone adds later. */
   const routes = await page.evaluate(() => {
-    const skip = { home: 1, product: 1, notfound: 1 };
+    /* claimForm is a route per claim type, not a page of its own, so it
+       is enumerated from the forms rather than from the view name. */
+    const skip = { home: 1, product: 1, notfound: 1, claimForm: 1 };
     return [""].concat(
       Object.keys(ICB.views).filter(v => !skip[v]),
-      (ICB.DATA.products || []).map(p => "insurance/" + p.id));
+      (ICB.DATA.products || []).map(p => "insurance/" + p.id),
+      ((ICB.DATA.claimForms && ICB.DATA.claimForms.forms) || []).map(f => "claims/form/" + f.id));
   });
 
   const written = [];
