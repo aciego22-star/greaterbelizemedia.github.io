@@ -19,16 +19,13 @@
    if a real photograph exists for it. A designed plate would be an
    assertion that the place is an operating branch, and that is exactly
    what the flag is withholding; a photograph is just a photograph, and it
-   is captioned as a place, not as a branch.
+   is captioned as a place, not as a branch. Nothing is held back today.
 
    INTERNAL TODO (not client-facing):
    - Collect the branch photographs published in ICB's own contact gallery
      (Southside Belize City, Santa Elena, San Pedro, San Ignacio, Corozal
      Border, Independence, Ladyville) and set src on the matching entries
      below. Files go in assets/img/branches/.
-   - San Narciso: a supplied photograph will render, captioned as a place
-     in Corozal District. Its branch status stays unstated until ICB
-     confirms it.
    - Ask ICB for staff, event and community photography for a second row.
    ========================================================================== */
 window.ICB = window.ICB || {};
@@ -76,19 +73,12 @@ ICB.DATA.gallery = {
       webp: [{ src: "assets/img/branches/corozal-border.webp" }],
       alt: "The Insurance Corporation of Belize branch building at the northern border, Corozal District"
     },
-    {
-      locationId: "san-narciso",
-      src: null,
-      caption: { en: "San Narciso, Corozal District", es: "San Narciso, distrito de Corozal" },
-      alt: "San Narciso Village, Corozal District"
-    },
     { locationId: "santa-elena",           src: null },
     { locationId: "san-ignacio",           src: null },
     { locationId: "independence",          src: null },
     /* Two more verified branches, each with a published address and
-       landline. They keep the grid's last row full now that San Narciso
-       is held back, and they take a photograph the same way the others
-       do. */
+       landline. They keep the grid's last row full, and they take a
+       photograph the same way the others do. */
     { locationId: "belmopan",              src: null },
     { locationId: "dangriga",              src: null }
   ],

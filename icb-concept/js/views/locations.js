@@ -88,9 +88,9 @@ ICB.views = ICB.views || {};
     mounted: function (mount) {
       /* Before anything else, and before the browser paints: the names on
          the map are measured where they stand and moved apart until none
-         of them collide. Twenty-two locations include three in one town
-         and four along one stretch of highway, so left to the markup they
-         overlap. */
+         of them collide. Twenty-two locations include two pairs sharing
+         a single town and a run of five along one stretch of the Southern
+         Highway, so left to the markup they overlap. */
       ICB.art.layoutMapLabels(mount.querySelector(".belize-map"));
 
       var chips = mount.querySelectorAll("[data-district-chip]");

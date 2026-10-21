@@ -167,11 +167,17 @@ function graph(DATA, { route, lang, title, description, crumbs }) {
   const orgId = ORIGIN + "/#organization";
   const pick = v => (v && typeof v === "object" ? (v[lang] || v.en) : v);
 
-  const hours = {
+  /* Opening hours as schema.org wants them, built from the same records
+     the cards are built from. Branches no longer all keep one schedule:
+     the standard week has a midday close and a Saturday morning, and the
+     two border branches follow the crossing instead. A single hardcoded
+     spec here would quietly tell Google something the page does not say. */
+  const hoursSpec = h => ((h && h.spec) || []).map(r => ({
     "@type": "OpeningHoursSpecification",
-    dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-    opens: "08:00", closes: "17:00"
-  };
+    dayOfWeek: r.days, opens: r.opens, closes: r.closes
+  }));
+  const hoursFor = l => hoursSpec(l.hours === undefined ? DATA.site.hours : l.hours);
+  const hours = hoursSpec(DATA.site.hours);
 
   const nodes = [
     {
@@ -250,7 +256,7 @@ function graph(DATA, { route, lang, title, description, crumbs }) {
               addressRegion: l.district + " District",
               addressCountry: "BZ"
             },
-            openingHoursSpecification: hours,
+            openingHoursSpecification: hoursFor(l),
             areaServed: { "@type": "AdministrativeArea", name: l.district + " District, Belize" }
           }
         };
@@ -608,7 +614,8 @@ function serve(dir) {
     "Head office: " + DATA.site.corporate.address + ", " + DATA.site.corporate.city +
       ", Belize. Telephone " + DATA.site.corporate.phoneDisplay + " and " +
       DATA.site.corporate.phoneAltDisplay + ". Email " + DATA.site.corporate.email + ".",
-    "Opening hours at every location: " + DATA.site.hours.en + ".",
+    "Standard opening hours: " + DATA.site.hours.lines.map(h => h.en).join("; ") +
+      ". The two border branches keep the crossing's hours instead, listed with them below.",
     "The site is published in English and Spanish; Spanish pages live under /es/.",
     "",
     "## Insurance products",
@@ -630,8 +637,11 @@ function serve(dir) {
         .concat((l.phones || []).map(x => "tel " + x.display))
         .concat((l.whatsapps || []).map(x => "WhatsApp " + x.display))
         .concat(l.email ? ["email " + l.email] : []);
+      const sched = (l.hours === undefined ? DATA.site.hours : l.hours);
+      const open = sched && sched.lines ? sched.lines.map(h => h.en).join("; ") : "";
       llms.push("- **" + l.name + "** (" + l.type + "). " + l.address +
-        (ways.length ? ". " + ways.join(", ") : "") + ".");
+        (ways.length ? ". " + ways.join(", ") : "") + "." +
+        (open ? " Open " + open + "." : ""));
     }
     llms.push("");
   }

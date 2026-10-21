@@ -661,9 +661,10 @@ window.ICB = window.ICB || {};
      Map label placement.
 
      Writing the names next to their dots and hoping is what produced
-     eight overlapping pairs on a map of twenty-two locations: Belize has
-     three ICB offices in Benque Viejo Town alone, and four more strung
-     along a few miles of the Southern Highway. So the names are measured
+     overlapping pairs on a map of twenty-two locations: ICB has two
+     offices in Benque Viejo Town, two more in Santa Cruz Village, and a
+     run of five strung along a few miles of the Southern Highway between
+     Santa Cruz and Bella Vista. So the names are measured
      after they are in the document and nudged vertically until none of
      them touch, with a leader line drawn to any that had to travel.
 
@@ -699,6 +700,25 @@ window.ICB = window.ICB || {};
            out for any baseline the solver lands on. */
         top: box.y - y0,
         leader: svg.querySelector('[data-leader="' + el.getAttribute("data-leader-for") + '"]')
+      });
+    }
+
+    /* The dots are obstacles too. A name held clear of every other name
+       can still be printed straight across somebody else's pin, and that
+       is what happened when the Southern Highway picked up two more
+       offices: "Bella Vista Village" ran over the Independence dot. They
+       join the solver as fixed items, so the names move and the pins
+       never do. A label is already LABEL_GAP clear of its own dot
+       horizontally, so no dot has to be excused from its own name. */
+    var dots = svg.querySelectorAll(".bm-dot");
+    for (i = 0; i < dots.length; i++) {
+      var cx = parseFloat(dots[i].getAttribute("cx"));
+      var cy = parseFloat(dots[i].getAttribute("cy"));
+      var dr = parseFloat(dots[i].getAttribute("r"));
+      if (!(cx >= 0) || !(cy >= 0) || !(dr > 0)) continue;
+      items.push({
+        el: null, fixed: true, ax: cx, ay: cy, side: "mid",
+        home: cy, y: cy, w: dr * 2, h: dr * 2, top: -dr, leader: null
       });
     }
 

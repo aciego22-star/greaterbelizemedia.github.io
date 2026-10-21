@@ -5,9 +5,17 @@
    mobile quick actions.
 
    SOURCE: ICB's own directory, "ICB | Branches, Agencies & Direct
-   Contacts", supplied by the client. Twenty-two numbered entries. Every
-   address, landline, email and WhatsApp number below is taken from it
-   verbatim. Nothing here is inferred from anywhere else.
+   Contacts", revised by the client after the review meeting of 20 Oct
+   2026. Twenty-two locations. Every address, landline, email and
+   WhatsApp number below is taken from it verbatim. Nothing here is
+   inferred from anywhere else.
+
+   That revision is the authority. Two locations in the previous version
+   are not in it and have been removed outright rather than held back:
+   SAN NARCISO (never confirmed, previously held at active: false) and
+   BENQUE VIEJO AGENCY (previously public, #58 George Price Boulevard,
+   615-3266 / 671-1100). Two were added: MORO AGENCY and VELASQUEZ
+   AGENCY, both in Santa Cruz Village.
 
    RULES
    - Every published ICB branch and agency appears here. WhatsApp
@@ -22,21 +30,39 @@
      presenting it publicly as an operating location. Everything that
      faces a visitor reads ICB.DATA.activeLocations(), never the raw
      array, so one flag governs the branch finder, the map, the call
-     directory, the WhatsApp directory and the contact form.
+     directory, the WhatsApp directory and the contact form. Nothing is
+     held back today.
 
    INTERNAL TODO (not client-facing):
-   - SAN NARCISO (entry 19): the directory itself marks this one REVIEW
-     ONLY, with no address, telephone, email or WhatsApp confirmed and a
-     note that the premises are not published. Held at active: false and
-     presented nowhere public. Confirm with ICB, then fill in and set
-     active: true.
-   - SAN JUAN: map position is APPROXIMATE, placed beside Independence
-     because San Juan Village sits in that part of Stann Creek; confirm
-     the exact position with ICB.
-   - Neither Benque Town Board, San Juan nor Bella Vista is a published
-     payment confirmation number. Their entries verify WhatsApp service
-     but do not say those lines receive payment receipts, so none carries
-     receipt: true. Add it only if ICB confirms.
+   - SANTA CRUZ VILLAGE (Moro, Velasquez): the revised directory gives
+     the village but no district. There are several Santa Cruz villages
+     in Belize. This is read as the one in STANN CREEK, on the Southern
+     Highway in the banana belt, because that is the Santa Cruz that
+     sits in the same corridor as ICB's existing San Juan, Bella Vista
+     and Independence offices and is the only one of any size. Confirm
+     with ICB. If it is the Toledo village instead, both records move
+     district and both pins move with them.
+   - SAN JUAN: the directory gives no coordinates for San Juan Village.
+     The pin is Cowpen's published position, which is the same village
+     pair at mile 35 of the Southern Highway. Previously it was placed
+     beside Independence, which was about ten miles out. Still worth
+     confirming with ICB.
+   - BELLA VISTA: the directory writes the address as "Toledo Village",
+     which is a slip for Toledo District. Published as "Toledo
+     District".
+   - Neither Benque Town Board, San Juan, Bella Vista, Moro nor
+     Velasquez is a published payment confirmation number. Their entries
+     verify WhatsApp service but do not say those lines receive payment
+     receipts, so none carries receipt: true. Add it only if ICB
+     confirms.
+
+   hours: optional per location, and the two border branches carry their
+   own because they keep the crossing's hours rather than office ones.
+   Anything without it falls back to ICB.DATA.site.hours. The shape is
+   { lines: [{en, es}, ...], spec: [{days, opens, closes}, ...] }: lines
+   are what a reader sees, spec is what the structured data publishes,
+   and they are written together so the two cannot drift apart. Set
+   hours: false to show none at all.
 
    whatsapps: array of { label?, display, wa, callable?, receipt? }
      wa        DIGITS ONLY, used to build https://wa.me/<wa> links.
@@ -77,6 +103,20 @@ ICB.DATA.locations = [
     phones: [{ display: "+501 423-8019", tel: "+5014238019" }],
     whatsapps: [{ display: "+501 613-0919", wa: "5016130919", receipt: true }],
     email: "icb_corozalborder@icbinsurance.com",
+    /* A border crossing, open while the crossing is. */
+    hours: {
+      lines: [
+        { en: "Monday to Saturday, 6:00 AM to 7:00 PM",
+          es: "Lunes a sábado, 6:00 AM a 7:00 PM" },
+        { en: "Sunday, 7:00 AM to 6:00 PM",
+          es: "Domingo, 7:00 AM a 6:00 PM" }
+      ],
+      spec: [
+        { days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+          opens: "06:00", closes: "19:00" },
+        { days: ["Sunday"], opens: "07:00", closes: "18:00" }
+      ]
+    },
     mapQuery: "Santa Elena Border Crossing, Corozal, Belize",
     map: { x: 146.2, y: 68.1 },
     note: null
@@ -99,22 +139,6 @@ ICB.DATA.locations = [
      ONLY and confirms nothing about it: no street address, no telephone,
      no email, no WhatsApp, no hours. It is not offered as a branch a
      visitor can travel to or call. The record stays for reference only. */
-  {
-    id: "san-narciso",
-    name: "San Narciso Branch",
-    type: "Branch",
-    district: "Corozal",
-    town: "San Narciso Village",
-    address: "San Narciso, Corozal District",
-    phones: [],
-    corporateLine: true,
-    whatsapps: [],
-    email: null,
-    mapQuery: "San Narciso Village, Corozal District, Belize",
-    map: { x: 130.6, y: 95.6 },
-    note: null,
-    active: false
-  },
 
   /* ---------------------------- Orange Walk ---------------------------- */
   {
@@ -283,22 +307,19 @@ ICB.DATA.locations = [
     phones: [{ display: "+501 823-2319", tel: "+5018232319" }],
     whatsapps: [{ display: "+501 613-0548", wa: "5016130548", receipt: true }],
     email: "icb_benqueagency@icbinsurance.com",
+    /* A border crossing, open every day of the week. */
+    hours: {
+      lines: [
+        { en: "Every day, 7:00 AM to 6:00 PM",
+          es: "Todos los días, 7:00 AM a 6:00 PM" }
+      ],
+      spec: [
+        { days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+          opens: "07:00", closes: "18:00" }
+      ]
+    },
     mapQuery: "Western Border Crossing, Benque Viejo del Carmen, Belize",
     map: { x: 24.2, y: 296.8 },
-    note: null
-  },
-  {
-    id: "benque-viejo-agency",
-    name: "Benque Viejo Agency",
-    type: "Agency",
-    district: "Cayo",
-    town: "Benque Viejo Town",
-    address: "#58 George Price Boulevard, Benque Viejo Town",
-    phones: [{ display: "+501 615-3266", tel: "+5016153266" }, { display: "+501 671-1100", tel: "+5016711100" }],
-    whatsapps: [],
-    email: "benqueagency@icbinsurance.com",
-    mapQuery: "58 George Price Boulevard, Benque Viejo del Carmen, Belize",
-    map: { x: 29.4, y: 297.9 },
     note: null
   },
   {
@@ -310,7 +331,7 @@ ICB.DATA.locations = [
     address: "39 George Street, Benque Town, Cayo District",
     phones: [],
     whatsapps: [{ display: "+501 656-7521", wa: "5016567521" }],
-    email: null,
+    email: "icb_benquetown@icbinsurance.com",
     mapQuery: "39 George Street, Benque Viejo del Carmen, Belize",
     map: { x: 27.7, y: 300.6 },
     note: null
@@ -364,7 +385,7 @@ ICB.DATA.locations = [
     whatsapps: [{ display: "+501 671-7916", wa: "5016717916" }],
     email: "icb_sanjuan@icbinsurance.com",
     mapQuery: "San Juan Village, Stann Creek District, Belize",
-    map: { x: 145.6, y: 384.2 },
+    map: { x: 123.5, y: 382.6 },
     note: null
   },
   {
@@ -379,6 +400,38 @@ ICB.DATA.locations = [
     email: "icb_independence@icbinsurance.com",
     mapQuery: "Corner of Hercules and Toucan Streets, Independence, Belize",
     map: { x: 142.4, y: 388.0 },
+    note: null
+  },
+
+  /* Two agencies in the same village. The pins sit a little either side
+     of the village point so the map can label them separately; both are
+     well inside the projection's own margin of error. */
+  {
+    id: "moro",
+    name: "Moro Agency",
+    type: "Agency",
+    district: "Stann Creek",
+    town: "Santa Cruz Village",
+    address: "#22 Police Station Street, Santa Cruz Village",
+    phones: [],
+    whatsapps: [{ display: "+501 609-0497", wa: "5016090497" }],
+    email: "William.moro@icbinsurance.com",
+    mapQuery: "Santa Cruz Village, Stann Creek District, Belize",
+    map: { x: 137.9, y: 359.8 },
+    note: null
+  },
+  {
+    id: "velasquez",
+    name: "Velasquez Agency",
+    type: "Agency",
+    district: "Stann Creek",
+    town: "Santa Cruz Village",
+    address: "Main Road, Santa Cruz Village",
+    phones: [],
+    whatsapps: [{ display: "+501 616-7612", wa: "5016167612" }],
+    email: "Wilson.velasquez@icbinsurance.com",
+    mapQuery: "Santa Cruz Village, Stann Creek District, Belize",
+    map: { x: 141.5, y: 362.8 },
     note: null
   },
 
@@ -412,7 +465,7 @@ ICB.DATA.locations = [
     type: "Agency",
     district: "Toledo",
     town: "Bella Vista Village",
-    address: "Bella Vista Village",
+    address: "3rd Street, Bella Vista Village, Toledo District",
     phones: [],
     whatsapps: [{ display: "+501 679-3896", wa: "5016793896" }],
     email: "icb_bellavista@icbinsurance.com",

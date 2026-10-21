@@ -39,18 +39,35 @@ ICB.DATA.site = {
     email: "icb@icbinsurance.com"
   },
 
-  /* ICB's directory gives the same opening hours for every branch and
-     agency, so they are held once here rather than copied twenty-one
-     times. A location can override it by setting its own hours, or opt
-     out entirely with hours: false, and neither is needed today.
+  /* The standard hours, as revised by ICB on 20 Oct 2026: a midday
+     close on weekdays and a Saturday morning. Held once here rather
+     than copied twenty-odd times. A location overrides them with its
+     own hours, which the two border branches do, or opts out entirely
+     with hours: false.
+
+     lines is what a reader sees, spec is what the structured data
+     publishes. They sit together on purpose: hours written in two
+     places drift apart, and a branch whose page and whose Google
+     listing disagree is worse than one that publishes neither.
 
      Written "to" rather than with a dash, which is how the rest of the
-     site writes a range. "(Belize time)" is in the directory and is left
-     off the cards: every one of these branches is in Belize, and the
-     phrase would repeat twenty-one times down one page. */
+     site writes a range. "(Belize time)" is in the directory and left
+     off the cards: every one of these offices is in Belize, and the
+     phrase would repeat twenty-two times down one page. */
   hours: {
-    en: "Monday to Friday, 8:00 AM to 5:00 PM",
-    es: "Lunes a viernes, 8:00 AM a 5:00 PM"
+    lines: [
+      { en: "Monday to Friday, 8:00 AM to 11:45 AM and 1:00 PM to 5:00 PM",
+        es: "Lunes a viernes, 8:00 AM a 11:45 AM y 1:00 PM a 5:00 PM" },
+      { en: "Saturday, 8:00 AM to 12:00 PM",
+        es: "Sábado, 8:00 AM a 12:00 PM" }
+    ],
+    spec: [
+      { days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        opens: "08:00", closes: "11:45" },
+      { days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        opens: "13:00", closes: "17:00" },
+      { days: ["Saturday"], opens: "08:00", closes: "12:00" }
+    ]
   },
 
   /* The hero's third slide plays the campaign film muted and looped as

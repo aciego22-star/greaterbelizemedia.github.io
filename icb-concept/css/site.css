@@ -2527,13 +2527,17 @@ select.input {
    button. */
 .loc-hours {
   display: flex;
-  align-items: center;
+  /* The schedule runs to two lines now, so the clock sits with the first
+     of them rather than floating to the middle of the block. */
+  align-items: flex-start;
   gap: var(--sp-2);
   color: var(--c-text-soft);
   font-size: var(--fs-300);
   margin-bottom: var(--sp-3);
 }
-.loc-hours .glyph { width: 16px; height: 16px; flex: none; opacity: 0.75; }
+.loc-hours .glyph { width: 16px; height: 16px; flex: none; opacity: 0.75;
+  /* Nudged down to sit on the first line rather than above it. */
+  margin-top: 0.15em; }
 .loc-hours b { font-weight: 600; color: var(--c-text); }
 .loc-actions { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
 .loc-map-panel {

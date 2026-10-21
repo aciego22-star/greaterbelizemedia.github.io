@@ -5,7 +5,7 @@
 
    Every capability listed here is something the assistant can actually
    do with what is on this site: explain ICB's published products, point
-   to one of the twenty-one offices with its real contact details, name
+   to one of the twenty-two offices with its real contact details, name
    the official claim form, explain that ICB is paid by bank transfer,
    and hand the visitor to a person. Nothing is promised that would need
    a system ICB has not got.
@@ -59,8 +59,8 @@ ICB.DATA.bee = {
       glyph: "marker",
       title: { en: "Find your nearest office", es: "Encontrar su oficina más cercana" },
       body: {
-        en: "Twenty-one branches and agencies, from Corozal to Punta Gorda. Bee can give you the address, telephone, WhatsApp and email for the one you need, and its opening hours.",
-        es: "Veintiuna sucursales y agencias, desde Corozal hasta Punta Gorda. Bee le da la dirección, el teléfono, el WhatsApp y el correo de la que necesita, y su horario."
+        en: "Twenty-two branches and agencies, from Corozal to Punta Gorda. Bee can give you the address, telephone, WhatsApp and email for the one you need, and its opening hours.",
+        es: "Veintidós sucursales y agencias, desde Corozal hasta Punta Gorda. Bee le da la dirección, el teléfono, el WhatsApp y el correo de la que necesita, y su horario."
       }
     },
     {
@@ -129,8 +129,11 @@ ICB.DATA.bee = {
       glyph: "storm",
       title: { en: "There at three in the morning", es: "Está a las tres de la mañana" },
       body: {
-        en: "ICB's offices are open Monday to Friday, 8:00 AM to 5:00 PM. Things happen outside those hours. Bee does not close.",
-        es: "Las oficinas de ICB abren de lunes a viernes, de 8:00 AM a 5:00 PM. Las cosas pasan fuera de ese horario. Bee no cierra."
+        /* Deliberately does not restate the times. They are on every
+            location card, they have changed once already, and a figure
+            repeated in prose is the one that gets left behind. */
+        en: "ICB's offices keep office hours, Monday to Saturday. Things happen outside those hours. Bee does not close.",
+        es: "Las oficinas de ICB atienden en horario de oficina, de lunes a sábado. Las cosas pasan fuera de ese horario. Bee no cierra."
       }
     },
     {
@@ -153,8 +156,8 @@ ICB.DATA.bee = {
       glyph: "compass",
       title: { en: "It knows the whole network", es: "Conoce toda la red" },
       body: {
-        en: "You do not have to work out which of twenty-one offices to call. Say where you are and Bee tells you.",
-        es: "No tiene que adivinar a cuál de veintiuna oficinas llamar. Diga dónde está y Bee se lo dice."
+        en: "You do not have to work out which of twenty-two offices to call. Say where you are and Bee tells you.",
+        es: "No tiene que adivinar a cuál de veintidós oficinas llamar. Diga dónde está y Bee se lo dice."
       }
     },
     {

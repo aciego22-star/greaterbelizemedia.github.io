@@ -134,14 +134,21 @@ window.ICB = window.ICB || {};
     out += '<div class="loc-head"><h3>' + esc(l.name) + "</h3>" +
       '<span class="badge' + (l.type === "Agency" ? " badge--gold" : "") + '">' + esc(ICB.s("locType" + l.type.replace(/\s+/g, ""))) + "</span></div>";
     out += '<p class="loc-addr">' + esc(l.address) + "</p>";
-    /* ICB publishes the same hours everywhere, so the card falls back to
-       the standard ones. A location can carry its own, or set hours to
-       false where ICB has not confirmed any, and nothing is shown then
-       rather than a guess. */
+    /* Most offices keep the standard hours, so the card falls back to
+       them. A location can carry its own, which the border branches do,
+       or set hours to false where ICB has not confirmed any, and
+       nothing is shown then rather than a guess.
+
+       One line per row of the schedule. A midday close and a Saturday
+       morning do not fit on one line on a phone without wrapping into
+       something unreadable, so each row gets its own. */
     var hours = l.hours === undefined ? ICB.DATA.site.hours : l.hours;
-    if (hours) {
-      out += '<p class="loc-hours">' + ICB.art.glyph("clock") +
-        "<span><b>" + esc(ICB.s("openingHours")) + "</b> " + esc(hours) + "</span></p>";
+    var hourLines = hours && hours.lines ? hours.lines : [];
+    if (hourLines.length) {
+      out += '<p class="loc-hours">' + ICB.art.glyph("clock") + "<span>" +
+        "<b>" + esc(ICB.s("openingHours")) + "</b> " +
+        hourLines.map(function (line) { return esc(line); }).join("<br>") +
+        "</span></p>";
     }
     if (l.note) out += '<p class="loc-note">' + esc(l.note) + "</p>";
     out += '<div class="loc-actions">';

@@ -59,8 +59,8 @@ ICB.views = ICB.views || {};
               T("Meet Bee, ICB's online assistant.",
                 "Le presentamos a Bee, el asistente en línea de ICB.") + "</h1>" +
             '<p class="hero-lead">' +
-              T("Bee answers questions about ICB's insurance, its twenty-one offices and how a claim starts. In English or Spanish, at any hour, with a person always one request away.",
-                "Bee responde preguntas sobre los seguros de ICB, sus veintiuna oficinas y cómo se inicia un reclamo. En inglés o en español, a cualquier hora, y siempre con una persona a una petición de distancia.") +
+              T("Bee answers questions about ICB's insurance, its twenty-two offices and how a claim starts. In English or Spanish, at any hour, with a person always one request away.",
+                "Bee responde preguntas sobre los seguros de ICB, sus veintidós oficinas y cómo se inicia un reclamo. En inglés o en español, a cualquier hora, y siempre con una persona a una petición de distancia.") +
             "</p>" +
             '<div class="btn-row">' +
               '<button type="button" class="btn btn-primary" data-bee-open>' +
