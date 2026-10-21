@@ -903,6 +903,9 @@ JS = {
  "wa_fee": "El costo de la entrega se confirma por WhatsApp.",
  "who_addr": "Direcci\u00f3n de entrega",
  "who_when": "\u00bfPara cu\u00e1ndo lo quiere?",
+ # The same question, asked of somebody collecting or sitting down
+ "who_when_pickup": "\u00bfA qu\u00e9 hora lo va a recoger?",
+ "who_when_dinein": "\u00bfA qu\u00e9 hora llega?",
  "sent_ok": "Pedido enviado por WhatsApp.",
  "sent_undo": "Devolverlo a mi carrito",
  # the fulfilment word as the customer reads it, for the confirmation summary

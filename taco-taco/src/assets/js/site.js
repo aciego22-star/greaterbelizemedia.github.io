@@ -129,26 +129,42 @@ function t(k,d){return TT_TXT[k]||d;}
  var WKEY='tt_who_v1';
  var nameEl=$('bp-who-name'), warnEl=$('bp-warn');
  var delBox=$('bp-del'), addrEl=$('bp-addr'), timeEl=$('bp-time');
+ var whenBox=$('bp-whenbox'), whenLab=$('bp-when-lab'), delNote=$('bp-del-note');
  function fulfilEl(){return document.querySelector('input[name=bp-fulfil]:checked');}
  function whenEl(){return document.querySelector('input[name=bp-when]:checked');}
+ /* "When do you want it?" is the right question for a delivery and the wrong
+    one for a table, so the label follows the choice above it. */
+ function whenLabel(how){
+  if(how==='Pickup')  return t('who_when_pickup','When are you picking it up?');
+  if(how==='Dine-In') return t('who_when_dinein','When are you arriving?');
+  return t('who_when','When do you want it?');
+ }
  function who(){
   var f=fulfilEl(), w=whenEl();
   var o={name:(nameEl&&nameEl.value||'').trim(), how:f?f.value:''};
-  if(o.how==='Delivery'){
-   o.addr=(addrEl&&addrEl.value||'').trim().replace(/\s*\n\s*/g,', ');
+  if(o.how){
+   // The kitchen needs the hour whichever way the order leaves the building.
    o.when=w?w.value:'';
    o.at=(timeEl&&timeEl.value)||'';
   }
+  if(o.how==='Delivery'){
+   o.addr=(addrEl&&addrEl.value||'').trim().replace(/\s*\n\s*/g,', ');
+  }
   return o;
  }
- /* The address and the time only exist for a delivery, so they only appear for
-    one. Asking somebody eating at a table for their street is how a form earns
-    a reputation. */
+ /* The address only exists for a delivery, so it only appears for one. Asking
+    somebody eating at a table for their street is how a form earns a
+    reputation. The hour is asked of everybody, but not until they have said
+    how they are getting it, so the panel opens on one question rather than
+    three. */
  function syncDelivery(){
   var f=fulfilEl(), on=!!f&&f.value==='Delivery';
-  if(delBox) delBox.hidden=!on;
+  if(delBox)  delBox.hidden=!on;
+  if(delNote) delNote.hidden=!on;
+  if(whenBox) whenBox.hidden=!f;
+  if(whenLab&&f) whenLab.textContent=whenLabel(f.value);
   var w=whenEl();
-  if(timeEl) timeEl.hidden=!(on&&w&&w.value==='At a time');
+  if(timeEl) timeEl.hidden=!(f&&w&&w.value==='At a time');
  }
  function saveWho(){
   try{localStorage.setItem(WKEY,JSON.stringify(who()));}catch(e){}
@@ -186,11 +202,14 @@ function t(k,d){return TT_TXT[k]||d;}
  document.querySelectorAll('input[name=bp-fulfil]').forEach(function(r){
   r.addEventListener('change',function(){
    syncDelivery(); clearMarks(); saveWho();
-   // Three fields appear out of nowhere below the fold otherwise, and on a
-   // short phone the customer never learns they are there.
-   if(r.value==='Delivery'&&delBox&&!delBox.hidden){
+   // Fields appear out of nowhere below the fold otherwise, and on a short
+   // phone the customer never learns they are there. Whichever block the
+   // choice just revealed is the one to bring up.
+   var shown=(r.value==='Delivery'&&delBox&&!delBox.hidden)?delBox
+            :(whenBox&&!whenBox.hidden)?whenBox:null;
+   if(shown){
     setTimeout(function(){
-     try{delBox.scrollIntoView({behavior:'smooth',block:'nearest'});}catch(e){}
+     try{shown.scrollIntoView({behavior:'smooth',block:'nearest'});}catch(e){}
     },60);
    }
   });
@@ -209,13 +228,13 @@ function t(k,d){return TT_TXT[k]||d;}
   if(!w.name){ missing.push(t('who_name','Your name')); if(nameEl) nameEl.classList.add('bad'); }
   if(!w.how){ missing.push(t('who_how','How are you getting it?'));
               var g=document.querySelector('.bp-how'); if(g) g.classList.add('bad'); }
-  if(w.how==='Delivery'){
-   if(!w.addr){ missing.push(t('who_addr','Delivery address')); if(addrEl) addrEl.classList.add('bad'); }
-   // "At a time" with no time on it is the same as not having answered
-   if(!w.when||(w.when==='At a time'&&!w.at)){
-    missing.push(t('who_when','When do you want it?'));
-    var d=document.querySelector('.bp-del-when'); if(d) d.classList.add('bad');
-   }
+  if(w.how==='Delivery'&&!w.addr){
+   missing.push(t('who_addr','Delivery address')); if(addrEl) addrEl.classList.add('bad');
+  }
+  // "At a time" with no time on it is the same as not having answered.
+  if(w.how&&(!w.when||(w.when==='At a time'&&!w.at))){
+   missing.push(whenLabel(w.how));
+   var d=document.querySelector('.bp-del-when'); if(d) d.classList.add('bad');
   }
   if(!missing.length) return true;
   if(warnEl){
@@ -225,8 +244,8 @@ function t(k,d){return TT_TXT[k]||d;}
   var focus=!w.name?nameEl
            :!w.how?document.querySelector('input[name=bp-fulfil]')
            :(w.how==='Delivery'&&!w.addr)?addrEl
-           :(w.how==='Delivery')?document.querySelector('input[name=bp-when]')
-           :nameEl;
+           :(w.when==='At a time'&&!w.at)?timeEl
+           :document.querySelector('input[name=bp-when]');
   if(focus&&focus.focus) focus.focus();
   return false;
  }
@@ -472,10 +491,8 @@ function t(k,d){return TT_TXT[k]||d;}
   var w=who(), head='';
   if(w.name) head+='\n'+t('wa_name','Name')+': '+w.name;
   if(w.how)  head+='\n'+t('wa_how','Order for')+': '+w.how;
-  if(w.how==='Delivery'){
-   if(w.addr) head+='\n'+t('wa_addr','Address')+': '+w.addr;
-   if(w.when) head+='\n'+t('wa_when','When')+': '+(w.when==='At a time'&&w.at?w.at:w.when);
-  }
+  if(w.how==='Delivery'&&w.addr) head+='\n'+t('wa_addr','Address')+': '+w.addr;
+  if(w.when) head+='\n'+t('wa_when','When')+': '+(w.when==='At a time'&&w.at?w.at:w.when);
   if(head) head+='\n';
   if(w.how==='Delivery') tail+='\n'+t('wa_fee','Delivery charge to be confirmed on WhatsApp.');
   return t('wa_intro','Hi Taco Taco! I would like to place this order:')+'\n'+head+'\n'+lines.join('\n')+tail;
