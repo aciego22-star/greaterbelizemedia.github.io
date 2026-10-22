@@ -418,6 +418,41 @@ def choice_control(d, c):
     out.append('</div>')
     return "".join(out)
 
+_CROP = {}
+def crop_derivative(fn, maxw, ratio, sub):
+    """A pre-cropped copy, for a slot whose shape is already decided.
+
+    The article figures are shown at 3:2 whatever shape the photograph is, so
+    sending a whole portrait and letting the browser throw away the top and
+    bottom means about half the pixels are downloaded to be discarded. This
+    cuts the same band the CSS would, at the width the column actually needs.
+    The lightbox still opens the full photograph, which is why nothing is lost
+    by cropping here. Returns (path, width, height)."""
+    key = (fn, maxw, ratio, sub)
+    if key in _CROP: return _CROP[key]
+    src = os.path.join(os.path.dirname(__file__), "assets", "img", fn)
+    out_rel = "assets/img/%s/%s" % (sub, fn)
+    try:
+        from PIL import Image
+        dst = os.path.join(DIST, *out_rel.split("/"))
+        os.makedirs(os.path.dirname(dst), exist_ok=True)
+        with Image.open(src) as im:
+            im = im.convert("RGB")
+            w, h = im.size
+            if w / h > ratio: nw, nh = int(round(h * ratio)), h
+            else:            nw, nh = w, int(round(w / ratio))
+            im = im.crop(((w - nw) // 2, (h - nh) // 2,
+                          (w - nw) // 2 + nw, (h - nh) // 2 + nh))
+            if im.width > maxw:
+                im = im.resize((maxw, int(round(maxw / ratio))), Image.LANCZOS)
+            im.save(dst, "JPEG", quality=82, optimize=True, progressive=True)
+            res = (out_rel, im.width, im.height)
+    except Exception as e:
+        print("  !! crop failed for %s: %s: %s" % (fn, type(e).__name__, e))
+        res = ("assets/img/" + fn, maxw, int(round(maxw / ratio)))
+    _CROP[key] = res
+    return res
+
 _FLYER_DIM={}
 def flyer_dim(fn):
     if fn not in _FLYER_DIM:
@@ -705,9 +740,26 @@ def article_body(a, socblock):
         elif k == "img":
             # the photo may not be in the repo yet; omit rather than ship a broken image
             if has_img(b["src"]):
-                out.append('<figure class="art-fig"><img src="assets/img/%s" alt="%s" '
-                           'loading="lazy" data-zoom="assets/img/%s" tabindex="0" '
-                           'role="button"></figure>' % (b["src"], esc(b["x"]), b["src"]))
+                # The article column is 720px wide on a desktop. Most of the food
+                # photographs are portrait, so served whole they stand 960px tall
+                # there, which is most of a laptop screen for one picture. The CSS
+                # crops them to 3:2; this hands the browser a 600px copy for a
+                # phone and the master for anything wider, and the width and
+                # height stop the text jumping while they arrive. The whole
+                # photograph is still one tap away in the lightbox.
+                # One width rather than a ladder. The slot is a fixed 720px on a
+                # desktop and full width on a phone, so everything that asks for
+                # this picture wants somewhere between 720 and 1440 real pixels.
+                # 1000 sits inside that for every case and costs the deploy half
+                # of what carrying two copies did, which the 30MB ZIP does not
+                # have spare. Cut to the 3:2 the column shows.
+                fig, fw, fh = crop_derivative(b["src"], 1000, 3/2, "a")
+                out.append('<figure class="art-fig"><img src="%s" '
+                           'alt="%s" width="%d" height="%d" '
+                           'loading="lazy" decoding="async" '
+                           'data-zoom="assets/img/%s" tabindex="0" '
+                           'role="button"></figure>'
+                           % (fig, esc(b["x"]), fw, fh, b["src"]))
         elif k == "cta":
             out.append('<p class="art-cta"><a class="btn btn-red" href="%s">%s</a></p>'
                        % (b["href"], esc(b["x"])))
@@ -718,28 +770,46 @@ def article_body(a, socblock):
 def article_hero(a):
     return a["hero"] if has_img(a["hero"]) else a.get("hero_fallback", "hero-plate.jpg")
 
+def hero_small(a):
+    """A 600px copy of the hero, for phones and for the hub cards."""
+    rel, w, _h = derivative(article_hero(a), 600, "g")
+    return rel, w
+
 def article_page(a, socblock):
     return ('\n <article class="blk art">\n  <div class="container art-wrap">\n'
             '   <p class="art-back"><a href="%s">&#8249; %s</a></p>\n'
             '   <span class="sec-kicker">%s</span>\n'
             '   <h1 class="art-title">%s</h1>\n'
             '   <p class="art-date"><time datetime="%s">%s</time></p>\n'
-            '   <figure class="art-hero"><img src="assets/img/%s" alt="%s" '
+            '   <figure class="art-hero"><img src="assets/img/%s" srcset="%s %dw, assets/img/%s %dw" '
+            'sizes="(max-width:800px) 100vw, 720px" alt="%s" width="%d" height="%d" '
+            'fetchpriority="high" decoding="async" '
             'data-zoom="assets/img/%s" tabindex="0" role="button"></figure>\n'
             '   %s\n  </div>\n </article>'
             % (HUB["slug"], esc(HUB["back"]), esc(HUB["kicker"]), esc(a["title"]),
-               a["date"], esc(a["date_label"]), article_hero(a), esc(a["hero_alt"]),
+               a["date"], esc(a["date_label"]),
+               article_hero(a), hero_small(a)[0], hero_small(a)[1], article_hero(a),
+               (img_size(article_hero(a)) or (1200, 675))[0], esc(a["hero_alt"]),
+               (img_size(article_hero(a)) or (1200, 675))[0],
+               (img_size(article_hero(a)) or (1200, 675))[1],
                article_hero(a),
                article_body(a, socblock)))
 
 def hub_page():
     cards = "".join(
       '<a class="post" href="%s">'
-      '<span class="post-img"><img src="assets/img/%s" alt="%s" loading="lazy"></span>'
+      '<span class="post-img"><img src="%s" srcset="%s %dw, assets/img/%s %dw" '
+      'sizes="(max-width:700px) 100vw, 420px" alt="%s" width="%d" height="%d" '
+      'loading="lazy" decoding="async"></span>'
       '<span class="post-body"><time class="post-date" datetime="%s">%s</time>'
       '<span class="post-title">%s</span><span class="post-ex">%s</span>'
       '<span class="post-more">%s</span></span></a>'
-      % (a["slug"], article_hero(a), esc(a["hero_alt"]), a["date"], esc(a["date_label"]),
+      % (a["slug"], hero_small(a)[0], hero_small(a)[0], hero_small(a)[1],
+         article_hero(a), (img_size(article_hero(a)) or (1200, 675))[0],
+         esc(a["hero_alt"]),
+         (img_size(article_hero(a)) or (1200, 675))[0],
+         (img_size(article_hero(a)) or (1200, 675))[1],
+         a["date"], esc(a["date_label"]),
          esc(a["title"]), esc(a["excerpt"]), esc(HUB["read"]))
       for a in ARTICLES)
     return ('\n <section class="blk" id="kitchen">\n  <div class="container">\n'

@@ -558,6 +558,194 @@ ES.update({
    "Nuestros vecinos siguen volviendo, y nos dicen por qué. Reseñas traducidas del inglés.",
 })
 
+# ---------------------------------------------------------------- the birria article
+# Fragments as well as sentences: **bold** and *italic* split a paragraph into
+# separate text nodes, and the pass translates each node on its own.
+ES.update({
+ "Birria, Eight Ways: Tacos, Ramen, Pizza and the Consom\u00e9":
+   "Birria de ocho maneras: tacos, ramen, pizza y el consom\u00e9",
+ "Birria in Belmopan | Birria Tacos, Ramen and Pizza | Taco Taco Belize":
+   "Birria en Belmop\u00e1n | Tacos, ramen y pizza de birria | Taco Taco Belice",
+ "What birria is and the eight ways Taco Taco Mexican Restaurant in Belmopan serves it: "
+ "birria tacos, the plato combo, birria pizza, birria ramen, birria soup, burritos and "
+ "quesadillas, all with consom\u00e9 for dipping.":
+   "Qu\u00e9 es la birria y las ocho maneras en que Taco Taco Mexican Restaurant en "
+   "Belmop\u00e1n la sirve: tacos de birria, el combo de plato, pizza de birria, ramen de "
+   "birria, sopa de birria, burritos y quesadillas, todo con consom\u00e9 para remojar.",
+ "The dish that quietly took over our menu. What birria actually is, why it comes with a "
+ "cup of broth, and the eight different ways you can order it.":
+   "El platillo que se apoder\u00f3 de nuestro men\u00fa sin hacer ruido. Qu\u00e9 es "
+   "realmente la birria, por qu\u00e9 llega con una taza de caldo, y las ocho maneras "
+   "distintas de pedirla.",
+
+ # headings
+ "What Birria Actually Is":            "Qu\u00e9 es realmente la birria",
+ "Start With The Tacos":               "Empiece por los tacos",
+ "Birria Ramen, The One People Photograph": "Ramen de birria, el que todos fotograf\u00edan",
+ "Birria Pizza":                       "Pizza de birria",
+ "Burritos And Quesadillas":           "Burritos y quesadillas",
+ "Or Put Birria On Something Else":    "O p\u00f3ngale birria a otra cosa",
+ "If You Want All Of It":              "Si lo quiere todo",
+ "One Thing Worth Knowing":            "Algo que vale la pena saber",
+ "Come And Dip Something":             "Venga a remojar algo",
+ "Dip it. That is the whole instruction.": "Rem\u00f3jelo. Esa es toda la instrucci\u00f3n.",
+ "See The Birria Deals":               "Ver las ofertas de birria",
+
+ # the opening
+ "Order birria anywhere and the first thing you notice is that it arrives with a cup of "
+ "something on the side. People sometimes set it aside, thinking it is a soup they did "
+ "not ask for.":
+   "Pida birria en cualquier lugar y lo primero que nota es que llega con una taza de algo "
+   "al lado. A veces la gente la hace a un lado, pensando que es una sopa que no pidi\u00f3.",
+ "It is not.":                         "No lo es.",
+ "That cup is the point.":             "Esa taza es lo importante.",
+
+ "Birria is meat slow-cooked in a seasoned broth until it pulls apart on its own. No "
+ "knife, no effort: it simply gives way.":
+   "La birria es carne cocida lentamente en un caldo sazonado hasta que se deshace sola. "
+   "Sin cuchillo, sin esfuerzo: simplemente cede.",
+ "The broth it cooked in does not get thrown away. It is served alongside as":
+   "El caldo en el que se coci\u00f3 no se tira. Se sirve al lado como",
+ "consom\u00e9":                           "consom\u00e9",
+ ", and you dip. Taco into the cup, lift, eat, repeat. The tortilla takes on the broth, "
+ "the meat is already soft, and the whole thing turns into something you eat with both "
+ "hands and no conversation.":
+   ", y usted remoja. Taco a la taza, levante, coma, repita. La tortilla toma el caldo, la "
+   "carne ya est\u00e1 suave, y todo se convierte en algo que se come con las dos manos y "
+   "sin conversaci\u00f3n.",
+ "That is the entire idea, and it is why birria has travelled the way it has.":
+   "Esa es toda la idea, y por eso la birria ha viajado como lo ha hecho.",
+
+ # the tacos
+ "If you have never had birria before, start here.":
+   "Si nunca ha probado la birria, empiece aqu\u00ed.",
+ "A single":                           "Un solo",
+ "birria taco is $6":                  "taco de birria cuesta $6",
+ ", so you can try one without committing. An":
+   ", as\u00ed que puede probar uno sin comprometerse. Una",
+ "order of four is $24":               "orden de cuatro cuesta $24",
+ ". If you would rather make a meal of it, the":
+   ". Si prefiere hacer de ello una comida completa, el",
+ "Birria Tacos Plato Combo at $22":    "Combo de Plato de Tacos de Birria a $22",
+ "brings two birria tacos with a side of rice and beans, served with a consom\u00e9.":
+   "trae dos tacos de birria con una porci\u00f3n de arroz y frijoles, servidos con un "
+   "consom\u00e9.",
+ "The plato combo is the one to order if you want to understand the dish properly, because "
+ "the rice and beans give the consom\u00e9 somewhere else to go once the tacos are gone.":
+   "El combo de plato es el que hay que pedir si quiere entender bien el platillo, porque "
+   "el arroz y los frijoles le dan al consom\u00e9 otro lugar a donde ir cuando se acaban "
+   "los tacos.",
+
+ # ramen and soup
+ "Birria Ramen is $16":                "El Ramen de Birria cuesta $16",
+ ": noodles, birria broth and meat, served with onions and cilantro.":
+   ": fideos, caldo de birria y carne, servidos con cebolla y cilantro.",
+ "This is the dish that stops people mid-scroll. The broth that normally sits in a cup on "
+ "the side becomes the whole bowl, the noodles soak in it, and the meat goes in on top. It "
+ "should not work as neatly as it does.":
+   "Este es el platillo que detiene a la gente a media pantalla. El caldo que normalmente "
+   "est\u00e1 en una taza al lado se convierte en todo el taz\u00f3n, los fideos se "
+   "empapan en \u00e9l, y la carne va encima. No deber\u00eda funcionar tan bien como "
+   "funciona.",
+ "If you want the broth without the noodles,":
+   "Si quiere el caldo sin los fideos,",
+ "Birria Soup is also $16":            "la Sopa de Birria tambi\u00e9n cuesta $16",
+ ": birria broth and meat, served with corn tortillas.":
+   ": caldo de birria y carne, servida con tortillas de ma\u00edz.",
+
+ # pizza
+ "Birria Pizza, $25.":                 "Pizza de Birria, $25.",
+ "Two large tortillas stuffed with birria meat, cheese, onion and cilantro, served with "
+ "consom\u00e9 and salsa.":
+   "Dos tortillas grandes rellenas de carne de birria, queso, cebolla y cilantro, servidas "
+   "con consom\u00e9 y salsa.",
+ "It comes cut into wedges, which makes it the obvious thing to put in the middle of a "
+ "table when nobody can agree on an order.":
+   "Viene cortada en rebanadas, lo que la convierte en lo obvio para poner en medio de la "
+   "mesa cuando nadie se pone de acuerdo con el pedido.",
+
+ # burritos and quesadillas
+ "Two more ways in, and both are":     "Dos maneras m\u00e1s de entrar, y ambas cuestan",
+ ". Two to an order, so they share without anybody having to be generous about it.":
+   ". Dos por orden, as\u00ed que se comparten sin que nadie tenga que ser generoso.",
+
+ # birria as a meat
+ "Birria is also a meat choice in its own right. Anywhere the menu says":
+   "La birria tambi\u00e9n es una opci\u00f3n de carne por derecho propio. Donde sea que "
+   "el men\u00fa diga",
+ ", you can":                          ", puede",
+ "add $1 and make it birria":          "agregar $1 y hacerla birria",
+ "Burritos, tortas, taco bowls, chimichangas, nachos, carne asada fries. If it takes a "
+ "meat, it takes birria.":
+   "Burritos, tortas, taco bowls, chimichangas, nachos, papas con carne asada. Si lleva "
+   "carne, lleva birria.",
+
+ # the deals
+ "Two of our current deals are built entirely around it.":
+   "Dos de nuestras ofertas actuales est\u00e1n hechas enteramente alrededor de ella.",
+ "The Birria Promotion is $100":       "La Promoci\u00f3n de birria cuesta $100",
+ ", and it is close to the whole list in one order: two birria quesadillas, two birria "
+ "burritos, a birria ramen, an order of four birria tacos and a birria pizza, with four "
+ "Cokes on the house.":
+   ", y es casi la lista entera en un solo pedido: dos quesadillas de birria, dos burritos "
+   "de birria, un ramen de birria, una orden de cuatro tacos de birria y una pizza de "
+   "birria, con cuatro Coca-Colas de cortes\u00eda.",
+ "Sunday Funday is $50":               "Sunday Funday cuesta $50",
+ "for eight birria tacos, with a dessert on the house alongside them: tres leches, "
+ "cinnamon rolls or chocoflan.":
+   "por ocho tacos de birria, con un postre de cortes\u00eda al lado: tres leches, roles "
+   "de canela o chocoflan.",
+
+ "Birria orders come with birria or carnitas pork, and no other meats. It is the one part "
+ "of the menu that does not open all the way up, and that is on purpose: those two are "
+ "what belong in the broth.":
+   "Los pedidos de birria vienen con birria o carnitas de cerdo, y ninguna otra carne. Es "
+   "la \u00fanica parte del men\u00fa que no se abre por completo, y es a prop\u00f3sito: "
+   "esas dos son las que pertenecen al caldo.",
+
+ # the close
+ "We are at":                          "Estamos en",
+ ", open":                             ", abierto",
+ "Monday to Thursday from 10AM":       "de lunes a jueves desde las 10AM",
+ "Friday to Sunday from 8AM":          "de viernes a domingo desde las 8AM",
+ ", until 8PM every day.":             ", hasta las 8PM todos los d\u00edas.",
+ "Order online and send it straight to us on WhatsApp, or come and sit down and let the "
+ "consom\u00e9 arrive hot.":
+   "Pida en l\u00ednea y env\u00edenoslo directo por WhatsApp, o venga, si\u00e9ntese y "
+   "deje que el consom\u00e9 llegue caliente.",
+
+ # the photographs
+ "A plate of birria tacos with rice, guacamole and a cup of consom\u00e9 at Taco Taco "
+ "Mexican Restaurant in Belmopan Belize":
+   "Un plato de tacos de birria con arroz, guacamole y una taza de consom\u00e9 en Taco "
+   "Taco Mexican Restaurant en Belmop\u00e1n, Belice",
+ "Birria tacos served with rice, guacamole, salsa and a cup of consom\u00e9 for dipping at "
+ "Taco Taco in Belmopan":
+   "Tacos de birria servidos con arroz, guacamole, salsa y una taza de consom\u00e9 para "
+   "remojar en Taco Taco en Belmop\u00e1n",
+ "Slow-cooked birria meat pulled apart in its broth at Taco Taco Mexican Restaurant in "
+ "Belmopan Belize":
+   "Carne de birria cocida lentamente y deshecha en su caldo en Taco Taco Mexican Restaurant "
+   "en Belmop\u00e1n, Belice",
+ "Birria ramen at Taco Taco Belmopan, noodles lifted from a bowl of birria broth with "
+ "onions and cilantro":
+   "Ramen de birria en Taco Taco Belmop\u00e1n, fideos levantados de un taz\u00f3n de "
+   "caldo de birria con cebolla y cilantro",
+ "Birria pizza at Taco Taco Belmopan, two large tortillas stuffed with birria meat and "
+ "cheese, cut into wedges and served with consom\u00e9":
+   "Pizza de birria en Taco Taco Belmop\u00e1n, dos tortillas grandes rellenas de carne de "
+   "birria y queso, cortadas en rebanadas y servidas con consom\u00e9",
+ "Two birria quesadillas on a plate with a cup of consom\u00e9 at Taco Taco Mexican "
+ "Restaurant in Belmopan":
+   "Dos quesadillas de birria en un plato con una taza de consom\u00e9 en Taco Taco "
+   "Mexican Restaurant en Belmop\u00e1n",
+
+ "meat of your choice":                "carne de su elecci\u00f3n",
+ "October 22, 2026":                   "22 de octubre de 2026",
+ "and":                                "y",
+ ", or":                               ", o",
+})
+
 # ---------------------------------------------------------------- the clips
 ES.update({
  "The taco mascots": "Las mascotas de Taco Taco",
