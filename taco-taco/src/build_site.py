@@ -1736,7 +1736,18 @@ def main():
                       % (c, SITE_URL + "/" + sb + ("" if f == "index.html" else f))
                       for c, sb, _ in LANGS)
         return ('\n <url><loc>%s</loc><lastmod>%s</lastmod>%s\n </url>' % (loc, today, alt))
-    urls = "".join(sm(f, sub) for _c, sub, _n in LANGS for f, _t in PAGES)
+    # The articles too. They were missing, which meant a piece of writing nobody
+    # could find: the hub was listed but nothing it linked to was. An article
+    # keeps its own date as lastmod, because that is when it was actually
+    # written and a crawler should not be told it changed today.
+    def sm_art(a, sub):
+        loc = SITE_URL + "/" + sub + a["slug"]
+        alt = "".join('\n  <xhtml:link rel="alternate" hreflang="%s" href="%s"/>'
+                      % (c, SITE_URL + "/" + sb + a["slug"]) for c, sb, _ in LANGS)
+        return ('\n <url><loc>%s</loc><lastmod>%s</lastmod>%s\n </url>'
+                % (loc, a["date"], alt))
+    urls = ("".join(sm(f, sub) for _c, sub, _n in LANGS for f, _t in PAGES)
+            + "".join(sm_art(a, sub) for _c, sub, _n in LANGS for a in ARTICLES))
     open(os.path.join(DIST,"sitemap.xml"),"w",encoding="utf-8").write(
       '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" '
       'xmlns:xhtml="http://www.w3.org/1999/xhtml">%s\n</urlset>\n'%urls)
@@ -1787,6 +1798,13 @@ def main():
         L.append("- [Menu in machine readable form](%s/menu.html): the page carries "
                  "schema.org Menu markup with every section, item and price" % SITE_URL)
         L.append("")
+        if ARTICLES:
+            L.append("## Articles")
+            L.append("")
+            for a in ARTICLES:
+                L.append("- [%s](%s/%s), %s: %s"
+                         % (a["title"], SITE_URL, a["slug"], a["date"], a["excerpt"]))
+            L.append("")
         L.append("## Menu sections")
         L.append("")
         L.append(", ".join(cats) + ".")
