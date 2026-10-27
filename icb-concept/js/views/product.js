@@ -14,10 +14,7 @@
    js/data/products.js, so a sparse category renders a short page rather
    than a page full of empty headings.
 
-   Three categories behave differently, and the renderer respects that:
-   - suspended: no quote action anywhere on the page. No product
-     carries the flag today; it is kept because a line of cover going
-     off sale is an ordinary event and the page already handles it.
+   Two categories behave differently, and the renderer respects that:
    - anaPathways (Mexican): ICB directs people to ANA Seguros, so the page
      leads with those pathways rather than an ICB quote.
    - quote: true: calls to action read "Request a quote" and carry the
@@ -176,7 +173,6 @@ ICB.views = ICB.views || {};
       var p = ICB.DATA.productById(ctx.productId);
       if (!p) return ICB.views.notfound.render();
 
-      var suspended = !!p.suspended;
       var quotable = p.quote === true;
       var anaUrl = site.external.mexicanInsurance;
       var quoteHref = ICB.DATA.quoteHref(p.id);
@@ -222,11 +218,7 @@ ICB.views = ICB.views || {};
 
       /* Hero actions. */
       var heroActions;
-      if (suspended) {
-        heroActions =
-          '<a class="btn btn-gold" href="#/contact?topic=other&category=' + R.esc(p.id) + '">' + R.esc(ICB.s("contactICB")) + "</a>" +
-          '<a class="btn btn-light" href="tel:' + R.esc(site.corporate.phoneTel) + '">' + R.esc(ICB.s("callN", { n: site.corporate.phoneDisplay })) + "</a>";
-      } else if (ana) {
+      if (ana) {
         heroActions =
           '<a class="btn btn-gold" href="' + R.esc(anaUrl) + '" target="_blank" rel="noopener noreferrer">' + R.esc(ICB.s("buyNow")) + "</a>" +
           '<a class="btn btn-light" href="tel:' + R.esc(site.corporate.phoneTel) + '">' + R.esc(ICB.s("callN", { n: site.corporate.phoneDisplay })) + "</a>";
@@ -240,26 +232,19 @@ ICB.views = ICB.views || {};
       var bandActions = [];
       if (quotable) bandActions.push({ label: ICB.s("requestQuote"), href: quoteHref });
       if (ana) bandActions.push({ label: ICB.s("goToANA"), href: anaUrl, external: true });
-      if (suspended) bandActions.push({ label: ICB.s("contactICB"), href: "#/contact?topic=other&category=" + p.id });
-      if (!quotable && !ana && !suspended) bandActions.push({ label: ICB.s("contactICB"), href: "#/contact?topic=other&category=" + p.id });
+      if (!quotable && !ana) bandActions.push({ label: ICB.s("contactICB"), href: "#/contact?topic=other&category=" + p.id });
       bandActions.push({ label: ICB.s("callN", { n: site.corporate.phoneDisplay }), href: "tel:" + site.corporate.phoneTel });
       bandActions.push({ label: ICB.s("visitABranch"), href: "#/locations" });
 
       /* ICB's product names stay in English inside a Spanish sentence,
          so the sentence is a slotted string rather than a translation of
          the whole line. */
-      var bandTitle = suspended
-        ? ICB.s("contactAboutProduct", { product: p.name })
-        : quotable
-          ? ICB.s("readyToTalk", { product: p.name })
-          : ICB.s("talkAboutProduct", { product: p.name });
-      var bandBody = suspended
-        ? ICB.s("suspendedBandBody")
-        : quotable
-          ? ICB.DATA.quoteNote
-          : ICB.s("plainBandBody");
+      var bandTitle = quotable
+        ? ICB.s("readyToTalk", { product: p.name })
+        : ICB.s("talkAboutProduct", { product: p.name });
+      var bandBody = quotable ? ICB.DATA.quoteNote : ICB.s("plainBandBody");
 
-      var whoHeading = ICB.s(suspended ? "currentStatus" : "whatICBPublishes");
+      var whoHeading = ICB.s("whatICBPublishes");
       /* Nothing to list means no reason for a two-column grid. */
       var single = !p.covers.length && !p.availableFor && !ana;
 

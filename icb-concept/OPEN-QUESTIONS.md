@@ -207,9 +207,13 @@ ICB has admin access to both.
   revert, because the copy on the old page described a product whose
   sales were suspended.
 
-  The `suspended` flag in `js/data/products.js` is kept although no
-  product carries it. A line of cover going off sale is an ordinary
-  event and the product page already handles it properly.
+  The `suspended` mechanism went with it, on the same instruction. The
+  flag, the branches in the product page and the product card, the
+  current-status route in the discovery quiz, and the four strings that
+  only those branches used are all gone. If a line of cover goes off
+  sale in future it is written fresh, against whatever ICB wants said
+  at the time, rather than inherited from how Travel Insurance was
+  handled.
 - **The live site lists 17 locations**, against the 22 in ICB's revised
   directory of 20 Oct. It still shows Benque Viejo Agency, which that
   revision dropped, and is missing Caye Caulker, Benque Town Board, San

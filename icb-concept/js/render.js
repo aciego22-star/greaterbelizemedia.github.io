@@ -64,19 +64,13 @@ window.ICB = window.ICB || {};
     return out + "</a>";
   }
 
-  /* Product category card. Categories with suspended sales carry no
-     enquiry link and no "learn more" invitation, so nothing on the card
-     implies cover can be arranged today. A quotable category asks for a
-     quote and carries itself into the enquiry, so the product is never
-     chosen twice. */
+  /* Product category card. A quotable category asks for a quote and
+     carries itself into the enquiry, so the product is never chosen
+     twice. Anything else keeps a plain contact route. */
   function productCard(p) {
-    var first = p.suspended
-      ? '<a href="' + esc(p.route) + '">' + esc(ICB.s("viewCurrentInfo")) + "</a>"
-      : '<a href="' + esc(p.route) + '">' + esc(ICB.s("learnMore")) + "</a>";
+    var first = '<a href="' + esc(p.route) + '">' + esc(ICB.s("learnMore")) + "</a>";
     var second;
-    if (p.suspended) {
-      second = '<a href="#/contact?topic=other&category=' + esc(p.id) + '">' + esc(ICB.s("contactICB")) + "</a>";
-    } else if (p.quote === true) {
+    if (p.quote === true) {
       second = '<a href="' + esc(ICB.DATA.quoteHref(p.id)) + '">' + esc(ICB.s("requestQuote")) + "</a>";
     } else {
       second = '<a href="#/contact?topic=other&category=' + esc(p.id) + '">' + esc(ICB.s("contactICB")) + "</a>";
@@ -279,8 +273,6 @@ window.ICB = window.ICB || {};
       blurb: { en: "Warehouse-to-warehouse protection for goods in transit.", es: "Protección de bodega a bodega para mercancía en tránsito." } },
     { id: "commercial-liability", label: { en: "Commercial liability", es: "Responsabilidad comercial" }, glyph: "scales", productId: "liability",
       blurb: { en: "Liability and miscellaneous products arranged around specific business exposures.", es: "Productos de responsabilidad y misceláneos organizados según exposiciones específicas del negocio." } },
-    /* Sales are suspended, so this result says so rather than presenting
-*/
     /* No legal assertions about driving in Mexico: ICB presents this line
        entirely through ANA Seguros. */
     { id: "mexico", label: { en: "A drive into Mexico", es: "Un viaje a México" }, glyph: "border", productId: "mexican",
@@ -311,16 +303,6 @@ window.ICB = window.ICB || {};
         "</div>";
     } else {
       var p = ICB.DATA.productById(opt.productId);
-      /* A suspended category gets the current-status route only. No
-         enquiry CTA, nothing that reads as "arrange this today". */
-      if (p.suspended) {
-        return '<span class="eyebrow">' + esc(ICB.s("currentStatus")) + "</span>" +
-          "<h3>" + esc(p.name) + "</h3><p>" + esc(ICB.t(opt.blurb)) + "</p>" +
-          '<div class="btn-row">' +
-          '<a class="btn btn-primary" href="' + esc(p.route) + '">' + esc(ICB.s("viewCurrentInfo")) + "</a>" +
-          '<a class="btn btn-ghost" href="#/contact?topic=other&category=' + esc(p.id) + '">' + esc(ICB.s("contactICB")) + "</a>" +
-          "</div>";
-      }
       /* A quotable category leads with the quote and carries itself into
          the enquiry. Anything else keeps a plain contact route. */
       var second = p.quote === true

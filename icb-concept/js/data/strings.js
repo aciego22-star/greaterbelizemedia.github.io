@@ -80,7 +80,6 @@ ICB.STRINGS = {
     findYourBranch: "Find your branch",
     learnMore: "Learn more",
     requestQuote: "Request a quote",
-    viewCurrentInfo: "View current information",
     openInNewTab: "opens in a new tab, {host}",
 
     /* ---- breadcrumbs and page furniture ---- */
@@ -95,7 +94,6 @@ ICB.STRINGS = {
     coverageOptions: "Coverage options",
     relevance: "Relevance",
     whatICBPublishes: "What ICB publishes",
-    currentStatus: "Current status",
     goodToKnow: "Good to know",
     ifSomethingHappens: "If something happens",
     claimFormsNote: "The official ICB claim forms and the route to the claims team are one click away.",
@@ -107,8 +105,6 @@ ICB.STRINGS = {
     pleaseNote: "Please note.",
     readyToTalk: "Ready to talk about {product}?",
     talkAboutProduct: "Talk to ICB about {product}.",
-    contactAboutProduct: "Contact ICB about {product}.",
-    suspendedBandBody: "Call, send a message, or walk into any branch and the ICB team will share the current information.",
     plainBandBody: "Call, send a message, or walk into any branch and an ICB representative will take it from there.",
     learnAboutProduct: "Learn about {product}",
     goToANA: "Go to ANA Seguros pathways",
@@ -267,7 +263,6 @@ ICB.STRINGS = {
     findYourBranch: "Encontrar su sucursal",
     learnMore: "Más información",
     requestQuote: "Solicitar una cotización",
-    viewCurrentInfo: "Ver información actual",
     openInNewTab: "se abre en una pestaña nueva, {host}",
 
     /* ---- breadcrumbs and page furniture ---- */
@@ -282,7 +277,6 @@ ICB.STRINGS = {
     coverageOptions: "Opciones de cobertura",
     relevance: "Para quién",
     whatICBPublishes: "Lo que publica ICB",
-    currentStatus: "Situación actual",
     goodToKnow: "Bueno saber",
     ifSomethingHappens: "Si ocurre algo",
     claimFormsNote: "Los formularios oficiales de reclamo de ICB y la vía para comunicarse con el equipo de reclamos están a un clic.",
@@ -294,8 +288,6 @@ ICB.STRINGS = {
     pleaseNote: "Tenga en cuenta.",
     readyToTalk: "¿Listo para hablar sobre {product}?",
     talkAboutProduct: "Hable con ICB sobre {product}.",
-    contactAboutProduct: "Comuníquese con ICB sobre {product}.",
-    suspendedBandBody: "Llame, envíe un mensaje o visite cualquier sucursal y el equipo de ICB le dará la información actual.",
     plainBandBody: "Llame, envíe un mensaje o visite cualquier sucursal y un representante de ICB le atenderá.",
     learnAboutProduct: "Conocer más sobre {product}",
     goToANA: "Ir a las opciones de ANA Seguros",
