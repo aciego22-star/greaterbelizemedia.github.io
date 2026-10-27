@@ -17,7 +17,6 @@
    enquiry, so its calls to action read "Request a quote" and carry the
    category into the New Insurance Enquiry flow. It is not an online
    quotation: no price is calculated, nothing is approved and no cover is
-   bound. Travel carries quote: false while sales are suspended.
 
    SHAPE OF A PRODUCT PAGE. Five questions, in order:
      intro            what is this insurance?
@@ -29,8 +28,6 @@
 
    INTERNAL TODO (not client-facing):
    - Confirm the full published vessel and transit lists with ICB.
-   - Confirm Travel Insurance status before launch; sales are currently
-     suspended on ICB's Travel Insurance site.
    - Confirm the ANA Seguros pathway URLs for Mexican Insurance.
    - The Property and Motor promotional graphics were described to us but
      the image files were not supplied. Their CONTENT is reproduced below.
@@ -405,40 +402,6 @@ ICB.DATA.products = [
     claimPathways: []
   },
 
-  {
-    id: "travel",
-    route: "#/insurance/travel",
-    name: "Travel Insurance",
-    kicker: { en: "Current product information", es: "Información actual del producto" },
-    short: { en: "Sales of ICB Travel Insurance are currently temporarily suspended.", es: "La venta de Travel Insurance de ICB está temporalmente suspendida." },
-    standfirst: { en: "ICB has temporarily suspended sales of its Travel Insurance product.", es: "ICB ha suspendido temporalmente la venta de su producto Travel Insurance." },
-    /* Sales suspended: no quote path anywhere, on this page or off it. */
-    suspended: true,
-    quote: false,
-
-    intro: {
-      title: { en: "Current status.", es: "Estado actual." },
-      body: [
-        { en: "ICB has temporarily suspended sales of its Travel Insurance product.", es: "ICB ha suspendido temporalmente la venta de su producto Travel Insurance." },
-        { en: "Existing customers who require assistance or need to file a Travel Insurance claim can continue to access the published support channels.", es: "Los clientes actuales que necesiten ayuda o deban presentar un reclamo de Travel Insurance pueden seguir usando los canales de atención publicados." }
-      ]
-    },
-
-    covers: [],
-    audience: null,
-    goodToKnow: [
-      { en: "The Corporate Office and every ICB branch can share the current Travel Insurance information.", es: "La Oficina Corporativa y todas las sucursales de ICB pueden darle la información vigente sobre Travel Insurance." },
-      { en: "Travel Insurance is also listed in the Resource Centre alongside ICB's other published material.", es: "Travel Insurance también aparece en el Centro de recursos junto con el demás material publicado por ICB." }
-    ],
-    status: {
-      tone: "notice",
-      text: { en: "Existing customers who require support with a Travel Insurance claim can contact ICB for the published support information. ICB will publish current information when there is an update.", es: "Los clientes actuales que necesiten apoyo con un reclamo de Travel Insurance pueden comunicarse con ICB para obtener la información de atención publicada. ICB publicará información actualizada cuando haya novedades." }
-    },
-    glyph: "plane",
-    artMotif: "travel",
-    related: ["property", "motor"],
-    claimPathways: []
-  },
 
   {
     id: "mexican",

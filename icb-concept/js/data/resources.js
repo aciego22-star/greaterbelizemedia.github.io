@@ -10,8 +10,6 @@
    - Swap the shared consumerResources link for direct URLs once ICB
      supplies them for Hurricane Safety, the hurricane tracking map and
      Fire Prevention.
-   - Confirm the current Travel Insurance information page and the
-     Travel Insurance FAQs URL.
    - Confirm the ANA Seguros resource URLs for Mexican Insurance.
    - The seven consumer-education articles written for the first draft of
      this concept were removed here. They are not ICB material. If ICB
@@ -70,12 +68,6 @@ ICB.DATA.resources = {
 
   /* Pages of this site that restate published ICB information. */
   onSite: [
-    {
-      label: { en: "Travel Insurance: current status", es: "Travel Insurance: estado actual" },
-      description: { en: "Sales are currently temporarily suspended. Support information for existing customers.", es: "La venta está temporalmente suspendida. Información de apoyo para clientes actuales." },
-      route: "#/insurance/travel",
-      glyph: "plane"
-    },
     {
       label: { en: "How claims work", es: "Cómo funcionan los reclamos" },
       description: { en: "Your claim type, the official ICB form, and how to reach the claims team.", es: "Su tipo de reclamo, el formulario oficial de ICB, y cómo contactar al equipo de reclamos." },

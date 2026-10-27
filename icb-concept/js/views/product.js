@@ -15,7 +15,9 @@
    than a page full of empty headings.
 
    Three categories behave differently, and the renderer respects that:
-   - suspended (Travel): no quote action anywhere on the page.
+   - suspended: no quote action anywhere on the page. No product
+     carries the flag today; it is kept because a line of cover going
+     off sale is an ordinary event and the page already handles it.
    - anaPathways (Mexican): ICB directs people to ANA Seguros, so the page
      leads with those pathways rather than an ICB quote.
    - quote: true: calls to action read "Request a quote" and carry the

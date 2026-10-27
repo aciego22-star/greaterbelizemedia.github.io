@@ -30,11 +30,10 @@ ICB.views = ICB.views || {};
   }
 
   function fieldOptions(field) {
-    /* A NEW insurance enquiry offers only what ICB can quote today. Listing
-       Travel here would invite an enquiry for a product whose sales are
-       suspended, and Mexican Insurance is arranged through ANA Seguros
-       rather than by ICB enquiry. Both remain reachable from their own
-       pages by their own routes. */
+    /* A NEW insurance enquiry offers only what ICB can quote today.
+       Mexican Insurance is arranged through ANA Seguros rather than by
+       ICB enquiry, so it is not listed here and stays reachable from
+       its own page by its own route. */
     if (field.optionsFrom === "products") {
       return ICB.DATA.quotableProducts().map(function (p) { return { value: p.id, label: p.name }; });
     }

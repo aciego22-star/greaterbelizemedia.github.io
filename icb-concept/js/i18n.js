@@ -38,8 +38,8 @@
    INTERNAL TODO (not client-facing): the Spanish here is written for this
    concept and has NOT been reviewed by ICB. Insurance copy is exact by
    nature, and the qualifiers matter most: a limit is a ceiling and not a
-   payment, "all risk" is not everything, travel sales are suspended,
-   payment is verified before documents are issued. Run
+   payment, "all risk" is not everything, payment is verified before
+   documents are issued. Run
    scratchpad/check/strings-export.js to produce every Spanish string for
    a Belizean Spanish speaker at ICB to check in one pass.
    ========================================================================== */

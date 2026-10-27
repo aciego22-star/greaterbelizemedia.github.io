@@ -114,8 +114,8 @@ ICB.DATA = ICB.DATA || {};
                note to itself, "Refer back to Products". */
             q: T("What insurance products do you offer?",
                  "¿Qué productos de seguro ofrecen?"),
-            a: T("ICB covers motor, property, marine, cargo, liability, travel and Mexican insurance. Each product page sets out what that cover is for. Tell a representative what you want to protect and they will point you to the cover you need.",
-                 "ICB ofrece seguros de vehículo, propiedad, marítimo, carga, responsabilidad, viaje y seguro mexicano. Cada página de producto explica para qué sirve esa cobertura. Dígale a un representante qué quiere proteger y le indicará la cobertura que necesita."),
+            a: T("ICB covers motor, property, marine, cargo, liability and Mexican insurance. Each product page sets out what that cover is for. Tell a representative what you want to protect and they will point you to the cover you need.",
+                 "ICB ofrece seguros de vehículo, propiedad, marítimo, carga, responsabilidad y seguro mexicano. Cada página de producto explica para qué sirve esa cobertura. Dígale a un representante qué quiere proteger y le indicará la cobertura que necesita."),
             link: { label: T("See all insurance", "Ver todos los seguros"), href: "#/insurance" },
             on: ["insurance"]
           },

@@ -5,7 +5,7 @@
    headquarters photograph, frames from ICB's own "Life Happens Fast"
    campaign film, and photography cropped from ICB's "Protect Your
    Investment" campaign artwork. Generated concept artwork remains only
-   where no official ICB visual is available yet (travel, cargo), and those
+   where no official ICB visual is available yet (cargo), and those
    slots upgrade automatically when a src is added.
 
    pos: optional CSS object-position for the photo's focal point.
@@ -55,8 +55,6 @@ ICB.DATA.images = {
                           alt: "A container ship, port cranes and freight trucks at a shipping terminal" },
     "product-liability":{ src: "assets/img/products/liability.jpg", pos: "center 38%",
                           alt: "A handshake across the desk with an ICB representative, from the Life Happens Fast film" },
-    "product-travel":   { src: "assets/img/products/travel.jpg", pos: "center center",
-                          alt: "A traveller waiting at the airport departure gate with her boarding pass" },
     "product-mexican":  { src: "assets/img/products/mexican.jpg", pos: "center 55%",
                           alt: "The Aduana Mexico crossing at Subteniente Lopez on the Belize and Mexico border" },
 

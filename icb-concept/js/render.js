@@ -280,9 +280,7 @@ window.ICB = window.ICB || {};
     { id: "commercial-liability", label: { en: "Commercial liability", es: "Responsabilidad comercial" }, glyph: "scales", productId: "liability",
       blurb: { en: "Liability and miscellaneous products arranged around specific business exposures.", es: "Productos de responsabilidad y misceláneos organizados según exposiciones específicas del negocio." } },
     /* Sales are suspended, so this result says so rather than presenting
-       Travel Insurance as something to arrange. */
-    { id: "trip", label: { en: "My next trip", es: "Mi próximo viaje" }, glyph: "plane", productId: "travel",
-      blurb: { en: "Sales of ICB Travel Insurance are currently temporarily suspended.", es: "La venta de Travel Insurance de ICB está temporalmente suspendida." } },
+*/
     /* No legal assertions about driving in Mexico: ICB presents this line
        entirely through ANA Seguros. */
     { id: "mexico", label: { en: "A drive into Mexico", es: "Un viaje a México" }, glyph: "border", productId: "mexican",

@@ -192,11 +192,24 @@ ICB has admin access to both.
   link had followed the name rather than the content. Corrected in
   `js/data/site.js`.
 
-- **Removed at ICB's instruction, 28 Oct 2026.** Mr Sal asked for the
-  `/micro-insurance` redirect to be completely removed. It is gone,
-  along with every mention of the term in shipped source, so that
-  address now falls through to the site's own not-found page. Do not
-  re-add it: this note is here so nobody restores it as a tidy-up.
+- **Travel Insurance removed entirely, 28 Oct 2026.** ICB asked for
+  the `/micro-insurance` redirect to be completely removed, and
+  confirmed on being asked that the Travel Insurance product goes with
+  it. Both are gone: the product record, its English and Spanish pages,
+  the hub card, the footer link, the resources tile, the "My next trip"
+  answer in the discovery quiz, the sitemap entries, the structured
+  data, the photograph, and the plane glyph and travel motif that
+  nothing else used.
+
+  `/insurance/travel` and `/micro-insurance` both answer 404 now, by
+  design rather than by omission. **Do not restore either as a
+  tidy-up.** If ICB brings the product back it is a fresh build, not a
+  revert, because the copy on the old page described a product whose
+  sales were suspended.
+
+  The `suspended` flag in `js/data/products.js` is kept although no
+  product carries it. A line of cover going off sale is an ordinary
+  event and the product page already handles it properly.
 - **The live site lists 17 locations**, against the 22 in ICB's revised
   directory of 20 Oct. It still shows Benque Viejo Agency, which that
   revision dropped, and is missing Caye Caulker, Benque Town Board, San
