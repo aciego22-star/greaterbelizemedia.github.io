@@ -210,8 +210,23 @@ exactly as it is. Recorded here so it cannot be lost:
   TXT verification records
 
 IT asked to see the full zone we intend to set up before any
-nameserver change. That is the right instinct and we should meet it in
-writing.
+nameserver change. The answer is that there is no such zone, because
+there is no nameserver change: the cutover is the www record, and
+possibly a second record for the bare domain, with the nameservers
+staying at Wix and the rest of the zone untouched.
+
+Writing ICB's zone is not Austere's work and should not be offered.
+Specifying a client's mail records carries liability we were not
+engaged for and are not accountable for. If ICB ever moves the zone off
+Wix, that is their IT's project with their own provider, and we are a
+consumer of the result rather than its author. An earlier draft of the
+reply offered to draft it; that was an overreach and was corrected
+before sending.
+
+The one thing that could complicate the simple cutover is whether Wix
+keeps the rest of the records, and allows www to point outward, once
+the domain is disconnected from the Wix site. That is a single question
+for Wix support, not a plan.
 
 ## Still open from this round
 
