@@ -352,26 +352,27 @@ ICB.DATA = ICB.DATA || {};
                 "Cómo pagar una prima, desde Belice y desde el extranjero."),
         qa: [
           {
-            /* ICB's own list, with one item held back.
-               ICB's FAQ reads: "Accepted forms of payment include Cash,
-               Cheque, Credit Card, ICB Payment Portal, and Premium
-               Financing through Nationwide Cash Express."
+            /* ICB's list, verbatim, with one sentence added after it.
 
-               ICB confirmed on 27 Oct 2026 that they do NOT take
-               payments online. The kiosk on their network is a physical
-               insurance terminal near the border, not a web portal, and
-               the billing subdomain is unrelated to the public site.
-               Publishing "ICB Payment Portal"
-               would send a customer looking for something that is not
-               there, so it is not in the list and the bank transfer
-               route, which is real and is on the payments page, is
-               named instead.
+               "ICB Payment Portal" looked at first like a contradiction
+               of the payments page, which says ICB does not take
+               payments through this website. ICB confirmed on 27 Oct
+               2026 that the two are the same thing: the portal IS the
+               bank transfer route, a payment made through the
+               customer's own bank with the confirmation sent to their
+               branch. ICB does not take card payments on a web page,
+               and the kiosk on their network is a physical terminal
+               near the border rather than a site.
 
-               Restoring it is one line. ICB should settle the final
-               wording: see OPEN-QUESTIONS.md. */
+               So the name stays, because it is ICB's, and a second
+               sentence says what it is. A customer who reads "portal"
+               and goes looking for a login will not find one, and the
+               sentence is what stops that. The product name itself is
+               left in English in both languages, as ICB's names are
+               throughout. */
             q: T("How can I pay my insurance premium?", "¿Cómo puedo pagar mi prima de seguro?"),
-            a: T("Accepted forms of payment include cash, cheque and credit card at any branch, bank transfer, and Premium Financing through Nationwide Cash Express. ICB does not take payments through this website; a transfer is made through your own bank and the confirmation goes to your branch.",
-                 "Las formas de pago aceptadas incluyen efectivo, cheque y tarjeta de crédito en cualquier sucursal, transferencia bancaria, y financiamiento de prima a través de Nationwide Cash Express. ICB no recibe pagos por este sitio web; la transferencia se hace desde su propio banco y el comprobante se envía a su sucursal."),
+            a: T("Accepted forms of payment include Cash, Cheque, Credit Card, ICB Payment Portal, and Premium Financing through Nationwide Cash Express.\n\nThe ICB Payment Portal is a transfer made through your own bank, followed by sending the confirmation to your branch. There is no payment page to log in to on this website. The payments page has the account numbers and the steps.",
+                 "Las formas de pago aceptadas incluyen efectivo, cheque, tarjeta de crédito, el ICB Payment Portal y financiamiento de prima a través de Nationwide Cash Express.\n\nEl ICB Payment Portal es una transferencia hecha desde su propio banco, seguida del envío del comprobante a su sucursal. No hay una página de pago con inicio de sesión en este sitio web. La página de pagos tiene los números de cuenta y los pasos."),
             link: { label: T("How to pay ICB", "Cómo pagarle a ICB"), href: "#/payments" },
             on: ["payments"]
           },

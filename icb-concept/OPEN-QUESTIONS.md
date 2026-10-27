@@ -293,17 +293,11 @@ than Bee has now.
   near the border; `billing` and `onlinesales` are unrelated to the
   public site. The payments page stands as written.
 
-  One consequence: ICB's FAQ lists "ICB Payment Portal" among accepted
-  payment methods, which contradicts that. It is **held back** from the
-  published answer, because publishing it would send a customer looking
-  for something that is not there. The bank transfer route, which is
-  real, is named instead. The full original sentence is quoted in the
-  comment above that answer in `js/data/faq.js`, and restoring it is
-  one line.
-
-  **ICB should settle the final wording of that one answer.** Either
-  the portal is dropped from their document, or it means something we
-  have not understood.
+  **"ICB Payment Portal" means that same bank transfer route**,
+  confirmed by ICB. It is not a page to log in to. ICB's wording is
+  published as they wrote it, with one sentence after it saying what
+  the portal actually is, because a customer who reads "portal" and
+  goes looking for a login will not find one. Closed.
 
 - **The Claims Department WhatsApp, 613-0579, is on the site.** Added
   as a department rather than as a branch: it has no address, no

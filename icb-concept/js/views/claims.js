@@ -18,14 +18,16 @@ ICB.views = ICB.views || {};
   function deptRow(R) {
     var d = (ICB.DATA.site.departments || []).filter(function (x) { return x.id === "claims"; })[0];
     if (!d || !d.whatsapp) return "";
+    /* The heading already says what this is for, so the note is not
+       repeated under it, and the number is not printed: the button
+       opens the chat, and a number nobody has to dial is clutter. */
     return '<aside class="claims-dept rv">' +
       ICB.art.waIcon("roundel", "wa-roundel") +
       '<div class="claims-dept-text">' +
         "<strong>" + R.esc(ICB.s("claimsDeptTitle")) + "</strong>" +
-        "<span>" + R.esc(ICB.t(d.note)) + "</span>" +
       "</div>" +
       '<a class="btn btn-outline btn-sm" href="' + R.esc(R.waHref(d.whatsapp.wa)) + '"' +
-        R.extAttrs() + ">" + R.esc(ICB.t(d.name)) + " " + R.esc(d.whatsapp.display) +
+        R.extAttrs() + ">" + R.esc(ICB.s("messageDept", { d: ICB.t(d.name) })) +
         R.extIcon() + "</a>" +
       "</aside>";
   }

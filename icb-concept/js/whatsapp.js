@@ -39,12 +39,17 @@ window.ICB = window.ICB || {};
        them the policy, and they should not have to know which district
        to look under to find it. */
     var depts = (ICB.DATA.site.departments || []).map(function (d) {
+      /* Exactly the markup a branch row uses, so the one department in
+         the list does not read as a different kind of thing. Name and
+         the same invitation, nothing else. */
       return '<a class="wa-row" href="' + R.esc(R.waHref(d.whatsapp.wa)) + '"' + R.extAttrs() + ">" +
-        ICB.art.waIcon("roundel", "wa-roundel") +
-        '<span class="wa-row-text"><strong>' + R.esc(ICB.t(d.name)) + "</strong>" +
-        '<span class="wa-row-note">' + R.esc(ICB.t(d.note)) + "</span>" +
-        '<span class="wa-row-num">' + R.esc(d.whatsapp.display) + "</span></span>" +
-        R.extIcon() + "</a>";
+        ICB.art.waIcon("roundel") +
+        '<span class="wa-row-main">' +
+          '<span class="wa-row-name">' + R.esc(ICB.t(d.name)) + "</span>" +
+        "</span>" +
+        '<span class="wa-row-cta">' + R.esc(ICB.s("chatOnWhatsApp")) + "</span>" +
+        R.extNote("wa.me") +
+      "</a>";
     }).join("");
     var deptGroup = depts
       ? '<section class="wa-group" aria-label="' + R.esc(ICB.s("waDepartments")) + '">' +
