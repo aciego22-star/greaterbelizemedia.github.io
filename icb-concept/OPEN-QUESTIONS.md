@@ -240,9 +240,15 @@ for Wix support, not a plan.
 - **The Google Business Profile listings.** None is linked in Wix,
   which does not mean none exists. Mr. Awe is updating the location
   list and will work with us on the profiles.
-- **`/advertisements`** (25 views a month). Nothing on the new site
-  corresponds to it. Asked what is on the page.
-- **The PDF linked from the old home page**,
-  `/_files/ugd/393da5_fe2e06d561ee417793c061ae5c1508fa.pdf`. Asked what
-  it is. If it should stay reachable it goes in `assets/` with a rule
-  pointing the old address at it.
+## Closed since
+
+- **`/advertisements`** (25 views a month) is ICB's video
+  advertisements and nothing else. Redirected to `/gallery`, where two
+  of those films already live; the older ones are not being carried
+  over. Confirmed with ICB, 27 Oct 2026.
+- **The PDF linked from the old home page** is not significant and the
+  content worth keeping is already carried across. No redirect.
+  Confirmed with ICB, 27 Oct 2026.
+- **The location count.** Mr. Sal confirmed 22. The Contact page's 17
+  is several years out of date, so the revised directory of 20 Oct
+  stands as the authority and no change is needed.

@@ -33,6 +33,12 @@
 # And the spelling someone may have corrected by hand.
 /consumer-resources     /resources              301
 
+# Advertisements [25]. The page is ICB's video advertisements and
+# nothing else, confirmed with ICB on 27 Oct 2026. The gallery is where
+# those live on this site: two of the films are already there, and the
+# older ones are not being carried over.
+/advertisements         /gallery                301
+
 # ---------------------------------------------------------------------
 # Pages that keep their address. No rule needed, listed so the set is
 # complete and nothing looks forgotten.
@@ -42,19 +48,13 @@
 # ---------------------------------------------------------------------
 
 # ---------------------------------------------------------------------
-# Waiting on ICB before these go in. Do not guess at them: a redirect
-# to the wrong page is read by Google as a soft 404 and is worse than
-# an honest one.
-#
-#   /advertisements [25]
-#     Nothing on the new site corresponds to it yet. Asked ICB what is
-#     on the page. Until then it falls through to the site's own
-#     not-found page, which carries the header and a way home.
+# Not carried over, deliberately.
 #
 #   /_files/ugd/393da5_fe2e06d561ee417793c061ae5c1508fa.pdf
-#     A PDF linked from the old home page. Asked ICB what it is. If it
-#     should stay reachable, the file goes in assets/ and a rule points
-#     this address at it. Wix asset URLs all live under /_files/, so a
-#     wildcard may be wanted once we know whether anything else is
-#     linked from outside.
+#     A PDF linked from the old home page. Checked with ICB on 27 Oct
+#     2026: not significant, and the content worth keeping has already
+#     been carried across. Left to fall through to the site's own
+#     not-found page, which at least has the header and a way home.
+#     Wix keeps its uploads under /_files/, so if anything else there
+#     turns out to be linked from outside, a wildcard rule goes here.
 # ---------------------------------------------------------------------
