@@ -24,7 +24,8 @@ from build_shell import (
     NAV_LABEL, ORG_ID, _plain, faq_node, page_url, shipped_image,
     about_hero_preload, contact_strip, cta_band, faq_section, footer, head,
     header, hero_picture,
-    hero_preload, hero_tiers, identity_ribbon, logo_full, page_hero, picture,
+    hero_preload, hero_tiers, identity_ribbon, logo_full, page_banner_preload,
+    page_hero, picture,
 )
 from video_dims import VIDEO_DIMS
 
@@ -1191,6 +1192,7 @@ def seafood_services():
             "seafood-services.html",
             extra_nodes=catalogue_nodes(),
             faq=FAQ_PRODUCTS,
+            preload=page_banner_preload("banner-seafood-services"),
         )
         + header("seafood-services.html")
         + page_hero(
@@ -1199,6 +1201,7 @@ def seafood_services():
             "What NATFISH brings to market, and the co-operative functions that "
             "carry a member's catch from the water to a buyer.",
             "Seafood &amp; Services",
+            banner="banner-seafood-services",
         )
         + f"""
     <div class="container">
@@ -1477,6 +1480,7 @@ def news():
             "Announcements, co-operative updates, fisheries-sector developments "
             f"and media coverage relevant to {LEGAL_NO_DOT}.",
             "news.html",
+            preload=page_banner_preload("banner-whats-new-conch"),
         )
         + header("news.html")
         + page_hero(
@@ -1485,6 +1489,7 @@ def news():
             "Announcements, co-operative updates and fisheries-sector "
             "developments. Each item links to the source it came from.",
             "What&rsquo;s New",
+            banner="banner-whats-new-conch",
         )
         + f"""
     <section class="section" aria-labelledby="news-featured-h">

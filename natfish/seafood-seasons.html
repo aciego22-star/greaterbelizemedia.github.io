@@ -6134,6 +6134,80 @@ body.nav-open {
   color: var(--ink-soft);
 }
 
+/* --------------------------------------------- page hero artwork band -- */
+/* Seafood & Services and What's New each carry a piece of the client's own
+   artwork under the heading: a product collage with the "From Our Fishermen
+   to Your Table" slogan, and a single Belizean Pride queen conch carton.
+
+   Deliberately NOT built like the About banner above. That one sits BEHIND
+   the copy, is cropped by the band with `object-fit: cover` and is dimmed by
+   a scrim so white text can sit on it. Every one of those three is
+   destructive here, because the subject of this artwork is printed packaging:
+   cover would cut the carton or the slogan off, the scrim would mute the
+   brand colours, and the headline would run across the box. So the artwork
+   sits in the flow under the heading, at its own ratio, with nothing over it.
+
+   The frame's ratio comes from the file, handed down as two custom properties
+   by the generator and switched on the same 600px line the <source> is. That
+   is what makes `cover` safe: the box and the picture are the same shape, so
+   there is nothing to crop. It also reserves the right height before the
+   image arrives, so the banner cannot shift the page as it loads. */
+
+.page-banner {
+  margin: clamp(1.75rem, 4vw, 2.75rem) 0 0;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: 0 18px 40px rgba(3, 25, 42, 0.35);
+}
+
+.page-banner picture,
+.page-banner img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.page-banner img {
+  object-fit: cover;
+}
+
+/* One rule per crop, because the two files are different shapes. Above 600px
+   the 16:9 desktop composition, at or below it the 4:5 phone one. */
+.page-banner {
+  aspect-ratio: var(--ratio-d);
+}
+
+@media (max-width: 600px) {
+  .page-banner {
+    aspect-ratio: var(--ratio-m);
+  }
+}
+
+/* The watermark is a decorative NATFISH lockup sized to fill the lower half
+   of an empty band. With artwork there it would sit behind the picture and
+   show only as a sliver beside the heading, which reads as a stray glyph
+   rather than a watermark. */
+/* The band carries its own visual weight once the artwork is in it, so the
+   padding comes down from the empty-band value. At 1440 that is 72px rather
+   than 96px top and bottom, which keeps the heading and the artwork reading
+   as one block instead of two stacked ones. */
+.page-hero--banner {
+  padding-block: clamp(3rem, 7vw, 4.5rem);
+}
+
+.page-hero--banner .page-hero__watermark {
+  display: none;
+}
+
+/* Same correction the photo banner makes: --teal-600 is chosen to sit on
+   white and measures 2.88:1 on the navy band, under the 4.5:1 small text
+   needs. --turq-300 is the colour the breadcrumb directly above it already
+   uses and measures 7.8:1. */
+.page-hero--banner .eyebrow {
+  color: var(--turq-300);
+}
+
   </style>
   <script type="application/ld+json">
   {
@@ -6271,8 +6345,8 @@ body.nav-open {
         "@id": "https://natfish.bz/#logo",
         "url": "https://natfish.bz/assets/img/natfish-logo-1200.png",
         "contentUrl": "https://natfish.bz/assets/img/natfish-logo-1200.png",
-        "width": 1789,
-        "height": 879,
+        "width": 1200,
+        "height": 590,
         "caption": "National Fishermen Producers Co-operative Society Ltd."
       },
       {
@@ -6653,7 +6727,7 @@ body.nav-open {
 
   <p class="visually-hidden" id="lang-status" role="status" aria-live="polite"></p>
 
-  <script src="assets/js/natfish-strings.js?v=424810ce"></script>
+  <script src="assets/js/natfish-strings.js?v=d2f3bdfb"></script>
   <script src="assets/js/natfish-i18n.js?v=b8a289c3"></script>
   <script src="assets/js/natfish-seasons.js?v=c270a135"></script>
   <script src="assets/js/natfish.js?v=79e88ac3"></script>

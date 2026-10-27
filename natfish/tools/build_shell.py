@@ -187,14 +187,34 @@ from news_dims import NEWS_DIMS  # noqa: E402
 from about_dims import ABOUT_DIMS, ABOUT_TIERS  # noqa: E402
 from miami_dims import MIAMI_DIMS, MIAMI_TIERS  # noqa: E402
 from miami_hero_dims import MIAMI_HERO_DIMS, MIAMI_HERO_TIERS  # noqa: E402
+from banner_dims import BANNER_DIMS, BANNER_TIERS  # noqa: E402
 
 DIMS = {**DIMS, **HERO_DIMS, **GALLERY_DIMS, **NEWS_DIMS, **ABOUT_DIMS,
-        **MIAMI_DIMS, **MIAMI_HERO_DIMS}
+        **MIAMI_DIMS, **MIAMI_HERO_DIMS, **BANNER_DIMS}
 
 # The two Miami hero slides were processed on their own, so their tiers arrive
 # in their own table rather than in hero_dims.py. hero_tiers() reads one dict,
 # so they are folded in here instead of being a second lookup at the call site.
 HERO_TIERS_BY_STEM = {**HERO_TIERS_BY_STEM, **MIAMI_HERO_TIERS}
+
+# The 2400w rung comes off the two homepage heroes that have one. The files
+# stay on disk and the packaging sweep leaves them out, so this is one list to
+# undo.
+#
+# Why these and not something else: the deployment package reached the 30 MiB
+# ceiling when the two page banners were added, and every other candidate cost
+# more than this one. The hero is painted at 60vw, so 2400 is only ever chosen
+# above roughly a 1600px viewport at DPR 2 - a 16-inch laptop or a large
+# desktop display - and those now get 1920 against a 1037px frame, which is
+# still 1.85 device pixels per CSS pixel on a photograph. The alternative was
+# re-encoding the new artwork at a lower quality, and that artwork is printed
+# carton wording and a slogan, where softness is the one thing that would be
+# noticed. Two files, half a megabyte, for a sharpness step on a photograph
+# that nothing in the brief depends on.
+HERO_TIERS_BY_STEM = {
+    k: tuple(t for t in v if t != 2400)
+    for k, v in HERO_TIERS_BY_STEM.items()
+}
 
 # The Miami collection reads its tiers through the same table picture() already
 # consults, but stays OUT of GALLERY_GROUPS: that dict is what builds the
@@ -310,6 +330,13 @@ ALT = {
     "hero-miami-representative-sailboat":
         "A NATFISH representative seated at the exhibition stand beside a "
         "model Belizean sailboat flying two Belize flags.",
+    # The two page banners. This alt text is the client's own, supplied with
+    # the artwork and used verbatim, the same rule the gallery set follows.
+    "banner-seafood-services":
+        "Belizean Pride lobster and conch seafood products by NATFISH, from "
+        "our fishermen to your table.",
+    "banner-whats-new-conch":
+        "Belizean Pride queen conch frozen raw meat product box.",
     "hero-2-boat-leaving-harbour":
         "A small fishing boat heading out of the harbour past moored skiffs and "
         "the waterfront.",
@@ -988,8 +1015,13 @@ def logo_node():
         "@id": LOGO_ID,
         "url": f"{SITE_URL}/assets/img/natfish-logo-1200.png",
         "contentUrl": f"{SITE_URL}/assets/img/natfish-logo-1200.png",
-        "width": LOGO_W,
-        "height": LOGO_H,
+        # The dimensions of the FILE this points at, not of the master
+        # artwork. LOGO_W/LOGO_H are 1789x879, the approved original, and are
+        # right for the intrinsic ratio on an <img>; naming them here told
+        # every crawler the 1200px derivative was 1789 wide, which is the same
+        # mistake the news article's image carried before it was corrected.
+        "width": 1200,
+        "height": 590,
         "caption": _plain(LEGAL),
     }
 
@@ -1615,22 +1647,95 @@ def about_hero_preload(stem):
             f' imagesizes="100vw" fetchpriority="high">\n')
 
 
-def page_hero(eyebrow, title, lede, crumb, actions="", photo=None):
+def banner_tiers(stem):
+    return BANNER_TIERS[stem]
+
+
+def page_banner(stem):
+    """The artwork banner that sits under a page hero's heading.
+
+    Not `about_hero_picture()` and not `hero_picture()`, because both of those
+    paint into a frame of the layout's choosing and let `object-fit: cover`
+    throw away whatever does not fit. That is right for a photograph of a
+    building or a dock and wrong here: these are the client's own product
+    compositions, and what would be cropped is the printed carton wording and
+    the "From Our Fishermen to Your Table" slogan, which are the reason the
+    artwork exists. So the frame takes its ratio from the file and the picture
+    fills it exactly - no crop, no letterbox, no stretch, at every width.
+
+    The two crops have different ratios, so the ratio is handed to the
+    stylesheet as two custom properties and switched on the same 600px line
+    the <source> is, rather than being inferred from the <img> - which carries
+    the desktop file's dimensions and would be wrong on a phone.
+    """
+    d = img_dir(stem)
+    mob, desk = f"{stem}-mobile", f"{stem}-desktop"
+    mw, mh = DIMS[mob]
+    dw, dh = DIMS[desk]
+    phone = f"(max-width: {HERO_PHONE_BP}px)"
+    return f"""<figure class="page-banner" style="--ratio-d:{dw} / {dh}; --ratio-m:{mw} / {mh}">
+          <picture>
+            <source media="{phone}" type="image/webp" srcset="{_srcset(d, mob, banner_tiers(mob), 'webp')}" sizes="100vw" width="{mw}" height="{mh}">
+            <source type="image/webp" srcset="{_srcset(d, desk, banner_tiers(desk), 'webp')}" sizes="(max-width: 1248px) 100vw, 1200px" width="{dw}" height="{dh}">
+            <img src="{d}/{desk}-1200.webp" width="{dw}" height="{dh}" alt="{ALT[stem]}" loading="eager" fetchpriority="high" decoding="async">
+          </picture>
+        </figure>"""
+
+
+def page_banner_preload(stem):
+    """The banner is the largest image on its page, so it is the LCP.
+
+    Both crops are preloaded behind their own `media`. Without it the browser
+    speculatively fetches one crop and then the other, which is two full
+    banner downloads before the first paint.
+    """
+    d = img_dir(stem)
+    mob, desk = f"{stem}-mobile", f"{stem}-desktop"
+    phone = f"(max-width: {HERO_PHONE_BP}px)"
+    # Named from the table rather than hard-coded. `href` is only the fallback
+    # for a browser with no `imagesrcset`, but a hard-coded 720 here was a
+    # preload straight to a 404 the moment that tier came out of the ladder.
+    small = max(t for t in banner_tiers(mob) if t <= HERO_PHONE_FALLBACK)
+    return (f'  <link rel="preload" as="image" type="image/webp" media="{phone}"\n'
+            f'        href="{d}/{mob}-{small}.webp"\n'
+            f'        imagesrcset="{_srcset(d, mob, banner_tiers(mob), "webp")}"'
+            f' imagesizes="100vw" fetchpriority="high">\n'
+            f'  <link rel="preload" as="image" type="image/webp"'
+            f' media="(min-width: {HERO_PHONE_BP + 1}px)"\n'
+            f'        href="{d}/{desk}-1200.webp"\n'
+            f'        imagesrcset="{_srcset(d, desk, banner_tiers(desk), "webp")}"'
+            f' imagesizes="(max-width: 1248px) 100vw, 1200px" fetchpriority="high">\n')
+
+
+def page_hero(eyebrow, title, lede, crumb, actions="", photo=None, banner=None):
     """The inner-page banner.
 
     `actions` renders inside the band rather than as a block underneath it. A
     call to action stranded on white below the hero reads as a leftover strip,
     which is exactly the complaint that removed the previous one.
 
-    `photo` puts a photograph behind the band. The navy gradient stays beneath
+    `photo` puts a photograph BEHIND the band. The navy gradient stays beneath
     it and a scrim goes over it, because the copy here is white and this
     photograph is bright sky and pale gravel - without the scrim the breadcrumb
     and the lede fall below readable contrast.
+
+    `banner` puts artwork UNDER the heading instead, in the flow, at the
+    artwork's own ratio. The difference is not decoration: a photograph behind
+    the copy is cropped by the band and dimmed by the scrim, and both of those
+    are destructive to artwork whose subject is printed packaging. Nothing is
+    laid over a banner and nothing is cropped out of one.
+
+    The two are alternatives, not layers. A page that asked for both would get
+    a photograph showing through artwork, which is a mistake rather than a
+    design, so it is refused here instead of being rendered.
     """
+    if photo and banner:
+        raise SystemExit("page_hero: a hero takes a photo or a banner, not both")
     block = f'\n        <div class="page-hero__actions">{actions}</div>' if actions else ""
     media = (f'\n      <div class="page-hero__media">{about_hero_picture(photo)}</div>'
              if photo else "")
-    mod = " page-hero--photo" if photo else ""
+    art = f'\n        {page_banner(banner)}' if banner else ""
+    mod = " page-hero--photo" if photo else (" page-hero--banner" if banner else "")
     return f"""
     <section class="page-hero{mod}">{media}
       <span class="page-hero__watermark" aria-hidden="true">NATFISH</span>
@@ -1638,7 +1743,7 @@ def page_hero(eyebrow, title, lede, crumb, actions="", photo=None):
         <p class="breadcrumb"><a href="index.html">Home</a><span>/</span>{crumb}</p>
         <span class="eyebrow">{eyebrow}</span>
         <h1>{title}</h1>
-        <p class="lede">{lede}</p>{block}
+        <p class="lede">{lede}</p>{block}{art}
       </div>
     </section>
 """

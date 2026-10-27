@@ -2694,3 +2694,16 @@ ES.update({
     "NATFISH at the Americas Food & Beverage Show 2026, a BELTRAIDE feature":
         "NATFISH en Americas Food & Beverage Show 2026, un reportaje de BELTRAIDE",
 })
+
+# The two page hero banners. "Belizean Pride" is the brand and stays in
+# English, as it does everywhere else on the site; the product descriptions
+# follow the catalogue's own wording ("caracol reina", "langosta").
+ES.update({
+    "Belizean Pride lobster and conch seafood products by NATFISH, from "
+    "our fishermen to your table.":
+        "Productos del mar Belizean Pride de langosta y caracol de NATFISH, "
+        "de nuestros pescadores a su mesa.",
+    "Belizean Pride queen conch frozen raw meat product box.":
+        "Caja de producto Belizean Pride de carne cruda congelada de caracol "
+        "reina.",
+})

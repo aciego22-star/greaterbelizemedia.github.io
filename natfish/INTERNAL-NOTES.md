@@ -1891,3 +1891,107 @@ The delegation photograph is now in two places: the hero, and the gallery's
 Miami collection, where their portrait shot of the same moment is one of the
 nine. Nobody sees both at once, but it is a repeat. Say the word and the
 gallery one comes out.
+
+## Two page hero banners: Seafood & Services, and What's New
+
+The client sent finished artwork for two page heroes that had none: a product
+collage carrying the "From Our Fishermen to Your Table" slogan for Seafood &
+Services, and a single Belizean Pride queen conch carton for What's New. Each
+came as a 16:9 desktop composition and a 4:5 phone composition, plus a 9:16
+portrait variant marked optional.
+
+The brief was explicit and narrow: those two slots only, no copy or metadata
+touched, nothing laid over the artwork, nothing cropped out of it.
+
+### Why this is not the About banner mechanism
+
+`page_hero(photo=...)` already existed and would have been the obvious reuse.
+It is wrong here, three times over. It puts the photograph BEHIND the copy,
+crops it to the band with `object-fit: cover`, and lays a navy scrim over it
+at up to 0.93 opacity so white text stays readable. Applied to this artwork
+that means the carton or the slogan cut off, the brand colours muted, and the
+page headline running across the box - and the printed packaging is the entire
+reason the artwork exists.
+
+So `page_hero(banner=...)` is a different thing, not a variant of it. The
+artwork sits in the flow under the heading, at its own ratio, with nothing
+over it. The two are mutually exclusive and `page_hero()` raises if it is
+handed both, because a page that asked for both would get a photograph showing
+through artwork, which is a mistake rather than a design.
+
+**The frame takes its ratio from the file.** The generator writes the real
+dimensions of each crop into `--ratio-d` and `--ratio-m` on the figure, and
+the stylesheet switches between them on the same 600px line the `<source>`
+does. That is what makes `cover` safe: the box and the picture are the same
+shape, so there is nothing to crop. It also reserves the right height before
+the image arrives, so the banner cannot shift the page while it loads.
+
+Measured at twelve viewports from 320 to 2560, both pages: the rendered box
+matches the file's own ratio to within 0.1%, which is rounding. Nothing is
+cropped, letterboxed or stretched at any width, and the crop swaps at exactly
+600/601.
+
+**The 9:16 variants are not built.** The client's note asks for the tall crop
+"only if the existing layout is actually tall", and it is not - this is a
+block inside the page, not a full-screen hero, so a 9:16 frame would be most
+of a phone screen of artwork. Both files are kept in `source-images/`.
+
+### The package hit the 30 MiB ceiling, and what was done about it
+
+The two banners added 1.4 MiB and took the deployment package to 30.63 MiB,
+over the 30 MiB a single chat attachment can carry. Three tiers came out, in
+increasing order of how much they cost:
+
+**The banners' 1600w and 720w rungs - free.** A srcset picks the narrowest
+tier that covers width x DPR. With 800, 1200 and 1920 present, the only
+requests 1600 could answer are between 1200 and 1600, which is Windows at 125%
+scaling; those are now answered by 1920 instead. Nobody is served a smaller
+file for the want of 1600. 720 on the phone crop is the same case. Verified in
+the browser: at DPR 1, 2 and 3, and at every viewport tested, exactly one
+banner file is fetched and it is the right crop at the right rung. 401 KB.
+
+**The homepage hero's 2400w rung - nearly free.** The hero is painted at 60vw,
+so 2400 was only ever chosen above about a 1600px viewport at DPR 2: a
+16-inch laptop or a large desktop display. Those now get 1920 against a
+1037px frame, still 1.85 device pixels per CSS pixel, on a photograph. 516 KB.
+The files are still on disk and the sweep leaves them out, so this is one list
+in `build_shell.py` to undo.
+
+**Package: 29.73 MiB.** What was NOT done: re-encoding the new artwork at a
+lower quality. It would have saved about the same and it is the one change
+that would show, because printed carton wording is the subject.
+
+### A bug found on the way
+
+`logo_node()` declared the logo as 1789x879 - the approved master artwork -
+while pointing every crawler at `natfish-logo-1200.png`, which is 1200x590.
+Same class of error as the news article image that was corrected earlier:
+structured data naming dimensions the file it points at does not have. It now
+names the file's own size. `LOGO_W`/`LOGO_H` stay as they are, because on an
+`<img>` they are the right intrinsic ratio.
+
+### Measured
+
+Twelve pages at 1440 and 390 in both languages: no console errors, no failed
+requests, no horizontal overflow. Both alt strings are the client's own text,
+used verbatim, and both swap to Spanish.
+
+Core Web Vitals against the pre-change build on an identical throttled profile
+(1.6 Mbps, 4x CPU), LCP:
+
+    What's New        desktop  3600 -> 3156 ms     phone  2576 -> 1972 ms
+    Seafood &         desktop  1500 -> 3740 ms     phone  1400 -> 2432 ms
+
+What's New got faster: its LCP used to be the featured article photograph
+further down the page, and the preloaded banner now beats it. Seafood &
+Services got slower, and that is not a defect to fix - it is what adding a
+hero image to a page that had none costs. Its LCP element used to be a line of
+text. CLS is 0 on both, because the frame reserves its height.
+
+### Worth raising with the client
+
+The collage is a composed product scene rather than a documentary photograph,
+and so are the four Belizean Pride carton images in `products/`, which carry
+`RECREATION_NOTE` on the pages that show them. No note was added here, because
+this artwork is the co-operative's own brand material rather than something
+built for the site, and that is theirs to assert. Flagged rather than decided.
