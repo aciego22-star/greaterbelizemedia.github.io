@@ -186,10 +186,17 @@ ICB has admin access to both.
   (`/`, `/contact`, `/claims`); four move; one is unresolved.
 - **No redirects exist on the Wix site today**, so nothing has to be
   unpicked.
-- **A naming trap, now fixed.** On the old site `/micro-insurance` is
-  TRAVEL insurance and `/ana-seguros-quote` is MEXICAN insurance, the
-  opposite of what the names suggest. Our `mexicanInsurance` link had
-  been pointing at the travel page. Corrected in `js/data/site.js`.
+- **A link of ours was pointing at the wrong page of theirs.** The
+  page list showed that two of the old site's addresses are named the
+  opposite way round from what they contain, and our Mexican Insurance
+  link had followed the name rather than the content. Corrected in
+  `js/data/site.js`.
+
+- **Removed at ICB's instruction, 28 Oct 2026.** Mr Sal asked for the
+  `/micro-insurance` redirect to be completely removed. It is gone,
+  along with every mention of the term in shipped source, so that
+  address now falls through to the site's own not-found page. Do not
+  re-add it: this note is here so nobody restores it as a tidy-up.
 - **The live site lists 17 locations**, against the 22 in ICB's revised
   directory of 20 Oct. It still shows Benque Viejo Agency, which that
   revision dropped, and is missing Caye Caulker, Benque Town Board, San

@@ -19,13 +19,8 @@
 # General Insurance [166]
 /products               /insurance              301
 
-# Mexican Insurance [85]. Note for the record: the old site puts
-# Mexican Insurance at /ana-seguros-quote and Travel Insurance at
-# /micro-insurance, which is the opposite of what the names suggest.
+# Mexican Insurance [85]
 /ana-seguros-quote      /insurance/mexican      301
-
-# Travel Insurance [67]
-/micro-insurance        /insurance/travel       301
 
 # Consumer resources [41]. The old address is misspelled; the redirect
 # keeps anyone who followed a link to it from landing on nothing.

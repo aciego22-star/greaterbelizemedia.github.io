@@ -129,14 +129,9 @@ ICB.DATA.site = {
        kiosk service; both were wrong and are gone. Payment is by bank
        transfer, explained on the internal #/payments page. */
     /* ICB's Mexican Insurance page, which carries the ANA Seguros
-       pathways.
-
-       This pointed at /micro-insurance until ICB's IT department listed
-       the current site's pages on 27 Oct 2026. On that site
-       /micro-insurance is TRAVEL insurance and /ana-seguros-quote is
-       MEXICAN insurance, which is the opposite of what the two names
-       suggest and is why the wrong one was picked. Anyone following
-       this link was being sent to the travel page.
+       pathways. The address was verified against the page list ICB's
+       IT department supplied on 27 Oct 2026; an earlier draft had it
+       pointing at a different page of theirs.
 
        INTERNAL TODO: swap in the direct ANA Seguros links (Buy Now,
        View Coverage, Claims, FAQs) once ICB supplies them. */
