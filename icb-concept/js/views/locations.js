@@ -83,7 +83,10 @@ ICB.views = ICB.views || {};
               ]
             }) +
           "</div>" +
-        "</section>";
+        "</section>" +
+        /* ICB's own answers to the questions this page raises.
+           A handful here, all of them on the FAQ page. */
+        R.faqBlock("locations", { tint: true, section: "company" });
     },
     mounted: function (mount) {
       /* Before anything else, and before the browser paints: the names on

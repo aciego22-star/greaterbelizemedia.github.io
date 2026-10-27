@@ -129,7 +129,10 @@ ICB.views = ICB.views || {};
               ]
             }) +
           "</div>" +
-        "</section>";
+        "</section>" +
+        /* ICB's own answers to the questions this page raises.
+           A handful here, all of them on the FAQ page. */
+        R.faqBlock("business", { tint: true, section: "servicing" });
     }
   };
 })();

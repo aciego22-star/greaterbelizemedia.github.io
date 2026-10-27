@@ -185,6 +185,7 @@ ICB.DATA.site = {
       {
         heading: { en: "Claims & Support", es: "Reclamos y ayuda" },
         links: [
+          { label: { en: "Questions and answers", es: "Preguntas y respuestas" }, href: "#/faq" },
           { label: { en: "How claims work", es: "Cómo funcionan los reclamos" }, href: "#/claims" },
           /* The assistant's own page. Filed here rather than in the main
              navigation: someone looking for it is usually asking what it

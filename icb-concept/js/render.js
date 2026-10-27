@@ -574,6 +574,103 @@ window.ICB = window.ICB || {};
       "</section>";
   }
 
+
+  /* ------------------------------------------------------------------ */
+  /* Questions and answers                                               */
+  /* ------------------------------------------------------------------ */
+
+  /* One question. Built on <details> rather than a scripted accordion,
+     for three reasons: it opens without JavaScript, the screen reader
+     announcements are the browser's own and correct, and the answer is
+     in the document whether it is open or shut, so a crawler and an
+     answer engine read the whole thing. A scripted accordion that
+     injects the answer on click gives all three of those away. */
+  function faqItem(qa, opts) {
+    opts = opts || {};
+    var open = opts.open ? " open" : "";
+    var out = '<details class="faq-item"' + open + '>' +
+      '<summary class="faq-q"><span>' + esc(ICB.t(qa.q)) + "</span>" +
+      '<span class="faq-mark" aria-hidden="true"></span></summary>' +
+      '<div class="faq-a">';
+
+    out += paragraphs(ICB.t(qa.a));
+
+    if (qa.list) {
+      out += "<ul>" + qa.list.map(function (x) {
+        return "<li>" + esc(ICB.t(x)) + "</li>";
+      }).join("") + "</ul>";
+    }
+    if (qa.groups) {
+      out += qa.groups.map(function (g) {
+        return '<div class="faq-group"><h4>' + esc(ICB.t(g.title)) + "</h4><ul>" +
+          g.list.map(function (x) { return "<li>" + esc(ICB.t(x)) + "</li>"; }).join("") +
+          "</ul></div>";
+      }).join("");
+    }
+    if (qa.table) {
+      out += '<div class="faq-table-wrap"><table class="faq-table"><thead><tr>' +
+        qa.table.cols.map(function (c) { return "<th>" + esc(ICB.t(c)) + "</th>"; }).join("") +
+        "</tr></thead><tbody>" +
+        qa.table.rows.map(function (row) {
+          return "<tr>" + row.map(function (cell) {
+            /* A cell can hold several lines, which is how ICB lists the
+               documents a product needs. They read as a list, not as a
+               paragraph with line breaks in it. */
+            var lines = String(ICB.t(cell)).split("\n").filter(Boolean);
+            return "<td>" + (lines.length > 1
+              ? "<ul>" + lines.map(function (l) { return "<li>" + esc(l) + "</li>"; }).join("") + "</ul>"
+              : esc(lines[0] || "")) + "</td>";
+          }).join("") + "</tr>";
+        }).join("") +
+        "</tbody></table></div>";
+    }
+    if (qa.after) out += paragraphs(ICB.t(qa.after));
+    if (qa.link) {
+      out += '<p class="faq-link"><a href="' + esc(qa.link.href) + '">' +
+        esc(ICB.t(qa.link.label)) + "</a></p>";
+    }
+    return out + "</div></details>";
+  }
+
+  /* A blank line in an answer starts a new paragraph. ICB writes the
+     claims answers that way and they read badly as one block. */
+  function paragraphs(text) {
+    return String(text == null ? "" : text).split(/\n{2,}/).filter(function (x) {
+      return x.trim();
+    }).map(function (x) {
+      return "<p>" + esc(x.trim()) + "</p>";
+    }).join("");
+  }
+
+  /* The short block a page carries beside the thing it is about. Capped,
+     because a page is not the FAQ: past about six questions it stops
+     being a helpful aside and becomes a second page stapled underneath
+     the first. The rest are a link away. */
+  function faqBlock(pageKey, opts) {
+    opts = opts || {};
+    var items = ICB.DATA.faqFor(pageKey);
+    if (!items.length) return "";
+    var max = opts.max || 6;
+    var shown = items.slice(0, max);
+    var anchor = opts.section ? "@" + opts.section : "";
+    return '<section class="section' + (opts.tint ? " section--tint" : "") +
+        '" aria-labelledby="faq-' + esc(pageKey.replace(/[^a-z]/g, "")) + '-title">' +
+        '<div class="shell shell--narrow">' +
+          sectionHead({
+            eyebrow: ICB.s("faqEyebrow"),
+            title: opts.title || ICB.s("faqHeading"),
+            id: "faq-" + pageKey.replace(/[^a-z]/g, "") + "-title"
+          }) +
+          '<div class="faq-list">' + shown.map(function (x) {
+            return faqItem(x.qa);
+          }).join("") + "</div>" +
+          '<p class="faq-more"><a class="btn btn-outline btn-sm" href="#/faq' + anchor + '">' +
+            esc(ICB.s(items.length > max ? "faqSeeAllMore" : "faqSeeAll",
+                      { n: items.length - max })) + "</a></p>" +
+        "</div>" +
+      "</section>";
+  }
+
   ICB.render = {
     esc: esc,
     waHref: waHref,
@@ -597,6 +694,9 @@ window.ICB = window.ICB || {};
     band: band,
     quiz: quiz,
     initQuiz: initQuiz,
-    assistBadge: assistBadge
+    assistBadge: assistBadge,
+    faqItem: faqItem,
+    faqBlock: faqBlock,
+    paragraphs: paragraphs
   };
 })();

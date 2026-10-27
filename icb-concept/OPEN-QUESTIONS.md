@@ -252,3 +252,51 @@ for Wix support, not a plan.
 - **The location count.** Mr. Sal confirmed 22. The Contact page's 17
   is several years out of date, so the revised directory of 20 Oct
   stands as the authority and no change is needed.
+
+---
+
+# ICB's FAQ, 27 Oct 2026
+
+Mr. Sal supplied "ICB FAQ Web Site 26.10.26 v2". Eighty-three questions
+are now in `js/data/faq.js`, on `/faq` in full and in context on the
+pages they belong to.
+
+**It was written for Bee, not for a website.** Several answers are in
+the assistant's first person ("Tell me your district and I can help you
+find an office near you"), and the document ends with fallback scripts
+for when the assistant does not understand. Those scripts are not on
+the site. The first-person answers were put into the site's voice and
+each one is marked VOICE in a comment beside it, so the change is
+visible and can be reversed.
+
+**The same document should also go into Bee's knowledge base**, more or
+less as written. That is what it was for, and it is a better answer set
+than Bee has now.
+
+## Settled by it
+
+- The four wire transfer sheets (USD, CAD, EUR, GBP) are on the
+  payments page. They exist in the document only as images; every line
+  was read off those images.
+- The three local bank accounts in the FAQ match `js/data/payments.js`
+  digit for digit.
+- The opening hours in the FAQ match what we built, borders included.
+- It supplies, for the first time, what a claim requires: the motor and
+  property document lists, what to do at the scene, after a fire, after
+  a theft, after a hurricane. The claims page can now carry that,
+  because ICB has said it.
+
+## Still open from it
+
+- **The ICB Payment Portal.** The FAQ lists it as an accepted payment
+  method. The payments page says in those words that ICB does not take
+  payments through its website, which came from earlier guidance. ICB's
+  DNS carries `billing`, `onlinesales` and `kiosk` subdomains, so
+  something exists. Which is right?
+- **The Claims Department WhatsApp, 613-0579.** In the FAQ, not in the
+  22-location directory. Should it be a contact on the site in its own
+  right?
+- **Nationwide Cash Express**, ICB's sister company for premium
+  financing. In the FAQ, nowhere on the site. Should it be?
+- **Confirm the wire sheets are current.** Correspondent banks change,
+  and a stale one sends money to the wrong place.

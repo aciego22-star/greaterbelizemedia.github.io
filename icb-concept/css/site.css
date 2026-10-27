@@ -3875,6 +3875,222 @@ select,
   border-top: 1px solid var(--c-line-soft);
 }
 
+/* ==================== Paying from outside Belize ==================== */
+/* Four sets of wire instructions. Every line is something a person
+   retypes into their own bank, so the values are monospaced, given a
+   copy button, and never allowed to wrap mid-code. */
+
+.wire-note {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  background: var(--red-050);
+  border: 1px solid var(--red-100);
+  border-radius: var(--r-md);
+  font-size: var(--fs-300);
+  margin: 0 0 var(--sp-5);
+}
+.wire-note .glyph { width: 20px; height: 20px; flex: none; color: var(--c-accent-ink); margin-top: 1px; }
+
+.wire-grid { display: grid; gap: var(--sp-5); }
+@media (min-width: 900px) { .wire-grid { grid-template-columns: 1fr 1fr; } }
+
+.wire-card {
+  background: var(--c-surface);
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-lg);
+  padding: var(--sp-5);
+}
+.wire-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-4);
+}
+.wire-head h3 { margin: 0; font-size: var(--fs-500); }
+.wire-card dl { margin: 0; }
+.wire-block h4 {
+  margin: var(--sp-4) 0 var(--sp-2);
+  font-size: var(--fs-200);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--c-text-soft);
+}
+.wire-block:first-child h4 { margin-top: 0; }
+.wire-row {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: var(--sp-3);
+  padding: var(--sp-2) 0;
+  border-bottom: 1px solid var(--c-line-soft);
+  font-size: var(--fs-300);
+}
+.wire-row dt { color: var(--c-text-soft); }
+.wire-row dd { margin: 0; }
+.wire-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: var(--fs-200);
+  /* A SWIFT code or an IBAN broken across two lines gets mistyped. */
+  white-space: nowrap;
+  overflow-x: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+.copy-btn {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  min-height: 32px;
+  padding: 0 var(--sp-2);
+  background: var(--c-tint);
+  border: 1px solid var(--c-line-soft);
+  border-radius: var(--r-sm);
+  color: var(--c-text-soft);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.copy-btn .glyph { width: 14px; height: 14px; }
+.copy-flash:empty { display: none; }
+.copy-flash {
+  font-family: var(--font-sans);
+  font-size: var(--fs-200);
+}
+.copy-btn.is-copied { border-color: var(--c-accent); color: var(--c-accent-ink); }
+@media (hover: hover) and (pointer: fine) {
+  .copy-btn:hover { border-color: var(--c-accent); color: var(--c-accent-ink); }
+}
+@media (max-width: 520px) {
+  .wire-row { grid-template-columns: 1fr; gap: 2px; }
+}
+
+/* ======================== Questions and answers ==================== */
+/* Built on <details>, so the answer is in the document whether it is
+   open or shut. The styling here is all in service of one thing: a
+   question should look like something you can press. */
+
+.shell--narrow { max-width: 760px; }
+
+/* The chips sit directly above the first section, so the two lots of
+   section padding would otherwise stack into a hole. */
+.faq-navwrap { padding-bottom: 0; }
+
+.faq-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+.faq-nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 0.5rem 0.9rem;
+  min-height: 40px;
+  border: 1px solid var(--c-line);
+  border-radius: 999px;
+  background: var(--c-surface);
+  color: var(--c-text);
+  font-size: var(--fs-300);
+  text-decoration: none;
+  touch-action: manipulation;
+}
+.faq-count {
+  font-size: var(--fs-200);
+  color: var(--c-text-soft);
+  font-variant-numeric: tabular-nums;
+}
+@media (hover: hover) and (pointer: fine) {
+  .faq-nav a:hover { border-color: var(--c-accent); color: var(--c-accent-ink); }
+}
+
+.faq-list { border-top: 1px solid var(--c-line-soft); }
+.faq-item { border-bottom: 1px solid var(--c-line-soft); }
+
+.faq-q {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  padding: var(--sp-4) 0;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: var(--fs-400);
+  line-height: 1.45;
+  list-style: none;
+  touch-action: manipulation;
+}
+/* Safari draws its own triangle unless both of these are set. */
+.faq-q::-webkit-details-marker { display: none; }
+.faq-q::marker { content: ""; }
+
+.faq-mark {
+  flex: none;
+  position: relative;
+  width: 18px;
+  height: 18px;
+  margin-top: 3px;
+}
+.faq-mark::before,
+.faq-mark::after {
+  content: "";
+  position: absolute;
+  background: var(--c-accent-ink);
+  border-radius: 1px;
+  transition: transform 0.18s ease, opacity 0.18s ease;
+}
+.faq-mark::before { inset: 8px 0 8px 0; height: 2px; }
+.faq-mark::after { inset: 0 8px 0 8px; width: 2px; }
+.faq-item[open] .faq-mark::after { transform: rotate(90deg); opacity: 0; }
+
+@media (hover: hover) and (pointer: fine) {
+  .faq-q:hover { color: var(--c-accent-ink); }
+}
+.faq-q:focus-visible { outline: 2px solid var(--c-accent); outline-offset: 2px; }
+
+.faq-a {
+  padding: 0 0 var(--sp-5);
+  max-width: 62ch;
+  color: var(--c-text-soft);
+  line-height: 1.65;
+  font-size: var(--fs-300);
+}
+.faq-a > p { margin: 0 0 var(--sp-3); }
+.faq-a > p:last-child { margin-bottom: 0; }
+.faq-a ul { margin: 0 0 var(--sp-3); padding-left: 1.15rem; display: grid; gap: var(--sp-2); }
+.faq-a li { line-height: 1.55; }
+.faq-group { margin-bottom: var(--sp-4); }
+.faq-group h4 {
+  margin: 0 0 var(--sp-2);
+  font-size: var(--fs-300);
+  color: var(--c-text);
+}
+.faq-link { margin: var(--sp-3) 0 0; }
+.faq-link a { color: var(--c-accent-ink); font-weight: 600; }
+
+/* A table inside an answer. It scrolls sideways on a phone rather than
+   squeezing a document list into a column two words wide. */
+.faq-table-wrap { overflow-x: auto; margin: 0 0 var(--sp-4); }
+.faq-table {
+  width: 100%;
+  min-width: 420px;
+  border-collapse: collapse;
+  font-size: var(--fs-200);
+}
+.faq-table th,
+.faq-table td {
+  text-align: left;
+  vertical-align: top;
+  padding: var(--sp-3);
+  border: 1px solid var(--c-line-soft);
+}
+.faq-table th { background: var(--c-tint); color: var(--c-text); font-weight: 600; }
+.faq-table ul { margin: 0; padding-left: 1rem; gap: var(--sp-1); }
+
+.faq-more { margin: var(--sp-5) 0 0; }
+
 /* ======================== ICB on YouTube ========================= */
 /* The card is a cover, not an embed. It becomes an iframe only when
    somebody presses play, so a visit that never watches anything never

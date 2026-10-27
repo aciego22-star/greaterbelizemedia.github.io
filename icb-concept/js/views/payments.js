@@ -32,6 +32,51 @@ ICB.views = ICB.views || {};
     return "desktop";
   }
 
+  /* One currency's wire instructions, as a labelled list rather than a
+     four-column table: a correspondent bank, an intermediary and a
+     beneficiary do not fit side by side on a phone, and every line here
+     is one somebody retypes into their own bank. Each value gets the
+     same copy button the local accounts have, for the same reason. */
+  function wireCard(cur, bene, R) {
+    function row(label, value, mono) {
+      if (!value) return "";
+      return '<div class="wire-row"><dt>' + R.esc(label) + "</dt>" +
+        '<dd' + (mono ? ' class="wire-mono"' : "") + ">" + R.esc(value) +
+        (mono ? ' <button type="button" class="copy-btn" data-copy="' + R.esc(value) +
+                '" aria-label="' + R.esc(ICB.s("copyValue", { v: value })) + '">' +
+                ICB.art.glyph("document") +
+                /* The shared copy handler writes its result into this
+                   span. Empty until something happens, so the button is
+                   an icon until it has news. */
+                '<span class="copy-flash" data-copy-label></span></button>' : "") +
+        "</dd></div>";
+    }
+    var T = ICB.T;
+    return '<article class="wire-card rv" data-wire="' + R.esc(cur.id) + '">' +
+      '<div class="wire-head"><h3>' + R.esc(ICB.t(cur.label)) + "</h3>" +
+        '<span class="badge">' + R.esc(ICB.t(cur.country)) + "</span></div>" +
+      "<dl>" +
+        '<div class="wire-block"><h4>' + R.esc(T("Remit to (Receiver's Correspondent Bank)", "Remitir a (banco corresponsal del receptor)")) + "</h4></div>" +
+        row(T("Bank", "Banco"), cur.correspondent.name) +
+        row(T("Address", "Dirección"), cur.correspondent.address) +
+        row("SWIFT BIC", cur.correspondent.swift, true) +
+        '<div class="wire-block"><h4>' + R.esc(T("To Credit (Intermediary Bank)", "A crédito de (banco intermediario)")) + "</h4></div>" +
+        row(T("Bank", "Banco"), cur.intermediary.name) +
+        row(T("Address", "Dirección"), cur.intermediary.address) +
+        row("SWIFT BIC", cur.intermediary.swift, true) +
+        row("IBAN", cur.intermediary.iban, true) +
+        '<div class="wire-block"><h4>' + R.esc(T("To Further Credit (Beneficiary Bank)", "Para crédito posterior (banco beneficiario)")) + "</h4></div>" +
+        row(T("Bank", "Banco"), bene.bank) +
+        row(T("Address", "Dirección"), bene.bankAddress) +
+        row("SWIFT BIC", bene.swift, true) +
+        row(ICB.t(cur.atCorrespondent.label), cur.atCorrespondent.value, true) +
+        '<div class="wire-block"><h4>' + R.esc(T("For Further Credit to (Beneficiary)", "Para crédito final a (beneficiario)")) + "</h4></div>" +
+        row(T("Name", "Nombre"), bene.name) +
+        row(T("Address", "Dirección"), bene.address) +
+        row(T("Beneficiary's Account Number", "Número de cuenta del beneficiario"), bene.account, true) +
+      "</dl></article>";
+  }
+
   function bankCard(bank, R, plat) {
     var store = plat === "ios" ? bank.ios : plat === "android" ? bank.android : null;
     var ext = R.extAttrs();
@@ -156,6 +201,26 @@ ICB.views = ICB.views || {};
           "</div>" +
         "</section>" +
 
+        /* Paying from abroad. Its own anchor so the FAQ can send
+           someone straight here. */
+        '<section class="section section--flush-top" data-anchor="overseas" aria-labelledby="pay-wire-title">' +
+          '<div class="shell">' +
+            R.sectionHead({
+              eyebrow: { en: "From outside Belize", es: "Desde fuera de Belice" },
+              title: pay.overseas.title,
+              sub: pay.overseas.body,
+              id: "pay-wire-title"
+            }) +
+            '<p class="wire-note rv">' + ICB.art.glyph("shield") + "<span>" +
+              R.esc(pay.overseas.note) + "</span></p>" +
+            '<div class="wire-grid">' +
+              pay.overseas.currencies.map(function (c) {
+                return wireCard(c, pay.overseas.beneficiary, R);
+              }).join("") +
+            "</div>" +
+          "</div>" +
+        "</section>" +
+
         '<section class="section section--tint section--flush-top" aria-labelledby="pay-wa-title">' +
           '<div class="shell">' +
             R.sectionHead({
@@ -184,7 +249,10 @@ ICB.views = ICB.views || {};
             }) +
             '<p class="pay-help-note rv">' + R.esc(pay.help.emailNote) + "</p>" +
           "</div>" +
-        "</section>";
+        "</section>" +
+        /* ICB's own answers to the questions this page raises.
+           A handful here, all of them on the FAQ page. */
+        R.faqBlock("payments", { tint: true, section: "payments" });
     },
 
     mounted: function (mount) {

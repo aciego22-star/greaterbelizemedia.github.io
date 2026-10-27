@@ -79,6 +79,76 @@ ICB.DATA.payments = {
     }
   ],
 
+  /* Wire transfers from abroad. Supplied by ICB in the FAQ document of
+     27 Oct 2026, where they arrive as four images of Belize Bank's own
+     instruction sheets, one per currency. Every line below was read off
+     those sheets.
+
+     All four route through Belize Bank, so the beneficiary is the same
+     every time and only the correspondent and intermediary change. The
+     beneficiary account for an overseas wire (129923020120025) is NOT
+     the local Belize Bank account above (129923010120026). They differ
+     by two digits in the middle and one at the end, which is exactly
+     the kind of pair that gets mistyped, so they are kept apart on the
+     page and checked against each other in the suite.
+
+     INTERNAL TODO (not client-facing): confirm with ICB that these
+     sheets are current before launch. Wire instructions age, and a
+     stale correspondent sends money to the wrong place. */
+  overseas: {
+    title: { en: "Paying from outside Belize", es: "Pagar desde fuera de Belice" },
+    body: {
+      en: "Wire transfers in US dollars, Canadian dollars, euros and pounds sterling all route through Belize Bank. Give your bank the lines for your currency exactly as they appear.",
+      es: "Las transferencias en dólares estadounidenses, dólares canadienses, euros y libras esterlinas se cursan a través de Belize Bank. Dé a su banco los datos de su moneda exactamente como aparecen."
+    },
+    note: {
+      en: "The beneficiary account for an overseas wire is not the same as the local Belize Bank account above. Use the one shown here.",
+      es: "La cuenta del beneficiario para una transferencia del extranjero no es la misma que la cuenta local de Belize Bank de arriba. Use la que aparece aquí."
+    },
+    beneficiary: {
+      name: "Insurance Corporation of Belize Ltd.",
+      address: "16 Daly Street, Belize City, Belize",
+      account: "129923020120025",
+      bank: "Belize Bank Limited",
+      bankAddress: "Matalon Business Center, Coney Drive, Belize City, Belize",
+      swift: "BBLZBZBZ"
+    },
+    currencies: [
+      {
+        id: "usd",
+        label: { en: "United States Dollars", es: "Dólares estadounidenses" },
+        country: { en: "United States", es: "Estados Unidos" },
+        correspondent: { name: "Citibank N.A. New York", address: "111 Wall Street, New York NY USA", swift: "CITIUS33" },
+        intermediary: { name: "Crown Agents Bank", address: "Quadrant House, Sutton UK", swift: "CRASGB2L" },
+        atCorrespondent: { label: { en: "Account at Correspondent", es: "Cuenta en el corresponsal" }, value: "31933101" }
+      },
+      {
+        id: "cad",
+        label: { en: "Canadian Dollars", es: "Dólares canadienses" },
+        country: { en: "Canada", es: "Canadá" },
+        correspondent: { name: "Bank of Montreal", address: "Toronto, Ontario, Canada", swift: "BOFMCAT2" },
+        intermediary: { name: "Crown Agents Bank", address: "Quadrant House, Sutton UK", swift: "CRASGB2L" },
+        atCorrespondent: { label: { en: "IBAN at Correspondent", es: "IBAN en el corresponsal" }, value: "GB57CRAS60836831933140" }
+      },
+      {
+        id: "eur",
+        label: { en: "Euro Currency", es: "Euros" },
+        country: { en: "European Union", es: "Unión Europea" },
+        correspondent: { name: "Natwest Bank, London PLC", address: "London, UK", swift: "NWBKGB2L" },
+        intermediary: { name: "Crown Agents Bank", address: "Quadrant House, Sutton UK", swift: "CRASGB2L", iban: "GB42NWBK60721442207312" },
+        atCorrespondent: { label: { en: "IBAN at Correspondent", es: "IBAN en el corresponsal" }, value: "GB91CRAS60836831933401" }
+      },
+      {
+        id: "gbp",
+        label: { en: "British Pound Sterling", es: "Libras esterlinas" },
+        country: { en: "United Kingdom", es: "Reino Unido" },
+        correspondent: { name: "Natwest Bank, London PLC", address: "London, UK", swift: "NWBKGB2L" },
+        intermediary: { name: "Crown Agents Bank", address: "Quadrant House, Sutton UK", swift: "CRASGB2L" },
+        atCorrespondent: { label: { en: "IBAN at Correspondent", es: "IBAN en el corresponsal" }, value: "GB27CRAS60836831933001" }
+      }
+    ]
+  },
+
   receipts: {
     title: { en: "Send your payment confirmation", es: "Envíe su comprobante de pago" },
     body: { en: "After completing your bank transfer, choose the corresponding ICB branch and send a screenshot of your payment confirmation through WhatsApp.", es: "Una vez hecha la transferencia, elija la sucursal de ICB que le corresponde y envíe una captura de su comprobante de pago por WhatsApp." },

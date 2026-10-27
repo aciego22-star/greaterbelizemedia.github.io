@@ -120,7 +120,7 @@ const chromium = pw.chromium;
 function loadData() {
   const ctx = vm.createContext({});
   ctx.window = ctx;
-  for (const f of ["site.js", "products.js", "locations.js", "gallery.js"]) {
+  for (const f of ["site.js", "products.js", "locations.js", "gallery.js", "faq.js"]) {
     vm.runInContext(fs.readFileSync(path.join(ROOT, "js/data", f), "utf8"), ctx);
   }
   return ctx.ICB.DATA;
@@ -230,6 +230,51 @@ function graph(DATA, { route, lang, title, description, crumbs }) {
         "@type": "ListItem", position: i + 1, name: c.name,
         item: ORIGIN + pathFor(c.route, lang)
       }))
+    });
+  }
+
+  /* Every question ICB answers, as a FAQPage. This is what lets a
+     question appear directly in a search result or inside an
+     assistant's answer rather than only as a link to a page that
+     contains it.
+
+     Declared on the FAQ page ALONE, although several of these questions
+     also appear in context on the claims, payments and product pages.
+     The same question declared from two URLs asks a search engine to
+     pick a winner, and it may pick neither. One canonical home. */
+  if (route === "faq" && DATA.faq) {
+    const plain = v => String(pick(v) || "")
+      .replace(/\s+/g, " ")
+      .trim();
+    const answerHtml = qa => {
+      let out = plain(qa.a).split(/\s{2,}/).join(" ");
+      const bits = [out];
+      (qa.list || []).forEach(x => bits.push(plain(x)));
+      (qa.groups || []).forEach(g => {
+        bits.push(plain(g.title));
+        (g.list || []).forEach(x => bits.push(plain(x)));
+      });
+      if (qa.table) {
+        qa.table.rows.forEach(r => bits.push(r.map(c => plain(c)).join(": ")));
+      }
+      if (qa.after) bits.push(plain(qa.after));
+      return bits.filter(Boolean).join(" ");
+    };
+    const entities = [];
+    DATA.faq.sections.forEach(sec => sec.qa.forEach(qa => {
+      entities.push({
+        "@type": "Question",
+        name: plain(qa.q),
+        acceptedAnswer: { "@type": "Answer", text: answerHtml(qa) }
+      });
+    }));
+    nodes.push({
+      "@type": "FAQPage",
+      "@id": url + "#faq",
+      inLanguage: lang,
+      isPartOf: { "@id": ORIGIN + "/#website" },
+      about: { "@id": orgId },
+      mainEntity: entities
     });
   }
 
@@ -630,6 +675,33 @@ function serve(dir) {
     llms.push("- [" + p.name + "](" + ORIGIN + pathFor("insurance/" + p.id, "en") + "): " +
       String(p.short && p.short.en || "").replace(/\s+/g, " ").trim());
   }
+  /* ICB's own questions and answers, in full. An answer engine that
+     reads one file about ICB should be able to answer from ICB's own
+     words rather than from an inference about them, and this is the
+     cheapest place to put all of it. */
+  if (DATA.faq) {
+    const flat = v => String((v && (v.en || v)) || "").replace(/\s+/g, " ").trim();
+    llms.push("", "## Questions and answers", "",
+      "Answered by ICB. The full set is at " + ORIGIN + "/faq.", "");
+    for (const sec of DATA.faq.sections) {
+      llms.push("### " + flat(sec.title), "");
+      for (const qa of sec.qa) {
+        llms.push("**" + flat(qa.q) + "**", "");
+        llms.push(flat(qa.a));
+        (qa.list || []).forEach(x => llms.push("- " + flat(x)));
+        (qa.groups || []).forEach(g => {
+          llms.push("", flat(g.title) + ":");
+          (g.list || []).forEach(x => llms.push("- " + flat(x)));
+        });
+        if (qa.table) {
+          qa.table.rows.forEach(r => llms.push("- " + r.map(c => flat(c)).join(": ")));
+        }
+        if (qa.after) llms.push(flat(qa.after));
+        llms.push("");
+      }
+    }
+  }
+
   llms.push("", "## Branches and agencies", "",
     live.length + " locations across all six districts of Belize.", "");
   for (const d of DATA.districts) {

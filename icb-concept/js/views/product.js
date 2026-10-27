@@ -345,7 +345,11 @@ ICB.views = ICB.views || {};
             R.sectionHead({ eyebrow: ICB.s("relatedEyebrow"), title: ICB.s("relatedTitle"), id: "rel-title" }) +
             '<div class="card-grid card-grid--pair">' + related + "</div>" +
           "</div>" +
-        "</section>";
+        "</section>" +
+        /* ICB's own answers about this cover, where they have written
+           any. Keyed per product, so the motor page gets the motor
+           questions and nothing else. */
+        R.faqBlock("product:" + p.id, { tint: true, section: "servicing" });
     }
   };
 })();
