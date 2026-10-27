@@ -13,6 +13,23 @@ ICB.views = ICB.views || {};
      where it is used. See ICB.T in js/i18n.js. */
   var T = ICB.T;
 
+
+  /* The Claims Department's own line, from ICB.DATA.site.departments. */
+  function deptRow(R) {
+    var d = (ICB.DATA.site.departments || []).filter(function (x) { return x.id === "claims"; })[0];
+    if (!d || !d.whatsapp) return "";
+    return '<aside class="claims-dept rv">' +
+      ICB.art.waIcon("roundel", "wa-roundel") +
+      '<div class="claims-dept-text">' +
+        "<strong>" + R.esc(ICB.s("claimsDeptTitle")) + "</strong>" +
+        "<span>" + R.esc(ICB.t(d.note)) + "</span>" +
+      "</div>" +
+      '<a class="btn btn-outline btn-sm" href="' + R.esc(R.waHref(d.whatsapp.wa)) + '"' +
+        R.extAttrs() + ">" + R.esc(ICB.t(d.name)) + " " + R.esc(d.whatsapp.display) +
+        R.extIcon() + "</a>" +
+      "</aside>";
+  }
+
   ICB.views.claims = {
     title: { en: "Claims | ICB", es: "Reclamos | ICB" },
     render: function () {
@@ -49,6 +66,12 @@ ICB.views = ICB.views || {};
               id: "pathways-title"
             }) +
             '<div class="pathway-grid">' + cards + "</div>" +
+            /* A claim already reported is a different errand from
+               starting one, and the pathways above do not serve it.
+               ICB gives the Claims Department its own WhatsApp line, so
+               it gets its own row rather than being buried in the
+               contact band at the foot of the page. */
+            deptRow(R) +
           "</div>" +
         "</section>" +
 

@@ -39,6 +39,27 @@ ICB.DATA.site = {
     email: "icb@icbinsurance.com"
   },
 
+  /* Departments that take enquiries in their own right, as against the
+     22 branches and agencies in ICB.DATA.locations.
+
+     Deliberately NOT a location record. It has no address, no opening
+     hours and no district, and putting it in that dataset would put a
+     telephone number on the map and in the branch finder as though
+     somebody could walk into it. The directory is the branch network
+     and should stay that way.
+
+     SOURCE: ICB's FAQ document of 27 Oct 2026, under "How can I check
+     the status of my claim?". */
+  departments: [
+    {
+      id: "claims",
+      name: { en: "Claims Department", es: "Departamento de Reclamos" },
+      note: { en: "For the progress of a claim already reported.",
+              es: "Para el avance de un reclamo ya reportado." },
+      whatsapp: { display: "+501 613-0579", wa: "5016130579" }
+    }
+  ],
+
   /* The standard hours, as revised by ICB on 20 Oct 2026: a midday
      close on weekdays and a Saturday morning. Held once here rather
      than copied twenty-odd times. A location overrides them with its

@@ -33,7 +33,25 @@ window.ICB = window.ICB || {};
 
   function directoryHtml() {
     var R = ICB.render;
-    var groups = ICB.DATA.districts.map(function (d) {
+
+    /* Departments first. Someone opening this to chase a claim they
+       already reported wants the claims team, not the branch that sold
+       them the policy, and they should not have to know which district
+       to look under to find it. */
+    var depts = (ICB.DATA.site.departments || []).map(function (d) {
+      return '<a class="wa-row" href="' + R.esc(R.waHref(d.whatsapp.wa)) + '"' + R.extAttrs() + ">" +
+        ICB.art.waIcon("roundel", "wa-roundel") +
+        '<span class="wa-row-text"><strong>' + R.esc(ICB.t(d.name)) + "</strong>" +
+        '<span class="wa-row-note">' + R.esc(ICB.t(d.note)) + "</span>" +
+        '<span class="wa-row-num">' + R.esc(d.whatsapp.display) + "</span></span>" +
+        R.extIcon() + "</a>";
+    }).join("");
+    var deptGroup = depts
+      ? '<section class="wa-group" aria-label="' + R.esc(ICB.s("waDepartments")) + '">' +
+          "<h3>" + R.esc(ICB.s("waDepartments")) + "</h3>" + depts + "</section>"
+      : "";
+
+    var groups = deptGroup + ICB.DATA.districts.map(function (d) {
       var locs = ICB.DATA.whatsappLines().filter(function (l) { return l.district === d; });
       if (!locs.length) return "";
       return '<section class="wa-group" aria-label="' + R.esc(ICB.s("district", { d: d })) + '">' +

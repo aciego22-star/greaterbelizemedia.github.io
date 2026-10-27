@@ -352,9 +352,27 @@ ICB.DATA = ICB.DATA || {};
                 "Cómo pagar una prima, desde Belice y desde el extranjero."),
         qa: [
           {
+            /* ICB's own list, with one item held back.
+               ICB's FAQ reads: "Accepted forms of payment include Cash,
+               Cheque, Credit Card, ICB Payment Portal, and Premium
+               Financing through Nationwide Cash Express."
+
+               ICB confirmed on 27 Oct 2026 that they do NOT take
+               payments online. The kiosk on their network is a physical
+               insurance terminal near the border, not a web portal, and
+               the billing subdomain is unrelated to the public site.
+               Publishing "ICB Payment Portal"
+               would send a customer looking for something that is not
+               there, so it is not in the list and the bank transfer
+               route, which is real and is on the payments page, is
+               named instead.
+
+               Restoring it is one line. ICB should settle the final
+               wording: see OPEN-QUESTIONS.md. */
             q: T("How can I pay my insurance premium?", "¿Cómo puedo pagar mi prima de seguro?"),
-            a: T("Accepted forms of payment include Cash, Cheque, Credit Card, ICB Payment Portal, and Premium Financing through Nationwide Cash Express.",
-                 "Las formas de pago aceptadas incluyen efectivo, cheque, tarjeta de crédito, el ICB Payment Portal y financiamiento de prima a través de Nationwide Cash Express."),
+            a: T("Accepted forms of payment include cash, cheque and credit card at any branch, bank transfer, and Premium Financing through Nationwide Cash Express. ICB does not take payments through this website; a transfer is made through your own bank and the confirmation goes to your branch.",
+                 "Las formas de pago aceptadas incluyen efectivo, cheque y tarjeta de crédito en cualquier sucursal, transferencia bancaria, y financiamiento de prima a través de Nationwide Cash Express. ICB no recibe pagos por este sitio web; la transferencia se hace desde su propio banco y el comprobante se envía a su sucursal."),
+            link: { label: T("How to pay ICB", "Cómo pagarle a ICB"), href: "#/payments" },
             on: ["payments"]
           },
           {

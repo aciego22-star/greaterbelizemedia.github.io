@@ -286,17 +286,35 @@ than Bee has now.
   a theft, after a hurricane. The claims page can now carry that,
   because ICB has said it.
 
-## Still open from it
+## Answered, 27 Oct 2026
 
-- **The ICB Payment Portal.** The FAQ lists it as an accepted payment
-  method. The payments page says in those words that ICB does not take
-  payments through its website, which came from earlier guidance. ICB's
-  DNS carries `billing`, `onlinesales` and `kiosk` subdomains, so
-  something exists. Which is right?
-- **The Claims Department WhatsApp, 613-0579.** In the FAQ, not in the
-  22-location directory. Should it be a contact on the site in its own
-  right?
-- **Nationwide Cash Express**, ICB's sister company for premium
-  financing. In the FAQ, nowhere on the site. Should it be?
-- **Confirm the wire sheets are current.** Correspondent banks change,
-  and a stale one sends money to the wrong place.
+- **No online payments.** ICB does not take payments through the
+  website. The kiosk on their network is a physical insurance terminal
+  near the border; `billing` and `onlinesales` are unrelated to the
+  public site. The payments page stands as written.
+
+  One consequence: ICB's FAQ lists "ICB Payment Portal" among accepted
+  payment methods, which contradicts that. It is **held back** from the
+  published answer, because publishing it would send a customer looking
+  for something that is not there. The bank transfer route, which is
+  real, is named instead. The full original sentence is quoted in the
+  comment above that answer in `js/data/faq.js`, and restoring it is
+  one line.
+
+  **ICB should settle the final wording of that one answer.** Either
+  the portal is dropped from their document, or it means something we
+  have not understood.
+
+- **The Claims Department WhatsApp, 613-0579, is on the site.** Added
+  as a department rather than as a branch: it has no address, no
+  opening hours and no district, so putting it in the location dataset
+  would place a telephone number on the map as though someone could
+  walk into it. It now leads the WhatsApp directory under
+  "Departments", and has its own row on the claims page for the errand
+  the pathways do not serve, chasing a claim already reported.
+
+- **Nationwide Cash Express** is a separate rebuild that may follow
+  this one. Left as ICB wrote it in the FAQ, not built out.
+
+- **The wire sheets are current**, received from ICB on 27 Oct 2026.
+  No further confirmation needed.

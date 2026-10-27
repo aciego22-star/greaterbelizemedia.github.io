@@ -3875,6 +3875,24 @@ select,
   border-top: 1px solid var(--c-line-soft);
 }
 
+/* The Claims Department's own line, on the claims page. Chasing a
+   claim already reported is a different errand from starting one, so
+   it sits apart from the pathway cards rather than among them. */
+.claims-dept {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--sp-4);
+  margin-top: var(--sp-5);
+  padding: var(--sp-4) var(--sp-5);
+  background: var(--c-tint);
+  border-radius: var(--r-lg);
+}
+.claims-dept .wa-roundel { width: 34px; height: 34px; flex: none; }
+.claims-dept-text { display: grid; gap: 2px; flex: 1 1 16rem; }
+.claims-dept-text strong { font-size: var(--fs-400); }
+.claims-dept-text span { font-size: var(--fs-300); color: var(--c-text-soft); }
+
 /* ==================== Paying from outside Belize ==================== */
 /* Four sets of wire instructions. Every line is something a person
    retypes into their own bank, so the values are monospaced, given a
