@@ -1,0 +1,60 @@
+# Redirects for the move from the Wix site to this one.
+#
+# Built from the eight pages ICB's IT department listed on 27 Oct 2026,
+# with their thirty-day view counts. Every old address that is not
+# answered here returns a 404 after the cutover, and Google drops
+# whatever position that page held, so this file is the thing that
+# carries ICB's existing search results across.
+#
+# Netlify reads this from the root of the published folder. The build
+# copies it if it finds it; see SHIP in build/build-static.js.
+#
+# Format: old path, new path, status. Netlify matches a trailing slash
+# either way and keeps any query string.
+
+# ---------------------------------------------------------------------
+# Pages that moved. Views over thirty days in brackets.
+# ---------------------------------------------------------------------
+
+# General Insurance [166]
+/products               /insurance              301
+
+# Mexican Insurance [85]. Note for the record: the old site puts
+# Mexican Insurance at /ana-seguros-quote and Travel Insurance at
+# /micro-insurance, which is the opposite of what the names suggest.
+/ana-seguros-quote      /insurance/mexican      301
+
+# Travel Insurance [67]
+/micro-insurance        /insurance/travel       301
+
+# Consumer resources [41]. The old address is misspelled; the redirect
+# keeps anyone who followed a link to it from landing on nothing.
+/consumer-resourses     /resources              301
+# And the spelling someone may have corrected by hand.
+/consumer-resources     /resources              301
+
+# ---------------------------------------------------------------------
+# Pages that keep their address. No rule needed, listed so the set is
+# complete and nothing looks forgotten.
+#   /         Home     [485]
+#   /contact  Contact  [307]
+#   /claims   Claims   [62]
+# ---------------------------------------------------------------------
+
+# ---------------------------------------------------------------------
+# Waiting on ICB before these go in. Do not guess at them: a redirect
+# to the wrong page is read by Google as a soft 404 and is worse than
+# an honest one.
+#
+#   /advertisements [25]
+#     Nothing on the new site corresponds to it yet. Asked ICB what is
+#     on the page. Until then it falls through to the site's own
+#     not-found page, which carries the header and a way home.
+#
+#   /_files/ugd/393da5_fe2e06d561ee417793c061ae5c1508fa.pdf
+#     A PDF linked from the old home page. Asked ICB what it is. If it
+#     should stay reachable, the file goes in assets/ and a rule points
+#     this address at it. Wix asset URLs all live under /_files/, so a
+#     wildcard may be wanted once we know whether anything else is
+#     linked from outside.
+# ---------------------------------------------------------------------

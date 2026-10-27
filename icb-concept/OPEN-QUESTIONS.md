@@ -100,6 +100,13 @@ the note in that file's header already says so.
 
 ## 4. The move to www.icbinsurance.com
 
+> **Answered in part, 27 Oct 2026**, by ICB's IT department. See
+> "What IT came back with" at the foot of this file. Still open from
+> this section: who holds the existing Search Console property, the
+> Google Business Profile listings (Mr. Awe), what is on
+> `/advertisements`, and what the PDF linked from the old home page is.
+
+
 **Who provides:** ICB's IT department, or whoever holds Search Console
 and the Google Business Profiles.
 
@@ -154,3 +161,73 @@ Smaller things raised earlier and not yet answered.
 - **Spanish URLs keep English slugs** (`/es/insurance/motor`). Fine,
   and deliberate, but worth a decision if ICB would rather they were
   translated.
+
+---
+
+# What IT came back with, 27 Oct 2026
+
+Answers to the email of earlier that week, and what each one settled.
+
+**The current site is Wix**, built and owned by the agency Darkfire
+Digital, with ICB staff as co-owners. The domain is registered at
+**Hover under ICB's own account**, and its nameservers point at Wix
+(`ns1.wix.com` / `ns2.wix.com`), so the DNS records live inside Wix.
+ICB has admin access to both.
+
+**Email is Google Workspace**, billed separately from Wix.
+
+## Settled
+
+- **www, not the bare domain.** `icbinsurance.com` already redirects to
+  `www.icbinsurance.com`, and the old site's canonical and sitemap both
+  use www. The build already targets www, so nothing changes.
+- **Eight pages, with thirty-day view counts.** Written into
+  `_redirects` at the root of this project. Three keep their address
+  (`/`, `/contact`, `/claims`); four move; one is unresolved.
+- **No redirects exist on the Wix site today**, so nothing has to be
+  unpicked.
+- **A naming trap, now fixed.** On the old site `/micro-insurance` is
+  TRAVEL insurance and `/ana-seguros-quote` is MEXICAN insurance, the
+  opposite of what the names suggest. Our `mexicanInsurance` link had
+  been pointing at the travel page. Corrected in `js/data/site.js`.
+- **The live site lists 17 locations**, against the 22 in ICB's revised
+  directory of 20 Oct. It still shows Benque Viejo Agency, which that
+  revision dropped, and is missing Caye Caulker, Benque Town Board, San
+  Juan, Bella Vista, Moro and Velasquez. The revised directory is the
+  newer document and remains the authority.
+
+## The DNS zone is the serious part
+
+The zone serves far more than the website, and IT asked that it be kept
+exactly as it is. Recorded here so it cannot be lost:
+
+- **Subdomains:** `agilis-connector`, `aml`, `billing`, `kiosk`,
+  `kioskprinters`, `kioskprinters2`, `onlinesales`, `printer`,
+  `training`, `covernote`, `gmail`
+- **Google Workspace email:** MX, SPF, Google DKIM, DMARC
+- **Amazon SES DKIM:** three records
+- **Verification:** the Google site-verification TXT, plus three other
+  TXT verification records
+
+IT asked to see the full zone we intend to set up before any
+nameserver change. That is the right instinct and we should meet it in
+writing.
+
+## Still open from this round
+
+- **Who owns the existing Search Console property.** A Google
+  verification TXT is already in the zone, so a property probably
+  exists under somebody's account, most likely the agency that built
+  the Wix site. IT is finding out. A newly verified property shows the
+  site's historical data anyway, so this is a convenience rather than a
+  blocker. Either way the existing verification record must not be
+  removed.
+- **The Google Business Profile listings.** None is linked in Wix,
+  which does not mean none exists. Mr. Awe is updating the location
+  list and will work with us on the profiles.
+- **`/advertisements`** (25 views a month). Nothing on the new site
+  corresponds to it. Asked what is on the page.
+- **The PDF linked from the old home page**,
+  `/_files/ugd/393da5_fe2e06d561ee417793c061ae5c1508fa.pdf`. Asked what
+  it is. If it should stay reachable it goes in `assets/` with a rule
+  pointing the old address at it.
