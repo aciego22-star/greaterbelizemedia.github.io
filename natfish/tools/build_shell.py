@@ -197,24 +197,6 @@ DIMS = {**DIMS, **HERO_DIMS, **GALLERY_DIMS, **NEWS_DIMS, **ABOUT_DIMS,
 # so they are folded in here instead of being a second lookup at the call site.
 HERO_TIERS_BY_STEM = {**HERO_TIERS_BY_STEM, **MIAMI_HERO_TIERS}
 
-# The 2400w rung comes off the two homepage heroes that have one. The files
-# stay on disk and the packaging sweep leaves them out, so this is one list to
-# undo.
-#
-# Why these and not something else: the deployment package reached the 30 MiB
-# ceiling when the two page banners were added, and every other candidate cost
-# more than this one. The hero is painted at 60vw, so 2400 is only ever chosen
-# above roughly a 1600px viewport at DPR 2 - a 16-inch laptop or a large
-# desktop display - and those now get 1920 against a 1037px frame, which is
-# still 1.85 device pixels per CSS pixel on a photograph. The alternative was
-# re-encoding the new artwork at a lower quality, and that artwork is printed
-# carton wording and a slogan, where softness is the one thing that would be
-# noticed. Two files, half a megabyte, for a sharpness step on a photograph
-# that nothing in the brief depends on.
-HERO_TIERS_BY_STEM = {
-    k: tuple(t for t in v if t != 2400)
-    for k, v in HERO_TIERS_BY_STEM.items()
-}
 
 # The Miami collection reads its tiers through the same table picture() already
 # consults, but stays OUT of GALLERY_GROUPS: that dict is what builds the

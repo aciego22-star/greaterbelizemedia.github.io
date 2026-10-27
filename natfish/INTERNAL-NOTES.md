@@ -1950,16 +1950,29 @@ file for the want of 1600. 720 on the phone crop is the same case. Verified in
 the browser: at DPR 1, 2 and 3, and at every viewport tested, exactly one
 banner file is fetched and it is the right crop at the right rung. 401 KB.
 
-**The homepage hero's 2400w rung - nearly free.** The hero is painted at 60vw,
-so 2400 was only ever chosen above about a 1600px viewport at DPR 2: a
-16-inch laptop or a large desktop display. Those now get 1920 against a
-1037px frame, still 1.85 device pixels per CSS pixel, on a photograph. 516 KB.
-The files are still on disk and the sweep leaves them out, so this is one list
-in `build_shell.py` to undo.
+**The homepage hero's 2400w rung - proposed, then reverted.** It was the next
+cheapest 516 KB: the hero paints at 60vw, so 2400 is only chosen above about a
+1600px viewport at DPR 2, and those displays would have got 1920 against a
+1037px frame, still 1.85 device pixels per CSS pixel on a photograph. The
+client's answer was that the brief meant the two named pages and nothing else,
+including the homepage, so it went back. Correct call: it is their site and
+the saving was a convenience for us, not a benefit to them.
 
-**Package: 29.73 MiB.** What was NOT done: re-encoding the new artwork at a
-lower quality. It would have saved about the same and it is the one change
-that would show, because printed carton wording is the subject.
+**Package: 30.23 MiB, and over the 30 MiB a single chat attachment carries.**
+That is now a delivery problem rather than a build problem, and it is left as
+one. What was NOT done, and should not be: re-encoding the new artwork at a
+lower quality. It would have saved about the right amount and it is the one
+change that would show, because printed carton wording is the subject.
+
+The structural position is worth writing down, because this will keep
+happening. 8.2 MiB of the package is two MP4s and 18.7 MiB is photography;
+the site is simply larger than one attachment now. The levers, in the order
+they should be reached for: re-encode `natfish-lobster-harvest.mp4`, which is
+4.3 MB and the older of the two videos; re-encode the four outsized gallery
+WebPs from an early delivery (`spiny-lobster-catch-on-boat` and
+`spiny-lobster-handling-at-sea` are 497, 286, 279 and 243 KB where the current
+standard is about 250 KB at 1400px); or hand the package over by a route that
+is not a chat attachment. None of those is a decision to take unasked.
 
 ### A bug found on the way
 
