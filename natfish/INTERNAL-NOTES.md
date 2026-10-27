@@ -2025,6 +2025,25 @@ earlier clean run had produced. Noted because a flaky comparison that is
 believed is worse than no comparison: the second opinion has to come from a
 clean run, not from preferring the answer that suits.
 
+### What's New kept its plain band
+
+The conch carton went into that hero and came straight back out: the client's
+read was that it is not where that image belongs, and where it does belong is
+a decision they have not made yet. The hero there is the plain navy band
+again, identical to what it was.
+
+Nothing about the conch artwork was deleted. The six derivatives are still in
+`assets/img/official/`, the sources are in `source-images/page-banners-2026/`,
+the alt text is still in `ALT` and its Spanish is still in `natfish_es.py`.
+The packaging sweep leaves the files out of the deployment while nothing
+references them, so putting the image anywhere later is one argument to
+`page_hero()` - or, if it belongs somewhere that is not a page hero, an
+already-processed tier ladder to point at.
+
+The `banner=` mechanism stays regardless, because Seafood & Services uses it.
+
+**Package: 29.86 MiB.**
+
 ### Worth raising with the client
 
 The collage is a composed product scene rather than a documentary photograph,

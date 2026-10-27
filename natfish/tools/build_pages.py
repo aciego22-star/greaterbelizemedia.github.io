@@ -1480,16 +1480,21 @@ def news():
             "Announcements, co-operative updates, fisheries-sector developments "
             f"and media coverage relevant to {LEGAL_NO_DOT}.",
             "news.html",
-            preload=page_banner_preload("banner-whats-new-conch"),
         )
         + header("news.html")
+        # No banner here. The conch carton artwork was placed in this hero and
+        # the client took it back out: it is not where that image belongs, and
+        # where it does belong is a decision they have not made yet. The
+        # derivatives stay in assets/img/official/ and the alt text and its
+        # Spanish stay in the registries, so putting it back anywhere is one
+        # argument, not a rebuild. The packaging sweep leaves the files out of
+        # the deployment while nothing references them.
         + page_hero(
             "What&rsquo;s New",
             "What&rsquo;s New at NATFISH",
             "Announcements, co-operative updates and fisheries-sector "
             "developments. Each item links to the source it came from.",
             "What&rsquo;s New",
-            banner="banner-whats-new-conch",
         )
         + f"""
     <section class="section" aria-labelledby="news-featured-h">
