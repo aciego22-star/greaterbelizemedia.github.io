@@ -2013,17 +2013,28 @@ page: adding the banner rules put 80 lines into all twelve HTML files, and
 them. Neither does anything a visitor sees, but "the rules are scoped, trust
 me" is not evidence.
 
-So: full-page screenshots of all ten other pages, before and after, compared
-byte for byte at 1440 DPR 1, 1728 DPR 2 and 390 DPR 3. Thirty comparisons,
-thirty identical. The only pixels that moved anywhere on the site are on the
-two pages the client named.
+So: full-page screenshots of every other page, before and after, compared
+byte for byte at 1440 DPR 1, 1728 DPR 2 and 390 DPR 3. Thirty-three
+comparisons, thirty-three identical. After the conch banner came out of
+What's New, Seafood & Services is the only page on the site whose pixels move
+at all.
 
-Two of the thirty first reported a difference, both on the first profile, and
-both because a previous run of the same check was still holding the browser.
-Re-run in isolation they matched to the byte, and to the same byte counts the
-earlier clean run had produced. Noted because a flaky comparison that is
-believed is worse than no comparison: the second opinion has to come from a
-clean run, not from preferring the answer that suits.
+**The checker needs a warm-up load, and this took three runs to pin down.**
+Early runs flagged a difference on whichever page happened to be compared
+first - About twice, Contact once - and the same page passed at every other
+profile in the same run. The first guess was that a competing run of the
+checker was holding the browser, which fitted the evidence at the time and
+was wrong: it kept happening with nothing else running. The actual cause is
+cold start. The first page a fresh browser renders decodes the webfonts and
+the 472 KB logo PNG for the first time, and the two servers land microseconds
+apart on it; `networkidle` and `document.fonts.ready` both return before that
+settles. A throwaway load of one page against each server before the first
+real comparison ends it, and that is in the checker now.
+
+Worth keeping because the failure mode is nasty: a comparison that reports a
+difference that is not there trains you to wave the next one through. The
+rule is that a disagreement gets diagnosed, not re-run until it agrees - and
+the first diagnosis that fits is not necessarily the right one.
 
 ### What's New kept its plain band
 
