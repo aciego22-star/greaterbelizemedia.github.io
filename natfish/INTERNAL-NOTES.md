@@ -1958,9 +1958,11 @@ client's answer was that the brief meant the two named pages and nothing else,
 including the homepage, so it went back. Correct call: it is their site and
 the saving was a convenience for us, not a benefit to them.
 
-**Package: 30.23 MiB, and over the 30 MiB a single chat attachment carries.**
-That is now a delivery problem rather than a build problem, and it is left as
-one. What was NOT done, and should not be: re-encoding the new artwork at a
+**Package: 30.23 MiB, which went through as a single attachment after all.**
+The 30 MiB figure this was engineered around turned out not to be a wall at
+this size, so the homepage rung need never have come off. Worth remembering
+before trading away quality against that number again: try the delivery
+first, then optimise if it actually fails. What was NOT done, and should not be: re-encoding the new artwork at a
 lower quality. It would have saved about the right amount and it is the one
 change that would show, because printed carton wording is the subject.
 
@@ -2000,6 +2002,28 @@ further down the page, and the preloaded banner now beats it. Seafood &
 Services got slower, and that is not a defect to fix - it is what adding a
 hero image to a page that had none costs. Its LCP element used to be a line of
 text. CLS is 0 on both, because the frame reserves its height.
+
+### Scope, verified rather than asserted
+
+The client's correction was that the brief meant Seafood & Services and
+What's New and nothing else, the homepage and About included. Proving that
+takes more than reading the diff, because the stylesheet is inlined into every
+page: adding the banner rules put 80 lines into all twelve HTML files, and
+`logo_node()`'s fix changed a number in the structured data on every one of
+them. Neither does anything a visitor sees, but "the rules are scoped, trust
+me" is not evidence.
+
+So: full-page screenshots of all ten other pages, before and after, compared
+byte for byte at 1440 DPR 1, 1728 DPR 2 and 390 DPR 3. Thirty comparisons,
+thirty identical. The only pixels that moved anywhere on the site are on the
+two pages the client named.
+
+Two of the thirty first reported a difference, both on the first profile, and
+both because a previous run of the same check was still holding the browser.
+Re-run in isolation they matched to the byte, and to the same byte counts the
+earlier clean run had produced. Noted because a flaky comparison that is
+believed is worse than no comparison: the second opinion has to come from a
+clean run, not from preferring the answer that suits.
 
 ### Worth raising with the client
 
