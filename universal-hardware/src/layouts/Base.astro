@@ -48,7 +48,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
     <script is:inline>
       (function () {
         var d = document.documentElement;
-        d.className = d.className.replace('no-js', 'js');
+        d.classList.remove('no-js');
+        d.classList.add('js');
         try {
           if (sessionStorage.getItem('uhc.motion.v1') === 'reduced') d.setAttribute('data-motion', 'reduced');
         } catch (e) {}

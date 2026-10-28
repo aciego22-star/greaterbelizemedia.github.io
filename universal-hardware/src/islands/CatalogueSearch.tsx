@@ -43,7 +43,11 @@ export default function CatalogueSearch() {
     if (dept) p.set('dept', dept);
     if (brand) p.set('brand', brand);
     const url = `${location.pathname}${p.toString() ? `?${p}` : ''}`;
-    history.replaceState(null, '', url);
+    try {
+      history.replaceState(null, '', url);
+    } catch {
+      /* sandboxed frames may refuse URL updates; search still works */
+    }
   }, [q, dept, brand]);
 
   const results = useMemo(() => {

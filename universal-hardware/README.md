@@ -59,6 +59,24 @@ Other scripts:
 | `/concept/` | Concept statement, what works vs. what's illustrative, data handling, approvals needed |
 | `/404.html` | Served by Netlify for unknown URLs |
 
+## Private preview artifact (owner review)
+
+For day-to-day review without using Netlify credits, the exact production build is also published as a **private** Claude artifact for the project owner only.
+
+```bash
+npm run build
+npm run preview:artifact   # writes .preview/ (gitignored)
+```
+
+`scripts/make-preview.mjs` adapts plumbing only; design, scripts, 3D and content are unchanged:
+- the main page is emitted without its outer `<html>/<head>/<body>`, because the host supplies them
+- root-absolute URLs become relative (`../products/index.html`), and links rendered at runtime are rewritten by a small injected script
+- `_assets/` is renamed `assets/`, because the host reserves names starting with `_`
+- fonts are inlined as data URIs
+- Netlify-only files are omitted
+
+The preview is not for sharing. The Netlify ZIP remains the deliverable.
+
 ## Deploying (private demo only)
 
 1. `npm run build && npm run zip`

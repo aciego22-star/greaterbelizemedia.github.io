@@ -15,7 +15,8 @@
     "test": "npm run test:logic && npm run test:e2e",
     "posters": "node scripts/render-poster.cjs",
     "screenshots": "node scripts/screenshots.cjs",
-    "fonts": "bash scripts/build-fonts.sh"
+    "fonts": "bash scripts/build-fonts.sh",
+    "preview:artifact": "node scripts/make-preview.mjs"
   },
   "dependencies": {
     "@astrojs/preact": "6.1.1",

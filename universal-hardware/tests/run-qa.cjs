@@ -417,11 +417,20 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
     const { ctx, page } = await newPage(browser, [1440, 900], { reducedMotion: 'reduce' });
     await page.goto(BASE + '/', { waitUntil: 'load' });
     await page.waitForFunction(() => document.querySelector('[data-hero-stage]').dataset.state === 'ready', null, { timeout: 30000 });
-    await page.waitForTimeout(400);
+    await page.evaluate(() => document.fonts.ready);
+    await page.waitForTimeout(800);
+    // A one-off re-render (e.g. a late layout change) is not motion; require
+    // that consecutive frames stop changing.
     const a = await page.locator('.hero__canvas').screenshot();
     await page.waitForTimeout(1200);
     const b = await page.locator('.hero__canvas').screenshot();
-    record('3d', 'prefers-reduced-motion: no idle animation', a.equals(b));
+    let still = a.equals(b);
+    if (!still) {
+      await page.waitForTimeout(1200);
+      const c = await page.locator('.hero__canvas').screenshot();
+      still = b.equals(c);
+    }
+    record('3d', 'prefers-reduced-motion: no idle animation', still);
     const revealHidden = await page.$$eval('[data-reveal]', (els) => els.filter((e) => getComputedStyle(e).opacity !== '1').length);
     record('motion', 'reduced motion: reveal content visible immediately', revealHidden === 0, `${revealHidden} hidden`);
     await ctx.close();

@@ -1,6 +1,6 @@
 {
   "base": "http://localhost:4322",
-  "date": "2026-10-28T21:10:00.359Z",
+  "date": "2026-10-28T23:11:16.621Z",
   "passed": 164,
   "failed": 0,
   "results": [
@@ -602,7 +602,7 @@
       "group": "search",
       "name": "\"submersible pump\" → Water Pumps with highlighted sub-type",
       "pass": true,
-      "detail": "Water Pumps | Submersible pumps, Jet pumps (pressure systems), Sprinkler pumps, Booster pumps, Sump pumps, Marine pumps, Pressure pumps, Gas and diesel powered water pumps (124ms)"
+      "detail": "Water Pumps | Submersible pumps, Jet pumps (pressure systems), Sprinkler pumps, Booster pumps, Sump pumps, Marine pumps, Pressure pumps, Gas and diesel powered water pumps (129ms)"
     },
     {
       "group": "search",
