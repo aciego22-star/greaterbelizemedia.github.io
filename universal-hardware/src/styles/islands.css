@@ -1467,3 +1467,12 @@
   flex-wrap: wrap;
   gap: 10px;
 }
+/* Light card inside the dark finder: keep the light illustration palette. */
+.on-dark .match--primary .cat-art,
+.finder--dark .match--primary .cat-art {
+  --art-line: var(--ink);
+  --art-surface: #fff;
+  --art-accent: var(--blue-600);
+  --art-accent-fill: var(--blue);
+  --art-guide: var(--line-strong);
+}

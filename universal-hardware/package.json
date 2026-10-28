@@ -7,11 +7,15 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build && node scripts/postbuild.mjs",
-    "preview": "astro preview",
+    "preview": "node scripts/serve.mjs dist 4322",
     "check": "astro check",
     "zip": "node scripts/make-zip.mjs",
-    "test": "node tests/run-qa.mjs",
-    "test:logic": "rolldown tests/guide-cases.ts --platform node --format esm -o .cache/guide-cases.mjs && node .cache/guide-cases.mjs"
+    "test:logic": "rolldown tests/guide-cases.ts --platform node --format esm -o .cache/guide-cases.mjs && node .cache/guide-cases.mjs",
+    "test:e2e": "node tests/run-qa.cjs",
+    "test": "npm run test:logic && npm run test:e2e",
+    "posters": "node scripts/render-poster.cjs",
+    "screenshots": "node scripts/screenshots.cjs",
+    "fonts": "bash scripts/build-fonts.sh"
   },
   "dependencies": {
     "@astrojs/preact": "6.1.1",
@@ -25,7 +29,8 @@
   "devDependencies": {
     "@astrojs/check": "0.9.12",
     "@types/three": "0.180.0",
-    "axe-core": "^4.10.3",
+    "axe-core": "4.10.3",
+    "playwright": "1.63.0",
     "typescript": "5.9.3"
   }
 }

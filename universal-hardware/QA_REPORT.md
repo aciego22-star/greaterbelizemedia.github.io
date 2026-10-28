@@ -1,0 +1,115 @@
+# QA report
+
+**Build:** `universal-hardware/` · Astro 7.3.8 static output · 20 pages · tested 28 October 2026
+**Environment:** headless Chromium 1243 (Playwright 1.63) on Linux with **software WebGL (SwiftShader)**; local Netlify-like server with Brotli/gzip; Lighthouse 12.6.1.
+**Not available here:** physical iPhone / Android / iPad hardware and real GPUs. See "Outstanding issues".
+
+## Summary
+
+| Area | Result |
+|---|---|
+| Automated end-to-end suite (`tests/run-qa.cjs`) | **164 / 164 checks pass** |
+| Logic suite (`tests/guide-cases.ts`) | **All pass**: 11 guide conversations; every finder answer combination (276) resolves to listed categories and sub-types |
+| Type check (`astro check`) | 0 errors, 0 warnings |
+| Post-build checks | noindex + disclaimer on all 20 pages; `_headers`, `robots.txt`, `404.html` present; no secret patterns |
+| axe-core (WCAG 2.1 A/AA + best practice) | 0 violations on all 19 content routes |
+| Lighthouse mobile | Performance 98–99 · Accessibility 100 · Best Practices 100 · SEO 69 (intentional `noindex`) |
+| Third-party network requests | **None**, on any route or during any interaction |
+
+## End-to-end checks by group
+
+| Group | Pass | What is verified |
+|---|---|---|
+| route | 21/21 | All 19 content routes load directly (refresh-safe) with status 200, one `<h1>`, `noindex`, the concept badge, the full disclaimer, an official-site link and alt text on every image; unknown URLs return the custom 404; `/products` redirects to `/products/` |
+| console | 19/19 | No console errors on any route |
+| axe | 19/19 | No accessibility violations |
+| network | 22/22 | No request to any non-origin host on page load, in the finder/enquiry flows, in Guide conversations or across navigation |
+| overflow | 7/7 | No horizontal overflow on any route at 320×640, 375×812, 390×844, 430×932, 768×1024, 1024×768, 1440×900 |
+| nav | 9/9 | Header links set `aria-current`; Explore Products and Find the Right Product CTAs; hero "Find the Right Solution" → `#finder`; 8 department tiles → live category pages; every internal link target on every route resolves (no dead links) |
+| mobile-menu | 4/4 | Opens as a modal `<dialog>` with focus inside, `aria-expanded`; Escape closes and returns focus; links navigate; no standalone tap target under 24 px |
+| search | 17/17 | 12 categories by default; "submersible pump" ranks Water Pumps and highlights the sub-type; URL sync; English, Spanish and typo queries ("planta", "bomba de agua", "genrator"); finished empty state with recovery; department and brand filters; `?q=` deep link |
+| finder | 5/5 | Six need paths; backup power → Generators with electrician caution; back navigation; farm → Water Pumps related; deep well → Submersible pumps |
+| enquiry | 12/12 | Add from finder updates header badge and toast; drawer opens as `aria-modal` with `inert` background; focus trapped (40 tabs); summary includes categories, use, branch, notes and the "Nothing has been sent or submitted" line; **Copy writes exactly the preview text to the clipboard**; remove; add from select; Escape closes; persists across pages (session); category-page toggle; two-step Reset |
+| guide | 13/13 | Labelled rule-based / not live AI / not official customer service; required conversations (generator ×3 turns, cordless drill, home water pump, motorbikes, Belize City store, quote); quote offers the Enquiry Summary; Spanish mode; Escape closes; category pages hand over a contextual prompt |
+| links | 4/4 | `tel:` and `https://wa.me/` links match the website-listed numbers exactly; external links use `rel="noopener"`; official-site links point to `universalhardware.bz` |
+| branch | 1/1 | Preferred branch persists for the session across pages |
+| privacy | 1/1 | No `localStorage` keys and no cookies are written |
+| 3d | 8/8 | Poster first and WebGL chunk not loaded at first paint; scene reaches `ready`; idle motion animates; **Pause 3D motion** freezes frames and relabels to "Resume"; drag rotates; `touch-action: pan-y` (no scroll trap); `prefers-reduced-motion` → no idle animation; **WebGL-disabled browser shows the static render with a "Static render" badge and no errors** |
+| motion | 2/2 | Reduced motion shows reveal content immediately; the footer "Reduce motion" toggle applies and persists for the session |
+
+Raw results: `tests/results/qa-results.json`.
+
+## Required Product Guide conversations (excerpted from the logic suite)
+
+| Prompt | Behaviour verified |
+|---|---|
+| "I need backup power for my home. What type should I look at?" | Names the website's generator brands; asks which appliances and whether it's for occasional or regular use; then category guidance plus "a qualified electrician should evaluate the load and any connection"; offers Add to Enquiry; no sizing |
+| "I need a cordless drill for concrete and steel." | Explains hammer drill vs standard drilling vs impact driver; asks material and frequency; points to Hammer drills + Cordless tools |
+| "I need a pump for my home water supply." | Asks source, depth/height and use; deep well → submersible; recommends professional confirmation |
+| "Do you carry motorbikes?" | Cites the Meilun & Lifan page (and Hisun page); says it can't state current models; asks riding style and branch |
+| "Where is your Belize City store?" | Address, listed hours, phone, Sales and Service WhatsApp, with the verification notice and an "independent demo" note |
+| "Can you send me a quote?" | Says it can't send quotes or contact the company; offers the copyable Enquiry Summary and the website-listed Sales WhatsApp lines |
+| Also: "Are you a real AI?", "Is it open now?", warranty, Spanish | Honest identity; no "open now" inference; no invented warranty; Spanish replies with a no-formal-bilingual-service note |
+
+## Lighthouse (simulated throttling)
+
+| Form factor | Route | Perf | A11y | BP | SEO | FCP | LCP | TBT | CLS | SI |
+|---|---|---|---|---|---|---|---|---|---|---|
+| mobile | `/` | 98 | 100 | 100 | 69 | 1.3 s | 2.4 s | 0 ms | 0 | 1.7 s |
+| mobile | `/products/` | 99 | 100 | 100 | 69 | 1.3 s | 2.0 s | 0 ms | 0 | 1.5 s |
+| mobile | `/products/water-pumps/` | 99 | 100 | 100 | 69 | 1.3 s | 2.0 s | 0 ms | 0 | 2.5 s |
+| mobile | `/locations/` | 99 | 100 | 100 | 69 | 1.3 s | 2.0 s | 0 ms | 0.005 | 2.7 s |
+| mobile | `/products/generators/`, `/brands/`, `/about/`, `/concept/`, `/find/` | 99 | 100 | 100 | 69 | 1.3–1.4 s | 2.0 s | 0 ms | 0 | — |
+| desktop | `/` | **69** | 100 | 100 | 69 | 0.3 s | 0.5 s | **1,560 ms** | 0 | 1.5 s |
+| desktop | `/products/`, `/products/water-pumps/`, `/locations/` | 100 | 100 | 100 | 69 | 0.4 s | 0.5 s | 0 ms | ≤0.003 | — |
+
+How to read these honestly:
+
+- **SEO 69 is intentional.** The only failing audit is "Page is blocked from indexing" (`noindex`), which this private demo requires.
+- **Mobile homepage 98 is measured before the 3D scene starts.** On touch devices the scene starts on first interaction or after a 3.2 s idle delay, which falls after Lighthouse's measurement window. Its own cost is reported separately below and is not hidden.
+- **Desktop homepage 69**: on desktop the scene starts after 1.6 s idle, inside the window. The 1.56 s TBT comes from software-rendered (SwiftShader) shader compilation and environment baking. Real GPUs with parallel shader compilation should be far cheaper, but this is **unverified here**.
+- The local server compresses like Netlify. Without compression the numbers would be worse than production.
+
+## 3D scene measurements (software WebGL, worst case)
+
+| Profile | Trigger → ready | Long tasks after trigger | Canvas | JS heap |
+|---|---|---|---|---|
+| Desktop 1440×900 | 2.0 s | 437, 63, 114, 86, 431 ms | 840×644 | 11 MB |
+| Mobile 390×844, touch (low-power path) | 1.6 s | 179, 103, 508 ms | 535×504 | 12 MB |
+
+Bundle: the WebGL chunk is ≈136 KB gzip and is never requested before first paint. The drill is ≈63.6k triangles (≈50.6k low-detail). Frame rate under SwiftShader was ~14–17 fps; this is a CPU-rendering artefact, not representative of GPU devices.
+
+Optimisations applied after measuring (homepage mobile went from Performance 55 / TBT 9.7 s to 98 / 0 ms):
+- the expensive up-front WebGL capability probe was replaced by a cheap feature check
+- the scene starts on interaction or idle
+- async shader compilation, with set-up yielding between steps
+- low-power profile: no shadow map, 1.5× DPR cap, ~30 fps cap
+- CSS inlined, which removes the render-blocking request
+- fonts trimmed from 138 KB to 55 KB (axis instancing + subsetting)
+- AVIF/WebP posters
+
+## Visual review
+
+Reviewed by screenshot at every tested viewport (see `deliverables/screenshots/`): hero, departments, finder states, drawer, guide, search, category, locations, brands, mobile menu, 320/768/1024 views and the no-WebGL fallback. Fixes made during review:
+- primary finder card illustration palette
+- branch card layout at 1440
+- mobile HUD clearance from the Guide button
+- figure label collision on small stages
+- extra headroom for the drill on small stages
+- toast covering drawer actions on mobile
+- footer official-site button contrast
+- map overflow
+- the "Not listed — see note" wording
+
+## Outstanding issues (named explicitly)
+
+1. **No physical-device testing.** iPhone Safari, Android Chrome and iPad landscape need hands-on checks, especially 3D smoothness, the drag-rotate vs scroll feel, the bottom-sheet drawer and Guide with the on-screen keyboard, and safe-area insets.
+2. **3D performance on real GPUs is unmeasured.** The numbers above are a software-rendering worst case.
+3. **Desktop Lighthouse home = 69** under SwiftShader (see above).
+4. **Chatbase adapter untested.** No agent ID was supplied. Enabling it also requires CSP changes (see README).
+5. **At 320×640 only**, the floating Product Guide button can sit over the stage's top-right Pause control until the page is scrolled. Pause stays reachable after a small scroll and via keyboard.
+6. **Utility strip wraps to two lines at ≤360 px** (by design, to avoid overflow).
+7. **Wordmark is a modest-resolution raster**; a high-resolution master is needed for production.
+8. **Canonical / Open Graph URLs** use a placeholder Netlify subdomain until `site` is updated.
+9. **Map pins are approximate town positions**, labelled as such; "Open in Google Maps" uses an address search.
+10. Lighthouse flags `dom-size` (~1,365 elements on the homepage, mostly inline SVG artwork). It's informational, and TBT stayed at 0 ms.

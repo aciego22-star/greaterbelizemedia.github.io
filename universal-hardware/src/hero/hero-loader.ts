@@ -66,8 +66,11 @@ if (stage) {
       const { createDrillScene } = await import('./drill-scene');
       const coarse = window.matchMedia('(pointer: coarse)').matches;
       const nav = navigator as Navigator & { deviceMemory?: number };
-      const lowPower =
-        !capture && (coarse || (navigator.hardwareConcurrency ?? 8) <= 4 || (nav.deviceMemory ?? 8) <= 4 || params.has('lowpower'));
+      // Poster captures choose the profile explicitly so each poster matches the
+      // device class that will cross-fade from it (phones use the low-power path).
+      const lowPower = capture
+        ? params.has('lowpower')
+        : coarse || (navigator.hardwareConcurrency ?? 8) <= 4 || (nav.deviceMemory ?? 8) <= 4 || params.has('lowpower');
       ctrl = await createDrillScene(canvas, stage, {
         reducedMotion: prefersReduced(),
         lowPower,

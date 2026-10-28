@@ -8,8 +8,9 @@ const path = require('node:path');
 const base = process.argv[2] || 'http://localhost:4322';
 const out = path.resolve(__dirname, '../public/hero');
 const shots = [
-  { name: 'drill-poster-desktop', viewport: { width: 1440, height: 900 }, dpr: 2 },
-  { name: 'drill-poster-mobile', viewport: { width: 390, height: 844 }, dpr: 2.5 },
+  { name: 'drill-poster-desktop', viewport: { width: 1440, height: 900 }, dpr: 2, query: '' },
+  // Phones run the low-power profile (no shadow map), so the mobile poster does too.
+  { name: 'drill-poster-mobile', viewport: { width: 390, height: 844 }, dpr: 2.5, query: '&lowpower' },
 ];
 
 (async () => {
@@ -17,7 +18,7 @@ const shots = [
   const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
   for (const s of shots) {
     const page = await browser.newPage({ viewport: s.viewport, deviceScaleFactor: s.dpr });
-    await page.goto(`${base}/?poster`, { waitUntil: 'load' });
+    await page.goto(`${base}/?poster${s.query}`, { waitUntil: 'load' });
     await page.waitForFunction(() => document.documentElement.classList.contains('poster-ready'), null, { timeout: 60000 });
     await page.waitForTimeout(800);
     const data = await page.evaluate(() => document.querySelector('.hero__canvas').toDataURL('image/png'));

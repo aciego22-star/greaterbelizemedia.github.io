@@ -106,7 +106,7 @@ export default function ProductFinder({ variant = 'dark', headingLevel = 3 }: Pr
       <div class="finder__bar">
         <div class="finder__steps" aria-hidden="true">
           <span class={`finder__step ${step === 0 ? 'is-current' : 'is-done'}`}>Need</span>
-          {path?.questions.map((qq, i) => (
+          {path?.questions.map((_q, i) => (
             <span class={`finder__step ${step === i + 1 ? 'is-current' : step > i + 1 ? 'is-done' : ''}`}>{`Q${i + 1}`}</span>
           ))}
           {!path && (

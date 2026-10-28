@@ -7,6 +7,8 @@ import { FINDER_PATHS } from '../src/lib/finder-rules';
 import { CATEGORY_BY_SLUG } from '../src/data/categories';
 import type { GuideState } from '../src/lib/guide/types';
 
+declare const process: { exit(code: number): never };
+
 let failures = 0;
 const check = (cond: boolean, msg: string) => {
   if (!cond) {

@@ -137,11 +137,13 @@ export default function GlobalUI() {
   useEffect(() => {
     const unsub = subscribe(setDraft);
     const onOpenEnq = () => {
+      setToast(null);
       setGuideOpen(false);
       setEnquiryOpen(true);
     };
     const onOpenGuide = (e: Event) => {
       const p = (e as CustomEvent<{ prompt?: string }>).detail?.prompt;
+      setToast(null);
       setEnquiryOpen(false);
       setGuideOpen(true);
       if (p) setGuidePrompt({ text: p, n: Date.now() });
