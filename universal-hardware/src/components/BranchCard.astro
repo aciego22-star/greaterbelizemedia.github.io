@@ -1,0 +1,270 @@
+---
+import Icon from './Icon.astro';
+import { type Branch, mapsUrl, waUrl } from '../data/branches';
+
+interface Props {
+  branch: Branch;
+  detailed?: boolean;
+  headingLevel?: 'h2' | 'h3';
+}
+const { branch: b, detailed = false, headingLevel = 'h3' } = Astro.props;
+const H = headingLevel;
+---
+<article class="branch" id={detailed ? b.id : undefined} data-branch-card={b.id} aria-labelledby={`branch-${b.id}-name`}>
+  <header class="branch__head">
+    <div>
+      {b.tag && <p class="tag">{b.tag}</p>}
+      <H class="branch__name" id={`branch-${b.id}-name`}>{b.name}</H>
+      <p class="branch__district mono">{b.district}</p>
+    </div>
+    <button type="button" class="branch__select" data-branch-select={b.id} aria-pressed="false">
+      <span class="branch__select-off">Set as my branch</span>
+      <span class="branch__select-on"><Icon name="check" size={16} /> My branch</span>
+    </button>
+  </header>
+
+  <div class="branch__grid">
+    <div class="branch__block">
+      <p class="branch__label"><Icon name="map-pin" size={16} /> Address</p>
+      <address>{b.addressLines.map((l) => <span>{l}</span>)}</address>
+      {detailed && b.addressNote && <p class="branch__note">{b.addressNote}</p>}
+      <a class="link-arrow branch__map" href={mapsUrl(b)} target="_blank" rel="noopener">
+        Open in Google Maps <Icon name="external" size={14} />
+      </a>
+    </div>
+    <div class="branch__block">
+      <p class="branch__label"><Icon name="clock" size={16} /> Listed hours</p>
+      <dl class="branch__hours">
+        {
+          b.hours.map((h) => (
+            <div>
+              <dt>{h.days}</dt>
+              <dd>{h.time}</dd>
+            </div>
+          ))
+        }
+        <div>
+          <dt>Sunday &amp; public holidays</dt>
+          <dd class="muted">Not listed — see note</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+
+  <div class="branch__contacts">
+    <p class="branch__label"><Icon name="phone" size={16} /> Call</p>
+    <ul class="branch__lines">
+      {
+        b.phones.map((p) => (
+          <li>
+            <a class="branch__line" href={`tel:${p.e164}`}>
+              <span class="branch__line-label">{p.label}</span>
+              <span class="branch__line-num">{p.display}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="branch__label"><Icon name="whatsapp" size={16} /> WhatsApp</p>
+    <ul class="branch__lines">
+      {
+        b.whatsapp.map((w) => (
+          <li>
+            <a class="branch__line branch__line--wa" href={waUrl(w)} target="_blank" rel="noopener">
+              <span class="branch__line-label">{w.label}</span>
+              <span class="branch__line-num">{w.display}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</article>
+
+<style>
+  .branch {
+    position: relative;
+    display: grid;
+    gap: 22px;
+    padding: clamp(20px, 2.6vw, 32px);
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    transition:
+      border-color var(--dur),
+      box-shadow var(--dur);
+  }
+  .branch:global(.is-selected) {
+    border-color: var(--blue-600);
+    box-shadow:
+      0 0 0 1px var(--blue-600),
+      var(--shadow);
+  }
+  .branch__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .branch__head .tag {
+    margin-bottom: 10px;
+  }
+  .branch__name {
+    font-size: clamp(1.6rem, 1.2rem + 1.2vw, 2.15rem);
+    letter-spacing: -0.02em;
+  }
+  .branch__district {
+    margin-top: 6px;
+    color: var(--steel);
+  }
+  .branch__select {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--line-strong);
+    background: var(--paper);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--ink);
+    transition: all var(--dur);
+  }
+  .branch__select:hover {
+    border-color: var(--blue-600);
+    color: var(--blue-700);
+  }
+  .branch__select-on {
+    display: none;
+    align-items: center;
+    gap: 6px;
+  }
+  .branch__select[aria-pressed='true'] {
+    background: var(--blue-600);
+    border-color: var(--blue-600);
+    color: #fff;
+  }
+  .branch__select[aria-pressed='true'] .branch__select-on {
+    display: inline-flex;
+  }
+  .branch__select[aria-pressed='true'] .branch__select-off {
+    display: none;
+  }
+  .branch__grid {
+    display: grid;
+    gap: 22px;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 560px) {
+    .branch__grid {
+      grid-template-columns: 1fr 1.1fr;
+    }
+  }
+  .branch__label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--steel);
+  }
+  .branch__label svg {
+    color: var(--blue-600);
+  }
+  address {
+    display: grid;
+    font-style: normal;
+    font-weight: 550;
+    line-height: 1.45;
+  }
+  .branch__note {
+    margin-top: 6px;
+    font-size: 0.78rem;
+    color: var(--steel);
+  }
+  .branch__map {
+    margin-top: 10px;
+    font-size: 0.88rem;
+    min-height: 36px;
+  }
+  .branch__hours {
+    display: grid;
+    gap: 8px;
+    margin: 0;
+  }
+  .branch__hours div {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed var(--line);
+    font-size: 0.93rem;
+  }
+  .branch__hours dt {
+    color: var(--steel);
+  }
+  .branch__hours dd {
+    margin: 0;
+    font-weight: 600;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  .branch__hours dd.muted {
+    font-weight: 500;
+    color: var(--steel);
+  }
+  .branch__contacts {
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+  }
+  .branch__lines {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .branch__lines:last-child {
+    margin-bottom: 0;
+  }
+  .branch__line {
+    display: grid;
+    gap: 2px;
+    min-height: 56px;
+    padding: 9px 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--line);
+    background: var(--mist);
+    text-decoration: none;
+    color: var(--ink);
+    transition:
+      border-color var(--dur),
+      background-color var(--dur);
+  }
+  .branch__line:hover {
+    border-color: var(--blue-600);
+    background: var(--blue-50);
+    color: var(--ink);
+  }
+  .branch__line-label {
+    font-size: 0.74rem;
+    color: var(--steel);
+  }
+  .branch__line-num {
+    font-weight: 650;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  @media (max-width: 380px) {
+    .branch__lines {
+      grid-template-columns: 1fr;
+    }
+    .branch__head {
+      flex-direction: column;
+    }
+  }
+</style>

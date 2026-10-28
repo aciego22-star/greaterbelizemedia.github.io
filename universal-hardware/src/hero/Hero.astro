@@ -1,0 +1,475 @@
+---
+import Icon from '../components/Icon.astro';
+
+const quick = [
+  { href: '/products/power-tools/', label: 'Power Tools' },
+  { href: '/products/generators/', label: 'Generators' },
+  { href: '/products/water-pumps/', label: 'Water Pumps' },
+  { href: '/products/welding-supplies/', label: 'Welding' },
+  { href: '/products/lawn-and-garden/', label: 'Lawn & Garden' },
+];
+---
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero__grid">
+    <div class="hero__copy">
+      <p class="eyebrow hero__in" style="--d:0">Universal Hardware • Belize</p>
+      <h1 id="hero-title" class="display hero__title hero__in" style="--d:1">
+        Built for <span class="hero__title-accent">Every Job.</span>
+      </h1>
+      <p class="lead hero__lead hero__in" style="--d:2">
+        Explore tools, equipment and trusted brands for work, home and industry.
+      </p>
+      <div class="hero__ctas hero__in" style="--d:3">
+        <a class="btn btn--lg" href="/products/">
+          Explore Products
+          <Icon name="arrow-right" size={18} class="btn-arrow" />
+        </a>
+        <a class="btn btn--ghost btn--lg" href="#finder">
+          Find the Right Solution
+        </a>
+      </div>
+      <nav class="hero__quick hero__in" style="--d:4" aria-label="Popular categories">
+        <span class="mono">Popular</span>
+        <ul>
+          {quick.map((q) => <li><a href={q.href}>{q.label}</a></li>)}
+        </ul>
+      </nav>
+    </div>
+
+    <div class="hero__stage on-dark" data-hero-stage data-state="poster">
+      <div class="hero__backdrop" aria-hidden="true">
+        <svg class="hero__contours" viewBox="0 0 800 800" preserveAspectRatio="xMidYMid slice">
+          <g fill="none" stroke="currentColor" stroke-width="1">
+            {
+              Array.from({ length: 11 }, (_, i) => (
+                <ellipse cx="560" cy="250" rx={90 + i * 58} ry={60 + i * 44} transform={`rotate(-14 560 250)`} opacity={0.5 - i * 0.035} />
+              ))
+            }
+          </g>
+        </svg>
+      </div>
+      <picture class="hero__poster">
+        <source media="(max-width: 999px)" type="image/webp" srcset="/hero/drill-poster-mobile.webp" />
+        <source type="image/webp" srcset="/hero/drill-poster-desktop.webp" />
+        <img
+          src="/hero/drill-poster-desktop.png"
+          alt="Studio render of an unbranded graphite and blue cordless drill standing on a lit plinth."
+          width="1640"
+          height="1600"
+          fetchpriority="high"
+          decoding="async"
+        />
+      </picture>
+      <canvas class="hero__canvas" aria-hidden="true"></canvas>
+
+      <div class="hero__hud">
+        <div class="hero__hud-top">
+          <p class="mono hero__fig">Fig. 01 — Cordless drill</p>
+          <p class="tag tag--dark hero__badge">
+            <span class="tag-dot" aria-hidden="true"></span>
+            <span class="hero__badge-live">Real-time 3D</span>
+            <span class="hero__badge-static">Static render</span>
+          </p>
+        </div>
+        <div class="hero__hud-bottom">
+          <p class="hero__caption">
+            <span class="hero__hint"><Icon name="rotate" size={15} /> Drag to rotate</span>
+            <span class="hero__disclose">Illustrative concept model — not a specific product.</span>
+          </p>
+          <button type="button" class="hero__pause" data-hero-pause aria-pressed="false">
+            <span data-icon-pause><Icon name="pause" size={16} /></span>
+            <span data-icon-play hidden><Icon name="play" size={16} /></span>
+            <span data-label>Pause 3D motion</span>
+          </button>
+          <button type="button" class="hero__load btn btn--light btn--sm" data-hero-load>
+            Load interactive 3D
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero__facts container">
+    <dl>
+      <div>
+        <dt class="mono">Distribution</dt>
+        <dd>Retail &amp; wholesale</dd>
+      </div>
+      <div>
+        <dt class="mono">Branches</dt>
+        <dd>Spanish Lookout · Belize City</dd>
+      </div>
+      <div>
+        <dt class="mono">Support</dt>
+        <dd>Sales &amp; service center lines at each branch</dd>
+      </div>
+      <div class="hero__facts-src">
+        <dt class="mono">Source</dt>
+        <dd><a href="/about/#sources">Universal Hardware's public website</a></dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<script>
+  import './hero-loader';
+</script>
+
+<style>
+  .hero {
+    position: relative;
+    padding-top: clamp(20px, 3vw, 36px);
+    background:
+      radial-gradient(60% 50% at 0% 0%, var(--blue-50), transparent 70%),
+      var(--paper);
+  }
+  .hero__grid {
+    display: grid;
+    grid-template-columns:
+      [full-start] minmax(var(--gutter), 1fr)
+      [content-start] minmax(0, 540px)
+      [mid] minmax(0, 780px)
+      [content-end] minmax(var(--gutter), 1fr)
+      [full-end];
+    min-height: clamp(600px, calc(100svh - var(--header-h) - var(--utility-h) - 150px), 780px);
+  }
+  .hero__copy {
+    grid-column: content-start / mid;
+    align-self: center;
+    padding-right: clamp(24px, 3.4vw, 56px);
+    padding-block: 24px 40px;
+    position: relative;
+    z-index: 2;
+  }
+  .hero__title {
+    margin-top: 22px;
+  }
+  .hero__title-accent {
+    display: block;
+    color: var(--blue-600);
+  }
+  .hero__lead {
+    margin-top: 24px;
+    max-width: 30ch;
+  }
+  .hero__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 34px;
+  }
+  .hero__quick {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    margin-top: 34px;
+    color: var(--steel);
+  }
+  .hero__quick ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px 16px;
+    list-style: none;
+  }
+  .hero__quick a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    color: var(--ink);
+    font-weight: 550;
+    font-size: 0.93rem;
+    text-decoration: none;
+    border-bottom: 1px solid var(--line-strong);
+    line-height: 1.3;
+  }
+  .hero__quick a:hover {
+    color: var(--blue-700);
+    border-color: var(--blue-600);
+  }
+
+  /* Entrance */
+  :global(.js) .hero__in {
+    animation: rise-in 900ms var(--ease-out) both;
+    animation-delay: calc(120ms + var(--d, 0) * 90ms);
+  }
+
+  /* Stage */
+  .hero__stage {
+    grid-column: mid / full-end;
+    position: relative;
+    overflow: hidden;
+    border-radius: 28px 0 0 28px;
+    background:
+      radial-gradient(55% 48% at 54% 44%, rgba(46, 120, 196, 0.42), transparent 70%),
+      radial-gradient(80% 60% at 50% 110%, rgba(23, 104, 180, 0.28), transparent 70%),
+      linear-gradient(160deg, #15212e 0%, #0d1823 55%, #08111a 100%);
+    isolation: isolate;
+    min-height: 560px;
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .hero__backdrop {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    color: #79b0e4;
+    opacity: 0.38;
+    background-image:
+      linear-gradient(to right, rgba(173, 199, 226, 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(173, 199, 226, 0.06) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(75% 75% at 50% 45%, #000 30%, transparent 85%);
+    -webkit-mask-image: radial-gradient(75% 75% at 50% 45%, #000 30%, transparent 85%);
+  }
+  .hero__contours {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .hero__poster,
+  .hero__canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+  .hero__poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .hero__canvas {
+    opacity: 0;
+    transition: opacity 900ms var(--ease-out);
+    cursor: grab;
+  }
+  .hero__stage:global(.is-dragging) .hero__canvas {
+    cursor: grabbing;
+  }
+  .hero__stage[data-state='ready'] .hero__canvas {
+    opacity: 1;
+  }
+  .hero__poster {
+    transition: opacity 900ms var(--ease-out) 200ms;
+  }
+  .hero__stage[data-state='ready'] .hero__poster {
+    opacity: 0;
+  }
+
+  /* HUD */
+  .hero__hud {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: clamp(16px, 2.2vw, 28px);
+    pointer-events: none;
+  }
+  .hero__hud > * {
+    pointer-events: auto;
+  }
+  .hero__hud-top,
+  .hero__hud-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .hero__hud-top {
+    pointer-events: none;
+  }
+  .hero__fig {
+    color: var(--on-dark-muted);
+  }
+  .hero__badge-static,
+  .hero__stage[data-state='fallback'] .hero__badge-live,
+  .hero__stage[data-state='deferred'] .hero__badge-live {
+    display: none;
+  }
+  .hero__stage[data-state='fallback'] .hero__badge-static,
+  .hero__stage[data-state='deferred'] .hero__badge-static {
+    display: inline;
+  }
+  .hero__stage[data-state='loading'] .hero__badge .tag-dot,
+  .hero__stage[data-state='poster'] .hero__badge .tag-dot {
+    animation: pulse 1.4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    50% {
+      opacity: 0.3;
+    }
+  }
+  .hero__caption {
+    display: grid;
+    gap: 4px;
+    font-size: 0.78rem;
+    color: var(--on-dark-muted);
+    line-height: 1.4;
+  }
+  .hero__hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--on-dark);
+    font-weight: 500;
+  }
+  .hero__stage:not([data-state='ready']) .hero__hint {
+    display: none;
+  }
+  .hero__pause {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(173, 199, 226, 0.3);
+    background: rgba(10, 19, 29, 0.55);
+    color: var(--on-dark);
+    font-size: 0.82rem;
+    font-weight: 550;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    transition: border-color var(--dur), background-color var(--dur);
+    flex: none;
+  }
+  .hero__pause:hover {
+    border-color: rgba(173, 199, 226, 0.65);
+    background: rgba(10, 19, 29, 0.8);
+  }
+  .hero__pause [hidden] {
+    display: none;
+  }
+  .hero__stage:not([data-state='ready']) .hero__pause {
+    display: none;
+  }
+  .hero__load {
+    display: none;
+  }
+  .hero__stage[data-state='deferred'] .hero__load {
+    display: inline-flex;
+  }
+  :global(.poster-mode) .hero__hud,
+  :global(.poster-mode) .hero__poster {
+    display: none !important;
+  }
+
+  /* Facts strip */
+  .hero__facts {
+    position: relative;
+    z-index: 2;
+  }
+  .hero__facts dl {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border-top: 1px solid var(--line);
+    margin: 0;
+  }
+  .hero__facts dl > div {
+    padding: 22px 24px 26px 0;
+    display: grid;
+    gap: 6px;
+  }
+  .hero__facts dl > div + div {
+    padding-left: 24px;
+    border-left: 1px solid var(--line);
+  }
+  .hero__facts dt {
+    color: var(--steel);
+  }
+  .hero__facts dd {
+    margin: 0;
+    font-weight: 600;
+    font-size: 0.98rem;
+    line-height: 1.35;
+  }
+  .hero__facts dd a {
+    color: var(--ink);
+  }
+
+  /* Tablet & mobile: stacked, art-directed */
+  @media (max-width: 999px) {
+    .hero__grid {
+      grid-template-columns: [full-start] var(--gutter) [content-start] minmax(0, 1fr) [content-end] var(--gutter) [full-end];
+      min-height: 0;
+    }
+    .hero__copy {
+      grid-column: content-start / content-end;
+      padding: 8px 0 26px;
+    }
+    .hero__stage {
+      grid-column: content-start / content-end;
+      border-radius: 22px;
+      min-height: 0;
+      aspect-ratio: 1 / 0.94;
+    }
+    .hero__lead {
+      max-width: 36ch;
+    }
+    .hero__facts dl {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      border-top: 0;
+      margin-top: 8px;
+    }
+    .hero__facts dl > div {
+      padding: 16px 12px 16px 0;
+      border-top: 1px solid var(--line);
+    }
+    .hero__facts dl > div + div {
+      padding-left: 0;
+      border-left: 0;
+    }
+    .hero__facts dl > div:nth-child(even) {
+      padding-left: 16px;
+      border-left: 1px solid var(--line);
+    }
+  }
+  @media (min-width: 640px) and (max-width: 999px) {
+    .hero__stage {
+      aspect-ratio: 16 / 11;
+    }
+  }
+  @media (max-width: 560px) {
+    .hero__ctas {
+      display: grid;
+      grid-template-columns: 1fr;
+      margin-top: 26px;
+    }
+    .hero__ctas .btn {
+      width: 100%;
+    }
+    .hero__quick {
+      display: none;
+    }
+    .hero__title {
+      margin-top: 16px;
+    }
+    .hero__lead {
+      margin-top: 16px;
+    }
+    .hero__disclose {
+      max-width: 22ch;
+    }
+    .hero__pause [data-label] {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+    }
+    .hero__pause {
+      width: 44px;
+      padding: 0;
+      justify-content: center;
+    }
+    .hero__facts dd {
+      font-size: 0.9rem;
+    }
+  }
+</style>

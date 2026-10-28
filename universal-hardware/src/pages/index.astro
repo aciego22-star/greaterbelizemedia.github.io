@@ -1,0 +1,543 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../hero/Hero.astro';
+import Icon from '../components/Icon.astro';
+import DepartmentTile from '../components/DepartmentTile.astro';
+import BranchCard from '../components/BranchCard.astro';
+import BelizeMap from '../components/BelizeMap.astro';
+import CategoryArt from '../components/CategoryArt.astro';
+import ProductFinder from '../islands/ProductFinder.tsx';
+import { DEPARTMENTS } from '../data/departments';
+import { BRANDS } from '../data/brands';
+import { BRANCHES, BRANCH_VERIFY_NOTE } from '../data/branches';
+import { CATEGORY_BY_SLUG } from '../data/categories';
+import { SOURCES } from '../data/sources';
+
+const wallBrands = BRANDS.filter((b) => b.onBrandsPage);
+const otherNamed = BRANDS.filter((b) => !b.onBrandsPage);
+const firstCat = (id: string) => {
+  const b = BRANDS.find((x) => x.id === id)!;
+  const c = b.categories[0];
+  return c ? CATEGORY_BY_SLUG[c.slug].shortName : 'Cooperative';
+};
+---
+<Base
+  title="Universal Hardware — Built for Every Job (Independent Concept)"
+  description="Independent concept demonstration by Austere Automations: explore Universal Hardware's publicly listed tools, equipment and brands, find the right product category and see branch details for Spanish Lookout and Belize City."
+  section="home"
+>
+  <Hero />
+
+  <!-- 01 Departments -->
+  <section class="section home-depts" aria-labelledby="depts-title">
+    <div class="container">
+      <div class="section-head section-head--split">
+        <div class="stack" style="--stack:18px">
+          <p class="eyebrow">01 — Departments</p>
+          <h2 id="depts-title" class="h2">Equipment for work, home and everything in between.</h2>
+        </div>
+        <div class="stack" style="--stack:20px">
+          <p class="lead">
+            Eight ways into the range listed on Universal Hardware's website, from cordless drills to cattle gates.
+          </p>
+          <a class="link-arrow" href="/products/">View all 12 categories <Icon name="arrow-right" size={16} /></a>
+        </div>
+      </div>
+      <div class="dept-grid">
+        {DEPARTMENTS.map((d, i) => <DepartmentTile dept={d} index={i} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 Finder -->
+  <section class="section section--dark home-finder on-dark" id="finder" aria-labelledby="finder-title">
+    <div class="home-finder__bg" aria-hidden="true"></div>
+    <div class="container">
+      <div class="section-head section-head--split">
+        <div class="stack" style="--stack:18px">
+          <p class="eyebrow">02 — Product finder</p>
+          <h2 id="finder-title" class="h2">Find the right solution in three questions.</h2>
+        </div>
+        <div class="stack" style="--stack:16px">
+          <p class="lead">
+            Tell us what you're working on. The finder matches your answers to the categories listed on
+            Universal Hardware's website and helps you prepare an enquiry for the branch.
+          </p>
+          <p class="finder-note"><Icon name="info" size={16} /> Rule-based guide using public category data. No account, no personal details.</p>
+        </div>
+      </div>
+      <ProductFinder client:visible />
+    </div>
+  </section>
+
+  <!-- 03 Brands -->
+  <section class="section home-brands" aria-labelledby="brands-title">
+    <div class="container">
+      <div class="section-head section-head--split">
+        <div class="stack" style="--stack:18px">
+          <p class="eyebrow">03 — Brands</p>
+          <h2 id="brands-title" class="h2">Trusted names, as listed on the current website.</h2>
+        </div>
+        <div class="stack" style="--stack:20px">
+          <p class="lead">
+            The brands shown on Universal Hardware's Brands page, presented as text for identification. A listing
+            doesn't confirm current stock of any line.
+          </p>
+          <a class="link-arrow" href="/brands/">Explore brands by category <Icon name="arrow-right" size={16} /></a>
+        </div>
+      </div>
+      <ul class="brand-wall" role="list">
+        {
+          wallBrands.map((b, i) => (
+            <li class="brand-wall__cell" data-reveal style={`--i:${i % 4}`}>
+              <a href={`/brands/#${b.id}`}>
+                <span class="brand-wall__name">{b.name}</span>
+                <span class="brand-wall__cat mono">{firstCat(b.id)}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="brand-wall__more">
+        Also named in the website's category listings:
+        {otherNamed.map((b, i) => (
+          <>
+            {i > 0 && ', '}
+            <a href={`/brands/#${b.id}`}>{b.name}</a>
+          </>
+        ))}.
+      </p>
+    </div>
+  </section>
+
+  <!-- 04 Service -->
+  <section class="section section--mist home-service" aria-labelledby="service-title">
+    <div class="container home-service__grid">
+      <div class="home-service__visual on-dark" data-reveal>
+        <div class="home-service__art">
+          <CategoryArt id="drill" class="cat-art--dark" />
+        </div>
+        <ul class="home-service__callouts" aria-hidden="true">
+          <li style="--x:12%;--y:18%"><span></span>Selection</li>
+          <li style="--x:64%;--y:12%"><span></span>Parts</li>
+          <li style="--x:58%;--y:74%"><span></span>Service</li>
+        </ul>
+        <p class="home-service__fig mono">Fig. 02 — Beyond the shelf</p>
+      </div>
+      <div class="home-service__copy">
+        <p class="eyebrow">04 — Sales &amp; service</p>
+        <h2 id="service-title" class="h2">Beyond the shelf.</h2>
+        <p class="lead">Product selection, parts and service enquiries, routed to the right branch line.</p>
+        <ul class="service-points">
+          <li data-reveal style="--i:0">
+            <span class="service-points__icon"><Icon name="wrench" size={20} /></span>
+            <div>
+              <h3>Service Center lines at both branches</h3>
+              <p>
+                The current website lists a dedicated Service Center WhatsApp number for Spanish Lookout and for
+                Belize City.
+              </p>
+            </div>
+          </li>
+          <li data-reveal style="--i:1">
+            <span class="service-points__icon"><Icon name="layers" size={20} /></span>
+            <div>
+              <h3>Published parts catalogues</h3>
+              <p>
+                Meilun parts catalogues for scooter, street, trail and cargo models, generators and pumps are posted
+                for parts orders.
+              </p>
+            </div>
+          </li>
+          <li data-reveal style="--i:2">
+            <span class="service-points__icon"><Icon name="store" size={20} /></span>
+            <div>
+              <h3>Help choosing the right equipment</h3>
+              <p>Each branch lists a Sales WhatsApp line alongside its telephone numbers for product questions.</p>
+            </div>
+          </li>
+        </ul>
+        <div class="home-service__ctas">
+          <a class="btn" href="/locations/#service">Find service contacts <Icon name="arrow-right" size={18} class="btn-arrow" /></a>
+          <a class="btn btn--ghost" href={SOURCES.catalogues.url} target="_blank" rel="noopener">
+            Parts catalogues <Icon name="external" size={16} />
+          </a>
+        </div>
+        <p class="hint">Service scope differs by brand and product. Confirm coverage with the branch.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 Branches -->
+  <section class="section home-branches" aria-labelledby="branches-title">
+    <div class="container">
+      <div class="section-head section-head--split">
+        <div class="stack" style="--stack:18px">
+          <p class="eyebrow">05 — Branches</p>
+          <h2 id="branches-title" class="h2">Two locations. One destination for solutions.</h2>
+        </div>
+        <div class="stack" style="--stack:16px">
+          <p class="lead">Choose the branch that suits you. Your choice is remembered only for this browser session.</p>
+          <p class="notice"><Icon name="info" /> <span>{BRANCH_VERIFY_NOTE}</span></p>
+        </div>
+      </div>
+      <div class="home-branches__grid">
+        <div class="home-branches__map" data-reveal>
+          <BelizeMap />
+        </div>
+        <div class="home-branches__cards">
+          {BRANCHES.map((b) => <BranchCard branch={b} />)}
+          <p class="home-branches__status" data-branch-status aria-live="polite"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Closing -->
+  <section class="closing on-dark" aria-labelledby="closing-title">
+    <div class="container closing__inner">
+      <p class="eyebrow">Universal Hardware</p>
+      <h2 id="closing-title" class="display closing__title">A better way to find what you need.</h2>
+      <p class="lead">Explore the range. Find your branch.</p>
+      <div class="closing__ctas">
+        <a class="btn btn--light btn--lg" href="/products/">Explore Products <Icon name="arrow-right" size={18} class="btn-arrow" /></a>
+        <a class="btn btn--ghost-dark btn--lg" href="/locations/">Find your branch</a>
+      </div>
+    </div>
+    <div class="closing__grid" aria-hidden="true"></div>
+  </section>
+</Base>
+
+<style>
+  .dept-grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  @media (min-width: 760px) {
+    .dept-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+  }
+  @media (min-width: 1100px) {
+    .dept-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 559px) {
+    .dept-grid {
+      gap: 10px;
+    }
+  }
+
+  /* Finder section */
+  .home-finder {
+    overflow: hidden;
+    background:
+      radial-gradient(50% 60% at 90% 0%, rgba(23, 104, 180, 0.35), transparent 70%),
+      radial-gradient(40% 50% at 0% 100%, rgba(23, 104, 180, 0.2), transparent 70%),
+      var(--graphite);
+  }
+  .home-finder__bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(173, 199, 226, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(173, 199, 226, 0.05) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: linear-gradient(to bottom, #000, transparent 80%);
+    -webkit-mask-image: linear-gradient(to bottom, #000, transparent 80%);
+    pointer-events: none;
+  }
+  .home-finder .container {
+    position: relative;
+  }
+  .finder-note {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: var(--on-dark-muted);
+  }
+  .finder-note :global(svg) {
+    color: var(--blue-on-dark);
+    flex: none;
+  }
+
+  /* Brand wall */
+  .brand-wall {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border-top: 1px solid var(--line);
+    border-left: 1px solid var(--line);
+  }
+  @media (min-width: 700px) {
+    .brand-wall {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+  .brand-wall__cell {
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .brand-wall__cell a {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 18px;
+    height: 100%;
+    min-height: clamp(104px, 11vw, 150px);
+    padding: clamp(16px, 2vw, 26px);
+    text-decoration: none;
+    color: var(--ink);
+    overflow: hidden;
+    transition:
+      background-color 400ms var(--ease-out),
+      color 400ms var(--ease-out);
+  }
+  .brand-wall__cell a::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--graphite);
+    transform: translateY(101%);
+    transition: transform 500ms var(--ease-out);
+    z-index: 0;
+  }
+  .brand-wall__cell a:hover::before,
+  .brand-wall__cell a:focus-visible::before {
+    transform: none;
+  }
+  .brand-wall__cell a:hover,
+  .brand-wall__cell a:focus-visible {
+    color: #fff;
+  }
+  .brand-wall__name,
+  .brand-wall__cat {
+    position: relative;
+    z-index: 1;
+  }
+  .brand-wall__name {
+    font-family: var(--font-display);
+    font-stretch: 112%;
+    font-weight: 760;
+    font-size: clamp(1.1rem, 0.9rem + 1vw, 1.7rem);
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+  }
+  .brand-wall__cat {
+    color: var(--steel);
+    transition: color 400ms;
+  }
+  .brand-wall__cell a:hover .brand-wall__cat {
+    color: var(--blue-on-dark);
+  }
+  .brand-wall__more {
+    margin-top: 22px;
+    font-size: 0.92rem;
+    color: var(--steel);
+    max-width: 80ch;
+  }
+
+  /* Service */
+  .home-service__grid {
+    display: grid;
+    gap: clamp(32px, 5vw, 72px);
+    align-items: center;
+  }
+  @media (min-width: 960px) {
+    .home-service__grid {
+      grid-template-columns: 1.05fr 1fr;
+    }
+  }
+  .home-service__visual {
+    position: relative;
+    aspect-ratio: 5 / 4;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background:
+      radial-gradient(60% 60% at 50% 45%, rgba(46, 120, 196, 0.35), transparent 70%),
+      linear-gradient(160deg, #15212e, #09121b);
+    display: grid;
+    place-items: center;
+  }
+  .home-service__visual::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(173, 199, 226, 0.07) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(173, 199, 226, 0.07) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+  .home-service__art {
+    position: relative;
+    width: 78%;
+  }
+  .home-service__callouts {
+    position: absolute;
+    inset: 0;
+    list-style: none;
+  }
+  .home-service__callouts li {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgba(10, 19, 29, 0.72);
+    border: 1px solid rgba(121, 176, 228, 0.35);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--on-dark);
+  }
+  .home-service__callouts span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--blue-on-dark);
+    box-shadow: 0 0 0 4px rgba(121, 176, 228, 0.2);
+  }
+  .home-service__fig {
+    position: absolute;
+    left: 20px;
+    bottom: 16px;
+    color: var(--on-dark-muted);
+  }
+  .home-service__copy {
+    display: grid;
+    gap: 18px;
+  }
+  .service-points {
+    list-style: none;
+    display: grid;
+    gap: 4px;
+    margin-top: 10px;
+  }
+  .service-points li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 16px;
+    padding: 16px 0;
+    border-top: 1px solid var(--line-strong);
+  }
+  .service-points__icon {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    color: var(--blue-600);
+  }
+  .service-points h3 {
+    font-size: 1.08rem;
+  }
+  .service-points p {
+    margin-top: 4px;
+    color: var(--steel);
+    font-size: 0.94rem;
+  }
+  .home-service__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 6px;
+  }
+
+  /* Branches */
+  .home-branches__grid {
+    display: grid;
+    gap: 28px;
+    align-items: start;
+  }
+  @media (min-width: 1000px) {
+    .home-branches__grid {
+      grid-template-columns: 0.72fr 1.28fr;
+      gap: 40px;
+    }
+    .home-branches__map {
+      position: sticky;
+      top: calc(var(--header-h) + 24px);
+    }
+  }
+  @media (max-width: 999px) {
+    .home-branches__map {
+      max-width: 340px;
+      margin-inline: auto;
+      width: 100%;
+    }
+  }
+  .home-branches__cards {
+    display: grid;
+    gap: 18px;
+  }
+  @media (min-width: 1240px) {
+    .home-branches__cards {
+      grid-template-columns: 1fr 1fr;
+    }
+    .home-branches__status {
+      grid-column: 1 / -1;
+    }
+  }
+  .home-branches__status {
+    font-size: 0.85rem;
+    color: var(--steel);
+  }
+
+  /* Closing */
+  .closing {
+    position: relative;
+    overflow: hidden;
+    padding-block: clamp(88px, 12vw, 168px);
+    background:
+      radial-gradient(60% 80% at 80% 20%, rgba(85, 146, 203, 0.45), transparent 70%),
+      radial-gradient(50% 70% at 10% 100%, rgba(23, 104, 180, 0.5), transparent 70%),
+      linear-gradient(150deg, #0f4e8c 0%, #0b2f52 45%, #0a1a2b 100%);
+    color: #fff;
+    text-align: left;
+  }
+  .closing__grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(70% 90% at 70% 40%, #000, transparent 80%);
+    -webkit-mask-image: radial-gradient(70% 90% at 70% 40%, #000, transparent 80%);
+  }
+  .closing__inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 22px;
+  }
+  .closing__title {
+    color: #fff;
+    max-width: 14ch;
+  }
+  .closing .lead {
+    color: #cfe0f1;
+  }
+  .closing__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 10px;
+  }
+  @media (max-width: 480px) {
+    .closing__ctas .btn {
+      width: 100%;
+    }
+  }
+</style>

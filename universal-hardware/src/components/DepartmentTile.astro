@@ -1,0 +1,197 @@
+---
+import CategoryArt from './CategoryArt.astro';
+import Icon from './Icon.astro';
+import type { Department } from '../data/departments';
+import { CATEGORY_BY_SLUG } from '../data/categories';
+
+interface Props {
+  dept: Department;
+  index: number;
+}
+const { dept, index } = Astro.props;
+const primary = CATEGORY_BY_SLUG[dept.categories[0]];
+const also = dept.categories.slice(1).map((s) => CATEGORY_BY_SLUG[s]);
+---
+<article class="dept" data-tilt data-reveal style={`--i:${index % 4}`}>
+  <div class="dept__inner">
+    <div class="dept__top">
+      <span class="dept__num mono">{String(index + 1).padStart(2, '0')}</span>
+      <span class="dept__go" aria-hidden="true"><Icon name="arrow-up-right" size={18} /></span>
+    </div>
+    <div class="dept__art">
+      <CategoryArt id={dept.illustration} />
+    </div>
+    <div class="dept__body">
+      <h3 class="dept__title">
+        <a class="dept__link" href={`/products/${primary.slug}/`}>{dept.name}</a>
+      </h3>
+      <p class="dept__blurb">{dept.blurb}</p>
+      <ul class="dept__tags">
+        {dept.highlights.map((h) => <li>{h}</li>)}
+      </ul>
+      {
+        also.length > 0 && (
+          <p class="dept__also">
+            Also see{' '}
+            {also.map((c, i) => (
+              <>
+                {i > 0 && ', '}
+                <a href={`/products/${c.slug}/`}>{c.name}</a>
+              </>
+            ))}
+          </p>
+        )
+      }
+    </div>
+  </div>
+</article>
+
+<style>
+  .dept {
+    --rx: 0deg;
+    --ry: 0deg;
+    position: relative;
+    perspective: 900px;
+  }
+  .dept__inner {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 22px 22px;
+    border-radius: var(--radius-lg);
+    background:
+      radial-gradient(120% 80% at var(--mx, 50%) var(--my, 0%), rgba(85, 146, 203, 0.1), transparent 60%),
+      linear-gradient(to right, rgba(13, 28, 44, 0.035) 1px, transparent 1px) 0 0 / 24px 24px,
+      linear-gradient(to bottom, rgba(13, 28, 44, 0.035) 1px, transparent 1px) 0 0 / 24px 24px,
+      var(--paper);
+    border: 1px solid var(--line);
+    transform: rotateX(var(--rx)) rotateY(var(--ry));
+    transform-style: preserve-3d;
+    transition:
+      transform 500ms var(--ease-out),
+      box-shadow 500ms var(--ease-out),
+      border-color var(--dur);
+  }
+  .dept:hover .dept__inner {
+    box-shadow: var(--shadow-lg);
+    border-color: var(--blue-200);
+  }
+  .dept__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .dept__num {
+    color: var(--steel-400);
+  }
+  .dept__go {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    color: var(--ink);
+    transition: all var(--dur) var(--ease-out);
+  }
+  .dept:hover .dept__go {
+    background: var(--blue-600);
+    border-color: var(--blue-600);
+    color: #fff;
+    transform: rotate(45deg);
+  }
+  .dept__art {
+    margin: 6px auto 4px;
+    width: 86%;
+    transition: transform 600ms var(--ease-out);
+  }
+  .dept:hover .dept__art {
+    transform: translateY(-4px) scale(1.02);
+  }
+  .dept__title {
+    font-size: 1.28rem;
+    letter-spacing: -0.015em;
+    line-height: 1.15;
+  }
+  .dept__link {
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .dept__link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-lg);
+    z-index: 1;
+  }
+  .dept__link:focus-visible {
+    outline: none;
+  }
+  .dept__link:focus-visible::after {
+    outline: 2px solid var(--blue-600);
+    outline-offset: 3px;
+  }
+  .dept__blurb {
+    margin-top: 8px;
+    color: var(--steel);
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+  .dept__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 14px;
+    list-style: none;
+  }
+  .dept__tags li {
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--mist);
+    border: 1px solid var(--line);
+    font-size: 0.76rem;
+    font-weight: 550;
+    color: var(--ink);
+  }
+  .dept__also {
+    position: relative;
+    z-index: 2;
+    margin-top: 12px;
+    font-size: 0.82rem;
+    color: var(--steel);
+  }
+  .dept__also a {
+    display: inline-block;
+    padding: 4px 0;
+    font-weight: 600;
+  }
+  @media (max-width: 559px) {
+    .dept__inner {
+      padding: 14px 14px 16px;
+      border-radius: 18px;
+    }
+    .dept__link::after {
+      border-radius: 18px;
+    }
+    .dept__art {
+      width: 100%;
+      margin: 2px 0 0;
+    }
+    .dept__go {
+      width: 30px;
+      height: 30px;
+    }
+    .dept__title {
+      font-size: 1.02rem;
+    }
+    .dept__blurb,
+    .dept__tags {
+      display: none;
+    }
+    .dept__also {
+      font-size: 0.76rem;
+      margin-top: 6px;
+    }
+  }
+</style>

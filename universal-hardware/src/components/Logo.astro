@@ -1,0 +1,32 @@
+---
+/**
+ * The supplied Universal Hardware wordmark (raster, unaltered geometry).
+ * Always displayed on a white / near-white surface, per the brand brief.
+ */
+interface Props {
+  height?: number;
+  class?: string;
+  eager?: boolean;
+}
+const { height = 34, class: cls, eager = false } = Astro.props;
+const ratio = 771 / 147;
+const width = Math.round(height * ratio);
+---
+<picture class={cls}>
+  <source
+    type="image/webp"
+    srcset="/brand/universal-hardware-logo-sm.webp 385w, /brand/universal-hardware-logo.webp 771w"
+    sizes={`${width}px`}
+  />
+  <img
+    src="/brand/universal-hardware-logo-sm.png"
+    srcset="/brand/universal-hardware-logo-sm.png 385w, /brand/universal-hardware-logo.png 771w"
+    sizes={`${width}px`}
+    width={width}
+    height={height}
+    alt="Universal Hardware"
+    loading={eager ? 'eager' : 'lazy'}
+    decoding="async"
+    fetchpriority={eager ? 'high' : undefined}
+  />
+</picture>

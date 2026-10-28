@@ -1,0 +1,163 @@
+---
+/**
+ * Illustrative map of Belize with the two website-listed branch towns.
+ * Outline: Natural Earth 1:10m Admin 0 (public domain), projected and
+ * simplified at build time. Pin positions are approximate town locations,
+ * not store-level navigation.
+ */
+import map from '../data/belize-map.json';
+interface Props {
+  class?: string;
+  compact?: boolean;
+}
+const { class: cls, compact = false } = Astro.props;
+const sl = map.points['spanish-lookout'];
+const bc = map.points['belize-city'];
+const midX = (sl[0] + bc[0]) / 2;
+const midY = Math.min(sl[1], bc[1]) - 46;
+const vb = compact ? `20 120 360 300` : `0 0 ${map.width} ${map.height}`;
+---
+<figure class:list={['bz-map', cls]}>
+  <svg viewBox={vb} role="img" aria-labelledby="bz-map-title" preserveAspectRatio="xMidYMid meet">
+    <title id="bz-map-title">Map of Belize showing approximate locations of Spanish Lookout (Cayo District) and Belize City</title>
+    <defs>
+      <pattern id="bz-grid" width="20" height="20" patternUnits="userSpaceOnUse">
+        <path d="M20 0H0V20" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.18" />
+      </pattern>
+      <radialGradient id="bz-glow" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#5592cb" stop-opacity="0.35" />
+        <stop offset="100%" stop-color="#5592cb" stop-opacity="0" />
+      </radialGradient>
+    </defs>
+    <rect x="-50" y="-50" width={map.width + 100} height={map.height + 100} fill="url(#bz-grid)" />
+    <path class="bz-map__ctx" d={map.context} />
+    <path class="bz-map__land" d={map.belize} />
+    <path
+      class="bz-map__route"
+      d={`M${sl[0]} ${sl[1]} Q${midX} ${midY} ${bc[0]} ${bc[1]}`}
+    />
+    {
+      [
+        { p: sl, id: 'spanish-lookout', name: 'Spanish Lookout', sub: 'Main branch · Cayo', anchor: 'start', dx: 14, dy: 26 },
+        { p: bc, id: 'belize-city', name: 'Belize City', sub: 'Belama Phase 2', anchor: 'end', dx: -14, dy: -18 },
+      ].map((pin) => (
+        <g class="bz-map__pin" data-map-pin={pin.id}>
+          <circle cx={pin.p[0]} cy={pin.p[1]} r="26" fill="url(#bz-glow)" />
+          <circle class="bz-map__pulse" cx={pin.p[0]} cy={pin.p[1]} r="10" />
+          <circle class="bz-map__dot" cx={pin.p[0]} cy={pin.p[1]} r="5.5" />
+          <text x={pin.p[0] + pin.dx} y={pin.p[1] + pin.dy} text-anchor={pin.anchor} class="bz-map__label">
+            {pin.name}
+          </text>
+          <text x={pin.p[0] + pin.dx} y={pin.p[1] + pin.dy + 15} text-anchor={pin.anchor} class="bz-map__sub">
+            {pin.sub}
+          </text>
+        </g>
+      ))
+    }
+    {!compact && (
+      <g class="bz-map__compass" transform={`translate(${map.width - 44} 40)`}>
+        <circle r="16" />
+        <path d="M0 -11 L4 2 L0 0 L-4 2 Z" />
+        <text y="-20" text-anchor="middle">N</text>
+      </g>
+    )}
+  </svg>
+  <figcaption>Approximate town locations. Outline: Natural Earth (public domain).</figcaption>
+</figure>
+
+<style>
+  .bz-map {
+    margin: 0;
+    color: var(--blue-600);
+  }
+  .bz-map svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+  .bz-map__ctx {
+    fill: #eef3f8;
+    stroke: var(--line-strong);
+    stroke-width: 0.8;
+  }
+  .bz-map__land {
+    fill: #dcebf8;
+    stroke: #5592cb;
+    stroke-width: 1.2;
+    stroke-linejoin: round;
+  }
+  .bz-map__route {
+    fill: none;
+    stroke: var(--blue-600);
+    stroke-width: 1.4;
+    stroke-dasharray: 4 5;
+  }
+  .bz-map__dot {
+    fill: var(--blue-600);
+    stroke: #fff;
+    stroke-width: 2.5;
+  }
+  .bz-map__pulse {
+    fill: none;
+    stroke: var(--blue-600);
+    stroke-width: 1.2;
+    opacity: 0.6;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: bz-pulse 2.6s var(--ease-out) infinite;
+  }
+  .bz-map__pin:nth-of-type(2) .bz-map__pulse {
+    animation-delay: 1.3s;
+  }
+  @keyframes bz-pulse {
+    0% {
+      transform: scale(0.6);
+      opacity: 0.8;
+    }
+    100% {
+      transform: scale(2.4);
+      opacity: 0;
+    }
+  }
+  .bz-map__label {
+    font-family: var(--font-display);
+    font-stretch: 108%;
+    font-weight: 700;
+    font-size: 15px;
+    fill: var(--ink);
+    paint-order: stroke;
+    stroke: rgba(255, 255, 255, 0.9);
+    stroke-width: 4px;
+  }
+  .bz-map__sub {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    fill: var(--steel);
+    paint-order: stroke;
+    stroke: rgba(255, 255, 255, 0.9);
+    stroke-width: 3px;
+  }
+  .bz-map__compass circle {
+    fill: #fff;
+    stroke: var(--line-strong);
+  }
+  .bz-map__compass path {
+    fill: var(--blue-600);
+  }
+  .bz-map__compass text {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--steel);
+  }
+  :global(.is-selected-sl) .bz-map__pin[data-map-pin='spanish-lookout'] .bz-map__dot,
+  :global(.is-selected-bc) .bz-map__pin[data-map-pin='belize-city'] .bz-map__dot {
+    fill: var(--ink);
+  }
+  figcaption {
+    margin-top: 10px;
+    font-size: 0.75rem;
+    color: var(--steel);
+  }
+</style>

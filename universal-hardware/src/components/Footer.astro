@@ -1,0 +1,82 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { SITE, NAV } from '../data/site';
+import { CATEGORIES } from '../data/categories';
+import { BRANCHES } from '../data/branches';
+---
+<footer class="site-footer on-dark">
+  <div class="container">
+    <div class="site-footer__top">
+      <div class="site-footer__brand">
+        <a href="/" class="site-footer__logo" aria-label="Universal Hardware concept — home">
+          <Logo height={30} />
+        </a>
+        <p class="site-footer__tag">A better way to find what you need.</p>
+        <a class="btn btn--light btn--sm" href={SITE.officialUrl} rel="noopener" target="_blank">
+          Visit Universal Hardware's current official website
+          <Icon name="external" size={16} />
+        </a>
+      </div>
+
+      <nav class="site-footer__col" aria-label="Footer: explore">
+        <p class="site-footer__h">Explore</p>
+        <ul>
+          <li><a href="/">Home</a></li>
+          {NAV.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+          <li><a href="/find/">Find the Right Product</a></li>
+        </ul>
+      </nav>
+
+      <nav class="site-footer__col site-footer__col--wide" aria-label="Footer: categories">
+        <p class="site-footer__h">Categories</p>
+        <ul class="site-footer__cats">
+          {CATEGORIES.map((c) => <li><a href={`/products/${c.slug}/`}>{c.name}</a></li>)}
+        </ul>
+      </nav>
+
+      <div class="site-footer__col">
+        <p class="site-footer__h">Branches</p>
+        <ul>
+          {
+            BRANCHES.map((b) => (
+              <li>
+                <a href={`/locations/#${b.id}`}>{b.name}</a>
+                <span class="site-footer__small">{b.hours[0].days}: {b.hours[0].time}</span>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="site-footer__small">Website-listed details. Confirm with the branch.</p>
+      </div>
+    </div>
+
+    <div class="site-footer__legal">
+      <div class="site-footer__disclaimer">
+        <Icon name="info" size={18} />
+        <p>
+          <strong>{SITE.disclaimer}</strong>
+          {' '}Product information is illustrative and based on Universal Hardware's public website as viewed on {SITE.demoDate}.
+          No prices, stock or availability are shown, and no enquiry on this site is sent anywhere.
+        </p>
+      </div>
+      <div class="site-footer__meta">
+        <p>Concept by Austere Automations · Demo prepared {SITE.demoDate}</p>
+        <p>
+          <a href="/concept/">About this concept &amp; data handling</a>
+          <span aria-hidden="true">·</span>
+          <button type="button" class="site-footer__motion" data-motion-toggle aria-pressed="false">
+            <Icon name="motion" size={14} />
+            <span data-motion-label>Reduce motion</span>
+          </button>
+          <span aria-hidden="true">·</span>
+          <a href="#main" class="site-footer__top-link">Back to top <Icon name="arrow-up" size={14} /></a>
+        </p>
+      </div>
+      <p class="site-footer__marks">
+        Universal Hardware name and wordmark belong to Universal Hardware Company Ltd. Brand names are shown as text
+        for identification only and belong to their respective owners.
+      </p>
+    </div>
+  </div>
+</footer>

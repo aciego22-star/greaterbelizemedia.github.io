@@ -1,0 +1,118 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { NAV, SITE } from '../data/site';
+import { BRANCHES } from '../data/branches';
+
+interface Props {
+  section?: string;
+}
+const { section } = Astro.props;
+const isCurrent = (href: string) => section && href.startsWith(`/${section}/`);
+---
+<header class="site-header" data-header>
+  <div class="container site-header__inner">
+    <a class="site-header__logo" href="/" aria-label="Universal Hardware concept — home">
+      <Logo height={34} eager />
+    </a>
+
+    <nav class="site-nav" aria-label="Primary">
+      <ul>
+        {
+          NAV.map((item) => (
+            <li>
+              <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="site-header__actions">
+      <a class="btn btn--ghost btn--sm site-header__find" href="/find/">
+        Find the Right Product
+      </a>
+      <a class="btn btn--sm site-header__explore" href="/products/">
+        Explore Products
+        <Icon name="arrow-right" size={16} class="btn-arrow" />
+      </a>
+      <button
+        type="button"
+        class="icon-btn enquiry-trigger"
+        data-open-enquiry
+        aria-label="Open enquiry summary (0 categories)"
+        aria-haspopup="dialog"
+      >
+        <Icon name="clipboard" />
+        <span class="enquiry-trigger__count" data-enquiry-count hidden>0</span>
+      </button>
+      <button
+        type="button"
+        class="icon-btn site-header__menu"
+        data-menu-open
+        aria-label="Open menu"
+        aria-haspopup="dialog"
+        aria-controls="mobile-nav"
+        aria-expanded="false"
+      >
+        <Icon name="menu" />
+      </button>
+    </div>
+  </div>
+</header>
+
+<dialog class="mobile-nav" id="mobile-nav" aria-label="Menu" data-mobile-nav>
+  <div class="mobile-nav__panel">
+    <div class="mobile-nav__top">
+      <a href="/" class="mobile-nav__logo" aria-label="Universal Hardware concept — home">
+        <Logo height={28} />
+      </a>
+      <button type="button" class="icon-btn" data-menu-close aria-label="Close menu">
+        <Icon name="x" />
+      </button>
+    </div>
+    <nav aria-label="Mobile primary">
+      <ul class="mobile-nav__links">
+        <li><a href="/">Home</a></li>
+        {
+          NAV.map((item) => (
+            <li>
+              <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+                {item.label}
+                <Icon name="arrow-right" size={18} />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+    <div class="mobile-nav__ctas">
+      <a class="btn btn--block btn--lg" href="/products/">Explore Products</a>
+      <a class="btn btn--ghost btn--block btn--lg" href="/find/">Find the Right Product</a>
+      <button type="button" class="btn btn--ghost btn--block" data-open-enquiry data-menu-close-after>
+        <Icon name="clipboard" size={18} />
+        Enquiry Summary
+      </button>
+    </div>
+    <div class="mobile-nav__branches">
+      <p class="mono muted">Branches</p>
+      <ul>
+        {
+          BRANCHES.map((b) => (
+            <li>
+              <a href={`/locations/#${b.id}`}>
+                <Icon name="map-pin" size={16} />
+                {b.name}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+    <p class="mobile-nav__disclaimer">
+      {SITE.disclaimer} <a href="/concept/">About this concept</a>
+    </p>
+  </div>
+</dialog>
