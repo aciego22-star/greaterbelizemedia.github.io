@@ -130,6 +130,29 @@ p {
 .prose p + p {
   margin-top: 1.1em;
 }
+/* Pictures written into an article body. Artwork like a public notice is
+   wider than the reading column, so it is held to the column width and keeps
+   its own proportions rather than overflowing. */
+.prose img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-block: clamp(1.8rem, 4vw, 2.6rem);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+.prose figure {
+  margin: clamp(1.8rem, 4vw, 2.6rem) 0;
+}
+.prose figure img {
+  margin-block: 0;
+}
+.prose figcaption {
+  margin-top: 0.75rem;
+  font-size: var(--fs-xs);
+  color: var(--text-soft);
+  text-align: center;
+}
 
 .eyebrow {
   display: inline-flex;
