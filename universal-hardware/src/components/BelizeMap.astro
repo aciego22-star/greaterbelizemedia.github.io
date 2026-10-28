@@ -73,7 +73,10 @@ const vb = compact ? `20 120 360 300` : `0 0 ${map.width} ${map.height}`;
   .bz-map svg {
     width: 100%;
     height: auto;
-    overflow: visible;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--line);
+    background: #f7fafd;
   }
   .bz-map__ctx {
     fill: #eef3f8;

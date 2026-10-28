@@ -10,10 +10,17 @@ import type { SceneController } from './drill-scene';
 
 const stage = document.querySelector<HTMLElement>('[data-hero-stage]');
 
-function webgl2Available(): boolean {
+/** Cheap feature check; the real context is only created when the scene starts. */
+function webgl2Supported(): boolean {
+  return typeof window.WebGL2RenderingContext === 'function';
+}
+
+function webgl2Works(): boolean {
   try {
     const c = document.createElement('canvas');
-    return !!(window.WebGL2RenderingContext && c.getContext('webgl2'));
+    const gl = c.getContext('webgl2');
+    gl?.getExtension('WEBGL_lose_context')?.loseContext();
+    return !!gl;
   } catch {
     return false;
   }
@@ -50,14 +57,18 @@ if (stage) {
 
   const start = async () => {
     if (ctrl) return;
+    if (!webgl2Works()) {
+      setState('fallback');
+      return;
+    }
     setState('loading');
     try {
       const { createDrillScene } = await import('./drill-scene');
       const coarse = window.matchMedia('(pointer: coarse)').matches;
       const nav = navigator as Navigator & { deviceMemory?: number };
       const lowPower =
-        coarse || (navigator.hardwareConcurrency ?? 8) <= 4 || (nav.deviceMemory ?? 8) <= 4 || params.has('lowpower');
-      ctrl = createDrillScene(canvas, stage, {
+        !capture && (coarse || (navigator.hardwareConcurrency ?? 8) <= 4 || (nav.deviceMemory ?? 8) <= 4 || params.has('lowpower'));
+      ctrl = await createDrillScene(canvas, stage, {
         reducedMotion: prefersReduced(),
         lowPower,
         capture,
@@ -74,14 +85,26 @@ if (stage) {
     }
   };
 
+  // Start the scene on the visitor's first interaction, or after a short idle
+  // delay. The poster is the same render, so the swap is invisible; this keeps
+  // the initial load light on phones and saves battery for passive readers.
   const schedule = () => {
+    let started = false;
+    const events = ['pointermove', 'pointerdown', 'touchstart', 'wheel', 'keydown', 'scroll'] as const;
+    const go = () => {
+      if (started) return;
+      started = true;
+      events.forEach((ev) => window.removeEventListener(ev, go));
+      void start();
+    };
+    events.forEach((ev) => window.addEventListener(ev, go, { passive: true, once: true }));
     const ric = (window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number })
       .requestIdleCallback;
-    if (ric) ric(() => void start(), { timeout: 1500 });
-    else window.setTimeout(() => void start(), 400);
+    const delay = window.matchMedia('(pointer: coarse)').matches ? 3200 : 1600;
+    window.setTimeout(() => (ric ? ric(go, { timeout: 1500 }) : go()), delay);
   };
 
-  if (params.has('no3d') || !webgl2Available()) {
+  if (params.has('no3d') || !webgl2Supported()) {
     setState('fallback');
   } else {
     const conn = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;

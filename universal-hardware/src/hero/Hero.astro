@@ -49,13 +49,15 @@ const quick = [
         </svg>
       </div>
       <picture class="hero__poster">
-        <source media="(max-width: 999px)" type="image/webp" srcset="/hero/drill-poster-mobile.webp" />
-        <source type="image/webp" srcset="/hero/drill-poster-desktop.webp" />
+        <source media="(max-width: 999px)" type="image/avif" srcset="/hero/drill-poster-mobile.avif" width="892" height="840" />
+        <source media="(max-width: 999px)" type="image/webp" srcset="/hero/drill-poster-mobile.webp" width="892" height="840" />
+        <source type="image/avif" srcset="/hero/drill-poster-desktop.avif" width="1680" height="1288" />
+        <source type="image/webp" srcset="/hero/drill-poster-desktop.webp" width="1680" height="1288" />
         <img
           src="/hero/drill-poster-desktop.png"
           alt="Studio render of an unbranded graphite and blue cordless drill standing on a lit plinth."
-          width="1640"
-          height="1600"
+          width="1680"
+          height="1288"
           fetchpriority="high"
           decoding="async"
         />
@@ -240,7 +242,7 @@ const quick = [
   .hero__poster img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
   }
   .hero__canvas {
     opacity: 0;
@@ -433,6 +435,26 @@ const quick = [
   @media (min-width: 640px) and (max-width: 999px) {
     .hero__stage {
       aspect-ratio: 16 / 11;
+    }
+  }
+  @media (max-width: 999px) {
+    /* Keep the pause control clear of the floating Product Guide button. */
+    .hero__pause {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+    }
+    .hero__hud-top {
+      padding-right: 56px;
+    }
+    .hero__badge {
+      order: -1;
+    }
+    .hero__hud-top {
+      justify-content: flex-start;
+    }
+    .hero__fig {
+      display: none;
     }
   }
   @media (max-width: 560px) {

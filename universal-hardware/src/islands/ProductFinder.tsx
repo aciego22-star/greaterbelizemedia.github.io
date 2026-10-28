@@ -24,9 +24,13 @@ const Icon = ({ name, size = 18 }: { name: Parameters<typeof iconSvg>[0]; size?:
 interface Props {
   /** Render variant: embedded on the homepage (dark) or full page (light). */
   variant?: 'dark' | 'light';
+  /** Heading level of the finder's step titles, to keep the page outline valid. */
+  headingLevel?: 2 | 3;
 }
 
-export default function ProductFinder({ variant = 'dark' }: Props) {
+export default function ProductFinder({ variant = 'dark', headingLevel = 3 }: Props) {
+  const Hq = (headingLevel === 2 ? 'h2' : 'h3') as 'h2';
+  const Hm = (headingLevel === 2 ? 'h3' : 'h4') as 'h3';
   const [pathId, setPathId] = useState<string | null>(null);
   const [answers, setAnswers] = useState<Answers>({});
   const [step, setStep] = useState(0); // 0 = choose path; 1..n questions; n+1 results
@@ -122,7 +126,7 @@ export default function ProductFinder({ variant = 'dark' }: Props) {
       <div class="finder__body" aria-live="polite">
         {step === 0 && (
           <div class="finder__panel" key="choose">
-            <h3 class="finder__q" tabIndex={-1} ref={headingRef}>What are you working on?</h3>
+            <Hq class="finder__q" tabIndex={-1} ref={headingRef}>What are you working on?</Hq>
             <ul class="finder__paths">
               {FINDER_PATHS.map((p, i) => (
                 <li style={{ '--i': i } as Record<string, number>}>
@@ -141,7 +145,7 @@ export default function ProductFinder({ variant = 'dark' }: Props) {
         {q && path && (
           <div class="finder__panel" key={`${path.id}-${q.id}`}>
             <p class="finder__context mono">{path.label} · Question {step} of {total}</p>
-            <h3 class="finder__q" tabIndex={-1} ref={headingRef} id={`fq-${q.id}`}>{q.prompt}</h3>
+            <Hq class="finder__q" tabIndex={-1} ref={headingRef} id={`fq-${q.id}`}>{q.prompt}</Hq>
             <div class="finder__options" role="group" aria-labelledby={`fq-${q.id}`}>
               {q.options.map((o, i) => (
                 <button
@@ -172,7 +176,7 @@ export default function ProductFinder({ variant = 'dark' }: Props) {
             <div class="finder__results-head">
               <div>
                 <p class="finder__context mono">Your matches · {path.label}</p>
-                <h3 class="finder__q" tabIndex={-1} ref={headingRef}>{result.headline}</h3>
+                <Hq class="finder__q" tabIndex={-1} ref={headingRef}>{result.headline}</Hq>
                 <ul class="finder__answers">
                   {path.questions.map((qq) => {
                     const o = qq.options.find((x) => x.id === answers[qq.id]);
@@ -200,7 +204,7 @@ export default function ProductFinder({ variant = 'dark' }: Props) {
                     <div class="match__art" dangerouslySetInnerHTML={{ __html: artSvg(c.illustration, { cls: variant === 'dark' && i !== 0 ? 'cat-art--dark' : '' }) }} />
                     <div class="match__body">
                       <p class="match__kicker mono">{i === 0 ? 'Best match' : 'Also relevant'}</p>
-                      <h4 class="match__title">{c.name}</h4>
+                      <Hm class="match__title">{c.name}</Hm>
                       <p class="match__reason">{m.reason}</p>
                       <p class="match__label">Ask about</p>
                       <ul class="match__focus">
@@ -243,7 +247,7 @@ export default function ProductFinder({ variant = 'dark' }: Props) {
 
             <div class="finder__after">
               <div class="finder__tips">
-                <h4>Before you contact the branch</h4>
+                <Hm class="finder__h">Before you contact the branch</Hm>
                 <ul>
                   {result.tips.map((t) => (
                     <li>
@@ -258,7 +262,7 @@ export default function ProductFinder({ variant = 'dark' }: Props) {
                 )}
               </div>
               <div class="finder__next">
-                <h4>Next step</h4>
+                <Hm class="finder__h">Next step</Hm>
                 <p class="finder__small">Preferred branch (this session only)</p>
                 <div class="finder__branches" role="group" aria-label="Preferred branch">
                   {(['spanish-lookout', 'belize-city'] as BranchId[]).map((id) => (

@@ -1,0 +1,501 @@
+---
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import CategoryArt from '../../components/CategoryArt.astro';
+import { CATEGORIES, CATEGORY_BY_SLUG, type Category } from '../../data/categories';
+import { DEPARTMENT_BY_ID } from '../../data/departments';
+import { BRANDS, brandsForCategory } from '../../data/brands';
+import { BRANCHES, BRANCH_VERIFY_NOTE } from '../../data/branches';
+import { SOURCES, SOURCE_VIEWED } from '../../data/sources';
+
+export function getStaticPaths() {
+  return CATEGORIES.map((c) => ({ params: { slug: c.slug }, props: { category: c } }));
+}
+
+const { category: c } = Astro.props as { category: Category };
+const dept = DEPARTMENT_BY_ID[c.department];
+const { related: relatedBrands } = brandsForCategory(c.slug);
+const relatedCats = c.related.map((s) => CATEGORY_BY_SLUG[s]).filter(Boolean);
+const finderPath: Record<string, string> = {
+  'power-tools': 'power-tools',
+  woodworking: 'power-tools',
+  generators: 'backup-power',
+  'water-pumps': 'water-pumping',
+  'lawn-and-garden': 'outdoor',
+  agriculture: 'outdoor',
+  motorcycles: 'motorcycles',
+  household: 'household',
+  'lighting-and-fans': 'household',
+};
+const guidePrompts: Record<string, string> = {
+  generators: 'I need backup power for my home. What type should I look at?',
+  'power-tools': 'I need a cordless drill for concrete and steel.',
+  'water-pumps': 'I need a pump for my home water supply.',
+  motorcycles: 'Do you carry motorbikes?',
+};
+const guidePrompt = guidePrompts[c.slug] ?? `I'm looking for ${c.subcategories[0].name.toLowerCase()}.`;
+const findHref = finderPath[c.slug] ? `/find/?need=${finderPath[c.slug]}` : '/find/';
+const index = CATEGORIES.findIndex((x) => x.slug === c.slug);
+---
+<Base
+  title={c.name}
+  description={`${c.name} listed on Universal Hardware's public website: ${c.summary} Independent concept page; confirm availability with the branch.`}
+  section="products"
+>
+  <section class="cat-hero">
+    <div class="cat-hero__grid" aria-hidden="true"></div>
+    <div class="container cat-hero__inner">
+      <div class="cat-hero__copy">
+        <nav aria-label="Breadcrumb">
+          <ol class="crumbs">
+            <li><a href="/">Home</a></li>
+            <li><a href="/products/">Products</a></li>
+            <li><span aria-current="page">{c.name}</span></li>
+          </ol>
+        </nav>
+        <p class="eyebrow">{String(index + 1).padStart(2, '0')} — {dept.name}</p>
+        <h1 class="h1">{c.name}</h1>
+        <p class="lead">{c.intro}</p>
+        <div class="cat-hero__ctas">
+          <button type="button" class="btn btn--lg enquiry-toggle" data-enquiry-toggle={c.slug} aria-pressed="false">
+            <span class="enquiry-toggle__off"><Icon name="plus" size={18} /></span>
+            <span class="enquiry-toggle__on"><Icon name="check" size={18} /></span>
+            <span data-label>Add to Enquiry Summary</span>
+          </button>
+          <button type="button" class="btn btn--ghost btn--lg" data-open-guide data-guide-prompt={guidePrompt}>
+            <Icon name="guide" size={18} /> Ask the Product Guide
+          </button>
+        </div>
+        <p class="cat-hero__source">
+          <span class="tag tag--neutral"><span class="tag-dot" aria-hidden="true"></span>Website-listed</span>
+          <span>
+            Source: {c.sourceIds.map((id, i) => (
+              <>
+                {i > 0 && ' · '}
+                <a href={SOURCES[id].url} target="_blank" rel="noopener">{SOURCES[id].title}</a>
+              </>
+            ))} on universalhardware.bz, viewed {SOURCE_VIEWED}.
+          </span>
+        </p>
+      </div>
+      <div class="cat-hero__art">
+        <div class="cat-hero__plate">
+          <CategoryArt id={c.illustration} title={`Line illustration representing ${c.name}`} />
+          <p class="cat-hero__fig mono">Concept illustration · not a specific product</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="container cat-layout">
+      <div class="cat-main">
+        <div class="cat-block">
+          <div class="cat-block__head">
+            <h2 class="h3">Listed on the current website</h2>
+            <p class="muted">{c.subcategories.length} product types</p>
+          </div>
+          <ol class="sub-grid">
+            {
+              c.subcategories.map((s, i) => (
+                <li class="sub-tile" data-reveal style={`--i:${i % 3}`}>
+                  <span class="sub-tile__num mono">{String(i + 1).padStart(2, '0')}</span>
+                  <span class="sub-tile__name">{s.name}</span>
+                </li>
+              ))
+            }
+          </ol>
+          {c.subcategoryNote && <p class="cat-note"><Icon name="info" size={16} /> {c.subcategoryNote}</p>}
+          {c.caveat && <p class="notice cat-caveat"><Icon name="info" /> <span>{c.caveat}</span></p>}
+        </div>
+
+        <div class="cat-block">
+          <h2 class="h3">Brands</h2>
+          {
+            c.listedBrands.length > 0 ? (
+              <>
+                <p class="muted cat-block__sub">Named for this category on the website:</p>
+                <ul class="brand-chips">
+                  {c.listedBrands.map((name) => {
+                    const b = BRANDS.find((x) => x.name === name || x.alsoWritten?.includes(name));
+                    return <li><a class="chip" href={b ? `/brands/#${b.id}` : '/brands/'}>{name}</a></li>;
+                  })}
+                </ul>
+              </>
+            ) : (
+              <p class="muted cat-block__sub">The Product Listing page doesn't name brands for this category.</p>
+            )
+          }
+          {
+            relatedBrands.length > 0 && (
+              <>
+                <p class="muted cat-block__sub">Related brands on the Brands page (by the page's own description):</p>
+                <ul class="brand-chips">
+                  {relatedBrands.map((b) => (
+                    <li><a class="chip" href={`/brands/#${b.id}`}>{b.name}</a></li>
+                  ))}
+                </ul>
+              </>
+            )
+          }
+          <p class="hint">A brand mention doesn't confirm current stock or a distribution agreement.</p>
+        </div>
+
+        <div class="cat-block">
+          <h2 class="h3">Before you contact a branch</h2>
+          <ul class="prep-list">
+            {c.prepare.map((p) => <li><Icon name="check" size={18} /> <span>{p}</span></li>)}
+          </ul>
+          <div class="cat-block__actions">
+            <a class="btn btn--ghost" href={findHref}>Use the product finder <Icon name="arrow-right" size={18} class="btn-arrow" /></a>
+            <button type="button" class="btn btn--ghost" data-open-enquiry>
+              <Icon name="clipboard" size={18} /> Open Enquiry Summary
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <aside class="cat-aside" aria-label="Branch contacts">
+        <div class="cat-aside__card">
+          <p class="eyebrow eyebrow--plain">Ask a branch</p>
+          <p class="cat-aside__lead">Price, availability and the right model are best confirmed directly with Universal Hardware.</p>
+          {
+            BRANCHES.map((b) => (
+              <div class="cat-aside__branch">
+                <p class="cat-aside__name">{b.name}</p>
+                <a href={`tel:${b.phones[0].e164}`}><Icon name="phone" size={16} /> {b.phones[0].display}</a>
+                <a href={`https://wa.me/${b.whatsapp[0].wa}`} target="_blank" rel="noopener"><Icon name="whatsapp" size={16} /> Sales {b.whatsapp[0].display}</a>
+              </div>
+            ))
+          }
+          <p class="cat-aside__fine">{BRANCH_VERIFY_NOTE}</p>
+          <a class="link-arrow" href="/locations/">Hours &amp; full details <Icon name="arrow-right" size={16} /></a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section section--mist section--tight">
+    <div class="container">
+      <div class="section-head section-head--split">
+        <h2 class="h3 related-title">Related categories</h2>
+        <a class="link-arrow" href="/products/">All categories <Icon name="arrow-right" size={16} /></a>
+      </div>
+      <ul class="related-grid">
+        {
+          relatedCats.map((r, i) => (
+            <li class="related-card" data-reveal style={`--i:${i}`}>
+              <div class="related-card__art"><CategoryArt id={r.illustration} /></div>
+              <div>
+                <h3><a href={`/products/${r.slug}/`} class="related-card__link">{r.name}</a></h3>
+                <p>{r.summary}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .cat-hero {
+    position: relative;
+    overflow: hidden;
+    padding-block: clamp(28px, 4vw, 56px) clamp(36px, 5vw, 72px);
+    background:
+      radial-gradient(50% 70% at 85% 30%, var(--blue-50), transparent 70%),
+      var(--paper);
+    border-bottom: 1px solid var(--line);
+  }
+  .cat-hero__grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(13, 28, 44, 0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(13, 28, 44, 0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: linear-gradient(to left, #000, transparent 75%);
+    -webkit-mask-image: linear-gradient(to left, #000, transparent 75%);
+  }
+  .cat-hero__inner {
+    position: relative;
+    display: grid;
+    gap: 32px;
+    align-items: center;
+  }
+  @media (min-width: 960px) {
+    .cat-hero__inner {
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 56px;
+    }
+  }
+  .cat-hero__copy {
+    display: grid;
+    gap: 18px;
+    justify-items: start;
+  }
+  .cat-hero__copy .crumbs {
+    margin-bottom: 8px;
+  }
+  .cat-hero__copy .lead {
+    max-width: 52ch;
+  }
+  .cat-hero__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 6px;
+  }
+  .enquiry-toggle__on {
+    display: none;
+  }
+  .enquiry-toggle[aria-pressed='true'] {
+    --btn-bg: var(--blue-50);
+    --btn-fg: var(--blue-800);
+    --btn-bd: var(--blue-200);
+  }
+  .enquiry-toggle[aria-pressed='true'] .enquiry-toggle__on {
+    display: inline-flex;
+  }
+  .enquiry-toggle[aria-pressed='true'] .enquiry-toggle__off {
+    display: none;
+  }
+  .cat-hero__source {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 12px;
+    font-size: 0.82rem;
+    color: var(--steel);
+  }
+  .cat-hero__plate {
+    position: relative;
+    padding: clamp(24px, 4vw, 48px);
+    border-radius: var(--radius-lg);
+    background:
+      radial-gradient(60% 60% at 50% 40%, #fff, transparent 70%),
+      linear-gradient(to right, rgba(13, 28, 44, 0.05) 1px, transparent 1px) 0 0 / 28px 28px,
+      linear-gradient(to bottom, rgba(13, 28, 44, 0.05) 1px, transparent 1px) 0 0 / 28px 28px,
+      var(--mist);
+    border: 1px solid var(--line);
+  }
+  .cat-hero__fig {
+    margin-top: 10px;
+    color: var(--steel-400);
+    text-align: center;
+  }
+  @media (max-width: 959px) {
+    .cat-hero__art {
+      order: -1;
+    }
+    .cat-hero__plate {
+      max-width: 420px;
+      padding: 20px 24px 14px;
+    }
+  }
+  @media (max-width: 560px) {
+    .cat-hero__ctas .btn {
+      width: 100%;
+    }
+  }
+
+  .cat-layout {
+    display: grid;
+    gap: 32px;
+  }
+  @media (min-width: 1000px) {
+    .cat-layout {
+      grid-template-columns: minmax(0, 1fr) 340px;
+      gap: 56px;
+      align-items: start;
+    }
+  }
+  .cat-main {
+    display: grid;
+    gap: 44px;
+  }
+  .cat-block {
+    display: grid;
+    gap: 14px;
+  }
+  .cat-block__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .cat-block__sub {
+    font-size: 0.92rem;
+  }
+  .sub-grid {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  @media (min-width: 760px) {
+    .sub-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .sub-tile {
+    display: grid;
+    gap: 10px;
+    align-content: space-between;
+    min-height: 96px;
+    padding: 14px 16px;
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    transition: border-color var(--dur), background-color var(--dur);
+  }
+  .sub-tile:hover {
+    border-color: var(--blue-200);
+    background: var(--blue-50);
+  }
+  .sub-tile__num {
+    color: var(--blue-600);
+  }
+  .sub-tile__name {
+    font-weight: 650;
+    line-height: 1.3;
+  }
+  .cat-note {
+    display: flex;
+    gap: 8px;
+    font-size: 0.84rem;
+    color: var(--steel);
+  }
+  .cat-note :global(svg) {
+    flex: none;
+    color: var(--blue-600);
+    margin-top: 2px;
+  }
+  .brand-chips {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .prep-list {
+    list-style: none;
+    display: grid;
+    gap: 10px;
+  }
+  .prep-list li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: var(--mist);
+  }
+  .prep-list :global(svg) {
+    color: var(--blue-600);
+    margin-top: 2px;
+  }
+  .cat-block__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 4px;
+  }
+  .cat-aside {
+    position: sticky;
+    top: calc(var(--header-h) + 24px);
+  }
+  .cat-aside__card {
+    display: grid;
+    gap: 14px;
+    padding: 22px;
+    border-radius: var(--radius-lg);
+    background: var(--graphite);
+    color: var(--on-dark);
+  }
+  .cat-aside__card .eyebrow {
+    color: var(--blue-on-dark);
+  }
+  .cat-aside__lead {
+    color: var(--on-dark-muted);
+    font-size: 0.92rem;
+  }
+  .cat-aside__branch {
+    display: grid;
+    gap: 2px;
+    padding-top: 12px;
+    border-top: 1px solid var(--on-dark-line);
+  }
+  .cat-aside__name {
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  .cat-aside__branch a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 38px;
+    color: var(--on-dark);
+    text-decoration: none;
+    font-variant-numeric: tabular-nums;
+  }
+  .cat-aside__branch a:hover {
+    color: #fff;
+    text-decoration: underline;
+  }
+  .cat-aside__branch :global(svg) {
+    color: var(--blue-on-dark);
+  }
+  .cat-aside__fine {
+    font-size: 0.76rem;
+    color: var(--on-dark-muted);
+  }
+  .cat-aside__card .link-arrow {
+    color: var(--blue-on-dark);
+  }
+  .related-grid {
+    list-style: none;
+    display: grid;
+    gap: 14px;
+  }
+  @media (min-width: 1000px) {
+    .related-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .related-card {
+    position: relative;
+    display: grid;
+    grid-template-columns: 110px minmax(0, 1fr);
+    gap: 16px;
+    align-items: center;
+    padding: 16px;
+    overflow-wrap: anywhere;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    background: var(--paper);
+    transition: box-shadow 400ms var(--ease-out), border-color var(--dur);
+  }
+  .related-card:hover {
+    box-shadow: var(--shadow);
+    border-color: var(--blue-200);
+  }
+  .related-card h3 {
+    font-size: 1.08rem;
+  }
+  .related-card p {
+    margin-top: 4px;
+    font-size: 0.85rem;
+    color: var(--steel);
+  }
+  .related-card__link {
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .related-card__link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+</style>

@@ -1,0 +1,269 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import BranchCard from '../components/BranchCard.astro';
+import BelizeMap from '../components/BelizeMap.astro';
+import { BRANCHES, BRANCH_VERIFY_NOTE, GENERAL_SALES_EMAIL, HOLIDAY_NOTE, waUrl } from '../data/branches';
+import { SOURCES, SOURCE_VIEWED } from '../data/sources';
+---
+<Base
+  title="Locations"
+  description="Spanish Lookout and Belize City branch addresses, listed hours, telephone and WhatsApp sales and service numbers, as published on Universal Hardware's website."
+  section="locations"
+>
+  <PageHero
+    eyebrow="Branches"
+    title="Two locations. One destination for solutions."
+    lead="Addresses, listed hours and direct sales and service lines for Spanish Lookout and Belize City."
+    crumbs={[{ label: 'Locations' }]}
+  >
+    <p class="notice loc-notice">
+      <Icon name="info" />
+      <span>
+        <strong>{BRANCH_VERIFY_NOTE}</strong> Source: <a href={SOURCES.about.url} target="_blank" rel="noopener">Contact Us page</a>, viewed {SOURCE_VIEWED}.
+      </span>
+    </p>
+    <div class="loc-pick" role="group" aria-label="Choose your preferred branch for this session">
+      {
+        BRANCHES.map((b) => (
+          <button type="button" class="chip" data-branch-select={b.id} aria-pressed="false">
+            <Icon name="map-pin" size={16} /> {b.name}
+          </button>
+        ))
+      }
+      <p class="loc-pick__status" data-branch-status aria-live="polite"></p>
+    </div>
+  </PageHero>
+
+  <section class="section section--tight">
+    <div class="container loc-grid">
+      <div class="loc-cards">
+        {BRANCHES.map((b) => <BranchCard branch={b} detailed headingLevel="h2" />)}
+      </div>
+      <div class="loc-map">
+        <BelizeMap />
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--mist section--tight" id="service" aria-labelledby="service-title">
+    <div class="container">
+      <div class="section-head section-head--split">
+        <div class="stack" style="--stack:16px">
+          <p class="eyebrow">Service &amp; parts</p>
+          <h2 id="service-title" class="h2">Service Center lines at both branches.</h2>
+        </div>
+        <p class="lead">
+          The website lists a dedicated Service Center WhatsApp number for each branch. Service coverage depends on the brand and product, so confirm
+          what's supported before bringing an item in.
+        </p>
+      </div>
+      <div class="service-grid">
+        {
+          BRANCHES.map((b) => (
+            <a class="service-card" href={waUrl(b.whatsapp[1])} target="_blank" rel="noopener">
+              <span class="service-card__icon"><Icon name="whatsapp" size={22} /></span>
+              <span class="service-card__label mono">{b.name} · Service Center</span>
+              <span class="service-card__num">{b.whatsapp[1].display}</span>
+              <span class="service-card__go">Open WhatsApp <Icon name="external" size={14} /></span>
+            </a>
+          ))
+        }
+        <a class="service-card service-card--light" href={SOURCES.catalogues.url} target="_blank" rel="noopener">
+          <span class="service-card__icon"><Icon name="layers" size={22} /></span>
+          <span class="service-card__label mono">Parts</span>
+          <span class="service-card__num">Meilun parts catalogues</span>
+          <span class="service-card__go">On the official website <Icon name="external" size={14} /></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="container visit-grid">
+      <div>
+        <h2 class="h3">Before you visit</h2>
+        <ul class="visit-list">
+          <li><Icon name="clock" size={18} /> <span>Confirm opening hours by phone or WhatsApp. {HOLIDAY_NOTE}</span></li>
+          <li><Icon name="clipboard" size={18} /> <span>Copy your <button type="button" class="link-btn" data-open-enquiry>Enquiry Summary</button> and send it to the branch so staff know what you're looking for.</span></li>
+          <li><Icon name="wrench" size={18} /> <span>For parts or service, bring the model name, photos or the part reference from the catalogue.</span></li>
+        </ul>
+      </div>
+      <div class="visit-aside">
+        <h2 class="h3">Other listed contact</h2>
+        <p>General sales email listed on the website:</p>
+        <p><a href={`mailto:${GENERAL_SALES_EMAIL}`} class="visit-mail"><Icon name="mail" size={18} /> {GENERAL_SALES_EMAIL}</a></p>
+        <p class="hint">
+          Phone, WhatsApp, email and map links open Universal Hardware's own channels or third-party apps only when you tap them. This concept doesn't
+          route, record or send any contact.
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .loc-notice {
+    max-width: 760px;
+  }
+  .loc-pick {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 10px;
+  }
+  .loc-pick__status {
+    flex-basis: 100%;
+    font-size: 0.84rem;
+    color: var(--steel);
+  }
+  .loc-grid {
+    display: grid;
+    gap: 32px;
+    align-items: start;
+  }
+  @media (min-width: 1000px) {
+    .loc-grid {
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.6fr);
+      gap: 48px;
+    }
+    .loc-map {
+      position: sticky;
+      top: calc(var(--header-h) + 24px);
+    }
+  }
+  @media (max-width: 999px) {
+    .loc-map {
+      order: -1;
+      max-width: 320px;
+      width: 100%;
+      margin-inline: auto;
+    }
+  }
+  .loc-cards {
+    display: grid;
+    gap: 20px;
+  }
+  .loc-cards :global(.branch) {
+    scroll-margin-top: calc(var(--header-h) + 24px);
+  }
+  .service-grid {
+    display: grid;
+    gap: 14px;
+  }
+  @media (min-width: 760px) {
+    .service-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .service-card {
+    display: grid;
+    gap: 6px;
+    padding: 22px;
+    border-radius: var(--radius-lg);
+    background: var(--graphite);
+    color: var(--on-dark);
+    text-decoration: none;
+    transition: transform 300ms var(--ease-out), box-shadow 300ms var(--ease-out);
+  }
+  .service-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+    color: #fff;
+  }
+  .service-card--light {
+    background: var(--paper);
+    color: var(--ink);
+    border: 1px solid var(--line);
+  }
+  .service-card--light:hover {
+    color: var(--ink);
+  }
+  .service-card__icon {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--blue-600);
+    color: #fff;
+    margin-bottom: 10px;
+  }
+  .service-card__label {
+    color: var(--blue-on-dark);
+  }
+  .service-card--light .service-card__label {
+    color: var(--blue-600);
+  }
+  .service-card__num {
+    font-family: var(--font-display);
+    font-stretch: 108%;
+    font-weight: 700;
+    font-size: 1.5rem;
+    letter-spacing: -0.01em;
+    font-variant-numeric: tabular-nums;
+  }
+  .service-card__go {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: var(--on-dark-muted);
+  }
+  .service-card--light .service-card__go {
+    color: var(--steel);
+  }
+  .visit-grid {
+    display: grid;
+    gap: 32px;
+  }
+  @media (min-width: 900px) {
+    .visit-grid {
+      grid-template-columns: 1.3fr 1fr;
+      gap: 56px;
+    }
+  }
+  .visit-list {
+    list-style: none;
+    display: grid;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .visit-list li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: var(--mist);
+  }
+  .visit-list :global(svg) {
+    color: var(--blue-600);
+    margin-top: 2px;
+  }
+  .link-btn {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--blue-600);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+  }
+  .visit-aside {
+    display: grid;
+    gap: 10px;
+    align-content: start;
+    padding: 22px;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--line);
+  }
+  .visit-mail {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    font-weight: 600;
+  }
+</style>

@@ -25,6 +25,7 @@
   "devDependencies": {
     "@astrojs/check": "0.9.12",
     "@types/three": "0.180.0",
+    "axe-core": "^4.10.3",
     "typescript": "5.9.3"
   }
 }

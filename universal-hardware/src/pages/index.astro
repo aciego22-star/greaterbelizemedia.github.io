@@ -99,7 +99,7 @@ const firstCat = (id: string) => {
         }
       </ul>
       <p class="brand-wall__more">
-        Also named in the website's category listings:
+        Also named elsewhere on the website:{' '}
         {otherNamed.map((b, i) => (
           <>
             {i > 0 && ', '}
@@ -462,8 +462,8 @@ const firstCat = (id: string) => {
   }
   @media (min-width: 1000px) {
     .home-branches__grid {
-      grid-template-columns: 0.72fr 1.28fr;
-      gap: 40px;
+      grid-template-columns: minmax(0, 0.62fr) minmax(0, 1.38fr);
+      gap: clamp(32px, 4vw, 64px);
     }
     .home-branches__map {
       position: sticky;
@@ -480,14 +480,6 @@ const firstCat = (id: string) => {
   .home-branches__cards {
     display: grid;
     gap: 18px;
-  }
-  @media (min-width: 1240px) {
-    .home-branches__cards {
-      grid-template-columns: 1fr 1fr;
-    }
-    .home-branches__status {
-      grid-column: 1 / -1;
-    }
   }
   .home-branches__status {
     font-size: 0.85rem;

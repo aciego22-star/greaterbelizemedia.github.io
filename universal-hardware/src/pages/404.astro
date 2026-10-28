@@ -1,0 +1,79 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import CategoryArt from '../components/CategoryArt.astro';
+import { DEPARTMENTS } from '../data/departments';
+---
+<Base title="Page not found" description="This page isn't available in the Universal Hardware concept." section="home">
+  <section class="nf">
+    <div class="container nf__inner">
+      <div class="nf__art" aria-hidden="true">
+        <CategoryArt id="handtools" />
+        <span class="nf__code mono">Error 404</span>
+      </div>
+      <div class="nf__copy">
+        <p class="eyebrow">Page not found</p>
+        <h1 class="h1">This page isn't on the shelf.</h1>
+        <p class="lead">The link may be out of date, or the page isn't part of this concept. Try a search, or head to one of these departments.</p>
+        <form class="nf__search" action="/products/" method="get" role="search">
+          <label for="nf-q" class="sr-only">Search products</label>
+          <input id="nf-q" name="q" type="search" class="input" placeholder="Search tools, equipment or brands" />
+          <button class="btn" type="submit"><Icon name="search" size={18} /> Search</button>
+        </form>
+        <ul class="nf__links">
+          {DEPARTMENTS.slice(0, 6).map((d) => <li><a class="chip" href={`/products/${d.categories[0]}/`}>{d.name}</a></li>)}
+        </ul>
+        <a class="link-arrow" href="/">Back to the homepage <Icon name="arrow-right" size={16} /></a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    padding-block: clamp(48px, 8vw, 120px);
+  }
+  .nf__inner {
+    display: grid;
+    gap: 40px;
+    align-items: center;
+  }
+  @media (min-width: 900px) {
+    .nf__inner {
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: 64px;
+    }
+  }
+  .nf__art {
+    position: relative;
+    max-width: 380px;
+    padding: 32px;
+    border-radius: var(--radius-lg);
+    background: var(--mist);
+    border: 1px solid var(--line);
+  }
+  .nf__code {
+    position: absolute;
+    top: 16px;
+    left: 18px;
+    color: var(--blue-600);
+  }
+  .nf__copy {
+    display: grid;
+    gap: 18px;
+    justify-items: start;
+  }
+  .nf__search {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+    width: 100%;
+    max-width: 520px;
+  }
+  .nf__links {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+</style>

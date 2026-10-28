@@ -1,0 +1,9 @@
+# Used only for Git-based Netlify deploys. The manual ZIP upload relies on
+# dist/_headers and dist/404.html, which are included in the build output.
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+  ASTRO_TELEMETRY_DISABLED = "1"

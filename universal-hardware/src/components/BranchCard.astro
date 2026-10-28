@@ -1,6 +1,6 @@
 ---
 import Icon from './Icon.astro';
-import { type Branch, mapsUrl, waUrl } from '../data/branches';
+import { type Branch, HOLIDAY_NOTE, mapsUrl, waUrl } from '../data/branches';
 
 interface Props {
   branch: Branch;
@@ -45,9 +45,10 @@ const H = headingLevel;
         }
         <div>
           <dt>Sunday &amp; public holidays</dt>
-          <dd class="muted">Not listed — see note</dd>
+          <dd class="muted">Not listed</dd>
         </div>
       </dl>
+      {detailed && <p class="branch__note">{HOLIDAY_NOTE}</p>}
     </div>
   </div>
 

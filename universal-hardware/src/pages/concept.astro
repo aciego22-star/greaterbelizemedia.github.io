@@ -1,0 +1,266 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import { SITE } from '../data/site';
+import { SOURCE_VIEWED } from '../data/sources';
+
+const works = [
+  ['Category explorer & search', 'Instant search across 12 categories, their listed product types and brands, with department and brand filters.'],
+  ['Category pages', 'A landing page for every category, with listed product types, brand mentions and preparation tips.'],
+  ['Product finder', 'Six guided paths with two or three questions each, mapping answers to listed categories using fixed local rules.'],
+  ['Enquiry Summary', 'Add, remove, copy and reset a plain-text summary. It stays in this browser tab and is never sent.'],
+  ['Product Guide', 'A rule-based conversational guide in English and Spanish. It is not live AI.'],
+  ['Branch details', 'Website-listed addresses, hours, phone and WhatsApp numbers, with a session-only branch preference.'],
+  ['Real-time 3D hero', 'An original, procedurally modelled drill rendered with WebGL, with pause, reduced-motion and static fallbacks.'],
+];
+const illustrative = [
+  'The 3D drill and all category illustrations are original concept artwork and do not depict specific products or stock.',
+  'Category descriptions are concept copy summarising Universal Hardware’s public pages.',
+  'Department groupings (for example “Welding & Shop Equipment”) are a proposed navigation structure.',
+  'Headlines such as “Built for Every Job.” are proposed concept copy, not a company slogan.',
+];
+const privacy = [
+  ['No data collection', 'No forms submit anywhere. No analytics, tracking pixels, cookies or third-party scripts are loaded.'],
+  ['Session-only memory', 'Your Enquiry Summary, preferred branch and motion setting use sessionStorage, which the browser clears when the tab closes.'],
+  ['Guide conversations', 'Kept in memory only and discarded when you leave the page. Nothing you type is transmitted.'],
+  ['Outbound links on tap only', 'Phone, WhatsApp, maps, email and official-website links open only when you choose them.'],
+];
+const approvals = [
+  'All branch hours, phone and WhatsApp numbers, addresses and email routing.',
+  'Which brands are current lines, and how each relationship may be described (including any exclusivity).',
+  'Category structure, product types and any product photography or logos.',
+  'Use of the Universal Hardware name and wordmark, and a high-resolution logo file.',
+  'Bilingual service commitments before any Spanish content goes live.',
+  'Service scope by brand, and parts ordering process.',
+];
+const roadmap = [
+  { t: 'Catalogue & content management', d: 'Staff-editable categories, products, photos and promotions.' },
+  { t: 'Inventory & pricing feed', d: 'Optional connection to the existing stock or POS system, if approved.' },
+  { t: 'Enquiry routing', d: 'Send enquiries to the right branch team by WhatsApp or email, with consent.' },
+  { t: 'AI Employee', d: 'An approved assistant trained on company-verified knowledge, with hand-off to staff.' },
+  { t: 'Reporting', d: 'Privacy-respecting insight into what customers search for and ask about.' },
+];
+---
+<Base
+  title="About this concept"
+  description="Independent website concept prepared by Austere Automations for presentation purposes. Not affiliated with or endorsed by Universal Hardware."
+  section="concept"
+>
+  <PageHero
+    eyebrow="Concept notes"
+    title="An independent website concept."
+    crumbs={[{ label: 'Concept' }]}
+    dark
+  >
+    <p class="concept-statement">{SITE.conceptStatement}</p>
+    <p class="concept-meta mono">Prepared by Austere Automations · {SITE.demoDate} · Public sources viewed {SOURCE_VIEWED}</p>
+    <div class="concept-ctas">
+      <a class="btn btn--light" href={SITE.officialUrl} target="_blank" rel="noopener">
+        Visit Universal Hardware's current official website <Icon name="external" size={16} />
+      </a>
+    </div>
+  </PageHero>
+
+  <section class="section section--tight">
+    <div class="container concept-grid">
+      <div>
+        <h2 class="h3">What works in this demonstration</h2>
+        <ul class="concept-list">
+          {works.map(([t, d]) => <li><Icon name="check" size={18} /><div><strong>{t}</strong><p>{d}</p></div></li>)}
+        </ul>
+      </div>
+      <div>
+        <h2 class="h3">What is illustrative</h2>
+        <ul class="concept-list concept-list--plain">
+          {illustrative.map((d) => <li><Icon name="info" size={18} /><p>{d}</p></li>)}
+        </ul>
+        <h2 class="h3 concept-h">What it never does</h2>
+        <p class="concept-p">
+          It shows no prices, stock levels, models for sale, warranties, delivery or payment terms, reviews or testimonials, and it does not take
+          orders or send quotes. Product and branch details must be confirmed with Universal Hardware.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--mist section--tight" id="privacy">
+    <div class="container">
+      <h2 class="h2">Data handling</h2>
+      <div class="privacy-grid">
+        {privacy.map(([t, d]) => <div class="privacy-card"><h3>{t}</h3><p>{d}</p></div>)}
+      </div>
+      <p class="concept-p concept-ai">
+        <strong>About the Product Guide:</strong> it is a deterministic, rule-based guide built on public website information. No AI model is
+        connected. The panel is built so an approved AI Employee can plug in later through the same interface, with its scope, limits and data sources
+        disclosed to visitors.
+      </p>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="container concept-grid">
+      <div>
+        <h2 class="h3">Needs Universal Hardware's approval before any launch</h2>
+        <ul class="concept-list concept-list--plain">
+          {approvals.map((d) => <li><Icon name="clipboard" size={18} /><p>{d}</p></li>)}
+        </ul>
+      </div>
+      <div>
+        <h2 class="h3">A possible production pathway</h2>
+        <p class="concept-p">Shown as a future architecture only. Scope would be agreed with management first.</p>
+        <ol class="roadmap">
+          {roadmap.map((r, i) => <li><span class="roadmap__n mono">{String(i + 1).padStart(2, '0')}</span><div><strong>{r.t}</strong><p>{r.d}</p></div></li>)}
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--mist section--tight">
+    <div class="container credits">
+      <h2 class="h3">Credits &amp; licences</h2>
+      <ul>
+        <li><strong>Universal Hardware wordmark:</strong> supplied reference image, displayed unaltered on light backgrounds. Belongs to Universal Hardware Company Ltd.</li>
+        <li><strong>3D drill:</strong> original procedural model built for this concept with Three.js (MIT). No third-party model or manufacturer marks.</li>
+        <li><strong>Category illustrations &amp; icons:</strong> original concept artwork.</li>
+        <li><strong>Map outline:</strong> Natural Earth 1:10m country boundaries (public domain).</li>
+        <li><strong>Typefaces:</strong> Archivo, Inter and JetBrains Mono (SIL Open Font License), self-hosted.</li>
+        <li><strong>Brand names</strong> are shown as plain text for identification and belong to their owners.</li>
+      </ul>
+      <p class="hint">See also: <a href="/about/#sources">full list of sources</a>.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .concept-statement {
+    font-size: clamp(1.15rem, 1rem + 0.7vw, 1.5rem);
+    line-height: 1.5;
+    color: #fff;
+    max-width: 50ch;
+  }
+  .concept-meta {
+    color: var(--on-dark-muted);
+  }
+  .concept-ctas {
+    margin-top: 6px;
+  }
+  .concept-ctas .btn {
+    white-space: normal;
+  }
+  .concept-grid {
+    display: grid;
+    gap: 40px;
+  }
+  @media (min-width: 960px) {
+    .concept-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+    }
+  }
+  .concept-list {
+    list-style: none;
+    display: grid;
+    gap: 12px;
+    margin-top: 18px;
+  }
+  .concept-list li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+  }
+  .concept-list :global(svg) {
+    color: var(--blue-600);
+    margin-top: 2px;
+  }
+  .concept-list p {
+    color: var(--steel);
+    font-size: 0.92rem;
+  }
+  .concept-list--plain li {
+    border: 0;
+    background: var(--mist);
+  }
+  .concept-list--plain p {
+    color: var(--ink);
+  }
+  .concept-h {
+    margin-top: 32px;
+  }
+  .concept-p {
+    margin-top: 12px;
+    color: var(--steel);
+    max-width: 62ch;
+  }
+  .privacy-grid {
+    display: grid;
+    gap: 14px;
+    margin-top: 24px;
+  }
+  @media (min-width: 760px) {
+    .privacy-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+  .privacy-card {
+    padding: 20px;
+    border-radius: var(--radius);
+    background: var(--paper);
+    border: 1px solid var(--line);
+  }
+  .privacy-card h3 {
+    font-size: 1.05rem;
+  }
+  .privacy-card p {
+    margin-top: 8px;
+    font-size: 0.9rem;
+    color: var(--steel);
+  }
+  .concept-ai {
+    margin-top: 24px;
+    color: var(--ink);
+  }
+  .roadmap {
+    list-style: none;
+    display: grid;
+    gap: 0;
+    margin-top: 18px;
+    border-left: 2px solid var(--blue-100);
+  }
+  .roadmap li {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 14px;
+    padding: 12px 0 12px 20px;
+  }
+  .roadmap li::before {
+    content: '';
+    position: absolute;
+    left: -7px;
+    top: 18px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--paper);
+    border: 2px solid var(--blue-600);
+  }
+  .roadmap__n {
+    color: var(--blue-600);
+    padding-top: 2px;
+  }
+  .roadmap p {
+    color: var(--steel);
+    font-size: 0.9rem;
+  }
+  .credits ul {
+    display: grid;
+    gap: 10px;
+    margin: 16px 0;
+    padding-left: 18px;
+    font-size: 0.92rem;
+  }
+</style>

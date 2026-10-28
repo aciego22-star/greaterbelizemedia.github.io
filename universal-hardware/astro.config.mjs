@@ -10,7 +10,7 @@ export default defineConfig({
   trailingSlash: 'always',
   build: {
     format: 'directory',
-    inlineStylesheets: 'auto',
+    inlineStylesheets: 'always',
     assets: '_assets',
   },
   integrations: [preact({ compat: false })],

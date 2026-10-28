@@ -1,0 +1,62 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Icon from '../../components/Icon.astro';
+import CatalogueSearch from '../../islands/CatalogueSearch.tsx';
+import { SOURCES, SOURCE_VIEWED } from '../../data/sources';
+---
+<Base
+  title="Products"
+  description="Search the twelve product categories listed on Universal Hardware's public website — power tools, welding, generators, water pumps, lawn and garden, motorcycles, household and more."
+  section="products"
+>
+  <PageHero
+    eyebrow="Product categories"
+    title="Find tools and equipment for the job."
+    lead="Search across the categories, product types and brands listed on Universal Hardware's website. Add anything useful to your Enquiry Summary as you go."
+    crumbs={[{ label: 'Products' }]}
+  />
+  <section class="section section--tight">
+    <div class="container">
+      <CatalogueSearch client:load />
+      <div class="products-foot">
+        <p class="notice">
+          <Icon name="info" />
+          <span>
+            Categories and product types come from Universal Hardware's
+            <a href={SOURCES.productListing.url} target="_blank" rel="noopener">Product Listing page</a>
+            (viewed {SOURCE_VIEWED}). No prices, models or stock levels are shown. Confirm current availability with a branch.
+          </span>
+        </p>
+        <div class="products-foot__cta">
+          <p><strong>Not sure where to start?</strong> Answer three quick questions.</p>
+          <a class="btn btn--ghost" href="/find/">Find the Right Product <Icon name="arrow-right" size={18} class="btn-arrow" /></a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .products-foot {
+    display: grid;
+    gap: 20px;
+    margin-top: 48px;
+  }
+  @media (min-width: 900px) {
+    .products-foot {
+      grid-template-columns: 1.4fr 1fr;
+      align-items: center;
+    }
+  }
+  .products-foot__cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 18px 20px;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+  }
+</style>

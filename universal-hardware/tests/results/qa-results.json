@@ -1,0 +1,992 @@
+{
+  "base": "http://localhost:4322",
+  "date": "2026-10-28T20:20:13.292Z",
+  "passed": 163,
+  "failed": 1,
+  "results": [
+    {
+      "group": "route",
+      "name": "/",
+      "pass": true,
+      "detail": "status 200, h1=1, noindex=true, disclaimer=true"
+    },
+    {
+      "group": "console",
+      "name": "/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "axe",
+      "name": "/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "network",
+      "name": "/ loads no third-party resources",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "route",
+      "name": "/products/",
+      "pass": true,
+      "detail": "status 200, h1=1, noindex=true, disclaimer=true"
+    },
+    {
+      "group": "console",
+      "name": "/products/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "axe",
+      "name": "/products/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "network",
+      "name": "/products/ loads no third-party resources",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "route",
+      "name": "/brands/",
+      "pass": true,
+      "detail": "status 200, h1=1, noindex=true, disclaimer=true"
+    },
+    {
+      "group": "console",
+      "name": "/brands/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "axe",
+      "name": "/brands/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "network",
+      "name": "/brands/ loads no third-party resources",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "route",
+      "name": "/locations/",
+      "pass": true,
+      "detail": "status 200, h1=1, noindex=true, disclaimer=true"
+    },
+    {
+      "group": "console",
+      "name": "/locations/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "axe",
+      "name": "/locations/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "network",
+      "name": "/locations/ loads no third-party resources",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "route",
+      "name": "/about/",
+      "pass": true,
+      "detail": "status 200, h1=1, noindex=true, disclaimer=true"
+    },
+    {
+      "group": "console",
+      "name": "/about/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "axe",
+      "name": "/about/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "network",
+      "name": "/about/ loads no third-party resources",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "route",
+      "name": "/concept/",
+      "pass": true,
+      "detail": "status 200, h1=1, noindex=true, disclaimer=true"
+    },
+    {
+      "group": "console",
+      "name": "/concept/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "axe",
+      "name": "/concept/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "network",
+      "name": "/concept/ loads no third-party resources",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "route",
+      "name": "/find/",
+      "pass": true,
+      "detail": "status 200, h1=1, noindex=true, disclaimer=true"
+    },
+    {
+      "group": "console",
+      "name": "/find/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "axe",
+      "name": "/find/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "network",
+      "name": "/find/ loads no third-party resources",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "route",
+      "name": "/products/power-tools/",
+      "pass": true,
+      "detail": "status 200, h1=1, noindex=true, disclaimer=true"
+    },
+    {
+      "group": "console",
+      "name": "/products/power-tools/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "axe",
+      "name": "/products/power-tools/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "network",
+      "name": "/products/power-tools/ loads no third-party resources",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "route",
+      "name": "/products/welding-supplies/",
+      "pass": true,
+      "detail": "status 200, h1=1, noindex=true, disclaimer=true"
+    },
+    {
+      "group": "console",
+      "name": "/products/welding-supplies/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "axe",
+      "name": "/products/welding-supplies/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "network",
+      "name": "/products/welding-supplies/ loads no third-party resources",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "route",
+      "name": "/products/generators/",
+      "pass": true,
+      "detail": "status 200, h1=1, noindex=true, disclaimer=true"
+    },
+    {
+      "group": "console",
+      "name": "/products/generators/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "axe",
+      "name": "/products/generators/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "network",
+      "name": "/products/generators/ loads no third-party resources",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "route",
+      "name": "/products/water-pumps/",
+      "pass": true,
+      "detail": "status 200, h1=1, noindex=true, disclaimer=true"
+    },
+    {
+      "group": "console",
+      "name": "/products/water-pumps/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "axe",
+      "name": "/products/water-pumps/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "network",
+      "name": "/products/water-pumps/ loads no third-party resources",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "route",
+      "name": "/products/lawn-and-garden/",
+      "pass": true,
+      "detail": "status 200, h1=1, noindex=true, disclaimer=true"
+    },
+    {
+      "group": "console",
+      "name": "/products/lawn-and-garden/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "axe",
+      "name": "/products/lawn-and-garden/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "network",
+      "name": "/products/lawn-and-garden/ loads no third-party resources",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "route",
+      "name": "/products/motorcycles/",
+      "pass": true,
+      "detail": "status 200, h1=1, noindex=true, disclaimer=true"
+    },
+    {
+      "group": "console",
+      "name": "/products/motorcycles/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "axe",
+      "name": "/products/motorcycles/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "network",
+      "name": "/products/motorcycles/ loads no third-party resources",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "route",
+      "name": "/products/household/",
+      "pass": true,
+      "detail": "status 200, h1=1, noindex=true, disclaimer=true"
+    },
+    {
+      "group": "console",
+      "name": "/products/household/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "axe",
+      "name": "/products/household/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "network",
+      "name": "/products/household/ loads no third-party resources",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "route",
+      "name": "/products/lighting-and-fans/",
+      "pass": true,
+      "detail": "status 200, h1=1, noindex=true, disclaimer=true"
+    },
+    {
+      "group": "console",
+      "name": "/products/lighting-and-fans/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "axe",
+      "name": "/products/lighting-and-fans/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "network",
+      "name": "/products/lighting-and-fans/ loads no third-party resources",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "route",
+      "name": "/products/woodworking/",
+      "pass": true,
+      "detail": "status 200, h1=1, noindex=true, disclaimer=true"
+    },
+    {
+      "group": "console",
+      "name": "/products/woodworking/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "axe",
+      "name": "/products/woodworking/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "network",
+      "name": "/products/woodworking/ loads no third-party resources",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "route",
+      "name": "/products/shop-tools/",
+      "pass": true,
+      "detail": "status 200, h1=1, noindex=true, disclaimer=true"
+    },
+    {
+      "group": "console",
+      "name": "/products/shop-tools/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "axe",
+      "name": "/products/shop-tools/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "network",
+      "name": "/products/shop-tools/ loads no third-party resources",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "route",
+      "name": "/products/agriculture/",
+      "pass": true,
+      "detail": "status 200, h1=1, noindex=true, disclaimer=true"
+    },
+    {
+      "group": "console",
+      "name": "/products/agriculture/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "axe",
+      "name": "/products/agriculture/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "network",
+      "name": "/products/agriculture/ loads no third-party resources",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "route",
+      "name": "/products/hand-tools/",
+      "pass": true,
+      "detail": "status 200, h1=1, noindex=true, disclaimer=true"
+    },
+    {
+      "group": "console",
+      "name": "/products/hand-tools/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "axe",
+      "name": "/products/hand-tools/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "network",
+      "name": "/products/hand-tools/ loads no third-party resources",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "route",
+      "name": "404 for unknown URL",
+      "pass": true,
+      "detail": "status 404"
+    },
+    {
+      "group": "route",
+      "name": "/products (no slash) resolves",
+      "pass": true,
+      "detail": "http://localhost:4322/products/"
+    },
+    {
+      "group": "overflow",
+      "name": "320×640 all routes",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "overflow",
+      "name": "375×812 all routes",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "overflow",
+      "name": "390×844 all routes",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "overflow",
+      "name": "430×932 all routes",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "overflow",
+      "name": "768×1024 all routes",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "overflow",
+      "name": "1024×768 all routes",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "overflow",
+      "name": "1440×900 all routes",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "nav",
+      "name": "header → Products",
+      "pass": true,
+      "detail": "http://localhost:4322/products/"
+    },
+    {
+      "group": "nav",
+      "name": "header → Brands",
+      "pass": true,
+      "detail": "http://localhost:4322/brands/"
+    },
+    {
+      "group": "nav",
+      "name": "header → Locations",
+      "pass": true,
+      "detail": "http://localhost:4322/locations/"
+    },
+    {
+      "group": "nav",
+      "name": "header → About",
+      "pass": true,
+      "detail": "http://localhost:4322/about/"
+    },
+    {
+      "group": "nav",
+      "name": "header Explore Products CTA",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "nav",
+      "name": "header Find the Right Product CTA",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "nav",
+      "name": "hero secondary CTA → #finder",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "nav",
+      "name": "8 department tiles link to live category pages",
+      "pass": true,
+      "detail": "/products/power-tools/ /products/welding-supplies/ /products/generators/ /products/water-pumps/ /products/lawn-and-garden/ /products/motorcycles/ /products/household/ /products/agriculture/"
+    },
+    {
+      "group": "nav",
+      "name": "all 25 internal link targets resolve",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "mobile-menu",
+      "name": "opens as modal dialog with focus inside",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "mobile-menu",
+      "name": "Escape closes and returns focus to trigger",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "mobile-menu",
+      "name": "menu link navigates",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "mobile-menu",
+      "name": "no tiny standalone tap targets (<24px) on /locations/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "search",
+      "name": "shows all 12 categories by default",
+      "pass": true,
+      "detail": "12"
+    },
+    {
+      "group": "search",
+      "name": "\"submersible pump\" → Water Pumps with highlighted sub-type",
+      "pass": true,
+      "detail": "Water Pumps | Submersible pumps, Jet pumps (pressure systems), Sprinkler pumps, Booster pumps, Sump pumps, Marine pumps, Pressure pumps, Gas and diesel powered water pumps (123ms)"
+    },
+    {
+      "group": "search",
+      "name": "query synced to URL",
+      "pass": true,
+      "detail": "http://localhost:4322/products/?q=submersible+pump"
+    },
+    {
+      "group": "search",
+      "name": "\"MIG welder\" → Welding Supplies",
+      "pass": true,
+      "detail": "Welding Supplies"
+    },
+    {
+      "group": "search",
+      "name": "\"makita\" → Power Tools",
+      "pass": true,
+      "detail": "Power Tools, Generators"
+    },
+    {
+      "group": "search",
+      "name": "\"planta\" → Generators",
+      "pass": true,
+      "detail": "Welding Supplies, Generators"
+    },
+    {
+      "group": "search",
+      "name": "\"bomba de agua\" → Water Pumps",
+      "pass": true,
+      "detail": "Water Pumps"
+    },
+    {
+      "group": "search",
+      "name": "\"chainsaws\" → Lawn and Garden",
+      "pass": true,
+      "detail": "Lawn and Garden"
+    },
+    {
+      "group": "search",
+      "name": "\"fridge\" → Household",
+      "pass": true,
+      "detail": "Household"
+    },
+    {
+      "group": "search",
+      "name": "\"barbed wire\" → Agriculture",
+      "pass": true,
+      "detail": "Agriculture"
+    },
+    {
+      "group": "search",
+      "name": "\"genrator\" → Generators",
+      "pass": true,
+      "detail": "Generators, Motorcycles & Equipment"
+    },
+    {
+      "group": "search",
+      "name": "\"scooter\" → Motorcycles & Equipment",
+      "pass": true,
+      "detail": "Motorcycles & Equipment"
+    },
+    {
+      "group": "search",
+      "name": "no-match query shows finished empty state",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "search",
+      "name": "empty state \"clear\" restores 12",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "search",
+      "name": "department filter (Home & Appliances)",
+      "pass": true,
+      "detail": "Household, Lighting and Fans"
+    },
+    {
+      "group": "search",
+      "name": "brand filter (Lincoln Electric) → Welding + Generators",
+      "pass": true,
+      "detail": "Welding Supplies, Generators"
+    },
+    {
+      "group": "search",
+      "name": "deep link ?q=hammer+drill restores results on load",
+      "pass": true,
+      "detail": "Power Tools"
+    },
+    {
+      "group": "finder",
+      "name": "six need paths",
+      "pass": true,
+      "detail": "Power tools, Backup power, Water pumping, Outdoor maintenance, Motorcycles, Household needs"
+    },
+    {
+      "group": "finder",
+      "name": "backup power → Generators with electrician caution",
+      "pass": true,
+      "detail": "Generators"
+    },
+    {
+      "group": "finder",
+      "name": "back navigation returns to last question",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "finder",
+      "name": "farm answer adds Water Pumps as related",
+      "pass": true,
+      "detail": "Generators, Water Pumps, Lighting and Fans"
+    },
+    {
+      "group": "enquiry",
+      "name": "add from finder updates header count + toast",
+      "pass": true,
+      "detail": "count=1 toast=\"Generators added to your Enquiry SummaryView summary\""
+    },
+    {
+      "group": "finder",
+      "name": "deep well → Submersible pumps",
+      "pass": true,
+      "detail": "Submersible pumps, Jet pumps (pressure systems), Booster pumps, Pressure pumps"
+    },
+    {
+      "group": "enquiry",
+      "name": "Build an Enquiry Summary opens drawer with items",
+      "pass": true,
+      "detail": "Generators, Water Pumps"
+    },
+    {
+      "group": "enquiry",
+      "name": "drawer is modal (aria-modal + inert background)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "enquiry",
+      "name": "focus is trapped inside drawer (40 tabs)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "enquiry",
+      "name": "summary includes categories, use, branch, notes and disclaimer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "enquiry",
+      "name": "Copy summary writes text to clipboard + announces",
+      "pass": true,
+      "detail": "Copied to your clipboard. Nothing was sent."
+    },
+    {
+      "group": "enquiry",
+      "name": "remove item",
+      "pass": true,
+      "detail": "Generators"
+    },
+    {
+      "group": "enquiry",
+      "name": "add category from drawer select",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "enquiry",
+      "name": "Escape closes drawer and restores background",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "enquiry",
+      "name": "draft persists across navigation (session)",
+      "pass": true,
+      "detail": "pressed=true count=2"
+    },
+    {
+      "group": "enquiry",
+      "name": "category page toggle removes item",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "enquiry",
+      "name": "Reset requires confirmation, then clears",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "network",
+      "name": "finder + enquiry flows made no third-party requests",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "guide",
+      "name": "identified as rule-based concept, not live AI",
+      "pass": true,
+      "detail": "Interactive concept · rule-based, not live AI"
+    },
+    {
+      "group": "guide",
+      "name": "generator asks appliances",
+      "pass": true,
+      "detail": "Universal Hardware's website lists generators for a wide range of applications, from small portable units up to industri"
+    },
+    {
+      "group": "guide",
+      "name": "generator asks frequency",
+      "pass": true,
+      "detail": "Thanks. Will it be for occasional outages, or will it run regularly? Duty cycle makes a real difference to the right typ"
+    },
+    {
+      "group": "guide",
+      "name": "generator recommends electrician",
+      "pass": true,
+      "detail": "For keeping essentials like lights, a fridge and fans running during occasional outages, here's how I'd frame it for the"
+    },
+    {
+      "group": "guide",
+      "name": "drill distinguishes hammer vs standard",
+      "pass": true,
+      "detail": "Concrete and steel is a common combination to plan for. Universal Hardware's website lists hammer drills, speed drills a"
+    },
+    {
+      "group": "guide",
+      "name": "pump clarifies source/depth",
+      "pass": true,
+      "detail": "Happy to help narrow it down. Universal Hardware's website lists submersible, jet (pressure system), booster, pressure, "
+    },
+    {
+      "group": "guide",
+      "name": "motorbikes → Meilun & Lifan page, no availability",
+      "pass": true,
+      "detail": "Universal Hardware's website has a Meilun & Lifan page covering scooters and cub bikes, street, trail and cargo motorcyc"
+    },
+    {
+      "group": "guide",
+      "name": "Belize City branch details",
+      "pass": true,
+      "detail": "Universal Hardware's website lists the Belize City branch here: Belize City: 3380 Chetumal Street, Belama Phase 2, Beliz"
+    },
+    {
+      "group": "guide",
+      "name": "quote → cannot transmit, offers summary",
+      "pass": true,
+      "detail": "I can't send quotes or get prices: this is an independent concept demonstration, and it can't send requests to Universal"
+    },
+    {
+      "group": "guide",
+      "name": "quote reply offers Open Enquiry Summary action",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "guide",
+      "name": "Spanish mode responds in Spanish",
+      "pass": true,
+      "detail": "Con gusto le ayudo. El sitio web de Universal Hardware incluye bombas sumergible"
+    },
+    {
+      "group": "guide",
+      "name": "Escape closes panel",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "guide",
+      "name": "category page hands a contextual prompt to the guide",
+      "pass": true,
+      "detail": "I need a pump for my home water supply."
+    },
+    {
+      "group": "network",
+      "name": "guide conversations made no third-party requests",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "links",
+      "name": "tel: links match website-listed numbers",
+      "pass": true,
+      "detail": "tel:+5018230254 tel:+5018800254 tel:+5012244140 tel:+5012800254"
+    },
+    {
+      "group": "links",
+      "name": "wa.me links match website-listed WhatsApp numbers",
+      "pass": true,
+      "detail": "https://wa.me/5016529933 https://wa.me/5016680311 https://wa.me/5016673937 https://wa.me/5016529330"
+    },
+    {
+      "group": "links",
+      "name": "external links open with rel=noopener",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "links",
+      "name": "official-site links present and point to universalhardware.bz",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "branch",
+      "name": "preferred branch persists for the session",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "privacy",
+      "name": "no localStorage keys or cookies written",
+      "pass": true,
+      "detail": "{\"local\":[],\"cookies\":\"\"}"
+    },
+    {
+      "group": "network",
+      "name": "no third-party requests on navigation",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "3d",
+      "name": "WebGL bundle not loaded before first paint (poster first)",
+      "pass": true,
+      "detail": "state at load: poster, scene chunks at load: 0"
+    },
+    {
+      "group": "3d",
+      "name": "real-time scene initialises (state=ready)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "3d",
+      "name": "idle motion animates",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "3d",
+      "name": "Pause 3D motion stops animation",
+      "pass": true,
+      "detail": "Resume 3D motion"
+    },
+    {
+      "group": "3d",
+      "name": "drag rotates the model",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "3d",
+      "name": "touch-action pan-y (no vertical scroll trap)",
+      "pass": true,
+      "detail": "pan-y"
+    },
+    {
+      "group": "3d",
+      "name": "prefers-reduced-motion: no idle animation",
+      "pass": false,
+      "detail": ""
+    },
+    {
+      "group": "motion",
+      "name": "reduced motion: reveal content visible immediately",
+      "pass": true,
+      "detail": "0 hidden"
+    },
+    {
+      "group": "3d",
+      "name": "no-WebGL browser: honest static render + \"Static render\" badge",
+      "pass": true,
+      "detail": "state=fallback"
+    },
+    {
+      "group": "motion",
+      "name": "footer Reduce motion toggle applies and persists for session",
+      "pass": true,
+      "detail": ""
+    }
+  ]
+}

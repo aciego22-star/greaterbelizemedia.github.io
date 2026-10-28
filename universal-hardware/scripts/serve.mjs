@@ -3,6 +3,7 @@
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
+import zlib from 'node:zlib';
 
 const root = path.resolve(process.argv[2] || 'dist');
 const port = Number(process.argv[3] || 4322);
@@ -34,7 +35,17 @@ http.createServer((req, res) => {
       res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' });
       return res.end(fs.existsSync(nf) ? fs.readFileSync(nf) : 'Not found');
     }
-    res.writeHead(200, { 'Content-Type': types[path.extname(file)] || 'application/octet-stream', 'Cache-Control': 'no-cache' });
+    const type = types[path.extname(file)] || 'application/octet-stream';
+    const headers = { 'Content-Type': type, 'Cache-Control': 'no-cache', Vary: 'Accept-Encoding' };
+    // Compress text like Netlify does, so local measurements are representative.
+    if (/text|javascript|json|svg|manifest|xml/.test(type) && /br/.test(req.headers['accept-encoding'] || '')) {
+      headers['Content-Encoding'] = 'br';
+      buf = zlib.brotliCompressSync(buf);
+    } else if (/text|javascript|json|svg|manifest|xml/.test(type) && /gzip/.test(req.headers['accept-encoding'] || '')) {
+      headers['Content-Encoding'] = 'gzip';
+      buf = zlib.gzipSync(buf);
+    }
+    res.writeHead(200, headers);
     res.end(buf);
   });
 }).listen(port, () => console.log(`serving ${root} on http://localhost:${port}`));

@@ -1,0 +1,93 @@
+---
+interface Crumb {
+  href?: string;
+  label: string;
+}
+interface Props {
+  eyebrow?: string;
+  title: string;
+  lead?: string;
+  crumbs?: Crumb[];
+  dark?: boolean;
+}
+const { eyebrow, title, lead, crumbs = [], dark = false } = Astro.props;
+---
+<section class:list={['page-hero', { 'page-hero--dark on-dark': dark }]}>
+  <div class="page-hero__grid" aria-hidden="true"></div>
+  <div class="container page-hero__inner">
+    {
+      crumbs.length > 0 && (
+        <nav aria-label="Breadcrumb">
+          <ol class="crumbs">
+            <li><a href="/">Home</a></li>
+            {crumbs.map((c) => (
+              <li>{c.href ? <a href={c.href}>{c.label}</a> : <span aria-current="page">{c.label}</span>}</li>
+            ))}
+          </ol>
+        </nav>
+      )
+    }
+    <div class="page-hero__copy">
+      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+      <h1 class="h1 page-hero__title">{title}</h1>
+      {lead && <p class="lead page-hero__lead">{lead}</p>}
+      <slot />
+    </div>
+    <slot name="aside" />
+  </div>
+</section>
+
+<style>
+  .page-hero {
+    position: relative;
+    overflow: hidden;
+    padding-block: clamp(32px, 5vw, 64px) clamp(40px, 6vw, 80px);
+    background:
+      radial-gradient(60% 80% at 100% 0%, var(--blue-50), transparent 70%),
+      var(--paper);
+    border-bottom: 1px solid var(--line);
+  }
+  .page-hero--dark {
+    background:
+      radial-gradient(60% 80% at 100% 0%, rgba(23, 104, 180, 0.4), transparent 70%),
+      var(--graphite);
+    border-bottom: 0;
+    color: var(--on-dark);
+  }
+  .page-hero--dark .page-hero__title {
+    color: #fff;
+  }
+  .page-hero--dark :global(.crumbs a),
+  .page-hero--dark :global(.crumbs) {
+    color: var(--on-dark-muted);
+  }
+  .page-hero__grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(13, 28, 44, 0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(13, 28, 44, 0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: linear-gradient(to left, #000, transparent 70%);
+    -webkit-mask-image: linear-gradient(to left, #000, transparent 70%);
+    pointer-events: none;
+  }
+  .page-hero--dark .page-hero__grid {
+    background-image:
+      linear-gradient(to right, rgba(173, 199, 226, 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(173, 199, 226, 0.06) 1px, transparent 1px);
+  }
+  .page-hero__inner {
+    position: relative;
+    display: grid;
+    gap: 28px;
+  }
+  .page-hero__copy {
+    display: grid;
+    gap: 18px;
+    max-width: 820px;
+  }
+  .page-hero__lead {
+    max-width: 58ch;
+  }
+</style>

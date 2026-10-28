@@ -1,0 +1,61 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import ProductFinder from '../islands/ProductFinder.tsx';
+---
+<Base
+  title="Find the Right Product"
+  description="Answer two or three quick questions and get matched to the product categories listed on Universal Hardware's website."
+  section="find"
+>
+  <PageHero
+    eyebrow="Product finder"
+    title="Find the right product."
+    lead="Pick what you're working on, answer a few quick questions and we'll point you to the categories and product types worth asking the branch about."
+    crumbs={[{ label: 'Find the Right Product' }]}
+  >
+    <p class="find-note"><Icon name="info" size={16} /> Rule-based guide using public category data. No account and no personal details needed.</p>
+  </PageHero>
+  <section class="section section--tight">
+    <div class="container">
+      <ProductFinder client:load variant="light" headingLevel={2} />
+      <div class="find-alt">
+        <p>Prefer to browse or describe it in your own words?</p>
+        <div class="find-alt__actions">
+          <a class="btn btn--ghost" href="/products/">Browse all categories</a>
+          <button type="button" class="btn btn--ghost" data-open-guide><Icon name="guide" size={18} /> Ask the Product Guide</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .find-note {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.88rem;
+    color: var(--steel);
+  }
+  .find-note :global(svg) {
+    color: var(--blue-600);
+  }
+  .find-alt {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-top: 32px;
+    padding: 20px;
+    border-radius: var(--radius);
+    background: var(--mist);
+  }
+  .find-alt__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+</style>

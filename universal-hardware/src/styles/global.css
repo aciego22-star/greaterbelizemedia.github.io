@@ -6,15 +6,15 @@
 @font-face {
   font-family: 'Archivo';
   src: url('/fonts/archivo-var.woff2') format('woff2-variations');
-  font-weight: 100 900;
-  font-stretch: 62% 125%;
+  font-weight: 600 800;
+  font-stretch: 100% 112%;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Inter';
   src: url('/fonts/inter-var.woff2') format('woff2-variations');
-  font-weight: 100 900;
+  font-weight: 400 700;
   font-style: normal;
   font-display: swap;
 }
@@ -759,8 +759,10 @@ ol {
   *::before,
   *::after {
     animation-duration: 0.001ms !important;
+    animation-delay: 0s !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
+    transition-delay: 0s !important;
   }
 }
 html[data-motion='reduced'] [data-reveal] {
@@ -772,8 +774,10 @@ html[data-motion='reduced'] *,
 html[data-motion='reduced'] *::before,
 html[data-motion='reduced'] *::after {
   animation-duration: 0.001ms !important;
+  animation-delay: 0s !important;
   animation-iteration-count: 1 !important;
   transition-duration: 0.001ms !important;
+  transition-delay: 0s !important;
 }
 
 /* Prevent body scroll when a dialog/drawer is open */

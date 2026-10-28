@@ -128,7 +128,15 @@ function floorMaterial(): ShaderMaterial {
   });
 }
 
-export function createDrillScene(canvas: HTMLCanvasElement, host: HTMLElement, opts: SceneOptions): SceneController {
+/** Give the main thread back between heavy setup steps (keeps input responsive). */
+const yieldToMain = () =>
+  new Promise<void>((resolve) => {
+    const sch = (globalThis as { scheduler?: { yield?: () => Promise<void> } }).scheduler;
+    if (sch?.yield) sch.yield().then(resolve);
+    else setTimeout(resolve, 0);
+  });
+
+export async function createDrillScene(canvas: HTMLCanvasElement, host: HTMLElement, opts: SceneOptions): Promise<SceneController> {
   const renderer = new WebGLRenderer({
     canvas,
     antialias: true,
@@ -136,18 +144,21 @@ export function createDrillScene(canvas: HTMLCanvasElement, host: HTMLElement, o
     powerPreference: opts.lowPower ? 'low-power' : 'high-performance',
     preserveDrawingBuffer: !!opts.capture,
   });
-  const maxDpr = opts.lowPower ? 1.5 : 2;
+  const maxDpr = opts.capture ? 3 : opts.lowPower ? 1.5 : 2;
   let dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
   renderer.setPixelRatio(dpr);
   renderer.setClearColor(0x000000, 0);
   renderer.outputColorSpace = SRGBColorSpace;
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.12;
-  renderer.shadowMap.enabled = true;
+  // Low-power devices rely on the baked contact shadow only.
+  renderer.shadowMap.enabled = !opts.lowPower;
   renderer.shadowMap.type = PCFSoftShadowMap;
 
+  await yieldToMain();
   const scene = new Scene();
   const envTex = buildEnvironment(renderer);
+  await yieldToMain();
   scene.environment = envTex;
   scene.environmentIntensity = 1.1;
 
@@ -156,7 +167,7 @@ export function createDrillScene(canvas: HTMLCanvasElement, host: HTMLElement, o
   /* Lights */
   const key = new DirectionalLight('#fff6ec', 2.8);
   key.position.set(-3.2, 6.5, 4.5);
-  key.castShadow = true;
+  key.castShadow = !opts.lowPower;
   key.shadow.mapSize.set(opts.lowPower ? 512 : 1024, opts.lowPower ? 512 : 1024);
   key.shadow.camera.left = -2.4;
   key.shadow.camera.right = 2.4;
@@ -241,7 +252,9 @@ export function createDrillScene(canvas: HTMLCanvasElement, host: HTMLElement, o
   owned.push(floorMat, floorGeo);
 
   /* Drill */
+  await yieldToMain();
   const drill = buildDrill({ lowDetail: opts.lowPower });
+  await yieldToMain();
   const pivot = new Group();
   pivot.add(drill.group);
   scene.add(pivot);
@@ -255,15 +268,18 @@ export function createDrillScene(canvas: HTMLCanvasElement, host: HTMLElement, o
     const aspect = w / h;
     camera.aspect = aspect;
     // Fit the object (approx. radius) in view for both portrait and landscape.
-    const radius = 2.28;
+    // Small stages get a little more headroom so the HUD never crowds the model.
+    const small = w < 640;
+    const radius = small ? 2.45 : 2.28;
+    const ty = small ? target.y + 0.12 : target.y;
     const vFov = MathUtils.degToRad(camera.fov);
     const distV = radius / Math.sin(vFov / 2);
     const hFov = 2 * Math.atan(Math.tan(vFov / 2) * aspect);
     const distH = radius / Math.sin(hFov / 2);
     const dist = Math.max(distV, distH) * (aspect < 1 ? 0.98 : 0.94);
     const elev = MathUtils.degToRad(15);
-    camera.position.set(0, target.y + Math.sin(elev) * dist, Math.cos(elev) * dist);
-    camera.lookAt(target.x, target.y, target.z);
+    camera.position.set(0, ty + Math.sin(elev) * dist, Math.cos(elev) * dist);
+    camera.lookAt(target.x, ty, target.z);
     camera.updateProjectionMatrix();
   }
   frame();
@@ -284,20 +300,23 @@ export function createDrillScene(canvas: HTMLCanvasElement, host: HTMLElement, o
   let pointerY = 0;
   let px = 0;
   let py = 0;
-  let intro = opts.capture ? 1 : 0;
+  // The static poster shows the resting pose, so the live scene starts there
+  // and eases into idle motion — no jump when it cross-fades in.
+  let intro = 1;
   let dragging = false;
   let lastDragX = 0;
   let firstFrame = true;
   let slowFrames = 0;
 
   function applyPose() {
-    const idle = reduced || paused ? 0 : 1;
-    const sway = Math.sin(t * 0.32) * 0.34 * idle;
+    // `t` only advances while motion is allowed, so pausing freezes the pose
+    // exactly where it is instead of snapping back.
+    const sway = Math.sin(t * 0.32) * 0.34;
     const e = 1 - Math.pow(1 - intro, 3);
     yaw = baseYaw + sway + userYaw + px * 0.32 + (1 - e) * -0.9;
-    pitch = py * 0.1 + Math.sin(t * 0.5) * 0.025 * idle;
+    pitch = py * 0.1 + Math.sin(t * 0.5) * 0.025;
     pivot.rotation.set(pitch, yaw, 0);
-    drill.group.position.y = (1 - e) * -0.35 + Math.sin(t * 0.8) * 0.025 * idle;
+    drill.group.position.y = (1 - e) * -0.35 + Math.sin(t * 0.8) * 0.025;
     key.intensity = 2.8 * (0.35 + 0.65 * e);
     rim.intensity = 3.2 * e;
   }
@@ -312,6 +331,11 @@ export function createDrillScene(canvas: HTMLCanvasElement, host: HTMLElement, o
 
   function tick(now: number) {
     raf = 0;
+    // Cap low-power devices at ~30 fps to save battery.
+    if (opts.lowPower && now - last < 30 && !dragging) {
+      raf = requestAnimationFrame(tick);
+      return;
+    }
     const dt = Math.min(0.05, (now - last) / 1000);
     last = now;
     const animating = !(reduced || paused);
@@ -324,8 +348,8 @@ export function createDrillScene(canvas: HTMLCanvasElement, host: HTMLElement, o
     if (!dragging) {
       userVel *= Math.pow(0.04, dt);
       userYaw += userVel * dt;
-      // Ease the user rotation back toward the presentation pose.
-      if (Math.abs(userVel) < 0.05) userYaw *= 1 - Math.min(1, dt * 0.35);
+      // Ease the user rotation back toward the presentation pose (only while motion is on).
+      if (animating && Math.abs(userVel) < 0.05) userYaw *= 1 - Math.min(1, dt * 0.35);
     }
     (floorMat.uniforms.uTime.value as number) = animating ? t : (floorMat.uniforms.uTime.value as number);
     applyPose();
@@ -339,8 +363,8 @@ export function createDrillScene(canvas: HTMLCanvasElement, host: HTMLElement, o
       frame();
       slowFrames = 0;
     }
-    const settling = intro < 1 || dragging || Math.abs(userVel) > 0.01 || Math.abs(userYaw) > 0.002 ||
-      Math.abs(pointerX - px) > 0.002 || Math.abs(pointerY - py) > 0.002;
+    const settling =
+      intro < 1 || dragging || Math.abs(userVel) > 0.01 || Math.abs(pointerX - px) > 0.002 || Math.abs(pointerY - py) > 0.002;
     if (visible && (animating || settling)) raf = requestAnimationFrame(tick);
   }
 
@@ -362,7 +386,7 @@ export function createDrillScene(canvas: HTMLCanvasElement, host: HTMLElement, o
       kick();
       return;
     }
-    if (!fine || reduced) return;
+    if (!fine || reduced || paused) return;
     const r = host.getBoundingClientRect();
     pointerX = MathUtils.clamp(((e.clientX - r.left) / r.width) * 2 - 1, -1, 1);
     pointerY = MathUtils.clamp(((e.clientY - r.top) / r.height) * 2 - 1, -1, 1);
@@ -421,6 +445,13 @@ export function createDrillScene(canvas: HTMLCanvasElement, host: HTMLElement, o
   });
   ro.observe(host);
 
+  // Compile shaders without blocking the main thread where supported.
+  try {
+    await renderer.compileAsync(scene, camera);
+  } catch {
+    /* fall back to compiling on first render */
+  }
+
   if (opts.capture) {
     intro = 1;
     applyPose();
@@ -432,6 +463,11 @@ export function createDrillScene(canvas: HTMLCanvasElement, host: HTMLElement, o
   return {
     setPaused(p) {
       paused = p;
+      if (p) {
+        // Freeze pointer influence where it is; only an explicit drag moves the model.
+        pointerX = px;
+        pointerY = py;
+      }
       kick();
     },
     isPaused: () => paused,
