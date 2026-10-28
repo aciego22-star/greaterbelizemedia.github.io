@@ -8,6 +8,9 @@ seed: 'news-bpa-registration-2027'
 image: '/media/hero-bpa-desktop.jpg'
 imageAlt: 'Belize Port Authority Registration and Licensing Exercise 2027'
 heroImage: '/media/life/caye-shoreline.jpg'
+# The notice itself opens the article, so a cover would only repeat it.
+# `image` above still supplies the share card and the blog listing picture.
+hideCover: true
 cardImage: '/media/hero-bpa-desktop.jpg'
 cardImageAlt: 'Belize Port Authority Registration and Licensing Exercise 2027'
 seoTitle: 'BPA Registration & Licensing Exercise 2027'

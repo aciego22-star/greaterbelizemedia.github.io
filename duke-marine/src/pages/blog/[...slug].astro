@@ -85,15 +85,17 @@ const prevInSeries = seriesPosts.find((p) => (p.data.seriesPart ?? 0) === (part 
       </div>
     </header>
 
-    <div class="article__cover container">
-      <img
-        src={cover}
-        alt={coverAlt}
-        class="article__cover-img"
-        style={`object-position:${coverPosition}`}
-        loading="lazy"
-      />
-    </div>
+    {!post.data.hideCover && (
+      <div class="article__cover container">
+        <img
+          src={cover}
+          alt={coverAlt}
+          class="article__cover-img"
+          style={`object-position:${coverPosition}`}
+          loading="lazy"
+        />
+      </div>
+    )}
 
     <div class="container article__body">
       <div class="prose article__prose">

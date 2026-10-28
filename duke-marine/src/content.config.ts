@@ -24,6 +24,12 @@ const news = defineCollection({
     cardImageAlt: z.string().optional(),
     /** Decorative full-bleed image behind the article title. */
     heroImage: z.string().optional(),
+    /**
+     * Drop the cover picture from the top of the article. For a piece that
+     * opens with its own artwork, such as a public notice, the cover would
+     * only repeat it. `image` still feeds the share card and the listing.
+     */
+    hideCover: z.boolean().default(false),
     /** SEO overrides; fall back to title and excerpt when omitted. */
     seoTitle: z.string().optional(),
     metaDescription: z.string().optional(),

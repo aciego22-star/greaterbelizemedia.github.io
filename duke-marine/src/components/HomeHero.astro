@@ -11,13 +11,14 @@
 // A slide with `href` renders as a clickable link (whole slide navigates);
 // slides without `href` are decorative images.
 const slides = [
+  // Public notice, first so it is the slide a visitor lands on. It links to our
+  // own write-up of the announcement rather than straight out to the Port
+  // Authority, so a visitor who taps it stays here and reads the requirements
+  // first. The timing is untouched: every slide still holds for 7s.
+  { src: '/media/hero-bpa.jpg', desktop: '/media/hero-bpa-desktop.jpg', href: '/blog/belize-port-authority-registration-licensing-2027', label: 'Belize Port Authority Registration and Licensing Exercise 2027. Read the required documents.' },
   { src: '/media/hero-catch.jpg', desktop: '/media/hero-catch-desktop.jpg', label: 'Built for the catch, fishing, diving and boat supplies' },
   { src: '/media/hero-dive.jpg', desktop: '/media/hero-dive-desktop.jpg', label: 'Every great dive starts with the right gear' },
   { src: '/media/hero-careers.jpg', desktop: '/media/hero-careers-desktop.jpg', href: '/careers', label: 'Careers at Duke Marine. Explore current employment opportunities.' },
-  // Public notice. The slide links to our own write-up of the announcement
-  // rather than straight out to the Port Authority, so a visitor who taps it
-  // stays on this site and reads the requirements here first.
-  { src: '/media/hero-bpa.jpg', desktop: '/media/hero-bpa-desktop.jpg', href: '/blog/belize-port-authority-registration-licensing-2027', label: 'Belize Port Authority Registration and Licensing Exercise 2027. Read the required documents.' },
 ];
 ---
 
