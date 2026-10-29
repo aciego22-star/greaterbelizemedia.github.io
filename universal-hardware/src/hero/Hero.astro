@@ -55,7 +55,7 @@ const quick = [
         <source type="image/webp" srcset="/hero/drill-poster-desktop.webp" width="1680" height="1288" />
         <img
           src="/hero/drill-poster-desktop.png"
-          alt="Studio render of an unbranded graphite and blue cordless drill standing on a lit plinth."
+          alt="3D render of a black Makita 12V cordless drill with its 1.5Ah battery, standing on a lit plinth."
           width="1680"
           height="1288"
           fetchpriority="high"
@@ -66,7 +66,7 @@ const quick = [
 
       <div class="hero__hud">
         <div class="hero__hud-top">
-          <p class="mono hero__fig">Fig. 01 — Cordless drill</p>
+          <p class="mono hero__fig">Fig. 01 — Makita 12V drill</p>
           <p class="tag tag--dark hero__badge">
             <span class="tag-dot" aria-hidden="true"></span>
             <span class="hero__badge-live">Real-time 3D</span>
@@ -76,7 +76,7 @@ const quick = [
         <div class="hero__hud-bottom">
           <p class="hero__caption">
             <span class="hero__hint"><Icon name="rotate" size={15} /> Drag to rotate</span>
-            <span class="hero__disclose">Illustrative concept model — not a specific product.</span>
+            <span class="hero__disclose">3D model of the Makita drill in Universal Hardware’s 2026 promotion<span class="hero__disclose-more">. Not confirmed stock</span>.</span>
           </p>
           <button type="button" class="hero__pause" data-hero-pause aria-pressed="false">
             <span data-icon-pause><Icon name="pause" size={16} /></span>
@@ -476,7 +476,10 @@ const quick = [
       margin-top: 16px;
     }
     .hero__disclose {
-      max-width: 22ch;
+      max-width: 30ch;
+    }
+    .hero__disclose-more {
+      display: none;
     }
     .hero__pause [data-label] {
       position: absolute;

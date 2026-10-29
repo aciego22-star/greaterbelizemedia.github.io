@@ -1,5 +1,5 @@
 /**
- * Signature hero scene: the procedural drill on a studio plinth.
+ * Signature hero scene: the procedural Makita drill on a studio plinth.
  * Loaded lazily (dynamic import) only after the page's primary content has
  * rendered. Exposes a small controller so the host can pause, resume,
  * render a still frame and dispose everything on navigation.
@@ -291,7 +291,8 @@ export async function createDrillScene(canvas: HTMLCanvasElement, host: HTMLElem
   let raf = 0;
   let last = performance.now();
   let t = 0;
-  const baseYaw = opts.yaw ?? -0.62;
+  // Left side towards the viewer with the chuck forward, as in the product photo.
+  const baseYaw = opts.yaw ?? MathUtils.degToRad(218);
   let yaw = baseYaw;
   let pitch = 0;
   let userYaw = 0;

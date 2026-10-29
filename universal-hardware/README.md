@@ -140,7 +140,7 @@ This project lives in `universal-hardware/` inside the `greaterbelizemedia.githu
 
 - [`SOURCES.md`](SOURCES.md): public pages used and the claims each supports
 - [`ASSET_ATTRIBUTIONS.md`](ASSET_ATTRIBUTIONS.md): every visual asset and its licence
-- [`3D_ASSET_LICENSE.md`](3D_ASSET_LICENSE.md): the procedural drill model
+- [`3D_ASSET_LICENSE.md`](3D_ASSET_LICENSE.md): the procedural Makita drill model and its reference photo
 - [`DEMO_CAVEATS.md`](DEMO_CAVEATS.md): restrictions, open questions and approvals required
 - [`QA_REPORT.md`](QA_REPORT.md): test matrix, measurements and outstanding issues
 - [`PITCH_STORYBOARD.md`](PITCH_STORYBOARD.md): 45-second walkthrough
