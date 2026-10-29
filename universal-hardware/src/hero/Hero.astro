@@ -1,5 +1,9 @@
 ---
 import Icon from '../components/Icon.astro';
+// Content-hashed poster files written by scripts/render-poster.cjs.
+import posters from './posters.json';
+
+const { desktop: pd, mobile: pm } = posters;
 
 const quick = [
   { href: '/products/power-tools/', label: 'Power Tools' },
@@ -49,15 +53,15 @@ const quick = [
         </svg>
       </div>
       <picture class="hero__poster">
-        <source media="(max-width: 999px)" type="image/avif" srcset="/hero/drill-poster-mobile.avif" width="892" height="840" />
-        <source media="(max-width: 999px)" type="image/webp" srcset="/hero/drill-poster-mobile.webp" width="892" height="840" />
-        <source type="image/avif" srcset="/hero/drill-poster-desktop.avif" width="1680" height="1288" />
-        <source type="image/webp" srcset="/hero/drill-poster-desktop.webp" width="1680" height="1288" />
+        <source media="(max-width: 999px)" type="image/avif" srcset={`/hero/${pm.avif}`} width={pm.width} height={pm.height} />
+        <source media="(max-width: 999px)" type="image/webp" srcset={`/hero/${pm.webp}`} width={pm.width} height={pm.height} />
+        <source type="image/avif" srcset={`/hero/${pd.avif}`} width={pd.width} height={pd.height} />
+        <source type="image/webp" srcset={`/hero/${pd.webp}`} width={pd.width} height={pd.height} />
         <img
-          src="/hero/drill-poster-desktop.png"
+          src={`/hero/${pd.png}`}
           alt="3D model of the black Makita 12V cordless drill, built from Universal Hardware’s product photo, floating above a lit plinth."
-          width="1680"
-          height="1288"
+          width={pd.width}
+          height={pd.height}
           fetchpriority="high"
           decoding="async"
         />

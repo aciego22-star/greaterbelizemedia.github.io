@@ -8,6 +8,8 @@
  *  - hp333d.webp / hp333d-lo.webp: the photo cut-out, colour + alpha matte;
  *  - hp333d-depth.png: front and back surface depth on a 3 px grid;
  *  - hp333d-snap.png: offsets that move the grid's edge points onto the outline.
+ * File names carry a content hash (listed in hp333d.json), so a rebuilt drill
+ * is never served from a stale cache.
  * Here the grid becomes a mesh, the photo is mapped onto the front, and a
  * mirrored copy onto the back, with the wordmark and clutch numbers flipped
  * back so they still read correctly from that side. Facing the camera it is
@@ -61,6 +63,9 @@ const FLIP_RECTS: [number, number, number, number][] = [
 function loadImage(url: string): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
     const img = new Image();
+    // CORS mode, so pixels stay readable (and uploadable to WebGL) even when a
+    // host serves the files from another origin than the page.
+    img.crossOrigin = 'anonymous';
     img.decoding = 'async';
     img.onload = () => resolve(img);
     img.onerror = () => reject(new Error(`Could not load ${url}`));
@@ -227,9 +232,9 @@ export async function buildDrill(opts: { lowDetail?: boolean } = {}): Promise<Dr
   const textures: Texture[] = [];
 
   const [photo, depthImg, snapImg] = await Promise.all([
-    loadImage(assetUrl(low ? 'hero/hp333d-lo.webp' : 'hero/hp333d.webp')),
-    loadImage(assetUrl('hero/hp333d-depth.png')),
-    loadImage(assetUrl('hero/hp333d-snap.png')),
+    loadImage(assetUrl(`hero/${low ? meta.files.photoLo : meta.files.photo}`)),
+    loadImage(assetUrl(`hero/${meta.files.depth}`)),
+    loadImage(assetUrl(`hero/${meta.files.snap}`)),
   ]);
   const scale = photo.naturalWidth / meta.size[0];
 

@@ -8,7 +8,7 @@
 | Built from | Universal Hardware's own product photo in its Friends & Family Sale 2026 promotion: https://universalhardware.bz/news/wp-content/uploads/HP333DYX3B.jpg |
 | Method | **Photo-based 3D.** The drill is cut out of the photo, and its outline is "inflated" into a solid. The photo is then mapped onto that solid. Facing the camera, the hero shows the photo itself, with real depth, lighting and rotation |
 | Code | `scripts/build-hp333d.py` (offline build), `src/hero/drill-model.ts` (mesh at runtime), `src/hero/drill-scene.ts` (stage, lights, motion) |
-| Data | `public/hero/hp333d.webp` (photo cut-out, 780 × 1042, 68 KB), `hp333d-lo.webp` (1x for low-power devices, 29 KB), `hp333d-depth.png` (17 KB) and `hp333d-snap.png` (2 KB), plus `src/hero/hp333d.json` |
+| Data | In `public/hero/`, each name carrying a hash of its content so an updated drill is never served from a stale cache: `hp333d.<hash>.webp` (photo cut-out, 780 × 1042, 68 KB), `hp333d-lo.<hash>.webp` (1x for low-power devices, 29 KB), `hp333d-depth.<hash>.png` (17 KB) and `hp333d-snap.<hash>.png` (2 KB). The current names are listed in `src/hero/hp333d.json` |
 | Third-party models, scans or textures | **None** besides the company's own photo. No GLB/GLTF, no manufacturer CAD, no HDRI files |
 | Marks | The Makita wordmark and markings appear exactly as photographed. Makita is a trademark of Makita Corporation, shown only to identify the product Universal Hardware promotes |
 | Represents | The specific drill Universal Hardware promoted in February 2026. It **does not confirm current stock, price or model**. The stage says so: "3D model of the Makita drill in Universal Hardware's 2026 promotion. Not confirmed stock." |

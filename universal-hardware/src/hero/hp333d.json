@@ -24,5 +24,11 @@
  "depthRange": [
   -84.30953216552734,
   84.30953216552734
- ]
+ ],
+ "files": {
+  "depth": "hp333d-depth.77071b0a4a.png",
+  "snap": "hp333d-snap.a0532d6d74.png",
+  "photoLo": "hp333d-lo.92d262733b.webp",
+  "photo": "hp333d.4dd26f93b2.webp"
+ }
 }

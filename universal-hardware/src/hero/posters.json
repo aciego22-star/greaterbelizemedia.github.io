@@ -1,0 +1,16 @@
+{
+ "desktop": {
+  "width": 1680,
+  "height": 1288,
+  "avif": "drill-poster-desktop.ec7034abad.avif",
+  "webp": "drill-poster-desktop.928cd89044.webp",
+  "png": "drill-poster-desktop.8154ea0099.png"
+ },
+ "mobile": {
+  "width": 892,
+  "height": 840,
+  "avif": "drill-poster-mobile.cb64ba7e0b.avif",
+  "webp": "drill-poster-mobile.aed2347f01.webp",
+  "png": "drill-poster-mobile.efd1ce9889.png"
+ }
+}

@@ -19,9 +19,14 @@ come out round. The foot is a flat slab with rounded edges, and the belt clip a
 thin plate on the near side. The photo is then projected onto the front and
 (mirrored, text re-flipped at runtime) onto the back.
 
+Each file name carries a hash of its content (hp333d.<hash>.webp and so on),
+listed in hp333d.json, so a changed file always gets a new URL.
+
 Usage: python3 scripts/build-hp333d.py <path-to-HP333DYX3B.jpg>
 Needs numpy, scipy and Pillow.
 """
+import hashlib
+import io
 import json
 import sys
 from pathlib import Path
@@ -34,6 +39,20 @@ SRC = sys.argv[1]
 OUT = Path(__file__).resolve().parent.parent / 'public' / 'hero'
 CROP = (258, 363, 648, 884)  # drill bounding box in the 1080 graphic, plus 10 px
 GRID = 3  # mesh grid spacing in photo pixels
+FILES = {}
+for old in OUT.glob('hp333d*'):
+    old.unlink()  # replaced by this run's content-named files
+
+
+def save(img, key, name, ext, **opts):
+    """Write `img` as hp333d<name>.<content hash>.<ext>: every change gets a new URL, so no host or browser cache can serve an old copy."""
+    buf = io.BytesIO()
+    img.save(buf, format='WEBP' if ext == 'webp' else 'PNG', **opts)
+    data = buf.getvalue()
+    fname = f'hp333d{name}.{hashlib.sha256(data).hexdigest()[:10]}.{ext}'
+    OUT.mkdir(parents=True, exist_ok=True)
+    (OUT / fname).write_bytes(data)
+    FILES[key] = fname
 
 im = Image.open(SRC).convert('RGB').crop(CROP)
 rgb = np.asarray(im).astype(np.float32)
@@ -136,7 +155,7 @@ packed[..., 0] = fe >> 4
 packed[..., 1] = ((fe & 15) << 4) | (be >> 8)
 packed[..., 2] = be & 255
 OUT.mkdir(parents=True, exist_ok=True)
-Image.fromarray(packed, 'RGB').save(OUT / 'hp333d-depth.png', optimize=True)
+save(Image.fromarray(packed, 'RGB'), 'depth', '-depth', 'png', optimize=True)
 
 # Snap offsets: a grid point outside the outline moves to the contour, half a
 # pixel out from its nearest inside pixel (1/16 px units, 128 = no offset).
@@ -156,19 +175,19 @@ snap = np.zeros((len(gy), len(gx), 3), np.uint8)
 snap[..., 0] = np.clip(np.round(128 + dx * 16), 0, 255)
 snap[..., 1] = np.clip(np.round(128 + dy * 16), 0, 255)
 snap[..., 2] = 128
-Image.fromarray(snap, 'RGB').save(OUT / 'hp333d-snap.png', optimize=True)
+save(Image.fromarray(snap, 'RGB'), 'snap', '-snap', 'png', optimize=True)
 print('max snap distance', float(np.hypot(dx, dy).max()))
 
 # ---- Textures ----
 rgba = np.dstack([np.clip(clean, 0, 255), alpha * 255]).astype(np.uint8)
 tex1 = Image.fromarray(rgba, 'RGBA')
-tex1.save(OUT / 'hp333d-lo.webp', quality=90, method=6)
+save(tex1, 'photoLo', '-lo', 'webp', quality=90, method=6)
 col2 = Image.fromarray(np.clip(clean, 0, 255).astype(np.uint8)).resize((W * 2, H * 2), Image.LANCZOS)
 col2 = col2.filter(ImageFilter.UnsharpMask(radius=1.4, percent=55, threshold=1))
 al2 = Image.fromarray((alpha * 255).astype(np.uint8)).resize((W * 2, H * 2), Image.BICUBIC)
 tex2 = col2.convert('RGBA')
 tex2.putalpha(al2)
-tex2.save(OUT / 'hp333d.webp', quality=88, method=6)
+save(tex2, 'photo', '', 'webp', quality=88, method=6)
 
 ys, xs = np.nonzero(mask)
 meta = {
@@ -179,6 +198,7 @@ meta = {
     'gridSize': [len(gx), len(gy)],
     'bbox': [int(xs.min()), int(ys.min()), int(xs.max()), int(ys.max())],
     'depthRange': [float(back[mask].min()), float(front[mask].max())],
+    'files': FILES,
 }
 (Path(__file__).resolve().parent.parent / 'src' / 'hero' / 'hp333d.json').write_text(json.dumps(meta, indent=1) + '\n')
 print(json.dumps(meta))
