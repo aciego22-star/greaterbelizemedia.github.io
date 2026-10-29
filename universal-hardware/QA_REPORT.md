@@ -90,7 +90,7 @@ How to read these honestly:
 | Desktop 1440×900 | 2.0 s | 437, 63, 114, 86, 431 ms | 840×644 | 11 MB |
 | Mobile 390×844, touch (low-power path) | 1.6 s | 179, 103, 508 ms | 535×504 | 12 MB |
 
-Bundle: the WebGL chunk is ≈122 KB gzip and is never requested before first paint. The drill (now built from the company's Makita HP333D photo) is one mesh of ≈40.1k triangles, battery fitted, plus ≈93 KB of texture and depth data (≈51 KB on low-power devices), lighter than the earlier generic drill (≈63.6k triangles). Frame rate under SwiftShader was ~14–17 fps; this is a CPU-rendering artefact, not representative of GPU devices.
+Bundle: the WebGL chunk is ≈122 KB gzip and is never requested before first paint. The drill (now built from the company's Makita HP333D photo) is one mesh of ≈36.8k triangles plus ≈88 KB of texture and depth data (≈50 KB on low-power devices), lighter than the earlier generic drill (≈63.6k triangles). Frame rate under SwiftShader was ~14–17 fps; this is a CPU-rendering artefact, not representative of GPU devices.
 
 Optimisations applied after measuring (homepage mobile went from Performance 55 / TBT 9.7 s to 98 / 0 ms):
 - the expensive up-front WebGL capability probe was replaced by a cheap feature check

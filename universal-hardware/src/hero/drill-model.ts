@@ -4,8 +4,7 @@
  *
  * scripts/build-hp333d.py cuts the drill out of the photo and "inflates" its
  * outline into a solid (union of balls, so the chuck, housing and grip come
- * out round; flat slab for the foot; thin plate for the belt clip), and fits
- * the 1.5Ah battery from the same photo under the foot. It ships:
+ * out round; flat slab for the foot; thin plate for the belt clip). It ships:
  *  - hp333d.webp / hp333d-lo.webp: the photo cut-out, colour + alpha matte;
  *  - hp333d-depth.png: front and back surface depth on a 3 px grid;
  *  - hp333d-snap.png: offsets that move the grid's edge points onto the outline.
@@ -13,7 +12,7 @@
  * mirrored copy onto the back, with the wordmark and clutch numbers flipped
  * back so they still read correctly from that side. Facing the camera it is
  * the photo; the geometry gives it real depth, lighting and rotation.
- * Units: 1 ≈ 7 cm. Lowest point (battery and belt clip) at y = 0 after build.
+ * Units: 1 ≈ 7 cm. Lowest point (belt clip) at y = 0 after build.
  */
 import {
   BufferAttribute,
@@ -47,8 +46,8 @@ const TILT = -0.25;
 
 /**
  * Text regions (1x photo pixels, x/y/w/h) flipped in place on the back
- * texture, so the mirrored back still reads correctly: the wordmark, the
- * clutch numbers and the battery's wordmark.
+ * texture, so the mirrored back still reads correctly: the wordmark and the
+ * clutch numbers.
  */
 const FLIP_RECTS: [number, number, number, number][] = [
   [256, 76, 90, 38],
@@ -57,7 +56,6 @@ const FLIP_RECTS: [number, number, number, number][] = [
   [166, 54, 18, 23],
   [180, 86, 17, 25],
   [181, 117, 16, 22],
-  [176, 450, 62, 54],
 ];
 
 function loadImage(url: string): Promise<HTMLImageElement> {
@@ -198,7 +196,7 @@ function buildGeometry(depth: Depth): BufferGeometry {
   const n = geo.getAttribute('normal');
   const facing = new Float32Array(n.count);
   for (let i = 0; i < n.count; i++) {
-    const t = Math.min(1, Math.max(0, (Math.abs(n.getZ(i)) - 0.14) / 0.36));
+    const t = Math.min(1, Math.max(0, (Math.abs(n.getZ(i)) - 0.05) / 0.25));
     facing[i] = t * t * (3 - 2 * t);
   }
   geo.setAttribute('facing', new BufferAttribute(facing, 1));
@@ -246,21 +244,23 @@ export async function buildDrill(opts: { lowDetail?: boolean } = {}): Promise<Dr
 
   // The mesh edge follows the outline (snap offsets), so the matte is not
   // needed for the silhouette and the surface stays opaque from every side.
-  // The photo is already lit, so it is shown mostly as photographed
-  // (emissive) with a little diffuse and a satin clearcoat on top: the scene's
-  // key and rim lights then add depth without washing out the black plastic.
+  // The photo is already lit, so facing the camera it is shown exactly as
+  // photographed: full emissive, and no tone mapping (the scene's filmic curve
+  // would darken and flatten its blacks and highlights). A faint diffuse term
+  // and a low, rough specular let the key and rim lights add depth as it turns,
+  // without the grey haze a clearcoat or strong reflections lay over it.
   const surface = (map: Texture) => {
     const m = new MeshPhysicalMaterial({
       map,
-      color: '#3a3a3a',
-      roughness: 0.6,
+      color: '#161616',
+      roughness: 0.62,
       metalness: 0,
-      specularIntensity: 0.55,
-      clearcoat: 0.12,
-      clearcoatRoughness: 0.45,
+      specularIntensity: 0.3,
+      envMapIntensity: 0.35,
       emissive: '#ffffff',
       emissiveMap: map,
-      emissiveIntensity: 0.78,
+      emissiveIntensity: 1,
+      toneMapped: false,
     });
     fadeSides(m);
     materials.push(m);
