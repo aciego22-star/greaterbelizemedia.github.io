@@ -100,11 +100,11 @@ src/
   components/   Astro: header, footer, utility bar, branch card, map, department tile, page hero, site photo
   pages/        Routes (see above)
   styles/       global.css (tokens, base), components.css, islands.css
-scripts/        postbuild checks, ZIP, posters, screenshots, fonts, local server
+scripts/        postbuild checks, ZIP, posters, screenshots, fonts, local server, News photo crops
 tests/          guide-cases.ts (logic), run-qa.cjs (end-to-end)
 ```
 
-Product photos and brand logos in `public/site-images/` are copied from Universal Hardware's current website and labelled as such on the page. Each file's source URL is recorded in `src/data/site-images.ts` and [`ASSET_ATTRIBUTIONS.md`](ASSET_ATTRIBUTIONS.md). They are low resolution and need approved replacements before any launch.
+Product photos and brand logos in `public/site-images/` are copied from Universal Hardware's current website and labelled as such on the page. Each file's source URL is recorded in `src/data/site-images.ts` and [`ASSET_ATTRIBUTIONS.md`](ASSET_ATTRIBUTIONS.md). The main product photos are cropped from the 2026 News / Promotions graphics (`scripts/crop-news-photos.py`), keeping only the product. Original high-resolution files should be requested before any launch.
 
 Design tokens come from the supplied wordmark: blue `#5592CB` (sampled), action blue `#1768B4`, graphite `#121D29`, ink `#0D1C2C`. Typefaces are Archivo (display), Inter (text) and JetBrains Mono (labels), all self-hosted.
 

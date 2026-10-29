@@ -64,14 +64,13 @@ Raw results: `tests/results/qa-results.json`.
 | desktop | `/` | **69** | 100 | 100 | 69 | 0.3 s | 0.5 s | **1,560 ms** | 0 | 1.5 s |
 | desktop | `/products/`, `/products/water-pumps/`, `/locations/` | 100 | 100 | 100 | 69 | 0.4 s | 0.5 s | 0 ms | ≤0.003 | — |
 
-After replacing every line illustration with the company's own photos (mobile, re-run on the photo-led routes):
+After switching to the sharper News / Promotions crops (mobile, re-run on the photo-led routes):
 
 | Form factor | Route | Perf | A11y | BP | SEO | FCP | LCP | TBT | CLS | SI | Transfer |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| mobile | `/` (8 department photos, 6 finder photos, logos) | 97 | 100 | 100 | 69 | 1.3 s | 2.3 s | 90 ms | 0 | 2.8 s | 277 KB |
-| mobile | `/products/` (12 photo cards) | 99 | 100 | 100 | 69 | 1.2 s | 1.9 s | 10 ms | 0 | 1.2 s | 207 KB |
-| mobile | `/products/power-tools/` (200 px hero photo) | 99 | 100 | 100 | 69 | 1.1 s | 1.9 s | 0 ms | 0 | 1.1 s | 153 KB |
-| mobile | `/products/generators/` (489 px hero photo + gallery) | 100 | 100 | 100 | 69 | 1.1 s | 1.9 s | 0 ms | 0 | 1.1 s | 190 KB |
+| mobile | `/` (8 department photos, 6 finder photos, service photo, logos) | 98 | 100 | 100 | 69 | 1.3 s | 2.3 s | 0 ms | 0 | 1.3 s | 382 KB |
+| mobile | `/products/` (12 photo cards) | 100 | 100 | 100 | 69 | 1.1 s | 1.5 s | 0 ms | 0 | 1.1 s | 278 KB |
+| mobile | `/products/power-tools/` (638 px hero crop + gallery) | 99 | 100 | 100 | 69 | 1.1 s | 2.0 s | 0 ms | 0 | 1.1 s | 215 KB |
 
 The table above that one is the pre-image baseline. Below-the-fold images are lazy-loaded, every image has explicit dimensions (CLS 0), and photos are served as WebP with a JPEG fallback.
 
@@ -113,7 +112,9 @@ Reviewed by screenshot at every tested viewport (see `deliverables/screenshots/`
 - the "Not listed — see note" wording
 - photo plates: tall 200 px photos were cropped by an auto-sized grid row; the cell is now clamped so every photo is contained
 - category hero: 200 px photos get a smaller square plate on desktop instead of being enlarged; galleries no longer repeat the hero photo
-- "Beyond the shelf" panel: the Meilun 8000E photo has an off-white patch around the product, so the panel uses the cargo motorcycle shot; the caption no longer overlaps the plate on phones
+- News / Promotions crops: each crop box was checked pixel by pixel so that no price, date, phone number or sale text is included. The Makita drill box ends one pixel before the flyer's "+ 1.5Ah" text, so the drill is whole and the text excluded
+- "Beyond the shelf" panel: now the Makita Clinic photo, full-bleed under a dark gradient so the callouts stay legible; the Service callout moved up to clear the caption on phones
+- Astro scoped styles don't reach a child component's root, so the service photo sits in a page-owned wrapper
 - brand cards: "No logo on the website" label contrast raised to pass axe
 
 ## Outstanding issues (named explicitly)
@@ -127,5 +128,5 @@ Reviewed by screenshot at every tested viewport (see `deliverables/screenshots/`
 7. **Wordmark is a modest-resolution raster**; a high-resolution master is needed for production.
 8. **Canonical / Open Graph URLs** use a placeholder Netlify subdomain until `site` is updated.
 9. **Map pins are approximate town positions**, labelled as such; "Open in Google Maps" uses an address search.
-10. **Website photos and logos are low resolution** (200 px category photos, ~150 px logos, 489 px product shots). They are sharp at the sizes used but need approved high-resolution files before any launch.
+10. **Website photos are mid resolution.** The main images are 370–638 px crops from 1080 px promotion graphics, plus 489 px product shots; gallery photos are 200 px and logos ~150 px. They are sharp at the sizes used, and never shown above 1.25× their own size, but original high-resolution files should be requested before any launch.
 11. Lighthouse flags `dom-size` (~1,365 elements on the homepage, mostly inline SVG artwork). It's informational, and TBT stayed at 0 ms.

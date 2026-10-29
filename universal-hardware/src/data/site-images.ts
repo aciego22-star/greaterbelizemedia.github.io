@@ -1,9 +1,10 @@
 /**
  * Images taken from Universal Hardware's current public website
  * (universalhardware.bz, retrieved 28 October 2026) for this private concept.
- * They belong to Universal Hardware and the respective manufacturers, and are
- * shown exactly as the company presents them. Photos are re-encoded to WebP
- * with the original JPEG as fallback; logos are unaltered.
+ * They belong to Universal Hardware and the respective manufacturers.
+ * Product Listing, Meilun & Lifan and Hisun photos are shown as published, with
+ * WebP copies added; logos are unaltered. News photos are cropped from 2026
+ * promotion graphics down to the product alone, leaving out prices and text.
  *
  * `src` paths are relative to the site root (no leading slash) so both the
  * production build and the private preview can resolve them.
@@ -31,21 +32,22 @@ const photo = (path: string, w: number, h: number, alt: string, source: string, 
   sourceUrl: SITE + source,
   caption,
 });
-const listed = (what: string) => `${what}, as pictured on Universal Hardware's Product Listing page`;
+const listing = (path: string, w: number, h: number, what: string, source: string): SiteImage =>
+  photo(path, w, h, `${what}, as pictured on Universal Hardware's Product Listing page`, source, `${what} (Product Listing page)`);
 
 /** One representative photo per category, from the Product Listing page (motorcycles: Meilun & Lifan page). */
 export const CATEGORY_PHOTOS: Record<string, SiteImage> = {
-  'welding-supplies': photo('categories/welding-supplies', 200, 223, listed('Arc welder with leads'), 'arc-welder.jpg'),
-  'power-tools': photo('categories/power-tools', 200, 201, listed('Circular saw'), 'power-tools.jpg'),
-  'hand-tools': photo('categories/hand-tools', 200, 266, listed('Hammer, pipe wrench and hand saw'), 'handtools.jpg'),
-  'lawn-and-garden': photo('categories/lawn-and-garden', 200, 293, listed('String trimmer'), 'lawn.jpg'),
-  'lighting-and-fans': photo('categories/lighting-and-fans', 200, 263, listed('Ceiling fan with light kit'), 'fans.jpg'),
-  woodworking: photo('categories/woodworking', 200, 180, listed('Table saw'), 'woodwork.jpg'),
-  generators: photo('categories/generators', 200, 223, listed('Portable generator'), 'generators.jpg', 'Portable generator (Product Listing page)'),
-  'water-pumps': photo('categories/water-pumps', 200, 223, listed('Engine-driven water pump'), 'waterpumps.jpg', 'Engine-driven water pump (Product Listing page)'),
-  household: photo('categories/household', 200, 263, listed('Gas barbecue grill'), 'bbqgrill.jpg'),
-  agriculture: photo('categories/agriculture', 200, 209, listed('Roll of barbed wire'), 'barbwire.jpg'),
-  'shop-tools': photo('categories/shop-tools', 200, 190, listed('Air compressor'), 'compressor.jpg'),
+  'welding-supplies': listing('categories/welding-supplies', 200, 223, 'Arc welder with leads', 'arc-welder.jpg'),
+  'power-tools': listing('categories/power-tools', 200, 201, 'Circular saw', 'power-tools.jpg'),
+  'hand-tools': listing('categories/hand-tools', 200, 266, 'Hammer, pipe wrench and hand saw', 'handtools.jpg'),
+  'lawn-and-garden': listing('categories/lawn-and-garden', 200, 293, 'String trimmer', 'lawn.jpg'),
+  'lighting-and-fans': listing('categories/lighting-and-fans', 200, 263, 'Ceiling fan with light kit', 'fans.jpg'),
+  woodworking: listing('categories/woodworking', 200, 180, 'Table saw', 'woodwork.jpg'),
+  generators: listing('categories/generators', 200, 223, 'Portable generator', 'generators.jpg'),
+  'water-pumps': listing('categories/water-pumps', 200, 223, 'Engine-driven water pump', 'waterpumps.jpg'),
+  household: listing('categories/household', 200, 263, 'Gas barbecue grill', 'bbqgrill.jpg'),
+  agriculture: listing('categories/agriculture', 200, 209, 'Roll of barbed wire', 'barbwire.jpg'),
+  'shop-tools': listing('categories/shop-tools', 200, 190, 'Air compressor', 'compressor.jpg'),
   motorcycles: photo(
     'products/meilun-trail-motorcycle',
     489,
@@ -73,23 +75,49 @@ export const PRODUCT_SHOTS: Record<string, SiteImage[]> = {
   ],
 };
 
+const NEWS = 'https://universalhardware.bz/news/wp-content/uploads/';
+const fromNews = (file: string, w: number, h: number, what: string, upload: string): SiteImage => ({
+  src: `site-images/news/${file}.jpg`,
+  webp: `site-images/news/${file}.webp`,
+  width: w,
+  height: h,
+  alt: `${what}, from a 2026 promotion on Universal Hardware's News page`,
+  sourceUrl: NEWS + upload,
+});
+
+/** Larger product photos cropped from the 1080 px promotion graphics on the News / Promotions page. */
+export const NEWS_PHOTOS: Record<string, SiteImage> = {
+  'power-tools': fromNews('makita-drill-kit', 638, 596, 'Makita 12V cordless drill with battery and charger', 'HP333DYX3B.jpg'),
+  woodworking: fromNews('knova-table-saws', 630, 405, 'Two Knova table saws', 'FF-Sale-Saws.jpg'),
+  'welding-supplies': fromNews('lincoln-welders', 510, 465, 'Lincoln Electric stick welder, welder/generator and MIG welder', 'Mega-Sale-i9-Lincoln.jpg'),
+  'shop-tools': fromNews('hoteche-air-compressors', 560, 465, 'Three Hoteche air compressors', 'Mega-Sale-H-Air-Compressors.jpg'),
+  'hand-tools': fromNews('hoteche-socket-set', 370, 420, 'Hoteche 110-piece socket and tool set in its case', 'EXPO-2026-Hoteche.jpg'),
+  'lawn-and-garden': fromNews('cub-cadet-zero-turn', 590, 425, 'Cub Cadet zero-turn lawn mower', 'FF-Sale-Cub-Cadet-4.jpg'),
+  'lighting-and-fans': fromNews('hunter-ceiling-fans', 590, 440, 'Two Hunter ceiling fans, one with a light kit', 'FF-Sale-Hunter-4.jpg'),
+  household: fromNews('sankey-refrigerators', 530, 270, 'Four Sankey refrigerators', 'FF-Sale-Sankey-Refrigerators.jpg'),
+  agriculture: fromNews('gaucho-barbed-wire', 440, 400, 'Roll of Gaucho high-strength barbed wire (Bekaert)', 'EXPO-2026-Wire.jpg'),
+};
+
+/** Photo from the Makita Clinic post (February 2026), used in the homepage service panel. */
+export const SERVICE_PHOTO = fromNews('makita-clinic', 1080, 410, 'Gloved hands servicing a Makita power tool at the Makita Clinic event', 'MakitaClinic-feb2026.jpg');
+
 /**
  * The sharpest website photo for each category, used wherever a category is
- * shown as a tile or card and in its page hero: a 489 px product shot where the
- * Meilun & Lifan page has one, otherwise the 200 px Product Listing photo.
+ * shown as a tile or card and in its page hero: a 489 px product shot from the
+ * Meilun & Lifan page, otherwise a crop from the News page.
  */
 export const FEATURED_PHOTOS: Record<string, SiteImage> = {
   ...CATEGORY_PHOTOS,
+  ...NEWS_PHOTOS,
   generators: PRODUCT_SHOTS.generators[0],
   'water-pumps': PRODUCT_SHOTS['water-pumps'][0],
 };
 
 /** Gallery for a category page: its product shots plus the Product Listing photo, minus the one in the hero. */
 export function galleryFor(slug: string): SiteImage[] {
-  const shots = PRODUCT_SHOTS[slug];
-  if (!shots) return [];
-  const listing = CATEGORY_PHOTOS[slug];
-  const all = listing && !shots.some((s) => s.src === listing.src) ? [...shots, listing] : shots;
+  const all = [...(PRODUCT_SHOTS[slug] ?? [])];
+  const listed = CATEGORY_PHOTOS[slug];
+  if (listed && !all.some((s) => s.src === listed.src)) all.push(listed);
   return all.filter((s) => s.src !== FEATURED_PHOTOS[slug]?.src);
 }
 

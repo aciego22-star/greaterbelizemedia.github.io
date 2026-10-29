@@ -30,7 +30,7 @@ This is an **independent, speculative concept** by Austere Automations. Universa
 | Concept copy and headline ("Built for Every Job.") | Proposed, not a company slogan |
 | Wordmark use and a high-resolution logo | The supplied raster is modest resolution; request the master file |
 | Spanish-language content | Product Guide only, labelled as not implying formal bilingual service |
-| Product photography and brand logos | Low-resolution images copied from the current website (200 px category photos, ~150 px logos, 489 px product shots). Approval to use them, ideally with high-resolution replacements, is needed before launch. |
+| Product photography and brand logos | Images from the current website: product photos cropped from the 2026 News / Promotions graphics (370–638 px, prices and sale text left out), 489 px Meilun & Lifan product shots, 200 px Product Listing photos (galleries only) and ~150 px logos. Some photographed brands (Hoteche, Knova) are not on the Brands page. The promotions have ended, so the photos show past examples, not current stock or offers. Approval to use them, ideally with original high-resolution files, is needed before launch. |
 
 ## Technical caveats
 

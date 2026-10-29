@@ -120,7 +120,7 @@ const shots = galleryFor(c.slug);
               <ul class={`shot-grid shot-grid--n${shots.length}`}>
                 {shots.map((im) => (
                   <li class="shot" data-reveal>
-                    <div class="shot__frame"><SitePhoto image={im} /></div>
+                    <div class="shot__frame photo-stage"><SitePhoto image={im} /></div>
                     <p class="shot__cap">{im.caption}</p>
                   </li>
                 ))}
@@ -344,19 +344,7 @@ const shots = galleryFor(c.slug);
     gap: 8px;
   }
   .shot__frame {
-    display: grid;
-    place-items: center;
     aspect-ratio: 3 / 2;
-    padding: 10px;
-    border-radius: 14px;
-    border: 1px solid var(--line);
-    background: #fff;
-    overflow: hidden;
-  }
-  .shot__frame :global(img) {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
   }
   .shot__cap {
     font-size: 0.85rem;

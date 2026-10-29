@@ -12,7 +12,7 @@ import { BRANDS } from '../data/brands';
 import { BRANCHES, BRANCH_VERIFY_NOTE } from '../data/branches';
 import { CATEGORY_BY_SLUG } from '../data/categories';
 import { SOURCES } from '../data/sources';
-import { BRAND_LOGOS, PRODUCT_SHOTS } from '../data/site-images';
+import { BRAND_LOGOS, SERVICE_PHOTO } from '../data/site-images';
 
 const wallBrands = BRANDS.filter((b) => b.onBrandsPage);
 const otherNamed = BRANDS.filter((b) => !b.onBrandsPage);
@@ -129,15 +129,13 @@ const firstCat = (id: string) => {
   <section class="section section--mist home-service" aria-labelledby="service-title">
     <div class="container home-service__grid">
       <div class="home-service__visual on-dark" data-reveal>
-        <div class="home-service__art photo-stage">
-          <SitePhoto image={PRODUCT_SHOTS.motorcycles[3]} />
-        </div>
+        <div class="home-service__photo"><SitePhoto image={SERVICE_PHOTO} /></div>
         <ul class="home-service__callouts" aria-hidden="true">
           <li style="--x:12%;--y:18%"><span></span>Selection</li>
           <li style="--x:64%;--y:12%"><span></span>Parts</li>
-          <li style="--x:58%;--y:74%"><span></span>Service</li>
+          <li style="--x:58%;--y:64%"><span></span>Service</li>
         </ul>
-        <p class="home-service__fig mono">As pictured on universalhardware.bz</p>
+        <p class="home-service__fig mono">Makita Clinic, Feb 2026 · as pictured on universalhardware.bz</p>
       </div>
       <div class="home-service__copy">
         <p class="eyebrow">04 — Sales &amp; service</p>
@@ -395,27 +393,34 @@ const firstCat = (id: string) => {
     display: grid;
     place-items: center;
   }
-  .home-service__visual::before {
+  .home-service__photo {
+    position: absolute;
+    inset: 0;
+  }
+  .home-service__photo :global(picture) {
+    display: block;
+    height: 100%;
+  }
+  .home-service__photo :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 42% 40%;
+  }
+  /* Darken the edges so the callouts and caption stay legible on the photo. */
+  .home-service__visual::after {
     content: '';
     position: absolute;
     inset: 0;
-    background-image:
-      linear-gradient(to right, rgba(173, 199, 226, 0.07) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(173, 199, 226, 0.07) 1px, transparent 1px);
-    background-size: 32px 32px;
-  }
-  .home-service__art {
-    position: relative;
-    width: 72%;
-    padding: 18px;
-    border: 0;
-    border-radius: 18px;
-    box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.6);
-    margin-bottom: 28px;
+    background:
+      linear-gradient(180deg, rgba(9, 18, 27, 0.55), transparent 30%, transparent 62%, rgba(9, 18, 27, 0.85)),
+      linear-gradient(90deg, rgba(9, 18, 27, 0.35), transparent 40%);
   }
   .home-service__callouts {
     position: absolute;
     inset: 0;
+    z-index: 1;
     list-style: none;
   }
   .home-service__callouts li {
@@ -444,9 +449,11 @@ const firstCat = (id: string) => {
   }
   .home-service__fig {
     position: absolute;
+    z-index: 1;
     left: 20px;
+    right: 20px;
     bottom: 16px;
-    color: var(--on-dark-muted);
+    color: var(--on-dark);
   }
   .home-service__copy {
     display: grid;
