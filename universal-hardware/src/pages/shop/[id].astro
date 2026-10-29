@@ -1,0 +1,155 @@
+---
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import SitePhoto from '../../components/SitePhoto.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import { CATEGORY_BY_SLUG } from '../../data/categories';
+import { BRAND_LOGOS } from '../../data/site-images';
+import { MAX_QTY } from '../../lib/cart-store';
+import { SHOP_GROUPS, SHOP_PRODUCTS, SHOP_PROMO, PRICE_NOTE, formatPrice, productTitle, sourceUrl, type ShopProduct } from '../../data/shop';
+import '../../styles/shop.css';
+
+export function getStaticPaths() {
+  return SHOP_PRODUCTS.map((p) => ({ params: { id: p.id }, props: { product: p } }));
+}
+
+const { product: p } = Astro.props as { product: ShopProduct };
+const title = productTitle(p);
+const logo = BRAND_LOGOS[p.brand.toLowerCase()];
+const group = SHOP_GROUPS.find((g) => g.id === p.group)!;
+const category = p.category ? CATEGORY_BY_SLUG[p.category] : undefined;
+const siblings = SHOP_PRODUCTS.filter((x) => x.group === p.group && x.id !== p.id);
+const i = siblings.findIndex((x) => x.price > p.price);
+const more = (i < 0 ? siblings.slice(-4) : siblings.slice(Math.max(0, i - 2), Math.max(0, i - 2) + 4)).slice(0, 4);
+---
+<Base
+  title={`${title} — ${p.name}`}
+  description={`${title}, ${p.name}: ${formatPrice(p.price)} in Universal Hardware's February 2026 sale graphic. Concept shop page with demo checkout.`}
+  section="shop"
+>
+  <section class="section section--tight">
+    <div class="container">
+      <nav aria-label="Breadcrumb" style="margin-bottom: 24px">
+        <ol class="crumbs">
+          <li><a href="/">Home</a></li>
+          <li><a href="/shop/">Shop</a></li>
+          <li><a href={`/shop/#${p.group}`}>{group.label}</a></li>
+          <li><span aria-current="page">{p.model}</span></li>
+        </ol>
+      </nav>
+
+      <div class="pdp" data-product={p.id}>
+        <div class="pdp__media">
+          <div class="photo-stage"><SitePhoto image={p.image} eager /></div>
+        </div>
+        <div class="pdp__info">
+          {
+            logo && (
+              <p class="pdp__logo">
+                <img src={`/${logo.src}`} width={logo.width} height={logo.height} alt={p.brand} loading="lazy" decoding="async" />
+              </p>
+            )
+          }
+          <div>
+            <p class="eyebrow eyebrow--plain">{p.brand} · {p.model}</p>
+            <h1 class="h2" style="margin-top: 10px">{title}</h1>
+            <p class="pdp__name" style="margin-top: 8px">{p.name}</p>
+          </div>
+          <div>
+            <p class="pdp__price">{formatPrice(p.price)}</p>
+            <p class="price-note" style="margin-top: 8px">{PRICE_NOTE}</p>
+          </div>
+
+          <div class="pdp__buy">
+            <div class="pdp__buy-row">
+              {
+                p.colours && p.colours.length > 1 && (
+                  <div class="field">
+                    <label for="pdp-colour">Colour</label>
+                    <select class="select" id="pdp-colour" data-colour>
+                      {p.colours.map((c) => <option value={c}>{c}</option>)}
+                    </select>
+                  </div>
+                )
+              }
+              <div class="field">
+                <label for="pdp-qty">Quantity</label>
+                <select class="select qty-input" id="pdp-qty" data-qty>
+                  {Array.from({ length: MAX_QTY }, (_, n) => <option value={n + 1}>{n + 1}</option>)}
+                </select>
+              </div>
+              <button type="button" class="btn btn--lg" data-add-to-cart={p.id}>
+                <Icon name="cart" size={18} /> Add to cart
+              </button>
+            </div>
+            <p class="hint">
+              Collect at a branch. <a href="/cart/">View cart</a> · Checkout runs in demo mode: nothing is charged.
+            </p>
+          </div>
+
+          <dl class="pdp__facts">
+            <dt>Brand</dt>
+            <dd>{p.brand}</dd>
+            <dt>Model</dt>
+            <dd>{p.model}</dd>
+            <dt>Description</dt>
+            <dd>{p.name}</dd>
+            {
+              p.colours && (
+                <>
+                  <dt>Colours</dt>
+                  <dd>{p.colours.join(', ')}</dd>
+                </>
+              )
+            }
+            {
+              category && (
+                <>
+                  <dt>Category</dt>
+                  <dd>
+                    <a href={`/products/${category.slug}/`}>{category.name}</a>
+                  </dd>
+                </>
+              )
+            }
+            <dt>Source</dt>
+            <dd>
+              <a href={sourceUrl(p)} target="_blank" rel="noopener">{SHOP_PROMO.name} graphic</a> on universalhardware.bz
+              ({SHOP_PROMO.where}, {SHOP_PROMO.dates})
+            </dd>
+          </dl>
+          {
+            p.note && (
+              <p class="notice">
+                <Icon name="info" />
+                <span>{p.note}</span>
+              </p>
+            )
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {
+    more.length > 0 && (
+      <section class="section section--tight section--mist">
+        <div class="container">
+          <div class="shop-bar" style="margin-top: 0">
+            <h2 class="h3">More {group.label.toLowerCase()}</h2>
+            <a class="link-arrow" href={`/shop/#${p.group}`}>
+              See all <Icon name="arrow-right" />
+            </a>
+          </div>
+          <ul class="shop-grid">
+            {more.map((x) => (
+              <li>
+                <ProductCard product={x} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+</Base>

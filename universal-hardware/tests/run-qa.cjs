@@ -8,7 +8,8 @@
  * errors, horizontal overflow at 7 viewports, navigation, mobile menu
  * keyboard behaviour, catalogue search/filters/empty state, product finder,
  * Enquiry Summary add/remove/copy/reset + focus trap, Product Guide required
- * conversations, session persistence, WebGL/fallback/reduced motion, link
+ * conversations, shop cart and demo checkout (no card fields, no payment
+ * requests), session persistence, WebGL/fallback/reduced motion, link
  * formats, axe-core accessibility scan, and a network audit proving that no
  * interaction contacts any third-party origin.
  */
@@ -24,6 +25,7 @@ const ROUTES = [
   '/products/power-tools/', '/products/welding-supplies/', '/products/generators/', '/products/water-pumps/',
   '/products/lawn-and-garden/', '/products/motorcycles/', '/products/household/', '/products/lighting-and-fans/',
   '/products/woodworking/', '/products/shop-tools/', '/products/agriculture/', '/products/hand-tools/',
+  '/shop/', '/shop/makita-hp333dyx3b/', '/shop/lifan-lf100-a/', '/cart/', '/checkout/',
 ];
 const VIEWPORTS = [
   [320, 640], [375, 812], [390, 844], [430, 932], [768, 1024], [1024, 768], [1440, 900],
@@ -127,7 +129,7 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
   {
     const { ctx, page } = await newPage(browser);
     await page.goto(BASE + '/', { waitUntil: 'load' });
-    for (const [label, href] of [['Products', '/products/'], ['Brands', '/brands/'], ['Locations', '/locations/'], ['About', '/about/']]) {
+    for (const [label, href] of [['Shop', '/shop/'], ['Products', '/products/'], ['Brands', '/brands/'], ['Locations', '/locations/'], ['About', '/about/']]) {
       await page.click(`.site-nav a:has-text("${label}")`);
       await page.waitForLoadState('load');
       const cur = await page.getAttribute('.site-nav a[aria-current="page"]', 'href').catch(() => null);
@@ -392,6 +394,71 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
     const store = await page.evaluate(() => ({ local: Object.keys(localStorage), cookies: document.cookie }));
     record('privacy', 'no localStorage keys or cookies written', store.local.length === 0 && !store.cookies, JSON.stringify(store));
     record('network', 'no third-party requests on navigation', page._external.length === 0, page._external.join(', '));
+    await ctx.close();
+  }
+
+  /* ---------- 7b. Shop, cart & demo checkout ---------- */
+  console.log('\n▶ Shop & checkout');
+  {
+    const { ctx, page } = await newPage(browser);
+    const writes = [];
+    page.on('request', (r) => { if (r.method() !== 'GET') writes.push(`${r.method()} ${r.url()}`); });
+    const axeCheck = async (name) => {
+      await page.addScriptTag({ content: AXE });
+      const v = await page.evaluate(async () => (await window.axe.run(document, { runOnly: ['wcag2a', 'wcag2aa', 'wcag21aa', 'best-practice'], rules: { region: { enabled: false } } })).violations.map((x) => `${x.id} ×${x.nodes.length}: ${x.nodes[0].target.join(' ')}`));
+      record('axe', name, v.length === 0, v.join(' || '));
+    };
+    const badge = () => page.$eval('[data-cart-count]', (e) => (e.hidden ? 0 : Number(e.textContent)));
+    await page.goto(BASE + '/shop/', { waitUntil: 'load' });
+    await page.waitForFunction(() => document.documentElement.classList.contains('ui-ready'));
+    const cards = await page.$$eval('.shop-grid .p-card', (c) => c.length);
+    const priced = await page.$$eval('.p-card__price', (p) => p.every((x) => /^BZ\$[\d,]+\.\d{2}/.test(x.textContent.trim())));
+    record('shop', 'lists 32 products, each with a BZ$ price', cards === 32 && priced, `${cards}`);
+    await page.click('[data-shop-filter="motorcycles"]');
+    const bikes = await page.$$eval('.shop-grid > li:not([hidden])', (l) => l.length);
+    record('shop', 'motorcycle filter shows the 16 bikes', bikes === 16, `${bikes}`);
+    await page.click('[data-shop-filter="all"]');
+    await page.click('[data-add-to-cart="makita-hp333dyx3b"]');
+    await page.selectOption('[data-product="lifan-lf100-a"] [data-colour]', 'Blue');
+    await page.click('[data-add-to-cart="lifan-lf100-a"]');
+    await page.waitForSelector('.toast a[href="/cart/"]');
+    record('shop', 'add to cart updates the header count and offers View cart', (await badge()) === 2);
+    await page.goto(BASE + '/shop/makita-dlx2180tx/', { waitUntil: 'load' });
+    await page.selectOption('[data-qty]', '2');
+    await page.click('.pdp [data-add-to-cart]');
+    record('shop', 'product page adds the chosen quantity', (await badge()) === 4);
+    await page.goto(BASE + '/cart/', { waitUntil: 'load' });
+    await page.waitForSelector('.cart-line');
+    const cart = await page.evaluate(() => ({ lines: document.querySelectorAll('.cart-line').length, total: document.querySelector('.summary__total span:last-child').textContent, colour: document.body.innerText.includes('Blue · BZ$1,742.40 each') }));
+    record('cart', 'cart survives navigation with the right lines, colour and total', cart.lines === 3 && cart.total === 'BZ$3,654.15' && cart.colour, JSON.stringify(cart));
+    await axeCheck('/cart/ with items');
+    await page.click('.cart-line:nth-child(1) .stepper button:last-child');
+    record('cart', 'stepper raises quantity and total', (await page.textContent('.summary__total span:last-child')) === 'BZ$3,902.40');
+    await page.click('.cart-line:nth-child(1) .link-btn');
+    record('cart', 'remove deletes the line', (await page.$$eval('.cart-line', (l) => l.length)) === 2);
+    await page.goto(BASE + '/checkout/', { waitUntil: 'load' });
+    await page.waitForSelector('.pay-demo');
+    const cardFields = await page.$$eval('input, iframe', (els) => els.filter((e) => /cc-|card|cvc|cvv|expir/i.test(`${e.getAttribute('autocomplete')} ${e.getAttribute('name')} ${e.id}`) || e.tagName === 'IFRAME').length);
+    record('checkout', 'demo card step has no card inputs or third-party frames', cardFields === 0, `${cardFields}`);
+    await page.press('#co-phone', 'Enter');
+    const errs = await page.evaluate(() => ({ n: document.querySelectorAll('.field-error').length, focus: document.activeElement?.id }));
+    record('checkout', 'Enter with empty details rejects them and focuses the first field', errs.n === 3 && errs.focus === 'co-name', JSON.stringify(errs));
+    await axeCheck('/checkout/ with errors');
+    await page.click('text=Fill in sample details');
+    await page.click('.seg label:has-text("Declined")');
+    await page.click('.pay-btn');
+    await page.waitForSelector('.pay-error', { timeout: 6000 });
+    record('checkout', 'simulated decline shows an alert and keeps the cart', (await badge()) === 3);
+    await page.click('.seg label:has-text("Approved")');
+    await page.click('.pay-btn');
+    await page.waitForSelector('.confirm', { timeout: 6000 });
+    const conf = await page.evaluate(() => ({ ref: document.querySelector('.confirm__ref').textContent, demo: document.body.innerText.includes('no card was charged') }));
+    record('checkout', 'approved demo payment shows a DEMO order reference and empties the cart', /^Order DEMO-[A-Z2-9]{6}$/.test(conf.ref) && conf.demo && (await badge()) === 0, JSON.stringify(conf));
+    await axeCheck('/checkout/ confirmation');
+    const stored = await page.evaluate(() => JSON.stringify(Object.fromEntries(Object.entries(sessionStorage))) + window.name);
+    record('privacy', 'checkout details are never stored', !/Sample Customer|example\.com|000-0000/.test(stored), stored.slice(0, 120));
+    record('network', 'shop and checkout sent nothing (no POST or other writes)', writes.length === 0, writes.join(', '));
+    record('network', 'shop and checkout made no third-party requests', page._external.length === 0, page._external.join(', '));
     await ctx.close();
   }
 

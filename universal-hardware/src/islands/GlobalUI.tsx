@@ -17,6 +17,7 @@ import {
   setField,
   subscribe,
   type EnquiryDraft,
+  type ToastAction,
 } from '../lib/enquiry-store';
 import type { GuideEngine, GuideReply, GuideState, Lang } from '../lib/guide/types';
 import { CHATBASE_AGENT_ID, LIVE_AI_DISCLAIMER, loadChatbase } from '../lib/guide/chatbase-adapter';
@@ -124,7 +125,7 @@ function Rich({ text }: { text: string }) {
 interface ToastState {
   id: number;
   message: string;
-  action?: 'open-enquiry';
+  action?: ToastAction;
 }
 
 export default function GlobalUI() {
@@ -150,7 +151,7 @@ export default function GlobalUI() {
       if (p) setGuidePrompt({ text: p, n: Date.now() });
     };
     const onToast = (e: Event) => {
-      const d = (e as CustomEvent<{ message: string; action?: 'open-enquiry' }>).detail;
+      const d = (e as CustomEvent<{ message: string; action?: ToastAction }>).detail;
       window.clearTimeout(toastTimer.current);
       setToast({ id: Date.now(), message: d.message, action: d.action });
       toastTimer.current = window.setTimeout(() => setToast(null), 4200);
@@ -204,6 +205,11 @@ export default function GlobalUI() {
               >
                 View summary
               </button>
+            )}
+            {toast.action === 'open-cart' && (
+              <a class="toast__action" href="/cart/">
+                View cart
+              </a>
             )}
           </div>
         )}
@@ -315,7 +321,16 @@ function EnquiryDrawer({ open, onClose, draft }: { open: boolean; onClose: () =>
                     <option value={c.slug}>{c.name}</option>
                   ))}
                 </select>
-                <button type="submit" class="btn btn--ghost" disabled={!addSlug}>
+                <button
+                  type="button"
+                  class="btn btn--ghost"
+                  disabled={!addSlug}
+                  onClick={() => {
+                    // Not a submit button: sandboxed preview frames block form submission.
+                    if (addSlug) addCategory(addSlug);
+                    setAddSlug('');
+                  }}
+                >
                   <Icon name="plus" size={16} /> Add
                 </button>
               </form>
@@ -645,9 +660,25 @@ function GuidePanel({
                 placeholder={lang === 'es' ? 'Escriba su pregunta…' : 'Ask about a product, job or branch…'}
                 value={input}
                 onInput={(e) => setInput((e.target as HTMLInputElement).value)}
+                onKeyDown={(e) => {
+                  // Handled here rather than by form submission, which sandboxed preview frames block.
+                  if (e.key === 'Enter' && !e.isComposing) {
+                    e.preventDefault();
+                    send(input);
+                  }
+                }}
                 data-autofocus
               />
-              <button type="submit" class="guide__send" aria-label="Send" disabled={!input.trim() || !engine}>
+              <button
+                type="button"
+                class="guide__send"
+                aria-label="Send"
+                disabled={!input.trim() || !engine}
+                onClick={() => {
+                  send(input);
+                  inputRef.current?.focus();
+                }}
+              >
                 <Icon name="send" size={18} />
               </button>
             </form>

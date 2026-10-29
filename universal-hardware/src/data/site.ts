@@ -13,6 +13,7 @@ export const SITE = {
 };
 
 export const NAV = [
+  { href: '/shop/', label: 'Shop' },
   { href: '/products/', label: 'Products' },
   { href: '/brands/', label: 'Brands' },
   { href: '/locations/', label: 'Locations' },

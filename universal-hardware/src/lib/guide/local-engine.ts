@@ -64,6 +64,7 @@ type IntentId =
   | 'greeting'
   | 'identity'
   | 'quote'
+  | 'shop'
   | 'stock'
   | 'branch'
   | 'hours'
@@ -106,7 +107,8 @@ function detect(t: string): Detected {
   if (has(t, /espanol/, /spanish please/, /en espanol/, /habla espanol/, /hablas espanol/)) return { intent: 'spanish' };
   if (has(t, /in english/, /english please/, /en ingles/)) return { intent: 'english' };
   if (has(t, /(are|r) (you|u) (a )?(real|human|person|bot|ai|robot)/, /who are you/, /what are you/, /is this (ai|a bot|real)/, /chatgpt/, /artificial/, /quien eres/, /eres (un )?(robot|humano|ia)/)) return { intent: 'identity' };
-  if (has(t, /quot/, /cotiza/, /presupuesto/, /send (me|my|it|this|a)/, /\border\b/, /pedido/, /reserve/, /buy online/, /checkout/)) return { intent: 'quote', branch };
+  if (has(t, /buy online/, /order online/, /shop online/, /online (order|shop|store|purchase)/, /pay online/, /checkout/, /\bcart\b/, /(credit|debit) card/, /pay (by|with) card/, /card payment/, /tarjeta/, /comprar en linea/, /compra en linea/, /carrito/)) return { intent: 'shop' };
+  if (has(t, /quot/, /cotiza/, /presupuesto/, /send (me|my|it|this|a)/, /\border\b/, /pedido/, /reserve/)) return { intent: 'quote', branch };
   if (has(t, /price/, /\bcost/, /how much/, /precio/, /cuanto/, /cuesta/, /cheap/, /discount/, /\bsale\b/, /oferta/)) return { intent: 'quote', branch };
   if (has(t, /in stock/, /stock/, /available/, /availability/, /disponib/, /do you have/, /tienen/, /hay /)) {
     const c = detectCategory(t);
@@ -459,22 +461,39 @@ export const LocalGuideEngine: GuideEngine = {
         const cat = d.category;
         const text = L(
           lang,
-          `${d.intent === 'stock' ? "I can't check stock: this concept has no live inventory connection" : "I can't send quotes or get prices: this is an independent concept demonstration"}, and it can't send requests to Universal Hardware.\n\nWhat I can do is build an **Enquiry Summary** you can copy and send to the branch yourself.${ctx.enquiryCount ? ` Your summary currently lists ${ctx.enquiryCount} ${ctx.enquiryCount === 1 ? 'category' : 'categories'}.` : ''}\n\nSales WhatsApp lines listed on the website: Spanish Lookout ${BRANCH_BY_ID['spanish-lookout'].whatsapp[0].display} · Belize City ${BRANCH_BY_ID['belize-city'].whatsapp[0].display}.`,
-          `${d.intent === 'stock' ? 'No puedo revisar existencias: este concepto no tiene conexión a inventario en vivo' : 'No puedo enviar cotizaciones ni obtener precios: esta es una demostración independiente'}, y no puede enviar solicitudes a Universal Hardware.\n\nLo que sí puedo hacer es armar un **resumen de consulta** que usted puede copiar y enviar a la sucursal.${ctx.enquiryCount ? ` Su resumen tiene ${ctx.enquiryCount} ${ctx.enquiryCount === 1 ? 'categoría' : 'categorías'}.` : ''}\n\nWhatsApp de ventas publicados en el sitio: Spanish Lookout ${BRANCH_BY_ID['spanish-lookout'].whatsapp[0].display} · Belize City ${BRANCH_BY_ID['belize-city'].whatsapp[0].display}.`,
+          `${d.intent === 'stock' ? "I can't check stock: this concept has no live inventory connection" : "I can't send quotes or get current prices: this is an independent concept demonstration"}, and it can't send requests to Universal Hardware.${d.intent === 'quote' ? ' The concept **Shop** shows the prices printed in the February 2026 sale graphics for some tools and motorcycles; that sale has ended.' : ''}\n\nWhat I can do is build an **Enquiry Summary** you can copy and send to the branch yourself.${ctx.enquiryCount ? ` Your summary currently lists ${ctx.enquiryCount} ${ctx.enquiryCount === 1 ? 'category' : 'categories'}.` : ''}\n\nSales WhatsApp lines listed on the website: Spanish Lookout ${BRANCH_BY_ID['spanish-lookout'].whatsapp[0].display} · Belize City ${BRANCH_BY_ID['belize-city'].whatsapp[0].display}.`,
+          `${d.intent === 'stock' ? 'No puedo revisar existencias: este concepto no tiene conexión a inventario en vivo' : 'No puedo enviar cotizaciones ni obtener precios actuales: esta es una demostración independiente'}, y no puede enviar solicitudes a Universal Hardware.${d.intent === 'quote' ? ' La **Tienda** del concepto muestra los precios de los anuncios de oferta de febrero de 2026 para algunas herramientas y motos; esa oferta ya terminó.' : ''}\n\nLo que sí puedo hacer es armar un **resumen de consulta** que usted puede copiar y enviar a la sucursal.${ctx.enquiryCount ? ` Su resumen tiene ${ctx.enquiryCount} ${ctx.enquiryCount === 1 ? 'categoría' : 'categorías'}.` : ''}\n\nWhatsApp de ventas publicados en el sitio: Spanish Lookout ${BRANCH_BY_ID['spanish-lookout'].whatsapp[0].display} · Belize City ${BRANCH_BY_ID['belize-city'].whatsapp[0].display}.`,
         );
         const actions: GuideReply['actions'] = [];
         if (cat) actions.push(addAction(cat, undefined, lang));
         actions.push({ type: 'open-enquiry', label: L(lang, 'Open Enquiry Summary', 'Abrir resumen') });
         if (ctx.enquiryCount) actions.push({ type: 'copy-summary', label: L(lang, 'Copy summary', 'Copiar resumen') });
-        return { reply: { text, actions, branches: d.branch ? [d.branch] : undefined, links: cat ? [catLink(cat, lang)] : undefined }, state: s };
+        const links = cat ? [catLink(cat, lang)] : [];
+        if (d.intent === 'quote') links.push({ label: L(lang, 'Go to the Shop', 'Ir a la Tienda'), href: '/shop/' });
+        return { reply: { text, actions, branches: d.branch ? [d.branch] : undefined, links: links.length ? links : undefined }, state: s };
       }
+      case 'shop':
+        return {
+          reply: {
+            text: L(
+              lang,
+              "This concept has a **Shop**: Makita tools and Lifan and Meilun motorcycles from Universal Hardware's February 2026 sale graphics, with a cart and a checkout where you collect at a branch.\n\nCard payment there runs in demo mode: no card details are collected, nothing is charged and no order reaches Universal Hardware. A live version would use Universal Hardware's own card processor.",
+              'Este concepto tiene una **Tienda**: herramientas Makita y motos Lifan y Meilun de los anuncios de oferta de febrero de 2026 de Universal Hardware, con carrito y pago para recoger en la sucursal.\n\nEl pago con tarjeta funciona en modo demostración: no se piden datos de tarjeta, no se cobra nada y ningún pedido llega a Universal Hardware. Una versión real usaría el procesador de tarjetas de la propia empresa.',
+            ),
+            links: [
+              { label: L(lang, 'Go to the Shop', 'Ir a la Tienda'), href: '/shop/' },
+              { label: L(lang, 'How payments would work', 'Cómo funcionarían los pagos'), href: '/concept/#shop' },
+            ],
+          },
+          state: s,
+        };
       case 'policy':
         return {
           reply: {
             text: L(
               lang,
-              "I don't have warranty, returns, delivery or payment information. Those terms aren't part of the public website content this demo uses, so the branch is the right place to ask. Would you like their contact details?",
-              'No tengo información sobre garantías, devoluciones, entregas ni formas de pago; esos términos no forman parte del contenido público que usa esta demostración. Lo mejor es consultarlo en la sucursal. ¿Quiere sus datos de contacto?',
+              "I don't have warranty, returns, delivery or financing information. Those terms aren't part of the public website content this demo uses, so the branch is the right place to ask. Would you like their contact details?",
+              'No tengo información sobre garantías, devoluciones, entregas ni financiamiento; esos términos no forman parte del contenido público que usa esta demostración. Lo mejor es consultarlo en la sucursal. ¿Quiere sus datos de contacto?',
             ),
             chips: ['Spanish Lookout', 'Belize City'],
           },

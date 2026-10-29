@@ -1,7 +1,7 @@
 {
   "base": "http://localhost:4322",
-  "date": "2026-10-29T13:34:48.276Z",
-  "passed": 183,
+  "date": "2026-10-29T17:09:53.851Z",
+  "passed": 226,
   "failed": 0,
   "results": [
     {
@@ -576,6 +576,156 @@
     },
     {
       "group": "route",
+      "name": "/shop/",
+      "pass": true,
+      "detail": "status 200, h1=1, noindex=true, disclaimer=true"
+    },
+    {
+      "group": "console",
+      "name": "/shop/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "axe",
+      "name": "/shop/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "images",
+      "name": "/shop/ every image loads",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "network",
+      "name": "/shop/ loads no third-party resources",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "route",
+      "name": "/shop/makita-hp333dyx3b/",
+      "pass": true,
+      "detail": "status 200, h1=1, noindex=true, disclaimer=true"
+    },
+    {
+      "group": "console",
+      "name": "/shop/makita-hp333dyx3b/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "axe",
+      "name": "/shop/makita-hp333dyx3b/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "images",
+      "name": "/shop/makita-hp333dyx3b/ every image loads",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "network",
+      "name": "/shop/makita-hp333dyx3b/ loads no third-party resources",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "route",
+      "name": "/shop/lifan-lf100-a/",
+      "pass": true,
+      "detail": "status 200, h1=1, noindex=true, disclaimer=true"
+    },
+    {
+      "group": "console",
+      "name": "/shop/lifan-lf100-a/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "axe",
+      "name": "/shop/lifan-lf100-a/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "images",
+      "name": "/shop/lifan-lf100-a/ every image loads",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "network",
+      "name": "/shop/lifan-lf100-a/ loads no third-party resources",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "route",
+      "name": "/cart/",
+      "pass": true,
+      "detail": "status 200, h1=1, noindex=true, disclaimer=true"
+    },
+    {
+      "group": "console",
+      "name": "/cart/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "axe",
+      "name": "/cart/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "images",
+      "name": "/cart/ every image loads",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "network",
+      "name": "/cart/ loads no third-party resources",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "route",
+      "name": "/checkout/",
+      "pass": true,
+      "detail": "status 200, h1=1, noindex=true, disclaimer=true"
+    },
+    {
+      "group": "console",
+      "name": "/checkout/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "axe",
+      "name": "/checkout/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "images",
+      "name": "/checkout/ every image loads",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "network",
+      "name": "/checkout/ loads no third-party resources",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "route",
       "name": "404 for unknown URL",
       "pass": true,
       "detail": "status 404"
@@ -630,6 +780,12 @@
     },
     {
       "group": "nav",
+      "name": "header → Shop",
+      "pass": true,
+      "detail": "http://localhost:4322/shop/"
+    },
+    {
+      "group": "nav",
       "name": "header → Products",
       "pass": true,
       "detail": "http://localhost:4322/products/"
@@ -678,7 +834,7 @@
     },
     {
       "group": "nav",
-      "name": "all 25 internal link targets resolve",
+      "name": "all 59 internal link targets resolve",
       "pass": true,
       "detail": ""
     },
@@ -716,7 +872,7 @@
       "group": "search",
       "name": "\"submersible pump\" → Water Pumps with highlighted sub-type",
       "pass": true,
-      "detail": "Water Pumps | Submersible pumps, Jet pumps (pressure systems), Sprinkler pumps, Booster pumps, Sump pumps, Marine pumps, Pressure pumps, Gas and diesel powered water pumps (142ms)"
+      "detail": "Water Pumps | Submersible pumps, Jet pumps (pressure systems), Sprinkler pumps, Booster pumps, Sump pumps, Marine pumps, Pressure pumps, Gas and diesel powered water pumps (121ms)"
     },
     {
       "group": "search",
@@ -968,7 +1124,7 @@
       "group": "guide",
       "name": "quote → cannot transmit, offers summary",
       "pass": true,
-      "detail": "I can't send quotes or get prices: this is an independent concept demonstration, and it can't send requests to Universal"
+      "detail": "I can't send quotes or get current prices: this is an independent concept demonstration, and it can't send requests to U"
     },
     {
       "group": "guide",
@@ -1039,6 +1195,108 @@
     {
       "group": "network",
       "name": "no third-party requests on navigation",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "shop",
+      "name": "lists 32 products, each with a BZ$ price",
+      "pass": true,
+      "detail": "32"
+    },
+    {
+      "group": "shop",
+      "name": "motorcycle filter shows the 16 bikes",
+      "pass": true,
+      "detail": "16"
+    },
+    {
+      "group": "shop",
+      "name": "add to cart updates the header count and offers View cart",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "shop",
+      "name": "product page adds the chosen quantity",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "cart",
+      "name": "cart survives navigation with the right lines, colour and total",
+      "pass": true,
+      "detail": "{\"lines\":3,\"total\":\"BZ$3,654.15\",\"colour\":true}"
+    },
+    {
+      "group": "axe",
+      "name": "/cart/ with items",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "cart",
+      "name": "stepper raises quantity and total",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "cart",
+      "name": "remove deletes the line",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "checkout",
+      "name": "demo card step has no card inputs or third-party frames",
+      "pass": true,
+      "detail": "0"
+    },
+    {
+      "group": "checkout",
+      "name": "Enter with empty details rejects them and focuses the first field",
+      "pass": true,
+      "detail": "{\"n\":3,\"focus\":\"co-name\"}"
+    },
+    {
+      "group": "axe",
+      "name": "/checkout/ with errors",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "checkout",
+      "name": "simulated decline shows an alert and keeps the cart",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "checkout",
+      "name": "approved demo payment shows a DEMO order reference and empties the cart",
+      "pass": true,
+      "detail": "{\"ref\":\"Order DEMO-UE2HGC\",\"demo\":true}"
+    },
+    {
+      "group": "axe",
+      "name": "/checkout/ confirmation",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "privacy",
+      "name": "checkout details are never stored",
+      "pass": true,
+      "detail": "{}"
+    },
+    {
+      "group": "network",
+      "name": "shop and checkout sent nothing (no POST or other writes)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "network",
+      "name": "shop and checkout made no third-party requests",
       "pass": true,
       "detail": ""
     },

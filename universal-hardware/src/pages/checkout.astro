@@ -1,0 +1,23 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import Checkout from '../islands/Checkout.tsx';
+import '../styles/shop.css';
+---
+<Base title="Checkout" description="Checkout for the Universal Hardware concept shop. Card payment runs in demo mode: nothing is charged." section="shop">
+  <PageHero title="Checkout" crumbs={[{ href: '/shop/', label: 'Shop' }, { href: '/cart/', label: 'Cart' }, { label: 'Checkout' }]} />
+  <section class="section section--tight">
+    <div class="container">
+      <p class="shop-demo" style="margin-bottom: 28px">
+        <Icon name="lock" />
+        <span>
+          <strong>Demo mode.</strong> The card step stands in for the payment processor’s secure form. No card details are collected,
+          nothing is charged and no order is sent.
+        </span>
+      </p>
+      <Checkout client:load />
+      <noscript><p class="notice">Checkout needs JavaScript.</p></noscript>
+    </div>
+  </section>
+</Base>

@@ -164,7 +164,8 @@
   gap: 10px;
   margin-left: auto;
 }
-.enquiry-trigger {
+.enquiry-trigger,
+.cart-trigger {
   position: relative;
 }
 .enquiry-trigger__count {
@@ -210,6 +211,15 @@
   }
   .site-header__inner {
     gap: 12px;
+  }
+}
+@media (max-width: 400px) {
+  .site-header__actions {
+    gap: 6px;
+  }
+  .site-header__actions .icon-btn {
+    width: 40px;
+    height: 40px;
   }
 }
 

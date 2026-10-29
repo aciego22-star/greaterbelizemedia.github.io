@@ -1,6 +1,6 @@
 # QA report
 
-**Build:** `universal-hardware/` · Astro 7.3.8 static output · 20 pages · tested 28 October 2026
+**Build:** `universal-hardware/` · Astro 7.3.8 static output · 55 pages · tested 28 October 2026; Shop, cart and checkout added and re-tested 29 October 2026
 **Environment:** headless Chromium 1243 (Playwright 1.63) on Linux with **software WebGL (SwiftShader)**; local Netlify-like server with Brotli/gzip; Lighthouse 12.6.1.
 **Not available here:** physical iPhone / Android / iPad hardware and real GPUs. See "Outstanding issues".
 
@@ -8,26 +8,27 @@
 
 | Area | Result |
 |---|---|
-| Automated end-to-end suite (`tests/run-qa.cjs`) | **183 / 183 checks pass** |
-| Logic suite (`tests/guide-cases.ts`) | **All pass**: 11 guide conversations; every finder answer combination (276) resolves to listed categories and sub-types |
+| Automated end-to-end suite (`tests/run-qa.cjs`) | **226 / 226 checks pass** |
+| Logic suite (`tests/guide-cases.ts`) | **All pass**: 13 guide conversations; every finder answer combination (276) resolves to listed categories and sub-types |
 | Type check (`astro check`) | 0 errors, 0 warnings |
-| Post-build checks | noindex + disclaimer on all 20 pages; `_headers`, `robots.txt`, `404.html` present; no secret patterns |
-| axe-core (WCAG 2.1 A/AA + best practice) | 0 violations on all 19 content routes |
+| Post-build checks | noindex + disclaimer on all 55 pages; `_headers`, `robots.txt`, `404.html` present; no secret patterns |
+| axe-core (WCAG 2.1 A/AA + best practice) | 0 violations on all 24 tested routes, plus the cart with items, checkout with errors and the order confirmation |
 | Lighthouse mobile | Performance 97–100 · Accessibility 100 · Best Practices 100 · SEO 69 (intentional `noindex`) |
 | Lighthouse desktop (home, photo-based 3D drill kit) | Performance 100 · TBT 0 ms · CLS 0 (was 69 with the earlier procedural drill) |
 | Third-party network requests | **None**, on any route or during any interaction |
+| Shop and checkout writes | **None**: the whole add-to-cart → checkout → demo payment flow sends no POST or other write request, and the checkout has no card inputs |
 
 ## End-to-end checks by group
 
 | Group | Pass | What is verified |
 |---|---|---|
-| route | 21/21 | All 19 content routes load directly (refresh-safe) with status 200, one `<h1>`, `noindex`, the concept badge, the full disclaimer, an official-site link and alt text on every image; unknown URLs return the custom 404; `/products` redirects to `/products/` |
-| console | 19/19 | No console errors on any route |
-| images | 19/19 | Every image on every route (including the photos and logos from universalhardware.bz) loads with real dimensions, once lazy loading is forced to eager |
-| axe | 19/19 | No accessibility violations |
-| network | 22/22 | No request to any non-origin host on page load, in the finder/enquiry flows, in Guide conversations or across navigation |
+| route | 26/26 | All 24 tested routes (including the Shop, two product pages, cart and checkout) load directly (refresh-safe) with status 200, one `<h1>`, `noindex`, the concept badge, the full disclaimer, an official-site link and alt text on every image; unknown URLs return the custom 404; `/products` redirects to `/products/` |
+| console | 24/24 | No console errors on any route |
+| images | 24/24 | Every image on every route (including the photos and logos from universalhardware.bz) loads with real dimensions, once lazy loading is forced to eager |
+| axe | 27/27 | No accessibility violations, on every route and on the cart, checkout-error and confirmation states |
+| network | 29/29 | No request to any non-origin host on page load, in the finder/enquiry flows, in Guide conversations, in the shop and checkout, or across navigation; the shop and checkout send no write request at all |
 | overflow | 7/7 | No horizontal overflow on any route at 320×640, 375×812, 390×844, 430×932, 768×1024, 1024×768, 1440×900 |
-| nav | 9/9 | Header links set `aria-current`; Explore Products and Find the Right Product CTAs; hero "Find the Right Solution" → `#finder`; 8 department tiles → live category pages; every internal link target on every route resolves (no dead links) |
+| nav | 10/10 | Header links (Shop, Products, Brands, Locations, About) set `aria-current`; Explore Products and Find the Right Product CTAs; hero "Find the Right Solution" → `#finder`; 8 department tiles → live category pages; every internal link target on every route resolves (no dead links) |
 | mobile-menu | 4/4 | Opens as a modal `<dialog>` with focus inside, `aria-expanded`; Escape closes and returns focus; links navigate; no standalone tap target under 24 px |
 | search | 17/17 | 12 categories by default; "submersible pump" ranks Water Pumps and highlights the sub-type; URL sync; English, Spanish and typo queries ("planta", "bomba de agua", "genrator"); finished empty state with recovery; department and brand filters; `?q=` deep link |
 | finder | 5/5 | Six need paths; backup power → Generators with electrician caution; back navigation; farm → Water Pumps related; deep well → Submersible pumps |
@@ -35,7 +36,10 @@
 | guide | 13/13 | Labelled rule-based / not live AI / not official customer service; required conversations (generator ×3 turns, cordless drill, home water pump, motorbikes, Belize City store, quote); quote offers the Enquiry Summary; Spanish mode; Escape closes; category pages hand over a contextual prompt, even when tapped before the global UI has hydrated (requests are queued and replayed) |
 | links | 4/4 | `tel:` and `https://wa.me/` links match the website-listed numbers exactly; external links use `rel="noopener"`; official-site links point to `universalhardware.bz` |
 | branch | 1/1 | Preferred branch persists for the session across pages |
-| privacy | 1/1 | No `localStorage` keys and no cookies are written |
+| privacy | 2/2 | No `localStorage` keys and no cookies are written; checkout contact details never reach `sessionStorage` or `window.name` |
+| shop | 4/4 | 32 products, each with a BZ$ price; the motorcycle filter shows 16; add to cart updates the header count and offers View cart; the product page adds the chosen quantity |
+| cart | 3/3 | Lines, colour and total (BZ$3,654.15 for the test basket) survive navigation; the stepper updates quantity and total; remove |
+| checkout | 4/4 | No card inputs or third-party frames; Enter with empty details shows three errors and focuses the first field; simulated decline shows an alert and keeps the cart; approved demo payment shows a `DEMO-` reference and empties the cart |
 | 3d | 8/8 | Poster first and WebGL chunk not loaded at first paint; scene reaches `ready`; idle motion animates; **Pause 3D motion** freezes frames and relabels to "Resume"; drag rotates; `touch-action: pan-y` (no scroll trap); `prefers-reduced-motion` → no idle animation; **WebGL-disabled browser shows the static render with a "Static render" badge and no errors** |
 | motion | 2/2 | Reduced motion shows reveal content immediately; the footer "Reduce motion" toggle applies and persists for the session |
 
@@ -73,7 +77,16 @@ After switching to the sharper News / Promotions crops (mobile, re-run on the ph
 | mobile | `/products/` (12 photo cards) | 100 | 100 | 100 | 69 | 1.1 s | 1.5 s | 0 ms | 0 | 1.1 s | 278 KB |
 | mobile | `/products/power-tools/` (638 px hero crop + gallery) | 99 | 100 | 100 | 69 | 1.1 s | 2.0 s | 0 ms | 0 | 1.1 s | 215 KB |
 
-The table above that one is the pre-image baseline. Below-the-fold images are lazy-loaded, every image has explicit dimensions (CLS 0), and photos are served as WebP with a JPEG fallback.
+After adding the Shop (mobile, 29 October 2026):
+
+| Form factor | Route | Perf | A11y | BP | LCP | TBT | CLS |
+|---|---|---|---|---|---|---|---|
+| mobile | `/shop/` (32 product cards) | 99 | 100 | 100 | 1.9 s | 37 ms | 0 |
+| mobile | `/shop/lifan-lf100-a/` | 99 | 100 | 100 | 2.1 s | 0 ms | 0 |
+| mobile | `/cart/` | 99 | 100 | — | — | — | 0 |
+| mobile | `/checkout/` | 100 | 100 | 100 | 1.8 s | 0 ms | 0 (was 0.079 before the island reserved its space) |
+
+The first table is the pre-image baseline. Below-the-fold images are lazy-loaded, every image has explicit dimensions (CLS 0), and photos are served as WebP with a JPEG fallback.
 
 How to read these honestly:
 
@@ -90,7 +103,7 @@ How to read these honestly:
 | Desktop 1440×900 | 2.0 s | 437, 63, 114, 86, 431 ms | 840×644 | 11 MB |
 | Mobile 390×844, touch (low-power path) | 1.6 s | 179, 103, 508 ms | 535×504 | 12 MB |
 
-Bundle: the WebGL chunk is ≈122 KB gzip and is never requested before first paint. The hero (now the company's Makita HP333D kit photo, drill, battery and charger, in 3D) is one mesh of ≈73.2k triangles plus ≈161 KB of texture and depth data (≈84 KB on low-power devices).8k triangles plus ≈88 KB of texture and depth data (≈50 KB on low-power devices), lighter than the earlier generic drill (≈63.6k triangles). Frame rate under SwiftShader was ~14–17 fps; this is a CPU-rendering artefact, not representative of GPU devices.
+Bundle: the WebGL chunk is ≈122 KB gzip and is never requested before first paint. The hero (now the company's Makita HP333D kit photo, drill, battery and charger, in 3D) is one mesh of ≈73.2k triangles plus ≈161 KB of texture and depth data (≈84 KB on low-power devices). Frame rate under SwiftShader was ~14–17 fps; this is a CPU-rendering artefact, not representative of GPU devices.
 
 Optimisations applied after measuring (homepage mobile went from Performance 55 / TBT 9.7 s to 98 / 0 ms):
 - the expensive up-front WebGL capability probe was replaced by a cheap feature check
@@ -118,6 +131,10 @@ Reviewed by screenshot at every tested viewport (see `deliverables/screenshots/`
 - "Beyond the shelf" panel: now the Makita Clinic photo, full-bleed under a dark gradient so the callouts stay legible; the Service callout moved up to clear the caption on phones
 - Astro scoped styles don't reach a child component's root, so the service photo sits in a page-owned wrapper
 - brand cards: "No logo on the website" label contrast raised to pass axe
+- Shop: colour pickers on bike cards were squeezed to one letter, so they now take their own row; two product columns on phones; filter chips scroll sideways on phones
+- Shop at 320 px: the extra cart icon pushed the header 8 px wide, so header icon buttons shrink to 40 px below 400 px
+- Checkout in the private preview: the preview frame blocks form submission, so Pay never fired there. Pay, the Product Guide's Send and the Enquiry Summary's Add are now plain buttons with Enter handled in script. Verified in an opaque-origin sandbox emulation: cart kept across pages (sessionStorage is blocked there, so the `window.name` fallback is used), demo payment completes, and Guide Enter and Send both reply
+- Shop photos: the automatic cut-outs kept "SALE" beside the two trimmers and clipped the rotary hammer's handle; fixed with three paint-out areas
 
 ## Outstanding issues (named explicitly)
 
@@ -132,3 +149,5 @@ Reviewed by screenshot at every tested viewport (see `deliverables/screenshots/`
 9. **Map pins are approximate town positions**, labelled as such; "Open in Google Maps" uses an address search.
 10. **Website photos are mid resolution.** The main images are 370–638 px crops from 1080 px promotion graphics, plus 489 px product shots; gallery photos are 200 px and logos ~150 px. They are sharp at the sizes used, and never shown above 1.25× their own size, but original high-resolution files should be requested before any launch.
 11. Lighthouse flags `dom-size` (~1,365 elements on the homepage, mostly inline SVG artwork). It's informational, and TBT stayed at 0 ms.
+12. **Card payments are not live** by design. The demo provider is the only one shipped; the live path is in `PAYMENTS.md` and depends on Universal Hardware's own merchant account.
+13. **Shop prices are past sale prices** from February 2026 graphics, read as Belize dollars; GST treatment is unknown.

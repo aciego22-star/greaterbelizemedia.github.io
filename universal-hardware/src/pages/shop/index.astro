@@ -1,0 +1,97 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Icon from '../../components/Icon.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import { SHOP_GROUPS, SHOP_PRODUCTS, SHOP_PROMO, PRICE_NOTE } from '../../data/shop';
+import '../../styles/shop.css';
+
+const count = (g: string) => SHOP_PRODUCTS.filter((p) => p.group === g).length;
+---
+<Base
+  title="Shop"
+  description="Concept online shop: Makita tools and Lifan and Meilun motorcycles from Universal Hardware's February 2026 sale graphics, with cart and a demo card checkout."
+  section="shop"
+>
+  <PageHero
+    eyebrow="Shop · concept"
+    title="Order online, collect at the branch."
+    lead={`${SHOP_PRODUCTS.length} products from Universal Hardware’s ${SHOP_PROMO.name} graphics, at the prices printed there. Add them to the cart and go through checkout to see how card payment works.`}
+    crumbs={[{ label: 'Shop' }]}
+  />
+  <section class="section section--tight">
+    <div class="container">
+      <p class="shop-demo">
+        <Icon name="lock" />
+        <span>
+          <strong>Demo checkout.</strong> Card payment runs in demo mode. No card details are collected, nothing is charged and no order is
+          sent. <a href="/concept/#shop">How the live version would work</a>
+        </span>
+      </p>
+
+      <div class="shop-bar">
+        <div class="shop-filters" role="group" aria-label="Filter products">
+          <button type="button" class="chip" data-shop-filter="all" aria-pressed="true">
+            All <span class="chip-count">{SHOP_PRODUCTS.length}</span>
+          </button>
+          {
+            SHOP_GROUPS.map((g) => (
+              <button type="button" class="chip" data-shop-filter={g.id} aria-pressed="false">
+                {g.label} <span class="chip-count">{count(g.id)}</span>
+              </button>
+            ))
+          }
+        </div>
+        <p class="shop-bar__count" aria-live="polite" data-shop-count>{SHOP_PRODUCTS.length} products</p>
+      </div>
+
+      <h2 class="sr-only">Products</h2>
+      <ul class="shop-grid" data-shop-grid>
+        {
+          SHOP_PRODUCTS.map((p) => (
+            <li data-group={p.group}>
+              <ProductCard product={p} />
+            </li>
+          ))
+        }
+      </ul>
+
+      <p class="notice" style="margin-top: 36px">
+        <Icon name="info" />
+        <span>
+          {PRICE_NOTE} Photos and details come from the same graphics on the
+          <a href={SHOP_PROMO.pageUrl} target="_blank" rel="noopener">News / Promotions page</a>. Confirm current models, colours,
+          stock and prices with a branch.
+        </span>
+      </p>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const grid = document.querySelector<HTMLElement>('[data-shop-grid]');
+  const counter = document.querySelector<HTMLElement>('[data-shop-count]');
+  const chips = document.querySelectorAll<HTMLButtonElement>('[data-shop-filter]');
+  function apply(group: string) {
+    let n = 0;
+    grid?.querySelectorAll<HTMLElement>(':scope > li').forEach((li) => {
+      const show = group === 'all' || li.dataset.group === group;
+      li.hidden = !show;
+      if (show) n++;
+    });
+    chips.forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.shopFilter === group)));
+    if (counter) counter.textContent = `${n} ${n === 1 ? 'product' : 'products'}`;
+  }
+  chips.forEach((c) =>
+    c.addEventListener('click', () => {
+      apply(c.dataset.shopFilter!);
+      try {
+        history.replaceState(null, '', c.dataset.shopFilter === 'all' ? location.pathname : `#${c.dataset.shopFilter}`);
+      } catch {
+        /* sandboxed preview frames may refuse history changes */
+      }
+    }),
+  );
+  const initial = location.hash.slice(1);
+  if ([...chips].some((c) => c.dataset.shopFilter === initial)) apply(initial);
+</script>

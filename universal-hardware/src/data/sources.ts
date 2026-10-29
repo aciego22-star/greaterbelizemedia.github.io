@@ -64,7 +64,7 @@ export const SOURCES: Record<SourceId, SourceRecord> = {
     id: 'news',
     title: 'News / Promotions',
     url: 'https://universalhardware.bz/news/',
-    supports: 'Recent posts including Universal Mega Sale 2026, Spanish Lookout Commercial Industrial Expo 2026 and Friends And Family Day 2026.',
+    supports: 'Recent posts including Universal Mega Sale 2026, Spanish Lookout Commercial Industrial Expo 2026 and Friends And Family Day 2026. The Shop’s items and sale prices come from the Friends & Family Sale graphics (19–21 February 2026).',
   },
   catalogues: {
     id: 'catalogues',

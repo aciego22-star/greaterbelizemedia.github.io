@@ -1163,6 +1163,8 @@
   color: var(--blue-on-dark);
 }
 .toast__action {
+  display: inline-flex;
+  align-items: center;
   min-height: 36px;
   padding: 6px 12px;
   border-radius: 10px;
@@ -1171,6 +1173,7 @@
   color: #fff;
   font-weight: 600;
   font-size: 0.82rem;
+  text-decoration: none;
   white-space: nowrap;
 }
 .toast__action:hover {

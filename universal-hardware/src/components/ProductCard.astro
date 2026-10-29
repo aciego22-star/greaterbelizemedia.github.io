@@ -1,0 +1,33 @@
+---
+import Icon from './Icon.astro';
+import SitePhoto from './SitePhoto.astro';
+import { formatPrice, type ShopProduct } from '../data/shop';
+interface Props {
+  product: ShopProduct;
+}
+const { product: p } = Astro.props;
+const href = `/shop/${p.id}/`;
+---
+<article class="p-card" data-product={p.id}>
+  <a class="p-card__media" href={href} tabindex="-1" aria-hidden="true">
+    <div class="photo-stage"><SitePhoto image={p.image} decorative /></div>
+  </a>
+  <div class="p-card__body">
+    <p class="p-card__meta"><span>{p.brand}</span><span>{p.model}</span></p>
+    <h3 class="p-card__title"><a href={href}>{p.brand} {p.model}</a></h3>
+    <p class="p-card__name">{p.name}</p>
+    <p class="p-card__price">{formatPrice(p.price)}<small>Feb 2026 sale price</small></p>
+    <div class="p-card__buy">
+      {
+        p.colours && p.colours.length > 1 && (
+          <select class="select" data-colour aria-label={`Colour for ${p.brand} ${p.model}`}>
+            {p.colours.map((c) => <option value={c}>{c}</option>)}
+          </select>
+        )
+      }
+      <button type="button" class="btn btn--sm" data-add-to-cart={p.id}>
+        <Icon name="cart" size={18} /> Add to cart<span class="sr-only">: {p.brand} {p.model}</span>
+      </button>
+    </div>
+  </div>
+</article>

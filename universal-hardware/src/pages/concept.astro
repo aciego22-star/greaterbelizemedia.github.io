@@ -6,6 +6,7 @@ import { SITE } from '../data/site';
 import { SOURCE_VIEWED } from '../data/sources';
 
 const works = [
+  ['Shop, cart & checkout', '32 Makita tools and Lifan and Meilun motorcycles with the model, description and price printed in the company’s February 2026 sale graphics, a cart, and a checkout with branch collection and a credit/debit card step that runs in demo mode.'],
   ['Category explorer & search', 'Instant search across 12 categories, their listed product types and brands, with department and brand filters.'],
   ['Category pages', 'A landing page for every category, with listed product types, brand mentions and preparation tips.'],
   ['Product finder', 'Six guided paths with two or three questions each, mapping answers to listed categories using fixed local rules.'],
@@ -15,6 +16,7 @@ const works = [
   ['Real-time 3D hero', 'The Makita 12V drill from Universal Hardware’s own 2026 promotion, built in 3D from the company’s product photo and rendered with WebGL, with pause, reduced-motion and static fallbacks.'],
 ];
 const illustrative = [
+  'Shop prices are the sale prices printed in Universal Hardware’s Friends & Family Sale graphics (Spanish Lookout, 19–21 February 2026). That sale has ended: the prices show how checkout works and are not a current price list. GST treatment, delivery and returns terms are not stated.',
   'The 3D drill kit (drill, 1.5Ah battery and charger) is built from the product photo in Universal Hardware’s February 2026 promotion. Its depth is estimated from the photo’s outline, and the far side mirrors the near side. It does not confirm current stock.',
   'Every product photo and brand logo is an image from Universal Hardware’s current website. The photos show example products, not confirmed stock or current models.',
   'Category descriptions are concept copy summarising Universal Hardware’s public pages.',
@@ -22,12 +24,19 @@ const illustrative = [
   'Headlines such as “Built for Every Job.” are proposed concept copy, not a company slogan.',
 ];
 const privacy = [
-  ['No data collection', 'No forms submit anywhere. No analytics, tracking pixels, cookies or third-party scripts are loaded.'],
-  ['Session-only memory', 'Your Enquiry Summary, preferred branch and motion setting use sessionStorage, which the browser clears when the tab closes.'],
+  ['No data collection', 'No forms submit anywhere. Checkout contact details stay in the page’s memory and are discarded when you leave it. No analytics, tracking pixels, cookies or third-party scripts are loaded.'],
+  ['Session-only memory', 'Your cart, Enquiry Summary, preferred branch and motion setting stay in this browser tab (sessionStorage) and are cleared when it closes.'],
   ['Guide conversations', 'Kept in memory only and discarded when you leave the page. Nothing you type is transmitted.'],
   ['Outbound links on tap only', 'Phone, WhatsApp, maps, email and official-website links open only when you choose them.'],
 ];
+const payments = [
+  ['Merchant account in Universal Hardware’s name', 'Universal Hardware applies to its bank or a card processor. The account, the money and the customer relationship are the company’s own; underwriting reviews the business and this website.'],
+  ['Processor-hosted card fields', 'The processor’s secure form replaces the demo box. Card numbers go straight to the processor and never touch the website, which keeps PCI DSS scope to the simplest level (SAQ A).'],
+  ['A small server step', 'A server function holds the processor’s secret key, confirms each payment (including 3-D Secure where the bank supports it), records the order and alerts the branch.'],
+  ['Real prices, stock and policies', 'Prices and stock from Universal Hardware, plus the refund, returns, delivery, privacy and terms pages that processors require.'],
+];
 const approvals = [
+  'Taking card payments: the merchant account, processor, prices, stock and customer policies.',
   'All branch hours, phone and WhatsApp numbers, addresses and email routing.',
   'Which brands are current lines, and how each relationship may be described (including any exclusivity).',
   'Category structure, product types and any product photography or logos.',
@@ -37,6 +46,7 @@ const approvals = [
   'Service scope by brand, and parts ordering process.',
 ];
 const roadmap = [
+  { t: 'Online ordering & card payments', d: 'Switch the demo card step to Universal Hardware’s own processor once its merchant account is approved, with real prices and stock.' },
   { t: 'Catalogue & content management', d: 'Staff-editable categories, products, photos and promotions.' },
   { t: 'Inventory & pricing feed', d: 'Optional connection to the existing stock or POS system, if approved.' },
   { t: 'Enquiry routing', d: 'Send enquiries to the right branch team by WhatsApp or email, with consent.' },
@@ -79,10 +89,28 @@ const roadmap = [
         </ul>
         <h2 class="h3 concept-h">What it never does</h2>
         <p class="concept-p">
-          It shows no prices, stock levels, models for sale, warranties, delivery or payment terms, reviews or testimonials, and it does not take
-          orders or send quotes. Product and branch details must be confirmed with Universal Hardware.
+          It takes no payments and sends no orders or quotes. The checkout’s card step is a demo stand-in that collects no card details. It
+          shows no stock levels, warranties, delivery or returns terms, reviews or testimonials, and no prices other than the past sale prices in the
+          Shop. Product and branch details must be confirmed with Universal Hardware.
         </p>
       </div>
+    </div>
+  </section>
+
+  <section class="section section--tight" id="shop">
+    <div class="container">
+      <h2 class="h2">How card payments would work</h2>
+      <p class="concept-p">
+        The Shop is a working cart and checkout. Only the last step is simulated: the card form is a stand-in and the processor’s answer is
+        simulated, so nothing is charged. The checkout talks to card processors through one small interface, so the processor Universal Hardware
+        chooses can be connected without redesigning it. Going live takes four things:
+      </p>
+      <ol class="pay-steps">
+        {payments.map(([t, d], i) => <li><span class="roadmap__n mono">{String(i + 1).padStart(2, '0')}</span><div><strong>{t}</strong><p>{d}</p></div></li>)}
+      </ol>
+      <p class="concept-p">
+        <a class="link-arrow" href="/shop/">Try the Shop <Icon name="arrow-right" /></a>
+      </p>
     </div>
   </section>
 
@@ -128,6 +156,7 @@ const roadmap = [
         <li><strong>Map outline:</strong> Natural Earth 1:10m country boundaries (public domain).</li>
         <li><strong>Typefaces:</strong> Archivo, Inter and JetBrains Mono (SIL Open Font License), self-hosted.</li>
         <li><strong>Product photos &amp; brand logos:</strong> taken from Universal Hardware's current website (universalhardware.bz) for this private concept. They belong to Universal Hardware and the respective manufacturers. Main product photos are cropped from 2026 News / Promotions graphics to the product alone, leaving out every price, date and sale message. Other photos are shown as published, with WebP copies added.</li>
+        <li><strong>Shop photos:</strong> cut out of the single-product graphics of Universal Hardware’s February 2026 Friends &amp; Family Sale, leaving out the printed price, dates and contact details. The model, description and price shown beside each photo are copied from the same graphic.</li>
         <li><strong>Brand names and logos</strong> are shown for identification and belong to their owners.</li>
       </ul>
       <p class="hint">See also: <a href="/about/#sources">full list of sources</a>.</p>
@@ -258,6 +287,30 @@ const roadmap = [
   .roadmap p {
     color: var(--steel);
     font-size: 0.9rem;
+  }
+  .pay-steps {
+    list-style: none;
+    display: grid;
+    gap: 14px;
+    margin-top: 24px;
+  }
+  @media (min-width: 900px) {
+    .pay-steps {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .pay-steps li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 14px;
+    padding: 18px 20px;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+  }
+  .pay-steps p {
+    margin-top: 6px;
+    color: var(--steel);
+    font-size: 0.92rem;
   }
   .credits ul {
     display: grid;

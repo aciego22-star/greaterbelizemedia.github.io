@@ -18,6 +18,8 @@ import {
 } from './enquiry-store';
 import { CATEGORY_BY_SLUG } from '../data/categories';
 import type { BranchId } from '../data/branches';
+import { PRODUCT_BY_ID, productTitle } from '../data/shop';
+import { addToCart, cartCount, getCart, subscribeCart } from './cart-store';
 
 const root = document.documentElement;
 const MOTION_KEY = 'uhc.motion.v1';
@@ -133,6 +135,37 @@ document.addEventListener('click', (e) => {
   if (guide) {
     e.preventDefault();
     openGuide(guide.dataset.guidePrompt || undefined);
+  }
+});
+
+/* ---------------- Cart hooks ---------------- */
+function renderCart() {
+  const n = cartCount(getCart());
+  document.querySelectorAll<HTMLElement>('[data-cart-count]').forEach((el) => {
+    el.textContent = String(n);
+    el.hidden = n === 0;
+  });
+  document.querySelectorAll<HTMLElement>('.cart-trigger').forEach((a) => {
+    a.setAttribute('aria-label', `Cart (${n} ${n === 1 ? 'item' : 'items'})`);
+  });
+  document.querySelectorAll<HTMLElement>('[data-cart-label]').forEach((el) => {
+    el.textContent = n ? `Cart (${n})` : 'Cart';
+  });
+}
+renderCart();
+subscribeCart(renderCart);
+
+document.addEventListener('click', (e) => {
+  const b = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-add-to-cart]');
+  if (!b) return;
+  e.preventDefault();
+  const p = PRODUCT_BY_ID[b.dataset.addToCart!];
+  if (!p) return;
+  const scope = b.closest('[data-product]') ?? document;
+  const colour = scope.querySelector<HTMLSelectElement>('[data-colour]')?.value || undefined;
+  const qty = Number(scope.querySelector<HTMLInputElement>('[data-qty]')?.value) || 1;
+  if (addToCart(p.id, qty, colour)) {
+    toast(`${productTitle(p)}${colour ? ` (${colour})` : ''} added to your cart`, 'open-cart');
   }
 });
 

@@ -55,6 +55,12 @@ convo('Branch', ['Where is your Belize City store?'], [
 convo('Quote', ['Can you send me a quote?'], [
   (t) => { check(/can't send quotes/i.test(t), 'states it cannot transmit'); check(/open-enquiry/.test(t), 'offers enquiry summary'); check(/652-9933/.test(t), 'gives official branch details'); },
 ]);
+convo('Shop', ['Can I pay with a credit card online?'], [
+  (t) => { check(/\/shop\//.test(t), 'links the Shop'); check(/demo mode/i.test(t) && /nothing is charged/i.test(t), 'says card payment is a demo'); noBanned(t); },
+]);
+convo('Price', ['How much is the Makita drill?'], [
+  (t) => { check(/can't send quotes or get current prices/i.test(t), 'no current prices'); check(/\/shop\//.test(t) && /ended/i.test(t), 'points to Shop sale prices as ended'); noBanned(t); },
+]);
 convo('Identity', ['Are you a real AI?'], [(t) => check(/not connected to a live AI|rule-based/i.test(t), 'honest about not being live AI')]);
 convo('Spanish', ['Hola, necesito una bomba de agua para la casa'], [(t) => check(/bomba/i.test(t) && /fuente de agua|pozo/i.test(t), 'responds in Spanish')]);
 convo('Open now', ['Is the Spanish Lookout store open now?'], [(t) => check(/can't tell whether a branch is open/i.test(t), 'does not infer open now')]);

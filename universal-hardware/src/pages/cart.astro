@@ -1,0 +1,15 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import CartView from '../islands/CartView.tsx';
+import '../styles/shop.css';
+---
+<Base title="Cart" description="Your cart in the Universal Hardware concept shop. Checkout runs in demo mode." section="shop">
+  <PageHero title="Your cart" crumbs={[{ href: '/shop/', label: 'Shop' }, { label: 'Cart' }]} />
+  <section class="section section--tight">
+    <div class="container">
+      <CartView client:load />
+      <noscript><p class="notice">The cart needs JavaScript.</p></noscript>
+    </div>
+  </section>
+</Base>

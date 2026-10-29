@@ -12,7 +12,7 @@ interface Props {
   title: string;
   description: string;
   /** Current nav section for aria-current. */
-  section?: 'products' | 'brands' | 'locations' | 'about' | 'concept' | 'find' | 'home';
+  section?: 'shop' | 'products' | 'brands' | 'locations' | 'about' | 'concept' | 'find' | 'home';
   bodyClass?: string;
 }
 const { title, description, section = 'home', bodyClass } = Astro.props;

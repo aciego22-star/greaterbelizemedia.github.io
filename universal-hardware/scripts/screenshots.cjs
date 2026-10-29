@@ -125,6 +125,30 @@ const shot = (page, name, opts = {}) => page.screenshot({ path: path.join(OUT, n
     await p2.goto(BASE + '/brands/', { waitUntil: 'load' });
     await p2.waitForTimeout(800);
     await shot(p2, `09-brands-${tag}.png`);
+    // Shop, cart and demo checkout
+    await p2.goto(BASE + '/shop/', { waitUntil: 'load' });
+    await p2.waitForFunction(() => document.documentElement.classList.contains('ui-ready'), null, { timeout: 20000 });
+    const jump = (sel) => p2.evaluate((q) => { const el = document.querySelector(q); if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 90, behavior: 'instant' }); }, sel);
+    await jump('.shop-bar');
+    await p2.waitForTimeout(800);
+    await shot(p2, `13-shop-${tag}.png`);
+    await p2.click('[data-add-to-cart="makita-hp333dyx3b"]');
+    await p2.selectOption('[data-product="lifan-lf100-a"] [data-colour]', 'Blue');
+    await p2.click('[data-add-to-cart="lifan-lf100-a"]');
+    await p2.goto(BASE + '/cart/', { waitUntil: 'load' });
+    await p2.waitForSelector('.cart-line');
+    await p2.waitForTimeout(500);
+    await shot(p2, `14-cart-${tag}.png`);
+    await p2.goto(BASE + '/checkout/', { waitUntil: 'load' });
+    await p2.waitForSelector('.pay-demo');
+    await p2.click('text=Fill in sample details');
+    await jump('.co-step:nth-of-type(3)');
+    await p2.waitForTimeout(500);
+    await shot(p2, `15-checkout-card-step-${tag}.png`);
+    await p2.click('.pay-btn');
+    await p2.waitForSelector('.confirm', { timeout: 8000 });
+    await p2.waitForTimeout(500);
+    await shot(p2, `16-order-confirmed-demo-${tag}.png`);
     if (w < 800) {
       await p2.goto(BASE + '/', { waitUntil: 'load' });
       await p2.click('[data-menu-open]');

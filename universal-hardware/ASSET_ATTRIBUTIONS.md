@@ -48,7 +48,7 @@ Logos are manufacturers' trademarks, shown here because Universal Hardware's own
 
 ## Product photos cropped from News / Promotions posts
 
-The sharpest product imagery on the company's site is in its 2026 News / Promotions posts (https://universalhardware.bz/news/): 1080 × 1080 sale and Expo graphics. They carry prices, sale dates, phone numbers and sale wording, none of which the concept may show. So only the product photograph is cropped out of each graphic. Every crop box was checked pixel by pixel so that no price, date, phone number, logo lock-up or sale text is included. The crops are 370–638 px wide, two to three times the 200 px Product Listing photos they replace as the main image. The Product Listing photos still appear in each category page's "Pictured on the current website" gallery.
+The sharpest product imagery on the company's site is in its 2026 News / Promotions posts (https://universalhardware.bz/news/): 1080 × 1080 sale and Expo graphics. They carry prices, sale dates, phone numbers and sale wording, none of which may appear in the concept's images. So only the product photograph is cropped out of each graphic. Every crop box was checked pixel by pixel so that no price, date, phone number, logo lock-up or sale text is included. The crops are 370–638 px wide, two to three times the 200 px Product Listing photos they replace as the main image. The Product Listing photos still appear in each category page's "Pictured on the current website" gallery.
 
 Edits are limited to cropping, plus presentation clean-up so the photos sit on the site's white plates. Near-white, colourless backdrop texture is lifted to pure white. On the grey or blue Expo and Mega Sale backgrounds, the outer 12% is faded to white. Products are not retouched. `scripts/crop-news-photos.py` reproduces every file exactly from the original uploads. Retrieved 29 October 2026.
 
@@ -66,6 +66,12 @@ Edits are limited to cropping, plus presentation clean-up so the photos sit on t
 | `makita-clinic` | https://universalhardware.bz/news/wp-content/uploads/MakitaClinic-feb2026.jpg | Makita Clinic (Friends & Family 2026) | 0, 0, 1080, 410 | Homepage "Beyond the shelf" panel | Cropped above the event banner; no other change |
 
 Some photographed brands are not on the website's Brands page: Hoteche (hand tools, shop tools) and Knova (woodworking). They appear because the company promoted them in 2026. A photo does not confirm current stock, price or model.
+
+## Shop photos cut out of the Friends & Family Sale graphics
+
+The Shop's 32 product photos (`public/site-images/shop/<model>.{jpg,webp}`) come from the single-product graphics of Universal Hardware's Friends & Family Sale (Spanish Lookout, 19–21 February 2026), at `https://universalhardware.bz/news/wp-content/uploads/<file>.jpg`. Each product's source file is recorded in `src/data/shop.ts` and linked from its Shop page. Retrieved 29 October 2026.
+
+`scripts/crop-shop-photos.py` reproduces every file from the original uploads. Below the sale banner, it keeps the large connected shape on the product side of the graphic. The model badge, description, price, logo and contact details are separate shapes, and are painted out with the backdrop, as are three areas where text reaches into the product side (`PAINT_OUT` in the script). Near-white backdrop streaks are lifted to white. Each cut-out is centred on a white 4:3 plate (up to 720 × 540). The products are not retouched. No price, date or phone number appears in any image. The price is shown as text beside the photo, labelled as a February 2026 sale price.
 
 ## Brand names
 

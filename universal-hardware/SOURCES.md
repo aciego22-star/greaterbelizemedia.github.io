@@ -13,7 +13,7 @@ All factual content comes from Universal Hardware Company Ltd.'s own public webs
 | Hisun | https://universalhardware.bz/Hisun.html | Hisun UTV and ATV page in the site navigation |
 | Meilun Catalogues | https://universalhardware.bz/catalogues.html | Meilun parts catalogues published "when making Parts Orders" |
 | Contact Us | https://universalhardware.bz/about.html | Branch addresses, hours, telephone and Smart numbers, Sales and Service Center WhatsApp numbers, holiday closure statement, sales email |
-| News / Promotions | https://universalhardware.bz/news/ | Post titles and dates: Universal Mega Sale 2026 (Apr 23), Spanish Lookout Commercial Industrial Expo 2026 (Mar 5), Friends And Family Day 2026 (Jan 26). Product photos cropped from these posts' promotion graphics (viewed 29 October 2026) |
+| News / Promotions | https://universalhardware.bz/news/ | Post titles and dates: Universal Mega Sale 2026 (Apr 23), Spanish Lookout Commercial Industrial Expo 2026 (Mar 5), Friends And Family Day 2026 (Jan 26). Product photos cropped from these posts' promotion graphics (viewed 29 October 2026). The Shop's items, from the 32 single-product Friends & Family Sale graphics (viewed 29 October 2026) |
 
 ## Claims → source
 
@@ -31,6 +31,7 @@ All factual content comes from Universal Hardware Company Ltd.'s own public webs
 | Service Center WhatsApp line at each branch | Contact Us |
 | Meilun parts catalogues for parts orders | Meilun Catalogues |
 | Recent News / Promotions post titles | News / Promotions |
+| Shop: 32 items with brand, model, description, colours and sale price, "Friends & Family Sale, Spanish Lookout, 19–21 February 2026" | The single-product Friends & Family Sale graphics on News / Promotions (each item's graphic is linked from its Shop page and listed in `src/data/shop.ts`) |
 
 Concept copy such as "Built for Every Job.", the category summaries, the department groupings and the "Before you contact a branch" tips is clearly presentational. It describes what the website lists, but it is not a company statement.
 
@@ -38,7 +39,7 @@ Concept copy such as "Built for Every Job.", the category summaries, the departm
 
 1. **Exclusivity claim not repeated.** The Product Listing and Brands pages both say Universal Hardware is the *exclusive distributor for Lincoln Electric in Belize*. Per the brief ("no exclusive manufacturer rights without newly verified permission"), the concept does not repeat it. It can be restored once management confirms it.
 2. **Hisun page found.** The site navigation includes a Hisun page listing UTV and ATV models. It was not in the brief's source inventory. The concept mentions it only as "UTVs and ATVs (Hisun page)" under Motorcycles & Equipment and on the Brands page, attributed to that page. It needs confirmation.
-3. **Historical prices.** The Meilun & Lifan, Hisun and homepage content show model prices (e.g. "Motorcylces as low as $2000"). None are reproduced.
+3. **Historical prices.** The Meilun & Lifan, Hisun and homepage content show model prices (e.g. "Motorcylces as low as $2000"). None are reproduced. The only prices on the concept are the Shop's, copied from the February 2026 Friends & Family Sale graphics and labelled as past sale prices.
 4. **Generator size range.** The Product Listing says generators from "1.5 KW camping generators to 25 KW … industrial". The concept refers only to "portable units to industrial use" and does not state the range as current stock.
 5. **Spelling variants.** "Toolcraft" (Brands page) vs "Tool Craft" (Product Listing); "ECHO SHindaiwa" / "Echo Shindaiwa" / "Echo & Shindaiwa". The concept shows each as written where it is quoted per page, and uses "ECHO / Shindaiwa" and "Toolcraft" as display names with the alternates noted.
 6. **Number labels.** The brief lists "alternate 880-0254" and "alternate 280-0254". The live page labels these "Smart:". Shown as "Alternate (Smart)". Fax numbers on the page are not shown.
@@ -46,10 +47,12 @@ Concept copy such as "Built for Every Job.", the category summaries, the departm
 8. **Address wording.** Spanish Lookout's street address appears under "Mailing Address"; the branch block says "Center Road". The concept shows the full address with that note.
 9. **Price/value claim not repeated.** The Product Listing says "Because we buy directly from manufacturers, we can offer better prices and selection." Not repeated, since there is no basis to verify it.
 10. **Brand descriptions.** Marketing descriptions on the Brands page (e.g. "world leader", "best power tools in the world") are not copied. Neutral descriptions are used instead.
+11. **Brand on two sale graphics.** The ML125-5 and ML125-7 graphics show the Lifan logo, but the model codes (ML) and the tank badges in the photos are Meilun. The Shop lists them as Meilun and notes the difference.
+12. **Currency.** The sale graphics print prices with "$" and no currency code. The Shop reads them as Belize dollars (BZ$), which needs confirming.
 
 ## Images
 
-Product photos and brand logos are copied from Universal Hardware's own website: the `/i/` image folder of the pages above, plus product photos cropped from the 2026 promotion graphics on News / Promotions. The crops keep only the product; prices, sale dates and sale wording are left out, and none of the promotions' prices or offers are repeated. Every file and its source URL are listed in [`ASSET_ATTRIBUTIONS.md`](ASSET_ATTRIBUTIONS.md). Foton, Maytag and Norwesco appear only inside commented-out (hidden) code on the Brands and home pages, so they are treated as retired entries and not used.
+Product photos and brand logos are copied from Universal Hardware's own website: the `/i/` image folder of the pages above, plus product photos cropped from the 2026 promotion graphics on News / Promotions. The crops keep only the product; prices, sale dates and sale wording are left out of every image. Apart from the Shop, where each February 2026 sale price is shown as text and labelled as a past sale price, none of the promotions' prices or offers are repeated. Every file and its source URL are listed in [`ASSET_ATTRIBUTIONS.md`](ASSET_ATTRIBUTIONS.md). Foton, Maytag and Norwesco appear only inside commented-out (hidden) code on the Brands and home pages, so they are treated as retired entries and not used.
 
 ## Third-party data
 

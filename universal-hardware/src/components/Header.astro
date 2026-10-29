@@ -38,6 +38,10 @@ const isCurrent = (href: string) => section && href.startsWith(`/${section}/`);
         Explore Products
         <Icon name="arrow-right" size={16} class="btn-arrow" />
       </a>
+      <a class="icon-btn cart-trigger" href="/cart/" data-cart-link aria-label="Cart (0 items)">
+        <Icon name="cart" />
+        <span class="enquiry-trigger__count" data-cart-count hidden>0</span>
+      </a>
       <button
         type="button"
         class="icon-btn enquiry-trigger"
@@ -90,6 +94,10 @@ const isCurrent = (href: string) => section && href.startsWith(`/${section}/`);
     </nav>
     <div class="mobile-nav__ctas">
       <a class="btn btn--block btn--lg" href="/products/">Explore Products</a>
+      <a class="btn btn--ghost btn--block btn--lg" href="/cart/" data-cart-link>
+        <Icon name="cart" size={18} />
+        <span data-cart-label>Cart</span>
+      </a>
       <a class="btn btn--ghost btn--block btn--lg" href="/find/">Find the Right Product</a>
       <button type="button" class="btn btn--ghost btn--block" data-open-enquiry data-menu-close-after>
         <Icon name="clipboard" size={18} />

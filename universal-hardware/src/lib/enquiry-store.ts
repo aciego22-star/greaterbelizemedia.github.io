@@ -250,6 +250,7 @@ export function openEnquiry() {
 export function openGuide(prompt?: string) {
   send(OPEN_GUIDE, { prompt });
 }
-export function toast(message: string, action?: 'open-enquiry') {
+export type ToastAction = 'open-enquiry' | 'open-cart';
+export function toast(message: string, action?: ToastAction) {
   send(TOAST, { message, action });
 }

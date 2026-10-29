@@ -11,7 +11,7 @@ const walk = (d) => fs.readdirSync(d, { withFileTypes: true }).flatMap((e) => (e
 const files = walk(dist);
 const html = files.filter((f) => f.endsWith('.html'));
 
-for (const req of ['index.html', '404.html', 'robots.txt', '_headers', 'products/index.html', 'brands/index.html', 'locations/index.html', 'about/index.html', 'concept/index.html', 'find/index.html']) {
+for (const req of ['index.html', '404.html', 'robots.txt', '_headers', 'products/index.html', 'brands/index.html', 'locations/index.html', 'about/index.html', 'concept/index.html', 'find/index.html', 'shop/index.html', 'cart/index.html', 'checkout/index.html']) {
   if (!fs.existsSync(path.join(dist, req))) errors.push(`missing ${req}`);
 }
 for (const f of html) {
