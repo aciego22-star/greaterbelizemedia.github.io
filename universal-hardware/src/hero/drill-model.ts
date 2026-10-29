@@ -4,7 +4,8 @@
  *
  * scripts/build-hp333d.py cuts the drill out of the photo and "inflates" its
  * outline into a solid (union of balls, so the chuck, housing and grip come
- * out round; flat slab for the foot; thin plate for the belt clip). It ships:
+ * out round; flat slab for the foot; thin plate for the belt clip), and fits
+ * the 1.5Ah battery from the same photo under the foot. It ships:
  *  - hp333d.webp / hp333d-lo.webp: the photo cut-out, colour + alpha matte;
  *  - hp333d-depth.png: front and back surface depth on a 3 px grid;
  *  - hp333d-snap.png: offsets that move the grid's edge points onto the outline.
@@ -12,7 +13,7 @@
  * mirrored copy onto the back, with the wordmark and clutch numbers flipped
  * back so they still read correctly from that side. Facing the camera it is
  * the photo; the geometry gives it real depth, lighting and rotation.
- * Units: 1 ≈ 7 cm. Lowest point (belt clip) at y = 0 after build.
+ * Units: 1 ≈ 7 cm. Lowest point (battery and belt clip) at y = 0 after build.
  */
 import {
   BufferAttribute,
@@ -46,8 +47,8 @@ const TILT = -0.25;
 
 /**
  * Text regions (1x photo pixels, x/y/w/h) flipped in place on the back
- * texture, so the mirrored back still reads correctly: the wordmark and the
- * clutch numbers.
+ * texture, so the mirrored back still reads correctly: the wordmark, the
+ * clutch numbers and the battery's wordmark.
  */
 const FLIP_RECTS: [number, number, number, number][] = [
   [256, 76, 90, 38],
@@ -56,6 +57,7 @@ const FLIP_RECTS: [number, number, number, number][] = [
   [166, 54, 18, 23],
   [180, 86, 17, 25],
   [181, 117, 16, 22],
+  [176, 450, 62, 54],
 ];
 
 function loadImage(url: string): Promise<HTMLImageElement> {

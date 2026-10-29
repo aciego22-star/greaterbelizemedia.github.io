@@ -16,7 +16,8 @@ How the shape is made: the drill's outline in the photo is "inflated" into a
 solid. Every point inside the outline gets a thickness from the largest balls
 that fit inside the outline (union of balls), so the chuck, housing and handle
 come out round. The foot is a flat slab with rounded edges, and the belt clip a
-thin plate on the near side. The photo is then projected onto the front and
+thin plate on the near side. The 1.5Ah battery from the same photo is fitted
+under the foot (see below). The photo is then projected onto the front and
 (mirrored, text re-flipped at runtime) onto the back.
 
 Usage: python3 scripts/build-hp333d.py <path-to-HP333DYX3B.jpg>
@@ -54,7 +55,7 @@ for i in range(1, hn + 1):
     sel = holes == i
     if fy[sel].min() > 840 and mn[sel].mean() >= 240:
         mask[sel] = False  # see-through openings in the clip
-alpha = ndi.gaussian_filter(mask.astype(np.float32), 0.6)
+drill_alpha = ndi.gaussian_filter(mask.astype(np.float32), 0.6)
 
 # Colour decontamination: edge pixels are blended with the white background,
 # so replace the outer band (and everything outside) with the nearest interior
@@ -113,6 +114,66 @@ c = clip_w * CZ
 h = (1 - clip_w) * body + clip_w * hclip
 front = np.where(mask, c + h, 0).astype(np.float32)
 back = np.where(mask, c - h, 0).astype(np.float32)
+
+# ---- 1.5Ah battery, fitted under the foot ----
+# The kit photo shows the BL1016 beside the drill, seen from the same
+# front-left angle: its front end ("makita") on the left, its long side (teal
+# 1.5Ah label) on the right. Under the foot, the battery takes the same
+# layout: front end below the toe, side below the foot's near side, top edges
+# tucked behind the foot. Each face is warped from the kit photo with a
+# homography between four corners. Kit corners are full-graphic pixels, drill
+# corners crop pixels, both top-left, top-right, bottom-right, bottom-left.
+# Kit bottom corners sit 1.5 px inside edges fitted to the photo (front bottom
+# edge y = 0.684x + 677.3, side bottom edge y = -0.531x + 1164.6).
+KIT_FRONT = [(324.5, 868), (393, 913), (396, 946.5), (327, 898)]
+KIT_SIDE = [(393, 913), (522, 846), (524, 885), (396, 946.5)]
+BAT_FRONT = [(172, 414), (246, 440), (246, 510), (172, 484)]
+BAT_SIDE = [(246, 440), (348, 416), (348, 486), (246, 510)]
+HBT = 64.0  # battery half depth: a little narrower than the foot (HF)
+RB = 8.0  # rounding of its edges
+full = Image.open(SRC).convert('RGB')
+
+
+def warp(dst, src):
+    """Image of the crop's size showing quad `src` of the graphic mapped onto quad `dst`."""
+    A, B = [], []
+    for (x, y), (u, v) in zip(dst, src):
+        A += [[x, y, 1, 0, 0, 0, -u * x, -u * y], [0, 0, 0, x, y, 1, -v * x, -v * y]]
+        B += [u, v]
+    cf = np.linalg.solve(np.array(A, float), np.array(B, float))
+    return np.asarray(full.transform((W, H), Image.PERSPECTIVE, tuple(cf), Image.BICUBIC)).astype(np.float32)
+
+
+def poly_alpha(pts, ss=4):
+    from PIL import ImageDraw
+    cv = Image.new('L', (W * ss, H * ss), 0)
+    ImageDraw.Draw(cv).polygon([(x * ss, y * ss) for x, y in pts], fill=255)
+    return np.asarray(cv.resize((W, H), Image.BOX)).astype(np.float32) / 255
+
+
+a_front = poly_alpha(BAT_FRONT)
+a_side = poly_alpha(BAT_SIDE)
+bat_alpha = np.clip(a_front + a_side, 0, 1)
+bat_rgb = np.where((a_front > a_side)[..., None], warp(BAT_FRONT, KIT_FRONT), warp(BAT_SIDE, KIT_SIDE))
+bat = bat_alpha > 0.5
+drill_mask = mask
+mask = drill_mask | bat
+
+# Depth: a slab with rounded edges; drill parts in front of it (the foot's
+# lip, the belt clip) keep their own surfaces.
+DB = ndi.distance_transform_edt(mask)
+bslab = HBT * np.sqrt(1 - (1 - np.clip(DB / RB, 0, 1)) ** 2)
+front = np.where(bat, np.maximum(front, bslab), front).astype(np.float32)
+back = np.where(bat, np.minimum(back, -bslab), back).astype(np.float32)
+
+# Colour: the battery shows through wherever the drill is not.
+inb = (bat_alpha > 0)[..., None]
+clean = np.where(inb, drill_alpha[..., None] * clean + (1 - drill_alpha[..., None]) * bat_rgb, clean)
+alpha = np.maximum(drill_alpha, bat_alpha)
+core = ndi.binary_erosion(mask, iterations=1)
+_, (iy, ix) = ndi.distance_transform_edt(~core, return_indices=True)
+band = ~core & ~drill_mask
+clean[band] = clean[iy[band], ix[band]]
 
 # Outside the outline, carry the nearest midline so front and back meet.
 _, (my, mx) = ndi.distance_transform_edt(~mask, return_indices=True)
