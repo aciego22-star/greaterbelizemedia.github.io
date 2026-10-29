@@ -1,6 +1,6 @@
 # Asset attributions
 
-No stock photography, scraped images, manufacturer logos, staff portraits or customer images are used anywhere in this concept.
+No stock photography, social-media images, staff portraits or customer images are used. Product photos and brand logos come only from Universal Hardware's own public website (listed below).
 
 | Asset | Files | Source / author | Licence / basis | Depicts | Edits |
 |---|---|---|---|---|---|
@@ -16,9 +16,38 @@ No stock photography, scraped images, manufacturer logos, staff portraits or cus
 | Inter (text type) | `public/fonts/inter-var.woff2` | Rasmus Andersson, via `@fontsource-variable/inter` | SIL Open Font License 1.1 (`public/fonts/LICENSE-Inter.txt`) | — | Weight axis restricted to 400–700 and subset to Latin / Latin-1 |
 | JetBrains Mono (labels) | `public/fonts/jetbrains-mono-500.woff2` | JetBrains, via `@fontsource/jetbrains-mono` | SIL Open Font License 1.1 (`public/fonts/LICENSE-JetBrainsMono.txt`) | — | None |
 
+## Images from Universal Hardware's current website
+
+Retrieved from `https://universalhardware.bz/i/…` on 28 October 2026 for this private concept, at the request of the concept's author. They belong to Universal Hardware Company Ltd. and the respective manufacturers. They are shown as the company presents them, with the caption "As pictured on universalhardware.bz" or "Pictured on the current website". They depict example products, not confirmed stock or current models. **Request high-resolution, approved files before any public use.**
+
+| File (`public/site-images/…`) | Source URL | Used on | Edits |
+|---|---|---|---|
+| `categories/welding-supplies` | https://universalhardware.bz/i/arc-welder.jpg | Welding Supplies page, search card | WebP copy added (JPEG kept) |
+| `categories/power-tools` | https://universalhardware.bz/i/power-tools.jpg | Power Tools | WebP copy |
+| `categories/hand-tools` | https://universalhardware.bz/i/handtools.jpg | Hand Tools | WebP copy |
+| `categories/lawn-and-garden` | https://universalhardware.bz/i/lawn.jpg | Lawn and Garden | Source file is truncated by 2 bytes; decoded and re-saved as a complete JPEG (q92) + WebP |
+| `categories/lighting-and-fans` | https://universalhardware.bz/i/fans.jpg | Lighting and Fans | WebP copy |
+| `categories/woodworking` | https://universalhardware.bz/i/woodwork.jpg | Woodworking | WebP copy |
+| `categories/generators` | https://universalhardware.bz/i/generators.jpg | Generators | WebP copy |
+| `categories/water-pumps` | https://universalhardware.bz/i/waterpumps.jpg | Water Pumps | WebP copy |
+| `categories/household` | https://universalhardware.bz/i/bbqgrill.jpg | Household | Source file is truncated by 4 bytes; re-saved as a complete JPEG (q92) + WebP |
+| `categories/agriculture` | https://universalhardware.bz/i/barbwire.jpg | Agriculture | WebP copy |
+| `categories/shop-tools` | https://universalhardware.bz/i/compressor.jpg | Shop Tools (photo shows a Porter-Cable compressor, a brand not on the Brands page) | WebP copy |
+| `products/meilun-trail-motorcycle` | https://universalhardware.bz/i/ML150GY-4RED.jpg | Motorcycles hero + gallery | WebP copy |
+| `products/lifan-street-motorcycle` | https://universalhardware.bz/i/lifan-lf125-5-red.jpg | Motorcycles gallery | WebP copy |
+| `products/lifan-scooter` | https://universalhardware.bz/i/lifan-lf100-blue.jpg | Motorcycles gallery | WebP copy |
+| `products/meilun-cargo-motorcycle` | https://universalhardware.bz/i/ml150zh-3.jpg | Motorcycles gallery | WebP copy |
+| `products/hisun-utv` | https://universalhardware.bz/i/hisun-HS750UTV.jpg | Motorcycles gallery | WebP copy |
+| `products/lifan-generator` | https://universalhardware.bz/i/meilun/lifan-5500.jpg | Generators gallery | WebP copy |
+| `products/meilun-generator` | https://universalhardware.bz/i/meilun/8000E.jpg | Generators gallery | WebP copy |
+| `products/meilun-water-pump` | https://universalhardware.bz/i/meilun/50ZB.jpg | Water Pumps gallery | WebP copy |
+| `logos/*` (18 files) | `https://universalhardware.bz/i/<name>-logo.gif` etc. (Brands page); `lifan-logo.png` from the Meilun & Lifan page; `hisun-logo.png` from the Hisun page | Homepage brand wall, Brands page | **None**: original files, renamed by brand id |
+
+Logos are manufacturers' trademarks, shown here because Universal Hardware's own Brands page displays them. Brands the website names without a logo (Master Mechanic, MTD, Hunter, Grizzly, Denyo, Honda) appear as text. Exact paths and alt text for every image are recorded in `src/data/site-images.ts`.
+
 ## Brand names
 
-Brand names (Makita, Lincoln Electric, ECHO / Shindaiwa, etc.) appear as **plain text only**, for identification, because Universal Hardware's website names them. No brand logos are reproduced. Trademarks belong to their owners. A mention does not imply a current distribution agreement, endorsement or stock.
+Brand names and logos appear for identification because Universal Hardware's website names and displays them. Trademarks belong to their owners. A mention does not imply a current distribution agreement, endorsement or stock.
 
 ## Software
 

@@ -225,12 +225,31 @@ export const OPEN_ENQUIRY = 'uhc:open-enquiry';
 export const OPEN_GUIDE = 'uhc:open-guide';
 export const TOAST = 'uhc:toast';
 
+// Requests made before the global UI island has hydrated are queued and
+// replayed by GlobalUI on mount, so an early tap is never lost.
+type Queued = { type: string; detail?: unknown };
+const UI_QUEUE = '__uhcUiQueue';
+function send(type: string, detail?: unknown) {
+  if (!document.documentElement.classList.contains('ui-ready')) {
+    const w = window as unknown as Record<string, Queued[]>;
+    (w[UI_QUEUE] ||= []).push({ type, detail });
+    return;
+  }
+  window.dispatchEvent(new CustomEvent(type, { detail }));
+}
+export function flushUiQueue() {
+  const w = window as unknown as Record<string, Queued[] | undefined>;
+  const q = w[UI_QUEUE];
+  w[UI_QUEUE] = [];
+  q?.forEach((e) => window.dispatchEvent(new CustomEvent(e.type, { detail: e.detail })));
+}
+
 export function openEnquiry() {
-  window.dispatchEvent(new CustomEvent(OPEN_ENQUIRY));
+  send(OPEN_ENQUIRY);
 }
 export function openGuide(prompt?: string) {
-  window.dispatchEvent(new CustomEvent(OPEN_GUIDE, { detail: { prompt } }));
+  send(OPEN_GUIDE, { prompt });
 }
 export function toast(message: string, action?: 'open-enquiry') {
-  window.dispatchEvent(new CustomEvent(TOAST, { detail: { message, action } }));
+  send(TOAST, { message, action });
 }

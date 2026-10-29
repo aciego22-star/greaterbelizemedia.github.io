@@ -12,6 +12,7 @@ import { BRANDS } from '../data/brands';
 import { BRANCHES, BRANCH_VERIFY_NOTE } from '../data/branches';
 import { CATEGORY_BY_SLUG } from '../data/categories';
 import { SOURCES } from '../data/sources';
+import { BRAND_LOGOS } from '../data/site-images';
 
 const wallBrands = BRANDS.filter((b) => b.onBrandsPage);
 const otherNamed = BRANDS.filter((b) => !b.onBrandsPage);
@@ -80,7 +81,7 @@ const firstCat = (id: string) => {
         </div>
         <div class="stack" style="--stack:20px">
           <p class="lead">
-            The brands shown on Universal Hardware's Brands page, presented as text for identification. A listing
+            The brands on Universal Hardware's Brands page, with the logos as the company displays them. A listing
             doesn't confirm current stock of any line.
           </p>
           <a class="link-arrow" href="/brands/">Explore brands by category <Icon name="arrow-right" size={16} /></a>
@@ -91,7 +92,20 @@ const firstCat = (id: string) => {
           wallBrands.map((b, i) => (
             <li class="brand-wall__cell" data-reveal style={`--i:${i % 4}`}>
               <a href={`/brands/#${b.id}`}>
-                <span class="brand-wall__name">{b.name}</span>
+                <span class="brand-wall__logo">
+                  {BRAND_LOGOS[b.id] ? (
+                    <img
+                      src={`/${BRAND_LOGOS[b.id].src}`}
+                      width={BRAND_LOGOS[b.id].width}
+                      height={BRAND_LOGOS[b.id].height}
+                      alt={b.name}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  ) : (
+                    <span class="brand-wall__name">{b.name}</span>
+                  )}
+                </span>
                 <span class="brand-wall__cat mono">{firstCat(b.id)}</span>
               </a>
             </li>
@@ -287,38 +301,52 @@ const firstCat = (id: string) => {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 18px;
+    gap: 16px;
     height: 100%;
-    min-height: clamp(104px, 11vw, 150px);
-    padding: clamp(16px, 2vw, 26px);
+    min-height: clamp(116px, 11vw, 156px);
+    padding: clamp(16px, 2vw, 24px);
     text-decoration: none;
     color: var(--ink);
-    overflow: hidden;
+    background: var(--paper);
     transition:
       background-color 400ms var(--ease-out),
-      color 400ms var(--ease-out);
+      box-shadow 400ms var(--ease-out);
   }
-  .brand-wall__cell a::before {
+  .brand-wall__cell a::after {
     content: '';
     position: absolute;
-    inset: 0;
-    background: var(--graphite);
-    transform: translateY(101%);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background: var(--blue-600);
+    transform: scaleX(0);
+    transform-origin: left;
     transition: transform 500ms var(--ease-out);
-    z-index: 0;
-  }
-  .brand-wall__cell a:hover::before,
-  .brand-wall__cell a:focus-visible::before {
-    transform: none;
   }
   .brand-wall__cell a:hover,
   .brand-wall__cell a:focus-visible {
-    color: #fff;
+    background: var(--mist);
   }
-  .brand-wall__name,
-  .brand-wall__cat {
-    position: relative;
-    z-index: 1;
+  .brand-wall__cell a:hover::after,
+  .brand-wall__cell a:focus-visible::after {
+    transform: scaleX(1);
+  }
+  .brand-wall__logo {
+    display: flex;
+    align-items: center;
+    min-height: 56px;
+  }
+  .brand-wall__logo img {
+    width: auto;
+    height: auto;
+    max-width: min(150px, 100%);
+    max-height: 52px;
+    mix-blend-mode: multiply;
+    transition: transform 500ms var(--ease-out);
+  }
+  .brand-wall__cell a:hover .brand-wall__logo img {
+    transform: scale(1.04);
   }
   .brand-wall__name {
     font-family: var(--font-display);
@@ -330,10 +358,9 @@ const firstCat = (id: string) => {
   }
   .brand-wall__cat {
     color: var(--steel);
-    transition: color 400ms;
   }
   .brand-wall__cell a:hover .brand-wall__cat {
-    color: var(--blue-on-dark);
+    color: var(--blue-700);
   }
   .brand-wall__more {
     margin-top: 22px;

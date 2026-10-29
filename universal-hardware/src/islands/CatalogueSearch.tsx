@@ -3,6 +3,8 @@ import { DEPARTMENTS } from '../data/departments';
 import { BRANDS } from '../data/brands';
 import { searchCategories, POPULAR_SEARCHES } from '../lib/search';
 import { artSvg } from '../lib/category-art';
+import { CATEGORY_PHOTOS } from '../data/site-images';
+import { assetUrl } from '../lib/asset-url';
 import { iconSvg, type IconName } from '../lib/icons';
 import { hasCategory, toggleCategory, subscribe, openGuide, toast } from '../lib/enquiry-store';
 
@@ -183,7 +185,22 @@ export default function CatalogueSearch() {
             const added = hasCategory(c.slug);
             return (
               <li class="cat-card" key={c.slug}>
-                <div class="cat-card__art" dangerouslySetInnerHTML={{ __html: artSvg(c.illustration) }} />
+                <div class="cat-card__art">
+                  <div class="cat-card__illus" dangerouslySetInnerHTML={{ __html: artSvg(c.illustration) }} />
+                  {CATEGORY_PHOTOS[c.slug] && (
+                    <picture class="cat-card__photo">
+                      {CATEGORY_PHOTOS[c.slug].webp && <source type="image/webp" srcset={assetUrl(CATEGORY_PHOTOS[c.slug].webp!)} />}
+                      <img
+                        src={assetUrl(CATEGORY_PHOTOS[c.slug].src)}
+                        width={CATEGORY_PHOTOS[c.slug].width}
+                        height={CATEGORY_PHOTOS[c.slug].height}
+                        alt={CATEGORY_PHOTOS[c.slug].alt}
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </picture>
+                  )}
+                </div>
                 <div class="cat-card__body">
                   <h2 class="cat-card__title">
                     <a href={`/products/${c.slug}/`} class="cat-card__link">{c.name}</a>

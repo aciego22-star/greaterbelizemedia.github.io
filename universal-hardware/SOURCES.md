@@ -47,6 +47,10 @@ Concept copy such as "Built for Every Job.", the category summaries, the departm
 9. **Price/value claim not repeated.** The Product Listing says "Because we buy directly from manufacturers, we can offer better prices and selection." Not repeated, since there is no basis to verify it.
 10. **Brand descriptions.** Marketing descriptions on the Brands page (e.g. "world leader", "best power tools in the world") are not copied. Neutral descriptions are used instead.
 
+## Images
+
+Product photos and brand logos are copied from Universal Hardware's own website (`/i/` image folder of the pages above). Every file and its source URL are listed in [`ASSET_ATTRIBUTIONS.md`](ASSET_ATTRIBUTIONS.md). Foton, Maytag and Norwesco appear only inside commented-out (hidden) code on the Brands and home pages, so they are treated as retired entries and not used.
+
 ## Third-party data
 
 - Belize country outline: Natural Earth 1:10m Admin 0 countries (public domain), https://github.com/nvkelso/natural-earth-vector, projected and simplified at build time. Branch pins are approximate town positions.

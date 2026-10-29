@@ -10,6 +10,7 @@ import {
   addCategory,
   buildSummary,
   copyText,
+  flushUiQueue,
   getDraft,
   removeCategory,
   resetDraft,
@@ -158,6 +159,7 @@ export default function GlobalUI() {
     window.addEventListener(OPEN_GUIDE, onOpenGuide);
     window.addEventListener(TOAST, onToast);
     document.documentElement.classList.add('ui-ready');
+    flushUiQueue();
     return () => {
       unsub();
       window.removeEventListener(OPEN_ENQUIRY, onOpenEnq);

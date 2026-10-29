@@ -20,7 +20,7 @@ const fullTitle = section === 'home' ? `${title}` : `${title} · Universal Hardw
 const canonical = new URL(Astro.url.pathname, Astro.site).toString();
 ---
 <!doctype html>
-<html lang="en" class="no-js">
+<html lang="en" class="no-js" data-root="/">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />

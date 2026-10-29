@@ -69,6 +69,7 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
     }));
     const ok = resp.status() === 200 && meta.robots.startsWith('noindex') && meta.h1 === 1 && meta.disclaimer && meta.concept && meta.official && !meta.imgsNoAlt;
     record('route', r, ok, `status ${resp.status()}, h1=${meta.h1}, noindex=${meta.robots.startsWith('noindex')}, disclaimer=${meta.disclaimer}`);
+
     const errs = page._errors.filter((e) => !/Failed to load resource/.test(e) || true);
     record('console', r, errs.length === 0, errs.join(' | '));
     // axe-core
@@ -78,6 +79,21 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
       return res.violations.map((v) => `${v.id} (${v.impact}) ×${v.nodes.length}: ${v.nodes.slice(0, 2).map((n) => n.target.join(' ')).join(', ')}`);
     });
     record('axe', r, axe.length === 0, axe.join(' || '));
+    await page.evaluate(async () => {
+      for (let y = 0; y < document.documentElement.scrollHeight; y += 600) {
+        window.scrollTo(0, y);
+        await new Promise((res) => setTimeout(res, 60));
+      }
+      window.scrollTo(0, 0);
+    });
+    // Force lazy images to load so every image URL on the page is verified.
+    const broken = await page.evaluate(async () => {
+      const imgs = Array.from(document.images);
+      imgs.forEach((i) => (i.loading = 'eager'));
+      await Promise.all(imgs.map((i) => (i.complete ? null : new Promise((r) => { i.addEventListener('load', r, { once: true }); i.addEventListener('error', r, { once: true }); setTimeout(r, 5000); }))));
+      return imgs.filter((i) => !(i.complete && i.naturalWidth > 0)).map((i) => i.currentSrc || i.src);
+    });
+    record('images', `${r} every image loads`, broken.length === 0, broken.join(', '));
     record('network', `${r} loads no third-party resources`, page._external.length === 0, page._external.join(', '));
     await ctx.close();
   }

@@ -49,6 +49,7 @@ const runtime = (depth) => `<script>
   var up = ${JSON.stringify('../'.repeat(depth))};
   var root = document.documentElement;
   if (!root.lang) root.lang = 'en';
+  root.setAttribute('data-root', up); // read by assetUrl() in islands
   function rel(u) {
     if (!u || u.charAt(0) !== '/' || u.charAt(1) === '/') return u;
     var m = u.match(/^([^?#]*)(\\?[^#]*)?(#.*)?$/), p = m[1];
@@ -56,14 +57,18 @@ const runtime = (depth) => `<script>
     else if (!/\\.[a-z0-9]+$/i.test(p.split('/').pop())) p += '/index.html';
     return up + p.slice(1) + (m[2] || '') + (m[3] || '');
   }
+  var SEL = 'a[href^="/"], form[action^="/"], img[src^="/"], img[srcset^="/"], source[srcset^="/"]';
   function fix(el) {
     if (el.nodeType !== 1) return;
-    var list = el.matches && el.matches('a[href^="/"], form[action^="/"]') ? [el] : [];
-    if (el.querySelectorAll) list = list.concat([].slice.call(el.querySelectorAll('a[href^="/"], form[action^="/"]')));
+    var list = el.matches && el.matches(SEL) ? [el] : [];
+    if (el.querySelectorAll) list = list.concat([].slice.call(el.querySelectorAll(SEL)));
     list.forEach(function (n) {
-      var a = n.tagName === 'FORM' ? 'action' : 'href';
-      var v = n.getAttribute(a);
-      if (v && v.charAt(0) === '/' && v.charAt(1) !== '/') n.setAttribute(a, rel(v));
+      ['href', 'action', 'src'].forEach(function (a) {
+        var v = n.getAttribute(a);
+        if (v && v.charAt(0) === '/' && v.charAt(1) !== '/') n.setAttribute(a, rel(v));
+      });
+      var ss = n.getAttribute('srcset');
+      if (ss && ss.charAt(0) === '/') n.setAttribute('srcset', ss.split(',').map(function (c) { var p = c.trim().split(/\s+/); p[0] = rel(p[0]); return p.join(' '); }).join(', '));
     });
   }
   new MutationObserver(function (records) {
@@ -71,7 +76,7 @@ const runtime = (depth) => `<script>
       if (r.type === 'attributes') fix(r.target);
       else r.addedNodes.forEach(fix);
     });
-  }).observe(root, { subtree: true, childList: true, attributes: true, attributeFilter: ['href', 'action'] });
+  }).observe(root, { subtree: true, childList: true, attributes: true, attributeFilter: ['href', 'action', 'src', 'srcset'] });
   document.addEventListener('DOMContentLoaded', function () { fix(document.body); });
 })();
 </script>
@@ -89,6 +94,8 @@ function transformHtml(html, depth, isMain) {
     .replace(/<meta property="og:[^"]+" content="[^"]*"\s*\/?>/g, '');
   // Inline fonts.
   for (const [k, v] of Object.entries(FONTS)) html = html.split(`url(${k})`).join(`url(${v})`).split(`url('${k}')`).join(`url('${v}')`).split(`url("${k}")`).join(`url("${v}")`);
+  // Asset root for islands (see src/lib/asset-url.ts).
+  html = html.replace('data-root="/"', `data-root="${'../'.repeat(depth)}"`);
   // Root-absolute attribute values.
   html = html.replace(/\b(href|src|component-url|renderer-url|before-hydration-url|action|poster)="(\/[^"]*)"/g, (_, a, u) => `${a}="${toRel(u, depth)}"`);
   html = html.replace(/\bsrcset="([^"]*)"/g, (_, v) =>

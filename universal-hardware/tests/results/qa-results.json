@@ -1,7 +1,7 @@
 {
   "base": "http://localhost:4322",
-  "date": "2026-10-28T23:11:16.621Z",
-  "passed": 164,
+  "date": "2026-10-28T23:56:01.445Z",
+  "passed": 183,
   "failed": 0,
   "results": [
     {
@@ -19,6 +19,12 @@
     {
       "group": "axe",
       "name": "/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "images",
+      "name": "/ every image loads",
       "pass": true,
       "detail": ""
     },
@@ -47,6 +53,12 @@
       "detail": ""
     },
     {
+      "group": "images",
+      "name": "/products/ every image loads",
+      "pass": true,
+      "detail": ""
+    },
+    {
       "group": "network",
       "name": "/products/ loads no third-party resources",
       "pass": true,
@@ -67,6 +79,12 @@
     {
       "group": "axe",
       "name": "/brands/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "images",
+      "name": "/brands/ every image loads",
       "pass": true,
       "detail": ""
     },
@@ -95,6 +113,12 @@
       "detail": ""
     },
     {
+      "group": "images",
+      "name": "/locations/ every image loads",
+      "pass": true,
+      "detail": ""
+    },
+    {
       "group": "network",
       "name": "/locations/ loads no third-party resources",
       "pass": true,
@@ -115,6 +139,12 @@
     {
       "group": "axe",
       "name": "/about/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "images",
+      "name": "/about/ every image loads",
       "pass": true,
       "detail": ""
     },
@@ -143,6 +173,12 @@
       "detail": ""
     },
     {
+      "group": "images",
+      "name": "/concept/ every image loads",
+      "pass": true,
+      "detail": ""
+    },
+    {
       "group": "network",
       "name": "/concept/ loads no third-party resources",
       "pass": true,
@@ -163,6 +199,12 @@
     {
       "group": "axe",
       "name": "/find/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "images",
+      "name": "/find/ every image loads",
       "pass": true,
       "detail": ""
     },
@@ -191,6 +233,12 @@
       "detail": ""
     },
     {
+      "group": "images",
+      "name": "/products/power-tools/ every image loads",
+      "pass": true,
+      "detail": ""
+    },
+    {
       "group": "network",
       "name": "/products/power-tools/ loads no third-party resources",
       "pass": true,
@@ -211,6 +259,12 @@
     {
       "group": "axe",
       "name": "/products/welding-supplies/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "images",
+      "name": "/products/welding-supplies/ every image loads",
       "pass": true,
       "detail": ""
     },
@@ -239,6 +293,12 @@
       "detail": ""
     },
     {
+      "group": "images",
+      "name": "/products/generators/ every image loads",
+      "pass": true,
+      "detail": ""
+    },
+    {
       "group": "network",
       "name": "/products/generators/ loads no third-party resources",
       "pass": true,
@@ -259,6 +319,12 @@
     {
       "group": "axe",
       "name": "/products/water-pumps/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "images",
+      "name": "/products/water-pumps/ every image loads",
       "pass": true,
       "detail": ""
     },
@@ -287,6 +353,12 @@
       "detail": ""
     },
     {
+      "group": "images",
+      "name": "/products/lawn-and-garden/ every image loads",
+      "pass": true,
+      "detail": ""
+    },
+    {
       "group": "network",
       "name": "/products/lawn-and-garden/ loads no third-party resources",
       "pass": true,
@@ -307,6 +379,12 @@
     {
       "group": "axe",
       "name": "/products/motorcycles/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "images",
+      "name": "/products/motorcycles/ every image loads",
       "pass": true,
       "detail": ""
     },
@@ -335,6 +413,12 @@
       "detail": ""
     },
     {
+      "group": "images",
+      "name": "/products/household/ every image loads",
+      "pass": true,
+      "detail": ""
+    },
+    {
       "group": "network",
       "name": "/products/household/ loads no third-party resources",
       "pass": true,
@@ -355,6 +439,12 @@
     {
       "group": "axe",
       "name": "/products/lighting-and-fans/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "images",
+      "name": "/products/lighting-and-fans/ every image loads",
       "pass": true,
       "detail": ""
     },
@@ -383,6 +473,12 @@
       "detail": ""
     },
     {
+      "group": "images",
+      "name": "/products/woodworking/ every image loads",
+      "pass": true,
+      "detail": ""
+    },
+    {
       "group": "network",
       "name": "/products/woodworking/ loads no third-party resources",
       "pass": true,
@@ -403,6 +499,12 @@
     {
       "group": "axe",
       "name": "/products/shop-tools/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "images",
+      "name": "/products/shop-tools/ every image loads",
       "pass": true,
       "detail": ""
     },
@@ -431,6 +533,12 @@
       "detail": ""
     },
     {
+      "group": "images",
+      "name": "/products/agriculture/ every image loads",
+      "pass": true,
+      "detail": ""
+    },
+    {
       "group": "network",
       "name": "/products/agriculture/ loads no third-party resources",
       "pass": true,
@@ -451,6 +559,12 @@
     {
       "group": "axe",
       "name": "/products/hand-tools/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "images",
+      "name": "/products/hand-tools/ every image loads",
       "pass": true,
       "detail": ""
     },
@@ -602,7 +716,7 @@
       "group": "search",
       "name": "\"submersible pump\" → Water Pumps with highlighted sub-type",
       "pass": true,
-      "detail": "Water Pumps | Submersible pumps, Jet pumps (pressure systems), Sprinkler pumps, Booster pumps, Sump pumps, Marine pumps, Pressure pumps, Gas and diesel powered water pumps (129ms)"
+      "detail": "Water Pumps | Submersible pumps, Jet pumps (pressure systems), Sprinkler pumps, Booster pumps, Sump pumps, Marine pumps, Pressure pumps, Gas and diesel powered water pumps (125ms)"
     },
     {
       "group": "search",

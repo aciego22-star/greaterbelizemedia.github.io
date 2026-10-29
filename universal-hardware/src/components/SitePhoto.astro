@@ -1,0 +1,22 @@
+---
+/** A photo from Universal Hardware's current website (WebP with JPEG fallback). */
+import type { SiteImage } from '../data/site-images';
+interface Props {
+  image: SiteImage;
+  class?: string;
+  eager?: boolean;
+  sizes?: string;
+}
+const { image, class: cls, eager = false } = Astro.props;
+---
+<picture class={cls}>
+  {image.webp && <source type="image/webp" srcset={`/${image.webp}`} />}
+  <img
+    src={`/${image.src}`}
+    width={image.width}
+    height={image.height}
+    alt={image.alt}
+    loading={eager ? 'eager' : 'lazy'}
+    decoding="async"
+  />
+</picture>

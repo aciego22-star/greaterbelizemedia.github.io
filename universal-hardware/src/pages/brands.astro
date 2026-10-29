@@ -5,6 +5,7 @@ import Icon from '../components/Icon.astro';
 import { BRANDS } from '../data/brands';
 import { CATEGORY_BY_SLUG, CATEGORIES } from '../data/categories';
 import { SOURCES, SOURCE_VIEWED } from '../data/sources';
+import { BRAND_LOGOS } from '../data/site-images';
 
 const onPage = BRANDS.filter((b) => b.onBrandsPage);
 const elsewhere = BRANDS.filter((b) => !b.onBrandsPage);
@@ -18,7 +19,7 @@ const usedCats = CATEGORIES.filter((c) => BRANDS.some((b) => b.categories.some((
   <PageHero
     eyebrow="Brand ecosystem"
     title="Brands on the current website."
-    lead="Every brand Universal Hardware's website names, shown with exactly where it's mentioned. Brand names are set as text for identification only; logos and relationships would be confirmed with the company."
+    lead="Every brand Universal Hardware's website names, shown with exactly where it's mentioned. Logos appear as the company displays them on its own pages; relationships would be confirmed with the company."
     crumbs={[{ label: 'Brands' }]}
   >
     <p class="notice brands-notice">
@@ -46,6 +47,13 @@ const usedCats = CATEGORIES.filter((c) => BRANDS.some((b) => b.categories.some((
         {
           onPage.map((b) => (
             <li class="brand-card" id={b.id} data-cats={b.categories.map((l) => l.slug).join(' ')}>
+              <div class="brand-card__logo">
+                {BRAND_LOGOS[b.id] ? (
+                  <img src={`/${BRAND_LOGOS[b.id].src}`} width={BRAND_LOGOS[b.id].width} height={BRAND_LOGOS[b.id].height} alt="" loading="lazy" decoding="async" />
+                ) : (
+                  <span class="brand-card__nologo mono">No logo on the website</span>
+                )}
+              </div>
               <h3 class="brand-card__name">{b.name}</h3>
               {b.alsoWritten && <p class="brand-card__aka">Also written: {b.alsoWritten.join(', ')}</p>}
               <p class="brand-card__focus">{b.focus}</p>
@@ -78,6 +86,13 @@ const usedCats = CATEGORIES.filter((c) => BRANDS.some((b) => b.categories.some((
         {
           elsewhere.map((b) => (
             <li class="brand-card" id={b.id} data-cats={b.categories.map((l) => l.slug).join(' ')}>
+              <div class="brand-card__logo">
+                {BRAND_LOGOS[b.id] ? (
+                  <img src={`/${BRAND_LOGOS[b.id].src}`} width={BRAND_LOGOS[b.id].width} height={BRAND_LOGOS[b.id].height} alt="" loading="lazy" decoding="async" />
+                ) : (
+                  <span class="brand-card__nologo mono">No logo on the website</span>
+                )}
+              </div>
               <h3 class="brand-card__name">{b.name}</h3>
               <p class="brand-card__rel"><Icon name="check" size={16} /> {b.relationship}</p>
               <ul class="brand-card__cats">
@@ -210,6 +225,23 @@ const usedCats = CATEGORIES.filter((c) => BRANDS.some((b) => b.categories.some((
   }
   .brand-card[hidden] {
     display: none;
+  }
+  .brand-card__logo {
+    display: flex;
+    align-items: center;
+    height: 64px;
+    margin-bottom: 4px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
+  }
+  .brand-card__logo img {
+    width: auto;
+    height: auto;
+    max-width: min(160px, 100%);
+    max-height: 52px;
+  }
+  .brand-card__nologo {
+    color: var(--steel);
   }
   .brand-card__name {
     font-size: 1.55rem;

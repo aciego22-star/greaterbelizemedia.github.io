@@ -91,7 +91,8 @@ Indexing is blocked three ways: `<meta name="robots" content="noindex, nofollowâ
 
 ```
 src/
-  data/         Source-backed records: categories, departments, brands, branches, sources, site copy
+  data/         Source-backed records: categories, departments, brands, branches, sources, site copy,
+                site-images (photos and logos from universalhardware.bz, with source URLs)
   lib/          enquiry-store (sessionStorage), search, finder rules, icons, category art,
                 guide/ (engine contract, local rule engine, optional Chatbase adapter)
   hero/         Hero.astro, hero-loader (progressive enhancement), drill-scene + drill-model (Three.js)
@@ -102,6 +103,8 @@ src/
 scripts/        postbuild checks, ZIP, posters, screenshots, fonts, local server
 tests/          guide-cases.ts (logic), run-qa.cjs (end-to-end)
 ```
+
+Product photos and brand logos in `public/site-images/` are copied from Universal Hardware's current website and labelled as such on the page. Each file's source URL is recorded in `src/data/site-images.ts` and [`ASSET_ATTRIBUTIONS.md`](ASSET_ATTRIBUTIONS.md). They are low resolution and need approved replacements before any launch.
 
 Design tokens come from the supplied wordmark: blue `#5592CB` (sampled), action blue `#1768B4`, graphite `#121D29`, ink `#0D1C2C`. Typefaces are Archivo (display), Inter (text) and JetBrains Mono (labels), all self-hosted.
 

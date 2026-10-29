@@ -8,7 +8,7 @@
 
 | Area | Result |
 |---|---|
-| Automated end-to-end suite (`tests/run-qa.cjs`) | **164 / 164 checks pass** |
+| Automated end-to-end suite (`tests/run-qa.cjs`) | **183 / 183 checks pass** |
 | Logic suite (`tests/guide-cases.ts`) | **All pass**: 11 guide conversations; every finder answer combination (276) resolves to listed categories and sub-types |
 | Type check (`astro check`) | 0 errors, 0 warnings |
 | Post-build checks | noindex + disclaimer on all 20 pages; `_headers`, `robots.txt`, `404.html` present; no secret patterns |
@@ -22,6 +22,7 @@
 |---|---|---|
 | route | 21/21 | All 19 content routes load directly (refresh-safe) with status 200, one `<h1>`, `noindex`, the concept badge, the full disclaimer, an official-site link and alt text on every image; unknown URLs return the custom 404; `/products` redirects to `/products/` |
 | console | 19/19 | No console errors on any route |
+| images | 19/19 | Every image on every route (including the photos and logos from universalhardware.bz) loads with real dimensions, once lazy loading is forced to eager |
 | axe | 19/19 | No accessibility violations |
 | network | 22/22 | No request to any non-origin host on page load, in the finder/enquiry flows, in Guide conversations or across navigation |
 | overflow | 7/7 | No horizontal overflow on any route at 320×640, 375×812, 390×844, 430×932, 768×1024, 1024×768, 1440×900 |
@@ -30,7 +31,7 @@
 | search | 17/17 | 12 categories by default; "submersible pump" ranks Water Pumps and highlights the sub-type; URL sync; English, Spanish and typo queries ("planta", "bomba de agua", "genrator"); finished empty state with recovery; department and brand filters; `?q=` deep link |
 | finder | 5/5 | Six need paths; backup power → Generators with electrician caution; back navigation; farm → Water Pumps related; deep well → Submersible pumps |
 | enquiry | 12/12 | Add from finder updates header badge and toast; drawer opens as `aria-modal` with `inert` background; focus trapped (40 tabs); summary includes categories, use, branch, notes and the "Nothing has been sent or submitted" line; **Copy writes exactly the preview text to the clipboard**; remove; add from select; Escape closes; persists across pages (session); category-page toggle; two-step Reset |
-| guide | 13/13 | Labelled rule-based / not live AI / not official customer service; required conversations (generator ×3 turns, cordless drill, home water pump, motorbikes, Belize City store, quote); quote offers the Enquiry Summary; Spanish mode; Escape closes; category pages hand over a contextual prompt |
+| guide | 13/13 | Labelled rule-based / not live AI / not official customer service; required conversations (generator ×3 turns, cordless drill, home water pump, motorbikes, Belize City store, quote); quote offers the Enquiry Summary; Spanish mode; Escape closes; category pages hand over a contextual prompt, even when tapped before the global UI has hydrated (requests are queued and replayed) |
 | links | 4/4 | `tel:` and `https://wa.me/` links match the website-listed numbers exactly; external links use `rel="noopener"`; official-site links point to `universalhardware.bz` |
 | branch | 1/1 | Preferred branch persists for the session across pages |
 | privacy | 1/1 | No `localStorage` keys and no cookies are written |
@@ -62,6 +63,18 @@ Raw results: `tests/results/qa-results.json`.
 | mobile | `/products/generators/`, `/brands/`, `/about/`, `/concept/`, `/find/` | 99 | 100 | 100 | 69 | 1.3–1.4 s | 2.0 s | 0 ms | 0 | — |
 | desktop | `/` | **69** | 100 | 100 | 69 | 0.3 s | 0.5 s | **1,560 ms** | 0 | 1.5 s |
 | desktop | `/products/`, `/products/water-pumps/`, `/locations/` | 100 | 100 | 100 | 69 | 0.4 s | 0.5 s | 0 ms | ≤0.003 | — |
+
+After adding the photos and logos from universalhardware.bz (mobile, re-run on the image-bearing routes):
+
+| Form factor | Route | Perf | A11y | BP | SEO | FCP | LCP | TBT | CLS | SI | Transfer |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| mobile | `/` (brand wall logos) | 98 | 100 | 100 | 69 | 1.3 s | 2.1 s | 90 ms | 0 | 2.8 s | 200 KB |
+| mobile | `/products/` (12 photo cards) | 99 | 100 | 100 | 69 | 1.1 s | 1.8 s | 10 ms | 0 | 1.1 s | 189 KB |
+| mobile | `/products/motorcycles/` (hero photo + 5-shot gallery) | 99 | 100 | 100 | 69 | 1.1 s | 1.9 s | 0 ms | 0 | 1.1 s | 219 KB |
+| mobile | `/products/generators/` | 99 | 100 | 100 | 69 | 1.1 s | 1.9 s | 0 ms | 0 | 1.1 s | 170 KB |
+| mobile | `/brands/` (18 logos) | 99 | 100 | 100 | 69 | 1.2 s | 1.8 s | 0 ms | 0 | 1.2 s | 157 KB |
+
+The table above that one is the pre-image baseline. Below-the-fold images are lazy-loaded, every image has explicit dimensions (CLS 0), and photos are served as WebP with a JPEG fallback.
 
 How to read these honestly:
 
@@ -100,6 +113,9 @@ Reviewed by screenshot at every tested viewport (see `deliverables/screenshots/`
 - footer official-site button contrast
 - map overflow
 - the "Not listed — see note" wording
+- category hero: the photo plate no longer covers the illustration caption (desktop and mobile)
+- motorcycle gallery: featured layout, so five shots leave no orphan tile
+- brand cards: "No logo on the website" label contrast raised to pass axe
 
 ## Outstanding issues (named explicitly)
 
@@ -112,4 +128,5 @@ Reviewed by screenshot at every tested viewport (see `deliverables/screenshots/`
 7. **Wordmark is a modest-resolution raster**; a high-resolution master is needed for production.
 8. **Canonical / Open Graph URLs** use a placeholder Netlify subdomain until `site` is updated.
 9. **Map pins are approximate town positions**, labelled as such; "Open in Google Maps" uses an address search.
-10. Lighthouse flags `dom-size` (~1,365 elements on the homepage, mostly inline SVG artwork). It's informational, and TBT stayed at 0 ms.
+10. **Website photos and logos are low resolution** (200 px category photos, ~150 px logos, 489 px product shots). They are sharp at the sizes used but need approved high-resolution files before any launch.
+11. Lighthouse flags `dom-size` (~1,365 elements on the homepage, mostly inline SVG artwork). It's informational, and TBT stayed at 0 ms.

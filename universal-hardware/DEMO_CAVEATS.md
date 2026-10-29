@@ -11,7 +11,7 @@ This is an **independent, speculative concept** by Austere Automations. Universa
 - **No live AI.** The Product Guide is deterministic and rule-based, and labelled "Interactive concept · rule-based, not live AI". A Chatbase adapter exists but is disabled; it would need an Austere-owned approved test agent (see README).
 - **No invented facts.** There are no prices, stock levels, "in stock"/"special offer" badges, SKUs, model availability, warranties, delivery, returns or financing terms, reviews, testimonials, counters, customer numbers, founding year, awards or staff.
 - **No "open now".** Hours are shown as *listed*, never as live status.
-- **No manufacturer logos.** Brand names are text only, and the 3D drill and illustrations are generic.
+- **Only the company's own images.** Product photos and brand logos come from universalhardware.bz and are labelled as such. They show example products, not confirmed stock. The 3D drill and line illustrations are generic originals.
 
 ## Statements that need Universal Hardware's confirmation before any launch
 
@@ -30,7 +30,7 @@ This is an **independent, speculative concept** by Austere Automations. Universa
 | Concept copy and headline ("Built for Every Job.") | Proposed, not a company slogan |
 | Wordmark use and a high-resolution logo | The supplied raster is modest resolution; request the master file |
 | Spanish-language content | Product Guide only, labelled as not implying formal bilingual service |
-| Product photography | None used; illustrations are placeholders for approved photography |
+| Product photography and brand logos | Low-resolution images copied from the current website (200 px category photos, ~150 px logos, 489 px product shots). Approval to use them, ideally with high-resolution replacements, is needed before launch. |
 
 ## Technical caveats
 
