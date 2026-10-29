@@ -253,7 +253,7 @@ export async function createDrillScene(canvas: HTMLCanvasElement, host: HTMLElem
 
   /* Drill */
   await yieldToMain();
-  const drill = buildDrill({ lowDetail: opts.lowPower });
+  const drill = await buildDrill({ lowDetail: opts.lowPower });
   await yieldToMain();
   const pivot = new Group();
   pivot.add(drill.group);
@@ -291,8 +291,8 @@ export async function createDrillScene(canvas: HTMLCanvasElement, host: HTMLElem
   let raf = 0;
   let last = performance.now();
   let t = 0;
-  // Left side towards the viewer with the chuck forward, as in the product photo.
-  const baseYaw = opts.yaw ?? MathUtils.degToRad(218);
+  // The product photo's own view faces the camera.
+  const baseYaw = opts.yaw ?? 0;
   let yaw = baseYaw;
   let pitch = 0;
   let userYaw = 0;
@@ -312,7 +312,8 @@ export async function createDrillScene(canvas: HTMLCanvasElement, host: HTMLElem
   function applyPose() {
     // `t` only advances while motion is allowed, so pausing freezes the pose
     // exactly where it is instead of snapping back.
-    const sway = Math.sin(t * 0.32) * 0.34;
+    // Gentle sway: the drill stays close to the product photo's own view.
+    const sway = Math.sin(t * 0.32) * 0.28;
     const e = 1 - Math.pow(1 - intro, 3);
     yaw = baseYaw + sway + userYaw + px * 0.32 + (1 - e) * -0.9;
     pitch = py * 0.1 + Math.sin(t * 0.5) * 0.025;

@@ -11,7 +11,7 @@ This is an **independent, speculative concept** by Austere Automations. Universa
 - **No live AI.** The Product Guide is deterministic and rule-based, and labelled "Interactive concept · rule-based, not live AI". A Chatbase adapter exists but is disabled; it would need an Austere-owned approved test agent (see README).
 - **No invented facts.** There are no prices, stock levels, "in stock"/"special offer" badges, SKUs, model availability, warranties, delivery, returns or financing terms, reviews, testimonials, counters, customer numbers, founding year, awards or staff.
 - **No "open now".** Hours are shown as *listed*, never as live status.
-- **Only the company's own images.** Product photos and brand logos come from universalhardware.bz and are labelled as such. They are used for every product image on the site (department tiles, finder, search cards and category pages). They show example products, not confirmed stock. The only non-photo product artwork is the 3D hero drill, modelled on the Makita 12V drill in the company's February 2026 promotion. It carries the Makita wordmark and is labelled as not confirmed stock.
+- **Only the company's own images.** Product photos and brand logos come from universalhardware.bz and are labelled as such. They are used for every product image on the site (department tiles, finder, search cards and category pages). They show example products, not confirmed stock. The 3D hero drill is built from the same kind of image: the Makita 12V drill photo in the company's February 2026 promotion, given 3D depth. It is labelled as not confirmed stock.
 
 ## Statements that need Universal Hardware's confirmation before any launch
 
@@ -30,7 +30,7 @@ This is an **independent, speculative concept** by Austere Automations. Universa
 | Concept copy and headline ("Built for Every Job.") | Proposed, not a company slogan |
 | Wordmark use and a high-resolution logo | The supplied raster is modest resolution; request the master file |
 | Spanish-language content | Product Guide only, labelled as not implying formal bilingual service |
-| 3D hero drill | Modelled by eye on the Makita HP333D in the company's 2026 promotion, with the Makita wordmark. Confirm the model is still carried, and get approval for the Makita mark, before any launch. |
+| 3D hero drill | Built from the company's photo of the Makita HP333D (2026 promotion); depth is estimated from the photo's outline and the far side mirrors the near side. Confirm the model is still carried, and get approval for the photo and the Makita mark, before any launch. |
 | Product photography and brand logos | Images from the current website: product photos cropped from the 2026 News / Promotions graphics (370–638 px, prices and sale text left out), 489 px Meilun & Lifan product shots, 200 px Product Listing photos (galleries only) and ~150 px logos. Some photographed brands (Hoteche, Knova) are not on the Brands page. The promotions have ended, so the photos show past examples, not current stock or offers. Approval to use them, ideally with original high-resolution files, is needed before launch. |
 
 ## Technical caveats

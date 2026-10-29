@@ -1,0 +1,28 @@
+{
+ "source": "https://universalhardware.bz/news/wp-content/uploads/HP333DYX3B.jpg",
+ "crop": [
+  258,
+  363,
+  648,
+  884
+ ],
+ "size": [
+  390,
+  521
+ ],
+ "grid": 3,
+ "gridSize": [
+  130,
+  174
+ ],
+ "bbox": [
+  10,
+  10,
+  379,
+  510
+ ],
+ "depthRange": [
+  -84.30953216552734,
+  84.30953216552734
+ ]
+}

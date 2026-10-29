@@ -14,6 +14,7 @@
 | Post-build checks | noindex + disclaimer on all 20 pages; `_headers`, `robots.txt`, `404.html` present; no secret patterns |
 | axe-core (WCAG 2.1 A/AA + best practice) | 0 violations on all 19 content routes |
 | Lighthouse mobile | Performance 97–100 · Accessibility 100 · Best Practices 100 · SEO 69 (intentional `noindex`) |
+| Lighthouse desktop (home, photo-based 3D drill) | Performance 100 · TBT 0 ms · CLS 0 (was 69 with the earlier procedural drill) |
 | Third-party network requests | **None**, on any route or during any interaction |
 
 ## End-to-end checks by group
@@ -79,6 +80,7 @@ How to read these honestly:
 - **SEO 69 is intentional.** The only failing audit is "Page is blocked from indexing" (`noindex`), which this private demo requires.
 - **Mobile homepage 98 is measured before the 3D scene starts.** On touch devices the scene starts on first interaction or after a 3.2 s idle delay, which falls after Lighthouse's measurement window. Its own cost is reported separately below and is not hidden.
 - **Desktop homepage 69**: on desktop the scene starts after 1.6 s idle, inside the window. The 1.56 s TBT comes from software-rendered (SwiftShader) shader compilation and environment baking. Real GPUs with parallel shader compilation should be far cheaper, but this is **unverified here**.
+- **Update:** with the drill now built from the company's photo (one mesh, simpler materials), the desktop homepage scores **100** with 0 ms TBT, and mobile 98 (re-measured 29 October 2026).
 - The local server compresses like Netlify. Without compression the numbers would be worse than production.
 
 ## 3D scene measurements (software WebGL, worst case)
@@ -88,7 +90,7 @@ How to read these honestly:
 | Desktop 1440×900 | 2.0 s | 437, 63, 114, 86, 431 ms | 840×644 | 11 MB |
 | Mobile 390×844, touch (low-power path) | 1.6 s | 179, 103, 508 ms | 535×504 | 12 MB |
 
-Bundle: the WebGL chunk is ≈136 KB gzip and is never requested before first paint. The drill (now the Makita HP333D model) is 54 meshes and ≈42.2k triangles (≈31.9k low-detail), lighter than the earlier generic drill (≈63.6k). Frame rate under SwiftShader was ~14–17 fps; this is a CPU-rendering artefact, not representative of GPU devices.
+Bundle: the WebGL chunk is ≈122 KB gzip and is never requested before first paint. The drill (now built from the company's Makita HP333D photo) is one mesh of ≈36.8k triangles plus ≈88 KB of texture and depth data (≈50 KB on low-power devices), lighter than the earlier generic drill (≈63.6k triangles). Frame rate under SwiftShader was ~14–17 fps; this is a CPU-rendering artefact, not representative of GPU devices.
 
 Optimisations applied after measuring (homepage mobile went from Performance 55 / TBT 9.7 s to 98 / 0 ms):
 - the expensive up-front WebGL capability probe was replaced by a cheap feature check
@@ -121,7 +123,7 @@ Reviewed by screenshot at every tested viewport (see `deliverables/screenshots/`
 
 1. **No physical-device testing.** iPhone Safari, Android Chrome and iPad landscape need hands-on checks, especially 3D smoothness, the drag-rotate vs scroll feel, the bottom-sheet drawer and Guide with the on-screen keyboard, and safe-area insets.
 2. **3D performance on real GPUs is unmeasured.** The numbers above are a software-rendering worst case.
-3. **Desktop Lighthouse home = 69** under SwiftShader (see above).
+3. ~~Desktop Lighthouse home = 69~~ under SwiftShader: resolved by the photo-based drill (now 100).
 4. **Chatbase adapter untested.** No agent ID was supplied. Enabling it also requires CSP changes (see README).
 5. **At 320×640 only**, the floating Product Guide button can sit over the stage's top-right Pause control until the page is scrolled. Pause stays reachable after a small scroll and via keyboard.
 6. **Utility strip wraps to two lines at ≤360 px** (by design, to avoid overflow).

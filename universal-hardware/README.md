@@ -100,7 +100,8 @@ src/
   components/   Astro: header, footer, utility bar, branch card, map, department tile, page hero, site photo
   pages/        Routes (see above)
   styles/       global.css (tokens, base), components.css, islands.css
-scripts/        postbuild checks, ZIP, posters, screenshots, fonts, local server, News photo crops
+scripts/        postbuild checks, ZIP, posters, screenshots, fonts, local server, News photo crops,
+                3D drill from photo (build-hp333d.py)
 tests/          guide-cases.ts (logic), run-qa.cjs (end-to-end)
 ```
 
@@ -110,7 +111,7 @@ Design tokens come from the supplied wordmark: blue `#5592CB` (sampled), action 
 
 ### 3D hero
 
-The hero ships with a static render of the same procedural model (AVIF/WebP/PNG), so the first paint is instant and identical. The Three.js bundle (≈136 KB gzip) loads only after the page has loaded, on the first interaction or after a short idle period. Shaders compile asynchronously, and the scene pauses off-screen or in background tabs, is disposed on page hide, caps resolution and frame rate on low-power devices, and respects `prefers-reduced-motion`, the footer "Reduce motion" toggle and the "Pause 3D motion" button. Without WebGL 2 the static render stays and is labelled "Static render". See [`3D_ASSET_LICENSE.md`](3D_ASSET_LICENSE.md).
+The hero drill is the Makita HP333D from Universal Hardware's own product photo, given 3D depth: `scripts/build-hp333d.py` cuts the drill out of the photo and inflates its outline into a solid, and the photo is mapped onto it. The hero ships with a static render of the same scene (AVIF/WebP/PNG), so the first paint is instant and identical. The Three.js bundle (≈122 KB gzip) and the drill data (≈88 KB) load only after the page has loaded, on the first interaction or after a short idle period. Shaders compile asynchronously, and the scene pauses off-screen or in background tabs, is disposed on page hide, caps resolution and frame rate on low-power devices, and respects `prefers-reduced-motion`, the footer "Reduce motion" toggle and the "Pause 3D motion" button. Without WebGL 2 the static render stays and is labelled "Static render". See [`3D_ASSET_LICENSE.md`](3D_ASSET_LICENSE.md).
 
 ### Privacy model
 
@@ -140,7 +141,7 @@ This project lives in `universal-hardware/` inside the `greaterbelizemedia.githu
 
 - [`SOURCES.md`](SOURCES.md): public pages used and the claims each supports
 - [`ASSET_ATTRIBUTIONS.md`](ASSET_ATTRIBUTIONS.md): every visual asset and its licence
-- [`3D_ASSET_LICENSE.md`](3D_ASSET_LICENSE.md): the procedural Makita drill model and its reference photo
+- [`3D_ASSET_LICENSE.md`](3D_ASSET_LICENSE.md): how the 3D Makita drill is built from the company's photo
 - [`DEMO_CAVEATS.md`](DEMO_CAVEATS.md): restrictions, open questions and approvals required
 - [`QA_REPORT.md`](QA_REPORT.md): test matrix, measurements and outstanding issues
 - [`PITCH_STORYBOARD.md`](PITCH_STORYBOARD.md): 45-second walkthrough
