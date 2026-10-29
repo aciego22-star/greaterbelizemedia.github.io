@@ -494,36 +494,31 @@
 }
 
 /* ==========================================================================
-   Category line art
+   Product photo stage (images from universalhardware.bz)
+   The photos have white backgrounds, so they sit on a white plate. Small
+   source files are never enlarged past 1.25× their own size (--cap).
    ========================================================================== */
-.cat-art {
-  --art-line: var(--ink);
-  --art-surface: #fff;
-  --art-accent: var(--blue-600);
-  --art-accent-fill: var(--blue);
-  --art-guide: var(--line-strong);
-  color: var(--art-line);
+.photo-stage {
+  display: grid;
+  /* Clamp the single cell to the plate, so tall photos shrink instead of overflowing. */
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+  place-items: center;
+  aspect-ratio: 4 / 3;
+  padding: 10px;
+  border-radius: 14px;
+  background: #fff;
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+.photo-stage > picture {
+  display: block;
+  width: min(100%, var(--cap, 100%));
+  height: 100%;
+  min-height: 0;
+}
+.photo-stage img {
+  display: block;
   width: 100%;
-  height: auto;
-  overflow: visible;
-}
-.cat-art .fill {
-  fill: var(--art-surface);
-}
-.cat-art .accent-fill {
-  fill: var(--art-accent-fill);
-}
-.cat-art .accent {
-  stroke: var(--art-accent);
-}
-.cat-art__grid {
-  stroke: var(--art-guide);
-}
-.on-dark .cat-art,
-.cat-art--dark {
-  --art-line: #dbe7f3;
-  --art-surface: #16222f;
-  --art-accent: var(--blue-on-dark);
-  --art-accent-fill: var(--blue);
-  --art-guide: rgba(173, 199, 226, 0.25);
+  height: 100%;
+  object-fit: contain;
 }

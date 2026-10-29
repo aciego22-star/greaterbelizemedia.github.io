@@ -18,6 +18,9 @@ export interface SiteImage {
   caption?: string;
 }
 
+/** Largest CSS width a photo may be shown at: 1.25× its own pixels, so small files stay reasonably sharp. */
+export const photoCap = (image: SiteImage) => Math.round(image.width * 1.25);
+
 const SITE = 'https://universalhardware.bz/i/';
 const photo = (path: string, w: number, h: number, alt: string, source: string, caption?: string): SiteImage => ({
   src: `site-images/${path}.jpg`,
@@ -38,8 +41,8 @@ export const CATEGORY_PHOTOS: Record<string, SiteImage> = {
   'lawn-and-garden': photo('categories/lawn-and-garden', 200, 293, listed('String trimmer'), 'lawn.jpg'),
   'lighting-and-fans': photo('categories/lighting-and-fans', 200, 263, listed('Ceiling fan with light kit'), 'fans.jpg'),
   woodworking: photo('categories/woodworking', 200, 180, listed('Table saw'), 'woodwork.jpg'),
-  generators: photo('categories/generators', 200, 223, listed('Portable generator'), 'generators.jpg'),
-  'water-pumps': photo('categories/water-pumps', 200, 223, listed('Engine-driven water pump'), 'waterpumps.jpg'),
+  generators: photo('categories/generators', 200, 223, listed('Portable generator'), 'generators.jpg', 'Portable generator (Product Listing page)'),
+  'water-pumps': photo('categories/water-pumps', 200, 223, listed('Engine-driven water pump'), 'waterpumps.jpg', 'Engine-driven water pump (Product Listing page)'),
   household: photo('categories/household', 200, 263, listed('Gas barbecue grill'), 'bbqgrill.jpg'),
   agriculture: photo('categories/agriculture', 200, 209, listed('Roll of barbed wire'), 'barbwire.jpg'),
   'shop-tools': photo('categories/shop-tools', 200, 190, listed('Air compressor'), 'compressor.jpg'),
@@ -69,6 +72,26 @@ export const PRODUCT_SHOTS: Record<string, SiteImage[]> = {
     photo('products/meilun-water-pump', 489, 367, 'Meilun engine-driven water pump on the Meilun & Lifan page', 'meilun/50ZB.jpg', 'Engine-driven water pump (Meilun)'),
   ],
 };
+
+/**
+ * The sharpest website photo for each category, used wherever a category is
+ * shown as a tile or card and in its page hero: a 489 px product shot where the
+ * Meilun & Lifan page has one, otherwise the 200 px Product Listing photo.
+ */
+export const FEATURED_PHOTOS: Record<string, SiteImage> = {
+  ...CATEGORY_PHOTOS,
+  generators: PRODUCT_SHOTS.generators[0],
+  'water-pumps': PRODUCT_SHOTS['water-pumps'][0],
+};
+
+/** Gallery for a category page: its product shots plus the Product Listing photo, minus the one in the hero. */
+export function galleryFor(slug: string): SiteImage[] {
+  const shots = PRODUCT_SHOTS[slug];
+  if (!shots) return [];
+  const listing = CATEGORY_PHOTOS[slug];
+  const all = listing && !shots.some((s) => s.src === listing.src) ? [...shots, listing] : shots;
+  return all.filter((s) => s.src !== FEATURED_PHOTOS[slug]?.src);
+}
 
 const logo = (id: string, ext: string, w: number, h: number, name: string, source: string): SiteImage => ({
   src: `site-images/logos/${id}.${ext}`,

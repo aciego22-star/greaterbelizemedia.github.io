@@ -1,21 +1,23 @@
 ---
 /** A photo from Universal Hardware's current website (WebP with JPEG fallback). */
 import type { SiteImage } from '../data/site-images';
+import { photoCap } from '../data/site-images';
 interface Props {
   image: SiteImage;
   class?: string;
   eager?: boolean;
-  sizes?: string;
+  /** Empty alt when adjacent text already names the category. */
+  decorative?: boolean;
 }
-const { image, class: cls, eager = false } = Astro.props;
+const { image, class: cls, eager = false, decorative = false } = Astro.props;
 ---
-<picture class={cls}>
+<picture class={cls} style={`--cap:${photoCap(image)}px`}>
   {image.webp && <source type="image/webp" srcset={`/${image.webp}`} />}
   <img
     src={`/${image.src}`}
     width={image.width}
     height={image.height}
-    alt={image.alt}
+    alt={decorative ? '' : image.alt}
     loading={eager ? 'eager' : 'lazy'}
     decoding="async"
   />

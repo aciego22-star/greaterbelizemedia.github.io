@@ -93,11 +93,11 @@ Indexing is blocked three ways: `<meta name="robots" content="noindex, nofollowâ
 src/
   data/         Source-backed records: categories, departments, brands, branches, sources, site copy,
                 site-images (photos and logos from universalhardware.bz, with source URLs)
-  lib/          enquiry-store (sessionStorage), search, finder rules, icons, category art,
+  lib/          enquiry-store (sessionStorage), search, finder rules, icons, asset-url,
                 guide/ (engine contract, local rule engine, optional Chatbase adapter)
   hero/         Hero.astro, hero-loader (progressive enhancement), drill-scene + drill-model (Three.js)
-  islands/      Preact: GlobalUI (Enquiry drawer, Product Guide, toasts), ProductFinder, CatalogueSearch
-  components/   Astro: header, footer, utility bar, branch card, map, department tile, page hero, art
+  islands/      Preact: GlobalUI (Enquiry drawer, Product Guide, toasts), ProductFinder, CatalogueSearch, SitePicture
+  components/   Astro: header, footer, utility bar, branch card, map, department tile, page hero, site photo
   pages/        Routes (see above)
   styles/       global.css (tokens, base), components.css, islands.css
 scripts/        postbuild checks, ZIP, posters, screenshots, fonts, local server

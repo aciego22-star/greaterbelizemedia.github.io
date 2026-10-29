@@ -4,7 +4,6 @@
  * Universal Hardware's public Product Listing / Meilun & Lifan pages.
  * No stock, models, prices or sizing are inferred.
  */
-import type { IllustrationId } from '../data/categories';
 
 export interface FinderOption {
   id: string;
@@ -37,7 +36,8 @@ export type Answers = Record<string, string>;
 export interface FinderPath {
   id: string;
   label: string;
-  art: IllustrationId;
+  /** Category whose website photo represents this path. */
+  photo: string;
   blurb: string;
   questions: FinderQuestion[];
   resolve(a: Answers): FinderResult;
@@ -52,7 +52,7 @@ const uniq = <T,>(arr: T[]) => Array.from(new Set(arr));
 const powerTools: FinderPath = {
   id: 'power-tools',
   label: 'Power tools',
-  art: 'drill',
+  photo: 'power-tools',
   blurb: 'Drilling, cutting, sanding, grinding and workshop machinery.',
   questions: [
     {
@@ -155,7 +155,7 @@ const powerTools: FinderPath = {
 const backupPower: FinderPath = {
   id: 'backup-power',
   label: 'Backup power',
-  art: 'generator',
+  photo: 'generators',
   blurb: 'Generators for outages, job sites, farms and business.',
   questions: [
     {
@@ -233,7 +233,7 @@ const backupPower: FinderPath = {
 const waterPumping: FinderPath = {
   id: 'water-pumping',
   label: 'Water pumping',
-  art: 'pump',
+  photo: 'water-pumps',
   blurb: 'Wells, cisterns, pressure systems, irrigation and drainage.',
   questions: [
     {
@@ -310,7 +310,7 @@ const waterPumping: FinderPath = {
 const outdoor: FinderPath = {
   id: 'outdoor',
   label: 'Outdoor maintenance',
-  art: 'mower',
+  photo: 'lawn-and-garden',
   blurb: 'Lawns, brush, trees, watering and fencing.',
   questions: [
     {
@@ -402,7 +402,7 @@ const outdoor: FinderPath = {
 const motorcycles: FinderPath = {
   id: 'motorcycles',
   label: 'Motorcycles',
-  art: 'motorcycle',
+  photo: 'motorcycles',
   blurb: 'Scooters, street, trail and cargo bikes, parts and service.',
   questions: [
     {
@@ -476,7 +476,7 @@ const motorcycles: FinderPath = {
 const household: FinderPath = {
   id: 'household',
   label: 'Household needs',
-  art: 'fridge',
+  photo: 'household',
   blurb: 'Appliances, cooling, lighting, hot water and home essentials.',
   questions: [
     {

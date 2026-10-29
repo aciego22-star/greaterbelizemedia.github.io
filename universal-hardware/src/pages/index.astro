@@ -5,14 +5,14 @@ import Icon from '../components/Icon.astro';
 import DepartmentTile from '../components/DepartmentTile.astro';
 import BranchCard from '../components/BranchCard.astro';
 import BelizeMap from '../components/BelizeMap.astro';
-import CategoryArt from '../components/CategoryArt.astro';
+import SitePhoto from '../components/SitePhoto.astro';
 import ProductFinder from '../islands/ProductFinder.tsx';
 import { DEPARTMENTS } from '../data/departments';
 import { BRANDS } from '../data/brands';
 import { BRANCHES, BRANCH_VERIFY_NOTE } from '../data/branches';
 import { CATEGORY_BY_SLUG } from '../data/categories';
 import { SOURCES } from '../data/sources';
-import { BRAND_LOGOS } from '../data/site-images';
+import { BRAND_LOGOS, PRODUCT_SHOTS } from '../data/site-images';
 
 const wallBrands = BRANDS.filter((b) => b.onBrandsPage);
 const otherNamed = BRANDS.filter((b) => !b.onBrandsPage);
@@ -47,6 +47,7 @@ const firstCat = (id: string) => {
       <div class="dept-grid">
         {DEPARTMENTS.map((d, i) => <DepartmentTile dept={d} index={i} />)}
       </div>
+      <p class="hint dept-note">Photos as pictured on universalhardware.bz. They show example products, not confirmed stock.</p>
     </div>
   </section>
 
@@ -128,15 +129,15 @@ const firstCat = (id: string) => {
   <section class="section section--mist home-service" aria-labelledby="service-title">
     <div class="container home-service__grid">
       <div class="home-service__visual on-dark" data-reveal>
-        <div class="home-service__art">
-          <CategoryArt id="drill" class="cat-art--dark" />
+        <div class="home-service__art photo-stage">
+          <SitePhoto image={PRODUCT_SHOTS.motorcycles[3]} />
         </div>
         <ul class="home-service__callouts" aria-hidden="true">
           <li style="--x:12%;--y:18%"><span></span>Selection</li>
           <li style="--x:64%;--y:12%"><span></span>Parts</li>
           <li style="--x:58%;--y:74%"><span></span>Service</li>
         </ul>
-        <p class="home-service__fig mono">Fig. 02 — Beyond the shelf</p>
+        <p class="home-service__fig mono">As pictured on universalhardware.bz</p>
       </div>
       <div class="home-service__copy">
         <p class="eyebrow">04 — Sales &amp; service</p>
@@ -243,6 +244,9 @@ const firstCat = (id: string) => {
     .dept-grid {
       gap: 10px;
     }
+  }
+  .dept-note {
+    margin-top: 16px;
   }
 
   /* Finder section */
@@ -402,7 +406,12 @@ const firstCat = (id: string) => {
   }
   .home-service__art {
     position: relative;
-    width: 78%;
+    width: 72%;
+    padding: 18px;
+    border: 0;
+    border-radius: 18px;
+    box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.6);
+    margin-bottom: 28px;
   }
   .home-service__callouts {
     position: absolute;

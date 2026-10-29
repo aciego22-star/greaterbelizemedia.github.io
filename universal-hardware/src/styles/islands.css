@@ -136,10 +136,10 @@
   background: rgba(121, 176, 228, 0.08);
 }
 .finder__path-art {
-  display: block;
   width: 72%;
-  max-width: 170px;
-  margin-bottom: 2px;
+  max-width: 190px;
+  margin-bottom: 6px;
+  border-color: transparent;
 }
 .finder__path-label {
   font-family: var(--font-display);
@@ -182,7 +182,9 @@
     display: none;
   }
   .finder__path-art {
-    width: 88%;
+    width: calc(100% - 32px);
+    padding: 6px;
+    border-radius: 10px;
   }
   .finder__path-label {
     font-size: 1rem;
@@ -317,6 +319,8 @@
 .match__art {
   width: 100%;
   max-width: 150px;
+  padding: 8px;
+  border-color: transparent;
 }
 .match--primary {
   background: var(--paper);
@@ -328,7 +332,8 @@
   box-shadow: var(--shadow);
 }
 .match--primary .match__art {
-  max-width: 260px;
+  max-width: 300px;
+  border-color: var(--line);
 }
 @media (min-width: 560px) {
   .match:not(.match--primary) {
@@ -1344,39 +1349,30 @@
   transform: translateY(-3px);
 }
 .cat-card__art {
-  padding: 18px 24px 6px;
-  background:
-    linear-gradient(to right, rgba(13, 28, 44, 0.035) 1px, transparent 1px) 0 0 / 24px 24px,
-    linear-gradient(to bottom, rgba(13, 28, 44, 0.035) 1px, transparent 1px) 0 0 / 24px 24px,
-    linear-gradient(180deg, var(--blue-50), #fff);
-  border-bottom: 1px solid var(--line);
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  gap: 14px;
-}
-.cat-card__illus {
-  flex: 1;
-  min-width: 0;
-  max-width: 220px;
-}
-.cat-card__photo {
-  flex: none;
   display: grid;
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
   place-items: center;
-  width: 92px;
-  height: 104px;
-  margin-bottom: 8px;
-  padding: 6px;
-  border-radius: 12px;
+  overflow: hidden;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  height: 196px;
+  padding: 18px 24px;
   background: #fff;
-  border: 1px solid var(--line);
-  box-shadow: var(--shadow-sm);
+  border-bottom: 1px solid var(--line);
 }
-.cat-card__photo img {
+.cat-card__art picture {
+  display: block;
+  width: min(100%, var(--cap));
+  height: 100%;
+}
+.cat-card__art img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: contain;
+  transition: transform 600ms var(--ease-out);
+}
+.cat-card:hover .cat-card__art img {
+  transform: scale(1.04);
 }
 .cat-card__body {
   padding: 18px 20px 6px;
@@ -1489,13 +1485,4 @@
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-}
-/* Light card inside the dark finder: keep the light illustration palette. */
-.on-dark .match--primary .cat-art,
-.finder--dark .match--primary .cat-art {
-  --art-line: var(--ink);
-  --art-surface: #fff;
-  --art-accent: var(--blue-600);
-  --art-accent-fill: var(--blue);
-  --art-guide: var(--line-strong);
 }

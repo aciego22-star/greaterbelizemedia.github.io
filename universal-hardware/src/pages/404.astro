@@ -1,14 +1,15 @@
 ---
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
-import CategoryArt from '../components/CategoryArt.astro';
+import SitePhoto from '../components/SitePhoto.astro';
+import { CATEGORY_PHOTOS } from '../data/site-images';
 import { DEPARTMENTS } from '../data/departments';
 ---
 <Base title="Page not found" description="This page isn't available in the Universal Hardware concept." section="home">
   <section class="nf">
     <div class="container nf__inner">
       <div class="nf__art" aria-hidden="true">
-        <CategoryArt id="handtools" />
+        <div class="nf__stage photo-stage"><SitePhoto image={CATEGORY_PHOTOS['hand-tools']} decorative eager /></div>
         <span class="nf__code mono">Error 404</span>
       </div>
       <div class="nf__copy">
@@ -51,6 +52,9 @@ import { DEPARTMENTS } from '../data/departments';
     border-radius: var(--radius-lg);
     background: var(--mist);
     border: 1px solid var(--line);
+  }
+  .nf__stage {
+    margin-top: 18px;
   }
   .nf__code {
     position: absolute;

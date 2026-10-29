@@ -22,20 +22,6 @@ export type DepartmentId =
   | 'home'
   | 'agri-hardware';
 
-export type IllustrationId =
-  | 'drill'
-  | 'welding'
-  | 'handtools'
-  | 'mower'
-  | 'fan'
-  | 'saw'
-  | 'generator'
-  | 'pump'
-  | 'fridge'
-  | 'fence'
-  | 'compressor'
-  | 'motorcycle';
-
 export interface Subcategory {
   name: string;
   keywords: string[];
@@ -49,7 +35,6 @@ export interface Category {
   name: string;
   shortName: string;
   department: DepartmentId;
-  illustration: IllustrationId;
   /** One-line concept summary for cards. */
   summary: string;
   /** Short paragraph for the category page. */
@@ -76,7 +61,6 @@ export const CATEGORIES: Category[] = [
     name: 'Power Tools',
     shortName: 'Power Tools',
     department: 'power-tools',
-    illustration: 'drill',
     summary: 'Drills, hammer drills, saws, sanders, routers, grinders and cordless tools.',
     intro:
       'The current website lists a broad power-tool range, from speed drills and hammer drills to saws, sanders, routers, grinders and cordless tools, naming Makita, Master Mechanic and Tool Craft.',
@@ -110,7 +94,6 @@ export const CATEGORIES: Category[] = [
     name: 'Welding Supplies',
     shortName: 'Welding',
     department: 'welding-shop',
-    illustration: 'welding',
     summary: 'Arc/stick, MIG and TIG welders, plasma cutters, cutting torches, electrodes and accessories.',
     intro:
       'Welding is a featured section of the current Product Listing page, which names Lincoln Electric and lists arc/stick, MIG and TIG welders, plasma cutters, cutting torches, electrodes and welding accessories.',
@@ -140,7 +123,6 @@ export const CATEGORIES: Category[] = [
     name: 'Generators',
     shortName: 'Generators',
     department: 'generators',
-    illustration: 'generator',
     summary: 'Generators across sizes and applications, from portable units to industrial use.',
     intro:
       'The website describes generators for a wide range of applications, from small portable units to industrial use, and names Denyo, Briggs & Stratton, Honda, Makita, Lincoln Electric and Meilun. Sizes and models change, so the right match should be confirmed with a branch and a qualified electrician.',
@@ -173,7 +155,6 @@ export const CATEGORIES: Category[] = [
     name: 'Water Pumps',
     shortName: 'Water Pumps',
     department: 'pumps',
-    illustration: 'pump',
     summary: 'Submersible, jet, booster, sump, sprinkler, marine, pressure and engine-driven pumps.',
     intro:
       'The current Product Listing page covers most water-moving needs: submersible pumps, jet pumps for pressure systems, sprinkler, booster, sump, marine and pressure pumps, plus gas- and diesel-powered water pumps.',
@@ -205,7 +186,6 @@ export const CATEGORIES: Category[] = [
     name: 'Lawn and Garden',
     shortName: 'Lawn & Garden',
     department: 'lawn-garden',
-    illustration: 'mower',
     summary: 'Mowers, lawn tractors, trimmers, chainsaws, sprayers, hoses and garden tools.',
     intro:
       'From mowers and lawn tractors to trimmers, chainsaws and everyday garden tools, the current website names ECHO/Shindaiwa, MTD, Briggs & Stratton and Homelite in its lawn and garden section.',
@@ -238,7 +218,6 @@ export const CATEGORIES: Category[] = [
     name: 'Motorcycles & Equipment',
     shortName: 'Motorcycles',
     department: 'mobility',
-    illustration: 'motorcycle',
     summary: 'Lifan and Meilun scooters, street, trail and cargo bikes, plus related engines and equipment.',
     intro:
       'The current website has a dedicated Meilun & Lifan page covering scooters and cub bikes, street, trail and cargo motorcycles, along with Meilun engines, generators and water pumps, and publishes Meilun parts catalogues. A separate Hisun page lists UTV and ATV models. Those model pages carry older pricing, so current models and prices must be confirmed with a branch.',
@@ -273,7 +252,6 @@ export const CATEGORIES: Category[] = [
     name: 'Household',
     shortName: 'Household',
     department: 'home',
-    illustration: 'fridge',
     summary: 'Refrigerators, freezers, washers, dryers, AC units, hot water tanks, grills and more.',
     intro:
       'The household section of the current website lists major appliances such as refrigerators, freezers, dishwashers, washers and dryers, air conditioning units and hot water tanks, alongside coolers, grills, vacuum cleaners, tables, chairs and detergents.',
@@ -310,7 +288,6 @@ export const CATEGORIES: Category[] = [
     name: 'Lighting and Fans',
     shortName: 'Lighting & Fans',
     department: 'home',
-    illustration: 'fan',
     summary: 'Westinghouse fixtures and bulbs, ceiling fans, Lasko fans, solar, yard and portable lights.',
     intro:
       'The current website lists Westinghouse light fixtures, bulbs and ceiling fans, Hunter ceiling fans and Lasko fans, plus flashlights, spotlights, decorative solar lights, yard lights and portable lights.',
@@ -342,7 +319,6 @@ export const CATEGORIES: Category[] = [
     name: 'Woodworking',
     shortName: 'Woodworking',
     department: 'power-tools',
-    illustration: 'saw',
     summary: 'Table saws, planers, jointers, band saws, drill presses and shapers.',
     intro:
       'For workshops and joinery, the current website lists table saws, planers, jointers, band saws, drill presses and shapers, naming Grizzly and Tool Craft.',
@@ -371,7 +347,6 @@ export const CATEGORIES: Category[] = [
     name: 'Shop Tools',
     shortName: 'Shop Tools',
     department: 'welding-shop',
-    illustration: 'compressor',
     summary: 'Air compressors, chain hoists, chains, hydraulic cylinders and jacks, electric motors and ladders.',
     intro:
       'The Shop Tools section of the current website covers workshop and garage equipment: air compressors, chain hoists and chains, hydraulic cylinders and jacks, electric motors, and ladders and stepladders.',
@@ -401,7 +376,6 @@ export const CATEGORIES: Category[] = [
     name: 'Agriculture',
     shortName: 'Agriculture',
     department: 'agri-hardware',
-    illustration: 'fence',
     summary: 'Barb wire, fencing staples, electric fencers, cattle gates, rotary cutters and trailer parts.',
     intro:
       'For farms and ranches, the current website lists barb wire, fencing staples, electric fencers, cattle gates, rotary cutters (bushhogs) and trailer parts.',
@@ -430,7 +404,6 @@ export const CATEGORIES: Category[] = [
     name: 'Hand Tools',
     shortName: 'Hand Tools',
     department: 'agri-hardware',
-    illustration: 'handtools',
     summary: 'Hammers, saws, chisels, tapes, wrenches, socket sets, pliers, screwdrivers and extension cords.',
     intro:
       'The everyday essentials: the current website lists hammers, hand saws, chisels, measuring tapes, wrenches, socket sets, pliers, screwdrivers and extension cords.',

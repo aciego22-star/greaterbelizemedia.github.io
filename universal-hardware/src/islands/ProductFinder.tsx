@@ -2,7 +2,8 @@ import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { FINDER_PATHS, FINDER_BY_ID, type Answers } from '../lib/finder-rules';
 import { CATEGORY_BY_SLUG } from '../data/categories';
 import { BRANCH_BY_ID, type BranchId } from '../data/branches';
-import { artSvg } from '../lib/category-art';
+import { FEATURED_PHOTOS } from '../data/site-images';
+import { SitePicture } from './SitePicture';
 import { iconSvg } from '../lib/icons';
 import {
   addCategory,
@@ -131,7 +132,7 @@ export default function ProductFinder({ variant = 'dark', headingLevel = 3 }: Pr
               {FINDER_PATHS.map((p, i) => (
                 <li style={{ '--i': i } as Record<string, number>}>
                   <button type="button" class="finder__path" onClick={() => choosePath(p.id)}>
-                    <span class="finder__path-art" dangerouslySetInnerHTML={{ __html: artSvg(p.art, { cls: variant === 'dark' ? 'cat-art--dark' : '' }) }} />
+                    <span class="finder__path-art photo-stage"><SitePicture image={FEATURED_PHOTOS[p.photo]} decorative /></span>
                     <span class="finder__path-label">{p.label}</span>
                     <span class="finder__path-blurb">{p.blurb}</span>
                     <span class="finder__path-go"><Icon name="arrow-right" size={16} /></span>
@@ -201,7 +202,7 @@ export default function ProductFinder({ variant = 'dark', headingLevel = 3 }: Pr
                 const brands = c.listedBrands;
                 return (
                   <article class={`match ${i === 0 ? 'match--primary' : ''}`}>
-                    <div class="match__art" dangerouslySetInnerHTML={{ __html: artSvg(c.illustration, { cls: variant === 'dark' && i !== 0 ? 'cat-art--dark' : '' }) }} />
+                    <div class="match__art photo-stage"><SitePicture image={FEATURED_PHOTOS[c.slug]} decorative /></div>
                     <div class="match__body">
                       <p class="match__kicker mono">{i === 0 ? 'Best match' : 'Also relevant'}</p>
                       <Hm class="match__title">{c.name}</Hm>

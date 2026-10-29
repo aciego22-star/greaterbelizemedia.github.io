@@ -11,7 +11,7 @@ This is an **independent, speculative concept** by Austere Automations. Universa
 - **No live AI.** The Product Guide is deterministic and rule-based, and labelled "Interactive concept · rule-based, not live AI". A Chatbase adapter exists but is disabled; it would need an Austere-owned approved test agent (see README).
 - **No invented facts.** There are no prices, stock levels, "in stock"/"special offer" badges, SKUs, model availability, warranties, delivery, returns or financing terms, reviews, testimonials, counters, customer numbers, founding year, awards or staff.
 - **No "open now".** Hours are shown as *listed*, never as live status.
-- **Only the company's own images.** Product photos and brand logos come from universalhardware.bz and are labelled as such. They show example products, not confirmed stock. The 3D drill and line illustrations are generic originals.
+- **Only the company's own images.** Product photos and brand logos come from universalhardware.bz and are labelled as such. They are used for every product image on the site (department tiles, finder, search cards and category pages). They show example products, not confirmed stock. The only non-photo product artwork is the 3D drill, a generic original.
 
 ## Statements that need Universal Hardware's confirmation before any launch
 

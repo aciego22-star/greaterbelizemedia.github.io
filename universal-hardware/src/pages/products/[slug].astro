@@ -1,14 +1,13 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Icon from '../../components/Icon.astro';
-import CategoryArt from '../../components/CategoryArt.astro';
 import { CATEGORIES, CATEGORY_BY_SLUG, type Category } from '../../data/categories';
 import { DEPARTMENT_BY_ID } from '../../data/departments';
 import { BRANDS, brandsForCategory } from '../../data/brands';
 import { BRANCHES, BRANCH_VERIFY_NOTE } from '../../data/branches';
 import { SOURCES, SOURCE_VIEWED } from '../../data/sources';
 import SitePhoto from '../../components/SitePhoto.astro';
-import { CATEGORY_PHOTOS, PRODUCT_SHOTS, SITE_IMAGE_NOTE } from '../../data/site-images';
+import { FEATURED_PHOTOS, galleryFor, SITE_IMAGE_NOTE } from '../../data/site-images';
 
 export function getStaticPaths() {
   return CATEGORIES.map((c) => ({ params: { slug: c.slug }, props: { category: c } }));
@@ -38,8 +37,8 @@ const guidePrompts: Record<string, string> = {
 const guidePrompt = guidePrompts[c.slug] ?? `I'm looking for ${c.subcategories[0].name.toLowerCase()}.`;
 const findHref = finderPath[c.slug] ? `/find/?need=${finderPath[c.slug]}` : '/find/';
 const index = CATEGORIES.findIndex((x) => x.slug === c.slug);
-const photo = CATEGORY_PHOTOS[c.slug];
-const shots = PRODUCT_SHOTS[c.slug];
+const photo = FEATURED_PHOTOS[c.slug];
+const shots = galleryFor(c.slug);
 ---
 <Base
   title={c.name}
@@ -82,20 +81,10 @@ const shots = PRODUCT_SHOTS[c.slug];
           </span>
         </p>
       </div>
-      <div class:list={['cat-hero__art', { 'has-photo': !!photo, 'is-wide': photo && photo.width > photo.height }]}>
-        <div class="cat-hero__plate">
-          <CategoryArt id={c.illustration} title={`Line illustration representing ${c.name}`} />
-          <p class="cat-hero__fig mono">Concept illustration · not a specific product</p>
-        </div>
-        {
-          photo && (
-            <figure class="cat-photo">
-              <SitePhoto image={photo} class="cat-photo__img" eager />
-              <figcaption class="mono">As pictured on universalhardware.bz</figcaption>
-            </figure>
-          )
-        }
-      </div>
+      <figure class:list={['cat-hero__art', { 'is-small': photo.width < 300 }]}>
+        <div class="cat-hero__stage photo-stage"><SitePhoto image={photo} eager /></div>
+        <figcaption class="cat-hero__fig mono">As pictured on universalhardware.bz · example, not confirmed stock</figcaption>
+      </figure>
     </div>
   </section>
 
@@ -122,7 +111,7 @@ const shots = PRODUCT_SHOTS[c.slug];
         </div>
 
         {
-          shots && (
+          shots.length > 0 && (
             <div class="cat-block">
               <div class="cat-block__head">
                 <h2 class="h3">Pictured on the current website</h2>
@@ -217,7 +206,7 @@ const shots = PRODUCT_SHOTS[c.slug];
         {
           relatedCats.map((r, i) => (
             <li class="related-card" data-reveal style={`--i:${i}`}>
-              <div class="related-card__art"><CategoryArt id={r.illustration} /></div>
+              <div class="related-card__art photo-stage"><SitePhoto image={FEATURED_PHOTOS[r.slug]} decorative /></div>
               <div>
                 <h3><a href={`/products/${r.slug}/`} class="related-card__link">{r.name}</a></h3>
                 <p>{r.summary}</p>
@@ -301,63 +290,30 @@ const shots = PRODUCT_SHOTS[c.slug];
     font-size: 0.82rem;
     color: var(--steel);
   }
-  .cat-hero__plate {
-    position: relative;
-    padding: clamp(24px, 4vw, 48px);
-    border-radius: var(--radius-lg);
-    background:
-      radial-gradient(60% 60% at 50% 40%, #fff, transparent 70%),
-      linear-gradient(to right, rgba(13, 28, 44, 0.05) 1px, transparent 1px) 0 0 / 28px 28px,
-      linear-gradient(to bottom, rgba(13, 28, 44, 0.05) 1px, transparent 1px) 0 0 / 28px 28px,
-      var(--mist);
-    border: 1px solid var(--line);
-  }
-  .cat-hero__fig {
-    margin-top: 10px;
-    color: var(--steel-400);
-    text-align: center;
-  }
   .cat-hero__art {
-    position: relative;
-  }
-  .cat-photo {
     margin: 0;
     display: grid;
-    gap: 8px;
-    padding: 10px 10px 8px;
-    border-radius: 16px;
-    background: #fff;
-    border: 1px solid var(--line);
+    gap: 10px;
+  }
+  .cat-hero__stage {
+    aspect-ratio: 5 / 4;
+    padding: clamp(18px, 3vw, 36px);
+    border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
   }
-  .cat-photo :global(img) {
-    display: block;
-    width: 100%;
-    height: auto;
-    max-height: 210px;
-    object-fit: contain;
-  }
-  .cat-photo figcaption {
-    font-size: 0.6rem;
+  .cat-hero__fig {
     color: var(--steel);
+    font-size: 0.66rem;
     text-align: center;
   }
+  /* 200 px Product Listing photos get a smaller plate rather than being enlarged. */
   @media (min-width: 960px) {
-    .cat-hero__art.has-photo {
-      padding: 0 0 40px 48px;
+    .cat-hero__art.is-small {
+      justify-self: center;
+      width: min(100%, 400px);
     }
-    .cat-hero__art.has-photo .cat-hero__fig {
-      text-align: right;
-      padding-left: 150px;
-    }
-    .cat-photo {
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 172px;
-    }
-    .cat-hero__art.is-wide .cat-photo {
-      width: 240px;
+    .cat-hero__art.is-small .cat-hero__stage {
+      aspect-ratio: 1;
     }
   }
   @media (max-width: 959px) {
@@ -366,69 +322,22 @@ const shots = PRODUCT_SHOTS[c.slug];
       width: 100%;
       max-width: 460px;
     }
-    .cat-hero__art.has-photo {
-      padding-bottom: 22px;
-    }
-    .cat-hero__plate {
-      padding: 20px 24px 14px;
-    }
-    .cat-hero__art.has-photo .cat-hero__plate {
-      margin-right: 24px;
-    }
-    .cat-hero__art.has-photo .cat-hero__fig {
-      text-align: left;
-      padding-right: 34%;
-    }
-    .cat-photo {
-      position: absolute;
-      right: 0;
-      bottom: 0;
-      width: min(32%, 136px);
-      padding: 6px 6px 5px;
-      border-radius: 12px;
-    }
-    .cat-hero__art.is-wide .cat-photo {
-      width: min(40%, 176px);
-    }
-    .cat-photo :global(img) {
-      max-height: 150px;
-    }
-    .cat-photo figcaption {
-      font-size: 0.52rem;
-      letter-spacing: 0.04em;
+    .cat-hero__stage {
+      aspect-ratio: 16 / 11;
     }
   }
 
-  /* 5 shots: one featured + a 2×2; 2 shots: a pair; 1 shot: half width. */
+  /* 2 or 4 shots: pairs; 1 shot: full width on phones, half width above. */
   .shot-grid {
     list-style: none;
     display: grid;
     gap: 12px;
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  @media (min-width: 700px) {
-    .shot-grid--n5 {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-    .shot-grid--n5 .shot:first-child {
-      grid-column: span 2;
-      grid-row: span 2;
-    }
-    .shot-grid--n5 .shot:first-child .shot__frame {
-      aspect-ratio: auto;
-      height: 100%;
-    }
-  }
   @media (max-width: 699px) {
-    .shot-grid--n5 .shot:first-child {
-      grid-column: span 2;
-    }
     .shot-grid--n1 .shot {
       grid-column: span 2;
     }
-  }
-  .shot-grid--n5 .shot:first-child {
-    grid-template-rows: 1fr auto;
   }
   .shot {
     display: grid;
@@ -648,6 +557,10 @@ const shots = PRODUCT_SHOTS[c.slug];
     margin-top: 4px;
     font-size: 0.85rem;
     color: var(--steel);
+  }
+  .related-card__art {
+    padding: 6px;
+    border-radius: 10px;
   }
   .related-card__link {
     color: var(--ink);

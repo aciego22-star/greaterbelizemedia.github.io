@@ -13,7 +13,7 @@
 | Type check (`astro check`) | 0 errors, 0 warnings |
 | Post-build checks | noindex + disclaimer on all 20 pages; `_headers`, `robots.txt`, `404.html` present; no secret patterns |
 | axe-core (WCAG 2.1 A/AA + best practice) | 0 violations on all 19 content routes |
-| Lighthouse mobile | Performance 98–99 · Accessibility 100 · Best Practices 100 · SEO 69 (intentional `noindex`) |
+| Lighthouse mobile | Performance 97–100 · Accessibility 100 · Best Practices 100 · SEO 69 (intentional `noindex`) |
 | Third-party network requests | **None**, on any route or during any interaction |
 
 ## End-to-end checks by group
@@ -64,15 +64,14 @@ Raw results: `tests/results/qa-results.json`.
 | desktop | `/` | **69** | 100 | 100 | 69 | 0.3 s | 0.5 s | **1,560 ms** | 0 | 1.5 s |
 | desktop | `/products/`, `/products/water-pumps/`, `/locations/` | 100 | 100 | 100 | 69 | 0.4 s | 0.5 s | 0 ms | ≤0.003 | — |
 
-After adding the photos and logos from universalhardware.bz (mobile, re-run on the image-bearing routes):
+After replacing every line illustration with the company's own photos (mobile, re-run on the photo-led routes):
 
 | Form factor | Route | Perf | A11y | BP | SEO | FCP | LCP | TBT | CLS | SI | Transfer |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| mobile | `/` (brand wall logos) | 98 | 100 | 100 | 69 | 1.3 s | 2.1 s | 90 ms | 0 | 2.8 s | 200 KB |
-| mobile | `/products/` (12 photo cards) | 99 | 100 | 100 | 69 | 1.1 s | 1.8 s | 10 ms | 0 | 1.1 s | 189 KB |
-| mobile | `/products/motorcycles/` (hero photo + 5-shot gallery) | 99 | 100 | 100 | 69 | 1.1 s | 1.9 s | 0 ms | 0 | 1.1 s | 219 KB |
-| mobile | `/products/generators/` | 99 | 100 | 100 | 69 | 1.1 s | 1.9 s | 0 ms | 0 | 1.1 s | 170 KB |
-| mobile | `/brands/` (18 logos) | 99 | 100 | 100 | 69 | 1.2 s | 1.8 s | 0 ms | 0 | 1.2 s | 157 KB |
+| mobile | `/` (8 department photos, 6 finder photos, logos) | 97 | 100 | 100 | 69 | 1.3 s | 2.3 s | 90 ms | 0 | 2.8 s | 277 KB |
+| mobile | `/products/` (12 photo cards) | 99 | 100 | 100 | 69 | 1.2 s | 1.9 s | 10 ms | 0 | 1.2 s | 207 KB |
+| mobile | `/products/power-tools/` (200 px hero photo) | 99 | 100 | 100 | 69 | 1.1 s | 1.9 s | 0 ms | 0 | 1.1 s | 153 KB |
+| mobile | `/products/generators/` (489 px hero photo + gallery) | 100 | 100 | 100 | 69 | 1.1 s | 1.9 s | 0 ms | 0 | 1.1 s | 190 KB |
 
 The table above that one is the pre-image baseline. Below-the-fold images are lazy-loaded, every image has explicit dimensions (CLS 0), and photos are served as WebP with a JPEG fallback.
 
@@ -104,7 +103,6 @@ Optimisations applied after measuring (homepage mobile went from Performance 55 
 ## Visual review
 
 Reviewed by screenshot at every tested viewport (see `deliverables/screenshots/`): hero, departments, finder states, drawer, guide, search, category, locations, brands, mobile menu, 320/768/1024 views and the no-WebGL fallback. Fixes made during review:
-- primary finder card illustration palette
 - branch card layout at 1440
 - mobile HUD clearance from the Guide button
 - figure label collision on small stages
@@ -113,8 +111,9 @@ Reviewed by screenshot at every tested viewport (see `deliverables/screenshots/`
 - footer official-site button contrast
 - map overflow
 - the "Not listed — see note" wording
-- category hero: the photo plate no longer covers the illustration caption (desktop and mobile)
-- motorcycle gallery: featured layout, so five shots leave no orphan tile
+- photo plates: tall 200 px photos were cropped by an auto-sized grid row; the cell is now clamped so every photo is contained
+- category hero: 200 px photos get a smaller square plate on desktop instead of being enlarged; galleries no longer repeat the hero photo
+- "Beyond the shelf" panel: the Meilun 8000E photo has an off-white patch around the product, so the panel uses the cargo motorcycle shot; the caption no longer overlaps the plate on phones
 - brand cards: "No logo on the website" label contrast raised to pass axe
 
 ## Outstanding issues (named explicitly)

@@ -1,8 +1,9 @@
 ---
-import CategoryArt from './CategoryArt.astro';
 import Icon from './Icon.astro';
+import SitePhoto from './SitePhoto.astro';
 import type { Department } from '../data/departments';
 import { CATEGORY_BY_SLUG } from '../data/categories';
+import { FEATURED_PHOTOS } from '../data/site-images';
 
 interface Props {
   dept: Department;
@@ -11,6 +12,7 @@ interface Props {
 const { dept, index } = Astro.props;
 const primary = CATEGORY_BY_SLUG[dept.categories[0]];
 const also = dept.categories.slice(1).map((s) => CATEGORY_BY_SLUG[s]);
+const photo = FEATURED_PHOTOS[primary.slug];
 ---
 <article class="dept" data-tilt data-reveal style={`--i:${index % 4}`}>
   <div class="dept__inner">
@@ -18,8 +20,8 @@ const also = dept.categories.slice(1).map((s) => CATEGORY_BY_SLUG[s]);
       <span class="dept__num mono">{String(index + 1).padStart(2, '0')}</span>
       <span class="dept__go" aria-hidden="true"><Icon name="arrow-up-right" size={18} /></span>
     </div>
-    <div class="dept__art">
-      <CategoryArt id={dept.illustration} />
+    <div class="dept__art photo-stage">
+      <SitePhoto image={photo} decorative />
     </div>
     <div class="dept__body">
       <h3 class="dept__title">
@@ -102,12 +104,15 @@ const also = dept.categories.slice(1).map((s) => CATEGORY_BY_SLUG[s]);
     transform: rotate(45deg);
   }
   .dept__art {
-    margin: 6px auto 4px;
-    width: 86%;
+    margin: 14px 0 16px;
+    aspect-ratio: 5 / 4;
+    padding: 14px;
+  }
+  .dept__art :global(img) {
     transition: transform 600ms var(--ease-out);
   }
-  .dept:hover .dept__art {
-    transform: translateY(-4px) scale(1.02);
+  .dept:hover .dept__art :global(img) {
+    transform: scale(1.05);
   }
   .dept__title {
     font-size: 1.28rem;
@@ -175,8 +180,9 @@ const also = dept.categories.slice(1).map((s) => CATEGORY_BY_SLUG[s]);
       border-radius: 18px;
     }
     .dept__art {
-      width: 100%;
-      margin: 2px 0 0;
+      margin: 10px 0 10px;
+      padding: 8px;
+      border-radius: 12px;
     }
     .dept__go {
       width: 30px;
