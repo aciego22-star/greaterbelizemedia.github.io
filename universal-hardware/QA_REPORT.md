@@ -14,7 +14,7 @@
 | Post-build checks | noindex + disclaimer on all 20 pages; `_headers`, `robots.txt`, `404.html` present; no secret patterns |
 | axe-core (WCAG 2.1 A/AA + best practice) | 0 violations on all 19 content routes |
 | Lighthouse mobile | Performance 97–100 · Accessibility 100 · Best Practices 100 · SEO 69 (intentional `noindex`) |
-| Lighthouse desktop (home, photo-based 3D drill) | Performance 100 · TBT 0 ms · CLS 0 (was 69 with the earlier procedural drill) |
+| Lighthouse desktop (home, photo-based 3D drill kit) | Performance 100 · TBT 0 ms · CLS 0 (was 69 with the earlier procedural drill) |
 | Third-party network requests | **None**, on any route or during any interaction |
 
 ## End-to-end checks by group
@@ -90,7 +90,7 @@ How to read these honestly:
 | Desktop 1440×900 | 2.0 s | 437, 63, 114, 86, 431 ms | 840×644 | 11 MB |
 | Mobile 390×844, touch (low-power path) | 1.6 s | 179, 103, 508 ms | 535×504 | 12 MB |
 
-Bundle: the WebGL chunk is ≈122 KB gzip and is never requested before first paint. The drill (now built from the company's Makita HP333D photo) is one mesh of ≈36.8k triangles plus ≈88 KB of texture and depth data (≈50 KB on low-power devices), lighter than the earlier generic drill (≈63.6k triangles). Frame rate under SwiftShader was ~14–17 fps; this is a CPU-rendering artefact, not representative of GPU devices.
+Bundle: the WebGL chunk is ≈122 KB gzip and is never requested before first paint. The hero (now the company's Makita HP333D kit photo, drill, battery and charger, in 3D) is one mesh of ≈73.2k triangles plus ≈161 KB of texture and depth data (≈84 KB on low-power devices).8k triangles plus ≈88 KB of texture and depth data (≈50 KB on low-power devices), lighter than the earlier generic drill (≈63.6k triangles). Frame rate under SwiftShader was ~14–17 fps; this is a CPU-rendering artefact, not representative of GPU devices.
 
 Optimisations applied after measuring (homepage mobile went from Performance 55 / TBT 9.7 s to 98 / 0 ms):
 - the expensive up-front WebGL capability probe was replaced by a cheap feature check

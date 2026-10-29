@@ -1,10 +1,11 @@
-"""Build the 3D hero drill from Universal Hardware's own product photo.
+"""Build the 3D hero kit from Universal Hardware's own product photo.
 
 Input: the Friends & Family 2026 graphic with the Makita HP333D kit on white,
 https://universalhardware.bz/news/wp-content/uploads/HP333DYX3B.jpg (1080 x 1080,
-not committed). Output, in public/hero/:
+not committed). The hero recreates the whole kit as photographed: the drill,
+the 1.5Ah battery and the DC10WD charger. Output, in public/hero/:
 
-  hp333d.webp        the drill cut out of the photo (colour + alpha matte), 2x
+  hp333d.webp        the kit cut out of the photo (colour + alpha matte), 2x
   hp333d-lo.webp     the same at 1x, for low-power devices
   hp333d-depth.png   front and back surface depth on a 3 px grid (12 bits each,
                      packed into RGB), used to build the 3D mesh at runtime
@@ -16,8 +17,11 @@ How the shape is made: the drill's outline in the photo is "inflated" into a
 solid. Every point inside the outline gets a thickness from the largest balls
 that fit inside the outline (union of balls), so the chuck, housing and handle
 come out round. The foot is a flat slab with rounded edges, and the belt clip a
-thin plate on the near side. The photo is then projected onto the front and
-(mirrored, text re-flipped at runtime) onto the back.
+thin plate on the near side. The battery and charger are rounded slabs set a
+little in front of the drill, as they stand in the photo; the battery, which
+overlaps the charger's corner, is split off along its measured edge. The photo
+is then projected onto the front and (mirrored, text re-flipped at runtime)
+onto the back.
 
 Each file name carries a hash of its content (hp333d.<hash>.webp and so on),
 listed in hp333d.json, so a changed file always gets a new URL.
@@ -37,7 +41,7 @@ from scipy import ndimage as ndi
 
 SRC = sys.argv[1]
 OUT = Path(__file__).resolve().parent.parent / 'public' / 'hero'
-CROP = (258, 363, 648, 884)  # drill bounding box in the 1080 graphic, plus 10 px
+CROP = (30, 363, 652, 962)  # kit bounding box in the 1080 graphic, plus about 10 px
 GRID = 3  # mesh grid spacing in photo pixels
 FILES = {}
 for old in OUT.glob('hp333d*'):
@@ -66,13 +70,26 @@ mn = rgb.min(axis=2)
 bg = mn >= 238
 lab, n = ndi.label(~bg)
 sizes = ndi.sum(np.ones_like(lab), lab, range(1, n + 1))
-drill = lab == (int(np.argmax(sizes)) + 1)
-mask = ndi.binary_fill_holes(drill)
-holes, hn = ndi.label(mask & ~drill)
+order = np.argsort(sizes)[::-1] + 1
+# The two largest shapes: the drill, and the charger with the battery in front.
+first, second = (lab == order[0]), (lab == order[1])
+drill_px, kit_px = (first, second) if fx[first].mean() > fx[second].mean() else (second, first)
+drill_mask = ndi.binary_fill_holes(drill_px)
+holes, hn = ndi.label(drill_mask & ~drill_px)
 for i in range(1, hn + 1):
     sel = holes == i
     if fy[sel].min() > 840 and mn[sel].mean() >= 240:
-        mask[sel] = False  # see-through openings in the clip
+        drill_mask[sel] = False  # see-through openings in the belt clip
+kit_mask = ndi.binary_fill_holes(kit_px)
+# The battery's edge where it overlaps the charger (full-graphic pixels): right
+# of and below this line is battery, the rest of that shape is charger.
+from PIL import ImageDraw
+BATTERY_SIDE = [(392, 700), (700, 700), (700, 1000), (300, 1000), (318, 900), (322, 860), (338, 826), (366, 823), (378, 818), (392, 812)]
+cv = Image.new('L', (W, H), 0)
+ImageDraw.Draw(cv).polygon([(x - CROP[0], y - CROP[1]) for x, y in BATTERY_SIDE], fill=255)
+battery_mask = kit_mask & (np.asarray(cv) > 127)
+charger_mask = kit_mask & ~battery_mask
+mask = drill_mask | kit_mask
 alpha = ndi.gaussian_filter(mask.astype(np.float32), 0.6)
 
 # Colour decontamination: edge pixels are blended with the white background,
@@ -84,8 +101,8 @@ clean = rgb.copy()
 band = ~core
 clean[band] = rgb[iy[band], ix[band]]
 
-# ---- Thickness field ----
-D = ndi.distance_transform_edt(mask)
+# ---- Thickness field (drill) ----
+D = ndi.distance_transform_edt(drill_mask)
 # Medial ridge: local maxima of D along any of four directions.
 ridge = np.zeros_like(mask)
 for dy, dx in ((0, 1), (1, 0), (1, 1), (1, -1)):
@@ -105,7 +122,7 @@ for qy, qx in zip(*np.nonzero(ridge)):
     d = np.hypot(yy[y0:y1, x0:x1] - qy, xx[y0:y1, x0:x1] - qx) / r
     t = np.clip(1 - d**p, 0, None) ** (1 / p) * r
     np.maximum(hb[y0:y1, x0:x1], t, out=hb[y0:y1, x0:x1])
-hb *= mask
+hb *= drill_mask
 
 # Depth multipliers: real proportions are a little slimmer than round.
 m = np.full((H, W), 0.92, np.float32)
@@ -122,7 +139,7 @@ wf = np.clip((fy - 752) / (792 - 752), 0, 1)
 wf = wf * wf * (3 - 2 * wf)
 
 # Belt clip below the foot: a thin plate on the near side.
-clip_only = mask & (fy > 836) & (fx > 552)
+clip_only = drill_mask & (fy > 836) & (fx > 552)
 clip_w = ndi.gaussian_filter(clip_only.astype(np.float32), 2.0)
 CZ = HF * 0.86
 hclip = 5.0 * np.sqrt(1 - (1 - np.clip(D / 3.0, 0, 1)) ** 2)
@@ -130,8 +147,16 @@ hclip = 5.0 * np.sqrt(1 - (1 - np.clip(D / 3.0, 0, 1)) ** 2)
 body = np.maximum(hb * m, wf * slab)
 c = clip_w * CZ
 h = (1 - clip_w) * body + clip_w * hclip
-front = np.where(mask, c + h, 0).astype(np.float32)
-back = np.where(mask, c - h, 0).astype(np.float32)
+front = np.where(drill_mask, c + h, 0).astype(np.float32)
+back = np.where(drill_mask, c - h, 0).astype(np.float32)
+
+# Battery and charger: rounded slabs, set forward of the drill (z offsets),
+# each as deep as its real proportions suggest. Units are photo pixels.
+for part, half, radius, zoff in ((charger_mask, 58.0, 22.0, 30.0), (battery_mask, 40.0, 10.0, 62.0)):
+    Dp = ndi.distance_transform_edt(part)
+    hp = half * np.sqrt(1 - (1 - np.clip(Dp / radius, 0, 1)) ** 2)
+    front = np.where(part, zoff + hp, front).astype(np.float32)
+    back = np.where(part, zoff - hp, back).astype(np.float32)
 
 # Outside the outline, carry the nearest midline so front and back meet.
 _, (my, mx) = ndi.distance_transform_edt(~mask, return_indices=True)
@@ -189,6 +214,15 @@ tex2 = col2.convert('RGBA')
 tex2.putalpha(al2)
 save(tex2, 'photo', '', 'webp', quality=88, method=6)
 
+# Text regions flipped back in place on the mirrored far side, so they still
+# read correctly (full-graphic x, y, w, h): the drill's wordmark and clutch
+# numbers, the battery's wordmark and label, and the charger's label.
+FLIP = [
+    (514, 439, 90, 38), (406, 405, 18, 15), (444, 407, 15, 13), (424, 417, 18, 23), (438, 449, 17, 25), (439, 480, 16, 22),
+    (326, 884, 66, 62), (400, 856, 128, 80),
+    (150, 668, 240, 105),
+]
+
 ys, xs = np.nonzero(mask)
 meta = {
     'source': 'https://universalhardware.bz/news/wp-content/uploads/HP333DYX3B.jpg',
@@ -198,6 +232,7 @@ meta = {
     'gridSize': [len(gx), len(gy)],
     'bbox': [int(xs.min()), int(ys.min()), int(xs.max()), int(ys.max())],
     'depthRange': [float(back[mask].min()), float(front[mask].max())],
+    'flip': [[x - CROP[0], y - CROP[1], w, h] for x, y, w, h in FLIP],
     'files': FILES,
 }
 (Path(__file__).resolve().parent.parent / 'src' / 'hero' / 'hp333d.json').write_text(json.dumps(meta, indent=1) + '\n')

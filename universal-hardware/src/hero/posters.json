@@ -2,15 +2,15 @@
  "desktop": {
   "width": 1680,
   "height": 1288,
-  "avif": "drill-poster-desktop.ec7034abad.avif",
-  "webp": "drill-poster-desktop.928cd89044.webp",
-  "png": "drill-poster-desktop.8154ea0099.png"
+  "avif": "drill-poster-desktop.bb58e7a127.avif",
+  "webp": "drill-poster-desktop.791dc299dd.webp",
+  "png": "drill-poster-desktop.fabca4fb09.png"
  },
  "mobile": {
   "width": 892,
   "height": 840,
-  "avif": "drill-poster-mobile.cb64ba7e0b.avif",
-  "webp": "drill-poster-mobile.aed2347f01.webp",
-  "png": "drill-poster-mobile.efd1ce9889.png"
+  "avif": "drill-poster-mobile.cfdf528bbb.avif",
+  "webp": "drill-poster-mobile.2a2fe702af.webp",
+  "png": "drill-poster-mobile.e5497e6164.png"
  }
 }

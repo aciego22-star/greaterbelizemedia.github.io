@@ -1,20 +1,22 @@
 /**
- * The Makita HP333D 12V max CXT drill, built from Universal Hardware's own
- * product photo (Friends & Family Sale 2026 promotion).
+ * The Makita HP333D 12V max CXT kit (drill, 1.5Ah battery and charger), built
+ * from Universal Hardware's own product photo (Friends & Family Sale 2026
+ * promotion) and laid out as photographed.
  *
- * scripts/build-hp333d.py cuts the drill out of the photo and "inflates" its
- * outline into a solid (union of balls, so the chuck, housing and grip come
- * out round; flat slab for the foot; thin plate for the belt clip). It ships:
+ * scripts/build-hp333d.py cuts the kit out of the photo and "inflates" its
+ * outline into solids (union of balls for the drill, so the chuck, housing and
+ * grip come out round; flat slab for its foot; thin plate for the belt clip;
+ * rounded slabs for the battery and charger, set a little in front). It ships:
  *  - hp333d.webp / hp333d-lo.webp: the photo cut-out, colour + alpha matte;
  *  - hp333d-depth.png: front and back surface depth on a 3 px grid;
  *  - hp333d-snap.png: offsets that move the grid's edge points onto the outline.
  * File names carry a content hash (listed in hp333d.json), so a rebuilt drill
  * is never served from a stale cache.
  * Here the grid becomes a mesh, the photo is mapped onto the front, and a
- * mirrored copy onto the back, with the wordmark and clutch numbers flipped
- * back so they still read correctly from that side. Facing the camera it is
- * the photo; the geometry gives it real depth, lighting and rotation.
- * Units: 1 ≈ 7 cm. Lowest point (belt clip) at y = 0 after build.
+ * mirrored copy onto the back, with the wordmarks, labels and clutch numbers
+ * (meta.flip) flipped back so they still read correctly from that side.
+ * Facing the camera it is the photo; the geometry gives it real depth,
+ * lighting and rotation. Lowest point (battery) at y = 0 after build.
  */
 import {
   BufferAttribute,
@@ -39,26 +41,12 @@ export interface DrillParts {
   height: number;
 }
 
-/** Model units per photo pixel (the drill is ~500 px tall in the photo). */
-const K = 0.0056;
-/** Gap between the plinth and the drill's lowest point: the drill floats, as in the photo. */
+/** Model units per photo pixel: the kit stands about 2.85 units tall, as the drill alone did. */
+const K = 2.85 / (meta.bbox[3] - meta.bbox[1]);
+/** Gap between the plinth and the kit's lowest point: it floats, as in the photo. */
 const HOVER = 0.16;
 /** Lean the photo plane back so it faces the camera, which looks down at 15°. */
 const TILT = -0.25;
-
-/**
- * Text regions (1x photo pixels, x/y/w/h) flipped in place on the back
- * texture, so the mirrored back still reads correctly: the wordmark and the
- * clutch numbers.
- */
-const FLIP_RECTS: [number, number, number, number][] = [
-  [256, 76, 90, 38],
-  [148, 42, 18, 15],
-  [186, 44, 15, 13],
-  [166, 54, 18, 23],
-  [180, 86, 17, 25],
-  [181, 117, 16, 22],
-];
 
 function loadImage(url: string): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
@@ -97,7 +85,8 @@ function backTexture(img: HTMLImageElement, scale: number): CanvasTexture {
   c.height = img.naturalHeight;
   const g = c.getContext('2d')!;
   g.drawImage(img, 0, 0);
-  for (const [x, y, w, h] of FLIP_RECTS) {
+  // Text regions (1x photo pixels, x/y/w/h) to flip back in place.
+  for (const [x, y, w, h] of meta.flip) {
     const [sx, sy, sw, sh] = [x * scale, y * scale, w * scale, h * scale];
     g.save();
     g.translate(sx + sw, sy);
@@ -286,14 +275,14 @@ export async function buildDrill(opts: { lowDetail?: boolean } = {}): Promise<Dr
   tilt.add(body);
   group.add(tilt);
 
-  /* Soft shadow on the plinth under the floating drill */
+  /* Soft shadow on the plinth under the floating kit */
   const shadowTex = contactShadowTexture();
   textures.push(shadowTex);
   const shadowMat = new MeshBasicMaterial({ map: shadowTex, transparent: true, depthWrite: false, opacity: 0.75, toneMapped: false });
   materials.push(shadowMat);
-  const shadow = new Mesh(new PlaneGeometry(1.7, 1.1), shadowMat);
+  const shadow = new Mesh(new PlaneGeometry(3.4, 1.7), shadowMat);
   shadow.rotation.x = -Math.PI / 2;
-  shadow.position.set(0.1, 0.004, 0);
+  shadow.position.set(0, 0.004, 0.2);
   shadow.renderOrder = -1;
   group.add(shadow);
 
