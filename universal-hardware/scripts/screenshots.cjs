@@ -9,11 +9,21 @@ const OUT = path.resolve(__dirname, '../deliverables/screenshots');
 fs.mkdirSync(OUT, { recursive: true });
 const LAUNCH = { args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] };
 
+// Scrolls the 3D hero (below the homepage slideshow) just under the sticky header.
+const toStage = (page) =>
+  page.evaluate(() => {
+    const el = document.querySelector('.hero');
+    if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - document.querySelector('[data-header]').offsetHeight, behavior: 'instant' });
+  });
+// The 3D scene starts once its stage is on screen: bring it into view, wait, then return to the top.
 async function ready(page) {
+  if (await page.$('[data-hero-stage]')) await toStage(page);
   await page.waitForFunction(() => {
     const s = document.querySelector('[data-hero-stage]');
     return !s || s.dataset.state === 'ready' || s.dataset.state === 'fallback';
   }, null, { timeout: 40000 });
+  await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
+  await page.waitForFunction(() => { const i = document.querySelector('[data-reel-slide].is-active img'); return !i || (i.complete && i.naturalWidth > 1); });
 }
 async function scrollThrough(page, vh) {
   const H = await page.evaluate(() => document.documentElement.scrollHeight);
@@ -54,8 +64,13 @@ const shot = (page, name, opts = {}) => page.screenshot({ path: path.join(OUT, n
     await page.goto(BASE + '/', { waitUntil: 'load' });
     await page.mouse.move(w * 0.7, h * 0.45);
     await ready(page);
-    await page.waitForTimeout(2600);
+    await page.waitForTimeout(1200);
     await shot(page, `01-home-hero-${tag}.png`);
+    await toStage(page);
+    await page.mouse.move(w * 0.7, h * 0.5);
+    await page.waitForTimeout(2600);
+    await shot(page, `01b-home-3d-drill-${tag}.png`);
+    await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
     {
       // Full-page capture from a non-emulated context (Chromium's full-page
       // capture duplicates content under mobile emulation).
@@ -172,6 +187,7 @@ const shot = (page, name, opts = {}) => page.screenshot({ path: path.join(OUT, n
     const b2 = await chromium.launch({ args: ['--disable-webgl', '--disable-webgl2', '--disable-3d-apis'] });
     const page = await b2.newPage({ viewport: { width: 1440, height: 900 } });
     await page.goto(BASE + '/', { waitUntil: 'load' });
+    await toStage(page);
     await page.waitForTimeout(1500);
     await shot(page, `12-home-no-webgl-fallback-1440x900.png`);
     await b2.close();

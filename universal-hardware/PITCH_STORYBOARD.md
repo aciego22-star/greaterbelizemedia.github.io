@@ -4,7 +4,7 @@ Record on a phone (390×844 portrait) or a laptop at 1440×900. Use a clean brow
 
 | Time | Screen | Action | On-screen / voice-over (suggested) |
 |---|---|---|---|
-| 0–7 s | Home hero | Land on the page; the wordmark and 3D drill are visible. Drag the drill a quarter turn (desktop: move the pointer). | "Your brand, your range, presented like a flagship store." |
+| 0–7 s | Home slideshow → 3D hero | Land on the slideshow (storefront with the Lifan bike), let it fade once, then scroll to the 3D drill and drag it a quarter turn (desktop: move the pointer). | "Your brand, your range, presented like a flagship store." |
 | 7–12 s | 01 Departments | Scroll to the eight department tiles; hover or tap **Generators & Power**. | "Every department from your current product listing, one tap away." |
 | 12–16 s | Category page `/products/generators/` | Show the listed product types and brand chips; tap back. Optionally flash `/products/water-pumps/`. | "Each category explains what you carry, without inventing prices or stock." |
 | 16–24 s | 02 Product finder | **Backup power** → "Lights, fridge & fans" → "Occasional outages" → "At home". The results show Generators plus the electrician guidance. | "Customers describe the job; the site points them to the right category." |

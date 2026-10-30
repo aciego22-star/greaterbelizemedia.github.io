@@ -1,7 +1,7 @@
 {
   "base": "http://localhost:4322",
-  "date": "2026-10-29T17:09:53.851Z",
-  "passed": 226,
+  "date": "2026-10-30T00:39:53.825Z",
+  "passed": 235,
   "failed": 0,
   "results": [
     {
@@ -872,7 +872,7 @@
       "group": "search",
       "name": "\"submersible pump\" → Water Pumps with highlighted sub-type",
       "pass": true,
-      "detail": "Water Pumps | Submersible pumps, Jet pumps (pressure systems), Sprinkler pumps, Booster pumps, Sump pumps, Marine pumps, Pressure pumps, Gas and diesel powered water pumps (121ms)"
+      "detail": "Water Pumps | Submersible pumps, Jet pumps (pressure systems), Sprinkler pumps, Booster pumps, Sump pumps, Marine pumps, Pressure pumps, Gas and diesel powered water pumps (135ms)"
     },
     {
       "group": "search",
@@ -1274,7 +1274,7 @@
       "group": "checkout",
       "name": "approved demo payment shows a DEMO order reference and empties the cart",
       "pass": true,
-      "detail": "{\"ref\":\"Order DEMO-UE2HGC\",\"demo\":true}"
+      "detail": "{\"ref\":\"Order DEMO-JXPN4P\",\"demo\":true}"
     },
     {
       "group": "axe",
@@ -1301,6 +1301,54 @@
       "detail": ""
     },
     {
+      "group": "reel",
+      "name": "1440×900: slideshow opens the page, 3D drill hero directly below, desktop images",
+      "pass": true,
+      "detail": "{\"above\":true,\"first\":true,\"src\":\"http://localhost:4322/hero/slides/storefront-desktop-1672.0d767427fd.avif\",\"h\":794}"
+    },
+    {
+      "group": "reel",
+      "name": "768×1024: slideshow opens the page, 3D drill hero directly below, desktop images",
+      "pass": true,
+      "detail": "{\"above\":true,\"first\":true,\"src\":\"http://localhost:4322/hero/slides/storefront-desktop-1200.817c69b8f4.avif\",\"h\":432}"
+    },
+    {
+      "group": "reel",
+      "name": "390×844: slideshow opens the page, 3D drill hero directly below, mobile images",
+      "pass": true,
+      "detail": "{\"above\":true,\"first\":true,\"src\":\"http://localhost:4322/hero/slides/storefront-mobile-750.d397a998e6.avif\",\"h\":488}"
+    },
+    {
+      "group": "reel",
+      "name": "only the first slideshow image loads with the page",
+      "pass": true,
+      "detail": "storefront-desktop-1672.0d767427fd.avif"
+    },
+    {
+      "group": "reel",
+      "name": "autoplay fades to the next slide after about 7 s; inactive slides are aria-hidden",
+      "pass": true,
+      "detail": "5530 ms after load, aria-hidden true,,true"
+    },
+    {
+      "group": "reel",
+      "name": "choosing a slide stops autoplay (still on it 8 s later)",
+      "pass": true,
+      "detail": "{\"third\":true,\"playing\":false,\"label\":\"Play slideshow\"}"
+    },
+    {
+      "group": "reel",
+      "name": "Play resumes autoplay; arrow keys change slide",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "reel",
+      "name": "reduced motion: slideshow starts paused on the first image",
+      "pass": true,
+      "detail": "{\"first\":true,\"playing\":false}"
+    },
+    {
       "group": "3d",
       "name": "WebGL bundle not loaded before first paint (poster first)",
       "pass": true,
@@ -1308,7 +1356,13 @@
     },
     {
       "group": "3d",
-      "name": "real-time scene initialises (state=ready)",
+      "name": "scene waits while the stage is below the slideshow (poster only)",
+      "pass": true,
+      "detail": "{\"state\":\"poster\",\"chunks\":0}"
+    },
+    {
+      "group": "3d",
+      "name": "real-time scene initialises (state=ready) once scrolled into view",
       "pass": true,
       "detail": ""
     },

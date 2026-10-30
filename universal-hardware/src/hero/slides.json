@@ -1,0 +1,158 @@
+{
+ "storefront": {
+  "desktop": {
+   "width": 1672,
+   "height": 941,
+   "avif": [
+    {
+     "w": 1200,
+     "file": "storefront-desktop-1200.817c69b8f4.avif"
+    },
+    {
+     "w": 1672,
+     "file": "storefront-desktop-1672.0d767427fd.avif"
+    }
+   ],
+   "webp": [
+    {
+     "w": 1200,
+     "file": "storefront-desktop-1200.a0e4389bdb.webp"
+    },
+    {
+     "w": 1672,
+     "file": "storefront-desktop-1672.cea4b30f0d.webp"
+    }
+   ],
+   "jpg": "storefront-desktop.b124861261.jpg"
+  },
+  "mobile": {
+   "width": 1122,
+   "height": 1402,
+   "avif": [
+    {
+     "w": 750,
+     "file": "storefront-mobile-750.d397a998e6.avif"
+    },
+    {
+     "w": 1122,
+     "file": "storefront-mobile-1122.c268ce8aca.avif"
+    }
+   ],
+   "webp": [
+    {
+     "w": 750,
+     "file": "storefront-mobile-750.b02082f9a4.webp"
+    },
+    {
+     "w": 1122,
+     "file": "storefront-mobile-1122.653f768698.webp"
+    }
+   ],
+   "jpg": "storefront-mobile.6625185de6.jpg"
+  }
+ },
+ "interior": {
+  "desktop": {
+   "width": 1672,
+   "height": 941,
+   "avif": [
+    {
+     "w": 1200,
+     "file": "interior-desktop-1200.dbb87fdeae.avif"
+    },
+    {
+     "w": 1672,
+     "file": "interior-desktop-1672.20034e8e74.avif"
+    }
+   ],
+   "webp": [
+    {
+     "w": 1200,
+     "file": "interior-desktop-1200.651a62f124.webp"
+    },
+    {
+     "w": 1672,
+     "file": "interior-desktop-1672.d5557cea4d.webp"
+    }
+   ],
+   "jpg": "interior-desktop.63015a964a.jpg"
+  },
+  "mobile": {
+   "width": 1122,
+   "height": 1402,
+   "avif": [
+    {
+     "w": 750,
+     "file": "interior-mobile-750.a4117df348.avif"
+    },
+    {
+     "w": 1122,
+     "file": "interior-mobile-1122.1b480829c5.avif"
+    }
+   ],
+   "webp": [
+    {
+     "w": 750,
+     "file": "interior-mobile-750.a4e4bccbd7.webp"
+    },
+    {
+     "w": 1122,
+     "file": "interior-mobile-1122.c37ec2711c.webp"
+    }
+   ],
+   "jpg": "interior-mobile.05c221d536.jpg"
+  }
+ },
+ "aisle": {
+  "desktop": {
+   "width": 1672,
+   "height": 941,
+   "avif": [
+    {
+     "w": 1200,
+     "file": "aisle-desktop-1200.e7fc55b02b.avif"
+    },
+    {
+     "w": 1672,
+     "file": "aisle-desktop-1672.5fb384ace8.avif"
+    }
+   ],
+   "webp": [
+    {
+     "w": 1200,
+     "file": "aisle-desktop-1200.ddcf57db76.webp"
+    },
+    {
+     "w": 1672,
+     "file": "aisle-desktop-1672.18fe588015.webp"
+    }
+   ],
+   "jpg": "aisle-desktop.b437d97b85.jpg"
+  },
+  "mobile": {
+   "width": 1122,
+   "height": 1402,
+   "avif": [
+    {
+     "w": 750,
+     "file": "aisle-mobile-750.301d992e33.avif"
+    },
+    {
+     "w": 1122,
+     "file": "aisle-mobile-1122.eb7424f2bd.avif"
+    }
+   ],
+   "webp": [
+    {
+     "w": 750,
+     "file": "aisle-mobile-750.5bd33d54f8.webp"
+    },
+    {
+     "w": 1122,
+     "file": "aisle-mobile-1122.ede04d121c.webp"
+    }
+   ],
+   "jpg": "aisle-mobile.023b3e02a5.jpg"
+  }
+ }
+}

@@ -27,7 +27,7 @@ Limits: the model is reconstructed from a single photo, so the far side is a mir
 
 ## Performance and safety measures
 
-- Not loaded until the page has rendered. A static render of the same scene is the first paint and the no-WebGL fallback. The bundle and the drill data load on first interaction or after an idle delay (1.6 s desktop, 3.2 s touch).
+- Not loaded until the page has rendered. A static render of the same scene is the first paint and the no-WebGL fallback. The hero sits below the homepage slideshow, so nothing loads until at least a fifth of the stage is on screen. The bundle and the drill data then load on the next interaction or after an idle delay (1.6 s desktop, 3.2 s touch).
 - The WebGL context is only created when the scene starts. Shaders compile with `compileAsync`, and set-up yields to the main thread between steps.
 - Low-power devices (touch, ≤4 cores or ≤4 GB memory) get the 1x texture, no shadow map, a ≤1.5 device-pixel-ratio cap and a ~30 fps cap. Adaptive resolution drops further if frames are slow.
 - The scene pauses when off-screen or when the tab is hidden, and is fully disposed (geometries, materials, textures, render targets, context) on page hide.

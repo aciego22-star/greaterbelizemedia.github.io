@@ -1,0 +1,388 @@
+---
+/**
+ * Homepage slideshow above the 3D drill hero. Each slide ships a desktop
+ * (16:9) and a mobile (4:5) composition, chosen by breakpoint, so neither is
+ * cropped into the other's shape. Fades every 7 s in an endless loop; any
+ * manual interaction (dots, swipe, arrow keys, pause) stops autoplay, and it
+ * waits while the slideshow is off-screen or the tab is hidden. With reduced
+ * motion it starts paused. Only the first image loads with the page; each
+ * later one is fetched a few seconds before it is due (or when the visitor
+ * reaches for the controls), so the slideshow adds nothing to start-up.
+ */
+import Icon from '../components/Icon.astro';
+// Content-hashed files written by scripts/build-hero-slides.mjs.
+import slides from './slides.json';
+
+type Variant = { width: number; height: number; avif: { w: number; file: string }[]; webp: { w: number; file: string }[]; jpg: string };
+const SLIDES: { key: keyof typeof slides; label: string; alt: string }[] = [
+  {
+    key: 'storefront',
+    label: 'Storefront',
+    alt: 'Concept image: a red Lifan motorcycle parked outside a Universal Hardware storefront, with the blue wordmark over the entrance.',
+  },
+  {
+    key: 'interior',
+    label: 'Store floor',
+    alt: 'Concept image: a busy store floor with Outdoor Power and Lawn & Garden departments, a True Value paint counter, patio furniture and grills.',
+  },
+  {
+    key: 'aisle',
+    label: 'Paint aisle',
+    alt: 'Concept image: a long aisle with a pegboard wall of putty knives, yellow extension poles and paint rollers.',
+  },
+];
+const srcset = (list: Variant['avif']) => list.map((x) => `/hero/slides/${x.file} ${x.w}w`).join(', ');
+const MOBILE = '(max-width: 767px)';
+// Later slides carry their URLs in data-* attributes until the script loads them.
+const BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+const lazy = (i: number, attr: 'srcset' | 'src', value: string) => (i === 0 ? { [attr]: value } : { [`data-${attr}`]: value });
+---
+<section class="hero-reel" aria-roledescription="carousel" aria-label="Universal Hardware in pictures" data-reel>
+  <div class="hero-reel__track" data-reel-track>
+    {
+      SLIDES.map((s, i) => {
+        const d = slides[s.key].desktop as Variant;
+        const m = slides[s.key].mobile as Variant;
+        return (
+          <figure
+            class:list={['hero-reel__slide', { 'is-active': i === 0 }]}
+            role="group"
+            aria-roledescription="slide"
+            aria-label={`${i + 1} of ${SLIDES.length}: ${s.label}`}
+            aria-hidden={i === 0 ? undefined : 'true'}
+            data-reel-slide
+          >
+            <picture>
+              <source media={MOBILE} type="image/avif" {...lazy(i, 'srcset', srcset(m.avif))} sizes="100vw" width={m.width} height={m.height} />
+              <source media={MOBILE} type="image/webp" {...lazy(i, 'srcset', srcset(m.webp))} sizes="100vw" width={m.width} height={m.height} />
+              <source media={MOBILE} {...lazy(i, 'srcset', `/hero/slides/${m.jpg}`)} width={m.width} height={m.height} />
+              <source type="image/avif" {...lazy(i, 'srcset', srcset(d.avif))} sizes="100vw" />
+              <source type="image/webp" {...lazy(i, 'srcset', srcset(d.webp))} sizes="100vw" />
+              <img
+                {...(i === 0 ? { src: `/hero/slides/${d.jpg}` } : { src: BLANK, 'data-src': `/hero/slides/${d.jpg}` })}
+                width={d.width}
+                height={d.height}
+                alt={s.alt}
+                fetchpriority={i === 0 ? 'high' : 'low'}
+                decoding="async"
+              />
+            </picture>
+          </figure>
+        );
+      })
+    }
+  </div>
+
+  <p class="hero-reel__note mono">Concept image<span class="hero-reel__note-more"> · not a photograph</span></p>
+
+  <div class="hero-reel__controls">
+    <button type="button" class="hero-reel__toggle" data-reel-toggle aria-label="Pause slideshow">
+      <span data-reel-pause><Icon name="pause" size={16} /></span>
+      <span data-reel-play hidden><Icon name="play" size={16} /></span>
+    </button>
+    <div class="hero-reel__dots" role="group" aria-label="Choose an image">
+      {
+        SLIDES.map((s, i) => (
+          <button type="button" class="hero-reel__dot" data-reel-go={i} aria-label={`Image ${i + 1}: ${s.label}`} aria-current={i === 0 ? 'true' : undefined}>
+            <span aria-hidden="true" />
+          </button>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  const INTERVAL = 7000;
+  const reel = document.querySelector<HTMLElement>('[data-reel]');
+  if (reel) {
+    const slides = [...reel.querySelectorAll<HTMLElement>('[data-reel-slide]')];
+    const dots = [...reel.querySelectorAll<HTMLButtonElement>('[data-reel-go]')];
+    const toggle = reel.querySelector<HTMLButtonElement>('[data-reel-toggle]')!;
+    const root = document.documentElement;
+    const reduced = () => root.dataset.motion === 'reduced' || matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    let current = 0;
+    let stopped = reduced(); // by the visitor, or by reduced motion
+    let visible = true;
+    let timer = 0;
+    let preload = 0;
+
+    /** Swap a later slide's data-* URLs in, which starts its download. */
+    function load(slide: HTMLElement) {
+      slide.querySelectorAll<HTMLElement>('[data-srcset]').forEach((el) => {
+        el.setAttribute('srcset', el.dataset.srcset!);
+        el.removeAttribute('data-srcset');
+      });
+      const img = slide.querySelector<HTMLImageElement>('img[data-src]');
+      if (img) {
+        img.src = img.dataset.src!;
+        img.removeAttribute('data-src');
+      }
+    }
+
+    const playing = () => !stopped && visible && !document.hidden;
+
+    function render() {
+      slides.forEach((s, i) => {
+        const on = i === current;
+        s.classList.toggle('is-active', on);
+        if (on) s.removeAttribute('aria-hidden');
+        else s.setAttribute('aria-hidden', 'true');
+      });
+      dots.forEach((d, i) => (i === current ? d.setAttribute('aria-current', 'true') : d.removeAttribute('aria-current')));
+      const p = playing();
+      reel!.classList.toggle('is-playing', p);
+      toggle.setAttribute('aria-label', stopped ? 'Play slideshow' : 'Pause slideshow');
+      toggle.querySelector('[data-reel-pause]')!.toggleAttribute('hidden', stopped);
+      toggle.querySelector('[data-reel-play]')!.toggleAttribute('hidden', !stopped);
+    }
+
+    function schedule() {
+      window.clearTimeout(timer);
+      window.clearTimeout(preload);
+      if (!playing()) return;
+      const upcoming = slides[(current + 1) % slides.length];
+      preload = window.setTimeout(() => load(upcoming), INTERVAL - 3500);
+      timer = window.setTimeout(() => void go(current + 1), INTERVAL);
+    }
+
+    async function go(n: number) {
+      const next = (n + slides.length) % slides.length;
+      if (next === current) return schedule();
+      // Fade only once the incoming image is ready, so it never flashes in half-loaded.
+      load(slides[next]);
+      await slides[next].querySelector('img')?.decode().catch(() => {});
+      current = next;
+      // Restart the active dot's progress bar.
+      reel!.classList.remove('is-playing');
+      void reel!.offsetWidth;
+      render();
+      schedule();
+    }
+
+    const manual = (n: number) => {
+      stopped = true;
+      void go(n);
+      render();
+    };
+
+    dots.forEach((d, i) => d.addEventListener('click', () => manual(i)));
+    // A visitor heading for the controls is about to change slide: fetch the rest now.
+    const controls = reel.querySelector<HTMLElement>('.hero-reel__controls')!;
+    const loadAll = () => slides.forEach(load);
+    controls.addEventListener('pointerenter', loadAll, { once: true });
+    controls.addEventListener('focusin', loadAll, { once: true });
+    toggle.addEventListener('click', () => {
+      stopped = !stopped;
+      render();
+      schedule();
+    });
+    reel.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') manual(current + 1);
+      else if (e.key === 'ArrowLeft') manual(current - 1);
+      else return;
+      e.preventDefault();
+    });
+
+    // Horizontal swipe on the images; vertical drags still scroll the page.
+    const track = reel.querySelector<HTMLElement>('[data-reel-track]')!;
+    let x0 = 0;
+    let y0 = 0;
+    track.addEventListener('pointerdown', (e) => ((x0 = e.clientX), (y0 = e.clientY)));
+    track.addEventListener('pointerup', (e) => {
+      const dx = e.clientX - x0;
+      if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(e.clientY - y0) * 1.5) manual(current + (dx < 0 ? 1 : -1));
+    });
+
+    // Wait while off-screen or in a background tab, then carry on with a full interval.
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(
+        ([en]) => {
+          visible = en.isIntersecting;
+          render();
+          schedule();
+        },
+        { threshold: 0.25 },
+      ).observe(reel);
+    }
+    document.addEventListener('visibilitychange', () => {
+      render();
+      schedule();
+    });
+    window.addEventListener('uhc:motion-change', () => {
+      if (reduced()) stopped = true;
+      render();
+      schedule();
+    });
+
+    render();
+    schedule();
+  }
+</script>
+
+<style>
+  .hero-reel {
+    --reel-ms: 7000ms;
+    position: relative;
+    height: min(56.25vw, calc(100vh - var(--header-h) - var(--utility-h)));
+    height: min(56.25vw, calc(100svh - var(--header-h) - var(--utility-h)));
+    min-height: 300px;
+    overflow: hidden;
+    background: var(--graphite-900);
+    color: #fff;
+  }
+  @media (max-width: 767px) {
+    .hero-reel {
+      height: min(125vw, calc(100vh - var(--header-h) - var(--utility-h)));
+      height: min(125vw, calc(100svh - var(--header-h) - var(--utility-h)));
+    }
+  }
+  .hero-reel__track {
+    position: absolute;
+    inset: 0;
+    touch-action: pan-y;
+  }
+  .hero-reel__slide {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    transition: opacity 1400ms var(--ease-in-out);
+  }
+  .hero-reel__slide.is-active {
+    opacity: 1;
+  }
+  .hero-reel__slide picture,
+  .hero-reel__slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .hero-reel__slide img {
+    object-fit: cover;
+    object-position: 50% 50%;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+  /* Soft shade at the foot, only so the controls stay legible. */
+  .hero-reel::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0;
+    height: 96px;
+    background: linear-gradient(to top, rgba(10, 19, 29, 0.42), transparent);
+    pointer-events: none;
+  }
+  .hero-reel__note {
+    position: absolute;
+    left: var(--gutter);
+    bottom: 22px;
+    z-index: 1;
+    margin: 0;
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.82);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+  }
+  .hero-reel__controls {
+    position: absolute;
+    left: 50%;
+    bottom: 10px;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 0 4px;
+    border-radius: 999px;
+    background: rgba(10, 19, 29, 0.38);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transform: translateX(-50%);
+  }
+  @media (max-width: 767px) {
+    .hero-reel__controls {
+      left: auto;
+      right: var(--gutter);
+      transform: none;
+    }
+  }
+  @media (max-width: 479px) {
+    .hero-reel__note-more {
+      display: none;
+    }
+  }
+  .hero-reel__toggle,
+  .hero-reel__dot {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: #fff;
+  }
+  .hero-reel__toggle :global(svg) {
+    width: 16px;
+    height: 16px;
+  }
+  .hero-reel__toggle:hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
+  .hero-reel__dots {
+    display: flex;
+  }
+  .hero-reel__dot {
+    width: 32px;
+  }
+  .hero-reel__dot span {
+    position: relative;
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.5);
+    overflow: hidden;
+    transition:
+      width var(--dur) var(--ease-out),
+      background-color var(--dur);
+  }
+  .hero-reel__dot:hover span {
+    background: rgba(255, 255, 255, 0.8);
+  }
+  .hero-reel__dot[aria-current='true'] span {
+    width: 22px;
+    background: rgba(255, 255, 255, 0.5);
+  }
+  .hero-reel__dot[aria-current='true'] span::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: #fff;
+  }
+  /* While playing, the active dot fills over the interval. */
+  .hero-reel.is-playing .hero-reel__dot[aria-current='true'] span::after {
+    transform-origin: left;
+    animation: reel-progress var(--reel-ms) linear forwards;
+  }
+  @keyframes reel-progress {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+  .hero-reel :focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-reel__slide {
+      transition-duration: 1ms;
+    }
+  }
+</style>

@@ -49,7 +49,7 @@ Other scripts:
 
 | Route | Content |
 |---|---|
-| `/` | Showcase homepage: 3D hero, 8 departments, product finder, brand wall, service, branches, closing CTA |
+| `/` | Showcase homepage: image slideshow, then the 3D hero, 8 departments, product finder, brand wall, service, branches, closing CTA |
 | `/products/` | Instant search across categories, product types and brands; department and brand filters; URL-synced (`?q=`, `?dept=`, `?brand=`) |
 | `/products/[slug]/` | 12 category pages: `power-tools`, `welding-supplies`, `generators`, `water-pumps`, `lawn-and-garden`, `motorcycles`, `household`, `lighting-and-fans`, `woodworking`, `shop-tools`, `agriculture`, `hand-tools` |
 | `/shop/` | Shop: 32 items from the February 2026 sale graphics, with filters and add to cart (deep links: `/shop/#motorcycles`) |
@@ -101,13 +101,15 @@ src/
   lib/          enquiry-store (sessionStorage), cart-store + tab-storage, search, finder rules, icons,
                 asset-url, payments/ (PaymentProvider contract + demo provider),
                 guide/ (engine contract, local rule engine, optional Chatbase adapter)
-  hero/         Hero.astro, hero-loader (progressive enhancement), drill-scene + drill-model (Three.js)
+  hero/         HeroCarousel.astro (homepage slideshow), Hero.astro, hero-loader (progressive enhancement),
+                drill-scene + drill-model (Three.js)
   islands/      Preact: GlobalUI (Enquiry drawer, Product Guide, toasts), ProductFinder, CatalogueSearch, SitePicture,
                 CartView, Checkout
   components/   Astro: header, footer, utility bar, branch card, map, department tile, page hero, site photo, product card
   pages/        Routes (see above)
   styles/       global.css (tokens, base), components.css, islands.css, shop.css (Shop, cart, checkout)
 scripts/        postbuild checks, ZIP, posters, screenshots, fonts, local server, News photo crops, Shop photo cut-outs,
+                slideshow encoding (build-hero-slides.mjs),
                 3D drill from photo (build-hp333d.py)
 tests/          guide-cases.ts (logic), run-qa.cjs (end-to-end)
 ```
@@ -116,9 +118,13 @@ Product photos and brand logos in `public/site-images/` are copied from Universa
 
 Design tokens come from the supplied wordmark: blue `#5592CB` (sampled), action blue `#1768B4`, graphite `#121D29`, ink `#0D1C2C`. Typefaces are Archivo (display), Inter (text) and JetBrains Mono (labels), all self-hosted.
 
+### Homepage slideshow
+
+The page opens with a full-width slideshow above the 3D hero: a storefront with a Lifan motorcycle, a store floor and a paint aisle. These are concept images supplied for this presentation, not photographs of a branch, and each carries a small "Concept image · not a photograph" label. Every slide has a 16:9 desktop and a 4:5 mobile composition. Phones (below 768 px) get the mobile one and tablets and desktops the desktop one, so neither is cropped into the other's shape. Slides fade every 7 seconds in an endless loop. Choosing a slide, swiping, the arrow keys or the pause button stop autoplay. It waits while off-screen or in a background tab, and starts paused with reduced motion. Only the first image loads with the page; each later one is fetched 3.5 s before it is due. `scripts/build-hero-slides.mjs` encodes the source PNGs as AVIF / WebP (two widths each) plus a JPEG fallback, under content-hashed names listed in `src/hero/slides.json`.
+
 ### 3D hero
 
-The hero is the Makita HP333D kit (drill, 1.5Ah battery and charger) from Universal Hardware's own product photo, given 3D depth: `scripts/build-hp333d.py` cuts the kit out of the photo and inflates each piece's outline into a solid, and the photo is mapped onto it. The hero ships with a static render of the same scene (AVIF/WebP/PNG), so the first paint is instant and identical. The Three.js bundle (≈122 KB gzip) and the kit data (≈161 KB) load only after the page has loaded, on the first interaction or after a short idle period. Shaders compile asynchronously, and the scene pauses off-screen or in background tabs, is disposed on page hide, caps resolution and frame rate on low-power devices, and respects `prefers-reduced-motion`, the footer "Reduce motion" toggle and the "Pause 3D motion" button. Without WebGL 2 the static render stays and is labelled "Static render". The drill data and posters carry a content hash in their file names (listed in `src/hero/hp333d.json` and `src/hero/posters.json`), so an update is never served from a stale cache. Regenerate the posters with `npm run posters` (serve `dist/` first). See [`3D_ASSET_LICENSE.md`](3D_ASSET_LICENSE.md).
+The hero is the Makita HP333D kit (drill, 1.5Ah battery and charger) from Universal Hardware's own product photo, given 3D depth: `scripts/build-hp333d.py` cuts the kit out of the photo and inflates each piece's outline into a solid, and the photo is mapped onto it. The hero ships with a static render of the same scene (AVIF/WebP/PNG), so the first paint is instant and identical. The hero sits directly below the homepage slideshow. The Three.js bundle (≈122 KB gzip) and the kit data (≈161 KB) load only once a fifth of the stage is on screen, then on the next interaction or after a short idle period. Shaders compile asynchronously, and the scene pauses off-screen or in background tabs, is disposed on page hide, caps resolution and frame rate on low-power devices, and respects `prefers-reduced-motion`, the footer "Reduce motion" toggle and the "Pause 3D motion" button. Without WebGL 2 the static render stays and is labelled "Static render". The drill data and posters carry a content hash in their file names (listed in `src/hero/hp333d.json` and `src/hero/posters.json`), so an update is never served from a stale cache. Regenerate the posters with `npm run posters` (serve `dist/` first). See [`3D_ASSET_LICENSE.md`](3D_ASSET_LICENSE.md).
 
 ### Shop and payments
 

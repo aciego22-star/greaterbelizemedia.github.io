@@ -1,6 +1,6 @@
 # QA report
 
-**Build:** `universal-hardware/` · Astro 7.3.8 static output · 55 pages · tested 28 October 2026; Shop, cart and checkout added and re-tested 29 October 2026
+**Build:** `universal-hardware/` · Astro 7.3.8 static output · 55 pages · tested 28 October 2026; Shop, cart and checkout added and re-tested 29 October 2026; homepage slideshow added and re-tested 30 October 2026
 **Environment:** headless Chromium 1243 (Playwright 1.63) on Linux with **software WebGL (SwiftShader)**; local Netlify-like server with Brotli/gzip; Lighthouse 12.6.1.
 **Not available here:** physical iPhone / Android / iPad hardware and real GPUs. See "Outstanding issues".
 
@@ -8,13 +8,13 @@
 
 | Area | Result |
 |---|---|
-| Automated end-to-end suite (`tests/run-qa.cjs`) | **226 / 226 checks pass** |
+| Automated end-to-end suite (`tests/run-qa.cjs`) | **235 / 235 checks pass** |
 | Logic suite (`tests/guide-cases.ts`) | **All pass**: 13 guide conversations; every finder answer combination (276) resolves to listed categories and sub-types |
 | Type check (`astro check`) | 0 errors, 0 warnings |
 | Post-build checks | noindex + disclaimer on all 55 pages; `_headers`, `robots.txt`, `404.html` present; no secret patterns |
 | axe-core (WCAG 2.1 A/AA + best practice) | 0 violations on all 24 tested routes, plus the cart with items, checkout with errors and the order confirmation |
 | Lighthouse mobile | Performance 97–100 · Accessibility 100 · Best Practices 100 · SEO 69 (intentional `noindex`) |
-| Lighthouse desktop (home, photo-based 3D drill kit) | Performance 100 · TBT 0 ms · CLS 0 (was 69 with the earlier procedural drill) |
+| Lighthouse desktop (home, with the slideshow above the 3D hero) | Performance 100 on three consecutive runs · LCP 0.7 s · TBT 0 ms · CLS 0 · 534 KB (was 69 with the earlier procedural drill) |
 | Third-party network requests | **None**, on any route or during any interaction |
 | Shop and checkout writes | **None**: the whole add-to-cart → checkout → demo payment flow sends no POST or other write request, and the checkout has no card inputs |
 
@@ -40,7 +40,8 @@
 | shop | 4/4 | 32 products, each with a BZ$ price; the motorcycle filter shows 16; add to cart updates the header count and offers View cart; the product page adds the chosen quantity |
 | cart | 3/3 | Lines, colour and total (BZ$3,654.15 for the test basket) survive navigation; the stepper updates quantity and total; remove |
 | checkout | 4/4 | No card inputs or third-party frames; Enter with empty details shows three errors and focuses the first field; simulated decline shows an alert and keeps the cart; approved demo payment shows a `DEMO-` reference and empties the cart |
-| 3d | 8/8 | Poster first and WebGL chunk not loaded at first paint; scene reaches `ready`; idle motion animates; **Pause 3D motion** freezes frames and relabels to "Resume"; drag rotates; `touch-action: pan-y` (no scroll trap); `prefers-reduced-motion` → no idle animation; **WebGL-disabled browser shows the static render with a "Static render" badge and no errors** |
+| reel | 8/8 | At 1440, 768 and 390 px the slideshow opens the page with the 3D hero directly below; desktop images on desktop and tablet, mobile images on phones; only the first image loads with the page; autoplay fades to the next slide after about 7 s with inactive slides `aria-hidden`; choosing a slide stops autoplay (still there 8 s later, button reads "Play slideshow"); Play resumes and arrow keys change slide; reduced motion starts paused |
+| 3d | 9/9 | Poster first and WebGL chunk not loaded at first paint; nothing loads while the stage is below the slideshow; scene reaches `ready` once scrolled into view; idle motion animates; **Pause 3D motion** freezes frames and relabels to "Resume"; drag rotates; `touch-action: pan-y` (no scroll trap); `prefers-reduced-motion` → no idle animation; **WebGL-disabled browser shows the static render with a "Static render" badge and no errors** |
 | motion | 2/2 | Reduced motion shows reveal content immediately; the footer "Reduce motion" toggle applies and persists for the session |
 
 Raw results: `tests/results/qa-results.json`.
@@ -86,6 +87,15 @@ After adding the Shop (mobile, 29 October 2026):
 | mobile | `/cart/` | 99 | 100 | — | — | — | 0 |
 | mobile | `/checkout/` | 100 | 100 | 100 | 1.8 s | 0 ms | 0 (was 0.079 before the island reserved its space) |
 
+After adding the homepage slideshow (30 October 2026, repeated runs):
+
+| Form factor | Route | Perf | A11y | BP | FCP | LCP | TBT | CLS | Transfer |
+|---|---|---|---|---|---|---|---|---|---|
+| desktop | `/` (×3) | 100, 100, 100 | 100 | 100 | 0.3 s | 0.7 s | 0 ms | 0 | 534 KB |
+| mobile | `/` (×2) | 97, 98 | 100 | 100 | 1.1–1.2 s | 2.3–2.6 s | 0 ms | 0 | 446 KB |
+
+The LCP element is now the first slideshow image (AVIF, 1672 px on desktop, 750 px on phones). Before two changes, desktop flipped between 100 and 60. Slides 2 and 3 downloaded right after load and kept the network busy, so the 3D scene could start inside Lighthouse's window, where SwiftShader frames count as blocking time. Now each later slide loads just before it is due, and the scene waits until its stage is on screen.
+
 The first table is the pre-image baseline. Below-the-fold images are lazy-loaded, every image has explicit dimensions (CLS 0), and photos are served as WebP with a JPEG fallback.
 
 How to read these honestly:
@@ -107,7 +117,7 @@ Bundle: the WebGL chunk is ≈122 KB gzip and is never requested before first pa
 
 Optimisations applied after measuring (homepage mobile went from Performance 55 / TBT 9.7 s to 98 / 0 ms):
 - the expensive up-front WebGL capability probe was replaced by a cheap feature check
-- the scene starts on interaction or idle
+- the scene starts on interaction or idle, and (since the slideshow was added) only once its stage is on screen
 - async shader compilation, with set-up yielding between steps
 - low-power profile: no shadow map, 1.5× DPR cap, ~30 fps cap
 - CSS inlined, which removes the render-blocking request
@@ -134,6 +144,8 @@ Reviewed by screenshot at every tested viewport (see `deliverables/screenshots/`
 - Shop: colour pickers on bike cards were squeezed to one letter, so they now take their own row; two product columns on phones; filter chips scroll sideways on phones
 - Shop at 320 px: the extra cart icon pushed the header 8 px wide, so header icon buttons shrink to 40 px below 400 px
 - Checkout in the private preview: the preview frame blocks form submission, so Pay never fired there. Pay, the Product Guide's Send and the Enquiry Summary's Add are now plain buttons with Enter handled in script. Verified in an opaque-origin sandbox emulation: cart kept across pages (sessionStorage is blocked there, so the `window.name` fallback is used), demo payment completes, and Guide Enter and Send both reply
+- Homepage slideshow: controls sit bottom-centre on desktop so they clear the floating Product Guide button; on phones the label shortens to "Concept image" and the controls move right so the two never overlap at 320 px
+- 3D tests: with the stage now below the slideshow, its 1.6 s intro starts when it scrolls into view, so the pause and no-WebGL checks first scroll the stage into view and let the intro finish
 - Shop photos: the automatic cut-outs kept "SALE" beside the two trimmers and clipped the rotary hammer's handle; fixed with three paint-out areas
 
 ## Outstanding issues (named explicitly)
@@ -151,3 +163,4 @@ Reviewed by screenshot at every tested viewport (see `deliverables/screenshots/`
 11. Lighthouse flags `dom-size` (~1,365 elements on the homepage, mostly inline SVG artwork). It's informational, and TBT stayed at 0 ms.
 12. **Card payments are not live** by design. The demo provider is the only one shipped; the live path is in `PAYMENTS.md` and depends on Universal Hardware's own merchant account.
 13. **Shop prices are past sale prices** from February 2026 graphics, read as Belize dollars; GST treatment is unknown.
+14. **Homepage slideshow images are concept images**, not photographs of a branch; they need replacing with real photography, or the company's sign-off, before launch.

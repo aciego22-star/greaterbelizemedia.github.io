@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Hero from '../hero/Hero.astro';
+import HeroCarousel from '../hero/HeroCarousel.astro';
 import Icon from '../components/Icon.astro';
 import DepartmentTile from '../components/DepartmentTile.astro';
 import BranchCard from '../components/BranchCard.astro';
@@ -27,6 +28,7 @@ const firstCat = (id: string) => {
   description="Independent concept demonstration by Austere Automations: explore Universal Hardware's publicly listed tools, equipment and brands, find the right product category and see branch details for Spanish Lookout and Belize City."
   section="home"
 >
+  <HeroCarousel />
   <Hero />
 
   <!-- 01 Departments -->

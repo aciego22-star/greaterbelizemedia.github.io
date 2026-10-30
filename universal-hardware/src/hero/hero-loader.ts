@@ -1,8 +1,10 @@
 /**
  * Progressive enhancement for the hero stage.
  *  1. HTML ships with a static render of the same 3D model (poster).
- *  2. After `load` + idle time, and only when WebGL2 is available, the Three.js
- *     scene is imported and cross-faded in over the poster.
+ *  2. Once the stage is at least a fifth on screen (it sits below the homepage
+ *     slideshow), after `load` + idle time or the first interaction, and only
+ *     when WebGL2 is available, the Three.js scene is imported and cross-faded
+ *     in over the poster.
  *  3. Save-Data users get an explicit "Load interactive 3D" button instead.
  *  4. Everything is disposed on page hide.
  */
@@ -107,6 +109,21 @@ if (stage) {
     window.setTimeout(() => (ric ? ric(go, { timeout: 1500 }) : go()), delay);
   };
 
+  // Hold everything until the visitor has scrolled a fair part of the stage into view.
+  const whenInView = (fn: () => void) => {
+    if (!('IntersectionObserver' in window)) return fn();
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.intersectionRatio >= 0.2)) {
+          io.disconnect();
+          fn();
+        }
+      },
+      { threshold: [0, 0.2] },
+    );
+    io.observe(stage);
+  };
+
   if (params.has('no3d') || !webgl2Supported()) {
     setState('fallback');
   } else {
@@ -117,9 +134,9 @@ if (stage) {
     } else if (capture) {
       void start();
     } else if (document.readyState === 'complete') {
-      schedule();
+      whenInView(schedule);
     } else {
-      window.addEventListener('load', schedule, { once: true });
+      window.addEventListener('load', () => whenInView(schedule), { once: true });
     }
   }
 

@@ -90,6 +90,9 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
     });
     // Force lazy images to load so every image URL on the page is verified.
     const broken = await page.evaluate(async () => {
+      // Slideshow images after the first carry their URLs in data-* until needed.
+      document.querySelectorAll('[data-srcset]').forEach((el) => el.setAttribute('srcset', el.dataset.srcset));
+      document.querySelectorAll('img[data-src]').forEach((el) => (el.src = el.dataset.src));
       const imgs = Array.from(document.images);
       imgs.forEach((i) => (i.loading = 'eager'));
       await Promise.all(imgs.map((i) => (i.complete ? null : new Promise((r) => { i.addEventListener('load', r, { once: true }); i.addEventListener('error', r, { once: true }); setTimeout(r, 5000); }))));
@@ -462,6 +465,54 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
     await ctx.close();
   }
 
+  /* ---------- 7c. Homepage slideshow above the 3D hero ---------- */
+  console.log('\n▶ Homepage slideshow');
+  for (const [vp, variant] of [[[1440, 900], 'desktop'], [[768, 1024], 'desktop'], [[390, 844], 'mobile']]) {
+    const { ctx, page } = await newPage(browser, vp);
+    await page.goto(BASE + '/', { waitUntil: 'load' });
+    const info = await page.evaluate(() => {
+      const reel = document.querySelector('[data-reel]').getBoundingClientRect();
+      const hero = document.querySelector('.hero').getBoundingClientRect();
+      const img = document.querySelector('[data-reel-slide].is-active img');
+      return { above: reel.bottom <= hero.top + 1, first: document.querySelector('main > *') === document.querySelector('[data-reel]'), src: img.currentSrc, h: Math.round(reel.height) };
+    });
+    record('reel', `${vp[0]}×${vp[1]}: slideshow opens the page, 3D drill hero directly below, ${variant} images`, info.above && info.first && info.src.includes(`-${variant}-`), JSON.stringify(info));
+    await ctx.close();
+  }
+  {
+    const { ctx, page } = await newPage(browser);
+    await page.goto(BASE + '/', { waitUntil: 'load' });
+    await page.waitForTimeout(1500);
+    const early = await page.evaluate(() => performance.getEntriesByType('resource').filter((r) => r.name.includes('/hero/slides/')).map((r) => r.name.split('/').pop()));
+    record('reel', 'only the first slideshow image loads with the page', early.length === 1 && early[0].startsWith('storefront-'), early.join(', '));
+    const t0 = Date.now();
+    await page.waitForFunction(() => document.querySelectorAll('[data-reel-slide]')[1].classList.contains('is-active'), null, { timeout: 12000 });
+    const dt = Date.now() - t0;
+    const hidden = await page.$$eval('[data-reel-slide]', (s) => s.map((x) => x.getAttribute('aria-hidden')));
+    record('reel', 'autoplay fades to the next slide after about 7 s; inactive slides are aria-hidden', dt > 3500 && dt < 8000 && hidden.join() === 'true,,true', `${dt} ms after load, aria-hidden ${hidden.join()}`);
+    await page.click('[data-reel-go="2"]');
+    await page.waitForTimeout(8200);
+    const after = await page.evaluate(() => ({ third: document.querySelectorAll('[data-reel-slide]')[2].classList.contains('is-active'), playing: document.querySelector('[data-reel]').classList.contains('is-playing') }));
+    const label = await page.getAttribute('[data-reel-toggle]', 'aria-label');
+    record('reel', 'choosing a slide stops autoplay (still on it 8 s later)', after.third && !after.playing && label === 'Play slideshow', JSON.stringify({ ...after, label }));
+    await page.click('[data-reel-toggle]');
+    const resumed = await page.evaluate(() => document.querySelector('[data-reel]').classList.contains('is-playing'));
+    await page.keyboard.press('ArrowRight');
+    const keyed = await page
+      .waitForFunction(() => document.querySelectorAll('[data-reel-slide]')[0].classList.contains('is-active'), null, { timeout: 3000 })
+      .then(() => true, () => false);
+    record('reel', 'Play resumes autoplay; arrow keys change slide', resumed && keyed);
+    await ctx.close();
+  }
+  {
+    const { ctx, page } = await newPage(browser, [1440, 900], { reducedMotion: 'reduce' });
+    await page.goto(BASE + '/', { waitUntil: 'load' });
+    await page.waitForTimeout(8000);
+    const st = await page.evaluate(() => ({ first: document.querySelectorAll('[data-reel-slide]')[0].classList.contains('is-active'), playing: document.querySelector('[data-reel]').classList.contains('is-playing') }));
+    record('reel', 'reduced motion: slideshow starts paused on the first image', st.first && !st.playing, JSON.stringify(st));
+    await ctx.close();
+  }
+
   /* ---------- 8. 3D hero: WebGL, fallback, motion ---------- */
   console.log('\n▶ 3D hero');
   {
@@ -470,8 +521,14 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
     const firstState = await page.evaluate(() => document.querySelector('[data-hero-stage]').dataset.state);
     const scriptsAtLoad = await page.evaluate(() => performance.getEntriesByType('resource').filter((r) => /drill-scene/.test(r.name)).length);
     record('3d', 'WebGL bundle not loaded before first paint (poster first)', firstState === 'poster' || firstState === 'loading', `state at load: ${firstState}, scene chunks at load: ${scriptsAtLoad}`);
+    await page.waitForTimeout(3000);
+    const offscreen = await page.evaluate(() => ({ state: document.querySelector('[data-hero-stage]').dataset.state, chunks: performance.getEntriesByType('resource').filter((r) => /drill-scene/.test(r.name)).length }));
+    record('3d', 'scene waits while the stage is below the slideshow (poster only)', offscreen.state === 'poster' && offscreen.chunks === 0, JSON.stringify(offscreen));
+    // The stage sits below the homepage slideshow; its 1.6 s intro plays once it is on screen.
+    await page.locator('[data-hero-stage]').scrollIntoViewIfNeeded();
     await page.waitForFunction(() => document.querySelector('[data-hero-stage]').dataset.state === 'ready', null, { timeout: 30000 });
-    record('3d', 'real-time scene initialises (state=ready)', true);
+    record('3d', 'real-time scene initialises (state=ready) once scrolled into view', true);
+    await page.waitForTimeout(2000);
     const a = await page.locator('.hero__canvas').screenshot();
     await page.waitForTimeout(1200);
     const b = await page.locator('.hero__canvas').screenshot();
@@ -499,6 +556,7 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
   {
     const { ctx, page } = await newPage(browser, [1440, 900], { reducedMotion: 'reduce' });
     await page.goto(BASE + '/', { waitUntil: 'load' });
+    await page.locator('[data-hero-stage]').scrollIntoViewIfNeeded();
     await page.waitForFunction(() => document.querySelector('[data-hero-stage]').dataset.state === 'ready', null, { timeout: 30000 });
     await page.evaluate(() => document.fonts.ready);
     await page.waitForTimeout(800);
@@ -525,7 +583,8 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
     const errs = [];
     page.on('pageerror', (e) => errs.push(e.message));
     await page.goto(BASE + '/', { waitUntil: 'load' });
-    await page.waitForTimeout(2500);
+    await page.locator('[data-hero-stage]').scrollIntoViewIfNeeded();
+    await page.waitForFunction(() => document.querySelector('[data-hero-stage]').dataset.state === 'fallback', null, { timeout: 10000 }).catch(() => {});
     const st = await page.evaluate(() => document.querySelector('[data-hero-stage]').dataset.state);
     const posterVisible = await page.evaluate(() => { const i = document.querySelector('.hero__poster img'); return i.complete && i.naturalWidth > 0 && getComputedStyle(document.querySelector('.hero__poster')).opacity === '1'; });
     const badge = await page.isVisible('.hero__badge-static');
