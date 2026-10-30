@@ -22,6 +22,7 @@ npm ci                 # install exact locked versions
 npm run build          # astro build + post-build safety checks
 npm run preview        # Netlify-like local server on http://localhost:4322
 npm run zip            # package dist/ as the Netlify drag-and-drop ZIP
+npm run release        # one build -> Netlify ZIP + private preview copy, always in step
 ```
 
 `npm run dev` starts the Astro dev server with hot reload.
@@ -68,9 +69,10 @@ Other scripts:
 For day-to-day review without using Netlify credits, the exact production build is also published as a **private** Claude artifact for the project owner only.
 
 ```bash
-npm run build
-npm run preview:artifact   # writes .preview/ (gitignored)
+npm run release            # build, then the Netlify ZIP and .preview/ (gitignored) from that same build
 ```
+
+Every preview publish ships with the ZIP from the same build, so the two always match.
 
 `scripts/make-preview.mjs` adapts plumbing only; design, scripts, 3D and content are unchanged:
 - the main page is emitted without its outer `<html>/<head>/<body>`, because the host supplies them

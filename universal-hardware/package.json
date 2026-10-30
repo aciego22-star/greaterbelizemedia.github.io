@@ -16,7 +16,8 @@
     "posters": "node scripts/render-poster.cjs",
     "screenshots": "node scripts/screenshots.cjs",
     "fonts": "bash scripts/build-fonts.sh",
-    "preview:artifact": "node scripts/make-preview.mjs"
+    "preview:artifact": "node scripts/make-preview.mjs",
+    "release": "npm run build && npm run zip && npm run preview:artifact"
   },
   "dependencies": {
     "@astrojs/preact": "6.1.1",
