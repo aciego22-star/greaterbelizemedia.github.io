@@ -11,7 +11,7 @@ import { BRANCHES, BRANCH_BY_ID, type BranchId } from '../data/branches';
 import { PRODUCT_BY_ID, formatPrice, productTitle } from '../data/shop';
 import { iconSvg, type IconName } from '../lib/icons';
 import { cartCount, cartTotal, clearCart, lineTotal, type CartLine } from '../lib/cart-store';
-import { getBranch } from '../lib/enquiry-store';
+import { getBranch } from '../lib/site-state';
 import { getPaymentProvider, newOrderReference } from '../lib/payments';
 import type { DemoOutcome, DemoProvider } from '../lib/payments/demo';
 import { CartEmpty, useCart } from './CartView';
@@ -117,14 +117,15 @@ export default function Checkout() {
         </span>
         <div>
           <h2 class="h2" id="confirm-title">
-            Payment approved <span class="muted">(demo)</span>
+            Payment approved <span class="muted">(simulated)</span>
           </h2>
           <p class="confirm__ref" style={{ marginTop: '10px' }}>
             Order {order.reference}
           </p>
         </div>
         <p class="lead">
-          Thanks, {order.name.trim()}. This was a demonstration: no card was charged and no order was sent to Universal Hardware.
+          Thanks, {order.name.trim()}. Card payments are still being set up, so this payment was simulated: no card was charged and the order
+          was not sent to the branch.
         </p>
         <div class="confirm__grid">
           <section class="confirm__panel" aria-labelledby="confirm-items">
@@ -140,26 +141,15 @@ export default function Checkout() {
             <p>{b.addressLines.join(', ')}</p>
             {b.hours.map((h) => (
               <p class="muted" key={h.days}>
-                {h.days}: {h.time} (as listed)
+                {h.days}: {h.time}
               </p>
             ))}
             <p class="muted">Bring your order reference.</p>
           </section>
         </div>
-        <section class="confirm__panel" aria-labelledby="confirm-live">
-          <h3 id="confirm-live">In the live shop</h3>
-          <ol class="confirm__steps">
-            <li>The card processor approves the payment, and the money is settled to Universal Hardware’s merchant bank account.</li>
-            <li>Universal Hardware receives the order, confirms stock and lets the customer know when it is ready to collect.</li>
-            <li>The customer gets an emailed receipt with the order reference.</li>
-          </ol>
-        </section>
         <div class="confirm__actions">
           <a class="btn" href="/shop/">
             Back to the Shop
-          </a>
-          <a class="btn btn--ghost" href="/concept/#shop">
-            How payments would work
           </a>
         </div>
       </div>
@@ -227,7 +217,7 @@ export default function Checkout() {
             </span>
           </legend>
           <p class="hint">
-            Demo: what you type stays on this page. It is not saved or sent.{' '}
+            What you type stays on this page; it is not saved or sent.{' '}
             <button type="button" class="link-btn" style={{ minHeight: 0, padding: 0 }} onClick={() => (setContact(SAMPLE), setErrors({}))}>
               Fill in sample details
             </button>
@@ -280,7 +270,7 @@ export default function Checkout() {
             <label class="choice">
               <input type="radio" name="branch" value="delivery" disabled />
               <span class="choice__title">Delivery</span>
-              <span class="choice__meta">Not offered in the concept. Universal Hardware would set delivery areas and charges.</span>
+              <span class="choice__meta">Not available online yet. Ask the branch about delivery.</span>
             </label>
           </div>
         </fieldset>
@@ -298,7 +288,7 @@ export default function Checkout() {
           <div class="pay-slot" ref={slot} />
           {!provider.live && (
             <div class="demo-outcome">
-              <span id="demo-outcome-label">Demo: simulate the processor’s answer</span>
+              <span id="demo-outcome-label">Simulated answer</span>
               <div class="seg" role="radiogroup" aria-labelledby="demo-outcome-label">
                 {(['approve', 'decline'] as DemoOutcome[]).map((o) => (
                   <label key={o}>
@@ -351,7 +341,7 @@ export default function Checkout() {
           )}
         </button>
         <p class="price-note" aria-live="polite">
-          {status === 'paying' ? 'Waiting for the simulated processor.' : 'Demo: no card is charged and no order is sent.'}
+          {status === 'paying' ? 'Waiting for the card processor.' : ''}
         </p>
         <a class="link-arrow" href="/cart/">
           <Icon name="arrow-left" size={16} /> Edit cart

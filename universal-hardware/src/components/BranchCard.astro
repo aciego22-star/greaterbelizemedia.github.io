@@ -27,13 +27,12 @@ const H = headingLevel;
     <div class="branch__block">
       <p class="branch__label"><Icon name="map-pin" size={16} /> Address</p>
       <address>{b.addressLines.map((l) => <span>{l}</span>)}</address>
-      {detailed && b.addressNote && <p class="branch__note">{b.addressNote}</p>}
       <a class="link-arrow branch__map" href={mapsUrl(b)} target="_blank" rel="noopener">
         Open in Google Maps <Icon name="external" size={14} />
       </a>
     </div>
     <div class="branch__block">
-      <p class="branch__label"><Icon name="clock" size={16} /> Listed hours</p>
+      <p class="branch__label"><Icon name="clock" size={16} /> Opening hours</p>
       <dl class="branch__hours">
         {
           b.hours.map((h) => (
@@ -43,10 +42,6 @@ const H = headingLevel;
             </div>
           ))
         }
-        <div>
-          <dt>Sunday &amp; public holidays</dt>
-          <dd class="muted">Not listed</dd>
-        </div>
       </dl>
       {detailed && <p class="branch__note">{HOLIDAY_NOTE}</p>}
     </div>

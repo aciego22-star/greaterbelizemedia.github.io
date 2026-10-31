@@ -1,7 +1,7 @@
 /**
- * LocalGuideEngine — "Product Guide (Interactive Concept)".
+ * LocalGuideEngine — the Product Guide.
  *
- * A deterministic, rule-based guide. It is NOT generative AI and says so.
+ * A deterministic, rule-based guide. It is NOT generative AI and says so when asked.
  * Knowledge is limited to Universal Hardware's public website as summarised
  * in this project's data files. It never claims stock, prices, quotes,
  * warranties or that staff were notified, and it performs no network I/O.
@@ -32,16 +32,16 @@ function branchText(id: BranchId, lang: Lang): string {
   const days = lang === 'es' ? hours.replace('Monday – Friday', 'Lunes a viernes').replace('Saturday', 'Sábado') : hours;
   return L(
     lang,
-    `**${b.name}${b.tag ? ' (main branch)' : ''}**: ${b.addressLines.join(', ')}.\nListed hours: ${days}.\nPhone ${b.phones[0].display} · Sales WhatsApp ${b.whatsapp[0].display} · Service Center WhatsApp ${b.whatsapp[1].display}.`,
-    `**${b.name}${b.tag ? ' (sucursal principal)' : ''}**: ${b.addressLines.join(', ')}.\nHorario publicado: ${days}.\nTeléfono ${b.phones[0].display} · WhatsApp de ventas ${b.whatsapp[0].display} · WhatsApp del centro de servicio ${b.whatsapp[1].display}.`,
+    `**${b.name}${b.tag ? ' (main branch)' : ''}**: ${b.addressLines.join(', ')}.\nHours: ${days}.\nPhone ${b.phones[0].display} · Sales WhatsApp ${b.whatsapp[0].display} · Service Center WhatsApp ${b.whatsapp[1].display}.`,
+    `**${b.name}${b.tag ? ' (sucursal principal)' : ''}**: ${b.addressLines.join(', ')}.\nHorario: ${days}.\nTeléfono ${b.phones[0].display} · WhatsApp de ventas ${b.whatsapp[0].display} · WhatsApp del centro de servicio ${b.whatsapp[1].display}.`,
   );
 }
 
 const VERIFY = (lang: Lang) =>
   L(
     lang,
-    "These details are listed on Universal Hardware's current website. Please confirm hours with the branch before visiting, especially around public holidays.",
-    'Estos datos aparecen en el sitio web actual de Universal Hardware. Confirme el horario con la sucursal antes de visitar, sobre todo en días feriados.',
+    "Hours can change around public holidays, so it's worth confirming by phone before you visit.",
+    'El horario puede cambiar en días feriados; conviene confirmarlo por teléfono antes de ir.',
   );
 
 const catLink = (slug: string, lang: Lang) => ({
@@ -49,12 +49,7 @@ const catLink = (slug: string, lang: Lang) => ({
   href: `/products/${slug}/`,
 });
 
-const addAction = (slug: string, context: string | undefined, lang: Lang) => ({
-  type: 'add-enquiry' as const,
-  slug,
-  context,
-  label: L(lang, `Add ${CATEGORY_BY_SLUG[slug].shortName} to Enquiry Summary`, `Agregar ${CATEGORY_BY_SLUG[slug].shortName} al resumen`),
-});
+const shopLink = (lang: Lang, hash = '') => ({ label: L(lang, 'Browse the Shop', 'Ver la Tienda'), href: `/shop/${hash}` });
 
 /* -------------------------------------------------------------------------- */
 /* Intent detection                                                            */
@@ -162,8 +157,8 @@ function generatorReply(t: string, s: GuideState, fresh: boolean): GuideReply {
     return {
       text: L(
         lang,
-        `Universal Hardware's website lists generators for a wide range of applications, from small portable units up to industrial use. Brands named include ${listBrands('generators').join(', ')}.\n\nI can't size a generator or confirm stock in this demo, but two questions will narrow down which type to ask the branch about:\n• Which appliances do you want to keep running? For example lights, fridge and fans, or air conditioning too?\n• Is it for occasional outages, or will it run regularly?`,
-        `El sitio web de Universal Hardware ofrece generadores para muchas aplicaciones, desde unidades portátiles hasta uso industrial. Marcas mencionadas: ${listBrands('generators').join(', ')}.\n\nEn esta demostración no puedo dimensionar un generador ni confirmar existencias, pero dos preguntas ayudan a saber qué tipo consultar en la sucursal:\n• ¿Qué aparatos quiere mantener funcionando? Por ejemplo luces, refrigeradora y abanicos, o también aire acondicionado.\n• ¿Es para apagones ocasionales o para uso regular?`,
+        `Universal Hardware offers generators for a wide range of applications, from small portable units up to industrial use, from brands including ${listBrands('generators').join(', ')}.\n\nI can't size a generator from here, but two questions will narrow down which type to ask the branch about:\n• Which appliances do you want to keep running? For example lights, fridge and fans, or air conditioning too?\n• Is it for occasional outages, or will it run regularly?`,
+        `Universal Hardware ofrece generadores para muchas aplicaciones, desde unidades portátiles hasta uso industrial, de marcas como ${listBrands('generators').join(', ')}.\n\nNo puedo dimensionar un generador desde aquí, pero dos preguntas ayudan a saber qué tipo consultar en la sucursal:\n• ¿Qué aparatos quiere mantener funcionando? Por ejemplo luces, refrigeradora y abanicos, o también aire acondicionado.\n• ¿Es para apagones ocasionales o para uso regular?`,
       ),
       chips: L(lang, 'Lights, fridge and fans|Most of the house, including AC|Occasional outages|Regular use', 'Luces, refrigeradora y abanicos|Casi toda la casa, con aire acondicionado|Apagones ocasionales|Uso regular').split('|'),
       links: [catLink('generators', lang)],
@@ -191,15 +186,13 @@ function generatorReply(t: string, s: GuideState, fresh: boolean): GuideReply {
   const freqEn = s.slots.freq === 'regular' ? 'regular use' : 'occasional outages';
   const freqEs = s.slots.freq === 'regular' ? 'uso regular' : 'apagones ocasionales';
   const bigger = s.slots.load === 'whole' || s.slots.load === 'business' || s.slots.freq === 'regular';
-  const ctx = `${en}; ${freqEn}`;
   s.topic = undefined;
   return {
     text: L(
       lang,
-      `For ${en} during ${freqEn}, here's how I'd frame it for the branch:\n\n• ${bigger ? 'This is at the larger end of home needs, so ask about larger or standby-type generators rather than small portable units.' : 'Portable or home-backup generators are the usual starting point for essentials.'}\n• Bring a list of what must run at the same time; that drives the size.\n• Ask about fuel type, running time, noise and where it can be placed safely.\n\n**A qualified electrician should evaluate the load and any connection to your home's wiring.** I can't give electrical sizing in this demo.\n\nWould you like me to add Generators to your Enquiry Summary, or show branch contact details?`,
-      `Para ${es} durante ${freqEs}, así lo plantearía en la sucursal:\n\n• ${bigger ? 'Es una necesidad grande para un hogar, así que pregunte por generadores de mayor capacidad o de respaldo, no solo portátiles pequeños.' : 'Los generadores portátiles o de respaldo doméstico son el punto de partida habitual para lo básico.'}\n• Lleve una lista de lo que debe funcionar al mismo tiempo; eso define la capacidad.\n• Pregunte por tipo de combustible, autonomía, ruido y dónde puede colocarse de forma segura.\n\n**Un electricista calificado debe evaluar la carga y cualquier conexión al cableado de su casa.** En esta demostración no puedo calcular capacidades eléctricas.\n\n¿Quiere que agregue Generadores a su resumen de consulta o que le muestre los contactos de las sucursales?`,
+      `For ${en} during ${freqEn}, here's how I'd frame it for the branch:\n\n• ${bigger ? 'This is at the larger end of home needs, so ask about larger or standby-type generators rather than small portable units.' : 'Portable or home-backup generators are the usual starting point for essentials.'}\n• Bring a list of what must run at the same time; that drives the size.\n• Ask about fuel type, running time, noise and where it can be placed safely.\n\n**A qualified electrician should evaluate the load and any connection to your home's wiring.** I can't give electrical sizing here.\n\nWould you like the branch contact details?`,
+      `Para ${es} durante ${freqEs}, así lo plantearía en la sucursal:\n\n• ${bigger ? 'Es una necesidad grande para un hogar, así que pregunte por generadores de mayor capacidad o de respaldo, no solo portátiles pequeños.' : 'Los generadores portátiles o de respaldo doméstico son el punto de partida habitual para lo básico.'}\n• Lleve una lista de lo que debe funcionar al mismo tiempo; eso define la capacidad.\n• Pregunte por tipo de combustible, autonomía, ruido y dónde puede colocarse de forma segura.\n\n**Un electricista calificado debe evaluar la carga y cualquier conexión al cableado de su casa.** No puedo calcular capacidades eléctricas desde aquí.\n\n¿Quiere los datos de contacto de las sucursales?`,
     ),
-    actions: [addAction('generators', ctx, lang), { type: 'open-enquiry', label: L(lang, 'Open Enquiry Summary', 'Abrir resumen') }],
     links: [catLink('generators', lang)],
     chips: L(lang, 'Show branch contacts|What about water pumps?', 'Ver contactos de sucursales|¿Y bombas de agua?').split('|'),
   };
@@ -223,8 +216,8 @@ function drillReply(t: string, s: GuideState, fresh: boolean): GuideReply {
     return {
       text: L(
         lang,
-        `${mixed ? 'Concrete and steel is a common combination to plan for. ' : ''}Universal Hardware's website lists hammer drills, speed drills and cordless tools in its Power Tools range, naming ${listBrands('power-tools').join(', ')}.\n\n• **Hammer drill:** adds a hammering action to the rotation, used with masonry bits for concrete and block.\n• **Standard drilling:** hammer action off, with metal bits, for steel.\n• **Impact driver:** a different tool, built for driving screws and bolts rather than drilling concrete.\n\nHammer drills commonly offer a standard drilling mode too, so one tool may cover both jobs. The branch can confirm which current models do.\n\nWhat will you drill most: solid concrete, concrete block or steel? And is it for occasional home jobs or daily trade work?`,
-        `${mixed ? 'Concreto y acero es una combinación común. ' : ''}El sitio web de Universal Hardware incluye rotomartillos (hammer drills), taladros y herramientas inalámbricas en su gama de herramientas eléctricas, con marcas como ${listBrands('power-tools').join(', ')}.\n\n• **Rotomartillo:** agrega percusión al giro; se usa con brocas para concreto y bloque.\n• **Taladrado normal:** sin percusión y con brocas para metal, para acero.\n• **Atornillador de impacto:** es otra herramienta, para tornillos y pernos, no para perforar concreto.\n\nMuchos rotomartillos también tienen modo de taladro normal, así que una sola herramienta puede servir para ambos trabajos. La sucursal puede confirmar qué modelos actuales lo hacen.\n\n¿Qué perforará más: concreto sólido, bloque o acero? ¿Es para trabajos ocasionales en casa o para trabajo diario?`,
+        `${mixed ? 'Concrete and steel is a common combination to plan for. ' : ''}Universal Hardware's Power Tools range includes hammer drills, speed drills and cordless tools from ${listBrands('power-tools').join(', ')}.\n\n• **Hammer drill:** adds a hammering action to the rotation, used with masonry bits for concrete and block.\n• **Standard drilling:** hammer action off, with metal bits, for steel.\n• **Impact driver:** a different tool, built for driving screws and bolts rather than drilling concrete.\n\nHammer drills commonly offer a standard drilling mode too, so one tool may cover both jobs. The branch can confirm which current models do.\n\nWhat will you drill most: solid concrete, concrete block or steel? And is it for occasional home jobs or daily trade work?`,
+        `${mixed ? 'Concreto y acero es una combinación común. ' : ''}La gama de herramientas eléctricas de Universal Hardware incluye rotomartillos, taladros y herramientas inalámbricas de ${listBrands('power-tools').join(', ')}.\n\n• **Rotomartillo:** agrega percusión al giro; se usa con brocas para concreto y bloque.\n• **Taladrado normal:** sin percusión y con brocas para metal, para acero.\n• **Atornillador de impacto:** es otra herramienta, para tornillos y pernos, no para perforar concreto.\n\nMuchos rotomartillos también tienen modo de taladro normal, así que una sola herramienta puede servir para ambos trabajos. La sucursal puede confirmar qué modelos actuales lo hacen.\n\n¿Qué perforará más: concreto sólido, bloque o acero? ¿Es para trabajos ocasionales en casa o para trabajo diario?`,
       ),
       chips: L(lang, 'Mostly concrete block|Mostly steel|Daily trade work|Occasional home use', 'Mayormente bloque|Mayormente acero|Trabajo diario|Uso ocasional en casa').split('|'),
       links: [catLink('power-tools', lang)],
@@ -239,16 +232,14 @@ function drillReply(t: string, s: GuideState, fresh: boolean): GuideReply {
   const material = s.slots.material ?? 'mixed';
   const focus =
     material === 'steel' ? 'Speed drills, Cordless tools' : material === 'wood' ? 'Speed drills, Cordless tools' : 'Hammer drills, Cordless tools';
-  const ctx = `Cordless drilling — ${material === 'mixed' ? 'concrete and steel' : material}; ${s.slots.use === 'trade' ? 'daily trade use' : 'occasional home use'}`;
   s.topic = undefined;
   return {
     text: L(
       lang,
-      `Here's what to ask the branch about: **${focus}** in the Power Tools range.\n\n• Mention the materials (${material === 'mixed' ? 'concrete and steel' : material}) and typical hole sizes.\n• Ask whether the tool and battery are sold together, and which battery platform it uses.\n• ${s.slots.use === 'trade' ? 'For daily trade work, ask about professional-grade lines, spare batteries and service support.' : 'For occasional use, ask which option gives the best balance for home projects.'}\n• Don't forget the right bits: masonry bits for concrete, metal bits for steel.\n\nShall I add Power Tools to your Enquiry Summary?`,
-      `Esto es lo que conviene consultar en la sucursal: **${focus}** en la gama de herramientas eléctricas.\n\n• Mencione los materiales (${material === 'mixed' ? 'concreto y acero' : material === 'steel' ? 'acero' : material === 'wood' ? 'madera' : 'concreto'}) y los diámetros habituales.\n• Pregunte si la herramienta incluye batería y qué plataforma de batería usa.\n• ${s.slots.use === 'trade' ? 'Para trabajo diario, pregunte por líneas profesionales, baterías de repuesto y servicio.' : 'Para uso ocasional, pregunte qué opción ofrece el mejor equilibrio para proyectos en casa.'}\n• No olvide las brocas adecuadas: para concreto y para metal.\n\n¿Agrego Herramientas eléctricas a su resumen de consulta?`,
+      `Here's what to ask the branch about: **${focus}** in the Power Tools range.\n\n• Mention the materials (${material === 'mixed' ? 'concrete and steel' : material}) and typical hole sizes.\n• Ask whether the tool and battery are sold together, and which battery platform it uses.\n• ${s.slots.use === 'trade' ? 'For daily trade work, ask about professional-grade lines, spare batteries and service support.' : 'For occasional use, ask which option gives the best balance for home projects.'}\n• Don't forget the right bits: masonry bits for concrete, metal bits for steel.\n\nThe Shop also has Makita drill kits with sale prices.`,
+      `Esto es lo que conviene consultar en la sucursal: **${focus}** en la gama de herramientas eléctricas.\n\n• Mencione los materiales (${material === 'mixed' ? 'concreto y acero' : material === 'steel' ? 'acero' : material === 'wood' ? 'madera' : 'concreto'}) y los diámetros habituales.\n• Pregunte si la herramienta incluye batería y qué plataforma de batería usa.\n• ${s.slots.use === 'trade' ? 'Para trabajo diario, pregunte por líneas profesionales, baterías de repuesto y servicio.' : 'Para uso ocasional, pregunte qué opción ofrece el mejor equilibrio para proyectos en casa.'}\n• No olvide las brocas adecuadas: para concreto y para metal.\n\nEn la Tienda también hay kits de taladro Makita con precios de oferta.`,
     ),
-    actions: [addAction('power-tools', ctx, lang)],
-    links: [catLink('power-tools', lang)],
+    links: [catLink('power-tools', lang), shopLink(lang, '#cordless')],
     chips: L(lang, 'Show branch contacts|Can you send me a quote?', 'Ver contactos de sucursales|¿Me pueden enviar una cotización?').split('|'),
   };
 }
@@ -266,8 +257,8 @@ function pumpReply(t: string, s: GuideState, fresh: boolean): GuideReply {
     return {
       text: L(
         lang,
-        "Happy to help narrow it down. Universal Hardware's website lists submersible, jet (pressure system), booster, pressure, sump, sprinkler and marine pumps, plus gas- and diesel-powered water pumps. The right type depends mostly on your water source:\n\n• Where does the water come from: a deep well, a shallow well or cistern, or a tank?\n• Roughly how deep is the water, and how high does it need to go (for example to a raised tank or upstairs)?\n• Is it for household pressure, irrigation, or both?",
-        'Con gusto le ayudo. El sitio web de Universal Hardware incluye bombas sumergibles, de chorro (sistemas de presión), de refuerzo, de presión, de sumidero, para riego y marinas, además de motobombas a gasolina y diésel. El tipo correcto depende sobre todo de la fuente de agua:\n\n• ¿De dónde viene el agua: un pozo profundo, un pozo poco profundo o cisterna, o un tanque?\n• ¿Qué tan profunda está el agua y a qué altura debe subir (por ejemplo a un tanque elevado o a un segundo piso)?\n• ¿Es para presión en la casa, para riego o ambos?',
+        "Happy to help narrow it down. Universal Hardware offers submersible, jet (pressure system), booster, pressure, sump, sprinkler and marine pumps, plus gas- and diesel-powered water pumps. The right type depends mostly on your water source:\n\n• Where does the water come from: a deep well, a shallow well or cistern, or a tank?\n• Roughly how deep is the water, and how high does it need to go (for example to a raised tank or upstairs)?\n• Is it for household pressure, irrigation, or both?",
+        'Con gusto le ayudo. Universal Hardware ofrece bombas sumergibles, de chorro (sistemas de presión), de refuerzo, de presión, de sumidero, para riego y marinas, además de motobombas a gasolina y diésel. El tipo correcto depende sobre todo de la fuente de agua:\n\n• ¿De dónde viene el agua: un pozo profundo, un pozo poco profundo o cisterna, o un tanque?\n• ¿Qué tan profunda está el agua y a qué altura debe subir (por ejemplo a un tanque elevado o a un segundo piso)?\n• ¿Es para presión en la casa, para riego o ambos?',
       ),
       chips: L(lang, 'Deep well|Shallow well or cistern|From a tank|Low pressure in the house', 'Pozo profundo|Pozo poco profundo o cisterna|Desde un tanque|Poca presión en la casa').split('|'),
       links: [catLink('water-pumps', lang)],
@@ -287,15 +278,13 @@ function pumpReply(t: string, s: GuideState, fresh: boolean): GuideReply {
   };
   const m = map[s.slots.source];
   const engine = s.slots.power === 'engine';
-  const ctx = `Home water supply — ${s.slots.source} source${s.slots.use ? `; ${s.slots.use}` : ''}`;
   s.topic = undefined;
   return {
     text: L(
       lang,
-      `${m.en}${engine ? ' Without power at the pump, gas- or diesel-powered water pumps are also listed.' : ''}\n\nWhen you contact the branch, have ready:\n• The depth to the water and the height or distance to where it's needed.\n• How many taps or fixtures, or the area to irrigate.\n• Pipe sizes or photos of any existing setup.\n\nA pump professional or the branch should confirm the exact pump for your depth and flow. Want me to add Water Pumps to your Enquiry Summary?`,
-      `${m.es}${engine ? ' Si no hay electricidad en la bomba, también se ofrecen motobombas a gasolina o diésel.' : ''}\n\nCuando contacte a la sucursal, tenga a mano:\n• La profundidad del agua y la altura o distancia hasta donde se necesita.\n• Cuántos grifos o puntos de agua, o el área a regar.\n• Medidas de tubería o fotos de la instalación actual.\n\nUn técnico en bombas o la sucursal debe confirmar la bomba exacta según profundidad y caudal. ¿Agrego Bombas de agua a su resumen de consulta?`,
+      `${m.en}${engine ? ' Without power at the pump, gas- or diesel-powered water pumps are also offered.' : ''}\n\nWhen you contact the branch, have ready:\n• The depth to the water and the height or distance to where it's needed.\n• How many taps or fixtures, or the area to irrigate.\n• Pipe sizes or photos of any existing setup.\n\nA pump professional or the branch should confirm the exact pump for your depth and flow.`,
+      `${m.es}${engine ? ' Si no hay electricidad en la bomba, también se ofrecen motobombas a gasolina o diésel.' : ''}\n\nCuando contacte a la sucursal, tenga a mano:\n• La profundidad del agua y la altura o distancia hasta donde se necesita.\n• Cuántos grifos o puntos de agua, o el área a regar.\n• Medidas de tubería o fotos de la instalación actual.\n\nUn técnico en bombas o la sucursal debe confirmar la bomba exacta según profundidad y caudal.`,
     ),
-    actions: [addAction('water-pumps', ctx, lang)],
     links: [catLink('water-pumps', lang)],
     chips: L(lang, 'Show branch contacts|What about a generator?', 'Ver contactos de sucursales|¿Y un generador?').split('|'),
   };
@@ -313,18 +302,18 @@ function motorcycleReply(t: string, s: GuideState, fresh: boolean): GuideReply {
     return {
       text: L(
         lang,
-        "Universal Hardware's website has a Meilun & Lifan page covering scooters and cub bikes, street, trail and cargo motorcycles, and it publishes Meilun parts catalogues. There's also a Hisun page listing UTVs and ATVs.\n\nThe model lists and prices on those pages look older, so I can't say which models are available now. The branch can.\n\nWhat kind of riding is it for: town commuting, rough roads and trails, or carrying cargo? And which branch is closer for you?",
-        'El sitio web de Universal Hardware tiene una página de Meilun y Lifan con scooters, motos de calle, de montaña y de carga, y publica catálogos de repuestos Meilun. También hay una página de Hisun con UTV y cuatrimotos.\n\nLos modelos y precios de esas páginas parecen antiguos, así que no puedo decir qué modelos hay disponibles ahora. La sucursal sí puede.\n\n¿Para qué tipo de uso es: ciudad, caminos de tierra y montaña, o carga? ¿Y qué sucursal le queda más cerca?',
+        "Universal Hardware sells Meilun and Lifan scooters, cub bikes and street, trail and cargo motorcycles, with Meilun parts catalogues for parts orders, plus Hisun UTVs and ATVs. Sale models and prices are in the Shop, and the branch can tell you which models are in stock now.\n\nWhat kind of riding is it for: town commuting, rough roads and trails, or carrying cargo? And which branch is closer for you?",
+        'Universal Hardware vende scooters y motos Meilun y Lifan de calle, montaña y carga, con catálogos de repuestos Meilun, además de UTV y cuatrimotos Hisun. En la Tienda hay modelos con precios de oferta, y la sucursal puede decirle qué modelos hay disponibles ahora.\n\n¿Para qué tipo de uso es: ciudad, caminos de tierra y montaña, o carga? ¿Y qué sucursal le queda más cerca?',
       ),
       chips: L(lang, 'Town commuting|Trails and rough roads|Carrying cargo|Spanish Lookout|Belize City', 'Ciudad|Caminos y montaña|Carga|Spanish Lookout|Belize City').split('|'),
-      links: [catLink('motorcycles', lang)],
+      links: [catLink('motorcycles', lang), shopLink(lang, '#motorcycles')],
     };
   }
   const rideFocus: Record<string, [string, string]> = {
     street: ['scooters, cub bikes and street motorcycles', 'scooters y motos de calle'],
     trail: ['trail motorcycles', 'motos de montaña (trail)'],
     cargo: ['cargo motorcycles', 'motos de carga'],
-    utv: ['UTVs and ATVs (Hisun page) and trail motorcycles', 'UTV y cuatrimotos (página Hisun) y motos de montaña'],
+    utv: ['Hisun UTVs and ATVs, and trail motorcycles', 'UTV y cuatrimotos Hisun, y motos de montaña'],
   };
   if (!s.slots.ride) {
     return {
@@ -342,8 +331,7 @@ function motorcycleReply(t: string, s: GuideState, fresh: boolean): GuideReply {
       `Para eso, consulte en la sucursal por **${es}**. Pregunte qué modelos hay disponibles ahora, el precio actual y el soporte de repuestos y servicio para el modelo que elija.${b ? `\n\nMencionó ${BRANCH_BY_ID[b].name}. Sus datos están abajo.` : '\n\n¿Quiere los datos de contacto de Spanish Lookout o de Belize City?'}`,
     ),
     branches: b ? [b] : undefined,
-    actions: [addAction('motorcycles', `Motorcycles — ${en}`, lang)],
-    links: [catLink('motorcycles', lang), { label: L(lang, 'Meilun parts catalogues (official site)', 'Catálogos de repuestos Meilun (sitio oficial)'), href: 'https://universalhardware.bz/catalogues.html', external: true }],
+    links: [catLink('motorcycles', lang), shopLink(lang, '#motorcycles'), { label: L(lang, 'Meilun parts catalogues', 'Catálogos de repuestos Meilun'), href: 'https://universalhardware.bz/catalogues.html', external: true }],
     chips: b ? undefined : ['Spanish Lookout', 'Belize City'],
   };
 }
@@ -357,11 +345,10 @@ function categoryReply(slug: string, lang: Lang, t: string): GuideReply {
   return {
     text: L(
       lang,
-      `Universal Hardware's website lists **${c.name}**${matched.length ? ', including' : ', such as'} ${shown.join(', ')}.${brands.length ? ` Brands named for this category: ${brands.join(', ')}.` : ''}\n\nI can't confirm current stock or prices, but I can help you prepare for the branch. To start: ${q.charAt(0).toLowerCase() + q.slice(1).replace(/\.$/, '')}?`,
-      `El sitio web de Universal Hardware incluye **${c.name}**, por ejemplo: ${shown.join(', ')}.${brands.length ? ` Marcas mencionadas: ${brands.join(', ')}.` : ''}\n\nNo puedo confirmar existencias ni precios, pero puedo ayudarle a preparar su consulta para la sucursal. Para empezar, cuénteme un poco más sobre el trabajo o el uso que tiene en mente.`,
+      `Universal Hardware offers **${c.name}**${matched.length ? ', including' : ', such as'} ${shown.join(', ')}.${brands.length ? ` Brands: ${brands.join(', ')}.` : ''}\n\nI can help you prepare for the branch. To start: ${q.charAt(0).toLowerCase() + q.slice(1).replace(/\.$/, '')}?`,
+      `Universal Hardware ofrece **${c.name}**, por ejemplo: ${shown.join(', ')}.${brands.length ? ` Marcas: ${brands.join(', ')}.` : ''}\n\nPuedo ayudarle a preparar su consulta para la sucursal. Para empezar, cuénteme un poco más sobre el trabajo o el uso que tiene en mente.`,
     ),
     links: [catLink(slug, lang)],
-    actions: [addAction(slug, undefined, lang)],
     chips: L(lang, 'Show branch contacts|Can you send me a quote?', 'Ver contactos de sucursales|¿Me pueden enviar una cotización?').split('|'),
   };
 }
@@ -389,8 +376,8 @@ const SUGGESTIONS_ES = [
 
 export const LocalGuideEngine: GuideEngine = {
   id: 'local-rules',
-  label: 'Product Guide · Interactive Concept',
-  description: 'Rule-based guide using public website information. Not live AI.',
+  label: 'Product Guide',
+  description: 'Rule-based product guide. Not live AI.',
   initialState(lang) {
     return { slots: {}, lang, turns: 0 };
   },
@@ -398,13 +385,13 @@ export const LocalGuideEngine: GuideEngine = {
     return {
       text: L(
         s.lang,
-        "Hi, I'm the Product Guide for this concept. I can help you find the right product category, prepare questions for a branch and build an enquiry summary, using information from Universal Hardware's public website.\n\nI'm rule-based, not live AI, and I can't check stock, prices or send anything to the store. What are you working on?",
-        'Hola, soy la Guía de Productos de este concepto. Puedo ayudarle a encontrar la categoría adecuada, preparar preguntas para la sucursal y armar un resumen de consulta, con información del sitio web público de Universal Hardware.\n\nFunciono con reglas, no soy IA en vivo, y no puedo revisar existencias, precios ni enviar nada a la tienda. ¿En qué está trabajando?',
+        "Hi, I'm the Product Guide. I can help you find the right products, prepare questions for a branch and reach the right team for sales or service.\n\nWhat are you working on?",
+        'Hola, soy la Guía de Productos. Puedo ayudarle a encontrar los productos adecuados, preparar preguntas para la sucursal y contactar al equipo correcto de ventas o servicio.\n\n¿En qué está trabajando?',
       ),
       chips: s.lang === 'es' ? SUGGESTIONS_ES : SUGGESTIONS_EN,
     };
   },
-  reply(input, prev, ctx) {
+  reply(input, prev) {
     const s: GuideState = { ...prev, slots: { ...prev.slots }, turns: prev.turns + 1 };
     const t = norm(input);
     const d = detect(t);
@@ -436,7 +423,7 @@ export const LocalGuideEngine: GuideEngine = {
         s.lang = 'es';
         return {
           reply: {
-            text: 'Claro, continuamos en español. Tenga en cuenta que esta es una demostración independiente: no implica que Universal Hardware ofrezca atención formal en español. ¿En qué le puedo ayudar?',
+            text: 'Claro, continuamos en español. ¿En qué le puedo ayudar?',
             chips: SUGGESTIONS_ES,
           },
           state: s,
@@ -449,41 +436,35 @@ export const LocalGuideEngine: GuideEngine = {
           reply: {
             text: L(
               lang,
-              "I'm the Product Guide in an independent website concept by Austere Automations, not Universal Hardware's official customer service. I'm a rule-based assistant: I match your questions to the categories and branch details published on Universal Hardware's website. I'm not connected to a live AI model, and nothing you type leaves this page.\n\nIn a production version, an approved AI Employee could take this role, with company-verified knowledge and hand-off to real staff.",
-              'Soy la Guía de Productos de un concepto de sitio web independiente de Austere Automations, no el servicio al cliente oficial de Universal Hardware. Funciono con reglas: relaciono sus preguntas con las categorías y datos de sucursales publicados en el sitio de Universal Hardware. No estoy conectada a un modelo de IA en vivo y nada de lo que escribe sale de esta página.\n\nEn una versión de producción, un Empleado de IA aprobado podría cumplir esta función, con información verificada por la empresa y traspaso a personal real.',
+              "I'm the Product Guide, a rule-based assistant. I match your questions to the products, branches and services on this site. I'm not a live AI model or a person, and nothing you type leaves this page, so for quotes, orders or stock the branch team is the right contact.",
+              'Soy la Guía de Productos, un asistente basado en reglas. Relaciono sus preguntas con los productos, sucursales y servicios de este sitio. No soy un modelo de IA en vivo ni una persona, y nada de lo que escribe sale de esta página; para cotizaciones, pedidos o existencias, lo mejor es el equipo de la sucursal.',
             ),
-            links: [{ label: L(lang, 'About this concept', 'Sobre este concepto'), href: '/concept/' }],
           },
           state: s,
         };
       case 'quote':
       case 'stock': {
         const cat = d.category;
+        const sl = BRANCH_BY_ID['spanish-lookout'].whatsapp[0].display;
+        const bc = BRANCH_BY_ID['belize-city'].whatsapp[0].display;
         const text = L(
           lang,
-          `${d.intent === 'stock' ? "I can't check stock: this concept has no live inventory connection" : "I can't send quotes or get current prices: this is an independent concept demonstration"}, and it can't send requests to Universal Hardware.${d.intent === 'quote' ? ' The concept **Shop** shows the prices printed in the February 2026 sale graphics for some tools and motorcycles; that sale has ended.' : ''}\n\nWhat I can do is build an **Enquiry Summary** you can copy and send to the branch yourself.${ctx.enquiryCount ? ` Your summary currently lists ${ctx.enquiryCount} ${ctx.enquiryCount === 1 ? 'category' : 'categories'}.` : ''}\n\nSales WhatsApp lines listed on the website: Spanish Lookout ${BRANCH_BY_ID['spanish-lookout'].whatsapp[0].display} · Belize City ${BRANCH_BY_ID['belize-city'].whatsapp[0].display}.`,
-          `${d.intent === 'stock' ? 'No puedo revisar existencias: este concepto no tiene conexión a inventario en vivo' : 'No puedo enviar cotizaciones ni obtener precios actuales: esta es una demostración independiente'}, y no puede enviar solicitudes a Universal Hardware.${d.intent === 'quote' ? ' La **Tienda** del concepto muestra los precios de los anuncios de oferta de febrero de 2026 para algunas herramientas y motos; esa oferta ya terminó.' : ''}\n\nLo que sí puedo hacer es armar un **resumen de consulta** que usted puede copiar y enviar a la sucursal.${ctx.enquiryCount ? ` Su resumen tiene ${ctx.enquiryCount} ${ctx.enquiryCount === 1 ? 'categoría' : 'categorías'}.` : ''}\n\nWhatsApp de ventas publicados en el sitio: Spanish Lookout ${BRANCH_BY_ID['spanish-lookout'].whatsapp[0].display} · Belize City ${BRANCH_BY_ID['belize-city'].whatsapp[0].display}.`,
+          `${d.intent === 'stock' ? "I can't check live stock from here" : "I can't send quotes or get current prices from here"}. The branch sales team can, and WhatsApp is usually fastest: Spanish Lookout ${sl} · Belize City ${bc}. Tell them the item, the quantity and what it's for.${d.intent === 'quote' ? '\n\nThe **Shop** also shows February 2026 sale prices for some tools and motorcycles; that sale has ended.' : ''}`,
+          `${d.intent === 'stock' ? 'No puedo revisar existencias desde aquí' : 'No puedo enviar cotizaciones ni obtener precios actuales desde aquí'}. El equipo de ventas de la sucursal sí puede, y por WhatsApp suele ser más rápido: Spanish Lookout ${sl} · Ciudad de Belice ${bc}. Indique el artículo, la cantidad y para qué lo necesita.${d.intent === 'quote' ? '\n\nLa **Tienda** también muestra precios de oferta de febrero de 2026 para algunas herramientas y motos; esa oferta ya terminó.' : ''}`,
         );
-        const actions: GuideReply['actions'] = [];
-        if (cat) actions.push(addAction(cat, undefined, lang));
-        actions.push({ type: 'open-enquiry', label: L(lang, 'Open Enquiry Summary', 'Abrir resumen') });
-        if (ctx.enquiryCount) actions.push({ type: 'copy-summary', label: L(lang, 'Copy summary', 'Copiar resumen') });
         const links = cat ? [catLink(cat, lang)] : [];
-        if (d.intent === 'quote') links.push({ label: L(lang, 'Go to the Shop', 'Ir a la Tienda'), href: '/shop/' });
-        return { reply: { text, actions, branches: d.branch ? [d.branch] : undefined, links: links.length ? links : undefined }, state: s };
+        if (d.intent === 'quote') links.push(shopLink(lang));
+        return { reply: { text, branches: d.branch ? [d.branch] : undefined, links: links.length ? links : undefined }, state: s };
       }
       case 'shop':
         return {
           reply: {
             text: L(
               lang,
-              "This concept has a **Shop**: Makita tools and Lifan and Meilun motorcycles from Universal Hardware's February 2026 sale graphics, with a cart and a checkout where you collect at a branch.\n\nCard payment there runs in demo mode: no card details are collected, nothing is charged and no order reaches Universal Hardware. A live version would use Universal Hardware's own card processor.",
-              'Este concepto tiene una **Tienda**: herramientas Makita y motos Lifan y Meilun de los anuncios de oferta de febrero de 2026 de Universal Hardware, con carrito y pago para recoger en la sucursal.\n\nEl pago con tarjeta funciona en modo demostración: no se piden datos de tarjeta, no se cobra nada y ningún pedido llega a Universal Hardware. Una versión real usaría el procesador de tarjetas de la propia empresa.',
+              "The **Shop** has Makita tools and Lifan and Meilun motorcycles from Universal Hardware's February 2026 sale, with a cart and a checkout for collection at either branch. Checkout takes credit and debit cards; for now the card step is simulated, so nothing is charged.",
+              'La **Tienda** tiene herramientas Makita y motos Lifan y Meilun de la oferta de febrero de 2026 de Universal Hardware, con carrito y pago para recoger en cualquiera de las dos sucursales. El pago acepta tarjetas de crédito y débito; por ahora el paso de la tarjeta es simulado, así que no se cobra nada.',
             ),
-            links: [
-              { label: L(lang, 'Go to the Shop', 'Ir a la Tienda'), href: '/shop/' },
-              { label: L(lang, 'How payments would work', 'Cómo funcionarían los pagos'), href: '/concept/#shop' },
-            ],
+            links: [shopLink(lang)],
           },
           state: s,
         };
@@ -492,8 +473,8 @@ export const LocalGuideEngine: GuideEngine = {
           reply: {
             text: L(
               lang,
-              "I don't have warranty, returns, delivery or financing information. Those terms aren't part of the public website content this demo uses, so the branch is the right place to ask. Would you like their contact details?",
-              'No tengo información sobre garantías, devoluciones, entregas ni financiamiento; esos términos no forman parte del contenido público que usa esta demostración. Lo mejor es consultarlo en la sucursal. ¿Quiere sus datos de contacto?',
+              "I don't have warranty, returns, delivery or financing details here, so the branch is the right place to ask. Would you like their contact details?",
+              'No tengo aquí información sobre garantías, devoluciones, entregas ni financiamiento; lo mejor es consultarlo en la sucursal. ¿Quiere sus datos de contacto?',
             ),
             chips: ['Spanish Lookout', 'Belize City'],
           },
@@ -505,8 +486,8 @@ export const LocalGuideEngine: GuideEngine = {
           reply: {
             text: L(
               lang,
-              `I can't tell whether a branch is open right now. Here are the hours listed on the website:\n\n${ids.map((i) => branchText(i, lang)).join('\n\n')}\n\nThe website also says the company is closed on Belize public and bank holidays. ${VERIFY(lang)}`,
-              `No puedo saber si una sucursal está abierta en este momento. Este es el horario publicado en el sitio web:\n\n${ids.map((i) => branchText(i, lang)).join('\n\n')}\n\nEl sitio también indica que la empresa cierra en los feriados públicos y bancarios de Belice. ${VERIFY(lang)}`,
+              `I can't tell whether a branch is open right now. Here are the opening hours:\n\n${ids.map((i) => branchText(i, lang)).join('\n\n')}\n\nBoth branches are closed on Belize public and bank holidays. ${VERIFY(lang)}`,
+              `No puedo saber si una sucursal está abierta en este momento. Este es el horario de atención:\n\n${ids.map((i) => branchText(i, lang)).join('\n\n')}\n\nAmbas sucursales cierran en los feriados públicos y bancarios de Belice. ${VERIFY(lang)}`,
             ),
             branches: ids,
           },
@@ -519,8 +500,8 @@ export const LocalGuideEngine: GuideEngine = {
           reply: {
             text: L(
               lang,
-              `${d.branch ? `Universal Hardware's website lists the ${BRANCH_BY_ID[d.branch].name} branch here:` : 'Universal Hardware lists two branches on its website:'}\n\n${ids.map((i) => branchText(i, lang)).join('\n\n')}\n\n${VERIFY(lang)} (I'm part of an independent concept demo, not the store itself.)\n\nIs there a product you're planning to ask them about? I can help you prepare an enquiry summary.`,
-              `${d.branch ? `El sitio web de Universal Hardware indica la sucursal de ${BRANCH_BY_ID[d.branch].name} así:` : 'Universal Hardware publica dos sucursales en su sitio web:'}\n\n${ids.map((i) => branchText(i, lang)).join('\n\n')}\n\n${VERIFY(lang)} (Soy parte de una demostración independiente, no la tienda.)\n\n¿Hay algún producto que piense consultar? Puedo ayudarle a preparar un resumen.`,
+              `${d.branch ? `Here are the ${BRANCH_BY_ID[d.branch].name} branch details:` : 'Universal Hardware has two branches:'}\n\n${ids.map((i) => branchText(i, lang)).join('\n\n')}\n\n${VERIFY(lang)}\n\nIs there a product you're planning to ask them about? I can help you prepare.`,
+              `${d.branch ? `Estos son los datos de la sucursal de ${BRANCH_BY_ID[d.branch].name}:` : 'Universal Hardware tiene dos sucursales:'}\n\n${ids.map((i) => branchText(i, lang)).join('\n\n')}\n\n${VERIFY(lang)}\n\n¿Hay algún producto que piense consultar? Puedo ayudarle a prepararse.`,
             ),
             branches: ids,
             links: [{ label: L(lang, 'All branch details', 'Todos los datos de sucursales'), href: '/locations/' }],
@@ -533,12 +514,12 @@ export const LocalGuideEngine: GuideEngine = {
           reply: {
             text: L(
               lang,
-              "The website lists a Service Center WhatsApp line at each branch: Spanish Lookout +501 668-0311 and Belize City +501 652-9330. It also publishes Meilun parts catalogues for parts orders.\n\nService coverage depends on the brand and product, so it's worth confirming with the Service Center. What is the item, and which branch is closer for you?",
-              'El sitio web publica una línea de WhatsApp del centro de servicio en cada sucursal: Spanish Lookout +501 668-0311 y Belize City +501 652-9330. También publica catálogos de repuestos Meilun.\n\nLa cobertura de servicio depende de la marca y el producto, así que conviene confirmarlo con el centro de servicio. ¿Qué artículo es y qué sucursal le queda más cerca?',
+              "Each branch has a Service Center WhatsApp line: Spanish Lookout +501 668-0311 and Belize City +501 652-9330. Meilun parts catalogues are available for parts orders.\n\nService coverage depends on the brand and product, so it's worth confirming with the Service Center. What is the item, and which branch is closer for you?",
+              'Cada sucursal tiene una línea de WhatsApp del centro de servicio: Spanish Lookout +501 668-0311 y Ciudad de Belice +501 652-9330. Hay catálogos de repuestos Meilun para pedidos de repuestos.\n\nLa cobertura de servicio depende de la marca y el producto, así que conviene confirmarlo con el centro de servicio. ¿Qué artículo es y qué sucursal le queda más cerca?',
             ),
             links: [
               { label: L(lang, 'Service contacts', 'Contactos de servicio'), href: '/locations/#service' },
-              { label: L(lang, 'Meilun parts catalogues (official site)', 'Catálogos Meilun (sitio oficial)'), href: 'https://universalhardware.bz/catalogues.html', external: true },
+              { label: L(lang, 'Meilun parts catalogues', 'Catálogos de repuestos Meilun'), href: 'https://universalhardware.bz/catalogues.html', external: true },
             ],
             chips: ['Spanish Lookout', 'Belize City'],
           },
@@ -551,8 +532,7 @@ export const LocalGuideEngine: GuideEngine = {
       case 'thanks':
         return {
           reply: {
-            text: L(lang, "You're welcome. Anything else you'd like to find? You can also open your Enquiry Summary to copy everything you've gathered.", 'Con gusto. ¿Algo más que quiera encontrar? También puede abrir su resumen de consulta para copiar todo lo que ha reunido.'),
-            actions: [{ type: 'open-enquiry', label: L(lang, 'Open Enquiry Summary', 'Abrir resumen') }],
+            text: L(lang, "You're welcome. Anything else you'd like to find?", 'Con gusto. ¿Algo más que quiera encontrar?'),
           },
           state: s,
         };
@@ -562,8 +542,8 @@ export const LocalGuideEngine: GuideEngine = {
           reply: {
             text: L(
               lang,
-              `I'm not sure I followed that. I'm a simple rule-based guide, so short descriptions work best: the job, the product type or a branch name.\n\nThe website's categories include ${sample} and more. You can also try the search on the Products page.`,
-              `No estoy segura de haber entendido. Soy una guía sencilla basada en reglas; funcionan mejor las descripciones cortas: el trabajo, el tipo de producto o el nombre de una sucursal.\n\nLas categorías del sitio incluyen ${sample} y más. También puede usar el buscador en la página de Productos.`,
+              `I'm not sure I followed that. I'm a simple rule-based guide, so short descriptions work best: the job, the product type or a branch name.\n\nCategories include ${sample} and more. You can also try the search on the Products page.`,
+              `No estoy segura de haber entendido. Soy una guía sencilla basada en reglas; funcionan mejor las descripciones cortas: el trabajo, el tipo de producto o el nombre de una sucursal.\n\nLas categorías incluyen ${sample} y más. También puede usar el buscador en la página de Productos.`,
             ),
             links: [{ label: L(lang, 'Search products', 'Buscar productos'), href: '/products/' }],
             chips: (lang === 'es' ? SUGGESTIONS_ES : SUGGESTIONS_EN).slice(0, 4),

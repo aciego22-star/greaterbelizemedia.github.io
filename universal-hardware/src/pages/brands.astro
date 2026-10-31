@@ -4,7 +4,6 @@ import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
 import { BRANDS } from '../data/brands';
 import { CATEGORY_BY_SLUG, CATEGORIES } from '../data/categories';
-import { SOURCES, SOURCE_VIEWED } from '../data/sources';
 import { BRAND_LOGOS } from '../data/site-images';
 
 const onPage = BRANDS.filter((b) => b.onBrandsPage);
@@ -13,20 +12,15 @@ const usedCats = CATEGORIES.filter((c) => BRANDS.some((b) => b.categories.some((
 ---
 <Base
   title="Brands"
-  description="Brand names that appear on Universal Hardware's public website, with the exact page and category each mention comes from."
+  description="The brands at Universal Hardware: Makita, Lincoln Electric, ECHO/Shindaiwa, Cub Cadet, Meilun, Lifan, Briggs & Stratton, Westinghouse and more."
   section="brands"
 >
   <PageHero
     eyebrow="Brand ecosystem"
-    title="Brands on the current website."
-    lead="Every brand Universal Hardware's website names, shown with exactly where it's mentioned. Logos appear as the company displays them on its own pages; relationships would be confirmed with the company."
+    title="The brands behind the range."
+    lead="Tools, equipment and appliances from names you know. Filter by category, or ask a branch about a specific line."
     crumbs={[{ label: 'Brands' }]}
-  >
-    <p class="notice brands-notice">
-      <Icon name="info" />
-      <span>A mention on the website doesn't confirm current stock, a current distribution agreement or exclusivity. Ask the branch about any specific line.</span>
-    </p>
-  </PageHero>
+  />
 
   <section class="section section--tight">
     <div class="container">
@@ -42,7 +36,7 @@ const usedCats = CATEGORIES.filter((c) => BRANDS.some((b) => b.categories.some((
       </div>
       <p class="brand-filter__status" aria-live="polite" data-brand-status>Showing all {BRANDS.length} brands.</p>
 
-      <h2 class="h3 brand-group__title">On the Brands page <span class="muted">· {onPage.length}</span></h2>
+      <h2 class="h3 brand-group__title">Featured brands <span class="muted">· {onPage.length}</span></h2>
       <ul class="brand-grid" data-brand-list>
         {
           onPage.map((b) => (
@@ -51,37 +45,27 @@ const usedCats = CATEGORIES.filter((c) => BRANDS.some((b) => b.categories.some((
                 {BRAND_LOGOS[b.id] ? (
                   <img src={`/${BRAND_LOGOS[b.id].src}`} width={BRAND_LOGOS[b.id].width} height={BRAND_LOGOS[b.id].height} alt="" loading="lazy" decoding="async" />
                 ) : (
-                  <span class="brand-card__nologo mono">No logo on the website</span>
+                  <span class="brand-card__nologo" aria-hidden="true"><Icon name="tag" size={22} /></span>
                 )}
               </div>
               <h3 class="brand-card__name">{b.name}</h3>
               {b.alsoWritten && <p class="brand-card__aka">Also written: {b.alsoWritten.join(', ')}</p>}
               <p class="brand-card__focus">{b.focus}</p>
-              <p class="brand-card__rel"><Icon name="check" size={16} /> {b.relationship}</p>
               {b.categories.length > 0 && (
                 <ul class="brand-card__cats">
                   {b.categories.map((l) => (
                     <li>
                       <a href={`/products/${l.slug}/`}>{CATEGORY_BY_SLUG[l.slug].name}</a>
-                      <span class="brand-card__basis">{l.basis === 'listing' ? 'listed' : 'by description'}</span>
                     </li>
                   ))}
                 </ul>
               )}
-              <p class="brand-card__src">
-                Source: {b.sources.map((s, i) => (
-                  <>
-                    {i > 0 && ', '}
-                    <a href={SOURCES[s].url} target="_blank" rel="noopener">{SOURCES[s].title}</a>
-                  </>
-                ))}
-              </p>
             </li>
           ))
         }
       </ul>
 
-      <h2 class="h3 brand-group__title">Named elsewhere on the website <span class="muted">· {elsewhere.length}</span></h2>
+      <h2 class="h3 brand-group__title">More brands <span class="muted">· {elsewhere.length}</span></h2>
       <ul class="brand-grid brand-grid--compact" data-brand-list>
         {
           elsewhere.map((b) => (
@@ -90,38 +74,22 @@ const usedCats = CATEGORIES.filter((c) => BRANDS.some((b) => b.categories.some((
                 {BRAND_LOGOS[b.id] ? (
                   <img src={`/${BRAND_LOGOS[b.id].src}`} width={BRAND_LOGOS[b.id].width} height={BRAND_LOGOS[b.id].height} alt="" loading="lazy" decoding="async" />
                 ) : (
-                  <span class="brand-card__nologo mono">No logo on the website</span>
+                  <span class="brand-card__nologo" aria-hidden="true"><Icon name="tag" size={22} /></span>
                 )}
               </div>
               <h3 class="brand-card__name">{b.name}</h3>
-              <p class="brand-card__rel"><Icon name="check" size={16} /> {b.relationship}</p>
+              <p class="brand-card__focus">{b.focus}</p>
               <ul class="brand-card__cats">
                 {b.categories.map((l) => (
                   <li><a href={`/products/${l.slug}/`}>{CATEGORY_BY_SLUG[l.slug].name}</a></li>
                 ))}
               </ul>
-              <p class="brand-card__src">
-                Source: {b.sources.map((s, i) => (
-                  <>
-                    {i > 0 && ', '}
-                    <a href={SOURCES[s].url} target="_blank" rel="noopener">{SOURCES[s].title}</a>
-                  </>
-                ))}
-              </p>
             </li>
           ))
         }
       </ul>
-      <p class="brand-empty" data-brand-empty hidden>No brands are linked to that category on the website.</p>
+      <p class="brand-empty" data-brand-empty hidden>No brands in that category.</p>
 
-      <div class="brand-key">
-        <h2 class="h3">How to read this page</h2>
-        <dl>
-          <div><dt><span class="brand-card__basis">listed</span></dt><dd>The Product Listing, Meilun &amp; Lifan or Hisun page names the brand within that category.</dd></div>
-          <div><dt><span class="brand-card__basis">by description</span></dt><dd>Linked using how the Brands page itself describes the brand (for example "fencing products" for Bekaert).</dd></div>
-        </dl>
-        <p class="hint">All sources viewed {SOURCE_VIEWED}. Brand names and trademarks belong to their respective owners.</p>
-      </div>
     </div>
   </section>
 </Base>
@@ -150,14 +118,11 @@ const usedCats = CATEGORIES.filter((c) => BRANDS.some((b) => b.categories.some((
       titles[i].hidden = !any;
     });
     if (empty) empty.hidden = shown > 0;
-    if (status) status.textContent = f ? `Showing ${shown} ${shown === 1 ? 'brand' : 'brands'} linked to ${btn.textContent?.trim()}.` : `Showing all ${shown} brands.`;
+    if (status) status.textContent = f ? `Showing ${shown} ${shown === 1 ? 'brand' : 'brands'} in ${btn.textContent?.trim()}.` : `Showing all ${shown} brands.`;
   });
 </script>
 
 <style>
-  .brands-notice {
-    max-width: 720px;
-  }
   .brand-filter {
     display: flex;
     flex-wrap: wrap;
@@ -257,17 +222,6 @@ const usedCats = CATEGORIES.filter((c) => BRANDS.some((b) => b.categories.some((
     color: var(--steel);
     font-size: 0.92rem;
   }
-  .brand-card__rel {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 8px;
-    font-size: 0.88rem;
-    font-weight: 550;
-  }
-  .brand-card__rel :global(svg) {
-    color: var(--blue-600);
-    margin-top: 2px;
-  }
   .brand-card__cats {
     list-style: none;
     display: flex;
@@ -296,46 +250,8 @@ const usedCats = CATEGORIES.filter((c) => BRANDS.some((b) => b.categories.some((
     color: var(--blue-700);
     text-decoration: underline;
   }
-  .brand-card__basis {
-    font-family: var(--font-mono);
-    font-size: 0.62rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 2px 6px;
-    border-radius: 999px;
-    background: var(--paper);
-    color: var(--steel);
-    border: 1px solid var(--line);
-  }
-  .brand-card__src {
-    font-size: 0.76rem;
-    color: var(--steel);
-  }
   .brand-empty {
     margin-top: 24px;
     color: var(--steel);
-  }
-  .brand-key {
-    margin-top: 56px;
-    padding: 24px;
-    border-radius: var(--radius-lg);
-    background: var(--mist);
-    display: grid;
-    gap: 14px;
-  }
-  .brand-key dl {
-    display: grid;
-    gap: 10px;
-    margin: 0;
-  }
-  .brand-key dl div {
-    display: grid;
-    grid-template-columns: 120px 1fr;
-    gap: 12px;
-    align-items: start;
-  }
-  .brand-key dd {
-    margin: 0;
-    font-size: 0.9rem;
   }
 </style>

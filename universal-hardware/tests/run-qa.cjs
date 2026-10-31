@@ -7,7 +7,7 @@
  * Covers: every route on direct load, metadata/noindex/disclaimer, console
  * errors, horizontal overflow at 7 viewports, navigation, mobile menu
  * keyboard behaviour, catalogue search/filters/empty state, product finder,
- * Enquiry Summary add/remove/copy/reset + focus trap, Product Guide required
+ * English/Spanish switch (whole site, islands, Guide, checkout), Product Guide required
  * conversations, shop cart and demo checkout (no card fields, no payment
  * requests), session persistence, WebGL/fallback/reduced motion, link
  * formats, axe-core accessibility scan, and a network audit proving that no
@@ -66,10 +66,9 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
       h1: document.querySelectorAll('h1').length,
       disclaimer: document.body.innerText.includes('Not commissioned, approved or affiliated with Universal Hardware Company Ltd.'),
       concept: !!document.querySelector('.utility__badge'),
-      official: !!document.querySelector('a[href="https://universalhardware.bz/"]'),
       imgsNoAlt: Array.from(document.querySelectorAll('img')).filter((i) => !i.hasAttribute('alt')).length,
     }));
-    const ok = resp.status() === 200 && meta.robots.startsWith('noindex') && meta.h1 === 1 && meta.disclaimer && meta.concept && meta.official && !meta.imgsNoAlt;
+    const ok = resp.status() === 200 && meta.robots.startsWith('noindex') && meta.h1 === 1 && meta.disclaimer && meta.concept && !meta.imgsNoAlt;
     record('route', r, ok, `status ${resp.status()}, h1=${meta.h1}, noindex=${meta.robots.startsWith('noindex')}, disclaimer=${meta.disclaimer}`);
 
     const errs = page._errors.filter((e) => !/Failed to load resource/.test(e) || true);
@@ -196,6 +195,7 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
     const { ctx, page } = await newPage(browser);
     await page.goto(BASE + '/products/', { waitUntil: 'load' });
     await page.waitForSelector('.cat-card');
+    await page.waitForFunction(() => { const i = document.querySelector('astro-island[component-url*="CatalogueSearch"]'); return i && !i.hasAttribute('ssr'); });
     const all = await page.$$eval('.cat-card', (c) => c.length);
     record('search', 'shows all 12 categories by default', all === 12, `${all}`);
     const t0 = Date.now();
@@ -235,8 +235,8 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
     await ctx.close();
   }
 
-  /* ---------- 5. Finder → enquiry → drawer ---------- */
-  console.log('\n▶ Product finder & Enquiry Summary');
+  /* ---------- 5. Finder ---------- */
+  console.log('\n▶ Product finder');
   {
     const { ctx, page } = await newPage(browser, [1440, 900], { permissions: ['clipboard-read', 'clipboard-write'] });
     await page.goto(BASE + '/find/', { waitUntil: 'load' });
@@ -256,11 +256,6 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
     await page.click('.finder__option:has-text("Farm or ranch")');
     const titles = await page.$$eval('.match__title', (h) => h.map((x) => x.textContent.trim()));
     record('finder', 'farm answer adds Water Pumps as related', titles.includes('Water Pumps'), titles.join(', '));
-    await page.click('.match--primary button:has-text("Add to Enquiry Summary")');
-    await page.waitForTimeout(150);
-    const count = await page.textContent('[data-enquiry-count]');
-    const toastTxt = await page.textContent('.toast').catch(() => '');
-    record('enquiry', 'add from finder updates header count + toast', count.trim() === '1' && /added/.test(toastTxt), `count=${count} toast="${toastTxt}"`);
     // Water pumping path
     await page.click('.finder__link:has-text("Start over")');
     await page.click('.finder__path:has-text("Water pumping")');
@@ -269,59 +264,14 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
     await page.click('.finder__option:has-text("Yes")');
     const pumpFocus = await page.$$eval('.match--primary .match__focus li', (l) => l.map((x) => x.textContent.trim()));
     record('finder', 'deep well → Submersible pumps', pumpFocus.includes('Submersible pumps'), pumpFocus.join(', '));
-    await page.click('.finder__next button:has-text("Build an Enquiry Summary")');
-    await page.waitForSelector('.drawer:not([hidden])');
-    const items = await page.$$eval('.enq-item__name', (l) => l.map((x) => x.textContent.trim()));
-    record('enquiry', 'Build an Enquiry Summary opens drawer with items', items.includes('Generators') && items.includes('Water Pumps'), items.join(', '));
-    const inert = await page.evaluate(() => document.querySelector('main').hasAttribute('inert'));
-    const modal = await page.getAttribute('.drawer', 'aria-modal');
-    record('enquiry', 'drawer is modal (aria-modal + inert background)', inert && modal === 'true');
-    // focus trap
-    let trapped = true;
-    for (let i = 0; i < 40; i++) {
-      await page.keyboard.press('Tab');
-      const inside = await page.evaluate(() => document.querySelector('.drawer').contains(document.activeElement));
-      if (!inside) { trapped = false; break; }
-    }
-    record('enquiry', 'focus is trapped inside drawer (40 tabs)', trapped);
-    await page.selectOption('#enq-use', 'Home or household');
-    await page.check('input[name="enq-branch"][value="belize-city"]');
-    await page.fill('#enq-notes', 'Need to lift water 60 ft to a raised tank.');
-    const preview = await page.inputValue('#enq-preview');
-    record('enquiry', 'summary includes categories, use, branch, notes and disclaimer',
-      /Generators/.test(preview) && /Water Pumps/.test(preview) && /Intended use: Home or household/.test(preview) && /Belize City — 3380 Chetumal Street/.test(preview) && /60 ft/.test(preview) && /Nothing has been sent or submitted/.test(preview));
-    await page.click('.drawer__actions .btn:has-text("Copy summary")');
-    await page.waitForTimeout(250);
-    const clip = await page.evaluate(() => navigator.clipboard.readText()).catch(() => '');
-    const live = await page.textContent('.drawer__live');
-    record('enquiry', 'Copy summary writes text to clipboard + announces', clip === preview && /Nothing was sent/.test(live), live);
-    await page.click('.enq-item__remove[aria-label="Remove Water Pumps"]');
-    const after = await page.$$eval('.enq-item__name', (l) => l.map((x) => x.textContent.trim()));
-    record('enquiry', 'remove item', after.length === 1 && after[0] === 'Generators', after.join(', '));
-    await page.selectOption('#enq-add', 'welding-supplies');
-    await page.click('.drawer__add button');
-    const after2 = await page.$$eval('.enq-item__name', (l) => l.length);
-    record('enquiry', 'add category from drawer select', after2 === 2);
+    const leftovers = await page.evaluate(() => document.querySelectorAll('[data-open-enquiry], .enquiry-trigger, [data-enquiry-toggle]').length + (document.body.innerText.includes('Enquiry Summary') ? 1 : 0));
+    record('finder', 'no Enquiry Summary controls or wording remain', leftovers === 0, `${leftovers}`);
+    await page.click('.finder__next button:has-text("Ask the Product Guide")');
+    await page.waitForSelector('.guide:not([hidden]) .msg--user', { timeout: 8000 });
+    const handed = await page.$$eval('.guide .msg--user', (m) => m.map((x) => x.textContent.trim()).join(' | '));
+    record('finder', 'Next step hands the answers to the Product Guide', handed.length > 10, handed.slice(0, 80));
     await page.keyboard.press('Escape');
-    await page.waitForTimeout(200);
-    const closed = await page.evaluate(() => document.querySelector('.drawer').hidden && !document.querySelector('main').hasAttribute('inert'));
-    record('enquiry', 'Escape closes drawer and restores background', closed);
-    // persistence across pages
-    await page.goto(BASE + '/products/generators/', { waitUntil: 'load' });
-    await page.waitForTimeout(300);
-    const pressed = await page.getAttribute('[data-enquiry-toggle="generators"]', 'aria-pressed');
-    const count2 = await page.textContent('[data-enquiry-count]');
-    record('enquiry', 'draft persists across navigation (session)', pressed === 'true' && count2.trim() === '2', `pressed=${pressed} count=${count2}`);
-    await page.click('[data-enquiry-toggle="generators"]');
-    record('enquiry', 'category page toggle removes item', (await page.getAttribute('[data-enquiry-toggle="generators"]', 'aria-pressed')) === 'false');
-    await page.click('.enquiry-trigger');
-    await page.waitForSelector('.drawer:not([hidden])');
-    await page.click('.drawer__actions .btn:has-text("Reset")');
-    const confirmTxt = await page.textContent('.drawer__actions .btn--ghost');
-    await page.click('.drawer__actions .btn--ghost');
-    const empty = await page.isVisible('.drawer__empty');
-    record('enquiry', 'Reset requires confirmation, then clears', /Tap again/.test(confirmTxt) && empty);
-    record('network', 'finder + enquiry flows made no third-party requests', page._external.length === 0, page._external.join(', '));
+    record('network', 'finder flows made no third-party requests', page._external.length === 0, page._external.join(', '));
     await ctx.close();
   }
 
@@ -334,8 +284,7 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
     await page.click('.guide-launcher');
     await page.waitForSelector('.msg--guide');
     const head = await page.textContent('.guide__sub');
-    const disc = await page.textContent('.guide__disclose');
-    record('guide', 'identified as rule-based concept, not live AI', /not live AI/.test(head) && /not Universal Hardware's official customer service/.test(disc), head);
+    record('guide', 'panel opens with the Product Guide welcome', /Products, branches and services/.test(head) && /Product Guide/.test(await page.textContent('.msg--guide')), head);
     const ask = async (q) => {
       const before = await page.$$eval('.msg--guide', (m) => m.length);
       await page.fill('#guide-input', q);
@@ -351,17 +300,21 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
       ['I need a pump for my home water supply.', /deep well/i, 'pump clarifies source/depth'],
       ['Do you carry motorbikes?', /Meilun/, 'motorbikes → Meilun & Lifan page, no availability'],
       ['Where is your Belize City store?', /3380 Chetumal Street[\s\S]*224-4140/, 'Belize City branch details'],
-      ['Can you send me a quote?', /can't send quotes/i, 'quote → cannot transmit, offers summary'],
+      ['Can you send me a quote?', /can't send quotes[\s\S]*WhatsApp/i, 'quote → cannot transmit, points to branch WhatsApp'],
+      ['Are you a real AI?', /rule-based/i, 'honest about being rule-based when asked'],
     ];
     for (const [q, re, name] of cases) {
       const t = await ask(q);
       record('guide', name, re.test(t), t.replace(/\s+/g, ' ').slice(0, 120));
     }
-    const addBtn = await page.$('.msg--guide:last-child .msg__btn--primary:has-text("Open Enquiry Summary")');
-    record('guide', 'quote reply offers Open Enquiry Summary action', !!addBtn);
-    await page.click('.guide__lang button:has-text("ES")');
+    await page.click('[data-lang-toggle]');
+    await page.waitForFunction(() => [...document.querySelectorAll('.msg--guide')].some((m) => /Hola/.test(m.textContent)), null, { timeout: 8000 }).catch(() => {});
+    const welcomeEs = await page.$$eval('.msg--guide', (m) => m[m.length - 1].innerText);
     const es = await ask('Necesito una bomba de agua');
-    record('guide', 'Spanish mode responds in Spanish', /bomba/i.test(es) && /agua/i.test(es), es.slice(0, 80));
+    record('guide', 'site switch to Spanish switches the Guide (welcome + replies)', /Hola/.test(welcomeEs) && /bomba/i.test(es) && /agua/i.test(es), es.slice(0, 80));
+    await page.click('[data-lang-toggle]');
+    await page.waitForFunction(() => document.documentElement.lang === 'en');
+    await page.focus('#guide-input');
     await page.keyboard.press('Escape');
     await page.waitForTimeout(200);
     record('guide', 'Escape closes panel', await page.evaluate(() => document.querySelector('.guide').hidden));
@@ -371,6 +324,70 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
     const prompted = await page.$$eval('.msg--user', (m) => m.map((x) => x.textContent));
     record('guide', 'category page hands a contextual prompt to the guide', prompted.some((t) => /pump/i.test(t)), prompted.join(' | '));
     record('network', 'guide conversations made no third-party requests', page._external.length === 0, page._external.join(', '));
+    await ctx.close();
+  }
+
+  /* ---------- 6b. English / Spanish ---------- */
+  console.log('\n▶ English / Spanish');
+  {
+    const { ctx, page } = await newPage(browser);
+    await page.goto(BASE + '/', { waitUntil: 'load' });
+    const esChunkEarly = await page.evaluate(() => performance.getEntriesByType('resource').some((r) => /\/es\.[\w-]+\.js/.test(r.name)));
+    record('i18n', 'English pages do not load the Spanish dictionary', !esChunkEarly);
+    const label = await page.getAttribute('[data-lang-toggle]', 'aria-label');
+    await page.click('[data-lang-toggle]');
+    await page.waitForFunction(() => document.documentElement.classList.contains('i18n-done') && document.documentElement.lang === 'es');
+    const es = await page.evaluate(() => ({ h1: document.querySelector('h1').textContent.replace(/\s+/g, ' ').trim(), nav: [...document.querySelectorAll('.site-nav a')].map((a) => a.textContent.trim()).join('|'), title: document.title, btn: document.querySelector('[data-lang-toggle]').getAttribute('aria-label') }));
+    record('i18n', 'header switch flips the page to Spanish (h1, menu, title, button label)', es.h1 === 'Hecho para cada trabajo.' && es.nav === 'Tienda|Productos|Marcas|Sucursales|Nosotros' && /Hecho para cada trabajo/.test(es.title) && label === 'Ver el sitio en español' && es.btn === 'View the site in English', JSON.stringify(es));
+    await page.goto(BASE + '/shop/', { waitUntil: 'load' });
+    await page.waitForFunction(() => document.documentElement.classList.contains('i18n-done'));
+    record('i18n', 'Spanish persists across pages', (await page.textContent('h1')).includes('Pida en línea'));
+    await page.click('[data-add-to-cart="makita-hp333dyx3b"]');
+    await page.waitForSelector('.toast');
+    const toastEs = await page.textContent('.toast');
+    record('i18n', 'island toasts follow the language', /se agregó a su carrito/.test(toastEs) && /Ver carrito/.test(toastEs), toastEs);
+    await page.goto(BASE + '/checkout/', { waitUntil: 'load' });
+    await page.waitForSelector('.pay-demo');
+    await page.waitForTimeout(200);
+    await page.click('.pay-btn');
+    await page.waitForTimeout(200);
+    const errs = await page.$$eval('.field-error', (e) => e.map((x) => x.textContent));
+    const pay = await page.textContent('.pay-btn');
+    record('i18n', 'checkout in Spanish (errors, pay button)', errs.includes('Ingrese su nombre.') && /Pagar BZ\$248\.25/.test(pay), `${errs.join(' / ')} · ${pay}`);
+    await page.click('.link-btn');
+    await page.click('.pay-btn');
+    await page.waitForSelector('.confirm', { timeout: 8000 });
+    const conf = await page.textContent('.confirm');
+    record('i18n', 'order confirmation in Spanish', /Pago aprobado/.test(conf) && /Recoger en|Recoja|Su pedido/.test(conf) && /Pedido TEST-/.test(conf), conf.replace(/\s+/g, ' ').slice(0, 120));
+    await page.addScriptTag({ content: AXE });
+    const axe = await page.evaluate(async () => (await window.axe.run(document, { runOnly: ['wcag2a', 'wcag2aa', 'wcag21aa', 'best-practice'], rules: { region: { enabled: false } } })).violations.map((v) => `${v.id} ×${v.nodes.length}`));
+    record('axe', 'Spanish checkout confirmation', axe.length === 0, axe.join(' || '));
+    await page.click('[data-lang-toggle]');
+    await page.waitForFunction(() => document.documentElement.lang === 'en');
+    record('i18n', 'switching back restores English without a reload', /Payment approved/.test(await page.textContent('.confirm')) && (await page.textContent('h1')).trim() === 'Checkout');
+    record('network', 'language switching made no third-party requests', page._external.length === 0, page._external.join(', '));
+    await ctx.close();
+  }
+  {
+    const { ctx, page } = await newPage(browser, [390, 844], { locale: 'es-ES' });
+    await page.goto(BASE + '/', { waitUntil: 'load' });
+    await page.waitForFunction(() => document.documentElement.classList.contains('i18n-done'));
+    const h1 = (await page.textContent('h1')).replace(/\s+/g, ' ').trim();
+    record('i18n', 'a Spanish-language browser opens in Spanish', h1 === 'Hecho para cada trabajo.', h1);
+    await page.addScriptTag({ content: AXE });
+    const axe = await page.evaluate(async () => (await window.axe.run(document, { runOnly: ['wcag2a', 'wcag2aa', 'wcag21aa', 'best-practice'], rules: { region: { enabled: false } } })).violations.map((v) => `${v.id} ×${v.nodes.length}`));
+    record('axe', 'Spanish homepage (mobile)', axe.length === 0, axe.join(' || '));
+    const bad = [];
+    for (const vp of [[320, 640], [1024, 768], [1200, 800]]) {
+      await page.setViewportSize({ width: vp[0], height: vp[1] });
+      for (const r of ['/', '/shop/', '/checkout/', '/products/power-tools/', '/locations/']) {
+        await page.goto(BASE + r, { waitUntil: 'load' });
+        await page.waitForFunction(() => document.documentElement.classList.contains('i18n-done'));
+        const ov = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+        if (ov > 0) bad.push(`${vp[0]} ${r} (+${ov}px)`);
+      }
+    }
+    record('overflow', 'Spanish: no horizontal overflow at 320, 1024 and 1200 px', bad.length === 0, bad.join(', '));
     await ctx.close();
   }
 
@@ -387,8 +404,6 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
     record('links', 'wa.me links match website-listed WhatsApp numbers', expectWa.every((t) => was.includes(t)) && was.every((t) => /^https:\/\/wa\.me\/501\d{7}$/.test(t)), was.join(' '));
     const ext = await page.$$eval('a[target="_blank"]', (a) => a.filter((x) => !(x.getAttribute('rel') || '').includes('noopener')).length);
     record('links', 'external links open with rel=noopener', ext === 0);
-    const off = await page.$$eval('a[href^="https://universalhardware.bz"]', (a) => a.length);
-    record('links', 'official-site links present and point to universalhardware.bz', off > 0);
     await page.click('[data-branch-select="spanish-lookout"].chip');
     const sel = await page.evaluate(() => document.querySelector('[data-branch-card="spanish-lookout"]').classList.contains('is-selected'));
     await page.goto(BASE + '/', { waitUntil: 'load' });
@@ -456,7 +471,7 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
     await page.click('.pay-btn');
     await page.waitForSelector('.confirm', { timeout: 6000 });
     const conf = await page.evaluate(() => ({ ref: document.querySelector('.confirm__ref').textContent, demo: document.body.innerText.includes('no card was charged') }));
-    record('checkout', 'approved demo payment shows a DEMO order reference and empties the cart', /^Order DEMO-[A-Z2-9]{6}$/.test(conf.ref) && conf.demo && (await badge()) === 0, JSON.stringify(conf));
+    record('checkout', 'approved simulated payment shows a TEST order reference and empties the cart', /^Order TEST-[A-Z2-9]{6}$/.test(conf.ref) && conf.demo && (await badge()) === 0, JSON.stringify(conf));
     await axeCheck('/checkout/ confirmation');
     const stored = await page.evaluate(() => JSON.stringify(Object.fromEntries(Object.entries(sessionStorage))) + window.name);
     record('privacy', 'checkout details are never stored', !/Sample Customer|example\.com|000-0000/.test(stored), stored.slice(0, 120));
@@ -535,10 +550,16 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
     record('3d', 'idle motion animates', !a.equals(b));
     await page.click('[data-hero-pause]');
     const label = await page.textContent('[data-hero-pause] [data-label]');
-    await page.waitForTimeout(500);
-    const c = await page.locator('.hero__canvas').screenshot();
-    await page.waitForTimeout(900);
-    const d = await page.locator('.hero__canvas').screenshot();
+    // Pause stops the idle motion; the 1.6 s intro may still be settling under
+    // software rendering, so wait (up to ~8 s) for frames to stop changing.
+    let c = await page.locator('.hero__canvas').screenshot();
+    let d = c;
+    for (let i = 0; i < 8; i++) {
+      await page.waitForTimeout(900);
+      d = await page.locator('.hero__canvas').screenshot();
+      if (c.equals(d)) break;
+      c = d;
+    }
     record('3d', 'Pause 3D motion stops animation', c.equals(d) && /Resume/.test(label), label);
     // drag rotate
     const box = await page.locator('.hero__canvas').boundingBox();

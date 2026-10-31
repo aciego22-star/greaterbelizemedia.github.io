@@ -16,7 +16,7 @@ interface Props {
   bodyClass?: string;
 }
 const { title, description, section = 'home', bodyClass } = Astro.props;
-const fullTitle = section === 'home' ? `${title}` : `${title} · Universal Hardware (Concept)`;
+const fullTitle = section === 'home' ? `${title}` : `${title} · Universal Hardware`;
 const canonical = new URL(Astro.url.pathname, Astro.site).toString();
 ---
 <!doctype html>
@@ -53,6 +53,26 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
         try {
           if (sessionStorage.getItem('uhc.motion.v1') === 'reduced') d.setAttribute('data-motion', 'reduced');
         } catch (e) {}
+        // Language: tab storage (sessionStorage, else window.name), else the browser language.
+        // Spanish pages stay hidden until the dictionary is applied (at most 2.5 s).
+        var l = null;
+        try {
+          l = sessionStorage.getItem('uhc.lang.v1');
+        } catch (e) {}
+        if (!l) {
+          try {
+            if (window.name.indexOf('uhc-tab:') === 0) l = JSON.parse(window.name.slice(8))['uhc.lang.v1'] || null;
+          } catch (e) {}
+        }
+        if (!l) l = (navigator.language || '').toLowerCase().indexOf('es') === 0 ? 'es' : 'en';
+        if (l === 'es') {
+          d.lang = 'es';
+          d.setAttribute('data-lang', 'es');
+          d.classList.add('i18n-pending');
+          setTimeout(function () {
+            d.classList.remove('i18n-pending');
+          }, 2500);
+        }
       })();
     </script>
   </head>

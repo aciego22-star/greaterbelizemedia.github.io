@@ -1,7 +1,7 @@
 ---
 import Logo from './Logo.astro';
 import Icon from './Icon.astro';
-import { NAV, SITE } from '../data/site';
+import { NAV } from '../data/site';
 import { BRANCHES } from '../data/branches';
 
 interface Props {
@@ -12,7 +12,7 @@ const isCurrent = (href: string) => section && href.startsWith(`/${section}/`);
 ---
 <header class="site-header" data-header>
   <div class="container site-header__inner">
-    <a class="site-header__logo" href="/" aria-label="Universal Hardware concept — home">
+    <a class="site-header__logo" href="/" aria-label="Universal Hardware — home">
       <Logo height={34} eager />
     </a>
 
@@ -40,17 +40,11 @@ const isCurrent = (href: string) => section && href.startsWith(`/${section}/`);
       </a>
       <a class="icon-btn cart-trigger" href="/cart/" data-cart-link aria-label="Cart (0 items)">
         <Icon name="cart" />
-        <span class="enquiry-trigger__count" data-cart-count hidden>0</span>
+        <span class="cart-trigger__count" data-cart-count hidden>0</span>
       </a>
-      <button
-        type="button"
-        class="icon-btn enquiry-trigger"
-        data-open-enquiry
-        aria-label="Open enquiry summary (0 categories)"
-        aria-haspopup="dialog"
-      >
-        <Icon name="clipboard" />
-        <span class="enquiry-trigger__count" data-enquiry-count hidden>0</span>
+      <button type="button" class="lang-toggle" data-lang-toggle data-i18n-skip lang="es" aria-label="Ver el sitio en español">
+        <span data-lang-opt="en" lang="en">EN</span>
+        <span data-lang-opt="es" lang="es">ES</span>
       </button>
       <button
         type="button"
@@ -70,7 +64,7 @@ const isCurrent = (href: string) => section && href.startsWith(`/${section}/`);
 <dialog class="mobile-nav" id="mobile-nav" aria-label="Menu" data-mobile-nav>
   <div class="mobile-nav__panel">
     <div class="mobile-nav__top">
-      <a href="/" class="mobile-nav__logo" aria-label="Universal Hardware concept — home">
+      <a href="/" class="mobile-nav__logo" aria-label="Universal Hardware — home">
         <Logo height={28} />
       </a>
       <button type="button" class="icon-btn" data-menu-close aria-label="Close menu">
@@ -99,10 +93,6 @@ const isCurrent = (href: string) => section && href.startsWith(`/${section}/`);
         <span data-cart-label>Cart</span>
       </a>
       <a class="btn btn--ghost btn--block btn--lg" href="/find/">Find the Right Product</a>
-      <button type="button" class="btn btn--ghost btn--block" data-open-enquiry data-menu-close-after>
-        <Icon name="clipboard" size={18} />
-        Enquiry Summary
-      </button>
     </div>
     <div class="mobile-nav__branches">
       <p class="mono muted">Branches</p>
@@ -119,8 +109,5 @@ const isCurrent = (href: string) => section && href.startsWith(`/${section}/`);
         }
       </ul>
     </div>
-    <p class="mobile-nav__disclaimer">
-      {SITE.disclaimer} <a href="/concept/">About this concept</a>
-    </p>
   </div>
 </dialog>

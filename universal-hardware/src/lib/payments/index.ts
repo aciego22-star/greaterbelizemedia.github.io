@@ -12,10 +12,10 @@ export function getPaymentProvider(): PaymentProvider {
   return createDemoProvider();
 }
 
-/** Order reference shown to the customer, e.g. "DEMO-7K2Q9X". */
+/** Order reference shown to the customer, e.g. "UH-7K2Q9X" (simulated payments: "TEST-7K2Q9X"). */
 export function newOrderReference(provider: PaymentProvider): string {
   const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   const bytes = crypto.getRandomValues(new Uint8Array(6));
   const code = Array.from(bytes, (b) => alphabet[b % alphabet.length]).join('');
-  return `${provider.live ? 'UH' : 'DEMO'}-${code}`;
+  return `${provider.live ? 'UH' : 'TEST'}-${code}`;
 }

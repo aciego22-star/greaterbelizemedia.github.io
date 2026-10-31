@@ -18,17 +18,17 @@ const SLIDES: { key: keyof typeof slides; label: string; alt: string }[] = [
   {
     key: 'storefront',
     label: 'Storefront',
-    alt: 'Concept image: a red Lifan motorcycle parked outside a Universal Hardware storefront, with the blue wordmark over the entrance.',
+    alt: 'A red Lifan motorcycle parked outside the Universal Hardware storefront, with the blue wordmark over the entrance.',
   },
   {
     key: 'interior',
     label: 'Store floor',
-    alt: 'Concept image: a busy store floor with Outdoor Power and Lawn & Garden departments, a True Value paint counter, patio furniture and grills.',
+    alt: 'A busy store floor with Outdoor Power and Lawn & Garden departments, a True Value paint counter, patio furniture and grills.',
   },
   {
     key: 'aisle',
     label: 'Paint aisle',
-    alt: 'Concept image: a long aisle with a pegboard wall of putty knives, yellow extension poles and paint rollers.',
+    alt: 'A long aisle with a pegboard wall of putty knives, yellow extension poles and paint rollers.',
   },
 ];
 const srcset = (list: Variant['avif']) => list.map((x) => `/hero/slides/${x.file} ${x.w}w`).join(', ');
@@ -72,8 +72,6 @@ const lazy = (i: number, attr: 'srcset' | 'src', value: string) => (i === 0 ? { 
       })
     }
   </div>
-
-  <p class="hero-reel__note mono">Concept image<span class="hero-reel__note-more"> · not a photograph</span></p>
 
   <div class="hero-reel__controls">
     <button type="button" class="hero-reel__toggle" data-reel-toggle aria-label="Pause slideshow">
@@ -274,18 +272,6 @@ const lazy = (i: number, attr: 'srcset' | 'src', value: string) => (i === 0 ? { 
     background: linear-gradient(to top, rgba(10, 19, 29, 0.42), transparent);
     pointer-events: none;
   }
-  .hero-reel__note {
-    position: absolute;
-    left: var(--gutter);
-    bottom: 22px;
-    z-index: 1;
-    margin: 0;
-    font-size: 0.66rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.82);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
-  }
   .hero-reel__controls {
     position: absolute;
     left: 50%;
@@ -306,11 +292,6 @@ const lazy = (i: number, attr: 'srcset' | 'src', value: string) => (i === 0 ? { 
       left: auto;
       right: var(--gutter);
       transform: none;
-    }
-  }
-  @media (max-width: 479px) {
-    .hero-reel__note-more {
-      display: none;
     }
   }
   .hero-reel__toggle,

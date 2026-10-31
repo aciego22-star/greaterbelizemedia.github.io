@@ -47,10 +47,8 @@ export const SHOP_GROUPS: { id: ShopGroup; label: string }[] = [
   { id: 'motorcycles', label: 'Motorcycles & scooters' },
 ];
 
-export const PRICE_NOTE = `Sale price printed in Universal Hardware’s ${SHOP_PROMO.name} graphic (${SHOP_PROMO.where}, ${SHOP_PROMO.dates}). That sale has ended: shown to demonstrate the checkout, not a current price.`;
 
 const UPLOADS = 'https://universalhardware.bz/news/wp-content/uploads/';
-export const sourceUrl = (p: ShopProduct) => `${UPLOADS}${p.source}.jpg`;
 
 const pic = (file: string, w: number, h: number, alt: string): SiteImage => ({
   src: `site-images/shop/${file}.jpg`,
@@ -106,7 +104,7 @@ export const SHOP_PRODUCTS: ShopProduct[] = ROWS.map(([id, brand, model, name, g
   group,
   price,
   source,
-  image: { ...pic(source.toLowerCase().replace(/-\d$/, ''), w, h, `${alt}, from Universal Hardware’s February 2026 sale graphic`), sourceUrl: UPLOADS + source + '.jpg' },
+  image: { ...pic(source.toLowerCase().replace(/-\d$/, ''), w, h, alt), sourceUrl: UPLOADS + source + '.jpg' },
   ...extra,
 }));
 

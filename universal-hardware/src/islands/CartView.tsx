@@ -112,8 +112,7 @@ export default function CartView() {
           <Icon name="lock" /> Checkout
         </a>
         <p class="price-note">
-          Prices as printed in the February 2026 sale graphics. Whether they include GST, and any delivery options, would be confirmed by
-          Universal Hardware.
+          February 2026 sale prices. Collect at Spanish Lookout or Belize City.
         </p>
       </aside>
     </div>

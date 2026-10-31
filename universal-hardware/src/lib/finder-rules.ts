@@ -204,8 +204,8 @@ const backupPower: FinderPath = {
           a.load === 'home'
             ? 'Running most of a home, including air conditioning, is a larger requirement that needs a proper load assessment.'
             : a.load === 'business'
-              ? 'Business and industrial loads sit at the larger end of the generator range the website describes.'
-              : 'The website lists generators for a wide range of applications, from portable units upward.',
+              ? 'Business and industrial loads sit at the larger end of the generator range.'
+              : 'Generators cover a wide range of applications, from portable units upward.',
         focus: focus[a.load] ?? ['Home backup power'],
       },
     ];
@@ -440,7 +440,7 @@ const motorcycles: FinderPath = {
       town: ['Scooters and cub bikes', 'Street motorcycles'],
       trail: ['Trail motorcycles'],
       cargo: ['Cargo motorcycles'],
-      utv: ['UTVs and ATVs (Hisun page)', 'Trail motorcycles'],
+      utv: ['UTVs and ATVs (Hisun)', 'Trail motorcycles'],
       unsure: ['Scooters and cub bikes', 'Street motorcycles', 'Trail motorcycles', 'Cargo motorcycles'],
     };
     const focus = [...(rideFocus[a.ride] ?? [])];
@@ -450,10 +450,10 @@ const motorcycles: FinderPath = {
         slug: 'motorcycles',
         reason:
           a.need === 'parts'
-            ? 'Meilun parts catalogues are published on the website for parts orders; the branch can confirm availability.'
+            ? 'Meilun parts catalogues are available for parts orders; the branch can confirm availability.'
             : a.need === 'service'
               ? 'Each branch lists a Service Center WhatsApp line for service and repair enquiries.'
-              : 'The Meilun & Lifan page groups models by riding style. Current models and prices must come from the branch.',
+              : 'Models are grouped by riding style. Ask the branch for current models and prices.',
         focus: uniq(focus),
       },
     ];

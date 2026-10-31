@@ -10,7 +10,7 @@ import SitePhoto from '../components/SitePhoto.astro';
 import ProductFinder from '../islands/ProductFinder.tsx';
 import { DEPARTMENTS } from '../data/departments';
 import { BRANDS } from '../data/brands';
-import { BRANCHES, BRANCH_VERIFY_NOTE } from '../data/branches';
+import { BRANCHES } from '../data/branches';
 import { CATEGORY_BY_SLUG } from '../data/categories';
 import { SOURCES } from '../data/sources';
 import { BRAND_LOGOS, SERVICE_PHOTO } from '../data/site-images';
@@ -24,8 +24,8 @@ const firstCat = (id: string) => {
 };
 ---
 <Base
-  title="Universal Hardware — Built for Every Job (Independent Concept)"
-  description="Independent concept demonstration by Austere Automations: explore Universal Hardware's publicly listed tools, equipment and brands, find the right product category and see branch details for Spanish Lookout and Belize City."
+  title="Universal Hardware — Built for Every Job"
+  description="Universal Hardware, Belize: tools, equipment, appliances and motorcycles from trusted brands, with branches in Spanish Lookout and Belize City."
   section="home"
 >
   <HeroCarousel />
@@ -41,7 +41,7 @@ const firstCat = (id: string) => {
         </div>
         <div class="stack" style="--stack:20px">
           <p class="lead">
-            Eight ways into the range listed on Universal Hardware's website, from cordless drills to cattle gates.
+            Eight ways into the range, from cordless drills to cattle gates.
           </p>
           <a class="link-arrow" href="/products/">View all 12 categories <Icon name="arrow-right" size={16} /></a>
         </div>
@@ -49,7 +49,6 @@ const firstCat = (id: string) => {
       <div class="dept-grid">
         {DEPARTMENTS.map((d, i) => <DepartmentTile dept={d} index={i} />)}
       </div>
-      <p class="hint dept-note">Photos as pictured on universalhardware.bz. They show example products, not confirmed stock.</p>
     </div>
   </section>
 
@@ -64,10 +63,10 @@ const firstCat = (id: string) => {
         </div>
         <div class="stack" style="--stack:16px">
           <p class="lead">
-            Tell us what you're working on. The finder matches your answers to the categories listed on
-            Universal Hardware's website and helps you prepare an enquiry for the branch.
+            Tell us what you're working on. The finder matches your answers to the right categories and helps you prepare for
+            the branch.
           </p>
-          <p class="finder-note"><Icon name="info" size={16} /> Rule-based guide using public category data. No account, no personal details.</p>
+          <p class="finder-note"><Icon name="info" size={16} /> Answers in seconds. No account, no personal details.</p>
         </div>
       </div>
       <ProductFinder client:idle />
@@ -80,12 +79,11 @@ const firstCat = (id: string) => {
       <div class="section-head section-head--split">
         <div class="stack" style="--stack:18px">
           <p class="eyebrow">03 — Brands</p>
-          <h2 id="brands-title" class="h2">Trusted names, as listed on the current website.</h2>
+          <h2 id="brands-title" class="h2">Trusted names.</h2>
         </div>
         <div class="stack" style="--stack:20px">
           <p class="lead">
-            The brands on Universal Hardware's Brands page, with the logos as the company displays them. A listing
-            doesn't confirm current stock of any line.
+            Tools, equipment and appliances from names you know, across every department.
           </p>
           <a class="link-arrow" href="/brands/">Explore brands by category <Icon name="arrow-right" size={16} /></a>
         </div>
@@ -116,7 +114,7 @@ const firstCat = (id: string) => {
         }
       </ul>
       <p class="brand-wall__more">
-        Also named elsewhere on the website:{' '}
+        More brands:{' '}
         {otherNamed.map((b, i) => (
           <>
             {i > 0 && ', '}
@@ -137,7 +135,7 @@ const firstCat = (id: string) => {
           <li style="--x:64%;--y:12%"><span></span>Parts</li>
           <li style="--x:58%;--y:64%"><span></span>Service</li>
         </ul>
-        <p class="home-service__fig mono">Makita Clinic, Feb 2026 · as pictured on universalhardware.bz</p>
+        <p class="home-service__fig mono">Makita Clinic, Feb 2026</p>
       </div>
       <div class="home-service__copy">
         <p class="eyebrow">04 — Sales &amp; service</p>
@@ -149,8 +147,7 @@ const firstCat = (id: string) => {
             <div>
               <h3>Service Center lines at both branches</h3>
               <p>
-                The current website lists a dedicated Service Center WhatsApp number for Spanish Lookout and for
-                Belize City.
+                A dedicated Service Center WhatsApp number for Spanish Lookout and for Belize City.
               </p>
             </div>
           </li>
@@ -168,7 +165,7 @@ const firstCat = (id: string) => {
             <span class="service-points__icon"><Icon name="store" size={20} /></span>
             <div>
               <h3>Help choosing the right equipment</h3>
-              <p>Each branch lists a Sales WhatsApp line alongside its telephone numbers for product questions.</p>
+              <p>Each branch has a Sales WhatsApp line alongside its telephone numbers for product questions.</p>
             </div>
           </li>
         </ul>
@@ -178,7 +175,6 @@ const firstCat = (id: string) => {
             Parts catalogues <Icon name="external" size={16} />
           </a>
         </div>
-        <p class="hint">Service scope differs by brand and product. Confirm coverage with the branch.</p>
       </div>
     </div>
   </section>
@@ -192,8 +188,7 @@ const firstCat = (id: string) => {
           <h2 id="branches-title" class="h2">Two locations. One destination for solutions.</h2>
         </div>
         <div class="stack" style="--stack:16px">
-          <p class="lead">Choose the branch that suits you. Your choice is remembered only for this browser session.</p>
-          <p class="notice"><Icon name="info" /> <span>{BRANCH_VERIFY_NOTE}</span></p>
+          <p class="lead">Choose the branch that suits you.</p>
         </div>
       </div>
       <div class="home-branches__grid">

@@ -6,7 +6,7 @@ The concept's Shop has a working cart and checkout. Only the card step is simula
 
 - **Cart** (`src/lib/cart-store.ts`): product ids, colours and quantities only, kept in tab storage. Prices are always looked up from `src/data/shop.ts`.
 - **Checkout** (`src/islands/Checkout.tsx`): contact details (kept in the component's memory, never stored or sent), branch collection, then the card step and an order confirmation.
-- **Card step**: the checkout talks to a processor only through the `PaymentProvider` interface (`src/lib/payments/types.ts`). The concept ships one provider, `demo` (`src/lib/payments/demo.ts`). It draws a stand-in for the processor's secure card form with nothing to type, collects no card details, sends nothing and simulates an approved or declined answer. Order references start with `DEMO-`.
+- **Card step**: the checkout talks to a processor only through the `PaymentProvider` interface (`src/lib/payments/types.ts`). The concept ships one provider, `demo` (`src/lib/payments/demo.ts`). It draws a stand-in for the processor's secure card form with nothing to type, collects no card details, sends nothing and simulates an approved or declined answer. Order references start with `TEST-`.
 
 The end-to-end suite checks that the checkout page has no card inputs or third-party frames, and that the whole shop and checkout flow sends no POST (or other write) request and makes no third-party request.
 

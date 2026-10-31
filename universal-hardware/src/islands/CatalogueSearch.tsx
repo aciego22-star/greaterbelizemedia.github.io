@@ -5,7 +5,7 @@ import { searchCategories, POPULAR_SEARCHES } from '../lib/search';
 import { FEATURED_PHOTOS } from '../data/site-images';
 import { SitePicture } from './SitePicture';
 import { iconSvg, type IconName } from '../lib/icons';
-import { hasCategory, toggleCategory, subscribe, openGuide, toast } from '../lib/enquiry-store';
+import { openGuide } from '../lib/site-state';
 
 const Icon = ({ name, size = 18 }: { name: IconName; size?: number }) => (
   <span class="i" aria-hidden="true" dangerouslySetInnerHTML={{ __html: iconSvg(name, size) }} />
@@ -23,17 +23,16 @@ export default function CatalogueSearch() {
   const [q, setQ] = useState('');
   const [dept, setDept] = useState('');
   const [brand, setBrand] = useState('');
-  const [, force] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const hydrated = useRef(false);
 
   useEffect(() => {
     const p = readParams();
-    setQ(p.q);
-    setDept(DEPARTMENTS.some((d) => d.id === p.dept) ? p.dept : '');
-    setBrand(BRANDS.some((b) => b.id === p.brand) ? p.brand : '');
+    // Keep anything typed in the moment before hydration finished.
+    setQ((cur) => cur || p.q);
+    setDept((cur) => cur || (DEPARTMENTS.some((d) => d.id === p.dept) ? p.dept : ''));
+    setBrand((cur) => cur || (BRANDS.some((b) => b.id === p.brand) ? p.brand : ''));
     hydrated.current = true;
-    return subscribe(() => force((n) => n + 1));
   }, []);
 
   // Keep the URL shareable and refresh-safe.
@@ -143,18 +142,13 @@ export default function CatalogueSearch() {
           </button>
         )}
       </div>
-      {brandObj && (
-        <p class="catalogue__brandnote">
-          <Icon name="info" size={16} /> {brandObj.relationship} A website mention doesn't confirm current stock.
-        </p>
-      )}
 
       {results.length === 0 ? (
         <div class="catalogue__empty">
           <h2 class="h3">Nothing matched{q.trim() ? ` “${q.trim()}”` : ''}.</h2>
           <p>
-            This concept searches the categories and product types listed on Universal Hardware's website, so some specific items won't appear. Try a
-            broader word, or ask the Product Guide.
+            Search covers categories, product types and brands, so some specific items won't appear. Try a broader word, or ask the Product
+            Guide.
           </p>
           <div class="catalogue__empty-actions">
             <button type="button" class="btn" onClick={() => openGuide(q.trim() || undefined)}>
@@ -181,7 +175,6 @@ export default function CatalogueSearch() {
           {results.map(({ category: c, subMatches, brandMatches }) => {
             const shown = subMatches.length ? subMatches : c.subcategories.slice(0, 4).map((s) => s.name);
             const more = c.subcategories.length - (subMatches.length ? 0 : 4);
-            const added = hasCategory(c.slug);
             return (
               <li class="cat-card" key={c.slug}>
                 <div class="cat-card__art">
@@ -200,7 +193,7 @@ export default function CatalogueSearch() {
                   </ul>
                   {(brandMatches.length > 0 || c.listedBrands.length > 0) && (
                     <p class="cat-card__brands">
-                      {brandMatches.length ? 'Brand match: ' : 'Brands named: '}
+                      {brandMatches.length ? 'Brand match: ' : 'Brands: '}
                       <strong>{(brandMatches.length ? brandMatches : c.listedBrands).join(', ')}</strong>
                     </p>
                   )}
@@ -209,19 +202,6 @@ export default function CatalogueSearch() {
                   <a class="link-arrow" href={`/products/${c.slug}/`} tabIndex={-1} aria-hidden="true">
                     View category <Icon name="arrow-right" size={16} />
                   </a>
-                  <button
-                    type="button"
-                    class="cat-card__add"
-                    aria-pressed={added}
-                    onClick={() => {
-                      const on = toggleCategory(c.slug);
-                      toast(on ? `${c.name} added to your Enquiry Summary` : `${c.name} removed from your Enquiry Summary`, on ? 'open-enquiry' : undefined);
-                    }}
-                  >
-                    <Icon name={added ? 'check' : 'plus'} size={16} />
-                    <span>{added ? 'In enquiry' : 'Add to enquiry'}</span>
-                    <span class="sr-only"> — {c.name}</span>
-                  </button>
                 </div>
               </li>
             );

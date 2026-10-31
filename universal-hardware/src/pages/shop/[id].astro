@@ -6,7 +6,7 @@ import ProductCard from '../../components/ProductCard.astro';
 import { CATEGORY_BY_SLUG } from '../../data/categories';
 import { BRAND_LOGOS } from '../../data/site-images';
 import { MAX_QTY } from '../../lib/cart-store';
-import { SHOP_GROUPS, SHOP_PRODUCTS, SHOP_PROMO, PRICE_NOTE, formatPrice, productTitle, sourceUrl, type ShopProduct } from '../../data/shop';
+import { SHOP_GROUPS, SHOP_PRODUCTS, SHOP_PROMO, formatPrice, productTitle, type ShopProduct } from '../../data/shop';
 import '../../styles/shop.css';
 
 export function getStaticPaths() {
@@ -24,7 +24,7 @@ const more = (i < 0 ? siblings.slice(-4) : siblings.slice(Math.max(0, i - 2), Ma
 ---
 <Base
   title={`${title} — ${p.name}`}
-  description={`${title}, ${p.name}: ${formatPrice(p.price)} in Universal Hardware's February 2026 sale graphic. Concept shop page with demo checkout.`}
+  description={`${title}, ${p.name}: ${formatPrice(p.price)} at Universal Hardware. Order online and collect at the branch.`}
   section="shop"
 >
   <section class="section section--tight">
@@ -57,7 +57,7 @@ const more = (i < 0 ? siblings.slice(-4) : siblings.slice(Math.max(0, i - 2), Ma
           </div>
           <div>
             <p class="pdp__price">{formatPrice(p.price)}</p>
-            <p class="price-note" style="margin-top: 8px">{PRICE_NOTE}</p>
+            <p class="price-note" style="margin-top: 8px">{SHOP_PROMO.name} price, February 2026</p>
           </div>
 
           <div class="pdp__buy">
@@ -83,7 +83,7 @@ const more = (i < 0 ? siblings.slice(-4) : siblings.slice(Math.max(0, i - 2), Ma
               </button>
             </div>
             <p class="hint">
-              Collect at a branch. <a href="/cart/">View cart</a> · Checkout runs in demo mode: nothing is charged.
+              Collect at Spanish Lookout or Belize City. <a href="/cart/">View cart</a>
             </p>
           </div>
 
@@ -112,20 +112,7 @@ const more = (i < 0 ? siblings.slice(-4) : siblings.slice(Math.max(0, i - 2), Ma
                 </>
               )
             }
-            <dt>Source</dt>
-            <dd>
-              <a href={sourceUrl(p)} target="_blank" rel="noopener">{SHOP_PROMO.name} graphic</a> on universalhardware.bz
-              ({SHOP_PROMO.where}, {SHOP_PROMO.dates})
-            </dd>
           </dl>
-          {
-            p.note && (
-              <p class="notice">
-                <Icon name="info" />
-                <span>{p.note}</span>
-              </p>
-            )
-          }
         </div>
       </div>
     </div>

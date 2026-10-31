@@ -66,7 +66,7 @@ export const BRANDS: Brand[] = [
     sources: ['brands'],
     onBrandsPage: true,
     categories: [B('lawn-and-garden')],
-    focus: 'Riding tractors, utility vehicles and mowers, as described on the Brands page.',
+    focus: 'Riding tractors, utility vehicles and mowers.',
     relationship: 'Shown on the Brands page.',
   },
   {
@@ -112,7 +112,7 @@ export const BRANDS: Brand[] = [
     sources: ['brands'],
     onBrandsPage: true,
     categories: [],
-    focus: 'Hardware cooperative.',
+    focus: 'Hardware cooperative; Universal Hardware is a member.',
     relationship: 'The Brands page states that Universal Hardware is a member of the True Value cooperative.',
   },
   {
@@ -121,7 +121,7 @@ export const BRANDS: Brand[] = [
     sources: ['brands'],
     onBrandsPage: true,
     categories: [B('household')],
-    focus: 'Refrigerant-based equipment and home appliances, as described on the Brands page.',
+    focus: 'Refrigerant-based equipment and home appliances.',
     relationship: 'Shown on the Brands page.',
   },
   {
@@ -159,7 +159,7 @@ export const BRANDS: Brand[] = [
     sources: ['brands'],
     onBrandsPage: true,
     categories: [B('lawn-and-garden')],
-    focus: 'Outdoor power equipment, as described on the Brands page.',
+    focus: 'Outdoor power equipment.',
     relationship: 'Shown on the Brands page.',
   },
   {
@@ -168,7 +168,7 @@ export const BRANDS: Brand[] = [
     sources: ['brands'],
     onBrandsPage: true,
     categories: [B('hand-tools')],
-    focus: 'Multi-tools, as described on the Brands page.',
+    focus: 'Multi-tools.',
     relationship: 'Shown on the Brands page.',
   },
   {
@@ -177,7 +177,7 @@ export const BRANDS: Brand[] = [
     sources: ['brands'],
     onBrandsPage: true,
     categories: [B('shop-tools')],
-    focus: 'Electric motors and gearmotors, as described on the Brands page.',
+    focus: 'Electric motors and gearmotors.',
     relationship: 'Shown on the Brands page.',
   },
   {
@@ -186,7 +186,7 @@ export const BRANDS: Brand[] = [
     sources: ['brands'],
     onBrandsPage: true,
     categories: [B('agriculture')],
-    focus: 'Agricultural fencing products, as described on the Brands page.',
+    focus: 'Agricultural fencing products.',
     relationship: 'Shown on the Brands page.',
   },
   {

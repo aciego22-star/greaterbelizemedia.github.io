@@ -5,18 +5,11 @@ import { BRANCH_BY_ID, type BranchId } from '../data/branches';
 import { FEATURED_PHOTOS } from '../data/site-images';
 import { SitePicture } from './SitePicture';
 import { iconSvg } from '../lib/icons';
-import {
-  addCategory,
-  getBranch,
-  hasCategory,
-  openEnquiry,
-  openGuide,
-  removeCategory,
-  setBranch,
-  subscribe,
-  subscribeBranch,
-  toast,
-} from '../lib/enquiry-store';
+import { SHOP_PRODUCTS } from '../data/shop';
+import { getBranch, openGuide, setBranch, subscribeBranch } from '../lib/site-state';
+
+/** Categories with items in the Shop get a direct link to it. */
+const SHOP_CATEGORIES = new Set(SHOP_PRODUCTS.map((p) => p.category).filter(Boolean));
 
 const Icon = ({ name, size = 18 }: { name: Parameters<typeof iconSvg>[0]; size?: number }) => (
   <span class="i" aria-hidden="true" dangerouslySetInnerHTML={{ __html: iconSvg(name, size) }} />
@@ -35,7 +28,6 @@ export default function ProductFinder({ variant = 'dark', headingLevel = 3 }: Pr
   const [pathId, setPathId] = useState<string | null>(null);
   const [answers, setAnswers] = useState<Answers>({});
   const [step, setStep] = useState(0); // 0 = choose path; 1..n questions; n+1 results
-  const [, force] = useState(0);
   const [branch, setBranchState] = useState<BranchId | ''>('');
   const headingRef = useRef<HTMLHeadingElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -48,7 +40,6 @@ export default function ProductFinder({ variant = 'dark', headingLevel = 3 }: Pr
 
   useEffect(() => {
     setBranchState(getBranch());
-    const u1 = subscribe(() => force((n) => n + 1));
     const u2 = subscribeBranch((id) => setBranchState(id));
     // Deep link support: /find/?need=backup-power
     const need = new URLSearchParams(location.search).get('need');
@@ -57,7 +48,6 @@ export default function ProductFinder({ variant = 'dark', headingLevel = 3 }: Pr
       setStep(1);
     }
     return () => {
-      u1();
       u2();
     };
   }, []);
@@ -198,7 +188,6 @@ export default function ProductFinder({ variant = 'dark', headingLevel = 3 }: Pr
             <div class="finder__matches">
               {result.matches.map((m, i) => {
                 const c = CATEGORY_BY_SLUG[m.slug];
-                const added = hasCategory(m.slug);
                 const brands = c.listedBrands;
                 return (
                   <article class={`match ${i === 0 ? 'match--primary' : ''}`}>
@@ -215,30 +204,18 @@ export default function ProductFinder({ variant = 'dark', headingLevel = 3 }: Pr
                       </ul>
                       {brands.length > 0 && (
                         <p class="match__brands">
-                          Brands named on the website: <strong>{brands.join(', ')}</strong>
+                          Brands: <strong>{brands.join(', ')}</strong>
                         </p>
                       )}
                       <div class="match__actions">
                         <a class="btn btn--sm" href={`/products/${c.slug}/`}>
                           View category <Icon name="arrow-right" size={16} />
                         </a>
-                        <button
-                          type="button"
-                          class={`btn btn--sm ${i === 0 ? 'btn--ghost' : 'btn--ghost'}`}
-                          aria-pressed={added}
-                          onClick={() => {
-                            if (added) {
-                              removeCategory(m.slug);
-                              toast(`${c.name} removed from your Enquiry Summary`);
-                            } else {
-                              addCategory(m.slug, result.context);
-                              toast(`${c.name} added to your Enquiry Summary`, 'open-enquiry');
-                            }
-                          }}
-                        >
-                          <Icon name={added ? 'check' : 'plus'} size={16} />
-                          {added ? 'In Enquiry Summary' : 'Add to Enquiry Summary'}
-                        </button>
+                        {SHOP_CATEGORIES.has(c.slug) && (
+                          <a class="btn btn--sm btn--ghost" href="/shop/">
+                            <Icon name="cart" size={16} /> Shop
+                          </a>
+                        )}
                       </div>
                     </div>
                   </article>
@@ -264,7 +241,7 @@ export default function ProductFinder({ variant = 'dark', headingLevel = 3 }: Pr
               </div>
               <div class="finder__next">
                 <Hm class="finder__h">Next step</Hm>
-                <p class="finder__small">Preferred branch (this session only)</p>
+                <p class="finder__small">Preferred branch</p>
                 <div class="finder__branches" role="group" aria-label="Preferred branch">
                   {(['spanish-lookout', 'belize-city'] as BranchId[]).map((id) => (
                     <button type="button" class="chip" aria-pressed={branch === id} onClick={() => setBranch(branch === id ? '' : id)}>
@@ -274,7 +251,7 @@ export default function ProductFinder({ variant = 'dark', headingLevel = 3 }: Pr
                 </div>
                 {branch && (
                   <p class="finder__small">
-                    {BRANCH_BY_ID[branch].name} sales WhatsApp listed on the website:{' '}
+                    {BRANCH_BY_ID[branch].name} sales WhatsApp:{' '}
                     <a href={`https://wa.me/${BRANCH_BY_ID[branch].whatsapp[0].wa}`} target="_blank" rel="noopener">
                       {BRANCH_BY_ID[branch].whatsapp[0].display}
                     </a>
@@ -289,26 +266,12 @@ export default function ProductFinder({ variant = 'dark', headingLevel = 3 }: Pr
                   </p>
                 )}
                 <div class="finder__next-actions">
-                  <button
-                    type="button"
-                    class="btn"
-                    onClick={() => {
-                      for (const m of result.matches.slice(0, 1)) if (!hasCategory(m.slug)) addCategory(m.slug, result.context);
-                      openEnquiry();
-                    }}
-                  >
-                    <Icon name="clipboard" size={18} /> Build an Enquiry Summary
-                  </button>
-                  <button type="button" class="btn btn--ghost" onClick={() => openGuide(result.guidePrompt)}>
+                  <button type="button" class="btn" onClick={() => openGuide(result.guidePrompt)}>
                     <Icon name="guide" size={18} /> Ask the Product Guide
                   </button>
                 </div>
               </div>
             </div>
-            <p class="finder__disclaimer">
-              Matches use the categories listed on Universal Hardware's public website, not live stock. Confirm availability,
-              pricing and suitability with the branch.
-            </p>
           </div>
         )}
       </div>

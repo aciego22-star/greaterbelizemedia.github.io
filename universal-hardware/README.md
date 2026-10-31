@@ -3,7 +3,7 @@
 > **Independent concept demonstration by Austere Automations. Not commissioned, approved or affiliated with Universal Hardware Company Ltd.**
 > Product information is illustrative and based on Universal Hardware's public website as viewed on 28 October 2026. No stock or availability is shown. The only prices are the Shop's past sale prices, copied from the company's February 2026 sale graphics. Nothing on the site takes a payment or sends any enquiry or order.
 
-A static, mobile-first concept site with a real-time 3D hero, a searchable catalogue of the 12 publicly listed product categories, a Shop with cart and a credit/debit card checkout that runs in demo mode, a guided product finder, a session-only Enquiry Summary, a rule-based Product Guide (English and Spanish), brand and branch pages, and the disclosures and data safeguards required for an unapproved private demo.
+A static, mobile-first concept site with a real-time 3D hero, a searchable catalogue of the 12 publicly listed product categories, a Shop with cart and a credit/debit card checkout that runs in demo mode, a guided product finder, a rule-based Product Guide, brand and branch pages, a one-tap English / Spanish switch for the whole site, and the data safeguards required for an unapproved private demo. On-page disclosure is the "Concept Preview" badge in the top bar and the paragraph in the footer.
 
 | | |
 |---|---|
@@ -35,7 +35,7 @@ npm run test:e2e       # Playwright suite against the preview server (start `npm
 npm test               # both
 ```
 
-The end-to-end suite needs a Chromium build for Playwright (`npx playwright install chromium`, or set `PLAYWRIGHT_BROWSERS_PATH`). It checks every route on direct load, metadata and disclaimers, console errors, horizontal overflow at 7 viewports, navigation, the mobile menu's keyboard behaviour, search and filters, the finder, the Enquiry Summary (add, remove, copy, reset, focus trap), the Product Guide's required conversations, the Shop, cart and demo checkout (including that the checkout has no card fields and sends no request), session persistence, WebGL, the no-WebGL fallback and reduced motion, link formats, axe-core accessibility, and a network audit that fails if anything contacts a third-party origin.
+The end-to-end suite needs a Chromium build for Playwright (`npx playwright install chromium`, or set `PLAYWRIGHT_BROWSERS_PATH`). It checks every route on direct load, metadata and disclaimers, console errors, horizontal overflow at 7 viewports, navigation, the mobile menu's keyboard behaviour, search and filters, the finder, the English / Spanish switch (whole site, islands, Guide, checkout, Spanish browser default, no overflow), the Product Guide's required conversations, the Shop, cart and demo checkout (including that the checkout has no card fields and sends no request), session persistence, WebGL, the no-WebGL fallback and reduced motion, link formats, axe-core accessibility, and a network audit that fails if anything contacts a third-party origin.
 
 Other scripts:
 
@@ -100,12 +100,13 @@ src/
   data/         Source-backed records: categories, departments, brands, branches, sources, site copy,
                 site-images (photos and logos from universalhardware.bz, with source URLs),
                 shop (the 32 Shop items as printed in the sale graphics)
-  lib/          enquiry-store (sessionStorage), cart-store + tab-storage, search, finder rules, icons,
+  lib/          site-state (branch + UI events), cart-store + tab-storage, i18n (EN/ES switch), search, finder rules, icons,
                 asset-url, payments/ (PaymentProvider contract + demo provider),
                 guide/ (engine contract, local rule engine, optional Chatbase adapter)
   hero/         HeroCarousel.astro (homepage slideshow), Hero.astro, hero-loader (progressive enhancement),
                 drill-scene + drill-model (Three.js)
-  islands/      Preact: GlobalUI (Enquiry drawer, Product Guide, toasts), ProductFinder, CatalogueSearch, SitePicture,
+  i18n/         es.json (Spanish dictionary, keyed by the English text) + es.ts (runtime patterns)
+  islands/      Preact: GlobalUI (Product Guide, toasts), ProductFinder, CatalogueSearch, SitePicture,
                 CartView, Checkout
   components/   Astro: header, footer, utility bar, branch card, map, department tile, page hero, site photo, product card
   pages/        Routes (see above)
@@ -120,9 +121,15 @@ Product photos and brand logos in `public/site-images/` are copied from Universa
 
 Design tokens come from the supplied wordmark: blue `#5592CB` (sampled), action blue `#1768B4`, graphite `#121D29`, ink `#0D1C2C`. Typefaces are Archivo (display), Inter (text) and JetBrains Mono (labels), all self-hosted.
 
+### English / Spanish
+
+The EN / ES button next to the cart (and the menu on phones) switches the whole site, instantly and without a reload. Pages are built in English. `src/lib/i18n.ts` applies the Spanish dictionary (`src/i18n/es.json`, about 1,000 strings, loaded only when Spanish is chosen) to every text node, `alt` / `aria-label` / `placeholder` / `title` and the page title, and a MutationObserver translates whatever the islands render later (finder, search, cart, checkout, toasts). `src/i18n/es.ts` covers runtime strings such as counts, prices and product names. The Product Guide answers in the site's language. The choice is kept for the tab; on a first visit a Spanish browser opens in Spanish. Switching back restores the original English.
+
+To add or change copy: edit the English, rebuild, then run `node scripts/collect-text.cjs` (all visible text, including island states) and `node scripts/collect-text.cjs --lang=es && node scripts/i18n-check.mjs`, which lists any English still showing in Spanish. Add those strings to `es.json`.
+
 ### Homepage slideshow
 
-The page opens with a full-width slideshow above the 3D hero: a storefront with a Lifan motorcycle, a store floor and a paint aisle. These are concept images supplied for this presentation, not photographs of a branch, and each carries a small "Concept image · not a photograph" label. Every slide has a 16:9 desktop and a 4:5 mobile composition. Phones (below 768 px) get the mobile one and tablets and desktops the desktop one, so neither is cropped into the other's shape. Slides fade every 7 seconds in an endless loop. Choosing a slide, swiping, the arrow keys or the pause button stop autoplay. It waits while off-screen or in a background tab, and starts paused with reduced motion. Only the first image loads with the page; each later one is fetched 3.5 s before it is due. `scripts/build-hero-slides.mjs` encodes the source PNGs as AVIF / WebP (two widths each) plus a JPEG fallback, under content-hashed names listed in `src/hero/slides.json`.
+The page opens with a full-width slideshow above the 3D hero: a storefront with a Lifan motorcycle, a store floor and a paint aisle. The images were supplied by Austere Automations. Every slide has a 16:9 desktop and a 4:5 mobile composition. Phones (below 768 px) get the mobile one and tablets and desktops the desktop one, so neither is cropped into the other's shape. Slides fade every 7 seconds in an endless loop. Choosing a slide, swiping, the arrow keys or the pause button stop autoplay. It waits while off-screen or in a background tab, and starts paused with reduced motion. Only the first image loads with the page; each later one is fetched 3.5 s before it is due. `scripts/build-hero-slides.mjs` encodes the source PNGs as AVIF / WebP (two widths each) plus a JPEG fallback, under content-hashed names listed in `src/hero/slides.json`.
 
 ### 3D hero
 
@@ -137,7 +144,7 @@ Checkout reaches card processors only through the `PaymentProvider` interface in
 ### Privacy model
 
 - No analytics, cookies, trackers, third-party fonts or scripts. The CSP enforces this.
-- The cart, Enquiry Summary, preferred branch and motion setting live in `sessionStorage` (cleared when the tab closes). Where it is blocked, the cart falls back to the tab's `window.name`. Checkout contact details and Product Guide conversations are kept in memory only.
+- The cart, language, preferred branch and motion setting live in `sessionStorage` (cleared when the tab closes). Where it is blocked, the cart falls back to the tab's `window.name`. Checkout contact details and Product Guide conversations are kept in memory only.
 - The only way data leaves the page is the visitor copying the summary, or tapping a phone, WhatsApp, map, email or official-website link. The checkout sends nothing.
 
 ## Optional live AI (disabled by default)

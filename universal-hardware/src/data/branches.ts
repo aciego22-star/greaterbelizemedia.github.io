@@ -24,7 +24,6 @@ export interface Branch {
   name: string;
   tag?: string;
   addressLines: string[];
-  addressNote?: string;
   district: string;
   hours: { days: string; time: string }[];
   phones: PhoneLine[];
@@ -40,7 +39,6 @@ export const BRANCHES: Branch[] = [
     name: 'Spanish Lookout',
     tag: 'Main branch',
     addressLines: ['585 Center Road', 'Spanish Lookout, Cayo', 'Belize'],
-    addressNote: 'Listed on the website as the company mailing address; the branch is listed on Center Road.',
     district: 'Cayo District',
     hours: [
       { days: 'Monday – Friday', time: '7:30 AM – 5:00 PM' },
@@ -83,11 +81,7 @@ export const BRANCH_BY_ID = Object.fromEntries(BRANCHES.map((b) => [b.id, b])) a
 
 export const GENERAL_SALES_EMAIL = 'sales@universalhardware.bz';
 
-export const HOLIDAY_NOTE =
-  'The website states that Universal Hardware is closed on Belize public and bank holidays. Confirm holiday hours with the branch.';
-
-export const BRANCH_VERIFY_NOTE =
-  "Details listed on Universal Hardware's current website; confirm hours and availability with the branch.";
+export const HOLIDAY_NOTE = 'Closed on Belize public and bank holidays.';
 
 export function mapsUrl(b: Branch): string {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(b.mapQuery)}`;

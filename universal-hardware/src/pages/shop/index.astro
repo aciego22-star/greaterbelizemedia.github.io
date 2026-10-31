@@ -1,33 +1,25 @@
 ---
 import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
-import Icon from '../../components/Icon.astro';
 import ProductCard from '../../components/ProductCard.astro';
-import { SHOP_GROUPS, SHOP_PRODUCTS, SHOP_PROMO, PRICE_NOTE } from '../../data/shop';
+import { SHOP_GROUPS, SHOP_PRODUCTS } from '../../data/shop';
 import '../../styles/shop.css';
 
 const count = (g: string) => SHOP_PRODUCTS.filter((p) => p.group === g).length;
 ---
 <Base
   title="Shop"
-  description="Concept online shop: Makita tools and Lifan and Meilun motorcycles from Universal Hardware's February 2026 sale graphics, with cart and a demo card checkout."
+  description="Shop Makita tools and Lifan and Meilun motorcycles online at Universal Hardware, then collect at Spanish Lookout or Belize City."
   section="shop"
 >
   <PageHero
-    eyebrow="Shop · concept"
+    eyebrow="Shop"
     title="Order online, collect at the branch."
-    lead={`${SHOP_PRODUCTS.length} products from Universal Hardware’s ${SHOP_PROMO.name} graphics, at the prices printed there. Add them to the cart and go through checkout to see how card payment works.`}
+    lead="Makita tools and Lifan and Meilun motorcycles at February 2026 sale prices. Add them to your cart, check out and collect at your branch."
     crumbs={[{ label: 'Shop' }]}
   />
   <section class="section section--tight">
     <div class="container">
-      <p class="shop-demo">
-        <Icon name="lock" />
-        <span>
-          <strong>Demo checkout.</strong> Card payment runs in demo mode. No card details are collected, nothing is charged and no order is
-          sent. <a href="/concept/#shop">How the live version would work</a>
-        </span>
-      </p>
 
       <div class="shop-bar">
         <div class="shop-filters" role="group" aria-label="Filter products">
@@ -56,14 +48,6 @@ const count = (g: string) => SHOP_PRODUCTS.filter((p) => p.group === g).length;
         }
       </ul>
 
-      <p class="notice" style="margin-top: 36px">
-        <Icon name="info" />
-        <span>
-          {PRICE_NOTE} Photos and details come from the same graphics on the
-          <a href={SHOP_PROMO.pageUrl} target="_blank" rel="noopener">News / Promotions page</a>. Confirm current models, colours,
-          stock and prices with a branch.
-        </span>
-      </p>
     </div>
   </section>
 </Base>

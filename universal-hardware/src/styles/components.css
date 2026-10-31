@@ -164,11 +164,10 @@
   gap: 10px;
   margin-left: auto;
 }
-.enquiry-trigger,
 .cart-trigger {
   position: relative;
 }
-.enquiry-trigger__count {
+.cart-trigger__count {
   position: absolute;
   top: -6px;
   right: -6px;
@@ -185,16 +184,21 @@
   text-align: center;
   box-shadow: 0 0 0 2px #fff;
 }
-.enquiry-trigger__count[hidden] {
+.cart-trigger__count[hidden] {
   display: none;
 }
 .site-header__menu {
   display: none;
 }
 @media (max-width: 1180px) {
-  .site-header__find {
+  .site-header__find,
+  .site-header__explore {
     display: none;
   }
+}
+/* Spanish labels are longer: the finder stays one tap away in the menu and on Products. */
+html[data-lang='es'] .site-header__find {
+  display: none;
 }
 @media (max-width: 999px) {
   .site-nav,
@@ -531,4 +535,62 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
+}
+
+/* Language switch (header) */
+.lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  height: 44px;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--paper);
+  color: var(--steel);
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  transition: border-color var(--dur) var(--ease-out);
+}
+.lang-toggle:hover {
+  border-color: var(--blue-600);
+}
+.lang-toggle span {
+  display: grid;
+  place-items: center;
+  min-width: 30px;
+  height: 100%;
+  border-radius: 7px;
+  transition:
+    background-color var(--dur),
+    color var(--dur);
+}
+.lang-toggle:not([data-active='es']) [data-lang-opt='en'],
+.lang-toggle[data-active='es'] [data-lang-opt='es'] {
+  background: var(--ink);
+  color: #fff;
+}
+/* Phones: one square button showing the language it switches to. */
+@media (max-width: 420px) {
+  .lang-toggle {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    justify-content: center;
+  }
+  .lang-toggle span {
+    min-width: 0;
+    background: none !important;
+    color: var(--ink) !important;
+    font-weight: 600;
+  }
+  .lang-toggle:not([data-active='es']) [data-lang-opt='en'],
+  .lang-toggle[data-active='es'] [data-lang-opt='es'] {
+    display: none;
+  }
+}
+html.i18n-pending body {
+  visibility: hidden;
 }

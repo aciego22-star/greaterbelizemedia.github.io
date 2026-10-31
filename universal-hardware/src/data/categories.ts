@@ -7,8 +7,8 @@ import type { SourceId } from './sources';
  * - `subcategories` use the wording of the source page (lightly normalised for
  *   capitalisation). Each carries search keywords, including common Belizean
  *   English and Spanish terms, so on-site search is forgiving.
- * - `summary` / `intro` are concept copy written for this demonstration. They
- *   describe what the website lists; they do not claim current stock.
+ * - `summary` / `intro` are copy written for this site. They describe the
+ *   range; they do not claim current stock.
  * - `listedBrands` are only brands the source page names for that category.
  */
 
@@ -63,7 +63,7 @@ export const CATEGORIES: Category[] = [
     department: 'power-tools',
     summary: 'Drills, hammer drills, saws, sanders, routers, grinders and cordless tools.',
     intro:
-      'The current website lists a broad power-tool range, from speed drills and hammer drills to saws, sanders, routers, grinders and cordless tools, naming Makita, Master Mechanic and Tool Craft.',
+      'A broad power-tool range, from speed drills and hammer drills to saws, sanders, routers, grinders and cordless tools, from Makita, Master Mechanic and Tool Craft.',
     subcategories: [
       s('Speed drills', 'drill', 'driver', 'taladro', 'electric drill'),
       s('Hammer drills', 'hammer drill', 'masonry', 'concrete', 'block', 'rotomartillo', 'taladro percutor'),
@@ -96,7 +96,7 @@ export const CATEGORIES: Category[] = [
     department: 'welding-shop',
     summary: 'Arc/stick, MIG and TIG welders, plasma cutters, cutting torches, electrodes and accessories.',
     intro:
-      'Welding is a featured section of the current Product Listing page, which names Lincoln Electric and lists arc/stick, MIG and TIG welders, plasma cutters, cutting torches, electrodes and welding accessories.',
+      'Arc/stick, MIG and TIG welders, plasma cutters, cutting torches, electrodes and welding accessories, with Lincoln Electric among the brands.',
     subcategories: [
       s('Arc / stick welders', 'arc', 'stick', 'smaw', 'welder', 'soldadora', 'planta de soldar'),
       s('MIG welders', 'mig', 'wire feed', 'gmaw', 'welder', 'soldadora mig'),
@@ -125,7 +125,7 @@ export const CATEGORIES: Category[] = [
     department: 'generators',
     summary: 'Generators across sizes and applications, from portable units to industrial use.',
     intro:
-      'The website describes generators for a wide range of applications, from small portable units to industrial use, and names Denyo, Briggs & Stratton, Honda, Makita, Lincoln Electric and Meilun. Sizes and models change, so the right match should be confirmed with a branch and a qualified electrician.',
+      'Generators for a wide range of applications, from small portable units to industrial use, from Denyo, Briggs & Stratton, Honda, Makita, Lincoln Electric and Meilun. A branch and a qualified electrician can help you choose the right size.',
     subcategories: [
       s('Portable and camping generators', 'portable', 'camping', 'small', 'planta portatil', 'generador'),
       s('Home backup power', 'backup', 'blackout', 'outage', 'house', 'planta de luz', 'emergencia'),
@@ -133,8 +133,6 @@ export const CATEGORIES: Category[] = [
       s('Industrial-application generators', 'industrial', 'large', 'commercial', 'diesel'),
       s('Meilun generators', 'meilun', 'parts catalogue'),
     ],
-    subcategoryNote:
-      'The Product Listing page describes generators for applications from camping to industrial use rather than listing sub-types; these groupings summarise that description. Meilun generators appear on the Meilun & Lifan page.',
     listedBrands: ['Denyo', 'Briggs & Stratton', 'Honda', 'Makita', 'Lincoln Electric', 'Meilun'],
     prepare: [
       'Which appliances or tools you want to run at the same time.',
@@ -146,8 +144,6 @@ export const CATEGORIES: Category[] = [
     related: ['water-pumps', 'welding-supplies', 'motorcycles'],
     sourceIds: ['productListing', 'meilun'],
     verificationStatus: 'website-listed',
-    caveat:
-      'The website mentions a historical size range. This concept does not repeat it as current stock; ask the branch what is available.',
   },
   {
     id: 'water-pumps',
@@ -157,7 +153,7 @@ export const CATEGORIES: Category[] = [
     department: 'pumps',
     summary: 'Submersible, jet, booster, sump, sprinkler, marine, pressure and engine-driven pumps.',
     intro:
-      'The current Product Listing page covers most water-moving needs: submersible pumps, jet pumps for pressure systems, sprinkler, booster, sump, marine and pressure pumps, plus gas- and diesel-powered water pumps.',
+      'Pumps for most water-moving needs: submersible pumps, jet pumps for pressure systems, sprinkler, booster, sump, marine and pressure pumps, plus gas- and diesel-powered water pumps.',
     subcategories: [
       s('Submersible pumps', 'well', 'deep well', 'borehole', 'bomba sumergible', 'pozo'),
       s('Jet pumps (pressure systems)', 'jet', 'shallow well', 'house water', 'pressure tank', 'bomba de agua'),
@@ -188,7 +184,7 @@ export const CATEGORIES: Category[] = [
     department: 'lawn-garden',
     summary: 'Mowers, lawn tractors, trimmers, chainsaws, sprayers, hoses and garden tools.',
     intro:
-      'From mowers and lawn tractors to trimmers, chainsaws and everyday garden tools, the current website names ECHO/Shindaiwa, MTD, Briggs & Stratton and Homelite in its lawn and garden section.',
+      'From mowers and lawn tractors to trimmers, chainsaws and everyday garden tools, with brands including ECHO/Shindaiwa, MTD, Briggs & Stratton and Homelite.',
     subcategories: [
       s('Lawn mowers', 'mower', 'push mower', 'grass', 'podadora', 'cortacesped'),
       s('Lawn tractors', 'riding mower', 'tractor', 'ride on'),
@@ -220,7 +216,7 @@ export const CATEGORIES: Category[] = [
     department: 'mobility',
     summary: 'Lifan and Meilun scooters, street, trail and cargo bikes, plus related engines and equipment.',
     intro:
-      'The current website has a dedicated Meilun & Lifan page covering scooters and cub bikes, street, trail and cargo motorcycles, along with Meilun engines, generators and water pumps, and publishes Meilun parts catalogues. A separate Hisun page lists UTV and ATV models. Those model pages carry older pricing, so current models and prices must be confirmed with a branch.',
+      'Meilun and Lifan scooters and cub bikes, street, trail and cargo motorcycles, along with Meilun engines, generators and water pumps and Meilun parts catalogues, plus Hisun UTVs and ATVs. Ask a branch about current models and prices.',
     subcategories: [
       s('Scooters and cub bikes', 'scooter', 'cub', 'moped', 'moto', 'motoneta'),
       s('Street motorcycles', 'street bike', 'commuter', 'motorbike', 'motocicleta'),
@@ -228,11 +224,9 @@ export const CATEGORIES: Category[] = [
       s('Cargo motorcycles', 'cargo', 'tricycle', 'delivery', 'carga'),
       s('Small engines', 'engine', 'motor', 'gas engine', 'motor estacionario'),
       s('Meilun generators and water pumps', 'meilun generator', 'meilun pump'),
-      s('UTVs and ATVs (Hisun page)', 'utv', 'atv', 'side by side', 'quad', 'cuatrimoto'),
+      s('UTVs and ATVs (Hisun)', 'utv', 'atv', 'side by side', 'quad', 'cuatrimoto'),
       s('Parts catalogues (Meilun)', 'parts', 'spare parts', 'repuestos', 'catalogue'),
     ],
-    subcategoryNote:
-      'Grouped from the model types shown on the Meilun & Lifan, Hisun and Meilun Catalogues pages.',
     listedBrands: ['Lifan', 'Meilun', 'Hisun'],
     prepare: [
       'How you will ride: street commuting, trail or cargo work.',
@@ -243,8 +237,6 @@ export const CATEGORIES: Category[] = [
     related: ['generators', 'water-pumps', 'shop-tools'],
     sourceIds: ['meilun', 'hisun', 'catalogues', 'productListing'],
     verificationStatus: 'website-listed-historical-details',
-    caveat:
-      'Model lists and prices on the current Meilun & Lifan and Hisun pages appear historical. No models, prices or availability are shown in this concept.',
   },
   {
     id: 'household',
@@ -254,7 +246,7 @@ export const CATEGORIES: Category[] = [
     department: 'home',
     summary: 'Refrigerators, freezers, washers, dryers, AC units, hot water tanks, grills and more.',
     intro:
-      'The household section of the current website lists major appliances such as refrigerators, freezers, dishwashers, washers and dryers, air conditioning units and hot water tanks, alongside coolers, grills, vacuum cleaners, tables, chairs and detergents.',
+      'Major appliances such as refrigerators, freezers, dishwashers, washers and dryers, air conditioning units and hot water tanks, alongside coolers, grills, vacuum cleaners, tables, chairs and detergents.',
     subcategories: [
       s('Refrigerators', 'fridge', 'refrigerator', 'refrigeradora', 'nevera'),
       s('Freezers', 'freezer', 'deep freeze', 'congelador'),
@@ -290,7 +282,7 @@ export const CATEGORIES: Category[] = [
     department: 'home',
     summary: 'Westinghouse fixtures and bulbs, ceiling fans, Lasko fans, solar, yard and portable lights.',
     intro:
-      'The current website lists Westinghouse light fixtures, bulbs and ceiling fans, Hunter ceiling fans and Lasko fans, plus flashlights, spotlights, decorative solar lights, yard lights and portable lights.',
+      'Westinghouse light fixtures, bulbs and ceiling fans, Hunter ceiling fans and Lasko fans, plus flashlights, spotlights, decorative solar lights, yard lights and portable lights.',
     subcategories: [
       s('Westinghouse light fixtures', 'fixture', 'lamp', 'lighting', 'lampara'),
       s('Westinghouse bulbs', 'bulb', 'led', 'light bulb', 'bombillo', 'foco'),
@@ -321,7 +313,7 @@ export const CATEGORIES: Category[] = [
     department: 'power-tools',
     summary: 'Table saws, planers, jointers, band saws, drill presses and shapers.',
     intro:
-      'For workshops and joinery, the current website lists table saws, planers, jointers, band saws, drill presses and shapers, naming Grizzly and Tool Craft.',
+      'For workshops and joinery: table saws, planers, jointers, band saws, drill presses and shapers, from Grizzly and Tool Craft.',
     subcategories: [
       s('Table saws', 'table saw', 'bench saw', 'sierra de mesa'),
       s('Planers', 'planer', 'thicknesser', 'cepillo'),
@@ -349,7 +341,7 @@ export const CATEGORIES: Category[] = [
     department: 'welding-shop',
     summary: 'Air compressors, chain hoists, chains, hydraulic cylinders and jacks, electric motors and ladders.',
     intro:
-      'The Shop Tools section of the current website covers workshop and garage equipment: air compressors, chain hoists and chains, hydraulic cylinders and jacks, electric motors, and ladders and stepladders.',
+      'Workshop and garage equipment: air compressors, chain hoists and chains, hydraulic cylinders and jacks, electric motors, and ladders and stepladders.',
     subcategories: [
       s('Air compressors', 'compressor', 'air', 'compresor'),
       s('Chain hoists', 'hoist', 'chain block', 'lifting', 'polipasto', 'tecle'),
@@ -378,7 +370,7 @@ export const CATEGORIES: Category[] = [
     department: 'agri-hardware',
     summary: 'Barb wire, fencing staples, electric fencers, cattle gates, rotary cutters and trailer parts.',
     intro:
-      'For farms and ranches, the current website lists barb wire, fencing staples, electric fencers, cattle gates, rotary cutters (bushhogs) and trailer parts.',
+      'For farms and ranches: barb wire, fencing staples, electric fencers, cattle gates, rotary cutters (bushhogs) and trailer parts.',
     subcategories: [
       s('Barb wire', 'barbed wire', 'barbwire', 'alambre de pua', 'fence wire'),
       s('Fencing staples', 'staples', 'grapas', 'fence'),
@@ -406,7 +398,7 @@ export const CATEGORIES: Category[] = [
     department: 'agri-hardware',
     summary: 'Hammers, saws, chisels, tapes, wrenches, socket sets, pliers, screwdrivers and extension cords.',
     intro:
-      'The everyday essentials: the current website lists hammers, hand saws, chisels, measuring tapes, wrenches, socket sets, pliers, screwdrivers and extension cords.',
+      'The everyday essentials: hammers, hand saws, chisels, measuring tapes, wrenches, socket sets, pliers, screwdrivers and extension cords.',
     subcategories: [
       s('Hammers', 'hammer', 'martillo', 'mallet'),
       s('Hand saws', 'handsaw', 'saw', 'serrucho'),

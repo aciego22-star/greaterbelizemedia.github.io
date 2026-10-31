@@ -21,20 +21,20 @@ function convo(title: string, turns: string[], expect: ((text: string, i: number
   console.log(`\n▶ ${title}`);
   let s: GuideState = LocalGuideEngine.initialState('en');
   turns.forEach((u, i) => {
-    const { reply, state } = LocalGuideEngine.reply(u, s, { enquiryCount: 0 });
+    const { reply, state } = LocalGuideEngine.reply(u, s);
     s = state;
     console.log(`  USER: ${u}\n  GUIDE: ${reply.text.replace(/\n+/g, ' ⏎ ').slice(0, 260)}…`);
-    expect[i]?.(reply.text + ' ' + JSON.stringify(reply.actions ?? []) + JSON.stringify(reply.links ?? []), i);
+    expect[i]?.(reply.text + ' ' + JSON.stringify(reply.links ?? []), i);
   });
 }
 
-const banned = [/in stock\b(?! levels)/i, /quote (has been|was) sent/i, /we have sent/i, /notified/i, /\$\s?\d/, /BZ\$/i, /guarantee/i];
+const banned = [/\bconcept\b/i, /demonstration/i, /Enquiry Summary/i, /in stock\b(?! levels| now)/i, /quote (has been|was) sent/i, /we have sent/i, /notified/i, /\$\s?\d/, /BZ\$/i, /guarantee/i];
 const noBanned = (t: string) => banned.forEach((b) => check(!b.test(t.replace(/can't check stock|can't confirm (current )?stock|no live inventory/gi, '')), `no banned claim ${b}`));
 
 convo('Generator', ['I need backup power for my home. What type should I look at?', 'Lights, fridge and fans', 'Occasional outages'], [
   (t) => { check(/appliances/i.test(t) && /occasional/i.test(t), 'asks appliances and occasional vs ongoing'); check(/\/products\/generators\//.test(t), 'links generator category'); noBanned(t); },
   (t) => check(/occasional|regular/i.test(t), 'asks remaining slot'),
-  (t) => { check(/qualified electrician/i.test(t), 'recommends electrician'); check(/add-enquiry/.test(t), 'offers add to enquiry'); noBanned(t); },
+  (t) => { check(/qualified electrician/i.test(t), 'recommends electrician'); check(/branch contact details/i.test(t), 'offers branch contacts'); noBanned(t); },
 ]);
 convo('Power tools', ['I need a cordless drill for concrete and steel.', 'Daily trade work'], [
   (t) => { check(/hammer drill/i.test(t) && /impact/i.test(t), 'distinguishes hammer vs impact'); check(/\?/.test(t), 'asks follow-up'); noBanned(t); },
@@ -45,7 +45,7 @@ convo('Pumps', ['I need a pump for my home water supply.', 'Deep well'], [
   (t) => { check(/submersible/i.test(t), 'suggests submersible for deep well'); check(/professional|confirm/i.test(t), 'recommends confirmation'); },
 ]);
 convo('Motorcycle', ['Do you carry motorbikes?', 'Town commuting', 'Belize City'], [
-  (t) => { check(/Meilun/.test(t) && /Lifan/.test(t), 'mentions Meilun & Lifan page'); check(/can't say which models|cannot|can't/i.test(t), 'does not state availability'); check(/branch/i.test(t), 'asks preferred location'); noBanned(t); },
+  (t) => { check(/Meilun/.test(t) && /Lifan/.test(t), 'mentions Meilun & Lifan page'); check(/branch can tell you which models are in stock/i.test(t), 'leaves current availability to the branch'); check(/branch/i.test(t), 'asks preferred location'); noBanned(t); },
   (t) => check(/street|scooter/i.test(t), 'maps commuting to street/scooters'),
   (t) => check(/Belize City/.test(t), 'handles branch follow-up'),
 ]);
@@ -53,10 +53,10 @@ convo('Branch', ['Where is your Belize City store?'], [
   (t) => { check(/3380 Chetumal Street/.test(t), 'gives address'); check(/224-4140/.test(t) && /667-3937/.test(t), 'gives phone and WhatsApp'); check(/confirm/i.test(t), 'verification notice'); },
 ]);
 convo('Quote', ['Can you send me a quote?'], [
-  (t) => { check(/can't send quotes/i.test(t), 'states it cannot transmit'); check(/open-enquiry/.test(t), 'offers enquiry summary'); check(/652-9933/.test(t), 'gives official branch details'); },
+  (t) => { check(/can't send quotes/i.test(t), 'states it cannot transmit'); check(/WhatsApp/.test(t), 'points to the branch WhatsApp lines'); check(/652-9933/.test(t), 'gives official branch details'); },
 ]);
 convo('Shop', ['Can I pay with a credit card online?'], [
-  (t) => { check(/\/shop\//.test(t), 'links the Shop'); check(/demo mode/i.test(t) && /nothing is charged/i.test(t), 'says card payment is a demo'); noBanned(t); },
+  (t) => { check(/\/shop\//.test(t), 'links the Shop'); check(/simulated/i.test(t) && /nothing is charged/i.test(t), 'says the card step is simulated'); noBanned(t); },
 ]);
 convo('Price', ['How much is the Makita drill?'], [
   (t) => { check(/can't send quotes or get current prices/i.test(t), 'no current prices'); check(/\/shop\//.test(t) && /ended/i.test(t), 'points to Shop sale prices as ended'); noBanned(t); },

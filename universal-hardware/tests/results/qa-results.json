@@ -1,7 +1,7 @@
 {
   "base": "http://localhost:4322",
-  "date": "2026-10-30T00:39:53.825Z",
-  "passed": 235,
+  "date": "2026-10-31T20:50:56.095Z",
+  "passed": 236,
   "failed": 0,
   "results": [
     {
@@ -872,7 +872,7 @@
       "group": "search",
       "name": "\"submersible pump\" → Water Pumps with highlighted sub-type",
       "pass": true,
-      "detail": "Water Pumps | Submersible pumps, Jet pumps (pressure systems), Sprinkler pumps, Booster pumps, Sump pumps, Marine pumps, Pressure pumps, Gas and diesel powered water pumps (135ms)"
+      "detail": "Water Pumps | Submersible pumps, Jet pumps (pressure systems), Sprinkler pumps, Booster pumps, Sump pumps, Marine pumps, Pressure pumps, Gas and diesel powered water pumps (127ms)"
     },
     {
       "group": "search",
@@ -989,100 +989,40 @@
       "detail": "Generators, Water Pumps, Lighting and Fans"
     },
     {
-      "group": "enquiry",
-      "name": "add from finder updates header count + toast",
-      "pass": true,
-      "detail": "count=1 toast=\"Generators added to your Enquiry SummaryView summary\""
-    },
-    {
       "group": "finder",
       "name": "deep well → Submersible pumps",
       "pass": true,
       "detail": "Submersible pumps, Jet pumps (pressure systems), Booster pumps, Pressure pumps"
     },
     {
-      "group": "enquiry",
-      "name": "Build an Enquiry Summary opens drawer with items",
+      "group": "finder",
+      "name": "no Enquiry Summary controls or wording remain",
       "pass": true,
-      "detail": "Generators, Water Pumps"
+      "detail": "0"
     },
     {
-      "group": "enquiry",
-      "name": "drawer is modal (aria-modal + inert background)",
+      "group": "finder",
+      "name": "Next step hands the answers to the Product Guide",
       "pass": true,
-      "detail": ""
-    },
-    {
-      "group": "enquiry",
-      "name": "focus is trapped inside drawer (40 tabs)",
-      "pass": true,
-      "detail": ""
-    },
-    {
-      "group": "enquiry",
-      "name": "summary includes categories, use, branch, notes and disclaimer",
-      "pass": true,
-      "detail": ""
-    },
-    {
-      "group": "enquiry",
-      "name": "Copy summary writes text to clipboard + announces",
-      "pass": true,
-      "detail": "Copied to your clipboard. Nothing was sent."
-    },
-    {
-      "group": "enquiry",
-      "name": "remove item",
-      "pass": true,
-      "detail": "Generators"
-    },
-    {
-      "group": "enquiry",
-      "name": "add category from drawer select",
-      "pass": true,
-      "detail": ""
-    },
-    {
-      "group": "enquiry",
-      "name": "Escape closes drawer and restores background",
-      "pass": true,
-      "detail": ""
-    },
-    {
-      "group": "enquiry",
-      "name": "draft persists across navigation (session)",
-      "pass": true,
-      "detail": "pressed=true count=2"
-    },
-    {
-      "group": "enquiry",
-      "name": "category page toggle removes item",
-      "pass": true,
-      "detail": ""
-    },
-    {
-      "group": "enquiry",
-      "name": "Reset requires confirmation, then clears",
-      "pass": true,
-      "detail": ""
+      "detail": "I need a pump for my home water supply."
     },
     {
       "group": "network",
-      "name": "finder + enquiry flows made no third-party requests",
+      "name": "finder flows made no third-party requests",
       "pass": true,
       "detail": ""
     },
     {
       "group": "guide",
-      "name": "identified as rule-based concept, not live AI",
+      "name": "panel opens with the Product Guide welcome",
       "pass": true,
-      "detail": "Interactive concept · rule-based, not live AI"
+      "detail": "Products, branches and services"
     },
     {
       "group": "guide",
       "name": "generator asks appliances",
       "pass": true,
-      "detail": "Universal Hardware's website lists generators for a wide range of applications, from small portable units up to industri"
+      "detail": "Universal Hardware offers generators for a wide range of applications, from small portable units up to industrial use, f"
     },
     {
       "group": "guide",
@@ -1100,43 +1040,43 @@
       "group": "guide",
       "name": "drill distinguishes hammer vs standard",
       "pass": true,
-      "detail": "Concrete and steel is a common combination to plan for. Universal Hardware's website lists hammer drills, speed drills a"
+      "detail": "Concrete and steel is a common combination to plan for. Universal Hardware's Power Tools range includes hammer drills, s"
     },
     {
       "group": "guide",
       "name": "pump clarifies source/depth",
       "pass": true,
-      "detail": "Happy to help narrow it down. Universal Hardware's website lists submersible, jet (pressure system), booster, pressure, "
+      "detail": "Happy to help narrow it down. Universal Hardware offers submersible, jet (pressure system), booster, pressure, sump, spr"
     },
     {
       "group": "guide",
       "name": "motorbikes → Meilun & Lifan page, no availability",
       "pass": true,
-      "detail": "Universal Hardware's website has a Meilun & Lifan page covering scooters and cub bikes, street, trail and cargo motorcyc"
+      "detail": "Universal Hardware sells Meilun and Lifan scooters, cub bikes and street, trail and cargo motorcycles, with Meilun parts"
     },
     {
       "group": "guide",
       "name": "Belize City branch details",
       "pass": true,
-      "detail": "Universal Hardware's website lists the Belize City branch here: Belize City: 3380 Chetumal Street, Belama Phase 2, Beliz"
+      "detail": "Here are the Belize City branch details: Belize City: 3380 Chetumal Street, Belama Phase 2, Belize City, Belize. Hours: "
     },
     {
       "group": "guide",
-      "name": "quote → cannot transmit, offers summary",
+      "name": "quote → cannot transmit, points to branch WhatsApp",
       "pass": true,
-      "detail": "I can't send quotes or get current prices: this is an independent concept demonstration, and it can't send requests to U"
+      "detail": "I can't send quotes or get current prices from here. The branch sales team can, and WhatsApp is usually fastest: Spanish"
     },
     {
       "group": "guide",
-      "name": "quote reply offers Open Enquiry Summary action",
+      "name": "honest about being rule-based when asked",
       "pass": true,
-      "detail": ""
+      "detail": "I'm the Product Guide, a rule-based assistant. I match your questions to the products, branches and services on this sit"
     },
     {
       "group": "guide",
-      "name": "Spanish mode responds in Spanish",
+      "name": "site switch to Spanish switches the Guide (welcome + replies)",
       "pass": true,
-      "detail": "Con gusto le ayudo. El sitio web de Universal Hardware incluye bombas sumergible"
+      "detail": "Con gusto le ayudo. Universal Hardware ofrece bombas sumergibles, de chorro (sis"
     },
     {
       "group": "guide",
@@ -1157,6 +1097,78 @@
       "detail": ""
     },
     {
+      "group": "i18n",
+      "name": "English pages do not load the Spanish dictionary",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "i18n",
+      "name": "header switch flips the page to Spanish (h1, menu, title, button label)",
+      "pass": true,
+      "detail": "{\"h1\":\"Hecho para cada trabajo.\",\"nav\":\"Tienda|Productos|Marcas|Sucursales|Nosotros\",\"title\":\"Universal Hardware — Hecho para cada trabajo\",\"btn\":\"View the site in English\"}"
+    },
+    {
+      "group": "i18n",
+      "name": "Spanish persists across pages",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "i18n",
+      "name": "island toasts follow the language",
+      "pass": true,
+      "detail": "Makita HP333DYX3B se agregó a su carritoVer carrito"
+    },
+    {
+      "group": "i18n",
+      "name": "checkout in Spanish (errors, pay button)",
+      "pass": true,
+      "detail": "Ingrese su nombre. / Ingrese un número de teléfono de al menos 7 dígitos. / Ingrese un correo como nombre@ejemplo.com. ·  Pagar BZ$248.25"
+    },
+    {
+      "group": "i18n",
+      "name": "order confirmation in Spanish",
+      "pass": true,
+      "detail": "Pago aprobado (simulado)Pedido TEST-MXF4J4Gracias, Cliente de ejemplo. Los pagos con tarjeta aún se están configurando, "
+    },
+    {
+      "group": "axe",
+      "name": "Spanish checkout confirmation",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "i18n",
+      "name": "switching back restores English without a reload",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "network",
+      "name": "language switching made no third-party requests",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "i18n",
+      "name": "a Spanish-language browser opens in Spanish",
+      "pass": true,
+      "detail": "Hecho para cada trabajo."
+    },
+    {
+      "group": "axe",
+      "name": "Spanish homepage (mobile)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "overflow",
+      "name": "Spanish: no horizontal overflow at 320, 1024 and 1200 px",
+      "pass": true,
+      "detail": ""
+    },
+    {
       "group": "links",
       "name": "tel: links match website-listed numbers",
       "pass": true,
@@ -1171,12 +1183,6 @@
     {
       "group": "links",
       "name": "external links open with rel=noopener",
-      "pass": true,
-      "detail": ""
-    },
-    {
-      "group": "links",
-      "name": "official-site links present and point to universalhardware.bz",
       "pass": true,
       "detail": ""
     },
@@ -1272,9 +1278,9 @@
     },
     {
       "group": "checkout",
-      "name": "approved demo payment shows a DEMO order reference and empties the cart",
+      "name": "approved simulated payment shows a TEST order reference and empties the cart",
       "pass": true,
-      "detail": "{\"ref\":\"Order DEMO-JXPN4P\",\"demo\":true}"
+      "detail": "{\"ref\":\"Order TEST-RBAJTP\",\"demo\":true}"
     },
     {
       "group": "axe",
@@ -1328,7 +1334,7 @@
       "group": "reel",
       "name": "autoplay fades to the next slide after about 7 s; inactive slides are aria-hidden",
       "pass": true,
-      "detail": "5530 ms after load, aria-hidden true,,true"
+      "detail": "5517 ms after load, aria-hidden true,,true"
     },
     {
       "group": "reel",

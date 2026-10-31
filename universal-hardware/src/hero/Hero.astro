@@ -59,7 +59,7 @@ const quick = [
         <source type="image/webp" srcset={`/hero/${pd.webp}`} width={pd.width} height={pd.height} />
         <img
           src={`/hero/${pd.png}`}
-          alt="3D model of the Makita 12V drill kit, as in Universal Hardware’s product photo: the black cordless drill, its 1.5Ah battery and the charger, floating above a lit plinth."
+          alt="3D model of the Makita 12V drill kit: the black cordless drill, its 1.5Ah battery and the charger, floating above a lit plinth."
           width={pd.width}
           height={pd.height}
           fetchpriority="high"
@@ -80,7 +80,7 @@ const quick = [
         <div class="hero__hud-bottom">
           <p class="hero__caption">
             <span class="hero__hint"><Icon name="rotate" size={15} /> Drag to rotate</span>
-            <span class="hero__disclose">3D model of the Makita drill kit in Universal Hardware’s 2026 promotion<span class="hero__disclose-more">. Not confirmed stock</span>.</span>
+            <span class="hero__disclose">Makita 12V CXT drill kit · HP333DYX3B</span>
           </p>
           <button type="button" class="hero__pause" data-hero-pause aria-pressed="false">
             <span data-icon-pause><Icon name="pause" size={16} /></span>
@@ -110,8 +110,8 @@ const quick = [
         <dd>Sales &amp; service center lines at each branch</dd>
       </div>
       <div class="hero__facts-src">
-        <dt class="mono">Source</dt>
-        <dd><a href="/about/#sources">Universal Hardware's public website</a></dd>
+        <dt class="mono">Shop</dt>
+        <dd><a href="/shop/">Order online, collect at the branch</a></dd>
       </div>
     </dl>
   </div>
@@ -481,9 +481,6 @@ const quick = [
     }
     .hero__disclose {
       max-width: 30ch;
-    }
-    .hero__disclose-more {
-      display: none;
     }
     .hero__pause [data-label] {
       position: absolute;

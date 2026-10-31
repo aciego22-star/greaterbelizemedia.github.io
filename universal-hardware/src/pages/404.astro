@@ -5,7 +5,7 @@ import SitePhoto from '../components/SitePhoto.astro';
 import { FEATURED_PHOTOS } from '../data/site-images';
 import { DEPARTMENTS } from '../data/departments';
 ---
-<Base title="Page not found" description="This page isn't available in the Universal Hardware concept." section="home">
+<Base title="Page not found" description="This page isn't available." section="home">
   <section class="nf">
     <div class="container nf__inner">
       <div class="nf__art" aria-hidden="true">
@@ -15,7 +15,7 @@ import { DEPARTMENTS } from '../data/departments';
       <div class="nf__copy">
         <p class="eyebrow">Page not found</p>
         <h1 class="h1">This page isn't on the shelf.</h1>
-        <p class="lead">The link may be out of date, or the page isn't part of this concept. Try a search, or head to one of these departments.</p>
+        <p class="lead">The link may be out of date. Try a search, or head to one of these departments.</p>
         <form class="nf__search" action="/products/" method="get" role="search">
           <label for="nf-q" class="sr-only">Search products</label>
           <input id="nf-q" name="q" type="search" class="input" placeholder="Search tools, equipment or brands" />

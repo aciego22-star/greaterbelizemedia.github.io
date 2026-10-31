@@ -2,24 +2,15 @@
  * Small, dependency-free behaviours shared by every page:
  * header state, mobile menu dialog, scroll reveals, card tilt, motion toggle,
  * and the declarative hooks (data-*) that connect static HTML to the
- * session-only enquiry store and the Product Guide.
+ * cart, the preferred branch and the Product Guide.
  */
-import {
-  getDraft,
-  subscribe,
-  toggleCategory,
-  hasCategory,
-  openEnquiry,
-  openGuide,
-  toast,
-  getBranch,
-  setBranch,
-  subscribeBranch,
-} from './enquiry-store';
-import { CATEGORY_BY_SLUG } from '../data/categories';
+import { openGuide, toast, getBranch, setBranch, subscribeBranch } from './site-state';
 import type { BranchId } from '../data/branches';
 import { PRODUCT_BY_ID, productTitle } from '../data/shop';
 import { addToCart, cartCount, getCart, subscribeCart } from './cart-store';
+import { initLang } from './i18n';
+
+initLang();
 
 const root = document.documentElement;
 const MOTION_KEY = 'uhc.motion.v1';
@@ -93,45 +84,9 @@ if (nav && openBtn) {
   });
 }
 
-/* ---------------- Enquiry hooks ---------------- */
-function renderCounts() {
-  const n = getDraft().items.length;
-  document.querySelectorAll<HTMLElement>('[data-enquiry-count]').forEach((el) => {
-    el.textContent = String(n);
-    el.hidden = n === 0;
-  });
-  document.querySelectorAll<HTMLButtonElement>('.enquiry-trigger').forEach((b) => {
-    b.setAttribute('aria-label', `Open enquiry summary (${n} ${n === 1 ? 'category' : 'categories'})`);
-  });
-  document.querySelectorAll<HTMLButtonElement>('[data-enquiry-toggle]').forEach((b) => {
-    const slug = b.dataset.enquiryToggle!;
-    const on = hasCategory(slug);
-    b.setAttribute('aria-pressed', String(on));
-    const label = b.querySelector<HTMLElement>('[data-label]');
-    if (label) label.textContent = on ? 'Added to Enquiry Summary' : b.dataset.labelOff || 'Add to Enquiry Summary';
-  });
-}
-renderCounts();
-subscribe(renderCounts);
-
+/* ---------------- Product Guide hooks ---------------- */
 document.addEventListener('click', (e) => {
-  const t = e.target as HTMLElement;
-  const opener = t.closest<HTMLElement>('[data-open-enquiry]');
-  if (opener) {
-    e.preventDefault();
-    openEnquiry();
-    return;
-  }
-  const toggler = t.closest<HTMLButtonElement>('[data-enquiry-toggle]');
-  if (toggler) {
-    e.preventDefault();
-    const slug = toggler.dataset.enquiryToggle!;
-    const added = toggleCategory(slug, toggler.dataset.enquiryContext);
-    const name = CATEGORY_BY_SLUG[slug]?.name ?? 'Category';
-    toast(added ? `${name} added to your Enquiry Summary` : `${name} removed from your Enquiry Summary`, added ? 'open-enquiry' : undefined);
-    return;
-  }
-  const guide = t.closest<HTMLElement>('[data-open-guide]');
+  const guide = (e.target as HTMLElement).closest<HTMLElement>('[data-open-guide]');
   if (guide) {
     e.preventDefault();
     openGuide(guide.dataset.guidePrompt || undefined);
@@ -181,7 +136,7 @@ function renderBranch() {
   document.querySelectorAll<HTMLElement>('[data-branch-status]').forEach((s) => {
     const name = id === 'spanish-lookout' ? 'Spanish Lookout' : id === 'belize-city' ? 'Belize City' : '';
     s.textContent = name
-      ? `${name} selected as your preferred branch for this browser session.`
+      ? `${name} selected as your preferred branch.`
       : 'No preferred branch selected.';
   });
 }

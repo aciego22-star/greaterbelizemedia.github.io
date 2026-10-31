@@ -3,21 +3,20 @@ import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
 import { SITE } from '../data/site';
-import { SOURCE_VIEWED } from '../data/sources';
+import { SOURCES, SOURCE_VIEWED } from '../data/sources';
 
 const works = [
   ['Shop, cart & checkout', '32 Makita tools and Lifan and Meilun motorcycles with the model, description and price printed in the company’s February 2026 sale graphics, a cart, and a checkout with branch collection and a credit/debit card step that runs in demo mode.'],
   ['Category explorer & search', 'Instant search across 12 categories, their listed product types and brands, with department and brand filters.'],
   ['Category pages', 'A landing page for every category, with listed product types, brand mentions and preparation tips.'],
   ['Product finder', 'Six guided paths with two or three questions each, mapping answers to listed categories using fixed local rules.'],
-  ['Enquiry Summary', 'Add, remove, copy and reset a plain-text summary. It stays in this browser tab and is never sent.'],
   ['Product Guide', 'A rule-based conversational guide in English and Spanish. It is not live AI.'],
   ['Branch details', 'Website-listed addresses, hours, phone and WhatsApp numbers, with a session-only branch preference.'],
-  ['Homepage slideshow', 'Three full-width concept images (storefront, store floor, paint aisle) above the 3D hero, with separate desktop and mobile compositions, a 7-second fade, and pause, dot, swipe and arrow-key controls.'],
+  ['English / Spanish', 'One tap in the header switches the whole site, including the Product Guide, between English and Spanish.'],
+  ['Homepage slideshow', 'Three full-width images (storefront, store floor, paint aisle) above the 3D hero, with separate desktop and mobile compositions, a 7-second fade, and pause, dot, swipe and arrow-key controls.'],
   ['Real-time 3D hero', 'The Makita 12V drill from Universal Hardware’s own 2026 promotion, built in 3D from the company’s product photo and rendered with WebGL, with pause, reduced-motion and static fallbacks.'],
 ];
 const illustrative = [
-  'The homepage slideshow images are concept images supplied for this presentation. They are not photographs of a Universal Hardware branch, and the people in them are not staff or customers.',
   'Shop prices are the sale prices printed in Universal Hardware’s Friends & Family Sale graphics (Spanish Lookout, 19–21 February 2026). That sale has ended: the prices show how checkout works and are not a current price list. GST treatment, delivery and returns terms are not stated.',
   'The 3D drill kit (drill, 1.5Ah battery and charger) is built from the product photo in Universal Hardware’s February 2026 promotion. Its depth is estimated from the photo’s outline, and the far side mirrors the near side. It does not confirm current stock.',
   'Every product photo and brand logo is an image from Universal Hardware’s current website. The photos show example products, not confirmed stock or current models.',
@@ -27,7 +26,7 @@ const illustrative = [
 ];
 const privacy = [
   ['No data collection', 'No forms submit anywhere. Checkout contact details stay in the page’s memory and are discarded when you leave it. No analytics, tracking pixels, cookies or third-party scripts are loaded.'],
-  ['Session-only memory', 'Your cart, Enquiry Summary, preferred branch and motion setting stay in this browser tab (sessionStorage) and are cleared when it closes.'],
+  ['Session-only memory', 'Your cart, language, preferred branch and motion setting stay in this browser tab (sessionStorage) and are cleared when it closes.'],
   ['Guide conversations', 'Kept in memory only and discarded when you leave the page. Nothing you type is transmitted.'],
   ['Outbound links on tap only', 'Phone, WhatsApp, maps, email and official-website links open only when you choose them.'],
 ];
@@ -158,11 +157,20 @@ const roadmap = [
         <li><strong>Map outline:</strong> Natural Earth 1:10m country boundaries (public domain).</li>
         <li><strong>Typefaces:</strong> Archivo, Inter and JetBrains Mono (SIL Open Font License), self-hosted.</li>
         <li><strong>Product photos &amp; brand logos:</strong> taken from Universal Hardware's current website (universalhardware.bz) for this private concept. They belong to Universal Hardware and the respective manufacturers. Main product photos are cropped from 2026 News / Promotions graphics to the product alone, leaving out every price, date and sale message. Other photos are shown as published, with WebP copies added.</li>
-        <li><strong>Homepage slideshow:</strong> concept images supplied by Austere Automations for this presentation, resized and re-encoded only. The Universal Hardware wordmark, the Lifan badge and the True Value signage shown in them belong to their owners.</li>
+        <li><strong>Homepage slideshow:</strong> images supplied by Austere Automations, resized and re-encoded only. The Universal Hardware wordmark, the Lifan badge and the True Value signage shown in them belong to their owners.</li>
         <li><strong>Shop photos:</strong> cut out of the single-product graphics of Universal Hardware’s February 2026 Friends &amp; Family Sale, leaving out the printed price, dates and contact details. The model, description and price shown beside each photo are copied from the same graphic.</li>
         <li><strong>Brand names and logos</strong> are shown for identification and belong to their owners.</li>
       </ul>
-      <p class="hint">See also: <a href="/about/#sources">full list of sources</a>.</p>
+    </div>
+  </section>
+
+  <section class="section section--tight" id="sources" aria-labelledby="sources-title">
+    <div class="container credits">
+      <h2 id="sources-title" class="h3">Sources</h2>
+      <p class="concept-p">Public Universal Hardware pages used for this concept, all viewed {SOURCE_VIEWED}.</p>
+      <ul>
+        {Object.values(SOURCES).map((src) => <li><a href={src.url} target="_blank" rel="noopener">{src.title}</a>: {src.supports}</li>)}
+      </ul>
     </div>
   </section>
 </Base>

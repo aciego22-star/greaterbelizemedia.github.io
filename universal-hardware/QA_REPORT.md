@@ -1,6 +1,6 @@
 # QA report
 
-**Build:** `universal-hardware/` · Astro 7.3.8 static output · 55 pages · tested 28 October 2026; Shop, cart and checkout added and re-tested 29 October 2026; homepage slideshow added and re-tested 30 October 2026
+**Build:** `universal-hardware/` · Astro 7.3.8 static output · 55 pages · tested 28 October 2026; Shop, cart and checkout added and re-tested 29 October 2026; homepage slideshow added and re-tested 30 October 2026; English / Spanish switch added, Enquiry Summary removed and wording cleaned up, re-tested 31 October 2026
 **Environment:** headless Chromium 1243 (Playwright 1.63) on Linux with **software WebGL (SwiftShader)**; local Netlify-like server with Brotli/gzip; Lighthouse 12.6.1.
 **Not available here:** physical iPhone / Android / iPad hardware and real GPUs. See "Outstanding issues".
 
@@ -8,12 +8,13 @@
 
 | Area | Result |
 |---|---|
-| Automated end-to-end suite (`tests/run-qa.cjs`) | **235 / 235 checks pass** |
+| Automated end-to-end suite (`tests/run-qa.cjs`) | **236 / 236 checks pass** |
 | Logic suite (`tests/guide-cases.ts`) | **All pass**: 13 guide conversations; every finder answer combination (276) resolves to listed categories and sub-types |
+| Spanish coverage (`scripts/i18n-check.mjs`) | **0 English strings left** in Spanish mode across all 55 pages and the finder, search, cart, checkout, Guide and menu states |
 | Type check (`astro check`) | 0 errors, 0 warnings |
-| Post-build checks | noindex + disclaimer on all 55 pages; `_headers`, `robots.txt`, `404.html` present; no secret patterns |
-| axe-core (WCAG 2.1 A/AA + best practice) | 0 violations on all 24 tested routes, plus the cart with items, checkout with errors and the order confirmation |
-| Lighthouse mobile | Performance 97–100 · Accessibility 100 · Best Practices 100 · SEO 69 (intentional `noindex`) |
+| Post-build checks | noindex + footer disclaimer on all 55 pages; `_headers`, `robots.txt`, `404.html` present; no secret patterns |
+| axe-core (WCAG 2.1 A/AA + best practice) | 0 violations on all 24 tested routes, plus the cart with items, checkout with errors, the order confirmation, and the Spanish homepage and confirmation |
+| Lighthouse mobile | Performance 96–100 · Accessibility 100 · Best Practices 100 · SEO 69 (intentional `noindex`); Spanish homepage 97 |
 | Lighthouse desktop (home, with the slideshow above the 3D hero) | Performance 100 on three consecutive runs · LCP 0.7 s · TBT 0 ms · CLS 0 · 534 KB (was 69 with the earlier procedural drill) |
 | Third-party network requests | **None**, on any route or during any interaction |
 | Shop and checkout writes | **None**: the whole add-to-cart → checkout → demo payment flow sends no POST or other write request, and the checkout has no card inputs |
@@ -22,24 +23,24 @@
 
 | Group | Pass | What is verified |
 |---|---|---|
-| route | 26/26 | All 24 tested routes (including the Shop, two product pages, cart and checkout) load directly (refresh-safe) with status 200, one `<h1>`, `noindex`, the concept badge, the full disclaimer, an official-site link and alt text on every image; unknown URLs return the custom 404; `/products` redirects to `/products/` |
+| route | 26/26 | All 24 tested routes (including the Shop, two product pages, cart and checkout) load directly (refresh-safe) with status 200, one `<h1>`, `noindex`, the Concept Preview badge, the footer disclaimer and alt text on every image; unknown URLs return the custom 404; `/products` redirects to `/products/` |
 | console | 24/24 | No console errors on any route |
 | images | 24/24 | Every image on every route (including the photos and logos from universalhardware.bz) loads with real dimensions, once lazy loading is forced to eager |
-| axe | 27/27 | No accessibility violations, on every route and on the cart, checkout-error and confirmation states |
-| network | 29/29 | No request to any non-origin host on page load, in the finder/enquiry flows, in Guide conversations, in the shop and checkout, or across navigation; the shop and checkout send no write request at all |
-| overflow | 7/7 | No horizontal overflow on any route at 320×640, 375×812, 390×844, 430×932, 768×1024, 1024×768, 1440×900 |
+| axe | 29/29 | No accessibility violations, on every route, on the cart, checkout-error and confirmation states, and in Spanish (mobile homepage, order confirmation) |
+| network | 30/30 | No request to any non-origin host on page load, in the finder flows, in Guide conversations, while switching language, in the shop and checkout, or across navigation; the shop and checkout send no write request at all |
+| overflow | 8/8 | No horizontal overflow on any route at 320×640, 375×812, 390×844, 430×932, 768×1024, 1024×768, 1440×900; in Spanish (longer labels) none at 320, 1024 and 1200 px |
 | nav | 10/10 | Header links (Shop, Products, Brands, Locations, About) set `aria-current`; Explore Products and Find the Right Product CTAs; hero "Find the Right Solution" → `#finder`; 8 department tiles → live category pages; every internal link target on every route resolves (no dead links) |
 | mobile-menu | 4/4 | Opens as a modal `<dialog>` with focus inside, `aria-expanded`; Escape closes and returns focus; links navigate; no standalone tap target under 24 px |
 | search | 17/17 | 12 categories by default; "submersible pump" ranks Water Pumps and highlights the sub-type; URL sync; English, Spanish and typo queries ("planta", "bomba de agua", "genrator"); finished empty state with recovery; department and brand filters; `?q=` deep link |
-| finder | 5/5 | Six need paths; backup power → Generators with electrician caution; back navigation; farm → Water Pumps related; deep well → Submersible pumps |
-| enquiry | 12/12 | Add from finder updates header badge and toast; drawer opens as `aria-modal` with `inert` background; focus trapped (40 tabs); summary includes categories, use, branch, notes and the "Nothing has been sent or submitted" line; **Copy writes exactly the preview text to the clipboard**; remove; add from select; Escape closes; persists across pages (session); category-page toggle; two-step Reset |
-| guide | 13/13 | Labelled rule-based / not live AI / not official customer service; required conversations (generator ×3 turns, cordless drill, home water pump, motorbikes, Belize City store, quote); quote offers the Enquiry Summary; Spanish mode; Escape closes; category pages hand over a contextual prompt, even when tapped before the global UI has hydrated (requests are queued and replayed) |
-| links | 4/4 | `tel:` and `https://wa.me/` links match the website-listed numbers exactly; external links use `rel="noopener"`; official-site links point to `universalhardware.bz` |
+| finder | 7/7 | Six need paths; backup power → Generators with electrician caution; back navigation; farm → Water Pumps related; deep well → Submersible pumps; no Enquiry Summary controls or wording left on any page; the next step hands the answers to the Product Guide as a ready-made question |
+| guide | 13/13 | Opens with its welcome; required conversations (generator ×3 turns, cordless drill, home water pump, motorbikes, Belize City store, quote); quote says it can't send anything and points to the branch WhatsApp lines; says it is rule-based when asked; switching the site to Spanish switches the Guide's welcome and replies; Escape closes; category pages hand over a contextual prompt, even when tapped before the global UI has hydrated (requests are queued and replayed) |
+| i18n | 8/8 | English pages never load the Spanish dictionary; the header EN/ES button flips the page (heading, menu, title, button label); Spanish persists across pages; island toasts follow the language; checkout errors, Pay button and order confirmation in Spanish; switching back restores English without a reload; a Spanish-language browser opens in Spanish |
+| links | 3/3 | `tel:` and `https://wa.me/` links match the website-listed numbers exactly; external links use `rel="noopener"` |
 | branch | 1/1 | Preferred branch persists for the session across pages |
 | privacy | 2/2 | No `localStorage` keys and no cookies are written; checkout contact details never reach `sessionStorage` or `window.name` |
 | shop | 4/4 | 32 products, each with a BZ$ price; the motorcycle filter shows 16; add to cart updates the header count and offers View cart; the product page adds the chosen quantity |
 | cart | 3/3 | Lines, colour and total (BZ$3,654.15 for the test basket) survive navigation; the stepper updates quantity and total; remove |
-| checkout | 4/4 | No card inputs or third-party frames; Enter with empty details shows three errors and focuses the first field; simulated decline shows an alert and keeps the cart; approved demo payment shows a `DEMO-` reference and empties the cart |
+| checkout | 4/4 | No card inputs or third-party frames; Enter with empty details shows three errors and focuses the first field; simulated decline shows an alert and keeps the cart; approved simulated payment shows a `TEST-` reference and empties the cart |
 | reel | 8/8 | At 1440, 768 and 390 px the slideshow opens the page with the 3D hero directly below; desktop images on desktop and tablet, mobile images on phones; only the first image loads with the page; autoplay fades to the next slide after about 7 s with inactive slides `aria-hidden`; choosing a slide stops autoplay (still there 8 s later, button reads "Play slideshow"); Play resumes and arrow keys change slide; reduced motion starts paused |
 | 3d | 9/9 | Poster first and WebGL chunk not loaded at first paint; nothing loads while the stage is below the slideshow; scene reaches `ready` once scrolled into view; idle motion animates; **Pause 3D motion** freezes frames and relabels to "Resume"; drag rotates; `touch-action: pan-y` (no scroll trap); `prefers-reduced-motion` → no idle animation; **WebGL-disabled browser shows the static render with a "Static render" badge and no errors** |
 | motion | 2/2 | Reduced motion shows reveal content immediately; the footer "Reduce motion" toggle applies and persists for the session |
@@ -50,13 +51,15 @@ Raw results: `tests/results/qa-results.json`.
 
 | Prompt | Behaviour verified |
 |---|---|
-| "I need backup power for my home. What type should I look at?" | Names the website's generator brands; asks which appliances and whether it's for occasional or regular use; then category guidance plus "a qualified electrician should evaluate the load and any connection"; offers Add to Enquiry; no sizing |
+| "I need backup power for my home. What type should I look at?" | Names the generator brands; asks which appliances and whether it's for occasional or regular use; then category guidance plus "a qualified electrician should evaluate the load and any connection"; no sizing |
 | "I need a cordless drill for concrete and steel." | Explains hammer drill vs standard drilling vs impact driver; asks material and frequency; points to Hammer drills + Cordless tools |
 | "I need a pump for my home water supply." | Asks source, depth/height and use; deep well → submersible; recommends professional confirmation |
 | "Do you carry motorbikes?" | Cites the Meilun & Lifan page (and Hisun page); says it can't state current models; asks riding style and branch |
-| "Where is your Belize City store?" | Address, listed hours, phone, Sales and Service WhatsApp, with the verification notice and an "independent demo" note |
-| "Can you send me a quote?" | Says it can't send quotes or contact the company; offers the copyable Enquiry Summary and the website-listed Sales WhatsApp lines |
-| Also: "Are you a real AI?", "Is it open now?", warranty, Spanish | Honest identity; no "open now" inference; no invented warranty; Spanish replies with a no-formal-bilingual-service note |
+| "Where is your Belize City store?" | Address, hours, phone, Sales and Service WhatsApp |
+| "Can you send me a quote?" | Says it can't send quotes itself; points to each branch's Sales WhatsApp line for prices and stock |
+| Also: "Are you a real AI?", "Is it open now?", warranty, Spanish | Honest identity (rule-based); no "open now" inference; no invented warranty; Spanish replies |
+
+The logic suite also fails any Guide reply that mentions "concept", "demonstration" or the Enquiry Summary.
 
 ## Lighthouse (simulated throttling)
 
@@ -94,6 +97,18 @@ After adding the homepage slideshow (30 October 2026, repeated runs):
 | desktop | `/` (×3) | 100, 100, 100 | 100 | 100 | 0.3 s | 0.7 s | 0 ms | 0 | 534 KB |
 | mobile | `/` (×2) | 97, 98 | 100 | 100 | 1.1–1.2 s | 2.3–2.6 s | 0 ms | 0 | 446 KB |
 
+After adding the English / Spanish switch and removing the Enquiry Summary (31 October 2026):
+
+| Form factor | Route | Language | Perf | A11y | BP | CLS |
+|---|---|---|---|---|---|---|
+| desktop | `/` | English | 100 | 100 | 100 | 0 |
+| mobile | `/` | English | 96 | 100 | 100 | 0 |
+| mobile | `/` | Spanish | 97 | 100 | 100 | 0 |
+| mobile | `/shop/` | Spanish | 99 | 100 | 100 | 0 |
+| mobile | `/checkout/` | English | 99 | 100 | 100 | 0 (FCP 1.0 s, LCP 2.0 s, TBT 0 ms, 134 KB) |
+
+The Spanish dictionary (about 1,000 strings) is a separate chunk, fetched only when Spanish is chosen; English pages never request it. In Spanish the page stays hidden until the translation is applied (about 0.2 s after load, with a 2.5 s failsafe), so there is no flash of English and no layout shift.
+
 The LCP element is now the first slideshow image (AVIF, 1672 px on desktop, 750 px on phones). Before two changes, desktop flipped between 100 and 60. Slides 2 and 3 downloaded right after load and kept the network busy, so the 3D scene could start inside Lighthouse's window, where SwiftShader frames count as blocking time. Now each later slide loads just before it is due, and the scene waits until its stage is on screen.
 
 The first table is the pre-image baseline. Below-the-fold images are lazy-loaded, every image has explicit dimensions (CLS 0), and photos are served as WebP with a JPEG fallback.
@@ -126,12 +141,11 @@ Optimisations applied after measuring (homepage mobile went from Performance 55 
 
 ## Visual review
 
-Reviewed by screenshot at every tested viewport (see `deliverables/screenshots/`): hero, departments, finder states, drawer, guide, search, category, locations, brands, mobile menu, 320/768/1024 views and the no-WebGL fallback. Fixes made during review:
+Reviewed by screenshot at every tested viewport (see `deliverables/screenshots/`): hero, departments, finder states, Spanish homepage, guide, search, category, locations, brands, mobile menu, 320/768/1024 views and the no-WebGL fallback. Fixes made during review:
 - branch card layout at 1440
 - mobile HUD clearance from the Guide button
 - figure label collision on small stages
 - extra headroom for the drill on small stages
-- toast covering drawer actions on mobile
 - footer official-site button contrast
 - map overflow
 - the "Not listed — see note" wording
@@ -143,14 +157,14 @@ Reviewed by screenshot at every tested viewport (see `deliverables/screenshots/`
 - brand cards: "No logo on the website" label contrast raised to pass axe
 - Shop: colour pickers on bike cards were squeezed to one letter, so they now take their own row; two product columns on phones; filter chips scroll sideways on phones
 - Shop at 320 px: the extra cart icon pushed the header 8 px wide, so header icon buttons shrink to 40 px below 400 px
-- Checkout in the private preview: the preview frame blocks form submission, so Pay never fired there. Pay, the Product Guide's Send and the Enquiry Summary's Add are now plain buttons with Enter handled in script. Verified in an opaque-origin sandbox emulation: cart kept across pages (sessionStorage is blocked there, so the `window.name` fallback is used), demo payment completes, and Guide Enter and Send both reply
-- Homepage slideshow: controls sit bottom-centre on desktop so they clear the floating Product Guide button; on phones the label shortens to "Concept image" and the controls move right so the two never overlap at 320 px
+- Checkout in the private preview: the preview frame blocks form submission, so Pay never fired there. Pay and the Product Guide's Send are now plain buttons with Enter handled in script. Verified in an opaque-origin sandbox emulation: cart kept across pages (sessionStorage is blocked there, so the `window.name` fallback is used), demo payment completes, and Guide Enter and Send both reply
+- Homepage slideshow: controls sit bottom-centre on desktop so they clear the floating Product Guide button; on phones the controls move right so the two never overlap at 320 px
 - 3D tests: with the stage now below the slideshow, its 1.6 s intro starts when it scrolls into view, so the pause and no-WebGL checks first scroll the stage into view and let the intro finish
 - Shop photos: the automatic cut-outs kept "SALE" beside the two trimmers and clipped the rotary hammer's handle; fixed with three paint-out areas
 
 ## Outstanding issues (named explicitly)
 
-1. **No physical-device testing.** iPhone Safari, Android Chrome and iPad landscape need hands-on checks, especially 3D smoothness, the drag-rotate vs scroll feel, the bottom-sheet drawer and Guide with the on-screen keyboard, and safe-area insets.
+1. **No physical-device testing.** iPhone Safari, Android Chrome and iPad landscape need hands-on checks, especially 3D smoothness, the drag-rotate vs scroll feel, the Guide panel with the on-screen keyboard, the EN/ES button, and safe-area insets.
 2. **3D performance on real GPUs is unmeasured.** The numbers above are a software-rendering worst case.
 3. ~~Desktop Lighthouse home = 69~~ under SwiftShader: resolved by the photo-based drill (now 100).
 4. **Chatbase adapter untested.** No agent ID was supplied. Enabling it also requires CSP changes (see README).
@@ -163,4 +177,5 @@ Reviewed by screenshot at every tested viewport (see `deliverables/screenshots/`
 11. Lighthouse flags `dom-size` (~1,365 elements on the homepage, mostly inline SVG artwork). It's informational, and TBT stayed at 0 ms.
 12. **Card payments are not live** by design. The demo provider is the only one shipped; the live path is in `PAYMENTS.md` and depends on Universal Hardware's own merchant account.
 13. **Shop prices are past sale prices** from February 2026 graphics, read as Belize dollars; GST treatment is unknown.
-14. **Homepage slideshow images are concept images**, not photographs of a branch; they need replacing with real photography, or the company's sign-off, before launch.
+14. **Spanish is a working translation**, written for this build, and has not yet been reviewed by a native speaker in Belize. It should be before launch, especially product names, sizing terms and the checkout.
+15. **The Product Guide does not pass enquiries on to staff.** It answers from the site's own content and points customers to the branch WhatsApp lines. Handing a conversation to a branch needs the approved live AI Employee and a destination Universal Hardware chooses.

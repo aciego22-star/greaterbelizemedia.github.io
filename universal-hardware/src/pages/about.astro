@@ -2,7 +2,6 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
-import { SOURCES, SOURCE_VIEWED } from '../data/sources';
 import { CATEGORIES } from '../data/categories';
 
 const news = [
@@ -12,21 +11,21 @@ const news = [
 ];
 const facts = [
   { k: 'What it does', v: 'Retail and wholesale distribution of hardware tools, household appliances, power equipment, motorcycles and welding supplies.', src: 'home' },
-  { k: 'Where', v: 'Two branches: Spanish Lookout (listed as the main branch) in Cayo District, and Belize City.', src: 'about' },
-  { k: 'Range', v: `${CATEGORIES.length - 1} product sections on the Product Listing page, plus a dedicated Meilun & Lifan motorcycles page.`, src: 'productListing' },
-  { k: 'Brands', v: 'A Brands page naming makers across tools, outdoor power, lighting, appliances and fencing, and stating membership of the True Value cooperative.', src: 'brands' },
-  { k: 'Service', v: 'A Service Center WhatsApp line at each branch, and Meilun parts catalogues published for parts orders.', src: 'about' },
+  { k: 'Where', v: 'Two branches: Spanish Lookout (main branch) in Cayo District, and Belize City.', src: 'about' },
+  { k: 'Range', v: `${CATEGORIES.length} product categories, from power tools and welding supplies to Meilun and Lifan motorcycles.`, src: 'productListing' },
+  { k: 'Brands', v: 'Makers across tools, outdoor power, lighting, appliances and fencing. Universal Hardware is a member of the True Value cooperative.', src: 'brands' },
+  { k: 'Service', v: 'A Service Center WhatsApp line at each branch, and Meilun parts catalogues for parts orders.', src: 'about' },
 ] as const;
 ---
 <Base
   title="About"
-  description="A short, source-backed overview of Universal Hardware Company Ltd. based on its public website."
+  description="About Universal Hardware Company Ltd.: retail and wholesale distributor of hardware tools, household appliances, power equipment, motorcycles and welding supplies in Belize."
   section="about"
 >
   <PageHero
     eyebrow="About Universal Hardware"
     title="Tools, equipment and home essentials for Belize."
-    lead="Universal Hardware Company Ltd. describes itself as a retail and wholesale distributor, serving customers from branches in Spanish Lookout and Belize City."
+    lead="Universal Hardware Company Ltd. is a retail and wholesale distributor, serving customers from branches in Spanish Lookout and Belize City."
     crumbs={[{ label: 'About' }]}
   />
 
@@ -35,8 +34,7 @@ const facts = [
       <div class="about-main">
         <p class="about-intro">
           From power tools and welding supplies to generators, water pumps, lawn equipment, motorcycles, household appliances and farm hardware, the
-          range on Universal Hardware's website covers work, home and industry. This page summarises what the company's own public pages say, and
-          nothing more.
+          range covers work, home and industry.
         </p>
         <dl class="fact-list">
           {
@@ -45,9 +43,6 @@ const facts = [
                 <dt class="mono">{f.k}</dt>
                 <dd>
                   <p>{f.v}</p>
-                  <a href={SOURCES[f.src].url} target="_blank" rel="noopener" class="fact__src">
-                    {SOURCES[f.src].title} <Icon name="external" size={13} />
-                  </a>
                 </dd>
               </div>
             ))
@@ -55,7 +50,7 @@ const facts = [
         </dl>
 
         <div class="about-news">
-          <h2 class="h3">Recent posts on the company's News &amp; Promotions page</h2>
+          <h2 class="h3">Recent news &amp; promotions</h2>
           <ul>
             {
               news.map((n) => (
@@ -69,50 +64,24 @@ const facts = [
               ))
             }
           </ul>
-          <p class="hint">Post titles and dates as listed on <a href={SOURCES.news.url} target="_blank" rel="noopener">universalhardware.bz/news</a>. Event details are on the company's site.</p>
         </div>
       </div>
 
       <div class="about-aside">
         <div class="about-aside__card">
-          <p class="eyebrow eyebrow--plain">Visit the official website</p>
-          <p>For company news, promotions and the authoritative version of all details on this page:</p>
-          <a class="btn btn--block" href="https://universalhardware.bz/" target="_blank" rel="noopener">universalhardware.bz <Icon name="external" size={16} /></a>
+          <p class="eyebrow eyebrow--plain">Visit a branch</p>
+          <p>Spanish Lookout and Belize City, with sales and service lines at both.</p>
+          <a class="btn btn--block" href="/locations/">Locations &amp; hours <Icon name="arrow-right" size={16} /></a>
         </div>
         <div class="about-aside__card about-aside__card--quiet">
-          <p class="eyebrow eyebrow--plain">What we leave out</p>
-          <p>
-            This concept doesn't state a founding year, staff, awards, sales figures or exclusivity arrangements. Those would come from Universal
-            Hardware directly.
-          </p>
+          <p class="eyebrow eyebrow--plain">Shop online</p>
+          <p>Order Makita tools and Lifan and Meilun motorcycles online, then collect at the branch.</p>
+          <a class="btn btn--ghost btn--block" href="/shop/">Go to the Shop <Icon name="arrow-right" size={16} /></a>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="section section--mist section--tight" id="sources" aria-labelledby="sources-title">
-    <div class="container">
-      <h2 id="sources-title" class="h2">Sources</h2>
-      <p class="lead">Public Universal Hardware pages used for this concept, all viewed {SOURCE_VIEWED}. Details may have changed since.</p>
-      <div class="src-table" role="table" aria-label="Sources">
-        <div class="src-row src-row--head" role="row">
-          <span role="columnheader">Page</span>
-          <span role="columnheader">Supports</span>
-        </div>
-        {
-          Object.values(SOURCES).map((s) => (
-            <div class="src-row" role="row">
-              <span role="cell">
-                <a href={s.url} target="_blank" rel="noopener">{s.title}</a>
-                <small>{s.url.replace('https://', '')}</small>
-              </span>
-              <span role="cell">{s.supports}</span>
-            </div>
-          ))
-        }
-      </div>
-    </div>
-  </section>
 </Base>
 
 <style>
@@ -163,13 +132,6 @@ const facts = [
   }
   .fact dd p {
     font-size: 1.05rem;
-  }
-  .fact__src {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.82rem;
-    color: var(--steel);
   }
   .about-news ul {
     list-style: none;
@@ -235,52 +197,5 @@ const facts = [
   }
   .about-aside__card--quiet .eyebrow {
     color: var(--blue-600);
-  }
-  .src-table {
-    margin-top: 28px;
-    border-radius: var(--radius);
-    border: 1px solid var(--line);
-    background: var(--paper);
-    overflow: hidden;
-  }
-  .src-row {
-    display: grid;
-    gap: 6px 24px;
-    padding: 16px 20px;
-    border-top: 1px solid var(--line);
-    font-size: 0.92rem;
-  }
-  @media (min-width: 760px) {
-    .src-row {
-      grid-template-columns: 280px 1fr;
-    }
-  }
-  .src-row--head {
-    border-top: 0;
-    background: var(--mist);
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--steel);
-  }
-  @media (max-width: 759px) {
-    .src-row--head {
-      display: none;
-    }
-    .src-row:nth-child(2) {
-      border-top: 0;
-    }
-  }
-  .src-row span:first-child {
-    display: grid;
-  }
-  .src-row a {
-    font-weight: 650;
-  }
-  .src-row small {
-    color: var(--steel);
-    font-size: 0.76rem;
-    word-break: break-all;
   }
 </style>

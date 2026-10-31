@@ -100,14 +100,14 @@ const shot = (page, name, opts = {}) => page.screenshot({ path: path.join(OUT, n
     await page.waitForTimeout(700);
     await page.locator('.finder').screenshot({ path: path.join(OUT, `03-finder-results-${tag}.png`) });
     console.log('  ', `03-finder-results-${tag}.png`);
-    await page.click('.match--primary button:has-text("Add to Enquiry Summary")');
-    await page.click('.finder__next button:has-text("Build an Enquiry Summary")');
-    await page.waitForSelector('.drawer:not([hidden])');
-    await page.selectOption('#enq-use', 'Home or household');
-    await page.check('input[name="enq-branch"][value="spanish-lookout"]');
+    // Spanish: the header EN/ES button flips the whole page in place.
+    await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
+    await page.click('[data-lang-toggle]');
+    await page.waitForFunction(() => document.documentElement.lang === 'es' && document.documentElement.classList.contains('i18n-done'));
     await page.waitForTimeout(600);
-    await shot(page, `04-enquiry-summary-${tag}.png`);
-    await page.keyboard.press('Escape');
+    await shot(page, `04-home-spanish-${tag}.png`);
+    await page.click('[data-lang-toggle]');
+    await page.waitForFunction(() => document.documentElement.lang === 'en');
     await page.waitForTimeout(300);
 
     // Product Guide

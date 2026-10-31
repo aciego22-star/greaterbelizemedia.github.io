@@ -33,7 +33,7 @@ const photo = (path: string, w: number, h: number, alt: string, source: string, 
   caption,
 });
 const listing = (path: string, w: number, h: number, what: string, source: string): SiteImage =>
-  photo(path, w, h, `${what}, as pictured on Universal Hardware's Product Listing page`, source, `${what} (Product Listing page)`);
+  photo(path, w, h, what, source, what);
 
 /** One representative photo per category, from the Product Listing page (motorcycles: Meilun & Lifan page). */
 export const CATEGORY_PHOTOS: Record<string, SiteImage> = {
@@ -52,7 +52,7 @@ export const CATEGORY_PHOTOS: Record<string, SiteImage> = {
     'products/meilun-trail-motorcycle',
     489,
     325,
-    "Trail motorcycle, as pictured on Universal Hardware's Meilun & Lifan page",
+    'Red Meilun trail motorcycle',
     'ML150GY-4RED.jpg',
   ),
 };
@@ -60,18 +60,18 @@ export const CATEGORY_PHOTOS: Record<string, SiteImage> = {
 /** Larger product shots from the Meilun & Lifan and Hisun pages, shown as a small gallery. */
 export const PRODUCT_SHOTS: Record<string, SiteImage[]> = {
   motorcycles: [
-    photo('products/meilun-trail-motorcycle', 489, 325, 'Red trail motorcycle on the Meilun & Lifan page', 'ML150GY-4RED.jpg', 'Trail motorcycle (Meilun)'),
-    photo('products/lifan-street-motorcycle', 489, 325, 'Red street motorcycle on the Meilun & Lifan page', 'lifan-lf125-5-red.jpg', 'Street motorcycle (Lifan)'),
-    photo('products/lifan-scooter', 489, 325, 'Blue cub bike on the Meilun & Lifan page', 'lifan-lf100-blue.jpg', 'Cub bike / scooter (Lifan)'),
-    photo('products/meilun-cargo-motorcycle', 489, 326, 'Red cargo tricycle on the Meilun & Lifan page', 'ml150zh-3.jpg', 'Cargo motorcycle (Meilun)'),
-    photo('products/hisun-utv', 489, 288, 'Camouflage UTV on the Hisun page', 'hisun-HS750UTV.jpg', 'UTV (Hisun page)'),
+    photo('products/meilun-trail-motorcycle', 489, 325, 'Red Meilun trail motorcycle', 'ML150GY-4RED.jpg', 'Trail motorcycle (Meilun)'),
+    photo('products/lifan-street-motorcycle', 489, 325, 'Red Lifan street motorcycle', 'lifan-lf125-5-red.jpg', 'Street motorcycle (Lifan)'),
+    photo('products/lifan-scooter', 489, 325, 'Blue Lifan cub bike', 'lifan-lf100-blue.jpg', 'Cub bike / scooter (Lifan)'),
+    photo('products/meilun-cargo-motorcycle', 489, 326, 'Red Meilun cargo tricycle', 'ml150zh-3.jpg', 'Cargo motorcycle (Meilun)'),
+    photo('products/hisun-utv', 489, 288, 'Camouflage Hisun UTV', 'hisun-HS750UTV.jpg', 'UTV (Hisun)'),
   ],
   generators: [
-    photo('products/lifan-generator', 489, 367, 'Orange-framed portable generator on the Meilun & Lifan page', 'meilun/lifan-5500.jpg', 'Portable generator (Meilun & Lifan page)'),
-    photo('products/meilun-generator', 489, 367, 'Black-framed Meilun generator on the Meilun & Lifan page', 'meilun/8000E.jpg', 'Generator (Meilun)'),
+    photo('products/lifan-generator', 489, 367, 'Orange-framed portable generator', 'meilun/lifan-5500.jpg', 'Portable generator'),
+    photo('products/meilun-generator', 489, 367, 'Black-framed Meilun generator', 'meilun/8000E.jpg', 'Generator (Meilun)'),
   ],
   'water-pumps': [
-    photo('products/meilun-water-pump', 489, 367, 'Meilun engine-driven water pump on the Meilun & Lifan page', 'meilun/50ZB.jpg', 'Engine-driven water pump (Meilun)'),
+    photo('products/meilun-water-pump', 489, 367, 'Meilun engine-driven water pump', 'meilun/50ZB.jpg', 'Engine-driven water pump (Meilun)'),
   ],
 };
 
@@ -81,7 +81,7 @@ const fromNews = (file: string, w: number, h: number, what: string, upload: stri
   webp: `site-images/news/${file}.webp`,
   width: w,
   height: h,
-  alt: `${what}, from a 2026 promotion on Universal Hardware's News page`,
+  alt: what,
   sourceUrl: NEWS + upload,
 });
 
@@ -151,4 +151,3 @@ export const BRAND_LOGOS: Record<string, SiteImage> = {
   hisun: logo('hisun', 'png', 170, 88, 'Hisun', 'hisun-logo.png'),
 };
 
-export const SITE_IMAGE_NOTE = 'Images from Universal Hardware’s current website. Models and availability may have changed.';
