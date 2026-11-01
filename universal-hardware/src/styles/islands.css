@@ -156,27 +156,6 @@
   color: var(--f-muted);
   line-height: 1.45;
 }
-.finder__path-go {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  display: grid;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 1px solid var(--f-line);
-  color: var(--f-accent);
-  transition: all var(--dur);
-}
-.finder__path:hover .finder__path-go {
-  background: var(--f-accent);
-  color: var(--graphite);
-  border-color: var(--f-accent);
-}
-.finder--light .finder__path:hover .finder__path-go {
-  color: #fff;
-}
 @media (max-width: 520px) {
   .finder__path-blurb {
     display: none;
@@ -188,12 +167,6 @@
   }
   .finder__path-label {
     font-size: 1rem;
-  }
-  .finder__path-go {
-    width: 28px;
-    height: 28px;
-    top: 10px;
-    right: 10px;
   }
 }
 

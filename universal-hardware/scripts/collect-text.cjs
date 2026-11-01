@@ -102,6 +102,9 @@ function harvest() {
   await page.click('[data-add-to-cart="lifan-lf100-a"]');
   await page.waitForTimeout(300);
   await grab('/shop/#toast');
+  // Every "Ask AI about this" description, opened at once (the page opens one at a time).
+  await page.evaluate(() => document.querySelectorAll('.p-about').forEach((p) => (p.hidden = false)));
+  await grab('/shop/#about');
   await page.goto(base + '/cart/', { waitUntil: 'load' });
   await settle();
   await grab('/cart/#items');

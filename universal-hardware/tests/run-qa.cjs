@@ -149,6 +149,9 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
     let deptOk = true;
     for (const h of depts) { const r = await page.request.get(BASE + h); if (r.status() !== 200) deptOk = false; }
     record('nav', `8 department tiles link to live category pages`, depts.length === 8 && deptOk, depts.join(' '));
+    await page.waitForSelector('.finder__path');
+    const arrows = await page.evaluate(() => document.querySelectorAll('.dept svg, .finder__path svg, .dept__go, .finder__path-go').length);
+    record('home', 'photo tiles and finder photo cards carry no arrow icons', arrows === 0, `${arrows} arrow icon(s)`);
     // every internal link across all routes resolves
     const seen = new Set();
     const broken = [];
@@ -543,6 +546,30 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
     const bikes = await page.$$eval('.shop-grid > li:not([hidden])', (l) => l.length);
     record('shop', 'motorcycle filter shows the 16 bikes', bikes === 16, `${bikes}`);
     await page.click('[data-shop-filter="all"]');
+    const asks = await page.$$eval('.shop-grid .p-card [data-ask]', (b) => b.map((x) => x.textContent.trim()));
+    record('shop', 'every product has a short "Ask AI about this" button', asks.length === 32 && asks.every((t) => t === 'Ask AI about this'), `${asks.length}`);
+    await page.click('[data-product="makita-hr2470"] [data-ask]');
+    const about = await page.evaluate(() => {
+      const c = document.querySelector('[data-product="makita-hr2470"]');
+      const panel = c.querySelector('.p-about');
+      return { open: !panel.hidden && panel.getBoundingClientRect().height > 100, expanded: c.querySelector('[data-ask]').getAttribute('aria-expanded'), text: panel.querySelector('.p-about__text').textContent, focus: document.activeElement === panel, guide: !document.querySelector('.guide') || document.querySelector('.guide').hidden };
+    });
+    record('shop', 'one tap shows a brief description in the card without opening Universal AI', about.open && about.expanded === 'true' && /SDS Plus/.test(about.text) && about.focus && about.guide, JSON.stringify(about).slice(0, 160));
+    await axeCheck('/shop/ with a description open');
+    await page.click('[data-product="makita-hp1630"] [data-ask]');
+    const one = await page.$$eval('.p-about:not([hidden])', (p) => p.map((x) => x.id));
+    record('shop', 'opening another description closes the first', one.join() === 'about-makita-hp1630', one.join());
+    await page.keyboard.press('Escape');
+    const esc = await page.evaluate(() => ({ hidden: document.getElementById('about-makita-hp1630').hidden, focus: document.activeElement?.getAttribute('aria-controls') }));
+    record('shop', 'Escape closes the description and returns focus to its button', esc.hidden && esc.focus === 'about-makita-hp1630', JSON.stringify(esc));
+    await page.click('[data-product="makita-hp1630"] [data-ask]');
+    await page.click('#about-makita-hp1630 [data-open-guide]');
+    await page.waitForSelector('.guide:not([hidden]) .msg--user', { timeout: 8000 });
+    const asked = await page.$$eval('.guide .msg--user', (m) => m.map((x) => x.textContent.trim()).join(' | '));
+    await page.waitForFunction(() => /710W corded hammer drill/.test([...document.querySelectorAll('.guide .msg--guide')].at(-1)?.textContent ?? ''), null, { timeout: 8000 }).catch(() => {});
+    const answer = await page.$$eval('.guide .msg--guide', (m) => m.at(-1)?.textContent ?? '');
+    record('shop', '"More questions? Ask Universal AI" asks about that model', /Makita HP1630/.test(asked) && /710W corded hammer drill/.test(answer), `${asked} → ${answer.slice(0, 60)}`);
+    await page.keyboard.press('Escape');
     await page.click('[data-add-to-cart="makita-hp333dyx3b"]');
     await page.selectOption('[data-product="lifan-lf100-a"] [data-colour]', 'Blue');
     await page.click('[data-add-to-cart="lifan-lf100-a"]');
@@ -731,6 +758,11 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
     await page.tap('[data-add-to-cart="makita-hp333dyx3b"]');
     const afterAdd = await badge();
     record('tap', 'shop: one tap filters, one tap adds to the cart', shown === 16 && afterAdd >= 1, `shown=${shown} cart=${afterAdd}`);
+    await page.tap('[data-product="lifan-lf100-a"] [data-ask]');
+    const tapOpen = await page.evaluate(() => !document.getElementById('about-lifan-lf100-a').hidden);
+    await page.tap('#about-lifan-lf100-a [data-ask-close]');
+    const tapClosed = await page.evaluate(() => document.getElementById('about-lifan-lf100-a').hidden);
+    record('tap', 'shop: one tap shows a product description, one tap closes it', tapOpen && tapClosed, `open=${tapOpen} closed=${tapClosed}`);
     await page.goto(BASE + '/cart/', { waitUntil: 'load' });
     await page.waitForSelector('.cart-line');
     await page.tap('.stepper button[aria-label^="One more"]');

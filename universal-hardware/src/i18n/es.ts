@@ -5,9 +5,12 @@
  * Loaded only when a visitor chooses Spanish (see src/lib/i18n.ts).
  */
 import ES from './es.json';
+import { SHOP_ABOUT } from '../data/shop-about';
 
 const COLOURS: Record<string, string> = { Black: 'Negro', Blue: 'Azul', Red: 'Rojo', White: 'Blanco', Green: 'Verde' };
-const dict = ES as Record<string, string>;
+const dict: Record<string, string> = { ...(ES as Record<string, string>) };
+// Shop product descriptions ("Ask AI about this") keep their Spanish next to the English.
+for (const [en, es] of Object.values(SHOP_ABOUT)) dict[en] = es;
 const word = (s: string) => dict[s] ?? s;
 const plural = (n: string, one: string, many: string) => (n === '1' ? one : many);
 
@@ -25,6 +28,7 @@ const PATTERNS: [RegExp, (m: RegExpMatchArray) => string][] = [
   [/^One more (.+)$/, (m) => `Uno más: ${m[1]}`],
   [/^Remove (.+)$/, (m) => `Quitar ${m[1]}`],
   [/^Colour for (.+)$/, (m) => `Color para ${m[1]}`],
+  [/^About the ((?:Makita|Lifan|Meilun) .+)$/, (m) => `Acerca de ${m[1]}`],
   [/^(Black|Blue|Red|White|Green) ·$/, (m) => `${COLOURS[m[1]]} ·`],
   [/^Pay (BZ\$[\d,.]+)$/, (m) => `Pagar ${m[1]}`],
   [/^Order ((?:TEST|UH)-[A-Z0-9]+)$/, (m) => `Pedido ${m[1]}`],

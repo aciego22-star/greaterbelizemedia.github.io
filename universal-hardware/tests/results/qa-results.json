@@ -1,7 +1,7 @@
 {
   "base": "http://localhost:4322",
-  "date": "2026-11-01T13:20:38.833Z",
-  "passed": 277,
+  "date": "2026-11-01T14:12:43.949Z",
+  "passed": 285,
   "failed": 0,
   "results": [
     {
@@ -869,6 +869,12 @@
       "detail": "/products/power-tools/ /products/welding-supplies/ /products/generators/ /products/water-pumps/ /products/lawn-and-garden/ /products/motorcycles/ /products/household/ /products/agriculture/"
     },
     {
+      "group": "home",
+      "name": "photo tiles and finder photo cards carry no arrow icons",
+      "pass": true,
+      "detail": "0 arrow icon(s)"
+    },
+    {
       "group": "nav",
       "name": "all 60 internal link targets resolve",
       "pass": true,
@@ -908,7 +914,7 @@
       "group": "search",
       "name": "\"submersible pump\" → Water Pumps with highlighted sub-type",
       "pass": true,
-      "detail": "Water Pumps | Submersible pumps, Jet pumps (pressure systems), Sprinkler pumps, Booster pumps, Sump pumps, Marine pumps, Pressure pumps, Gas and diesel powered water pumps (125ms)"
+      "detail": "Water Pumps | Submersible pumps, Jet pumps (pressure systems), Sprinkler pumps, Booster pumps, Sump pumps, Marine pumps, Pressure pumps, Gas and diesel powered water pumps (118ms)"
     },
     {
       "group": "search",
@@ -1250,7 +1256,7 @@
       "group": "i18n",
       "name": "order confirmation in Spanish",
       "pass": true,
-      "detail": "Pago aprobado (simulado)Pedido TEST-RYHH7UGracias, Sample Customer. Los pagos con tarjeta aún se están configurando, así"
+      "detail": "Pago aprobado (simulado)Pedido TEST-QCPK4JGracias, Sample Customer. Los pagos con tarjeta aún se están configurando, así"
     },
     {
       "group": "axe",
@@ -1374,6 +1380,42 @@
     },
     {
       "group": "shop",
+      "name": "every product has a short \"Ask AI about this\" button",
+      "pass": true,
+      "detail": "32"
+    },
+    {
+      "group": "shop",
+      "name": "one tap shows a brief description in the card without opening Universal AI",
+      "pass": true,
+      "detail": "{\"open\":true,\"expanded\":\"true\",\"text\":\"An SDS Plus rotary hammer with 2.7 joules of impact energy for drilling into concrete and block, and for light chiselling"
+    },
+    {
+      "group": "axe",
+      "name": "/shop/ with a description open",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "shop",
+      "name": "opening another description closes the first",
+      "pass": true,
+      "detail": "about-makita-hp1630"
+    },
+    {
+      "group": "shop",
+      "name": "Escape closes the description and returns focus to its button",
+      "pass": true,
+      "detail": "{\"hidden\":true,\"focus\":\"about-makita-hp1630\"}"
+    },
+    {
+      "group": "shop",
+      "name": "\"More questions? Ask Universal AI\" asks about that model",
+      "pass": true,
+      "detail": "Makita HP1630 → Makita HP1630: 5/8″ Hammer Drill 710W.A 710W corded hammer d"
+    },
+    {
+      "group": "shop",
       "name": "add to cart updates the header count and offers View cart",
       "pass": true,
       "detail": ""
@@ -1436,7 +1478,7 @@
       "group": "checkout",
       "name": "approved simulated payment shows a TEST order reference and empties the cart",
       "pass": true,
-      "detail": "{\"ref\":\"Order TEST-NC8JQH\",\"demo\":true}"
+      "detail": "{\"ref\":\"Order TEST-RCZ8V9\",\"demo\":true}"
     },
     {
       "group": "axe",
@@ -1448,7 +1490,7 @@
       "group": "privacy",
       "name": "checkout details are never stored",
       "pass": true,
-      "detail": "{}"
+      "detail": "{\"uhc.ai.opened.v1\":\"1\"}"
     },
     {
       "group": "network",
@@ -1490,7 +1532,7 @@
       "group": "reel",
       "name": "autoplay fades to the next slide after about 7 s; inactive slides are aria-hidden",
       "pass": true,
-      "detail": "5523 ms after load, aria-hidden true,,true"
+      "detail": "5512 ms after load, aria-hidden true,,true"
     },
     {
       "group": "reel",
@@ -1554,6 +1596,12 @@
     },
     {
       "group": "tap",
+      "name": "shop: one tap shows a product description, one tap closes it",
+      "pass": true,
+      "detail": "open=true closed=true"
+    },
+    {
+      "group": "tap",
       "name": "cart: quick repeated taps on + each count",
       "pass": true,
       "detail": "qty=3"
@@ -1580,7 +1628,7 @@
       "group": "search",
       "name": "checkout pays for priced items only and confirms the request separately",
       "pass": true,
-      "detail": "{\"ref\":\"Order TEST-KYQ3LM\",\"note\":true,\"items\":true}"
+      "detail": "{\"ref\":\"Order TEST-PRWBXS\",\"note\":true,\"items\":true}"
     },
     {
       "group": "search",

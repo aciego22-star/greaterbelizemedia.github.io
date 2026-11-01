@@ -5,6 +5,8 @@
 import { LocalGuideEngine } from '../src/lib/guide/local-engine';
 import { FINDER_PATHS } from '../src/lib/finder-rules';
 import { CATEGORY_BY_SLUG } from '../src/data/categories';
+import { SHOP_PRODUCTS } from '../src/data/shop';
+import { SHOP_ABOUT } from '../src/data/shop-about';
 import type { GuideContext, GuideReply, GuideState } from '../src/lib/guide/types';
 
 declare const process: { exit(code: number): never };
@@ -127,6 +129,8 @@ talk('AC sizing, follow-up', ['what size air conditioner do I need?', '4 x 5 met
 ]);
 talk('Inverter vs regular', ['inverter vs regular AC?'], [(r) => check(/30%/.test(r.text) && /quieter/.test(r.text), "explains inverter vs fixed speed from Sankey's page")]);
 talk('Motorcycle specs', ['what is the fuel consumption of the LF100-A?'], [(r) => check(/1\.9 L\/100 km/.test(r.text) && /3\.5 litres/.test(r.text) && r.cards?.[0]?.kind === 'product', 'gives LF100-A specs from the live site, with its Shop card')]);
+talk('Product description from the Shop button', ['Makita HP1630'], [(r) => check(/710W corded hammer drill/.test(r.text) && /BZ\$128\.25/.test(r.text) && r.cards?.[0]?.kind === 'product', 'model name alone (the "More questions?" prompt) gives the description, price and card')]);
+talk('Bike description', ['Meilun ML200ZH-3'], [(r) => check(/350 kg/.test(r.text) && /three-wheel cargo/.test(r.text) && /\$4,979\.00/.test(r.text), 'listed bike gets its description with the listed price')]);
 talk('Hisun prices', ['how much is a hisun utv?'], [(r) => check(/Sector 750: \$29,849\.00/.test(r.text) && (r.cards ?? []).some((c) => c.kind === 'brand'), 'lists Hisun models and prices from the live site')]);
 talk('Brand facts', ['tell me about Cub Cadet'], [(r) => check(/authorized dealer/.test(r.text) && r.cards?.[0]?.kind === 'brand', 'Cub Cadet: authorized dealer, with the brand card')]);
 talk('Shindaiwa', ['shindaiwa'], [(r) => check(/proud distributor of Shindaiwa/.test(r.text), 'Shindaiwa: Universal is its distributor in Belize')]);
@@ -142,6 +146,15 @@ talk('Search fallback', ['angle grinder'], [(r) => check((r.cards ?? []).some((c
 talk('Spanish: add to cart', ['agregue 2 LF100-A rojas al carrito'], [(r) => check(r.actions?.[0]?.type === 'add' && r.actions[0].qty === 2 && /agregué/.test(r.text), 'Spanish add with quantity and colour')], {}, 'es');
 talk('Spanish: AC', ['¿qué tamaño de aire acondicionado para un cuarto de 12 por 14 pies?'], [(r) => check(/168 pies cuadrados/.test(r.text) && /6,000 BTU/.test(r.text), 'Spanish AC sizing')], {}, 'es');
 talk('Guides still work', ['I need backup power for my home. What type should I look at?'], [(r) => check(/appliances/.test(r.text) && r.cards?.[0]?.kind === 'category', 'generator guide still asks, now with the Generators card')]);
+
+console.log('\n▶ Shop descriptions');
+{
+  const missing = SHOP_PRODUCTS.filter((p) => !SHOP_ABOUT[p.id]?.[0] || !SHOP_ABOUT[p.id]?.[1]);
+  const extra = Object.keys(SHOP_ABOUT).filter((id) => !SHOP_PRODUCTS.some((p) => p.id === id));
+  check(!missing.length && !extra.length, `every Shop product has an English and Spanish description${missing.length ? ` (missing: ${missing.map((p) => p.id).join(', ')})` : ''}${extra.length ? ` (unknown: ${extra.join(', ')})` : ''}`);
+  const long = Object.entries(SHOP_ABOUT).filter(([, [en]]) => en.split(' ').length > 50);
+  check(!long.length, `descriptions stay brief (50 words or fewer)${long.length ? `: ${long.map(([id]) => id).join(', ')}` : ''}`);
+}
 
 console.log('\n▶ Finder data integrity');
 for (const p of FINDER_PATHS) {

@@ -1,0 +1,46 @@
+---
+/**
+ * "Ask AI about this": one tap shows a short description of the product, from
+ * src/data/shop-about.ts, without opening the assistant. On a Shop card the
+ * description covers the card until it is closed; on the product page it opens
+ * below the button. The toggle lives in src/lib/page-behaviors.ts.
+ */
+import Icon from './Icon.astro';
+import { SHOP_ABOUT } from '../data/shop-about';
+import type { ShopProduct } from '../data/shop';
+interface Props {
+  product: ShopProduct;
+  /** Opens below the button instead of covering the card (product page). */
+  inline?: boolean;
+}
+const { product: p, inline = false } = Astro.props;
+const about = SHOP_ABOUT[p.id]?.[0];
+const id = `${inline ? 'pdp-' : ''}about-${p.id}`;
+const title = `${p.brand} ${p.model}`;
+---
+{
+  about && (
+    <>
+      <button type="button" class="ask-btn" data-ask aria-expanded="false" aria-controls={id}>
+        <Icon name="sparkle" size={16} /> Ask AI about this
+      </button>
+      <div class:list={['p-about', { 'p-about--inline': inline }]} id={id} role="region" aria-label={`About the ${title}`} tabindex="-1" hidden>
+        <div class="p-about__head">
+          <p class="p-about__by">
+            <Icon name="sparkle" size={14} /> Universal AI
+          </p>
+          {!inline && (
+            <button type="button" class="p-about__close" data-ask-close aria-label="Close description">
+              <Icon name="x" size={18} />
+            </button>
+          )}
+        </div>
+        {!inline && <p class="p-about__title">{title}</p>}
+        <p class="p-about__text">{about}</p>
+        <button type="button" class="link-btn p-about__more" data-open-guide data-guide-prompt={title}>
+          More questions? Ask Universal AI
+        </button>
+      </div>
+    </>
+  )
+}

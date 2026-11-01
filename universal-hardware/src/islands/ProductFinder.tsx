@@ -125,7 +125,6 @@ export default function ProductFinder({ variant = 'dark', headingLevel = 3 }: Pr
                     <span class="finder__path-art photo-stage"><SitePicture image={FEATURED_PHOTOS[p.photo]} decorative /></span>
                     <span class="finder__path-label">{p.label}</span>
                     <span class="finder__path-blurb">{p.blurb}</span>
-                    <span class="finder__path-go"><Icon name="arrow-right" size={16} /></span>
                   </button>
                 </li>
               ))}

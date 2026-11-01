@@ -40,6 +40,16 @@ if (header) {
   update();
 }
 
+/* ---------------- Start each page at the top, even inside a stretched frame ---------------- */
+// In a preview frame that the host stretches to the page's full height (phones do this), the host page
+// does the scrolling and keeps its old position when we load a new page, so visitors land at the bottom.
+// Bring the top of the new page (or its #target) into view instead.
+if (window.self !== window.top) {
+  const id = location.hash ? decodeURIComponent(location.hash.slice(1)) : '';
+  const target = id ? document.getElementById(id) : null;
+  (target ?? document.documentElement).scrollIntoView({ block: 'start', behavior: 'instant' });
+}
+
 /* ---------------- Mobile nav (native <dialog>) ---------------- */
 const nav = document.querySelector<HTMLDialogElement>('[data-mobile-nav]');
 const openBtn = document.querySelector<HTMLButtonElement>('[data-menu-open]');
@@ -102,6 +112,40 @@ document.addEventListener('click', (e) => {
   if (guide) {
     e.preventDefault();
     openGuide(guide.dataset.guidePrompt || undefined);
+  }
+});
+
+/* ---------------- "Ask AI about this" (Shop) ---------------- */
+// One tap shows the product's short description; it does not open the assistant.
+function setAbout(btn: HTMLElement, open: boolean) {
+  const panel = document.getElementById(btn.getAttribute('aria-controls') ?? '');
+  if (!panel) return;
+  if (open) {
+    document.querySelectorAll<HTMLElement>('[data-ask][aria-expanded="true"]').forEach((b) => b !== btn && setAbout(b, false));
+  }
+  btn.setAttribute('aria-expanded', String(open));
+  panel.hidden = !open;
+  if (open) panel.focus({ preventScroll: true });
+}
+const askFor = (panel: Element | null) => (panel ? document.querySelector<HTMLElement>(`[data-ask][aria-controls="${panel.id}"]`) : null);
+document.addEventListener('click', (e) => {
+  const t = e.target as HTMLElement;
+  const ask = t.closest<HTMLElement>('[data-ask]');
+  if (ask) return setAbout(ask, ask.getAttribute('aria-expanded') !== 'true');
+  if (t.closest('[data-ask-close]')) {
+    const btn = askFor(t.closest('.p-about'));
+    if (btn) {
+      setAbout(btn, false);
+      btn.focus({ preventScroll: true });
+    }
+  }
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Escape') return;
+  const btn = askFor((e.target as HTMLElement).closest?.('.p-about') ?? null);
+  if (btn) {
+    setAbout(btn, false);
+    btn.focus({ preventScroll: true });
   }
 });
 

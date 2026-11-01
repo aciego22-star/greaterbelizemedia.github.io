@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import Icon from '../../components/Icon.astro';
 import SitePhoto from '../../components/SitePhoto.astro';
 import ProductCard from '../../components/ProductCard.astro';
+import AskAbout from '../../components/AskAbout.astro';
 import { CATEGORY_BY_SLUG } from '../../data/categories';
 import { BRAND_LOGOS } from '../../data/site-images';
 import { MAX_QTY } from '../../lib/cart-store';
@@ -85,6 +86,10 @@ const more = (i < 0 ? siblings.slice(-4) : siblings.slice(Math.max(0, i - 2), Ma
             <p class="hint">
               Collect at Spanish Lookout or Belize City. <a href="/cart/">View cart</a>
             </p>
+          </div>
+
+          <div class="pdp__ask">
+            <AskAbout product={p} inline />
           </div>
 
           <dl class="pdp__facts">

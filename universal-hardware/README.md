@@ -81,6 +81,8 @@ Every preview publish ships with the ZIP from the same build, so the two always 
 - fonts are inlined as data URIs
 - Netlify-only files are omitted
 
+The preview host can show the page in a frame as tall as the page itself, so the browser never scrolls the frame back to the top when a link opens a new page. Inside a frame only, `src/lib/page-behaviors.ts` scrolls each new page to its top (or to the `#section` its link names). A deployed site is never framed, so this does nothing there.
+
 The preview is not for sharing. The Netlify ZIP remains the deliverable.
 
 ## Deploying (private demo only)
@@ -99,7 +101,7 @@ Indexing is blocked three ways: `<meta name="robots" content="noindex, nofollowâ
 src/
   data/         Source-backed records: categories, departments, brands, branches, sources, site copy,
                 site-images (photos and logos from universalhardware.bz, with source URLs),
-                shop (the 32 Shop items as printed in the sale graphics)
+                shop (the 32 Shop items as printed in the sale graphics), shop-about (their short descriptions, EN/ES)
   lib/          site-state (branch + UI events), cart-store + tab-storage, i18n (EN/ES switch), search, finder rules, icons,
                 asset-url, payments/ (PaymentProvider contract + demo provider),
                 guide/ (engine contract, local rule engine, optional Chatbase adapter)
@@ -169,6 +171,8 @@ The hero is the Makita HP333D kit (drill, 1.5Ah battery and charger) from Univer
 ### Shop and payments
 
 The Shop lists the 32 single-product graphics of the company's Friends & Family Sale (Spanish Lookout, 19â€“21 February 2026). Model, description, colours and price are copied as printed and labelled as past sale prices. The photos are cut out of the same graphics, without the price text, by `scripts/crop-shop-photos.py`. The cart keeps ids, colours and quantities only.
+
+Every product card, and the product page, has an **Ask AI about this** button. One tap shows a short description of the item, in English or Spanish, without opening Universal AI; a "More questions? Ask Universal AI" link inside it opens the assistant on that model. The descriptions live in `src/data/shop-about.ts` and say only what the sale graphic shows (what's in the box, colours) and, for the bikes, the specs on Universal's Meilun & Lifan page. Universal AI uses the same text when asked about a model.
 
 Checkout reaches card processors only through the `PaymentProvider` interface in `src/lib/payments/`. The only provider shipped is `demo`: a stand-in for the processor's hosted card fields that collects nothing and simulates an approved or declined answer. Going live needs Universal Hardware's own merchant account and processor, a small server step for the secret key, and current prices. See [`PAYMENTS.md`](PAYMENTS.md).
 

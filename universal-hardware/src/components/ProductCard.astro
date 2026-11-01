@@ -1,6 +1,7 @@
 ---
 import Icon from './Icon.astro';
 import SitePhoto from './SitePhoto.astro';
+import AskAbout from './AskAbout.astro';
 import { formatPrice, type ShopProduct } from '../data/shop';
 interface Props {
   product: ShopProduct;
@@ -29,5 +30,6 @@ const href = `/shop/${p.id}/`;
         <Icon name="cart" size={18} /> Add to cart<span class="sr-only">: {p.brand} {p.model}</span>
       </button>
     </div>
+    <AskAbout product={p} />
   </div>
 </article>

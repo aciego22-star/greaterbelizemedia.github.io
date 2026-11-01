@@ -13,6 +13,7 @@ import { CATEGORIES } from '../../data/categories';
 import { BRAND_FACTS, COMPANY, HISUN, HOLIDAYS, LISTED_MODELS, MEILUN_PRODUCTS, PARTS_CATALOGUES, type ListedModel } from '../../data/live-site';
 import { acSizing, compact, isAcQuestion, isAddIntent, isCartView, openStatus, parseColour, parseQty, requestText, resolveProduct } from './smarts';
 import { searchCategories, tokens } from '../search';
+import { SHOP_ABOUT } from '../../data/shop-about';
 
 const L = (lang: Lang, en: string, es: string) => (lang === 'es' ? es : en);
 const has = (t: string, ...re: RegExp[]) => re.some((r) => r.test(t));
@@ -25,6 +26,8 @@ const listedLine = (m: ListedModel, lang: Lang) =>
   L(lang, `**${m.brand} ${m.model}**: ${m.type}, listed on Universal's website at $${m.price}`, `**${m.brand} ${m.model}**: ${m.typeEs}, publicado en el sitio de Universal a $${m.price}`);
 const cartLink = (lang: Lang) => ({ label: L(lang, 'View cart', 'Ver carrito'), href: '/cart/' });
 const checkoutLink = (lang: Lang) => ({ label: L(lang, 'Checkout', 'Pagar'), href: '/checkout/' });
+/** The product's short description (the Shop's "Ask AI about this" text). */
+const aboutOf = (p: ShopProduct | undefined, lang: Lang) => (p && SHOP_ABOUT[p.id] ? SHOP_ABOUT[p.id][lang === 'es' ? 1 : 0] : '');
 const shopProductFor = (m: ListedModel) => Object.values(PRODUCT_BY_ID).find((p) => p.model === m.model);
 
 type Skill = (t: string, s: GuideState, ctx: GuideContext) => GuideReply | null;
@@ -209,18 +212,24 @@ const modelInfo: Skill = (t, s) => {
   if (!m && p) {
     s.lastShown = [p.id];
     return {
-      text: L(lang, `**${productTitle(p)}**: ${p.name}. In the Shop at ${salePrice(p, lang)}${p.colours ? `, in ${p.colours.map((c) => colourWord(c, lang)).join(', ')}` : ''}. Tap Add to put it in your cart.`, `**${productTitle(p)}**: ${p.name}. En la Tienda a ${salePrice(p, lang)}${p.colours ? `, en ${p.colours.map((c) => colourWord(c, lang)).join(', ')}` : ''}. Toque Agregar para ponerlo en su carrito.`),
+      text: L(
+        lang,
+        `**${productTitle(p)}**: ${p.name}.${aboutOf(p, lang) ? `\n\n${aboutOf(p, lang)}` : ''}\n\nIn the Shop at ${salePrice(p, lang)}${p.colours ? `, in ${p.colours.map((c) => colourWord(c, lang)).join(', ')}` : ''}. Tap Add to put it in your cart.`,
+        `**${productTitle(p)}**: ${p.name}.${aboutOf(p, lang) ? `\n\n${aboutOf(p, lang)}` : ''}\n\nEn la Tienda a ${salePrice(p, lang)}${p.colours ? `, en ${p.colours.map((c) => colourWord(c, lang)).join(', ')}` : ''}. Toque Agregar para ponerlo en su carrito.`,
+      ),
       cards: [{ kind: 'product', id: p.id }],
     };
   }
   if (!m) return null;
   const specs = lang === 'es' ? m.specsEs : m.specs;
+  // A spec question gets the listed specs; anything else gets the product's short description.
+  const about = /(spec|fuel|tank|brake|consum|tanque|freno|caracteristic)/.test(t) && specs?.length ? '' : aboutOf(p, lang);
   if (p) s.lastShown = [p.id];
   return {
     text: L(
       lang,
-      `${listedLine(m, lang)}.${specs?.length ? `\n${specs.map((x) => `• ${x}`).join('\n')}` : ''}${p ? `\n\nIt's also in the online Shop at ${salePrice(p, lang)}.` : '\n\nIt isn\'t in the online Shop, but I can add it to your cart as a request.'}\n\nThe branch confirms today's price and availability.`,
-      `${listedLine(m, lang)}.${specs?.length ? `\n${specs.map((x) => `• ${x}`).join('\n')}` : ''}${p ? `\n\nTambién está en la Tienda en línea a ${salePrice(p, lang)}.` : '\n\nNo está en la Tienda en línea, pero puedo agregarlo a su carrito como solicitud.'}\n\nLa sucursal confirma el precio y la disponibilidad de hoy.`,
+      `${listedLine(m, lang)}.${about ? `\n\n${about}` : specs?.length ? `\n${specs.map((x) => `• ${x}`).join('\n')}` : ''}${p ? `\n\nIt's also in the online Shop at ${salePrice(p, lang)}.` : '\n\nIt isn\'t in the online Shop, but I can add it to your cart as a request.'}\n\nThe branch confirms today's price and availability.`,
+      `${listedLine(m, lang)}.${about ? `\n\n${about}` : specs?.length ? `\n${specs.map((x) => `• ${x}`).join('\n')}` : ''}${p ? `\n\nTambién está en la Tienda en línea a ${salePrice(p, lang)}.` : '\n\nNo está en la Tienda en línea, pero puedo agregarlo a su carrito como solicitud.'}\n\nLa sucursal confirma el precio y la disponibilidad de hoy.`,
     ),
     cards: p ? [{ kind: 'product', id: p.id }] : [{ kind: 'listed', model: m.model }],
     chips: p ? undefined : [L(lang, `Add the ${m.model} to my cart`, `Agregue la ${m.model} a mi carrito`)],
