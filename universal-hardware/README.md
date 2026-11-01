@@ -3,7 +3,7 @@
 > **Independent concept demonstration by Austere Automations. Not commissioned, approved or affiliated with Universal Hardware Company Ltd.**
 > Product information is illustrative and based on Universal Hardware's public website as viewed on 28 October 2026. No stock or availability is shown. The only prices are the Shop's past sale prices, copied from the company's February 2026 sale graphics. Nothing on the site takes a payment or sends any enquiry or order.
 
-A static, mobile-first concept site with a real-time 3D hero, a searchable catalogue of the 12 publicly listed product categories, a Shop with cart and a credit/debit card checkout that runs in demo mode, a guided product finder, the Universal AI assistant (rule-based in this build), a What's New at Universal page of sales and events, brand and branch pages, a one-tap English / Spanish switch for the whole site, and the data safeguards required for an unapproved private demo. On-page disclosure is the "Concept Preview" badge in the top bar and the paragraph in the footer.
+A static, mobile-first concept site with an interactive 3D hero, a searchable catalogue of the 12 publicly listed product categories, a Shop with cart and a credit/debit card checkout that runs in demo mode, a guided product finder, the Universal AI assistant (rule-based in this build), a What's New at Universal page of sales and events, brand and branch pages, a one-tap English / Spanish switch for the whole site, and the data safeguards required for an unapproved private demo. On-page disclosure is the "Concept Preview" badge in the top bar and the paragraph in the footer.
 
 | | |
 |---|---|
@@ -168,7 +168,7 @@ The page opens with a full-width slideshow above the 3D hero: a storefront with 
 
 ### 3D hero
 
-The hero is the Makita HP333D kit (drill, 1.5Ah battery and charger) from Universal Hardware's own product photo, given 3D depth: `scripts/build-hp333d.py` cuts the kit out of the photo and inflates each piece's outline into a solid, and the photo is mapped onto it. The hero ships with a static render of the same scene (AVIF/WebP/PNG), so the first paint is instant and identical. The hero sits directly below the homepage slideshow. The Three.js bundle (≈122 KB gzip) and the kit data (≈161 KB) load only once a fifth of the stage is on screen, then on the next interaction or after a short idle period. Shaders compile asynchronously, and the scene pauses off-screen or in background tabs, is disposed on page hide, caps resolution and frame rate on low-power devices, and respects `prefers-reduced-motion`, the footer "Reduce motion" toggle and the "Pause 3D motion" button. Without WebGL 2 the static render stays and is labelled "Static render". The drill data and posters carry a content hash in their file names (listed in `src/hero/hp333d.json` and `src/hero/posters.json`), so an update is never served from a stale cache. Regenerate the posters with `npm run posters` (serve `dist/` first). See [`3D_ASSET_LICENSE.md`](3D_ASSET_LICENSE.md).
+The hero is the Makita HP333D kit (drill, 1.5Ah battery and charger) from Universal Hardware's own product photo, given 3D depth: `scripts/build-hp333d.py` cuts the kit out of the photo and inflates each piece's outline into a solid, and the photo is mapped onto it. The hero ships with a static render of the same scene (AVIF/WebP/PNG), so the first paint is instant and identical. The hero sits directly below the homepage slideshow. The Three.js bundle (≈122 KB gzip) and the kit data (≈161 KB) load only once a fifth of the stage is on screen, then on the next interaction or after a short idle period. Shaders compile asynchronously, and the scene pauses off-screen or in background tabs, is disposed on page hide, caps resolution and frame rate on low-power devices, and respects `prefers-reduced-motion`, the footer "Reduce motion" toggle and the "Pause 3D motion" button. The stage's badge names what is actually running: no badge over the still render, "Loading 3D" while the scene loads, "Interactive 3D" once it renders (with "Drag to rotate" and the Pause button). Without WebGL 2, if the scene fails, or if the browser later drops the WebGL context, the still render stays (or comes back) with no 3D label. The drill data and posters carry a content hash in their file names (listed in `src/hero/hp333d.json` and `src/hero/posters.json`), so an update is never served from a stale cache. Regenerate the posters with `npm run posters` (serve `dist/` first). See [`3D_ASSET_LICENSE.md`](3D_ASSET_LICENSE.md).
 
 ### Shop and payments
 
@@ -176,7 +176,9 @@ The Shop lists the 32 single-product graphics of the company's Friends & Family 
 
 Every product card, and the product page, has an **Ask AI about this** button. One tap shows a short description of the item, in English or Spanish, without opening Universal AI; a "More questions? Ask Universal AI" link inside it opens the assistant on that model. The descriptions live in `src/data/shop-about.ts` and say only what the sale graphic shows (what's in the box, colours) and, for the bikes, the specs on Universal's Meilun & Lifan page. Universal AI uses the same text when asked about a model.
 
-Checkout reaches card processors only through the `PaymentProvider` interface in `src/lib/payments/`. The only provider shipped is `demo`: a stand-in for the processor's hosted card fields that collects nothing and simulates an approved or declined answer. Going live needs Universal Hardware's own merchant account and processor, a small server step for the secret key, and current prices. See [`PAYMENTS.md`](PAYMENTS.md).
+The whole store runs in **demonstration mode**. The Shop, product pages, cart and checkout carry the notice "Demonstration mode — no actual orders or payments are processed." (`src/components/DemoNotice.astro`), and the Shop's heading is "Explore our online store concept." The checkout ("Preview the checkout experience") keeps every step: details, branch collection, the card step and a confirmation. Its button reads "Simulate payment · BZ$…", and the confirmation reads "Demo order complete" with a `TEST-` demo reference, the same notice, and a short account of what would happen once live (real reference, email receipt, branch alert). Nothing on it says a paid order was placed.
+
+Checkout reaches card processors only through the `PaymentProvider` interface in `src/lib/payments/`. The only provider shipped is `demo` (`live: false`): a stand-in for the processor's hosted card fields that collects nothing and simulates an approved or declined answer. There is no live provider, payment SDK, API key or network call in the build. Going live needs Universal Hardware's own merchant account and processor, a small server step for the secret key, and current prices. See [`PAYMENTS.md`](PAYMENTS.md).
 
 ### Privacy model
 
@@ -196,7 +198,7 @@ This adds a "Try the live AI test widget" option that loads Chatbase's embed onl
 
 ## Browser support
 
-Current Chrome, Edge, Safari (iOS 16.4+ / macOS 13+) and Firefox. The 3D hero needs WebGL 2; other browsers get the static render. Native `<dialog>`, `inert`, `:has()` and AVIF are used, with fallbacks where they matter (WebP/PNG posters, clipboard fallback).
+Current Chrome, Edge, Safari (iOS 16.4+ / macOS 13+) and Firefox. The 3D hero needs WebGL 2; other browsers get the still render. Native `<dialog>`, `inert`, `:has()` and AVIF are used, with fallbacks where they matter (WebP/PNG posters, clipboard fallback).
 
 ## Repository note
 

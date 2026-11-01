@@ -59,7 +59,7 @@ const quick = [
         <source type="image/webp" srcset={`/hero/${pd.webp}`} width={pd.width} height={pd.height} />
         <img
           src={`/hero/${pd.png}`}
-          alt="3D model of the Makita 12V drill kit: the black cordless drill, its 1.5Ah battery and the charger, floating above a lit plinth."
+          alt="3D render of the Makita 12V drill kit: the black cordless drill, its 1.5Ah battery and the charger, floating above a lit plinth."
           width={pd.width}
           height={pd.height}
           fetchpriority="high"
@@ -71,10 +71,9 @@ const quick = [
       <div class="hero__hud">
         <div class="hero__hud-top">
           <p class="mono hero__fig">Fig. 01 — Makita 12V drill kit</p>
-          <p class="tag tag--dark hero__badge">
+          <p class="tag tag--dark hero__badge" data-hero-badge>
             <span class="tag-dot" aria-hidden="true"></span>
-            <span class="hero__badge-live">Real-time 3D</span>
-            <span class="hero__badge-static">Static render</span>
+            <span data-hero-badge-text></span>
           </p>
         </div>
         <div class="hero__hud-bottom">
@@ -111,7 +110,7 @@ const quick = [
       </div>
       <div class="hero__facts-src">
         <dt class="mono">Shop</dt>
-        <dd><a href="/shop/">Order online, collect at the branch</a></dd>
+        <dd><a href="/shop/">Explore our online store concept</a></dd>
       </div>
     </dl>
   </div>
@@ -290,17 +289,12 @@ const quick = [
   .hero__fig {
     color: var(--on-dark-muted);
   }
-  .hero__badge-static,
-  .hero__stage[data-state='fallback'] .hero__badge-live,
-  .hero__stage[data-state='deferred'] .hero__badge-live {
+  /* The badge names what is running: "Loading 3D" while the scene loads, "Interactive 3D" once it runs.
+     Over the still image (before the scene starts, or as the fallback) there is no badge. */
+  .hero__stage:not([data-state='loading']):not([data-state='ready']) .hero__badge {
     display: none;
   }
-  .hero__stage[data-state='fallback'] .hero__badge-static,
-  .hero__stage[data-state='deferred'] .hero__badge-static {
-    display: inline;
-  }
-  .hero__stage[data-state='loading'] .hero__badge .tag-dot,
-  .hero__stage[data-state='poster'] .hero__badge .tag-dot {
+  .hero__stage[data-state='loading'] .hero__badge .tag-dot {
     animation: pulse 1.4s ease-in-out infinite;
   }
   @keyframes pulse {

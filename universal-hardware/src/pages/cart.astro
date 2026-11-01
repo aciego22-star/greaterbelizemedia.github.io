@@ -1,11 +1,14 @@
 ---
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
+import DemoNotice from '../components/DemoNotice.astro';
 import CartView from '../islands/CartView.tsx';
 import '../styles/shop.css';
 ---
-<Base title="Cart" description="Your Universal Hardware shopping cart." section="shop">
-  <PageHero title="Your cart" crumbs={[{ href: '/shop/', label: 'Shop' }, { label: 'Cart' }]} />
+<Base title="Cart" description="The cart of the Universal Hardware online store concept." section="shop">
+  <PageHero title="Your cart" crumbs={[{ href: '/shop/', label: 'Shop' }, { label: 'Cart' }]}>
+    <DemoNotice />
+  </PageHero>
   <section class="section section--tight">
     <div class="container">
       <CartView client:load />

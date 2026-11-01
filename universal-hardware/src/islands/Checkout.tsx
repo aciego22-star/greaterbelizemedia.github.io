@@ -1,5 +1,7 @@
 /**
- * Checkout for the concept shop.
+ * Checkout for the concept shop. It is a working demonstration: the whole
+ * journey runs, but no order is placed, no payment is taken and nothing is
+ * sent, and every step and the confirmation say so.
  *
  * Contact details live in this component's memory only: they are not stored,
  * logged or sent. Card payment goes through the PaymentProvider interface; the
@@ -135,41 +137,51 @@ export default function Checkout() {
         </span>
         <div>
           <h2 class="h2" id="confirm-title">
-            {order.paid ? 'Payment approved' : 'Request received'} <span class="muted">(simulated)</span>
+            {order.paid ? 'Demo order complete' : 'Demo request complete'}
           </h2>
           <p class="confirm__ref" style={{ marginTop: '10px' }}>
-            Order {order.reference}
+            Demo reference {order.reference}
           </p>
         </div>
+        <p class="demo-notice">
+          <Icon name="info" size={16} />
+          <span>
+            <strong>Demonstration mode — no actual orders or payments are processed.</strong>{' '}
+            {order.paid ? 'No order was placed and no payment was taken.' : 'No request was sent.'}
+          </span>
+        </p>
         <p class="lead">
           {order.paid
-            ? `Thanks, ${order.name.trim()}. Card payments are still being set up, so this payment was simulated: no card was charged and the order was not sent to the branch.`
-            : `Thanks, ${order.name.trim()}. Online requests are still being set up, so this request was simulated and was not sent to the branch.`}
+            ? `Thanks, ${order.name.trim()}. This checkout was a demonstration: no card was charged and nothing was sent to Universal Hardware. Once live, this page would show the real order reference, an email receipt would follow and the branch would be alerted to prepare the order for collection.`
+            : `Thanks, ${order.name.trim()}. This request was a demonstration and was not sent to Universal Hardware. Once live, the branch would confirm the price and availability and contact the customer before payment.`}
         </p>
-        {order.requests && (
+        {order.requests && order.paid && (
           <p class="request-note">
             <Icon name="info" />
-            <span>For requested items, the branch confirms the price and availability and contacts you before you pay for them.</span>
+            <span>Once live, the branch confirms the price and availability of requested items and contacts the customer before they pay for them.</span>
           </p>
         )}
         <div class="confirm__grid">
           <section class="confirm__panel" aria-labelledby="confirm-items">
-            <h3 id="confirm-items">Your order</h3>
+            <h3 id="confirm-items">Items in this demo</h3>
             <SummaryItems lines={order.lines} />
             <p class="summary__total">
-              <span>{order.paid ? 'Total' : 'Paid now'}</span>
+              <span>Demo total</span>
               <span>{formatPrice(order.total)}</span>
             </p>
           </section>
           <section class="confirm__panel" aria-labelledby="confirm-branch">
-            <h3 id="confirm-branch">Collect at {b.name}</h3>
+            <h3 id="confirm-branch">Collection, once live</h3>
+            <p>
+              <strong>{b.name}</strong>
+            </p>
             <p>{b.addressLines.join(', ')}</p>
             {b.hours.map((h) => (
               <p class="muted" key={h.days}>
                 {h.days}: {h.time}
               </p>
             ))}
-            <p class="muted">Bring your order reference.</p>
+            <p class="muted">Customers would bring their order reference to collect.</p>
           </section>
         </div>
         <div class="confirm__actions">
@@ -274,7 +286,7 @@ export default function Checkout() {
               )}
             </div>
             <div class="field">
-              <label for="co-email">Email (for the receipt)</label>
+              <label for="co-email">Email</label>
               <input {...fieldProps('email')} type="email" autocomplete="email" />
               {errors.email && (
                 <p class="field-error" id="co-email-error">
@@ -318,8 +330,8 @@ export default function Checkout() {
               <Icon name="info" />
               <span>
                 {priced
-                  ? 'You pay now for the priced items only. The branch confirms the price and availability of your requested items and contacts you before you pay for them.'
-                  : 'Nothing to pay now. The branch confirms the price and availability of your requested items and contacts you before you pay.'}
+                  ? 'Only priced items are paid at checkout. Once live, the branch confirms the price and availability of requested items and contacts the customer before they pay for them.'
+                  : 'Nothing is paid at checkout. Once live, the branch confirms the price and availability of requested items and contacts the customer before payment.'}
               </span>
             </p>
           )}
@@ -327,12 +339,12 @@ export default function Checkout() {
           <>
           <p class="pay-cards">
             <Icon name="card" size={20} />
-            <span>Credit or debit card. The card networks accepted are set by the bank that provides the merchant account.</span>
+            <span>Credit or debit card. Once live, the accepted card networks are set by the bank that provides Universal Hardware's merchant account.</span>
           </p>
           <div class="pay-slot" ref={slot} />
           {!provider.live && (
             <div class="demo-outcome">
-              <span id="demo-outcome-label">Simulated answer</span>
+              <span id="demo-outcome-label">Demo outcome</span>
               <div class="seg" role="radiogroup" aria-labelledby="demo-outcome-label">
                 {(['approve', 'decline'] as DemoOutcome[]).map((o) => (
                   <label key={o}>
@@ -384,16 +396,16 @@ export default function Checkout() {
         <button type="button" class="btn btn--lg btn--block pay-btn" onClick={submit} disabled={status === 'paying'} aria-busy={status === 'paying'}>
           {status === 'paying' ? (
             <>
-              <span class="spinner" aria-hidden="true" /> Contacting the processor…
+              <span class="spinner" aria-hidden="true" /> Simulating the card processor…
             </>
           ) : (
             <>
-              <Icon name={priced ? 'lock' : 'send'} /> {priced ? `Pay ${formatPrice(total)}` : 'Send request'}
+              <Icon name={priced ? 'lock' : 'send'} /> {priced ? `Simulate payment · ${formatPrice(total)}` : 'Simulate request'}
             </>
           )}
         </button>
         <p class="price-note" aria-live="polite">
-          {status === 'paying' ? 'Waiting for the card processor.' : ''}
+          {status === 'paying' ? 'Simulating the card processor’s answer. Nothing is charged.' : ''}
         </p>
         <a class="link-arrow" href="/cart/">
           <Icon name="arrow-left" size={16} /> Edit cart

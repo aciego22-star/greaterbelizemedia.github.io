@@ -1,7 +1,7 @@
 {
   "base": "http://localhost:4322",
-  "date": "2026-11-01T14:48:19.957Z",
-  "passed": 288,
+  "date": "2026-11-01T20:24:46.505Z",
+  "passed": 290,
   "failed": 0,
   "results": [
     {
@@ -932,7 +932,7 @@
       "group": "search",
       "name": "\"submersible pump\" → Water Pumps with highlighted sub-type",
       "pass": true,
-      "detail": "Water Pumps | Submersible pumps, Jet pumps (pressure systems), Sprinkler pumps, Booster pumps, Sump pumps, Marine pumps, Pressure pumps, Gas and diesel powered water pumps (120ms)"
+      "detail": "Water Pumps | Submersible pumps, Jet pumps (pressure systems), Sprinkler pumps, Booster pumps, Sump pumps, Marine pumps, Pressure pumps, Gas and diesel powered water pumps (126ms)"
     },
     {
       "group": "search",
@@ -1268,13 +1268,13 @@
       "group": "i18n",
       "name": "checkout in Spanish (errors, pay button)",
       "pass": true,
-      "detail": "Ingrese su nombre. / Ingrese un número de teléfono de al menos 7 dígitos. / Ingrese un correo como nombre@ejemplo.com. ·  Pagar BZ$248.25"
+      "detail": "Ingrese su nombre. / Ingrese un número de teléfono de al menos 7 dígitos. / Ingrese un correo como nombre@ejemplo.com. ·  Simular pago · BZ$248.25"
     },
     {
       "group": "i18n",
-      "name": "order confirmation in Spanish",
+      "name": "demo confirmation in Spanish",
       "pass": true,
-      "detail": "Pago aprobado (simulado)Pedido TEST-JK5GPXGracias, Sample Customer. Los pagos con tarjeta aún se están configurando, así"
+      "detail": "Pedido de demostración completadoReferencia de demostración TEST-SZ6ME4Modo de demostración — no se procesan pedidos ni "
     },
     {
       "group": "axe",
@@ -1392,6 +1392,12 @@
     },
     {
       "group": "shop",
+      "name": "Shop, product pages, cart and checkout say \"Demonstration mode — no actual orders or payments are processed.\"; nothing says \"Order online\"",
+      "pass": true,
+      "detail": "{\"/shop/\":true,\"/shop/makita-hp1630/\":true,\"/cart/\":true,\"/checkout/\":true}"
+    },
+    {
+      "group": "shop",
       "name": "motorcycle filter shows the 16 bikes",
       "pass": true,
       "detail": "16"
@@ -1494,9 +1500,9 @@
     },
     {
       "group": "checkout",
-      "name": "approved simulated payment shows a TEST order reference and empties the cart",
+      "name": "the simulated payment ends in \"Demo order complete\" with a demo reference, the demonstration notice and no paid-order wording, and empties the cart",
       "pass": true,
-      "detail": "{\"ref\":\"Order TEST-7H86XT\",\"demo\":true}"
+      "detail": "{\"title\":\"Demo order complete\",\"ref\":\"Demo reference TEST-U8WK6U\",\"notice\":true,\"demo\":true,\"claims\":false}"
     },
     {
       "group": "axe",
@@ -1550,7 +1556,7 @@
       "group": "reel",
       "name": "autoplay fades to the next slide after about 7 s; inactive slides are aria-hidden",
       "pass": true,
-      "detail": "5511 ms after load, aria-hidden true,,true"
+      "detail": "5504 ms after load, aria-hidden true,,true"
     },
     {
       "group": "reel",
@@ -1644,15 +1650,15 @@
     },
     {
       "group": "search",
-      "name": "checkout pays for priced items only and confirms the request separately",
+      "name": "checkout simulates payment for priced items only and notes the request separately",
       "pass": true,
-      "detail": "{\"ref\":\"Order TEST-F4ERER\",\"note\":true,\"items\":true}"
+      "detail": "{\"ref\":\"Demo reference TEST-9BFVC5\",\"note\":true,\"items\":true}"
     },
     {
       "group": "search",
-      "name": "a request-only cart has no card step and confirms \"Request received\"",
+      "name": "a request-only cart has no card step and ends in \"Demo request complete\"",
       "pass": true,
-      "detail": "{\"btn\":\"Send request\",\"card\":false}"
+      "detail": "{\"btn\":\"Simulate request\",\"card\":false}"
     },
     {
       "group": "network",
@@ -1674,9 +1680,15 @@
     },
     {
       "group": "3d",
-      "name": "real-time scene initialises (state=ready) once scrolled into view",
+      "name": "interactive scene initialises (state=ready) once scrolled into view",
       "pass": true,
       "detail": ""
+    },
+    {
+      "group": "3d",
+      "name": "the 3D label matches what runs: none over the still image, \"Interactive 3D\" once the scene renders; no \"Real-time 3D\"/\"Static render\" wording",
+      "pass": true,
+      "detail": "poster=\"\" ready=\"Interactive 3D\" oldWords=false"
     },
     {
       "group": "3d",
@@ -1722,9 +1734,9 @@
     },
     {
       "group": "3d",
-      "name": "no-WebGL browser: honest static render + \"Static render\" badge",
+      "name": "no-WebGL browser: the still render with no 3D label, no drag hint and no pause button",
       "pass": true,
-      "detail": "state=fallback"
+      "detail": "state=fallback badge=false {\"hint\":\"none\",\"pause\":\"none\"}"
     },
     {
       "group": "motion",

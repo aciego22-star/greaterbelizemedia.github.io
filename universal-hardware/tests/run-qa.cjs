@@ -434,7 +434,7 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
     record('i18n', 'header switch flips the page to Spanish (h1, menu, title, button label)', es.h1 === 'Hecho para cada trabajo.' && es.nav === 'Tienda|Productos|Marcas|Sucursales|Nosotros|Novedades en Universal' && /Hecho para cada trabajo/.test(es.title) && label === 'Ver el sitio en español' && es.btn === 'View the site in English', JSON.stringify(es));
     await page.goto(BASE + '/shop/', { waitUntil: 'load' });
     await page.waitForFunction(() => document.documentElement.classList.contains('i18n-done'));
-    record('i18n', 'Spanish persists across pages', (await page.textContent('h1')).includes('Pida en línea'));
+    record('i18n', 'Spanish persists across pages', (await page.textContent('h1')).includes('Explore nuestro concepto de tienda en línea'));
     await page.click('[data-add-to-cart="makita-hp333dyx3b"]');
     await page.waitForSelector('.toast');
     const toastEs = await page.textContent('.toast');
@@ -446,18 +446,18 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
     await page.waitForTimeout(200);
     const errs = await page.$$eval('.field-error', (e) => e.map((x) => x.textContent));
     const pay = await page.textContent('.pay-btn');
-    record('i18n', 'checkout in Spanish (errors, pay button)', errs.includes('Ingrese su nombre.') && /Pagar BZ\$248\.25/.test(pay), `${errs.join(' / ')} · ${pay}`);
+    record('i18n', 'checkout in Spanish (errors, pay button)', errs.includes('Ingrese su nombre.') && /Simular pago · BZ\$248\.25/.test(pay), `${errs.join(' / ')} · ${pay}`);
     await page.click('.link-btn');
     await page.click('.pay-btn');
     await page.waitForSelector('.confirm', { timeout: 8000 });
     const conf = await page.textContent('.confirm');
-    record('i18n', 'order confirmation in Spanish', /Pago aprobado/.test(conf) && /Recoger en|Recoja|Su pedido/.test(conf) && /Pedido TEST-/.test(conf), conf.replace(/\s+/g, ' ').slice(0, 120));
+    record('i18n', 'demo confirmation in Spanish', /Pedido de demostración completado/.test(conf) && /Modo de demostración/.test(conf) && /Referencia de demostración TEST-/.test(conf) && /Recogida, una vez en funcionamiento/.test(conf), conf.replace(/\s+/g, ' ').slice(0, 120));
     await page.addScriptTag({ content: AXE });
     const axe = await page.evaluate(async () => (await window.axe.run(document, { runOnly: ['wcag2a', 'wcag2aa', 'wcag21aa', 'best-practice'], rules: { region: { enabled: false } } })).violations.map((v) => `${v.id} ×${v.nodes.length}`));
     record('axe', 'Spanish checkout confirmation', axe.length === 0, axe.join(' || '));
     await page.click('[data-lang-toggle]');
     await page.waitForFunction(() => document.documentElement.lang === 'en');
-    record('i18n', 'switching back restores English without a reload', /Payment approved/.test(await page.textContent('.confirm')) && (await page.textContent('h1')).trim() === 'Checkout');
+    record('i18n', 'switching back restores English without a reload', /Demo order complete/.test(await page.textContent('.confirm')) && (await page.textContent('h1')).trim() === 'Preview the checkout experience');
     record('network', 'language switching made no third-party requests', page._external.length === 0, page._external.join(', '));
     await ctx.close();
   }
@@ -565,6 +565,15 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
     const cards = await page.$$eval('.shop-grid .p-card', (c) => c.length);
     const priced = await page.$$eval('.p-card__price', (p) => p.every((x) => /^BZ\$[\d,]+\.\d{2}/.test(x.textContent.trim())));
     record('shop', 'lists 32 products, each with a BZ$ price', cards === 32 && priced, `${cards}`);
+    const notices = {};
+    for (const r of ['/shop/', '/shop/makita-hp1630/', '/cart/', '/checkout/']) {
+      await page.goto(BASE + r, { waitUntil: 'load' });
+      notices[r] = await page.evaluate(() => document.body.innerText.includes('Demonstration mode — no actual orders or payments are processed.'));
+    }
+    const strip = await page.evaluate(() => fetch('/').then((x) => x.text()));
+    record('shop', 'Shop, product pages, cart and checkout say "Demonstration mode — no actual orders or payments are processed."; nothing says "Order online"', Object.values(notices).every(Boolean) && !/Order online/i.test(strip), JSON.stringify(notices));
+    await page.goto(BASE + '/shop/', { waitUntil: 'load' });
+    await page.waitForFunction(() => document.documentElement.classList.contains('ui-ready'));
     await page.click('[data-shop-filter="motorcycles"]');
     const bikes = await page.$$eval('.shop-grid > li:not([hidden])', (l) => l.length);
     record('shop', 'motorcycle filter shows the 16 bikes', bikes === 16, `${bikes}`);
@@ -627,8 +636,14 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
     await page.click('.seg label:has-text("Approved")');
     await page.click('.pay-btn');
     await page.waitForSelector('.confirm', { timeout: 6000 });
-    const conf = await page.evaluate(() => ({ ref: document.querySelector('.confirm__ref').textContent, demo: document.body.innerText.includes('no card was charged') }));
-    record('checkout', 'approved simulated payment shows a TEST order reference and empties the cart', /^Order TEST-[A-Z2-9]{6}$/.test(conf.ref) && conf.demo && (await badge()) === 0, JSON.stringify(conf));
+    const conf = await page.evaluate(() => ({
+      title: document.querySelector('#confirm-title').textContent.trim(),
+      ref: document.querySelector('.confirm__ref').textContent,
+      notice: !!document.querySelector('.confirm .demo-notice') && document.querySelector('.confirm .demo-notice').innerText.includes('no actual orders or payments are processed'),
+      demo: document.body.innerText.includes('no card was charged'),
+      claims: /Payment approved|Order confirmed|Order placed|Thank you for your order|has been charged/i.test(document.body.innerText),
+    }));
+    record('checkout', 'the simulated payment ends in "Demo order complete" with a demo reference, the demonstration notice and no paid-order wording, and empties the cart', conf.title === 'Demo order complete' && /^Demo reference TEST-[A-Z2-9]{6}$/.test(conf.ref) && conf.notice && conf.demo && !conf.claims && (await badge()) === 0, JSON.stringify(conf));
     await axeCheck('/checkout/ confirmation');
     const stored = await page.evaluate(() => JSON.stringify(Object.fromEntries(Object.entries(sessionStorage))) + window.name);
     record('privacy', 'checkout details are never stored', !/Sample Customer|example\.com|000-0000/.test(stored), stored.slice(0, 120));
@@ -831,7 +846,7 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
     await page.click('.pay-btn');
     await page.waitForSelector('.confirm', { timeout: 8000 });
     const conf = await page.evaluate(() => ({ ref: document.querySelector('.confirm__ref').textContent.trim(), note: !!document.querySelector('.confirm .request-note'), items: document.querySelector('.confirm').innerText.includes('pvc pipe 2 inch') }));
-    record('search', 'checkout pays for priced items only and confirms the request separately', /^Order TEST-/.test(conf.ref) && conf.note && conf.items, JSON.stringify(conf));
+    record('search', 'checkout simulates payment for priced items only and notes the request separately', /^Demo reference TEST-/.test(conf.ref) && conf.note && conf.items, JSON.stringify(conf));
     // A cart with only a request sends it instead of taking a payment.
     await page.goto(BASE + '/', { waitUntil: 'load' });
     await page.waitForFunction(() => document.documentElement.classList.contains('ui-ready'), null, { timeout: 20000 });
@@ -846,7 +861,7 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
     await page.click('.pay-btn');
     await page.waitForSelector('.confirm', { timeout: 8000 });
     const h = await page.textContent('#confirm-title');
-    record('search', 'a request-only cart has no card step and confirms "Request received"', onlyReq.btn === 'Send request' && !onlyReq.card && /Request received/.test(h), JSON.stringify(onlyReq));
+    record('search', 'a request-only cart has no card step and ends in "Demo request complete"', onlyReq.btn === 'Simulate request' && !onlyReq.card && /Demo request complete/.test(h), JSON.stringify(onlyReq));
     record('network', 'search, requests and request checkout made no third-party requests', page._external.length === 0, page._external.join(', '));
     await ctx.close();
   }
@@ -859,13 +874,19 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
     const firstState = await page.evaluate(() => document.querySelector('[data-hero-stage]').dataset.state);
     const scriptsAtLoad = await page.evaluate(() => performance.getEntriesByType('resource').filter((r) => /drill-scene/.test(r.name)).length);
     record('3d', 'WebGL bundle not loaded before first paint (poster first)', firstState === 'poster' || firstState === 'loading', `state at load: ${firstState}, scene chunks at load: ${scriptsAtLoad}`);
+    const badgeLabel = () => page.evaluate(() => { const b = document.querySelector('[data-hero-badge]'); return getComputedStyle(b).display === 'none' ? '' : b.textContent.trim(); });
+    const posterLabel = await badgeLabel();
+    const oldWords = await page.evaluate(() => /Real-time 3D|Static render/.test(document.documentElement.innerHTML));
     await page.waitForTimeout(3000);
     const offscreen = await page.evaluate(() => ({ state: document.querySelector('[data-hero-stage]').dataset.state, chunks: performance.getEntriesByType('resource').filter((r) => /drill-scene/.test(r.name)).length }));
     record('3d', 'scene waits while the stage is below the slideshow (poster only)', offscreen.state === 'poster' && offscreen.chunks === 0, JSON.stringify(offscreen));
     // The stage sits below the homepage slideshow; its 1.6 s intro plays once it is on screen.
     await page.locator('[data-hero-stage]').scrollIntoViewIfNeeded();
     await page.waitForFunction(() => document.querySelector('[data-hero-stage]').dataset.state === 'ready', null, { timeout: 30000 });
-    record('3d', 'real-time scene initialises (state=ready) once scrolled into view', true);
+    record('3d', 'interactive scene initialises (state=ready) once scrolled into view', true);
+    await page.waitForTimeout(1000);
+    const readyLabel = await badgeLabel();
+    record('3d', 'the 3D label matches what runs: none over the still image, "Interactive 3D" once the scene renders; no "Real-time 3D"/"Static render" wording', posterLabel === '' && readyLabel === 'Interactive 3D' && !oldWords, `poster="${posterLabel}" ready="${readyLabel}" oldWords=${oldWords}`);
     await page.waitForTimeout(2000);
     const a = await page.locator('.hero__canvas').screenshot();
     await page.waitForTimeout(1200);
@@ -933,8 +954,9 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
     await page.waitForFunction(() => document.querySelector('[data-hero-stage]').dataset.state === 'fallback', null, { timeout: 10000 }).catch(() => {});
     const st = await page.evaluate(() => document.querySelector('[data-hero-stage]').dataset.state);
     const posterVisible = await page.evaluate(() => { const i = document.querySelector('.hero__poster img'); return i.complete && i.naturalWidth > 0 && getComputedStyle(document.querySelector('.hero__poster')).opacity === '1'; });
-    const badge = await page.isVisible('.hero__badge-static');
-    record('3d', 'no-WebGL browser: honest static render + "Static render" badge', st === 'fallback' && posterVisible && badge && errs.length === 0, `state=${st}`);
+    const badge = await page.isVisible('[data-hero-badge]');
+    const hud = await page.evaluate(() => ({ hint: getComputedStyle(document.querySelector('.hero__hint')).display, pause: getComputedStyle(document.querySelector('.hero__pause')).display }));
+    record('3d', 'no-WebGL browser: the still render with no 3D label, no drag hint and no pause button', st === 'fallback' && posterVisible && !badge && hud.hint === 'none' && hud.pause === 'none' && errs.length === 0, `state=${st} badge=${badge} ${JSON.stringify(hud)}`);
     await browser2.close();
   }
   {

@@ -44,7 +44,8 @@ function talk(title: string, turns: string[], expect: ((r: GuideReply, i: number
 }
 
 const banned = [/\bconcept\b/i, /demonstration/i, /Enquiry Summary/i, /in stock\b(?! levels| now)/i, /quote (has been|was) sent/i, /we have sent/i, /notified/i, /\$\s?\d/, /BZ\$/i, /guarantee/i];
-const noBanned = (t: string) => banned.forEach((b) => check(!b.test(t.replace(/can't check stock|can't confirm (current )?stock|no live inventory/gi, '')), `no banned claim ${b}`));
+const noBanned = (t: string, allow: RegExp[] = []) =>
+  banned.filter((b) => !allow.some((a) => a.source === b.source)).forEach((b) => check(!b.test(t.replace(/can't check stock|can't confirm (current )?stock|no live inventory/gi, '')), `no banned claim ${b}`));
 
 convo('Generator', ['I need backup power for my home. What type should I look at?', 'Lights, fridge and fans', 'Occasional outages'], [
   (t) => { check(/appliances/i.test(t) && /occasional/i.test(t), 'asks appliances and occasional vs ongoing'); check(/\/products\/generators\//.test(t), 'links generator category'); noBanned(t); },
@@ -71,7 +72,8 @@ convo('Quote', ['Can you send me a quote?'], [
   (t) => { check(/can't send quotes/i.test(t), 'states it cannot transmit'); check(/WhatsApp/.test(t), 'points to the branch WhatsApp lines'); check(/652-9933/.test(t), 'gives official branch details'); },
 ]);
 convo('Shop', ['Can I pay with a credit card online?'], [
-  (t) => { check(/\/shop\//.test(t), 'links the Shop'); check(/simulated/i.test(t) && /nothing is charged/i.test(t), 'says the card step is simulated'); noBanned(t); },
+  // Online ordering and payment answers must say the store is a demonstration (other answers stay free of concept wording).
+  (t) => { check(/\/shop\//.test(t), 'links the Shop'); check(/demonstration mode/i.test(t) && /no actual orders or payments are processed/i.test(t), 'says the store is a demonstration: no actual orders or payments'); noBanned(t, [/\bconcept\b/i, /demonstration/i]); },
 ]);
 convo('Price', ['How much is the Makita drill?'], [
   (t) => { check(/can't send quotes or get current prices/i.test(t), 'no current prices'); check(/\/shop\//.test(t) && /ended/i.test(t), 'points to Shop sale prices as ended'); noBanned(t); },

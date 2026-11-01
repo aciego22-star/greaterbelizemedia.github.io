@@ -73,9 +73,9 @@ const facts = [
           <a class="btn btn--block" href="/locations/">Locations &amp; hours <Icon name="arrow-right" size={16} /></a>
         </div>
         <div class="about-aside__card about-aside__card--quiet">
-          <p class="eyebrow eyebrow--plain">Shop online</p>
-          <p>Order Makita tools and Lifan and Meilun motorcycles online, then collect at the branch.</p>
-          <a class="btn btn--ghost btn--block" href="/shop/">Go to the Shop <Icon name="arrow-right" size={16} /></a>
+          <p class="eyebrow eyebrow--plain">Online store concept</p>
+          <p>Browse Makita tools and Lifan and Meilun motorcycles, add them to a cart and preview the checkout. Demonstration only: no orders or payments are processed.</p>
+          <a class="btn btn--ghost btn--block" href="/shop/">Explore the store concept <Icon name="arrow-right" size={16} /></a>
         </div>
         <div class="about-aside__card about-aside__card--quiet">
           <p class="eyebrow eyebrow--plain">Contact us now</p>
@@ -207,5 +207,10 @@ const facts = [
   }
   .about-aside__card--quiet .eyebrow {
     color: var(--blue-600);
+  }
+  /* Longer button labels (and their Spanish) wrap on narrow phones instead of overflowing. */
+  .about-aside__card .btn {
+    white-space: normal;
+    text-align: center;
   }
 </style>

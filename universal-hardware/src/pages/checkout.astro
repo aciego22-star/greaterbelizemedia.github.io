@@ -1,11 +1,14 @@
 ---
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
+import DemoNotice from '../components/DemoNotice.astro';
 import Checkout from '../islands/Checkout.tsx';
 import '../styles/shop.css';
 ---
-<Base title="Checkout" description="Universal Hardware checkout: collect at Spanish Lookout or Belize City." section="shop">
-  <PageHero title="Checkout" crumbs={[{ href: '/shop/', label: 'Shop' }, { href: '/cart/', label: 'Cart' }, { label: 'Checkout' }]} />
+<Base title="Checkout" description="A preview of the checkout experience in the Universal Hardware online store concept." section="shop">
+  <PageHero title="Preview the checkout experience" crumbs={[{ href: '/shop/', label: 'Shop' }, { href: '/cart/', label: 'Cart' }, { label: 'Checkout' }]}>
+    <DemoNotice>This checkout shows how online ordering could work once Universal Hardware authorises it and connects its own card processor. Nothing you enter is saved or sent, and no card details are collected.</DemoNotice>
+  </PageHero>
   <section class="section section--tight">
     <div class="container">
       <Checkout client:load />

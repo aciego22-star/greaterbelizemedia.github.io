@@ -25,7 +25,7 @@ const salePrice = (p: ShopProduct, lang: Lang) =>
 const listedLine = (m: ListedModel, lang: Lang) =>
   L(lang, `**${m.brand} ${m.model}**: ${m.type}, listed on Universal's website at $${m.price}`, `**${m.brand} ${m.model}**: ${m.typeEs}, publicado en el sitio de Universal a $${m.price}`);
 const cartLink = (lang: Lang) => ({ label: L(lang, 'View cart', 'Ver carrito'), href: '/cart/' });
-const checkoutLink = (lang: Lang) => ({ label: L(lang, 'Checkout', 'Pagar'), href: '/checkout/' });
+const checkoutLink = (lang: Lang) => ({ label: L(lang, 'Preview the checkout', 'Ver el pago de demostración'), href: '/checkout/' });
 /** The product's short description (the Shop's "Ask AI about this" text). */
 const aboutOf = (p: ShopProduct | undefined, lang: Lang) => (p && SHOP_ABOUT[p.id] ? SHOP_ABOUT[p.id][lang === 'es' ? 1 : 0] : '');
 const shopProductFor = (m: ListedModel) => Object.values(PRODUCT_BY_ID).find((p) => p.model === m.model);
@@ -83,8 +83,8 @@ const addToCart: Skill = (t, s) => {
     return {
       text: L(
         lang,
-        `Done: I added ${qty} × **${productTitle(p)}**${c ? ` in ${colourWord(c, lang)}` : ''} to your cart, at ${salePrice(p, lang)} each. You can check out for collection at either branch.`,
-        `Listo: agregué ${qty} × **${productTitle(p)}**${c ? ` en ${colourWord(c, lang)}` : ''} a su carrito, a ${salePrice(p, lang)} cada uno. Puede pagar y recoger en cualquiera de las dos sucursales.`,
+        `Done: I added ${qty} × **${productTitle(p)}**${c ? ` in ${colourWord(c, lang)}` : ''} to your cart, at ${salePrice(p, lang)} each. You can preview the checkout for collection at either branch (demonstration only: no order or payment is processed).`,
+        `Listo: agregué ${qty} × **${productTitle(p)}**${c ? ` en ${colourWord(c, lang)}` : ''} a su carrito, a ${salePrice(p, lang)} cada uno. Puede ver el pago para recoger en cualquiera de las dos sucursales (solo una demostración: no se procesa ningún pedido ni pago).`,
       ),
       actions: [{ type: 'add', id: p.id, qty, colour: c }],
       cards: [{ kind: 'product', id: p.id }],

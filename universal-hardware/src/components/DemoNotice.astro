@@ -1,0 +1,16 @@
+---
+/**
+ * The online store is a working demonstration, not Universal Hardware's
+ * operational store. This notice says so where people shop (Shop, cart,
+ * checkout); the checkout's confirmation repeats it. The slot replaces the
+ * second sentence.
+ */
+import Icon from './Icon.astro';
+---
+<p class="demo-notice" data-demo-notice>
+  <Icon name="info" size={16} />
+  <span>
+    <strong>Demonstration mode — no actual orders or payments are processed.</strong>{' '}
+    <slot>An independent online store concept by Austere Automations, not Universal Hardware's authorised store.</slot>
+  </span>
+</p>

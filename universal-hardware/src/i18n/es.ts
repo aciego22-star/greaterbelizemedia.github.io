@@ -30,11 +30,11 @@ const PATTERNS: [RegExp, (m: RegExpMatchArray) => string][] = [
   [/^Colour for (.+)$/, (m) => `Color para ${m[1]}`],
   [/^About the ((?:Makita|Lifan|Meilun) .+)$/, (m) => `Acerca de ${m[1]}`],
   [/^(Black|Blue|Red|White|Green) ·$/, (m) => `${COLOURS[m[1]]} ·`],
-  [/^Pay (BZ\$[\d,.]+)$/, (m) => `Pagar ${m[1]}`],
-  [/^Order ((?:TEST|UH)-[A-Z0-9]+)$/, (m) => `Pedido ${m[1]}`],
+  [/^Simulate payment · (BZ\$[\d,.]+)$/, (m) => `Simular pago · ${m[1]}`],
+  [/^Demo reference ((?:TEST|UH)-[A-Z0-9]+)$/, (m) => `Referencia de demostración ${m[1]}`],
   [
-    /^Thanks, (.+?)\. Card payments are still being set up, so this payment was simulated: no card was charged and the order was not sent to the branch\.$/,
-    (m) => `Gracias, ${m[1]}. Los pagos con tarjeta aún se están configurando, así que este pago fue simulado: no se cobró ninguna tarjeta y el pedido no se envió a la sucursal.`,
+    /^Thanks, (.+?)\. This checkout was a demonstration: no card was charged and nothing was sent to Universal Hardware\. Once live, this page would show the real order reference, an email receipt would follow and the branch would be alerted to prepare the order for collection\.$/,
+    (m) => `Gracias, ${m[1]}. Este pago fue una demostración: no se cobró ninguna tarjeta y no se envió nada a Universal Hardware. Una vez en funcionamiento, esta página mostraría la referencia real del pedido, llegaría un recibo por correo y se avisaría a la sucursal para preparar el pedido para su recogida.`,
   ],
   [/^Showing all (\d+) brands\.$/, (m) => `Mostrando las ${m[1]} marcas.`],
   [/^Showing (\d+) brands? in (.+)\.$/, (m) => `Mostrando ${m[1]} ${plural(m[1], 'marca', 'marcas')} en ${word(m[2])}.`],
@@ -50,8 +50,8 @@ const PATTERNS: [RegExp, (m: RegExpMatchArray) => string][] = [
   [/^Add (.+) to cart in$/, (m) => `Agregar ${m[1]} al carrito en`],
   [/^Add (.+) to cart$/, (m) => `Agregar ${m[1]} al carrito`],
   [
-    /^Thanks, (.+?)\. Online requests are still being set up, so this request was simulated and was not sent to the branch\.$/,
-    (m) => `Gracias, ${m[1]}. Las solicitudes en línea aún se están configurando, así que esta solicitud fue simulada y no se envió a la sucursal.`,
+    /^Thanks, (.+?)\. This request was a demonstration and was not sent to Universal Hardware\. Once live, the branch would confirm the price and availability and contact the customer before payment\.$/,
+    (m) => `Gracias, ${m[1]}. Esta solicitud fue una demostración y no se envió a Universal Hardware. Una vez en funcionamiento, la sucursal confirmaría el precio y la disponibilidad y contactaría al cliente antes del pago.`,
   ],
   [/^View (.+)$/, (m) => `Ver ${word(m[1])}`],
   // Page titles: "Makita HP1630 — 5/8″ Hammer Drill 710W · Universal Hardware", "Brands · Universal Hardware".

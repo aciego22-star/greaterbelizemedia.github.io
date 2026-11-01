@@ -116,11 +116,11 @@ export default function CartView() {
           <span>{formatPrice(total)}</span>
         </p>
         <a class="btn btn--lg btn--block" href="/checkout/">
-          <Icon name={hasPriced(lines) ? 'lock' : 'send'} /> {hasPriced(lines) ? 'Checkout' : 'Continue to request'}
+          <Icon name={hasPriced(lines) ? 'lock' : 'send'} /> {hasPriced(lines) ? 'Preview the checkout' : 'Continue to request'}
         </a>
         <p class="price-note">
           {hasRequests(lines)
-            ? 'The branch confirms the price and availability of requested items before you pay for them.'
+            ? 'Once live, the branch confirms the price and availability of requested items before the customer pays for them.'
             : 'February 2026 sale prices. Collect at Spanish Lookout or Belize City.'}
         </p>
       </aside>

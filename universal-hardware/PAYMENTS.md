@@ -1,12 +1,12 @@
 # Card payments: from demo to live
 
-The concept's Shop has a working cart and checkout. Only the card step is simulated. This document covers what the demo does, and what it takes to accept real credit and debit cards.
+The concept's Shop has a working cart and checkout in **demonstration mode**: every step runs, but no order is placed, no payment is taken and nothing is sent. The Shop, product pages, cart, checkout and confirmation all say "Demonstration mode — no actual orders or payments are processed." This document covers what the demo does, and what it takes to accept real credit and debit cards.
 
 ## What the demo does
 
 - **Cart** (`src/lib/cart-store.ts`): product ids, colours and quantities, kept in tab storage. Prices are always looked up from `src/data/shop.ts`. It can also hold **requested items** (an item name typed in site search, for products the site does not list): they have no price, are shown as "Price to be confirmed" and are never part of the amount charged. A cart with only requests skips the card step entirely.
 - **Checkout** (`src/islands/Checkout.tsx`): contact details (kept in the component's memory, never stored or sent), branch collection, then the card step and an order confirmation.
-- **Card step**: the checkout talks to a processor only through the `PaymentProvider` interface (`src/lib/payments/types.ts`). The concept ships one provider, `demo` (`src/lib/payments/demo.ts`). It draws a stand-in for the processor's secure card form with nothing to type, collects no card details, sends nothing and simulates an approved or declined answer. Order references start with `TEST-`.
+- **Card step**: the checkout talks to a processor only through the `PaymentProvider` interface (`src/lib/payments/types.ts`). The concept ships one provider, `demo` (`src/lib/payments/demo.ts`). It draws a stand-in for the processor's secure card form with nothing to type, collects no card details, sends nothing and simulates an approved or declined answer. The button reads "Simulate payment", the confirmation reads "Demo order complete" and its reference is labelled "Demo reference TEST-…". `getPaymentProvider()` returns only this provider; there is no live provider, payment SDK, key or endpoint in the build.
 
 The end-to-end suite checks that the checkout page has no card inputs or third-party frames, and that the whole shop and checkout flow sends no POST (or other write) request and makes no third-party request.
 

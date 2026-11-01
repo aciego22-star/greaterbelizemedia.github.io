@@ -7,6 +7,10 @@
  *     in over the poster.
  *  3. Save-Data users get an explicit "Load interactive 3D" button instead.
  *  4. Everything is disposed on page hide.
+ * The stage's badge always names what is actually running: nothing over the
+ * still image, "Loading 3D" while the scene loads, "Interactive 3D" once it
+ * renders. If WebGL is missing, fails, or loses its context later, the still
+ * image comes back with no 3D label.
  */
 import type { SceneController } from './drill-scene';
 
@@ -45,7 +49,12 @@ if (stage) {
   let ctrl: SceneController | null = null;
   let userPaused = false;
 
-  const setState = (s: string) => (stage.dataset.state = s);
+  const badgeText = stage.querySelector<HTMLElement>('[data-hero-badge-text]');
+  const BADGE: Record<string, string> = { loading: 'Loading 3D', ready: 'Interactive 3D' };
+  const setState = (s: string) => {
+    stage.dataset.state = s;
+    if (badgeText) badgeText.textContent = BADGE[s] ?? '';
+  };
 
   const updatePause = () => {
     if (!pauseBtn) return;
@@ -84,6 +93,18 @@ if (stage) {
         },
       });
       if (userPaused) ctrl.setPaused(true);
+      // If the GPU drops the 3D context (a driver reset, or too many tabs), show the still image again rather than a blank stage.
+      canvas.addEventListener(
+        'webglcontextlost',
+        () => {
+          if (stage.dataset.state !== 'ready') return;
+          setState('fallback');
+          const c = ctrl;
+          ctrl = null;
+          c?.dispose();
+        },
+        { once: true },
+      );
     } catch (err) {
       console.warn('[hero] 3D scene unavailable, keeping static render.', err);
       setState('fallback');

@@ -574,8 +574,8 @@ function baseReply(t: string, s: GuideState, d: Detected): { reply: GuideReply; 
           reply: {
             text: L(
               lang,
-              "The **Shop** has Makita tools and Lifan and Meilun motorcycles from Universal Hardware's February 2026 sale, with a cart and a checkout for collection at either branch. Checkout takes credit and debit cards; for now the card step is simulated, so nothing is charged.",
-              'La **Tienda** tiene herramientas Makita y motos Lifan y Meilun de la oferta de febrero de 2026 de Universal Hardware, con carrito y pago para recoger en cualquiera de las dos sucursales. El pago acepta tarjetas de crédito y débito; por ahora el paso de la tarjeta es simulado, así que no se cobra nada.',
+              "The **Shop** is an online store concept: Makita tools and Lifan and Meilun motorcycles from Universal Hardware's February 2026 sale, with a cart and a checkout for collection at either branch, including a credit and debit card step. It runs in demonstration mode: no actual orders or payments are processed.",
+              'La **Tienda** es un concepto de tienda en línea: herramientas Makita y motos Lifan y Meilun de la oferta de febrero de 2026 de Universal Hardware, con carrito y pago para recoger en cualquiera de las dos sucursales, incluido un paso de tarjeta de crédito y débito. Funciona en modo de demostración: no se procesan pedidos ni pagos reales.',
             ),
             links: [shopLink(lang)],
           },

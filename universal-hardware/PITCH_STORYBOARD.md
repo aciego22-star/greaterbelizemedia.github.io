@@ -13,7 +13,7 @@ Record on a phone (390×844 portrait) or a laptop at 1440×900. Use a clean brow
 | 35–41 s | 05 Branches / `/locations/` | Tap **Set as my branch** on Belize City; show the Sales and Service Center WhatsApp lines. | "Two branches, sales and service, one tap to call or message." |
 | 41–45 s | Closing CTA | Scroll to "A better way to find what you need." | "This is what your digital customer journey could look like." |
 
-**Optional Shop beat (+10 s, after the language switch):** open **Shop**, add the Makita HP333DYX3B kit, open the cart, then **Checkout** → **Fill in sample details** → **Pay**. The confirmation shows a `TEST-` order. Voice-over: "Order online, pay by card, collect at the branch. In this demo the card step is simulated; live, it runs on your own merchant account."
+**Optional Shop beat (+10 s, after the language switch):** open **Shop**, add the Makita HP333DYX3B kit, open the cart, then **Preview the checkout** → **Fill in sample details** → **Simulate payment**. The confirmation reads "Demo order complete" with a `TEST-` demo reference. Voice-over: "Order online, pay by card, collect at the branch. This is demonstration mode, so no order or payment is processed; once you authorise it, it runs on your own merchant account."
 
 **Optional What's New beat (+6 s):** tap **What's New at Universal** in the header and scroll past the Mega Sale, the Makita Clinic and the Friends & Family Sale. Voice-over: "Your Mega Sales, Family Days and Expo, all in one place, in English and Spanish."
 
