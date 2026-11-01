@@ -1,0 +1,80 @@
+---
+/**
+ * Full-width photo at the top of an inner page, framed exactly like the
+ * homepage slideshow: 16:9 on desktop and 4:5 on phones, never taller than the
+ * screen below the header, filled edge to edge (object-fit: cover). On phones a
+ * photo supplied in another shape keeps its own proportions (--banner-m), so
+ * nothing in it is cut off. Desktop
+ * and mobile crops are separate images (see scripts/build-page-heroes.mjs).
+ * The photo is the page's main image, so it loads with the page.
+ */
+import pages from '../hero/pages.json';
+import slides from '../hero/slides.json';
+
+type Img = { w: number; file: string };
+type Variant = { width: number; height: number; avif: Img[]; webp: Img[]; jpg: string };
+type Set = { dir: string; desktop: Variant; mobile: Variant };
+
+export type BannerPage = 'shop' | 'products' | 'brands' | 'locations' | 'about' | 'whats-new';
+
+// Brands reuses the homepage's pegboard aisle photo until a brand-display photo is supplied.
+const SETS: Record<BannerPage, Set> = {
+  shop: { dir: 'pages', ...(pages.shop as Omit<Set, 'dir'>) },
+  products: { dir: 'pages', ...(pages.products as Omit<Set, 'dir'>) },
+  brands: { dir: 'slides', ...(slides.aisle as Omit<Set, 'dir'>) },
+  locations: { dir: 'pages', ...(pages.locations as Omit<Set, 'dir'>) },
+  about: { dir: 'pages', ...(pages.about as Omit<Set, 'dir'>) },
+  'whats-new': { dir: 'pages', ...(pages['whats-new'] as Omit<Set, 'dir'>) },
+};
+
+interface Props {
+  page: BannerPage;
+  alt: string;
+}
+const { page, alt } = Astro.props;
+const set = SETS[page];
+const d = set.desktop;
+const m = set.mobile;
+const srcset = (list: Img[]) => list.map((x) => `/hero/${set.dir}/${x.file} ${x.w}w`).join(', ');
+const MOBILE = '(max-width: 767px)';
+---
+<div class="page-banner" data-page-banner={page} style={`--banner-m: ${((m.height / m.width) * 100).toFixed(2)}vw`}>
+  <picture>
+    <source media={MOBILE} type="image/avif" srcset={srcset(m.avif)} sizes="100vw" width={m.width} height={m.height} />
+    <source media={MOBILE} type="image/webp" srcset={srcset(m.webp)} sizes="100vw" width={m.width} height={m.height} />
+    <source media={MOBILE} srcset={`/hero/${set.dir}/${m.jpg}`} width={m.width} height={m.height} />
+    <source type="image/avif" srcset={srcset(d.avif)} sizes="100vw" width={d.width} height={d.height} />
+    <source type="image/webp" srcset={srcset(d.webp)} sizes="100vw" width={d.width} height={d.height} />
+    <img src={`/hero/${set.dir}/${d.jpg}`} alt={alt} width={d.width} height={d.height} fetchpriority="high" decoding="async" />
+  </picture>
+</div>
+
+<style>
+  /* Same frame as the homepage slideshow (src/hero/HeroCarousel.astro). */
+  .page-banner {
+    position: relative;
+    height: min(56.25vw, calc(100vh - var(--header-h) - var(--utility-h)));
+    height: min(56.25vw, calc(100svh - var(--header-h) - var(--utility-h)));
+    min-height: 300px;
+    overflow: hidden;
+    background: var(--graphite-900);
+  }
+  @media (max-width: 767px) {
+    .page-banner {
+      height: min(var(--banner-m, 125vw), calc(100vh - var(--header-h) - var(--utility-h)));
+      height: min(var(--banner-m, 125vw), calc(100svh - var(--header-h) - var(--utility-h)));
+    }
+  }
+  .page-banner picture,
+  .page-banner img {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .page-banner img {
+    object-fit: cover;
+    object-position: 50% 50%;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+</style>

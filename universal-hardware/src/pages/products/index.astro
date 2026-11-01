@@ -2,6 +2,7 @@
 import RequestPrompt from '../../components/RequestPrompt.astro';
 import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
+import PageBanner from '../../components/PageBanner.astro';
 import Icon from '../../components/Icon.astro';
 import CatalogueSearch from '../../islands/CatalogueSearch.tsx';
 ---
@@ -10,6 +11,7 @@ import CatalogueSearch from '../../islands/CatalogueSearch.tsx';
   description="Search Universal Hardware's twelve product categories: power tools, welding, generators, water pumps, lawn and garden, motorcycles, household and more."
   section="products"
 >
+  <PageBanner page="products" alt="Numbered aisles of tools, housewares and lawn and garden supplies inside a Universal Hardware branch." />
   <PageHero
     eyebrow="Product categories"
     title="Find tools and equipment for the job."

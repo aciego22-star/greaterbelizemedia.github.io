@@ -1,7 +1,7 @@
 {
   "base": "http://localhost:4322",
-  "date": "2026-11-01T20:24:46.505Z",
-  "passed": 290,
+  "date": "2026-11-01T21:44:43.951Z",
+  "passed": 291,
   "failed": 0,
   "results": [
     {
@@ -894,9 +894,15 @@
     },
     {
       "group": "nav",
-      "name": "a brand link opens Brands at the top with that brand first and highlighted",
+      "name": "a brand link opens Brands at the top (hero photo first) with that brand first in its list and highlighted",
       "pass": true,
-      "detail": "{\"id\":\"lasko\",\"first\":true,\"inView\":true}"
+      "detail": "{\"id\":\"lasko\",\"first\":true,\"y\":0}"
+    },
+    {
+      "group": "nav",
+      "name": "Shop, Products, Brands, Locations, About and What's New open with a full-width hero photo (desktop crop on desktop, mobile crop on phones)",
+      "pass": true,
+      "detail": "[]"
     },
     {
       "group": "mobile-menu",
@@ -932,7 +938,7 @@
       "group": "search",
       "name": "\"submersible pump\" → Water Pumps with highlighted sub-type",
       "pass": true,
-      "detail": "Water Pumps | Submersible pumps, Jet pumps (pressure systems), Sprinkler pumps, Booster pumps, Sump pumps, Marine pumps, Pressure pumps, Gas and diesel powered water pumps (126ms)"
+      "detail": "Water Pumps | Submersible pumps, Jet pumps (pressure systems), Sprinkler pumps, Booster pumps, Sump pumps, Marine pumps, Pressure pumps, Gas and diesel powered water pumps (124ms)"
     },
     {
       "group": "search",
@@ -1274,7 +1280,7 @@
       "group": "i18n",
       "name": "demo confirmation in Spanish",
       "pass": true,
-      "detail": "Pedido de demostración completadoReferencia de demostración TEST-SZ6ME4Modo de demostración — no se procesan pedidos ni "
+      "detail": "Pedido de demostración completadoReferencia de demostración TEST-YPBTL8Modo de demostración — no se procesan pedidos ni "
     },
     {
       "group": "axe",
@@ -1502,7 +1508,7 @@
       "group": "checkout",
       "name": "the simulated payment ends in \"Demo order complete\" with a demo reference, the demonstration notice and no paid-order wording, and empties the cart",
       "pass": true,
-      "detail": "{\"title\":\"Demo order complete\",\"ref\":\"Demo reference TEST-U8WK6U\",\"notice\":true,\"demo\":true,\"claims\":false}"
+      "detail": "{\"title\":\"Demo order complete\",\"ref\":\"Demo reference TEST-X579VC\",\"notice\":true,\"demo\":true,\"claims\":false}"
     },
     {
       "group": "axe",
@@ -1556,7 +1562,7 @@
       "group": "reel",
       "name": "autoplay fades to the next slide after about 7 s; inactive slides are aria-hidden",
       "pass": true,
-      "detail": "5504 ms after load, aria-hidden true,,true"
+      "detail": "5518 ms after load, aria-hidden true,,true"
     },
     {
       "group": "reel",
@@ -1652,7 +1658,7 @@
       "group": "search",
       "name": "checkout simulates payment for priced items only and notes the request separately",
       "pass": true,
-      "detail": "{\"ref\":\"Demo reference TEST-9BFVC5\",\"note\":true,\"items\":true}"
+      "detail": "{\"ref\":\"Demo reference TEST-HMU9CB\",\"note\":true,\"items\":true}"
     },
     {
       "group": "search",

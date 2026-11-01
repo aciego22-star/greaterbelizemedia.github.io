@@ -1,0 +1,262 @@
+{
+ "shop": {
+  "desktop": {
+   "width": 1920,
+   "height": 1080,
+   "avif": [
+    {
+     "w": 1200,
+     "file": "shop-desktop-1200.2c3ff08e02.avif"
+    },
+    {
+     "w": 1920,
+     "file": "shop-desktop-1920.652b91a210.avif"
+    }
+   ],
+   "webp": [
+    {
+     "w": 1200,
+     "file": "shop-desktop-1200.3a6eba4fe4.webp"
+    },
+    {
+     "w": 1920,
+     "file": "shop-desktop-1920.6faf51e5c5.webp"
+    }
+   ],
+   "jpg": "shop-desktop.975f7d869d.jpg"
+  },
+  "mobile": {
+   "width": 1080,
+   "height": 1350,
+   "avif": [
+    {
+     "w": 750,
+     "file": "shop-mobile-750.55292cffa3.avif"
+    },
+    {
+     "w": 1080,
+     "file": "shop-mobile-1080.2f81715664.avif"
+    }
+   ],
+   "webp": [
+    {
+     "w": 750,
+     "file": "shop-mobile-750.3208c9d41f.webp"
+    },
+    {
+     "w": 1080,
+     "file": "shop-mobile-1080.950350f888.webp"
+    }
+   ],
+   "jpg": "shop-mobile.fce9cef82e.jpg"
+  }
+ },
+ "products": {
+  "desktop": {
+   "width": 1920,
+   "height": 1080,
+   "avif": [
+    {
+     "w": 1200,
+     "file": "products-desktop-1200.4b6b3c9a07.avif"
+    },
+    {
+     "w": 1920,
+     "file": "products-desktop-1920.abb3ff9212.avif"
+    }
+   ],
+   "webp": [
+    {
+     "w": 1200,
+     "file": "products-desktop-1200.f9af78f92b.webp"
+    },
+    {
+     "w": 1920,
+     "file": "products-desktop-1920.be2a13997e.webp"
+    }
+   ],
+   "jpg": "products-desktop.eea7c13d10.jpg"
+  },
+  "mobile": {
+   "width": 1080,
+   "height": 1350,
+   "avif": [
+    {
+     "w": 750,
+     "file": "products-mobile-750.ea8472a530.avif"
+    },
+    {
+     "w": 1080,
+     "file": "products-mobile-1080.503c0c8966.avif"
+    }
+   ],
+   "webp": [
+    {
+     "w": 750,
+     "file": "products-mobile-750.b0ac567745.webp"
+    },
+    {
+     "w": 1080,
+     "file": "products-mobile-1080.2a164f5862.webp"
+    }
+   ],
+   "jpg": "products-mobile.f046a3c1c3.jpg"
+  }
+ },
+ "locations": {
+  "desktop": {
+   "width": 1920,
+   "height": 900,
+   "avif": [
+    {
+     "w": 1200,
+     "file": "locations-desktop-1200.609c303d47.avif"
+    },
+    {
+     "w": 1920,
+     "file": "locations-desktop-1920.7df65bd163.avif"
+    }
+   ],
+   "webp": [
+    {
+     "w": 1200,
+     "file": "locations-desktop-1200.45a544b4e0.webp"
+    },
+    {
+     "w": 1920,
+     "file": "locations-desktop-1920.665697e434.webp"
+    }
+   ],
+   "jpg": "locations-desktop.f6701b6f4d.jpg"
+  },
+  "mobile": {
+   "width": 1080,
+   "height": 1350,
+   "avif": [
+    {
+     "w": 750,
+     "file": "locations-mobile-750.ddceba8a49.avif"
+    },
+    {
+     "w": 1080,
+     "file": "locations-mobile-1080.608cfc4899.avif"
+    }
+   ],
+   "webp": [
+    {
+     "w": 750,
+     "file": "locations-mobile-750.976f4bf42e.webp"
+    },
+    {
+     "w": 1080,
+     "file": "locations-mobile-1080.a0405a8034.webp"
+    }
+   ],
+   "jpg": "locations-mobile.415775e278.jpg"
+  }
+ },
+ "about": {
+  "desktop": {
+   "width": 1920,
+   "height": 1012,
+   "avif": [
+    {
+     "w": 1200,
+     "file": "about-desktop-1200.5e53333dd3.avif"
+    },
+    {
+     "w": 1920,
+     "file": "about-desktop-1920.d732fce1f5.avif"
+    }
+   ],
+   "webp": [
+    {
+     "w": 1200,
+     "file": "about-desktop-1200.64d7d5de89.webp"
+    },
+    {
+     "w": 1920,
+     "file": "about-desktop-1920.99fc3787c3.webp"
+    }
+   ],
+   "jpg": "about-desktop.14a5e7261a.jpg"
+  },
+  "mobile": {
+   "width": 1080,
+   "height": 1012,
+   "avif": [
+    {
+     "w": 750,
+     "file": "about-mobile-750.212f2388d6.avif"
+    },
+    {
+     "w": 1080,
+     "file": "about-mobile-1080.bfbc399224.avif"
+    }
+   ],
+   "webp": [
+    {
+     "w": 750,
+     "file": "about-mobile-750.908f4621c3.webp"
+    },
+    {
+     "w": 1080,
+     "file": "about-mobile-1080.38610e2af8.webp"
+    }
+   ],
+   "jpg": "about-mobile.7ad2e11ca2.jpg"
+  }
+ },
+ "whats-new": {
+  "desktop": {
+   "width": 1920,
+   "height": 1080,
+   "avif": [
+    {
+     "w": 1200,
+     "file": "whats-new-desktop-1200.42596fa06a.avif"
+    },
+    {
+     "w": 1920,
+     "file": "whats-new-desktop-1920.6cab2943f7.avif"
+    }
+   ],
+   "webp": [
+    {
+     "w": 1200,
+     "file": "whats-new-desktop-1200.a6c212a7f4.webp"
+    },
+    {
+     "w": 1920,
+     "file": "whats-new-desktop-1920.7ebf47001e.webp"
+    }
+   ],
+   "jpg": "whats-new-desktop.ee16095de4.jpg"
+  },
+  "mobile": {
+   "width": 1080,
+   "height": 1350,
+   "avif": [
+    {
+     "w": 750,
+     "file": "whats-new-mobile-750.96040606a6.avif"
+    },
+    {
+     "w": 1080,
+     "file": "whats-new-mobile-1080.9eeee69f76.avif"
+    }
+   ],
+   "webp": [
+    {
+     "w": 750,
+     "file": "whats-new-mobile-750.50311ad6fd.webp"
+    },
+    {
+     "w": 1080,
+     "file": "whats-new-mobile-1080.8a16d8052a.webp"
+    }
+   ],
+   "jpg": "whats-new-mobile.c9adb97613.jpg"
+  }
+ }
+}

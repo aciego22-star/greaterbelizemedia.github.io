@@ -186,8 +186,22 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
       record('nav', `${w}px: all ${n} links that open another page open it at the top`, low.length === 0, low.join(', '));
     }
     await page.goto(BASE + '/brands/#lasko', { waitUntil: 'load' });
-    const lasko = await page.evaluate(() => { const el = document.querySelector('.is-linked'); return { id: el?.dataset.anchor, first: el === el?.parentElement.firstElementChild, inView: el ? el.getBoundingClientRect().top < innerHeight : false }; });
-    record('nav', 'a brand link opens Brands at the top with that brand first and highlighted', lasko.id === 'lasko' && lasko.first && lasko.inView, JSON.stringify(lasko));
+    const lasko = await page.evaluate(() => { const el = document.querySelector('.is-linked'); return { id: el?.dataset.anchor, first: el === el?.parentElement.firstElementChild, y: scrollY }; });
+    record('nav', 'a brand link opens Brands at the top (hero photo first) with that brand first in its list and highlighted', lasko.id === 'lasko' && lasko.first && lasko.y === 0, JSON.stringify(lasko));
+    // Inner pages open with a full-width photo in the same frame as the homepage slideshow.
+    const banners = {};
+    for (const [w, h] of [[1440, 900], [390, 844]]) {
+      await page.setViewportSize({ width: w, height: h });
+      for (const r of ['/shop/', '/products/', '/brands/', '/locations/', '/about/', '/whats-new/']) {
+        await page.goto(BASE + r, { waitUntil: 'load' });
+        banners[`${w} ${r}`] = await page.evaluate((mobile) => {
+          const b = document.querySelector('.page-banner'); const i = b?.querySelector('img'); const f = b?.getBoundingClientRect();
+          return !!i && i.complete && i.naturalWidth > 0 && Math.round(f.width) === innerWidth && f.height >= (mobile ? 300 : innerHeight * 0.6) && (mobile ? /-mobile-/.test(i.currentSrc) : /-desktop-/.test(i.currentSrc));
+        }, w < 768);
+      }
+    }
+    await page.setViewportSize({ width: 1440, height: 900 });
+    record('nav', 'Shop, Products, Brands, Locations, About and What\'s New open with a full-width hero photo (desktop crop on desktop, mobile crop on phones)', Object.values(banners).every(Boolean), JSON.stringify(Object.entries(banners).filter(([, v]) => !v).map(([k]) => k)));
     await page.setViewportSize({ width: 1440, height: 900 });
     await ctx.close();
   }

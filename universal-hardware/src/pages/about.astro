@@ -2,6 +2,7 @@
 import ContactLinks from '../components/ContactLinks.astro';
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
+import PageBanner from '../components/PageBanner.astro';
 import Icon from '../components/Icon.astro';
 import { CATEGORIES } from '../data/categories';
 import { NEWS } from '../data/whats-new';
@@ -20,6 +21,7 @@ const facts = [
   description="About Universal Hardware Company Ltd.: retail and wholesale distributor of hardware tools, household appliances, power equipment, motorcycles and welding supplies in Belize."
   section="about"
 >
+  <PageBanner page="about" alt="A Universal Hardware team member in a company shirt helping customers at the paint colour display." />
   <PageHero
     eyebrow="About Universal Hardware"
     title="Tools, equipment and home essentials for Belize."

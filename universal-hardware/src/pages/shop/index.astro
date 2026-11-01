@@ -2,6 +2,7 @@
 import RequestPrompt from '../../components/RequestPrompt.astro';
 import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
+import PageBanner from '../../components/PageBanner.astro';
 import DemoNotice from '../../components/DemoNotice.astro';
 import ProductCard from '../../components/ProductCard.astro';
 import { SHOP_GROUPS, SHOP_PRODUCTS } from '../../data/shop';
@@ -14,6 +15,7 @@ const count = (g: string) => SHOP_PRODUCTS.filter((p) => p.group === g).length;
   description="An online store concept for Universal Hardware: Makita tools and Lifan and Meilun motorcycles at February 2026 sale prices, with a cart and a demonstration checkout."
   section="shop"
 >
+  <PageBanner page="shop" alt="Lifan and Meilun motorcycles lined up beside the Makita tool wall inside a Universal Hardware branch." />
   <PageHero
     eyebrow="Shop"
     title="Explore our online store concept."

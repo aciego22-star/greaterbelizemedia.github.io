@@ -2,6 +2,7 @@
 import ContactLinks from '../components/ContactLinks.astro';
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
+import PageBanner from '../components/PageBanner.astro';
 import SitePhoto from '../components/SitePhoto.astro';
 import Icon from '../components/Icon.astro';
 import { NEWS, YEARLY } from '../data/whats-new';
@@ -14,6 +15,7 @@ const year = (iso: string) => iso.slice(0, 4);
   description="Sales, events and Makita Clinics at Universal Hardware's Spanish Lookout and Belize City branches: the Mega Sale, the Friends & Family Sale, the Spanish Lookout Expo and more."
   section="whats-new"
 >
+  <PageBanner page="whats-new" alt="A crowd seated outside a Universal Hardware branch during a store event." />
   <PageHero
     eyebrow="News & events"
     title="What's New at Universal"
