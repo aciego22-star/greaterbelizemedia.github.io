@@ -1,6 +1,6 @@
 {
   "base": "http://localhost:4322",
-  "date": "2026-11-01T23:08:39.730Z",
+  "date": "2026-11-01T23:25:40.682Z",
   "passed": 291,
   "failed": 0,
   "results": [
@@ -938,7 +938,7 @@
       "group": "search",
       "name": "\"submersible pump\" → Water Pumps with highlighted sub-type",
       "pass": true,
-      "detail": "Water Pumps | Submersible pumps, Jet pumps (pressure systems), Sprinkler pumps, Booster pumps, Sump pumps, Marine pumps, Pressure pumps, Gas and diesel powered water pumps (129ms)"
+      "detail": "Water Pumps | Submersible pumps, Jet pumps (pressure systems), Sprinkler pumps, Booster pumps, Sump pumps, Marine pumps, Pressure pumps, Gas and diesel powered water pumps (127ms)"
     },
     {
       "group": "search",
@@ -1280,7 +1280,7 @@
       "group": "i18n",
       "name": "demo confirmation in Spanish",
       "pass": true,
-      "detail": "Pedido de demostración completadoReferencia de demostración TEST-W7EK5HModo de demostración — no se procesan pedidos ni "
+      "detail": "Pedido de demostración completadoReferencia de demostración TEST-QCNHKAModo de demostración — no se procesan pedidos ni "
     },
     {
       "group": "axe",
@@ -1508,7 +1508,7 @@
       "group": "checkout",
       "name": "the simulated payment ends in \"Demo order complete\" with a demo reference, the demonstration notice and no paid-order wording, and empties the cart",
       "pass": true,
-      "detail": "{\"title\":\"Demo order complete\",\"ref\":\"Demo reference TEST-DCA28R\",\"notice\":true,\"demo\":true,\"claims\":false}"
+      "detail": "{\"title\":\"Demo order complete\",\"ref\":\"Demo reference TEST-BQTGTT\",\"notice\":true,\"demo\":true,\"claims\":false}"
     },
     {
       "group": "axe",
@@ -1562,7 +1562,7 @@
       "group": "reel",
       "name": "autoplay fades to the next slide after about 7 s; inactive slides are aria-hidden",
       "pass": true,
-      "detail": "5498 ms after load, aria-hidden true,,true"
+      "detail": "5501 ms after load, aria-hidden true,,true"
     },
     {
       "group": "reel",
@@ -1658,7 +1658,7 @@
       "group": "search",
       "name": "checkout simulates payment for priced items only and notes the request separately",
       "pass": true,
-      "detail": "{\"ref\":\"Demo reference TEST-C36FXP\",\"note\":true,\"items\":true}"
+      "detail": "{\"ref\":\"Demo reference TEST-Y93ELT\",\"note\":true,\"items\":true}"
     },
     {
       "group": "search",
