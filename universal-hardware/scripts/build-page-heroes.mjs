@@ -4,7 +4,8 @@
 // src/hero/pages.json for PageBanner.astro.
 // Usage: node scripts/build-page-heroes.mjs <source-dir>
 //   <source-dir> holds <page>-desktop.png and <page>-mobile.png for each page below
-//   (desktop 1920 × 1080, mobile 1080 × 1350; a shorter desktop crop is fine).
+//   (desktop 1920 × 1080 or 1672 × 941, mobile 1080 × 1350 or another 4:5 size;
+//   a shorter desktop crop is fine).
 import sharp from 'sharp';
 import crypto from 'node:crypto';
 import fs from 'node:fs';
@@ -27,7 +28,10 @@ for (const page of PAGES) {
     const file = path.join(src, `${page}-${variant}.png`);
     const { width, height } = await sharp(file).metadata();
     const entry = { width, height, avif: [], webp: [] };
-    for (const w of WIDTHS[variant].filter((x) => x <= width)) {
+    // The standard widths up to the photo's own size, plus the photo's full width when it falls between them.
+    const widths = WIDTHS[variant].filter((x) => x <= width);
+    if (width < WIDTHS[variant].at(-1) && !widths.includes(width)) widths.push(width);
+    for (const w of widths) {
       const img = sharp(file).resize({ width: w });
       const encoded = {
         avif: await img.clone().avif({ quality: 52, effort: 6 }).toBuffer(),

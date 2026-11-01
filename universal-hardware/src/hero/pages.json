@@ -1,54 +1,54 @@
 {
  "shop": {
   "desktop": {
-   "width": 1920,
-   "height": 1080,
+   "width": 1672,
+   "height": 941,
    "avif": [
     {
      "w": 1200,
-     "file": "shop-desktop-1200.2c3ff08e02.avif"
+     "file": "shop-desktop-1200.b5801221c8.avif"
     },
     {
-     "w": 1920,
-     "file": "shop-desktop-1920.652b91a210.avif"
+     "w": 1672,
+     "file": "shop-desktop-1672.92ab695ddd.avif"
     }
    ],
    "webp": [
     {
      "w": 1200,
-     "file": "shop-desktop-1200.3a6eba4fe4.webp"
+     "file": "shop-desktop-1200.55a743bf17.webp"
     },
     {
-     "w": 1920,
-     "file": "shop-desktop-1920.6faf51e5c5.webp"
+     "w": 1672,
+     "file": "shop-desktop-1672.cb0b0d1cd7.webp"
     }
    ],
-   "jpg": "shop-desktop.975f7d869d.jpg"
+   "jpg": "shop-desktop.2acef110b8.jpg"
   },
   "mobile": {
-   "width": 1080,
-   "height": 1350,
+   "width": 941,
+   "height": 1176,
    "avif": [
     {
      "w": 750,
-     "file": "shop-mobile-750.55292cffa3.avif"
+     "file": "shop-mobile-750.425f19fa1d.avif"
     },
     {
-     "w": 1080,
-     "file": "shop-mobile-1080.2f81715664.avif"
+     "w": 941,
+     "file": "shop-mobile-941.462d662ce5.avif"
     }
    ],
    "webp": [
     {
      "w": 750,
-     "file": "shop-mobile-750.3208c9d41f.webp"
+     "file": "shop-mobile-750.dd53375b69.webp"
     },
     {
-     "w": 1080,
-     "file": "shop-mobile-1080.950350f888.webp"
+     "w": 941,
+     "file": "shop-mobile-941.91168ee023.webp"
     }
    ],
-   "jpg": "shop-mobile.fce9cef82e.jpg"
+   "jpg": "shop-mobile.0636eaae60.jpg"
   }
  },
  "products": {
@@ -105,54 +105,54 @@
  },
  "locations": {
   "desktop": {
-   "width": 1920,
-   "height": 900,
+   "width": 1672,
+   "height": 941,
    "avif": [
     {
      "w": 1200,
-     "file": "locations-desktop-1200.609c303d47.avif"
+     "file": "locations-desktop-1200.89a4b5c11c.avif"
     },
     {
-     "w": 1920,
-     "file": "locations-desktop-1920.7df65bd163.avif"
+     "w": 1672,
+     "file": "locations-desktop-1672.f5e871e428.avif"
     }
    ],
    "webp": [
     {
      "w": 1200,
-     "file": "locations-desktop-1200.45a544b4e0.webp"
+     "file": "locations-desktop-1200.9b1eaad676.webp"
     },
     {
-     "w": 1920,
-     "file": "locations-desktop-1920.665697e434.webp"
+     "w": 1672,
+     "file": "locations-desktop-1672.4586f610e4.webp"
     }
    ],
-   "jpg": "locations-desktop.f6701b6f4d.jpg"
+   "jpg": "locations-desktop.542e875809.jpg"
   },
   "mobile": {
-   "width": 1080,
-   "height": 1350,
+   "width": 941,
+   "height": 1176,
    "avif": [
     {
      "w": 750,
-     "file": "locations-mobile-750.ddceba8a49.avif"
+     "file": "locations-mobile-750.12dacaf7ba.avif"
     },
     {
-     "w": 1080,
-     "file": "locations-mobile-1080.608cfc4899.avif"
+     "w": 941,
+     "file": "locations-mobile-941.f0ff78a331.avif"
     }
    ],
    "webp": [
     {
      "w": 750,
-     "file": "locations-mobile-750.976f4bf42e.webp"
+     "file": "locations-mobile-750.9e98b22bb8.webp"
     },
     {
-     "w": 1080,
-     "file": "locations-mobile-1080.a0405a8034.webp"
+     "w": 941,
+     "file": "locations-mobile-941.174e25dba2.webp"
     }
    ],
-   "jpg": "locations-mobile.415775e278.jpg"
+   "jpg": "locations-mobile.60dc84ebc2.jpg"
   }
  },
  "about": {
@@ -209,54 +209,54 @@
  },
  "whats-new": {
   "desktop": {
-   "width": 1920,
-   "height": 1080,
+   "width": 1672,
+   "height": 941,
    "avif": [
     {
      "w": 1200,
-     "file": "whats-new-desktop-1200.42596fa06a.avif"
+     "file": "whats-new-desktop-1200.388fbf1a3a.avif"
     },
     {
-     "w": 1920,
-     "file": "whats-new-desktop-1920.6cab2943f7.avif"
+     "w": 1672,
+     "file": "whats-new-desktop-1672.b459052518.avif"
     }
    ],
    "webp": [
     {
      "w": 1200,
-     "file": "whats-new-desktop-1200.a6c212a7f4.webp"
+     "file": "whats-new-desktop-1200.49f410b97b.webp"
     },
     {
-     "w": 1920,
-     "file": "whats-new-desktop-1920.7ebf47001e.webp"
+     "w": 1672,
+     "file": "whats-new-desktop-1672.3a801bc8fb.webp"
     }
    ],
-   "jpg": "whats-new-desktop.ee16095de4.jpg"
+   "jpg": "whats-new-desktop.2b743d4906.jpg"
   },
   "mobile": {
-   "width": 1080,
-   "height": 1350,
+   "width": 941,
+   "height": 1176,
    "avif": [
     {
      "w": 750,
-     "file": "whats-new-mobile-750.96040606a6.avif"
+     "file": "whats-new-mobile-750.628390cd91.avif"
     },
     {
-     "w": 1080,
-     "file": "whats-new-mobile-1080.9eeee69f76.avif"
+     "w": 941,
+     "file": "whats-new-mobile-941.f2b59136f8.avif"
     }
    ],
    "webp": [
     {
      "w": 750,
-     "file": "whats-new-mobile-750.50311ad6fd.webp"
+     "file": "whats-new-mobile-750.96b3d940b0.webp"
     },
     {
-     "w": 1080,
-     "file": "whats-new-mobile-1080.8a16d8052a.webp"
+     "w": 941,
+     "file": "whats-new-mobile-941.9e6542f278.webp"
     }
    ],
-   "jpg": "whats-new-mobile.c9adb97613.jpg"
+   "jpg": "whats-new-mobile.e57579bec6.jpg"
   }
  }
 }
