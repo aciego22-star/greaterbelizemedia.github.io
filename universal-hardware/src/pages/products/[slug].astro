@@ -36,7 +36,6 @@ const guidePrompts: Record<string, string> = {
 };
 const guidePrompt = guidePrompts[c.slug] ?? `I'm looking for ${c.subcategories[0].name.toLowerCase()}.`;
 const findHref = finderPath[c.slug] ? `/find/?need=${finderPath[c.slug]}` : '/find/';
-const index = CATEGORIES.findIndex((x) => x.slug === c.slug);
 const photo = FEATURED_PHOTOS[c.slug];
 const shots = galleryFor(c.slug);
 const inShop = SHOP_PRODUCTS.some((p) => p.category === c.slug);
@@ -57,7 +56,7 @@ const inShop = SHOP_PRODUCTS.some((p) => p.category === c.slug);
             <li><span aria-current="page">{c.name}</span></li>
           </ol>
         </nav>
-        <p class="eyebrow">{String(index + 1).padStart(2, '0')} — {dept.name}</p>
+        <p class="eyebrow">{dept.name}</p>
         <h1 class="h1">{c.name}</h1>
         <p class="lead">{c.intro}</p>
         <div class="cat-hero__ctas">

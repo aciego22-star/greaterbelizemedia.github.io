@@ -1,4 +1,5 @@
 ---
+import ContactLinks from './ContactLinks.astro';
 import Logo from './Logo.astro';
 import Icon from './Icon.astro';
 import { NAV } from '../data/site';
@@ -42,6 +43,9 @@ const isCurrent = (href: string) => section && href.startsWith(`/${section}/`);
         Explore Products
         <Icon name="arrow-right" size={16} class="btn-arrow" />
       </a>
+      <button type="button" class="icon-btn search-trigger" data-open-search aria-label="Search" aria-haspopup="dialog">
+        <Icon name="search" />
+      </button>
       <a class="icon-btn cart-trigger" href="/cart/" data-cart-link aria-label="Cart (0 items)">
         <Icon name="cart" />
         <span class="cart-trigger__count" data-cart-count hidden>0</span>
@@ -91,12 +95,19 @@ const isCurrent = (href: string) => section && href.startsWith(`/${section}/`);
       </ul>
     </nav>
     <div class="mobile-nav__ctas">
-      <a class="btn btn--block btn--lg" href="/products/">Explore Products</a>
+      <button type="button" class="btn btn--block btn--lg" data-open-search>
+        <Icon name="search" size={18} /> Search for a product
+      </button>
+      <a class="btn btn--ghost btn--block btn--lg" href="/products/">Explore Products</a>
       <a class="btn btn--ghost btn--block btn--lg" href="/cart/" data-cart-link>
         <Icon name="cart" size={18} />
         <span data-cart-label>Cart</span>
       </a>
       <a class="btn btn--ghost btn--block btn--lg" href="/find/">Find the Right Product</a>
+    </div>
+    <div class="mobile-nav__contact">
+      <p class="mono muted">Contact us now</p>
+      <ContactLinks />
     </div>
     <div class="mobile-nav__branches">
       <p class="mono muted">Branches</p>

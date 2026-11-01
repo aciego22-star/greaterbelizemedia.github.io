@@ -21,3 +21,14 @@ export const NAV: { href: string; label: string; short?: string }[] = [
   { href: '/about/', label: 'About' },
   { href: '/whats-new/', label: "What's New at Universal", short: "What's New" },
 ];
+
+/**
+ * Universal Hardware's own social accounts, as linked from the Contact panel of
+ * universalhardware.bz/about.html (read 1 November 2026). Direct WhatsApp uses
+ * each branch's Sales line from src/data/branches.ts.
+ */
+export const SOCIAL = [
+  { id: 'facebook', label: 'Facebook', href: 'https://www.facebook.com/universalhardware.bz/' },
+  { id: 'instagram', label: 'Instagram', href: 'https://www.instagram.com/universalhardware_bz/' },
+  { id: 'youtube', label: 'YouTube', href: 'https://www.youtube.com/channel/UC1iOB19Z3cxVEcv5ZBKv2OA' },
+] as const;

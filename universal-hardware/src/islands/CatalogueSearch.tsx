@@ -5,7 +5,7 @@ import { searchCategories, POPULAR_SEARCHES } from '../lib/search';
 import { FEATURED_PHOTOS } from '../data/site-images';
 import { SitePicture } from './SitePicture';
 import { iconSvg, type IconName } from '../lib/icons';
-import { openGuide } from '../lib/site-state';
+import { openGuide, openSearch } from '../lib/site-state';
 
 const Icon = ({ name, size = 18 }: { name: IconName; size?: number }) => (
   <span class="i" aria-hidden="true" dangerouslySetInnerHTML={{ __html: iconSvg(name, size) }} />
@@ -152,6 +152,9 @@ export default function CatalogueSearch() {
           <div class="catalogue__empty-actions">
             <button type="button" class="btn" onClick={() => openGuide(q.trim() || undefined)}>
               <Icon name="sparkle" size={18} /> Ask Universal AI
+            </button>
+            <button type="button" class="btn btn--ghost" onClick={() => openSearch(q.trim() || undefined)}>
+              <Icon name="search" size={18} /> Search and add it to your cart
             </button>
             <button type="button" class="btn btn--ghost" onClick={clearAll}>
               Clear search and filters

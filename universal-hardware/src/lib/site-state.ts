@@ -35,6 +35,7 @@ export function subscribeBranch(fn: (id: BranchId | '') => void): () => void {
 
 /* ---- UI events used across islands ---- */
 export const OPEN_GUIDE = 'uhc:open-guide';
+export const OPEN_SEARCH = 'uhc:open-search';
 export const LANG_EVENT = 'uhc:lang-change';
 export const TOAST = 'uhc:toast';
 export type ToastAction = 'open-cart';
@@ -60,6 +61,9 @@ export function flushUiQueue() {
 
 export function openGuide(prompt?: string) {
   send(OPEN_GUIDE, { prompt });
+}
+export function openSearch(query?: string) {
+  send(OPEN_SEARCH, { query });
 }
 export function toast(message: string, action?: ToastAction) {
   send(TOAST, { message, action });

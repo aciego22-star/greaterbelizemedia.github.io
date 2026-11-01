@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'preact/hooks';
 import { PRODUCT_BY_ID, formatPrice, productTitle } from '../data/shop';
 import { iconSvg, type IconName } from '../lib/icons';
-import { MAX_QTY, cartCount, cartTotal, getCart, lineTotal, removeLine, setQty, subscribeCart, type CartLine } from '../lib/cart-store';
+import { MAX_QTY, cartCount, cartTotal, getCart, hasPriced, hasRequests, isRequest, lineKey, lineTotal, removeLine, setQty, subscribeCart, type CartLine } from '../lib/cart-store';
 import { SitePicture } from './SitePicture';
 
 const Icon = ({ name, size = 18 }: { name: IconName; size?: number }) => (
@@ -21,7 +21,7 @@ export function CartEmpty() {
   return (
     <div class="cart-empty">
       <p class="h3">Your cart is empty.</p>
-      <p class="muted">Add tools or motorcycles from the Shop, then come back here to check out.</p>
+      <p class="muted">Add tools or motorcycles from the Shop, or search for anything else and add it as a request.</p>
       <a class="btn" href="/shop/">
         Go to the Shop <Icon name="arrow-right" />
       </a>
@@ -44,10 +44,11 @@ export default function CartView() {
         <h2 class="sr-only">Items</h2>
         <ul class="cart-lines">
           {lines.map((l) => {
+            if (isRequest(l)) return <RequestRow line={l} key={lineKey(l)} />;
             const p = PRODUCT_BY_ID[l.id];
             const title = productTitle(p);
             return (
-              <li class="cart-line" key={`${l.id}|${l.colour ?? ''}`}>
+              <li class="cart-line" key={lineKey(l)}>
                 <a class="cart-line__media" href={`/shop/${p.id}/`} tabIndex={-1} aria-hidden="true">
                   <div class="photo-stage">
                     <SitePicture image={p.image} decorative />
@@ -99,22 +100,63 @@ export default function CartView() {
             </span>
             <span>{formatPrice(total)}</span>
           </p>
+          {hasRequests(lines) && (
+            <p class="summary__row summary__row--muted">
+              <span>Requested items</span>
+              <span>Price to be confirmed</span>
+            </p>
+          )}
           <p class="summary__row summary__row--muted">
             <span>Collection</span>
             <span>At a branch</span>
           </p>
         </div>
         <p class="summary__total">
-          <span>Total</span>
+          <span>{hasPriced(lines) ? 'Total' : 'To pay now'}</span>
           <span>{formatPrice(total)}</span>
         </p>
         <a class="btn btn--lg btn--block" href="/checkout/">
-          <Icon name="lock" /> Checkout
+          <Icon name={hasPriced(lines) ? 'lock' : 'send'} /> {hasPriced(lines) ? 'Checkout' : 'Continue to request'}
         </a>
         <p class="price-note">
-          February 2026 sale prices. Collect at Spanish Lookout or Belize City.
+          {hasRequests(lines)
+            ? 'The branch confirms the price and availability of requested items before you pay for them.'
+            : 'February 2026 sale prices. Collect at Spanish Lookout or Belize City.'}
         </p>
       </aside>
     </div>
+  );
+}
+
+/** A requested item: the name the customer typed, with no price until the branch confirms one. */
+export function RequestRow({ line }: { line: Extract<CartLine, { kind: 'request' }> }) {
+  return (
+    <li class="cart-line cart-line--request">
+      <div class="cart-line__media cart-line__media--request" aria-hidden="true">
+        <Icon name="search" size={28} />
+      </div>
+      <div class="cart-line__info">
+        <p class="cart-line__title" data-i18n-skip>
+          {line.text}
+        </p>
+        <p class="cart-line__meta">Requested item</p>
+        <p class="cart-line__meta">The branch confirms price and availability.</p>
+      </div>
+      <div class="cart-line__controls">
+        <div class="stepper" role="group" aria-label={`Quantity of ${line.text}`}>
+          <button type="button" onClick={() => setQty(line, line.qty - 1)} aria-label={line.qty === 1 ? `Remove ${line.text}` : `One fewer ${line.text}`}>
+            <Icon name={line.qty === 1 ? 'trash' : 'minus'} />
+          </button>
+          <output aria-live="polite">{line.qty}</output>
+          <button type="button" onClick={() => setQty(line, line.qty + 1)} disabled={line.qty >= MAX_QTY} aria-label={`One more ${line.text}`}>
+            <Icon name="plus" />
+          </button>
+        </div>
+        <p class="cart-line__total cart-line__total--tbc">Price to be confirmed</p>
+        <button type="button" class="link-btn" onClick={() => removeLine(line)}>
+          Remove<span class="sr-only"> {line.text}</span>
+        </button>
+      </div>
+    </li>
   );
 }

@@ -314,16 +314,6 @@ ol {
   text-transform: uppercase;
   color: var(--blue-600);
 }
-.eyebrow::before {
-  content: '';
-  width: 22px;
-  height: 1px;
-  background: currentColor;
-  opacity: 0.7;
-}
-.eyebrow--plain::before {
-  display: none;
-}
 .on-dark .eyebrow,
 .section--dark .eyebrow {
   color: var(--blue-on-dark);
@@ -784,4 +774,28 @@ html[data-motion='reduced'] *::after {
 html.is-locked,
 html.is-locked body {
   overflow: hidden;
+}
+
+/* One tap: no double-tap-to-zoom wait on controls, so quick repeated taps (steppers, chips) all register. */
+a,
+button,
+input,
+select,
+textarea,
+label,
+summary,
+[role='button'] {
+  touch-action: manipulation;
+}
+
+/* Comfortable tap targets for links that stand on their own (breadcrumbs, card titles, detail lists). */
+.crumbs a,
+.p-card__title a,
+dd > a,
+.search-product__title {
+  display: inline-block;
+  padding-block: 4px;
+}
+.crumbs a {
+  padding-block: 6px;
 }

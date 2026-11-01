@@ -1,4 +1,5 @@
 ---
+import ContactLinks from '../components/ContactLinks.astro';
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
@@ -85,9 +86,10 @@ import { SOURCES } from '../data/sources';
         </ul>
       </div>
       <div class="visit-aside">
-        <h2 class="h3">Email</h2>
-        <p>General sales email:</p>
-        <p><a href={`mailto:${GENERAL_SALES_EMAIL}`} class="visit-mail"><Icon name="mail" size={18} /> {GENERAL_SALES_EMAIL}</a></p>
+        <h2 class="h3">Contact us now</h2>
+        <p>Message a branch's sales team on WhatsApp, or follow Universal for new arrivals and sales.</p>
+        <ContactLinks />
+        <p class="visit-mail-row">General sales email: <a href={`mailto:${GENERAL_SALES_EMAIL}`} class="visit-mail"><Icon name="mail" size={18} /> {GENERAL_SALES_EMAIL}</a></p>
       </div>
     </div>
   </section>

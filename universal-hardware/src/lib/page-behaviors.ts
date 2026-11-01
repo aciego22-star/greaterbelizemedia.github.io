@@ -4,7 +4,7 @@
  * and the declarative hooks (data-*) that connect static HTML to the
  * cart, the preferred branch and Universal AI.
  */
-import { openGuide, toast, getBranch, setBranch, subscribeBranch } from './site-state';
+import { openGuide, openSearch, toast, getBranch, setBranch, subscribeBranch } from './site-state';
 import type { BranchId } from '../data/branches';
 import { PRODUCT_BY_ID, productTitle } from '../data/shop';
 import { addToCart, cartCount, getCart, subscribeCart } from './cart-store';
@@ -86,6 +86,18 @@ if (nav && openBtn) {
 
 /* ---------------- Universal AI hooks ---------------- */
 document.addEventListener('click', (e) => {
+  const searchBtn = (e.target as HTMLElement).closest<HTMLElement>('[data-open-search]');
+  if (searchBtn) {
+    e.preventDefault();
+    const q = searchBtn.dataset.searchQuery || undefined;
+    const menu = document.querySelector<HTMLDialogElement>('[data-mobile-nav]');
+    // From the phone menu: close it first, then open search once its focus and scroll lock are released.
+    if (menu?.open) {
+      menu.addEventListener('close', () => openSearch(q), { once: true });
+      menu.close();
+    } else openSearch(q);
+    return;
+  }
   const guide = (e.target as HTMLElement).closest<HTMLElement>('[data-open-guide]');
   if (guide) {
     e.preventDefault();

@@ -849,3 +849,43 @@
   flex-wrap: wrap;
   gap: 12px;
 }
+
+/* Requested items (searched for, not listed on the site) */
+.cart-line__media--request,
+.summary__item-request {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 4 / 3;
+  border-radius: 10px;
+  border: 1px dashed var(--blue-200);
+  background: var(--blue-50);
+  color: var(--blue-600);
+}
+.cart-line__total--tbc {
+  font-family: var(--font-body, inherit);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--steel);
+}
+.request-note {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--blue-50);
+  color: var(--ink);
+  font-size: 0.92rem;
+}
+.request-note .i {
+  flex: none;
+  margin-top: 2px;
+  color: var(--blue-600);
+}
+.summary__tbc {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--steel);
+  text-align: right;
+}

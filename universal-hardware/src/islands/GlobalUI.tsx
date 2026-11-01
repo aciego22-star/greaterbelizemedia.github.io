@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'preact/hooks';
-import type { RefObject } from 'preact';
 import { BRANCH_BY_ID, type BranchId } from '../data/branches';
 import { iconSvg, type IconName } from '../lib/icons';
-import { LANG_EVENT, OPEN_GUIDE, TOAST, flushUiQueue, type ToastAction } from '../lib/site-state';
+import { LANG_EVENT, OPEN_GUIDE, OPEN_SEARCH, TOAST, flushUiQueue, type ToastAction } from '../lib/site-state';
+import type { ComponentType } from 'preact';
 import { tabGet, tabSet } from '../lib/tab-storage';
+import { setBackgroundInert, useFocusTrap, useMedia } from '../lib/ui-hooks';
 import type { GuideEngine, GuideReply, GuideState, Lang } from '../lib/guide/types';
 import { CHATBASE_AGENT_ID, LIVE_AI_DISCLAIMER, loadChatbase } from '../lib/guide/chatbase-adapter';
 
@@ -11,71 +12,6 @@ const Icon = ({ name, size = 18 }: { name: IconName; size?: number }) => (
   <span class="i" aria-hidden="true" dangerouslySetInnerHTML={{ __html: iconSvg(name, size) }} />
 );
 
-
-/* ---------------- helpers ---------------- */
-function setBackgroundInert(on: boolean) {
-  document.querySelectorAll<HTMLElement>('body > .utility, body > .site-header, body > main, body > .site-footer, body > .skip-link').forEach((el) => {
-    if (on) el.setAttribute('inert', '');
-    else el.removeAttribute('inert');
-  });
-  document.documentElement.classList.toggle('is-locked', on);
-}
-
-function useFocusTrap(ref: RefObject<HTMLElement>, active: boolean, onEscape: () => void, trap = true) {
-  useEffect(() => {
-    if (!active) return;
-    const el = ref.current;
-    if (!el) return;
-    const prev = document.activeElement as HTMLElement | null;
-    const focusables = () =>
-      Array.from(el.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), input:not([disabled]), select, textarea, [tabindex]:not([tabindex="-1"])')).filter(
-        (x) => x.offsetParent !== null || x === document.activeElement,
-      );
-    const t = window.setTimeout(() => {
-      const target = el.querySelector<HTMLElement>('[data-autofocus]') ?? focusables()[0];
-      target?.focus();
-    }, 60);
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        if (!trap && !el.contains(document.activeElement)) return;
-        e.preventDefault();
-        onEscape();
-        return;
-      }
-      if (e.key === 'Tab' && trap) {
-        const f = focusables();
-        if (!f.length) return;
-        const first = f[0];
-        const last = f[f.length - 1];
-        if (e.shiftKey && document.activeElement === first) {
-          e.preventDefault();
-          last.focus();
-        } else if (!e.shiftKey && document.activeElement === last) {
-          e.preventDefault();
-          first.focus();
-        }
-      }
-    };
-    document.addEventListener('keydown', onKey);
-    return () => {
-      window.clearTimeout(t);
-      document.removeEventListener('keydown', onKey);
-      if (prev && document.contains(prev)) prev.focus({ preventScroll: true });
-    };
-  }, [active, trap]);
-}
-
-function useMedia(q: string) {
-  const [m, setM] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia(q);
-    setM(mq.matches);
-    const h = () => setM(mq.matches);
-    mq.addEventListener('change', h);
-    return () => mq.removeEventListener('change', h);
-  }, [q]);
-  return m;
-}
 
 /** Minimal safe rich text: paragraphs, "• " bullets and **bold**. */
 function Rich({ text }: { text: string }) {
@@ -116,6 +52,13 @@ export default function GlobalUI() {
   const [guideOpen, setGuideOpen] = useState(false);
   const [guidePrompt, setGuidePrompt] = useState<{ text: string; n: number } | null>(null);
   const [toast, setToast] = useState<ToastState | null>(null);
+  // Site search is loaded the first time it opens.
+  const [search, setSearch] = useState<{ open: boolean; q?: string; n: number }>({ open: false, n: 0 });
+  const [SearchPanel, setSearchPanel] = useState<ComponentType<{ open: boolean; initial?: string; onClose: () => void }> | null>(null);
+  useEffect(() => {
+    if (!search.open || SearchPanel) return;
+    import('./SiteSearch').then((m) => setSearchPanel(() => m.default));
+  }, [search.open, SearchPanel]);
   const toastTimer = useRef<number>(0);
   // The launcher pulses until the visitor has opened Universal AI once this session.
   // Read after mount: the server-rendered button carries the pulse, and hydration keeps its markup.
@@ -142,12 +85,19 @@ export default function GlobalUI() {
       setToast({ id: Date.now(), message: d.message, action: d.action });
       toastTimer.current = window.setTimeout(() => setToast(null), 4200);
     };
+    const onOpenSearch = (e: Event) => {
+      const q = (e as CustomEvent<{ query?: string }>).detail?.query;
+      setGuideOpen(false);
+      setSearch((s) => ({ open: true, q, n: s.n + 1 }));
+    };
     window.addEventListener(OPEN_GUIDE, onOpenGuide);
+    window.addEventListener(OPEN_SEARCH, onOpenSearch);
     window.addEventListener(TOAST, onToast);
     document.documentElement.classList.add('ui-ready');
     flushUiQueue();
     return () => {
       window.removeEventListener(OPEN_GUIDE, onOpenGuide);
+      window.removeEventListener(OPEN_SEARCH, onOpenSearch);
       window.removeEventListener(TOAST, onToast);
     };
   }, []);
@@ -155,6 +105,7 @@ export default function GlobalUI() {
   return (
     <>
       <GuidePanel open={guideOpen} onClose={() => setGuideOpen(false)} prompt={guidePrompt} />
+      {SearchPanel && <SearchPanel key={search.n} open={search.open} initial={search.q} onClose={() => setSearch((s) => ({ ...s, open: false }))} />}
       {!guideOpen && (
         <button
           type="button"

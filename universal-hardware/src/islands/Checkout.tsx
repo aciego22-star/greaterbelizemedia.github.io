@@ -10,7 +10,7 @@ import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { BRANCHES, BRANCH_BY_ID, type BranchId } from '../data/branches';
 import { PRODUCT_BY_ID, formatPrice, productTitle } from '../data/shop';
 import { iconSvg, type IconName } from '../lib/icons';
-import { cartCount, cartTotal, clearCart, lineTotal, type CartLine } from '../lib/cart-store';
+import { cartCount, cartTotal, clearCart, hasPriced, hasRequests, isRequest, lineKey, lineTotal, type CartLine } from '../lib/cart-store';
 import { getBranch } from '../lib/site-state';
 import { getPaymentProvider, newOrderReference } from '../lib/payments';
 import type { DemoOutcome, DemoProvider } from '../lib/payments/demo';
@@ -33,6 +33,9 @@ interface PlacedOrder {
   total: number;
   branch: BranchId;
   name: string;
+  /** False when the order held only requested items, so nothing was paid. */
+  paid: boolean;
+  requests: boolean;
 }
 
 const SAMPLE: Contact = { name: 'Sample Customer', phone: '+501 000-0000', email: 'customer@example.com' };
@@ -49,9 +52,24 @@ function SummaryItems({ lines }: { lines: CartLine[] }) {
   return (
     <ul class="summary__items">
       {lines.map((l) => {
+        if (isRequest(l))
+          return (
+            <li class="summary__item" key={lineKey(l)}>
+              <div class="summary__item-request" aria-hidden="true">
+                <Icon name="search" size={20} />
+              </div>
+              <div>
+                <p class="summary__item-title" data-i18n-skip>
+                  {l.text}
+                </p>
+                <p class="summary__item-meta">Requested · Qty {l.qty}</p>
+              </div>
+              <span class="summary__tbc">To be confirmed</span>
+            </li>
+          );
         const p = PRODUCT_BY_ID[l.id];
         return (
-          <li class="summary__item" key={`${l.id}|${l.colour ?? ''}`}>
+          <li class="summary__item" key={lineKey(l)}>
             <div class="photo-stage">
               <SitePicture image={p.image} decorative />
             </div>
@@ -82,7 +100,7 @@ export default function Checkout() {
   const [order, setOrder] = useState<PlacedOrder | null>(null);
   const slot = useRef<HTMLDivElement>(null);
   const confirmRef = useRef<HTMLDivElement>(null);
-  const showForm = ready && !order && lines.length > 0;
+  const showForm = ready && !order && hasPriced(lines);
 
   useEffect(() => {
     setReady(true);
@@ -117,22 +135,29 @@ export default function Checkout() {
         </span>
         <div>
           <h2 class="h2" id="confirm-title">
-            Payment approved <span class="muted">(simulated)</span>
+            {order.paid ? 'Payment approved' : 'Request received'} <span class="muted">(simulated)</span>
           </h2>
           <p class="confirm__ref" style={{ marginTop: '10px' }}>
             Order {order.reference}
           </p>
         </div>
         <p class="lead">
-          Thanks, {order.name.trim()}. Card payments are still being set up, so this payment was simulated: no card was charged and the order
-          was not sent to the branch.
+          {order.paid
+            ? `Thanks, ${order.name.trim()}. Card payments are still being set up, so this payment was simulated: no card was charged and the order was not sent to the branch.`
+            : `Thanks, ${order.name.trim()}. Online requests are still being set up, so this request was simulated and was not sent to the branch.`}
         </p>
+        {order.requests && (
+          <p class="request-note">
+            <Icon name="info" />
+            <span>For requested items, the branch confirms the price and availability and contacts you before you pay for them.</span>
+          </p>
+        )}
         <div class="confirm__grid">
           <section class="confirm__panel" aria-labelledby="confirm-items">
             <h3 id="confirm-items">Your order</h3>
             <SummaryItems lines={order.lines} />
             <p class="summary__total">
-              <span>Total</span>
+              <span>{order.paid ? 'Total' : 'Paid now'}</span>
               <span>{formatPrice(order.total)}</span>
             </p>
           </section>
@@ -160,6 +185,8 @@ export default function Checkout() {
 
   const n = cartCount(lines);
   const total = cartTotal(lines);
+  const priced = hasPriced(lines);
+  const requested = hasRequests(lines);
   const set = (k: Field) => (e: Event) => {
     const v = (e.currentTarget as HTMLInputElement).value;
     setContact((c) => ({ ...c, [k]: v }));
@@ -177,12 +204,17 @@ export default function Checkout() {
       return;
     }
     setPayError('');
-    setStatus('paying');
     const reference = newOrderReference(provider);
+    if (!priced) {
+      setOrder({ reference, lines, total: 0, branch, name: contact.name, paid: false, requests: true });
+      clearCart();
+      return;
+    }
+    setStatus('paying');
     const result = await provider.pay({ reference, amount: total, currency: 'BZD', description: `Universal Hardware order, ${n} items` });
     setStatus('idle');
     if (result.status === 'approved') {
-      setOrder({ reference, lines, total, branch, name: contact.name });
+      setOrder({ reference, lines, total, branch, name: contact.name, paid: true, requests: hasRequests(lines) });
       clearCart();
     } else {
       setPayError(result.message);
@@ -281,6 +313,18 @@ export default function Checkout() {
               <span class="co-step__num">3</span> Payment
             </span>
           </legend>
+          {requested && (
+            <p class="request-note">
+              <Icon name="info" />
+              <span>
+                {priced
+                  ? 'You pay now for the priced items only. The branch confirms the price and availability of your requested items and contacts you before you pay for them.'
+                  : 'Nothing to pay now. The branch confirms the price and availability of your requested items and contacts you before you pay.'}
+              </span>
+            </p>
+          )}
+          {priced && (
+          <>
           <p class="pay-cards">
             <Icon name="card" size={20} />
             <span>Credit or debit card. The card networks accepted are set by the bank that provides the merchant account.</span>
@@ -298,6 +342,8 @@ export default function Checkout() {
                 ))}
               </div>
             </div>
+          )}
+          </>
           )}
           {payError && (
             <p class="pay-error" role="alert">
@@ -320,13 +366,19 @@ export default function Checkout() {
             </span>
             <span>{formatPrice(total)}</span>
           </p>
+          {requested && (
+            <p class="summary__row summary__row--muted">
+              <span>Requested items</span>
+              <span>Price to be confirmed</span>
+            </p>
+          )}
           <p class="summary__row summary__row--muted">
             <span>Collect at</span>
             <span>{BRANCH_BY_ID[branch].name}</span>
           </p>
         </div>
         <p class="summary__total">
-          <span>Total</span>
+          <span>{priced ? 'Total' : 'To pay now'}</span>
           <span>{formatPrice(total)}</span>
         </p>
         <button type="button" class="btn btn--lg btn--block pay-btn" onClick={submit} disabled={status === 'paying'} aria-busy={status === 'paying'}>
@@ -336,7 +388,7 @@ export default function Checkout() {
             </>
           ) : (
             <>
-              <Icon name="lock" /> Pay {formatPrice(total)}
+              <Icon name={priced ? 'lock' : 'send'} /> {priced ? `Pay ${formatPrice(total)}` : 'Send request'}
             </>
           )}
         </button>

@@ -120,7 +120,33 @@ function harvest() {
   await page.click('.pay-btn');
   await page.waitForSelector('.confirm', { timeout: 6000 });
   await grab('/checkout/#confirm');
-  // Product Guide chrome.
+  // Site search: empty, results, nothing found; a request in the cart and checkout.
+  await page.goto(base + '/', { waitUntil: 'load' });
+  await settle();
+  await page.click('[data-open-search]');
+  await page.waitForSelector('#site-search-input');
+  await page.waitForTimeout(300);
+  await grab('/#search');
+  for (const q of ['makita drill', 'motorcycle', 'pvc pipe 2 inch']) {
+    await page.fill('#site-search-input', q);
+    await page.waitForTimeout(250);
+    await grab('/#search=' + q);
+  }
+  await page.click('.search-request .btn');
+  await page.waitForTimeout(300);
+  await grab('/#search-added');
+  await page.keyboard.press('Escape');
+  await page.goto(base + '/cart/', { waitUntil: 'load' });
+  await settle();
+  await grab('/cart/#request');
+  await page.goto(base + '/checkout/', { waitUntil: 'load' });
+  await settle();
+  await grab('/checkout/#request');
+  await page.click('text=Fill in sample details').catch(() => {});
+  await page.click('.pay-btn');
+  await page.waitForSelector('.confirm', { timeout: 6000 }).catch(() => {});
+  await grab('/checkout/#request-confirm');
+  // Universal AI chrome.
   await page.goto(base + '/', { waitUntil: 'load' });
   await settle();
   await page.click('.guide-launcher');

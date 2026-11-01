@@ -1,0 +1,21 @@
+---
+/** "Don't see your product?" — opens site search, where any item can be added to the cart as a request. */
+import Icon from './Icon.astro';
+interface Props {
+  class?: string;
+}
+const { class: cls } = Astro.props;
+---
+<div class:list={['request-prompt', cls]}>
+  <span class="request-prompt__icon" aria-hidden="true"><Icon name="search" size={24} /></span>
+  <div class="request-prompt__copy">
+    <p class="request-prompt__title">Don't see your product here?</p>
+    <p>
+      Universal carries far more in store than this site lists. Search for it and add it to your cart as a request; the branch confirms the price
+      and availability before you pay.
+    </p>
+  </div>
+  <button type="button" class="btn" data-open-search>
+    <Icon name="search" size={18} /> Search for a product
+  </button>
+</div>

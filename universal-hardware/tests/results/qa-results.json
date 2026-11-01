@@ -1,7 +1,7 @@
 {
   "base": "http://localhost:4322",
-  "date": "2026-10-31T23:00:47.708Z",
-  "passed": 252,
+  "date": "2026-11-01T02:20:22.179Z",
+  "passed": 267,
   "failed": 0,
   "results": [
     {
@@ -908,7 +908,7 @@
       "group": "search",
       "name": "\"submersible pump\" → Water Pumps with highlighted sub-type",
       "pass": true,
-      "detail": "Water Pumps | Submersible pumps, Jet pumps (pressure systems), Sprinkler pumps, Booster pumps, Sump pumps, Marine pumps, Pressure pumps, Gas and diesel powered water pumps (118ms)"
+      "detail": "Water Pumps | Submersible pumps, Jet pumps (pressure systems), Sprinkler pumps, Booster pumps, Sump pumps, Marine pumps, Pressure pumps, Gas and diesel powered water pumps (129ms)"
     },
     {
       "group": "search",
@@ -1190,7 +1190,7 @@
       "group": "i18n",
       "name": "order confirmation in Spanish",
       "pass": true,
-      "detail": "Pago aprobado (simulado)Pedido TEST-99TUHJGracias, Cliente de ejemplo. Los pagos con tarjeta aún se están configurando, "
+      "detail": "Pago aprobado (simulado)Pedido TEST-W839ZDGracias, Sample Customer. Los pagos con tarjeta aún se están configurando, así"
     },
     {
       "group": "axe",
@@ -1238,13 +1238,19 @@
       "group": "links",
       "name": "wa.me links match website-listed WhatsApp numbers",
       "pass": true,
-      "detail": "https://wa.me/5016529933 https://wa.me/5016680311 https://wa.me/5016673937 https://wa.me/5016529330"
+      "detail": "https://wa.me/5016529933 https://wa.me/5016673937 https://wa.me/5016680311 https://wa.me/5016529330"
     },
     {
       "group": "links",
       "name": "external links open with rel=noopener",
       "pass": true,
       "detail": ""
+    },
+    {
+      "group": "links",
+      "name": "footer \"Contact us now\": WhatsApp to each branch's sales line, plus Facebook, Instagram and YouTube from the company's own site",
+      "pass": true,
+      "detail": "{\"social\":[\"https://www.facebook.com/universalhardware.bz/\",\"https://www.instagram.com/universalhardware_bz/\",\"https://www.youtube.com/channel/UC1iOB19Z3cxVEcv5ZBKv2OA\"],\"wa\":[\"https://wa.me/5016529933\",\"https://wa.me/5016673937\"],\"blank\":true}"
     },
     {
       "group": "branch",
@@ -1370,7 +1376,7 @@
       "group": "checkout",
       "name": "approved simulated payment shows a TEST order reference and empties the cart",
       "pass": true,
-      "detail": "{\"ref\":\"Order TEST-Q8S6UZ\",\"demo\":true}"
+      "detail": "{\"ref\":\"Order TEST-E2ZCEG\",\"demo\":true}"
     },
     {
       "group": "axe",
@@ -1424,7 +1430,7 @@
       "group": "reel",
       "name": "autoplay fades to the next slide after about 7 s; inactive slides are aria-hidden",
       "pass": true,
-      "detail": "5485 ms after load, aria-hidden true,,true"
+      "detail": "5512 ms after load, aria-hidden true,,true"
     },
     {
       "group": "reel",
@@ -1443,6 +1449,90 @@
       "name": "reduced motion: slideshow starts paused on the first image",
       "pass": true,
       "detail": "{\"first\":true,\"playing\":false}"
+    },
+    {
+      "group": "tap",
+      "name": "no hover-only styles on touch screens, on any route",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "tap",
+      "name": "every control on all 25 routes is at least 24 px and reachable by a single tap",
+      "pass": true,
+      "detail": "ok"
+    },
+    {
+      "group": "tap",
+      "name": "one tap opens the menu, one tap on a menu link navigates",
+      "pass": true,
+      "detail": "http://localhost:4322/whats-new/"
+    },
+    {
+      "group": "tap",
+      "name": "one tap changes the slideshow image and switches language",
+      "pass": true,
+      "detail": "slide=true lang=es"
+    },
+    {
+      "group": "tap",
+      "name": "one tap opens Universal AI, one tap on a suggestion asks it",
+      "pass": true,
+      "detail": "1 message(s)"
+    },
+    {
+      "group": "tap",
+      "name": "finder: one tap picks a need, one tap answers each question",
+      "pass": true,
+      "detail": "Lights, fridge & fans|Most of the home,  → Occasional outages|Regular or daily use|"
+    },
+    {
+      "group": "tap",
+      "name": "shop: one tap filters, one tap adds to the cart",
+      "pass": true,
+      "detail": "shown=16 cart=1"
+    },
+    {
+      "group": "tap",
+      "name": "cart: quick repeated taps on + each count",
+      "pass": true,
+      "detail": "qty=3"
+    },
+    {
+      "group": "search",
+      "name": "header search opens a modal panel and finds Shop items",
+      "pass": true,
+      "detail": "Makita HP1630, Makita HP333DYX3B, Makita HR2470"
+    },
+    {
+      "group": "search",
+      "name": "one tap adds a Shop item; Spanish words find categories; an unlisted item can be added as a request",
+      "pass": true,
+      "detail": "cart 1→2; motosierra → Lawn and GardenChainsaws"
+    },
+    {
+      "group": "search",
+      "name": "the cart lists the request with \"Price to be confirmed\" and leaves it out of the total",
+      "pass": true,
+      "detail": "{\"req\":\"pvc pipe 2 inch\",\"tbc\":true,\"total\":\"TotalBZ$128.25\"}"
+    },
+    {
+      "group": "search",
+      "name": "checkout pays for priced items only and confirms the request separately",
+      "pass": true,
+      "detail": "{\"ref\":\"Order TEST-78ZXX6\",\"note\":true,\"items\":true}"
+    },
+    {
+      "group": "search",
+      "name": "a request-only cart has no card step and confirms \"Request received\"",
+      "pass": true,
+      "detail": "{\"btn\":\"Send request\",\"card\":false}"
+    },
+    {
+      "group": "network",
+      "name": "search, requests and request checkout made no third-party requests",
+      "pass": true,
+      "detail": ""
     },
     {
       "group": "3d",

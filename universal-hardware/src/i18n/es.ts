@@ -42,6 +42,13 @@ const PATTERNS: [RegExp, (m: RegExpMatchArray) => string][] = [
     (m) => `${m[1]} ${plural(m[1], 'categoría', 'categorías')}${m[2] ? ` · ${m[2]} ${plural(m[2], 'tipo de producto coincidente', 'tipos de producto coincidentes')}` : ''}`,
   ],
   [/^Collect at (.+)$/, (m) => `Recoger en ${word(m[1])}`],
+  [/^Add (.+) in (Black|Blue|Red|White|Green) to cart$/, (m) => `Agregar ${m[1]} en ${COLOURS[m[2]].toLowerCase()} al carrito`],
+  [/^Add (.+) to cart in$/, (m) => `Agregar ${m[1]} al carrito en`],
+  [/^Add (.+) to cart$/, (m) => `Agregar ${m[1]} al carrito`],
+  [
+    /^Thanks, (.+?)\. Online requests are still being set up, so this request was simulated and was not sent to the branch\.$/,
+    (m) => `Gracias, ${m[1]}. Las solicitudes en línea aún se están configurando, así que esta solicitud fue simulada y no se envió a la sucursal.`,
+  ],
   [/^View (.+)$/, (m) => `Ver ${word(m[1])}`],
   // Page titles: "Makita HP1630 — 5/8″ Hammer Drill 710W · Universal Hardware", "Brands · Universal Hardware".
   [/^(.+?) — (.+) · Universal Hardware$/, (m) => `${m[1]} — ${word(m[2])} · Universal Hardware`],
@@ -53,6 +60,11 @@ export function translateEs(text: string): string | null {
   if (!key) return null;
   const hit = dict[key];
   if (hit !== undefined) return hit;
+  // Lists joined with " · " (e.g. matching product types in search): translate when every part is known.
+  if (key.includes(' · ')) {
+    const parts = key.split(' · ');
+    if (parts.every((p) => dict[p] !== undefined)) return parts.map((p) => dict[p]).join(' · ');
+  }
   for (const [re, fn] of PATTERNS) {
     const m = key.match(re);
     if (m) return fn(m);

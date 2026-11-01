@@ -101,6 +101,8 @@ const lazy = (i: number, attr: 'srcset' | 'src', value: string) => (i === 0 ? { 
     const reduced = () => root.dataset.motion === 'reduced' || matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     let current = 0;
+    // The slide being shown, or the one a tap asked for while its image loads: the dots follow it at once.
+    let target = 0;
     let stopped = reduced(); // by the visitor, or by reduced motion
     let visible = true;
     let timer = 0;
@@ -128,7 +130,7 @@ const lazy = (i: number, attr: 'srcset' | 'src', value: string) => (i === 0 ? { 
         if (on) s.removeAttribute('aria-hidden');
         else s.setAttribute('aria-hidden', 'true');
       });
-      dots.forEach((d, i) => (i === current ? d.setAttribute('aria-current', 'true') : d.removeAttribute('aria-current')));
+      dots.forEach((d, i) => (i === target ? d.setAttribute('aria-current', 'true') : d.removeAttribute('aria-current')));
       const p = playing();
       reel!.classList.toggle('is-playing', p);
       toggle.setAttribute('aria-label', stopped ? 'Play slideshow' : 'Pause slideshow');
@@ -147,10 +149,15 @@ const lazy = (i: number, attr: 'srcset' | 'src', value: string) => (i === 0 ? { 
 
     async function go(n: number) {
       const next = (n + slides.length) % slides.length;
-      if (next === current) return schedule();
+      target = next;
+      if (next === current) {
+        render();
+        return schedule();
+      }
       // Fade only once the incoming image is ready, so it never flashes in half-loaded.
       load(slides[next]);
       await slides[next].querySelector('img')?.decode().catch(() => {});
+      if (target !== next) return; // another tap came in meanwhile
       current = next;
       // Restart the active dot's progress bar.
       reel!.classList.remove('is-playing');
@@ -161,8 +168,8 @@ const lazy = (i: number, attr: 'srcset' | 'src', value: string) => (i === 0 ? { 
 
     const manual = (n: number) => {
       stopped = true;
-      void go(n);
-      render();
+      void go(n); // sets the target before its first await,
+      render(); // so the tapped dot lights up straight away
     };
 
     dots.forEach((d, i) => d.addEventListener('click', () => manual(i)));

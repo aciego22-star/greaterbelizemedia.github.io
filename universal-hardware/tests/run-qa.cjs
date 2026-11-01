@@ -216,7 +216,7 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
     await page.waitForTimeout(80);
     const empty = await page.isVisible('.catalogue__empty');
     record('search', 'no-match query shows finished empty state', empty);
-    await page.click('.catalogue__empty .btn--ghost');
+    await page.click('.catalogue__empty .btn--ghost:has-text("Clear search")');
     await page.waitForTimeout(80);
     record('search', 'empty state "clear" restores 12', (await page.$$eval('.cat-card', (c) => c.length)) === 12);
     await page.click('.catalogue__depts .chip:has-text("Home & Appliances")');
@@ -389,6 +389,8 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
     await page.waitForFunction(() => document.documentElement.classList.contains('i18n-done'));
     const h1 = (await page.textContent('h1')).replace(/\s+/g, ' ').trim();
     record('i18n', 'a Spanish-language browser opens in Spanish', h1 === 'Hecho para cada trabajo.', h1);
+    // Let the Universal AI button finish fading in: half-faded text would read as low contrast.
+    await page.waitForFunction(() => document.getAnimations().filter((a) => a.animationName === 'rise-in').every((a) => a.playState === 'finished'), null, { timeout: 8000 }).catch(() => {});
     await page.addScriptTag({ content: AXE });
     const axe = await page.evaluate(async () => (await window.axe.run(document, { runOnly: ['wcag2a', 'wcag2aa', 'wcag21aa', 'best-practice'], rules: { region: { enabled: false } } })).violations.map((v) => `${v.id} ×${v.nodes.length}`));
     record('axe', 'Spanish homepage (mobile)', axe.length === 0, axe.join(' || '));
@@ -419,6 +421,19 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
     record('links', 'wa.me links match website-listed WhatsApp numbers', expectWa.every((t) => was.includes(t)) && was.every((t) => /^https:\/\/wa\.me\/501\d{7}$/.test(t)), was.join(' '));
     const ext = await page.$$eval('a[target="_blank"]', (a) => a.filter((x) => !(x.getAttribute('rel') || '').includes('noopener')).length);
     record('links', 'external links open with rel=noopener', ext === 0);
+    const contact = await page.evaluate(() => ({
+      social: [...document.querySelectorAll('.site-footer .social-btn')].map((a) => a.getAttribute('href')),
+      wa: [...document.querySelectorAll('.site-footer .wa-btn')].map((a) => a.getAttribute('href')),
+      blank: [...document.querySelectorAll('.contact-links a')].every((a) => a.target === '_blank' && a.rel.includes('noopener')),
+    }));
+    record(
+      'links',
+      'footer "Contact us now": WhatsApp to each branch\'s sales line, plus Facebook, Instagram and YouTube from the company\'s own site',
+      contact.wa.join() === 'https://wa.me/5016529933,https://wa.me/5016673937' &&
+        contact.social.join() === 'https://www.facebook.com/universalhardware.bz/,https://www.instagram.com/universalhardware_bz/,https://www.youtube.com/channel/UC1iOB19Z3cxVEcv5ZBKv2OA' &&
+        contact.blank,
+      JSON.stringify(contact),
+    );
     await page.click('[data-branch-select="spanish-lookout"].chip');
     const sel = await page.evaluate(() => document.querySelector('[data-branch-card="spanish-lookout"]').classList.contains('is-selected'));
     await page.goto(BASE + '/', { waitUntil: 'load' });
@@ -565,6 +580,167 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
     await page.waitForTimeout(8000);
     const st = await page.evaluate(() => ({ first: document.querySelectorAll('[data-reel-slide]')[0].classList.contains('is-active'), playing: document.querySelector('[data-reel]').classList.contains('is-playing') }));
     record('reel', 'reduced motion: slideshow starts paused on the first image', st.first && !st.playing, JSON.stringify(st));
+    await ctx.close();
+  }
+
+  /* ---------- 7d. One tap: every control works with a single tap on a touch screen ---------- */
+  console.log('\n▶ One tap (touch screen)');
+  {
+    const { ctx, page } = await newPage(browser, [390, 844], { isMobile: true, hasTouch: true });
+    const ready = () => page.waitForFunction(() => document.documentElement.classList.contains('ui-ready'), null, { timeout: 20000 }).catch(() => {});
+    // 1. No hover style applies on touch screens (hover can swallow the first tap on iOS).
+    let hoverOutside = [];
+    for (const r of ROUTES) {
+      await page.goto(BASE + r, { waitUntil: 'load' });
+      hoverOutside = hoverOutside.concat(await page.evaluate(() => {
+        const out = [];
+        const walk = (rules, ok) => {
+          for (const rule of rules) {
+            if (rule instanceof CSSMediaRule) walk(rule.cssRules, ok || /hover:\s*hover/.test(rule.conditionText));
+            else if (rule instanceof CSSStyleRule && rule.selectorText.includes(':hover') && !ok) out.push(rule.selectorText);
+            else if (rule.cssRules) walk(rule.cssRules, ok);
+          }
+        };
+        for (const s of document.styleSheets) { try { walk(s.cssRules, false); } catch {} }
+        return out;
+      }));
+    }
+    record('tap', 'no hover-only styles on touch screens, on any route', hoverOutside.length === 0, [...new Set(hoverOutside)].slice(0, 5).join(' | '));
+    // 2. Every visible control is at least 24 px (or a stretched card link / a link inside a sentence) and nothing covers its centre.
+    const problems = [];
+    for (const r of ROUTES) {
+      await page.goto(BASE + r, { waitUntil: 'load' });
+      await ready();
+      await page.addStyleTag({ content: '[data-reveal]{opacity:1!important;transform:none!important}' });
+      const found = await page.evaluate(async () => {
+        document.documentElement.style.scrollBehavior = 'auto';
+        const out = [];
+        for (const el of document.querySelectorAll('a[href], button, input:not([type=hidden]), select, summary, [role=button]')) {
+          if (el.closest('[hidden], dialog:not([open]), [inert], [aria-hidden="true"]') || el.classList.contains('sr-only') || el.classList.contains('skip-link')) continue;
+          if (el.matches('input[type=radio], input[type=checkbox]') && el.closest('label')) continue;
+          const cs = getComputedStyle(el);
+          const rr = el.getBoundingClientRect();
+          if (!rr.width || !rr.height || cs.visibility === 'hidden') continue;
+          const inline = el.tagName === 'A' && cs.display === 'inline' && el.parentElement.textContent.trim().length > el.textContent.trim().length + 3;
+          const after = getComputedStyle(el, '::after');
+          const stretched = after.content !== 'none' && after.position === 'absolute' && parseFloat(after.width) >= 24;
+          const name = (el.getAttribute('aria-label') || el.textContent || '').trim().replace(/\s+/g, ' ').slice(0, 30);
+          if (!inline && !stretched && (rr.width < 24 || rr.height < 24)) out.push(`small: ${name} ${Math.round(rr.width)}x${Math.round(rr.height)}`);
+          el.scrollIntoView({ block: 'center' });
+          const c = el.getBoundingClientRect();
+          const x = c.left + c.width / 2, y = c.top + c.height / 2;
+          if (x < 0 || y < 0 || x > innerWidth || y > innerHeight) continue;
+          const hit = document.elementFromPoint(x, y);
+          if (hit && !(hit === el || el.contains(hit) || [...(el.labels || [])].some((l) => l.contains(hit)))) out.push(`covered: ${name} by ${hit.className || hit.tagName}`);
+        }
+        return out;
+      });
+      found.forEach((f) => problems.push(`${r} ${f}`));
+    }
+    record('tap', `every control on all ${ROUTES.length} routes is at least 24 px and reachable by a single tap`, problems.length === 0, problems.slice(0, 6).join(' | ') || 'ok');
+    // 3. Single taps do their job.
+    const badge = () => page.$eval('[data-cart-count]', (e) => (e.hidden ? 0 : Number(e.textContent)));
+    await page.goto(BASE + '/', { waitUntil: 'load' });
+    await ready();
+    await page.tap('[data-menu-open]');
+    const menuOpen = await page.evaluate(() => document.querySelector('[data-mobile-nav]').open);
+    await page.tap('.mobile-nav__links a[href="/whats-new/"]');
+    await page.waitForURL(/\/whats-new\/$/, { timeout: 8000 }).catch(() => {});
+    record('tap', 'one tap opens the menu, one tap on a menu link navigates', menuOpen && page.url().endsWith('/whats-new/'), page.url());
+    await page.goto(BASE + '/', { waitUntil: 'load' });
+    await ready();
+    await page.tap('.hero-reel__dot >> nth=2');
+    const slide = await page.getAttribute('.hero-reel__dot >> nth=2', 'aria-current');
+    await page.tap('[data-lang-toggle]');
+    await page.waitForFunction(() => document.documentElement.lang === 'es', null, { timeout: 8000 }).catch(() => {});
+    const es = await page.evaluate(() => document.documentElement.lang);
+    await page.tap('[data-lang-toggle]');
+    await page.waitForFunction(() => document.documentElement.lang === 'en', null, { timeout: 8000 }).catch(() => {});
+    record('tap', 'one tap changes the slideshow image and switches language', slide === 'true' && es === 'es', `slide=${slide} lang=${es}`);
+    await page.tap('.guide-launcher');
+    await page.waitForSelector('.guide__chip', { timeout: 8000 });
+    await page.tap('.guide__chip >> nth=1');
+    await page.waitForFunction(() => document.querySelectorAll('.guide .msg--user').length > 0, null, { timeout: 5000 }).catch(() => {});
+    const sent = await page.$$eval('.guide .msg--user', (m) => m.length);
+    record('tap', 'one tap opens Universal AI, one tap on a suggestion asks it', sent === 1, `${sent} message(s)`);
+    await page.goto(BASE + '/find/', { waitUntil: 'load' });
+    await page.waitForFunction(() => { const i = document.querySelector('astro-island[component-url*="ProductFinder"]'); return i && !i.hasAttribute('ssr'); }, null, { timeout: 20000 });
+    await page.tap('.finder__path >> nth=1');
+    const step1 = await page.$$eval('.finder__option', (o) => o.map((x) => x.textContent.trim()).join('|'));
+    await page.tap('.finder__option >> nth=0');
+    await page.waitForTimeout(200);
+    const step2 = await page.$$eval('.finder__option', (o) => o.map((x) => x.textContent.trim()).join('|'));
+    record('tap', 'finder: one tap picks a need, one tap answers each question', step1.length > 0 && step2 !== step1, `${step1.slice(0, 40)} → ${step2.slice(0, 40)}`);
+    await page.goto(BASE + '/shop/', { waitUntil: 'load' });
+    await ready();
+    await page.tap('[data-shop-filter="motorcycles"]');
+    const shown = await page.$$eval('[data-shop-grid] > li', (l) => l.filter((x) => !x.hidden && getComputedStyle(x).display !== 'none').length);
+    await page.tap('[data-shop-filter="all"]');
+    await page.tap('[data-add-to-cart="makita-hp333dyx3b"]');
+    const afterAdd = await badge();
+    record('tap', 'shop: one tap filters, one tap adds to the cart', shown === 16 && afterAdd >= 1, `shown=${shown} cart=${afterAdd}`);
+    await page.goto(BASE + '/cart/', { waitUntil: 'load' });
+    await page.waitForSelector('.cart-line');
+    await page.tap('.stepper button[aria-label^="One more"]');
+    await page.tap('.stepper button[aria-label^="One more"]');
+    const qty = await page.textContent('.stepper output');
+    record('tap', 'cart: quick repeated taps on + each count', Number(qty) === afterAdd + 2, `qty=${qty}`);
+    await ctx.close();
+  }
+
+  /* ---------- 7e. Site search and requested items ---------- */
+  console.log('\n▶ Site search');
+  {
+    const { ctx, page } = await newPage(browser, [390, 844], { isMobile: true, hasTouch: true });
+    const badge = () => page.$eval('[data-cart-count]', (e) => (e.hidden ? 0 : Number(e.textContent)));
+    await page.goto(BASE + '/', { waitUntil: 'load' });
+    await page.waitForFunction(() => document.documentElement.classList.contains('ui-ready'), null, { timeout: 20000 });
+    await page.tap('[data-open-search]');
+    await page.waitForSelector('#site-search-input');
+    const modal = await page.evaluate(() => document.querySelector('.search').getAttribute('aria-modal') === 'true' && document.querySelector('main').hasAttribute('inert'));
+    await page.fill('#site-search-input', 'makita drill');
+    await page.waitForSelector('.search-product');
+    const titles = await page.$$eval('.search-product__title', (a) => a.map((x) => x.textContent.trim()));
+    record('search', 'header search opens a modal panel and finds Shop items', modal && titles.some((t) => /Makita (HP333DYX3B|HP1630|HR2470)/.test(t)), titles.join(', '));
+    const firstPrice = await page.textContent('.search-product .search-product__price');
+    await page.tap('.search-product .btn >> nth=0');
+    const b1 = await badge();
+    await page.fill('#site-search-input', 'motosierra');
+    await page.waitForTimeout(200);
+    const es = await page.$$eval('.search__links a', (a) => a.map((x) => x.textContent));
+    await page.fill('#site-search-input', 'pvc pipe 2 inch');
+    await page.waitForSelector('.search-request--prominent');
+    await page.tap('.search-request .btn');
+    const b2 = await badge();
+    record('search', 'one tap adds a Shop item; Spanish words find categories; an unlisted item can be added as a request', b1 === 1 && b2 === 2 && es.some((t) => /Lawn and Garden/.test(t)), `cart ${b1}→${b2}; motosierra → ${es.join(' / ').slice(0, 60)}`);
+    await page.keyboard.press('Escape');
+    await page.goto(BASE + '/cart/', { waitUntil: 'load' });
+    await page.waitForSelector('.cart-line--request');
+    const cart = await page.evaluate(() => ({ req: document.querySelector('.cart-line--request .cart-line__title').textContent.trim(), tbc: document.body.innerText.includes('Price to be confirmed'), total: document.querySelector('.summary__total').textContent }));
+    record('search', 'the cart lists the request with "Price to be confirmed" and leaves it out of the total', cart.req === 'pvc pipe 2 inch' && cart.tbc && cart.total.endsWith(firstPrice.trim()), JSON.stringify(cart));
+    await page.goto(BASE + '/checkout/', { waitUntil: 'load' });
+    await page.waitForSelector('.pay-btn');
+    await page.click('text=Fill in sample details');
+    await page.click('.pay-btn');
+    await page.waitForSelector('.confirm', { timeout: 8000 });
+    const conf = await page.evaluate(() => ({ ref: document.querySelector('.confirm__ref').textContent.trim(), note: !!document.querySelector('.confirm .request-note'), items: document.querySelector('.confirm').innerText.includes('pvc pipe 2 inch') }));
+    record('search', 'checkout pays for priced items only and confirms the request separately', /^Order TEST-/.test(conf.ref) && conf.note && conf.items, JSON.stringify(conf));
+    // A cart with only a request sends it instead of taking a payment.
+    await page.goto(BASE + '/', { waitUntil: 'load' });
+    await page.waitForFunction(() => document.documentElement.classList.contains('ui-ready'), null, { timeout: 20000 });
+    await page.tap('[data-open-search]');
+    await page.waitForSelector('#site-search-input');
+    await page.fill('#site-search-input', 'galvanized nails 3 inch');
+    await page.press('#site-search-input', 'Enter');
+    await page.goto(BASE + '/checkout/', { waitUntil: 'load' });
+    await page.waitForSelector('.pay-btn');
+    const onlyReq = await page.evaluate(() => ({ btn: document.querySelector('.pay-btn').textContent.trim(), card: !!document.querySelector('.pay-slot') }));
+    await page.click('text=Fill in sample details');
+    await page.click('.pay-btn');
+    await page.waitForSelector('.confirm', { timeout: 8000 });
+    const h = await page.textContent('#confirm-title');
+    record('search', 'a request-only cart has no card step and confirms "Request received"', onlyReq.btn === 'Send request' && !onlyReq.card && /Request received/.test(h), JSON.stringify(onlyReq));
+    record('network', 'search, requests and request checkout made no third-party requests', page._external.length === 0, page._external.join(', '));
     await ctx.close();
   }
 

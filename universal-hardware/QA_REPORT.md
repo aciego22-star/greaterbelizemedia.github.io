@@ -1,6 +1,6 @@
 # QA report
 
-**Build:** `universal-hardware/` · Astro 7.3.8 static output · 56 pages · tested 28 October 2026; Shop, cart and checkout added and re-tested 29 October 2026; homepage slideshow added and re-tested 30 October 2026; English / Spanish switch added, Enquiry Summary removed and wording cleaned up, re-tested 31 October 2026; What's New at Universal and the Universal AI launcher added and re-tested 31 October 2026
+**Build:** `universal-hardware/` · Astro 7.3.8 static output · 56 pages · tested 28 October 2026; Shop, cart and checkout added and re-tested 29 October 2026; homepage slideshow added and re-tested 30 October 2026; English / Spanish switch added, Enquiry Summary removed and wording cleaned up, re-tested 31 October 2026; What's New at Universal and the Universal AI launcher added and re-tested 31 October 2026; site search with requested items, Contact us now (WhatsApp and social links), the one-tap audit and the dash-free labels added and re-tested 1 November 2026
 **Environment:** headless Chromium 1243 (Playwright 1.63) on Linux with **software WebGL (SwiftShader)**; local Netlify-like server with Brotli/gzip; Lighthouse 12.6.1.
 **Not available here:** physical iPhone / Android / iPad hardware and real GPUs. See "Outstanding issues".
 
@@ -8,7 +8,7 @@
 
 | Area | Result |
 |---|---|
-| Automated end-to-end suite (`tests/run-qa.cjs`) | **252 / 252 checks pass** |
+| Automated end-to-end suite (`tests/run-qa.cjs`) | **267 / 267 checks pass** |
 | Logic suite (`tests/guide-cases.ts`) | **All pass**: 16 Universal AI conversations plus its English and Spanish greetings; every finder answer combination (276) resolves to listed categories and sub-types |
 | Spanish coverage (`scripts/i18n-check.mjs`) | **0 English strings left** in Spanish mode across all 56 pages and the finder, search, cart, checkout, Guide and menu states |
 | Type check (`astro check`) | 0 errors, 0 warnings |
@@ -27,16 +27,17 @@
 | console | 25/25 | No console errors on any route |
 | images | 25/25 | Every image on every route (including the photos and logos from universalhardware.bz) loads with real dimensions, once lazy loading is forced to eager |
 | axe | 30/30 | No accessibility violations, on every route, on the cart, checkout-error and confirmation states, and in Spanish (mobile homepage, order confirmation) |
-| network | 32/32 | No request to any non-origin host on page load, in the finder flows, in Universal AI conversations, on What's New, while switching language, in the shop and checkout, or across navigation; the shop and checkout send no write request at all |
+| network | 33/33 | No request to any non-origin host on page load, in the finder flows, in Universal AI conversations, on What's New, in site search and request checkout, while switching language, in the shop and checkout, or across navigation; the shop and checkout send no write request at all |
 | overflow | 8/8 | No horizontal overflow on any route at 320×640, 375×812, 390×844, 430×932, 768×1024, 1024×768, 1440×900; in Spanish (longer labels) none at 320, 1024 and 1200 px |
 | nav | 11/11 | Header links (Shop, Products, Brands, Locations, About, What's New at Universal) set `aria-current`; Explore Products CTA; Find the Right Product stays in the menu and footer (it left the desktop bar to make room); hero "Find the Right Solution" → `#finder`; 8 department tiles → live category pages; every internal link target on every route resolves (no dead links) |
 | mobile-menu | 4/4 | Opens as a modal `<dialog>` with focus inside, `aria-expanded`; Escape closes and returns focus; links navigate; no standalone tap target under 24 px |
-| search | 17/17 | 12 categories by default; "submersible pump" ranks Water Pumps and highlights the sub-type; URL sync; English, Spanish and typo queries ("planta", "bomba de agua", "genrator"); finished empty state with recovery; department and brand filters; `?q=` deep link |
+| search | 22/22 | Site search (header, menu, Shop, Products): opens as a modal; finds Shop items ("makita drill") and adds one with a tap; Spanish words find categories ("motosierra" → Lawn and Garden); an unlisted item ("pvc pipe 2 inch") goes into the cart as a request, shown as "Price to be confirmed" and left out of the total; checkout charges priced items only and confirms the request separately; a request-only cart has no card step and ends in "Request received". Catalogue search:  12 categories by default; "submersible pump" ranks Water Pumps and highlights the sub-type; URL sync; English, Spanish and typo queries ("planta", "bomba de agua", "genrator"); finished empty state with recovery; department and brand filters; `?q=` deep link |
 | finder | 7/7 | Six need paths; backup power → Generators with electrician caution; back navigation; farm → Water Pumps related; deep well → Submersible pumps; no Enquiry Summary controls or wording left on any page; the next step hands the answers to Universal AI as a ready-made question |
 | guide | 17/17 | The launcher pill reads "Universal AI Assistant" and pulses, and stops pulsing once opened in the session; opens with "Hi, I'm Universal AI. How may I assist you today?" and the suggestions below it; "What's new at Universal?" answers with the yearly sales and the latest event and links to the page; required conversations (generator ×3 turns, cordless drill, home water pump, motorbikes, Belize City store, quote); quote says it can't send anything and points to the branch WhatsApp lines; says it is rule-based when asked; switching the site to Spanish switches the Guide's welcome and replies; Escape closes; category pages hand over a contextual prompt, even when tapped before the global UI has hydrated (requests are queued and replayed) |
 | news | 4/4 | What's New lists six sales and events newest first, led by the Mega Sale 2026; every event shows its flyer from the site itself; "Ask Universal AI" on the page answers about upcoming sales; About's news list links to What's New |
 | i18n | 8/8 | English pages never load the Spanish dictionary; the header EN/ES button flips the page (heading, menu, title, button label); Spanish persists across pages; island toasts follow the language; checkout errors, Pay button and order confirmation in Spanish; switching back restores English without a reload; a Spanish-language browser opens in Spanish |
-| links | 3/3 | `tel:` and `https://wa.me/` links match the website-listed numbers exactly; external links use `rel="noopener"` |
+| links | 4/4 | `tel:` and `https://wa.me/` links match the website-listed numbers exactly; external links use `rel="noopener"`; the footer's Contact us now has WhatsApp to each branch's Sales line and the Facebook, Instagram and YouTube links from the company's own About page |
+| tap | 8/8 | On a touch screen (390 px, touch emulation): no hover-only style on any route; every control on all 25 routes is at least 24 px (or a full-card link, or a link inside a sentence) and nothing covers its centre; one tap opens the menu and one tap on a link navigates; one tap changes the slideshow image (the dot lights up at once) and switches language; one tap opens Universal AI and one tap on a suggestion asks it; one tap per finder answer; one tap filters the Shop and adds to the cart; quick repeated taps on the cart stepper all count |
 | branch | 1/1 | Preferred branch persists for the session across pages |
 | privacy | 2/2 | No `localStorage` keys and no cookies are written; checkout contact details never reach `sessionStorage` or `window.name` |
 | shop | 4/4 | 32 products, each with a BZ$ price; the motorcycle filter shows 16; add to cart updates the header count and offers View cart; the product page adds the chosen quantity |
@@ -123,6 +124,17 @@ After adding What's New at Universal and the pulsing Universal AI launcher (31 O
 
 The pulse animates only `transform` and `opacity` on the launcher's own pseudo-elements, so the compositor runs it without repainting or script, and it stops after the first open. (These four runs used an earlier shadow-based pulse; the final transform-based version passed the full e2e suite.)
 
+After adding site search, Contact us now and the one-tap changes (1 November 2026):
+
+| Form factor | Route | Perf | A11y | BP | LCP | TBT | CLS |
+|---|---|---|---|---|---|---|---|
+| mobile | `/` | 96 | 100 | 100 | 2.7 s | 60 ms | 0 |
+| desktop | `/` | 100 | 100 | 100 | 0.7 s | 0 ms | 0 |
+| mobile | `/shop/` | 99 | 100 | 100 | 1.9 s | 0 ms | 0 |
+| mobile | `/cart/` | 99 | 100 | 100 | 2.0 s | 0 ms | 0 |
+
+Site search is a separate chunk, loaded the first time the panel opens.
+
 The LCP element is now the first slideshow image (AVIF, 1672 px on desktop, 750 px on phones). Before two changes, desktop flipped between 100 and 60. Slides 2 and 3 downloaded right after load and kept the network busy, so the 3D scene could start inside Lighthouse's window, where SwiftShader frames count as blocking time. Now each later slide loads just before it is due, and the scene waits until its stage is on screen.
 
 The first table is the pre-image baseline. Below-the-fold images are lazy-loaded, every image has explicit dimensions (CLS 0), and photos are served as WebP with a JPEG fallback.
@@ -176,6 +188,10 @@ Reviewed by screenshot at every tested viewport (see `deliverables/screenshots/`
 - 3D tests: with the stage now below the slideshow, its 1.6 s intro starts when it scrolls into view, so the pause and no-WebGL checks first scroll the stage into view and let the intro finish
 - Shop photos: the automatic cut-outs kept "SALE" beside the two trimmers and clipped the rotary hammer's handle; fixed with three paint-out areas
 - Header: with six links, "What's New at Universal" plus both header buttons overflowed between 1181 and 1280 px and wrapped links up to 1440 px. Links no longer wrap; Find the Right Product left the desktop bar (still in the hero, menu and footer), Explore Products hides below 1300 px, and the label shortens to "What's New" only between 1000 and 1119 px. Checked at 13 widths in English and Spanish
+- Eyebrow labels: the short dash before every small label is gone, and the numbered "01 —" to "05 —" labels on the homepage and category pages are now plain labels
+- Header with the new search button: overflowed at 320 px (+34 px) and at several widths between 1000 and 1300 px (more in Spanish). Now the burger menu takes over below 1100 px, "What's New at Universal" shortens only between 1100 and 1199 px, Explore Products shows from 1440 px, and phones below 360 px use 38 px header buttons. Checked at 13 desktop widths and 6 phone widths in both languages: no overflow
+- One tap: tapping a slideshow dot used to change nothing until the next image had loaded, so on a slow phone it looked like the tap failed. The dot now lights up at once and the image fades in when ready. Breadcrumbs, Shop card titles and detail links were under 24 px tall and now have comfortable tap areas
+- WhatsApp buttons in the footer: a footer link colour overrode their dark text on green (axe contrast failure); fixed
 - Universal AI pulse: the server-rendered button kept its pulse class after hydration, so the pulse never stopped on later pages (caught by the e2e suite). The saved "opened" state is now read after mount
 - Universal AI pulse: the first version animated a box-shadow, which repaints every frame; with software 3D running, headless screenshots stalled. It now animates transform and opacity only, and the presentation screenshots freeze it mid-ring
 - Universal AI suggestions now sit directly under the latest reply instead of in a scrolling strip above the input
@@ -200,3 +216,5 @@ Reviewed by screenshot at every tested viewport (see `deliverables/screenshots/`
 14. **Spanish is a working translation**, written for this build, and has not yet been reviewed by a native speaker in Belize. It should be before launch, especially product names, sizing terms and the checkout.
 15. **Universal AI does not pass enquiries on to staff, and is rule-based in this build.** Its name and greeting present it as the site's AI assistant; asked what it is, it says it is rule-based and not a live AI model. It answers from the site's own content and points customers to the branch WhatsApp lines. Handing a conversation to a branch needs the approved live AI Employee and a destination Universal Hardware chooses.
 16. **What's New lists only past events** (December 2025 to May 2026). New posts on the company's News / Promotions page have to be added by hand (see README); the yearly pattern ("usually in February / May") is inferred from the 2023–2026 flyers.
+17. **Requested items are not sent anywhere yet.** Site search can put any item into the cart as a request, but in this build the request ends at a simulated confirmation. Routing requests to a branch is part of production option 4.
+18. **Facebook and Instagram could not be opened here** (both show a login wall to automated checks). The links are taken from the company's own About page; someone should tap them once on a phone to confirm they open the right pages.

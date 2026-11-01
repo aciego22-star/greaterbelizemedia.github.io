@@ -163,6 +163,14 @@ const shot = async (page, name, opts = {}) => {
     await p2.evaluate(() => { const el = document.querySelector('.news-feature'); if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 110, behavior: 'instant' }); });
     await p2.waitForTimeout(900);
     await shot(p2, `17-whats-new-${tag}.png`);
+    await p2.click('[data-open-search]');
+    await p2.waitForSelector('#site-search-input');
+    await p2.fill('#site-search-input', 'makita drill');
+    await p2.waitForSelector('.search-product');
+    await p2.waitForTimeout(600);
+    await shot(p2, `18-search-${tag}.png`);
+    await p2.keyboard.press('Escape');
+    await p2.waitForTimeout(300);
     // Shop, cart and demo checkout
     await p2.goto(BASE + '/shop/', { waitUntil: 'load' });
     await p2.waitForFunction(() => document.documentElement.classList.contains('ui-ready'), null, { timeout: 20000 });

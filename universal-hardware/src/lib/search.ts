@@ -50,7 +50,7 @@ function editDistanceLE1(a: string, b: string): boolean {
   return edits + (a.length - i) + (b.length - j) <= 1;
 }
 
-function wordMatch(qt: string, text: string): number {
+export function wordMatch(qt: string, text: string): number {
   // 3 = whole-word, 2 = prefix, 1 = fuzzy (typo), 0 = none
   const words = text.split(' ').map(stem);
   let best = 0;

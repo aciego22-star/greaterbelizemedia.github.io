@@ -135,6 +135,18 @@ To add or change copy: edit the English, rebuild, then run `node scripts/collect
 
 The floating pill reads "Universal AI / Assistant" ("Universal AI" on phones). A rapid blue pulse radiates from it until the visitor opens it once in the session; with reduced motion (system setting or the footer toggle) it shows a steady halo instead. Its greeting is "Hi, I'm Universal AI. How may I assist you today?", with suggested questions below.
 
+### Site search and requested items
+
+The search button in the header (and "Search for a product" in the phone menu, the Shop and Products pages) opens one search box over the Shop, the categories and the brands (`src/islands/SiteSearch.tsx`, loaded the first time it opens). Shop items go into the cart with one tap, colour by colour for motorcycles. Anything the site does not list can be added to the cart as a **request**: just the name the customer typed (up to 80 characters), shown as "Price to be confirmed" and left out of the total. At checkout the customer pays for priced items only; a cart with only requests has no card step and ends in "Request received (simulated)". Requests are not sent anywhere in this build; going live needs a destination at the branch (see `PRODUCTION_OPTIONS.md`).
+
+### Contact us now
+
+`src/components/ContactLinks.astro` puts direct WhatsApp buttons (each branch's Sales line) and Universal Hardware's Facebook, Instagram and YouTube in the footer, the phone menu, Locations, About and What's New. The social links are the ones on the company's own About page (`SOCIAL` in `src/data/site.ts`).
+
+### One tap
+
+Every control responds to the first tap on a touch screen. A PostCSS plugin (`scripts/postcss-hover-media.mjs`, wired in `astro.config.mjs`) moves every `:hover` rule into `@media (hover: hover) and (pointer: fine)`, because on iPhones a hover effect can swallow the first tap. Controls use `touch-action: manipulation`, so quick repeated taps (steppers, chips) all count, and standalone links are at least 24 px tall. Slideshow dots light up the moment they are tapped, even while the next image loads. The end-to-end suite checks all of this on every route with touch emulation.
+
 ### Homepage slideshow
 
 The page opens with a full-width slideshow above the 3D hero: a storefront with a Lifan motorcycle, a store floor and a paint aisle. The images were supplied by Austere Automations. Every slide has a 16:9 desktop and a 4:5 mobile composition. Phones (below 768 px) get the mobile one and tablets and desktops the desktop one, so neither is cropped into the other's shape. Slides fade every 7 seconds in an endless loop. Choosing a slide, swiping, the arrow keys or the pause button stop autoplay. It waits while off-screen or in a background tab, and starts paused with reduced motion. Only the first image loads with the page; each later one is fetched 3.5 s before it is due. `scripts/build-hero-slides.mjs` encodes the source PNGs as AVIF / WebP (two widths each) plus a JPEG fallback, under content-hashed names listed in `src/hero/slides.json`.
@@ -152,7 +164,7 @@ Checkout reaches card processors only through the `PaymentProvider` interface in
 ### Privacy model
 
 - No analytics, cookies, trackers, third-party fonts or scripts. The CSP enforces this.
-- The cart, language, preferred branch and motion setting live in `sessionStorage` (cleared when the tab closes). Where it is blocked, the cart falls back to the tab's `window.name`. Checkout contact details and Universal AI conversations are kept in memory only.
+- The cart (including the names of requested items), language, preferred branch and motion setting live in `sessionStorage` (cleared when the tab closes). Where it is blocked, the cart falls back to the tab's `window.name`. Checkout contact details and Universal AI conversations are kept in memory only.
 - The only way data leaves the page is the visitor copying the summary, or tapping a phone, WhatsApp, map, email or official-website link. The checkout sends nothing.
 
 ## Optional live AI (disabled by default)

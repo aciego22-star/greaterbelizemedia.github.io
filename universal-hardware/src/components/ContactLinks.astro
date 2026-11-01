@@ -1,0 +1,58 @@
+---
+/**
+ * Contact us now: direct WhatsApp to each branch's sales line, and
+ * Universal Hardware's Facebook, Instagram and YouTube. Every control is a
+ * plain link, so one tap opens WhatsApp or the social app.
+ */
+import Icon from './Icon.astro';
+import { BRANCHES, waUrl } from '../data/branches';
+import { SOCIAL } from '../data/site';
+
+interface Props {
+  /** `dark` for the footer and dark panels, `light` for page sections. */
+  tone?: 'dark' | 'light';
+  /** Show the WhatsApp buttons (on by default). */
+  whatsapp?: boolean;
+  /** Show the social row (on by default). */
+  social?: boolean;
+  class?: string;
+}
+const { tone = 'light', whatsapp = true, social = true, class: cls } = Astro.props;
+---
+<div class:list={['contact-links', `contact-links--${tone}`, cls]}>
+  {
+    whatsapp && (
+      <div class="contact-links__wa">
+        {BRANCHES.map((b) => (
+          <a class="wa-btn" href={waUrl(b.whatsapp[0])} target="_blank" rel="noopener" data-contact="whatsapp">
+            <Icon name="whatsapp" size={22} />
+            <span class="wa-btn__text">
+              <span class="wa-btn__k">WhatsApp</span>{' '}
+              <span class="wa-btn__v">{b.name}</span>
+            </span>
+          </a>
+        ))}
+      </div>
+    )
+  }
+  {
+    social && (
+      <ul class="contact-links__social" aria-label="Universal Hardware on social media">
+        {SOCIAL.map((s) => (
+          <li>
+            <a
+              class:list={['social-btn', `social-btn--${s.id}`]}
+              href={s.href}
+              target="_blank"
+              rel="noopener"
+              aria-label={`Universal Hardware on ${s.label}`}
+              data-contact={s.id}
+            >
+              <Icon name={s.id} size={22} />
+            </a>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</div>

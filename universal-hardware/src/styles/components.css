@@ -40,7 +40,7 @@
   border: 1px solid rgba(121, 176, 228, 0.4);
   color: #d9e9f8;
   text-decoration: none;
-  min-height: 22px;
+  min-height: 26px;
 }
 .utility__badge:hover {
   color: #fff;
@@ -162,8 +162,8 @@
 .site-nav__short {
   display: none;
 }
-/* "What's New at Universal" stays whole down to 1120px, then shortens to "What's New". */
-@media (max-width: 1119px) {
+/* "What's New at Universal" stays whole down to 1200px, then shortens to "What's New". */
+@media (max-width: 1199px) {
   .site-nav__full {
     display: none;
   }
@@ -204,12 +204,12 @@
   display: none;
 }
 /* Explore Products leaves the bar first; the finder is in the hero, the menu and the footer. */
-@media (max-width: 1299px) {
+@media (max-width: 1439px) {
   .site-header__explore {
     display: none;
   }
 }
-@media (max-width: 999px) {
+@media (max-width: 1099px) {
   .site-nav,
   .site-header__explore {
     display: none;
@@ -233,6 +233,23 @@
   .site-header__actions .icon-btn {
     width: 40px;
     height: 40px;
+  }
+  .site-header__logo img {
+    height: 24px;
+  }
+}
+/* Small phones: search, cart, language and menu all stay one tap away in the bar. */
+@media (max-width: 360px) {
+  .site-header__inner {
+    gap: 8px;
+  }
+  .site-header__actions {
+    gap: 4px;
+  }
+  .site-header__actions .icon-btn,
+  .site-header__actions .lang-toggle {
+    width: 38px;
+    height: 38px;
   }
 }
 
@@ -602,4 +619,154 @@
 }
 html.i18n-pending body {
   visibility: hidden;
+}
+
+/* Contact us now: WhatsApp buttons and social links (footer, menu, pages) */
+.contact-links {
+  display: grid;
+  gap: 14px;
+  justify-items: start;
+}
+.contact-links__wa {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.contact-links .wa-btn,
+.site-footer .contact-links .wa-btn {
+  color: #062814;
+  text-decoration: none;
+}
+.wa-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 8px 18px 8px 12px;
+  border-radius: 999px;
+  background: #25d366;
+  color: #062814;
+  font-weight: 650;
+  text-decoration: none;
+  line-height: 1.1;
+  transition: background-color var(--dur), transform var(--dur);
+}
+.wa-btn__text {
+  display: grid;
+}
+.wa-btn__k {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.wa-btn__v {
+  font-size: 0.95rem;
+}
+.contact-links__social {
+  display: flex;
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.social-btn {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+  transition: background-color var(--dur), color var(--dur), border-color var(--dur);
+}
+.site-footer .contact-links .social-btn {
+  color: #fff;
+  text-decoration: none;
+}
+.contact-links--dark .social-btn {
+  border-color: rgba(173, 199, 226, 0.28);
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+@media (hover: hover) and (pointer: fine) {
+  .wa-btn:hover {
+    background: #3ee07b;
+  }
+  .social-btn--facebook:hover {
+    background: #1877f2;
+    border-color: #1877f2;
+    color: #fff;
+  }
+  .social-btn--instagram:hover {
+    background: #d62976;
+    border-color: #d62976;
+    color: #fff;
+  }
+  .social-btn--youtube:hover {
+    background: #e62117;
+    border-color: #e62117;
+    color: #fff;
+  }
+}
+.site-footer__contact {
+  display: grid;
+  gap: 12px;
+  margin-top: 8px;
+}
+.site-footer__contact .site-footer__h {
+  margin: 0;
+}
+.mobile-nav__contact {
+  display: grid;
+  gap: 10px;
+  margin-top: 20px;
+}
+.mobile-nav__contact .wa-btn {
+  flex: 1 1 150px;
+}
+
+/* "Don't see your product here?" prompt (Shop, Products) */
+.request-prompt {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 14px 16px;
+  align-items: center;
+  margin-top: 28px;
+  padding: 20px;
+  border: 1px solid var(--blue-100);
+  border-radius: var(--radius-lg);
+  background: var(--blue-50);
+}
+.request-prompt__icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: var(--paper);
+  color: var(--blue-600);
+}
+.request-prompt__title {
+  font-family: var(--font-display);
+  font-weight: 750;
+  font-size: 1.1rem;
+}
+.request-prompt__copy p + p {
+  margin-top: 4px;
+  color: var(--ink);
+}
+.request-prompt .btn {
+  grid-column: 1 / -1;
+  justify-self: start;
+}
+@media (min-width: 760px) {
+  .request-prompt {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+  .request-prompt .btn {
+    grid-column: auto;
+  }
 }
