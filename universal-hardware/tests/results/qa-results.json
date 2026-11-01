@@ -1,7 +1,7 @@
 {
   "base": "http://localhost:4322",
-  "date": "2026-11-01T02:20:22.179Z",
-  "passed": 267,
+  "date": "2026-11-01T13:20:38.833Z",
+  "passed": 277,
   "failed": 0,
   "results": [
     {
@@ -908,7 +908,7 @@
       "group": "search",
       "name": "\"submersible pump\" → Water Pumps with highlighted sub-type",
       "pass": true,
-      "detail": "Water Pumps | Submersible pumps, Jet pumps (pressure systems), Sprinkler pumps, Booster pumps, Sump pumps, Marine pumps, Pressure pumps, Gas and diesel powered water pumps (129ms)"
+      "detail": "Water Pumps | Submersible pumps, Jet pumps (pressure systems), Sprinkler pumps, Booster pumps, Sump pumps, Marine pumps, Pressure pumps, Gas and diesel powered water pumps (125ms)"
     },
     {
       "group": "search",
@@ -1157,6 +1157,66 @@
       "detail": ""
     },
     {
+      "group": "ai",
+      "name": "\"show me makita drills\" answers with product photos and Add buttons",
+      "pass": true,
+      "detail": "{\"products\":3,\"loaded\":4}"
+    },
+    {
+      "group": "ai",
+      "name": "one tap on Add in the chat puts the item in the cart",
+      "pass": true,
+      "detail": "cart 1"
+    },
+    {
+      "group": "ai",
+      "name": "\"add 2 red LF100-A to my cart\" adds two red LF100-A",
+      "pass": true,
+      "detail": "[{\"id\":\"makita-hp1630\",\"qty\":1},{\"id\":\"lifan-lf100-a\",\"colour\":\"Red\",\"qty\":2}]"
+    },
+    {
+      "group": "ai",
+      "name": "an item the site does not list goes into the cart as a request",
+      "pass": true,
+      "detail": "[{\"kind\":\"request\",\"text\":\"bags of cement\",\"qty\":3}]"
+    },
+    {
+      "group": "ai",
+      "name": "AC sizing from Sankey's chart on the live site (12 × 14 ft → 6,000 BTU)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "ai",
+      "name": "model specs from the live Meilun & Lifan page",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "ai",
+      "name": "WhatsApp handoff: both branches, chat and cart summarised, opens only on tap",
+      "pass": true,
+      "detail": "Hi Universal Hardware! I was chatting with Universal AI on your website.\nI asked about: What size AC do I need for a 12 "
+    },
+    {
+      "group": "network",
+      "name": "Universal AI (pictures, cart, handoff) made no third-party requests",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "ai",
+      "name": "Spanish: \"agregue la LF125-5 al carrito\" adds the listed model as a request, with its listed price",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "axe",
+      "name": "Universal AI panel with picture cards and the WhatsApp handoff",
+      "pass": true,
+      "detail": ""
+    },
+    {
       "group": "i18n",
       "name": "English pages do not load the Spanish dictionary",
       "pass": true,
@@ -1190,7 +1250,7 @@
       "group": "i18n",
       "name": "order confirmation in Spanish",
       "pass": true,
-      "detail": "Pago aprobado (simulado)Pedido TEST-W839ZDGracias, Sample Customer. Los pagos con tarjeta aún se están configurando, así"
+      "detail": "Pago aprobado (simulado)Pedido TEST-RYHH7UGracias, Sample Customer. Los pagos con tarjeta aún se están configurando, así"
     },
     {
       "group": "axe",
@@ -1376,7 +1436,7 @@
       "group": "checkout",
       "name": "approved simulated payment shows a TEST order reference and empties the cart",
       "pass": true,
-      "detail": "{\"ref\":\"Order TEST-E2ZCEG\",\"demo\":true}"
+      "detail": "{\"ref\":\"Order TEST-NC8JQH\",\"demo\":true}"
     },
     {
       "group": "axe",
@@ -1430,7 +1490,7 @@
       "group": "reel",
       "name": "autoplay fades to the next slide after about 7 s; inactive slides are aria-hidden",
       "pass": true,
-      "detail": "5512 ms after load, aria-hidden true,,true"
+      "detail": "5523 ms after load, aria-hidden true,,true"
     },
     {
       "group": "reel",
@@ -1520,7 +1580,7 @@
       "group": "search",
       "name": "checkout pays for priced items only and confirms the request separately",
       "pass": true,
-      "detail": "{\"ref\":\"Order TEST-78ZXX6\",\"note\":true,\"items\":true}"
+      "detail": "{\"ref\":\"Order TEST-KYQ3LM\",\"note\":true,\"items\":true}"
     },
     {
       "group": "search",

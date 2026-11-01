@@ -6,7 +6,8 @@
  * opens; it searches local data only and makes no network request.
  */
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
-import { SHOP_GROUPS, SHOP_PRODUCTS, formatPrice, productTitle, type ShopProduct } from '../data/shop';
+import { formatPrice, productTitle, type ShopProduct } from '../data/shop';
+import { searchProducts } from '../lib/product-search';
 import { BRANDS } from '../data/brands';
 import { POPULAR_SEARCHES, normalize, searchCategories, tokens, wordMatch } from '../lib/search';
 import { addRequest, addToCart, MAX_REQUEST_LEN } from '../lib/cart-store';
@@ -18,47 +19,6 @@ import { SitePicture } from './SitePicture';
 const Icon = ({ name, size = 18 }: { name: IconName; size?: number }) => (
   <span class="i" aria-hidden="true" dangerouslySetInnerHTML={{ __html: iconSvg(name, size) }} />
 );
-
-// Everyday words (English and Spanish) for what each product is.
-const SYNONYMS: [RegExp, string][] = [
-  [/drill|hammer/i, 'drill taladro rotomartillo'],
-  [/grinder/i, 'grinder esmeril amoladora pulidora'],
-  [/saw/i, 'saw sierra'],
-  [/sander/i, 'sander lijadora'],
-  [/trimmer|brushcutter/i, 'trimmer weed eater desbrozadora chapeadora'],
-  [/pressure washer/i, 'pressure washer hidrolavadora lavadora a presion'],
-  [/battery/i, 'battery bateria'],
-  [/charger/i, 'charger cargador'],
-  [/scooter/i, 'scooter moto motocicleta'],
-  [/bike|street|trail|wheel/i, 'motorcycle motorbike moto motocicleta'],
-];
-const GROUP_LABEL = Object.fromEntries(SHOP_GROUPS.map((g) => [g.id, g.label]));
-
-const PRODUCT_INDEX = SHOP_PRODUCTS.map((p) => ({
-  p,
-  text: normalize(
-    `${p.brand} ${p.model} ${p.model.replace(/-/g, '')} ${p.name} ${GROUP_LABEL[p.group]} ${SYNONYMS.filter(([re]) => re.test(`${p.name} ${p.group}`))
-      .map(([, w]) => w)
-      .join(' ')}`,
-  ),
-}));
-
-function searchProducts(q: string): ShopProduct[] {
-  const qts = tokens(q);
-  if (!qts.length) return [];
-  return PRODUCT_INDEX.map(({ p, text }) => {
-    let score = 0;
-    for (const qt of qts) {
-      const m = wordMatch(qt, text);
-      if (!m) return { p, score: 0 };
-      score += m;
-    }
-    return { p, score };
-  })
-    .filter((x) => x.score > 0)
-    .sort((a, b) => b.score - a.score || a.p.price - b.p.price)
-    .map((x) => x.p);
-}
 
 function searchBrands(q: string) {
   const qts = tokens(q);

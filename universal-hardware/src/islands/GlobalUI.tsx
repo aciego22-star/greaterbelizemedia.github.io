@@ -6,6 +6,8 @@ import type { ComponentType } from 'preact';
 import { tabGet, tabSet } from '../lib/tab-storage';
 import { setBackgroundInert, useFocusTrap, useMedia } from '../lib/ui-hooks';
 import type { GuideEngine, GuideReply, GuideState, Lang } from '../lib/guide/types';
+import { getCart, isRequest } from '../lib/cart-store';
+import { PRODUCT_BY_ID, productTitle } from '../data/shop';
 import { CHATBASE_AGENT_ID, LIVE_AI_DISCLAIMER, loadChatbase } from '../lib/guide/chatbase-adapter';
 
 const Icon = ({ name, size = 18 }: { name: IconName; size?: number }) => (
@@ -166,12 +168,14 @@ function GuidePanel({ open, onClose, prompt }: { open: boolean; onClose: () => v
     else if (!open) setBackgroundInert(false);
   }, [open, mobile]);
 
-  // Lazy-load the rule engine the first time the panel opens.
+  // Lazy-load the engine and its picture cards the first time the panel opens.
+  const [cardsUi, setCardsUi] = useState<typeof import('./GuideCards') | null>(null);
   useEffect(() => {
     if (!open || engine) return;
     let cancelled = false;
-    import('../lib/guide/local-engine').then(({ LocalGuideEngine }) => {
+    Promise.all([import('../lib/guide/local-engine'), import('./GuideCards')]).then(([{ LocalGuideEngine }, ui]) => {
       if (cancelled) return;
+      setCardsUi(ui);
       const lang: Lang = document.documentElement.lang === 'es' ? 'es' : 'en';
       const s = LocalGuideEngine.initialState(lang);
       setEngine(LocalGuideEngine);
@@ -187,13 +191,26 @@ function GuidePanel({ open, onClose, prompt }: { open: boolean; onClose: () => v
     (text: string) => {
       const t = text.trim();
       if (!t || !engine || !state) return;
-      const { reply, state: next } = engine.reply(t, state);
+      // The engine sees the cart (it never leaves the page) and may ask for cart changes the visitor requested.
+      const { reply, state: next } = engine.reply(t, state, { cart: getCart() });
+      if (reply.actions?.length) cardsUi?.runActions(reply.actions);
       setState(next);
       setMsgs((m) => [...m, { id: counter.current++, from: 'user', text: t }, { id: counter.current++, from: 'guide', text: '', reply }]);
       setInput('');
     },
-    [engine, state],
+    [engine, state, cardsUi],
   );
+
+  // What the WhatsApp handoff message summarises: the visitor's recent questions and the cart.
+  const handoffSummary = (upTo: number) =>
+    msgs
+      .filter((m) => m.from === 'user' && m.id < upTo)
+      .slice(-3)
+      .map((m) => m.text.slice(0, 120));
+  const cartSummary = () =>
+    getCart().map((l) =>
+      isRequest(l) ? `${l.qty} × ${l.text} (request)` : `${l.qty} × ${PRODUCT_BY_ID[l.id] ? productTitle(PRODUCT_BY_ID[l.id]) : l.id}${l.colour ? ` (${l.colour})` : ''}`,
+    );
 
   // Prompts handed over by other components (finder, category pages).
   useEffect(() => {
@@ -293,6 +310,7 @@ function GuidePanel({ open, onClose, prompt }: { open: boolean; onClose: () => v
                       <Rich text={m.reply!.text} />
                     </div>
                     {m.reply!.branches?.map((id) => <MiniBranch id={id} />)}
+                    {!!m.reply!.cards?.length && cardsUi && <cardsUi.GuideCards cards={m.reply!.cards} lang={lang} />}
                     {!!m.reply!.links?.length && (
                       <div class="msg__actions">
                         {m.reply!.links?.map((l) => (
@@ -302,6 +320,7 @@ function GuidePanel({ open, onClose, prompt }: { open: boolean; onClose: () => v
                         ))}
                       </div>
                     )}
+                    {m.reply!.handoff && cardsUi && <cardsUi.Handoff kind={m.reply!.handoff} lang={lang} summary={handoffSummary(m.id)} cart={cartSummary()} />}
                   </div>
                 ),
               )}

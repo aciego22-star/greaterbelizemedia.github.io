@@ -152,6 +152,13 @@ function harvest() {
   await page.click('.guide-launcher');
   await page.waitForTimeout(800);
   await grab('/#guide');
+  // Universal AI answers with picture cards and the WhatsApp handoff.
+  for (const q of ['show me makita drills', 'what do you sell?', 'tell me about Sankey', 'how much is a hisun utv?', "what's new at Universal?", 'add the LF125-5 to my cart', 'talk to a person']) {
+    await page.fill('#guide-input', q);
+    await page.press('#guide-input', 'Enter');
+    await page.waitForTimeout(500);
+    await grab('/#guide=' + q);
+  }
   // Mobile menu.
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(base + '/', { waitUntil: 'load' });

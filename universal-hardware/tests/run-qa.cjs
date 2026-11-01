@@ -342,6 +342,58 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
     await ctx.close();
   }
 
+  /* ---------- 6a. Universal AI: pictures, add to cart, WhatsApp handoff, live-site knowledge ---------- */
+  console.log('\n▶ Universal AI skills');
+  {
+    const { ctx, page } = await newPage(browser, [1280, 900]);
+    const badge = () => page.$eval('[data-cart-count]', (e) => (e.hidden ? 0 : Number(e.textContent)));
+    await page.goto(BASE + '/', { waitUntil: 'load' });
+    await page.waitForFunction(() => document.documentElement.classList.contains('ui-ready'), null, { timeout: 20000 });
+    await page.click('.guide-launcher');
+    await page.waitForSelector('.guide__chip');
+    const ask = async (q) => {
+      const n = await page.$$eval('.msg--guide', (m) => m.length);
+      await page.fill('#guide-input', q);
+      await page.press('#guide-input', 'Enter');
+      await page.waitForFunction((k) => document.querySelectorAll('.msg--guide').length > k, n);
+      await page.waitForTimeout(300);
+      return page.locator('.msg--guide').last();
+    };
+    let last = await ask('show me makita drills');
+    await last.locator('.gcard img').first().scrollIntoViewIfNeeded();
+    await page.waitForFunction(() => { const m = [...document.querySelectorAll('.msg--guide')].pop(); const imgs = [...m.querySelectorAll('.gcard img')]; return imgs.length >= 2 && imgs.slice(0, 2).every((i) => i.complete && i.naturalWidth > 0); }, null, { timeout: 10000 }).catch(() => {});
+    const cards = await last.evaluate((m) => ({ products: m.querySelectorAll('.gcard__add, .gcard__colours').length, loaded: [...m.querySelectorAll('.gcard img')].filter((i) => i.complete && i.naturalWidth > 0).length }));
+    record('ai', '"show me makita drills" answers with product photos and Add buttons', cards.products >= 2 && cards.loaded >= 2, JSON.stringify(cards));
+    await last.locator('.gcard__add').first().click();
+    const b1 = await badge();
+    record('ai', 'one tap on Add in the chat puts the item in the cart', b1 === 1, `cart ${b1}`);
+    last = await ask('add 2 red LF100-A to my cart');
+    const cart = await page.evaluate(() => JSON.parse(sessionStorage.getItem('uhc.cart.v1') || '[]'));
+    record('ai', '"add 2 red LF100-A to my cart" adds two red LF100-A', (await badge()) === 3 && cart.some((l) => l.id === 'lifan-lf100-a' && l.colour === 'Red' && l.qty === 2), JSON.stringify(cart));
+    last = await ask('add 3 bags of cement to my cart');
+    const reqs = await page.evaluate(() => JSON.parse(sessionStorage.getItem('uhc.cart.v1') || '[]').filter((l) => l.kind === 'request'));
+    record('ai', 'an item the site does not list goes into the cart as a request', reqs.some((l) => l.text === 'bags of cement' && l.qty === 3), JSON.stringify(reqs));
+    last = await ask('What size AC do I need for a 12 by 14 room?');
+    record('ai', "AC sizing from Sankey's chart on the live site (12 × 14 ft → 6,000 BTU)", /168 square feet[\s\S]*6,000 BTU/.test(await last.innerText()));
+    last = await ask('what is the fuel consumption of the LF100-A?');
+    record('ai', 'model specs from the live Meilun & Lifan page', /1\.9 L\/100 km/.test(await last.innerText()));
+    last = await ask('Talk to a person on WhatsApp');
+    const wa = await last.locator('.handoff__btn').evaluateAll((a) => a.map((x) => ({ href: x.getAttribute('href'), target: x.target, rel: x.rel })));
+    const msg = wa[0] ? decodeURIComponent(wa[0].href.split('?text=')[1] || '') : '';
+    record('ai', 'WhatsApp handoff: both branches, chat and cart summarised, opens only on tap', wa.length === 2 && wa[0].href.startsWith('https://wa.me/5016529933?text=') && wa[1].href.startsWith('https://wa.me/5016673937?text=') && /Universal AI/.test(msg) && /LF100-A \(Red\)/.test(msg) && wa.every((x) => x.target === '_blank' && x.rel.includes('noopener')), msg.slice(0, 120));
+    record('network', 'Universal AI (pictures, cart, handoff) made no third-party requests', page._external.length === 0, page._external.join(', '));
+    // Spanish: the same skills answer in Spanish.
+    await page.click('[data-lang-toggle]');
+    await page.waitForFunction(() => document.documentElement.lang === 'es' && document.documentElement.classList.contains('i18n-done'));
+    last = await ask('agregue la LF125-5 al carrito');
+    const reqEs = await page.evaluate(() => JSON.parse(sessionStorage.getItem('uhc.cart.v1') || '[]').some((l) => l.kind === 'request' && l.text === 'Lifan LF125-5'));
+    record('ai', 'Spanish: "agregue la LF125-5 al carrito" adds the listed model as a request, with its listed price', reqEs && /2,371\.00/.test(await last.innerText()) && /solicitud/.test(await last.innerText()));
+    await page.addScriptTag({ content: AXE });
+    const axeChat = await page.evaluate(async () => (await window.axe.run(document.querySelector('.guide'), { runOnly: ['wcag2a', 'wcag2aa', 'wcag21aa'] })).violations.map((v) => `${v.id} ×${v.nodes.length}`));
+    record('axe', 'Universal AI panel with picture cards and the WhatsApp handoff', axeChat.length === 0, axeChat.join(' || '));
+    await ctx.close();
+  }
+
   /* ---------- 6b. English / Spanish ---------- */
   console.log('\n▶ English / Spanish');
   {

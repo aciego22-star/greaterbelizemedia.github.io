@@ -680,7 +680,7 @@ html.i18n-pending body {
   border: 1px solid var(--line);
   background: var(--paper);
   color: var(--ink);
-  transition: background-color var(--dur), color var(--dur), border-color var(--dur);
+  transition: background-color var(--dur), color var(--dur), border-color var(--dur), transform var(--dur);
 }
 .site-footer .contact-links .social-btn {
   color: #fff;
@@ -691,24 +691,31 @@ html.i18n-pending body {
   background: rgba(255, 255, 255, 0.06);
   color: #fff;
 }
+/* Real brand colours: Facebook blue, the Instagram gradient, YouTube's red logo on white. */
+.contact-links .social-btn--facebook,
+.site-footer .contact-links .social-btn--facebook {
+  background: #1877f2;
+  border-color: #1877f2;
+  color: #fff;
+}
+.contact-links .social-btn--instagram,
+.site-footer .contact-links .social-btn--instagram {
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%);
+  border-color: transparent;
+  color: #fff;
+}
+.contact-links .social-btn--youtube,
+.site-footer .contact-links .social-btn--youtube {
+  background: #fff;
+  border-color: var(--line);
+}
 @media (hover: hover) and (pointer: fine) {
   .wa-btn:hover {
     background: #3ee07b;
   }
-  .social-btn--facebook:hover {
-    background: #1877f2;
-    border-color: #1877f2;
-    color: #fff;
-  }
-  .social-btn--instagram:hover {
-    background: #d62976;
-    border-color: #d62976;
-    color: #fff;
-  }
-  .social-btn--youtube:hover {
-    background: #e62117;
-    border-color: #e62117;
-    color: #fff;
+  .social-btn:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.05);
   }
 }
 .site-footer__contact {

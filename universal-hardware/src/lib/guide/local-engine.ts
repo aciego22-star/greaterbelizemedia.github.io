@@ -6,7 +6,12 @@
  * in this project's data files. It never claims stock, prices, quotes,
  * warranties or that staff were notified, and it performs no network I/O.
  */
-import type { GuideEngine, GuideReply, GuideState, Lang } from './types';
+import type { GuideCard, GuideContext, GuideEngine, GuideReply, GuideState, Lang } from './types';
+import { SKILLS } from './skills';
+import { searchWords } from './smarts';
+import { searchProducts } from '../product-search';
+import { searchCategories } from '../search';
+import { SHOP_PRODUCTS } from '../../data/shop';
 import { CATEGORIES, CATEGORY_BY_SLUG } from '../../data/categories';
 import { BRANCH_BY_ID, type BranchId } from '../../data/branches';
 import { NEWS } from '../../data/whats-new';
@@ -45,8 +50,9 @@ const VERIFY = (lang: Lang) =>
     'El horario puede cambiar en días feriados; conviene confirmarlo por teléfono antes de ir.',
   );
 
-const catLink = (slug: string, lang: Lang) => ({
-  label: L(lang, `View ${CATEGORY_BY_SLUG[slug].name}`, `Ver ${CATEGORY_BY_SLUG[slug].name}`),
+// Written in English on purpose: the page's Spanish dictionary translates "View <category>" whole.
+const catLink = (slug: string, _lang: Lang) => ({
+  label: `View ${CATEGORY_BY_SLUG[slug].name}`,
   href: `/products/${slug}/`,
 });
 
@@ -104,13 +110,22 @@ function detect(t: string): Detected {
   if (has(t, /espanol/, /spanish please/, /en espanol/, /habla espanol/, /hablas espanol/)) return { intent: 'spanish' };
   if (has(t, /in english/, /english please/, /en ingles/)) return { intent: 'english' };
   if (has(t, /(are|r) (you|u) (a )?(real|human|person|bot|ai|robot)/, /who are you/, /what are you/, /is this (ai|a bot|real)/, /chatgpt/, /artificial/, /quien eres/, /eres (un )?(robot|humano|ia)/)) return { intent: 'identity' };
+  if (has(t, /(show|open|go to|see|browse) (me )?(the |your )?(online )?shop\b/, /^(the )?(online )?shop$/, /(online|your) shop\b/, /tienda en linea/, /ver la tienda/)) return { intent: 'shop' };
+  if (has(t, /where (can|do|could) i (buy|get|find)/, /donde (puedo )?(comprar|consigo|encuentro)/)) {
+    if (has(t, /generator/, /generador/, /planta/)) return { intent: 'generator' };
+    if (has(t, /pump/, /bomba/)) return { intent: 'pump' };
+    if (has(t, /motorbike/, /motorcycle/, /scooter/, /moto/)) return { intent: 'motorcycle' };
+    if (has(t, /drill/, /taladro/)) return { intent: 'drill' };
+    const c = detectCategory(t);
+    if (c) return { intent: 'category', category: c };
+  }
   if (has(t, /buy online/, /order online/, /shop online/, /online (order|shop|store|purchase)/, /pay online/, /checkout/, /\bcart\b/, /(credit|debit) card/, /pay (by|with) card/, /card payment/, /tarjeta/, /comprar en linea/, /compra en linea/, /carrito/)) return { intent: 'shop' };
   if (has(t, /what s new/, /whats new/, /\bnews\b/, /\bevents?\b/, /mega ?sale/, /friends (and |& )?family/, /\bexpo\b/, /clinic/, /promotion/, /\bpromos?\b/, /(next|upcoming|any) sales?/, /sales? (coming|soon|next)/, /on sale/, /novedad/, /evento/, /feria/, /promocion/, /clinica/, /proxima venta/, /que hay de nuevo/))
     return { intent: 'news' };
   if (has(t, /quot/, /cotiza/, /presupuesto/, /send (me|my|it|this|a)/, /\border\b/, /pedido/, /reserve/)) return { intent: 'quote', branch };
   if (has(t, /price/, /\bcost/, /how much/, /precio/, /cuanto/, /cuesta/, /cheap/, /discount/, /\bsale\b/, /oferta/)) return { intent: 'quote', branch };
   if (has(t, /in stock/, /stock/, /available/, /availability/, /disponib/, /do you have/, /tienen/, /hay /)) {
-    const c = detectCategory(t);
+    const c = detectCategory(t) ?? searchCategories(searchWords(t)).find((h) => h.score > 0)?.category.slug ?? null;
     return { intent: 'stock', category: c ?? undefined, branch };
   }
   if (has(t, /warrant/, /garantia/, /return/, /refund/, /devolu/, /deliver/, /entrega/, /shipping/, /financ/, /credit/, /credito/, /payment/, /pago/, /installment/)) return { intent: 'policy' };
@@ -363,21 +378,21 @@ function categoryReply(slug: string, lang: Lang, t: string): GuideReply {
 
 const SUGGESTIONS_EN = [
   "What's new at Universal?",
+  'Show me Makita drills',
+  'Add the Lifan LF100-A in red to my cart',
+  'What size AC do I need for a 12 by 14 room?',
   'I need backup power for my home. What type should I look at?',
-  'I need a cordless drill for concrete and steel.',
-  'I need a pump for my home water supply.',
-  'Do you carry motorbikes?',
   'Where is your Belize City store?',
-  'Can you send me a quote?',
+  'Talk to a person on WhatsApp',
 ];
 const SUGGESTIONS_ES = [
   '¿Qué hay de nuevo en Universal?',
+  'Muéstrame taladros Makita',
+  'Agregue la Lifan LF100-A en rojo al carrito',
+  '¿Qué tamaño de aire acondicionado para un cuarto de 12 por 14 pies?',
   'Necesito un generador para mi casa.',
-  'Necesito un taladro inalámbrico para concreto.',
-  'Necesito una bomba de agua para la casa.',
-  '¿Venden motos?',
   '¿Dónde queda la tienda de Belize City?',
-  '¿Me pueden enviar una cotización?',
+  'Hablar con una persona por WhatsApp',
 ];
 
 export const LocalGuideEngine: GuideEngine = {
@@ -397,12 +412,91 @@ export const LocalGuideEngine: GuideEngine = {
       chips: s.lang === 'es' ? SUGGESTIONS_ES : SUGGESTIONS_EN,
     };
   },
-  reply(input, prev) {
+  reply(input, prev, ctx: GuideContext = {}) {
     const s: GuideState = { ...prev, slots: { ...prev.slots }, turns: prev.turns + 1 };
     const t = norm(input);
     const d = detect(t);
     // Auto-detect Spanish phrasing.
-    if (s.lang === 'en' && has(t, /^hola/, /necesito/, /donde/, /tienen/, /quiero/, /cuanto/, /venden/, /buenos dias/, /buenas/, /(^|\s)hay(\s|$)/, /novedad/)) s.lang = 'es';
+    if (s.lang === 'en' && has(t, /^hola/, /necesito/, /donde/, /tienen/, /quiero/, /cuanto/, /venden/, /buenos dias/, /buenas/, /(^|\s)hay(\s|$)/, /novedad/, /agrega/, /carrito/)) s.lang = 'es';
+    // Skills first (cart, add to cart, WhatsApp, AC sizing, models, brands, hours, jobs…), except for language and identity questions.
+    if (!['spanish', 'english', 'identity'].includes(d.intent ?? '')) {
+      for (const skill of SKILLS) {
+        const r = skill(t, s, ctx);
+        if (r) return { reply: remember(r, s), state: s };
+      }
+    }
+    const prevTopic = prev.topic;
+    const out = baseReply(t, s, d);
+    return { reply: remember(enrich(out.reply, t, d, out.state, prevTopic), out.state), state: out.state };
+  },
+};
+
+/** Keep track of the products a reply showed, so "add the second one" works next. */
+function remember(r: GuideReply, s: GuideState): GuideReply {
+  const ids = r.cards?.filter((c): c is Extract<GuideCard, { kind: 'product' }> => c.kind === 'product').map((c) => c.id);
+  if (ids?.length) s.lastShown = ids;
+  return r;
+}
+
+const FEATURED = ['makita-hp333dyx3b', 'makita-dlx2336syx', 'makita-ga4530x2', 'lifan-lf100-a', 'meilun-ml125-5', 'lifan-lf200gy-4'];
+const TOPIC_CATEGORY: Record<string, string> = { generator: 'generators', pump: 'water-pumps', drill: 'power-tools', motorcycle: 'motorcycles' };
+
+/** Add pictures and a WhatsApp handoff to the topic guides' replies. */
+function enrich(r: GuideReply, t: string, d: Detected, s: GuideState, prevTopic?: string): GuideReply {
+  if (r.cards?.length) return r;
+  const words = searchWords(t);
+  const shopHits = words ? searchProducts(words) : [];
+  const cards: GuideCard[] = [];
+  const intent = d.intent;
+  if (intent && TOPIC_CATEGORY[intent] && prevTopic !== intent) {
+    cards.push({ kind: 'category', slug: TOPIC_CATEGORY[intent] });
+    const products = intent === 'motorcycle' ? SHOP_PRODUCTS.filter((p) => p.group === 'motorcycles') : intent === 'drill' ? searchProducts('drill') : [];
+    products.slice(0, 5).forEach((p) => cards.push({ kind: 'product', id: p.id }));
+  } else if (intent === 'category' && d.category) {
+    cards.push({ kind: 'category', slug: d.category });
+    shopHits.filter((p) => p.category === d.category).slice(0, 4).forEach((p) => cards.push({ kind: 'product', id: p.id }));
+  } else if ((intent === 'quote' || intent === 'stock') && (d.category || shopHits.length)) {
+    if (d.category) cards.push({ kind: 'category', slug: d.category });
+    shopHits.slice(0, 4).forEach((p) => cards.push({ kind: 'product', id: p.id }));
+    if (shopHits.length && intent === 'quote') {
+      const lang = s.lang;
+      r = {
+        ...r,
+        text: L(
+          lang,
+          `The Shop has ${shopHits.length === 1 ? 'this item' : 'these'} at the February 2026 sale price${shopHits.length === 1 ? '' : 's'} (on the card${shopHits.length === 1 ? '' : 's'} below); tap Add to put one in your cart.\n\n${r.text}`,
+          `La Tienda tiene ${shopHits.length === 1 ? 'este artículo' : 'estos artículos'} al precio de oferta de febrero de 2026 (en las tarjetas de abajo); toque Agregar para ponerlo en su carrito.\n\n${r.text}`,
+        ),
+      };
+    }
+  } else if (intent === 'news') {
+    NEWS.slice(0, 3).forEach((n) => cards.push({ kind: 'event', id: n.id }));
+  } else if (intent === 'shop') {
+    FEATURED.forEach((id) => cards.push({ kind: 'product', id }));
+  }
+  const handoff = r.handoff ?? (intent === 'service' ? 'service' : intent && ['quote', 'stock', 'policy', 'branch', 'hours'].includes(intent) ? 'sales' : undefined);
+  return { ...r, cards: cards.length ? cards : r.cards, handoff };
+}
+
+/** When nothing else fits: search the whole site before giving up, then offer a person. */
+function searchFallback(t: string, lang: Lang): GuideReply | null {
+  const words = searchWords(t);
+  if (!words) return null;
+  const products = searchProducts(words).slice(0, 6);
+  const cats = searchCategories(words).filter((h) => h.score > 0).slice(0, 3);
+  if (!products.length && !cats.length) return null;
+  return {
+    text: L(
+      lang,
+      `Here's what I found on the site for "${words}".${products.length ? ' Tap Add to put a Shop item in your cart.' : ''}${cats.length ? ` It's in ${cats.map((h) => h.category.name).join(', ')}.` : ''} If you don't see the exact item, say "add ${words} to my cart" and I'll add it as a request for the branch to price.`,
+      `Esto encontré en el sitio para "${words}".${products.length ? ' Toque Agregar para poner un artículo de la Tienda en su carrito.' : ''}${cats.length ? ` Está en ${cats.map((h) => h.category.name).join(', ')}.` : ''} Si no ve el artículo exacto, diga "agregue ${words} a mi carrito" y lo agrego como solicitud para que la sucursal le dé precio.`,
+    ),
+    cards: [...cats.map((h) => ({ kind: 'category' as const, slug: h.category.slug })), ...products.map((p) => ({ kind: 'product' as const, id: p.id }))],
+  };
+}
+
+function baseReply(t: string, s: GuideState, d: Detected): { reply: GuideReply; state: GuideState } {
+  {
     const lang = s.lang;
 
     // Continue the active topic when the input reads like an answer to it.
@@ -453,7 +547,11 @@ export const LocalGuideEngine: GuideEngine = {
         const cat = d.category;
         const sl = BRANCH_BY_ID['spanish-lookout'].whatsapp[0].display;
         const bc = BRANCH_BY_ID['belize-city'].whatsapp[0].display;
-        const text = L(
+        const catInfo = cat ? CATEGORY_BY_SLUG[cat] : undefined;
+        const intro = catInfo
+          ? L(lang, `Universal carries **${catInfo.name}**, such as ${catInfo.subcategories.slice(0, 4).map((x) => x.name.toLowerCase()).join(', ')}${catInfo.listedBrands.length ? ` (${catInfo.listedBrands.slice(0, 4).join(', ')})` : ''}. `, `Universal tiene **${catInfo.name}**, por ejemplo ${catInfo.subcategories.slice(0, 4).map((x) => x.name).join(', ')}${catInfo.listedBrands.length ? ` (${catInfo.listedBrands.slice(0, 4).join(', ')})` : ''}. `)
+          : '';
+        const text = intro + L(
           lang,
           `${d.intent === 'stock' ? "I can't check live stock from here" : "I can't send quotes or get current prices from here"}. The branch sales team can, and WhatsApp is usually fastest: Spanish Lookout ${sl} · Belize City ${bc}. Tell them the item, the quantity and what it's for.${d.intent === 'quote' ? '\n\nThe **Shop** also shows February 2026 sale prices for some tools and motorcycles; that sale has ended.' : ''}`,
           `${d.intent === 'stock' ? 'No puedo revisar existencias desde aquí' : 'No puedo enviar cotizaciones ni obtener precios actuales desde aquí'}. El equipo de ventas de la sucursal sí puede, y por WhatsApp suele ser más rápido: Spanish Lookout ${sl} · Ciudad de Belice ${bc}. Indique el artículo, la cantidad y para qué lo necesita.${d.intent === 'quote' ? '\n\nLa **Tienda** también muestra precios de oferta de febrero de 2026 para algunas herramientas y motos; esa oferta ya terminó.' : ''}`,
@@ -552,6 +650,8 @@ export const LocalGuideEngine: GuideEngine = {
           state: s,
         };
       default: {
+        const found = searchFallback(t, lang);
+        if (found) return { reply: found, state: s };
         const sample = CATEGORIES.slice(0, 8).map((c) => c.shortName).join(', ');
         return {
           reply: {
@@ -562,10 +662,11 @@ export const LocalGuideEngine: GuideEngine = {
             ),
             links: [{ label: L(lang, 'Search products', 'Buscar productos'), href: '/products/' }],
             chips: (lang === 'es' ? SUGGESTIONS_ES : SUGGESTIONS_EN).slice(0, 4),
+            handoff: 'sales',
           },
           state: s,
         };
       }
     }
-  },
-};
+  }
+}

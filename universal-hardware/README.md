@@ -131,6 +131,17 @@ To add or change copy: edit the English, rebuild, then run `node scripts/collect
 
 `/whats-new/` (in the header as "What's New at Universal", shortened to "What's New" between 1000 and 1119 px) lists the company's sales and events, newest first, from its News / Promotions posts: the Mega Sale, the Friends & Family Sale, the Spanish Lookout Expo, the GST Holiday Sale and the Makita Clinics. Each post on the company's site is a set of flyers, so each entry's date, place and details are read from the post's main flyer, which is shown beside it (resized by `scripts/build-whats-new-flyers.py`; no prices). To add an event, put its flyer in `public/site-images/whats-new/` and add an entry at the top of `NEWS` in `src/data/whats-new.ts`, with its Spanish date and place for Universal AI's replies, and add the new strings to `src/i18n/es.json`. Universal AI answers "What's new?" and "Is there a sale coming up?" from the same data.
 
+### Universal AI: what it knows and does
+
+Universal AI runs entirely in the browser: no API, no account, no cost, nothing sent anywhere. It answers from this site's data plus what Universal Hardware's live website says (`src/data/live-site.ts`, read 1 November 2026): every brand page, Meilun & Lifan models with their listed prices and specs, Hisun UTVs and ATVs, the Meilun parts catalogues, Sankey's air conditioner sizing chart and inverter guide, the holiday closures, contact details and the employment form.
+
+- **Pictures in the chat**: Shop products (with one-tap Add, colour by colour for motorcycles), categories, brand logos, listed models and event flyers appear as cards under its replies (`src/islands/GuideCards.tsx`, loaded with the panel).
+- **Adds to the cart for you**: "add 2 red LF100-A to my cart", "add the second one", "agregue la LF125-5 al carrito". Items the Shop doesn't list go in as requests, worded as typed. It reads the cart too ("what's in my cart?").
+- **Smarter answers**: air conditioner size from room dimensions (Sankey's chart and adjustments), open or closed right now from the listed hours in Belize time, model specs, brand facts, jobs, parts catalogues, holidays; questions it can't place fall back to a search of the whole site.
+- **WhatsApp handoff (free)**: "talk to a person" (and quote, stock, service and policy questions) show buttons that open WhatsApp to a branch's Sales or Service Center line with the conversation and cart summarised in the message. It uses WhatsApp's free click-to-chat links: nothing is sent until the visitor presses send in WhatsApp.
+
+The engine (`src/lib/guide/local-engine.ts`, `skills.ts`, `smarts.ts`) sits behind the `GuideEngine` interface, so a hosted model can replace it later without changing the panel.
+
 ### Universal AI launcher
 
 The floating pill reads "Universal AI / Assistant" ("Universal AI" on phones). A rapid blue pulse radiates from it until the visitor opens it once in the session; with reduced motion (system setting or the footer toggle) it shows a steady halo instead. Its greeting is "Hi, I'm Universal AI. How may I assist you today?", with suggested questions below.

@@ -51,6 +51,9 @@
   --blue-200: #bcd7f0;
   --blue-100: #dcebf8;
   --blue-50: #eaf4fb;
+  /* Universal Hardware's logo blue, and a baby-blue tint of it for clean panels. */
+  --logo-blue: #5590c9;
+  --baby-blue: #d9e8f6;
 
   /* Neutrals */
   --ink: #0d1c2c;
@@ -288,16 +291,11 @@ ol {
 }
 
 .grid-bg {
-  background-image:
-    linear-gradient(to right, rgba(13, 28, 44, 0.045) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(13, 28, 44, 0.045) 1px, transparent 1px);
-  background-size: 40px 40px;
+  background-image: none;
 }
 .on-dark.grid-bg,
 .section--dark.grid-bg {
-  background-image:
-    linear-gradient(to right, rgba(173, 199, 226, 0.06) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(173, 199, 226, 0.06) 1px, transparent 1px);
+  background-image: none;
 }
 
 /* --------------------------------------------------------------------------
