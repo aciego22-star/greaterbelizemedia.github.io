@@ -68,6 +68,21 @@ Edits are limited to cropping, plus presentation clean-up so the photos sit on t
 
 Some photographed brands are not on the website's Brands page: Hoteche (hand tools, shop tools) and Knova (woodworking). They appear because the company promoted them in 2026. A photo does not confirm current stock, price or model.
 
+## Event flyers on What's New at Universal
+
+`/whats-new/` shows each event's main flyer from its News / Promotions post, whole: the event is the news, so its name, dates, place, featured brands and branch phone numbers are kept. None of these flyers carries a price. They are only resized (`scripts/build-whats-new-flyers.py`, WebP and JPEG). Retrieved 31 October 2026 from `https://universalhardware.bz/news/wp-content/uploads/<file>`.
+
+| File (`public/site-images/whats-new/…`) | Source upload | Post | Size |
+|---|---|---|---|
+| `mega-sale-2026` | `Mega-Sale-LinkedIn.jpg` | Universal Mega Sale 2026 | 1200 × 627 |
+| `makita-clinic-mega-sale-2026` | `Makita-Clinic.jpg` | Universal Mega Sale 2026 | 800 × 800 (from 1080) |
+| `expo-2026` | `EXPO-2026-FB-COVER-2.jpg` | Spanish Lookout Commercial Industrial Expo 2026 | 1200 × 457 (from 1640) |
+| `friends-family-2026` | `ff26-main-flyer.jpeg` | Friends And Family Day 2026 | 800 × 799 (from 1064) |
+| `makita-clinic-friends-family-2026` | `MakitaClinic-feb2026.jpg` | Friends And Family Day 2026 | 800 × 800 (from 1080) |
+| `gst-holiday-2025` | `a-2025.jpeg` | GST Holiday 2025 | 800 × 799 (from 1068) |
+| `mega-sale-2025` | `Mega-Sale-INSTA-FB.jpg` | Universal Mega Sale 2025 | 800 × 800 (from 1080) |
+| `friends-family-2025` | `FB-Cover-FF-Sale-2025.jpg` | Friends And Family Day 2025 | 1200 × 457 (from 1640) |
+
 ## Shop photos cut out of the Friends & Family Sale graphics
 
 The Shop's 32 product photos (`public/site-images/shop/<model>.{jpg,webp}`) come from the single-product graphics of Universal Hardware's Friends & Family Sale (Spanish Lookout, 19–21 February 2026), at `https://universalhardware.bz/news/wp-content/uploads/<file>.jpg`. Each product's source file is recorded in `src/data/shop.ts` and linked from its Shop page. Retrieved 29 October 2026.

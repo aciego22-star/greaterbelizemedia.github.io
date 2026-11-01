@@ -10,9 +10,10 @@ const works = [
   ['Category explorer & search', 'Instant search across 12 categories, their listed product types and brands, with department and brand filters.'],
   ['Category pages', 'A landing page for every category, with listed product types, brand mentions and preparation tips.'],
   ['Product finder', 'Six guided paths with two or three questions each, mapping answers to listed categories using fixed local rules.'],
-  ['Product Guide', 'A rule-based conversational guide in English and Spanish. It is not live AI.'],
+  ['Universal AI', 'The on-site assistant, in English and Spanish. In this build it is rule-based, not a live AI model.'],
+  ['What’s New at Universal', 'Sales, events and Makita Clinics, newest first, with each event’s flyer from the company’s News / Promotions page.'],
   ['Branch details', 'Website-listed addresses, hours, phone and WhatsApp numbers, with a session-only branch preference.'],
-  ['English / Spanish', 'One tap in the header switches the whole site, including the Product Guide, between English and Spanish.'],
+  ['English / Spanish', 'One tap in the header switches the whole site, including Universal AI, between English and Spanish.'],
   ['Homepage slideshow', 'Three full-width images (storefront, store floor, paint aisle) above the 3D hero, with separate desktop and mobile compositions, a 7-second fade, and pause, dot, swipe and arrow-key controls.'],
   ['Real-time 3D hero', 'The Makita 12V drill from Universal Hardware’s own 2026 promotion, built in 3D from the company’s product photo and rendered with WebGL, with pause, reduced-motion and static fallbacks.'],
 ];
@@ -27,7 +28,7 @@ const illustrative = [
 const privacy = [
   ['No data collection', 'No forms submit anywhere. Checkout contact details stay in the page’s memory and are discarded when you leave it. No analytics, tracking pixels, cookies or third-party scripts are loaded.'],
   ['Session-only memory', 'Your cart, language, preferred branch and motion setting stay in this browser tab (sessionStorage) and are cleared when it closes.'],
-  ['Guide conversations', 'Kept in memory only and discarded when you leave the page. Nothing you type is transmitted.'],
+  ['Universal AI conversations', 'Kept in memory only and discarded when you leave the page. Nothing you type is transmitted.'],
   ['Outbound links on tap only', 'Phone, WhatsApp, maps, email and official-website links open only when you choose them.'],
 ];
 const payments = [
@@ -122,8 +123,8 @@ const roadmap = [
         {privacy.map(([t, d]) => <div class="privacy-card"><h3>{t}</h3><p>{d}</p></div>)}
       </div>
       <p class="concept-p concept-ai">
-        <strong>About the Product Guide:</strong> it is a deterministic, rule-based guide built on public website information. No AI model is
-        connected. The panel is built so an approved AI Employee can plug in later through the same interface, with its scope, limits and data sources
+        <strong>About Universal AI:</strong> in this build it is a deterministic, rule-based assistant built on public website information. No AI model is
+        connected, and it says so when asked. The panel is built so an approved AI Employee can plug in later through the same interface, with its scope, limits and data sources
         disclosed to visitors.
       </p>
     </div>

@@ -132,6 +132,7 @@
   color: var(--ink);
   font-weight: 550;
   font-size: 0.95rem;
+  white-space: nowrap;
   text-decoration: none;
   transition: color var(--dur), background-color var(--dur);
 }
@@ -157,6 +158,18 @@
 }
 .site-nav a[aria-current='page'] {
   color: var(--blue-700);
+}
+.site-nav__short {
+  display: none;
+}
+/* "What's New at Universal" stays whole down to 1120px, then shortens to "What's New". */
+@media (max-width: 1119px) {
+  .site-nav__full {
+    display: none;
+  }
+  .site-nav__short {
+    display: inline;
+  }
 }
 .site-header__actions {
   display: flex;
@@ -190,15 +203,11 @@
 .site-header__menu {
   display: none;
 }
-@media (max-width: 1180px) {
-  .site-header__find,
+/* Explore Products leaves the bar first; the finder is in the hero, the menu and the footer. */
+@media (max-width: 1299px) {
   .site-header__explore {
     display: none;
   }
-}
-/* Spanish labels are longer: the finder stays one tap away in the menu and on Products. */
-html[data-lang='es'] .site-header__find {
-  display: none;
 }
 @media (max-width: 999px) {
   .site-nav,

@@ -1,7 +1,7 @@
 {
   "base": "http://localhost:4322",
-  "date": "2026-10-31T20:50:56.095Z",
-  "passed": 236,
+  "date": "2026-10-31T23:00:47.708Z",
+  "passed": 252,
   "failed": 0,
   "results": [
     {
@@ -726,6 +726,36 @@
     },
     {
       "group": "route",
+      "name": "/whats-new/",
+      "pass": true,
+      "detail": "status 200, h1=1, noindex=true, disclaimer=true"
+    },
+    {
+      "group": "console",
+      "name": "/whats-new/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "axe",
+      "name": "/whats-new/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "images",
+      "name": "/whats-new/ every image loads",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "network",
+      "name": "/whats-new/ loads no third-party resources",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "route",
       "name": "404 for unknown URL",
       "pass": true,
       "detail": "status 404"
@@ -810,15 +840,21 @@
     },
     {
       "group": "nav",
+      "name": "header → What's New at Universal",
+      "pass": true,
+      "detail": "http://localhost:4322/whats-new/"
+    },
+    {
+      "group": "nav",
       "name": "header Explore Products CTA",
       "pass": true,
       "detail": ""
     },
     {
       "group": "nav",
-      "name": "header Find the Right Product CTA",
+      "name": "Find the Right Product stays in the menu and footer",
       "pass": true,
-      "detail": ""
+      "detail": "{\"menu\":true,\"footer\":true}"
     },
     {
       "group": "nav",
@@ -834,7 +870,7 @@
     },
     {
       "group": "nav",
-      "name": "all 59 internal link targets resolve",
+      "name": "all 60 internal link targets resolve",
       "pass": true,
       "detail": ""
     },
@@ -872,7 +908,7 @@
       "group": "search",
       "name": "\"submersible pump\" → Water Pumps with highlighted sub-type",
       "pass": true,
-      "detail": "Water Pumps | Submersible pumps, Jet pumps (pressure systems), Sprinkler pumps, Booster pumps, Sump pumps, Marine pumps, Pressure pumps, Gas and diesel powered water pumps (127ms)"
+      "detail": "Water Pumps | Submersible pumps, Jet pumps (pressure systems), Sprinkler pumps, Booster pumps, Sump pumps, Marine pumps, Pressure pumps, Gas and diesel powered water pumps (118ms)"
     },
     {
       "group": "search",
@@ -1002,7 +1038,7 @@
     },
     {
       "group": "finder",
-      "name": "Next step hands the answers to the Product Guide",
+      "name": "Next step hands the answers to Universal AI",
       "pass": true,
       "detail": "I need a pump for my home water supply."
     },
@@ -1014,9 +1050,15 @@
     },
     {
       "group": "guide",
-      "name": "panel opens with the Product Guide welcome",
+      "name": "launcher pill reads \"Universal AI Assistant\" and pulses",
       "pass": true,
-      "detail": "Products, branches and services"
+      "detail": "{\"name\":\"Universal AI Assistant\",\"text\":\"Universal AI ASSISTANT\",\"pulse\":true,\"anim\":\"uai-pulse\",\"iter\":\"infinite\"}"
+    },
+    {
+      "group": "guide",
+      "name": "panel opens with \"Hi, I'm Universal AI. How may I assist you today?\" and suggestions",
+      "pass": true,
+      "detail": "Hi, I'm Universal AI. How may I assist you today?"
     },
     {
       "group": "guide",
@@ -1070,7 +1112,13 @@
       "group": "guide",
       "name": "honest about being rule-based when asked",
       "pass": true,
-      "detail": "I'm the Product Guide, a rule-based assistant. I match your questions to the products, branches and services on this sit"
+      "detail": "I'm Universal AI, the assistant on Universal Hardware's website. Right now I'm rule-based: I match your questions to the"
+    },
+    {
+      "group": "guide",
+      "name": "What's new → yearly sales, latest event, link to the page",
+      "pass": true,
+      "detail": "Universal holds two big sales every year: the Friends & Family Sale at the Spanish Lookout branch, usually in February, "
     },
     {
       "group": "guide",
@@ -1081,6 +1129,18 @@
     {
       "group": "guide",
       "name": "Escape closes panel",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "guide",
+      "name": "What's New reply links to the page",
+      "pass": true,
+      "detail": "/products/generators/ /products/generators/ /products/power-tools/ /products/water-pumps/ /products/motorcycles/ /shop/#motorcycles /locations/ /shop/ /whats-new/ /products/water-pumps/"
+    },
+    {
+      "group": "guide",
+      "name": "pulse stops once Universal AI has been opened this session",
       "pass": true,
       "detail": ""
     },
@@ -1106,7 +1166,7 @@
       "group": "i18n",
       "name": "header switch flips the page to Spanish (h1, menu, title, button label)",
       "pass": true,
-      "detail": "{\"h1\":\"Hecho para cada trabajo.\",\"nav\":\"Tienda|Productos|Marcas|Sucursales|Nosotros\",\"title\":\"Universal Hardware — Hecho para cada trabajo\",\"btn\":\"View the site in English\"}"
+      "detail": "{\"h1\":\"Hecho para cada trabajo.\",\"nav\":\"Tienda|Productos|Marcas|Sucursales|Nosotros|Novedades en Universal\",\"title\":\"Universal Hardware — Hecho para cada trabajo\",\"btn\":\"View the site in English\"}"
     },
     {
       "group": "i18n",
@@ -1130,7 +1190,7 @@
       "group": "i18n",
       "name": "order confirmation in Spanish",
       "pass": true,
-      "detail": "Pago aprobado (simulado)Pedido TEST-MXF4J4Gracias, Cliente de ejemplo. Los pagos con tarjeta aún se están configurando, "
+      "detail": "Pago aprobado (simulado)Pedido TEST-99TUHJGracias, Cliente de ejemplo. Los pagos con tarjeta aún se están configurando, "
     },
     {
       "group": "axe",
@@ -1201,6 +1261,36 @@
     {
       "group": "network",
       "name": "no third-party requests on navigation",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "news",
+      "name": "page lists six sales and events, newest first, led by the Mega Sale 2026",
+      "pass": true,
+      "detail": "2026-05-21, 2026-03-13, 2026-02-19, 2025-12-06, 2025-05-15, 2025-02-27"
+    },
+    {
+      "group": "news",
+      "name": "every event shows its flyer, served from the site itself",
+      "pass": true,
+      "detail": "8 flyers"
+    },
+    {
+      "group": "news",
+      "name": "\"Ask Universal AI\" on the page answers about upcoming sales",
+      "pass": true,
+      "detail": "Universal holds two big sales every year: the Friends & Family Sale at the Spanish Lookout branch, u"
+    },
+    {
+      "group": "news",
+      "name": "About links its news list to What's New",
+      "pass": true,
+      "detail": "/whats-new/#mega-sale-2026 /whats-new/#expo-2026 /whats-new/#friends-family-2026 /whats-new/"
+    },
+    {
+      "group": "network",
+      "name": "What's New made no third-party requests",
       "pass": true,
       "detail": ""
     },
@@ -1280,7 +1370,7 @@
       "group": "checkout",
       "name": "approved simulated payment shows a TEST order reference and empties the cart",
       "pass": true,
-      "detail": "{\"ref\":\"Order TEST-RBAJTP\",\"demo\":true}"
+      "detail": "{\"ref\":\"Order TEST-Q8S6UZ\",\"demo\":true}"
     },
     {
       "group": "axe",
@@ -1334,7 +1424,7 @@
       "group": "reel",
       "name": "autoplay fades to the next slide after about 7 s; inactive slides are aria-hidden",
       "pass": true,
-      "detail": "5517 ms after load, aria-hidden true,,true"
+      "detail": "5485 ms after load, aria-hidden true,,true"
     },
     {
       "group": "reel",
@@ -1407,6 +1497,12 @@
       "name": "reduced motion: reveal content visible immediately",
       "pass": true,
       "detail": "0 hidden"
+    },
+    {
+      "group": "motion",
+      "name": "reduced motion: Universal AI launcher shows a steady halo, no pulse",
+      "pass": true,
+      "detail": "none"
     },
     {
       "group": "3d",

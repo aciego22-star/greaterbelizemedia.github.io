@@ -7,7 +7,7 @@
  * Covers: every route on direct load, metadata/noindex/disclaimer, console
  * errors, horizontal overflow at 7 viewports, navigation, mobile menu
  * keyboard behaviour, catalogue search/filters/empty state, product finder,
- * English/Spanish switch (whole site, islands, Guide, checkout), Product Guide required
+ * English/Spanish switch (whole site, islands, Universal AI, checkout), What's New page, Universal AI required
  * conversations, shop cart and demo checkout (no card fields, no payment
  * requests), session persistence, WebGL/fallback/reduced motion, link
  * formats, axe-core accessibility scan, and a network audit proving that no
@@ -25,7 +25,7 @@ const ROUTES = [
   '/products/power-tools/', '/products/welding-supplies/', '/products/generators/', '/products/water-pumps/',
   '/products/lawn-and-garden/', '/products/motorcycles/', '/products/household/', '/products/lighting-and-fans/',
   '/products/woodworking/', '/products/shop-tools/', '/products/agriculture/', '/products/hand-tools/',
-  '/shop/', '/shop/makita-hp333dyx3b/', '/shop/lifan-lf100-a/', '/cart/', '/checkout/',
+  '/shop/', '/shop/makita-hp333dyx3b/', '/shop/lifan-lf100-a/', '/cart/', '/checkout/', '/whats-new/',
 ];
 const VIEWPORTS = [
   [320, 640], [375, 812], [390, 844], [430, 932], [768, 1024], [1024, 768], [1440, 900],
@@ -131,7 +131,7 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
   {
     const { ctx, page } = await newPage(browser);
     await page.goto(BASE + '/', { waitUntil: 'load' });
-    for (const [label, href] of [['Shop', '/shop/'], ['Products', '/products/'], ['Brands', '/brands/'], ['Locations', '/locations/'], ['About', '/about/']]) {
+    for (const [label, href] of [['Shop', '/shop/'], ['Products', '/products/'], ['Brands', '/brands/'], ['Locations', '/locations/'], ['About', '/about/'], ["What's New at Universal", '/whats-new/']]) {
       await page.click(`.site-nav a:has-text("${label}")`);
       await page.waitForLoadState('load');
       const cur = await page.getAttribute('.site-nav a[aria-current="page"]', 'href').catch(() => null);
@@ -139,8 +139,8 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
     }
     await page.click('.site-header__explore');
     record('nav', 'header Explore Products CTA', page.url().endsWith('/products/'));
-    await page.click('.site-header__find');
-    record('nav', 'header Find the Right Product CTA', page.url().endsWith('/find/'));
+    const findLinks = await page.evaluate(() => ({ menu: !!document.querySelector('.mobile-nav a[href="/find/"]'), footer: !!document.querySelector('.site-footer a[href="/find/"]') }));
+    record('nav', 'Find the Right Product stays in the menu and footer', findLinks.menu && findLinks.footer, JSON.stringify(findLinks));
     await page.goto(BASE + '/', { waitUntil: 'load' });
     await page.click('.hero__ctas a:has-text("Find the Right Solution")');
     await page.waitForTimeout(600);
@@ -266,25 +266,33 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
     record('finder', 'deep well → Submersible pumps', pumpFocus.includes('Submersible pumps'), pumpFocus.join(', '));
     const leftovers = await page.evaluate(() => document.querySelectorAll('[data-open-enquiry], .enquiry-trigger, [data-enquiry-toggle]').length + (document.body.innerText.includes('Enquiry Summary') ? 1 : 0));
     record('finder', 'no Enquiry Summary controls or wording remain', leftovers === 0, `${leftovers}`);
-    await page.click('.finder__next button:has-text("Ask the Product Guide")');
+    await page.click('.finder__next button:has-text("Ask Universal AI")');
     await page.waitForSelector('.guide:not([hidden]) .msg--user', { timeout: 8000 });
     const handed = await page.$$eval('.guide .msg--user', (m) => m.map((x) => x.textContent.trim()).join(' | '));
-    record('finder', 'Next step hands the answers to the Product Guide', handed.length > 10, handed.slice(0, 80));
+    record('finder', 'Next step hands the answers to Universal AI', handed.length > 10, handed.slice(0, 80));
     await page.keyboard.press('Escape');
     record('network', 'finder flows made no third-party requests', page._external.length === 0, page._external.join(', '));
     await ctx.close();
   }
 
-  /* ---------- 6. Product Guide ---------- */
-  console.log('\n▶ Product Guide');
+  /* ---------- 6. Universal AI ---------- */
+  console.log('\n▶ Universal AI');
   {
     const { ctx, page } = await newPage(browser, [1440, 900]);
     await page.goto(BASE + '/', { waitUntil: 'load' });
     await page.waitForSelector('.guide-launcher');
+    await page.waitForTimeout(1500);
+    const pill = await page.evaluate(() => {
+      const b = document.querySelector('.guide-launcher');
+      const before = getComputedStyle(b, '::before');
+      return { name: b.getAttribute('aria-label'), text: b.innerText.replace(/\s+/g, ' ').trim(), pulse: b.classList.contains('guide-launcher--pulse'), anim: before.animationName, iter: before.animationIterationCount };
+    });
+    record('guide', 'launcher pill reads "Universal AI Assistant" and pulses', pill.name === 'Universal AI Assistant' && /^Universal AI Assistant$/i.test(pill.text) && pill.pulse && pill.anim === 'uai-pulse' && pill.iter === 'infinite', JSON.stringify(pill));
     await page.click('.guide-launcher');
     await page.waitForSelector('.msg--guide');
-    const head = await page.textContent('.guide__sub');
-    record('guide', 'panel opens with the Product Guide welcome', /Products, branches and services/.test(head) && /Product Guide/.test(await page.textContent('.msg--guide')), head);
+    const head = await page.textContent('.guide__head');
+    const welcome = await page.textContent('.msg--guide');
+    record('guide', 'panel opens with "Hi, I\'m Universal AI. How may I assist you today?" and suggestions', /Universal AI/.test(head) && /Hi, I'm Universal AI\. How may I assist you today\?/.test(welcome) && (await page.$$('.guide__chip')).length >= 6, welcome.slice(0, 80));
     const ask = async (q) => {
       const before = await page.$$eval('.msg--guide', (m) => m.length);
       await page.fill('#guide-input', q);
@@ -302,6 +310,7 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
       ['Where is your Belize City store?', /3380 Chetumal Street[\s\S]*224-4140/, 'Belize City branch details'],
       ['Can you send me a quote?', /can't send quotes[\s\S]*WhatsApp/i, 'quote → cannot transmit, points to branch WhatsApp'],
       ['Are you a real AI?', /rule-based/i, 'honest about being rule-based when asked'],
+      ["What's new at Universal?", /Friends & Family Sale[\s\S]*Mega Sale[\s\S]*21–23 May 2026/, "What's new → yearly sales, latest event, link to the page"],
     ];
     for (const [q, re, name] of cases) {
       const t = await ask(q);
@@ -318,6 +327,12 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
     await page.keyboard.press('Escape');
     await page.waitForTimeout(200);
     record('guide', 'Escape closes panel', await page.evaluate(() => document.querySelector('.guide').hidden));
+    const newsLink = await page.$$eval('.msg--guide .msg__btn', (a) => a.map((x) => x.getAttribute('href')));
+    record('guide', "What's New reply links to the page", newsLink.includes('/whats-new/'), newsLink.join(' '));
+    await page.goto(BASE + '/', { waitUntil: 'load' });
+    await page.waitForFunction(() => document.documentElement.classList.contains('ui-ready'), null, { timeout: 20000 });
+    await page.waitForTimeout(300);
+    record('guide', 'pulse stops once Universal AI has been opened this session', !(await page.evaluate(() => document.querySelector('.guide-launcher').classList.contains('guide-launcher--pulse'))));
     await page.goto(BASE + '/products/water-pumps/', { waitUntil: 'load' });
     await page.click('[data-open-guide]');
     await page.waitForFunction(() => document.querySelectorAll('.msg--user').length > 0, null, { timeout: 5000 }).catch(() => {});
@@ -337,8 +352,8 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
     const label = await page.getAttribute('[data-lang-toggle]', 'aria-label');
     await page.click('[data-lang-toggle]');
     await page.waitForFunction(() => document.documentElement.classList.contains('i18n-done') && document.documentElement.lang === 'es');
-    const es = await page.evaluate(() => ({ h1: document.querySelector('h1').textContent.replace(/\s+/g, ' ').trim(), nav: [...document.querySelectorAll('.site-nav a')].map((a) => a.textContent.trim()).join('|'), title: document.title, btn: document.querySelector('[data-lang-toggle]').getAttribute('aria-label') }));
-    record('i18n', 'header switch flips the page to Spanish (h1, menu, title, button label)', es.h1 === 'Hecho para cada trabajo.' && es.nav === 'Tienda|Productos|Marcas|Sucursales|Nosotros' && /Hecho para cada trabajo/.test(es.title) && label === 'Ver el sitio en español' && es.btn === 'View the site in English', JSON.stringify(es));
+    const es = await page.evaluate(() => ({ h1: document.querySelector('h1').textContent.replace(/\s+/g, ' ').trim(), nav: [...document.querySelectorAll('.site-nav a')].map((a) => a.innerText.trim()).join('|'), title: document.title, btn: document.querySelector('[data-lang-toggle]').getAttribute('aria-label') }));
+    record('i18n', 'header switch flips the page to Spanish (h1, menu, title, button label)', es.h1 === 'Hecho para cada trabajo.' && es.nav === 'Tienda|Productos|Marcas|Sucursales|Nosotros|Novedades en Universal' && /Hecho para cada trabajo/.test(es.title) && label === 'Ver el sitio en español' && es.btn === 'View the site in English', JSON.stringify(es));
     await page.goto(BASE + '/shop/', { waitUntil: 'load' });
     await page.waitForFunction(() => document.documentElement.classList.contains('i18n-done'));
     record('i18n', 'Spanish persists across pages', (await page.textContent('h1')).includes('Pida en línea'));
@@ -412,6 +427,31 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
     const store = await page.evaluate(() => ({ local: Object.keys(localStorage), cookies: document.cookie }));
     record('privacy', 'no localStorage keys or cookies written', store.local.length === 0 && !store.cookies, JSON.stringify(store));
     record('network', 'no third-party requests on navigation', page._external.length === 0, page._external.join(', '));
+    await ctx.close();
+  }
+
+  /* ---------- 7a. What's New at Universal ---------- */
+  console.log("\n▶ What's New at Universal");
+  {
+    const { ctx, page } = await newPage(browser);
+    await page.goto(BASE + '/whats-new/', { waitUntil: 'load' });
+    const info = await page.evaluate(() => ({
+      h1: document.querySelector('h1').textContent.trim(),
+      dates: [...document.querySelectorAll('.news-feature time, .news-card time')].map((t) => t.getAttribute('datetime')),
+      titles: [...document.querySelectorAll('.news-feature h2, .news-card h3')].map((h) => h.textContent.trim()),
+      flyers: [...document.querySelectorAll('.news-feature img, .news-card img')].map((i) => i.getAttribute('src')),
+    }));
+    const sorted = info.dates.every((d, i) => i === 0 || d <= info.dates[i - 1]);
+    record('news', 'page lists six sales and events, newest first, led by the Mega Sale 2026', info.h1 === "What's New at Universal" && info.dates.length === 6 && sorted && info.titles[0] === 'Universal Mega Sale 2026', `${info.dates.join(', ')}`);
+    record('news', 'every event shows its flyer, served from the site itself', info.flyers.length >= 8 && info.flyers.every((f) => f.startsWith('/site-images/whats-new/')), `${info.flyers.length} flyers`);
+    await page.click('[data-open-guide]');
+    await page.waitForFunction(() => document.querySelectorAll('.msg--guide').length > 1, null, { timeout: 8000 }).catch(() => {});
+    const reply = await page.$$eval('.msg--guide', (m) => m[m.length - 1].innerText);
+    record('news', '"Ask Universal AI" on the page answers about upcoming sales', /usually in May/i.test(reply), reply.replace(/\s+/g, ' ').slice(0, 100));
+    await page.goto(BASE + '/about/', { waitUntil: 'load' });
+    const about = await page.$$eval('.about-news a', (a) => a.map((x) => x.getAttribute('href')));
+    record('news', 'About links its news list to What\'s New', about[0] === '/whats-new/#mega-sale-2026' && about.includes('/whats-new/') && about.every((h) => h.startsWith('/whats-new/')), about.join(' '));
+    record('network', "What's New made no third-party requests", page._external.length === 0, page._external.join(', '));
     await ctx.close();
   }
 
@@ -595,6 +635,8 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
     record('3d', 'prefers-reduced-motion: no idle animation', still);
     const revealHidden = await page.$$eval('[data-reveal]', (els) => els.filter((e) => getComputedStyle(e).opacity !== '1').length);
     record('motion', 'reduced motion: reveal content visible immediately', revealHidden === 0, `${revealHidden} hidden`);
+    const pulseAnim = await page.evaluate(() => { const b = document.querySelector('.guide-launcher'); return b ? getComputedStyle(b, '::before').animationName : 'missing'; });
+    record('motion', 'reduced motion: Universal AI launcher shows a steady halo, no pulse', pulseAnim === 'none', pulseAnim);
     await ctx.close();
   }
   {

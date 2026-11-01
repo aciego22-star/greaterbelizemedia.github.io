@@ -8,12 +8,14 @@ Record on a phone (390×844 portrait) or a laptop at 1440×900. Use a clean brow
 | 7–12 s | 01 Departments | Scroll to the eight department tiles; hover or tap **Generators & Power**. | "Every department from your current product listing, one tap away." |
 | 12–16 s | Category page `/products/generators/` | Show the listed product types and brand chips; tap back. Optionally flash `/products/water-pumps/`. | "Each category explains what you carry, without inventing prices or stock." |
 | 16–24 s | 02 Product finder | **Backup power** → "Lights, fridge & fans" → "Occasional outages" → "At home". The results show Generators plus the electrician guidance. | "Customers describe the job; the site points them to the right category." |
-| 24–28 s | Product Guide | Open the guide and tap "I need a pump for my home water supply." Show the follow-up question. | "A guided assistant that asks the right questions. Today it's rule-based; an approved AI Employee could take this role next." |
+| 24–28 s | Universal AI | Point out the pulsing Universal AI pill, open it ("Hi, I'm Universal AI. How may I assist you today?") and tap "I need a pump for my home water supply." Show the follow-up question. | "An assistant that asks the right questions. Today it's rule-based; an approved AI Employee takes this role next." |
 | 28–35 s | English / Spanish | Tap **EN / ES** in the header: the page, menu and Guide switch to Spanish instantly. Tap again to switch back. | "Spanish Lookout and Belize City serve many Spanish-speaking customers. One tap, and the whole site speaks Spanish." |
 | 35–41 s | 05 Branches / `/locations/` | Tap **Set as my branch** on Belize City; show the Sales and Service Center WhatsApp lines. | "Two branches, sales and service, one tap to call or message." |
 | 41–45 s | Closing CTA | Scroll to "A better way to find what you need." | "This is what your digital customer journey could look like." |
 
 **Optional Shop beat (+10 s, after the language switch):** open **Shop**, add the Makita HP333DYX3B kit, open the cart, then **Checkout** → **Fill in sample details** → **Pay**. The confirmation shows a `TEST-` order. Voice-over: "Order online, pay by card, collect at the branch. In this demo the card step is simulated; live, it runs on your own merchant account."
+
+**Optional What's New beat (+6 s):** tap **What's New at Universal** in the header and scroll past the Mega Sale, the Makita Clinic and the Friends & Family Sale. Voice-over: "Your Mega Sales, Family Days and Expo, all in one place, in English and Spanish."
 
 Austere's contact and meeting call-to-action belongs **outside** the product site (end card in the video or in the email), never inside the concept.
 

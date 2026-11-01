@@ -54,12 +54,28 @@ async function stitchFullPage(page, w, h, name) {
   parts.forEach((f) => fs.rmSync(f));
   console.log('  ', name);
 }
-const shot = (page, name, opts = {}) => page.screenshot({ path: path.join(OUT, name), ...opts }).then(() => console.log('  ', name));
+// Freeze Universal AI's pulse mid-ring: the shot still shows the halo, and the
+// software-rendered capture is not kept busy by a never-ending animation.
+const FREEZE_PULSE = `.guide-launcher--pulse::before,.guide-launcher--pulse::after,.guide-launcher--pulse .guide-launcher__icon{animation-play-state:paused!important;animation-delay:-0.5s!important}`;
+const prep = (ctx) =>
+  ctx.addInitScript((css) => {
+    document.addEventListener('DOMContentLoaded', () => {
+      const s = document.createElement('style');
+      s.textContent = css;
+      document.head.append(s);
+    });
+  }, FREEZE_PULSE);
+const shot = async (page, name, opts = {}) => {
+  const t = Date.now();
+  await page.screenshot({ path: path.join(OUT, name), timeout: 120000, ...opts });
+  console.log('  ', name, `${((Date.now() - t) / 1000).toFixed(1)} s`);
+};
 
 (async () => {
   const browser = await chromium.launch(LAUNCH);
   for (const [w, h, dpr, tag] of [[1440, 900, 1, 'desktop-1440x900'], [390, 844, 2, 'mobile-390x844']]) {
     const ctx = await browser.newContext({ viewport: { width: w, height: h }, deviceScaleFactor: dpr, hasTouch: w < 800, isMobile: w < 800 });
+    await prep(ctx);
     const page = await ctx.newPage();
     await page.goto(BASE + '/', { waitUntil: 'load' });
     await page.mouse.move(w * 0.7, h * 0.45);
@@ -75,6 +91,7 @@ const shot = (page, name, opts = {}) => page.screenshot({ path: path.join(OUT, n
       // Full-page capture from a non-emulated context (Chromium's full-page
       // capture duplicates content under mobile emulation).
       const fctx = await browser.newContext({ viewport: { width: w, height: h }, deviceScaleFactor: 1 });
+    await prep(fctx);
       const fp = await fctx.newPage();
       await fp.goto(BASE + '/', { waitUntil: 'load' });
       await fp.mouse.move(w * 0.7, h * 0.45);
@@ -125,6 +142,7 @@ const shot = (page, name, opts = {}) => page.screenshot({ path: path.join(OUT, n
 
     // Inner pages
     const ctx2 = await browser.newContext({ viewport: { width: w, height: h }, deviceScaleFactor: dpr, hasTouch: w < 800, isMobile: w < 800 });
+    await prep(ctx2);
     const p2 = await ctx2.newPage();
     await p2.goto(BASE + '/products/?q=pump', { waitUntil: 'load' });
     await p2.waitForTimeout(800);
@@ -140,6 +158,11 @@ const shot = (page, name, opts = {}) => page.screenshot({ path: path.join(OUT, n
     await p2.goto(BASE + '/brands/', { waitUntil: 'load' });
     await p2.waitForTimeout(800);
     await shot(p2, `09-brands-${tag}.png`);
+    await p2.goto(BASE + '/whats-new/', { waitUntil: 'load' });
+    await p2.waitForFunction(() => document.documentElement.classList.contains('ui-ready'), null, { timeout: 20000 });
+    await p2.evaluate(() => { const el = document.querySelector('.news-feature'); if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 110, behavior: 'instant' }); });
+    await p2.waitForTimeout(900);
+    await shot(p2, `17-whats-new-${tag}.png`);
     // Shop, cart and demo checkout
     await p2.goto(BASE + '/shop/', { waitUntil: 'load' });
     await p2.waitForFunction(() => document.documentElement.classList.contains('ui-ready'), null, { timeout: 20000 });
@@ -175,6 +198,7 @@ const shot = (page, name, opts = {}) => page.screenshot({ path: path.join(OUT, n
   // Extra breakpoints
   for (const [w, h] of [[320, 640], [768, 1024], [1024, 768]]) {
     const ctx = await browser.newContext({ viewport: { width: w, height: h }, deviceScaleFactor: 1, hasTouch: w < 1024, isMobile: w < 800 });
+    await prep(ctx);
     const page = await ctx.newPage();
     await page.goto(BASE + '/', { waitUntil: 'load' });
     await page.mouse.move(w * 0.7, h * 0.5);

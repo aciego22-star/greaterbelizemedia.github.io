@@ -267,7 +267,7 @@ export default function ProductFinder({ variant = 'dark', headingLevel = 3 }: Pr
                 )}
                 <div class="finder__next-actions">
                   <button type="button" class="btn" onClick={() => openGuide(result.guidePrompt)}>
-                    <Icon name="guide" size={18} /> Ask the Product Guide
+                    <Icon name="sparkle" size={18} /> Ask Universal AI
                   </button>
                 </div>
               </div>

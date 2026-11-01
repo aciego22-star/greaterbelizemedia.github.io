@@ -1,6 +1,6 @@
 /**
  * Small browser-only state shared across the page: the preferred branch and
- * the UI event bus (Product Guide, toasts). Nothing here makes a network
+ * the UI event bus (Universal AI, toasts). Nothing here makes a network
  * request; the branch lives in tab storage (see tab-storage.ts).
  */
 import type { BranchId } from '../data/branches';

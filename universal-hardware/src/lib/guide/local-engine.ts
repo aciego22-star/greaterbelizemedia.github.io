@@ -1,5 +1,5 @@
 /**
- * LocalGuideEngine — the Product Guide.
+ * LocalGuideEngine — Universal AI, the site's assistant (rule-based in this build).
  *
  * A deterministic, rule-based guide. It is NOT generative AI and says so when asked.
  * Knowledge is limited to Universal Hardware's public website as summarised
@@ -9,6 +9,7 @@
 import type { GuideEngine, GuideReply, GuideState, Lang } from './types';
 import { CATEGORIES, CATEGORY_BY_SLUG } from '../../data/categories';
 import { BRANCH_BY_ID, type BranchId } from '../../data/branches';
+import { NEWS } from '../../data/whats-new';
 
 const norm = (s: string) =>
   s
@@ -72,7 +73,8 @@ type IntentId =
   | 'thanks'
   | 'spanish'
   | 'english'
-  | 'category';
+  | 'category'
+  | 'news';
 
 interface Detected {
   intent: IntentId | null;
@@ -103,6 +105,8 @@ function detect(t: string): Detected {
   if (has(t, /in english/, /english please/, /en ingles/)) return { intent: 'english' };
   if (has(t, /(are|r) (you|u) (a )?(real|human|person|bot|ai|robot)/, /who are you/, /what are you/, /is this (ai|a bot|real)/, /chatgpt/, /artificial/, /quien eres/, /eres (un )?(robot|humano|ia)/)) return { intent: 'identity' };
   if (has(t, /buy online/, /order online/, /shop online/, /online (order|shop|store|purchase)/, /pay online/, /checkout/, /\bcart\b/, /(credit|debit) card/, /pay (by|with) card/, /card payment/, /tarjeta/, /comprar en linea/, /compra en linea/, /carrito/)) return { intent: 'shop' };
+  if (has(t, /what s new/, /whats new/, /\bnews\b/, /\bevents?\b/, /mega ?sale/, /friends (and |& )?family/, /\bexpo\b/, /clinic/, /promotion/, /\bpromos?\b/, /(next|upcoming|any) sales?/, /sales? (coming|soon|next)/, /on sale/, /novedad/, /evento/, /feria/, /promocion/, /clinica/, /proxima venta/, /que hay de nuevo/))
+    return { intent: 'news' };
   if (has(t, /quot/, /cotiza/, /presupuesto/, /send (me|my|it|this|a)/, /\border\b/, /pedido/, /reserve/)) return { intent: 'quote', branch };
   if (has(t, /price/, /\bcost/, /how much/, /precio/, /cuanto/, /cuesta/, /cheap/, /discount/, /\bsale\b/, /oferta/)) return { intent: 'quote', branch };
   if (has(t, /in stock/, /stock/, /available/, /availability/, /disponib/, /do you have/, /tienen/, /hay /)) {
@@ -358,6 +362,7 @@ function categoryReply(slug: string, lang: Lang, t: string): GuideReply {
 /* -------------------------------------------------------------------------- */
 
 const SUGGESTIONS_EN = [
+  "What's new at Universal?",
   'I need backup power for my home. What type should I look at?',
   'I need a cordless drill for concrete and steel.',
   'I need a pump for my home water supply.',
@@ -366,6 +371,7 @@ const SUGGESTIONS_EN = [
   'Can you send me a quote?',
 ];
 const SUGGESTIONS_ES = [
+  '¿Qué hay de nuevo en Universal?',
   'Necesito un generador para mi casa.',
   'Necesito un taladro inalámbrico para concreto.',
   'Necesito una bomba de agua para la casa.',
@@ -376,8 +382,8 @@ const SUGGESTIONS_ES = [
 
 export const LocalGuideEngine: GuideEngine = {
   id: 'local-rules',
-  label: 'Product Guide',
-  description: 'Rule-based product guide. Not live AI.',
+  label: 'Universal AI',
+  description: 'Universal AI assistant. Rule-based in this build, not a live AI model.',
   initialState(lang) {
     return { slots: {}, lang, turns: 0 };
   },
@@ -385,8 +391,8 @@ export const LocalGuideEngine: GuideEngine = {
     return {
       text: L(
         s.lang,
-        "Hi, I'm the Product Guide. I can help you find the right products, prepare questions for a branch and reach the right team for sales or service.\n\nWhat are you working on?",
-        'Hola, soy la Guía de Productos. Puedo ayudarle a encontrar los productos adecuados, preparar preguntas para la sucursal y contactar al equipo correcto de ventas o servicio.\n\n¿En qué está trabajando?',
+        "Hi, I'm Universal AI. How may I assist you today?",
+        'Hola, soy Universal AI. ¿En qué puedo ayudarle hoy?',
       ),
       chips: s.lang === 'es' ? SUGGESTIONS_ES : SUGGESTIONS_EN,
     };
@@ -396,7 +402,7 @@ export const LocalGuideEngine: GuideEngine = {
     const t = norm(input);
     const d = detect(t);
     // Auto-detect Spanish phrasing.
-    if (s.lang === 'en' && has(t, /^hola/, /necesito/, /donde/, /tienen/, /quiero/, /cuanto/, /venden/, /buenos dias/, /buenas/)) s.lang = 'es';
+    if (s.lang === 'en' && has(t, /^hola/, /necesito/, /donde/, /tienen/, /quiero/, /cuanto/, /venden/, /buenos dias/, /buenas/, /(^|\s)hay(\s|$)/, /novedad/)) s.lang = 'es';
     const lang = s.lang;
 
     // Continue the active topic when the input reads like an answer to it.
@@ -436,8 +442,8 @@ export const LocalGuideEngine: GuideEngine = {
           reply: {
             text: L(
               lang,
-              "I'm the Product Guide, a rule-based assistant. I match your questions to the products, branches and services on this site. I'm not a live AI model or a person, and nothing you type leaves this page, so for quotes, orders or stock the branch team is the right contact.",
-              'Soy la Guía de Productos, un asistente basado en reglas. Relaciono sus preguntas con los productos, sucursales y servicios de este sitio. No soy un modelo de IA en vivo ni una persona, y nada de lo que escribe sale de esta página; para cotizaciones, pedidos o existencias, lo mejor es el equipo de la sucursal.',
+              "I'm Universal AI, the assistant on Universal Hardware's website. Right now I'm rule-based: I match your questions to the products, branches and services on this site. I'm not a live AI model or a person, and nothing you type leaves this page, so for quotes, orders or stock the branch team is the right contact.",
+              'Soy Universal AI, el asistente del sitio web de Universal Hardware. Por ahora funciono con reglas: relaciono sus preguntas con los productos, sucursales y servicios de este sitio. No soy un modelo de IA en vivo ni una persona, y nada de lo que escribe sale de esta página; para cotizaciones, pedidos o existencias, lo mejor es el equipo de la sucursal.',
             ),
           },
           state: s,
@@ -455,6 +461,15 @@ export const LocalGuideEngine: GuideEngine = {
         const links = cat ? [catLink(cat, lang)] : [];
         if (d.intent === 'quote') links.push(shopLink(lang));
         return { reply: { text, branches: d.branch ? [d.branch] : undefined, links: links.length ? links : undefined }, state: s };
+      }
+      case 'news': {
+        const n = NEWS[0];
+        const text = L(
+          lang,
+          `Universal holds two big sales every year: the **Friends & Family Sale** at the Spanish Lookout branch, usually in February, and the **Mega Sale** at the Belize City branch, usually in May.\n\nMost recent: **${n.title}**, ${n.when}, ${n.where}.${n.extra ? ` A ${n.extra.title} ran alongside, with free maintenance for Makita tools.` : ''}\n\nNew dates go up on What's New at Universal, and the branch can tell you what's on right now.`,
+          `Universal realiza dos grandes ventas cada año: la **Friends & Family Sale** en la sucursal de Spanish Lookout, normalmente en febrero, y la **Mega Sale** en la sucursal de Ciudad de Belice, normalmente en mayo.\n\nLa más reciente: **${n.title}**, ${n.es.when}, ${n.es.where}.${n.extra ? ` Al mismo tiempo se realizó un ${n.extra.title}, con mantenimiento gratuito para herramientas Makita.` : ''}\n\nLas nuevas fechas se publican en Novedades en Universal, y la sucursal puede decirle qué hay en este momento.`,
+        );
+        return { reply: { text, links: [{ label: L(lang, "See What's New", 'Ver las novedades'), href: '/whats-new/' }] }, state: s };
       }
       case 'shop':
         return {

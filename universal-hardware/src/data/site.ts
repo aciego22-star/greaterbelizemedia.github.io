@@ -12,10 +12,12 @@ export const SITE = {
   nothingSent: 'Concept demonstration only. Nothing has been sent or submitted.',
 };
 
-export const NAV = [
+/** `short` is shown in the desktop bar when the full label does not fit. */
+export const NAV: { href: string; label: string; short?: string }[] = [
   { href: '/shop/', label: 'Shop' },
   { href: '/products/', label: 'Products' },
   { href: '/brands/', label: 'Brands' },
   { href: '/locations/', label: 'Locations' },
   { href: '/about/', label: 'About' },
+  { href: '/whats-new/', label: "What's New at Universal", short: "What's New" },
 ];

@@ -66,6 +66,15 @@ convo('Spanish', ['Hola, necesito una bomba de agua para la casa'], [(t) => chec
 convo('Open now', ['Is the Spanish Lookout store open now?'], [(t) => check(/can't tell whether a branch is open/i.test(t), 'does not infer open now')]);
 convo('Warranty', ['What is the warranty on generators?'], [(t) => check(/don't have warranty/i.test(t), 'no invented warranty')]);
 convo('Category', ['Do you sell MIG welders?'], [(t) => check(/Welding Supplies/.test(t), 'maps to welding')]);
+convo("What's new", ["What's new at Universal?"], [(t) => check(/Friends & Family Sale[\s\S]*usually in February[\s\S]*Mega Sale[\s\S]*usually in May[\s\S]*Universal Mega Sale 2026/.test(t), 'yearly sales and the latest event')]);
+convo('Sale coming up', ['Is there a sale coming up?'], [(t) => check(/usually in May/.test(t) && !/can't send quotes/.test(t), 'answers with sales, not a quote refusal')]);
+convo('Novedades', ['¿Qué hay de nuevo en Universal?'], [(t) => check(/normalmente en febrero[\s\S]*del 21 al 23 de mayo de 2026/.test(t), 'Spanish news reply with Spanish dates')]);
+{
+  const w = LocalGuideEngine.welcome(LocalGuideEngine.initialState('en'));
+  check(w.text === "Hi, I'm Universal AI. How may I assist you today?" && (w.chips?.length ?? 0) >= 6, 'welcome greets as Universal AI with suggestions below');
+  const we = LocalGuideEngine.welcome(LocalGuideEngine.initialState('es'));
+  check(we.text === 'Hola, soy Universal AI. ¿En qué puedo ayudarle hoy?', 'Spanish welcome');
+}
 
 console.log('\n▶ Finder data integrity');
 for (const p of FINDER_PATHS) {

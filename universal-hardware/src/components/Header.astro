@@ -22,7 +22,14 @@ const isCurrent = (href: string) => section && href.startsWith(`/${section}/`);
           NAV.map((item) => (
             <li>
               <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
-                {item.label}
+                {item.short ? (
+                  <>
+                    <span class="site-nav__full">{item.label}</span>
+                    <span class="site-nav__short">{item.short}</span>
+                  </>
+                ) : (
+                  item.label
+                )}
               </a>
             </li>
           ))
@@ -31,9 +38,6 @@ const isCurrent = (href: string) => section && href.startsWith(`/${section}/`);
     </nav>
 
     <div class="site-header__actions">
-      <a class="btn btn--ghost btn--sm site-header__find" href="/find/">
-        Find the Right Product
-      </a>
       <a class="btn btn--sm site-header__explore" href="/products/">
         Explore Products
         <Icon name="arrow-right" size={16} class="btn-arrow" />

@@ -3,12 +3,9 @@ import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
 import { CATEGORIES } from '../data/categories';
+import { NEWS } from '../data/whats-new';
 
-const news = [
-  { title: 'Universal Mega Sale 2026', date: 'Apr 23, 2026', href: 'https://universalhardware.bz/news/2026/04/universal-mega-sale-2026/' },
-  { title: 'Spanish Lookout Commercial Industrial Expo 2026', date: 'Mar 5, 2026', href: 'https://universalhardware.bz/news/2026/03/spanish-lookout-commercial-industrial-expo-2026/' },
-  { title: 'Friends And Family Day 2026', date: 'Jan 26, 2026', href: 'https://universalhardware.bz/news/2026/01/friends-and-family-day-2026/' },
-];
+const news = NEWS.slice(0, 3);
 const facts = [
   { k: 'What it does', v: 'Retail and wholesale distribution of hardware tools, household appliances, power equipment, motorcycles and welding supplies.', src: 'home' },
   { k: 'Where', v: 'Two branches: Spanish Lookout (main branch) in Cayo District, and Belize City.', src: 'about' },
@@ -50,20 +47,21 @@ const facts = [
         </dl>
 
         <div class="about-news">
-          <h2 class="h3">Recent news &amp; promotions</h2>
+          <h2 class="h3">What's New at Universal</h2>
           <ul>
             {
               news.map((n) => (
                 <li>
-                  <a href={n.href} target="_blank" rel="noopener">
-                    <span class="about-news__date mono">{n.date}</span>
+                  <a href={`/whats-new/#${n.id}`}>
+                    <span class="about-news__date mono">{n.when}</span>
                     <span class="about-news__title">{n.title}</span>
-                    <Icon name="external" size={16} />
+                    <Icon name="arrow-right" size={16} />
                   </a>
                 </li>
               ))
             }
           </ul>
+          <a class="about-news__all" href="/whats-new/">All sales and events <Icon name="arrow-right" size={16} /></a>
         </div>
       </div>
 
@@ -139,9 +137,9 @@ const facts = [
     gap: 10px;
     margin: 16px 0 12px;
   }
-  .about-news a {
+  .about-news li a {
     display: grid;
-    grid-template-columns: 110px 1fr auto;
+    grid-template-columns: 150px 1fr auto;
     gap: 16px;
     align-items: center;
     min-height: 60px;
@@ -152,7 +150,7 @@ const facts = [
     text-decoration: none;
     transition: border-color var(--dur), background-color var(--dur);
   }
-  .about-news a:hover {
+  .about-news li a:hover {
     border-color: var(--blue-600);
     background: var(--blue-50);
   }
@@ -162,8 +160,15 @@ const facts = [
   .about-news__title {
     font-weight: 650;
   }
+  .about-news__all {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 44px;
+    font-weight: 600;
+  }
   @media (max-width: 520px) {
-    .about-news a {
+    .about-news li a {
       grid-template-columns: 1fr auto;
     }
     .about-news__date {

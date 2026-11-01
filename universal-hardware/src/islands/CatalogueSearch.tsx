@@ -147,12 +147,11 @@ export default function CatalogueSearch() {
         <div class="catalogue__empty">
           <h2 class="h3">Nothing matched{q.trim() ? ` “${q.trim()}”` : ''}.</h2>
           <p>
-            Search covers categories, product types and brands, so some specific items won't appear. Try a broader word, or ask the Product
-            Guide.
+            Search covers categories, product types and brands, so some specific items won't appear. Try a broader word, or ask Universal AI.
           </p>
           <div class="catalogue__empty-actions">
             <button type="button" class="btn" onClick={() => openGuide(q.trim() || undefined)}>
-              <Icon name="guide" size={18} /> Ask the Product Guide
+              <Icon name="sparkle" size={18} /> Ask Universal AI
             </button>
             <button type="button" class="btn btn--ghost" onClick={clearAll}>
               Clear search and filters

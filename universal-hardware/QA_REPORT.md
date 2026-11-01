@@ -1,6 +1,6 @@
 # QA report
 
-**Build:** `universal-hardware/` · Astro 7.3.8 static output · 55 pages · tested 28 October 2026; Shop, cart and checkout added and re-tested 29 October 2026; homepage slideshow added and re-tested 30 October 2026; English / Spanish switch added, Enquiry Summary removed and wording cleaned up, re-tested 31 October 2026
+**Build:** `universal-hardware/` · Astro 7.3.8 static output · 56 pages · tested 28 October 2026; Shop, cart and checkout added and re-tested 29 October 2026; homepage slideshow added and re-tested 30 October 2026; English / Spanish switch added, Enquiry Summary removed and wording cleaned up, re-tested 31 October 2026; What's New at Universal and the Universal AI launcher added and re-tested 31 October 2026
 **Environment:** headless Chromium 1243 (Playwright 1.63) on Linux with **software WebGL (SwiftShader)**; local Netlify-like server with Brotli/gzip; Lighthouse 12.6.1.
 **Not available here:** physical iPhone / Android / iPad hardware and real GPUs. See "Outstanding issues".
 
@@ -8,12 +8,12 @@
 
 | Area | Result |
 |---|---|
-| Automated end-to-end suite (`tests/run-qa.cjs`) | **236 / 236 checks pass** |
-| Logic suite (`tests/guide-cases.ts`) | **All pass**: 13 guide conversations; every finder answer combination (276) resolves to listed categories and sub-types |
-| Spanish coverage (`scripts/i18n-check.mjs`) | **0 English strings left** in Spanish mode across all 55 pages and the finder, search, cart, checkout, Guide and menu states |
+| Automated end-to-end suite (`tests/run-qa.cjs`) | **252 / 252 checks pass** |
+| Logic suite (`tests/guide-cases.ts`) | **All pass**: 16 Universal AI conversations plus its English and Spanish greetings; every finder answer combination (276) resolves to listed categories and sub-types |
+| Spanish coverage (`scripts/i18n-check.mjs`) | **0 English strings left** in Spanish mode across all 56 pages and the finder, search, cart, checkout, Guide and menu states |
 | Type check (`astro check`) | 0 errors, 0 warnings |
-| Post-build checks | noindex + footer disclaimer on all 55 pages; `_headers`, `robots.txt`, `404.html` present; no secret patterns |
-| axe-core (WCAG 2.1 A/AA + best practice) | 0 violations on all 24 tested routes, plus the cart with items, checkout with errors, the order confirmation, and the Spanish homepage and confirmation |
+| Post-build checks | noindex + footer disclaimer on all 56 pages; `_headers`, `robots.txt`, `404.html` present; no secret patterns |
+| axe-core (WCAG 2.1 A/AA + best practice) | 0 violations on all 25 tested routes, plus the cart with items, checkout with errors, the order confirmation, and the Spanish homepage and confirmation |
 | Lighthouse mobile | Performance 96–100 · Accessibility 100 · Best Practices 100 · SEO 69 (intentional `noindex`); Spanish homepage 97 |
 | Lighthouse desktop (home, with the slideshow above the 3D hero) | Performance 100 on three consecutive runs · LCP 0.7 s · TBT 0 ms · CLS 0 · 534 KB (was 69 with the earlier procedural drill) |
 | Third-party network requests | **None**, on any route or during any interaction |
@@ -23,17 +23,18 @@
 
 | Group | Pass | What is verified |
 |---|---|---|
-| route | 26/26 | All 24 tested routes (including the Shop, two product pages, cart and checkout) load directly (refresh-safe) with status 200, one `<h1>`, `noindex`, the Concept Preview badge, the footer disclaimer and alt text on every image; unknown URLs return the custom 404; `/products` redirects to `/products/` |
-| console | 24/24 | No console errors on any route |
-| images | 24/24 | Every image on every route (including the photos and logos from universalhardware.bz) loads with real dimensions, once lazy loading is forced to eager |
-| axe | 29/29 | No accessibility violations, on every route, on the cart, checkout-error and confirmation states, and in Spanish (mobile homepage, order confirmation) |
-| network | 30/30 | No request to any non-origin host on page load, in the finder flows, in Guide conversations, while switching language, in the shop and checkout, or across navigation; the shop and checkout send no write request at all |
+| route | 27/27 | All 25 tested routes (including What's New, the Shop, two product pages, cart and checkout) load directly (refresh-safe) with status 200, one `<h1>`, `noindex`, the Concept Preview badge, the footer disclaimer and alt text on every image; unknown URLs return the custom 404; `/products` redirects to `/products/` |
+| console | 25/25 | No console errors on any route |
+| images | 25/25 | Every image on every route (including the photos and logos from universalhardware.bz) loads with real dimensions, once lazy loading is forced to eager |
+| axe | 30/30 | No accessibility violations, on every route, on the cart, checkout-error and confirmation states, and in Spanish (mobile homepage, order confirmation) |
+| network | 32/32 | No request to any non-origin host on page load, in the finder flows, in Universal AI conversations, on What's New, while switching language, in the shop and checkout, or across navigation; the shop and checkout send no write request at all |
 | overflow | 8/8 | No horizontal overflow on any route at 320×640, 375×812, 390×844, 430×932, 768×1024, 1024×768, 1440×900; in Spanish (longer labels) none at 320, 1024 and 1200 px |
-| nav | 10/10 | Header links (Shop, Products, Brands, Locations, About) set `aria-current`; Explore Products and Find the Right Product CTAs; hero "Find the Right Solution" → `#finder`; 8 department tiles → live category pages; every internal link target on every route resolves (no dead links) |
+| nav | 11/11 | Header links (Shop, Products, Brands, Locations, About, What's New at Universal) set `aria-current`; Explore Products CTA; Find the Right Product stays in the menu and footer (it left the desktop bar to make room); hero "Find the Right Solution" → `#finder`; 8 department tiles → live category pages; every internal link target on every route resolves (no dead links) |
 | mobile-menu | 4/4 | Opens as a modal `<dialog>` with focus inside, `aria-expanded`; Escape closes and returns focus; links navigate; no standalone tap target under 24 px |
 | search | 17/17 | 12 categories by default; "submersible pump" ranks Water Pumps and highlights the sub-type; URL sync; English, Spanish and typo queries ("planta", "bomba de agua", "genrator"); finished empty state with recovery; department and brand filters; `?q=` deep link |
-| finder | 7/7 | Six need paths; backup power → Generators with electrician caution; back navigation; farm → Water Pumps related; deep well → Submersible pumps; no Enquiry Summary controls or wording left on any page; the next step hands the answers to the Product Guide as a ready-made question |
-| guide | 13/13 | Opens with its welcome; required conversations (generator ×3 turns, cordless drill, home water pump, motorbikes, Belize City store, quote); quote says it can't send anything and points to the branch WhatsApp lines; says it is rule-based when asked; switching the site to Spanish switches the Guide's welcome and replies; Escape closes; category pages hand over a contextual prompt, even when tapped before the global UI has hydrated (requests are queued and replayed) |
+| finder | 7/7 | Six need paths; backup power → Generators with electrician caution; back navigation; farm → Water Pumps related; deep well → Submersible pumps; no Enquiry Summary controls or wording left on any page; the next step hands the answers to Universal AI as a ready-made question |
+| guide | 17/17 | The launcher pill reads "Universal AI Assistant" and pulses, and stops pulsing once opened in the session; opens with "Hi, I'm Universal AI. How may I assist you today?" and the suggestions below it; "What's new at Universal?" answers with the yearly sales and the latest event and links to the page; required conversations (generator ×3 turns, cordless drill, home water pump, motorbikes, Belize City store, quote); quote says it can't send anything and points to the branch WhatsApp lines; says it is rule-based when asked; switching the site to Spanish switches the Guide's welcome and replies; Escape closes; category pages hand over a contextual prompt, even when tapped before the global UI has hydrated (requests are queued and replayed) |
+| news | 4/4 | What's New lists six sales and events newest first, led by the Mega Sale 2026; every event shows its flyer from the site itself; "Ask Universal AI" on the page answers about upcoming sales; About's news list links to What's New |
 | i18n | 8/8 | English pages never load the Spanish dictionary; the header EN/ES button flips the page (heading, menu, title, button label); Spanish persists across pages; island toasts follow the language; checkout errors, Pay button and order confirmation in Spanish; switching back restores English without a reload; a Spanish-language browser opens in Spanish |
 | links | 3/3 | `tel:` and `https://wa.me/` links match the website-listed numbers exactly; external links use `rel="noopener"` |
 | branch | 1/1 | Preferred branch persists for the session across pages |
@@ -43,11 +44,11 @@
 | checkout | 4/4 | No card inputs or third-party frames; Enter with empty details shows three errors and focuses the first field; simulated decline shows an alert and keeps the cart; approved simulated payment shows a `TEST-` reference and empties the cart |
 | reel | 8/8 | At 1440, 768 and 390 px the slideshow opens the page with the 3D hero directly below; desktop images on desktop and tablet, mobile images on phones; only the first image loads with the page; autoplay fades to the next slide after about 7 s with inactive slides `aria-hidden`; choosing a slide stops autoplay (still there 8 s later, button reads "Play slideshow"); Play resumes and arrow keys change slide; reduced motion starts paused |
 | 3d | 9/9 | Poster first and WebGL chunk not loaded at first paint; nothing loads while the stage is below the slideshow; scene reaches `ready` once scrolled into view; idle motion animates; **Pause 3D motion** freezes frames and relabels to "Resume"; drag rotates; `touch-action: pan-y` (no scroll trap); `prefers-reduced-motion` → no idle animation; **WebGL-disabled browser shows the static render with a "Static render" badge and no errors** |
-| motion | 2/2 | Reduced motion shows reveal content immediately; the footer "Reduce motion" toggle applies and persists for the session |
+| motion | 3/3 | Reduced motion shows reveal content immediately and gives the Universal AI launcher a steady halo instead of the pulse; the footer "Reduce motion" toggle applies and persists for the session |
 
 Raw results: `tests/results/qa-results.json`.
 
-## Required Product Guide conversations (excerpted from the logic suite)
+## Required Universal AI conversations (excerpted from the logic suite)
 
 | Prompt | Behaviour verified |
 |---|---|
@@ -59,7 +60,9 @@ Raw results: `tests/results/qa-results.json`.
 | "Can you send me a quote?" | Says it can't send quotes itself; points to each branch's Sales WhatsApp line for prices and stock |
 | Also: "Are you a real AI?", "Is it open now?", warranty, Spanish | Honest identity (rule-based); no "open now" inference; no invented warranty; Spanish replies |
 
-The logic suite also fails any Guide reply that mentions "concept", "demonstration" or the Enquiry Summary.
+| "What's new at Universal?", "Is there a sale coming up?", "¿Qué hay de nuevo en Universal?" | Friends & Family Sale (Spanish Lookout, usually February) and Mega Sale (Belize City, usually May), then the latest event with its dates; Spanish dates in Spanish; never treated as a quote request |
+
+The logic suite also fails any Universal AI reply that mentions "concept", "demonstration" or the Enquiry Summary.
 
 ## Lighthouse (simulated throttling)
 
@@ -109,6 +112,17 @@ After adding the English / Spanish switch and removing the Enquiry Summary (31 O
 
 The Spanish dictionary (about 1,000 strings) is a separate chunk, fetched only when Spanish is chosen; English pages never request it. In Spanish the page stays hidden until the translation is applied (about 0.2 s after load, with a 2.5 s failsafe), so there is no flash of English and no layout shift.
 
+After adding What's New at Universal and the pulsing Universal AI launcher (31 October 2026):
+
+| Form factor | Route | Perf | A11y | BP | FCP | LCP | TBT | CLS | Transfer |
+|---|---|---|---|---|---|---|---|---|---|
+| mobile | `/whats-new/` (8 flyers, lazy below the first) | 96 | 100 | 100 | 1.3 s | 2.8 s | 0 ms | 0 | 393 KB |
+| desktop | `/whats-new/` | 100 | 100 | 100 | 0.3 s | 0.7 s | 0 ms | 0 | 547 KB |
+| mobile | `/` | 97 | 100 | 100 | 1.3 s | 2.6 s | 0 ms | 0 | 444 KB |
+| desktop | `/` | 100 | 100 | 100 | — | 0.7 s | 0 ms | 0 | — |
+
+The pulse animates only `transform` and `opacity` on the launcher's own pseudo-elements, so the compositor runs it without repainting or script, and it stops after the first open. (These four runs used an earlier shadow-based pulse; the final transform-based version passed the full e2e suite.)
+
 The LCP element is now the first slideshow image (AVIF, 1672 px on desktop, 750 px on phones). Before two changes, desktop flipped between 100 and 60. Slides 2 and 3 downloaded right after load and kept the network busy, so the 3D scene could start inside Lighthouse's window, where SwiftShader frames count as blocking time. Now each later slide loads just before it is due, and the scene waits until its stage is on screen.
 
 The first table is the pre-image baseline. Below-the-fold images are lazy-loaded, every image has explicit dimensions (CLS 0), and photos are served as WebP with a JPEG fallback.
@@ -141,7 +155,7 @@ Optimisations applied after measuring (homepage mobile went from Performance 55 
 
 ## Visual review
 
-Reviewed by screenshot at every tested viewport (see `deliverables/screenshots/`): hero, departments, finder states, Spanish homepage, guide, search, category, locations, brands, mobile menu, 320/768/1024 views and the no-WebGL fallback. Fixes made during review:
+Reviewed by screenshot at every tested viewport (see `deliverables/screenshots/`): hero, departments, finder states, Spanish homepage, Universal AI, What's New, search, category, locations, brands, mobile menu, 320/768/1024 views and the no-WebGL fallback. Fixes made during review:
 - branch card layout at 1440
 - mobile HUD clearance from the Guide button
 - figure label collision on small stages
@@ -157,10 +171,16 @@ Reviewed by screenshot at every tested viewport (see `deliverables/screenshots/`
 - brand cards: "No logo on the website" label contrast raised to pass axe
 - Shop: colour pickers on bike cards were squeezed to one letter, so they now take their own row; two product columns on phones; filter chips scroll sideways on phones
 - Shop at 320 px: the extra cart icon pushed the header 8 px wide, so header icon buttons shrink to 40 px below 400 px
-- Checkout in the private preview: the preview frame blocks form submission, so Pay never fired there. Pay and the Product Guide's Send are now plain buttons with Enter handled in script. Verified in an opaque-origin sandbox emulation: cart kept across pages (sessionStorage is blocked there, so the `window.name` fallback is used), demo payment completes, and Guide Enter and Send both reply
-- Homepage slideshow: controls sit bottom-centre on desktop so they clear the floating Product Guide button; on phones the controls move right so the two never overlap at 320 px
+- Checkout in the private preview: the preview frame blocks form submission, so Pay never fired there. Pay and Universal AI's Send are now plain buttons with Enter handled in script. Verified in an opaque-origin sandbox emulation: cart kept across pages (sessionStorage is blocked there, so the `window.name` fallback is used), demo payment completes, and Guide Enter and Send both reply
+- Homepage slideshow: controls sit bottom-centre on desktop so they clear the floating Universal AI button; on phones the controls move right so the two never overlap at 320 px
 - 3D tests: with the stage now below the slideshow, its 1.6 s intro starts when it scrolls into view, so the pause and no-WebGL checks first scroll the stage into view and let the intro finish
 - Shop photos: the automatic cut-outs kept "SALE" beside the two trimmers and clipped the rotary hammer's handle; fixed with three paint-out areas
+- Header: with six links, "What's New at Universal" plus both header buttons overflowed between 1181 and 1280 px and wrapped links up to 1440 px. Links no longer wrap; Find the Right Product left the desktop bar (still in the hero, menu and footer), Explore Products hides below 1300 px, and the label shortens to "What's New" only between 1000 and 1119 px. Checked at 13 widths in English and Spanish
+- Universal AI pulse: the server-rendered button kept its pulse class after hydration, so the pulse never stopped on later pages (caught by the e2e suite). The saved "opened" state is now read after mount
+- Universal AI pulse: the first version animated a box-shadow, which repaints every frame; with software 3D running, headless screenshots stalled. It now animates transform and opacity only, and the presentation screenshots freeze it mid-ring
+- Universal AI suggestions now sit directly under the latest reply instead of in a scrolling strip above the input
+- What's New: the two wide banner flyers run across their card, so their text stays readable; the square flyers sit beside the details
+- Phone launcher ("Universal AI" pill, 158 px) checked against the slideshow controls at 320, 360, 375 and 390 px: no overlap
 
 ## Outstanding issues (named explicitly)
 
@@ -168,7 +188,7 @@ Reviewed by screenshot at every tested viewport (see `deliverables/screenshots/`
 2. **3D performance on real GPUs is unmeasured.** The numbers above are a software-rendering worst case.
 3. ~~Desktop Lighthouse home = 69~~ under SwiftShader: resolved by the photo-based drill (now 100).
 4. **Chatbase adapter untested.** No agent ID was supplied. Enabling it also requires CSP changes (see README).
-5. **At 320×640 only**, the floating Product Guide button can sit over the stage's top-right Pause control until the page is scrolled. Pause stays reachable after a small scroll and via keyboard.
+5. **At 320×640 only**, the floating Universal AI button can sit over the stage's top-right Pause control until the page is scrolled. Pause stays reachable after a small scroll and via keyboard.
 6. **Utility strip wraps to two lines at ≤360 px** (by design, to avoid overflow).
 7. **Wordmark is a modest-resolution raster**; a high-resolution master is needed for production.
 8. **Canonical / Open Graph URLs** use a placeholder Netlify subdomain until `site` is updated.
@@ -178,4 +198,5 @@ Reviewed by screenshot at every tested viewport (see `deliverables/screenshots/`
 12. **Card payments are not live** by design. The demo provider is the only one shipped; the live path is in `PAYMENTS.md` and depends on Universal Hardware's own merchant account.
 13. **Shop prices are past sale prices** from February 2026 graphics, read as Belize dollars; GST treatment is unknown.
 14. **Spanish is a working translation**, written for this build, and has not yet been reviewed by a native speaker in Belize. It should be before launch, especially product names, sizing terms and the checkout.
-15. **The Product Guide does not pass enquiries on to staff.** It answers from the site's own content and points customers to the branch WhatsApp lines. Handing a conversation to a branch needs the approved live AI Employee and a destination Universal Hardware chooses.
+15. **Universal AI does not pass enquiries on to staff, and is rule-based in this build.** Its name and greeting present it as the site's AI assistant; asked what it is, it says it is rule-based and not a live AI model. It answers from the site's own content and points customers to the branch WhatsApp lines. Handing a conversation to a branch needs the approved live AI Employee and a destination Universal Hardware chooses.
+16. **What's New lists only past events** (December 2025 to May 2026). New posts on the company's News / Promotions page have to be added by hand (see README); the yearly pattern ("usually in February / May") is inferred from the 2023–2026 flyers.

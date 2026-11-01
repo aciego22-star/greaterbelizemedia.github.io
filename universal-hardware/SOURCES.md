@@ -13,7 +13,7 @@ All factual content comes from Universal Hardware Company Ltd.'s own public webs
 | Hisun | https://universalhardware.bz/Hisun.html | Hisun UTV and ATV page in the site navigation |
 | Meilun Catalogues | https://universalhardware.bz/catalogues.html | Meilun parts catalogues published "when making Parts Orders" |
 | Contact Us | https://universalhardware.bz/about.html | Branch addresses, hours, telephone and Smart numbers, Sales and Service Center WhatsApp numbers, holiday closure statement, sales email |
-| News / Promotions | https://universalhardware.bz/news/ | Post titles and dates: Universal Mega Sale 2026 (Apr 23), Spanish Lookout Commercial Industrial Expo 2026 (Mar 5), Friends And Family Day 2026 (Jan 26). Product photos cropped from these posts' promotion graphics (viewed 29 October 2026). The Shop's items, from the 32 single-product Friends & Family Sale graphics (viewed 29 October 2026) |
+| News / Promotions | https://universalhardware.bz/news/ (and its RSS feed) | What's New at Universal, read 31 October 2026: the posts Universal Mega Sale 2026, Spanish Lookout Commercial Industrial Expo 2026, Friends And Family Day 2026, GST Holiday 2025, Universal Mega Sale 2025 and Friends And Family Day 2025, with dates, places and details read from each post's main flyer (posts contain flyers only), plus the Mega Sale 2023 and 2024 and Friends & Family 2024 flyers for the yearly pattern. Product photos cropped from these posts' promotion graphics (viewed 29 October 2026). The Shop's items, from the 32 single-product Friends & Family Sale graphics (viewed 29 October 2026) |
 
 ## Claims → source
 
@@ -52,7 +52,7 @@ Concept copy such as "Built for Every Job.", the category summaries, the departm
 
 ## Images
 
-Product photos and brand logos are copied from Universal Hardware's own website: the `/i/` image folder of the pages above, plus product photos cropped from the 2026 promotion graphics on News / Promotions. The crops keep only the product; prices, sale dates and sale wording are left out of every image. Apart from the Shop, where each February 2026 sale price is shown as text and labelled as a past sale price, none of the promotions' prices or offers are repeated. Every file and its source URL are listed in [`ASSET_ATTRIBUTIONS.md`](ASSET_ATTRIBUTIONS.md). Foton, Maytag and Norwesco appear only inside commented-out (hidden) code on the Brands and home pages, so they are treated as retired entries and not used.
+Product photos and brand logos are copied from Universal Hardware's own website: the `/i/` image folder of the pages above, plus product photos cropped from the 2026 promotion graphics on News / Promotions. The crops keep only the product; prices, sale dates and sale wording are left out of every image. Apart from the Shop, where each February 2026 sale price is shown as text and labelled as a past sale price, no promotion prices are repeated. What's New at Universal repeats each past event's offer as its flyer states it (for example "12.5% GST off plus a 12.5% discount" and the Expo coupon terms) and shows the flyer itself; none of these flyers carries a price. Every file and its source URL are listed in [`ASSET_ATTRIBUTIONS.md`](ASSET_ATTRIBUTIONS.md). Foton, Maytag and Norwesco appear only inside commented-out (hidden) code on the Brands and home pages, so they are treated as retired entries and not used.
 
 ## Third-party data
 

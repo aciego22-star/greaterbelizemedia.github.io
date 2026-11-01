@@ -10,7 +10,7 @@
  * Spanish browser language selects Spanish.
  *
  * Anything inside [data-i18n-skip] is left alone (the language button itself,
- * and Product Guide replies, which the Guide writes in the chosen language).
+ * and Universal AI replies, which the assistant writes in the chosen language).
  */
 import { tabGet, tabSet } from './tab-storage';
 

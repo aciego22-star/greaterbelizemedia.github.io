@@ -1,5 +1,5 @@
 /**
- * Product Guide integration contract.
+ * Universal AI (assistant) integration contract.
  *
  * The site ships with `LocalGuideEngine` — deterministic rules over the
  * site's own product and branch data. A production "AI Employee" (e.g. a

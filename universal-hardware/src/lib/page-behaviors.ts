@@ -2,7 +2,7 @@
  * Small, dependency-free behaviours shared by every page:
  * header state, mobile menu dialog, scroll reveals, card tilt, motion toggle,
  * and the declarative hooks (data-*) that connect static HTML to the
- * cart, the preferred branch and the Product Guide.
+ * cart, the preferred branch and Universal AI.
  */
 import { openGuide, toast, getBranch, setBranch, subscribeBranch } from './site-state';
 import type { BranchId } from '../data/branches';
@@ -84,7 +84,7 @@ if (nav && openBtn) {
   });
 }
 
-/* ---------------- Product Guide hooks ---------------- */
+/* ---------------- Universal AI hooks ---------------- */
 document.addEventListener('click', (e) => {
   const guide = (e.target as HTMLElement).closest<HTMLElement>('[data-open-guide]');
   if (guide) {

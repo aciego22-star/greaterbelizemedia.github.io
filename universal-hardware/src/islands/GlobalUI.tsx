@@ -3,6 +3,7 @@ import type { RefObject } from 'preact';
 import { BRANCH_BY_ID, type BranchId } from '../data/branches';
 import { iconSvg, type IconName } from '../lib/icons';
 import { LANG_EVENT, OPEN_GUIDE, TOAST, flushUiQueue, type ToastAction } from '../lib/site-state';
+import { tabGet, tabSet } from '../lib/tab-storage';
 import type { GuideEngine, GuideReply, GuideState, Lang } from '../lib/guide/types';
 import { CHATBASE_AGENT_ID, LIVE_AI_DISCLAIMER, loadChatbase } from '../lib/guide/chatbase-adapter';
 
@@ -104,6 +105,7 @@ function Rich({ text }: { text: string }) {
 }
 
 /* ---------------- Root ---------------- */
+const AI_SEEN_KEY = 'uhc.ai.opened.v1';
 interface ToastState {
   id: number;
   message: string;
@@ -115,6 +117,17 @@ export default function GlobalUI() {
   const [guidePrompt, setGuidePrompt] = useState<{ text: string; n: number } | null>(null);
   const [toast, setToast] = useState<ToastState | null>(null);
   const toastTimer = useRef<number>(0);
+  // The launcher pulses until the visitor has opened Universal AI once this session.
+  // Read after mount: the server-rendered button carries the pulse, and hydration keeps its markup.
+  const [pulse, setPulse] = useState(true);
+  useEffect(() => {
+    if (tabGet(AI_SEEN_KEY) === '1') setPulse(false);
+  }, []);
+  useEffect(() => {
+    if (!guideOpen) return;
+    setPulse(false);
+    tabSet(AI_SEEN_KEY, '1');
+  }, [guideOpen]);
 
   useEffect(() => {
     const onOpenGuide = (e: Event) => {
@@ -143,11 +156,17 @@ export default function GlobalUI() {
     <>
       <GuidePanel open={guideOpen} onClose={() => setGuideOpen(false)} prompt={guidePrompt} />
       {!guideOpen && (
-        <button type="button" class="guide-launcher" onClick={() => setGuideOpen(true)} aria-haspopup="dialog">
-          <span class="guide-launcher__icon"><Icon name="guide" size={20} /></span>
-          <span class="guide-launcher__text">
-            <span class="guide-launcher__title">Product Guide</span>
-            <span class="guide-launcher__sub">Ask a question</span>
+        <button
+          type="button"
+          class={`guide-launcher${pulse ? ' guide-launcher--pulse' : ''}`}
+          onClick={() => setGuideOpen(true)}
+          aria-haspopup="dialog"
+          aria-label="Universal AI Assistant"
+        >
+          <span class="guide-launcher__icon"><Icon name="sparkle" size={22} /></span>
+          <span class="guide-launcher__text" aria-hidden="true">
+            <span class="guide-launcher__title">Universal AI</span>
+            <span class="guide-launcher__sub">Assistant</span>
           </span>
         </button>
       )}
@@ -168,7 +187,7 @@ export default function GlobalUI() {
   );
 }
 
-/* ---------------- Product Guide panel ---------------- */
+/* ---------------- Universal AI panel ---------------- */
 interface Msg {
   id: number;
   from: 'user' | 'guide' | 'note';
@@ -240,8 +259,9 @@ function GuidePanel({ open, onClose, prompt }: { open: boolean; onClose: () => v
   useEffect(() => {
     const el = listRef.current;
     if (!el) return;
-    const last = el.querySelector<HTMLElement>('.msg:last-child');
-    if (last && last.classList.contains('msg--guide') && el.children.length > 1) {
+    const all = el.querySelectorAll<HTMLElement>('.msg');
+    const last = all[all.length - 1];
+    if (last && last.classList.contains('msg--guide') && all.length > 1) {
       el.scrollTo({ top: Math.max(0, last.offsetTop - 12), behavior: 'smooth' });
     } else el.scrollTo({ top: el.scrollHeight });
   }, [msgs.length]);
@@ -286,14 +306,14 @@ function GuidePanel({ open, onClose, prompt }: { open: boolean; onClose: () => v
       >
         <header class="guide__head">
           <div class="guide__id">
-            <span class="guide__avatar" aria-hidden="true"><Icon name="guide" size={20} /></span>
+            <span class="guide__avatar" aria-hidden="true"><Icon name="sparkle" size={22} /></span>
             <div>
-              <h2 id="guide-title" class="guide__title">Product Guide</h2>
-              <p class="guide__sub">{mode === 'live' ? 'Live AI test (Chatbase)' : 'Products, branches and services'}</p>
+              <h2 id="guide-title" class="guide__title">Universal AI</h2>
+              <p class="guide__sub">{mode === 'live' ? 'Live AI test (Chatbase)' : 'Assistant · Products, branches and services'}</p>
             </div>
           </div>
           <div class="guide__tools">
-            <button type="button" class="icon-btn" onClick={onClose} aria-label="Close Product Guide">
+            <button type="button" class="icon-btn" onClick={onClose} aria-label="Close Universal AI">
               <Icon name="x" />
             </button>
           </div>
@@ -303,12 +323,12 @@ function GuidePanel({ open, onClose, prompt }: { open: boolean; onClose: () => v
           <div class="guide__live">
             <p class="notice"><Icon name="info" /><span>{LIVE_AI_DISCLAIMER}</span></p>
             <p>{liveStatus === 'loading' ? 'Loading the test widget…' : liveStatus === 'error' ? 'The live test widget could not load.' : 'The Chatbase test widget is open in its own bubble.'}</p>
-            <button type="button" class="btn btn--ghost" onClick={() => setMode('local')}>Back to the Product Guide</button>
+            <button type="button" class="btn btn--ghost" onClick={() => setMode('local')}>Back to Universal AI</button>
           </div>
         ) : (
           <>
             <div class="guide__msgs" ref={listRef} aria-live="polite" aria-relevant="additions">
-              {!engine && <p class="guide__loading">Loading guide…</p>}
+              {!engine && <p class="guide__loading">Loading Universal AI…</p>}
               {msgs.map((m) =>
                 m.from === 'user' ? (
                   <div class="msg msg--user" key={m.id} data-i18n-skip>
@@ -334,17 +354,17 @@ function GuidePanel({ open, onClose, prompt }: { open: boolean; onClose: () => v
                   </div>
                 ),
               )}
+              {msgs.length > 0 && msgs[msgs.length - 1].reply?.chips && (
+                <div class="guide__chips" role="group" aria-label="Suggested questions">
+                  {/* Suggestions sit right under the latest reply, in the chosen language. */}
+                  {msgs[msgs.length - 1].reply!.chips!.map((c) => (
+                    <button type="button" class="guide__chip" onClick={() => send(c)} data-i18n-skip>
+                      {c}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
-            {msgs.length > 0 && msgs[msgs.length - 1].reply?.chips && (
-              <div class="guide__chips" role="group" aria-label="Suggested questions">
-                {/* Chips come from the Guide in the chosen language. */}
-                {msgs[msgs.length - 1].reply!.chips!.map((c) => (
-                  <button type="button" class="guide__chip" onClick={() => send(c)} data-i18n-skip>
-                    {c}
-                  </button>
-                ))}
-              </div>
-            )}
             <form
               class="guide__form"
               onSubmit={(e) => {
@@ -353,7 +373,7 @@ function GuidePanel({ open, onClose, prompt }: { open: boolean; onClose: () => v
                 inputRef.current?.focus();
               }}
             >
-              <label for="guide-input" class="sr-only">Ask the Product Guide</label>
+              <label for="guide-input" class="sr-only">Ask Universal AI</label>
               <input
                 id="guide-input"
                 ref={inputRef}
