@@ -40,14 +40,69 @@ if (header) {
   update();
 }
 
-/* ---------------- Start each page at the top, even inside a stretched frame ---------------- */
-// In a preview frame that the host stretches to the page's full height (phones do this), the host page
-// does the scrolling and keeps its old position when we load a new page, so visitors land at the bottom.
-// Bring the top of the new page (or its #target) into view instead.
-if (window.self !== window.top) {
-  const id = location.hash ? decodeURIComponent(location.hash.slice(1)) : '';
-  const target = id ? document.getElementById(id) : null;
-  (target ?? document.documentElement).scrollIntoView({ block: 'start', behavior: 'instant' });
+/* ---------------- Every page opens at its top ---------------- */
+// Links such as /brands/#makita or /locations/#belize-city name an item on the next page. The page still
+// opens at its top (the item carries data-anchor, not an id, so the browser doesn't jump part-way down);
+// the item is highlighted, and on Brands it moves to the front of its list so it shows without scrolling.
+function markLinked() {
+  let name = '';
+  try {
+    name = decodeURIComponent(location.hash.slice(1));
+  } catch {
+    /* malformed hash */
+  }
+  const linked = name ? [...document.querySelectorAll<HTMLElement>('[data-anchor]')].find((el) => el.dataset.anchor === name) : undefined;
+  if (!linked) return false;
+  document.querySelectorAll('.is-linked').forEach((el) => el.classList.remove('is-linked'));
+  if (linked.hasAttribute('data-anchor-first')) linked.parentElement?.prepend(linked);
+  linked.classList.add('is-linked');
+  return true;
+}
+markLinked();
+// The same kind of link followed on the page it names (e.g. a Universal AI brand card on Brands) does the same, from the top.
+addEventListener('hashchange', () => {
+  if (markLinked()) window.scrollTo({ top: 0, behavior: 'auto' });
+});
+
+// Inside a preview frame that the host stretches to the page's full height (phones do this), the host
+// page does the scrolling and keeps its old position when the frame loads a new page, so visitors would
+// land part-way down. Only when the top of this page is out of sight while the frame itself isn't
+// scrolled (the stretched case), bring it into view: when the page opens, once it has finished loading,
+// and on the tap that leaves for another page. Never after the visitor has started scrolling. A deployed
+// site is not framed, so none of this runs there.
+if (window.self !== window.top && 'IntersectionObserver' in window) {
+  const toTop = () => {
+    try {
+      document.documentElement.scrollIntoView({ block: 'start', behavior: 'instant' as ScrollBehavior });
+    } catch {
+      document.documentElement.scrollIntoView(true);
+    }
+  };
+  const marker = document.createElement('div');
+  marker.setAttribute('aria-hidden', 'true');
+  marker.style.cssText = 'position:absolute;top:0;left:0;width:1px;height:1px;pointer-events:none;';
+  document.body.prepend(marker);
+  let topInView = true;
+  let moved = false;
+  const stretchedAndOff = () => !topInView && window.scrollY === 0;
+  ['wheel', 'touchmove', 'keydown'].forEach((t) => addEventListener(t, () => (moved = true), { passive: true, once: true }));
+  let first = true;
+  new IntersectionObserver((entries) => {
+    topInView = entries[entries.length - 1].isIntersecting;
+    if (first) {
+      first = false;
+      if (stretchedAndOff()) toTop();
+    }
+  }).observe(marker);
+  addEventListener('load', () => setTimeout(() => !moved && stretchedAndOff() && toTop(), 60), { once: true });
+  document.addEventListener('click', (e) => {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    const a = (e.target as Element).closest?.<HTMLAnchorElement>('a[href]');
+    if (!a || (a.target && a.target !== '_self') || a.hasAttribute('download')) return;
+    const url = new URL(a.href, location.href);
+    if (url.origin !== location.origin || (url.pathname === location.pathname && url.search === location.search)) return;
+    if (stretchedAndOff()) toTop();
+  });
 }
 
 /* ---------------- Mobile nav (native <dialog>) ---------------- */

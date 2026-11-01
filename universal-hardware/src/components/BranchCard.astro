@@ -10,7 +10,7 @@ interface Props {
 const { branch: b, detailed = false, headingLevel = 'h3' } = Astro.props;
 const H = headingLevel;
 ---
-<article class="branch" id={detailed ? b.id : undefined} data-branch-card={b.id} aria-labelledby={`branch-${b.id}-name`}>
+<article class="branch" data-anchor={detailed ? b.id : undefined} data-branch-card={b.id} aria-labelledby={`branch-${b.id}-name`}>
   <header class="branch__head">
     <div>
       {b.tag && <p class="tag">{b.tag}</p>}

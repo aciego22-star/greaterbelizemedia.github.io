@@ -81,7 +81,9 @@ Every preview publish ships with the ZIP from the same build, so the two always 
 - fonts are inlined as data URIs
 - Netlify-only files are omitted
 
-The preview host can show the page in a frame as tall as the page itself, so the browser never scrolls the frame back to the top when a link opens a new page. Inside a frame only, `src/lib/page-behaviors.ts` scrolls each new page to its top (or to the `#section` its link names). A deployed site is never framed, so this does nothing there.
+Every page opens at its top, on the deployed site and in the preview. Links that name an item on the next page (`/brands/#makita`, `/locations/#belize-city`, `/whats-new/#mega-sale-2026`) don't jump to it: the item carries `data-anchor` instead of an `id`, and `src/lib/page-behaviors.ts` highlights it (on Brands it also moves to the front of its list). Same-page links such as the hero's "Find the Right Solution" still scroll to their section.
+
+The preview host can show the page in a frame as tall as the page itself, so the host page keeps its scroll position when a link opens a new page. Inside a frame only, `page-behaviors.ts` brings the top of the page into view when the top is out of sight: as the page opens, after it loads, and on the tap that leaves for another page (never once the visitor has started scrolling). A deployed site is never framed, so this does nothing there.
 
 The preview is not for sharing. The Netlify ZIP remains the deliverable.
 

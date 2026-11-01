@@ -40,7 +40,7 @@ const usedCats = CATEGORIES.filter((c) => BRANDS.some((b) => b.categories.some((
       <ul class="brand-grid" data-brand-list>
         {
           onPage.map((b) => (
-            <li class="brand-card" id={b.id} data-cats={b.categories.map((l) => l.slug).join(' ')}>
+            <li class="brand-card" data-anchor={b.id} data-anchor-first data-cats={b.categories.map((l) => l.slug).join(' ')}>
               <div class="brand-card__logo">
                 {BRAND_LOGOS[b.id] ? (
                   <img src={`/${BRAND_LOGOS[b.id].src}`} width={BRAND_LOGOS[b.id].width} height={BRAND_LOGOS[b.id].height} alt="" loading="lazy" decoding="async" />
@@ -69,7 +69,7 @@ const usedCats = CATEGORIES.filter((c) => BRANDS.some((b) => b.categories.some((
       <ul class="brand-grid brand-grid--compact" data-brand-list>
         {
           elsewhere.map((b) => (
-            <li class="brand-card" id={b.id} data-cats={b.categories.map((l) => l.slug).join(' ')}>
+            <li class="brand-card" data-anchor={b.id} data-anchor-first data-cats={b.categories.map((l) => l.slug).join(' ')}>
               <div class="brand-card__logo">
                 {BRAND_LOGOS[b.id] ? (
                   <img src={`/${BRAND_LOGOS[b.id].src}`} width={BRAND_LOGOS[b.id].width} height={BRAND_LOGOS[b.id].height} alt="" loading="lazy" decoding="async" />

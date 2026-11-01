@@ -24,7 +24,7 @@ const year = (iso: string) => iso.slice(0, 4);
   <section class="section section--tight" aria-labelledby="latest-title">
     <div class="container">
       <p class="eyebrow">Latest</p>
-      <article class="news-feature" id={latest.id} data-reveal>
+      <article class="news-feature" data-anchor={latest.id} data-reveal>
         <div class="news-feature__flyer">
           <SitePhoto image={latest.image} class="news-flyer" eager />
         </div>
@@ -67,7 +67,7 @@ const year = (iso: string) => iso.slice(0, 4);
       <ol class="news-list">
         {
           earlier.map((n) => (
-            <li class:list={['news-card', { 'news-card--wide': n.image.width > n.image.height * 1.4 }]} id={n.id} data-reveal>
+            <li class:list={['news-card', { 'news-card--wide': n.image.width > n.image.height * 1.4 }]} data-anchor={n.id} data-reveal>
               <div class="news-card__flyer">
                 <SitePhoto image={n.image} class="news-flyer" />
               </div>

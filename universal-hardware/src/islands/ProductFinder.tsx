@@ -32,6 +32,8 @@ export default function ProductFinder({ variant = 'dark', headingLevel = 3 }: Pr
   const headingRef = useRef<HTMLHeadingElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
   const firstRender = useRef(true);
+  // A /find/?need=… link opens the page at its top: the first step it selects doesn't scroll.
+  const fromLink = useRef(false);
 
   const path = pathId ? FINDER_BY_ID[pathId] : null;
   const total = path ? path.questions.length : 0;
@@ -44,6 +46,7 @@ export default function ProductFinder({ variant = 'dark', headingLevel = 3 }: Pr
     // Deep link support: /find/?need=backup-power
     const need = new URLSearchParams(location.search).get('need');
     if (need && FINDER_BY_ID[need]) {
+      fromLink.current = true;
       setPathId(need);
       setStep(1);
     }
@@ -56,6 +59,10 @@ export default function ProductFinder({ variant = 'dark', headingLevel = 3 }: Pr
   useEffect(() => {
     if (firstRender.current) {
       firstRender.current = false;
+      return;
+    }
+    if (fromLink.current) {
+      fromLink.current = false;
       return;
     }
     headingRef.current?.focus({ preventScroll: true });

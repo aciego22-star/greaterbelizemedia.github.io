@@ -155,8 +155,10 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
     // every internal link across all routes resolves
     const seen = new Set();
     const broken = [];
+    const full = new Set();
     for (const r of ROUTES) {
       await page.goto(BASE + r, { waitUntil: 'domcontentloaded' });
+      (await page.$$eval('a[href^="/"]', (as) => as.map((a) => a.getAttribute('href')))).forEach((h) => full.add(h));
       const hrefs = await page.$$eval('a[href^="/"]', (as) => as.map((a) => a.getAttribute('href').split('#')[0]));
       for (const h of hrefs) {
         if (seen.has(h) || !h) continue;
@@ -166,6 +168,27 @@ async function newPage(browser, vp = [1440, 900], opts = {}) {
       }
     }
     record('nav', `all ${seen.size} internal link targets resolve`, broken.length === 0, broken.join(', '));
+    // Every link that opens another page opens it at the top, on desktop and on a phone, including links
+    // that name an item on the next page (/brands/#makita, /locations/#belize-city): the item is highlighted instead.
+    for (const [w, h, list] of [[1440, 900, [...full]], [390, 844, ['/brands/#lasko', '/locations/#belize-city', '/locations/#service', '/whats-new/#mega-sale-2025', '/find/?need=backup-power', '/shop/#motorcycles']]]) {
+      await page.setViewportSize({ width: w, height: h });
+      const low = [];
+      let n = 0;
+      for (const href of list) {
+        if (href.startsWith('/#')) continue; // same-page section links on the homepage (hero → #finder) scroll on purpose
+        n++;
+        await page.goto(BASE + '/404.html', { waitUntil: 'domcontentloaded' });
+        await page.goto(BASE + href, { waitUntil: 'load' });
+        await page.waitForTimeout(250);
+        const y = await page.evaluate(() => scrollY);
+        if (y > 0) low.push(`${href} at ${y}px`);
+      }
+      record('nav', `${w}px: all ${n} links that open another page open it at the top`, low.length === 0, low.join(', '));
+    }
+    await page.goto(BASE + '/brands/#lasko', { waitUntil: 'load' });
+    const lasko = await page.evaluate(() => { const el = document.querySelector('.is-linked'); return { id: el?.dataset.anchor, first: el === el?.parentElement.firstElementChild, inView: el ? el.getBoundingClientRect().top < innerHeight : false }; });
+    record('nav', 'a brand link opens Brands at the top with that brand first and highlighted', lasko.id === 'lasko' && lasko.first && lasko.inView, JSON.stringify(lasko));
+    await page.setViewportSize({ width: 1440, height: 900 });
     await ctx.close();
   }
   {

@@ -797,3 +797,12 @@ dd > a,
 .crumbs a {
   padding-block: 6px;
 }
+
+/* The item a link named (e.g. /brands/#makita): the page opens at its top and this ring marks the item. */
+.brand-card.is-linked,
+.branch.is-linked,
+.news-card.is-linked,
+.news-feature.is-linked {
+  outline: 3px solid var(--blue-600);
+  outline-offset: 3px;
+}

@@ -152,7 +152,7 @@ const shot = async (page, name, opts = {}) => {
     await shot(p2, `07-category-generators-${tag}.png`);
     await p2.goto(BASE + '/locations/', { waitUntil: 'load' });
     await p2.waitForTimeout(800);
-    await p2.evaluate(() => document.querySelector('#spanish-lookout')?.scrollIntoView({ block: 'start' }));
+    await p2.evaluate(() => document.querySelector('[data-anchor="spanish-lookout"]')?.scrollIntoView({ block: 'start' }));
     await p2.waitForTimeout(500);
     await shot(p2, `08-locations-${tag}.png`);
     await p2.goto(BASE + '/brands/', { waitUntil: 'load' });
