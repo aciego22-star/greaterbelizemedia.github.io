@@ -37,18 +37,20 @@
    plate that is already in place instead of changing the shape of the
    grid.
 
+   Every photograph ICB has supplied is in. One tile is still a plate:
+   SAN ESTEVAN AGENCY, which is in ICB's revised directory of 22 with a
+   landline and an email but has not been photographed. Its file goes
+   in assets/img/branches/ like the rest, named for its locationId.
+
+   (Filenames that do not exist yet are written without their extension
+   in these comments on purpose. The single-file build scans the bundle
+   for asset paths and stops if it finds one it cannot inline, and a
+   comment is part of the bundle.)
+
    INTERNAL TODO (not client-facing):
-   - Four tiles are still plates: Corozal Town, San Estevan, Seine Bight
-     and Independence. Files go in assets/img/branches/.
-   - Three supplied photographs are not wired up, because none of them
-     can be tied to a location with confidence. ICB_Branch_01 and
-     ICB_Branch_03 from the second batch carry no branch name on any
-     sign in the frame. ICB_Yellow_Village_Branch from the third batch
-     is named, but there is no Yellow Village in the directory ICB sent
-     and its sign carries no branch name either. Three photographs and
-     four empty tiles, so they are very probably three of the four, but
-     that is arithmetic rather than evidence. Waiting on ICB.
-   - Ask ICB for staff, event and community photography for a second row.
+   - Ask ICB for the San Estevan photograph. It is the last one.
+   - Ask ICB for staff, event and community photography for a second
+     row.
    ========================================================================== */
 window.ICB = window.ICB || {};
 ICB.DATA = ICB.DATA || {};
@@ -95,7 +97,16 @@ ICB.DATA.gallery = {
       webp: [{ src: "assets/img/branches/corozal-border.webp" }],
       alt: "The Insurance Corporation of Belize branch building at the northern border, Corozal District"
     },
-    { locationId: "corozal",               src: null },
+    /* Supplied in the second batch as ICB_Branch_01, with no branch
+       name anywhere in the frame, and identified by the client from the
+       raw photograph ICB sent. The only ICB sign on the building is the
+       small INSURANCE / SEGUROS plaque beside the door, which fits a
+       Corozal Town shopfront. Trimmed at the bottom. */
+    {
+      locationId: "corozal",
+      src: "assets/img/branches/corozal.webp",
+      alt: "The Insurance Corporation of Belize Corozal Branch, a two-storey building on 1st Street North"
+    },
     /* Identified from its own signboard, which carries the Orange Walk
        landline, WhatsApp number and icb_ow@icbinsurance.com, all three
        matching the branch record. Trimmed at the bottom to take the
@@ -197,7 +208,17 @@ ICB.DATA.gallery = {
     },
 
     /* The south. */
-    { locationId: "seine-bight",           src: null },
+    /* Supplied in the third batch under the file name Yellow Village,
+       which is not a location in ICB's directory. Identified by the
+       client from the raw photograph as Seine Bight. The ICB signboard
+       stands at the right-hand edge of the frame, so pos holds that
+       edge rather than the centre. */
+    {
+      locationId: "seine-bight",
+      src: "assets/img/branches/seine-bight.webp",
+      pos: "right center",
+      alt: "The Insurance Corporation of Belize Seine Bight Agency, a yellow village office flying Belize flags"
+    },
     /* Identified from the signboard on the gable, which reads "Dangriga
        Branch, Phone: 522-0706", matching the branch record. */
     {
@@ -205,7 +226,19 @@ ICB.DATA.gallery = {
       src: "assets/img/branches/dangriga.webp",
       alt: "The Insurance Corporation of Belize Dangriga Branch building at Market Square"
     },
-    { locationId: "independence",          src: null },
+    /* Supplied in the second batch as ICB_Branch_03, with no branch
+       name anywhere in the frame, and identified by the client from the
+       raw photograph ICB sent. Trimmed at the bottom to take the
+       concrete apron out.
+
+       The door decals in this frame are the ones posting business hours
+       that disagree with the hours ICB gave us. Recorded in
+       OPEN-QUESTIONS.md. */
+    {
+      locationId: "independence",
+      src: "assets/img/branches/independence.webp",
+      alt: "The Insurance Corporation of Belize Independence Branch at Hercules and Toucan Streets"
+    },
     /* The agency sign carries the 671-7916 WhatsApp number, which
        matches the branch record.
 

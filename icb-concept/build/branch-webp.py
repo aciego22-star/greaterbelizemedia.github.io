@@ -50,15 +50,24 @@ JOBS = [
     #   02  "DANGRIGA BRANCH  PHONE: 522-0706"
     #   04  "AIRPORT PLAZA, LADYVILLE  TEL: 670-6970"
     #   05  "Tel: 322-3509 / 613-0817 ... icb_ow@icbinsurance.com"
-    # 01 and 03 carry no branch name and are not wired up yet.
+    # 01 and 03 carry no branch name. The client identified them on
+    # 3 Nov from the raw frames ICB sent: 01 is Corozal Town, which is
+    # why the only plaque on it reads SEGUROS, and 03 is Independence,
+    # whose door decals are the ones posting the business hours that
+    # disagree with the hours we were given.
+    # Trims a little of the gravel forecourt.
+    ("ICB_Branch_01_Desktop_1600x1200.jpg", "corozal", (0.0, 0.0, 1.0, 0.93)),
     ("ICB_Branch_02_Desktop_1600x1200.jpg", "dangriga", None),
+    # Trims the concrete apron in the foreground.
+    ("ICB_Branch_03_Desktop_1600x1200.jpg", "independence", (0.0, 0.0, 1.0, 0.85)),
     ("ICB_Branch_04_Desktop_1600x1200.jpg", "ladyville", None),
     # Trims the empty concrete forecourt at the bottom.
     ("ICB_Branch_05_Desktop_1600x1200.jpg", "orange-walk", (0.0, 0.0, 1.0, 0.86)),
 
-    # Batch three, 3 Nov 2026. Named by the client, and every name
-    # matches a location in the directory except Yellow Village, which
-    # is not in it at all and is therefore not wired up.
+    # Batch three, 3 Nov 2026. Named by the client. Seven names match a
+    # location in the directory outright. The eighth was supplied as
+    # "Yellow Village", which is not a location: the client identified
+    # it on 3 Nov from the raw frame as SEINE BIGHT.
     # Trims the neighbouring shopfront and its awning off the left, so
     # the frame is ICB's agency rather than ICB's agency and the shop
     # next door, and takes a little grass off the bottom.
@@ -71,6 +80,7 @@ JOBS = [
     ("ICB_Santa_Elena_Branch_Landscape.jpg", "santa-elena", None),
     # Trims the grass and the step in the foreground.
     ("ICB_Velasquez_Agency_Landscape.jpg", "velasquez", (0.0, 0.0, 1.0, 0.85)),
+    ("ICB_Yellow_Village_Branch_Landscape.jpg", "seine-bight", None),
 ]
 
 os.makedirs(OUT, exist_ok=True)

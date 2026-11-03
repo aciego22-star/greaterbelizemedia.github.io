@@ -26,7 +26,7 @@ visual has been supplied.
 | About page hero | HQ photograph |
 | ICB in Motion featured video | The compressed campaign film + poster frame |
 | Hero slide 3 | Nationwide Cash Express, two supplied compositions |
-| Branch gallery (19 of 23 tiles) | Everything except Corozal Town, San Estevan, Seine Bight and Independence |
+| Branch gallery (22 of 23 tiles) | Everything except San Estevan |
 | Insurance page hero | Supplied photograph of an ICB office building |
 | Resources page hero | Supplied photograph: the curved red facade against the sky |
 | Gallery page banner | Two supplied ICB buildings, art-directed, cycling on a five second timer |
@@ -201,22 +201,13 @@ files and the folder to write into:
 ## Still to supply: branch photography
 
 All 22 locations have a tile, so the grid is the whole network rather
-than a selection of it. Four of them still render a designed location
-plate built from the verified branch record, and each upgrades to a
-photograph the moment a file is dropped in and `src` is set in
-`js/data/gallery.js`:
+than a selection of it, and 21 of them carry a photograph (23 tiles in
+all, because the Corporate Office has two).
 
-| Tile | File to supply |
-| --- | --- |
-| Corozal Branch | `assets/img/branches/corozal.webp` |
-| San Estevan Agency | `assets/img/branches/san-estevan.webp` |
-| Seine Bight Agency | `assets/img/branches/seine-bight.webp` |
-| Independence Branch | `assets/img/branches/independence.webp` |
-
-Three supplied photographs are sitting unused because none of them can
-be tied to a location: `ICB_Branch_01` and `ICB_Branch_03` from the
-second batch, and `ICB_Yellow_Village_Branch` from the third. Three
-photographs, four empty tiles.
+**San Estevan Agency is the only one left.** It renders a designed
+location plate built from the verified branch record, and it upgrades
+to a photograph the moment a file is dropped into
+`assets/img/branches/` and `src` is set in `js/data/gallery.js`.
 
 Staff, event and community photography is also welcome; it goes in a
 second row of the same grid with no layout change.
@@ -265,14 +256,13 @@ Orange Walk is trimmed at the bottom to take the empty concrete
 forecourt out. Ladyville carries a `pos` because its signboard sits
 across the top of the frame and a phone crop would cut it in half.
 
-**`ICB_Branch_01` and `ICB_Branch_03` are not wired up.** Neither frame
-contains a sign that names the office. 01 is a two-storey white
-building with a small "INSURANCE / SEGUROS" plaque; 03 is single storey
-with a long red fascia sign and a pole sign at the roadside, and its
-door decals are legible but carry no branch name. Both are waiting on
-ICB to say which locations they are. The files are in the client's
-folder; adding each one afterwards is a line in `JOBS` in
-`build/branch-webp.py` and a `src` in `js/data/gallery.js`.
+`ICB_Branch_01` and `ICB_Branch_03` carry no sign that names the
+office. 01 is a two-storey white building with a small "INSURANCE /
+SEGUROS" plaque; 03 is single storey with a long red fascia sign and a
+pole sign at the roadside, and its door decals are legible but carry no
+branch name. The client identified both on 3 Nov from the raw frames
+ICB sent: **01 is Corozal Town** and **03 is Independence**. Both are
+wired up.
 
 The door decals on `ICB_Branch_03` also post opening hours that differ
 from the ones ICB gave us. Recorded in OPEN-QUESTIONS.md.
@@ -283,11 +273,16 @@ Eight more, named this time, at 1448x1086. Seven map straight onto a
 location and are wired up: Moro, Punta Gorda, San Ignacio, San Juan,
 San Pedro, Santa Elena and Velasquez.
 
-The eighth is named `ICB_Yellow_Village_Branch`, and there is no
+The eighth was supplied as `ICB_Yellow_Village_Branch`, and there is no
 Yellow Village in the directory of 22 that ICB sent. Its sign reads
 INSURANCE CORPORATION OF BELIZE LTD and nothing else legible, so the
-photograph cannot name itself either. Not wired up. Recorded in
-OPEN-QUESTIONS.md.
+photograph could not name itself either. The client identified it on
+3 Nov from the raw frame as **Seine Bight**, so the file name was
+descriptive rather than a location, and there is no 23rd branch.
+
+Its ICB signboard stands at the right-hand edge of the frame, so the
+entry carries `pos: "right center"` to keep that edge in the tile
+rather than the middle of the picture.
 
 Every number on every sign in this batch matches the branch record
 except on three frames, all recorded in OPEN-QUESTIONS.md: Moro
@@ -298,10 +293,12 @@ grass off the bottom, San Ignacio loses the road in the foreground,
 Velasquez loses the grass and the step. San Pedro carries a `pos`
 because its signboard sits across the top of the frame.
 
-Moro is the heaviest file in the set at 219 KB, against an average
-nearer 120. The frame is dense with foliage and fence, which is
-expensive to compress. It is one photograph and it loads lazily, so it
-is left alone.
+Moro and Seine Bight are the heaviest files in the set, at 219 KB and
+280 KB against an average nearer 120. Both frames are dense with
+foliage, which is expensive to compress, and dropping the quality
+barely helps: Seine Bight at quality 60 is still 243 KB, which is a
+visible loss for a 13 percent saving. Both are left at quality 74.
+They are two photographs out of twenty-two and they load lazily.
 
 The frames for San Juan, Velasquez and Moro carry Digi, BEL and
 Infinite agent signage. Unlike the spa board cropped out of the Caye

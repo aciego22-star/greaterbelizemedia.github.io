@@ -189,51 +189,48 @@ office **"Benque Viejo Branch"**, not "Benque Town Board Branch". The
 site uses the directory name. If the sign is the name customers know
 it by, the directory name is the one to change.
 
-### What is Yellow Village, and is it a 23rd location
+### Settled: Yellow Village, Branch_01 and Branch_03
 
-The third batch of photographs, 3 Nov 2026, arrived named, and seven of
-the eight names match a location exactly. The eighth is called
-`ICB_Yellow_Village_Branch`, and there is no Yellow Village anywhere in
-the directory of 22 that ICB sent.
+All three were identified by the client on 3 Nov 2026 from the raw
+photographs ICB sent, so no tile is captioned from a guess.
 
-The photograph does not settle it either. The sign on the fence reads
-INSURANCE CORPORATION OF BELIZE LTD and the line under it is too small
-to read. The building is a brightly painted house on posts with palms
-behind it.
+- `ICB_Branch_01`, the two-storey building whose only ICB sign is a
+  small INSURANCE / SEGUROS plaque, is **Corozal Town**.
+- `ICB_Branch_03`, the one with the long red fascia sign and the bench
+  outside, is **Independence**. Its door decals are the ones posting
+  the business hours below.
+- `ICB_Yellow_Village_Branch` is **Seine Bight**. The file name was
+  descriptive, not a location, so there is no 23rd branch and the
+  network is still 22.
 
-Two possibilities, and they lead to different work:
+### San Estevan has not been removed, and has no photograph
 
-1. **Yellow Village is one of the 22 under another name**, in which
-   case the photograph goes straight into that tile and nothing else
-   changes.
-2. **Yellow Village is a real location missing from the directory**, in
-   which case it is not just a photograph. It needs a full record, a
-   map pin, an entry in the call and WhatsApp directories, a line in
-   the structured data and a place in the branch finder, and the "22
-   locations" the site states in several places becomes 23.
+Asked on 3 Nov 2026 whether San Estevan had been taken off the site
+earlier. It has not, and nothing in the build has ever removed it.
 
-### Which branches are the three unidentified photographs
+**San Estevan Agency is in ICB's own revised directory**, the one
+reissued after the review meeting of 20 Oct 2026, with a landline of
+322-0659 and `icb_sanestevan@icbinsurance.com`. It is one of the
+twenty-two. It is in the branch finder, on the map, in the call
+directory and in the structured data, and its gallery tile is the last
+one still showing a designed plate rather than a photograph.
 
-Three photographs cannot be tied to a location, and four tiles are
-still waiting for one. The four tiles are **Corozal Town, San Estevan,
-Seine Bight and Independence**. So three of those four are very
-probably in hand already. That is arithmetic, not evidence, and
-captioning a branch from arithmetic is exactly the kind of guess this
-site does not make.
+Two locations were removed when that revised directory arrived, which
+is probably the thing being remembered:
 
-The three photographs:
+- **San Narciso**, which was never confirmed and had been held back
+  from public view before that.
+- **Benque Viejo Agency**, which had been public, at #58 George Price
+  Boulevard on 615-3266 and 671-1100.
 
-- **`ICB_Branch_01`**, a two-storey white building with red trim, a
-  gravel forecourt and a small "INSURANCE / SEGUROS" plaque beside the
-  door. No branch name, no telephone number anywhere in the frame.
-- **`ICB_Branch_03`**, single storey, a long red fascia sign reading
-  INSURANCE CORPORATION OF BELIZE LTD across the front, a chain-link
-  fence and a pole sign at the roadside. The pole sign is too small and
-  too oblique to read, and the door decals carry the business hours but
-  not the branch name.
-- **`ICB_Yellow_Village_Branch`**, the one above.
+Both are gone from the dataset entirely. San Estevan is not either of
+them, so it stays. Taking a branch that ICB currently publishes off
+the website would mean a customer in San Estevan cannot find their own
+agency, and the only thing actually missing is a photograph.
 
-One word each from ICB and all three are up.
+**What we need:** either a photograph of San Estevan, or a word from
+ICB that the agency has in fact closed, in which case it comes out of
+the directory properly rather than just out of the gallery.
 
 ### The street number on the Orange Walk sign
 
@@ -247,9 +244,9 @@ The site publishes #48, the directory's version. It is also what the
 map link searches for, so if 38 is correct the pin is pointing at the
 wrong building.
 
-### The opening hours posted on a branch door
+### The opening hours posted on the Independence door
 
-The door decals in `ICB_Branch_03` post:
+The door decals at Independence post:
 
 > Monday - Friday 8:00 a.m. - 12:00 noon, 1:15 p.m. - 5:00 p.m.
 > Saturday 8:30 a.m. - 12:00 noon
