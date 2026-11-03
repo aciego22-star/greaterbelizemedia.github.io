@@ -26,7 +26,7 @@ visual has been supplied.
 | About page hero | HQ photograph |
 | ICB in Motion featured video | The compressed campaign film + poster frame |
 | Hero slide 3 | Nationwide Cash Express, two supplied compositions |
-| Branch gallery (9 of 15 tiles) | HQ, the Daly Street Corporate Office, Southside, Caye Caulker, Corozal Border, Belmopan, Benque Viejo Border, Benque Town Board, Bella Vista |
+| Branch gallery (12 of 23 tiles) | HQ, the Daly Street Corporate Office, Southside, Corozal Border, Orange Walk, Ladyville, Caye Caulker, Belmopan, Benque Viejo Border, Benque Town Board, Dangriga, Bella Vista |
 | Insurance page hero | Supplied photograph of an ICB office building |
 | Resources page hero | Supplied photograph: the curved red facade against the sky |
 | Gallery page banner | Two supplied ICB buildings, art-directed, cycling on a five second timer |
@@ -200,22 +200,25 @@ files and the folder to write into:
 
 ## Still to supply: branch photography
 
-Six tiles still render a designed location plate built from the verified
-branch record, and each upgrades to a photograph the moment a file is
-dropped in and `src` is set in `js/data/gallery.js`:
+All 22 locations now have a tile, so the grid is the whole network
+rather than a selection of it. Eleven of them render a designed
+location plate built from the verified branch record, and each upgrades
+to a photograph the moment a file is dropped in and `src` is set in
+`js/data/gallery.js`:
 
 | Tile | File to supply |
 | --- | --- |
-| Ladyville Branch | `assets/img/branches/ladyville.webp` |
+| Corozal Branch | `assets/img/branches/corozal.webp` |
+| San Estevan Agency | `assets/img/branches/san-estevan.webp` |
 | San Pedro Branch | `assets/img/branches/san-pedro.webp` |
 | Santa Elena Branch | `assets/img/branches/santa-elena.webp` |
 | San Ignacio Branch | `assets/img/branches/san-ignacio.webp` |
-| Dangriga Branch | `assets/img/branches/dangriga.webp` |
+| Seine Bight Agency | `assets/img/branches/seine-bight.webp` |
 | Independence Branch | `assets/img/branches/independence.webp` |
-
-Eight further locations have no tile in the grid at all and need both a
-photograph and an entry: Corozal Town, Orange Walk, San Estevan, Seine
-Bight, San Juan, Moro Agency, Velasquez Agency and Punta Gorda.
+| San Juan Agency | `assets/img/branches/san-juan.webp` |
+| Moro Agency | `assets/img/branches/moro.webp` |
+| Velasquez Agency | `assets/img/branches/velasquez.webp` |
+| Punta Gorda Branch | `assets/img/branches/punta-gorda.webp` |
 
 Staff, event and community photography is also welcome; it goes in a
 second row of the same grid with no layout change.
@@ -243,6 +246,38 @@ back.
 **Benque Town Board** is the only interior frame in the set: a signboard
 on a green wall rather than a street view of the office. It reads
 differently from the other eight. Worth asking ICB for an exterior.
+
+## The second 3 November batch
+
+Five more, supplied numbered rather than named, as `ICB_Branch_01`
+through `ICB_Branch_05`. Three were identified from their own
+signboards and are wired up:
+
+| Supplied as | Branch | What the sign says |
+| --- | --- | --- |
+| `ICB_Branch_02` | Dangriga | "DANGRIGA BRANCH  PHONE: 522-0706" |
+| `ICB_Branch_04` | Ladyville | "AIRPORT PLAZA, LADYVILLE  TEL: 670-6970" |
+| `ICB_Branch_05` | Orange Walk | "Tel: 322-3509 / 613-0817", "38 Belize Corozal Road.", `icb_ow@icbinsurance.com` |
+
+Every number on all three matches the branch record. The one thing that
+does not is the Orange Walk street number: the sign says 38, the
+directory says #48. Recorded in OPEN-QUESTIONS.md.
+
+Orange Walk is trimmed at the bottom to take the empty concrete
+forecourt out. Ladyville carries a `pos` because its signboard sits
+across the top of the frame and a phone crop would cut it in half.
+
+**`ICB_Branch_01` and `ICB_Branch_03` are not wired up.** Neither frame
+contains a sign that names the office. 01 is a two-storey white
+building with a small "INSURANCE / SEGUROS" plaque; 03 is single storey
+with a long red fascia sign and a pole sign at the roadside, and its
+door decals are legible but carry no branch name. Both are waiting on
+ICB to say which locations they are. The files are in the client's
+folder; adding each one afterwards is a line in `JOBS` in
+`build/branch-webp.py` and a `src` in `js/data/gallery.js`.
+
+The door decals on `ICB_Branch_03` also post opening hours that differ
+from the ones ICB gave us. Recorded in OPEN-QUESTIONS.md.
 
 ## The Gallery page hero
 

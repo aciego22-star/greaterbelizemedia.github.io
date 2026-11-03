@@ -32,12 +32,19 @@
    file under assets/img, so a second copy of each photograph would cost
    it a third again of its own weight for nothing.
 
+   Every one of the 22 locations now has a tile, so the grid is the whole
+   network rather than a selection of it, and a new photograph fills a
+   plate that is already in place instead of changing the shape of the
+   grid.
+
    INTERNAL TODO (not client-facing):
-   - Still waiting on photographs for Ladyville, San Pedro, Santa Elena,
-     San Ignacio, Dangriga and Independence, and for the eight locations
-     that are not in this list at all: Corozal Town, Orange Walk, San
-     Estevan, Seine Bight, San Juan, Moro Agency, Velasquez Agency and
-     Punta Gorda. Files go in assets/img/branches/.
+   - Still waiting on photographs for Corozal Town, San Estevan, San
+     Pedro, Santa Elena, San Ignacio, Seine Bight, Independence, San
+     Juan, Moro, Velasquez and Punta Gorda. Files go in
+     assets/img/branches/.
+   - Two photographs in the second batch, supplied as ICB_Branch_01 and
+     ICB_Branch_03, carry no branch name on any sign in the frame and
+     are not wired up. Waiting on ICB to name them.
    - Ask ICB for staff, event and community photography for a second row.
    ========================================================================== */
 window.ICB = window.ICB || {};
@@ -69,18 +76,8 @@ ICB.DATA.gallery = {
       src: "assets/img/branches/southside.jpg",
       alt: "The Insurance Corporation of Belize branch office on Central America Boulevard, Belize City"
     },
-    { locationId: "ladyville",             src: null },
-    { locationId: "san-pedro",             src: null },
-    /* The agency's own sign, on the walkway outside the office. The
-       frame as supplied carried a third-party spa advertising board
-       above ICB's sign, which is cropped out here: the gallery is ICB's
-       own shopfront and nobody else's. The full frame is in the
-       client's folder if it is ever wanted back. */
-    {
-      locationId: "caye-caulker",
-      src: "assets/img/branches/caye-caulker.webp",
-      alt: "The Insurance Corporation of Belize Caye Caulker Agency sign outside the office on Avenida Hicaco"
-    },
+
+    /* The north. */
     /* Supplied by the client and identified by them as the Corozal Border
        Branch. It is the same building as the wide frame used in the
        Gallery banner. The caption comes from the branch record, as every
@@ -95,6 +92,46 @@ ICB.DATA.gallery = {
       webp: [{ src: "assets/img/branches/corozal-border.webp" }],
       alt: "The Insurance Corporation of Belize branch building at the northern border, Corozal District"
     },
+    { locationId: "corozal",               src: null },
+    /* Identified from its own signboard, which carries the Orange Walk
+       landline, WhatsApp number and icb_ow@icbinsurance.com, all three
+       matching the branch record. Trimmed at the bottom to take the
+       empty concrete forecourt out.
+
+       INTERNAL TODO (not client-facing): the sign reads "38 Belize
+       Corozal Road", while the directory ICB sent carries "#48 Belize
+       Corozal Road". One of the two is out of date. Raised with ICB. */
+    {
+      locationId: "orange-walk",
+      src: "assets/img/branches/orange-walk.webp",
+      alt: "The Insurance Corporation of Belize Orange Walk Branch on Belize Corozal Road"
+    },
+    { locationId: "san-estevan",           src: null },
+
+    /* Belize District and the cayes. */
+    /* Identified from the signboard over the entrance, which reads
+       "Airport Plaza, Ladyville" with the 670-6970 landline, both
+       matching the branch record. The sign sits high in the frame and a
+       phone crop would cut it in half, hence pos. */
+    {
+      locationId: "ladyville",
+      src: "assets/img/branches/ladyville.webp",
+      pos: "center 12%",
+      alt: "The Insurance Corporation of Belize Ladyville Branch at Airport Plaza on the Northern Highway"
+    },
+    { locationId: "san-pedro",             src: null },
+    /* The agency's own sign, on the walkway outside the office. The
+       frame as supplied carried a third-party spa advertising board
+       above ICB's sign, which is cropped out here: the gallery is ICB's
+       own shopfront and nobody else's. The full frame is in the
+       client's folder if it is ever wanted back. */
+    {
+      locationId: "caye-caulker",
+      src: "assets/img/branches/caye-caulker.webp",
+      alt: "The Insurance Corporation of Belize Caye Caulker Agency sign outside the office on Avenida Hicaco"
+    },
+
+    /* Cayo. */
     /* Trimmed at the bottom to take some of the foreground lawn out, so
        the building fills more of the tile. Nothing of the branch is
        cut. */
@@ -133,13 +170,26 @@ ICB.DATA.gallery = {
       pos: "center 18%",
       alt: "The Insurance Corporation of Belize sign inside the Benque Town Board Branch, Benque Viejo Town"
     },
-    { locationId: "dangriga",              src: null },
+
+    /* The south. */
+    { locationId: "seine-bight",           src: null },
+    /* Identified from the signboard on the gable, which reads "Dangriga
+       Branch, Phone: 522-0706", matching the branch record. */
+    {
+      locationId: "dangriga",
+      src: "assets/img/branches/dangriga.webp",
+      alt: "The Insurance Corporation of Belize Dangriga Branch building at Market Square"
+    },
     { locationId: "independence",          src: null },
+    { locationId: "san-juan",              src: null },
+    { locationId: "moro",                  src: null },
     {
       locationId: "bella-vista",
       src: "assets/img/branches/bella-vista.webp",
       alt: "The Insurance Corporation of Belize Bella Vista Agency office on 3rd Street, Bella Vista Village"
-    }
+    },
+    { locationId: "velasquez",             src: null },
+    { locationId: "punta-gorda",           src: null }
   ],
 
   /* ICB in Motion. Both films are the supplied ICB campaign material,

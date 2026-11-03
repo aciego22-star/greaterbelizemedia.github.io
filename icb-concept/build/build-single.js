@@ -146,6 +146,8 @@ const mb = result.length / 1048576;
 console.log("Built", outFile, mb.toFixed(2) + " MB");
 if (mb > 15.5) {
   console.error("Build error: " + mb.toFixed(2) + "MB exceeds the 16MB preview cap. " +
-    "Re-encode the files in build/preview at a lower bitrate.");
+    "Re-encode the files in build/preview at a lower bitrate, or, if it is the " +
+    "branch photographs that have grown, give this build a smaller rendition of " +
+    "them. The deployed site is unaffected either way: this cap is the preview's.");
   process.exit(1);
 }

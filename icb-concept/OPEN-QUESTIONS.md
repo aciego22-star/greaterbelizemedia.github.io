@@ -189,6 +189,67 @@ office **"Benque Viejo Branch"**, not "Benque Town Board Branch". The
 site uses the directory name. If the sign is the name customers know
 it by, the directory name is the one to change.
 
+### Which branches are the two unnamed photographs
+
+The second batch of photographs, 3 Nov 2026, arrived numbered rather
+than named. Three identified themselves from their own signboards:
+Dangriga, Ladyville and Orange Walk. Two did not.
+
+- **`ICB_Branch_01`**, a two-storey white building with red trim, a
+  gravel forecourt and a small "INSURANCE / SEGUROS" plaque beside the
+  door. No branch name, no telephone number anywhere in the frame.
+- **`ICB_Branch_03`**, single storey, a long red fascia sign reading
+  INSURANCE CORPORATION OF BELIZE LTD across the front, a chain-link
+  fence and a pole sign at the roadside. The pole sign is too small and
+  too oblique to read, and the door decals carry the business hours but
+  not the branch name.
+
+Neither is on the site. Eleven locations are still waiting on a
+photograph, so there is no safe way to guess. One word each from ICB
+and both are up.
+
+### The street number on the Orange Walk sign
+
+The Orange Walk signboard reads **"38 Belize Corozal Road."** The
+directory ICB sent carries **"#48 Belize Corozal Road"**. The telephone
+number, the WhatsApp number and the email address on that sign all
+match the directory exactly, so the street number is the only thing in
+disagreement.
+
+The site publishes #48, the directory's version. It is also what the
+map link searches for, so if 38 is correct the pin is pointing at the
+wrong building.
+
+### The opening hours posted on a branch door
+
+The door decals in `ICB_Branch_03` post:
+
+> Monday - Friday 8:00 a.m. - 12:00 noon, 1:15 p.m. - 5:00 p.m.
+> Saturday 8:30 a.m. - 12:00 noon
+
+The hours ICB gave us, and what the site publishes, are Monday to
+Friday 8:00 to 11:45 and 1:00 to 5:00, Saturday 8:00 to 12:00. Three
+differences: the morning close, the afternoon open and the Saturday
+open.
+
+Either that door sign is out of date, or hours vary from branch to
+branch. It matters which, because the second case means every branch
+needs its own hours rather than one set for all of them. The site
+already does this for the two border branches, so it is data entry
+rather than a change to the build.
+
+### Does ICB want the bee used on the site
+
+The Orange Walk signboard carries a cartoon bee in a suit, running,
+alongside the ICB mark. It is ICB's own character and it is painted on
+their own signage, so it is not something we introduced. The site does
+not use it anywhere: the assistant is called Bee and uses the ICB mark
+rather than the character.
+
+If ICB wants the character used, we need the artwork rather than a
+photograph of a sign. If they would rather it stayed on the signage,
+nothing changes.
+
 ---
 
 # What IT came back with, 27 Oct 2026
