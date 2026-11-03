@@ -108,11 +108,24 @@ function t(k,d){return TT_TXT[k]||d;}
   if(PROMO.deals!==false) return total();
   return basket.reduce(function(a,b){return a+(b.deal?0:b.qty*b.price);},0);
  }
+ var GST=window.TT_GST||{on:false};
+ /* The restaurant's register adds the tax to what it actually charges, so a
+    discount comes off first and the tax is worked out on what is left. Each
+    line is rounded before the next uses it, so the three numbers the customer
+    reads add up exactly to the total they are asked for: a basket that shows
+    55.00 and 6.88 has to total 61.88, not 61.875 rounded somewhere else. */
  function bill(){
   var sub=round2(total());
   var off=(promoOn()&&basket.length&&sub>0)?round2(promoBase()*PROMO.pct/100):0;
   if(off>sub) off=sub;                       // belt and braces; cannot happen at 5%
-  return {sub:sub, off:off, total:round2(sub-off), on:off>0};
+  var net=round2(sub-off);
+  var base=GST.on ? (GST.deals===false
+            ? round2(basket.reduce(function(a,b){return a+(b.deal?0:b.qty*b.price);},0))
+            : net) : 0;
+  if(base>net) base=net;
+  var gst=(GST.on&&basket.length&&base>0)?round2(base*GST.rate/100):0;
+  return {sub:sub, off:off, net:net, gst:gst,
+          total:round2(net+gst), on:off>0, taxed:gst>0};
  }
 
  /* ---- who the order is for, and how they are getting it ----
@@ -356,14 +369,23 @@ function t(k,d){return TT_TXT[k]||d;}
    list.appendChild(row);
   });
   var b=bill();
-  var sum=$('bp-sum');
+  var sum=$('bp-sum'), gstRow=$('bp-gst-row'), disc=sum&&sum.querySelector('.bp-disc');
   if(sum){
-   sum.hidden=!b.on;
+   // The block shows for a discount, for the tax, or for both.
+   sum.hidden=!(b.on||b.taxed);
+   if(disc) disc.hidden=!b.on;
    if(b.on){
-    $('bp-sub-l').textContent=PROMO.subtotal||'Subtotal';
-    $('bp-sub').textContent=money(b.sub);
     $('bp-disc-l').textContent=PROMO.line||'';
     $('bp-disc').textContent='\u2212'+money(b.off);
+   }
+   if(gstRow) gstRow.hidden=!b.taxed;
+   if(b.taxed){
+    $('bp-gst-l').textContent=GST.line||'GST';
+    $('bp-gst').textContent=money(b.gst);
+   }
+   if(b.on||b.taxed){
+    $('bp-sub-l').textContent=(b.on&&PROMO.subtotal)||GST.subtotal||'Subtotal';
+    $('bp-sub').textContent=money(b.sub);
    }
   }
   panelTotal.textContent=money(b.total);
@@ -479,10 +501,11 @@ function t(k,d){return TT_TXT[k]||d;}
   // the customer was shown, to the cent. When the promotion is not running this
   // is the single total line the site has always sent.
   var b=bill(), tail;
-  if(b.on){
-   tail='\n\n'+(PROMO.subtotal||'Subtotal')+': BZD '+money(b.sub)
-      + '\n\uD83C\uDDE7\uD83C\uDDFF '+(PROMO.line||'')+': \u2212BZD '+money(b.off)
-      + '\n'+(PROMO.final||'Final Order Total')+': BZD '+money(b.total);
+  if(b.on||b.taxed){
+   tail='\n\n'+(GST.subtotal||'Subtotal')+': BZD '+money(b.sub);
+   if(b.on) tail+='\n\uD83C\uDDE7\uD83C\uDDFF '+(PROMO.line||'')+': \u2212BZD '+money(b.off);
+   if(b.taxed) tail+='\n'+(GST.line||'GST')+': BZD '+money(b.gst);
+   tail+='\n'+((b.on&&PROMO.final)||GST.total||'Total')+': BZD '+money(b.total);
   }else{
    tail='\n\n'+t('wa_total','Total')+': '+money(b.total)+' BZD';
   }
@@ -625,6 +648,23 @@ function t(k,d){return TT_TXT[k]||d;}
     while it is open, Escape closes it, and focus goes back where it came from.
     Behind it the page cannot scroll, and it is the last thing in the DOM so a
     reader that ignores all of this still meets the page first. */
+ /* The tax notice. Dismissed per device rather than per session, because
+    somebody who has read it once does not need it again tomorrow, and the line
+    on the menu and the line in the basket carry it from there. It is in the
+    markup rather than built here so it is there without JavaScript too; the
+    script only takes it away. */
+ (function(){
+  var bar=document.getElementById('gstbar'); if(!bar) return;
+  var key='tt_gst_notice_v1';
+  try{ if(localStorage.getItem(key)==='1') return; }catch(e){}
+  bar.hidden=false;
+  var x=document.getElementById('gstbar-x');
+  if(x) x.addEventListener('click',function(){
+   bar.hidden=true;
+   try{ localStorage.setItem(key,'1'); }catch(e){}
+  });
+ })();
+
  /* The entry clip. It is muted because no browser will autoplay a clip with
     sound, so the speaker button is how a visitor asks to hear it. Somebody who
     has asked their browser for less motion gets the still and a tap to play

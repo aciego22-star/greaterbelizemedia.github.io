@@ -10,6 +10,7 @@ from about_data import ABOUT
 from faq_data import FAQ, HEAD as FAQ_HEAD
 import promo_data
 import intro_data
+import tax_data
 import i18n
 from es import ES, JS as JS_ES
 
@@ -88,6 +89,26 @@ def promo_live():
     what lets the promotion end on the night of the 30th without a redeploy."""
     import time as _t
     return promo_data.ACTIVE and _t.time() * 1000 <= PROMO_TO
+
+def gst_live():
+    """Is the tax being charged at all? One switch, so a rate change or a repeal
+    is a line in tax_data.py rather than a hunt through the build."""
+    return tax_data.ACTIVE and tax_data.RATE > 0
+
+def _notice_ms(stamp):
+    import datetime as _dt
+    d = _dt.datetime.strptime(stamp, "%Y-%m-%d %H:%M:%S")
+    d = d.replace(tzinfo=_dt.timezone(_dt.timedelta(hours=tax_data.TZ_OFFSET_HOURS)))
+    return int(d.timestamp() * 1000)
+
+NOTICE_TO = _notice_ms(tax_data.NOTICE_ENDS)
+
+def gst_notice_live():
+    """Same clock rule as the promotions: a build made after the notice has run
+    leaves it out, and inside the window the visitor's browser decides."""
+    import time as _t
+    return (gst_live() and tax_data.NOTICE
+            and _t.time() * 1000 <= NOTICE_TO)
 
 def _intro_ms(stamp):
     import datetime as _dt
@@ -930,6 +951,27 @@ def promo_modal(fname):
     esc(C["welcome"]), body, esc(C["nocode"]), href, esc(C["cta"]),
     esc(C["thanks"]), esc(C["signoff"])))
 
+def gst_notice():
+    """A strip under the header while the tax is still new.
+
+    Not a popup. A popup says "event" and demands a tap; this is permanent from
+    now on, and the thing the restaurant actually asked for is that people
+    understand who the money goes to. A strip is read and forgotten, which is
+    what habit looks like. It takes itself down at the end of the month and the
+    line on the menu carries it from there.
+
+    No heading tag: it is not part of the page's outline."""
+    C = tax_data.COPY
+    return (
+ '\n<div class="gstbar" id="gstbar" hidden>'
+ '<div class="container gstbar-in">'
+ '<p class="gstbar-t">%s</p>'
+ '<button type="button" id="gstbar-x" class="gstbar-x" aria-label="%s">'
+ '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
+ '<path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>'
+ '</svg></button>'
+ '</div></div>' % (esc(C["notice"]), esc(C["notice_close"])))
+
 def intro_modal(fname):
     """The entry clip, rendered server-side for the same two reasons the
     discount popup is: the Spanish pass only sees finished HTML, and the words
@@ -1243,7 +1285,10 @@ def main():
     # a dedicated menu page shows the whole menu: drop the collapse wrapper
     menu = menu.replace('<div class="menu-collapse" id="menu-collapse">','<div class="menu-full">')
     menu = re.sub(r'<div class="menu-toggle-wrap">.*?</div>\s*', '', menu, flags=re.S)
-    menu = menu.replace('<div class="menu-grid">', quick + '<div class="menu-grid">', 1)
+    # Said once, next to the prices. A customer who reads it here is not
+    # surprised by the line in the basket later, which is the whole point.
+    taxnote = ('<p class="tax-note">%s</p>' % esc(tax_data.COPY["menu_note"])) if gst_live() else ""
+    menu = menu.replace('<div class="menu-grid">', quick + taxnote + '<div class="menu-grid">', 1)
 
     # ---------- video section ----------
     # Real players, not thumbnails that pretend. Nothing is fetched until the
@@ -1499,7 +1544,8 @@ def main():
         h = re.sub(r'(<meta name="description" content=")[^"]*(")', r'\1'+desc+r'\2', h)
         h = h + head_meta(fname, title, desc) + "<!--SCHEMA-->"
         return ("<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n%s\n</head>\n<body>\n%s\n<main id=\"top\">\n%s\n</main>\n%s\n%s\n%s\n%s%s\n</body>\n</html>\n"
-                % (h, header_for(nav_as or fname), body, banner, foot, dock, basket,
+                % (h, header_for(nav_as or fname) + (gst_notice() if gst_notice_live() else ""),
+                   body, banner, foot, dock, basket,
                    promo_modal(fname) if promo_live()
                    else (intro_modal(fname) if intro_live() else "")))
 
@@ -1526,18 +1572,23 @@ def main():
         # one directory down, and a path the browser builds at run time gets no
         # help from the rewrite that fixes the markup: every deal added to the
         # basket from /es/ asked for /es/assets/img/ and showed a blank square.
+        TC = tax_data.COPY if lang == "en" else i18n.translate_json(tax_data.COPY)
+        gst = {"on": gst_live(), "rate": tax_data.RATE, "deals": tax_data.ON_DEALS,
+               "line": TC["line"], "subtotal": TC["subtotal"], "total": TC["total"]}
         IC = intro_data.COPY if lang == "en" else i18n.translate_json(intro_data.COPY)
         intro = {"on": intro_live(), "id": intro_data.INTRO_ID,
                  "from": INTRO_FROM, "to": INTRO_TO,
                  "unmute": IC["unmute"], "mute": IC["mute"]}
         return ("window.TT_DEALS=%s;\nwindow.TT_STR=%s;\nwindow.TT_REVIEWS=%s;\n"
                 "window.TT_REV_ORDER=%s;\nwindow.TT_T=%s;\nwindow.TT_WA='%s';\n"
-                "window.TT_PROMO=%s;\nwindow.TT_INTRO=%s;\nwindow.TT_BASE='%s';\n"
+                "window.TT_PROMO=%s;\nwindow.TT_INTRO=%s;\nwindow.TT_GST=%s;\n"
+                "window.TT_BASE='%s';\n"
                 % (json.dumps(deals, ensure_ascii=False), json.dumps(strs, ensure_ascii=False),
                    json.dumps(revs, ensure_ascii=False), json.dumps(HOME_ORDER, ensure_ascii=False),
                    json.dumps(txt, ensure_ascii=False), WA_NUMBER,
                    json.dumps(promo, ensure_ascii=False),
                    json.dumps(intro, ensure_ascii=False),
+                   json.dumps(gst, ensure_ascii=False),
                    "" if lang == "en" else "../"))
     for _lang, _, _ in LANGS:
         open(os.path.join(DIST,"assets","js","deals%s.js" % ("" if _lang=="en" else "."+_lang)),

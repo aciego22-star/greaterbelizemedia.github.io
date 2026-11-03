@@ -731,6 +731,33 @@ html.promo-open,html.promo-open body{overflow:hidden}
  padding:5px 0;color:var(--muted);font-size:.9rem}
 .bp-line.bp-disc{color:var(--green-d);font-weight:800}
 .bp-line.bp-disc span:last-child{white-space:nowrap}
+/* The tax reads as a plain cost, not as a discount and not as a warning: the
+   restaurant's point is that it is a line like any other, going somewhere else. */
+.bp-line.bp-gst{color:var(--muted)}
+.bp-line.bp-gst span:last-child{white-space:nowrap}
+/* A row hidden on its own has to beat .bp-line's own display:flex, which the
+   [hidden] attribute alone does not. Until the tax arrived the whole summary
+   block was shown or hidden together and no single row ever needed this, so
+   the discount line was sitting there reading -$0.00 the moment GST gave the
+   block a second reason to be open. */
+.bp-line[hidden]{display:none}
+/* Beside the prices on the menu, permanently, so the basket is never a surprise. */
+.tax-note{margin:0 0 16px;padding:9px 13px;border-radius:11px;
+ background:var(--cream2);border:1px solid var(--border);
+ color:var(--muted);font-size:.83rem;line-height:1.5}
+/* The temporary strip under the header. It scrolls away with the page rather
+   than sticking, because it is an announcement and not a control. */
+.gstbar{background:var(--green);color:#fff}
+.gstbar[hidden]{display:none}
+.gstbar-in{display:flex;align-items:center;gap:14px;
+ padding-top:9px;padding-bottom:9px}
+.gstbar-t{margin:0;font-size:.82rem;line-height:1.45;flex:1}
+.gstbar-x{flex:none;width:30px;height:30px;border:0;border-radius:50%;cursor:pointer;
+ background:rgba(255,255,255,.16);color:#fff;display:grid;place-items:center}
+.gstbar-x:hover{background:rgba(255,255,255,.28)}
+.gstbar-x svg{width:15px;height:15px;fill:none}
+.gstbar-x:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+@media (max-width:520px){.gstbar-t{font-size:.76rem}}
 
 /* ================= Taco Taco Connect ================= */
 /* Deep green so it lifts off the cream the map band sits on, and the mascot on

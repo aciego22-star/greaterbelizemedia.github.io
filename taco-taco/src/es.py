@@ -1035,6 +1035,20 @@ ES.update({
  "Start My Order":   "Comenzar mi pedido",
  "Close this offer": "Cerrar esta oferta",
 
+ # GST, from 2 November 2026
+ "GST (12.5%)": "GST (12.5%)",
+ "Close this notice": "Cerrar este aviso",
+ "Menu prices do not include GST. A 12.5% government sales tax is added to "
+ "your order total.":
+   "Los precios del men\u00fa no incluyen el GST. Se agrega un impuesto sobre "
+   "las ventas del 12.5% al total de su pedido.",
+ "From 2 November, a 12.5% government sales tax (GST) is added to all orders, "
+ "in store and online. The tax is collected for the government and is shown as "
+ "its own line on your order.":
+   "A partir del 2 de noviembre, se agrega un impuesto sobre las ventas del "
+   "12.5% (GST) a todos los pedidos, en el local y en l\u00ednea. El impuesto "
+   "se cobra para el gobierno y aparece como su propia l\u00ednea en su pedido.",
+
  # The free carnitas clip
  "Come get your free carnitas tacos. For a limited time, while supplies last!":
    "\u00a1Venga por sus tacos de carnitas gratis! Por tiempo limitado, "
