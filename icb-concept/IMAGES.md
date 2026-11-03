@@ -26,7 +26,7 @@ visual has been supplied.
 | About page hero | HQ photograph |
 | ICB in Motion featured video | The compressed campaign film + poster frame |
 | Hero slide 3 | Nationwide Cash Express, two supplied compositions |
-| Branch gallery (3 of 12 tiles) | HQ photograph, the Daly Street Corporate Office, the Southside branch |
+| Branch gallery (9 of 15 tiles) | HQ, the Daly Street Corporate Office, Southside, Caye Caulker, Corozal Border, Belmopan, Benque Viejo Border, Benque Town Board, Bella Vista |
 | Insurance page hero | Supplied photograph of an ICB office building |
 | Resources page hero | Supplied photograph: the curved red facade against the sky |
 | Gallery page banner | Two supplied ICB buildings, art-directed, cycling on a five second timer |
@@ -171,38 +171,78 @@ photograph is theirs to publish. It arrived through the client rather than
 from ICB's own material, and every other photograph on the site is
 traceable to something ICB published.
 
+## How a branch photograph is prepared
+
+One file per branch, WebP, 1200px on the long edge, quality 74. That
+covers the lightbox, which caps at 1100 CSS pixels, with a little to
+spare.
+
+There is no JPEG twin. Every browser the site supports reads WebP, and
+the single-file preview build inlines every file under `assets/img` as
+base64, so a second copy of each photograph would add a third again of
+its own weight to a preview that is already near the size a preview can
+be. The two older files that do have a JPEG twin, Corozal Border and
+Southside, predate that rule and are left alone.
+
+The tiles are a fixed height and the photographs are not all the same
+shape, so `object-fit: cover` trims something off every one of them, and
+which axis it trims changes with the screen: a four-by-three frame loses
+its sides in the four-column grid and loses its top and bottom on a
+phone. Where that would clip the branch signboard, the entry carries a
+`pos` (a CSS `object-position`) to hold the sign in frame at both. Two
+entries use it today, both of the Benque frames.
+
+`build/branch-webp.py` is the script that produced the 3 Nov batch,
+including the two crops noted below. It takes the folder of supplied
+files and the folder to write into:
+
+    python3 build/branch-webp.py <supplied> assets/img/branches
+
 ## Still to supply: branch photography
 
-The branch gallery is the priority. Nine tiles currently render a
-designed location plate built from the verified branch record, and each
-upgrades to a photograph the moment a file is dropped in:
+Six tiles still render a designed location plate built from the verified
+branch record, and each upgrades to a photograph the moment a file is
+dropped in and `src` is set in `js/data/gallery.js`:
 
 | Tile | File to supply |
 | --- | --- |
-| Ladyville Branch | `assets/img/branches/ladyville.jpg` |
-| San Pedro Branch | `assets/img/branches/san-pedro.jpg` |
-| Corozal Border Branch | `assets/img/branches/corozal-border.jpg` |
-| Santa Elena Branch | `assets/img/branches/santa-elena.jpg` |
-| San Ignacio Branch | `assets/img/branches/san-ignacio.jpg` |
-| Independence Branch | `assets/img/branches/independence.jpg` |
-| Belmopan City Branch | `assets/img/branches/belmopan.jpg` |
-| Dangriga Branch | `assets/img/branches/dangriga.jpg` |
+| Ladyville Branch | `assets/img/branches/ladyville.webp` |
+| San Pedro Branch | `assets/img/branches/san-pedro.webp` |
+| Santa Elena Branch | `assets/img/branches/santa-elena.webp` |
+| San Ignacio Branch | `assets/img/branches/san-ignacio.webp` |
+| Dangriga Branch | `assets/img/branches/dangriga.webp` |
+| Independence Branch | `assets/img/branches/independence.webp` |
 
-Most of these are the branch photographs published in ICB's own contact
-gallery. They could not be fetched from this environment (outbound
-requests to icbinsurance.com are blocked here), so they need to be
-supplied directly.
-
-**San Narciso** is a special case. Its record is held at `active: false`
-in `js/data/locations.js` because ICB's current operating status for it
-is not verified, so it does not appear in the branch finder, the map, the
-call directory or the WhatsApp directory. A supplied photograph will
-render in the gallery, captioned "San Narciso, Corozal District" rather
-than as a branch. Set `active: true` once ICB confirms it and every
-surface picks it up at once.
+Eight further locations have no tile in the grid at all and need both a
+photograph and an entry: Corozal Town, Orange Walk, San Estevan, Seine
+Bight, San Juan, Moro Agency, Velasquez Agency and Punta Gorda.
 
 Staff, event and community photography is also welcome; it goes in a
 second row of the same grid with no layout change.
+
+## The 3 November batch, and the two frames that were cropped
+
+Five photographs supplied by ICB through the client: Bella Vista,
+Belmopan City, Benque Viejo Border, Benque Town Board and Caye Caulker.
+Each arrived as a 1600x1200 desktop crop and a 1080x1350 portrait crop;
+only the landscape crop is used, because the tiles are landscape at
+every screen size and the lightbox shows whatever it is given.
+
+Two were cropped further:
+
+- **Caye Caulker.** The frame as supplied carried a third-party spa
+  advertising board above ICB's own sign. The top 24% is cropped off, so
+  the tile and the lightbox show ICB's sign and nothing else.
+- **Belmopan City.** The bottom 15% is trimmed to take some of the
+  foreground lawn out, so the building fills more of the tile. Nothing
+  of the branch is cut.
+
+Both full frames are in the client's folder if either is ever wanted
+back.
+
+**Benque Town Board** is the only interior frame in the set: a signboard
+on a green wall rather than a street view of the office. It reads
+differently from the other eight. Worth asking ICB for an exterior.
 
 ## The Gallery page hero
 

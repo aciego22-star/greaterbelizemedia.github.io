@@ -403,12 +403,20 @@ window.ICB = window.ICB || {};
       /* WebP first where the entry has one, with the file in src as the
          fallback. Both go through the asset resolver, so the single-file
          build substitutes each on its own. */
+      /* The tiles are a fixed height and the photographs are not all the
+         same shape, so cover crops something off every one of them, and
+         which axis it crops off changes with the screen: a four-by-three
+         frame loses its sides in the four-column grid and loses its top
+         and bottom on a phone. pos is the focal point for that crop, the
+         way it is for the photo slots in art.js, and it is set on the
+         frames where the branch sign would otherwise be clipped. */
+      var style = b.pos ? ' style="object-position: ' + esc(b.pos) + '"' : "";
       var pic = (b.webp && b.webp.length)
         ? "<picture>" + b.webp.map(function (c) {
             return '<source type="image/webp" data-asset-srcset="' + esc(c.src) + '">';
           }).join("") +
-          '<img data-asset="' + esc(b.src) + '" alt="' + esc(b.alt) + '" loading="lazy"></picture>'
-        : '<img data-asset="' + esc(b.src) + '" alt="' + esc(b.alt) + '" loading="lazy">';
+          '<img data-asset="' + esc(b.src) + '" alt="' + esc(b.alt) + '"' + style + ' loading="lazy"></picture>'
+        : '<img data-asset="' + esc(b.src) + '" alt="' + esc(b.alt) + '"' + style + ' loading="lazy">';
       return '<figure class="' + cls + '">' +
         '<button type="button" class="g-open" data-lightbox="' + photoIndex + '" aria-label="' + esc(ICB.s("viewLarger", { caption: ICB.t(b.caption) })) + '">' +
           pic +

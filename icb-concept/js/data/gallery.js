@@ -10,6 +10,11 @@
    and type always match the branch dataset. Nothing here invents a branch
    identity: a caption is only ever the verified location name.
 
+   pos: optional CSS object-position, for a frame whose subject would
+   otherwise be cropped out of the tile. Tiles are a fixed height, so
+   cover trims the sides of a tall frame in the desktop grid and trims
+   the top and bottom of that same frame on a phone.
+
    src: null means the official photograph has not been supplied yet. Those
    entries render as a designed location plate built from the verified
    branch record, and upgrade to a photograph the moment a file is dropped
@@ -21,11 +26,18 @@
    what the flag is withholding; a photograph is just a photograph, and it
    is captioned as a place, not as a branch. Nothing is held back today.
 
+   Photographs are stored as a single WebP at 1200px wide, which covers
+   the lightbox with a little to spare. No JPEG twin: every browser the
+   site supports reads WebP, and the single-file preview inlines every
+   file under assets/img, so a second copy of each photograph would cost
+   it a third again of its own weight for nothing.
+
    INTERNAL TODO (not client-facing):
-   - Collect the branch photographs published in ICB's own contact gallery
-     (Southside Belize City, Santa Elena, San Pedro, San Ignacio, Corozal
-     Border, Independence, Ladyville) and set src on the matching entries
-     below. Files go in assets/img/branches/.
+   - Still waiting on photographs for Ladyville, San Pedro, Santa Elena,
+     San Ignacio, Dangriga and Independence, and for the eight locations
+     that are not in this list at all: Corozal Town, Orange Walk, San
+     Estevan, Seine Bight, San Juan, Moro Agency, Velasquez Agency and
+     Punta Gorda. Files go in assets/img/branches/.
    - Ask ICB for staff, event and community photography for a second row.
    ========================================================================== */
 window.ICB = window.ICB || {};
@@ -59,6 +71,16 @@ ICB.DATA.gallery = {
     },
     { locationId: "ladyville",             src: null },
     { locationId: "san-pedro",             src: null },
+    /* The agency's own sign, on the walkway outside the office. The
+       frame as supplied carried a third-party spa advertising board
+       above ICB's sign, which is cropped out here: the gallery is ICB's
+       own shopfront and nobody else's. The full frame is in the
+       client's folder if it is ever wanted back. */
+    {
+      locationId: "caye-caulker",
+      src: "assets/img/branches/caye-caulker.webp",
+      alt: "The Insurance Corporation of Belize Caye Caulker Agency sign outside the office on Avenida Hicaco"
+    },
     /* Supplied by the client and identified by them as the Corozal Border
        Branch. It is the same building as the wide frame used in the
        Gallery banner. The caption comes from the branch record, as every
@@ -73,14 +95,51 @@ ICB.DATA.gallery = {
       webp: [{ src: "assets/img/branches/corozal-border.webp" }],
       alt: "The Insurance Corporation of Belize branch building at the northern border, Corozal District"
     },
+    /* Trimmed at the bottom to take some of the foreground lawn out, so
+       the building fills more of the tile. Nothing of the branch is
+       cut. */
+    {
+      locationId: "belmopan",
+      src: "assets/img/branches/belmopan.webp",
+      alt: "The Insurance Corporation of Belize Belmopan City Branch building on South Ring Road"
+    },
     { locationId: "santa-elena",           src: null },
     { locationId: "san-ignacio",           src: null },
+    /* The western border branch. Its sign carries the branch telephone
+       and WhatsApp numbers, and both match the branch record.
+
+       INTERNAL TODO (not client-facing): the sign reads
+       icb_benqueviejo@icbinsurance.com, while the directory ICB sent
+       carries icb_benqueagency@icbinsurance.com for this branch. One of
+       the two is out of date. Raised with ICB. */
+    {
+      locationId: "benque-viejo-border",
+      src: "assets/img/branches/benque-viejo-border.webp",
+      pos: "center 12%",
+      alt: "The Insurance Corporation of Belize branch at the Benque Viejo border crossing, Cayo District"
+    },
+    /* The only interior frame in the set. Identified from the WhatsApp
+       number on the sign, 656-7521, which is this branch's.
+
+       INTERNAL TODO (not client-facing): the sign reads
+       icb.benquetown@icbinsurance.com with a dot, while the directory
+       carries icb_benquetown@icbinsurance.com with an underscore, and it
+       titles the office "Benque Viejo Branch" rather than "Benque Town
+       Board Branch". Raised with ICB. The tile caption comes from the
+       branch record either way. */
+    {
+      locationId: "benque-town-board",
+      src: "assets/img/branches/benque-town-board.webp",
+      pos: "center 18%",
+      alt: "The Insurance Corporation of Belize sign inside the Benque Town Board Branch, Benque Viejo Town"
+    },
+    { locationId: "dangriga",              src: null },
     { locationId: "independence",          src: null },
-    /* Two more verified branches, each with a published address and
-       landline. They keep the grid's last row full, and they take a
-       photograph the same way the others do. */
-    { locationId: "belmopan",              src: null },
-    { locationId: "dangriga",              src: null }
+    {
+      locationId: "bella-vista",
+      src: "assets/img/branches/bella-vista.webp",
+      alt: "The Insurance Corporation of Belize Bella Vista Agency office on 3rd Street, Bella Vista Village"
+    }
   ],
 
   /* ICB in Motion. Both films are the supplied ICB campaign material,
@@ -185,6 +244,7 @@ ICB.DATA.galleryBranches = function () {
       src: b.src || null,
       webp: b.webp || null,
       caption: b.caption || loc.name || "",
+      pos: b.pos || null,
       sub: loc.district ? loc.district + " District" : "",
       type: loc.type || "",
       alt: b.alt || (loc.name ? loc.name + ", Insurance Corporation of Belize" : ""),

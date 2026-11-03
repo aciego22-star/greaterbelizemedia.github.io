@@ -162,6 +162,33 @@ Smaller things raised earlier and not yet answered.
   and deliberate, but worth a decision if ICB would rather they were
   translated.
 
+### Two email addresses the branch photographs disagree with
+
+The first five branch photographs arrived on 3 Nov 2026, and two of
+them carry a signboard with an email address on it that is not the
+address in the directory ICB sent.
+
+- **Benque Viejo Border Branch.** The sign reads
+  `icb_benqueviejo@icbinsurance.com`. The directory says
+  `icb_benqueagency@icbinsurance.com`. Everything else on that sign,
+  the 823-2319 landline and the 613-0548 WhatsApp number, matches.
+- **Benque Town Board Branch.** The sign reads
+  `icb.benquetown@icbinsurance.com`, with a dot. The directory says
+  `icb_benquetown@icbinsurance.com`, with an underscore. Every other
+  ICB address on the site uses the underscore, so the sign is the odd
+  one out, but it is the sign a walk-in customer reads. The WhatsApp
+  number, 656-7521, matches.
+
+The site publishes the directory's version of both, since that is the
+document ICB sent. One of each pair is out of date and it is worth
+knowing which, because a customer who emails the wrong one gets
+nothing back.
+
+Same photograph, separate point: the Benque Town Board sign titles the
+office **"Benque Viejo Branch"**, not "Benque Town Board Branch". The
+site uses the directory name. If the sign is the name customers know
+it by, the directory name is the one to change.
+
 ---
 
 # What IT came back with, 27 Oct 2026
