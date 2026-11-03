@@ -26,7 +26,7 @@ visual has been supplied.
 | About page hero | HQ photograph |
 | ICB in Motion featured video | The compressed campaign film + poster frame |
 | Hero slide 3 | Nationwide Cash Express, two supplied compositions |
-| Branch gallery (12 of 23 tiles) | HQ, the Daly Street Corporate Office, Southside, Corozal Border, Orange Walk, Ladyville, Caye Caulker, Belmopan, Benque Viejo Border, Benque Town Board, Dangriga, Bella Vista |
+| Branch gallery (19 of 23 tiles) | Everything except Corozal Town, San Estevan, Seine Bight and Independence |
 | Insurance page hero | Supplied photograph of an ICB office building |
 | Resources page hero | Supplied photograph: the curved red facade against the sky |
 | Gallery page banner | Two supplied ICB buildings, art-directed, cycling on a five second timer |
@@ -200,25 +200,23 @@ files and the folder to write into:
 
 ## Still to supply: branch photography
 
-All 22 locations now have a tile, so the grid is the whole network
-rather than a selection of it. Eleven of them render a designed
-location plate built from the verified branch record, and each upgrades
-to a photograph the moment a file is dropped in and `src` is set in
+All 22 locations have a tile, so the grid is the whole network rather
+than a selection of it. Four of them still render a designed location
+plate built from the verified branch record, and each upgrades to a
+photograph the moment a file is dropped in and `src` is set in
 `js/data/gallery.js`:
 
 | Tile | File to supply |
 | --- | --- |
 | Corozal Branch | `assets/img/branches/corozal.webp` |
 | San Estevan Agency | `assets/img/branches/san-estevan.webp` |
-| San Pedro Branch | `assets/img/branches/san-pedro.webp` |
-| Santa Elena Branch | `assets/img/branches/santa-elena.webp` |
-| San Ignacio Branch | `assets/img/branches/san-ignacio.webp` |
 | Seine Bight Agency | `assets/img/branches/seine-bight.webp` |
 | Independence Branch | `assets/img/branches/independence.webp` |
-| San Juan Agency | `assets/img/branches/san-juan.webp` |
-| Moro Agency | `assets/img/branches/moro.webp` |
-| Velasquez Agency | `assets/img/branches/velasquez.webp` |
-| Punta Gorda Branch | `assets/img/branches/punta-gorda.webp` |
+
+Three supplied photographs are sitting unused because none of them can
+be tied to a location: `ICB_Branch_01` and `ICB_Branch_03` from the
+second batch, and `ICB_Yellow_Village_Branch` from the third. Three
+photographs, four empty tiles.
 
 Staff, event and community photography is also welcome; it goes in a
 second row of the same grid with no layout change.
@@ -278,6 +276,52 @@ folder; adding each one afterwards is a line in `JOBS` in
 
 The door decals on `ICB_Branch_03` also post opening hours that differ
 from the ones ICB gave us. Recorded in OPEN-QUESTIONS.md.
+
+## The third 3 November batch
+
+Eight more, named this time, at 1448x1086. Seven map straight onto a
+location and are wired up: Moro, Punta Gorda, San Ignacio, San Juan,
+San Pedro, Santa Elena and Velasquez.
+
+The eighth is named `ICB_Yellow_Village_Branch`, and there is no
+Yellow Village in the directory of 22 that ICB sent. Its sign reads
+INSURANCE CORPORATION OF BELIZE LTD and nothing else legible, so the
+photograph cannot name itself either. Not wired up. Recorded in
+OPEN-QUESTIONS.md.
+
+Every number on every sign in this batch matches the branch record
+except on three frames, all recorded in OPEN-QUESTIONS.md: Moro
+(four differences), San Juan (the email) and Punta Gorda (the email).
+
+Cropped: Moro loses the shopfront next door off the left and a little
+grass off the bottom, San Ignacio loses the road in the foreground,
+Velasquez loses the grass and the step. San Pedro carries a `pos`
+because its signboard sits across the top of the frame.
+
+Moro is the heaviest file in the set at 219 KB, against an average
+nearer 120. The frame is dense with foliage and fence, which is
+expensive to compress. It is one photograph and it loads lazily, so it
+is left alone.
+
+The frames for San Juan, Velasquez and Moro carry Digi, BEL and
+Infinite agent signage. Unlike the spa board cropped out of the Caye
+Caulker frame, those are services the agency itself provides, so they
+stay.
+
+## Why the preview carries lighter photographs
+
+`build/build-single.js` inlines every asset as base64, which adds a
+third again to each byte, against a hard 16MB cap on a single
+document. With nineteen branch photographs in the grid that became the
+binding constraint, so `build/branch-webp.py` now writes a second,
+lighter rendition of each photograph to `build/preview/branches`
+(900px, quality 68) and the single-file build substitutes it, exactly
+as it already does for the two campaign films.
+
+The deployed folder and the ZIP always carry the full-quality file.
+The only place the lighter rendition is ever seen is the one-file
+preview, and only in the lightbox, where it is about a quarter softer
+than the real thing.
 
 ## The Gallery page hero
 

@@ -48,19 +48,25 @@ let result = inline(html);
       HTML parser about ten megabytes of base64, which is what made the
       preview feel slow to click through.
 
-   Video is the one place the preview and the deployed site differ:
-   assets/video holds the site encodes (1280x720), and base64 adds a third
-   again to every byte against a 16MB single-document cap, so a lighter
-   encode from build/preview is substituted when present. The deployed
-   folder and ZIP always ship the full-quality files. */
+   Video and the branch photographs are the places where the preview and
+   the deployed site differ: assets/video holds the site encodes
+   (1280x720) and assets/img/branches holds the full-size photographs,
+   and base64 adds a third again to every byte against a 16MB
+   single-document cap. A lighter rendition from build/preview is
+   substituted when one is there. The deployed folder and ZIP always
+   ship the full-quality files. build/branch-webp.py writes the
+   photographs' preview renditions beside the real ones. */
 const MIME = { png: "image/png", jpg: "image/jpeg", jpeg: "image/jpeg", webp: "image/webp",
                mp4: "video/mp4", pdf: "application/pdf" };
 const PREVIEW_DIR = path.join(root, "build", "preview");
 const assets = {};
 
+const PREVIEW_OF = { "assets/video": "", "assets/img/branches": "branches" };
+
 function sourceFor(dir, name) {
-  if (dir === "assets/video") {
-    const proxy = path.join(PREVIEW_DIR, name);
+  const sub = PREVIEW_OF[dir];
+  if (sub !== undefined) {
+    const proxy = path.join(PREVIEW_DIR, sub, name);
     if (fs.existsSync(proxy)) return { file: proxy, note: " (preview encode)" };
   }
   return { file: path.join(root, dir, name), note: "" };

@@ -38,13 +38,16 @@
    grid.
 
    INTERNAL TODO (not client-facing):
-   - Still waiting on photographs for Corozal Town, San Estevan, San
-     Pedro, Santa Elena, San Ignacio, Seine Bight, Independence, San
-     Juan, Moro, Velasquez and Punta Gorda. Files go in
-     assets/img/branches/.
-   - Two photographs in the second batch, supplied as ICB_Branch_01 and
-     ICB_Branch_03, carry no branch name on any sign in the frame and
-     are not wired up. Waiting on ICB to name them.
+   - Four tiles are still plates: Corozal Town, San Estevan, Seine Bight
+     and Independence. Files go in assets/img/branches/.
+   - Three supplied photographs are not wired up, because none of them
+     can be tied to a location with confidence. ICB_Branch_01 and
+     ICB_Branch_03 from the second batch carry no branch name on any
+     sign in the frame. ICB_Yellow_Village_Branch from the third batch
+     is named, but there is no Yellow Village in the directory ICB sent
+     and its sign carries no branch name either. Three photographs and
+     four empty tiles, so they are very probably three of the four, but
+     that is arithmetic rather than evidence. Waiting on ICB.
    - Ask ICB for staff, event and community photography for a second row.
    ========================================================================== */
 window.ICB = window.ICB || {};
@@ -119,7 +122,16 @@ ICB.DATA.gallery = {
       pos: "center 12%",
       alt: "The Insurance Corporation of Belize Ladyville Branch at Airport Plaza on the Northern Highway"
     },
-    { locationId: "san-pedro",             src: null },
+    /* The signboard over the entrance, carrying Coconut Drive, the
+       226-4099 landline, the 610-2941 WhatsApp number and
+       icb_sanpedro@icbinsurance.com. All four match the branch record.
+       It sits high in the frame, hence pos. */
+    {
+      locationId: "san-pedro",
+      src: "assets/img/branches/san-pedro.webp",
+      pos: "center 20%",
+      alt: "The Insurance Corporation of Belize San Pedro Branch signboard above the office on Coconut Drive"
+    },
     /* The agency's own sign, on the walkway outside the office. The
        frame as supplied carried a third-party spa advertising board
        above ICB's sign, which is cropped out here: the gallery is ICB's
@@ -140,8 +152,21 @@ ICB.DATA.gallery = {
       src: "assets/img/branches/belmopan.webp",
       alt: "The Insurance Corporation of Belize Belmopan City Branch building on South Ring Road"
     },
-    { locationId: "santa-elena",           src: null },
-    { locationId: "san-ignacio",           src: null },
+    /* The sign on the gable carries the 824-2454 landline, the
+       614-0437 WhatsApp number, 74 Western Highway and
+       icb_santaelena@icbinsurance.com. Every one matches the branch
+       record. */
+    {
+      locationId: "santa-elena",
+      src: "assets/img/branches/santa-elena.webp",
+      alt: "The Insurance Corporation of Belize Santa Elena Branch, a white building on the Western Highway"
+    },
+    /* Trimmed at the bottom to take the road out of the foreground. */
+    {
+      locationId: "san-ignacio",
+      src: "assets/img/branches/san-ignacio.webp",
+      alt: "The Insurance Corporation of Belize San Ignacio Branch at Buena Vista and King Streets"
+    },
     /* The western border branch. Its sign carries the branch telephone
        and WhatsApp numbers, and both match the branch record.
 
@@ -181,15 +206,65 @@ ICB.DATA.gallery = {
       alt: "The Insurance Corporation of Belize Dangriga Branch building at Market Square"
     },
     { locationId: "independence",          src: null },
-    { locationId: "san-juan",              src: null },
-    { locationId: "moro",                  src: null },
+    /* The agency sign carries the 671-7916 WhatsApp number, which
+       matches the branch record.
+
+       INTERNAL TODO (not client-facing): the email on the sign is a
+       two-letter prefix followed by .sanjuan@icbinsurance.com, not the
+       icb_sanjuan@icbinsurance.com in the directory. The prefix is too
+       small in the photograph to read with confidence. Raised with ICB.
+
+       The frame also carries Digi, BEL and Infinite agent signs. Those
+       are services this agency itself provides, not somebody else's
+       advertising, so they stay. */
+    {
+      locationId: "san-juan",
+      src: "assets/img/branches/san-juan.webp",
+      alt: "The Insurance Corporation of Belize San Juan Agency sign on the green office in San Juan Village"
+    },
+    /* Trimmed on the left so the frame is ICB's agency rather than
+       ICB's agency and the shopfront next door.
+
+       INTERNAL TODO (not client-facing): four things on this sign
+       disagree with the directory ICB sent. The sign says MORIO
+       AGENCY, the directory says Moro Agency. The sign gives the
+       address as Belmopan Service S. Santa Cruz Village, the directory
+       says #22 Police Station Street. The sign gives WhatsApp
+       669-9497, the directory says 609-0497. The sign gives
+       william.moreno@icbinsurance.com, the directory says
+       William.moro@icbinsurance.com. Raised with ICB; the site still
+       publishes the directory's version of all four. */
+    {
+      locationId: "moro",
+      src: "assets/img/branches/moro.webp",
+      alt: "The Insurance Corporation of Belize agency office in Santa Cruz Village, Stann Creek District"
+    },
     {
       locationId: "bella-vista",
       src: "assets/img/branches/bella-vista.webp",
       alt: "The Insurance Corporation of Belize Bella Vista Agency office on 3rd Street, Bella Vista Village"
     },
-    { locationId: "velasquez",             src: null },
-    { locationId: "punta-gorda",           src: null }
+    /* The sign carries Main Road, Santa Cruz Village, the 616-7612
+       WhatsApp number and wilson.velasquez@icbinsurance.com, all three
+       matching the branch record. Trimmed at the bottom. */
+    {
+      locationId: "velasquez",
+      src: "assets/img/branches/velasquez.webp",
+      alt: "The Insurance Corporation of Belize Velasquez Agency, a blue office on the main road in Santa Cruz Village"
+    },
+    /* The sign carries George Price Street, the 615-8046 WhatsApp
+       number and the 722-2291 landline, all matching the branch
+       record.
+
+       INTERNAL TODO (not client-facing): the sign reads
+       icb.pg@icbinsurance.com with a dot, while the directory carries
+       icb_pg@icbinsurance.com with an underscore. The same dot against
+       underscore difference as Benque Town Board. Raised with ICB. */
+    {
+      locationId: "punta-gorda",
+      src: "assets/img/branches/punta-gorda.webp",
+      alt: "The Insurance Corporation of Belize Punta Gorda Branch on George Price Street"
+    }
   ],
 
   /* ICB in Motion. Both films are the supplied ICB campaign material,

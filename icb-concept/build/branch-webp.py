@@ -23,6 +23,16 @@ SRC = sys.argv[1]
 OUT = sys.argv[2]
 QUALITY = 74
 
+# The single-file preview inlines every photograph as base64, which adds
+# a third again to each one, against a hard 16MB cap on one document. So
+# a lighter rendition of each is written to build/preview/branches and
+# build/build-single.js picks it up in place of the real file. The
+# deployed folder and the ZIP always carry the full-quality file; this
+# is the same arrangement the two campaign films already use.
+PREVIEW_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "preview", "branches")
+PREVIEW_WIDTH = 900
+PREVIEW_QUALITY = 68
+
 # supplied filename -> (output stem, crop box as fractions of the source)
 JOBS = [
     # Batch one, 3 Nov 2026. Named by the client.
@@ -45,6 +55,22 @@ JOBS = [
     ("ICB_Branch_04_Desktop_1600x1200.jpg", "ladyville", None),
     # Trims the empty concrete forecourt at the bottom.
     ("ICB_Branch_05_Desktop_1600x1200.jpg", "orange-walk", (0.0, 0.0, 1.0, 0.86)),
+
+    # Batch three, 3 Nov 2026. Named by the client, and every name
+    # matches a location in the directory except Yellow Village, which
+    # is not in it at all and is therefore not wired up.
+    # Trims the neighbouring shopfront and its awning off the left, so
+    # the frame is ICB's agency rather than ICB's agency and the shop
+    # next door, and takes a little grass off the bottom.
+    ("ICB_Moro_Agency_Landscape.jpg", "moro", (0.14, 0.0, 1.0, 0.95)),
+    ("ICB_Punta_Gorda_Branch_Landscape.jpg", "punta-gorda", None),
+    # Trims the road in the foreground.
+    ("ICB_San_Ignacio_Branch_Landscape.jpg", "san-ignacio", (0.0, 0.0, 1.0, 0.88)),
+    ("ICB_San_Juan_Agency_Landscape.jpg", "san-juan", None),
+    ("ICB_San_Pedro_Branch_Landscape.jpg", "san-pedro", None),
+    ("ICB_Santa_Elena_Branch_Landscape.jpg", "santa-elena", None),
+    # Trims the grass and the step in the foreground.
+    ("ICB_Velasquez_Agency_Landscape.jpg", "velasquez", (0.0, 0.0, 1.0, 0.85)),
 ]
 
 os.makedirs(OUT, exist_ok=True)
@@ -61,4 +87,13 @@ for src, stem, box in JOBS:
         im = im.resize((1200, round(im.height * 1200 / im.width)), Image.LANCZOS)
     path = os.path.join(OUT, stem + ".webp")
     im.save(path, "WEBP", quality=QUALITY, method=6)
-    print("%-22s %4dx%-4d q=%-3d %6.1f KB" % (stem, im.width, im.height, QUALITY, os.path.getsize(path) / 1024))
+
+    os.makedirs(PREVIEW_DIR, exist_ok=True)
+    small = im.resize((PREVIEW_WIDTH, round(im.height * PREVIEW_WIDTH / im.width)), Image.LANCZOS) \
+        if im.width > PREVIEW_WIDTH else im
+    prev = os.path.join(PREVIEW_DIR, stem + ".webp")
+    small.save(prev, "WEBP", quality=PREVIEW_QUALITY, method=6)
+
+    print("%-22s %4dx%-4d q=%-3d %6.1f KB   preview %5.1f KB"
+          % (stem, im.width, im.height, QUALITY, os.path.getsize(path) / 1024,
+             os.path.getsize(prev) / 1024))

@@ -189,11 +189,39 @@ office **"Benque Viejo Branch"**, not "Benque Town Board Branch". The
 site uses the directory name. If the sign is the name customers know
 it by, the directory name is the one to change.
 
-### Which branches are the two unnamed photographs
+### What is Yellow Village, and is it a 23rd location
 
-The second batch of photographs, 3 Nov 2026, arrived numbered rather
-than named. Three identified themselves from their own signboards:
-Dangriga, Ladyville and Orange Walk. Two did not.
+The third batch of photographs, 3 Nov 2026, arrived named, and seven of
+the eight names match a location exactly. The eighth is called
+`ICB_Yellow_Village_Branch`, and there is no Yellow Village anywhere in
+the directory of 22 that ICB sent.
+
+The photograph does not settle it either. The sign on the fence reads
+INSURANCE CORPORATION OF BELIZE LTD and the line under it is too small
+to read. The building is a brightly painted house on posts with palms
+behind it.
+
+Two possibilities, and they lead to different work:
+
+1. **Yellow Village is one of the 22 under another name**, in which
+   case the photograph goes straight into that tile and nothing else
+   changes.
+2. **Yellow Village is a real location missing from the directory**, in
+   which case it is not just a photograph. It needs a full record, a
+   map pin, an entry in the call and WhatsApp directories, a line in
+   the structured data and a place in the branch finder, and the "22
+   locations" the site states in several places becomes 23.
+
+### Which branches are the three unidentified photographs
+
+Three photographs cannot be tied to a location, and four tiles are
+still waiting for one. The four tiles are **Corozal Town, San Estevan,
+Seine Bight and Independence**. So three of those four are very
+probably in hand already. That is arithmetic, not evidence, and
+captioning a branch from arithmetic is exactly the kind of guess this
+site does not make.
+
+The three photographs:
 
 - **`ICB_Branch_01`**, a two-storey white building with red trim, a
   gravel forecourt and a small "INSURANCE / SEGUROS" plaque beside the
@@ -203,10 +231,9 @@ Dangriga, Ladyville and Orange Walk. Two did not.
   fence and a pole sign at the roadside. The pole sign is too small and
   too oblique to read, and the door decals carry the business hours but
   not the branch name.
+- **`ICB_Yellow_Village_Branch`**, the one above.
 
-Neither is on the site. Eleven locations are still waiting on a
-photograph, so there is no safe way to guess. One word each from ICB
-and both are up.
+One word each from ICB and all three are up.
 
 ### The street number on the Orange Walk sign
 
@@ -237,6 +264,43 @@ branch. It matters which, because the second case means every branch
 needs its own hours rather than one set for all of them. The site
 already does this for the two border branches, so it is data entry
 rather than a change to the build.
+
+### Four things on the Moro Agency sign
+
+This is the largest disagreement between a signboard and the directory
+so far. The sign on the fence at the Santa Cruz Village agency reads:
+
+| On the sign | In the directory |
+| --- | --- |
+| MORIO AGENCY | Moro Agency |
+| Belmopan Service S. Santa Cruz Village | #22 Police Station Street, Santa Cruz Village |
+| WhatsApp 669-9497 | WhatsApp 609-0497 |
+| william.moreno@icbinsurance.com | William.moro@icbinsurance.com |
+
+"Moro" and "moreno" read like the same person's name shortened, so the
+likeliest reading is that the directory entry was abbreviated at some
+point and the sign is the fuller version. But the WhatsApp number is
+the part that matters most, because a customer who messages 609-0497
+when the agency is on 669-9497 gets nothing back, and we cannot tell
+from a photograph which of the two is live.
+
+The site publishes the directory's version of all four.
+
+### Two more email addresses, same pattern as Benque
+
+- **Punta Gorda.** The sign reads `icb.pg@icbinsurance.com` with a dot.
+  The directory says `icb_pg@icbinsurance.com` with an underscore. The
+  telephone, WhatsApp and street on that sign all match.
+- **San Juan.** The sign reads a two-letter prefix, then
+  `.sanjuan@icbinsurance.com`. The prefix is too small in the
+  photograph to read with confidence, but it is plainly not `icb_`. The
+  directory says `icb_sanjuan@icbinsurance.com`. The WhatsApp number on
+  the sign matches.
+
+That is now four branch signs carrying an email address the directory
+does not have: Benque Viejo Border, Benque Town Board, Punta Gorda and
+San Juan. It is worth asking ICB for one authoritative list of branch
+email addresses rather than settling them one at a time.
 
 ### Does ICB want the bee used on the site
 
