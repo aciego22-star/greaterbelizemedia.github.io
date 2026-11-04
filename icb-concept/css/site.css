@@ -1845,12 +1845,15 @@ button {
   align-self: center;
   z-index: 2;
 }
-/* contain, not cover. The box is already the shape of the picture, so
-   the two agree and neither crops; contain says so, and if a future
-   source is ever the wrong shape it will show as a margin rather than
-   quietly eating a roofline. */
+/* cover, since the banner stopped being two purpose-cut photographs and
+   became all of them. The two opening frames have a 16:9 crop made for
+   this box and cover does nothing to them. The branch photographs behind
+   them are four by three, and in a 16:9 box contain would letterbox every
+   one, which reads as a fault rather than as a choice. Each of those
+   carries the same focal point the gallery tile uses, set inline, so the
+   crop holds the signage rather than the middle of the picture. */
 .page-hero--banner .page-hero-art .slot-photo {
-  object-fit: contain;
+  object-fit: cover;
   object-position: center center;
 }
 

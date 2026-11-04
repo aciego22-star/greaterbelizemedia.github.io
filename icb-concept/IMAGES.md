@@ -29,7 +29,7 @@ visual has been supplied.
 | Branch gallery (22 of 23 tiles) | Everything except San Estevan |
 | Insurance page hero | Supplied photograph of an ICB office building |
 | Resources page hero | Supplied photograph: the curved red facade against the sky |
-| Gallery page banner | Two supplied ICB buildings, art-directed, cycling on a five second timer |
+| Gallery page banner | Every branch photograph, cycling on a five second timer |
 
 ## The Gallery banner: art direction, and why 16:9
 
@@ -322,12 +322,35 @@ than the real thing.
 
 ## The Gallery page hero
 
-Its slot in `js/data/images.js` carries `srcs` (three files) and
-`rotate: 5000` instead of a single `src`, and `rotateSlot` in `js/art.js`
-cycles them. There are no controls: it is a backdrop behind a heading,
-not something to operate. It never starts under reduced motion, holds
-while the tab is hidden, and ends itself once the page is navigated away
-from.
+Its slot in `js/data/images.js` carries `shots` and `rotate: 5000`
+instead of a single `src`, and `rotateSlot` in `js/art.js` cycles them.
+There are no controls: it is a backdrop behind a heading, not something
+to operate. It never starts under reduced motion, holds while the tab
+is hidden, and ends itself once the page is navigated away from.
+
+**It carries every branch photograph, all 22.** Two are written out in
+the slot and stay at the front, because they are the only two with a
+16:9 crop cut for the banner and the opening frame is worth getting
+exactly right. The rest are appended at the foot of `images.js`
+straight from `ICB.DATA.gallery.branches`, which is also what the grid
+further down the page is built from, so the two cannot fall out of step
+and a photograph that arrives tomorrow joins the rotation without
+anyone editing the slot.
+
+Three things follow from that:
+
+- The banner is `object-fit: cover`, not `contain`. The two opening
+  frames are already 16:9 so cover does nothing to them; the branch
+  photographs are four by three, and `contain` would letterbox every
+  one of them. Each carries the same focal point its gallery tile uses,
+  so the crop holds the signage rather than the middle of the picture.
+- `rotateSlot` asks for each photograph only as its turn approaches:
+  the first two up front, then one more each time the banner changes.
+  Creating all 22 at once would pull about two and a half megabytes
+  before the visitor has finished reading the heading. Someone who
+  stays half a minute fetches six.
+- They are the same files the grid uses, so by the time a visitor
+  scrolls down the browser already has them.
 
 Two of the three files are the ones already used by the Insurance hero
 and the Southside gallery tile. The single-file build keys its asset map

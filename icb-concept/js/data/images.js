@@ -84,7 +84,12 @@ ICB.DATA.images = {
        The third photograph that used to be in this rotation, the curved
        red facade, is not here: it is shot from below and a 16:9 crop cuts
        its roof off. It remains the Insurance page hero, where the 4:3 it
-       needs is what it gets. */
+       needs is what it gets.
+
+       These two are the OPENING frames, and the only two with a crop cut
+       for the job. Every other branch photograph joins them underneath,
+       appended from the gallery at the foot of this file, so the banner
+       shows the whole country rather than a chosen pair. */
     "gallery-hero":     {
       pos: "center center",
       rotate: 5000,
@@ -126,3 +131,38 @@ ICB.DATA.images = {
     "about-band":       { src: "assets/img/icb-hq.webp", alt: "Insurance Corporation of Belize headquarters in Belize City" }
   }
 };
+
+/* The Gallery banner rotates EVERY branch photograph, not a chosen two.
+
+   The two above stay at the front, because they are the only two with a
+   16:9 crop cut for the banner and the opening frame is the one worth
+   getting exactly right. The rest are appended straight from
+   ICB.DATA.gallery.branches, which is also what the grid further down
+   the page is built from, so the banner and the grid can never fall out
+   of step and a photograph that arrives tomorrow joins the rotation
+   without anyone touching this file.
+
+   They are the same files the grid uses, so a visitor who scrolls down
+   finds them already in the browser's cache. Only the first two are
+   fetched up front; rotateSlot in js/art.js asks for each of the others
+   as its turn approaches.
+
+   The two already at the front are skipped by location rather than by
+   filename, because the Corozal Border banner crop was made from a
+   different source file than the one in the grid. */
+(function () {
+  var hero = ICB.DATA.images.slots["gallery-hero"];
+  var opening = { "belize-city-southside": true, "corozal-border": true };
+  var branches = (ICB.DATA.gallery && ICB.DATA.gallery.branches) || [];
+
+  branches.forEach(function (b) {
+    if (!b.src || opening[b.locationId]) return;
+    var loc = (ICB.DATA.locationById && ICB.DATA.locationById(b.locationId)) || {};
+    hero.shots.push({
+      src: b.src,
+      webp: b.webp || null,
+      pos: b.pos || null,
+      alt: b.alt || (loc.name ? loc.name + ", Insurance Corporation of Belize" : "")
+    });
+  });
+})();

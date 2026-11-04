@@ -950,11 +950,25 @@ window.ICB = window.ICB || {};
   function rotateSlot(node, conf) {
     var every = typeof conf.rotate === "number" ? conf.rotate : 5000;
     var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    var shots = [];
+    var list = shotsOf(conf);
+    var shots = [];    /* the <img> for each index, once it has loaded */
+    var asked = [];    /* whether this index has been requested at all */
     var shown = 0;
 
-    shotsOf(conf).forEach(function (shot, i) {
-      slotPhoto(node, conf, shot, function (img) {
+    /* A rotation can be long: the Gallery banner carries every branch
+       photograph ICB has supplied, which is the whole country. Asking
+       the browser for all of them at once would pull two and a half
+       megabytes down before the visitor has finished reading the
+       heading, for pictures most of them will never sit still long
+       enough to see. So each one is requested just before its turn:
+       the first two up front, then one more every time the banner
+       changes. A visitor who stays half a minute fetches six, not
+       twenty-two, and they are the same files the grid below uses, so
+       the browser already has them when it gets there. */
+    function want(i) {
+      if (asked[i]) return;
+      asked[i] = true;
+      slotPhoto(node, conf, list[i], function (img) {
         img.classList.add("slot-photo--rotating");
         shots[i] = img;
         // The first to arrive is the one on screen.
@@ -963,9 +977,11 @@ window.ICB = window.ICB || {};
           img.classList.add("is-loaded", "is-front");
         }
       });
-    });
+    }
 
-    if (still) return;
+    want(0);
+    if (still || list.length < 2) return;
+    want(1);
 
     var timer = setInterval(function () {
       if (!node.isConnected) { clearInterval(timer); return; }
@@ -975,8 +991,8 @@ window.ICB = window.ICB || {};
       var from = shots[shown];
       var next = shown;
       // Step to the next photograph that has actually loaded.
-      for (var i = 1; i <= shots.length; i++) {
-        var candidate = (shown + i) % shots.length;
+      for (var i = 1; i <= list.length; i++) {
+        var candidate = (shown + i) % list.length;
         if (shots[candidate]) { next = candidate; break; }
       }
       if (next === shown) return;
@@ -988,6 +1004,8 @@ window.ICB = window.ICB || {};
         from.classList.remove("is-loaded");
       }
       shown = next;
+      /* Line the following one up while this one is on screen. */
+      want((next + 1) % list.length);
     }, every);
   }
 
