@@ -228,9 +228,11 @@ them, so it stays. Taking a branch that ICB currently publishes off
 the website would mean a customer in San Estevan cannot find their own
 agency, and the only thing actually missing is a photograph.
 
-**What we need:** either a photograph of San Estevan, or a word from
-ICB that the agency has in fact closed, in which case it comes out of
-the directory properly rather than just out of the gallery.
+**Status, 4 Nov 2026:** ICB has confirmed the photograph is coming.
+Nothing further is needed and this is not on the list of things to
+chase. Drop the file into assets/img/branches/, set its src in
+js/data/gallery.js, and the last plate in the grid becomes a
+photograph.
 
 ### The street number on the Orange Walk sign
 
@@ -298,32 +300,6 @@ That is now four branch signs carrying an email address the directory
 does not have: Benque Viejo Border, Benque Town Board, Punta Gorda and
 San Juan. It is worth asking ICB for one authoritative list of branch
 email addresses rather than settling them one at a time.
-
-### Does ICB want the bee used on the site
-
-The Orange Walk signboard carries a cartoon bee in a suit, running,
-alongside the ICB mark. It is ICB's own character and it is painted on
-their own signage, so it is not something we introduced. The site does
-not use it anywhere: the assistant is called Bee and uses the ICB mark
-rather than the character.
-
-If ICB wants the character used, we need the artwork rather than a
-photograph of a sign. If they would rather it stayed on the signage,
-nothing changes.
-
----
-
-# What IT came back with, 27 Oct 2026
-
-Answers to the email of earlier that week, and what each one settled.
-
-**The current site is Wix**, built and owned by the agency Darkfire
-Digital, with ICB staff as co-owners. The domain is registered at
-**Hover under ICB's own account**, and its nameservers point at Wix
-(`ns1.wix.com` / `ns2.wix.com`), so the DNS records live inside Wix.
-ICB has admin access to both.
-
-**Email is Google Workspace**, billed separately from Wix.
 
 ## Settled
 

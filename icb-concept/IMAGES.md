@@ -305,6 +305,16 @@ Infinite agent signage. Unlike the spa board cropped out of the Caye
 Caulker frame, those are services the agency itself provides, so they
 stay.
 
+## The bee on the signage
+
+Several ICB signboards carry a cartoon bee in a suit alongside the ICB
+mark, Orange Walk's among them. It is ICB's own character on ICB's own
+signage. The site does not use it: the assistant is called Bee and uses
+the ICB mark rather than the character, and nothing has been lifted out
+of a photograph. Raised with the client on 3 Nov 2026 and closed on
+4 Nov; it is not a question for ICB. Recorded only so nobody spots the
+bee in a photograph later and wonders whether it was missed.
+
 ## Why the preview carries lighter photographs
 
 `build/build-single.js` inlines every asset as base64, which adds a
