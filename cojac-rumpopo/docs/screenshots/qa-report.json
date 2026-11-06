@@ -1,0 +1,354 @@
+[
+  {
+    "viewport": "desktop",
+    "path": "/",
+    "status": 200,
+    "title": "Cojac’s Sumptuous Rumpopo | A Belizean Christmas Tradition",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "desktop",
+    "path": "/our-story",
+    "status": 200,
+    "title": "Our Story — Behind the Bottle | Cojac’s Sumptuous Rumpopo",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "desktop",
+    "path": "/flavours",
+    "status": 200,
+    "title": "Find Your Flavour | Cojac’s Sumptuous Rumpopo",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "desktop",
+    "path": "/our-guarantee",
+    "status": 200,
+    "title": "The Cojac’s Guarantee | What You Can Expect in Every Bottle",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "desktop",
+    "path": "/gallery",
+    "status": 200,
+    "title": "The Sumptuous Gallery | Cojac’s Sumptuous Rumpopo",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "desktop",
+    "path": "/videos-features",
+    "status": 200,
+    "title": "Videos & Features | Cojac’s Sumptuous Rumpopo",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "desktop",
+    "path": "/order",
+    "status": 200,
+    "title": "Your Order Request | Cojac’s Sumptuous Rumpopo",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "desktop",
+    "path": "/faqs",
+    "status": 200,
+    "title": "FAQs | Cojac’s Sumptuous Rumpopo",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "desktop",
+    "path": "/contact",
+    "status": 200,
+    "title": "Connect With Us | Cojac’s Sumptuous Rumpopo",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "desktop",
+    "path": "/privacy",
+    "status": 200,
+    "title": "Privacy, Accessibility & Responsible Enjoyment | Cojac’s Sumptuous Rumpopo",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "desktop",
+    "path": "/does-not-exist",
+    "status": 200,
+    "title": "Page not found | Cojac’s Sumptuous Rumpopo",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "tablet",
+    "path": "/",
+    "status": 200,
+    "title": "Cojac’s Sumptuous Rumpopo | A Belizean Christmas Tradition",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "tablet",
+    "path": "/our-story",
+    "status": 200,
+    "title": "Our Story — Behind the Bottle | Cojac’s Sumptuous Rumpopo",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "tablet",
+    "path": "/flavours",
+    "status": 200,
+    "title": "Find Your Flavour | Cojac’s Sumptuous Rumpopo",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "tablet",
+    "path": "/our-guarantee",
+    "status": 200,
+    "title": "The Cojac’s Guarantee | What You Can Expect in Every Bottle",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "tablet",
+    "path": "/gallery",
+    "status": 200,
+    "title": "The Sumptuous Gallery | Cojac’s Sumptuous Rumpopo",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "tablet",
+    "path": "/videos-features",
+    "status": 200,
+    "title": "Videos & Features | Cojac’s Sumptuous Rumpopo",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "tablet",
+    "path": "/order",
+    "status": 200,
+    "title": "Your Order Request | Cojac’s Sumptuous Rumpopo",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "tablet",
+    "path": "/faqs",
+    "status": 200,
+    "title": "FAQs | Cojac’s Sumptuous Rumpopo",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "tablet",
+    "path": "/contact",
+    "status": 200,
+    "title": "Connect With Us | Cojac’s Sumptuous Rumpopo",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "tablet",
+    "path": "/privacy",
+    "status": 200,
+    "title": "Privacy, Accessibility & Responsible Enjoyment | Cojac’s Sumptuous Rumpopo",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "tablet",
+    "path": "/does-not-exist",
+    "status": 200,
+    "title": "Page not found | Cojac’s Sumptuous Rumpopo",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "mobile",
+    "path": "/",
+    "status": 200,
+    "title": "Cojac’s Sumptuous Rumpopo | A Belizean Christmas Tradition",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "mobile",
+    "path": "/our-story",
+    "status": 200,
+    "title": "Our Story — Behind the Bottle | Cojac’s Sumptuous Rumpopo",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "mobile",
+    "path": "/flavours",
+    "status": 200,
+    "title": "Find Your Flavour | Cojac’s Sumptuous Rumpopo",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "mobile",
+    "path": "/our-guarantee",
+    "status": 200,
+    "title": "The Cojac’s Guarantee | What You Can Expect in Every Bottle",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "mobile",
+    "path": "/gallery",
+    "status": 200,
+    "title": "The Sumptuous Gallery | Cojac’s Sumptuous Rumpopo",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "mobile",
+    "path": "/videos-features",
+    "status": 200,
+    "title": "Videos & Features | Cojac’s Sumptuous Rumpopo",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "mobile",
+    "path": "/order",
+    "status": 200,
+    "title": "Your Order Request | Cojac’s Sumptuous Rumpopo",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "mobile",
+    "path": "/faqs",
+    "status": 200,
+    "title": "FAQs | Cojac’s Sumptuous Rumpopo",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "mobile",
+    "path": "/contact",
+    "status": 200,
+    "title": "Connect With Us | Cojac’s Sumptuous Rumpopo",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "mobile",
+    "path": "/privacy",
+    "status": 200,
+    "title": "Privacy, Accessibility & Responsible Enjoyment | Cojac’s Sumptuous Rumpopo",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "mobile",
+    "path": "/does-not-exist",
+    "status": 200,
+    "title": "Page not found | Cojac’s Sumptuous Rumpopo",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "mobile-small",
+    "path": "/",
+    "status": 200,
+    "title": "Cojac’s Sumptuous Rumpopo | A Belizean Christmas Tradition",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "mobile-small",
+    "path": "/our-story",
+    "status": 200,
+    "title": "Our Story — Behind the Bottle | Cojac’s Sumptuous Rumpopo",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "mobile-small",
+    "path": "/flavours",
+    "status": 200,
+    "title": "Find Your Flavour | Cojac’s Sumptuous Rumpopo",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "mobile-small",
+    "path": "/our-guarantee",
+    "status": 200,
+    "title": "The Cojac’s Guarantee | What You Can Expect in Every Bottle",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "mobile-small",
+    "path": "/gallery",
+    "status": 200,
+    "title": "The Sumptuous Gallery | Cojac’s Sumptuous Rumpopo",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "mobile-small",
+    "path": "/videos-features",
+    "status": 200,
+    "title": "Videos & Features | Cojac’s Sumptuous Rumpopo",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "mobile-small",
+    "path": "/order",
+    "status": 200,
+    "title": "Your Order Request | Cojac’s Sumptuous Rumpopo",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "mobile-small",
+    "path": "/faqs",
+    "status": 200,
+    "title": "FAQs | Cojac’s Sumptuous Rumpopo",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "mobile-small",
+    "path": "/contact",
+    "status": 200,
+    "title": "Connect With Us | Cojac’s Sumptuous Rumpopo",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "mobile-small",
+    "path": "/privacy",
+    "status": 200,
+    "title": "Privacy, Accessibility & Responsible Enjoyment | Cojac’s Sumptuous Rumpopo",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "mobile-small",
+    "path": "/does-not-exist",
+    "status": 200,
+    "title": "Page not found | Cojac’s Sumptuous Rumpopo",
+    "horizontalOverflow": false,
+    "errors": []
+  }
+]

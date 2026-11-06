@@ -1,0 +1,68 @@
+{
+  "home": {
+    "path": "/",
+    "nav": "Home",
+    "title": "Cojac’s Sumptuous Rumpopo | A Belizean Christmas Tradition",
+    "description": "There’s nothing quite like rumpopo season. Rich, creamy Belizean rumpopo in Classic Vanilla and customer-favourite flavours. Request your order on WhatsApp."
+  },
+  "story": {
+    "path": "/our-story",
+    "nav": "Our Story — Behind the Bottle",
+    "short": "Our Story",
+    "title": "Our Story — Behind the Bottle | Cojac’s Sumptuous Rumpopo",
+    "description": "A family recipe, a love for good rumpopo, and a desire to make every bottle something worth sharing. Some traditions are worth preserving, and some are worth reinventing."
+  },
+  "flavours": {
+    "path": "/flavours",
+    "nav": "Find Your Flavour",
+    "short": "Flavours",
+    "title": "Find Your Flavour | Cojac’s Sumptuous Rumpopo",
+    "description": "From Classic Vanilla to customer favourites like Peanut Delight and Pumpkin Spice — choose your rumpopo and send your order request on WhatsApp."
+  },
+  "guarantee": {
+    "path": "/our-guarantee",
+    "nav": "The Cojac’s Guarantee",
+    "short": "Our Guarantee",
+    "title": "The Cojac’s Guarantee | What You Can Expect in Every Bottle",
+    "description": "Rich and creamy. No eggy taste. Filled to the top. More than just Classic Vanilla. What you can expect in every bottle of Cojac’s rumpopo."
+  },
+  "gallery": {
+    "path": "/gallery",
+    "nav": "The Sumptuous Gallery",
+    "short": "Gallery",
+    "title": "The Sumptuous Gallery | Cojac’s Sumptuous Rumpopo",
+    "description": "Bottles, holiday gifting and moments from the Cojac’s rumpopo season."
+  },
+  "videos": {
+    "path": "/videos-features",
+    "nav": "Videos & Features",
+    "short": "Videos & Features",
+    "title": "Videos & Features | Cojac’s Sumptuous Rumpopo",
+    "description": "Television interviews, Christmas features, community events and social media moments from the Cojac’s journey."
+  },
+  "order": {
+    "path": "/order",
+    "nav": "Order",
+    "title": "Your Order Request | Cojac’s Sumptuous Rumpopo",
+    "description": "Review your rumpopo order request and send it to Cojac’s on WhatsApp. Cojac’s confirms availability, price and delivery directly."
+  },
+  "faqs": {
+    "path": "/faqs",
+    "nav": "FAQs",
+    "title": "FAQs | Cojac’s Sumptuous Rumpopo",
+    "description": "How to place a rumpopo order request on WhatsApp, flavours, alcohol and allergy questions."
+  },
+  "contact": {
+    "path": "/contact",
+    "nav": "Connect With Us",
+    "short": "Contact",
+    "title": "Connect With Us | Cojac’s Sumptuous Rumpopo",
+    "description": "Order and enquiries on WhatsApp. Cojac’s Sumptuous Rumpopo, Diego St, Belize City."
+  },
+  "privacy": {
+    "path": "/privacy",
+    "nav": "Privacy & Responsible Enjoyment",
+    "title": "Privacy, Accessibility & Responsible Enjoyment | Cojac’s Sumptuous Rumpopo",
+    "description": "How the Cojac’s website handles your order request, WhatsApp, accessibility and responsible enjoyment of alcohol."
+  }
+}

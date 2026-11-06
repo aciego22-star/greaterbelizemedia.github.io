@@ -1,0 +1,199 @@
+import { useId, useState } from 'react';
+import { Link } from 'react-router-dom';
+import routes from '../content/routes.json';
+import { guarantee } from '../content/copy';
+import { site } from '../content/site';
+import type { FaqItem, GalleryItem, MediaItem } from '../types';
+import { asset } from '../lib/whatsapp';
+import { CreamIcon, DropsIcon, ExternalIcon, FacebookIcon, FullBottleIcon, PlayIcon, WhiskIcon, WhatsAppIcon, YouTubeIcon, ChevronIcon } from './Icons';
+import { Reveal } from './ui';
+import { Sparkle, Sprig } from './Art';
+
+const pillarIcons = [CreamIcon, WhiskIcon, FullBottleIcon, DropsIcon];
+
+export function GuaranteePillars({ large = false }: { large?: boolean }) {
+  return (
+    <ol className={`pillars ${large ? 'pillars--large' : ''}`}>
+      {guarantee.pillars.map((p, i) => {
+        const Icon = pillarIcons[i];
+        return (
+          <Reveal as="li" key={p.id} delay={i * 90} className="pillar">
+            <span className="pillar__num" aria-hidden="true" data-num={`0${i + 1}`} />
+            <Icon className="pillar__icon" />
+            <h3>{p.title}</h3>
+            <p>{p.text}</p>
+          </Reveal>
+        );
+      })}
+    </ol>
+  );
+}
+
+export function HowItWorks() {
+  const steps = [
+    { t: 'Choose your flavours', d: 'Browse the season’s rumpopo and pick your favourites.' },
+    { t: 'Build your order request', d: 'Select quantities, add any notes and review everything in one place.' },
+    { t: 'Send it on WhatsApp', d: 'WhatsApp opens with your request ready. Press Send — that’s it.' },
+    { t: 'Cojac’s confirms', d: 'We confirm availability, final total, payment and delivery or pickup with you directly.' },
+  ];
+  return (
+    <ol className="steps">
+      {steps.map((s, i) => (
+        <Reveal as="li" key={s.t} delay={i * 90} className="step">
+          <span className="step__num">{i + 1}</span>
+          <h3>{s.t}</h3>
+          <p>{s.d}</p>
+        </Reveal>
+      ))}
+    </ol>
+  );
+}
+
+export function FaqAccordion({ items }: { items: FaqItem[] }) {
+  const [open, setOpen] = useState<string | null>(items[0]?.id ?? null);
+  const uid = useId();
+  return (
+    <div className="accordion">
+      {items.map((f) => {
+        const isOpen = open === f.id;
+        return (
+          <div key={f.id} className={`accordion__item ${isOpen ? 'is-open' : ''}`}>
+            <h3>
+              <button
+                type="button"
+                aria-expanded={isOpen}
+                aria-controls={`${uid}-${f.id}`}
+                id={`${uid}-${f.id}-btn`}
+                onClick={() => setOpen(isOpen ? null : f.id)}
+              >
+                <span>{f.question}</span>
+                <ChevronIcon size={20} />
+              </button>
+            </h3>
+            <div id={`${uid}-${f.id}`} role="region" aria-labelledby={`${uid}-${f.id}-btn`} className="accordion__panel" hidden={!isOpen}>
+              <p>{f.answer}</p>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+export function VideoCard({ item }: { item: MediaItem }) {
+  const [playing, setPlaying] = useState(false);
+  if (item.platform === 'youtube' && item.youtubeId) {
+    return (
+      <article className="video-card">
+        <div className="video-card__frame">
+          {playing ? (
+            <iframe
+              src={`https://www.youtube-nocookie.com/embed/${item.youtubeId}?autoplay=1&rel=0`}
+              title={item.title}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              loading="lazy"
+            />
+          ) : (
+            <button type="button" className="video-card__poster" onClick={() => setPlaying(true)} aria-label={`Play video: ${item.title}`}>
+              {item.thumbnail && <img src={asset(item.thumbnail)} alt="" loading="lazy" decoding="async" />}
+              <span className="video-card__play">
+                <PlayIcon size={26} />
+              </span>
+            </button>
+          )}
+        </div>
+        <div className="video-card__body">
+          <p className="video-card__source">
+            <YouTubeIcon size={18} /> YouTube{item.publisher ? ` · ${item.publisher}` : ''}
+          </p>
+          <h3>{item.title}</h3>
+          <a className="text-link" href={item.url} target="_blank" rel="noopener noreferrer">
+            Watch on YouTube <ExternalIcon size={14} style={{ display: 'inline', verticalAlign: '-2px' }} />
+          </a>
+        </div>
+      </article>
+    );
+  }
+  return (
+    <article className="video-card video-card--external">
+      <a className="video-card__frame video-card__fb" href={item.url} target="_blank" rel="noopener noreferrer" aria-label={`${item.title} — opens Facebook in a new tab`}>
+        <Sprig className="video-card__sprig" />
+        <span className="video-card__fb-icon">
+          <FacebookIcon size={30} />
+        </span>
+        <span className="video-card__fb-kind">{item.kind === 'reel' ? 'Facebook Reel' : 'Facebook Video'}</span>
+        <span className="video-card__play video-card__play--sm">
+          <PlayIcon size={20} />
+        </span>
+      </a>
+      <div className="video-card__body">
+        <p className="video-card__source">
+          <FacebookIcon size={18} /> Facebook
+        </p>
+        <h3>{item.title}</h3>
+        <a className="text-link" href={item.url} target="_blank" rel="noopener noreferrer">
+          Watch on Facebook <ExternalIcon size={14} style={{ display: 'inline', verticalAlign: '-2px' }} />
+        </a>
+      </div>
+    </article>
+  );
+}
+
+const tileTones = [
+  ['#6b1525', '#3a0a13'],
+  ['#1f4231', '#0f2219'],
+  ['#8a5537', '#4d2e1e'],
+  ['#a27a3c', '#5a3624'],
+];
+
+export function GalleryTile({ item, index, onOpen }: { item: GalleryItem; index: number; onOpen?: () => void }) {
+  const [a, b] = tileTones[index % tileTones.length];
+  const content = item.src ? (
+    <img src={asset(item.src)} alt={item.alt} loading="lazy" decoding="async" />
+  ) : (
+    <span className="gallery-tile__placeholder" style={{ background: `radial-gradient(80% 60% at 30% 20%, rgba(236,214,166,.25), transparent 60%), linear-gradient(150deg, ${a}, ${b})` }}>
+      <Sparkle size={18} className="gallery-tile__spark" />
+      <span className="gallery-tile__ph-label">Photo coming soon</span>
+    </span>
+  );
+  return (
+    <figure className={`gallery-tile gallery-tile--${item.shape}`}>
+      {onOpen ? (
+        <button type="button" onClick={onOpen} aria-label={`Open ${item.caption}${item.src ? '' : ' (photo coming soon)'}`}>
+          {content}
+        </button>
+      ) : (
+        content
+      )}
+      <figcaption>{item.caption}</figcaption>
+    </figure>
+  );
+}
+
+export function FinalCta() {
+  return (
+    <section className="section final-cta grain on-dark" aria-labelledby="final-cta-title">
+      <div className="final-cta__glow" aria-hidden="true" />
+      <div className="container final-cta__inner">
+        <Reveal>
+          <p className="final-cta__lead">
+            After all, Christmas only comes once a year, and when it does, we believe it should be a little more:
+          </p>
+          <h2 id="final-cta-title" className="final-cta__word">
+            Sumptuous.
+          </h2>
+        </Reveal>
+        <Reveal delay={120} className="btn-row" style={{ justifyContent: 'center' }}>
+          <Link to={routes.flavours.path} className="btn btn--gold">
+            Find Your Flavour
+          </Link>
+          <Link to={routes.order.path} className="btn btn--whatsapp">
+            <WhatsAppIcon /> Order on WhatsApp
+          </Link>
+        </Reveal>
+        <p className="final-cta__fine">{site.alcohol.responsibleMessage}</p>
+      </div>
+    </section>
+  );
+}

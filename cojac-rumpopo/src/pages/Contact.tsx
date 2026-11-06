@@ -1,0 +1,101 @@
+import { Link } from 'react-router-dom';
+import routes from '../content/routes.json';
+import { site } from '../content/site';
+import { usePageMeta } from '../lib/usePageMeta';
+import { generalEnquiryUrl } from '../lib/whatsapp';
+import { FacebookIcon, InstagramIcon, MailIcon, PhoneIcon, PinIcon, WhatsAppIcon } from '../components/Icons';
+import { PageHero, Reveal } from '../components/ui';
+import { Ornament } from '../components/Art';
+
+export default function Contact() {
+  usePageMeta('contact');
+  const enquiry = generalEnquiryUrl();
+  const { contact, social } = site;
+  const socials = [
+    social.facebook && { href: social.facebook, label: 'Facebook', Icon: FacebookIcon },
+    social.instagram && { href: social.instagram, label: 'Instagram', Icon: InstagramIcon },
+  ].filter(Boolean) as { href: string; label: string; Icon: typeof FacebookIcon }[];
+
+  return (
+    <>
+      <PageHero eyebrow="Connect With Us" title="We’d Love to Hear From You" lead="WhatsApp is the quickest way to reach Cojac’s for orders and questions." />
+      <section className="section section--paper">
+        <div className="container contact-grid">
+          <Reveal className="contact-primary card">
+            <span className="contact-primary__icon">
+              <WhatsAppIcon size={34} />
+            </span>
+            <h2 className="display-m">Order &amp; enquiries on WhatsApp</h2>
+            <p>Build your order request on the website and send it in one message, or simply say hello with a question.</p>
+            <div className="btn-row">
+              <Link to={routes.flavours.path} className="btn btn--whatsapp">
+                <WhatsAppIcon /> Start an order request
+              </Link>
+              {enquiry && (
+                <a href={enquiry} target="_blank" rel="noopener noreferrer" className="btn btn--ghost-dark">
+                  Ask a question
+                </a>
+              )}
+            </div>
+          </Reveal>
+
+          <div className="contact-side">
+            <Reveal delay={80} className="contact-item card">
+              <PinIcon size={24} />
+              <div>
+                <h3>Where we’re based</h3>
+                <p>{contact.addressLine}</p>
+                <p className="hint">Delivery, shipping and any pickup arrangements are confirmed on WhatsApp.</p>
+                {contact.mapUrl && (
+                  <a href={contact.mapUrl} target="_blank" rel="noopener noreferrer" className="text-link">
+                    Open map
+                  </a>
+                )}
+              </div>
+            </Reveal>
+            {contact.phoneDisplay && contact.phoneDial && (
+              <Reveal delay={120} className="contact-item card">
+                <PhoneIcon size={24} />
+                <div>
+                  <h3>Phone</h3>
+                  <a href={`tel:+${contact.phoneDial}`} className="text-link">
+                    {contact.phoneDisplay}
+                  </a>
+                </div>
+              </Reveal>
+            )}
+            {contact.email && (
+              <Reveal delay={160} className="contact-item card">
+                <MailIcon size={24} />
+                <div>
+                  <h3>Email</h3>
+                  <a href={`mailto:${contact.email}`} className="text-link">
+                    {contact.email}
+                  </a>
+                </div>
+              </Reveal>
+            )}
+            {socials.length > 0 && (
+              <Reveal delay={200} className="contact-item card">
+                <div>
+                  <h3>Follow the season</h3>
+                  <div className="social-row">
+                    {socials.map(({ href, label, Icon }) => (
+                      <a key={label} href={href} target="_blank" rel="noopener noreferrer" className="social-btn">
+                        <Icon size={20} /> {label}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </Reveal>
+            )}
+          </div>
+        </div>
+        <div className="container--narrow center contact-foot">
+          <Ornament />
+          <p>{site.alcohol.responsibleMessage}</p>
+        </div>
+      </section>
+    </>
+  );
+}

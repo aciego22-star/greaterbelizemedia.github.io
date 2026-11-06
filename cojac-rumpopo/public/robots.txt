@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /launch-notes
+
+Sitemap: https://cojacs-rumpopo.netlify.app/sitemap.xml

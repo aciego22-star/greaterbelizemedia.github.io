@@ -1,0 +1,97 @@
+
+== desktop (qa) ==
+PASS  age notice shown on first visit
+PASS  age notice dismissed
+PASS  cart drawer opens
+PASS  items merge per flavour (2 + 3 = 5)
+PASS  remove line
+PASS  header count = 7 bottles — Your order request, 7 bottles
+PASS  no fictional total shown
+PASS  quantity clamps at 99
+PASS  validation blocks send without fulfilment
+PASS  WhatsApp opened in a new tab via wa.me — https://wa.me/5010000000?text=Hello%20Co
+PASS  message contains: Hello Cojac's Sumptuous Rumpopo! I'd like to reque
+PASS  message contains: - Classic Vanilla — Size to be confirmed × 5 — pri
+PASS  message contains: Note: One bottle wrapped as a gift
+PASS  message contains: - Peanut Delight — Size to be confirmed × 2
+PASS  message contains: *SUBTOTAL:* To be confirmed by Cojac’s
+PASS  message contains: *FULFILMENT:* Delivery in Belize City
+PASS  message contains: *AREA:* Kings Park
+PASS  message contains: *PREFERRED DATE:* Sun, 20 December 2026
+PASS  message contains: *NAME:* QA Tester
+PASS  message contains: "quotes" 🎄
+PASS  message contains: Please confirm availability, final price, payment 
+PASS  message has no Pumpkin Spice (removed)
+PASS  honest feedback shown (no "order confirmed")
+PASS  QA line is flagged
+PASS  copy order details gives feedback
+PASS  clipboard holds the order message
+PASS  order request survives refresh
+PASS  clear empties the order
+PASS  no page errors
+
+== iPhone 13 (qa) ==
+PASS  age notice shown on first visit
+PASS  age notice dismissed
+PASS  cart drawer opens
+PASS  items merge per flavour (2 + 3 = 5)
+PASS  remove line
+PASS  header count = 7 bottles — Your order request, 7 bottles
+PASS  no fictional total shown
+PASS  quantity clamps at 99
+PASS  validation blocks send without fulfilment
+PASS  WhatsApp opened in a new tab via wa.me — https://wa.me/5010000000?text=Hello%20Co
+PASS  message contains: Hello Cojac's Sumptuous Rumpopo! I'd like to reque
+PASS  message contains: - Classic Vanilla — Size to be confirmed × 5 — pri
+PASS  message contains: Note: One bottle wrapped as a gift
+PASS  message contains: - Peanut Delight — Size to be confirmed × 2
+PASS  message contains: *SUBTOTAL:* To be confirmed by Cojac’s
+PASS  message contains: *FULFILMENT:* Delivery in Belize City
+PASS  message contains: *AREA:* Kings Park
+PASS  message contains: *PREFERRED DATE:* Sun, 20 December 2026
+PASS  message contains: *NAME:* QA Tester
+PASS  message contains: "quotes" 🎄
+PASS  message contains: Please confirm availability, final price, payment 
+PASS  message has no Pumpkin Spice (removed)
+PASS  honest feedback shown (no "order confirmed")
+PASS  QA line is flagged
+PASS  copy order details gives feedback
+PASS  order request survives refresh
+PASS  clear empties the order
+PASS  mobile menu lists all 9 sitemap sections — 10 links
+PASS  mobile menu navigation works
+PASS  no page errors
+
+== Pixel 7 (qa) ==
+PASS  age notice shown on first visit
+PASS  age notice dismissed
+PASS  cart drawer opens
+PASS  items merge per flavour (2 + 3 = 5)
+PASS  remove line
+PASS  header count = 7 bottles — Your order request, 7 bottles
+PASS  no fictional total shown
+PASS  quantity clamps at 99
+PASS  validation blocks send without fulfilment
+PASS  WhatsApp opened in a new tab via wa.me — https://wa.me/5010000000?text=Hello%20Co
+PASS  message contains: Hello Cojac's Sumptuous Rumpopo! I'd like to reque
+PASS  message contains: - Classic Vanilla — Size to be confirmed × 5 — pri
+PASS  message contains: Note: One bottle wrapped as a gift
+PASS  message contains: - Peanut Delight — Size to be confirmed × 2
+PASS  message contains: *SUBTOTAL:* To be confirmed by Cojac’s
+PASS  message contains: *FULFILMENT:* Delivery in Belize City
+PASS  message contains: *AREA:* Kings Park
+PASS  message contains: *PREFERRED DATE:* Sun, 20 December 2026
+PASS  message contains: *NAME:* QA Tester
+PASS  message contains: "quotes" 🎄
+PASS  message contains: Please confirm availability, final price, payment 
+PASS  message has no Pumpkin Spice (removed)
+PASS  honest feedback shown (no "order confirmed")
+PASS  QA line is flagged
+PASS  copy order details gives feedback
+PASS  order request survives refresh
+PASS  clear empties the order
+PASS  mobile menu lists all 9 sitemap sections — 10 links
+PASS  mobile menu navigation works
+PASS  no page errors
+
+89/89 checks passed
