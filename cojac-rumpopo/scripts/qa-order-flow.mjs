@@ -13,7 +13,7 @@ const { chromium, devices } = require('playwright');
 
 const BASE = process.env.QA_BASE || 'http://localhost:4173';
 const MODE = process.env.QA_MODE || 'official';
-const EXPECT_NUMBER = process.env.QA_EXPECT_NUMBER || (MODE === 'qa' ? '5010000000' : '5016230447');
+const EXPECT_NUMBER = process.env.QA_EXPECT_NUMBER || (MODE === 'qa' ? '5010000000' : '5016218372');
 const results = [];
 const check = (name, ok, extra = '') => {
   results.push({ name, ok });

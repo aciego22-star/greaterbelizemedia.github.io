@@ -6,7 +6,7 @@ You make all of these edits in plain text files in `src/content/`. After saving,
 
 ---
 
-## 1. The WhatsApp order number (set to +501 623-0447)
+## 1. The WhatsApp order number (set to +501 621-8372)
 
 `src/content/site.ts`:
 
@@ -82,7 +82,11 @@ Enter an amount (e.g. `feeBZD: 10`) to show it at checkout and in the WhatsApp m
 
 ## 6. Contact details and social links (Facebook / Instagram)
 
-`src/content/site.ts → contact` and `social`. Empty values stay hidden. Paste the full profile links, e.g. `facebook: 'https://www.facebook.com/…'` and `instagram: 'https://www.instagram.com/…'`. The WhatsApp, Facebook and Instagram logos appear side by side on Connect With Us, in the footer and in the mobile menu (the WhatsApp number itself is not printed — the logo opens the chat), and the links are added to the structured data for Google.
+`src/content/site.ts → contact` and `social`. Empty values stay hidden. Paste the full profile links, e.g. `facebook: 'https://www.facebook.com/…'` and `instagram: 'https://www.instagram.com/…'`. The WhatsApp, Facebook, Instagram and email logos appear side by side on Connect With Us, in the footer and in the mobile menu (the WhatsApp number itself is not printed — the logo opens the chat), and the links are added to the structured data for Google.
+
+## 6a. Map
+
+`site.ts → contact.mapUrl` (the “Open in Google Maps” link) and `contact.mapEmbedUrl` (the map shown on Connect With Us after a visitor taps “Show map”) both point to Diego St, Belize City. For an exact pin, open the location in Google Maps, choose **Share → Copy link** for `mapUrl`, and **Share → Embed a map** (copy just the `src="…"` address) for `mapEmbedUrl`.
 
 ## 6b. Footer credit
 

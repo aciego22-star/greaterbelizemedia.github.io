@@ -13,8 +13,8 @@ PASS  pickup shows "No charge"
 PASS  pickup hides the area field
 PASS  shipping asks for town/district
 PASS  shipping shows a charge
-PASS  WhatsApp opened in a new tab via wa.me — https://wa.me/5016230447?text=Hello%20Co
-PASS  destination number is 5016230447
+PASS  WhatsApp opened in a new tab via wa.me — https://wa.me/5016218372?text=Hello%20Co
+PASS  destination number is 5016218372
 PASS  message contains: Hello Cojac's Sumptuous Rumpopo! I'd like to reque
 PASS  message contains: - Classic Vanilla — Size to be confirmed × 5 — pri
 PASS  message contains: Note: One bottle wrapped as a gift
@@ -49,8 +49,8 @@ PASS  pickup shows "No charge"
 PASS  pickup hides the area field
 PASS  shipping asks for town/district
 PASS  shipping shows a charge
-PASS  WhatsApp opened in a new tab via wa.me — https://wa.me/5016230447?text=Hello%20Co
-PASS  destination number is 5016230447
+PASS  WhatsApp opened in a new tab via wa.me — https://wa.me/5016218372?text=Hello%20Co
+PASS  destination number is 5016218372
 PASS  message contains: Hello Cojac's Sumptuous Rumpopo! I'd like to reque
 PASS  message contains: - Classic Vanilla — Size to be confirmed × 5 — pri
 PASS  message contains: Note: One bottle wrapped as a gift
@@ -68,7 +68,7 @@ PASS  honest feedback shown (no "order confirmed")
 PASS  copy order details gives feedback
 PASS  order request survives refresh
 PASS  clear empties the order
-PASS  mobile menu lists all 9 sitemap sections — 13 links
+PASS  mobile menu lists all 9 sitemap sections — 14 links
 PASS  mobile menu navigation works
 PASS  no page errors
 
@@ -86,8 +86,8 @@ PASS  pickup shows "No charge"
 PASS  pickup hides the area field
 PASS  shipping asks for town/district
 PASS  shipping shows a charge
-PASS  WhatsApp opened in a new tab via wa.me — https://wa.me/5016230447?text=Hello%20Co
-PASS  destination number is 5016230447
+PASS  WhatsApp opened in a new tab via wa.me — https://wa.me/5016218372?text=Hello%20Co
+PASS  destination number is 5016218372
 PASS  message contains: Hello Cojac's Sumptuous Rumpopo! I'd like to reque
 PASS  message contains: - Classic Vanilla — Size to be confirmed × 5 — pri
 PASS  message contains: Note: One bottle wrapped as a gift
@@ -105,7 +105,7 @@ PASS  honest feedback shown (no "order confirmed")
 PASS  copy order details gives feedback
 PASS  order request survives refresh
 PASS  clear empties the order
-PASS  mobile menu lists all 9 sitemap sections — 13 links
+PASS  mobile menu lists all 9 sitemap sections — 14 links
 PASS  mobile menu navigation works
 PASS  no page errors
 

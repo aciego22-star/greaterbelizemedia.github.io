@@ -30,6 +30,11 @@ export default function Privacy() {
             YouTube videos load only after you press play and use YouTube’s privacy-enhanced mode. Facebook videos open on Facebook. These
             services have their own privacy policies.
           </p>
+          <h2>Maps</h2>
+          <p>
+            The Google Map on our Connect With Us page loads only after you tap “Show map”. Google’s privacy policy then applies to the
+            map.
+          </p>
           <h2>Analytics &amp; cookies</h2>
           <p>This website does not use analytics, advertising trackers or marketing cookies.</p>
           <h2>Responsible enjoyment</h2>

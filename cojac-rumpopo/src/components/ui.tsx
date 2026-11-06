@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type ElementType, type ReactNode, type CSS
 import { Link } from 'react-router-dom';
 import routes from '../content/routes.json';
 import { site } from '../content/site';
-import { FacebookIcon, InstagramIcon, MinusIcon, PlusIcon, WhatsAppIcon } from './Icons';
+import { FacebookIcon, InstagramIcon, MailIcon, MinusIcon, PlusIcon, WhatsAppIcon } from './Icons';
 import { generalEnquiryUrl } from '../lib/whatsapp';
 import { asset } from '../lib/whatsapp';
 import type { Availability } from '../types';
@@ -195,8 +195,8 @@ export function PageHero({
 }
 
 /**
- * WhatsApp, Facebook and Instagram logos side by side. The WhatsApp number is
- * kept behind the logo (opens a chat) rather than printed on the page.
+ * WhatsApp, Facebook, Instagram and email logos side by side. The WhatsApp number
+ * and email address sit behind their logos rather than being printed on the page.
  */
 export function SocialIcons({ size = 'md', light = false }: { size?: 'md' | 'lg'; light?: boolean }) {
   const wa = generalEnquiryUrl();
@@ -204,6 +204,7 @@ export function SocialIcons({ size = 'md', light = false }: { size?: 'md' | 'lg'
     wa && { href: wa, label: 'WhatsApp', cls: 'whatsapp', Icon: WhatsAppIcon },
     site.social.facebook && { href: site.social.facebook, label: 'Facebook', cls: 'facebook', Icon: FacebookIcon },
     site.social.instagram && { href: site.social.instagram, label: 'Instagram', cls: 'instagram', Icon: InstagramIcon },
+    site.contact.email && { href: `mailto:${site.contact.email}`, label: 'Email', cls: 'email', Icon: MailIcon },
   ].filter(Boolean) as { href: string; label: string; cls: string; Icon: typeof WhatsAppIcon }[];
   if (!items.length) return null;
   return (
@@ -212,10 +213,15 @@ export function SocialIcons({ size = 'md', light = false }: { size?: 'md' | 'lg'
         <li key={label}>
           <a
             href={href}
-            target="_blank"
-            rel="noopener noreferrer"
+            {...(label === 'Email' ? {} : { target: '_blank', rel: 'noopener noreferrer' })}
             className={`social-icon social-icon--${cls}`}
-            aria-label={label === 'WhatsApp' ? `Chat with ${site.brandShort} on WhatsApp` : `${site.brandShort} on ${label}`}
+            aria-label={
+              label === 'WhatsApp'
+                ? `Chat with ${site.brandShort} on WhatsApp`
+                : label === 'Email'
+                  ? `Email ${site.brandShort}`
+                  : `${site.brandShort} on ${label}`
+            }
             title={label}
           >
             <Icon size={size === 'lg' ? 26 : 20} />

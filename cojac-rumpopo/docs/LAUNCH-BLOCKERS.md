@@ -6,7 +6,7 @@ Nothing below was invented. Each item is either empty in the config (so it is hi
 
 | # | Item | Where it goes | What the site does now |
 |---|---|---|---|
-| 1 | ~~Official WhatsApp order number~~ — **done: +501 623-0447** | `site.ts → whatsapp.orderNumber` | Send button opens WhatsApp to 5016230447. |
+| 1 | ~~Official WhatsApp order number~~ — **done: +501 621-8372** | `site.ts → whatsapp.orderNumber` | Send button opens WhatsApp to 5016218372. |
 | 2 | **Brand spelling** — the official logo (supplied Nov 2026) reads “Cojac’s”, matching the sitemap. Only needs a final yes from the family. | `site.ts`, `copy.ts`, `catalogue.ts` | Uses “Cojac’s” everywhere. |
 | 3 | **2026/27 flavour list**: which flavours are definitely on this season | `catalogue.ts → confirmedThisSeason`, `active` | Classic Vanilla, Peanut Delight and Pumpkin Spice are shown with “Ask about availability”. |
 | 4 | **Bottle sizes and BZD prices** | `catalogue.ts → variants` | “Bottle sizes are confirmed by Cojac’s” and “Price: To be confirmed by Cojac’s”. No totals are calculated. |
@@ -22,8 +22,8 @@ Nothing below was invented. Each item is either empty in the config (so it is hi
 | 9 | ~~Logo~~ (done: official logo in `public/brand/`). Still needed: bottle label art and official brand colour codes, if any. | `global.css` |
 | 10 | Product photography for each flavour | `public/products/`, `catalogue.ts → images` |
 | 11 | Gallery photos (bottles, packaging, events, memories). Two stills from the Greater Belize Media YouTube features are in place; **confirm the family and the presenter are happy for them to appear.** | `public/gallery/`, `gallery.ts` |
-| 12 | ~~Facebook and Instagram links~~ — **done** (facebook.com/share/1PdoHB7dwv, instagram.com/cojacsumptuousrumpopo). Optional: swap the Facebook *share* link for the page’s permanent address (facebook.com/<page-name>) when known — it is a stronger signal for Google. | `site.ts → social` |
-| 13 | Public phone number and email (optional) | `site.ts → contact` |
+| 12 | ~~Facebook and Instagram links~~ — **done** (facebook.com/share/1EJbfQLwDq, instagram.com/cojacsumptuousrumpopo). Optional: swap the Facebook *share* link for the page’s permanent address (facebook.com/<page-name>) when known — it is a stronger signal for Google. | `site.ts → social` |
+| 13 | ~~Email~~ — **done: rumpopobze@gmail.com** (email logo beside WhatsApp, Facebook, Instagram). Public phone number still optional. | `site.ts → contact` |
 | 14 | Pickup point: pickup is now offered (free); location and time are confirmed on WhatsApp. Diego St is **not** described as the pickup point unless the family confirms it. | `site.ts → fulfilment.pickup`, `contact.mapUrl` |
 | 15 | Payment methods accepted (arranged outside the website) | `faqs.ts → payment-methods` |
 | 16 | Answers to the draft FAQs: prices, sizes, lead time, delivery fees, shipping areas, pickup, storage, gifting, refunds | `faqs.ts` |

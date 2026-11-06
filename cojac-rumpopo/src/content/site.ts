@@ -35,9 +35,9 @@ export const site = {
      * Confirmed Nov 2026. If cleared, the "Send on WhatsApp" button is safely
      * disabled and customers can still copy their order details.
      */
-    orderNumber: '5016230447',
+    orderNumber: '5016218372',
     /** The number itself is not printed on the page — customers tap the WhatsApp logo. */
-    display: '+501 623-0447',
+    display: '+501 621-8372',
   },
 
   // ── Season ─────────────────────────────────────────────────────────────────
@@ -124,12 +124,14 @@ export const site = {
     phoneDisplay: '',
     /** Digits only for tel: links, e.g. "5016000000". */
     phoneDial: '',
-    email: '',
-    /** Approved map link for a confirmed pickup address. Empty = hidden. */
-    mapUrl: '',
+    email: 'rumpopobze@gmail.com',
+    /** Google Maps link for the address above. Empty = hidden. */
+    mapUrl: 'https://www.google.com/maps/search/?api=1&query=Diego+St%2C+Belize+City%2C+Belize',
+    /** Google Maps embed (loaded only when the visitor taps "Show map"). */
+    mapEmbedUrl: 'https://www.google.com/maps?q=Diego+St,+Belize+City,+Belize&z=16&output=embed',
   },
   social: {
-    facebook: 'https://www.facebook.com/share/1PdoHB7dwv/',
+    facebook: 'https://www.facebook.com/share/1EJbfQLwDq/',
     instagram: 'https://www.instagram.com/cojacsumptuousrumpopo/',
   },
 

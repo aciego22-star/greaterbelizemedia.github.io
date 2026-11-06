@@ -3,10 +3,10 @@ import routes from '../content/routes.json';
 import { site } from '../content/site';
 import { usePageMeta } from '../lib/usePageMeta';
 import { generalEnquiryUrl } from '../lib/whatsapp';
-import { MailIcon, PhoneIcon, PinIcon, WhatsAppIcon } from '../components/Icons';
+import { PhoneIcon, PinIcon, WhatsAppIcon } from '../components/Icons';
 import { PageHero, Reveal, SocialIcons } from '../components/ui';
 import { Ornament } from '../components/Art';
-import { AtAGlance } from '../components/sections';
+import { AtAGlance, LocationMap } from '../components/sections';
 
 export default function Contact() {
   usePageMeta('contact');
@@ -48,8 +48,8 @@ export default function Contact() {
                 <p>{contact.addressLine}</p>
                 <p className="hint">Delivery, shipping and any pickup arrangements are confirmed on WhatsApp.</p>
                 {contact.mapUrl && (
-                  <a href={contact.mapUrl} target="_blank" rel="noopener noreferrer" className="text-link">
-                    Open map
+                  <a href="#map" className="text-link">
+                    See the map ↓
                   </a>
                 )}
               </div>
@@ -65,19 +65,13 @@ export default function Contact() {
                 </div>
               </Reveal>
             )}
-            {contact.email && (
-              <Reveal delay={160} className="contact-item card">
-                <MailIcon size={24} />
-                <div>
-                  <h3>Email</h3>
-                  <a href={`mailto:${contact.email}`} className="text-link">
-                    {contact.email}
-                  </a>
-                </div>
-              </Reveal>
-            )}
           </div>
         </div>
+        {contact.mapUrl && (
+          <div className="container" style={{ marginTop: 56 }}>
+            <LocationMap />
+          </div>
+        )}
         <div className="container--narrow" style={{ marginTop: 56 }}>
           <AtAGlance />
         </div>

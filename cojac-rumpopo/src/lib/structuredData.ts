@@ -61,6 +61,7 @@ export function organization(): Json {
       },
     }),
     ...(site.contact.email && { email: site.contact.email }),
+    ...(site.contact.mapUrl && { hasMap: site.contact.mapUrl }),
     ...(contactPoint.length && { contactPoint }),
     ...(sameAs.length && { sameAs }),
     brand: { '@type': 'Brand', name: site.brandShort, logo: abs('/brand/cojacs-logo-square-512.jpg'), slogan: site.logoTagline },

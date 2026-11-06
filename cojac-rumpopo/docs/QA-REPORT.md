@@ -9,7 +9,7 @@ Date: 6 November 2026 · Build: production (`npm run build`) and QA (`VITE_QA_WH
 | Area | Result |
 |---|---|
 | Unit tests: order maths, WhatsApp message (incl. delivery/pickup/shipping charges), number validation, season dates (`npm test`) | **16 / 16 pass** |
-| End-to-end order flow with the business number 5016230447, on 3 devices (`scripts/qa-order-flow.mjs`); wa.me requests intercepted, so nothing was sent | **104 / 104 checks pass** — see `qa-order-flow-official.log`. Covers pickup = “No charge” with no area field, shipping = town/district plus a charge, and delivery = Belize City area plus a charge. |
+| End-to-end order flow with the business number 5016218372, on 3 devices (`scripts/qa-order-flow.mjs`); wa.me requests intercepted, so nothing was sent | **104 / 104 checks pass** — see `qa-order-flow-official.log`. Covers pickup = “No charge” with no area field, shipping = town/district plus a charge, and delivery = Belize City area plus a charge. |
 | Page sweep: 11 URLs × 4 viewports (1440, 834, 390, 360 px) | **44 / 44**: no console errors, no failed requests, no horizontal overflow — see `screenshots/qa-report.json` |
 | Accessibility: axe-core WCAG 2.0/2.1 A and AA, 10 pages × desktop and mobile | **0 violations** (after contrast fixes for the WhatsApp green, small gold labels and story numerals) |
 | TypeScript strict type check | Pass |

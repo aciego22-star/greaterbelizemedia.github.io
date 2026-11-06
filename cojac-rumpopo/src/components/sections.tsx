@@ -8,7 +8,7 @@ import { media } from '../content/media';
 import { getCatalogue } from '../content/catalogue';
 import { formatLongDate } from '../lib/season';
 import { asset } from '../lib/whatsapp';
-import { CreamIcon, DropsIcon, ExternalIcon, FacebookIcon, FullBottleIcon, PlayIcon, WhiskIcon, WhatsAppIcon, YouTubeIcon, ChevronIcon } from './Icons';
+import { CreamIcon, DropsIcon, ExternalIcon, FacebookIcon, FullBottleIcon, PinIcon, PlayIcon, WhiskIcon, WhatsAppIcon, YouTubeIcon, ChevronIcon } from './Icons';
 import { Logo, Reveal } from './ui';
 import { Sparkle, Sprig } from './Art';
 
@@ -263,5 +263,82 @@ export function AtAGlance() {
         ))}
       </dl>
     </section>
+  );
+}
+
+/**
+ * Google Map of the business location. The map only loads when the visitor asks
+ * for it (faster page, no Google tracking until then); "Open in Google Maps"
+ * always works, including for directions on a phone.
+ */
+export function LocationMap() {
+  const [show, setShow] = useState(false);
+  const { contact } = site;
+  return (
+    <section className="map-card card" id="map" aria-labelledby="map-title">
+      <div className="map-card__info">
+        <p className="eyebrow">Find us</p>
+        <h2 id="map-title" className="display-m">
+          {contact.addressLine}
+        </h2>
+        <p>{site.brandName} is based on {contact.addressLine}, Belize. Delivery, pickup and shipping are arranged on WhatsApp.</p>
+        <div className="btn-row">
+          <a href={contact.mapUrl} target="_blank" rel="noopener noreferrer" className="btn">
+            <PinIcon size={18} /> Open in Google Maps
+          </a>
+        </div>
+      </div>
+      <div className="map-card__frame">
+        {show && !buildFlags.noEmbeds && contact.mapEmbedUrl ? (
+          <iframe
+            src={contact.mapEmbedUrl}
+            title={`Map of ${contact.addressLine}`}
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            allowFullScreen
+          />
+        ) : (
+          <div className="map-card__placeholder">
+            <MapArt />
+            {buildFlags.noEmbeds || !contact.mapEmbedUrl ? (
+              <a href={contact.mapUrl} target="_blank" rel="noopener noreferrer" className="btn btn--gold">
+                <PinIcon size={18} /> View on Google Maps
+              </a>
+            ) : (
+              <button type="button" className="btn btn--gold" onClick={() => setShow(true)}>
+                <PinIcon size={18} /> Show map
+              </button>
+            )}
+            <small>Map by Google</small>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
+/** Stylised street-map illustration used before the live map loads. */
+function MapArt() {
+  return (
+    <svg className="map-card__art" viewBox="0 0 400 260" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+      <rect width="400" height="260" fill="#efe4cf" />
+      <path d="M0 210 C80 190 120 230 210 200 S340 150 400 170 V260 H0Z" fill="#cfe0d6" />
+      <g stroke="#fff" strokeWidth="10" fill="none" strokeLinecap="round">
+        <path d="M-10 80 L410 120" />
+        <path d="M120 -10 L160 270" />
+        <path d="M280 -10 L250 270" />
+        <path d="M-10 170 L410 150" />
+      </g>
+      <g stroke="#e3d3b4" strokeWidth="4" fill="none">
+        <path d="M40 -10 L60 270" />
+        <path d="M-10 30 L410 50" />
+        <path d="M340 -10 L360 270" />
+      </g>
+      <g transform="translate(205 100)">
+        <ellipse cx="0" cy="34" rx="14" ry="5" fill="#000" opacity=".15" />
+        <path d="M0 34 C-6 22 -18 12 -18 0 A18 18 0 0 1 18 0 C18 12 6 22 0 34Z" fill="#9b2335" />
+        <circle r="6.5" fill="#fff" />
+      </g>
+    </svg>
   );
 }

@@ -4,7 +4,7 @@ import routes from '../content/routes.json';
 import { buildFlags, site } from '../content/site';
 import { useCart } from '../context/CartContext';
 import { shouldShowBanner } from '../lib/season';
-import { BagIcon, ChevronIcon, CloseIcon, MailIcon, MenuIcon, PhoneIcon, PinIcon, WhatsAppIcon } from './Icons';
+import { BagIcon, ChevronIcon, CloseIcon, MenuIcon, PhoneIcon, PinIcon, WhatsAppIcon } from './Icons';
 import { Sparkle } from './Art';
 import { Logo, SocialIcons } from './ui';
 import { CartDrawer } from './CartDrawer';
@@ -213,10 +213,15 @@ function Footer() {
                 <li><a href={`tel:+${contact.phoneDial}`}><PhoneIcon size={18} /> {contact.phoneDisplay}</a></li>
               )}
               {contact.addressLine && (
-                <li><span><PinIcon size={18} /> {contact.addressLine}</span></li>
-              )}
-              {contact.email && (
-                <li><a href={`mailto:${contact.email}`}><MailIcon size={18} /> {contact.email}</a></li>
+                <li>
+                  {contact.mapUrl ? (
+                    <a href={contact.mapUrl} target="_blank" rel="noopener noreferrer" aria-label={`${contact.addressLine} — open in Google Maps`}>
+                      <PinIcon size={18} /> {contact.addressLine}
+                    </a>
+                  ) : (
+                    <span><PinIcon size={18} /> {contact.addressLine}</span>
+                  )}
+                </li>
               )}
             </ul>
           </div>
