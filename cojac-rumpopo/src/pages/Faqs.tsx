@@ -9,10 +9,10 @@ import { FaqAccordion } from '../components/sections';
 import type { FaqItem } from '../types';
 
 const groups: { id: FaqItem['category']; title: string }[] = [
+  { id: 'general', title: 'About rumpopo & Cojac’s' },
   { id: 'ordering', title: 'Ordering' },
   { id: 'product', title: 'Our rumpopo' },
   { id: 'delivery', title: 'Delivery & pickup' },
-  { id: 'general', title: 'General' },
 ];
 
 export default function Faqs() {

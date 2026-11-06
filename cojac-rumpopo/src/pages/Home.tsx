@@ -12,7 +12,7 @@ import { BottleArt, CinnamonArt, GlassArt, Ornament, Sparkle, Sprig } from '../c
 import { ArrowIcon, WhatsAppIcon } from '../components/Icons';
 import { Reveal, SectionHead } from '../components/ui';
 import { FlavourVisual } from '../components/FlavourCard';
-import { FaqAccordion, FinalCta, GalleryTile, GuaranteePillars, HowItWorks, VideoCard } from '../components/sections';
+import { FaqAccordion, FinalCta, GalleryTile, GuaranteePillars, HowItWorks, TrustStrip, VideoCard } from '../components/sections';
 
 function Hero() {
   const all = getCatalogue();
@@ -189,12 +189,14 @@ function FeaturedFlavours() {
 
 export default function Home() {
   usePageMeta('home');
-  const faqs = publishedFaqs().slice(0, 4);
+  const homeFaqIds = ['what-is-rumpopo', 'how-to-order', 'delivery-areas', 'is-order-confirmed', 'contains-alcohol'];
+  const faqs = homeFaqIds.map((id) => publishedFaqs().find((f) => f.id === id)).filter((f): f is NonNullable<typeof f> => !!f);
   const videos = media.filter((m) => m.featured && m.platform === 'youtube').slice(0, 2);
   return (
     <>
       <Hero />
       <SeasonStatus />
+      <TrustStrip />
       <StoryStrip />
       <FeaturedFlavours />
 

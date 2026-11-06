@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import routes from '../content/routes.json';
 import { buildFlags, site } from '../content/site';
@@ -21,13 +21,14 @@ export default function Order() {
   const enabledOptions = site.fulfilment.filter((f) => f.enabled);
   const fulfilment = enabledOptions.find((f) => f.id === details.fulfilment);
 
-  const [ageOk, setAgeOk] = useState(() => {
+  const [ageOk, setAgeOk] = useState(false);
+  useEffect(() => {
     try {
-      return localStorage.getItem(AGE_KEY) === 'yes';
+      if (localStorage.getItem(AGE_KEY) === 'yes') setAgeOk(true);
     } catch {
-      return false;
+      /* storage unavailable */
     }
-  });
+  }, []);
   const [attempted, setAttempted] = useState(false);
   const [status, setStatus] = useState<'idle' | 'opened' | 'copied' | 'copy-failed'>('idle');
 

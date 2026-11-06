@@ -7,7 +7,7 @@ PASS  items merge per flavour (2 + 3 = 5)
 PASS  remove line
 PASS  header count = 7 bottles — Your order request, 7 bottles
 PASS  no fictional total shown
-PASS  quantity clamps at 99
+PASS  quantity clamps at 99 — 99
 PASS  send button disabled without an approved number
 PASS  missing-number explanation shown
 PASS  no wa.me link anywhere on page
@@ -25,7 +25,7 @@ PASS  items merge per flavour (2 + 3 = 5)
 PASS  remove line
 PASS  header count = 7 bottles — Your order request, 7 bottles
 PASS  no fictional total shown
-PASS  quantity clamps at 99
+PASS  quantity clamps at 99 — 99
 PASS  send button disabled without an approved number
 PASS  missing-number explanation shown
 PASS  no wa.me link anywhere on page
@@ -44,7 +44,7 @@ PASS  items merge per flavour (2 + 3 = 5)
 PASS  remove line
 PASS  header count = 7 bottles — Your order request, 7 bottles
 PASS  no fictional total shown
-PASS  quantity clamps at 99
+PASS  quantity clamps at 99 — 99
 PASS  send button disabled without an approved number
 PASS  missing-number explanation shown
 PASS  no wa.me link anywhere on page

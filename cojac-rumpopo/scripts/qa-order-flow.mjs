@@ -76,7 +76,8 @@ for (const [label, opts] of [
   const big = page.getByRole('spinbutton', { name: 'Quantity of Peanut Delight' });
   await big.fill('5000');
   await big.blur();
-  check('quantity clamps at 99', (await big.inputValue()) === '99');
+  await page.waitForTimeout(200);
+  check('quantity clamps at 99', (await big.inputValue()) === '99', await big.inputValue());
   await big.fill('2');
   await big.blur();
 

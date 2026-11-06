@@ -119,6 +119,8 @@ export interface MediaItem {
   sourceTitle?: string;
   publisher?: string;
   thumbnail?: string;
+  /** Upload date on YouTube (YYYY-MM-DD). Enables VideoObject structured data. */
+  uploadDate?: string;
   featured: boolean;
 }
 

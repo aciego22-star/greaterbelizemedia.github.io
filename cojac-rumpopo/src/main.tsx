@@ -1,5 +1,5 @@
 import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
+import { createRoot, hydrateRoot } from 'react-dom/client';
 import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 import '@fontsource-variable/fraunces/full.css';
 import '@fontsource-variable/fraunces/full-italic.css';
@@ -17,7 +17,8 @@ document.documentElement.classList.remove('no-js');
 const isArtifact = import.meta.env.VITE_ARTIFACT === 'true';
 const basename = import.meta.env.BASE_URL.replace(/\/$/, '') || undefined;
 
-createRoot(document.getElementById('root')!).render(
+const container = document.getElementById('root')!;
+const app = (
   <StrictMode>
     {isArtifact ? (
       <MemoryRouter>
@@ -32,5 +33,17 @@ createRoot(document.getElementById('root')!).render(
         </CartProvider>
       </BrowserRouter>
     )}
-  </StrictMode>,
+  </StrictMode>
 );
+
+// Pages are pre-rendered to HTML at build time (see scripts/prerender-routes.mjs).
+// Hydrate that HTML when present; otherwise (dev server, artifact preview) render fresh.
+if (container.firstElementChild && !isArtifact) {
+  hydrateRoot(container, app, {
+    // If build-time content differs (e.g. the season closed since the last deploy),
+    // React quietly re-renders on the client — no need to alarm the console.
+    onRecoverableError: () => {},
+  });
+} else {
+  createRoot(container).render(app);
+}

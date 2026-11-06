@@ -14,6 +14,9 @@ Date: 6 November 2026 · Build: production (`npm run build`) and QA (`VITE_QA_WH
 | Page sweep: 11 URLs × 4 viewports (1440, 834, 390, 360 px) | **44 / 44**: no console errors, no failed requests, no horizontal overflow — see `screenshots/qa-report.json` |
 | Accessibility: axe-core WCAG 2.0/2.1 A and AA, 10 pages × desktop and mobile | **0 violations** (after contrast fixes for the WhatsApp green, small gold labels and story numerals) |
 | TypeScript strict type check | Pass |
+| **SEO update (Nov 2026):** full-HTML pre-render of all 10 pages | One `<h1>` per page. 190–1,050 words of content per page are readable with JavaScript off. Valid JSON-LD on every page (Organization, WebSite, WebPage type, BreadcrumbList; FAQPage on /faqs). The 404 page has no canonical and is `noindex`. |
+| Favicon | `/favicon.ico` (16/32/48) + 48/96/192/512 PNG + 180 apple-touch-icon + manifest, linked in the static homepage `<head>` |
+| Hydration | Pre-rendered HTML is hydrated, and the saved cart and age answer are restored after mount. The order flow was re-run: 89/89 (QA number) and 50/50 (no number) pass. The sweep over the served static files found no console errors. |
 | Direct load / refresh of every route | Each route is pre-rendered to its own `index.html` with its own title, description and canonical link. Unknown paths → `404.html` with a 404 status (`_redirects` and `netlify.toml`). |
 
 ## Order-flow checks (each run on desktop, iPhone 13 and Pixel 7)

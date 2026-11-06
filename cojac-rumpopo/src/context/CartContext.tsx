@@ -10,7 +10,8 @@ type Action =
   | { type: 'setQty'; key: string; quantity: number }
   | { type: 'setNote'; key: string; note: string }
   | { type: 'remove'; key: string }
-  | { type: 'clear' };
+  | { type: 'clear' }
+  | { type: 'restore'; lines: CartLine[] };
 
 function variantOf(productId: string, variantId: string | null) {
   const p = getCatalogue().find((x) => x.id === productId);
@@ -41,6 +42,8 @@ function reducer(state: CartLine[], a: Action): CartLine[] {
       return state.filter((l) => l.key !== a.key);
     case 'clear':
       return [];
+    case 'restore':
+      return a.lines;
   }
 }
 
@@ -81,20 +84,30 @@ interface CartCtx {
 const Ctx = createContext<CartCtx | null>(null);
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const initial = useRef(load());
-  const [lines, dispatch] = useReducer(reducer, initial.current.lines);
-  const [details, setDetailsState] = useState<OrderDetails>(initial.current.details);
+  // Start empty so the pre-rendered HTML and the first browser render match
+  // (hydration); the saved order request is restored right after mounting.
+  const [lines, dispatch] = useReducer(reducer, []);
+  const [details, setDetailsState] = useState<OrderDetails>(emptyDetails);
+  const [restored, setRestored] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [toast, setToast] = useState('');
   const toastTimer = useRef<number>();
 
   useEffect(() => {
+    const saved = load();
+    if (saved.lines.length) dispatch({ type: 'restore', lines: saved.lines });
+    setDetailsState(saved.details);
+    setRestored(true);
+  }, []);
+
+  useEffect(() => {
+    if (!restored) return;
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({ lines, details }));
     } catch {
       /* private mode — cart still works for this visit */
     }
-  }, [lines, details]);
+  }, [lines, details, restored]);
 
   const announce = useCallback((msg: string) => {
     setToast(msg);

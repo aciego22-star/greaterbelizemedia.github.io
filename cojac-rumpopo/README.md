@@ -31,7 +31,7 @@ npm run preview      # serve dist/ at http://localhost:4173
 
 1. In Netlify, choose **Add new site → Import from Git** and pick this repository.
 2. Set **Base directory** to `cojac-rumpopo`. `netlify.toml` already sets the build command (`npm ci && npm run build`) and the publish folder (`dist`).
-3. Deploy. Each page is pre-rendered to its own folder (`/flavours/index.html` and so on), so direct links and refreshes work. Unknown URLs get the branded 404 page with a real 404 status.
+3. Deploy. Each page is pre-rendered to full HTML in its own folder (`/flavours/index.html` and so on), with structured data, so direct links, refreshes and crawlers all work without JavaScript. Unknown URLs get the branded 404 page with a real 404 status.
 
 **Drag-and-drop option:** run `npm run build`, then drag the `dist/` folder (or the supplied ZIP) onto Netlify’s deploy screen.
 
@@ -54,4 +54,4 @@ public/                    favicon, social image, robots.txt, video thumbnails; 
 docs/                      handover guide, launch blockers, QA report, screenshots
 ```
 
-See **docs/HANDOVER.md** for step-by-step edits the family can make each season.
+See **docs/HANDOVER.md** for step-by-step edits the family can make each season, and **docs/SEO.md** for search, answer-engine and AI visibility (including getting the favicon into Google).

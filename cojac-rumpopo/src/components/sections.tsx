@@ -1,9 +1,12 @@
-import { useId, useState } from 'react';
+import { useId, useState, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import routes from '../content/routes.json';
 import { guarantee } from '../content/copy';
 import { buildFlags, site } from '../content/site';
 import type { FaqItem, GalleryItem, MediaItem } from '../types';
+import { media } from '../content/media';
+import { getCatalogue } from '../content/catalogue';
+import { formatLongDate } from '../lib/season';
 import { asset } from '../lib/whatsapp';
 import { CreamIcon, DropsIcon, ExternalIcon, FacebookIcon, FullBottleIcon, PlayIcon, WhiskIcon, WhatsAppIcon, YouTubeIcon, ChevronIcon } from './Icons';
 import { Logo, Reveal } from './ui';
@@ -202,6 +205,63 @@ export function FinalCta() {
         </Reveal>
         <p className="final-cta__fine">{site.alcohol.responsibleMessage}</p>
       </div>
+    </section>
+  );
+}
+
+/** Verified trust points only (family description, supplied address, published media). */
+export function TrustStrip() {
+  const publisher = media.find((m) => m.publisher)?.publisher;
+  const items = [
+    'Belizean family recipe',
+    `${site.experienceStatement[0].toUpperCase()}${site.experienceStatement.slice(1)} of rumpopo`,
+    site.contact.addressLine && `Based on ${site.contact.addressLine}`,
+    publisher && `Featured by ${publisher.replace(/\s*\|.*$/, '')}`,
+  ].filter(Boolean) as string[];
+  return (
+    <section className="trust-strip" aria-label="About Cojac’s">
+      <ul className="container">
+        {items.map((t) => (
+          <li key={t}>
+            <Sparkle size={11} />
+            {t}
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+/** "At a glance" facts — short, consistent, machine-friendly answers built from site.ts. */
+export function AtAGlance() {
+  const facts: [string, ReactNode][] = [
+    ['What', 'Rumpopo (rum popo) — a rich, creamy Belizean Christmas drink that contains alcohol'],
+    ['Who', `${site.brandName}, a Belizean family business`],
+    ['Where', `${site.contact.addressLine}, Belize`],
+    ['Experience', `Sharing rumpopo for ${site.experienceStatement}`],
+    ['Flavours', getCatalogue().map((p) => p.name).join(', ') + ', plus seasonal creations and new releases'],
+    ['Season', `Order requests open until ${formatLongDate(site.season.seasonClosesOn)}`],
+    [
+      'How to order',
+      <>
+        Choose flavours on <Link to={routes.flavours.path}>Find Your Flavour</Link>, then send your order request on WhatsApp — Cojac’s confirms availability, price and delivery directly.
+      </>,
+    ],
+    ['Payment', 'Arranged directly with Cojac’s — no online payment on this website'],
+  ];
+  return (
+    <section className="glance" aria-labelledby="glance-title">
+      <h2 id="glance-title" className="display-m">
+        {site.brandShort} at a glance
+      </h2>
+      <dl>
+        {facts.map(([k, v]) => (
+          <div key={k}>
+            <dt>{k}</dt>
+            <dd>{v}</dd>
+          </div>
+        ))}
+      </dl>
     </section>
   );
 }

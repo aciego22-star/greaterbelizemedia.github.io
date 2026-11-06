@@ -1,55 +1,87 @@
 /**
- * Post-build step: writes dist/<route>/index.html for every page with its own
- * <title>, description and canonical URL, plus 404.html and sitemap.xml.
- * This makes every URL load directly (and on refresh) on Netlify or any
- * static host — no server needed.
+ * Post-build step (runs after the client build and the SSR build):
+ *  - writes dist/<route>/index.html for every page with its full content rendered
+ *    to HTML (readable without JavaScript by search engines, answer engines and
+ *    AI crawlers), its own title/description/canonical/social tags and JSON-LD;
+ *  - writes 404.html, sitemap.xml, robots.txt (with the live domain) and llms.txt.
+ * No server is needed: every URL is a static file on Netlify or any static host.
  */
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, rmSync } from 'node:fs';
 import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const dist = join(root, 'dist');
-const routes = JSON.parse(readFileSync(join(root, 'src/content/routes.json'), 'utf8'));
-const siteTs = readFileSync(join(root, 'src/content/site.ts'), 'utf8');
-const siteUrl = (siteTs.match(/siteUrl:\s*'([^']+)'/)?.[1] ?? '').replace(/\/$/, '');
+
 if (process.env.VITE_ARTIFACT === 'true') {
   console.log('Artifact build: single index.html, no route pre-rendering.');
   process.exit(0);
 }
-const template = readFileSync(join(dist, 'index.html'), 'utf8');
+
+const ssr = await import(pathToFileURL(join(root, 'dist-ssr', 'entry-server.js')).href);
+const { routes, render, jsonLdScript, llmsTxt } = ssr;
+const siteTs = readFileSync(join(root, 'src/content/site.ts'), 'utf8');
+const siteUrl = (siteTs.match(/siteUrl:\s*'([^']+)'/)?.[1] ?? '').replace(/\/$/, '');
+const PLACEHOLDER = /https:\/\/cojacs-rumpopo\.netlify\.app/g;
+const template = readFileSync(join(dist, 'index.html'), 'utf8').replace(PLACEHOLDER, siteUrl);
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+const setMeta = (html, attr, key, value) =>
+  html.replace(new RegExp(`(<meta ${attr}="${key}" content=")[^"]*(")`), `$1${esc(value)}$2`);
 
-function render({ title, description, path }, { noindex = false } = {}) {
+function page({ key, title, description, path, noindex = false }) {
   const url = siteUrl + (path === '/' ? '/' : path);
-  let html = template
-    .replace(/<title>[^<]*<\/title>/, `<title>${esc(title)}</title>`)
-    .replace(/(<meta name="description" content=")[^"]*(")/, `$1${esc(description)}$2`)
-    .replace(/(<meta property="og:title" content=")[^"]*(")/, `$1${esc(title)}$2`)
-    .replace(/(<meta property="og:description" content=")[^"]*(")/, `$1${esc(description)}$2`)
-    .replace(/(<meta property="og:url" content=")[^"]*(")/, `$1${url}$2`)
+  let html = template.replace(/<title>[^<]*<\/title>/, `<title>${esc(title)}</title>`);
+  html = setMeta(html, 'name', 'description', description);
+  html = setMeta(html, 'property', 'og:title', title);
+  html = setMeta(html, 'property', 'og:description', description);
+  html = setMeta(html, 'property', 'og:url', url);
+  html = setMeta(html, 'name', 'twitter:title', title);
+  html = setMeta(html, 'name', 'twitter:description', description);
+  html = html
     .replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${url}$2`)
-    .replace(/https:\/\/cojacs-rumpopo\.netlify\.app/g, siteUrl);
-  if (noindex) html = html.replace('<!--app-head-->', '<meta name="robots" content="noindex" />');
+    .replace(/(<link rel="alternate" hreflang="en-BZ" href=")[^"]*(")/, `$1${url}$2`)
+    .replace(/(<link rel="alternate" hreflang="x-default" href=")[^"]*(")/, `$1${url}$2`);
+  if (noindex) {
+    html = html
+      .replace(/<meta name="robots" content="[^"]*" \/>/, '<meta name="robots" content="noindex, follow" />')
+      .replace(/\s*<link rel="canonical"[^>]*>/, '')
+      .replace(/\s*<link rel="alternate" hreflang="[^"]*"[^>]*>/g, '');
+  }
+  const head = key ? jsonLdScript(key) : '';
+  html = html.replace('<!--app-head-->', head);
+  html = html.replace('<div id="root"></div>', `<div id="root">${render(path)}</div>`);
   return html;
 }
 
 const today = new Date().toISOString().slice(0, 10);
 const urls = [];
-for (const r of Object.values(routes)) {
+for (const [key, r] of Object.entries(routes)) {
   const out = r.path === '/' ? join(dist, 'index.html') : join(dist, r.path.slice(1), 'index.html');
   mkdirSync(dirname(out), { recursive: true });
-  writeFileSync(out, render(r));
-  urls.push(`  <url><loc>${siteUrl}${r.path === '/' ? '/' : r.path}</loc><lastmod>${today}</lastmod></url>`);
+  writeFileSync(out, page({ key, ...r }));
+  const loc = `${siteUrl}${r.path === '/' ? '/' : r.path}`;
+  const image =
+    key === 'home'
+      ? `\n    <image:image><image:loc>${siteUrl}/brand/cojacs-logo-square-512.jpg</image:loc></image:image>\n    <image:image><image:loc>${siteUrl}/og-image.jpg</image:loc></image:image>`
+      : '';
+  const priority = key === 'home' ? '1.0' : key === 'flavours' || key === 'order' ? '0.9' : key === 'privacy' ? '0.3' : '0.7';
+  urls.push(`  <url>\n    <loc>${loc}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>${priority}</priority>${image}\n  </url>`);
 }
-writeFileSync(join(dist, '404.html'), render({ title: 'Page not found | Cojac’s Sumptuous Rumpopo', description: 'This page could not be found.', path: '/404' }, { noindex: true }));
+writeFileSync(
+  join(dist, '404.html'),
+  page({ title: 'Page not found | Cojac’s Sumptuous Rumpopo', description: 'This page could not be found.', path: '/404', noindex: true }),
+);
 if (process.env.VITE_SHOW_LAUNCH_NOTES === 'true') {
   mkdirSync(join(dist, 'launch-notes'), { recursive: true });
-  writeFileSync(join(dist, 'launch-notes', 'index.html'), render({ title: 'Launch notes (internal)', description: 'Internal', path: '/launch-notes' }, { noindex: true }));
+  writeFileSync(join(dist, 'launch-notes', 'index.html'), page({ title: 'Launch notes (internal)', description: 'Internal', path: '/launch-notes', noindex: true }));
 }
-const robots = readFileSync(join(dist, 'robots.txt'), 'utf8').replace(/https:\/\/cojacs-rumpopo\.netlify\.app/g, siteUrl);
-writeFileSync(join(dist, 'robots.txt'), robots);
-writeFileSync(join(dist, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>\n`);
+writeFileSync(
+  join(dist, 'sitemap.xml'),
+  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n${urls.join('\n')}\n</urlset>\n`,
+);
+writeFileSync(join(dist, 'robots.txt'), readFileSync(join(dist, 'robots.txt'), 'utf8').replace(PLACEHOLDER, siteUrl));
+writeFileSync(join(dist, 'llms.txt'), llmsTxt());
 writeFileSync(join(dist, '_redirects'), '/*  /404.html  404\n');
-console.log(`Pre-rendered ${urls.length} routes + 404.html + sitemap.xml for ${siteUrl}`);
+rmSync(join(root, 'dist-ssr'), { recursive: true, force: true });
+console.log(`Pre-rendered ${urls.length} pages (full HTML + JSON-LD) + 404.html, sitemap.xml, robots.txt, llms.txt for ${siteUrl}`);

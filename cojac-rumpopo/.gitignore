@@ -3,3 +3,4 @@ dist
 *.zip
 .DS_Store
 dist-artifact
+dist-ssr

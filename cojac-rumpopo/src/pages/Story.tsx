@@ -6,7 +6,7 @@ import { site } from '../content/site';
 import { usePageMeta } from '../lib/usePageMeta';
 import { BottleArt, Ornament, Sprig } from '../components/Art';
 import { PageHero, Reveal } from '../components/ui';
-import { FinalCta } from '../components/sections';
+import { AtAGlance, FinalCta } from '../components/sections';
 
 export default function Story() {
   usePageMeta('story');
@@ -107,6 +107,11 @@ export default function Story() {
         </div>
       </section>
 
+      <section className="section section--tight section--cream">
+        <div className="container--narrow">
+          <AtAGlance />
+        </div>
+      </section>
       <FinalCta />
     </>
   );

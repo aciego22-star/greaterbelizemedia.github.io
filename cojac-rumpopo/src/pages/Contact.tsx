@@ -6,6 +6,7 @@ import { generalEnquiryUrl } from '../lib/whatsapp';
 import { FacebookIcon, InstagramIcon, MailIcon, PhoneIcon, PinIcon, WhatsAppIcon } from '../components/Icons';
 import { PageHero, Reveal } from '../components/ui';
 import { Ornament } from '../components/Art';
+import { AtAGlance } from '../components/sections';
 
 export default function Contact() {
   usePageMeta('contact');
@@ -90,6 +91,9 @@ export default function Contact() {
               </Reveal>
             )}
           </div>
+        </div>
+        <div className="container--narrow" style={{ marginTop: 56 }}>
+          <AtAGlance />
         </div>
         <div className="container--narrow center contact-foot">
           <Ornament />

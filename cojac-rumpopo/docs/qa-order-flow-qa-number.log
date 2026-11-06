@@ -7,7 +7,7 @@ PASS  items merge per flavour (2 + 3 = 5)
 PASS  remove line
 PASS  header count = 7 bottles — Your order request, 7 bottles
 PASS  no fictional total shown
-PASS  quantity clamps at 99
+PASS  quantity clamps at 99 — 99
 PASS  validation blocks send without fulfilment
 PASS  WhatsApp opened in a new tab via wa.me — https://wa.me/5010000000?text=Hello%20Co
 PASS  message contains: Hello Cojac's Sumptuous Rumpopo! I'd like to reque
@@ -38,7 +38,7 @@ PASS  items merge per flavour (2 + 3 = 5)
 PASS  remove line
 PASS  header count = 7 bottles — Your order request, 7 bottles
 PASS  no fictional total shown
-PASS  quantity clamps at 99
+PASS  quantity clamps at 99 — 99
 PASS  validation blocks send without fulfilment
 PASS  WhatsApp opened in a new tab via wa.me — https://wa.me/5010000000?text=Hello%20Co
 PASS  message contains: Hello Cojac's Sumptuous Rumpopo! I'd like to reque
@@ -70,7 +70,7 @@ PASS  items merge per flavour (2 + 3 = 5)
 PASS  remove line
 PASS  header count = 7 bottles — Your order request, 7 bottles
 PASS  no fictional total shown
-PASS  quantity clamps at 99
+PASS  quantity clamps at 99 — 99
 PASS  validation blocks send without fulfilment
 PASS  WhatsApp opened in a new tab via wa.me — https://wa.me/5010000000?text=Hello%20Co
 PASS  message contains: Hello Cojac's Sumptuous Rumpopo! I'd like to reque

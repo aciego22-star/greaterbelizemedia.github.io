@@ -4,8 +4,61 @@
  * write the answer, then switch `published` to true.
  */
 import type { FaqItem } from '../types';
+import { site } from './site';
+import { formatLongDate } from '../lib/season';
+
+// Answers below are built from the verified settings in site.ts, so they stay
+// consistent with the rest of the website (and with what AI assistants read).
+const fulfilmentList = site.fulfilment
+  .filter((f) => f.enabled && f.id !== 'advise')
+  .map((f) => f.label.toLowerCase())
+  .join(' and ');
 
 export const faqs: FaqItem[] = [
+  {
+    id: 'what-is-rumpopo',
+    category: 'general',
+    published: true,
+    question: 'What is rumpopo?',
+    answer:
+      'Rumpopo (also spelled rum popo) is a rich, creamy holiday drink that contains alcohol. In Belize it’s a much-loved part of Christmas — the bottle brought out when family visits, the gift shared between friends and colleagues, and the drink poured at workplace celebrations.',
+  },
+  {
+    id: 'rumpopo-or-rum-popo',
+    category: 'general',
+    published: true,
+    question: 'Is it “rumpopo” or “rum popo”?',
+    answer: 'Both. Rumpopo and rum popo are two spellings of the same festive drink. Our brand name is Cojac’s Sumptuous Rumpopo.',
+  },
+  {
+    id: 'who-is-cojacs',
+    category: 'general',
+    published: true,
+    question: 'Who makes Cojac’s Sumptuous Rumpopo?',
+    answer: `Cojac’s is a Belizean family business based on ${site.contact.addressLine}. Our story began with a family recipe and a love for good rumpopo, and the family has been sharing its rumpopo for ${site.experienceStatement}.`,
+  },
+  {
+    id: 'what-makes-it-different',
+    category: 'general',
+    published: true,
+    question: 'What makes Cojac’s rumpopo different?',
+    answer:
+      'The Cojac’s Guarantee: rich and creamy (never thin or watered down), no eggy taste, filled to the top, and more than just Classic Vanilla — with customer favourites like Peanut Delight and Pumpkin Spice alongside seasonal creations and new releases.',
+  },
+  {
+    id: 'when-to-order',
+    category: 'ordering',
+    published: true,
+    question: 'When can I order Cojac’s rumpopo?',
+    answer: `Rumpopo is a seasonal Christmas treat. This season, order requests are open until ${formatLongDate(site.season.seasonClosesOn)}.`,
+  },
+  {
+    id: 'delivery-areas',
+    category: 'delivery',
+    published: !!fulfilmentList,
+    question: 'Do you deliver?',
+    answer: `During the season, Cojac’s offers ${fulfilmentList}. Fees, schedules and eligibility for your area are confirmed with you on WhatsApp when you send your order request.`,
+  },
   {
     id: 'how-to-order',
     category: 'ordering',
