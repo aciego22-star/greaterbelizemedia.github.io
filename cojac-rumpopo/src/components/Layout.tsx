@@ -4,10 +4,9 @@ import routes from '../content/routes.json';
 import { buildFlags, site } from '../content/site';
 import { useCart } from '../context/CartContext';
 import { shouldShowBanner } from '../lib/season';
-import { generalEnquiryUrl } from '../lib/whatsapp';
-import { BagIcon, ChevronIcon, CloseIcon, FacebookIcon, InstagramIcon, MailIcon, MenuIcon, PhoneIcon, PinIcon, WhatsAppIcon } from './Icons';
+import { BagIcon, ChevronIcon, CloseIcon, MailIcon, MenuIcon, PhoneIcon, PinIcon, WhatsAppIcon } from './Icons';
 import { Sparkle } from './Art';
-import { Logo } from './ui';
+import { Logo, SocialIcons } from './ui';
 import { CartDrawer } from './CartDrawer';
 import { AgeNotice } from './AgeNotice';
 
@@ -113,6 +112,7 @@ function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
         <Link to={routes.order.path} className="btn btn--whatsapp btn--block" onClick={onClose}>
           <WhatsAppIcon /> Order on WhatsApp
         </Link>
+        <SocialIcons light />
         <p>{site.alcohol.responsibleMessage}</p>
       </div>
     </div>
@@ -171,8 +171,7 @@ function Header() {
 }
 
 function Footer() {
-  const enquiry = generalEnquiryUrl();
-  const { contact, social } = site;
+  const { contact } = site;
   return (
     <footer className="site-footer grain">
       <div className="container">
@@ -208,20 +207,8 @@ function Footer() {
           </nav>
           <div>
             <h2>Connect</h2>
+            <SocialIcons light />
             <ul className="site-footer__connect">
-              {social.facebook && (
-                <li><a href={social.facebook} target="_blank" rel="noopener noreferrer"><FacebookIcon size={18} /> Facebook</a></li>
-              )}
-              {social.instagram && (
-                <li><a href={social.instagram} target="_blank" rel="noopener noreferrer"><InstagramIcon size={18} /> Instagram</a></li>
-              )}
-              <li>
-                {enquiry ? (
-                  <a href={enquiry} target="_blank" rel="noopener noreferrer"><WhatsAppIcon size={18} /> WhatsApp {site.whatsapp.display}</a>
-                ) : (
-                  <Link to={routes.order.path}><WhatsAppIcon size={18} /> WhatsApp order requests</Link>
-                )}
-              </li>
               {contact.phoneDisplay && contact.phoneDial && (
                 <li><a href={`tel:+${contact.phoneDial}`}><PhoneIcon size={18} /> {contact.phoneDisplay}</a></li>
               )}

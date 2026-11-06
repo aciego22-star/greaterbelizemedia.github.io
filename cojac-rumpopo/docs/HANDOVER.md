@@ -82,7 +82,7 @@ Enter an amount (e.g. `feeBZD: 10`) to show it at checkout and in the WhatsApp m
 
 ## 6. Contact details and social links (Facebook / Instagram)
 
-`src/content/site.ts → contact` and `social`. Empty values stay hidden. Paste the full profile links, e.g. `facebook: 'https://www.facebook.com/…'` and `instagram: 'https://www.instagram.com/…'`. Brand-coloured Facebook and Instagram buttons then appear on Connect With Us and in the footer, and the links are added to the structured data for Google.
+`src/content/site.ts → contact` and `social`. Empty values stay hidden. Paste the full profile links, e.g. `facebook: 'https://www.facebook.com/…'` and `instagram: 'https://www.instagram.com/…'`. The WhatsApp, Facebook and Instagram logos appear side by side on Connect With Us, in the footer and in the mobile menu (the WhatsApp number itself is not printed — the logo opens the chat), and the links are added to the structured data for Google.
 
 ## 6b. Footer credit
 

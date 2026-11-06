@@ -22,7 +22,7 @@ Nothing below was invented. Each item is either empty in the config (so it is hi
 | 9 | ~~Logo~~ (done: official logo in `public/brand/`). Still needed: bottle label art and official brand colour codes, if any. | `global.css` |
 | 10 | Product photography for each flavour | `public/products/`, `catalogue.ts → images` |
 | 11 | Gallery photos (bottles, packaging, events, memories). Two stills from the Greater Belize Media YouTube features are in place; **confirm the family and the presenter are happy for them to appear.** | `public/gallery/`, `gallery.ts` |
-| 12 | **Exact Facebook and Instagram profile URLs.** Facebook and Instagram block automated access and web search found no official pages, so they weren’t guessed. Once added, brand-coloured Facebook/Instagram buttons appear on Connect With Us and in the footer. | `site.ts → social` |
+| 12 | ~~Facebook and Instagram links~~ — **done** (facebook.com/share/1PdoHB7dwv, instagram.com/cojacsumptuousrumpopo). Optional: swap the Facebook *share* link for the page’s permanent address (facebook.com/<page-name>) when known — it is a stronger signal for Google. | `site.ts → social` |
 | 13 | Public phone number and email (optional) | `site.ts → contact` |
 | 14 | Pickup point: pickup is now offered (free); location and time are confirmed on WhatsApp. Diego St is **not** described as the pickup point unless the family confirms it. | `site.ts → fulfilment.pickup`, `contact.mapUrl` |
 | 15 | Payment methods accepted (arranged outside the website) | `faqs.ts → payment-methods` |

@@ -3,19 +3,15 @@ import routes from '../content/routes.json';
 import { site } from '../content/site';
 import { usePageMeta } from '../lib/usePageMeta';
 import { generalEnquiryUrl } from '../lib/whatsapp';
-import { FacebookIcon, InstagramIcon, MailIcon, PhoneIcon, PinIcon, WhatsAppIcon } from '../components/Icons';
-import { PageHero, Reveal } from '../components/ui';
+import { MailIcon, PhoneIcon, PinIcon, WhatsAppIcon } from '../components/Icons';
+import { PageHero, Reveal, SocialIcons } from '../components/ui';
 import { Ornament } from '../components/Art';
 import { AtAGlance } from '../components/sections';
 
 export default function Contact() {
   usePageMeta('contact');
   const enquiry = generalEnquiryUrl();
-  const { contact, social } = site;
-  const socials = [
-    social.facebook && { href: social.facebook, label: 'Facebook', Icon: FacebookIcon },
-    social.instagram && { href: social.instagram, label: 'Instagram', Icon: InstagramIcon },
-  ].filter(Boolean) as { href: string; label: string; Icon: typeof FacebookIcon }[];
+  const { contact } = site;
 
   return (
     <>
@@ -28,13 +24,10 @@ export default function Contact() {
             </span>
             <h2 className="display-m">Order &amp; enquiries on WhatsApp</h2>
             <p>Build your order request on the website and send it in one message, or simply say hello with a question.</p>
-            {enquiry && (
-              <p className="contact-primary__number">
-                <a href={enquiry} target="_blank" rel="noopener noreferrer">
-                  {site.whatsapp.display}
-                </a>
-              </p>
-            )}
+            <div className="contact-primary__social">
+              <p className="contact-primary__social-label">Message or follow us</p>
+              <SocialIcons size="lg" />
+            </div>
             <div className="btn-row">
               <Link to={routes.flavours.path} className="btn btn--whatsapp">
                 <WhatsAppIcon /> Start an order request
@@ -80,23 +73,6 @@ export default function Contact() {
                   <a href={`mailto:${contact.email}`} className="text-link">
                     {contact.email}
                   </a>
-                </div>
-              </Reveal>
-            )}
-            {socials.length > 0 && (
-              <Reveal delay={200} className="contact-item card">
-                <div>
-                  <h3>Follow us</h3>
-                  <div className="social-row">
-                    {socials.map(({ href, label, Icon }) => (
-                      <a key={label} href={href} target="_blank" rel="noopener noreferrer" className={`social-btn social-btn--${label.toLowerCase()}`} aria-label={`${site.brandShort} on ${label} (opens in a new tab)`}>
-                        <span className="social-btn__icon">
-                          <Icon size={22} />
-                        </span>
-                        {label}
-                      </a>
-                    ))}
-                  </div>
                 </div>
               </Reveal>
             )}

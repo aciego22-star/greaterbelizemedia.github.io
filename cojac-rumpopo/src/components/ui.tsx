@@ -2,7 +2,8 @@ import { useEffect, useRef, useState, type ElementType, type ReactNode, type CSS
 import { Link } from 'react-router-dom';
 import routes from '../content/routes.json';
 import { site } from '../content/site';
-import { MinusIcon, PlusIcon } from './Icons';
+import { FacebookIcon, InstagramIcon, MinusIcon, PlusIcon, WhatsAppIcon } from './Icons';
+import { generalEnquiryUrl } from '../lib/whatsapp';
 import { asset } from '../lib/whatsapp';
 import type { Availability } from '../types';
 
@@ -190,5 +191,37 @@ export function PageHero({
         {children}
       </div>
     </header>
+  );
+}
+
+/**
+ * WhatsApp, Facebook and Instagram logos side by side. The WhatsApp number is
+ * kept behind the logo (opens a chat) rather than printed on the page.
+ */
+export function SocialIcons({ size = 'md', light = false }: { size?: 'md' | 'lg'; light?: boolean }) {
+  const wa = generalEnquiryUrl();
+  const items = [
+    wa && { href: wa, label: 'WhatsApp', cls: 'whatsapp', Icon: WhatsAppIcon },
+    site.social.facebook && { href: site.social.facebook, label: 'Facebook', cls: 'facebook', Icon: FacebookIcon },
+    site.social.instagram && { href: site.social.instagram, label: 'Instagram', cls: 'instagram', Icon: InstagramIcon },
+  ].filter(Boolean) as { href: string; label: string; cls: string; Icon: typeof WhatsAppIcon }[];
+  if (!items.length) return null;
+  return (
+    <ul className={`social-icons social-icons--${size} ${light ? 'social-icons--light' : ''}`}>
+      {items.map(({ href, label, cls, Icon }) => (
+        <li key={label}>
+          <a
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`social-icon social-icon--${cls}`}
+            aria-label={label === 'WhatsApp' ? `Chat with ${site.brandShort} on WhatsApp` : `${site.brandShort} on ${label}`}
+            title={label}
+          >
+            <Icon size={size === 'lg' ? 26 : 20} />
+          </a>
+        </li>
+      ))}
+    </ul>
   );
 }

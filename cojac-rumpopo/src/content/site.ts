@@ -36,7 +36,7 @@ export const site = {
      * disabled and customers can still copy their order details.
      */
     orderNumber: '5016230447',
-    /** How the number is shown on the page. */
+    /** The number itself is not printed on the page — customers tap the WhatsApp logo. */
     display: '+501 623-0447',
   },
 
@@ -129,8 +129,8 @@ export const site = {
     mapUrl: '',
   },
   social: {
-    facebook: '',
-    instagram: '',
+    facebook: 'https://www.facebook.com/share/1PdoHB7dwv/',
+    instagram: 'https://www.instagram.com/cojacsumptuousrumpopo/',
   },
 
   // ── Website credit (footer) ─────────────────────────────────────────────────

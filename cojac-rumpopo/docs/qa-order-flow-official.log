@@ -68,7 +68,7 @@ PASS  honest feedback shown (no "order confirmed")
 PASS  copy order details gives feedback
 PASS  order request survives refresh
 PASS  clear empties the order
-PASS  mobile menu lists all 9 sitemap sections — 10 links
+PASS  mobile menu lists all 9 sitemap sections — 13 links
 PASS  mobile menu navigation works
 PASS  no page errors
 
@@ -105,7 +105,7 @@ PASS  honest feedback shown (no "order confirmed")
 PASS  copy order details gives feedback
 PASS  order request survives refresh
 PASS  clear empties the order
-PASS  mobile menu lists all 9 sitemap sections — 10 links
+PASS  mobile menu lists all 9 sitemap sections — 13 links
 PASS  mobile menu navigation works
 PASS  no page errors
 
