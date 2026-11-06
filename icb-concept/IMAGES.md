@@ -26,10 +26,10 @@ visual has been supplied.
 | About page hero | HQ photograph |
 | ICB in Motion featured video | The compressed campaign film + poster frame |
 | Hero slide 3 | Nationwide Cash Express, two supplied compositions |
-| Branch gallery (22 of 23 tiles) | Everything except San Estevan |
+| Branch gallery (23 of 23 tiles) | Every location |
 | Insurance page hero | Supplied photograph of an ICB office building |
 | Resources page hero | Supplied photograph: the curved red facade against the sky |
-| Gallery page banner | Every branch photograph, cycling on a five second timer |
+| Gallery page banner | All 23 gallery photographs, cycling on a five second timer |
 
 ## The Gallery banner: art direction, and why 16:9
 
@@ -200,14 +200,16 @@ files and the folder to write into:
 
 ## Still to supply: branch photography
 
-All 22 locations have a tile, so the grid is the whole network rather
-than a selection of it, and 21 of them carry a photograph (23 tiles in
-all, because the Corporate Office has two).
+All 22 locations have a tile and every tile carries a photograph (23
+tiles in all, because the Corporate Office has two). No designed plates
+are left in the grid.
 
-**San Estevan Agency is the only one left.** It renders a designed
-location plate built from the verified branch record, and it upgrades
-to a photograph the moment a file is dropped into
-`assets/img/branches/` and `src` is set in `js/data/gallery.js`.
+**One to swap: San Estevan.** The frame there is the village welcome
+sign rather than the agency office, so the tile is captioned "San
+Estevan Village" instead of taking "San Estevan Agency" from the branch
+record. See below. When ICB send a photograph of the office, replace
+the file and delete that entry's `caption` in `js/data/gallery.js`;
+nothing else changes.
 
 Staff, event and community photography is also welcome; it goes in a
 second row of the same grid with no layout change.
@@ -304,6 +306,33 @@ The frames for San Juan, Velasquez and Moro carry Digi, BEL and
 Infinite agent signage. Unlike the spa board cropped out of the Caye
 Caulker frame, those are services the agency itself provides, so they
 stay.
+
+## San Estevan, and why its tile is captioned as a village
+
+The frame supplied for San Estevan on 6 Nov 2026 is the pink and yellow
+"WELCOME TO SAN ESTEVAN" monument at the entrance to the village, with
+a Lions International crest on top and an old clapboard house behind
+it. There is no ICB building and no ICB sign anywhere in it.
+
+Every other tile in the grid takes its caption from the branch record,
+so this one would have read "San Estevan Agency" over a picture of a
+house that, as far as anything in the frame shows, is not ICB's office.
+That is an assertion the photograph does not support, so the entry
+carries a `caption` of its own and the tile reads **"San Estevan
+Village"**. The district subtitle is unchanged, and the location is
+still San Estevan Agency everywhere else on the site: the branch
+finder, the map, the call directory and the structured data.
+
+This is the rule the head of `js/data/gallery.js` already sets out, that
+a photograph is captioned as a place rather than as a branch.
+
+Trimmed at the bottom to take the foreground lawn out, which also keeps
+the whole monument inside the phone crop. At 212 KB it is one of the
+heavier files, for the same reason Moro and Seine Bight are: grass and
+foliage across most of the frame.
+
+To finish it: drop ICB's photograph of the office in, delete the
+`caption`, and the tile reads like every other one.
 
 ## The bee on the signage
 

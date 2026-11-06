@@ -81,6 +81,13 @@ JOBS = [
     # Trims the grass and the step in the foreground.
     ("ICB_Velasquez_Agency_Landscape.jpg", "velasquez", (0.0, 0.0, 1.0, 0.85)),
     ("ICB_Yellow_Village_Branch_Landscape.jpg", "seine-bight", None),
+
+    # Batch four, 6 Nov 2026. A single frame for San Estevan: the
+    # village welcome sign, not the agency office, which is why the
+    # tile is captioned as the village. Trimmed at the bottom to take
+    # the foreground lawn out and to keep the monument whole in the
+    # phone crop.
+    ("ICB_San_Estevan_Village_Landscape.png", "san-estevan", (0.0, 0.0, 1.0, 0.87)),
 ]
 
 os.makedirs(OUT, exist_ok=True)

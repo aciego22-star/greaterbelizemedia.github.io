@@ -230,9 +230,19 @@ agency, and the only thing actually missing is a photograph.
 
 **Status, 4 Nov 2026:** ICB has confirmed the photograph is coming.
 Nothing further is needed and this is not on the list of things to
-chase. Drop the file into assets/img/branches/, set its src in
-js/data/gallery.js, and the last plate in the grid becomes a
-photograph.
+chase.
+
+**Status, 6 Nov 2026:** a frame went in so that no tile in the grid is
+left as a plate, but it is the village welcome sign at the entrance to
+San Estevan, not the agency office, and there is no ICB building or ICB
+sign in it. The tile is therefore captioned "San Estevan Village"
+rather than "San Estevan Agency", so the grid does not assert that the
+house behind the sign is ICB's office. The location reads as San
+Estevan Agency everywhere else on the site.
+
+When ICB's photograph of the office arrives, replace the file and
+delete that entry's caption in js/data/gallery.js. Nothing else
+changes.
 
 ### The street number on the Orange Walk sign
 

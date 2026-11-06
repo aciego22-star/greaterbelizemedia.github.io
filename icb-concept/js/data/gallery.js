@@ -37,18 +37,14 @@
    plate that is already in place instead of changing the shape of the
    grid.
 
-   Every photograph ICB has supplied is in. One tile is still a plate:
-   SAN ESTEVAN AGENCY, which is in ICB's revised directory of 22 with a
-   landline and an email but has not been photographed. Its file goes
-   in assets/img/branches/ like the rest, named for its locationId.
-
-   (Filenames that do not exist yet are written without their extension
-   in these comments on purpose. The single-file build scans the bundle
-   for asset paths and stops if it finds one it cannot inline, and a
-   comment is part of the bundle.)
+   Every tile now carries a photograph. San Estevan is the one to watch:
+   the frame there is the village welcome sign rather than the agency
+   office, so it is captioned as the village until ICB's own photograph
+   of the office arrives.
 
    INTERNAL TODO (not client-facing):
-   - Ask ICB for the San Estevan photograph. It is the last one.
+   - Swap in the San Estevan agency photograph when ICB send it, and
+     drop that entry's caption so the tile reads as the branch again.
    - Ask ICB for staff, event and community photography for a second
      row.
    ========================================================================== */
@@ -120,7 +116,26 @@ ICB.DATA.gallery = {
       src: "assets/img/branches/orange-walk.webp",
       alt: "The Insurance Corporation of Belize Orange Walk Branch on Belize Corozal Road"
     },
-    { locationId: "san-estevan",           src: null },
+    /* The village welcome sign, not the agency office: there is no ICB
+       building and no ICB sign anywhere in this frame.
+
+       So it is captioned as the place rather than as the branch, which
+       is the rule the top of this file already sets out. Every other
+       tile takes its caption from the branch record and reads "San
+       Estevan Agency"; this one says "San Estevan Village", because
+       that is what the photograph shows and the grid should not assert
+       that the house behind the sign is ICB's office.
+
+       INTERNAL TODO (not client-facing): swap in the agency photograph
+       when ICB send it, and delete the caption below so the tile falls
+       back to the branch name like every other one. Nothing else
+       changes. */
+    {
+      locationId: "san-estevan",
+      src: "assets/img/branches/san-estevan.webp",
+      caption: { en: "San Estevan Village", es: "Aldea San Estevan" },
+      alt: "The welcome sign at the entrance to San Estevan Village, Orange Walk District"
+    },
 
     /* Belize District and the cayes. */
     /* Identified from the signboard over the entrance, which reads
