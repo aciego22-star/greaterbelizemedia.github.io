@@ -98,7 +98,10 @@ function SeasonStatus() {
               .map((f) => (
                 <li key={f.id}>
                   <Sparkle size={12} />
-                  <span>{f.label}</span>
+                  <span>
+                    {f.label}
+                    {f.short && <small className="season-card__note"> — {f.short}</small>}
+                  </span>
                 </li>
               ))}
           </ul>
@@ -106,7 +109,7 @@ function SeasonStatus() {
             <Link to={routes.flavours.path} className="btn">
               Start your order
             </Link>
-            <p className="season-card__fine">Delivery and shipping details are confirmed by Cojac’s on WhatsApp.</p>
+            <p className="season-card__fine">Delivery and shipping charges are confirmed by Cojac’s on WhatsApp.</p>
           </div>
         </Reveal>
       </div>

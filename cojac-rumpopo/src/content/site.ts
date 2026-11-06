@@ -32,11 +32,12 @@ export const site = {
     /**
      * Official order number in international format, digits only
      * (e.g. Belize numbers start with 501 followed by 7 digits).
-     * LAUNCH BLOCKER: empty until the family confirms the number.
-     * While empty, the "Send on WhatsApp" button is safely disabled and
-     * customers can still copy their order details.
+     * Confirmed Nov 2026. If cleared, the "Send on WhatsApp" button is safely
+     * disabled and customers can still copy their order details.
      */
-    orderNumber: '',
+    orderNumber: '5016230447',
+    /** How the number is shown on the page. */
+    display: '+501 623-0447',
   },
 
   // ── Season ─────────────────────────────────────────────────────────────────
@@ -70,37 +71,44 @@ export const site = {
   fulfilment: [
     {
       id: 'delivery',
-      label: 'Delivery in Belize City',
-      description: 'Delivery arrangements and any fee are confirmed by Cojac’s on WhatsApp.',
+      label: 'Delivery',
+      short: 'within Belize City limits',
+      description: 'Within Belize City limits. A delivery charge applies.',
       enabled: true,
       asksForArea: true,
-      areaLabel: 'Area / neighbourhood in Belize City',
-      feeBZD: null,
-    },
-    {
-      id: 'shipping',
-      label: 'Countrywide shipping',
-      description: 'Shipping to other parts of Belize. Eligibility, schedule and fees are confirmed by Cojac’s.',
-      enabled: true,
-      asksForArea: true,
-      areaLabel: 'Town / village and district',
-      feeBZD: null,
+      areaLabel: 'Area / neighbourhood (within Belize City limits)',
+      chargeLabel: 'Delivery charge',
+      feeBZD: null, // Charge applies — enter the approved amount, e.g. 10
     },
     {
       id: 'pickup',
       label: 'Pickup',
-      description: 'Collect your order at an arranged time and place.',
-      enabled: false, // LAUNCH BLOCKER: enable only once a pickup point is approved.
+      short: 'no charge',
+      description: 'No charge. Pickup location and time are confirmed by Cojac’s on WhatsApp.',
+      enabled: true,
       asksForArea: false,
-      feeBZD: null,
+      chargeLabel: 'Pickup',
+      feeBZD: 0, // 0 = no charge
+    },
+    {
+      id: 'shipping',
+      label: 'Shipping',
+      short: 'out-district, to other districts',
+      description: 'Out-district — to other districts outside Belize City. A shipping charge applies.',
+      enabled: true,
+      asksForArea: true,
+      areaLabel: 'Town / village and district',
+      chargeLabel: 'Shipping charge',
+      feeBZD: null, // Charge applies — enter the approved amount
     },
     {
       id: 'advise',
       label: 'Not sure yet — please advise',
       description: 'Cojac’s will suggest the best option for you.',
-      enabled: true,
+      enabled: false,
       asksForArea: true,
       areaLabel: 'Where are you located?',
+      chargeLabel: 'Charge',
       feeBZD: null,
     },
   ] as FulfilmentOption[],
@@ -123,6 +131,12 @@ export const site = {
   social: {
     facebook: '',
     instagram: '',
+  },
+
+  // ── Website credit (footer) ─────────────────────────────────────────────────
+  credit: {
+    label: 'Website development in Belize by Austere Automations',
+    url: 'https://austereautomations.com/website-development-belize',
   },
 
   // ── Responsible enjoyment ──────────────────────────────────────────────────

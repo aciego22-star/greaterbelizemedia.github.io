@@ -2,15 +2,18 @@
  * End-to-end test of the WhatsApp order-request flow (no messages are sent:
  * wa.me requests are intercepted and blocked).
  *
- *   QA_MODE=qa       build with VITE_QA_WHATSAPP=<fake number> — checks the full hand-off
- *   QA_MODE=nonumber production-like build — checks the send button is safely disabled
+ *   QA_MODE=official production build with the business number (default) — full hand-off;
+ *                    wa.me requests are intercepted and blocked, so nothing is ever sent
+ *   QA_MODE=qa       build with VITE_QA_WHATSAPP=<fake number> and no official number
+ *   QA_MODE=nonumber build with the official number cleared — send button safely disabled
  */
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { chromium, devices } = require('playwright');
 
 const BASE = process.env.QA_BASE || 'http://localhost:4173';
-const MODE = process.env.QA_MODE || 'qa';
+const MODE = process.env.QA_MODE || 'official';
+const EXPECT_NUMBER = process.env.QA_EXPECT_NUMBER || (MODE === 'qa' ? '5010000000' : '5016230447');
 const results = [];
 const check = (name, ok, extra = '') => {
   results.push({ name, ok });
@@ -82,12 +85,21 @@ for (const [label, opts] of [
   await big.blur();
 
   const send = page.getByRole('button', { name: /send order request on whatsapp/i }).or(page.getByRole('link', { name: /send order request on whatsapp/i }));
-  if (MODE === 'qa') {
+  if (MODE === 'qa' || MODE === 'official') {
     // Validation: fulfilment required
     await page.evaluate(() => localStorage.removeItem('x'));
     await send.click();
-    check('validation blocks send without fulfilment', (await page.getByText('Please choose how you’d like to receive your order.').count()) === 1 && waUrls.length === 0);
-    await page.getByText('Delivery in Belize City', { exact: true }).click();
+    check('validation blocks send without fulfilment', (await page.getByText('Please choose delivery, pickup or shipping.').count()) === 1 && waUrls.length === 0);
+    // Pickup: no charge, no area
+    await page.locator('.option-card', { hasText: 'Pickup' }).click();
+    check('pickup shows "No charge"', (await page.locator('.summary-totals').innerText()).includes('No charge'));
+    check('pickup hides the area field', (await page.getByLabel(/area \/ neighbourhood|town \/ village/i).count()) === 0);
+    // Shipping: out-district destination + charge
+    await page.locator('.option-card', { hasText: 'Out-district' }).click();
+    check('shipping asks for town/district', (await page.getByLabel(/town \/ village and district/i).count()) === 1);
+    check('shipping shows a charge', (await page.locator('.summary-totals').innerText()).includes('Charge applies'));
+    // Delivery within Belize City for the hand-off
+    await page.locator('.option-card', { hasText: 'Within Belize City limits' }).click();
     await page.getByLabel(/area \/ neighbourhood/i).fill('Kings Park');
     await page.getByLabel(/preferred date/i).fill('2026-12-20');
     await page.getByLabel(/your name/i).fill('QA Tester');
@@ -96,6 +108,7 @@ for (const [label, opts] of [
     await page.waitForTimeout(800);
     const url = waUrls[0] || popup?.url() || '';
     check('WhatsApp opened in a new tab via wa.me', url.startsWith('https://wa.me/'), url.slice(0, 40));
+    check(`destination number is ${EXPECT_NUMBER}`, url.startsWith(`https://wa.me/${EXPECT_NUMBER}?text=`));
     const text = decodeURIComponent((url.split('text=')[1] || '').replace(/\+/g, ' '));
     for (const expect of [
       "Hello Cojac's Sumptuous Rumpopo! I'd like to request an order.",
@@ -103,7 +116,8 @@ for (const [label, opts] of [
       'Note: One bottle wrapped as a gift',
       '- Peanut Delight — Size to be confirmed × 2',
       '*SUBTOTAL:* To be confirmed by Cojac’s',
-      '*FULFILMENT:* Delivery in Belize City',
+      '*FULFILMENT:* Delivery',
+      '*DELIVERY CHARGE:* Charge applies — amount confirmed by Cojac’s',
       '*AREA:* Kings Park',
       '*PREFERRED DATE:* Sun, 20 December 2026',
       '*NAME:* QA Tester',
@@ -113,7 +127,7 @@ for (const [label, opts] of [
       check(`message contains: ${expect.slice(0, 50)}`, text.includes(expect));
     check('message has no Pumpkin Spice (removed)', !text.includes('Pumpkin'));
     check('honest feedback shown (no "order confirmed")', (await page.getByText('WhatsApp will open with your order request.').count()) === 1 && (await page.getByText(/order confirmed|order placed|payment received/i).count()) === 0);
-    check('QA line is flagged', (await page.getByText('QA test line').count()) === 1);
+    if (MODE === 'qa') check('QA line is flagged', (await page.getByText('QA test line').count()) === 1);
     if (popup) await popup.close();
   } else {
     check('send button disabled without an approved number', await send.isDisabled());

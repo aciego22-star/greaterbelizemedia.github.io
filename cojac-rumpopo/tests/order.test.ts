@@ -43,7 +43,9 @@ const line = (productId: string, variantId: string | null, quantity: number, not
   quantity,
   note,
 });
-const delivery: FulfilmentOption = { id: 'delivery', label: 'Delivery in Belize City', description: '', enabled: true, asksForArea: true, feeBZD: null };
+const delivery: FulfilmentOption = { id: 'delivery', label: 'Delivery', description: '', enabled: true, asksForArea: true, chargeLabel: 'Delivery charge', feeBZD: null };
+const pickup: FulfilmentOption = { id: 'pickup', label: 'Pickup', description: '', enabled: true, asksForArea: false, chargeLabel: 'Pickup', feeBZD: 0 };
+const shipping: FulfilmentOption = { id: 'shipping', label: 'Shipping', description: '', enabled: true, asksForArea: true, chargeLabel: 'Shipping charge', feeBZD: null };
 const details = { name: '', fulfilment: 'delivery' as const, area: '', preferredDate: '', notes: '' };
 
 describe('totals', () => {
@@ -92,8 +94,8 @@ describe('WhatsApp message', () => {
     expect(msg).toContain('- Flavour A — Test 1L × 2 — BZD $20.00');
     expect(msg).toContain('Note: gift');
     expect(msg).toContain('- Flavour B — Size to be confirmed × 1 — price to be confirmed');
-    expect(msg).toContain('*FULFILMENT:* Delivery in Belize City');
-    expect(msg).toContain('*DELIVERY/SHIPPING FEE:* To be confirmed by Cojac’s');
+    expect(msg).toContain('*FULFILMENT:* Delivery');
+    expect(msg).toContain('*DELIVERY CHARGE:* Charge applies — amount confirmed by Cojac’s');
     expect(msg).toContain('*AREA:* Kings Park');
     expect(msg).toContain('*PREFERRED DATE:* Sun, 20 December 2026');
     expect(msg).toContain('*NAME:* Ana');
@@ -111,6 +113,18 @@ describe('WhatsApp message', () => {
   it('shows an estimated total only when every price and the fee are approved', () => {
     const msg = buildOrderMessage({ brandName: 'X', resolved: resolveLines([line('a', 'big', 2)], catalogue), details, fulfilment: { ...delivery, feeBZD: 5 } });
     expect(msg).toContain('*ESTIMATED TOTAL:* BZD $25.00 (before confirmation)');
+  });
+  it('pickup has no charge and no area; shipping asks for a destination', () => {
+    const r = resolveLines([line('a', 'big', 2)], catalogue);
+    const p = buildOrderMessage({ brandName: 'X', resolved: r, details: { ...details, fulfilment: 'pickup', area: 'ignored' }, fulfilment: pickup });
+    expect(p).toContain('*FULFILMENT:* Pickup');
+    expect(p).toContain('*PICKUP:* No charge');
+    expect(p).not.toContain('ignored');
+    expect(p).toContain('*ESTIMATED TOTAL:* BZD $20.00 (before confirmation)');
+    const sh = buildOrderMessage({ brandName: 'X', resolved: r, details: { ...details, fulfilment: 'shipping', area: 'Orange Walk Town' }, fulfilment: shipping });
+    expect(sh).toContain('*SHIPPING CHARGE:* Charge applies — amount confirmed by Cojac’s');
+    expect(sh).toContain('*DESTINATION:* Orange Walk Town');
+    expect(sh).not.toContain('ESTIMATED TOTAL');
   });
   it('encodes safely into a wa.me link, including long messages and special characters', () => {
     const lines = Array.from({ length: 3 }, (_, i) => line(['a', 'b', 'c'][i], ['big', null, 'v'][i], 99, 'Note & "quotes" #hash ? ünïcødé 🎄'));

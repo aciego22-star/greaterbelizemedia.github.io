@@ -217,7 +217,7 @@ function Footer() {
               )}
               <li>
                 {enquiry ? (
-                  <a href={enquiry} target="_blank" rel="noopener noreferrer"><WhatsAppIcon size={18} /> WhatsApp</a>
+                  <a href={enquiry} target="_blank" rel="noopener noreferrer"><WhatsAppIcon size={18} /> WhatsApp {site.whatsapp.display}</a>
                 ) : (
                   <Link to={routes.order.path}><WhatsAppIcon size={18} /> WhatsApp order requests</Link>
                 )}
@@ -235,11 +235,9 @@ function Footer() {
           </div>
         </div>
         <div className="site-footer__legal">
-          <p>{site.alcohol.responsibleMessage}</p>
-          <p>
-            © {new Date().getFullYear()} {site.brandName}. Order requests are sent through WhatsApp — there is no online payment on this
-            site.
-          </p>
+          <a href={site.credit.url} target="_blank" rel="noopener" className="site-footer__credit">
+            {site.credit.label}
+          </a>
         </div>
       </div>
     </footer>

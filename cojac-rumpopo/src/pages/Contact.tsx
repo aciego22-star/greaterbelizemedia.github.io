@@ -28,6 +28,13 @@ export default function Contact() {
             </span>
             <h2 className="display-m">Order &amp; enquiries on WhatsApp</h2>
             <p>Build your order request on the website and send it in one message, or simply say hello with a question.</p>
+            {enquiry && (
+              <p className="contact-primary__number">
+                <a href={enquiry} target="_blank" rel="noopener noreferrer">
+                  {site.whatsapp.display}
+                </a>
+              </p>
+            )}
             <div className="btn-row">
               <Link to={routes.flavours.path} className="btn btn--whatsapp">
                 <WhatsAppIcon /> Start an order request
@@ -79,11 +86,14 @@ export default function Contact() {
             {socials.length > 0 && (
               <Reveal delay={200} className="contact-item card">
                 <div>
-                  <h3>Follow the season</h3>
+                  <h3>Follow us</h3>
                   <div className="social-row">
                     {socials.map(({ href, label, Icon }) => (
-                      <a key={label} href={href} target="_blank" rel="noopener noreferrer" className="social-btn">
-                        <Icon size={20} /> {label}
+                      <a key={label} href={href} target="_blank" rel="noopener noreferrer" className={`social-btn social-btn--${label.toLowerCase()}`} aria-label={`${site.brandShort} on ${label} (opens in a new tab)`}>
+                        <span className="social-btn__icon">
+                          <Icon size={22} />
+                        </span>
+                        {label}
                       </a>
                     ))}
                   </div>

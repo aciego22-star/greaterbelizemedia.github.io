@@ -15,6 +15,15 @@ export function lineKey(productId: string, variantId: string | null): string {
   return `${productId}::${variantId ?? 'tbc'}`;
 }
 
+export const CHARGE_TBC = 'Charge applies — amount confirmed by Cojac’s';
+
+/** "No charge", "BZD $10.00" or "Charge applies — amount confirmed by Cojac’s". */
+export function feeLabel(f: Pick<FulfilmentOption, 'feeBZD'>): string {
+  if (f.feeBZD === 0) return 'No charge';
+  if (f.feeBZD === null) return CHARGE_TBC;
+  return formatBZD(f.feeBZD);
+}
+
 export function formatBZD(amount: number): string {
   return `BZD $${amount.toFixed(2)}`;
 }
@@ -124,14 +133,14 @@ export function buildOrderMessage({ brandName, resolved, details, fulfilment }: 
   if (fulfilment) {
     out.push(`*FULFILMENT:* ${fulfilment.label}`);
     if (fulfilment.id !== 'advise') {
-      out.push(`*DELIVERY/SHIPPING FEE:* ${fulfilment.feeBZD === null ? UNKNOWN_PRICE : formatBZD(fulfilment.feeBZD)}`);
+      out.push(`*${fulfilment.chargeLabel.toUpperCase()}:* ${feeLabel(fulfilment)}`);
     }
   }
   if (totals.allPriced && fulfilment && fulfilment.feeBZD !== null) {
     out.push(`*ESTIMATED TOTAL:* ${formatBZD(totals.pricedSubtotal + fulfilment.feeBZD)} (before confirmation)`);
   }
   const area = clean(details.area, 120);
-  if (area && fulfilment?.asksForArea) out.push(`*AREA:* ${area}`);
+  if (area && fulfilment?.asksForArea) out.push(`*${fulfilment.id === 'shipping' ? 'DESTINATION' : 'AREA'}:* ${area}`);
   out.push(`*PREFERRED DATE:* ${details.preferredDate ? formatLongDate(details.preferredDate) : 'Flexible'}`);
   const name = clean(details.name, 80);
   if (name) out.push(`*NAME:* ${name}`);

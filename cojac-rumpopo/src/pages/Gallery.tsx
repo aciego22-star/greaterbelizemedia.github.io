@@ -41,6 +41,7 @@ function Lightbox({ index, onClose, onMove }: { index: number; onClose: () => vo
         )}
         <figcaption>
           {item.caption} <span>· {index + 1} / {gallery.length}</span>
+          {item.credit && <small className="lightbox__credit">{item.credit}</small>}
         </figcaption>
       </figure>
       <button type="button" className="lightbox__nav lightbox__nav--prev" onClick={() => onMove(-1)} aria-label="Previous image">
@@ -61,7 +62,7 @@ export default function Gallery() {
   const [open, setOpen] = useState<number | null>(null);
   const close = useCallback(() => setOpen(null), []);
   const move = useCallback((d: number) => setOpen((i) => (i === null ? i : (i + d + gallery.length) % gallery.length)), []);
-  const hasPhotos = gallery.some((g) => g.src);
+  const hasPhotos = gallery.every((g) => g.src);
   return (
     <>
       <PageHero
@@ -78,7 +79,7 @@ export default function Gallery() {
           {!hasPhotos && (
             <Reveal className="notice notice--soft gallery-note" role="note">
               <Sparkle size={18} />
-              <p>Our gallery is being filled with photographs from this season. Check back soon.</p>
+              <p>More photographs from this season are on the way — check back soon.</p>
             </Reveal>
           )}
           <div className="gallery-grid">

@@ -160,7 +160,7 @@ const tileTones = [
 export function GalleryTile({ item, index, onOpen }: { item: GalleryItem; index: number; onOpen?: () => void }) {
   const [a, b] = tileTones[index % tileTones.length];
   const content = item.src ? (
-    <img src={asset(item.src)} alt={item.alt} loading="lazy" decoding="async" />
+    <img src={asset(item.src)} alt={item.alt} loading="lazy" decoding="async" style={item.position ? { objectPosition: item.position } : undefined} />
   ) : (
     <span className="gallery-tile__placeholder" style={{ background: `radial-gradient(80% 60% at 30% 20%, rgba(236,214,166,.25), transparent 60%), linear-gradient(150deg, ${a}, ${b})` }}>
       <Sparkle size={18} className="gallery-tile__spark" />

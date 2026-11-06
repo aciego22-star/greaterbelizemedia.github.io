@@ -6,11 +6,11 @@ Nothing below was invented. Each item is either empty in the config (so it is hi
 
 | # | Item | Where it goes | What the site does now |
 |---|---|---|---|
-| 1 | **Official WhatsApp order number** | `site.ts → whatsapp.orderNumber` | The Send button is switched off. “Copy order details” still works. |
+| 1 | ~~Official WhatsApp order number~~ — **done: +501 623-0447** | `site.ts → whatsapp.orderNumber` | Send button opens WhatsApp to 5016230447. |
 | 2 | **Brand spelling** — the official logo (supplied Nov 2026) reads “Cojac’s”, matching the sitemap. Only needs a final yes from the family. | `site.ts`, `copy.ts`, `catalogue.ts` | Uses “Cojac’s” everywhere. |
 | 3 | **2026/27 flavour list**: which flavours are definitely on this season | `catalogue.ts → confirmedThisSeason`, `active` | Classic Vanilla, Peanut Delight and Pumpkin Spice are shown with “Ask about availability”. |
 | 4 | **Bottle sizes and BZD prices** | `catalogue.ts → variants` | “Bottle sizes are confirmed by Cojac’s” and “Price: To be confirmed by Cojac’s”. No totals are calculated. |
-| 5 | **Delivery in Belize City and countrywide shipping**: eligibility, areas, fees, schedule, cut-off, and whether alcohol may be shipped countrywide | `site.ts → fulfilment`, banner text | Offered as *preferences*, with “fee to be confirmed”. The banner copy is the family’s own draft. |
+| 5 | **Delivery and shipping charge amounts** (options confirmed: Delivery within Belize City limits — charge; Pickup — free; Shipping out-district — charge). Also: pickup location/times, and whether alcohol may be shipped to all districts | `site.ts → fulfilment.feeBZD` | Customers choose Delivery, Pickup or Shipping. Pickup shows “No charge”; delivery and shipping show “Charge applies — amount confirmed by Cojac’s”. |
 | 6 | **Allergen and ingredient statement for each flavour** (egg, milk, nuts and so on) | `catalogue.ts → allergens`, `ingredientsDisclosure` | Shows a generic “may contain egg and dairy — please ask” note. |
 | 7 | **Legal age and alcohol obligations** (Belize purchasing age, any rules for selling or delivering alcohol) | `site.ts → alcohol` | Shows an 18+ courtesy notice and an age checkbox before sending. This is not age verification. |
 | 8 | **Final domain** | `site.ts → siteUrl` | Placeholder `cojacs-rumpopo.netlify.app`. |
@@ -21,10 +21,10 @@ Nothing below was invented. Each item is either empty in the config (so it is hi
 |---|---|---|
 | 9 | ~~Logo~~ (done: official logo in `public/brand/`). Still needed: bottle label art and official brand colour codes, if any. | `global.css` |
 | 10 | Product photography for each flavour | `public/products/`, `catalogue.ts → images` |
-| 11 | Gallery photos (bottles, packaging, events, memories) and permission to publish people’s faces | `public/gallery/`, `gallery.ts` |
-| 12 | Facebook and Instagram profile links | `site.ts → social` |
+| 11 | Gallery photos (bottles, packaging, events, memories). Two stills from the Greater Belize Media YouTube features are in place; **confirm the family and the presenter are happy for them to appear.** | `public/gallery/`, `gallery.ts` |
+| 12 | **Exact Facebook and Instagram profile URLs.** Facebook and Instagram block automated access and web search found no official pages, so they weren’t guessed. Once added, brand-coloured Facebook/Instagram buttons appear on Connect With Us and in the footer. | `site.ts → social` |
 | 13 | Public phone number and email (optional) | `site.ts → contact` |
-| 14 | Pickup point, if pickup is offered. Diego St is **not** described as a shop or pickup point today. | `site.ts → fulfilment.pickup`, `contact.mapUrl` |
+| 14 | Pickup point: pickup is now offered (free); location and time are confirmed on WhatsApp. Diego St is **not** described as the pickup point unless the family confirms it. | `site.ts → fulfilment.pickup`, `contact.mapUrl` |
 | 15 | Payment methods accepted (arranged outside the website) | `faqs.ts → payment-methods` |
 | 16 | Answers to the draft FAQs: prices, sizes, lead time, delivery fees, shipping areas, pickup, storage, gifting, refunds | `faqs.ts` |
 | 17 | Titles for the two Facebook videos, and confirmation that the YouTube features may be shown | `media.ts` |

@@ -9,10 +9,15 @@ import { formatLongDate } from '../lib/season';
 
 // Answers below are built from the verified settings in site.ts, so they stay
 // consistent with the rest of the website (and with what AI assistants read).
-const fulfilmentList = site.fulfilment
-  .filter((f) => f.enabled && f.id !== 'advise')
-  .map((f) => f.label.toLowerCase())
-  .join(' and ');
+const on = (id: string) => site.fulfilment.some((f) => f.id === id && f.enabled);
+const fulfilmentList = [
+  on('delivery') && 'delivery within Belize City limits',
+  on('pickup') && 'pickup (no charge)',
+  on('shipping') && 'shipping to other districts',
+]
+  .filter(Boolean)
+  .join(', ')
+  .replace(/, ([^,]*)$/, ' and $1');
 
 export const faqs: FaqItem[] = [
   {
@@ -56,8 +61,8 @@ export const faqs: FaqItem[] = [
     id: 'delivery-areas',
     category: 'delivery',
     published: !!fulfilmentList,
-    question: 'Do you deliver?',
-    answer: `During the season, Cojac’s offers ${fulfilmentList}. Fees, schedules and eligibility for your area are confirmed with you on WhatsApp when you send your order request.`,
+    question: 'Do you deliver, ship or offer pickup?',
+    answer: `Yes — Cojac’s offers ${fulfilmentList}. Delivery and shipping each carry a charge, confirmed with you on WhatsApp along with timing; pickup is free.`,
   },
   {
     id: 'how-to-order',

@@ -50,7 +50,7 @@ Brand tagline: "${site.logoTagline}"
 - Location: ${site.contact.addressLine}, Belize
 - Season: order requests accepted until ${formatLongDate(site.season.seasonClosesOn)}
 - Ordering: choose flavours on the website, then send the order request on WhatsApp; ${site.brandShort} confirms availability, final price, payment and delivery directly
-- Fulfilment options offered this season: ${site.fulfilment.filter((f) => f.enabled && f.id !== 'advise').map((f) => f.label).join('; ')} (details and fees confirmed by ${site.brandShort})
+- Fulfilment options offered this season: ${site.fulfilment.filter((f) => f.enabled && f.id !== 'advise').map((f) => `${f.label}${f.short ? ` (${f.short})` : ''}`).join('; ')}. Delivery and shipping carry a charge confirmed by ${site.brandShort}; pickup is free
 - Prices and bottle sizes: confirmed by ${site.brandShort} on request
 
 ## The Cojac's Guarantee

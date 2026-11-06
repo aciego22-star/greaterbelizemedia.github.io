@@ -77,7 +77,11 @@ export interface FulfilmentOption {
   /** Ask the customer for an area / town / address hint. */
   asksForArea: boolean;
   areaLabel?: string;
-  /** Fee in BZD if approved; null = "To be confirmed by Cojac's". */
+  /** Few-word summary shown in the season announcement, e.g. "within Belize City limits". */
+  short?: string;
+  /** How the charge is named in the order summary, e.g. "Delivery charge". */
+  chargeLabel: string;
+  /** Charge in BZD. 0 = no charge. null = a charge applies; amount confirmed by Cojac's. */
   feeBZD: number | null;
 }
 
@@ -132,5 +136,9 @@ export interface GalleryItem {
   caption: string;
   category: 'product' | 'packaging' | 'process' | 'memories' | 'events';
   /** Shape in the grid. */
-  shape: 'tall' | 'wide' | 'square';
+  shape: 'tall' | 'wide' | 'square' | 'feature';
+  /** CSS object-position for cropping, e.g. '100% 50%' keeps the right side in view. */
+  position?: string;
+  /** Photo credit shown in the lightbox. */
+  credit?: string;
 }

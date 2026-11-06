@@ -312,7 +312,7 @@
   position: relative;
   background: var(--evergreen-900);
   color: rgba(251, 244, 230, 0.8);
-  padding: 72px 0 calc(32px + env(safe-area-inset-bottom));
+  padding: 72px 0 calc(96px + env(safe-area-inset-bottom)); /* room for the sticky order bar */
   overflow: hidden;
 }
 .site-footer .container {
@@ -384,6 +384,20 @@
 }
 .site-footer__legal p {
   margin: 0;
+}
+.site-footer__legal {
+  text-align: center;
+}
+.site-footer .site-footer__credit {
+  display: inline-block;
+  color: rgba(251, 244, 230, 0.7);
+  font-size: 0.85rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(236, 214, 166, 0.4);
+}
+.site-footer .site-footer__credit:hover {
+  color: var(--gold-300);
 }
 @media (min-width: 900px) {
   .site-footer .container {

@@ -6,7 +6,7 @@ You make all of these edits in plain text files in `src/content/`. After saving,
 
 ---
 
-## 1. Set the WhatsApp order number (required before launch)
+## 1. The WhatsApp order number (set to +501 623-0447)
 
 `src/content/site.ts`:
 
@@ -70,11 +70,23 @@ whatsapp: {
 
 ## 5. Delivery, shipping and pickup options
 
-`src/content/site.ts → fulfilment`. Switch each option on or off with `enabled`. Enter an approved fee in `feeBZD`, or leave it `null` (“To be confirmed by Cojac’s”). Pickup is off until a pickup point is approved.
+`src/content/site.ts → fulfilment`. Customers choose one of three options at checkout:
 
-## 6. Contact details and social links
+| Option | Meaning | `feeBZD` today |
+|---|---|---|
+| Delivery | Within Belize City limits, with a charge | `null` → “Charge applies — amount confirmed by Cojac’s” |
+| Pickup | Free | `0` → “No charge” |
+| Shipping | Out-district (other districts), with a charge | `null` → “Charge applies — amount confirmed by Cojac’s” |
 
-`src/content/site.ts → contact` and `social`. Empty values stay hidden. Once filled in, Facebook, Instagram, phone and email appear in the footer and on the Contact page.
+Enter an amount (e.g. `feeBZD: 10`) to show it at checkout and in the WhatsApp message. When every item and the charge have prices, an estimated total appears. Switch any option on or off with `enabled`.
+
+## 6. Contact details and social links (Facebook / Instagram)
+
+`src/content/site.ts → contact` and `social`. Empty values stay hidden. Paste the full profile links, e.g. `facebook: 'https://www.facebook.com/…'` and `instagram: 'https://www.instagram.com/…'`. Brand-coloured Facebook and Instagram buttons then appear on Connect With Us and in the footer, and the links are added to the structured data for Google.
+
+## 6b. Footer credit
+
+`site.ts → credit` holds the “Website development in Belize by Austere Automations” link at the bottom of every page.
 
 ## 7. FAQs
 

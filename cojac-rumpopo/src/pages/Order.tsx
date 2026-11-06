@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import routes from '../content/routes.json';
 import { buildFlags, site } from '../content/site';
 import { useCart } from '../context/CartContext';
-import { buildOrderMessage, buildWhatsAppUrl, formatBZD, MAX_ORDER_NOTES_LENGTH, subtotalLabel, UNKNOWN_PRICE } from '../lib/order';
+import { buildOrderMessage, buildWhatsAppUrl, feeLabel, formatBZD, MAX_ORDER_NOTES_LENGTH, subtotalLabel } from '../lib/order';
 import { belizeDateString, formatLongDate, isAcceptingOrders } from '../lib/season';
 import { copyText, generalEnquiryUrl, getDestination } from '../lib/whatsapp';
 import { usePageMeta } from '../lib/usePageMeta';
@@ -41,7 +41,7 @@ export default function Order() {
   const previewUrl = !destination.ok && buildFlags.showLaunchNotes ? `https://wa.me/?text=${encodeURIComponent(message)}` : null;
 
   const errors = {
-    fulfilment: !fulfilment ? 'Please choose how you’d like to receive your order.' : '',
+    fulfilment: !fulfilment ? 'Please choose delivery, pickup or shipping.' : '',
     age: !ageOk ? `Please confirm you are ${site.alcohol.legalAge} or older.` : '',
   };
   const valid = !errors.fulfilment && !errors.age;
@@ -130,7 +130,7 @@ export default function Order() {
                     tabIndex={-1}
                     aria-describedby={attempted && errors.fulfilment ? 'fulfilment-error' : undefined}
                   >
-                    <legend>How would you like to receive your order? *</legend>
+                    <legend>Delivery, pickup or shipping? *</legend>
                     <div className="option-grid">
                       {enabledOptions.map((f) => (
                         <label key={f.id} className={`option-card ${details.fulfilment === f.id ? 'is-selected' : ''}`}>
@@ -144,7 +144,7 @@ export default function Order() {
                           <span className="option-card__title">{f.label}</span>
                           <span className="option-card__desc">{f.description}</span>
                           {f.id !== 'advise' && (
-                            <span className="option-card__fee">Fee: {f.feeBZD === null ? UNKNOWN_PRICE : formatBZD(f.feeBZD)}</span>
+                            <span className={`option-card__fee ${f.feeBZD === 0 ? 'is-free' : ''}`}>{f.feeBZD === 0 ? 'No charge' : `${f.chargeLabel}: ${f.feeBZD === null ? 'confirmed by Cojac’s' : formatBZD(f.feeBZD)}`}</span>
                           )}
                         </label>
                       ))}
@@ -224,8 +224,8 @@ export default function Order() {
                   </div>
                   {fulfilment && fulfilment.id !== 'advise' && (
                     <div>
-                      <dt>{fulfilment.label}</dt>
-                      <dd>{fulfilment.feeBZD === null ? UNKNOWN_PRICE : formatBZD(fulfilment.feeBZD)}</dd>
+                      <dt>{fulfilment.chargeLabel}</dt>
+                      <dd>{feeLabel(fulfilment)}</dd>
                     </div>
                   )}
                   {details.preferredDate && (

@@ -264,6 +264,14 @@
   font-weight: 600;
   color: var(--evergreen-700);
 }
+.season-card__note {
+  font-weight: 500;
+  color: var(--ink-soft);
+  font-size: 0.9em;
+}
+.option-card__fee.is-free {
+  color: var(--evergreen-700);
+}
 .season-card__list svg {
   color: var(--gold-500);
 }
@@ -693,6 +701,10 @@
 .gallery-grid__cell--wide {
   grid-column: span 2;
 }
+.gallery-grid__cell--feature {
+  grid-column: span 2;
+  grid-row: span 2;
+}
 .gallery-grid .gallery-tile {
   aspect-ratio: auto;
 }
@@ -764,6 +776,13 @@
   font-family: var(--font-display);
   font-size: 1.15rem;
   text-align: center;
+}
+.lightbox__credit {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  color: rgba(251, 244, 230, 0.55);
 }
 .lightbox figcaption span {
   color: rgba(251, 244, 230, 0.5);
@@ -1744,6 +1763,15 @@
 .contact-primary p {
   color: var(--ink-soft);
 }
+.contact-primary__number a {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
+  color: var(--whatsapp-dark);
+  text-decoration: none;
+}
+.contact-primary__number a:hover {
+  text-decoration: underline;
+}
 .contact-side {
   display: grid;
   gap: 16px;
@@ -1779,11 +1807,33 @@
 .social-btn {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 14px;
+  gap: 10px;
+  padding: 6px 18px 6px 6px;
   border-radius: 999px;
-  border: 1px solid rgba(90, 54, 36, 0.2);
+  border: 1px solid rgba(90, 54, 36, 0.18);
+  background: #fff;
+  font-weight: 600;
   text-decoration: none;
+  transition: transform 0.2s var(--ease), box-shadow 0.2s;
+}
+.social-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-soft);
+}
+.social-btn__icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: #fff;
+  background: var(--burgundy-700);
+}
+.social-btn--facebook .social-btn__icon {
+  background: #1877f2;
+}
+.social-btn--instagram .social-btn__icon {
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fd5949 45%, #d6249f 60%, #285aeb 90%);
 }
 .contact-foot {
   margin-top: 56px;
