@@ -11,7 +11,8 @@ import { PageHero } from '../components/ui';
 export default function LaunchNotes() {
   const d = getDestination();
   const items: { label: string; done: boolean; where: string }[] = [
-    { label: 'Brand spelling confirmed (Cojac vs Cojak), logo & label art supplied', done: false, where: 'src/content/site.ts → brandName; replace Wordmark' },
+    { label: 'Official logo supplied (spells “Cojac’s”)', done: true, where: 'public/brand/ + Logo in src/components/ui.tsx' },
+    { label: 'Label art / bottle photography & official brand colours', done: false, where: 'catalogue.ts → images; global.css :root' },
     { label: 'Official WhatsApp order number', done: d.ok && d.source === 'official', where: 'src/content/site.ts → whatsapp.orderNumber' },
     { label: 'Facebook link', done: !!site.social.facebook, where: 'site.ts → social.facebook' },
     { label: 'Instagram link', done: !!site.social.instagram, where: 'site.ts → social.instagram' },

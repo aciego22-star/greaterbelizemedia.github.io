@@ -7,7 +7,7 @@ Nothing below was invented. Each item is either empty in the config (so it is hi
 | # | Item | Where it goes | What the site does now |
 |---|---|---|---|
 | 1 | **Official WhatsApp order number** | `site.ts → whatsapp.orderNumber` | The Send button is switched off. “Copy order details” still works. |
-| 2 | **Brand spelling: Cojac vs Cojak** | `site.ts`, `copy.ts`, `catalogue.ts` | Uses “Cojac”, as in the sitemap draft. |
+| 2 | **Brand spelling** — the official logo (supplied Nov 2026) reads “Cojac’s”, matching the sitemap. Only needs a final yes from the family. | `site.ts`, `copy.ts`, `catalogue.ts` | Uses “Cojac’s” everywhere. |
 | 3 | **2026/27 flavour list**: which flavours are definitely on this season | `catalogue.ts → confirmedThisSeason`, `active` | Classic Vanilla, Peanut Delight and Pumpkin Spice are shown with “Ask about availability”. |
 | 4 | **Bottle sizes and BZD prices** | `catalogue.ts → variants` | “Bottle sizes are confirmed by Cojac’s” and “Price: To be confirmed by Cojac’s”. No totals are calculated. |
 | 5 | **Delivery in Belize City and countrywide shipping**: eligibility, areas, fees, schedule, cut-off, and whether alcohol may be shipped countrywide | `site.ts → fulfilment`, banner text | Offered as *preferences*, with “fee to be confirmed”. The banner copy is the family’s own draft. |
@@ -19,7 +19,7 @@ Nothing below was invented. Each item is either empty in the config (so it is hi
 
 | # | Item | Where |
 |---|---|---|
-| 9 | Logo, label art and brand colours | `ui.tsx → Wordmark`, `global.css` |
+| 9 | ~~Logo~~ (done: official logo in `public/brand/`). Still needed: bottle label art and official brand colour codes, if any. | `global.css` |
 | 10 | Product photography for each flavour | `public/products/`, `catalogue.ts → images` |
 | 11 | Gallery photos (bottles, packaging, events, memories) and permission to publish people’s faces | `public/gallery/`, `gallery.ts` |
 | 12 | Facebook and Instagram profile links | `site.ts → social` |

@@ -22,38 +22,53 @@
   animation: twinkle 3s ease-in-out infinite;
 }
 
-/* ── Wordmark (interim) ────────────────────────────────────────────────── */
-.wordmark {
-  display: inline-flex;
-  flex-direction: column;
-  line-height: 1;
-  color: var(--burgundy-800);
-  text-decoration: none;
+/* ── Official logo ─────────────────────────────────────────────────────── */
+.logo {
+  display: block;
+  flex: none;
 }
-.wordmark__name {
-  font-family: var(--font-display);
-  font-size: 1.85rem;
-  font-weight: 500;
-  font-style: italic;
-  letter-spacing: -0.02em;
-  font-variation-settings: 'opsz' 144, 'SOFT' 100, 'WONK' 1;
+.logo img {
+  display: block;
+  height: 100%;
+  width: auto;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.25));
 }
-.wordmark__sub {
-  font-size: 0.6rem;
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
-  font-weight: 600;
-  margin-top: 4px;
-  color: var(--gold-700);
+.logo--header {
+  height: 74px;
+  margin-top: 8px;
+  transition:
+    height 0.35s var(--ease),
+    margin 0.35s var(--ease);
 }
-.wordmark--light {
-  color: var(--cream-50);
+.is-scrolled .logo--header {
+  height: 56px;
+  margin-top: 0;
 }
-.wordmark--light .wordmark__sub {
-  color: var(--gold-300);
+.logo--menu {
+  height: 56px;
 }
-.wordmark--compact .wordmark__name {
-  font-size: 1.5rem;
+.logo--footer {
+  height: 150px;
+}
+.logo--feature {
+  display: flex;
+  justify-content: center;
+  height: 170px;
+  margin: 0 auto;
+}
+@media (min-width: 1000px) {
+  /* Badge hangs just below the header bar over the dark hero */
+  .site-header__inner > .site-header__logo {
+    align-self: flex-start;
+  }
+  .logo--header {
+    height: 104px;
+    margin-top: 8px;
+  }
+  .is-scrolled .logo--header {
+    height: 60px;
+    margin-top: 0;
+  }
 }
 
 /* ── Header ────────────────────────────────────────────────────────────── */
@@ -81,6 +96,9 @@
 .site-header__logo {
   text-decoration: none;
   flex: none;
+  align-self: center;
+  position: relative;
+  z-index: 2;
 }
 .site-nav {
   display: none;
@@ -460,6 +478,17 @@
 }
 
 /* ── Launch ribbon (internal preview only) ─────────────────────────────── */
+.launch-ribbon__long {
+  display: none;
+}
+@media (min-width: 1000px) {
+  .launch-ribbon__long {
+    display: inline;
+  }
+  .launch-ribbon__short {
+    display: none;
+  }
+}
 .launch-ribbon {
   position: fixed;
   left: 12px;
@@ -720,7 +749,10 @@
   animation: fadeUp 0.5s var(--ease);
 }
 .age-card .ornament {
-  margin: 18px auto;
+  margin: 14px auto;
+}
+.age-card {
+  padding-top: 28px;
 }
 .age-card h2 {
   font-size: 1.8rem;

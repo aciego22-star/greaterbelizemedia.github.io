@@ -12,12 +12,14 @@ import type { FulfilmentOption } from '../types';
 
 export const site = {
   /**
-   * Brand name. Spelling "Cojac" follows the family's sitemap draft.
-   * LAUNCH BLOCKER: confirm Cojac vs Cojak before launch — change it here only.
+   * Brand name. "Cojac's" matches the official logo supplied by the family
+   * and the sitemap draft.
    */
   brandShort: "Cojac's",
   brandName: "Cojac's Sumptuous Rumpopo",
   tagline: 'A Belizean Christmas Tradition',
+  /** Tagline printed on the official logo. */
+  logoTagline: 'A very merry treat and must have addition to your holiday celebrations!',
 
   /** Public site address — used for canonical links, sitemap and social previews. */
   siteUrl: 'https://cojacs-rumpopo.netlify.app',
@@ -143,4 +145,6 @@ export const buildFlags = {
    * Lets the team test the hand-off without messaging the business.
    */
   qaWhatsAppNumber: (import.meta.env.VITE_QA_WHATSAPP as string | undefined) ?? '',
+  /** Sandboxed artifact preview: third-party iframes are blocked, so videos open externally. */
+  noEmbeds: import.meta.env.VITE_ARTIFACT === 'true',
 };

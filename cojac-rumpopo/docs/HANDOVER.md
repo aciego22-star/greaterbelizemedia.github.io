@@ -87,5 +87,5 @@ whatsapp: {
 ## 9. Brand name and logo
 
 - The name is set once, in `site.ts` (`brandShort`, `brandName`). The approved copy in `copy.ts` and `catalogue.ts` also mentions “Cojac’s”. If the spelling changes, search and replace those files too.
-- The logo is currently a typographic wordmark (`Wordmark` in `src/components/ui.tsx`). Swap it for the official logo file when supplied.
+- The official logo lives in `public/brand/` (the original file plus transparent cut-outs at 160/320/640 px). To replace it, overwrite those files with the same names.
 - The colours are in `src/styles/global.css` (`:root`). Replace them with official brand colours if you have them.

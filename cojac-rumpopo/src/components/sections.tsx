@@ -2,11 +2,11 @@ import { useId, useState } from 'react';
 import { Link } from 'react-router-dom';
 import routes from '../content/routes.json';
 import { guarantee } from '../content/copy';
-import { site } from '../content/site';
+import { buildFlags, site } from '../content/site';
 import type { FaqItem, GalleryItem, MediaItem } from '../types';
 import { asset } from '../lib/whatsapp';
 import { CreamIcon, DropsIcon, ExternalIcon, FacebookIcon, FullBottleIcon, PlayIcon, WhiskIcon, WhatsAppIcon, YouTubeIcon, ChevronIcon } from './Icons';
-import { Reveal } from './ui';
+import { Logo, Reveal } from './ui';
 import { Sparkle, Sprig } from './Art';
 
 const pillarIcons = [CreamIcon, WhiskIcon, FullBottleIcon, DropsIcon];
@@ -86,7 +86,14 @@ export function VideoCard({ item }: { item: MediaItem }) {
     return (
       <article className="video-card">
         <div className="video-card__frame">
-          {playing ? (
+          {buildFlags.noEmbeds ? (
+            <a className="video-card__poster" href={item.url} target="_blank" rel="noopener noreferrer" aria-label={`Watch on YouTube: ${item.title}`}>
+              {item.thumbnail && <img src={asset(item.thumbnail)} alt="" loading="lazy" decoding="async" />}
+              <span className="video-card__play">
+                <PlayIcon size={26} />
+              </span>
+            </a>
+          ) : playing ? (
             <iframe
               src={`https://www.youtube-nocookie.com/embed/${item.youtubeId}?autoplay=1&rel=0`}
               title={item.title}
@@ -177,6 +184,7 @@ export function FinalCta() {
       <div className="final-cta__glow" aria-hidden="true" />
       <div className="container final-cta__inner">
         <Reveal>
+          <Logo size="feature" className="final-cta__logo" />
           <p className="final-cta__lead">
             After all, Christmas only comes once a year, and when it does, we believe it should be a little more:
           </p>

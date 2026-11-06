@@ -1061,6 +1061,10 @@
   position: relative;
   z-index: 1;
 }
+.final-cta__logo {
+  height: clamp(150px, 22vw, 210px);
+  margin-bottom: 28px;
+}
 .final-cta__lead {
   font-family: var(--font-display);
   font-size: clamp(1.25rem, 2.4vw, 1.7rem);

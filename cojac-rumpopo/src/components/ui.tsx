@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import routes from '../content/routes.json';
 import { site } from '../content/site';
 import { MinusIcon, PlusIcon } from './Icons';
+import { asset } from '../lib/whatsapp';
 import type { Availability } from '../types';
 
 /** Fades content in as it scrolls into view (respects reduced motion via CSS). */
@@ -134,13 +135,18 @@ export function AvailabilityChip({ value }: { value: Availability }) {
   );
 }
 
-/** Interim typographic wordmark — replace with the family's approved logo. */
-export function Wordmark({ light = false, compact = false }: { light?: boolean; compact?: boolean }) {
+/**
+ * Official Cojac's logo (supplied by the family, Nov 2026).
+ * Transparent cut-outs live in /public/brand. `size` sets the rendered height.
+ */
+export function Logo({ size = 'header', className = '' }: { size?: 'header' | 'menu' | 'footer' | 'feature'; className?: string }) {
+  const src320 = asset('/brand/cojacs-logo-320');
+  const src640 = asset('/brand/cojacs-logo-640');
   return (
-    <span className={`wordmark ${light ? 'wordmark--light' : ''} ${compact ? 'wordmark--compact' : ''}`}>
-      <span className="wordmark__name">{site.brandShort}</span>
-      <span className="wordmark__sub">Sumptuous Rumpopo</span>
-    </span>
+    <picture className={`logo logo--${size} ${className}`}>
+      <source type="image/webp" srcSet={`${asset('/brand/cojacs-logo-160')}.webp 160w, ${src320}.webp 320w, ${src640}.webp 640w`} sizes={size === 'feature' ? '260px' : size === 'footer' ? '170px' : '80px'} />
+      <img src={`${src320}.png`} width={320} height={289} alt={`${site.brandName} — ${site.logoTagline}`} decoding="async" />
+    </picture>
   );
 }
 

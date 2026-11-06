@@ -13,6 +13,10 @@ const dist = join(root, 'dist');
 const routes = JSON.parse(readFileSync(join(root, 'src/content/routes.json'), 'utf8'));
 const siteTs = readFileSync(join(root, 'src/content/site.ts'), 'utf8');
 const siteUrl = (siteTs.match(/siteUrl:\s*'([^']+)'/)?.[1] ?? '').replace(/\/$/, '');
+if (process.env.VITE_ARTIFACT === 'true') {
+  console.log('Artifact build: single index.html, no route pre-rendering.');
+  process.exit(0);
+}
 const template = readFileSync(join(dist, 'index.html'), 'utf8');
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');

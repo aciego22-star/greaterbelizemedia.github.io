@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { site } from '../content/site';
 import { Ornament } from './Art';
-import { Wordmark } from './ui';
+import { Logo } from './ui';
 
 const KEY = 'cojac-age-confirmed-v1';
 
@@ -41,7 +41,7 @@ export function AgeNotice() {
   return (
     <div className="age-root">
       <div className="age-card" role="dialog" aria-modal="true" aria-labelledby="age-title" aria-describedby="age-desc" ref={dialog}>
-        <Wordmark />
+        <Logo size="feature" />
         <Ornament />
         {state === 'ask' ? (
           <>

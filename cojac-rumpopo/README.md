@@ -24,6 +24,7 @@ npm run preview      # serve dist/ at http://localhost:4173
 | `npm run build` | **Production.** Only confirmed content is shown. |
 | `npm run build:preview` | Internal preview. Adds a “launch notes” ribbon and a `/launch-notes` checklist. |
 | `npm run build:illustrative` | Internal preview that also shows *sample* bottle sizes (no prices), clearly labelled “Illustrative”. |
+| `npm run build:artifact` | Claude artifact preview (in-memory navigation, relative paths, videos open on YouTube) → `dist-artifact/`. Republish to slug `6fae53bf-1e34-4c7a-8eb2-be42f9309c03`. |
 | `VITE_QA_WHATSAPP=501XXXXXXX npm run build:preview` | QA build. It sends test orders to a **team test number**, never to the business. Production ignores this when an official number is set. |
 
 ## Deploying to Netlify
@@ -48,6 +49,7 @@ src/content/copy.ts        the family's approved copy (story, guarantee, videos 
 src/content/routes.json    page URLs, titles and SEO descriptions
 src/lib/order.ts           order maths + WhatsApp message builder (unit-tested)
 src/lib/season.ts          season open/closed logic (Belize time)
+public/brand/              official Cojac's logo (original + transparent cut-outs)
 public/                    favicon, social image, robots.txt, video thumbnails; add product/gallery photos here
 docs/                      handover guide, launch blockers, QA report, screenshots
 ```

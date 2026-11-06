@@ -7,7 +7,7 @@ import { shouldShowBanner } from '../lib/season';
 import { generalEnquiryUrl } from '../lib/whatsapp';
 import { BagIcon, ChevronIcon, CloseIcon, FacebookIcon, InstagramIcon, MailIcon, MenuIcon, PhoneIcon, PinIcon, WhatsAppIcon } from './Icons';
 import { Sparkle } from './Art';
-import { Wordmark } from './ui';
+import { Logo } from './ui';
 import { CartDrawer } from './CartDrawer';
 import { AgeNotice } from './AgeNotice';
 
@@ -93,7 +93,7 @@ function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
   return (
     <div className="mobile-menu" role="dialog" aria-modal="true" aria-label="Site menu" ref={ref}>
       <div className="mobile-menu__top">
-        <Wordmark light compact />
+        <Logo size="menu" />
         <button type="button" className="icon-btn icon-btn--light" onClick={onClose} aria-label="Close menu">
           <CloseIcon size={24} />
         </button>
@@ -137,7 +137,7 @@ function Header() {
       <header className={`site-header ${scrolled ? 'is-scrolled' : ''}`}>
         <div className="container site-header__inner">
           <Link to="/" className="site-header__logo" aria-label={`${site.brandName} — home`}>
-            <Wordmark light={!scrolled} />
+            <Logo size="header" />
           </Link>
           <nav className="site-nav" aria-label="Main">
             <NavLink to={routes.flavours.path} className="nav-link">
@@ -177,7 +177,7 @@ function Footer() {
     <footer className="site-footer grain">
       <div className="container">
         <div className="site-footer__brand">
-          <Wordmark light />
+          <Logo size="footer" />
           <p className="site-footer__line">
             After all, Christmas only comes once a year, and when it does, we believe it should be a little more: <em>Sumptuous.</em>
           </p>
@@ -278,7 +278,10 @@ function LaunchRibbon() {
   if (!buildFlags.showLaunchNotes) return null;
   return (
     <Link to="/launch-notes" className="launch-ribbon">
-      Internal preview · awaiting confirmed details{buildFlags.illustrativeMenu ? ' · illustrative menu' : ''} →
+      <span className="launch-ribbon__short">Preview notes →</span>
+      <span className="launch-ribbon__long">
+        Internal preview · awaiting confirmed details{buildFlags.illustrativeMenu ? ' · illustrative menu' : ''} →
+      </span>
     </Link>
   );
 }
