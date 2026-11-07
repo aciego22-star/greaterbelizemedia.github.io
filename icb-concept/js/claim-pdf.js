@@ -193,11 +193,18 @@ window.ICB = window.ICB || {};
       doc.text("No signature was captured.", { size: 9, grey: 0.4 });
     }
 
-    /* The stamp some of ICB's forms ask for cannot be drawn on a phone,
-       so the form says so rather than leaving a reader to wonder. */
-    doc.space(6);
-    doc.text("Where ICB's printed form provides for a stamp, none is applied here. This form was completed and signed on a device.",
-      { size: 7.5, grey: 0.5 });
+    /* Six of ICB's nine forms print a stamp line beside the signature.
+       It is a business's rubber stamp, not something a claimant
+       signing for themselves owes anyone, so the completed form says
+       what it is instead of apologising for not having one. The three
+       forms with no stamp line say nothing. */
+    if (form.stamp) {
+      doc.space(6);
+      /* English, like the rest of the completed PDF: it is the copy
+         ICB's claims team works from, whichever language it was
+         filled in. */
+      doc.text(ICB.DATA.claimForms.stampLine.en, { size: 7.5, grey: 0.5 });
+    }
 
     doc.space(10);
     doc.rule(0.5);

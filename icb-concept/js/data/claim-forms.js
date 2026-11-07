@@ -33,12 +33,10 @@
    INTERNAL TODO (not client-facing), all for ICB rather than for us:
    - ICB's claims team must confirm they accept a signature drawn on a
      screen on these forms. Nothing here should go live until they do.
-   - Several forms ask for a stamp beside the signature, and the four
-     added on 7 Nov add three more: inland cargo ("Insured's Signature
-     & Stamp"), public liability ("where signing on behalf of a Company
-     please affix official stamp") and personal accident. A stamp
-     cannot be drawn on a phone. Today the completed PDF leaves the
-     space and notes it; confirm what ICB wants instead.
+   - The stamp is settled; see stampNote below. Six of the nine forms
+     print a stamp line; marine, windscreen and personal accident do
+     not. It is a company's rubber stamp rather than anything a
+     claimant signing for themselves has to produce.
    - The personal accident form has a section only a doctor can
      complete. ICB's own form says it may be left blank if an itemized
      bill is attached, so that is what the online form says too.
@@ -174,6 +172,39 @@ ICB.DATA = ICB.DATA || {};
   ICB.DATA.claimForms = {
     legal: LEGAL,
 
+    /* THE STAMP, AND WHY IT IS NOT A PROBLEM.
+
+       Six of the nine forms print "(& Stamp)" or similar beside the
+       signature line, and an earlier draft of this build treated that
+       as a blocker: a rubber stamp cannot be drawn on a phone, so the
+       completed PDF apologised for not having one.
+
+       That was the wrong reading. The public liability form spells out
+       what the others abbreviate: "Where signing on behalf of a
+       Company please affix official stamp". It is a business's rubber
+       stamp, asked for only when someone signs for a company. An
+       individual signs their name and that is the whole of it. Put to
+       ICB on 7 Nov 2026, Mr Sal's reaction was to wonder why a claim
+       form would want a postage stamp at all, which is a fair reading
+       of the question as it was asked and tells you how small a thing
+       this is.
+
+       So the form no longer apologises. It says what the stamp is, and
+       a business that stamps its paperwork is told it can print the
+       page and stamp it. The marine, windscreen and personal accident
+       forms carry no stamp line at all and say nothing.
+
+       This text is ours, not ICB's, which is why it is here and not in
+       LEGAL. */
+    stampNote: {
+      en: "ICB's printed form has a space for a stamp beside the signature. That is a business's rubber stamp, for a claimant signing on behalf of a company. If you are signing for yourself, your signature is all that is needed. A business that stamps its paperwork can print the completed form and stamp it.",
+      es: "El formulario impreso de ICB tiene un espacio para un sello junto a la firma. Se trata del sello de goma de una empresa, para quien firma en nombre de una compañía. Si firma por su cuenta, basta con su firma. Una empresa que sella sus documentos puede imprimir el formulario completado y sellarlo."
+    },
+    stampLine: {
+      en: "ICB's printed form has a space for a company stamp beside the signature, for a claimant signing on behalf of a business. This form was signed on a device. A business that stamps its paperwork can print this page and stamp it.",
+      es: "El formulario impreso de ICB tiene un espacio para el sello de la empresa junto a la firma, para quien firma en nombre de un negocio. Este formulario se firmó en un dispositivo. Una empresa que sella sus documentos puede imprimir esta página y sellarla."
+    },
+
     /* What a claimant may attach. Named rather than left open, because a
        claimant who is told what is wanted sends it the first time. */
     attachmentHint: {
@@ -193,6 +224,7 @@ ICB.DATA = ICB.DATA || {};
       {
         id: "motor",
         pathway: "motor",
+        stamp: true,
         pdfTitle: "INSURED MOTOR ACCIDENT REPORT FORM",
         title: { en: "Insured Motor Accident Report Form", es: "Formulario de reporte de accidente, asegurado" },
         lead: { en: "For an ICB policyholder reporting an accident involving an insured vehicle.", es: "Para un asegurado de ICB que reporta un accidente con un vehículo asegurado." },
@@ -384,6 +416,7 @@ ICB.DATA = ICB.DATA || {};
       {
         id: "motor-third-party",
         pathway: "motor-third-party",
+        stamp: true,
         pdfTitle: "CLAIMANT MOTOR ACCIDENT REPORT FORM",
         title: { en: "Claimant Motor Accident Report Form", es: "Formulario de reporte de accidente, reclamante" },
         lead: { en: "For a claimant involved in an accident with a vehicle insured by ICB.", es: "Para un reclamante involucrado en un accidente con un vehículo asegurado por ICB." },
@@ -526,6 +559,7 @@ ICB.DATA = ICB.DATA || {};
       {
         id: "property",
         pathway: "property",
+        stamp: true,
         pdfTitle: "“PROPERTY” CLAIM FORM",
         title: { en: "Property Claim Form", es: "Formulario de reclamo de propiedad" },
         lead: { en: "For loss or damage at a property insured with ICB.", es: "Por pérdida o daño en una propiedad asegurada con ICB." },
@@ -616,6 +650,7 @@ ICB.DATA = ICB.DATA || {};
       {
         id: "hurricane",
         pathway: "hurricane",
+        stamp: true,
         pdfTitle: "PROPERTY CATASTROPHE CLAIM FORM",
         title: { en: "Hurricane Claim Form", es: "Formulario de reclamo por huracán" },
         lead: { en: "For property loss or damage following a hurricane.", es: "Por pérdida o daño a la propiedad después de un huracán." },
@@ -898,6 +933,7 @@ ICB.DATA = ICB.DATA || {};
       {
         id: "inland-cargo",
         pathway: "inland-cargo",
+        stamp: true,
         pdfTitle: "INLAND CARGO CLAIM FORM",
         title: { en: "Inland Cargo Claim Form", es: "Formulario de reclamo de carga terrestre" },
         lead: { en: "For loss or damage to cargo or heavy equipment in transit within Belize.", es: "Por pérdida o daño a carga o equipo pesado en tránsito dentro de Belice." },
@@ -980,6 +1016,7 @@ ICB.DATA = ICB.DATA || {};
       {
         id: "public-liability",
         pathway: "public-liability",
+        stamp: true,
         pdfTitle: "PUBLIC LIABILITY INSURANCE CLAIM FORM",
         title: { en: "Public Liability Claim Form", es: "Formulario de reclamo de responsabilidad civil" },
         lead: { en: "For an accident where someone else was injured or their property damaged.", es: "Por un accidente en el que otra persona resultó lesionada o su propiedad dañada." },

@@ -160,9 +160,20 @@ ICB.views = ICB.views || {};
 
   function stepBody() {
     var s = form.steps[step];
+    /* Where ICB's paper form has a stamp line, say what it is, once,
+       on the step the signature is on. Without it a claimant signing
+       for a business wonders whether they have finished, and one
+       signing for themselves wonders what a stamp has to do with
+       anything. See stampNote in js/data/claim-forms.js. */
+    var stampNote = "";
+    if (form.stamp && s.fields.some(function (x) { return x.t === "signature"; })) {
+      stampNote = '<p class="cf-note cf-note--quiet">' +
+        esc(pick(ICB.DATA.claimForms.stampNote)) + "</p>";
+    }
     return '<div class="cf-stepbody">' +
       '<h2 class="cf-steptitle">' + esc(pick(s.title)) + "</h2>" +
       '<div class="cf-grid">' + s.fields.map(fieldHtml).join("") + "</div>" +
+      stampNote +
       "</div>";
   }
 

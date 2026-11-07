@@ -3713,6 +3713,16 @@ select,
   color: var(--c-text-soft);
   line-height: 1.55;
 }
+/* The stamp note sits after the field grid rather than inside it, so
+   it needs its own top margin, and it is an aside rather than an
+   instruction: no tint, just a rule above it. */
+.cf-note--quiet {
+  margin-top: var(--sp-5);
+  padding: var(--sp-4) 0 0;
+  background: none;
+  border-top: 1px solid var(--c-line-soft);
+  border-radius: 0;
+}
 
 .cf-input {
   width: 100%;

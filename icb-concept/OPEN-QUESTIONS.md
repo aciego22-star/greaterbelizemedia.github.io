@@ -238,13 +238,39 @@ in correct English and the PDFs are untouched:
 Declarations, releases and anything a claimant signs under are
 reproduced exactly as printed, slips included.
 
-### 4. Three more forms ask for a stamp
+### 4. The stamp, which turned out not to be a question
 
-This is the stamp question already on this list, now wider. Inland
-cargo asks for "Insured's Signature & Stamp". Public liability says
-"where signing on behalf of a Company please affix official stamp".
-A stamp cannot be drawn on a phone. The completed PDF leaves the space
-and says so; ICB needs to say what it wants instead.
+**Settled 7 Nov 2026 and no longer waiting on ICB.**
+
+Six of the nine forms print a stamp line beside the signature: both
+motor forms, property, the hurricane form, inland cargo and public
+liability. Marine, windscreen and personal accident do not.
+
+An earlier version of this build treated that as a blocker, on the
+grounds that a rubber stamp cannot be drawn on a phone, and the
+completed PDF apologised for not having one. That was the wrong
+reading of it. The public liability form spells out what the other
+five abbreviate to "(& Stamp)":
+
+> Where signing on behalf of a Company please affix official stamp
+
+It is a business's rubber stamp, wanted only when someone signs for a
+company. An individual signs their name and that is the whole of it.
+Raised with Mr Sal around the branch photographs, his reaction was to
+wonder why a claim form would want a postage stamp, which says how
+small a thing this is and that the question as we first put it was the
+confusing part.
+
+**What the site does now.** On the six forms that have the line, the
+signature step says plainly what the stamp is and that a signature is
+all an individual needs, and the completed PDF carries the same
+sentence instead of an apology. A business that stamps its paperwork
+is told it can print the finished form and stamp it. The other three
+forms say nothing, because their paper says nothing.
+
+Nothing here is a statement about what ICB will accept. If the claims
+team ever wants a stamped copy from a company, that is between them
+and the claimant, and the printed form is still there to stamp.
 
 ### And one thing to confirm about the personal accident form
 
