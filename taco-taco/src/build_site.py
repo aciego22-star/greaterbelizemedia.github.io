@@ -244,6 +244,12 @@ ITEM_IMG = {
  "Cinnamon Rolls":                 "menu-cinnamon-rolls.jpg",
  "Cookies":                        "menu-cookies.jpg",
  "Frapp\u00e9":                      "fav-04.jpg",
+ # From the restaurant's 7 November post. No Pecan Pie here on purpose: she
+ # photographed the other two and a stand-in would be the wrong cake.
+ "Pumpkin Pie":                    "menu-pumpkin-pie.jpg",
+ "Apple Dutch Pie":                "menu-apple-dutch-pie.jpg",
+ "Mango Passion Fruit, Medium":    "menu-mango-passion.jpg",
+ "Mango Passion Fruit, Large":     "menu-mango-passion.jpg",
 
  # From the two photo packages, each checked against the printed menu.
  "Order of Flautas":               "menu-flautas.jpg",
@@ -639,7 +645,15 @@ def faq_section(lang="en"):
 def menu_section():
     """The whole menu, built from menu_data so one file holds every string."""
     def item_row(it):
-        bits = ['<div class="mi"><div class="mi-l"><span class="mi-name">%s</span>' % esc(it["name"])]
+        # A seasonal item ships with its last day on it. The browser takes it
+        # off the menu on the morning after, the same way the promotions end,
+        # so nobody has to redeploy on 1 December to stop selling pumpkin pie.
+        until = (' data-until="%s"' % it["until"]) if it.get("until") else ""
+        bits = ['<div class="mi"%s><div class="mi-l"><span class="mi-name">%s</span>'
+                % (until, esc(it["name"]))]
+        if it.get("until"):
+            # 84 items on this page: something new goes unseen without it.
+            bits.append('<span class="mi-new">%s</span>' % esc(MENU_INTRO["new_badge"]))
         if it.get("desc"):
             bits.append('<span class="mi-desc">%s</span>' % esc(it["desc"]))
         bits.append("</div>")
@@ -1264,7 +1278,11 @@ def main():
         else:
             th = '<span class="mi-thumb mi-thumb-none" aria-hidden="true"></span>'
         return row.replace('<div class="mi-l">', th + '<div class="mi-l">', 1)
-    menu = re.sub(r'<div class="mi">.*?(?=<div class="mi">|</div></div>)', add_thumb, menu, flags=re.S)
+    # A row can now carry data-until, so the opening tag is not always the bare
+    # <div class="mi">: matching it literally silently skipped the new items and
+    # left them with no photograph.
+    menu = re.sub(r'<div class="mi"[^>]*>.*?(?=<div class="mi"[^>]*>|</div></div>)',
+                  add_thumb, menu, flags=re.S)
 
     # carry the photo onto the add button so it can fly to the basket
     def tag_btn(m):
@@ -1572,6 +1590,11 @@ def main():
         # one directory down, and a path the browser builds at run time gets no
         # help from the rewrite that fixes the markup: every deal added to the
         # basket from /es/ asked for /es/assets/img/ and showed a blank square.
+        # Which items have a last day, so every page knows, not just the menu:
+        # the basket follows the customer around the site. English names only,
+        # because that is the key the basket stores and the kitchen reads.
+        season = {i["name"]: i["until"] for c in MENU_CATS for i in c["items"]
+                  if i.get("until")}
         TC = tax_data.COPY if lang == "en" else i18n.translate_json(tax_data.COPY)
         gst = {"on": gst_live(), "rate": tax_data.RATE, "deals": tax_data.ON_DEALS,
                "line": TC["line"], "subtotal": TC["subtotal"], "total": TC["total"]}
@@ -1582,13 +1605,14 @@ def main():
         return ("window.TT_DEALS=%s;\nwindow.TT_STR=%s;\nwindow.TT_REVIEWS=%s;\n"
                 "window.TT_REV_ORDER=%s;\nwindow.TT_T=%s;\nwindow.TT_WA='%s';\n"
                 "window.TT_PROMO=%s;\nwindow.TT_INTRO=%s;\nwindow.TT_GST=%s;\n"
-                "window.TT_BASE='%s';\n"
+                "window.TT_SEASON=%s;\nwindow.TT_BASE='%s';\n"
                 % (json.dumps(deals, ensure_ascii=False), json.dumps(strs, ensure_ascii=False),
                    json.dumps(revs, ensure_ascii=False), json.dumps(HOME_ORDER, ensure_ascii=False),
                    json.dumps(txt, ensure_ascii=False), WA_NUMBER,
                    json.dumps(promo, ensure_ascii=False),
                    json.dumps(intro, ensure_ascii=False),
                    json.dumps(gst, ensure_ascii=False),
+                   json.dumps(season, ensure_ascii=False),
                    "" if lang == "en" else "../"))
     for _lang, _, _ in LANGS:
         open(os.path.join(DIST,"assets","js","deals%s.js" % ("" if _lang=="en" else "."+_lang)),

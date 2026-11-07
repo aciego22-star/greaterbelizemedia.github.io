@@ -119,13 +119,17 @@ function t(k,d){return TT_TXT[k]||d;}
   var off=(promoOn()&&basket.length&&sub>0)?round2(promoBase()*PROMO.pct/100):0;
   if(off>sub) off=sub;                       // belt and braces; cannot happen at 5%
   var net=round2(sub-off);
+  // The courier's fee is part of what she charges, and she confirmed on
+  // 7 November that the register taxes it too, so it goes in before GST.
+  var fee=(basket.length&&feeEl())?round2(parseFloat(feeEl().getAttribute('data-fee'))||0):0;
   var base=GST.on ? (GST.deals===false
-            ? round2(basket.reduce(function(a,b){return a+(b.deal?0:b.qty*b.price);},0))
-            : net) : 0;
-  if(base>net) base=net;
+            ? round2(basket.reduce(function(a,b){return a+(b.deal?0:b.qty*b.price);},0)+fee)
+            : round2(net+fee)) : 0;
+  var cap=round2(net+fee);
+  if(base>cap) base=cap;
   var gst=(GST.on&&basket.length&&base>0)?round2(base*GST.rate/100):0;
-  return {sub:sub, off:off, net:net, gst:gst,
-          total:round2(net+gst), on:off>0, taxed:gst>0};
+  return {sub:sub, off:off, net:net, fee:fee, gst:gst,
+          total:round2(net+fee+gst), on:off>0, taxed:gst>0, delivered:fee>0};
  }
 
  /* ---- who the order is for, and how they are getting it ----
@@ -145,6 +149,13 @@ function t(k,d){return TT_TXT[k]||d;}
  var whenBox=$('bp-whenbox'), whenLab=$('bp-when-lab'), delNote=$('bp-del-note');
  function fulfilEl(){return document.querySelector('input[name=bp-fulfil]:checked');}
  function whenEl(){return document.querySelector('input[name=bp-when]:checked');}
+ function zoneEl(){return document.querySelector('input[name=bp-zone]:checked');}
+ /* The fee only counts while Delivery is the chosen fulfilment: a zone left
+    selected from last Friday must not quietly charge somebody collecting. */
+ function feeEl(){
+  var f=fulfilEl();
+  return (f&&f.value==='Delivery') ? zoneEl() : null;
+ }
  /* "When do you want it?" is the right question for a delivery and the wrong
     one for a table, so the label follows the choice above it. */
  function whenLabel(how){
@@ -162,6 +173,9 @@ function t(k,d){return TT_TXT[k]||d;}
   }
   if(o.how==='Delivery'){
    o.addr=(addrEl&&addrEl.value||'').trim().replace(/\s*\n\s*/g,', ');
+   var z=zoneEl();
+   o.zone=z?z.value:'';
+   o.fee=z?(parseFloat(z.getAttribute('data-fee'))||0):0;
   }
   return o;
  }
@@ -197,6 +211,10 @@ function t(k,d){return TT_TXT[k]||d;}
      if(q) q.checked=true;
     }
     if(v.at&&timeEl) timeEl.value=v.at;
+    if(v.zone){
+     var z=document.querySelector('input[name=bp-zone][value="'+v.zone+'"]');
+     if(z) z.checked=true;
+    }
    }
   }catch(e){}
   syncDelivery();
@@ -207,7 +225,7 @@ function t(k,d){return TT_TXT[k]||d;}
  function clearMarks(){
   if(nameEl) nameEl.classList.remove('bad');
   if(addrEl) addrEl.classList.remove('bad');
-  ['.bp-how','.bp-del-when'].forEach(function(sel){
+  ['.bp-how','.bp-del-when','.bp-zone'].forEach(function(sel){
    var g=document.querySelector(sel); if(g) g.classList.remove('bad');
   });
   if(warnEl) warnEl.hidden=true;
@@ -215,6 +233,10 @@ function t(k,d){return TT_TXT[k]||d;}
  document.querySelectorAll('input[name=bp-fulfil]').forEach(function(r){
   r.addEventListener('change',function(){
    syncDelivery(); clearMarks(); saveWho();
+   // The fulfilment decides whether the delivery fee counts, so the totals
+   // have to be redrawn: switching from Delivery to Pickup was leaving the
+   // fee on the bill and the row on screen.
+   renderPanel(); renderBar();
    // Fields appear out of nowhere below the fold otherwise, and on a short
    // phone the customer never learns they are there. Whichever block the
    // choice just revealed is the one to bring up.
@@ -232,6 +254,10 @@ function t(k,d){return TT_TXT[k]||d;}
    if(timeEl&&!timeEl.hidden&&timeEl.focus) timeEl.focus();
   });
  });
+ document.querySelectorAll('input[name=bp-zone]').forEach(function(r){
+  // The fee changes the total, so the panel has to be redrawn, not just saved.
+  r.addEventListener('change',function(){ clearMarks(); saveWho(); renderPanel(); renderBar(); });
+ });
  if(addrEl) addrEl.addEventListener('input',function(){ clearMarks(); saveWho(); });
  if(timeEl) timeEl.addEventListener('change',function(){ clearMarks(); saveWho(); });
  /* Nothing is sent half answered: the kitchen cannot cook "for someone, somehow".
@@ -241,6 +267,10 @@ function t(k,d){return TT_TXT[k]||d;}
   if(!w.name){ missing.push(t('who_name','Your name')); if(nameEl) nameEl.classList.add('bad'); }
   if(!w.how){ missing.push(t('who_how','How are you getting it?'));
               var g=document.querySelector('.bp-how'); if(g) g.classList.add('bad'); }
+  if(w.how==='Delivery'&&!w.zone){
+   missing.push(t('who_zone','Where are we delivering to?'));
+   var zg=document.querySelector('.bp-zone'); if(zg) zg.classList.add('bad');
+  }
   if(w.how==='Delivery'&&!w.addr){
    missing.push(t('who_addr','Delivery address')); if(addrEl) addrEl.classList.add('bad');
   }
@@ -284,7 +314,37 @@ function t(k,d){return TT_TXT[k]||d;}
   for(var i=0;i<ds.length;i++) if(ds[i].id===id) return ds[i];
   return null;
  }
+ /* A seasonal item carries its last day in data-until. The check is against
+    the visitor's clock, not the build, so pumpkin pie stops being orderable on
+    the morning of 1 December whether or not anybody redeployed the site. The
+    date is the LAST day it is sold, so the item is gone once the clock passes
+    the end of it. */
+ var ENDS={};
+ function seasonOver(until){
+  if(!until) return false;
+  if(!(until in ENDS)){
+   var p=/^(\d{4})-(\d{2})-(\d{2})$/.exec(until);
+   // Belize is UTC-6 all year, and the date is the LAST day it is sold, so the
+   // season ends at midnight local, which is 06:00 UTC the next morning.
+   ENDS[until]=p?Date.UTC(+p[1],+p[2]-1,+p[3])+30*3600*1000:0;
+  }
+  var end=ENDS[until];
+  return end>0 && Date.now()>end;
+ }
+ /* Which names the season has retired. Read from the payload rather than from
+    the page, because the basket follows the customer onto the home page and
+    the gallery, where there are no menu rows to look at. */
+ var SEASON=window.TT_SEASON||{}, GONE=null;
+ function goneNames(){
+  if(GONE) return GONE;
+  GONE={};
+  for(var n in SEASON){
+   if(Object.prototype.hasOwnProperty.call(SEASON,n)&&seasonOver(SEASON[n])) GONE[n]=1;
+  }
+  return GONE;
+ }
  function stillOrderable(it){
+  if(it.name && goneNames()[it.name]) return false;
   if(!it.deal) return true;
   var k=it.key||'', a=k.indexOf(':'), b=k.indexOf(':',a+1);
   if(a<0||b<0) return false;
@@ -372,18 +432,21 @@ function t(k,d){return TT_TXT[k]||d;}
   var sum=$('bp-sum'), gstRow=$('bp-gst-row'), disc=sum&&sum.querySelector('.bp-disc');
   if(sum){
    // The block shows for a discount, for the tax, or for both.
-   sum.hidden=!(b.on||b.taxed);
+   sum.hidden=!(b.on||b.taxed||b.delivered);
    if(disc) disc.hidden=!b.on;
    if(b.on){
     $('bp-disc-l').textContent=PROMO.line||'';
     $('bp-disc').textContent='\u2212'+money(b.off);
    }
+   var feeRow=$('bp-fee-row');
+   if(feeRow) feeRow.hidden=!b.delivered;
+   if(b.delivered) $('bp-fee').textContent=money(b.fee);
    if(gstRow) gstRow.hidden=!b.taxed;
    if(b.taxed){
     $('bp-gst-l').textContent=GST.line||'GST';
     $('bp-gst').textContent=money(b.gst);
    }
-   if(b.on||b.taxed){
+   if(b.on||b.taxed||b.delivered){
     $('bp-sub-l').textContent=(b.on&&PROMO.subtotal)||GST.subtotal||'Subtotal';
     $('bp-sub').textContent=money(b.sub);
    }
@@ -501,9 +564,10 @@ function t(k,d){return TT_TXT[k]||d;}
   // the customer was shown, to the cent. When the promotion is not running this
   // is the single total line the site has always sent.
   var b=bill(), tail;
-  if(b.on||b.taxed){
+  if(b.on||b.taxed||b.delivered){
    tail='\n\n'+(GST.subtotal||'Subtotal')+': BZD '+money(b.sub);
    if(b.on) tail+='\n\uD83C\uDDE7\uD83C\uDDFF '+(PROMO.line||'')+': \u2212BZD '+money(b.off);
+   if(b.delivered) tail+='\n'+t('wa_fee_line','Delivery')+': BZD '+money(b.fee);
    if(b.taxed) tail+='\n'+(GST.line||'GST')+': BZD '+money(b.gst);
    tail+='\n'+((b.on&&PROMO.final)||GST.total||'Total')+': BZD '+money(b.total);
   }else{
@@ -515,6 +579,7 @@ function t(k,d){return TT_TXT[k]||d;}
   if(w.name) head+='\n'+t('wa_name','Name')+': '+w.name;
   if(w.how)  head+='\n'+t('wa_how','Order for')+': '+w.how;
   if(w.how==='Delivery'&&w.addr) head+='\n'+t('wa_addr','Address')+': '+w.addr;
+  if(w.how==='Delivery'&&w.zone) head+='\n'+t('wa_zone','Delivery area')+': '+w.zone;
   if(w.when) head+='\n'+t('wa_when','When')+': '+(w.when==='At a time'&&w.at?w.at:w.when);
   if(head) head+='\n';
   if(w.how==='Delivery') tail+='\n'+t('wa_fee','Delivery charge to be confirmed on WhatsApp.');
@@ -648,6 +713,23 @@ function t(k,d){return TT_TXT[k]||d;}
     while it is open, Escape closes it, and focus goes back where it came from.
     Behind it the page cannot scroll, and it is the last thing in the DOM so a
     reader that ignores all of this still meets the page first. */
+ /* Seasonal items leave the page when their last day has passed: off the menu
+    entirely rather than shown as unavailable, because a row you cannot order
+    is a row that only raises the question. The Crowd Favorites card goes with
+    it. Nothing here needs a redeploy. */
+ (function(){
+  var n=0;
+  document.querySelectorAll('.mi[data-until],.fav[data-until]').forEach(function(el){
+   if(!seasonOver(el.getAttribute('data-until'))) return;
+   el.parentNode.removeChild(el); n++;
+  });
+  if(!n) return;
+  // A category emptied by the season should not leave a heading over nothing.
+  document.querySelectorAll('.mcat').forEach(function(c){
+   if(!c.querySelector('.mi')) c.parentNode.removeChild(c);
+  });
+ })();
+
  /* The tax notice. Dismissed per device rather than per session, because
     somebody who has read it once does not need it again tomorrow, and the line
     on the menu and the line in the basket carry it from there. It is in the

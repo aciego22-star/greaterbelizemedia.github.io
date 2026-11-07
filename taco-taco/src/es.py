@@ -1038,6 +1038,29 @@ ES.update({
  # GST, from 2 November 2026
  "GST (12.5%)": "GST (12.5%)",
  "Close this notice": "Cerrar este aviso",
+
+ # Delivery areas, confirmed 7 November: she goes to these four places only.
+ "Where are we delivering to?": "\u00bfA d\u00f3nde entregamos?",
+ "Belmopan city": "Ciudad de Belmop\u00e1n",
+ "Armenia, Roaring Creek or Camalote": "Armenia, Roaring Creek o Camalote",
+ "We deliver in Belmopan city and to Armenia, Roaring Creek and Camalote. "
+ "Anywhere else, message us on WhatsApp and we will see what we can do.":
+   "Entregamos en la ciudad de Belmop\u00e1n y en Armenia, Roaring Creek y "
+   "Camalote. Para cualquier otro lugar, escr\u00edbanos por WhatsApp y vemos "
+   "qu\u00e9 podemos hacer.",
+
+ # The November items. Off the menu on 1 December.
+ "New": "Nuevo",
+ "By the slice": "Por rebanada",
+ "Pumpkin Pie": "Pay de calabaza",
+ "Apple Dutch Pie": "Pay de manzana holand\u00e9s",
+ "Pecan Pie": "Pay de nuez",
+ "Mango Passion Fruit": "Mango con maracuy\u00e1",
+ "Mango Passion Fruit, Medium": "Mango con maracuy\u00e1, mediano",
+ "Mango Passion Fruit, Large": "Mango con maracuy\u00e1, grande",
+ "Thanksgiving baking, by the slice":
+   "Reposter\u00eda de Acci\u00f3n de Gracias, por rebanada",
+ "Blended fresh, medium or large": "Licuado al momento, mediano o grande",
  "Menu prices do not include GST. A 12.5% government sales tax is added to "
  "your order total.":
    "Los precios del men\u00fa no incluyen el GST. Se agrega un impuesto sobre "

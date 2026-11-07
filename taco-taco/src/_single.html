@@ -98,7 +98,15 @@
     <p class="sec-sub">A few of the dishes our Belmopan neighbors keep coming back for.</p>
    </div>
    <div class="fav-wrap">
-    <div class="fav">
+    <div class="fav" data-until="2026-11-30">
+          <button type="button" class="fav-img" style="background-image:url('assets/img/menu-pumpkin-pie.jpg')" data-zoom="assets/img/menu-pumpkin-pie.jpg" data-zoom-title="Pumpkin Pie" aria-label="View photo of Pumpkin Pie"></button>
+          <div class="fav-name">Pumpkin Pie</div>
+          <div class="fav-desc">Thanksgiving baking, by the slice</div></div>
+<div class="fav" data-until="2026-11-30">
+          <button type="button" class="fav-img" style="background-image:url('assets/img/menu-mango-passion.jpg')" data-zoom="assets/img/menu-mango-passion.jpg" data-zoom-title="Mango Passion Fruit" aria-label="View photo of Mango Passion Fruit"></button>
+          <div class="fav-name">Mango Passion Fruit</div>
+          <div class="fav-desc">Blended fresh, medium or large</div></div>
+<div class="fav">
           <button type="button" class="fav-img" style="background-image:url('assets/img/hero-plate.jpg')" data-zoom="assets/img/hero-plate.jpg" data-zoom-title="Mexican Tacos" aria-label="View photo of Mexican Tacos"></button>
           <div class="fav-name">Mexican Tacos</div>
           <div class="fav-desc">Carne asada, al pastor, carnitas &amp; more</div></div>
@@ -301,6 +309,13 @@
      </div>
     </fieldset>
     <div class="bp-del" id="bp-del" hidden>
+     <fieldset class="bp-field bp-zone">
+      <legend class="bp-lab">Where are we delivering to?</legend>
+      <div class="bp-zone-col">
+       <label class="bp-opt bp-zone-opt"><input type="radio" name="bp-zone" value="Belmopan City" data-fee="5"><span>Belmopan city<em>$5</em></span></label>
+       <label class="bp-opt bp-zone-opt"><input type="radio" name="bp-zone" value="Armenia, Roaring Creek or Camalote" data-fee="10"><span>Armenia, Roaring Creek or Camalote<em>$10</em></span></label>
+      </div>
+     </fieldset>
      <label class="bp-field">
       <span class="bp-lab">Delivery address</span>
       <textarea id="bp-addr" rows="2" maxlength="160" autocomplete="street-address"
@@ -317,12 +332,13 @@
       <input type="time" id="bp-time" hidden>
      </fieldset>
     </div>
-    <p class="bp-del-note" id="bp-del-note" hidden>The delivery charge is arranged with you on WhatsApp and is not in the total below.</p>
+    <p class="bp-del-note" id="bp-del-note" hidden>We deliver in Belmopan city and to Armenia, Roaring Creek and Camalote. Anywhere else, message us on WhatsApp and we will see what we can do.</p>
     <p class="bp-warn" id="bp-warn" hidden></p>
    </div>
    <div class="bp-sum" id="bp-sum" hidden>
     <div class="bp-line"><span id="bp-sub-l">Subtotal</span><span id="bp-sub">$0.00</span></div>
     <div class="bp-line bp-disc"><span id="bp-disc-l">Website Discount</span><span id="bp-disc">-$0.00</span></div>
+    <div class="bp-line bp-del-fee" id="bp-fee-row" hidden><span id="bp-fee-l">Delivery</span><span id="bp-fee">$0.00</span></div>
     <div class="bp-line bp-gst" id="bp-gst-row" hidden><span id="bp-gst-l">GST (12.5%)</span><span id="bp-gst">$0.00</span></div>
    </div>
   </div>

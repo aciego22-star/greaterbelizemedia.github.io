@@ -36,6 +36,7 @@ INTRO = {
  "full": "View Full Menu",
  "basket": "View Your Basket",
  "choose_meat": "Choose meat for %s",
+ "new_badge": "New",
 }
 
 CATEGORIES = [
@@ -244,6 +245,13 @@ CATEGORIES = [
    {"name": "Cookies", "price": 5},
    {"name": "Cinnamon Rolls", "price": 12},
    {"name": "Order of Churros", "price": 12},
+   # Added 7 November from the restaurant's own post. By the slice, confirmed
+   # with Albert, because the photographs show whole pies and $12 for a whole
+   # pie would have been an argument at the counter. "until" takes them off on
+   # 1 December: they are Thanksgiving baking, not a standing dessert.
+   {"name": "Pumpkin Pie", "price": 12, "desc": "By the slice", "until": "2026-11-30"},
+   {"name": "Apple Dutch Pie", "price": 12, "desc": "By the slice", "until": "2026-11-30"},
+   {"name": "Pecan Pie", "price": 12, "desc": "By the slice", "until": "2026-11-30"},
   ]},
 
  {"name": "Drinks", "items": [
@@ -253,6 +261,10 @@ CATEGORIES = [
    {"name": "Soda Water", "price": 3},
    {"name": "Sweet Tea", "price": 10},
    {"name": "Frappé", "price": 12, "desc": "Coffee or chocolate"},
+   # Two sizes, the way Menudo Soup already does it. Off on 1 December: mango
+   # is seasonal.
+   {"name": "Mango Passion Fruit, Medium", "price": 8, "until": "2026-11-30"},
+   {"name": "Mango Passion Fruit, Large", "price": 12, "until": "2026-11-30"},
   ]},
 
  {"name": "Breakfast Drinks", "items": [
