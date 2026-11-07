@@ -19,7 +19,7 @@ if (process.env.VITE_ARTIFACT === 'true') {
 }
 
 const ssr = await import(pathToFileURL(join(root, 'dist-ssr', 'entry-server.js')).href);
-const { routes, render, jsonLdScript, llmsTxt } = ssr;
+const { routes, render, jsonLdScript, postJsonLdScript, blogPages, llmsTxt } = ssr;
 const siteTs = readFileSync(join(root, 'src/content/site.ts'), 'utf8');
 const siteUrl = (siteTs.match(/siteUrl:\s*'([^']+)'/)?.[1] ?? '').replace(/\/$/, '');
 const PLACEHOLDER = /https:\/\/cojacs-rumpopo\.netlify\.app/g;
@@ -29,7 +29,7 @@ const esc = (s) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g
 const setMeta = (html, attr, key, value) =>
   html.replace(new RegExp(`(<meta ${attr}="${key}" content=")[^"]*(")`), `$1${esc(value)}$2`);
 
-function page({ key, title, description, path, noindex = false }) {
+function page({ key, title, description, path, noindex = false, ld = '', image = null, article = null }) {
   const url = siteUrl + (path === '/' ? '/' : path);
   let html = template.replace(/<title>[^<]*<\/title>/, `<title>${esc(title)}</title>`);
   html = setMeta(html, 'name', 'description', description);
@@ -48,7 +48,23 @@ function page({ key, title, description, path, noindex = false }) {
       .replace(/\s*<link rel="canonical"[^>]*>/, '')
       .replace(/\s*<link rel="alternate" hreflang="[^"]*"[^>]*>/g, '');
   }
-  const head = key ? jsonLdScript(key) : '';
+  if (image) {
+    html = setMeta(html, 'property', 'og:image', image.url);
+    html = setMeta(html, 'property', 'og:image:width', String(image.width));
+    html = setMeta(html, 'property', 'og:image:height', String(image.height));
+    html = setMeta(html, 'property', 'og:image:alt', image.alt);
+    html = setMeta(html, 'name', 'twitter:image', image.url);
+  }
+  let extra = '';
+  if (article) {
+    html = setMeta(html, 'property', 'og:type', 'article');
+    extra +=
+      `<meta property="article:published_time" content="${article.publishedAt}" />` +
+      `<meta property="article:modified_time" content="${article.updatedAt}" />` +
+      article.section.map((s) => `<meta property="article:section" content="${esc(s)}" />`).join('') +
+      article.tags.map((t) => `<meta property="article:tag" content="${esc(t)}" />`).join('');
+  }
+  const head = (key ? jsonLdScript(key) : ld) + extra;
   html = html.replace('<!--app-head-->', head);
   html = html.replace('<div id="root"></div>', `<div id="root">${render(path)}</div>`);
   return html;
@@ -67,6 +83,12 @@ for (const [key, r] of Object.entries(routes)) {
       : '';
   const priority = key === 'home' ? '1.0' : key === 'flavours' || key === 'order' ? '0.9' : key === 'privacy' ? '0.3' : '0.7';
   urls.push(`  <url>\n    <loc>${loc}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>${priority}</priority>${image}\n  </url>`);
+}
+for (const b of blogPages()) {
+  const out = join(dist, b.path.slice(1), 'index.html');
+  mkdirSync(dirname(out), { recursive: true });
+  writeFileSync(out, page({ title: b.title, description: b.description, path: b.path, ld: postJsonLdScript(b.slug), image: b.image, article: b }));
+  urls.push(`  <url>\n    <loc>${siteUrl}${b.path}</loc>\n    <lastmod>${b.updatedAt}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.8</priority>\n    <image:image><image:loc>${b.image.url}</image:loc></image:image>\n  </url>`);
 }
 writeFileSync(
   join(dist, '404.html'),

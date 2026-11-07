@@ -8,14 +8,16 @@ import { StaticRouter } from 'react-router-dom/server';
 import App from './App';
 import { CartProvider } from './context/CartContext';
 import routes from './content/routes.json';
-import { jsonLdScript } from './lib/structuredData';
+import { blogPages, jsonLdScript, postJsonLdScript } from './lib/structuredData';
+import { publishedPosts, postPath, formatPostDate } from './content/blog/posts';
+import { contest } from './content/blog/contest';
 import { site } from './content/site';
 import { publishedFaqs } from './content/faqs';
 import { getCatalogue } from './content/catalogue';
 import { media } from './content/media';
 import { formatLongDate } from './lib/season';
 
-export { routes, jsonLdScript };
+export { routes, jsonLdScript, postJsonLdScript, blogPages };
 
 export function render(url: string): string {
   return renderToString(
@@ -70,6 +72,11 @@ ${flavours}
 ## Pages
 ${pages}
 
+## Holiday Blog
+${publishedPosts()
+  .map((p) => `* [${p.title}](${base}${postPath(p.slug)}) (${formatPostDate(p.publishedAt)}): ${p.excerpt}`)
+  .join('\n')}
+${contest.status === 'active' ? '\nMystery flavour competition (2026): the new flavour is secret. Official hint: one of the main ingredients is popular in Belizean cooking. Guesses are made only in the comments of Cojac’s official Facebook competition post (one answer per comment, multiple guesses allowed); the first three correct answers each win one half liter bottle of the new flavour. Guesses are not collected on this website.\n' : ''}
 ## Media features
 ${videos}
 

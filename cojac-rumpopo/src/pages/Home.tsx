@@ -13,6 +13,8 @@ import { ArrowIcon, WhatsAppIcon } from '../components/Icons';
 import { Reveal, SectionHead } from '../components/ui';
 import { FlavourVisual } from '../components/FlavourCard';
 import { HeroSlideshow } from '../components/HeroSlideshow';
+import { PostCard } from '../components/blog';
+import { publishedPosts } from '../content/blog/posts';
 import { FaqAccordion, FinalCta, GalleryTile, GuaranteePillars, HowItWorks, TrustStrip, VideoCard } from '../components/sections';
 
 function Hero() {
@@ -165,6 +167,7 @@ function FeaturedFlavours() {
 
 export default function Home() {
   usePageMeta('home');
+  const latestPost = publishedPosts()[0];
   const homeFaqIds = ['what-is-rumpopo', 'how-to-order', 'prices', 'delivery-areas', 'is-order-confirmed'];
   const faqs = homeFaqIds.map((id) => publishedFaqs().find((f) => f.id === id)).filter((f): f is NonNullable<typeof f> => !!f);
   const videos = media.filter((m) => m.featured && m.platform === 'youtube').slice(0, 2);
@@ -241,6 +244,22 @@ export default function Home() {
                 </Reveal>
               ))}
             </div>
+          </div>
+        </section>
+      )}
+
+      {latestPost && (
+        <section className="section section--cream" aria-labelledby="blog-home-title">
+          <div className="container">
+            <div className="split-head">
+              <SectionHead title={<span id="blog-home-title">From the Holiday Blog</span>} />
+              <Link to={routes.holidayBlog.path} className="text-link split-head__link">
+                All Holiday Blog stories →
+              </Link>
+            </div>
+            <Reveal>
+              <PostCard post={latestPost} variant="compact" headingLevel={3} />
+            </Reveal>
           </div>
         </section>
       )}

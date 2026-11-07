@@ -13,7 +13,7 @@ const OUT = process.argv[2] || 'docs/screenshots';
 const SCALE = Number(process.env.QA_SCALE || 1);
 mkdirSync(OUT, { recursive: true });
 
-const pages = (process.env.QA_TRAILING ? ['/', '/our-story/', '/flavours/', '/our-guarantee/', '/gallery/', '/videos-features/', '/order/', '/faqs/', '/contact/', '/privacy/'] : ['/', '/our-story', '/flavours', '/our-guarantee', '/gallery', '/videos-features', '/order', '/faqs', '/contact', '/privacy', '/does-not-exist']);
+const pages = (process.env.QA_TRAILING ? ['/', '/our-story/', '/flavours/', '/our-guarantee/', '/gallery/', '/videos-features/', '/order/', '/faqs/', '/contact/', '/privacy/', '/holiday-blog/', '/holiday-blog/rumpopo-season-2026-secret-flavour/'] : ['/', '/our-story', '/flavours', '/our-guarantee', '/gallery', '/videos-features', '/order', '/faqs', '/contact', '/privacy', '/holiday-blog', '/holiday-blog/rumpopo-season-2026-secret-flavour', '/does-not-exist']);
 const viewports = {
   desktop: { width: 1440, height: 900 },
   tablet: { width: 834, height: 1112 },

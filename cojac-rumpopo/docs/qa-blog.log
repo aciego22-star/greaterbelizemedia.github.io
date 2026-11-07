@@ -1,0 +1,139 @@
+
+== desktop 1280 ==
+PASS  Holiday Blog opens from the navigation
+PASS  footer links to the Holiday Blog
+PASS  index shows the featured story
+PASS  index shows six topic tiles
+PASS  empty topics say "Stories coming soon" (no fake posts)
+PASS  no pagination on the index
+PASS  post has exactly one H1
+PASS  post has section H2s
+PASS  breadcrumb Home › Holiday Blog › post
+PASS  author, date and reading time shown
+PASS  official hint shown as a pull quote
+PASS  artwork is the desktop 16:9 file at its natural ratio — Cojacs_Secret_Flavour_Holiday_Blog_DESKTOP_1920x1080.webp 1.778
+PASS  artwork is not cropped (no object-fit: cover)
+PASS  main artwork is not lazy-loaded (LCP)
+PASS  artwork appears once on the post
+PASS  competition panel present
+PASS  panel links only to the verified Facebook page (no contest permalink supplied yet) — [["Visit Cojac’s Official Facebook Page","https://www.facebook.com/share/1EJbfQLwDq/"]]
+PASS  no "enter here" wording while the post link is missing
+PASS  no forms or text inputs in the article
+PASS  no placeholder hrefs
+PASS  no long dashes in the page
+PASS  no countdown / entry counter
+PASS  CTAs go to Find Your Flavour and the existing order flow — ["/flavours","/order"]
+PASS  internal link to /our-story
+PASS  internal link to /our-guarantee
+PASS  internal link to /videos-features
+PASS  internal link to /flavours
+PASS  internal link to /order
+PASS  share links carry the canonical article URL — 2 links
+PASS  Order Through WhatsApp opens the site order page (cart flow kept)
+PASS  no horizontal overflow
+PASS  no page errors
+
+== desktop 1920 ==
+PASS  Holiday Blog opens from the navigation
+PASS  footer links to the Holiday Blog
+PASS  index shows the featured story
+PASS  index shows six topic tiles
+PASS  empty topics say "Stories coming soon" (no fake posts)
+PASS  no pagination on the index
+PASS  post has exactly one H1
+PASS  post has section H2s
+PASS  breadcrumb Home › Holiday Blog › post
+PASS  author, date and reading time shown
+PASS  official hint shown as a pull quote
+PASS  artwork is the desktop 16:9 file at its natural ratio — Cojacs_Secret_Flavour_Holiday_Blog_DESKTOP_1920x1080.webp 1.778
+PASS  artwork is not cropped (no object-fit: cover)
+PASS  main artwork is not lazy-loaded (LCP)
+PASS  artwork appears once on the post
+PASS  competition panel present
+PASS  panel links only to the verified Facebook page (no contest permalink supplied yet) — [["Visit Cojac’s Official Facebook Page","https://www.facebook.com/share/1EJbfQLwDq/"]]
+PASS  no "enter here" wording while the post link is missing
+PASS  no forms or text inputs in the article
+PASS  no placeholder hrefs
+PASS  no long dashes in the page
+PASS  no countdown / entry counter
+PASS  CTAs go to Find Your Flavour and the existing order flow — ["/flavours","/order"]
+PASS  internal link to /our-story
+PASS  internal link to /our-guarantee
+PASS  internal link to /videos-features
+PASS  internal link to /flavours
+PASS  internal link to /order
+PASS  share links carry the canonical article URL — 2 links
+PASS  Order Through WhatsApp opens the site order page (cart flow kept)
+PASS  no horizontal overflow
+PASS  no page errors
+
+== iPhone 13 ==
+PASS  Holiday Blog opens from the navigation
+PASS  footer links to the Holiday Blog
+PASS  index shows the featured story
+PASS  index shows six topic tiles
+PASS  empty topics say "Stories coming soon" (no fake posts)
+PASS  no pagination on the index
+PASS  post has exactly one H1
+PASS  post has section H2s
+PASS  breadcrumb Home › Holiday Blog › post
+PASS  author, date and reading time shown
+PASS  official hint shown as a pull quote
+PASS  artwork is the mobile 4:5 file at its natural ratio — Cojacs_Secret_Flavour_Holiday_Blog_MOBILE_1080x1350.webp 0.800
+PASS  artwork is not cropped (no object-fit: cover)
+PASS  main artwork is not lazy-loaded (LCP)
+PASS  artwork appears once on the post
+PASS  competition panel present
+PASS  panel links only to the verified Facebook page (no contest permalink supplied yet) — [["Visit Cojac’s Official Facebook Page","https://www.facebook.com/share/1EJbfQLwDq/"]]
+PASS  no "enter here" wording while the post link is missing
+PASS  no forms or text inputs in the article
+PASS  no placeholder hrefs
+PASS  no long dashes in the page
+PASS  no countdown / entry counter
+PASS  CTAs go to Find Your Flavour and the existing order flow — ["/flavours","/order"]
+PASS  internal link to /our-story
+PASS  internal link to /our-guarantee
+PASS  internal link to /videos-features
+PASS  internal link to /flavours
+PASS  internal link to /order
+PASS  share links carry the canonical article URL — 2 links
+PASS  Order Through WhatsApp opens the site order page (cart flow kept)
+PASS  no horizontal overflow
+PASS  no page errors
+
+== 360 wide ==
+PASS  Holiday Blog opens from the navigation
+PASS  footer links to the Holiday Blog
+PASS  index shows the featured story
+PASS  index shows six topic tiles
+PASS  empty topics say "Stories coming soon" (no fake posts)
+PASS  no pagination on the index
+PASS  post has exactly one H1
+PASS  post has section H2s
+PASS  breadcrumb Home › Holiday Blog › post
+PASS  author, date and reading time shown
+PASS  official hint shown as a pull quote
+PASS  artwork is the mobile 4:5 file at its natural ratio — Cojacs_Secret_Flavour_Holiday_Blog_MOBILE_540x675.webp 0.800
+PASS  artwork is not cropped (no object-fit: cover)
+PASS  main artwork is not lazy-loaded (LCP)
+PASS  artwork appears once on the post
+PASS  competition panel present
+PASS  panel links only to the verified Facebook page (no contest permalink supplied yet) — [["Visit Cojac’s Official Facebook Page","https://www.facebook.com/share/1EJbfQLwDq/"]]
+PASS  no "enter here" wording while the post link is missing
+PASS  no forms or text inputs in the article
+PASS  no placeholder hrefs
+PASS  no long dashes in the page
+PASS  no countdown / entry counter
+PASS  CTAs go to Find Your Flavour and the existing order flow — ["/flavours","/order"]
+PASS  internal link to /our-story
+PASS  internal link to /our-guarantee
+PASS  internal link to /videos-features
+PASS  internal link to /flavours
+PASS  internal link to /order
+PASS  share links carry the canonical article URL — 2 links
+PASS  Order Through WhatsApp opens the site order page (cart flow kept)
+PASS  no horizontal overflow
+PASS  no page errors
+PASS  unknown post shows the not-found page
+
+129/129 checks passed

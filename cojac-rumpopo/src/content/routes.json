@@ -40,6 +40,12 @@
     "title": "Videos & Features | Cojac’s Sumptuous Rumpopo on TV & Social Media",
     "description": "Television interviews, Christmas features, community events and social media moments from the Cojac’s rumpopo journey, including features by Greater Belize Media."
   },
+  "holidayBlog": {
+    "path": "/holiday-blog",
+    "nav": "Holiday Blog",
+    "title": "Holiday Blog | Cojac’s Sumptuous Rumpopo Belize",
+    "description": "Celebrate rumpopo season in Belize with Cojac’s holiday stories, flavour news, festive announcements and behind the bottle updates."
+  },
   "order": {
     "path": "/order",
     "nav": "Order",

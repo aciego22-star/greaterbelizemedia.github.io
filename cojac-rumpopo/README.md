@@ -45,6 +45,8 @@ src/content/catalogue.ts   flavours, sizes, prices, availability, allergens, pho
 src/content/faqs.ts        FAQ questions & answers (draft answers stay hidden until published)
 src/content/media.ts       videos & features
 src/content/gallery.ts     gallery photos
+src/content/blog/          Holiday Blog posts (posts.ts) and competition settings (contest.ts)
+src/content/hero.ts        homepage slideshow
 src/content/copy.ts        the family's approved copy (story, guarantee, videos intro)
 src/content/routes.json    page URLs, titles and SEO descriptions
 src/lib/order.ts           order maths + WhatsApp message builder (unit-tested)
@@ -54,4 +56,4 @@ public/                    favicon, social image, robots.txt, video thumbnails; 
 docs/                      handover guide, launch blockers, QA report, screenshots
 ```
 
-See **docs/HANDOVER.md** for step-by-step edits the family can make each season, and **docs/SEO.md** for search, answer-engine and AI visibility (including getting the favicon into Google).
+See **docs/HOLIDAY-BLOG.md** for the blog, **docs/HANDOVER.md** for step-by-step edits the family can make each season, and **docs/SEO.md** for search, answer-engine and AI visibility (including getting the favicon into Google).

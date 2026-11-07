@@ -12,6 +12,7 @@ import { media } from '../content/media';
 import { getCatalogue } from '../content/catalogue';
 import { getDestination } from './whatsapp';
 import { buildWhatsAppUrl } from './order';
+import { categoryName, postPath, publishedPosts, findPost, wordCount, type BlogPost } from '../content/blog/posts';
 
 type RouteKey = keyof typeof routes;
 type Json = Record<string, unknown>;
@@ -91,6 +92,7 @@ const pageTypes: Partial<Record<RouteKey, string>> = {
   flavours: 'CollectionPage',
   gallery: 'CollectionPage',
   videos: 'CollectionPage',
+  holidayBlog: 'CollectionPage',
 };
 
 function breadcrumb(key: RouteKey): Json | null {
@@ -125,6 +127,23 @@ function webpage(key: RouteKey): Json {
       name: f.question,
       acceptedAnswer: { '@type': 'Answer', text: f.answer },
     }));
+  }
+  if (key === 'holidayBlog') {
+    page.mainEntity = {
+      '@type': 'Blog',
+      '@id': `${pageUrl('holidayBlog')}#blog`,
+      name: `${site.brandShort} Holiday Blog`,
+      description: routes.holidayBlog.description,
+      publisher: { '@id': ORG_ID() },
+      inLanguage: 'en-BZ',
+      blogPost: publishedPosts().map((p) => ({
+        '@type': 'BlogPosting',
+        '@id': `${abs(postPath(p.slug))}#article`,
+        headline: p.title,
+        url: abs(postPath(p.slug)),
+        datePublished: p.publishedAt,
+      })),
+    };
   }
   if (key === 'flavours') {
     page.mainEntity = {
@@ -198,4 +217,86 @@ export function structuredDataFor(key: RouteKey): Json {
 
 export function jsonLdScript(key: RouteKey): string {
   return `<script type="application/ld+json">${JSON.stringify(structuredDataFor(key)).replace(/</g, '\\u003c')}</script>`;
+}
+
+/* ── Holiday Blog posts ─────────────────────────────────────────────────── */
+
+function blogPosting(post: BlogPost): Json {
+  const url = abs(postPath(post.slug));
+  return {
+    '@type': 'BlogPosting',
+    '@id': `${url}#article`,
+    headline: post.title,
+    description: post.metaDescription,
+    image: [
+      { '@type': 'ImageObject', url: abs(post.image.desktopJpg), width: post.image.desktopWidth, height: post.image.desktopHeight },
+      { '@type': 'ImageObject', url: abs(post.image.mobileJpg), width: post.image.mobileWidth, height: post.image.mobileHeight },
+    ],
+    datePublished: post.publishedAt,
+    dateModified: post.updatedAt,
+    author: { '@id': ORG_ID() },
+    publisher: { '@id': ORG_ID() },
+    mainEntityOfPage: { '@id': `${url}#webpage` },
+    isPartOf: { '@id': `${pageUrl('holidayBlog')}#blog` },
+    articleSection: post.categories.map(categoryName),
+    keywords: post.tags.join(', '),
+    wordCount: wordCount(post),
+    inLanguage: 'en-BZ',
+  };
+}
+
+export function postStructuredData(slug: string): Json | null {
+  const post = findPost(slug);
+  if (!post) return null;
+  const url = abs(postPath(post.slug));
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      organization(),
+      website(),
+      {
+        '@type': 'WebPage',
+        '@id': `${url}#webpage`,
+        url,
+        name: post.seoTitle,
+        description: post.metaDescription,
+        inLanguage: 'en-BZ',
+        isPartOf: { '@id': SITE_ID() },
+        primaryImageOfPage: { '@type': 'ImageObject', url: abs(post.image.desktopJpg) },
+        breadcrumb: { '@id': `${url}#breadcrumb` },
+        datePublished: post.publishedAt,
+        dateModified: post.updatedAt,
+      },
+      blogPosting(post),
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `${url}#breadcrumb`,
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: `${origin()}/` },
+          { '@type': 'ListItem', position: 2, name: 'Holiday Blog', item: pageUrl('holidayBlog') },
+          { '@type': 'ListItem', position: 3, name: post.title, item: url },
+        ],
+      },
+    ],
+  };
+}
+
+export function postJsonLdScript(slug: string): string {
+  const data = postStructuredData(slug);
+  return data ? `<script type="application/ld+json">${JSON.stringify(data).replace(/</g, '\\u003c')}</script>` : '';
+}
+
+/** Data the build step needs to write each post page (title, social image, etc.). */
+export function blogPages() {
+  return publishedPosts().map((p) => ({
+    slug: p.slug,
+    path: postPath(p.slug),
+    title: p.seoTitle,
+    description: p.metaDescription,
+    publishedAt: p.publishedAt,
+    updatedAt: p.updatedAt,
+    image: { url: abs(p.image.desktopJpg), width: p.image.desktopWidth, height: p.image.desktopHeight, alt: p.image.alt },
+    section: p.categories.map(categoryName),
+    tags: p.tags,
+  }));
 }

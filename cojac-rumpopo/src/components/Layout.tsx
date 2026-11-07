@@ -88,7 +88,7 @@ function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
     };
   }, [open, onClose]);
   if (!open) return null;
-  const all = [routes.home, routes.story, routes.flavours, routes.guarantee, routes.gallery, routes.videos, routes.order, routes.faqs, routes.contact];
+  const all = [routes.home, routes.story, routes.flavours, routes.guarantee, routes.gallery, routes.videos, routes.holidayBlog, routes.order, routes.faqs, routes.contact];
   return (
     <div className="mobile-menu" role="dialog" aria-modal="true" aria-label="Site menu" ref={ref}>
       <div className="mobile-menu__top">
@@ -144,6 +144,9 @@ function Header() {
               {routes.flavours.nav}
             </NavLink>
             <DiscoverMenu />
+            <NavLink to={routes.holidayBlog.path} className="nav-link">
+              Holiday Blog
+            </NavLink>
             <NavLink to={routes.faqs.path} className="nav-link">
               FAQs
             </NavLink>
@@ -194,6 +197,7 @@ function Footer() {
               <li><Link to={routes.guarantee.path}>Our Guarantee</Link></li>
               <li><Link to={routes.gallery.path}>Gallery</Link></li>
               <li><Link to={routes.videos.path}>Videos &amp; Features</Link></li>
+              <li><Link to={routes.holidayBlog.path}>Holiday Blog</Link></li>
             </ul>
           </nav>
           <nav aria-label="Order and support">

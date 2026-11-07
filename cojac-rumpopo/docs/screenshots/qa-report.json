@@ -80,6 +80,22 @@
     "errors": []
   },
   {
+    "viewport": "desktop",
+    "path": "/holiday-blog/",
+    "status": 200,
+    "title": "Holiday Blog | Cojac’s Sumptuous Rumpopo Belize",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "desktop",
+    "path": "/holiday-blog/rumpopo-season-2026-secret-flavour/",
+    "status": 200,
+    "title": "Rumpopo Season 2026 Is Back | Cojac’s New Flavour Mystery",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
     "viewport": "tablet",
     "path": "/",
     "status": 200,
@@ -160,6 +176,22 @@
     "errors": []
   },
   {
+    "viewport": "tablet",
+    "path": "/holiday-blog/",
+    "status": 200,
+    "title": "Holiday Blog | Cojac’s Sumptuous Rumpopo Belize",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "tablet",
+    "path": "/holiday-blog/rumpopo-season-2026-secret-flavour/",
+    "status": 200,
+    "title": "Rumpopo Season 2026 Is Back | Cojac’s New Flavour Mystery",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
     "viewport": "mobile",
     "path": "/",
     "status": 200,
@@ -240,6 +272,22 @@
     "errors": []
   },
   {
+    "viewport": "mobile",
+    "path": "/holiday-blog/",
+    "status": 200,
+    "title": "Holiday Blog | Cojac’s Sumptuous Rumpopo Belize",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "mobile",
+    "path": "/holiday-blog/rumpopo-season-2026-secret-flavour/",
+    "status": 200,
+    "title": "Rumpopo Season 2026 Is Back | Cojac’s New Flavour Mystery",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
     "viewport": "mobile-small",
     "path": "/",
     "status": 200,
@@ -316,6 +364,22 @@
     "path": "/privacy/",
     "status": 200,
     "title": "Privacy, Accessibility & Responsible Enjoyment | Cojac’s Sumptuous Rumpopo",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "mobile-small",
+    "path": "/holiday-blog/",
+    "status": 200,
+    "title": "Holiday Blog | Cojac’s Sumptuous Rumpopo Belize",
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "viewport": "mobile-small",
+    "path": "/holiday-blog/rumpopo-season-2026-secret-flavour/",
+    "status": 200,
+    "title": "Rumpopo Season 2026 Is Back | Cojac’s New Flavour Mystery",
     "horizontalOverflow": false,
     "errors": []
   }

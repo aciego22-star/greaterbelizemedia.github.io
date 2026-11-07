@@ -17,6 +17,8 @@ Nothing below was invented. Each item is either empty in the config (so it is hi
 
 | 9b | **Hero photos**: confirm the four slideshow images (cocktail, gift bags, glass bottles, holiday collection) show packaging Cojac’s actually offers, since customers may expect it | `public/hero/`, `hero.ts` | Shown on the homepage. |
 
+| 9c | **Holiday Blog contest link**: the exact Facebook competition post URL, confirmation the flavour is still secret and guesses still open, and any eligibility/age wording the owners want shown | `src/content/blog/contest.ts` | Panel links to the official Facebook page (“Visit Cojac’s Official Facebook Page”) and asks people to find the post. No enter button until the link is supplied. |
+
 ## Should have
 
 | # | Item | Where |

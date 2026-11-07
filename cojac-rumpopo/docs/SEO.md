@@ -31,6 +31,8 @@ This document follows the “Layers of SEO” guide. Everything is generated fro
 
 **Key signals to watch** (Search Console → Performance and Pages): organic impressions, keyword positions (e.g. “rumpopo Belize”, “rum popo Belize City”, “Cojac’s rumpopo”), search traffic and pages indexed (10 expected).
 
+**Holiday Blog:** `/holiday-blog` (CollectionPage + Blog) and article pages (BlogPosting + BreadcrumbList, `og:type=article`, 1920×1080 share image, sitemap entries with images). New stories add topical depth for “rumpopo Belize”, “Belizean rum popo”, “rum popo season 2026” and “Belize Christmas drink”.
+
 ## 2. AEO: content that answer engines can quote
 
 | Work on | Implementation |

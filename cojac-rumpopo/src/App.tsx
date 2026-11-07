@@ -15,6 +15,8 @@ import Contact from './pages/Contact';
 import Privacy from './pages/Privacy';
 import LaunchNotes from './pages/LaunchNotes';
 import NotFound from './pages/NotFound';
+import BlogIndex from './pages/BlogIndex';
+import BlogPost from './pages/BlogPost';
 
 const strip = (p: string) => p.replace(/^\//, '');
 
@@ -28,6 +30,8 @@ export default function App() {
           <Route path={strip(routes.guarantee.path)} element={<Guarantee />} />
           <Route path={strip(routes.gallery.path)} element={<Gallery />} />
           <Route path={strip(routes.videos.path)} element={<Videos />} />
+          <Route path={strip(routes.holidayBlog.path)} element={<BlogIndex />} />
+          <Route path={`${strip(routes.holidayBlog.path)}/:slug`} element={<BlogPost />} />
           <Route path={strip(routes.order.path)} element={<Order />} />
           <Route path={strip(routes.faqs.path)} element={<Faqs />} />
           <Route path={strip(routes.contact.path)} element={<Contact />} />
