@@ -2472,3 +2472,187 @@
 .story-chapter--dark .story-chapter__title {
   color: var(--gold-300);
 }
+
+/* ═════════════════════════════════════════════════════════════════════════
+   CENTRED LAYOUT (Nov 2026): numbers, icons, headings and short card text are
+   centred across the site. Long paragraphs and form fields stay left-aligned
+   for readability.
+   ═════════════════════════════════════════════════════════════════════════ */
+
+/* Section headings */
+.section-head {
+  margin-inline: auto;
+  text-align: center;
+}
+.section-head .lead {
+  margin-inline: auto;
+}
+.split-head {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0;
+}
+.split-head .section-head {
+  margin-bottom: 14px;
+}
+.split-head__link {
+  margin-bottom: 40px;
+}
+.collection__head {
+  justify-content: center;
+  text-align: center;
+}
+.ornament {
+  justify-content: center !important;
+}
+
+/* Cards with a number or icon */
+.moment,
+.step,
+.know,
+.pillar,
+.pillars--large .pillar {
+  text-align: center;
+}
+.moment__num {
+  display: block;
+}
+.step__num {
+  margin-inline: auto;
+}
+.pillar__icon {
+  margin-inline: auto;
+}
+.pillar__num,
+.pillars--large .pillar__num {
+  position: static;
+  display: block;
+  font-size: 2.4rem;
+  line-height: 1;
+  margin-bottom: 14px;
+}
+.pillars--large .pillar {
+  display: block;
+}
+.pillars--large .pillar p {
+  margin-inline: auto;
+}
+
+/* Featured flavours, flavour cards, videos, gallery captions */
+.featured__body,
+.video-card__body {
+  text-align: center;
+  justify-items: center;
+}
+.video-card__source {
+  justify-content: center;
+}
+.video-card .text-link {
+  justify-self: center;
+}
+.flavour-card__chips {
+  justify-content: center;
+}
+.flavour-card__name,
+.flavour-card__desc {
+  text-align: center;
+}
+.flavour-card__extras {
+  justify-content: center;
+  gap: 8px 20px;
+}
+.gallery-tile figcaption {
+  text-align: center;
+}
+
+/* Season card and discover tile */
+.season-card,
+.season-card--closed {
+  text-align: center;
+}
+.season-card__list {
+  justify-items: center;
+}
+.season-card__list li {
+  justify-content: center;
+  text-align: left;
+}
+.season-card__cta {
+  justify-items: center;
+  text-align: center;
+}
+@media (min-width: 900px) {
+  .season-card__cta {
+    justify-items: center;
+    text-align: center;
+  }
+}
+.discover-tile {
+  justify-items: center;
+  text-align: center;
+}
+@media (min-width: 800px) {
+  .discover-tile {
+    grid-template-columns: 1fr;
+  }
+}
+.discover-tile p {
+  margin-inline: auto;
+}
+
+/* FAQ preview on the home page */
+.faq-preview > div:first-child {
+  text-align: center;
+}
+@media (min-width: 900px) {
+  .faq-preview {
+    grid-template-columns: 1fr;
+    max-width: 860px;
+    margin-inline: auto;
+    gap: 28px;
+  }
+}
+
+/* Story page */
+.story-chapter__label {
+  text-align: center;
+}
+.evolution__intro {
+  text-align: center;
+}
+.evolution__intro .lead {
+  margin-inline: auto;
+}
+
+/* Contact page */
+.contact-primary {
+  text-align: center;
+}
+.contact-primary .btn-row,
+.contact-primary .social-icons {
+  justify-content: center;
+}
+.contact-item {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+}
+.contact-item > svg {
+  margin-top: 0;
+}
+.map-card__info {
+  text-align: center;
+}
+.map-card__info .btn-row {
+  justify-content: center;
+}
+.glance h2 {
+  text-align: center;
+}
+@media (max-width: 639px) {
+  .glance dl > div {
+    text-align: center;
+  }
+}

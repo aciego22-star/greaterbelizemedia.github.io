@@ -230,6 +230,13 @@ function Footer() {
           <a href={site.credit.url} target="_blank" rel="noopener" className="site-footer__credit">
             {site.credit.label}
           </a>
+          {buildFlags.showLaunchNotes && (
+            <p>
+              <Link to="/launch-notes" className="site-footer__preview">
+                Internal preview: launch notes
+              </Link>
+            </p>
+          )}
         </div>
       </div>
     </footer>
@@ -264,17 +271,6 @@ function Toast() {
   );
 }
 
-function LaunchRibbon() {
-  if (!buildFlags.showLaunchNotes) return null;
-  return (
-    <Link to="/launch-notes" className="launch-ribbon">
-      <span className="launch-ribbon__short">Preview notes →</span>
-      <span className="launch-ribbon__long">
-        Internal preview · awaiting confirmed details{buildFlags.illustrativeMenu ? ' · illustrative menu' : ''} →
-      </span>
-    </Link>
-  );
-}
 
 export function Layout() {
   const { pathname } = useLocation();
@@ -302,7 +298,6 @@ export function Layout() {
       <StickyOrderBar />
       <CartDrawer />
       <Toast />
-      <LaunchRibbon />
       <AgeNotice />
     </>
   );
