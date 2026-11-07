@@ -1,9 +1,12 @@
 # ICB Concept Experience
 
-A speculative, first-draft website concept for Insurance Corporation of
-Belize Ltd., prepared by Austere Automations for private client review.
-ICB has not commissioned this work; nothing here is an official ICB
-website or an offer of insurance.
+The rebuild of the Insurance Corporation of Belize Ltd. website, built
+by Austere Automations and commissioned by ICB. It goes live on
+www.icbinsurance.com and is reviewed in the meantime on the agency
+subdomain. Nothing on it is an offer of insurance.
+
+(This paragraph used to say the work was speculative and uncommissioned,
+which it was when the first draft was written and has not been since.)
 
 ## What this is
 
@@ -24,9 +27,15 @@ offline, and from disk.
   (outline derived from 1:1m open coastline data, ODbL)
 - `js/views/*.js` — one module per page; the homepage hero is a
   rotating three-slide real-media carousel with autoplay, pause and swipe
+- `js/data/news.js` + `js/views/news*.js` — What's New at ICB: a listing
+  at `/news` and one real page per article at `/news/<slug>`, both
+  languages, each with its own title, canonical and hreflang pair
 - `js/assets.js` — asset resolver: views emit `data-asset="assets/..."`
   and it hydrates real `src`/`poster` properties after mount
 - `build/build-single.js` — optional one-file build (`dist/`)
+- `build/branch-webp.py`, `build/news-webp.py` — the photograph and hero
+  image pipelines, each writing a full-size file for the site and a
+  lighter rendition for the one-file preview
 
 See `DEPLOY.md` for hosting and `IMAGES.md` for the photography plan.
 

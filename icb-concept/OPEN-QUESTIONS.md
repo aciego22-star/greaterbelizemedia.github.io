@@ -142,6 +142,60 @@ verified branch listings is the strongest local search asset ICB has.
 
 ---
 
+## What's New at ICB: the draft entry
+
+Added 7 Nov 2026 with the section itself. Three entries went up;
+**the Benque Viejo border kiosk one is a draft and is marked as such
+in the data**, because it describes an insurance product and nobody at
+ICB has confirmed the details yet.
+
+It is on the site rather than held back, so Mr Sal can read it in
+place. The whole site is still noindexed and still on the review
+subdomain, so nothing has been published to the public. But it must
+not go to launch unanswered, and DEPLOY.md's launch checklist now
+carries that as its first item.
+
+**What ICB needs to confirm:**
+
+1. That short-term third-party motor insurance is what is sold at this
+   kiosk, which vehicles are eligible, what coverage periods exist,
+   what documents a driver must bring, and how a visitor is given
+   proof of cover. The online guide covers ICB's general offering; a
+   kiosk at a border crossing may work differently.
+2. The kiosk's hours, what payment it takes, and whether the Border
+   Branch telephone and WhatsApp are the right contacts for kiosk
+   questions. The draft labels both as branch contacts.
+3. Whether `icbcovernote.com` is ICB's own site and whether ICB wants
+   the article to link to it. The draft does, on the strength of the
+   copy pack naming it as ICB's short-term motor insurance guide, and
+   an insurer's own news page should not send a reader to a domain
+   nobody has confirmed is theirs.
+4. Whether anything else is sold at the kiosk. The draft covers motor
+   insurance and does not claim it is the only service.
+5. Whether ICB wants to say this is the only kiosk of its kind in
+   Belize. The draft does not say it.
+
+## What's New: two decisions that were taken as defaults
+
+**Spanish articles keep the English address.** `/es/news/icb-claimsvault-belize`
+rather than a translated slug. The copy packs suggest Spanish slugs,
+and adopting them would give every article two addresses, two sets of
+canonicals and two things to keep in step. This follows the rule the
+rest of the site already follows, and it is the same open question that
+is listed further down for the other Spanish URLs. One decision would
+settle both.
+
+**Each article's publication date is the day it went on this site**,
+7 Nov 2026, and it is shown at the foot of the article and declared in
+the structured data. The date of the thing itself, the conference in
+February and the ClaimsVAULT launch in July, is shown separately at the
+top with its own label. They are two different dates and a reader
+should be able to tell which is which.
+
+If the site goes live much later than November, those publication dates
+are worth refreshing to the real launch date. One field per entry in
+`js/data/news.js`.
+
 ## Already flagged, still open
 
 Smaller things raised earlier and not yet answered.

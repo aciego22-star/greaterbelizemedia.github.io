@@ -153,6 +153,12 @@ ICB.DATA.site = {
     { id: "business", label: { en: "Business", es: "Empresas" }, href: "#/business" },
     { id: "about", label: { en: "About", es: "Nosotros" }, href: "#/about" },
     { id: "resources", label: { en: "Resources", es: "Recursos" }, href: "#/resources" },
+    /* "What's New" rather than "What's New at ICB": the bar is already
+       nine words long and the longer label is the page's own heading,
+       not a nav item. Measured at every width from 1100, where the bar
+       appears, to 1920, in both languages: the row stays on one line
+       and the cover button stays on screen. */
+    { id: "news", label: { en: "What's New", es: "Novedades" }, href: "#/news" },
     /* Named "Bee AI" rather than "Bee": in a row of plain words with no
        mascot beside it, "Bee" tells a first-time visitor nothing. Not
        translated, because it is the assistant's name. Sits beside
@@ -190,6 +196,7 @@ ICB.DATA.site = {
         heading: { en: "Company", es: "La empresa" },
         links: [
           { label: { en: "About ICB", es: "Sobre ICB" }, href: "#/about" },
+          { label: { en: "What's New at ICB", es: "Novedades de ICB" }, href: "#/news" },
           { label: { en: "Business Insurance", es: "Seguros para empresas" }, href: "#/business" },
           { label: { en: "Locations", es: "Ubicaciones" }, href: "#/locations" },
           { label: { en: "Gallery", es: "Galería" }, href: "#/gallery" },

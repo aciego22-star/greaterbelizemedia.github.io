@@ -169,6 +169,14 @@ ICB.views = ICB.views || {};
         ? { view: "claimForm", navId: "claims", formId: p[2] }
         : { view: "notfound", navId: null };
     }
+    /* news/<id>: one What's New article. A route of its own, so each
+       article is a page a reader can link to, share and find, rather
+       than a panel that only exists once the listing has opened it. */
+    if (p[0] === "news" && p.length === 2) {
+      return ICB.DATA.newsById(p[1])
+        ? { view: "newsEntry", navId: "news", newsId: p[1] }
+        : { view: "notfound", navId: null };
+    }
     if (ICB.views[p[0]] && p.length === 1) return { view: p[0], navId: p[0] };
     return { view: "notfound", navId: null };
   }
@@ -326,6 +334,7 @@ ICB.views = ICB.views || {};
     var match = resolve(ctx);
     ctx.productId = match.productId || null;
     ctx.formId = match.formId || null;
+    ctx.newsId = match.newsId || null;
 
     var view = ICB.views[match.view] || ICB.views.notfound;
     mount.innerHTML = view.render(ctx) || "";

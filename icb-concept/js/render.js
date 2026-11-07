@@ -659,9 +659,35 @@ window.ICB = window.ICB || {};
       "</section>";
   }
 
+  /* A date a reader recognises, in the language they are reading.
+
+     Built by hand rather than with toLocaleDateString, because that
+     formats against the BROWSER's locale, not the site's: a Belizean
+     reader with a Spanish phone would get Spanish dates on the English
+     pages. Parsed field by field rather than with new Date(iso), which
+     reads a bare yyyy-mm-dd as UTC midnight and prints the day before
+     in every timezone west of Greenwich, Belize included. */
+  var MONTHS = {
+    en: ["January", "February", "March", "April", "May", "June",
+         "July", "August", "September", "October", "November", "December"],
+    es: ["enero", "febrero", "marzo", "abril", "mayo", "junio",
+         "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"]
+  };
+  function longDate(iso) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(iso || ""));
+    if (!m) return "";
+    var lang = ICB.i18n.get() === "es" ? "es" : "en";
+    var month = MONTHS[lang][Number(m[2]) - 1];
+    var day = String(Number(m[3]));
+    return lang === "es"
+      ? day + " de " + month + " de " + m[1]
+      : month + " " + day + ", " + m[1];
+  }
+
   ICB.render = {
     esc: esc,
     waHref: waHref,
+    longDate: longDate,
     branchGallery: branchGallery,
     motionSection: motionSection,
     crumbs: crumbs,

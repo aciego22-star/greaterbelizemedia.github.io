@@ -334,6 +334,32 @@ foliage across most of the frame.
 To finish it: drop ICB's photograph of the office in, delete the
 `caption`, and the tile reads like every other one.
 
+## What's New hero images
+
+`assets/img/news/` holds two files per article, because ICB composes
+the wide frame and the tall one separately and they are different
+pictures, not two sizes of one. The article serves them through a
+single `<picture>` with a `media` query, so a phone is given the frame
+made for a phone rather than a crop of the desktop one. Neither is
+cropped by the page: both carry their width and height, the box takes
+whatever shape the picture is, and the space is reserved before the
+bytes arrive.
+
+`build/news-webp.py` is the pipeline. It re-encodes the supplied files
+at 1600 wide and 900 wide, which is as much as the article column ever
+shows, and writes a lighter rendition of each to
+`build/preview/news` for the one-file preview, the same arrangement
+the branch photographs and the two campaign films use.
+
+**The preview is getting full.** The one-file build is at 15.16 MB
+against a hard 16 MB ceiling, and it stops itself at 15.5. Each new
+What's New entry costs it roughly 90 KB, so there is room for about
+three more before something has to give. When it does, the lever is the
+two campaign films: they are 6.2 MB of the bundle once base64 is
+counted, and a lighter preview encode of them would free more than
+every photograph on the site put together. The deployed site is not
+affected by any of this.
+
 ## The bee on the signage
 
 Several ICB signboards carry a cartoon bee in a suit alongside the ICB

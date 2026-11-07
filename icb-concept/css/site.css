@@ -4388,3 +4388,169 @@ body.sheet-open .bee { display: none; }
   .bee-pill { transition: background-color var(--t-fast) var(--ease); will-change: auto; }
   .bee-pill, .bee-pill:hover { transform: none !important; }
 }
+
+/* ======================= What's New at ICB ======================= */
+/* A listing of cards and an article page, both inside the narrow shell
+   the FAQ already uses. Reading copy wants a measure, not the full
+   content width. */
+
+.news-list { display: grid; gap: var(--sp-5); }
+
+.news-card {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: var(--sp-5);
+  align-items: start;
+  padding-bottom: var(--sp-5);
+  border-bottom: 1px solid var(--c-line-soft);
+}
+.news-list .news-card:last-child { border-bottom: 0; padding-bottom: 0; }
+
+/* The thumbnail is decoration: the heading beside it is the real link,
+   and a second link to the same article in the same card would be read
+   out twice and tabbed through twice. Hence aria-hidden and tabindex
+   -1 on it in the markup, and a cursor that still says it is clickable
+   for a reader using a mouse. */
+.news-card-shot {
+  display: block;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  background: var(--c-brand-deep);
+  aspect-ratio: 16 / 10;
+}
+.news-card-shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform var(--t-slow) var(--ease);
+}
+.news-card-body > p { margin: 0 0 var(--sp-3); color: var(--c-text-soft); }
+
+.news-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.75rem;
+  margin: 0 0 0.4rem;
+  font-size: var(--fs-300);
+}
+.news-meta-cat {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  color: var(--c-accent-ink);
+}
+.news-meta-when { color: var(--c-text-soft); }
+.news-meta-when-label {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.7rem;
+  color: var(--c-text-soft);
+}
+
+.news-card-title { margin: 0 0 var(--sp-2); font-size: var(--fs-600); line-height: 1.25; }
+.news-card-title a { color: inherit; text-decoration: none; }
+.news-card-title a:hover { color: var(--c-brand); }
+.news-card-more {
+  margin: 0;
+  font-weight: 600;
+  font-size: var(--fs-300);
+  color: var(--c-brand);
+}
+.news-card-title a:hover ~ .news-card-more { text-decoration: underline; }
+
+@media (hover: hover) {
+  .news-card:hover .news-card-shot img { transform: scale(1.03); }
+}
+
+@media (max-width: 639px) {
+  .news-card { grid-template-columns: 1fr; gap: var(--sp-4); }
+  .news-card-shot { aspect-ratio: 16 / 9; }
+}
+
+/* ---- The article ---- */
+
+/* No photograph behind this hero, so it needs no scrim, and the copy
+   is not fighting anything for contrast. */
+.page-hero--article .page-hero-art { display: none; }
+.page-hero--article .page-hero-inner { max-width: none; }
+.page-hero--article .news-meta { color: var(--c-text-inverse-soft); }
+.page-hero--article .news-meta-cat { color: var(--c-accent-soft); }
+.page-hero--article .news-meta-when,
+.page-hero--article .news-meta-when-label { color: var(--c-text-inverse-soft); }
+.news-venue {
+  margin: 0.35rem 0 0;
+  font-size: var(--fs-300);
+  color: var(--c-text-inverse-soft);
+}
+.news-venue-label {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.7rem;
+}
+
+/* The picture keeps its own shape: ICB composed the wide frame and the
+   tall one separately, so neither is cropped here. Both carry width and
+   height, which reserves the space before the file arrives. */
+.news-hero { margin: 0 0 var(--sp-6); }
+.news-hero img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--r-md);
+  background: var(--c-tint);
+}
+.news-hero figcaption {
+  margin-top: var(--sp-3);
+  font-size: var(--fs-300);
+  color: var(--c-text-soft);
+}
+
+.news-body > p { margin: 0 0 var(--sp-4); }
+.news-body > h2 {
+  margin: var(--sp-6) 0 var(--sp-3);
+  font-size: var(--fs-600);
+}
+.news-body > h2:first-child { margin-top: 0; }
+.news-actions { margin: var(--sp-5) 0 var(--sp-4); }
+
+.news-sources {
+  margin-top: var(--sp-7);
+  padding-top: var(--sp-5);
+  border-top: 1px solid var(--c-line-soft);
+}
+.news-sources h2 {
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c-text-soft);
+  margin: 0 0 var(--sp-3);
+}
+.news-sources ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-3); }
+.news-sources li { font-size: var(--fs-300); }
+.news-source-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-weight: 600;
+  color: var(--c-brand);
+}
+.news-source-note { display: block; color: var(--c-text-soft); margin-top: 0.15rem; }
+
+.news-published {
+  margin: var(--sp-6) 0 0;
+  font-size: var(--fs-300);
+  color: var(--c-text-soft);
+}
+
+.news-list--compact .news-card { grid-template-columns: 160px 1fr; gap: var(--sp-4); }
+.news-list--compact .news-card-title { font-size: var(--fs-500); }
+.news-list--compact .news-card-body > p { display: none; }
+@media (max-width: 639px) {
+  .news-list--compact .news-card { grid-template-columns: 1fr; }
+}

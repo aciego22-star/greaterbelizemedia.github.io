@@ -120,7 +120,7 @@ const chromium = pw.chromium;
 function loadData() {
   const ctx = vm.createContext({});
   ctx.window = ctx;
-  for (const f of ["site.js", "products.js", "locations.js", "gallery.js", "faq.js"]) {
+  for (const f of ["site.js", "products.js", "locations.js", "gallery.js", "faq.js", "news.js"]) {
     vm.runInContext(fs.readFileSync(path.join(ROOT, "js/data", f), "utf8"), ctx);
   }
   return ctx.ICB.DATA;
@@ -371,6 +371,48 @@ function graph(DATA, { route, lang, title, description, crumbs }) {
     });
   }
 
+  /* What's New: the listing as a collection, each article as a
+     NewsArticle of its own. datePublished is the day the article went
+     up on this site, which is not the day of the thing it describes:
+     those dates are page text with their own labels, and conflating
+     the two would have a search engine date a February conference to
+     November or the other way round. */
+  const news = (DATA.news && DATA.news.entries) || [];
+  if (route === "news") {
+    nodes.push({
+      "@type": "CollectionPage",
+      "@id": url + "#collection",
+      name: pick(DATA.news.section),
+      isPartOf: { "@id": ORIGIN + "/#website" },
+      inLanguage: lang,
+      hasPart: news.map(e => ({
+        "@type": "NewsArticle",
+        "@id": ORIGIN + pathFor("news/" + e.id, lang) + "#article",
+        headline: pick(e.title),
+        url: ORIGIN + pathFor("news/" + e.id, lang)
+      }))
+    });
+  }
+  const article = news.find(e => route === "news/" + e.id);
+  if (article) {
+    nodes.push({
+      "@type": "NewsArticle",
+      "@id": url + "#article",
+      headline: pick(article.title),
+      description: pick(article.seoDescription),
+      articleSection: pick(article.category),
+      url: url,
+      datePublished: article.published,
+      dateModified: article.published,
+      image: ORIGIN + "/" + article.hero.wide,
+      author: { "@id": orgId },
+      publisher: { "@id": orgId },
+      isPartOf: { "@id": url + "#page" },
+      mainEntityOfPage: { "@id": url + "#page" },
+      inLanguage: lang
+    });
+  }
+
   return JSON.stringify({ "@context": "https://schema.org", "@graph": nodes });
 }
 
@@ -510,10 +552,11 @@ function serve(dir) {
   const routes = await page.evaluate(() => {
     /* claimForm is a route per claim type, not a page of its own, so it
        is enumerated from the forms rather than from the view name. */
-    const skip = { home: 1, product: 1, notfound: 1, claimForm: 1 };
+    const skip = { home: 1, product: 1, notfound: 1, claimForm: 1, newsEntry: 1 };
     return [""].concat(
       Object.keys(ICB.views).filter(v => !skip[v]),
       (ICB.DATA.products || []).map(p => "insurance/" + p.id),
+      (((ICB.DATA.news && ICB.DATA.news.entries) || [])).map(e => "news/" + e.id),
       ((ICB.DATA.claimForms && ICB.DATA.claimForms.forms) || []).map(f => "claims/form/" + f.id));
   });
 
@@ -541,7 +584,12 @@ function serve(dir) {
         const crumbs = [...document.querySelectorAll(".crumbs a, .crumbs [aria-current]")]
           .map(a => a.textContent.trim()).filter(Boolean);
         const lead = document.querySelector(".hero-lead, .page-hero p, #main p");
+        /* A page may state its own description rather than have its
+           opening line trimmed to length. Used where ICB supplied one
+           written for search. */
+        const stated = document.querySelector("[data-seo-description]");
         return {
+          seoDescription: stated ? stated.getAttribute("data-seo-description") : "",
           title: document.title,
           h1: (document.querySelector("h1") || {}).textContent || "",
           lead: lead ? lead.textContent.replace(/\s+/g, " ").trim() : "",
@@ -554,13 +602,31 @@ function serve(dir) {
 
       /* The description is the page's own opening line, trimmed at a word
          boundary. Reusing approved copy rather than writing new claims. */
-      let description = info.lead || info.h1;
+      let description = info.seoDescription || info.lead || info.h1;
       if (description.length > 158) {
         description = description.slice(0, 158).replace(/\s+\S*$/, "") + "...";
       }
 
+      /* The breadcrumb a machine reads should be the one a reader
+         sees. A page below the top level renders three steps, Home,
+         the section, then itself, and declaring only two of them lost
+         the middle one: an article read as a child of the homepage
+         rather than of What's New, and a product as a child of nothing
+         in particular. The section's own name comes from the rendered
+         trail, so it is the same words on the page, and its route is
+         the longest prefix of this one that is itself a page. */
       const crumbs = [{ name: "ICB", route: "" }];
-      if (route) crumbs.push({ name: info.h1.trim() || route, route: route });
+      if (route) {
+        const trail = info.crumbNames || [];
+        let parent = "";
+        for (const r of routes) {
+          if (r && r !== route && route.indexOf(r + "/") === 0 && r.length > parent.length) parent = r;
+        }
+        if (parent && trail.length >= 3) {
+          crumbs.push({ name: trail[trail.length - 2], route: parent });
+        }
+        crumbs.push({ name: info.h1.trim() || route, route: route });
+      }
 
       const html = finish(info.html, {
         route, lang, title: info.title, description, crumbs
@@ -699,6 +765,23 @@ function serve(dir) {
         if (qa.after) llms.push(flat(qa.after));
         llms.push("");
       }
+    }
+  }
+
+  /* What's New. An answer engine asked what ICB has been doing lately
+     should be able to say, in ICB's own words, rather than infer it
+     from a navigation label. Each entry gives its own approved
+     excerpt, the date of the thing itself where there is one, and the
+     address of the article. */
+  const newsAll = (DATA.news && DATA.news.entries) || [];
+  if (newsAll.length) {
+    const flat = v => String((v && (v.en || v)) || "").replace(/\s+/g, " ").trim();
+    llms.push("", "## What's New at ICB", "",
+      "News and service updates. The full list is at " + ORIGIN + "/news.", "");
+    for (const e of newsAll) {
+      const when = e.dated ? flat(e.dated.label) + " " + flat(e.dated.text) + ". " : "";
+      llms.push("- [" + flat(e.title) + "](" + ORIGIN + pathFor("news/" + e.id, "en") + "): " +
+        when + flat(e.excerpt));
     }
   }
 

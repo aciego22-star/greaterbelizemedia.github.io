@@ -113,7 +113,28 @@ or connect the Git repository for automatic deploys from a branch.
   one-file version of the whole site for preview surfaces that need a
   single document.
 
-## Launch day: the one switch
+## Launch day: two switches
+
+### 1. The draft article in What's New
+
+`js/data/news.js` marks one entry `draft: true`:
+**benque-viejo-border-kiosk**. ICB has not confirmed what is sold at
+the kiosk, its hours, the documents it asks for, or whether the Border
+Branch telephone and WhatsApp are the right contacts for it. It is on
+the site so Mr Sal can read it in place while the site is still
+noindexed and under review.
+
+Before launch, either get those answers and clear the flag, or take the
+entry out. Do not launch with the flag still set. To check:
+
+    grep -n "draft: true" js/data/news.js
+
+The questions are in OPEN-QUESTIONS.md. The flag is inert in the build,
+which is the point: it is a marker for a person, not a switch that
+hides anything, because an entry hidden from the preview is an entry
+nobody reviews.
+
+### 2. The one that keeps the site out of Google
 
 `index.html` carries
 
