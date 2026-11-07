@@ -15,11 +15,11 @@ export function lineKey(productId: string, variantId: string | null): string {
   return `${productId}::${variantId ?? 'tbc'}`;
 }
 
-export const CHARGE_TBC = 'Charge applies — amount confirmed by Cojac’s';
+export const CHARGE_TBC = 'Charge confirmed by Cojac’s';
 
-/** "No charge", "BZD $10.00" or "Charge applies — amount confirmed by Cojac’s". */
+/** "Free", "BZD $5.00" or "Charge confirmed by Cojac’s". */
 export function feeLabel(f: Pick<FulfilmentOption, 'feeBZD'>): string {
-  if (f.feeBZD === 0) return 'No charge';
+  if (f.feeBZD === 0) return 'Free';
   if (f.feeBZD === null) return CHARGE_TBC;
   return formatBZD(f.feeBZD);
 }
@@ -102,7 +102,7 @@ export function computeTotals(resolved: ResolvedLine[]): Totals {
 
 export function subtotalLabel(t: Totals): string {
   if (t.allPriced) return formatBZD(t.pricedSubtotal);
-  if (t.anyPriced) return `${formatBZD(t.pricedSubtotal)} for priced items — remaining items ${UNKNOWN_PRICE.toLowerCase()}`;
+  if (t.anyPriced) return `${formatBZD(t.pricedSubtotal)} plus items priced by Cojac’s`;
   return UNKNOWN_PRICE;
 }
 
@@ -115,39 +115,45 @@ export interface MessageInput {
 
 const clean = (s: string, max: number) => s.replace(/\s+/g, ' ').trim().slice(0, max);
 
+/** "Half liter (500 mL)" → "Half liter" for a compact message. */
+const shortSize = (size: string) => size.split(' (')[0];
+
+/**
+ * The WhatsApp order request. Kept deliberately short so the chat between
+ * Cojac's and the customer stays tidy: items, delivery, total, name, address.
+ */
 export function buildOrderMessage({ brandName, resolved, details, fulfilment }: MessageInput): string {
   const totals = computeTotals(resolved);
   const out: string[] = [];
-  out.push(`Hello ${brandName}! I'd like to request an order.`);
+  out.push(`Hi ${brandName}! *Order request:*`);
   out.push('');
-  out.push('*ITEMS*');
   for (const r of resolved) {
-    const price = r.lineTotal === null ? 'price to be confirmed' : formatBZD(r.lineTotal);
-    out.push(`- ${r.product.name} — ${r.sizeLabel} × ${r.line.quantity} — ${price}`);
+    const size = r.variant ? ` (${shortSize(r.sizeLabel)})` : '';
+    const price = r.lineTotal === null ? 'price TBC' : formatBZD(r.lineTotal);
+    out.push(`${r.line.quantity} × ${r.product.name}${size}: ${price}`);
     const note = clean(r.line.note, MAX_NOTE_LENGTH);
     if (note) out.push(`   Note: ${note}`);
   }
   out.push('');
-  out.push(`*SUBTOTAL:* ${subtotalLabel(totals)}`);
-
   if (fulfilment) {
-    out.push(`*FULFILMENT:* ${fulfilment.label}`);
-    if (fulfilment.id !== 'advise') {
-      out.push(`*${fulfilment.chargeLabel.toUpperCase()}:* ${feeLabel(fulfilment)}`);
-    }
+    const fee = fulfilment.feeBZD === 0 ? 'free' : fulfilment.feeBZD === null ? 'charge TBC' : formatBZD(fulfilment.feeBZD);
+    out.push(`${fulfilment.messageLabel ?? fulfilment.label}: ${fee}`);
   }
   if (totals.allPriced && fulfilment && fulfilment.feeBZD !== null) {
-    out.push(`*ESTIMATED TOTAL:* ${formatBZD(totals.pricedSubtotal + fulfilment.feeBZD)} (before confirmation)`);
+    out.push(`*Total: ${formatBZD(totals.pricedSubtotal + fulfilment.feeBZD)}*`);
+  } else {
+    out.push(`*Subtotal: ${subtotalLabel(totals)}*`);
   }
-  const area = clean(details.area, 120);
-  if (area && fulfilment?.asksForArea) out.push(`*${fulfilment.id === 'shipping' ? 'DESTINATION' : 'AREA'}:* ${area}`);
-  out.push(`*PREFERRED DATE:* ${details.preferredDate ? formatLongDate(details.preferredDate) : 'Flexible'}`);
-  const name = clean(details.name, 80);
-  if (name) out.push(`*NAME:* ${name}`);
-  const notes = clean(details.notes, MAX_ORDER_NOTES_LENGTH);
-  if (notes) out.push(`*NOTES:* ${notes}`);
   out.push('');
-  out.push('Please confirm availability, final price, payment arrangements and fulfilment details. Thank you!');
+  const name = clean(details.name, 80);
+  if (name) out.push(`Name: ${name}`);
+  const address = clean(details.area, 160);
+  if (address && fulfilment?.asksForArea) out.push(`Address: ${address}`);
+  if (details.preferredDate) out.push(`Date: ${formatLongDate(details.preferredDate)}`);
+  const notes = clean(details.notes, MAX_ORDER_NOTES_LENGTH);
+  if (notes) out.push(`Notes: ${notes}`);
+  out.push('');
+  out.push('Please confirm availability and payment. Thank you!');
   return out.join('\n');
 }
 

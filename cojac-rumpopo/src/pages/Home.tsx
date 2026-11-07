@@ -8,34 +8,20 @@ import { publishedFaqs } from '../content/faqs';
 import { site } from '../content/site';
 import { formatLongDate, getSeasonState } from '../lib/season';
 import { usePageMeta } from '../lib/usePageMeta';
-import { BottleArt, CinnamonArt, GlassArt, Ornament, Sparkle, Sprig } from '../components/Art';
+import { Ornament, Sparkle, Sprig } from '../components/Art';
 import { ArrowIcon, WhatsAppIcon } from '../components/Icons';
 import { Reveal, SectionHead } from '../components/ui';
-import { FlavourVisual, ProductPicture } from '../components/FlavourCard';
+import { FlavourVisual } from '../components/FlavourCard';
+import { HeroSlideshow } from '../components/HeroSlideshow';
 import { FaqAccordion, FinalCta, GalleryTile, GuaranteePillars, HowItWorks, TrustStrip, VideoCard } from '../components/sections';
 
 function Hero() {
-  const all = getCatalogue();
-  const [a, b, c] = [all[1] ?? all[0], all[0], all[2] ?? all[0]];
-  // Real product photography when available: Classic Vanilla in front,
-  // Dark Chocolate Peppermint and Pumpkin Spice behind.
-  const pick = (id: string) => all.find((p) => p.id === id && p.images[0]);
-  const front = pick('classic-vanilla') ?? all.find((p) => p.images[0]);
-  const left = pick('dark-chocolate-peppermint') ?? all.find((p) => p.images[0] && p !== front);
-  const right = pick('pumpkin-spice') ?? all.find((p) => p.images[0] && p !== front && p !== left);
   return (
-    <section className="hero grain on-dark" aria-labelledby="hero-title">
-      <div className="hero__glow" aria-hidden="true" />
-      <div className="hero__lights" aria-hidden="true">
-        {Array.from({ length: 14 }).map((_, i) => (
-          <Sparkle key={i} size={6 + (i % 4) * 3} className={`hero__light l${i}`} />
-        ))}
-      </div>
-      <div className="container hero__inner">
-        <div className="hero__copy">
-          <p className="hero__pill">
-            <Sparkle size={12} /> {homeCopy.heroPill}
-          </p>
+    <>
+      <HeroSlideshow />
+      <section className="hero-intro grain on-dark" aria-labelledby="hero-title">
+        <div className="hero-intro__glow" aria-hidden="true" />
+        <div className="container hero-intro__inner">
           <h1 id="hero-title" className="hero__title">
             There’s Nothing Quite Like <em className="italic-gold">Rumpopo</em> Season
           </h1>
@@ -49,35 +35,8 @@ function Hero() {
             </Link>
           </div>
         </div>
-        {front && left && right ? (
-          <div className="hero__stage hero__stage--photo">
-            <div className="hero__halo" aria-hidden="true" />
-            <figure className="hero__photo hero__photo--left" aria-hidden="true">
-              <ProductPicture image={left.images[0]} mode="mobile" sizes="(min-width: 900px) 200px, 34vw" />
-            </figure>
-            <figure className="hero__photo hero__photo--right" aria-hidden="true">
-              <ProductPicture image={right.images[0]} mode="mobile" sizes="(min-width: 900px) 200px, 34vw" />
-            </figure>
-            <figure className="hero__photo hero__photo--front">
-              <ProductPicture image={front.images[0]} mode="mobile" sizes="(min-width: 900px) 300px, 54vw" eager />
-            </figure>
-          </div>
-        ) : b && (
-          <div className="hero__stage" aria-hidden="true">
-            <div className="hero__halo" />
-            <BottleArt palette={a.palette} className="hero__bottle hero__bottle--left" title="" />
-            <BottleArt palette={c.palette} className="hero__bottle hero__bottle--right" title="" />
-            <BottleArt palette={b.palette} tag={b.name} className="hero__bottle hero__bottle--center" title="" />
-            <GlassArt palette={b.palette} className="hero__glass" />
-            <CinnamonArt className="hero__cinnamon" />
-            <span className="hero__caption">Illustration</span>
-          </div>
-        )}
-      </div>
-      <div className="hero__scroll" aria-hidden="true">
-        <span />
-      </div>
-    </section>
+      </section>
+    </>
   );
 }
 
@@ -89,7 +48,6 @@ function SeasonStatus() {
         <div className="container">
           <Reveal className="season-card season-card--closed">
             <div>
-              <p className="eyebrow">{state === 'closed' ? 'Season ended' : 'Coming soon'}</p>
               <h2 className="display-m">{state === 'closed' ? site.season.closedHeadline : 'Rumpopo season is almost here.'}</h2>
               <p>{state === 'closed' ? site.season.closedText : 'Order requests open when the season begins.'}</p>
             </div>
@@ -103,7 +61,6 @@ function SeasonStatus() {
       <div className="container">
         <Reveal className="season-card">
           <div className="season-card__intro">
-            <p className="eyebrow">In season now</p>
             <h2 id="season-title" className="display-m">
               Rumpopo season is here!
             </h2>
@@ -119,7 +76,7 @@ function SeasonStatus() {
                   <Sparkle size={12} />
                   <span>
                     {f.label}
-                    {f.short && <small className="season-card__note"> — {f.short}</small>}
+                    {f.short && <small className="season-card__note">: {f.short}</small>}
                   </span>
                 </li>
               ))}
@@ -128,7 +85,7 @@ function SeasonStatus() {
             <Link to={routes.flavours.path} className="btn">
               Start your order
             </Link>
-            <p className="season-card__fine">Delivery and shipping charges are confirmed by Cojac’s on WhatsApp.</p>
+            <p className="season-card__fine">Delivery is BZD $5 in Belize City. Shipping charges are confirmed on WhatsApp.</p>
           </div>
         </Reveal>
       </div>
@@ -142,7 +99,6 @@ function StoryStrip() {
       <Sprig className="story-strip__sprig" />
       <div className="container story-strip__grid">
         <Reveal className="story-strip__quote">
-          <p className="eyebrow">Our Story</p>
           <h2 id="story-title" className="display-l">
             “{homeCopy.storyOpener}”
           </h2>
@@ -151,7 +107,7 @@ function StoryStrip() {
           <p className="lead">{homeCopy.storyParagraphs[0]}</p>
           <p>{homeCopy.storyParagraphs[1]}</p>
           <Link to={routes.story.path} className="text-link">
-            Read our story — Behind the Bottle →
+            Read our story: Behind the Bottle →
           </Link>
         </Reveal>
       </div>
@@ -178,7 +134,6 @@ function FeaturedFlavours() {
       <div className="container">
         <SectionHead
           center
-          eyebrow="Find Your Flavour"
           title={<span id="featured-title">More Than Just Classic Vanilla</span>}
           lead="Classic Vanilla may have started it all, but it didn’t stop there."
         />
@@ -188,7 +143,6 @@ function FeaturedFlavours() {
               <Link to={`${routes.flavours.path}#${p.slug}`} className="featured__link">
                 <FlavourVisual product={p} />
                 <div className="featured__body">
-                  <p className="featured__sub">{p.subtitle}</p>
                   <h3>{p.name}</h3>
                   <span className="featured__go">
                     Choose this flavour <ArrowIcon size={16} />
@@ -199,7 +153,7 @@ function FeaturedFlavours() {
           ))}
         </div>
         <Reveal className="featured__foot">
-          <p>Seven flavours this season — every one in a half liter (500 mL) or liter (1 L) bottle.</p>
+          <p>Seven flavours this season, every one in a half liter (500 mL) or liter (1 L) bottle.</p>
           <Link to={routes.flavours.path} className="btn btn--ghost-dark">
             See all flavours
           </Link>
@@ -226,7 +180,6 @@ export default function Home() {
         <div className="container">
           <SectionHead
             center
-            eyebrow="The Cojac’s Guarantee"
             title={<span id="guarantee-title">{guarantee.title}</span>}
           />
           <GuaranteePillars />
@@ -242,7 +195,6 @@ export default function Home() {
         <div className="container">
           <SectionHead
             center
-            eyebrow="How ordering works"
             title={<span id="how-title">Simple, from your phone to your table</span>}
             lead="No accounts and no online payment. Your order request goes straight to Cojac’s on WhatsApp."
           />
@@ -258,7 +210,7 @@ export default function Home() {
       <section className="section section--cream" aria-labelledby="gallery-title">
         <div className="container">
           <div className="split-head">
-            <SectionHead eyebrow="The Sumptuous Gallery" title={<span id="gallery-title">Moments from the season</span>} />
+            <SectionHead title={<span id="gallery-title">Moments from the season</span>} />
             <Link to={routes.gallery.path} className="text-link split-head__link">
               View the gallery →
             </Link>
@@ -277,7 +229,7 @@ export default function Home() {
         <section className="section section--burgundy grain" aria-labelledby="videos-title">
           <div className="container">
             <div className="split-head">
-              <SectionHead eyebrow="Videos & Features" title={<span id="videos-title">A few moments from the journey</span>} />
+              <SectionHead title={<span id="videos-title">A few moments from the journey</span>} />
               <Link to={routes.videos.path} className="text-link split-head__link">
                 All videos &amp; features →
               </Link>
@@ -296,7 +248,7 @@ export default function Home() {
       <section className="section section--paper" aria-labelledby="faq-title">
         <div className="container faq-preview">
           <div>
-            <SectionHead eyebrow="FAQs" title={<span id="faq-title">Good to know</span>} />
+            <SectionHead title={<span id="faq-title">Good to know</span>} />
             <Ornament />
             <Link to={routes.faqs.path} className="text-link">
               All frequently asked questions →

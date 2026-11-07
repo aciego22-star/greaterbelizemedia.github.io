@@ -43,9 +43,9 @@ const line = (productId: string, variantId: string | null, quantity: number, not
   quantity,
   note,
 });
-const delivery: FulfilmentOption = { id: 'delivery', label: 'Delivery', description: '', enabled: true, asksForArea: true, chargeLabel: 'Delivery charge', feeBZD: null };
-const pickup: FulfilmentOption = { id: 'pickup', label: 'Pickup', description: '', enabled: true, asksForArea: false, chargeLabel: 'Pickup', feeBZD: 0 };
-const shipping: FulfilmentOption = { id: 'shipping', label: 'Shipping', description: '', enabled: true, asksForArea: true, chargeLabel: 'Shipping charge', feeBZD: null };
+const delivery: FulfilmentOption = { id: 'delivery', label: 'Delivery', messageLabel: 'Delivery (Belize City)', description: '', enabled: true, asksForArea: true, chargeLabel: 'Delivery', feeBZD: 5 };
+const pickup: FulfilmentOption = { id: 'pickup', label: 'Pickup', messageLabel: 'Pickup', description: '', enabled: true, asksForArea: false, chargeLabel: 'Pickup', feeBZD: 0 };
+const shipping: FulfilmentOption = { id: 'shipping', label: 'Shipping', messageLabel: 'Shipping (out of district)', description: '', enabled: true, asksForArea: true, chargeLabel: 'Shipping', feeBZD: null };
 const details = { name: '', fulfilment: 'delivery' as const, area: '', preferredDate: '', notes: '' };
 
 describe('totals', () => {
@@ -59,7 +59,7 @@ describe('totals', () => {
   it('never invents a total when any price is unknown', () => {
     const t = computeTotals(resolveLines([line('a', 'big', 1), line('b', null, 2)], catalogue));
     expect(t.allPriced).toBe(false);
-    expect(subtotalLabel(t)).toContain('to be confirmed');
+    expect(subtotalLabel(t)).toContain('plus items priced by Cojac’s');
     expect(subtotalLabel(computeTotals(resolveLines([line('b', null, 2)], catalogue)))).toBe('To be confirmed by Cojac’s');
   });
   it('drops lines whose product or variant no longer exists', () => {
@@ -83,48 +83,61 @@ describe('quantity limits', () => {
 });
 
 describe('WhatsApp message', () => {
-  it('contains business name, items, sizes, quantities and the confirmation notice', () => {
-    const msg = buildOrderMessage({
-      brandName: "Cojac's Sumptuous Rumpopo",
-      resolved: resolveLines([line('a', 'big', 2, 'gift'), line('b', null, 1)], catalogue),
-      details: { ...details, name: 'Ana', area: 'Kings Park', notes: 'Call after 5', preferredDate: '2026-12-20' },
+  const full = () =>
+    buildOrderMessage({
+      brandName: "Cojac's",
+      resolved: resolveLines([line('a', 'big', 2, 'gift'), line('c', 'v', 1)], catalogue),
+      details: { ...details, name: 'Ana Smith', area: '12 Cleghorn St, blue house', notes: 'Call after 5', preferredDate: '2026-12-20' },
       fulfilment: delivery,
     });
-    expect(msg).toContain("Hello Cojac's Sumptuous Rumpopo!");
-    expect(msg).toContain('- Flavour A — Test 1L × 2 — BZD $20.00');
+
+  it('is short: items, delivery, total, name, address', () => {
+    const msg = full();
+    expect(msg).toContain("Hi Cojac's! *Order request:*");
+    expect(msg).toContain('2 × Flavour A (Test 1L): BZD $20.00');
     expect(msg).toContain('Note: gift');
-    expect(msg).toContain('- Flavour B — Size to be confirmed × 1 — price to be confirmed');
-    expect(msg).toContain('*FULFILMENT:* Delivery');
-    expect(msg).toContain('*DELIVERY CHARGE:* Charge applies — amount confirmed by Cojac’s');
-    expect(msg).toContain('*AREA:* Kings Park');
-    expect(msg).toContain('*PREFERRED DATE:* Sun, 20 December 2026');
-    expect(msg).toContain('*NAME:* Ana');
-    expect(msg).toContain('*NOTES:* Call after 5');
-    expect(msg).toContain('Please confirm availability, final price, payment arrangements and fulfilment details.');
-    expect(msg).not.toMatch(/ESTIMATED TOTAL/);
-    expect(msg).not.toMatch(/confirmed order|order placed|payment received/i);
+    expect(msg).toContain('1 × Flavour C (Test 500ml): price TBC');
+    expect(msg).toContain('Delivery (Belize City): BZD $5.00');
+    expect(msg).toContain('Name: Ana Smith');
+    expect(msg).toContain('Address: 12 Cleghorn St, blue house');
+    expect(msg).toContain('Date: Sun, 20 December 2026');
+    expect(msg).toContain('Notes: Call after 5');
+    expect(msg).toContain('Please confirm availability and payment. Thank you!');
+    expect(msg.split('\n').length).toBeLessThanOrEqual(15);
   });
-  it('omits optional fields and says Flexible when no date', () => {
-    const msg = buildOrderMessage({ brandName: 'X', resolved: resolveLines([line('b', null, 1)], catalogue), details, fulfilment: delivery });
-    expect(msg).toContain('*PREFERRED DATE:* Flexible');
-    expect(msg).not.toContain('*NAME:*');
-    expect(msg).not.toContain('*AREA:*');
+  it('contains no dashes and never claims the order is confirmed', () => {
+    const msg = full();
+    expect(msg).not.toMatch(/[—–]/);
+    expect(msg).not.toMatch(/^- /m);
+    expect(msg).not.toMatch(/order confirmed|order placed|payment received/i);
   });
-  it('shows an estimated total only when every price and the fee are approved', () => {
-    const msg = buildOrderMessage({ brandName: 'X', resolved: resolveLines([line('a', 'big', 2)], catalogue), details, fulfilment: { ...delivery, feeBZD: 5 } });
-    expect(msg).toContain('*ESTIMATED TOTAL:* BZD $25.00 (before confirmation)');
+  it('omits empty optional fields', () => {
+    const msg = buildOrderMessage({ brandName: 'X', resolved: resolveLines([line('a', 'big', 1)], catalogue), details, fulfilment: delivery });
+    expect(msg).not.toContain('Name:');
+    expect(msg).not.toContain('Address:');
+    expect(msg).not.toContain('Date:');
+    expect(msg).not.toContain('Notes:');
   });
-  it('pickup has no charge and no area; shipping asks for a destination', () => {
+  it('delivery at BZD $5 gives a total when every price is approved', () => {
+    const msg = buildOrderMessage({ brandName: 'X', resolved: resolveLines([line('a', 'big', 2)], catalogue), details, fulfilment: delivery });
+    expect(msg).toContain('*Total: BZD $25.00*');
+  });
+  it('never invents a total when a price or the charge is unknown', () => {
+    const unpriced = buildOrderMessage({ brandName: 'X', resolved: resolveLines([line('a', 'big', 1), line('b', null, 1)], catalogue), details, fulfilment: delivery });
+    expect(unpriced).not.toContain('Total:');
+    expect(unpriced).toContain('*Subtotal: BZD $10.00 plus items priced by Cojac’s*');
+  });
+  it('pickup is free with no address; shipping lists the address and an unconfirmed charge', () => {
     const r = resolveLines([line('a', 'big', 2)], catalogue);
     const p = buildOrderMessage({ brandName: 'X', resolved: r, details: { ...details, fulfilment: 'pickup', area: 'ignored' }, fulfilment: pickup });
-    expect(p).toContain('*FULFILMENT:* Pickup');
-    expect(p).toContain('*PICKUP:* No charge');
+    expect(p).toContain('Pickup: free');
     expect(p).not.toContain('ignored');
-    expect(p).toContain('*ESTIMATED TOTAL:* BZD $20.00 (before confirmation)');
-    const sh = buildOrderMessage({ brandName: 'X', resolved: r, details: { ...details, fulfilment: 'shipping', area: 'Orange Walk Town' }, fulfilment: shipping });
-    expect(sh).toContain('*SHIPPING CHARGE:* Charge applies — amount confirmed by Cojac’s');
-    expect(sh).toContain('*DESTINATION:* Orange Walk Town');
-    expect(sh).not.toContain('ESTIMATED TOTAL');
+    expect(p).toContain('*Total: BZD $20.00*');
+    const sh = buildOrderMessage({ brandName: 'X', resolved: r, details: { ...details, fulfilment: 'shipping', area: 'Main St, Orange Walk Town, Orange Walk' }, fulfilment: shipping });
+    expect(sh).toContain('Shipping (out of district): charge TBC');
+    expect(sh).toContain('Address: Main St, Orange Walk Town, Orange Walk');
+    expect(sh).toContain('*Subtotal: BZD $20.00*');
+    expect(sh).not.toContain('Total: BZD');
   });
   it('encodes safely into a wa.me link, including long messages and special characters', () => {
     const lines = Array.from({ length: 3 }, (_, i) => line(['a', 'b', 'c'][i], ['big', null, 'v'][i], 99, 'Note & "quotes" #hash ? ünïcødé 🎄'));

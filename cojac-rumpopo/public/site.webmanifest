@@ -1,7 +1,7 @@
 {
   "name": "Cojac’s Sumptuous Rumpopo",
   "short_name": "Cojac’s",
-  "description": "A Belizean Christmas tradition — rich, creamy rumpopo. Order requests on WhatsApp.",
+  "description": "A Belizean Christmas tradition: rich, creamy rumpopo. Order requests on WhatsApp.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#fffaf1",

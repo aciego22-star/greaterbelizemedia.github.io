@@ -10,10 +10,12 @@ Nothing below was invented. Each item is either empty in the config (so it is hi
 | 2 | **Brand spelling** — the official logo (supplied Nov 2026) reads “Cojac’s”, matching the sitemap. Only needs a final yes from the family. | `site.ts`, `copy.ts`, `catalogue.ts` | Uses “Cojac’s” everywhere. |
 | 3 | ~~2026/27 flavour list~~ — **done**: Classic Vanilla, Peanut Delight, Pumpkin Spice, White Chocolate w/ Hazelnut, Dark Chocolate Peppermint, Snickerdeluxe, Vegan | `catalogue.ts` | Shown as “On this season’s menu” (no stock claim). |
 | 4 | ~~Bottle sizes and BZD prices~~ — **done**: Half liter (500 mL) and Liter (1 L) for every flavour, BZD $17–$50 | `catalogue.ts → variants` | Live prices, subtotals and itemised WhatsApp messages. |
-| 5 | **Delivery and shipping charge amounts** (options confirmed: Delivery within Belize City limits — charge; Pickup — free; Shipping out-district — charge). Also: pickup location/times, and whether alcohol may be shipped to all districts | `site.ts → fulfilment.feeBZD` | Customers choose Delivery, Pickup or Shipping. Pickup shows “No charge”; delivery and shipping show “Charge applies — amount confirmed by Cojac’s”. |
+| 5 | **Shipping charge** for out of district orders (delivery is set: BZD $5 anywhere in Belize City; pickup is free). Also: pickup location and times, and whether alcohol may be shipped to every district | `site.ts → fulfilment.shipping.feeBZD` | Shipping shows “Charge confirmed by Cojac’s”, so no total is shown for shipping orders until the amount is entered. |
 | 6 | **Allergen and ingredient statement for each flavour** (egg, milk, peanut, hazelnut, chocolate…) — especially Peanut Delight, White Chocolate w/ Hazelnut, Snickerdeluxe and the Vegan recipe | `catalogue.ts → allergens`, `ingredientsDisclosure` | Shows a generic “may contain egg and dairy — please ask” note on every card. |
 | 7 | **Legal age and alcohol obligations** (Belize purchasing age, any rules for selling or delivering alcohol) | `site.ts → alcohol` | Shows an 18+ courtesy notice and an age checkbox before sending. This is not age verification. |
 | 8 | **Final domain** | `site.ts → siteUrl` | Placeholder `cojacs-rumpopo.netlify.app`. |
+
+| 9b | **Hero photos**: confirm the four slideshow images (cocktail, gift bags, glass bottles, holiday collection) show packaging Cojac’s actually offers, since customers may expect it | `public/hero/`, `hero.ts` | Shown on the homepage. |
 
 ## Should have
 

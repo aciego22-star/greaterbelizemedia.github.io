@@ -42,16 +42,20 @@ export default function Order() {
 
   const errors = {
     fulfilment: !fulfilment ? 'Please choose delivery, pickup or shipping.' : '',
+    name: details.name.trim().length < 2 ? 'Please enter your name.' : '',
+    address: fulfilment?.asksForArea && details.area.trim().length < 6 ? 'Please enter your exact address.' : '',
     age: !ageOk ? `Please confirm you are ${site.alcohol.legalAge} or older.` : '',
   };
-  const valid = !errors.fulfilment && !errors.age;
+  const firstError = (['fulfilment', 'name', 'address', 'age'] as const).find((k) => errors[k]);
+  const valid = !firstError;
+  const focusId = { fulfilment: 'fulfilment-group', name: 'name', address: 'area', age: 'age-confirm' } as const;
   const today = belizeDateString();
 
   const onSend = (e: React.MouseEvent<HTMLAnchorElement>) => {
     setAttempted(true);
     if (!valid) {
       e.preventDefault();
-      document.getElementById(errors.fulfilment ? 'fulfilment-group' : 'age-confirm')?.focus();
+      if (firstError) document.getElementById(focusId[firstError])?.focus();
       return;
     }
     setStatus('opened');
@@ -65,7 +69,7 @@ export default function Order() {
   if (!accepting) {
     return (
       <>
-        <PageHero eyebrow="Order" title="Order requests are closed" lead={`${site.season.closedHeadline} ${site.season.closedText}`} />
+        <PageHero title="Order requests are closed" lead={`${site.season.closedHeadline} ${site.season.closedText}`} />
         <section className="section section--paper">
           <div className="container--narrow center">
             <Link to={routes.flavours.path} className="btn">
@@ -80,9 +84,8 @@ export default function Order() {
   return (
     <>
       <PageHero
-        eyebrow="Order on WhatsApp"
         title="Your Order Request"
-        lead="Review your flavours, tell us how you’d like to receive them, and send your request to Cojac’s on WhatsApp. No online payment — we confirm everything with you directly."
+        lead="Review your flavours, tell us how you’d like to receive them, and send your request to Cojac’s on WhatsApp. No online payment. We confirm everything with you directly."
       />
       <section className="section section--paper order-section">
         <div className="container">
@@ -90,7 +93,7 @@ export default function Order() {
             <div className="order-empty card">
               <BagIcon size={44} />
               <h2 className="display-m">Your order request is empty</h2>
-              <p>Choose your flavours and quantities first — then come back here to send everything in one WhatsApp message.</p>
+              <p>Choose your flavours and quantities first, then come back here to send everything in one WhatsApp message.</p>
               <div className="btn-row" style={{ justifyContent: 'center' }}>
                 <Link to={routes.flavours.path} className="btn">
                   Find Your Flavour
@@ -122,7 +125,7 @@ export default function Order() {
                 <section className="order-step card" aria-labelledby="step-fulfil">
                   <div className="order-step__head">
                     <span className="order-step__num">2</span>
-                    <h2 id="step-fulfil">Delivery details</h2>
+                    <h2 id="step-fulfil">Your details</h2>
                   </div>
                   <fieldset
                     className="field"
@@ -144,7 +147,9 @@ export default function Order() {
                           <span className="option-card__title">{f.label}</span>
                           <span className="option-card__desc">{f.description}</span>
                           {f.id !== 'advise' && (
-                            <span className={`option-card__fee ${f.feeBZD === 0 ? 'is-free' : ''}`}>{f.feeBZD === 0 ? 'No charge' : `${f.chargeLabel}: ${f.feeBZD === null ? 'confirmed by Cojac’s' : formatBZD(f.feeBZD)}`}</span>
+                            <span className={`option-card__fee ${f.feeBZD === 0 ? 'is-free' : ''}`}>
+                              {f.feeBZD === 0 ? 'Free' : f.feeBZD === null ? 'Charge confirmed by Cojac’s' : formatBZD(f.feeBZD)}
+                            </span>
                           )}
                         </label>
                       ))}
@@ -156,35 +161,63 @@ export default function Order() {
                     )}
                   </fieldset>
 
+                  <div className="field">
+                    <label htmlFor="name">Your name *</label>
+                    <input
+                      id="name"
+                      className="input"
+                      type="text"
+                      maxLength={80}
+                      value={details.name}
+                      onChange={(e) => setDetails({ name: e.target.value })}
+                      autoComplete="name"
+                      aria-invalid={attempted && !!errors.name}
+                      aria-describedby={attempted && errors.name ? 'name-error' : undefined}
+                    />
+                    {attempted && errors.name && (
+                      <p className="field-error" id="name-error">
+                        {errors.name}
+                      </p>
+                    )}
+                  </div>
+
                   {fulfilment?.asksForArea && (
                     <div className="field">
-                      <label htmlFor="area">{fulfilment.areaLabel ?? 'Area'}</label>
-                      <input id="area" className="input" type="text" maxLength={120} value={details.area} onChange={(e) => setDetails({ area: e.target.value })} autoComplete="address-level2" />
-                      <p className="hint">A general area is enough — share exact directions with Cojac’s on WhatsApp.</p>
+                      <label htmlFor="area">{fulfilment.areaLabel ?? 'Exact address'} *</label>
+                      <textarea
+                        id="area"
+                        className="textarea textarea--short"
+                        rows={2}
+                        maxLength={160}
+                        value={details.area}
+                        onChange={(e) => setDetails({ area: e.target.value })}
+                        autoComplete="street-address"
+                        placeholder={fulfilment.addressHint}
+                        aria-invalid={attempted && !!errors.address}
+                        aria-describedby={attempted && errors.address ? 'area-error' : undefined}
+                      />
+                      {attempted && errors.address && (
+                        <p className="field-error" id="area-error">
+                          {errors.address}
+                        </p>
+                      )}
                     </div>
                   )}
 
-                  <div className="field-row">
-                    {site.askPreferredDate && (
-                      <div className="field">
-                        <label htmlFor="date">Preferred date (optional)</label>
-                        <input
-                          id="date"
-                          className="input"
-                          type="date"
-                          min={today}
-                          max={site.season.seasonClosesOn}
-                          value={details.preferredDate}
-                          onChange={(e) => setDetails({ preferredDate: e.target.value })}
-                        />
-                        <p className="hint">Leave blank if you’re flexible. Cojac’s will confirm what’s possible.</p>
-                      </div>
-                    )}
+                  {site.askPreferredDate && (
                     <div className="field">
-                      <label htmlFor="name">Your name (optional)</label>
-                      <input id="name" className="input" type="text" maxLength={80} value={details.name} onChange={(e) => setDetails({ name: e.target.value })} autoComplete="name" />
+                      <label htmlFor="date">Preferred date (optional)</label>
+                      <input
+                        id="date"
+                        className="input"
+                        type="date"
+                        min={today}
+                        max={site.season.seasonClosesOn}
+                        value={details.preferredDate}
+                        onChange={(e) => setDetails({ preferredDate: e.target.value })}
+                      />
                     </div>
-                  </div>
+                  )}
                   <div className="field">
                     <label htmlFor="notes">Notes for Cojac’s (optional)</label>
                     <textarea
@@ -193,11 +226,9 @@ export default function Order() {
                       maxLength={MAX_ORDER_NOTES_LENGTH}
                       value={details.notes}
                       onChange={(e) => setDetails({ notes: e.target.value })}
-                      placeholder="e.g. gift for a colleague, best time to reach you"
+                      placeholder="e.g. best time to deliver"
                     />
-                    <p className="hint">
-                      {details.notes.length}/{MAX_ORDER_NOTES_LENGTH} · Please don’t include card or payment details.
-                    </p>
+                    <p className="hint">Please don’t include card or payment details.</p>
                   </div>
                 </section>
               </div>
@@ -228,6 +259,12 @@ export default function Order() {
                       <dd>{feeLabel(fulfilment)}</dd>
                     </div>
                   )}
+                  {totals.allPriced && fulfilment && fulfilment.feeBZD !== null && (
+                    <div className="summary-totals__total">
+                      <dt>Total</dt>
+                      <dd>{formatBZD(totals.pricedSubtotal + fulfilment.feeBZD)}</dd>
+                    </div>
+                  )}
                   {details.preferredDate && (
                     <div>
                       <dt>Preferred date</dt>
@@ -236,7 +273,7 @@ export default function Order() {
                   )}
                 </dl>
                 <p className="summary-note">
-                  <InfoIcon size={16} /> Cojac’s will confirm availability, the final total, payment arrangements and delivery or pickup details.
+                  <InfoIcon size={16} /> Cojac’s will confirm availability and payment on WhatsApp.
                 </p>
 
                 <details className="message-preview">
@@ -273,7 +310,7 @@ export default function Order() {
                     )}
                   </>
                 )}
-                {destination.ok && destination.source === 'qa' && <p className="qa-flag">QA test line — not the business number</p>}
+                {destination.ok && destination.source === 'qa' && <p className="qa-flag">QA test line, not the business number</p>}
 
                 <button type="button" className="btn btn--ghost-dark btn--block" onClick={onCopy}>
                   <CopyIcon size={18} /> Copy order details

@@ -27,7 +27,7 @@ function Lightbox({ index, onClose, onMove }: { index: number; onClose: () => vo
     };
   }, [onClose, onMove]);
   return (
-    <div className="lightbox" role="dialog" aria-modal="true" aria-label={`${item.caption} — image ${index + 1} of ${gallery.length}`} ref={ref} tabIndex={-1}>
+    <div className="lightbox" role="dialog" aria-modal="true" aria-label={`${item.caption}, image ${index + 1} of ${gallery.length}`} ref={ref} tabIndex={-1}>
       <button type="button" className="lightbox__backdrop" onClick={onClose} aria-label="Close" tabIndex={-1} />
       <figure className="lightbox__figure">
         {item.src ? (
@@ -66,7 +66,6 @@ export default function Gallery() {
   return (
     <>
       <PageHero
-        eyebrow="The Sumptuous Gallery"
         title={
           <>
             Moments from the <em className="italic-gold">Season</em>
@@ -79,7 +78,7 @@ export default function Gallery() {
           {!hasPhotos && (
             <Reveal className="notice notice--soft gallery-note" role="note">
               <Sparkle size={18} />
-              <p>More photographs from this season are on the way — check back soon.</p>
+              <p>More photographs from this season are on the way. Check back soon.</p>
             </Reveal>
           )}
           <div className="gallery-grid">

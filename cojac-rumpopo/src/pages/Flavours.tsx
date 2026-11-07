@@ -27,7 +27,6 @@ export default function Flavours() {
   return (
     <>
       <PageHero
-        eyebrow="Find Your Flavour"
         title={
           <>
             More Than Just <em className="italic-gold">Classic Vanilla</em>
@@ -42,7 +41,7 @@ export default function Flavours() {
             <div className="notice illustrative-banner" role="note">
               <InfoIcon size={20} />
               <p>
-                <strong>Illustrative layout — menu awaiting confirmation.</strong> Bottle sizes shown are samples for internal review only. No
+                <strong>Illustrative layout: menu awaiting confirmation.</strong> Bottle sizes shown are samples for internal review only. No
                 prices or stock levels are real.
               </p>
             </div>
@@ -52,7 +51,7 @@ export default function Flavours() {
               <InfoIcon size={20} />
               <p>
                 These are the family’s classic and customer-favourite flavours. This season’s menu, bottle sizes and prices are confirmed by
-                Cojac’s when you send your order request — flavours may change from season to season.
+                Cojac’s when you send your order request. Flavours may change from season to season.
               </p>
             </Reveal>
           )}
@@ -105,7 +104,6 @@ export default function Flavours() {
         <div className="container">
           <SectionHead
             center
-            eyebrow="Before you order"
             title="Good to know"
             lead={isAcceptingOrders() ? 'A few details to keep in mind while you choose.' : 'Order requests are closed until next season.'}
           />

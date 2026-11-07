@@ -136,7 +136,7 @@ function Header() {
     <>
       <header className={`site-header ${scrolled ? 'is-scrolled' : ''}`}>
         <div className="container site-header__inner">
-          <Link to="/" className="site-header__logo" aria-label={`${site.brandName} — home`}>
+          <Link to="/" className="site-header__logo" aria-label={`${site.brandName}, home`}>
             <Logo size="header" />
           </Link>
           <nav className="site-nav" aria-label="Main">
@@ -215,7 +215,7 @@ function Footer() {
               {contact.addressLine && (
                 <li>
                   {contact.mapUrl ? (
-                    <a href={contact.mapUrl} target="_blank" rel="noopener noreferrer" aria-label={`${contact.addressLine} — open in Google Maps`}>
+                    <a href={contact.mapUrl} target="_blank" rel="noopener noreferrer" aria-label={`${contact.addressLine}, open in Google Maps`}>
                       <PinIcon size={18} /> {contact.addressLine}
                     </a>
                   ) : (
@@ -239,7 +239,7 @@ function Footer() {
 function StickyOrderBar() {
   const { totals, openDrawer } = useCart();
   const { pathname } = useLocation();
-  if (totals.itemCount === 0 || pathname === routes.order.path) return null;
+  if (totals.itemCount === 0 || pathname.replace(/\/+$/, '') === routes.order.path) return null;
   return (
     <div className="sticky-order">
       <button type="button" className="sticky-order__summary" onClick={openDrawer}>

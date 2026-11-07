@@ -6,6 +6,10 @@ You make all of these edits in plain text files in `src/content/`. After saving,
 
 ---
 
+## 0. Homepage slideshow
+
+`src/content/hero.ts` lists the four hero photos (desktop 16:9 and mobile 9:16, in `public/hero/`). They rotate every 6 seconds in the listed order and loop. To change the order, move the entries; to change the speed, edit `heroIntervalMs`. For a new photo, add a desktop and mobile PNG plus WebP copies with the same naming and a new entry with a short description (`alt`) of the photo.
+
 ## 1. The WhatsApp order number (set to +501 621-8372)
 
 `src/content/site.ts`:
@@ -94,11 +98,15 @@ The detailed field reference follows:
 
 | Option | Meaning | `feeBZD` today |
 |---|---|---|
-| Delivery | Within Belize City limits, with a charge | `null` → “Charge applies — amount confirmed by Cojac’s” |
-| Pickup | Free | `0` → “No charge” |
-| Shipping | Out-district (other districts), with a charge | `null` → “Charge applies — amount confirmed by Cojac’s” |
+| Delivery | Anywhere in and within Belize City | `5` → BZD $5.00 |
+| Pickup | Free | `0` → “Free” |
+| Shipping | Out of district (anywhere outside Belize City), with a charge | `null` → “Charge confirmed by Cojac’s” |
 
 Enter an amount (e.g. `feeBZD: 10`) to show it at checkout and in the WhatsApp message. When every item and the charge have prices, an estimated total appears. Switch any option on or off with `enabled`.
+
+## 5b. What customers fill in at checkout
+
+Customers choose Delivery, Pickup or Shipping and must give their **name**. Delivery and shipping also require the **exact address** (street, house number and a landmark). A preferred date and notes are optional. The WhatsApp message is kept short: items with sizes and prices, the delivery line, the total, name, address, date and notes.
 
 ## 6. Contact details and social links (Facebook / Instagram)
 

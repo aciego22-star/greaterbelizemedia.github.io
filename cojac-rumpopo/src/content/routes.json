@@ -3,20 +3,20 @@
     "path": "/",
     "nav": "Home",
     "title": "Cojac’s Sumptuous Rumpopo | Belizean Christmas Rumpopo, Belize City",
-    "description": "Rich, creamy Belizean rumpopo (rum popo) in Classic Vanilla, Peanut Delight and Pumpkin Spice. A family Christmas tradition — order on WhatsApp in Belize City."
+    "description": "Rich, creamy Belizean rumpopo (rum popo) in Classic Vanilla, Peanut Delight and Pumpkin Spice. A family Christmas tradition. Order on WhatsApp in Belize City."
   },
   "story": {
     "path": "/our-story",
-    "nav": "Our Story — Behind the Bottle",
+    "nav": "Our Story: Behind the Bottle",
     "short": "Our Story",
-    "title": "Our Story — Behind the Bottle | Cojac’s Belizean Rumpopo",
+    "title": "Our Story: Behind the Bottle | Cojac’s Belizean Rumpopo",
     "description": "A Belizean family recipe, a love for good rumpopo and a desire to make every bottle worth sharing. Some traditions are worth preserving, and some are worth reinventing."
   },
   "flavours": {
     "path": "/flavours",
     "nav": "Find Your Flavour",
     "short": "Flavours",
-    "title": "Rumpopo Flavours — Find Your Flavour | Cojac’s Sumptuous Rumpopo",
+    "title": "Rumpopo Flavours: Find Your Flavour | Cojac’s Sumptuous Rumpopo",
     "description": "Classic Vanilla, Peanut Delight, Pumpkin Spice and seasonal creations. Choose your Cojac’s rumpopo flavours and send your order request on WhatsApp."
   },
   "guarantee": {
@@ -44,12 +44,12 @@
     "path": "/order",
     "nav": "Order",
     "title": "Order Rumpopo on WhatsApp | Cojac’s Sumptuous Rumpopo",
-    "description": "Build your rumpopo order request and send it to Cojac’s on WhatsApp. Delivery in Belize City and countrywide shipping — availability, price and delivery confirmed directly."
+    "description": "Build your rumpopo order request and send it to Cojac’s on WhatsApp. BZD $5 delivery anywhere in Belize City, pickup, and shipping to other districts."
   },
   "faqs": {
     "path": "/faqs",
     "nav": "FAQs",
-    "title": "Rumpopo FAQs — Ordering, Delivery & Flavours | Cojac’s",
+    "title": "Rumpopo FAQs: Ordering, Delivery & Flavours | Cojac’s",
     "description": "What is rumpopo? How do I order? Do you deliver in Belize City? Answers about Cojac’s rumpopo, WhatsApp order requests, flavours, alcohol and allergies."
   },
   "contact": {

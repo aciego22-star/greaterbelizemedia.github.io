@@ -93,20 +93,28 @@ for (const [label, opts] of [
     await page.evaluate(() => localStorage.removeItem('x'));
     await send.click();
     check('validation blocks send without fulfilment', (await page.getByText('Please choose delivery, pickup or shipping.').count()) === 1 && waUrls.length === 0);
-    // Pickup: no charge, no area
+    // Pickup: free, no address
     await page.locator('.option-card', { hasText: 'Pickup' }).click();
-    check('pickup shows "No charge"', (await page.locator('.summary-totals').innerText()).includes('No charge'));
-    check('pickup hides the area field', (await page.getByLabel(/area \/ neighbourhood|town \/ village/i).count()) === 0);
-    // Shipping: out-district destination + charge
-    await page.locator('.option-card', { hasText: 'Out-district' }).click();
-    check('shipping asks for town/district', (await page.getByLabel(/town \/ village and district/i).count()) === 1);
-    check('shipping shows a charge', (await page.locator('.summary-totals').innerText()).includes('Charge applies'));
-    // Delivery within Belize City for the hand-off
-    await page.locator('.option-card', { hasText: 'Within Belize City limits' }).click();
-    await page.getByLabel(/area \/ neighbourhood/i).fill('Kings Park');
-    await page.getByLabel(/preferred date/i).fill('2026-12-20');
+    check('pickup shows "Free"', (await page.locator('.summary-totals').innerText()).includes('Free'));
+    check('pickup asks for no address', (await page.getByLabel(/exact (delivery|shipping) address/i).count()) === 0);
+    check('pickup shows a total (BZD $161.00)', (await page.locator('.summary-totals__total').innerText()).includes('BZD $161.00'));
+    // Shipping: out of district, address + unconfirmed charge
+    await page.locator('.option-card', { hasText: 'Out of district' }).click();
+    check('shipping asks for the exact shipping address', (await page.getByLabel(/exact shipping address/i).count()) === 1);
+    check('shipping charge shown as confirmed by Cojac’s', (await page.locator('.summary-totals').innerText()).includes('Charge confirmed by Cojac’s'));
+    check('shipping shows no invented total', (await page.locator('.summary-totals__total').count()) === 0);
+    // Delivery: BZD $5 within Belize City
+    await page.locator('.option-card', { hasText: 'Anywhere in and within Belize City' }).click();
+    check('delivery is BZD $5.00', (await page.locator('.summary-totals').innerText()).includes('BZD $5.00'));
+    check('delivery total is BZD $166.00', (await page.locator('.summary-totals__total').innerText()).includes('BZD $166.00'));
+    // Name and exact address are required
+    await send.click();
+    check('send blocked without a name', (await page.getByText('Please enter your name.').count()) === 1 && waUrls.length === 0);
+    check('send blocked without an address', (await page.getByText('Please enter your exact address.').count()) === 1 && waUrls.length === 0);
     await page.getByLabel(/your name/i).fill('QA Tester');
-    await page.getByLabel(/notes for cojac/i).fill('QA test — please ignore. Special chars: & # ? "quotes" 🎄');
+    await page.getByLabel(/exact delivery address/i).fill('12 Cleghorn St, blue house beside the church');
+    await page.getByLabel(/preferred date/i).fill('2026-12-20');
+    await page.getByLabel(/notes for cojac/i).fill('QA test, please ignore. Special chars: & # ? "quotes" 🎄');
     const [popup] = await Promise.all([ctx.waitForEvent('page', { timeout: 5000 }).catch(() => null), send.click()]);
     await page.waitForTimeout(800);
     const url = waUrls[0] || popup?.url() || '';
@@ -114,20 +122,21 @@ for (const [label, opts] of [
     check(`destination number is ${EXPECT_NUMBER}`, url.startsWith(`https://wa.me/${EXPECT_NUMBER}?text=`));
     const text = decodeURIComponent((url.split('text=')[1] || '').replace(/\+/g, ' '));
     for (const expect of [
-      "Hello Cojac's Sumptuous Rumpopo! I'd like to request an order.",
-      '- Classic Vanilla Rumpopo — Half liter (500 mL) × 5 — BZD $85.00',
+      "Hi Cojac's Sumptuous Rumpopo! *Order request:*",
+      '5 × Classic Vanilla Rumpopo (Half liter): BZD $85.00',
       'Note: One bottle wrapped as a gift',
-      '- Peanut Delight Rumpopo — Liter (1 L) × 2 — BZD $76.00',
-      '*SUBTOTAL:* BZD $161.00',
-      '*FULFILMENT:* Delivery',
-      '*DELIVERY CHARGE:* Charge applies — amount confirmed by Cojac’s',
-      '*AREA:* Kings Park',
-      '*PREFERRED DATE:* Sun, 20 December 2026',
-      '*NAME:* QA Tester',
+      '2 × Peanut Delight Rumpopo (Liter): BZD $76.00',
+      'Delivery (Belize City): BZD $5.00',
+      '*Total: BZD $166.00*',
+      'Name: QA Tester',
+      'Address: 12 Cleghorn St, blue house beside the church',
+      'Date: Sun, 20 December 2026',
       '"quotes" 🎄',
-      'Please confirm availability, final price, payment arrangements and fulfilment details.',
+      'Please confirm availability and payment. Thank you!',
     ])
       check(`message contains: ${expect.slice(0, 50)}`, text.includes(expect));
+    check('message is short (≤ 15 lines)', text.split('\n').length <= 15, `${text.split('\n').length} lines`);
+    check('message has no em/en dashes', !/[—–]/.test(text));
     check('message has no Pumpkin Spice (removed)', !text.includes('Pumpkin'));
     check('honest feedback shown (no "order confirmed")', (await page.getByText('WhatsApp will open with your order request.').count()) === 1 && (await page.getByText(/order confirmed|order placed|payment received/i).count()) === 0);
     if (MODE === 'qa') check('QA line is flagged', (await page.getByText('QA test line').count()) === 1);
@@ -144,7 +153,7 @@ for (const [label, opts] of [
   check('copy order details gives feedback', (await page.locator('.send-status').innerText()).length > 10);
   if (label === 'desktop') {
     const clip = await page.evaluate(() => navigator.clipboard.readText().catch(() => ''));
-    check('clipboard holds the order message', clip.includes("I'd like to request an order"));
+    check('clipboard holds the order message', clip.includes('*Order request:*'));
   }
 
   // Persistence across refresh, then clear

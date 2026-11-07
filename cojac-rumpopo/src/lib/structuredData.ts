@@ -49,7 +49,7 @@ export function organization(): Json {
     logo: { '@type': 'ImageObject', url: abs('/brand/cojacs-logo-square-512.jpg'), width: 512, height: 512, caption: site.brandName },
     image: abs('/og-image.jpg'),
     slogan: site.logoTagline,
-    description: `${site.brandName} is a Belizean family business making rich, creamy rumpopo (rum popo) for the Christmas season — from Classic Vanilla to customer favourites like Peanut Delight and Pumpkin Spice. Order requests are taken on WhatsApp.`,
+    description: `${site.brandName} is a Belizean family business making rich, creamy rumpopo (rum popo) for the Christmas season, from Classic Vanilla to customer favourites like Peanut Delight and Pumpkin Spice. Order requests are taken on WhatsApp.`,
     knowsAbout: ['Rumpopo', 'Rum popo', 'Belizean Christmas traditions', 'Holiday drinks'],
     areaServed: { '@type': 'Country', name: 'Belize' },
     ...(site.contact.addressLine && {
@@ -67,7 +67,7 @@ export function organization(): Json {
     brand: { '@type': 'Brand', name: site.brandShort, logo: abs('/brand/cojacs-logo-square-512.jpg'), slogan: site.logoTagline },
     subjectOf: media
       .filter((m) => m.platform === 'youtube')
-      .map((m) => ({ '@type': 'CreativeWork', name: `${site.brandName} — ${m.title}`, url: m.url, ...(m.publisher && { publisher: { '@type': 'Organization', name: m.publisher } }) })),
+      .map((m) => ({ '@type': 'CreativeWork', name: `${site.brandName}: ${m.title}`, url: m.url, ...(m.publisher && { publisher: { '@type': 'Organization', name: m.publisher } }) })),
   };
 }
 
@@ -144,8 +144,8 @@ function webpage(key: RouteKey): Json {
     if (videos.length) {
       page.video = videos.map((m) => ({
         '@type': 'VideoObject',
-        name: `${site.brandName} — ${m.title}`,
-        description: `${m.title} — featuring ${site.brandName}.`,
+        name: `${site.brandName}: ${m.title}`,
+        description: `${m.title}, featuring ${site.brandName}.`,
         thumbnailUrl: m.thumbnail ? abs(m.thumbnail) : `https://i.ytimg.com/vi/${m.youtubeId}/hqdefault.jpg`,
         uploadDate: m.uploadDate,
         contentUrl: m.url,

@@ -170,9 +170,7 @@ export function Sparkle({ className, size = 14 }: { className?: string; size?: n
 export function Ornament() {
   return (
     <div className="ornament" aria-hidden="true">
-      <span />
       <Sparkle size={16} />
-      <span />
     </div>
   );
 }

@@ -11,7 +11,7 @@
     "viewport": "desktop",
     "path": "/our-story/",
     "status": 200,
-    "title": "Our Story — Behind the Bottle | Cojac’s Belizean Rumpopo",
+    "title": "Our Story: Behind the Bottle | Cojac’s Belizean Rumpopo",
     "horizontalOverflow": false,
     "errors": []
   },
@@ -19,7 +19,7 @@
     "viewport": "desktop",
     "path": "/flavours/",
     "status": 200,
-    "title": "Rumpopo Flavours — Find Your Flavour | Cojac’s Sumptuous Rumpopo",
+    "title": "Rumpopo Flavours: Find Your Flavour | Cojac’s Sumptuous Rumpopo",
     "horizontalOverflow": false,
     "errors": []
   },
@@ -59,7 +59,7 @@
     "viewport": "desktop",
     "path": "/faqs/",
     "status": 200,
-    "title": "Rumpopo FAQs — Ordering, Delivery & Flavours | Cojac’s",
+    "title": "Rumpopo FAQs: Ordering, Delivery & Flavours | Cojac’s",
     "horizontalOverflow": false,
     "errors": []
   },
@@ -91,7 +91,7 @@
     "viewport": "tablet",
     "path": "/our-story/",
     "status": 200,
-    "title": "Our Story — Behind the Bottle | Cojac’s Belizean Rumpopo",
+    "title": "Our Story: Behind the Bottle | Cojac’s Belizean Rumpopo",
     "horizontalOverflow": false,
     "errors": []
   },
@@ -99,7 +99,7 @@
     "viewport": "tablet",
     "path": "/flavours/",
     "status": 200,
-    "title": "Rumpopo Flavours — Find Your Flavour | Cojac’s Sumptuous Rumpopo",
+    "title": "Rumpopo Flavours: Find Your Flavour | Cojac’s Sumptuous Rumpopo",
     "horizontalOverflow": false,
     "errors": []
   },
@@ -139,7 +139,7 @@
     "viewport": "tablet",
     "path": "/faqs/",
     "status": 200,
-    "title": "Rumpopo FAQs — Ordering, Delivery & Flavours | Cojac’s",
+    "title": "Rumpopo FAQs: Ordering, Delivery & Flavours | Cojac’s",
     "horizontalOverflow": false,
     "errors": []
   },
@@ -171,7 +171,7 @@
     "viewport": "mobile",
     "path": "/our-story/",
     "status": 200,
-    "title": "Our Story — Behind the Bottle | Cojac’s Belizean Rumpopo",
+    "title": "Our Story: Behind the Bottle | Cojac’s Belizean Rumpopo",
     "horizontalOverflow": false,
     "errors": []
   },
@@ -179,7 +179,7 @@
     "viewport": "mobile",
     "path": "/flavours/",
     "status": 200,
-    "title": "Rumpopo Flavours — Find Your Flavour | Cojac’s Sumptuous Rumpopo",
+    "title": "Rumpopo Flavours: Find Your Flavour | Cojac’s Sumptuous Rumpopo",
     "horizontalOverflow": false,
     "errors": []
   },
@@ -219,7 +219,7 @@
     "viewport": "mobile",
     "path": "/faqs/",
     "status": 200,
-    "title": "Rumpopo FAQs — Ordering, Delivery & Flavours | Cojac’s",
+    "title": "Rumpopo FAQs: Ordering, Delivery & Flavours | Cojac’s",
     "horizontalOverflow": false,
     "errors": []
   },
@@ -251,7 +251,7 @@
     "viewport": "mobile-small",
     "path": "/our-story/",
     "status": 200,
-    "title": "Our Story — Behind the Bottle | Cojac’s Belizean Rumpopo",
+    "title": "Our Story: Behind the Bottle | Cojac’s Belizean Rumpopo",
     "horizontalOverflow": false,
     "errors": []
   },
@@ -259,7 +259,7 @@
     "viewport": "mobile-small",
     "path": "/flavours/",
     "status": 200,
-    "title": "Rumpopo Flavours — Find Your Flavour | Cojac’s Sumptuous Rumpopo",
+    "title": "Rumpopo Flavours: Find Your Flavour | Cojac’s Sumptuous Rumpopo",
     "horizontalOverflow": false,
     "errors": []
   },
@@ -299,7 +299,7 @@
     "viewport": "mobile-small",
     "path": "/faqs/",
     "status": 200,
-    "title": "Rumpopo FAQs — Ordering, Delivery & Flavours | Cojac’s",
+    "title": "Rumpopo FAQs: Ordering, Delivery & Flavours | Cojac’s",
     "horizontalOverflow": false,
     "errors": []
   },

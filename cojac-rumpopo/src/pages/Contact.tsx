@@ -15,7 +15,7 @@ export default function Contact() {
 
   return (
     <>
-      <PageHero eyebrow="Connect With Us" title="We’d Love to Hear From You" lead="WhatsApp is the quickest way to reach Cojac’s for orders and questions." />
+      <PageHero title="We’d Love to Hear From You" lead="WhatsApp is the quickest way to reach Cojac’s for orders and questions." />
       <section className="section section--paper">
         <div className="container contact-grid">
           <Reveal className="contact-primary card">
@@ -25,7 +25,6 @@ export default function Contact() {
             <h2 className="display-m">Order &amp; enquiries on WhatsApp</h2>
             <p>Build your order request on the website and send it in one message, or simply say hello with a question.</p>
             <div className="contact-primary__social">
-              <p className="contact-primary__social-label">Message or follow us</p>
               <SocialIcons size="lg" />
             </div>
             <div className="btn-row">

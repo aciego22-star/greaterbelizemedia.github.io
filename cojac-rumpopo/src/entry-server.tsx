@@ -33,7 +33,7 @@ export function llmsTxt(): string {
   const flavours = getCatalogue()
     .map(
       (p) =>
-        `- ${p.name} — ${p.variants.map((v) => `${v.bottleSize}${v.priceBZD !== null ? ` BZD $${v.priceBZD}` : ''}`).join(' · ')}${p.dietaryLabel ? ` (${p.dietaryLabel})` : ''}: ${p.description}`,
+        `- ${p.name}: ${p.variants.map((v) => `${v.bottleSize}${v.priceBZD !== null ? ` BZD $${v.priceBZD}` : ''}`).join(' · ')}${p.dietaryLabel ? ` (${p.dietaryLabel})` : ''}: ${p.description}`,
     )
     .join('\n');
   const faqs = publishedFaqs().map((f) => `### ${f.question}\n${f.answer}`).join('\n\n');
@@ -41,7 +41,7 @@ export function llmsTxt(): string {
     .map((r) => `- [${r.nav}](${base}${r.path === '/' ? '/' : r.path}): ${r.description}`)
     .join('\n');
   const videos = media
-    .map((m) => `- ${site.brandName} — ${m.title}${m.publisher ? ` (${m.publisher}, ${m.platform === 'youtube' ? 'YouTube' : 'Facebook'})` : ''}: ${m.url}`)
+    .map((m) => `- ${site.brandName}, ${m.title}${m.publisher ? ` (${m.publisher}, ${m.platform === 'youtube' ? 'YouTube' : 'Facebook'})` : ''}: ${m.url}`)
     .join('\n');
   return `# ${site.brandName}
 
@@ -51,7 +51,7 @@ Brand tagline: "${site.logoTagline}"
 
 ## Key facts
 - Business: ${site.brandName} (short name: ${site.brandShort})
-- Product: rumpopo / rum popo — contains alcohol; for adults of legal drinking age (${site.alcohol.legalAge}+)
+- Product: rumpopo / rum popo, contains alcohol; for adults of legal drinking age (${site.alcohol.legalAge}+)
 - Location: ${site.contact.addressLine}, Belize
 - Season: order requests accepted until ${formatLongDate(site.season.seasonClosesOn)}
 - Ordering: choose flavours on the website, then send the order request on WhatsApp; ${site.brandShort} confirms availability, final price, payment and delivery directly
@@ -59,10 +59,10 @@ Brand tagline: "${site.logoTagline}"
 - Sizes: Half liter (500 mL) and Liter (1 L); prices in Belize dollars (BZD) are listed below
 
 ## The Cojac's Guarantee
-- Rich and creamy — never thin, watered down or lacking in flavour.
-- No eggy taste — rumpopo may contain eggs, but it should never taste eggy.
-- Filled to the top — bottles are filled properly, right to the top.
-- More than just Classic Vanilla — customer favourites, seasonal creations and new releases.
+- Rich and creamy: never thin, watered down or lacking in flavour.
+- No eggy taste: rumpopo may contain eggs, but it should never taste eggy.
+- Filled to the top: bottles are filled properly, right to the top.
+- More than just Classic Vanilla: customer favourites, seasonal creations and new releases.
 
 ## Menu and prices this season (availability confirmed on WhatsApp)
 ${flavours}

@@ -30,7 +30,7 @@ export default function LaunchNotes() {
   ];
   return (
     <>
-      <PageHero eyebrow="Internal" title="Launch notes" lead="Visible only in preview builds. Items update automatically as the content files are completed." />
+      <PageHero title="Launch notes" lead="Visible only in preview builds. Items update automatically as the content files are completed." />
       <section className="section section--paper">
         <div className="container--narrow">
           <p className="notice notice--soft">

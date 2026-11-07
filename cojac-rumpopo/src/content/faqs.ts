@@ -35,7 +35,7 @@ export const faqs: FaqItem[] = [
     published: true,
     question: 'What is rumpopo?',
     answer:
-      'Rumpopo (also spelled rum popo) is a rich, creamy holiday drink that contains alcohol. In Belize it’s a much-loved part of Christmas — the bottle brought out when family visits, the gift shared between friends and colleagues, and the drink poured at workplace celebrations.',
+      'Rumpopo (also spelled rum popo) is a rich, creamy holiday drink that contains alcohol. In Belize it’s a much-loved part of Christmas: the bottle brought out when family visits, the gift shared between friends and colleagues, and the drink poured at workplace celebrations.',
   },
   {
     id: 'rumpopo-or-rum-popo',
@@ -57,7 +57,7 @@ export const faqs: FaqItem[] = [
     published: true,
     question: 'What makes Cojac’s rumpopo different?',
     answer:
-      'The Cojac’s Guarantee: rich and creamy (never thin or watered down), no eggy taste, filled to the top, and more than just Classic Vanilla — with customer favourites like Peanut Delight and Pumpkin Spice alongside seasonal creations and new releases.',
+      'The Cojac’s Guarantee: rich and creamy (never thin or watered down), no eggy taste, filled to the top, and more than just Classic Vanilla, with customer favourites like Peanut Delight and Pumpkin Spice alongside seasonal creations and new releases.',
   },
   {
     id: 'when-to-order',
@@ -71,7 +71,7 @@ export const faqs: FaqItem[] = [
     category: 'delivery',
     published: !!fulfilmentList,
     question: 'Do you deliver, ship or offer pickup?',
-    answer: `Yes — Cojac’s offers ${fulfilmentList}. Delivery and shipping each carry a charge, confirmed with you on WhatsApp along with timing; pickup is free.`,
+    answer: `Yes. Cojac’s offers ${fulfilmentList}. Delivery and shipping each carry a charge, confirmed with you on WhatsApp along with timing; pickup is free.`,
   },
   {
     id: 'how-to-order',
@@ -79,7 +79,7 @@ export const faqs: FaqItem[] = [
     published: true,
     question: 'How do I place an order?',
     answer:
-      'Choose your flavours on the Find Your Flavour page, select quantities and add them to your order. Review your order request, then tap “Send Order Request on WhatsApp”. WhatsApp opens with your request ready — press Send, and Cojac’s will confirm the details with you directly.',
+      'Choose your flavours on the Find Your Flavour page, select quantities and add them to your order. Review your order request, then tap “Send Order Request on WhatsApp”. WhatsApp opens with your request ready. Press Send, and Cojac’s will confirm the details with you directly.',
   },
   {
     id: 'is-order-confirmed',
@@ -149,7 +149,7 @@ export const faqs: FaqItem[] = [
     category: 'product',
     published: from !== null,
     question: 'How much does a bottle of Cojac’s rumpopo cost?',
-    answer: `Prices start from BZD $${from} for a half liter. This season’s prices (half liter, liter) — ${priceLines}. Delivery and shipping charges are confirmed on WhatsApp; pickup is free.`,
+    answer: `Prices start from BZD $${from} for a half liter. This season’s prices (half liter, liter): ${priceLines}. Delivery in Belize City is BZD $5, pickup is free, and shipping charges are confirmed on WhatsApp.`,
   },
   { id: 'lead-time', category: 'ordering', published: false, question: 'How far in advance should I order?', answer: '' },
   { id: 'delivery-fees', category: 'delivery', published: false, question: 'How much is delivery or shipping?', answer: '' },

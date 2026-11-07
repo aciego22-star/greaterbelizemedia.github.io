@@ -21,7 +21,7 @@ export default function Faqs() {
   const enquiry = generalEnquiryUrl();
   return (
     <>
-      <PageHero eyebrow="FAQs" title="Frequently Asked Questions" lead="Everything you need to know about sending your rumpopo order request." />
+      <PageHero title="Frequently Asked Questions" lead="Everything you need to know about sending your rumpopo order request." />
       <section className="section section--paper">
         <div className="container faq-page">
           {groups.map((g) => {

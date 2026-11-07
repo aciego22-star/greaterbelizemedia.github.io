@@ -1,0 +1,129 @@
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { heroIntervalMs, heroSlides } from '../content/hero';
+import { asset } from '../lib/whatsapp';
+
+function Slide({ i, active, show }: { i: number; active: boolean; show: boolean }) {
+  const s = heroSlides[i];
+  return (
+    <div
+      className={`hero-slides__slide ${active ? 'is-active' : ''}`}
+      role="group"
+      aria-roledescription="slide"
+      aria-label={`${i + 1} of ${heroSlides.length}`}
+      aria-hidden={!active}
+    >
+      {show && (
+        <picture>
+          <source media="(max-width: 767px)" type="image/webp" srcSet={asset(`${s.mobile}.webp`)} />
+          <source media="(max-width: 767px)" srcSet={asset(`${s.mobile}.png`)} />
+          <source type="image/webp" srcSet={asset(`${s.desktop}.webp`)} />
+          <img
+            src={asset(`${s.desktop}.png`)}
+            width={1672}
+            height={941}
+            alt={s.alt}
+            decoding="async"
+            loading={i === 0 ? 'eager' : 'lazy'}
+            {...(i === 0 ? { fetchpriority: 'high' } : {})}
+          />
+        </picture>
+      )}
+    </div>
+  );
+}
+
+/**
+ * Full-bleed homepage slideshow. Rotates every 6 seconds and loops. It pauses
+ * on hover or keyboard focus and when the tab is hidden, and has a pause button.
+ * It starts paused for visitors who ask for reduced motion.
+ */
+export function HeroSlideshow() {
+  const n = heroSlides.length;
+  const [current, setCurrent] = useState(0);
+  // Only the first slide is in the pre-rendered HTML; the rest load just before they appear.
+  const [loaded, setLoaded] = useState<Set<number>>(() => new Set([0]));
+  const [paused, setPaused] = useState(false);
+  const [hovering, setHovering] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const root = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) setPaused(true);
+    const onVis = () => setHidden(document.hidden);
+    document.addEventListener('visibilitychange', onVis);
+    return () => document.removeEventListener('visibilitychange', onVis);
+  }, []);
+
+  useEffect(() => {
+    setLoaded((prev) => {
+      const next = new Set(prev);
+      next.add(current);
+      next.add((current + 1) % n);
+      return next.size === prev.size ? prev : next;
+    });
+  }, [current, n]);
+
+  const go = useCallback((i: number) => setCurrent(((i % n) + n) % n), [n]);
+
+  useEffect(() => {
+    if (paused || hovering || hidden || n < 2) return;
+    const t = window.setTimeout(() => go(current + 1), heroIntervalMs);
+    return () => window.clearTimeout(t);
+  }, [current, paused, hovering, hidden, go, n]);
+
+  if (!n) return null;
+  return (
+    <section
+      ref={root}
+      className="hero-slides"
+      aria-roledescription="carousel"
+      aria-label="Cojac’s holiday photos"
+      onMouseEnter={() => setHovering(true)}
+      onMouseLeave={() => setHovering(false)}
+      onFocus={() => setHovering(true)}
+      onBlur={(e) => {
+        if (!root.current?.contains(e.relatedTarget as Node)) setHovering(false);
+      }}
+    >
+      <div className="hero-slides__track" aria-live={paused ? 'polite' : 'off'}>
+        {heroSlides.map((s, i) => (
+          <Slide key={s.id} i={i} active={i === current} show={loaded.has(i)} />
+        ))}
+      </div>
+      {n > 1 && (
+        <div className="hero-slides__controls">
+          <button
+            type="button"
+            className="hero-slides__pause"
+            onClick={() => setPaused((p) => !p)}
+            aria-label={paused ? 'Play slideshow' : 'Pause slideshow'}
+          >
+            {paused ? (
+              <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7 4.5v15l13-7.5-13-7.5Z" fill="currentColor" />
+              </svg>
+            ) : (
+              <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 4h4v16H6zM14 4h4v16h-4z" fill="currentColor" />
+              </svg>
+            )}
+          </button>
+          <div className="hero-slides__dots">
+            {heroSlides.map((s, i) => (
+              <button
+                key={s.id}
+                type="button"
+                className={`hero-slides__dot ${i === current ? 'is-active' : ''}`}
+                aria-label={`Show photo ${i + 1} of ${n}`}
+                aria-current={i === current}
+                onClick={() => go(i)}
+              >
+                <span />
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}

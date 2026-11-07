@@ -167,30 +167,6 @@ p {
 }
 
 /* Typography helpers */
-.eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-family: var(--font-body);
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--cranberry);
-  margin-bottom: 18px;
-}
-.eyebrow::before {
-  content: '';
-  width: 28px;
-  height: 1px;
-  background: currentColor;
-  opacity: 0.6;
-}
-.on-dark .eyebrow,
-.section--burgundy .eyebrow,
-.section--evergreen .eyebrow {
-  color: var(--gold-300);
-}
 .display-xl {
   font-size: clamp(2.6rem, 7.2vw, 5.6rem);
   font-weight: 400;
@@ -227,13 +203,6 @@ p {
 .section-head--center {
   margin-inline: auto;
   text-align: center;
-}
-.section-head--center .eyebrow::after {
-  content: '';
-  width: 28px;
-  height: 1px;
-  background: currentColor;
-  opacity: 0.6;
 }
 
 /* Buttons */
@@ -419,14 +388,6 @@ p {
   gap: 14px;
   color: var(--gold-500);
   margin: 0 auto 22px;
-}
-.ornament span {
-  height: 1px;
-  width: 64px;
-  background: linear-gradient(90deg, transparent, currentColor);
-}
-.ornament span:last-child {
-  background: linear-gradient(270deg, transparent, currentColor);
 }
 
 /* Forms */

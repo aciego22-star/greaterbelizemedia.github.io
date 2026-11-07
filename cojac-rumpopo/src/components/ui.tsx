@@ -50,13 +50,11 @@ export function Reveal({
 }
 
 export function SectionHead({
-  eyebrow,
   title,
   lead,
   center,
   id,
 }: {
-  eyebrow?: string;
   title: ReactNode;
   lead?: ReactNode;
   center?: boolean;
@@ -64,7 +62,6 @@ export function SectionHead({
 }) {
   return (
     <Reveal className={`section-head ${center ? 'section-head--center' : ''}`}>
-      {eyebrow && <p className="eyebrow">{eyebrow}</p>}
       <h2 className="display-l" id={id}>
         {title}
       </h2>
@@ -119,7 +116,7 @@ export function QuantityStepper({
 
 const availabilityText: Record<Availability, string> = {
   available: 'Available this season',
-  limited: 'Limited — few left',
+  limited: 'Limited, few left',
   'sold-out': 'Sold out',
   'on-menu': 'On this season’s menu',
   ask: 'Ask about availability',
@@ -147,7 +144,7 @@ export function Logo({ size = 'header', className = '' }: { size?: 'header' | 'm
   return (
     <picture className={`logo logo--${size} ${className}`}>
       <source type="image/webp" srcSet={`${asset('/brand/cojacs-logo-160')}.webp 160w, ${src320}.webp 320w, ${src640}.webp 640w`} sizes={size === 'feature' ? '260px' : size === 'footer' ? '170px' : '80px'} />
-      <img src={`${src320}.png`} width={320} height={289} alt={`${site.brandName} — ${site.logoTagline}`} decoding="async" />
+      <img src={`${src320}.png`} width={320} height={289} alt={`${site.brandName}: ${site.logoTagline}`} decoding="async" />
     </picture>
   );
 }
@@ -162,13 +159,11 @@ export function PageLink({ to, children, className }: { to: RouteKey; children?:
 }
 
 export function PageHero({
-  eyebrow,
   title,
   lead,
   children,
   tone = 'burgundy',
 }: {
-  eyebrow: string;
   title: ReactNode;
   lead?: ReactNode;
   children?: ReactNode;
@@ -178,9 +173,6 @@ export function PageHero({
     <header className={`page-hero page-hero--${tone} grain on-dark`}>
       <div className="page-hero__glow" aria-hidden="true" />
       <div className="container page-hero__inner">
-        <p className="eyebrow" style={{ animation: 'fadeUp .8s var(--ease) both' }}>
-          {eyebrow}
-        </p>
         <h1 className="display-xl" style={{ animation: 'fadeUp .9s .08s var(--ease) both' }}>
           {title}
         </h1>

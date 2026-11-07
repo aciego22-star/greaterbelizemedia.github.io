@@ -49,7 +49,7 @@ export function CartLines({ compact = false }: { compact?: boolean }) {
                   className="input"
                   type="text"
                   maxLength={200}
-                  placeholder="Add a note (optional) — e.g. for a gift"
+                  placeholder="Add a note (optional), e.g. for a gift"
                   value={r.line.note}
                   onChange={(e) => setNote(r.line.key, e.target.value)}
                 />

@@ -109,8 +109,8 @@ export function FlavourCard({ product }: { product: Product }) {
         <div className="flavour-card__chips">
           <AvailabilityChip value={availability} />
           {variant?.illustrative && <span className="chip chip--illustrative">Illustrative sizes</span>}
+          {product.dietaryLabel?.startsWith('Vegan') && <span className="chip chip--vegan">Vegan</span>}
         </div>
-        <p className="flavour-card__subtitle">{product.subtitle}</p>
         <h3 className="flavour-card__name" id={`${uid}-name`}>
           {product.name}
         </h3>
@@ -210,7 +210,7 @@ export function FlavourCard({ product }: { product: Product }) {
             <dd>
               {product.allergens && product.allergens.length
                 ? `Contains: ${product.allergens.join(', ')}.`
-                : 'Allergen information for this flavour is being confirmed. Rumpopo may contain egg and dairy — please ask Cojac’s on WhatsApp about ingredients before ordering.'}
+                : 'Allergen information for this flavour is being confirmed. Rumpopo may contain egg and dairy. Please ask Cojac’s on WhatsApp about ingredients before ordering.'}
             </dd>
             {product.ingredientsDisclosure && (
               <>

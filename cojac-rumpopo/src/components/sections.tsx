@@ -36,7 +36,7 @@ export function HowItWorks() {
   const steps = [
     { t: 'Choose your flavours', d: 'Browse the season’s rumpopo and pick your favourites.' },
     { t: 'Build your order request', d: 'Select quantities, add any notes and review everything in one place.' },
-    { t: 'Send it on WhatsApp', d: 'WhatsApp opens with your request ready. Press Send — that’s it.' },
+    { t: 'Send it on WhatsApp', d: 'WhatsApp opens with your request ready. Press Send. That’s it.' },
     { t: 'Cojac’s confirms', d: 'We confirm availability, final total, payment and delivery or pickup with you directly.' },
   ];
   return (
@@ -127,7 +127,7 @@ export function VideoCard({ item }: { item: MediaItem }) {
   }
   return (
     <article className="video-card video-card--external">
-      <a className="video-card__frame video-card__fb" href={item.url} target="_blank" rel="noopener noreferrer" aria-label={`${item.title} — opens Facebook in a new tab`}>
+      <a className="video-card__frame video-card__fb" href={item.url} target="_blank" rel="noopener noreferrer" aria-label={`${item.title} (opens Facebook in a new tab)`}>
         <Sprig className="video-card__sprig" />
         <span className="video-card__fb-icon">
           <FacebookIcon size={30} />
@@ -235,20 +235,20 @@ export function TrustStrip() {
 /** "At a glance" facts — short, consistent, machine-friendly answers built from site.ts. */
 export function AtAGlance() {
   const facts: [string, ReactNode][] = [
-    ['What', 'Rumpopo (rum popo) — a rich, creamy Belizean Christmas drink that contains alcohol'],
+    ['What', 'Rumpopo (rum popo): a rich, creamy Belizean Christmas drink that contains alcohol'],
     ['Who', `${site.brandName}, a Belizean family business`],
     ['Where', `${site.contact.addressLine}, Belize`],
     ['Experience', `Sharing rumpopo for ${site.experienceStatement}`],
     ['Flavours', getCatalogue().map((p) => p.name.replace(/ Rumpopo$/, '')).join(', ')],
-    ['Sizes & prices', `Half liter (500 mL) or liter (1 L) — from BZD $${lowestPrice() ?? ''}`],
+    ['Sizes & prices', `Half liter (500 mL) or liter (1 L), from BZD $${lowestPrice() ?? ''}`],
     ['Season', `Order requests open until ${formatLongDate(site.season.seasonClosesOn)}`],
     [
       'How to order',
       <>
-        Choose flavours on <Link to={routes.flavours.path}>Find Your Flavour</Link>, then send your order request on WhatsApp — Cojac’s confirms availability, price and delivery directly.
+        Choose flavours on <Link to={routes.flavours.path}>Find Your Flavour</Link>, then send your order request on WhatsApp. Cojac’s confirms availability and payment directly.
       </>,
     ],
-    ['Payment', 'Arranged directly with Cojac’s — no online payment on this website'],
+    ['Payment', 'Arranged directly with Cojac’s. No online payment on this website'],
   ];
   return (
     <section className="glance" aria-labelledby="glance-title">
@@ -278,7 +278,6 @@ export function LocationMap() {
   return (
     <section className="map-card card" id="map" aria-labelledby="map-title">
       <div className="map-card__info">
-        <p className="eyebrow">Find us</p>
         <h2 id="map-title" className="display-m">
           {contact.addressLine}
         </h2>

@@ -16,7 +16,6 @@ export default function Story() {
   return (
     <>
       <PageHero
-        eyebrow="Our Story"
         title={
           <>
             Behind the <em className="italic-gold">Bottle</em>
@@ -29,7 +28,7 @@ export default function Story() {
         <div className="container story-chapter__grid">
           <Reveal className="story-chapter__label">
             <span className="story-chapter__num">I</span>
-            <p className="eyebrow">A Belizean Christmas</p>
+            <h2 className="story-chapter__title">A Belizean Christmas</h2>
           </Reveal>
           <Reveal delay={100} className="story-chapter__text">
             <p className="dropcap lead">{p1}</p>
@@ -52,7 +51,7 @@ export default function Story() {
         <div className="container story-chapter__grid">
           <Reveal className="story-chapter__label">
             <span className="story-chapter__num">II</span>
-            <p className="eyebrow">A family recipe</p>
+            <h2 className="story-chapter__title">A family recipe</h2>
           </Reveal>
           <Reveal delay={100} className="story-chapter__text">
             <p className="lead">{p2}</p>
@@ -66,10 +65,9 @@ export default function Story() {
       <section className="section section--cream">
         <div className="container evolution">
           <Reveal className="evolution__intro">
-            <p className="eyebrow">From a classic favourite to a collection</p>
             <h2 className="display-l">What started with a classic favourite has grown.</h2>
             <p className="lead">
-              Classic Vanilla may have started it all, but it didn’t stop there — customer favourites, seasonal creations and new releases
+              Classic Vanilla may have started it all, but it didn’t stop there. Customer favourites, seasonal creations and new releases
               followed.
             </p>
             <Link to={routes.flavours.path} className="btn">
@@ -97,7 +95,7 @@ export default function Story() {
         <div className="container story-chapter__grid">
           <Reveal className="story-chapter__label">
             <span className="story-chapter__num">III</span>
-            <p className="eyebrow">Preserving &amp; reinventing</p>
+            <h2 className="story-chapter__title">Preserving &amp; reinventing</h2>
           </Reveal>
           <Reveal delay={100} className="story-chapter__text">
             <p className="lead">{p3}</p>

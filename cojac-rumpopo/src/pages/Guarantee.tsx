@@ -12,7 +12,6 @@ export default function Guarantee() {
     <>
       <PageHero
         tone="evergreen"
-        eyebrow="The Cojac’s Guarantee"
         title={
           <>
             What You Can Expect in <em className="italic-gold">Every Bottle</em>

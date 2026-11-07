@@ -9,7 +9,6 @@ export default function Videos() {
   return (
     <>
       <PageHero
-        eyebrow="Videos & Features"
         title={
           <>
             Moments from the <em className="italic-gold">Journey</em>

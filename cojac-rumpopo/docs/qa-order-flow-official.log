@@ -10,24 +10,31 @@ PASS  header count = 7 bottles — Your order request, 7 bottles
 PASS  subtotal uses approved prices (BZD $161.00)
 PASS  quantity clamps at 99 — 99
 PASS  validation blocks send without fulfilment
-PASS  pickup shows "No charge"
-PASS  pickup hides the area field
-PASS  shipping asks for town/district
-PASS  shipping shows a charge
-PASS  WhatsApp opened in a new tab via wa.me — https://wa.me/5016218372?text=Hello%20Co
+PASS  pickup shows "Free"
+PASS  pickup asks for no address
+PASS  pickup shows a total (BZD $161.00)
+PASS  shipping asks for the exact shipping address
+PASS  shipping charge shown as confirmed by Cojac’s
+PASS  shipping shows no invented total
+PASS  delivery is BZD $5.00
+PASS  delivery total is BZD $166.00
+PASS  send blocked without a name
+PASS  send blocked without an address
+PASS  WhatsApp opened in a new tab via wa.me — https://wa.me/5016218372?text=Hi%20Cojac
 PASS  destination number is 5016218372
-PASS  message contains: Hello Cojac's Sumptuous Rumpopo! I'd like to reque
-PASS  message contains: - Classic Vanilla Rumpopo — Half liter (500 mL) × 
+PASS  message contains: Hi Cojac's Sumptuous Rumpopo! *Order request:*
+PASS  message contains: 5 × Classic Vanilla Rumpopo (Half liter): BZD $85.
 PASS  message contains: Note: One bottle wrapped as a gift
-PASS  message contains: - Peanut Delight Rumpopo — Liter (1 L) × 2 — BZD $
-PASS  message contains: *SUBTOTAL:* BZD $161.00
-PASS  message contains: *FULFILMENT:* Delivery
-PASS  message contains: *DELIVERY CHARGE:* Charge applies — amount confirm
-PASS  message contains: *AREA:* Kings Park
-PASS  message contains: *PREFERRED DATE:* Sun, 20 December 2026
-PASS  message contains: *NAME:* QA Tester
+PASS  message contains: 2 × Peanut Delight Rumpopo (Liter): BZD $76.00
+PASS  message contains: Delivery (Belize City): BZD $5.00
+PASS  message contains: *Total: BZD $166.00*
+PASS  message contains: Name: QA Tester
+PASS  message contains: Address: 12 Cleghorn St, blue house beside the chu
+PASS  message contains: Date: Sun, 20 December 2026
 PASS  message contains: "quotes" 🎄
-PASS  message contains: Please confirm availability, final price, payment 
+PASS  message contains: Please confirm availability and payment. Thank you
+PASS  message is short (≤ 15 lines) — 15 lines
+PASS  message has no em/en dashes
 PASS  message has no Pumpkin Spice (removed)
 PASS  honest feedback shown (no "order confirmed")
 PASS  copy order details gives feedback
@@ -47,24 +54,31 @@ PASS  header count = 7 bottles — Your order request, 7 bottles
 PASS  subtotal uses approved prices (BZD $161.00)
 PASS  quantity clamps at 99 — 99
 PASS  validation blocks send without fulfilment
-PASS  pickup shows "No charge"
-PASS  pickup hides the area field
-PASS  shipping asks for town/district
-PASS  shipping shows a charge
-PASS  WhatsApp opened in a new tab via wa.me — https://wa.me/5016218372?text=Hello%20Co
+PASS  pickup shows "Free"
+PASS  pickup asks for no address
+PASS  pickup shows a total (BZD $161.00)
+PASS  shipping asks for the exact shipping address
+PASS  shipping charge shown as confirmed by Cojac’s
+PASS  shipping shows no invented total
+PASS  delivery is BZD $5.00
+PASS  delivery total is BZD $166.00
+PASS  send blocked without a name
+PASS  send blocked without an address
+PASS  WhatsApp opened in a new tab via wa.me — https://wa.me/5016218372?text=Hi%20Cojac
 PASS  destination number is 5016218372
-PASS  message contains: Hello Cojac's Sumptuous Rumpopo! I'd like to reque
-PASS  message contains: - Classic Vanilla Rumpopo — Half liter (500 mL) × 
+PASS  message contains: Hi Cojac's Sumptuous Rumpopo! *Order request:*
+PASS  message contains: 5 × Classic Vanilla Rumpopo (Half liter): BZD $85.
 PASS  message contains: Note: One bottle wrapped as a gift
-PASS  message contains: - Peanut Delight Rumpopo — Liter (1 L) × 2 — BZD $
-PASS  message contains: *SUBTOTAL:* BZD $161.00
-PASS  message contains: *FULFILMENT:* Delivery
-PASS  message contains: *DELIVERY CHARGE:* Charge applies — amount confirm
-PASS  message contains: *AREA:* Kings Park
-PASS  message contains: *PREFERRED DATE:* Sun, 20 December 2026
-PASS  message contains: *NAME:* QA Tester
+PASS  message contains: 2 × Peanut Delight Rumpopo (Liter): BZD $76.00
+PASS  message contains: Delivery (Belize City): BZD $5.00
+PASS  message contains: *Total: BZD $166.00*
+PASS  message contains: Name: QA Tester
+PASS  message contains: Address: 12 Cleghorn St, blue house beside the chu
+PASS  message contains: Date: Sun, 20 December 2026
 PASS  message contains: "quotes" 🎄
-PASS  message contains: Please confirm availability, final price, payment 
+PASS  message contains: Please confirm availability and payment. Thank you
+PASS  message is short (≤ 15 lines) — 15 lines
+PASS  message has no em/en dashes
 PASS  message has no Pumpkin Spice (removed)
 PASS  honest feedback shown (no "order confirmed")
 PASS  copy order details gives feedback
@@ -85,24 +99,31 @@ PASS  header count = 7 bottles — Your order request, 7 bottles
 PASS  subtotal uses approved prices (BZD $161.00)
 PASS  quantity clamps at 99 — 99
 PASS  validation blocks send without fulfilment
-PASS  pickup shows "No charge"
-PASS  pickup hides the area field
-PASS  shipping asks for town/district
-PASS  shipping shows a charge
-PASS  WhatsApp opened in a new tab via wa.me — https://wa.me/5016218372?text=Hello%20Co
+PASS  pickup shows "Free"
+PASS  pickup asks for no address
+PASS  pickup shows a total (BZD $161.00)
+PASS  shipping asks for the exact shipping address
+PASS  shipping charge shown as confirmed by Cojac’s
+PASS  shipping shows no invented total
+PASS  delivery is BZD $5.00
+PASS  delivery total is BZD $166.00
+PASS  send blocked without a name
+PASS  send blocked without an address
+PASS  WhatsApp opened in a new tab via wa.me — https://wa.me/5016218372?text=Hi%20Cojac
 PASS  destination number is 5016218372
-PASS  message contains: Hello Cojac's Sumptuous Rumpopo! I'd like to reque
-PASS  message contains: - Classic Vanilla Rumpopo — Half liter (500 mL) × 
+PASS  message contains: Hi Cojac's Sumptuous Rumpopo! *Order request:*
+PASS  message contains: 5 × Classic Vanilla Rumpopo (Half liter): BZD $85.
 PASS  message contains: Note: One bottle wrapped as a gift
-PASS  message contains: - Peanut Delight Rumpopo — Liter (1 L) × 2 — BZD $
-PASS  message contains: *SUBTOTAL:* BZD $161.00
-PASS  message contains: *FULFILMENT:* Delivery
-PASS  message contains: *DELIVERY CHARGE:* Charge applies — amount confirm
-PASS  message contains: *AREA:* Kings Park
-PASS  message contains: *PREFERRED DATE:* Sun, 20 December 2026
-PASS  message contains: *NAME:* QA Tester
+PASS  message contains: 2 × Peanut Delight Rumpopo (Liter): BZD $76.00
+PASS  message contains: Delivery (Belize City): BZD $5.00
+PASS  message contains: *Total: BZD $166.00*
+PASS  message contains: Name: QA Tester
+PASS  message contains: Address: 12 Cleghorn St, blue house beside the chu
+PASS  message contains: Date: Sun, 20 December 2026
 PASS  message contains: "quotes" 🎄
-PASS  message contains: Please confirm availability, final price, payment 
+PASS  message contains: Please confirm availability and payment. Thank you
+PASS  message is short (≤ 15 lines) — 15 lines
+PASS  message has no em/en dashes
 PASS  message has no Pumpkin Spice (removed)
 PASS  honest feedback shown (no "order confirmed")
 PASS  copy order details gives feedback
@@ -112,4 +133,4 @@ PASS  mobile menu lists all 9 sitemap sections — 14 links
 PASS  mobile menu navigation works
 PASS  no page errors
 
-107/107 checks passed
+128/128 checks passed

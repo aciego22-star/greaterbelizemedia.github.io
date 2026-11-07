@@ -6,7 +6,7 @@ export default function Privacy() {
   usePageMeta('privacy');
   return (
     <>
-      <PageHero eyebrow="The fine print" title="Privacy & Responsible Enjoyment" />
+      <PageHero title="Privacy & Responsible Enjoyment" />
       <section className="section section--paper">
         <div className="container--narrow prose">
           <h2>Your order request</h2>

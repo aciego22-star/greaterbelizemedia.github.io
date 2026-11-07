@@ -7,9 +7,9 @@
 export type Availability =
   | 'available' // confirmed by the family for this season
   | 'limited' // confirmed, but only a few left
-  | 'sold-out' // confirmed, none left — cannot be added to an order
+  | 'sold-out' // confirmed, none left, cannot be added to an order
   | 'on-menu' // on this season's confirmed menu (not a live stock count)
-  | 'ask' // not yet confirmed this season — customer may ask on WhatsApp
+  | 'ask' // not yet confirmed this season, customer may ask on WhatsApp
   | 'coming-soon'; // announced but not yet taking requests
 
 export interface ProductVariant {
@@ -92,6 +92,10 @@ export interface FulfilmentOption {
   areaLabel?: string;
   /** Few-word summary shown in the season announcement, e.g. "within Belize City limits". */
   short?: string;
+  /** Short label used in the WhatsApp message, e.g. "Delivery (Belize City)". */
+  messageLabel?: string;
+  /** Label for the address field when `asksForArea` is true. */
+  addressHint?: string;
   /** How the charge is named in the order summary, e.g. "Delivery charge". */
   chargeLabel: string;
   /** Charge in BZD. 0 = no charge. null = a charge applies; amount confirmed by Cojac's. */
