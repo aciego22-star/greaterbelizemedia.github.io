@@ -72,6 +72,8 @@ The detailed field reference follows:
 - **New flavour:** copy an existing block, give it a new `id` and `slug` (lower-case, with dashes), and set `seasonalCollection` to `'seasonal'` or `'new-release'`. Those headings show automatically.
 - **Colours:** `palette` sets the colours of the illustrated bottle. Once real photos are added, the photo replaces the illustration.
 
+**Add to Order animation:** when a customer adds a flavour, a small copy of its photo floats into the basket at the top of the page. It uses the flavour's first photo automatically, so new flavours get it for free. The speed is `FLY_DURATION_MS` in `src/lib/flyToCart.ts` (1600 = 1.6 seconds).
+
 ## 3. Add photos
 
 1. Put the images in `public/products/` (bottles) or `public/gallery/` (gallery). JPG or WebP, about 1600 px on the long side, under 400 KB each.

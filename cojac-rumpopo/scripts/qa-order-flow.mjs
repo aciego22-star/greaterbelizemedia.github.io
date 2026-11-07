@@ -51,6 +51,13 @@ for (const [label, opts] of [
   await card('Classic Vanilla').getByRole('button', { name: '+ Add a note' }).click();
   await card('Classic Vanilla').getByPlaceholder(/gift/).fill('One bottle wrapped as a gift');
   await card('Classic Vanilla').getByRole('button', { name: /add to order/i }).click();
+  // Fly to basket: a small photo with a ×2 badge floats to the header basket, which then bounces.
+  const flyer = page.locator('.fly-to-cart');
+  check('fly to basket: photo floats toward the basket', await flyer.first().waitFor({ state: 'attached', timeout: 1000 }).then(() => true, () => false));
+  check('fly to basket: shows ×2 badge', (await flyer.first().locator('.fly-to-cart__qty').innerText().catch(() => '')) === '×2');
+  check('fly to basket: flyer is hidden from screen readers', (await flyer.first().getAttribute('aria-hidden').catch(() => null)) === 'true');
+  check('fly to basket: basket bounces on landing', await page.waitForSelector('.site-header .cart-btn.is-bumping', { timeout: 2500 }).then(() => true, () => false));
+  check('fly to basket: flyer removed after landing', await flyer.first().waitFor({ state: 'detached', timeout: 1500 }).then(() => true, () => false));
   await card('Peanut Delight').locator('.size-option', { has: page.locator('input[value="liter"]') }).click();
   check('size picker shows Liter price BZD $38.00', (await card('Peanut Delight').locator('.flavour-card__price strong').innerText()) === 'BZD $38.00');
   await card('Peanut Delight').getByRole('button', { name: /add to order/i }).click();

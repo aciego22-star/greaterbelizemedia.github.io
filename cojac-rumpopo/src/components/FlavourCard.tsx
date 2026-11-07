@@ -1,8 +1,9 @@
-import { useId, useState } from 'react';
+import { useId, useRef, useState, type MouseEvent } from 'react';
 import type { Product, ProductImage } from '../types';
 import { useCart } from '../context/CartContext';
 import { clampQuantity, formatBZD, isOrderable, maxQuantityFor, MAX_NOTE_LENGTH, UNKNOWN_PRICE } from '../lib/order';
 import { isAcceptingOrders } from '../lib/season';
+import { flyToCart } from '../lib/flyToCart';
 import { asset } from '../lib/whatsapp';
 import { BottleArt, Sparkle } from './Art';
 import { CheckIcon, PlusIcon } from './Icons';
@@ -86,6 +87,7 @@ export function FlavourCard({ product }: { product: Product }) {
   const [note, setNote] = useState('');
   const [showNote, setShowNote] = useState(false);
   const [added, setAdded] = useState(false);
+  const cardRef = useRef<HTMLElement>(null);
 
   const accepting = isAcceptingOrders();
   const hasVariants = product.variants.length > 0;
@@ -93,8 +95,10 @@ export function FlavourCard({ product }: { product: Product }) {
   const availability = variant?.availability ?? (allSoldOut ? 'sold-out' : product.confirmedThisSeason ? 'available' : 'ask');
   const canAdd = accepting && !allSoldOut;
 
-  const onAdd = () => {
-    add(product.id, variantId, clampQuantity(qty, variant), note.trim());
+  const onAdd = (e: MouseEvent<HTMLButtonElement>) => {
+    const count = clampQuantity(qty, variant);
+    add(product.id, variantId, count, note.trim());
+    flyToCart(cardRef.current?.querySelector('.flavour-visual img') ?? null, e.currentTarget, count);
     setAdded(true);
     setQty(1);
     setNote('');
@@ -103,7 +107,7 @@ export function FlavourCard({ product }: { product: Product }) {
   };
 
   return (
-    <article className="flavour-card" aria-labelledby={`${uid}-name`}>
+    <article className="flavour-card" ref={cardRef} aria-labelledby={`${uid}-name`}>
       <FlavourVisual product={product} />
       <div className="flavour-card__body">
         <div className="flavour-card__chips">

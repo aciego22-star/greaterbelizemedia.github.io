@@ -2,6 +2,11 @@
 == desktop (official) ==
 PASS  age notice shown on first visit
 PASS  age notice dismissed
+PASS  fly to basket: photo floats toward the basket
+PASS  fly to basket: shows ×2 badge
+PASS  fly to basket: flyer is hidden from screen readers
+PASS  fly to basket: basket bounces on landing
+PASS  fly to basket: flyer removed after landing
 PASS  size picker shows Liter price BZD $38.00
 PASS  cart drawer opens
 PASS  items merge per flavour (2 + 3 = 5)
@@ -63,6 +68,11 @@ PASS  no page errors
 == iPhone 13 (official) ==
 PASS  age notice shown on first visit
 PASS  age notice dismissed
+PASS  fly to basket: photo floats toward the basket
+PASS  fly to basket: shows ×2 badge
+PASS  fly to basket: flyer is hidden from screen readers
+PASS  fly to basket: basket bounces on landing
+PASS  fly to basket: flyer removed after landing
 PASS  size picker shows Liter price BZD $38.00
 PASS  cart drawer opens
 PASS  items merge per flavour (2 + 3 = 5)
@@ -124,6 +134,11 @@ PASS  no page errors
 == Pixel 7 (official) ==
 PASS  age notice shown on first visit
 PASS  age notice dismissed
+PASS  fly to basket: photo floats toward the basket
+PASS  fly to basket: shows ×2 badge
+PASS  fly to basket: flyer is hidden from screen readers
+PASS  fly to basket: basket bounces on landing
+PASS  fly to basket: flyer removed after landing
 PASS  size picker shows Liter price BZD $38.00
 PASS  cart drawer opens
 PASS  items merge per flavour (2 + 3 = 5)
@@ -182,4 +197,4 @@ PASS  mobile menu lists all 9 sitemap sections — 15 links
 PASS  mobile menu navigation works
 PASS  no page errors
 
-177/177 checks passed
+192/192 checks passed
