@@ -5,6 +5,7 @@ import { guarantee } from '../content/copy';
 import { buildFlags, site } from '../content/site';
 import type { FaqItem, GalleryItem, MediaItem } from '../types';
 import { media } from '../content/media';
+import { galleryFiles } from '../content/gallery';
 import { getCatalogue, lowestPrice } from '../content/catalogue';
 import { formatLongDate } from '../lib/season';
 import { asset } from '../lib/whatsapp';
@@ -150,33 +151,60 @@ export function VideoCard({ item }: { item: MediaItem }) {
   );
 }
 
-const tileTones = [
-  ['#6b1525', '#3a0a13'],
-  ['#1f4231', '#0f2219'],
-  ['#8a5537', '#4d2e1e'],
-  ['#a27a3c', '#5a3624'],
-];
-
-export function GalleryTile({ item, index, onOpen }: { item: GalleryItem; index: number; onOpen?: () => void }) {
-  const [a, b] = tileTones[index % tileTones.length];
-  const content = item.src ? (
-    <img src={asset(item.src)} alt={item.alt} loading="lazy" decoding="async" style={item.position ? { objectPosition: item.position } : undefined} />
-  ) : (
-    <span className="gallery-tile__placeholder" style={{ background: `radial-gradient(80% 60% at 30% 20%, rgba(236,214,166,.25), transparent 60%), linear-gradient(150deg, ${a}, ${b})` }}>
-      <Sparkle size={18} className="gallery-tile__spark" />
-      <span className="gallery-tile__ph-label">Photo coming soon</span>
-    </span>
-  );
+/**
+ * One gallery photo: the mobile 4:5 file at 767px and below, the desktop 4:3 file
+ * above (or always the portrait file with `portrait`). WebP first, JPG fallback.
+ */
+export function GalleryPicture({
+  item,
+  portrait = false,
+  large = false,
+  eager = false,
+}: {
+  item: GalleryItem;
+  portrait?: boolean;
+  large?: boolean;
+  eager?: boolean;
+}) {
+  const f = galleryFiles(item);
+  const mobileSet = `${asset(f.mobileWebpSmall)} 540w, ${asset(f.mobileWebp)} 1080w`;
+  const desktopSet = `${asset(f.desktopWebpSmall)} 800w, ${asset(f.desktopWebp)} 1600w`;
+  const tileSizes = large ? '90vw' : '(min-width: 1000px) 400px, (min-width: 768px) 50vw, 50vw';
   return (
-    <figure className={`gallery-tile gallery-tile--${item.shape}`}>
+    <picture>
+      {portrait ? (
+        <source type="image/webp" srcSet={mobileSet} sizes={large ? '90vw' : '(min-width: 900px) 300px, 50vw'} />
+      ) : (
+        <>
+          <source media="(max-width: 767px)" type="image/webp" srcSet={mobileSet} sizes={large ? '100vw' : '50vw'} />
+          <source media="(max-width: 767px)" srcSet={asset(f.mobileJpg)} />
+          <source type="image/webp" srcSet={desktopSet} sizes={tileSizes} />
+        </>
+      )}
+      <img
+        src={asset(portrait ? f.mobileJpg : f.desktopJpg)}
+        width={portrait ? 1080 : 1600}
+        height={portrait ? 1350 : 1200}
+        alt={item.alt}
+        loading={eager ? 'eager' : 'lazy'}
+        decoding="async"
+      />
+    </picture>
+  );
+}
+
+export function GalleryTile({ item, onOpen, portrait = false }: { item: GalleryItem; index?: number; onOpen?: () => void; portrait?: boolean }) {
+  const content = <GalleryPicture item={item} portrait={portrait} />;
+  return (
+    <figure className="gallery-tile">
       {onOpen ? (
-        <button type="button" onClick={onOpen} aria-label={`Open ${item.caption}${item.src ? '' : ' (photo coming soon)'}`}>
+        <button type="button" onClick={onOpen} aria-label={`Open photo: ${item.caption}`}>
           {content}
         </button>
       ) : (
         content
       )}
-      <figcaption>{item.caption}</figcaption>
+      <figcaption className="visually-hidden">{item.caption}</figcaption>
     </figure>
   );
 }

@@ -23,7 +23,7 @@ export default function LaunchNotes() {
     { label: 'Product photography', done: products.every((p) => !p.active || p.images.length > 0), where: 'public/products + catalogue.ts → images' },
     { label: 'Allergen & ingredient information per flavour', done: products.every((p) => !p.active || p.allergens !== null), where: 'catalogue.ts → allergens / ingredientsDisclosure' },
     { label: 'Delivery & shipping charge amounts', done: site.fulfilment.every((f) => !f.enabled || f.feeBZD !== null), where: 'site.ts → fulfilment.feeBZD' },
-    { label: 'Gallery photographs', done: gallery.some((g) => g.src), where: 'public/gallery + gallery.ts' },
+    { label: 'Gallery photographs', done: gallery.length > 0, where: 'public/gallery + gallery.ts' },
     { label: 'Draft FAQ answers approved', done: faqs.every((f) => f.published), where: 'faqs.ts → published' },
     { label: 'Legal age / alcohol obligations reviewed', done: false, where: 'site.ts → alcohol' },
     { label: 'Final site URL / domain', done: !site.siteUrl.includes('netlify.app'), where: 'site.ts → siteUrl' },

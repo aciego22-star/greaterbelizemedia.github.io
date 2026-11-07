@@ -221,7 +221,7 @@ export default function Home() {
           <div className="gallery-preview">
             {gallery.slice(0, 4).map((g, i) => (
               <Reveal key={g.id} delay={i * 80}>
-                <GalleryTile item={g} index={i} />
+                <GalleryTile item={g} portrait />
               </Reveal>
             ))}
           </div>

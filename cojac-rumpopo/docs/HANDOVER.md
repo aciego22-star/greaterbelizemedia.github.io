@@ -76,7 +76,7 @@ The detailed field reference follows:
 
 1. Put the images in `public/products/` (bottles) or `public/gallery/` (gallery). JPG or WebP, about 1600 px on the long side, under 400 KB each.
 2. Products: list them in the flavour’s `images`.
-3. Gallery: in `src/content/gallery.ts`, set `src: '/gallery/your-photo.jpg'` and write a short `alt` description. Tiles with no `src` show “Photo coming soon”.
+3. Gallery: each photo is a pair, `<name>_Desktop_1600x1200.jpg` (4:3, larger screens) and `<name>_Mobile_1080x1350.jpg` (4:5, phones), plus WebP copies (`_Desktop_800x600.webp`, `_Desktop_1600x1200.webp`, `_Mobile_540x675.webp`, `_Mobile_1080x1350.webp`) in `public/gallery/`. In `src/content/gallery.ts` add an entry with that `base` name, a short `caption` (shown in the full-screen viewer) and an `alt` description of what is visible. The order of entries is the order on the page; the first four also appear on the homepage.
 
 ## 4. Season banner and closing the season
 

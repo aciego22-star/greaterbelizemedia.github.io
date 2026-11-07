@@ -25,7 +25,7 @@ Nothing below was invented. Each item is either empty in the config (so it is hi
 |---|---|---|
 | 9 | ~~Logo~~ (done: official logo in `public/brand/`). Still needed: bottle label art and official brand colour codes, if any. | `global.css` |
 | 10 | ~~Product photography~~ — **done**: 14 photos (desktop 4:3 + mobile 4:5) for all seven flavours | `public/products/` |
-| 11 | Gallery now uses the seven product photos plus two Greater Belize Media stills — **confirm the family and presenter are happy for the GBM stills to appear.** More photos (packaging, events, memories) welcome. | `public/gallery/`, `gallery.ts` |
+| 11 | ~~Gallery photos~~ — **done**: nine owner-supplied scenes (desktop 4:3 + mobile 4:5 pairs). Note: the “Chilled on ice” photo shows a bottle labelled “Piña Colada”, which is not on the current menu; confirm the family is happy to show it. | `public/gallery/`, `gallery.ts` |
 | 12 | ~~Facebook and Instagram links~~ — **done** (facebook.com/share/1EJbfQLwDq, instagram.com/cojacsumptuousrumpopo). Optional: swap the Facebook *share* link for the page’s permanent address (facebook.com/<page-name>) when known — it is a stronger signal for Google. | `site.ts → social` |
 | 13 | ~~Email~~ — **done: rumpopobze@gmail.com** (email logo beside WhatsApp, Facebook, Instagram). Public phone number still optional. | `site.ts → contact` |
 | 14 | Pickup point: pickup is now offered (free); location and time are confirmed on WhatsApp. Diego St is **not** described as the pickup point unless the family confirms it. | `site.ts → fulfilment.pickup`, `contact.mapUrl` |

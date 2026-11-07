@@ -147,17 +147,9 @@ export interface MediaItem {
 
 export interface GalleryItem {
   id: string;
-  /** Approved photo path. Leave empty for a labelled placeholder. */
-  src: string;
+  /** Shared file name of the desktop/mobile pair in /public/gallery (see content/gallery.ts). */
+  base: string;
   alt: string;
   caption: string;
   category: 'product' | 'packaging' | 'process' | 'memories' | 'events';
-  /** Shape in the grid. */
-  shape: 'tall' | 'wide' | 'square' | 'feature';
-  /** CSS object-position for cropping, e.g. '100% 50%' keeps the right side in view. */
-  position?: string;
-  /** Bigger version for the lightbox (defaults to src). */
-  large?: string;
-  /** Photo credit shown in the lightbox. */
-  credit?: string;
 }
