@@ -133,7 +133,7 @@ def intro_live():
 # generous, and the flyers that have been on the site since launch are 760 wide
 # and nobody has ever remarked on them. It saves 2MB across the build, which is
 # the difference between a deploy that fits in one upload and one that does not.
-MASTER_MAX = 1200
+MASTER_MAX = 1100
 
 # The one-link page. It is its own site on its own subdomain, so it is named
 # here once and every mention on this site is built from these two lines.
