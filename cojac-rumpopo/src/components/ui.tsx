@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState, type ElementType, type ReactNode, type CSSProperties } from 'react';
 import { Link } from 'react-router-dom';
-import routes from '../content/routes.json';
+import routes from '../content/routes';
 import { site } from '../content/site';
 import { FacebookIcon, InstagramIcon, MailIcon, MinusIcon, PlusIcon, WhatsAppIcon } from './Icons';
 import { generalEnquiryUrl } from '../lib/whatsapp';
 import { asset } from '../lib/whatsapp';
 import type { Availability } from '../types';
+import { t } from '../i18n/lang';
 
 /** Fades content in as it scrolls into view (respects reduced motion via CSS). */
 export function Reveal({
@@ -91,7 +92,7 @@ export function QuantityStepper({
   };
   return (
     <div className={`stepper stepper--${size}`} role="group" aria-label={label}>
-      <button type="button" onClick={() => onChange(Math.max(1, value - 1))} disabled={value <= 1} aria-label={`Decrease ${label}`}>
+      <button type="button" onClick={() => onChange(Math.max(1, value - 1))} disabled={value <= 1} aria-label={`${t('Decrease', 'Disminuir')} ${label}`}>
         <MinusIcon size={16} />
       </button>
       <input
@@ -107,7 +108,7 @@ export function QuantityStepper({
           if (e.key === 'Enter') commit((e.target as HTMLInputElement).value);
         }}
       />
-      <button type="button" onClick={() => onChange(Math.min(max, value + 1))} disabled={value >= max} aria-label={`Increase ${label}`}>
+      <button type="button" onClick={() => onChange(Math.min(max, value + 1))} disabled={value >= max} aria-label={`${t('Increase', 'Aumentar')} ${label}`}>
         <PlusIcon size={16} />
       </button>
     </div>
@@ -115,12 +116,12 @@ export function QuantityStepper({
 }
 
 const availabilityText: Record<Availability, string> = {
-  available: 'Available this season',
-  limited: 'Limited, few left',
-  'sold-out': 'Sold out',
-  'on-menu': 'On this season’s menu',
-  ask: 'Ask about availability',
-  'coming-soon': 'Coming soon',
+  available: t('Available this season', 'Disponible esta temporada'),
+  limited: t('Limited, few left', 'Pocas unidades'),
+  'sold-out': t('Sold out', 'Agotado'),
+  'on-menu': t('On this season’s menu', 'En el menú de esta temporada'),
+  ask: t('Ask about availability', 'Pregunta por la disponibilidad'),
+  'coming-soon': t('Coming soon', 'Muy pronto'),
 };
 
 export function AvailabilityChip({ value }: { value: Availability }) {
@@ -210,12 +211,12 @@ export function SocialIcons({ size = 'md', light = false }: { size?: 'md' | 'lg'
             className={`social-icon social-icon--${cls}`}
             aria-label={
               label === 'WhatsApp'
-                ? `Chat with ${site.brandShort} on WhatsApp`
+                ? t(`Chat with ${site.brandShort} on WhatsApp`, `Escríbele a ${site.brandShort} por WhatsApp`)
                 : label === 'Email'
-                  ? `Email ${site.brandShort}`
-                  : `${site.brandShort} on ${label}`
+                  ? t(`Email ${site.brandShort}`, `Envía un correo a ${site.brandShort}`)
+                  : t(`${site.brandShort} on ${label}`, `${site.brandShort} en ${label}`)
             }
-            title={label}
+            title={label === 'Email' ? t('Email', 'Correo') : label}
           >
             <Icon size={size === 'lg' ? 26 : 20} />
           </a>

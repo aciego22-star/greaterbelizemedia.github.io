@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom';
-import routes from '../content/routes.json';
+import routes from '../content/routes';
 import { blogCategories, postPath, publishedPosts } from '../content/blog/posts';
 import { usePageMeta } from '../lib/usePageMeta';
 import { PageHero, Reveal, SectionHead } from '../components/ui';
 import { PostCard } from '../components/blog';
 import { FinalCta } from '../components/sections';
 import { Sparkle } from '../components/Art';
+import { isEs, t } from '../i18n/lang';
 
 export default function BlogIndex() {
   usePageMeta('holidayBlog');
@@ -16,13 +17,24 @@ export default function BlogIndex() {
       <PageHero
         title={
           <>
-            Holiday <em className="italic-gold">Blog</em>
+            {isEs ? (
+              <>
+                Blog <em className="italic-gold">navideño</em>
+              </>
+            ) : (
+              <>
+                Holiday <em className="italic-gold">Blog</em>
+              </>
+            )}
           </>
         }
-        lead="Rumpopo season stories from Cojac’s kitchen: flavour news, festive announcements and behind the bottle updates."
+        lead={t(
+          'Rumpopo season stories from Cojac’s kitchen: flavour news, festive announcements and behind the bottle updates.',
+          'Historias de la temporada de rumpopo desde la cocina de Cojac’s: noticias de sabores, anuncios festivos y novedades desde detrás de la botella.',
+        )}
       />
 
-      <section className="section section--paper blog-index" aria-label="Latest story">
+      <section className="section section--paper blog-index" aria-label={t('Latest story', 'Historia más reciente')}>
         <div className="container">
           {featured ? (
             <Reveal>
@@ -31,17 +43,17 @@ export default function BlogIndex() {
           ) : (
             <div className="blog-empty card">
               <Sparkle size={22} />
-              <h2 className="display-m">Stories are on the way</h2>
-              <p>The first Holiday Blog story will appear here soon.</p>
+              <h2 className="display-m">{t('Stories are on the way', 'Las historias vienen en camino')}</h2>
+              <p>{t('The first Holiday Blog story will appear here soon.', 'La primera historia del blog navideño aparecerá aquí muy pronto.')}</p>
               <Link to={routes.flavours.path} className="btn">
-                Find Your Flavour
+                {routes.flavours.nav}
               </Link>
             </div>
           )}
 
           {rest.length > 0 && (
             <section className="blog-more" aria-labelledby="more-stories">
-              <SectionHead title={<span id="more-stories">More stories</span>} />
+              <SectionHead title={<span id="more-stories">{t('More stories', 'Más historias')}</span>} />
               <div className="blog-grid">
                 {rest.map((p) => (
                   <Reveal key={p.slug}>
@@ -57,8 +69,8 @@ export default function BlogIndex() {
       <section className="section section--cream" aria-labelledby="blog-topics">
         <div className="container">
           <SectionHead
-            title={<span id="blog-topics">What the Holiday Blog covers</span>}
-            lead="Follow the season in one place. New stories are added as Cojac’s shares them."
+            title={<span id="blog-topics">{t('What the Holiday Blog covers', 'De qué trata el blog navideño')}</span>}
+            lead={t('Follow the season in one place. New stories are added as Cojac’s shares them.', 'Sigue la temporada en un solo lugar. Se añaden nuevas historias a medida que Cojac’s las comparte.')}
           />
           <ul className="blog-topics">
             {blogCategories.map((c, i) => {
@@ -69,10 +81,10 @@ export default function BlogIndex() {
                   <p>{c.description}</p>
                   {inCat.length ? (
                     <Link to={postPath(inCat[0].slug)} className="text-link">
-                      {inCat.length === 1 ? 'Read the latest story' : `${inCat.length} stories`} →
+                      {inCat.length === 1 ? t('Read the latest story', 'Leer la historia más reciente') : `${inCat.length} ${t('stories', 'historias')}`} →
                     </Link>
                   ) : (
-                    <span className="blog-topic__soon">Stories coming soon</span>
+                    <span className="blog-topic__soon">{t('Stories coming soon', 'Historias muy pronto')}</span>
                   )}
                 </Reveal>
               );

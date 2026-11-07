@@ -23,6 +23,10 @@
  * Cojac's will send the account details in the WhatsApp chat.
  */
 import type { FulfilmentId } from '../types';
+import { t } from '../i18n/lang';
+
+const TRANSFER = t('Bank transfer', 'Transferencia bancaria');
+const TRANSFER_DESC = t('Pay from your banking app and send us the screenshot.', 'Paga desde la app de tu banco y envíanos la captura de pantalla.');
 
 export type PaymentMethodId = 'cash' | 'transfer';
 export type BankId = 'heritage' | 'belize-bank' | 'atlantic';
@@ -87,16 +91,22 @@ export const receivingAccount: ReceivingAccount | null = {
 /** Payment options offered for each fulfilment choice, in display order. */
 export const paymentOptions: Record<FulfilmentId, { id: PaymentMethodId; label: string; description: string }[]> = {
   delivery: [
-    { id: 'cash', label: 'Cash on delivery', description: 'Pay in cash when your order arrives.' },
-    { id: 'transfer', label: 'Bank transfer', description: 'Pay from your banking app and send us the screenshot.' },
+    { id: 'cash', label: t('Cash on delivery', 'Efectivo contra entrega'), description: t('Pay in cash when your order arrives.', 'Paga en efectivo cuando llegue tu pedido.') },
+    { id: 'transfer', label: TRANSFER, description: TRANSFER_DESC },
   ],
   pickup: [
-    { id: 'cash', label: 'Cash at pickup', description: 'Pay in cash when you collect your order.' },
-    { id: 'transfer', label: 'Bank transfer', description: 'Pay from your banking app and send us the screenshot.' },
+    { id: 'cash', label: t('Cash at pickup', 'Efectivo al recoger'), description: t('Pay in cash when you collect your order.', 'Paga en efectivo cuando recojas tu pedido.') },
+    { id: 'transfer', label: TRANSFER, description: TRANSFER_DESC },
   ],
-  shipping: [{ id: 'transfer', label: 'Bank transfer', description: 'Shipping orders are paid by bank transfer before they are sent.' }],
+  shipping: [
+    {
+      id: 'transfer',
+      label: TRANSFER,
+      description: t('Shipping orders are paid by bank transfer before they are sent.', 'Los pedidos con envío se pagan por transferencia bancaria antes de enviarse.'),
+    },
+  ],
   advise: [
-    { id: 'cash', label: 'Cash', description: 'Pay in cash when you receive your order.' },
-    { id: 'transfer', label: 'Bank transfer', description: 'Pay from your banking app and send us the screenshot.' },
+    { id: 'cash', label: t('Cash', 'Efectivo'), description: t('Pay in cash when you receive your order.', 'Paga en efectivo cuando recibas tu pedido.') },
+    { id: 'transfer', label: TRANSFER, description: TRANSFER_DESC },
   ],
 };

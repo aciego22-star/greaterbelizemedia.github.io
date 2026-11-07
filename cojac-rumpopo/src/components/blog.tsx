@@ -1,12 +1,13 @@
 import { Fragment, useState, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import routes from '../content/routes.json';
+import routes from '../content/routes';
 import { site } from '../content/site';
 import { contest } from '../content/blog/contest';
 import { categoryName, formatPostDate, postPath, readingMinutes, type BlogImage, type BlogPost } from '../content/blog/posts';
 import { asset, copyText } from '../lib/whatsapp';
 import { ArrowIcon, CheckIcon, CopyIcon, FacebookIcon, WhatsAppIcon } from './Icons';
 import { Sparkle } from './Art';
+import { localPath, t } from '../i18n/lang';
 
 /* ── Images ─────────────────────────────────────────────────────────────── */
 
@@ -56,11 +57,11 @@ function inline(text: string, keyBase: string): ReactNode[] {
   let i = 0;
   while ((m = re.exec(text))) {
     if (m.index > last) out.push(text.slice(last, m.index));
-    const t = m[0];
+    const tok = m[0];
     const k = `${keyBase}-${i++}`;
-    if (t.startsWith('**')) out.push(<strong key={k}>{t.slice(2, -2)}</strong>);
-    else if (t.startsWith('[')) {
-      const [, label, href] = t.match(/^\[([^\]]+)\]\(([^)]+)\)$/)!;
+    if (tok.startsWith('**')) out.push(<strong key={k}>{tok.slice(2, -2)}</strong>);
+    else if (tok.startsWith('[')) {
+      const [, label, href] = tok.match(/^\[([^\]]+)\]\(([^)]+)\)$/)!;
       out.push(
         href.startsWith('/') ? (
           <Link key={k} to={href} className="text-link">
@@ -72,8 +73,8 @@ function inline(text: string, keyBase: string): ReactNode[] {
           </a>
         ),
       );
-    } else out.push(<em key={k}>{t.slice(1, -1)}</em>);
-    last = m.index + t.length;
+    } else out.push(<em key={k}>{tok.slice(1, -1)}</em>);
+    last = m.index + tok.length;
   }
   if (last < text.length) out.push(text.slice(last));
   return out;
@@ -92,7 +93,7 @@ export function BlogBody({ post }: { post: BlogPost }) {
         if (b === '[[signoff]]')
           return (
             <p key={k} className="blog-signoff">
-              <Sparkle size={14} /> Sip Something Sumptuous! <Sparkle size={14} />
+              <Sparkle size={14} /> {t('Sip Something Sumptuous!', '¡Brinda con algo suntuoso!')} <Sparkle size={14} />
             </p>
           );
         if (b.startsWith('## ')) return <h2 key={k}>{inline(b.slice(3), k)}</h2>;
@@ -124,11 +125,17 @@ export function ContestPanel() {
   if (contest.status === 'revealed') {
     return (
       <aside className="contest-panel" aria-labelledby="contest-title">
-        <h3 id="contest-title">The new flavour has been revealed</h3>
-        <p>{contest.revealText || 'Thank you to everyone who guessed! The new flavour has been announced on Cojac’s official channels.'}</p>
+        <h3 id="contest-title">{t('The new flavour has been revealed', 'Ya se reveló el nuevo sabor')}</h3>
+        <p>
+          {contest.revealText ||
+            t(
+              'Thank you to everyone who guessed! The new flavour has been announced on Cojac’s official channels.',
+              '¡Gracias a todos los que participaron! El nuevo sabor se anunció en los canales oficiales de Cojac’s.',
+            )}
+        </p>
         {(contest.revealUrl || pageUrl) && (
           <a className="btn btn--gold" href={contest.revealUrl || pageUrl} target="_blank" rel="noopener noreferrer">
-            <FacebookIcon size={18} /> See the announcement
+            <FacebookIcon size={18} /> {t('See the announcement', 'Ver el anuncio')}
           </a>
         )}
       </aside>
@@ -137,11 +144,19 @@ export function ContestPanel() {
   if (contest.status === 'closed') {
     return (
       <aside className="contest-panel" aria-labelledby="contest-title">
-        <h3 id="contest-title">The guessing challenge has closed</h3>
-        <p>Thank you to everyone who sent in a guess. Entries are no longer being accepted, and the new flavour will be revealed on Cojac’s official channels.</p>
+        <h3 id="contest-title">{t('The guessing challenge has closed', 'El reto de adivinar ha cerrado')}</h3>
+        <p>
+          {t(
+            'Thank you to everyone who sent in a guess. Entries are no longer being accepted, and the new flavour will be revealed on Cojac’s official channels.',
+            'Gracias a todos los que enviaron su respuesta. Ya no se aceptan participaciones, y el nuevo sabor se revelará en los canales oficiales de Cojac’s.',
+          )}
+        </p>
         {(postUrl || pageUrl) && (
           <a className="btn btn--ghost" href={postUrl || pageUrl} target="_blank" rel="noopener noreferrer">
-            <FacebookIcon size={18} /> {postUrl ? 'View the competition post' : 'Visit Cojac’s Official Facebook Page'}
+            <FacebookIcon size={18} />{' '}
+            {postUrl
+              ? t('View the competition post', 'Ver la publicación del concurso')
+              : t('Visit Cojac’s Official Facebook Page', 'Visita la página oficial de Cojac’s en Facebook')}
           </a>
         )}
       </aside>
@@ -149,33 +164,47 @@ export function ContestPanel() {
   }
   return (
     <aside className="contest-panel" aria-labelledby="contest-title">
-      <h3 id="contest-title">How the guessing challenge works</h3>
+      <h3 id="contest-title">{t('How the guessing challenge works', 'Cómo funciona el reto de adivinar')}</h3>
       <ol className="contest-steps">
         <li>
-          Visit Cojac’s Sumptuous Rumpopo’s <strong>official Facebook competition post</strong>.
+          {t('Visit Cojac’s Sumptuous Rumpopo’s ', 'Visita la ')}
+          <strong>{t('official Facebook competition post', 'publicación oficial del concurso en Facebook')}</strong>
+          {t('.', ' de Cojac’s Sumptuous Rumpopo.')}
         </li>
-        <li>Leave your flavour guess in the comments on that post.</li>
+        <li>{t('Leave your flavour guess in the comments on that post.', 'Deja tu respuesta del sabor en los comentarios de esa publicación.')}</li>
         <li>
-          You may submit multiple guesses, but <strong>only one answer per comment</strong>.
+          {t('You may submit multiple guesses, but ', 'Puedes enviar varias respuestas, pero ')}
+          <strong>{t('only one answer per comment', 'solo una respuesta por comentario')}</strong>.
         </li>
         <li>
-          The <strong>first three correct answers</strong> win one half liter bottle each.
+          {t('The ', 'Las ')}
+          <strong>{t('first three correct answers', 'primeras tres respuestas correctas')}</strong>
+          {t(' win one half liter bottle each.', ' ganan una botella de medio litro cada una.')}
         </li>
       </ol>
       <p className="contest-note">
-        <strong>Important:</strong> Entries belong on the original Facebook post, not on this website. Please check that official post for the
-        competition rules and any updates. No deadline or additional entry restrictions have been announced, so none are added here.
+        <strong>{t('Important:', 'Importante:')}</strong>{' '}
+        {t(
+          'Entries belong on the original Facebook post, not on this website. Please check that official post for the competition rules and any updates. No deadline or additional entry restrictions have been announced, so none are added here.',
+          'Las participaciones van en la publicación original de Facebook, no en este sitio web. Revisa esa publicación oficial para ver las reglas del concurso y cualquier novedad. No se ha anunciado una fecha límite ni restricciones adicionales, así que aquí no se añade ninguna.',
+        )}
       </p>
       {postUrl ? (
         <a className="btn btn--gold" href={postUrl} target="_blank" rel="noopener noreferrer">
-          <FacebookIcon size={18} /> See the official mystery flavour competition on Facebook
+          <FacebookIcon size={18} />{' '}
+          {t('See the official mystery flavour competition on Facebook', 'Ver el concurso oficial del sabor misterioso en Facebook')}
         </a>
       ) : pageUrl ? (
         <>
           <a className="btn btn--gold" href={pageUrl} target="_blank" rel="noopener noreferrer">
-            <FacebookIcon size={18} /> Visit Cojac’s Official Facebook Page
+            <FacebookIcon size={18} /> {t('Visit Cojac’s Official Facebook Page', 'Visita la página oficial de Cojac’s en Facebook')}
           </a>
-          <p className="contest-help">Look for the “Guess our newest rumpopo flavour” post and leave your guess in its comments.</p>
+          <p className="contest-help">
+            {t(
+              'Look for the “Guess our newest rumpopo flavour” post and leave your guess in its comments.',
+              'Busca la publicación “Guess our newest rumpopo flavour” (adivina nuestro nuevo sabor de rumpopo) y deja tu respuesta en los comentarios.',
+            )}
+          </p>
         </>
       ) : null}
     </aside>
@@ -188,10 +217,10 @@ export function OrderButtons() {
   return (
     <div className="blog-order">
       <Link to={routes.flavours.path} className="btn btn--gold">
-        Explore Our Flavours <ArrowIcon size={18} />
+        {t('Explore Our Flavours', 'Explora nuestros sabores')} <ArrowIcon size={18} />
       </Link>
       <Link to={routes.order.path} className="btn btn--whatsapp">
-        <WhatsAppIcon /> Order Through WhatsApp
+        <WhatsAppIcon /> {t('Order Through WhatsApp', 'Pide por WhatsApp')}
       </Link>
     </div>
   );
@@ -200,20 +229,20 @@ export function OrderButtons() {
 /* ── Share links (real article URL; no counts) ─────────────────────────── */
 
 export function ShareLinks({ post }: { post: BlogPost }) {
-  const url = site.siteUrl.replace(/\/$/, '') + postPath(post.slug);
+  const url = site.siteUrl.replace(/\/$/, '') + localPath(postPath(post.slug));
   const [copied, setCopied] = useState(false);
   const enc = encodeURIComponent;
   return (
     <div className="blog-share">
-      <p className="blog-share__label">Share this story</p>
+      <p className="blog-share__label">{t('Share this story', 'Comparte esta historia')}</p>
       <ul>
         <li>
-          <a href={`https://www.facebook.com/sharer/sharer.php?u=${enc(url)}`} target="_blank" rel="noopener noreferrer" className="share-btn share-btn--facebook" aria-label="Share on Facebook (opens in a new tab)">
+          <a href={`https://www.facebook.com/sharer/sharer.php?u=${enc(url)}`} target="_blank" rel="noopener noreferrer" className="share-btn share-btn--facebook" aria-label={t('Share on Facebook (opens in a new tab)', 'Compartir en Facebook (abre una pestaña nueva)')}>
             <FacebookIcon size={18} /> Facebook
           </a>
         </li>
         <li>
-          <a href={`https://wa.me/?text=${enc(`${post.title} ${url}`)}`} target="_blank" rel="noopener noreferrer" className="share-btn share-btn--whatsapp" aria-label="Share on WhatsApp (opens in a new tab)">
+          <a href={`https://wa.me/?text=${enc(`${post.title} ${url}`)}`} target="_blank" rel="noopener noreferrer" className="share-btn share-btn--whatsapp" aria-label={t('Share on WhatsApp (opens in a new tab)', 'Compartir en WhatsApp (abre una pestaña nueva)')}>
             <WhatsAppIcon size={18} /> WhatsApp
           </a>
         </li>
@@ -228,7 +257,7 @@ export function ShareLinks({ post }: { post: BlogPost }) {
               }
             }}
           >
-            {copied ? <CheckIcon size={18} /> : <CopyIcon size={18} />} {copied ? 'Link copied' : 'Copy link'}
+            {copied ? <CheckIcon size={18} /> : <CopyIcon size={18} />} {copied ? t('Link copied', 'Enlace copiado') : t('Copy link', 'Copiar enlace')}
           </button>
         </li>
       </ul>
@@ -241,18 +270,22 @@ export function ShareLinks({ post }: { post: BlogPost }) {
 export function PostMeta({ post }: { post: BlogPost }) {
   return (
     <p className="post-meta">
-      <span>By {post.author}</span>
+      <span>
+        {t('By', 'Por')} {post.author}
+      </span>
       <span aria-hidden="true">·</span>
       <time dateTime={post.publishedAt}>{formatPostDate(post.publishedAt)}</time>
       <span aria-hidden="true">·</span>
-      <span>{readingMinutes(post)} min read</span>
+      <span>
+        {readingMinutes(post)} {t('min read', 'min de lectura')}
+      </span>
     </p>
   );
 }
 
 export function CategoryChips({ post }: { post: BlogPost }) {
   return (
-    <ul className="post-chips" aria-label="Categories">
+    <ul className="post-chips" aria-label={t('Categories', 'Categorías')}>
       {post.categories.map((c) => (
         <li key={c} className="chip chip--blog">
           {categoryName(c)}
@@ -278,7 +311,7 @@ export function PostCard({ post, variant = 'featured', headingLevel = 2 }: { pos
         <PostMeta post={post} />
         <p className="post-card__excerpt">{post.excerpt}</p>
         <Link to={postPath(post.slug)} className="btn btn--sm">
-          Read the story <ArrowIcon size={16} />
+          {t('Read the story', 'Leer la historia')} <ArrowIcon size={16} />
         </Link>
       </div>
     </article>
@@ -288,7 +321,7 @@ export function PostCard({ post, variant = 'featured', headingLevel = 2 }: { pos
 /** Breadcrumb that matches the real navigation (Home › Holiday Blog › Post). */
 export function Breadcrumb({ items }: { items: { label: string; to?: string }[] }) {
   return (
-    <nav className="breadcrumb" aria-label="Breadcrumb">
+    <nav className="breadcrumb" aria-label={t('Breadcrumb', 'Ruta de navegación')}>
       <ol>
         {items.map((it, i) => (
           <Fragment key={it.label}>

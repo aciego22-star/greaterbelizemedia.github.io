@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import routes from '../content/routes.json';
+import routes from '../content/routes';
 import { homeCopy, seasonMoments } from '../content/copy';
 import { getCatalogue } from '../content/catalogue';
 import { site } from '../content/site';
@@ -8,6 +8,7 @@ import { BottleArt, Ornament, Sprig } from '../components/Art';
 import { PageHero, Reveal } from '../components/ui';
 import { ProductPicture } from '../components/FlavourCard';
 import { AtAGlance, FinalCta } from '../components/sections';
+import { t } from '../i18n/lang';
 
 export default function Story() {
   usePageMeta('story');
@@ -18,7 +19,8 @@ export default function Story() {
       <PageHero
         title={
           <>
-            Behind the <em className="italic-gold">Bottle</em>
+            {t('Behind the ', 'Detrás de la ')}
+            <em className="italic-gold">{t('Bottle', 'botella')}</em>
           </>
         }
         lead={homeCopy.storyOpener}
@@ -28,7 +30,7 @@ export default function Story() {
         <div className="container story-chapter__grid">
           <Reveal className="story-chapter__label">
             <span className="story-chapter__num">I</span>
-            <h2 className="story-chapter__title">A Belizean Christmas</h2>
+            <h2 className="story-chapter__title">{t('A Belizean Christmas', 'Una Navidad beliceña')}</h2>
           </Reveal>
           <Reveal delay={100} className="story-chapter__text">
             <p className="dropcap lead">{p1}</p>
@@ -51,12 +53,13 @@ export default function Story() {
         <div className="container story-chapter__grid">
           <Reveal className="story-chapter__label">
             <span className="story-chapter__num">II</span>
-            <h2 className="story-chapter__title">A family recipe</h2>
+            <h2 className="story-chapter__title">{t('A family recipe', 'Una receta familiar')}</h2>
           </Reveal>
           <Reveal delay={100} className="story-chapter__text">
             <p className="lead">{p2}</p>
             <p className="story-years">
-              Shared with Belizean families for <strong>{site.experienceStatement}</strong>.
+              {t('Shared with Belizean families for ', 'Compartido con familias beliceñas desde hace ')}
+              <strong>{site.experienceStatement}</strong>.
             </p>
           </Reveal>
         </div>
@@ -65,13 +68,15 @@ export default function Story() {
       <section className="section section--cream">
         <div className="container evolution">
           <Reveal className="evolution__intro">
-            <h2 className="display-l">What started with a classic favourite has grown.</h2>
+            <h2 className="display-l">{t('What started with a classic favourite has grown.', 'Lo que empezó con un clásico favorito ha crecido.')}</h2>
             <p className="lead">
-              Classic Vanilla may have started it all, but it didn’t stop there. Customer favourites, seasonal creations and new releases
-              followed.
+              {t(
+                'Classic Vanilla may have started it all, but it didn’t stop there. Customer favourites, seasonal creations and new releases followed.',
+                'Classic Vanilla quizá lo empezó todo, pero no se quedó ahí. Luego llegaron los favoritos de los clientes, las creaciones de temporada y los nuevos lanzamientos.',
+              )}
             </p>
             <Link to={routes.flavours.path} className="btn">
-              Find Your Flavour
+              {routes.flavours.nav}
             </Link>
           </Reveal>
           <Reveal delay={120} className="evolution__bottles" aria-hidden="true">
@@ -95,7 +100,7 @@ export default function Story() {
         <div className="container story-chapter__grid">
           <Reveal className="story-chapter__label">
             <span className="story-chapter__num">III</span>
-            <h2 className="story-chapter__title">Preserving &amp; reinventing</h2>
+            <h2 className="story-chapter__title">{t('Preserving & reinventing', 'Conservar y reinventar')}</h2>
           </Reveal>
           <Reveal delay={100} className="story-chapter__text">
             <p className="lead">{p3}</p>
@@ -104,10 +109,13 @@ export default function Story() {
         <div className="container--narrow center story-pull">
           <Ornament />
           <Reveal as="blockquote" className="pull-quote">
-            Some traditions are worth preserving, and some are worth reinventing. At Cojac’s, we’re proud to do both.
+            {t(
+              'Some traditions are worth preserving, and some are worth reinventing. At Cojac’s, we’re proud to do both.',
+              'Algunas tradiciones merecen conservarse y otras merecen reinventarse. En Cojac’s, nos enorgullece hacer ambas cosas.',
+            )}
           </Reveal>
           <Link to={routes.videos.path} className="text-link">
-            See our videos &amp; features →
+            {t('See our videos & features →', 'Mira nuestros videos y reportajes →')}
           </Link>
         </div>
       </section>

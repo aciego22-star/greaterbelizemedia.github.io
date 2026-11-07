@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom';
-import routes from '../content/routes.json';
+import routes from '../content/routes';
 import { guarantee } from '../content/copy';
 import { usePageMeta } from '../lib/usePageMeta';
 import { InfoIcon } from '../components/Icons';
 import { PageHero, Reveal } from '../components/ui';
 import { FinalCta, GuaranteePillars } from '../components/sections';
+import { t } from '../i18n/lang';
 
 export default function Guarantee() {
   usePageMeta('guarantee');
@@ -14,10 +15,14 @@ export default function Guarantee() {
         tone="evergreen"
         title={
           <>
-            What You Can Expect in <em className="italic-gold">Every Bottle</em>
+            {t('What You Can Expect in ', 'Lo que puedes esperar en ')}
+            <em className="italic-gold">{t('Every Bottle', 'cada botella')}</em>
           </>
         }
-        lead="Rich and creamy. No eggy taste. Filled to the top. More than just Classic Vanilla."
+        lead={t(
+          'Rich and creamy. No eggy taste. Filled to the top. More than just Classic Vanilla.',
+          'Rico y cremoso. Sin sabor a huevo. Lleno hasta el tope. Mucho más que vainilla clásica.',
+        )}
       />
       <section className="section section--paper">
         <div className="container">
@@ -30,14 +35,15 @@ export default function Guarantee() {
           <Reveal className="notice ingredient-note" role="note">
             <InfoIcon size={22} />
             <div>
-              <h2>A note on ingredients</h2>
+              <h2>{t('A note on ingredients', 'Una nota sobre los ingredientes')}</h2>
               <p>
-                “No eggy taste” describes flavour, not ingredients. Rumpopo may contain eggs and dairy, and some flavours may contain other
-                allergens such as nuts. If you have an allergy or dietary question, please ask Cojac’s about the specific flavour before
-                ordering.
+                {t(
+                  '“No eggy taste” describes flavour, not ingredients. Rumpopo may contain eggs and dairy, and some flavours may contain other allergens such as nuts. If you have an allergy or dietary question, please ask Cojac’s about the specific flavour before ordering.',
+                  '“Sin sabor a huevo” describe el sabor, no los ingredientes. El rumpopo puede contener huevo y lácteos, y algunos sabores pueden contener otros alérgenos, como nueces o maní. Si tienes una alergia o una pregunta sobre tu dieta, pregúntale a Cojac’s por el sabor específico antes de pedir.',
+                )}
               </p>
               <Link to={routes.faqs.path} className="text-link">
-                Read our FAQs →
+                {t('Read our FAQs →', 'Lee nuestras preguntas frecuentes →')}
               </Link>
             </div>
           </Reveal>

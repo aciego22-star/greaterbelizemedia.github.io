@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { heroIntervalMs, heroSlides } from '../content/hero';
 import { asset } from '../lib/whatsapp';
+import { t } from '../i18n/lang';
 
 function Slide({ i, active, show }: { i: number; active: boolean; show: boolean }) {
   const s = heroSlides[i];
@@ -8,8 +9,8 @@ function Slide({ i, active, show }: { i: number; active: boolean; show: boolean 
     <div
       className={`hero-slides__slide ${active ? 'is-active' : ''}`}
       role="group"
-      aria-roledescription="slide"
-      aria-label={`${i + 1} of ${heroSlides.length}`}
+      aria-roledescription={t('slide', 'diapositiva')}
+      aria-label={`${i + 1} ${t('of', 'de')} ${heroSlides.length}`}
       aria-hidden={!active}
     >
       {show && (
@@ -67,8 +68,8 @@ export function HeroSlideshow() {
 
   useEffect(() => {
     if (paused || hovering || hidden || n < 2) return;
-    const t = window.setTimeout(() => go(current + 1), heroIntervalMs);
-    return () => window.clearTimeout(t);
+    const timer = window.setTimeout(() => go(current + 1), heroIntervalMs);
+    return () => window.clearTimeout(timer);
   }, [current, paused, hovering, hidden, go, n]);
 
   if (!n) return null;
@@ -76,8 +77,8 @@ export function HeroSlideshow() {
     <section
       ref={root}
       className="hero-slides"
-      aria-roledescription="carousel"
-      aria-label="Cojac’s holiday photos"
+      aria-roledescription={t('carousel', 'carrusel')}
+      aria-label={t('Cojac’s holiday photos', 'Fotos navideñas de Cojac’s')}
       onMouseEnter={() => setHovering(true)}
       onMouseLeave={() => setHovering(false)}
       onFocus={() => setHovering(true)}
@@ -96,7 +97,7 @@ export function HeroSlideshow() {
             type="button"
             className="hero-slides__pause"
             onClick={() => setPaused((p) => !p)}
-            aria-label={paused ? 'Play slideshow' : 'Pause slideshow'}
+            aria-label={paused ? t('Play slideshow', 'Reproducir presentación') : t('Pause slideshow', 'Pausar presentación')}
           >
             {paused ? (
               <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -114,7 +115,7 @@ export function HeroSlideshow() {
                 key={s.id}
                 type="button"
                 className={`hero-slides__dot ${i === current ? 'is-active' : ''}`}
-                aria-label={`Show photo ${i + 1} of ${n}`}
+                aria-label={t(`Show photo ${i + 1} of ${n}`, `Mostrar foto ${i + 1} de ${n}`)}
                 aria-current={i === current}
                 onClick={() => go(i)}
               >

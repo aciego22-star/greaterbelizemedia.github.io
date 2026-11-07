@@ -550,3 +550,15 @@ fieldset {
     opacity: 1;
   }
 }
+
+/* One tap everywhere: no double-tap-to-zoom wait on links, buttons and form controls. */
+a,
+button,
+input,
+select,
+textarea,
+label,
+summary,
+[role='button'] {
+  touch-action: manipulation;
+}

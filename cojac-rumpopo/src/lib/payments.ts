@@ -1,6 +1,7 @@
 /** Payment helpers: pure functions, unit-tested in tests/payments.test.ts. */
 import { banks, paymentOptions, type Bank, type BankId, type PaymentMethodId } from '../content/payments';
 import type { FulfilmentId } from '../types';
+import { t } from '../i18n/lang';
 
 export function optionsFor(fulfilment: FulfilmentId | ''): { id: PaymentMethodId; label: string; description: string }[] {
   return fulfilment ? paymentOptions[fulfilment] : [];
@@ -43,11 +44,14 @@ export function bankAppLink(bank: Bank, platform: Platform): string {
 /** Lines for the WhatsApp order message. */
 export function paymentMessageLines(method: PaymentMethodId | '', fulfilment: FulfilmentId | '', bank: Bank | undefined): string[] {
   if (method === 'cash') {
-    const label = optionsFor(fulfilment).find((o) => o.id === 'cash')?.label ?? 'Cash';
-    return [`Payment: ${label}`];
+    const label = optionsFor(fulfilment).find((o) => o.id === 'cash')?.label ?? t('Cash', 'Efectivo');
+    return [`${t('Payment', 'Pago')}: ${label}`];
   }
   if (method === 'transfer') {
-    return [`Payment: Bank transfer${bank ? ` (${bank.name})` : ''}`, 'I will send the transfer screenshot in this chat.'];
+    return [
+      `${t('Payment', 'Pago')}: ${t('Bank transfer', 'Transferencia bancaria')}${bank ? ` (${bank.name})` : ''}`,
+      t('I will send the transfer screenshot in this chat.', 'Enviaré la captura de la transferencia en este chat.'),
+    ];
   }
   return [];
 }

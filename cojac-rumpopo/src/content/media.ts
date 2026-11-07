@@ -7,6 +7,7 @@
  * share links do not reliably embed and titles have not been verified.
  */
 import type { MediaItem } from '../types';
+import { t } from '../i18n/lang';
 
 export const media: MediaItem[] = [
   {
@@ -15,7 +16,7 @@ export const media: MediaItem[] = [
     kind: 'video',
     url: 'https://youtu.be/eV4alFs8zrY',
     youtubeId: 'eV4alFs8zrY',
-    title: 'New flavour now available for all your festivities',
+    title: t('New flavour now available for all your festivities', 'Nuevo sabor ya disponible para todas tus fiestas'),
     sourceTitle: "Cojac's Sumptuous Rum Popo - New flavor now available for all your festivities",
     publisher: 'Greater Belize Media | GBM',
     thumbnail: '/media/yt-eV4alFs8zrY.jpg',
@@ -27,7 +28,7 @@ export const media: MediaItem[] = [
     kind: 'video',
     url: 'https://www.youtube.com/watch?v=K_SPFrGazyw',
     youtubeId: 'K_SPFrGazyw',
-    title: 'Christmas Feature',
+    title: t('Christmas Feature', 'Reportaje navideño'),
     sourceTitle: "Colac's Sumptuous Rum Popo (Christmas Feature )",
     publisher: 'Greater Belize Media | GBM',
     thumbnail: '/media/yt-K_SPFrGazyw.jpg',
@@ -38,7 +39,7 @@ export const media: MediaItem[] = [
     platform: 'facebook',
     kind: 'video',
     url: 'https://www.facebook.com/share/v/1Dp29hCbz7/',
-    title: 'Video on Facebook',
+    title: t('Video on Facebook', 'Video en Facebook'),
     featured: true,
   },
   {
@@ -46,7 +47,7 @@ export const media: MediaItem[] = [
     platform: 'facebook',
     kind: 'reel',
     url: 'https://www.facebook.com/reel/780308661736625',
-    title: 'Reel on Facebook',
+    title: t('Reel on Facebook', 'Reel en Facebook'),
     featured: false,
   },
 ];

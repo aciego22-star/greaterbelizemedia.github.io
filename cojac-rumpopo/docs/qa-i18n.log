@@ -1,0 +1,62 @@
+
+== Language detection ==
+PASS  English browser opens the English homepage
+PASS  English homepage heading
+PASS  a Spanish link stays Spanish for an English browser (shared links, search engines)
+PASS  iPhone 13, es-MX: Spanish browser lands on the Spanish homepage
+PASS  iPhone 13, es-MX: deep link /flavours opens /es/flavours
+PASS  Pixel 7, es-ES: Spanish browser lands on the Spanish homepage
+PASS  Pixel 7, es-ES: deep link /flavours opens /es/flavours
+
+== Language toggle ==
+PASS  desktop: toggle is at the very top of the page
+PASS  desktop: toggle shows both languages, current one marked
+PASS  desktop: one tap on English opens the same page in English
+PASS  desktop: the English choice is remembered even with a Spanish browser
+PASS  desktop: one tap on Español switches back
+PASS  desktop: the order request is kept when switching language
+PASS  iPhone 13: toggle is at the very top of the page
+PASS  iPhone 13: toggle shows both languages, current one marked
+PASS  iPhone 13: one tap on English opens the same page in English
+PASS  iPhone 13: the English choice is remembered even with a Spanish browser
+PASS  iPhone 13: one tap on Español switches back
+PASS  iPhone 13: the order request is kept when switching language
+
+== Spanish order (iPhone 13, taps only) ==
+PASS  one tap selects the Litro size
+PASS  price shown for Litro
+PASS  one tap adds to the order (flying photo appears)
+PASS  Spanish toast
+PASS  one tap opens the order drawer (Spanish)
+PASS  one tap goes to the Spanish order page
+PASS  one tap picks cash on delivery
+PASS  total shown: BZD $81.00
+PASS  WhatsApp goes to the business number
+PASS  message line: *Solicitud de pedido:*
+PASS  message line: 2 × Peanut Delight Rumpopo (Litro): BZD $76.00
+PASS  message line: Entrega (Ciudad de Belice): BZD $5.00
+PASS  message line: *Total: BZD $81.00*
+PASS  message line: Pago: Efectivo contra entrega
+PASS  message line: Nombre: Ana Pérez
+PASS  message line: Dirección: 12 Cleghorn St, casa azul
+PASS  message has no long dashes
+PASS  one tap on Send opens WhatsApp (intercepted, nothing sent)
+PASS  Spanish confirmation wording shown
+PASS  one tap opens the Spanish menu
+PASS  menu includes the language switch
+PASS  one tap on a menu item opens the page
+PASS  unknown Spanish address shows the Spanish 404 page
+PASS  no page errors
+
+== Footer credit ==
+PASS  en: credit reads “Website developed by Austere Automations”
+PASS  en: the whole phrase is one link to Austere Automations
+PASS  en: colour changes every 8 s through red, yellow and blue, then repeats :: ["rgb(255, 138, 138)","rgb(255, 216, 77)","rgb(140, 200, 255)","rgb(255, 138, 138)"]
+PASS  es: credit reads “Sitio web desarrollado por Austere Automations”
+PASS  es: the whole phrase is one link to Austere Automations
+PASS  es: colour changes every 8 s through red, yellow and blue, then repeats :: ["rgb(255, 138, 138)","rgb(255, 216, 77)","rgb(140, 200, 255)","rgb(255, 138, 138)"]
+
+== One tap: hover styles ==
+PASS  every hover style is limited to mouse/trackpad devices
+
+50/50 checks passed

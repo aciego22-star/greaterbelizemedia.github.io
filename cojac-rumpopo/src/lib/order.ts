@@ -5,22 +5,23 @@
 import type { CartLine, FulfilmentOption, OrderDetails, Product, ProductVariant } from '../types';
 import { formatLongDate } from './season';
 import { effectivePayment, findBank, paymentMessageLines } from './payments';
+import { t } from '../i18n/lang';
 
 export const MAX_QTY_PER_LINE = 99;
 export const MAX_NOTE_LENGTH = 200;
 export const MAX_ORDER_NOTES_LENGTH = 500;
-export const UNKNOWN_PRICE = 'To be confirmed by Cojac’s';
-export const SIZE_TBC = 'Size to be confirmed';
+export const UNKNOWN_PRICE = t('To be confirmed by Cojac’s', 'Por confirmar con Cojac’s');
+export const SIZE_TBC = t('Size to be confirmed', 'Tamaño por confirmar');
 
 export function lineKey(productId: string, variantId: string | null): string {
   return `${productId}::${variantId ?? 'tbc'}`;
 }
 
-export const CHARGE_TBC = 'Charge confirmed by Cojac’s';
+export const CHARGE_TBC = t('Charge confirmed by Cojac’s', 'Costo confirmado por Cojac’s');
 
 /** "Free", "BZD $5.00" or "Charge confirmed by Cojac’s". */
 export function feeLabel(f: Pick<FulfilmentOption, 'feeBZD'>): string {
-  if (f.feeBZD === 0) return 'Free';
+  if (f.feeBZD === 0) return t('Free', 'Gratis');
   if (f.feeBZD === null) return CHARGE_TBC;
   return formatBZD(f.feeBZD);
 }
@@ -101,9 +102,9 @@ export function computeTotals(resolved: ResolvedLine[]): Totals {
   };
 }
 
-export function subtotalLabel(t: Totals): string {
-  if (t.allPriced) return formatBZD(t.pricedSubtotal);
-  if (t.anyPriced) return `${formatBZD(t.pricedSubtotal)} plus items priced by Cojac’s`;
+export function subtotalLabel(tot: Totals): string {
+  if (tot.allPriced) return formatBZD(tot.pricedSubtotal);
+  if (tot.anyPriced) return `${formatBZD(tot.pricedSubtotal)} ${t('plus items priced by Cojac’s', 'más los artículos que cotice Cojac’s')}`;
   return UNKNOWN_PRICE;
 }
 
@@ -126,18 +127,19 @@ const shortSize = (size: string) => size.split(' (')[0];
 export function buildOrderMessage({ brandName, resolved, details, fulfilment }: MessageInput): string {
   const totals = computeTotals(resolved);
   const out: string[] = [];
-  out.push(`Hi ${brandName}! *Order request:*`);
+  out.push(t(`Hi ${brandName}! *Order request:*`, `¡Hola, ${brandName}! *Solicitud de pedido:*`));
   out.push('');
   for (const r of resolved) {
     const size = r.variant ? ` (${shortSize(r.sizeLabel)})` : '';
-    const price = r.lineTotal === null ? 'price TBC' : formatBZD(r.lineTotal);
+    const price = r.lineTotal === null ? t('price TBC', 'precio por confirmar') : formatBZD(r.lineTotal);
     out.push(`${r.line.quantity} × ${r.product.name}${size}: ${price}`);
     const note = clean(r.line.note, MAX_NOTE_LENGTH);
-    if (note) out.push(`   Note: ${note}`);
+    if (note) out.push(`   ${t('Note', 'Nota')}: ${note}`);
   }
   out.push('');
   if (fulfilment) {
-    const fee = fulfilment.feeBZD === 0 ? 'free' : fulfilment.feeBZD === null ? 'charge TBC' : formatBZD(fulfilment.feeBZD);
+    const fee =
+      fulfilment.feeBZD === 0 ? t('free', 'gratis') : fulfilment.feeBZD === null ? t('charge TBC', 'costo por confirmar') : formatBZD(fulfilment.feeBZD);
     out.push(`${fulfilment.messageLabel ?? fulfilment.label}: ${fee}`);
   }
   if (totals.allPriced && fulfilment && fulfilment.feeBZD !== null) {
@@ -149,14 +151,14 @@ export function buildOrderMessage({ brandName, resolved, details, fulfilment }: 
   out.push(...pay);
   out.push('');
   const name = clean(details.name, 80);
-  if (name) out.push(`Name: ${name}`);
+  if (name) out.push(`${t('Name', 'Nombre')}: ${name}`);
   const address = clean(details.area, 160);
-  if (address && fulfilment?.asksForArea) out.push(`Address: ${address}`);
-  if (details.preferredDate) out.push(`Date: ${formatLongDate(details.preferredDate)}`);
+  if (address && fulfilment?.asksForArea) out.push(`${t('Address', 'Dirección')}: ${address}`);
+  if (details.preferredDate) out.push(`${t('Date', 'Fecha')}: ${formatLongDate(details.preferredDate)}`);
   const notes = clean(details.notes, MAX_ORDER_NOTES_LENGTH);
-  if (notes) out.push(`Notes: ${notes}`);
+  if (notes) out.push(`${t('Notes', 'Notas')}: ${notes}`);
   out.push('');
-  out.push('Please confirm availability and payment. Thank you!');
+  out.push(t('Please confirm availability and payment. Thank you!', 'Por favor, confirmen la disponibilidad y el pago. ¡Gracias!'));
   return out.join('\n');
 }
 

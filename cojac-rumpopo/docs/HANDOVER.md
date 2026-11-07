@@ -10,6 +10,18 @@ You make all of these edits in plain text files in `src/content/`. After saving,
 
 `src/content/hero.ts` lists the four hero photos (desktop 16:9 and mobile 9:16, in `public/hero/`). They rotate every 6 seconds in the listed order and loop. To change the order, move the entries; to change the speed, edit `heroIntervalMs`. For a new photo, add a desktop and mobile PNG plus WebP copies with the same naming and a new entry with a short description (`alt`) of the photo.
 
+## 0b. English and Spanish
+
+The whole site is bilingual. English pages are at `/flavours`, Spanish at `/es/flavours`, and so on. Visitors whose phone or browser is set to Spanish see the Spanish site automatically; everyone can switch with the English | Español buttons at the very top of every page (also in the menu and footer), and the choice is remembered.
+
+**Editing text:** wherever a sentence appears, both versions sit side by side as `t('English text', 'Texto en español')`. Change both. Page names and search titles in Spanish are in `src/content/routes.ts` (English in `routes.json`). Flavour names stay the same in both languages, matching the bottles.
+
+**WhatsApp messages** arrive in the customer's language (for example “Solicitud de pedido”, “Pago: Efectivo contra entrega”). If you would rather receive every order in English, ask your developer to switch the message to English only; it is a one-line change in `src/lib/order.ts`.
+
+## 0c. Footer credit
+
+`site.ts → credit` holds the “Website developed by Austere Automations” link. Its colour steps through red, yellow and blue every 8 seconds (`creditPrimary` in `src/styles/components.css`).
+
 ## 1. The WhatsApp order number (set to +501 621-8372)
 
 `src/content/site.ts`:
@@ -138,10 +150,6 @@ The links to each bank’s app are in the same file (`iosAppStore`, `androidPack
 ## 6a. Map
 
 `site.ts → contact.mapUrl` (the “Open in Google Maps” link) and `contact.mapEmbedUrl` (the map shown on Connect With Us after a visitor taps “Show map”) both point to Diego St, Belize City. For an exact pin, open the location in Google Maps, choose **Share → Copy link** for `mapUrl`, and **Share → Embed a map** (copy just the `src="…"` address) for `mapEmbedUrl`.
-
-## 6b. Footer credit
-
-`site.ts → credit` holds the “Website development in Belize by Austere Automations” link at the bottom of every page.
 
 ## 7. FAQs
 

@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
-import routes from '../content/routes.json';
+import routes from '../content/routes';
 import { buildFlags, site } from '../content/site';
+import { homeCopy } from '../content/copy';
 import { useCart } from '../context/CartContext';
 import { shouldShowBanner } from '../lib/season';
 import { BagIcon, ChevronIcon, CloseIcon, MenuIcon, PhoneIcon, PinIcon, WhatsAppIcon } from './Icons';
@@ -9,13 +10,15 @@ import { Sparkle } from './Art';
 import { Logo, SocialIcons } from './ui';
 import { CartDrawer } from './CartDrawer';
 import { AgeNotice } from './AgeNotice';
+import { LangToggle } from './LangToggle';
+import { t } from '../i18n/lang';
 
 const discover = [routes.story, routes.guarantee, routes.gallery, routes.videos];
 
 function SeasonBanner() {
   if (!shouldShowBanner()) return null;
   return (
-    <div className="season-banner" role="region" aria-label="Season announcement">
+    <div className="season-banner" role="region" aria-label={t('Season announcement', 'Anuncio de temporada')}>
       <Sparkle size={12} className="season-banner__spark" />
       <p>{site.season.bannerText}</p>
       <Sparkle size={12} className="season-banner__spark" />
@@ -56,7 +59,7 @@ function DiscoverMenu() {
         aria-controls="discover-menu"
         onClick={() => setOpen((o) => !o)}
       >
-        Discover <ChevronIcon size={16} />
+        {t('Discover', 'Descubre')} <ChevronIcon size={16} />
       </button>
       <div className="nav-dropdown__panel" id="discover-menu" hidden={!open}>
         <ul>
@@ -90,14 +93,15 @@ function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
   if (!open) return null;
   const all = [routes.home, routes.story, routes.flavours, routes.guarantee, routes.gallery, routes.videos, routes.holidayBlog, routes.order, routes.faqs, routes.contact];
   return (
-    <div className="mobile-menu" role="dialog" aria-modal="true" aria-label="Site menu" ref={ref}>
+    <div className="mobile-menu" role="dialog" aria-modal="true" aria-label={t('Site menu', 'Menú del sitio')} ref={ref}>
       <div className="mobile-menu__top">
         <Logo size="menu" />
-        <button type="button" className="icon-btn icon-btn--light" onClick={onClose} aria-label="Close menu">
+        <button type="button" className="icon-btn icon-btn--light" onClick={onClose} aria-label={t('Close menu', 'Cerrar menú')}>
           <CloseIcon size={24} />
         </button>
       </div>
-      <nav aria-label="Mobile">
+      <LangToggle variant="menu" />
+      <nav aria-label={t('Mobile', 'Móvil')}>
         <ul className="mobile-menu__list">
           {all.map((r, i) => (
             <li key={r.path} style={{ animationDelay: `${60 + i * 35}ms` }}>
@@ -110,7 +114,7 @@ function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
       </nav>
       <div className="mobile-menu__foot">
         <Link to={routes.order.path} className="btn btn--whatsapp btn--block" onClick={onClose}>
-          <WhatsAppIcon /> Order on WhatsApp
+          <WhatsAppIcon /> {t('Order on WhatsApp', 'Pedir por WhatsApp')}
         </Link>
         <SocialIcons light />
         <p>{site.alcohol.responsibleMessage}</p>
@@ -136,33 +140,42 @@ function Header() {
     <>
       <header className={`site-header ${scrolled ? 'is-scrolled' : ''}`}>
         <div className="container site-header__inner">
-          <Link to="/" className="site-header__logo" aria-label={`${site.brandName}, home`}>
+          <Link to="/" className="site-header__logo" aria-label={`${site.brandName}, ${t('home', 'inicio')}`}>
             <Logo size="header" />
           </Link>
-          <nav className="site-nav" aria-label="Main">
+          <nav className="site-nav" aria-label={t('Main', 'Principal')}>
             <NavLink to={routes.flavours.path} className="nav-link">
               {routes.flavours.nav}
             </NavLink>
             <DiscoverMenu />
             <NavLink to={routes.holidayBlog.path} className="nav-link">
-              Holiday Blog
+              {routes.holidayBlog.nav}
             </NavLink>
             <NavLink to={routes.faqs.path} className="nav-link">
-              FAQs
+              {t('FAQs', 'Preguntas')}
             </NavLink>
             <NavLink to={routes.contact.path} className="nav-link">
               {routes.contact.nav}
             </NavLink>
           </nav>
           <div className="site-header__actions">
-            <button type="button" className="cart-btn" onClick={openDrawer} aria-label={`Your order request, ${count} ${count === 1 ? 'bottle' : 'bottles'}`}>
+            <button type="button" className="cart-btn" onClick={openDrawer} aria-label={t(
+                `Your order request, ${count} ${count === 1 ? 'bottle' : 'bottles'}`,
+                `Tu pedido, ${count} ${count === 1 ? 'botella' : 'botellas'}`,
+              )}>
               <BagIcon size={22} />
               {count > 0 && <span className="cart-btn__count">{count > 99 ? '99+' : count}</span>}
             </button>
             <Link to={routes.order.path} className="btn btn--gold btn--sm site-header__cta">
-              Order
+              {routes.order.nav}
             </Link>
-            <button type="button" className="icon-btn menu-btn" onClick={() => setMenuOpen(true)} aria-label="Open menu" aria-expanded={menuOpen}>
+            <button
+              type="button"
+              className="icon-btn menu-btn"
+              onClick={() => setMenuOpen(true)}
+              aria-label={t('Open menu', 'Abrir menú')}
+              aria-expanded={menuOpen}
+            >
               <MenuIcon size={24} />
             </button>
           </div>
@@ -181,36 +194,36 @@ function Footer() {
         <div className="site-footer__brand">
           <Logo size="footer" />
           <p className="site-footer__line">
-            After all, Christmas only comes once a year, and when it does, we believe it should be a little more: <em>Sumptuous.</em>
+            {homeCopy.closingLead} <em>{homeCopy.closingWord}</em>
           </p>
           <Link to={routes.order.path} className="btn btn--whatsapp">
-            <WhatsAppIcon /> Order on WhatsApp
+            <WhatsAppIcon /> {t('Order on WhatsApp', 'Pedir por WhatsApp')}
           </Link>
         </div>
         <div className="site-footer__cols">
-          <nav aria-label="Explore">
-            <h2>Explore</h2>
+          <nav aria-label={t('Explore', 'Explora')}>
+            <h2>{t('Explore', 'Explora')}</h2>
             <ul>
-              <li><Link to="/">Home</Link></li>
-              <li><Link to={routes.story.path}>Our Story</Link></li>
-              <li><Link to={routes.flavours.path}>Flavours</Link></li>
-              <li><Link to={routes.guarantee.path}>Our Guarantee</Link></li>
-              <li><Link to={routes.gallery.path}>Gallery</Link></li>
-              <li><Link to={routes.videos.path}>Videos &amp; Features</Link></li>
-              <li><Link to={routes.holidayBlog.path}>Holiday Blog</Link></li>
+              <li><Link to="/">{routes.home.nav}</Link></li>
+              <li><Link to={routes.story.path}>{routes.story.short}</Link></li>
+              <li><Link to={routes.flavours.path}>{routes.flavours.short}</Link></li>
+              <li><Link to={routes.guarantee.path}>{routes.guarantee.short}</Link></li>
+              <li><Link to={routes.gallery.path}>{routes.gallery.short}</Link></li>
+              <li><Link to={routes.videos.path}>{routes.videos.short}</Link></li>
+              <li><Link to={routes.holidayBlog.path}>{routes.holidayBlog.nav}</Link></li>
             </ul>
           </nav>
-          <nav aria-label="Order and support">
-            <h2>Order &amp; Support</h2>
+          <nav aria-label={t('Order and support', 'Pedidos y ayuda')}>
+            <h2>{t('Order & Support', 'Pedidos y ayuda')}</h2>
             <ul>
-              <li><Link to={routes.order.path}>Order</Link></li>
-              <li><Link to={routes.faqs.path}>FAQs</Link></li>
-              <li><Link to={routes.contact.path}>Connect with Us</Link></li>
-              <li><Link to={routes.privacy.path}>Privacy &amp; Responsible Enjoyment</Link></li>
+              <li><Link to={routes.order.path}>{routes.order.nav}</Link></li>
+              <li><Link to={routes.faqs.path}>{routes.faqs.nav}</Link></li>
+              <li><Link to={routes.contact.path}>{t('Connect with Us', 'Conecta con nosotros')}</Link></li>
+              <li><Link to={routes.privacy.path}>{routes.privacy.nav}</Link></li>
             </ul>
           </nav>
           <div>
-            <h2>Connect</h2>
+            <h2>{t('Connect', 'Conecta')}</h2>
             <SocialIcons light />
             <ul className="site-footer__connect">
               {contact.phoneDisplay && contact.phoneDial && (
@@ -219,7 +232,7 @@ function Footer() {
               {contact.addressLine && (
                 <li>
                   {contact.mapUrl ? (
-                    <a href={contact.mapUrl} target="_blank" rel="noopener noreferrer" aria-label={`${contact.addressLine}, open in Google Maps`}>
+                    <a href={contact.mapUrl} target="_blank" rel="noopener noreferrer" aria-label={`${contact.addressLine}, ${t('open in Google Maps', 'abrir en Google Maps')}`}>
                       <PinIcon size={18} /> {contact.addressLine}
                     </a>
                   ) : (
@@ -231,13 +244,14 @@ function Footer() {
           </div>
         </div>
         <div className="site-footer__legal">
+          <LangToggle variant="footer" />
           <a href={site.credit.url} target="_blank" rel="noopener" className="site-footer__credit">
             {site.credit.label}
           </a>
           {buildFlags.showLaunchNotes && (
             <p>
               <Link to="/launch-notes" className="site-footer__preview">
-                Internal preview: launch notes
+                {t('Internal preview: launch notes', 'Vista interna: notas de lanzamiento')}
               </Link>
             </p>
           )}
@@ -256,11 +270,11 @@ function StickyOrderBar() {
       <button type="button" className="sticky-order__summary" onClick={openDrawer}>
         <BagIcon size={20} />
         <span>
-          {totals.itemCount} {totals.itemCount === 1 ? 'bottle' : 'bottles'}
+          {totals.itemCount} {totals.itemCount === 1 ? t('bottle', 'botella') : t('bottles', 'botellas')}
         </span>
       </button>
       <Link to={routes.order.path} className="btn btn--whatsapp btn--sm">
-        Review &amp; send
+        {t('Review & send', 'Revisar y enviar')}
       </Link>
     </div>
   );
@@ -291,8 +305,13 @@ export function Layout() {
   return (
     <>
       <a href="#main" className="skip-link">
-        Skip to content
+        {t('Skip to content', 'Ir al contenido')}
       </a>
+      <div className="lang-bar">
+        <div className="container lang-bar__inner">
+          <LangToggle variant="bar" />
+        </div>
+      </div>
       <SeasonBanner />
       <Header />
       <main id="main" ref={mainRef} tabIndex={-1}>

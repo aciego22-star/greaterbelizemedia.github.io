@@ -1,4 +1,5 @@
 import { site } from '../content/site';
+import { dateLocale } from '../i18n/lang';
 
 export type SeasonState = 'upcoming' | 'open' | 'closed';
 
@@ -35,7 +36,7 @@ export function shouldShowBanner(now: Date = new Date()): boolean {
 export function formatLongDate(iso: string): string {
   const [y, m, d] = iso.split('-').map(Number);
   if (!y || !m || !d) return iso;
-  return new Date(Date.UTC(y, m - 1, d, 12)).toLocaleDateString('en-GB', {
+  return new Date(Date.UTC(y, m - 1, d, 12)).toLocaleDateString(dateLocale, {
     weekday: 'short',
     day: 'numeric',
     month: 'long',

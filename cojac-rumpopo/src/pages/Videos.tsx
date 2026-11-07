@@ -3,6 +3,7 @@ import { videosIntro } from '../content/copy';
 import { usePageMeta } from '../lib/usePageMeta';
 import { PageHero, Reveal } from '../components/ui';
 import { FinalCta, VideoCard } from '../components/sections';
+import { t } from '../i18n/lang';
 
 export default function Videos() {
   usePageMeta('videos');
@@ -11,7 +12,8 @@ export default function Videos() {
       <PageHero
         title={
           <>
-            Moments from the <em className="italic-gold">Journey</em>
+            {t('Moments from the ', 'Momentos del ')}
+            <em className="italic-gold">{t('Journey', 'camino')}</em>
           </>
         }
         lead={videosIntro}
@@ -26,8 +28,10 @@ export default function Videos() {
             ))}
           </div>
           <p className="media-fine">
-            Videos play from YouTube or open on Facebook. YouTube videos load only when you press play, using YouTube’s privacy-enhanced
-            mode.
+            {t(
+              'Videos play from YouTube or open on Facebook. YouTube videos load only when you press play, using YouTube’s privacy-enhanced mode.',
+              'Los videos se reproducen desde YouTube o se abren en Facebook. Los videos de YouTube solo se cargan cuando presionas reproducir, con el modo de privacidad mejorada de YouTube.',
+            )}
           </p>
         </div>
       </section>

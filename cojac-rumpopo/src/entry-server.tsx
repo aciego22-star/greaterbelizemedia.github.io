@@ -7,7 +7,7 @@ import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom/server';
 import App from './App';
 import { CartProvider } from './context/CartContext';
-import routes from './content/routes.json';
+import routes from './content/routes';
 import { blogPages, jsonLdScript, postJsonLdScript } from './lib/structuredData';
 import { publishedPosts, postPath, formatPostDate } from './content/blog/posts';
 import { contest } from './content/blog/contest';
@@ -16,12 +16,15 @@ import { publishedFaqs } from './content/faqs';
 import { getCatalogue } from './content/catalogue';
 import { media } from './content/media';
 import { formatLongDate } from './lib/season';
+import { lang, routerBasename, LANG_REDIRECT_SCRIPT } from './i18n/lang';
+
+export { lang, LANG_REDIRECT_SCRIPT };
 
 export { routes, jsonLdScript, postJsonLdScript, blogPages };
 
 export function render(url: string): string {
   return renderToString(
-    <StaticRouter location={url}>
+    <StaticRouter location={url} basename={routerBasename()}>
       <CartProvider>
         <App />
       </CartProvider>

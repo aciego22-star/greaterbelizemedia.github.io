@@ -5,6 +5,7 @@ import { formatBZD } from '../lib/order';
 import { asset, copyText } from '../lib/whatsapp';
 import type { FulfilmentOption, OrderDetails } from '../types';
 import { CheckIcon, CopyIcon, ExternalIcon, InfoIcon } from './Icons';
+import { t } from '../i18n/lang';
 
 interface Props {
   details: OrderDetails;
@@ -26,7 +27,7 @@ function CopyRow({ label, value }: { label: string; value: string }) {
         <button
           type="button"
           className="account-row__copy"
-          aria-label={`Copy ${label.toLowerCase()}`}
+          aria-label={`${t('Copy', 'Copiar')} ${label.toLowerCase()}`}
           onClick={async () => {
             if (await copyText(value)) {
               setDone(true);
@@ -58,15 +59,17 @@ export function PaymentStep({ details, setDetails, fulfilment, total, attempted,
     <section className="order-step card" aria-labelledby="step-pay">
       <div className="order-step__head">
         <span className="order-step__num">3</span>
-        <h2 id="step-pay">How will you pay?</h2>
+        <h2 id="step-pay">{t('How will you pay?', '¿Cómo vas a pagar?')}</h2>
       </div>
 
       {!fulfilment ? (
-        <p className="hint pay-wait">Choose delivery, pickup or shipping above to see the payment options.</p>
+        <p className="hint pay-wait">
+          {t('Choose delivery, pickup or shipping above to see the payment options.', 'Elige entrega, recoger o envío arriba para ver las opciones de pago.')}
+        </p>
       ) : (
         <>
           <fieldset className="field" id="payment-group" tabIndex={-1} aria-describedby={attempted && errors.payment ? 'payment-error' : undefined}>
-            <legend>Payment method *</legend>
+            <legend>{t('Payment method', 'Forma de pago')} *</legend>
             <div className="option-grid">
               {options.map((o) => (
                 <label key={o.id} className={`option-card ${method === o.id ? 'is-selected' : ''}`}>
@@ -92,7 +95,7 @@ export function PaymentStep({ details, setDetails, fulfilment, total, attempted,
           {method === 'transfer' && (
             <>
               <fieldset className="field" id="bank-group" tabIndex={-1} aria-describedby={attempted && errors.bank ? 'bank-error' : undefined}>
-                <legend>Which bank will you pay from? *</legend>
+                <legend>{t('Which bank will you pay from?', '¿Desde qué banco vas a pagar?')} *</legend>
                 <div className="bank-grid">
                   {banks.map((b) => (
                     <label key={b.id} className={`bank-option ${details.bank === b.id ? 'is-selected' : ''}`}>
@@ -113,34 +116,36 @@ export function PaymentStep({ details, setDetails, fulfilment, total, attempted,
               </fieldset>
 
               {bank && (
-                <div className="transfer-panel" role="region" aria-label={`Paying with ${bank.name}`}>
+                <div className="transfer-panel" role="region" aria-label={`${t('Paying with', 'Pago con')} ${bank.name}`}>
                   <a
                     className="btn btn--block transfer-panel__open"
                     href={bankAppLink(bank, platform)}
                     {...(platform === 'android' ? {} : { target: '_blank', rel: 'noopener noreferrer' })}
                   >
-                    {platform === 'desktop' ? `Open ${bank.name} online banking` : `Open the ${bank.name} app`}
+                    {platform === 'desktop'
+                      ? t(`Open ${bank.name} online banking`, `Abrir la banca en línea de ${bank.name}`)
+                      : t(`Open the ${bank.name} app`, `Abrir la app de ${bank.name}`)}
                     <ExternalIcon size={16} />
                   </a>
 
                   <dl className="transfer-facts">
                     <div className="account-row">
-                      <dt>Amount</dt>
+                      <dt>{t('Amount', 'Monto')}</dt>
                       <dd>
-                        <strong>{total !== null ? formatBZD(total) : 'Confirmed by Cojac’s on WhatsApp'}</strong>
+                        <strong>{total !== null ? formatBZD(total) : t('Confirmed by Cojac’s on WhatsApp', 'Cojac’s lo confirma por WhatsApp')}</strong>
                       </dd>
                     </div>
                     {acct && (
                       <>
                         <div className="account-row">
-                          <dt>Pay to</dt>
+                          <dt>{t('Pay to', 'Pagar a')}</dt>
                           <dd>{acct.bankName}</dd>
                         </div>
-                        <CopyRow label="Account number" value={acct.accountNumber} />
-                        <CopyRow label="Recipient name" value={acct.accountName} />
+                        <CopyRow label={t('Account number', 'Número de cuenta')} value={acct.accountNumber} />
+                        <CopyRow label={t('Recipient name', 'Nombre del destinatario')} value={acct.accountName} />
                         {acct.accountType && (
                           <div className="account-row">
-                            <dt>Account type</dt>
+                            <dt>{t('Account type', 'Tipo de cuenta')}</dt>
                             <dd>{acct.accountType}</dd>
                           </div>
                         )}
@@ -150,8 +155,9 @@ export function PaymentStep({ details, setDetails, fulfilment, total, attempted,
 
                   {acct && bank.id !== acct.bankId && (
                     <p className="transfer-hint">
-                      Paying from {bank.name}: in your app, choose the option to send money to <strong>another bank in Belize</strong> and select{' '}
-                      {acct.bankName}.
+                      {t(`Paying from ${bank.name}: in your app, choose the option to send money to `, `Si pagas desde ${bank.name}: en tu app, elige la opción para enviar dinero a `)}
+                      <strong>{t('another bank in Belize', 'otro banco en Belice')}</strong>
+                      {t(` and select ${acct.bankName}.`, ` y selecciona ${acct.bankName}.`)}
                     </p>
                   )}
 
@@ -159,29 +165,45 @@ export function PaymentStep({ details, setDetails, fulfilment, total, attempted,
                     {acct && total !== null ? (
                       <>
                         <li>
-                          In your {bank.name} app, send <strong>{formatBZD(total)}</strong> to the account above.
+                          {t(`In your ${bank.name} app, send `, `En tu app de ${bank.name}, envía `)}
+                          <strong>{formatBZD(total)}</strong>
+                          {t(' to the account above.', ' a la cuenta de arriba.')}
                         </li>
                         <li>
-                          Take a <strong>screenshot of your completed transfer</strong>.
+                          {t('Take a ', 'Toma una ')}
+                          <strong>{t('screenshot of your completed transfer', 'captura de pantalla de tu transferencia completada')}</strong>.
                         </li>
-                        <li>Tap “Send Order Request on WhatsApp” below and send the screenshot in the chat.</li>
+                        <li>
+                          {t(
+                            'Tap “Send Order Request on WhatsApp” below and send the screenshot in the chat.',
+                            'Toca “Enviar pedido por WhatsApp” abajo y envía la captura en el chat.',
+                          )}
+                        </li>
                       </>
                     ) : acct ? (
                       <>
-                        <li>Tap “Send Order Request on WhatsApp” below.</li>
-                        <li>Cojac’s replies with your total, including the shipping charge.</li>
-                        <li>In your {bank.name} app, send that amount to the account above.</li>
+                        <li>{t('Tap “Send Order Request on WhatsApp” below.', 'Toca “Enviar pedido por WhatsApp” abajo.')}</li>
+                        <li>{t('Cojac’s replies with your total, including the shipping charge.', 'Cojac’s te responde con tu total, incluido el costo de envío.')}</li>
+                        <li>{t(`In your ${bank.name} app, send that amount to the account above.`, `En tu app de ${bank.name}, envía ese monto a la cuenta de arriba.`)}</li>
                         <li>
-                          Send a <strong>screenshot of your completed transfer</strong> in the chat.
+                          {t('Send a ', 'Envía una ')}
+                          <strong>{t('screenshot of your completed transfer', 'captura de pantalla de tu transferencia completada')}</strong>
+                          {t(' in the chat.', ' en el chat.')}
                         </li>
                       </>
                     ) : (
                       <>
-                        <li>Tap “Send Order Request on WhatsApp” below.</li>
-                        <li>Cojac’s replies with the account details{total === null ? ' and your total' : ''}.</li>
-                        <li>Make the transfer in your {bank.name} app.</li>
+                        <li>{t('Tap “Send Order Request on WhatsApp” below.', 'Toca “Enviar pedido por WhatsApp” abajo.')}</li>
                         <li>
-                          Send a <strong>screenshot of your completed transfer</strong> in the chat.
+                          {total === null
+                            ? t('Cojac’s replies with the account details and your total.', 'Cojac’s te responde con los datos de la cuenta y tu total.')
+                            : t('Cojac’s replies with the account details.', 'Cojac’s te responde con los datos de la cuenta.')}
+                        </li>
+                        <li>{t(`Make the transfer in your ${bank.name} app.`, `Haz la transferencia en tu app de ${bank.name}.`)}</li>
+                        <li>
+                          {t('Send a ', 'Envía una ')}
+                          <strong>{t('screenshot of your completed transfer', 'captura de pantalla de tu transferencia completada')}</strong>
+                          {t(' in the chat.', ' en el chat.')}
                         </li>
                       </>
                     )}
@@ -189,7 +211,12 @@ export function PaymentStep({ details, setDetails, fulfilment, total, attempted,
                   <p className="transfer-panel__note">
                     <InfoIcon size={18} />
                     <span>
-                      <strong>Your order is placed once Cojac’s receives your transfer screenshot.</strong>
+                      <strong>
+                        {t(
+                          'Your order is placed once Cojac’s receives your transfer screenshot.',
+                          'Tu pedido queda hecho cuando Cojac’s recibe la captura de tu transferencia.',
+                        )}
+                      </strong>
                     </span>
                   </p>
                 </div>
@@ -199,7 +226,10 @@ export function PaymentStep({ details, setDetails, fulfilment, total, attempted,
 
           {method === 'cash' && (
             <p className="pay-cash">
-              <CheckIcon size={18} /> {fulfilment.id === 'pickup' ? 'Pay in cash when you collect your order.' : 'Pay in cash when your order arrives.'}
+              <CheckIcon size={18} />{' '}
+              {fulfilment.id === 'pickup'
+                ? t('Pay in cash when you collect your order.', 'Paga en efectivo cuando recojas tu pedido.')
+                : t('Pay in cash when your order arrives.', 'Paga en efectivo cuando llegue tu pedido.')}
             </p>
           )}
         </>

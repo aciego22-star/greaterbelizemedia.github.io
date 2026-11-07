@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
-import routes from '../content/routes.json';
+import routes from '../content/routes';
 import { site } from '../content/site';
+import { localPath } from '../i18n/lang';
 
 type Key = keyof typeof routes;
 
@@ -18,7 +19,7 @@ export function usePageMeta(key: Key | { title: string; description: string; pat
     setMeta('meta[property="og:title"]', 'content', r.title);
     setMeta('meta[property="og:description"]', 'content', r.description);
     if (r.path) {
-      const url = site.siteUrl.replace(/\/$/, '') + (r.path === '/' ? '/' : r.path);
+      const url = site.siteUrl.replace(/\/$/, '') + localPath(r.path);
       setMeta('link[rel="canonical"]', 'href', url);
       setMeta('meta[property="og:url"]', 'content', url);
     }

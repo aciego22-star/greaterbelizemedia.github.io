@@ -5,7 +5,7 @@
  *  - No prices, offers, ratings or reviews unless approved in catalogue.ts.
  *  - Videos become VideoObject only when an uploadDate has been entered in media.ts.
  */
-import routes from '../content/routes.json';
+import routes from '../content/routes';
 import { site } from '../content/site';
 import { publishedFaqs } from '../content/faqs';
 import { media } from '../content/media';
@@ -13,13 +13,18 @@ import { getCatalogue } from '../content/catalogue';
 import { getDestination } from './whatsapp';
 import { buildWhatsAppUrl } from './order';
 import { categoryName, postPath, publishedPosts, findPost, wordCount, type BlogPost } from '../content/blog/posts';
+import { isEs, localPath, t } from '../i18n/lang';
+
+const IN_LANG = isEs ? 'es-BZ' : 'en-BZ';
 
 type RouteKey = keyof typeof routes;
 type Json = Record<string, unknown>;
 
 const origin = () => site.siteUrl.replace(/\/$/, '');
 const abs = (path: string) => origin() + (path.startsWith('/') ? path : `/${path}`);
-const pageUrl = (key: RouteKey) => abs(routes[key].path === '/' ? '/' : routes[key].path);
+const pageUrl = (key: RouteKey) => abs(localPath(routes[key].path));
+const homeUrl = () => abs(localPath('/'));
+const postUrl = (slug: string) => abs(localPath(postPath(slug)));
 const ORG_ID = () => `${origin()}/#organization`;
 const SITE_ID = () => `${origin()}/#website`;
 
@@ -50,7 +55,10 @@ export function organization(): Json {
     logo: { '@type': 'ImageObject', url: abs('/brand/cojacs-logo-square-512.jpg'), width: 512, height: 512, caption: site.brandName },
     image: abs('/og-image.jpg'),
     slogan: site.logoTagline,
-    description: `${site.brandName} is a Belizean family business making rich, creamy rumpopo (rum popo) for the Christmas season, from Classic Vanilla to customer favourites like Peanut Delight and Pumpkin Spice. Order requests are taken on WhatsApp.`,
+    description: t(
+      `${site.brandName} is a Belizean family business making rich, creamy rumpopo (rum popo) for the Christmas season, from Classic Vanilla to customer favourites like Peanut Delight and Pumpkin Spice. Order requests are taken on WhatsApp.`,
+      `${site.brandName} es un negocio familiar beliceño que hace rumpopo (rum popo) rico y cremoso para la temporada navideña, desde Classic Vanilla hasta favoritos de los clientes como Peanut Delight y Pumpkin Spice. Los pedidos se reciben por WhatsApp.`,
+    ),
     knowsAbout: ['Rumpopo', 'Rum popo', 'Belizean Christmas traditions', 'Holiday drinks'],
     areaServed: { '@type': 'Country', name: 'Belize' },
     ...(site.contact.addressLine && {
@@ -80,7 +88,7 @@ export function website(): Json {
     name: site.brandName,
     alternateName: [site.brandShort, `${site.brandShort} Rumpopo`],
     description: routes.home.description,
-    inLanguage: 'en-BZ',
+    inLanguage: ['en-BZ', 'es-BZ'],
     publisher: { '@id': ORG_ID() },
   };
 }
@@ -101,7 +109,7 @@ function breadcrumb(key: RouteKey): Json | null {
     '@type': 'BreadcrumbList',
     '@id': `${pageUrl(key)}#breadcrumb`,
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: `${origin()}/` },
+      { '@type': 'ListItem', position: 1, name: routes.home.nav, item: homeUrl() },
       { '@type': 'ListItem', position: 2, name: routes[key].nav, item: pageUrl(key) },
     ],
   };
@@ -115,7 +123,7 @@ function webpage(key: RouteKey): Json {
     url: pageUrl(key),
     name: r.title,
     description: r.description,
-    inLanguage: 'en-BZ',
+    inLanguage: IN_LANG,
     isPartOf: { '@id': SITE_ID() },
     about: { '@id': ORG_ID() },
     primaryImageOfPage: { '@type': 'ImageObject', url: abs('/og-image.jpg') },
@@ -135,12 +143,12 @@ function webpage(key: RouteKey): Json {
       name: `${site.brandShort} Holiday Blog`,
       description: routes.holidayBlog.description,
       publisher: { '@id': ORG_ID() },
-      inLanguage: 'en-BZ',
+      inLanguage: IN_LANG,
       blogPost: publishedPosts().map((p) => ({
         '@type': 'BlogPosting',
-        '@id': `${abs(postPath(p.slug))}#article`,
+        '@id': `${postUrl(p.slug)}#article`,
         headline: p.title,
-        url: abs(postPath(p.slug)),
+        url: postUrl(p.slug),
         datePublished: p.publishedAt,
       })),
     };
@@ -164,7 +172,7 @@ function webpage(key: RouteKey): Json {
       page.video = videos.map((m) => ({
         '@type': 'VideoObject',
         name: `${site.brandName}: ${m.title}`,
-        description: `${m.title}, featuring ${site.brandName}.`,
+        description: t(`${m.title}, featuring ${site.brandName}.`, `${m.title}, con ${site.brandName}.`),
         thumbnailUrl: m.thumbnail ? abs(m.thumbnail) : `https://i.ytimg.com/vi/${m.youtubeId}/hqdefault.jpg`,
         uploadDate: m.uploadDate,
         contentUrl: m.url,
@@ -222,7 +230,7 @@ export function jsonLdScript(key: RouteKey): string {
 /* ── Holiday Blog posts ─────────────────────────────────────────────────── */
 
 function blogPosting(post: BlogPost): Json {
-  const url = abs(postPath(post.slug));
+  const url = postUrl(post.slug);
   return {
     '@type': 'BlogPosting',
     '@id': `${url}#article`,
@@ -241,14 +249,14 @@ function blogPosting(post: BlogPost): Json {
     articleSection: post.categories.map(categoryName),
     keywords: post.tags.join(', '),
     wordCount: wordCount(post),
-    inLanguage: 'en-BZ',
+    inLanguage: IN_LANG,
   };
 }
 
 export function postStructuredData(slug: string): Json | null {
   const post = findPost(slug);
   if (!post) return null;
-  const url = abs(postPath(post.slug));
+  const url = postUrl(post.slug);
   return {
     '@context': 'https://schema.org',
     '@graph': [
@@ -260,7 +268,7 @@ export function postStructuredData(slug: string): Json | null {
         url,
         name: post.seoTitle,
         description: post.metaDescription,
-        inLanguage: 'en-BZ',
+        inLanguage: IN_LANG,
         isPartOf: { '@id': SITE_ID() },
         primaryImageOfPage: { '@type': 'ImageObject', url: abs(post.image.desktopJpg) },
         breadcrumb: { '@id': `${url}#breadcrumb` },
@@ -272,7 +280,7 @@ export function postStructuredData(slug: string): Json | null {
         '@type': 'BreadcrumbList',
         '@id': `${url}#breadcrumb`,
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Home', item: `${origin()}/` },
+          { '@type': 'ListItem', position: 1, name: routes.home.nav, item: homeUrl() },
           { '@type': 'ListItem', position: 2, name: 'Holiday Blog', item: pageUrl('holidayBlog') },
           { '@type': 'ListItem', position: 3, name: post.title, item: url },
         ],

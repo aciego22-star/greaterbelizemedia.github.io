@@ -1,11 +1,12 @@
 import { Link, useParams } from 'react-router-dom';
-import routes from '../content/routes.json';
+import routes from '../content/routes';
 import { site } from '../content/site';
 import { findPost, postPath } from '../content/blog/posts';
 import { usePageMeta } from '../lib/usePageMeta';
 import { BlogBody, BlogPicture, Breadcrumb, CategoryChips, PostMeta, ShareLinks } from '../components/blog';
 import { ArrowIcon } from '../components/Icons';
 import NotFound from './NotFound';
+import { t } from '../i18n/lang';
 
 function Article({ slug }: { slug: string }) {
   const post = findPost(slug)!;
@@ -14,7 +15,7 @@ function Article({ slug }: { slug: string }) {
     <article className="blog-article" aria-labelledby="post-title">
       <header className="blog-article__header grain on-dark">
         <div className="container blog-article__header-inner">
-          <Breadcrumb items={[{ label: 'Home', to: '/' }, { label: 'Holiday Blog', to: routes.holidayBlog.path }, { label: post.title }]} />
+          <Breadcrumb items={[{ label: routes.home.nav, to: '/' }, { label: routes.holidayBlog.nav, to: routes.holidayBlog.path }, { label: post.title }]} />
           <CategoryChips post={post} />
           <h1 id="post-title" className="blog-article__title">
             {post.title}
@@ -32,12 +33,12 @@ function Article({ slug }: { slug: string }) {
         <BlogBody post={post} />
         <p className="blog-article__responsible">{site.alcohol.responsibleMessage}</p>
         <ShareLinks post={post} />
-        <nav className="blog-article__more" aria-label="Keep exploring">
+        <nav className="blog-article__more" aria-label={t('Keep exploring', 'Sigue explorando')}>
           <Link to={routes.holidayBlog.path} className="text-link">
-            ← All Holiday Blog stories
+            {t('← All Holiday Blog stories', '← Todas las historias del blog navideño')}
           </Link>
           <Link to={routes.story.path} className="text-link">
-            Our Story: Behind the Bottle <ArrowIcon size={14} style={{ display: 'inline', verticalAlign: '-2px' }} />
+            {routes.story.nav} <ArrowIcon size={14} style={{ display: 'inline', verticalAlign: '-2px' }} />
           </Link>
         </nav>
       </div>

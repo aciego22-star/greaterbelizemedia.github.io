@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
-import routes from './content/routes.json';
+import routes from './content/routes';
 import { buildFlags } from './content/site';
 import { Layout } from './components/Layout';
 import Home from './pages/Home';

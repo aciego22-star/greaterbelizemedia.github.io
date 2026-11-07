@@ -387,17 +387,6 @@
 .site-footer__legal {
   text-align: center;
 }
-.site-footer .site-footer__credit {
-  display: inline-block;
-  color: rgba(251, 244, 230, 0.7);
-  font-size: 0.85rem;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  text-decoration-color: rgba(236, 214, 166, 0.4);
-}
-.site-footer .site-footer__credit:hover {
-  color: var(--gold-300);
-}
 @media (min-width: 900px) {
   .site-footer .container {
     display: grid;
@@ -980,5 +969,110 @@
   }
   100% {
     transform: scale(1);
+  }
+}
+
+/* Language switch (src/components/LangToggle.tsx) */
+.lang-bar {
+  background: var(--burgundy-900);
+  color: var(--cream-50);
+}
+.lang-bar__inner {
+  display: flex;
+  justify-content: center;
+  padding-block: 4px;
+}
+@media (min-width: 768px) {
+  .lang-bar__inner {
+    justify-content: flex-end;
+  }
+}
+.lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.lang-toggle__globe {
+  margin-right: 4px;
+  opacity: 0.85;
+}
+.lang-toggle__opt {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0 14px;
+  border-radius: 999px;
+  color: inherit;
+  text-decoration: none;
+  border: 1px solid transparent;
+  touch-action: manipulation;
+}
+.lang-toggle__opt.is-active {
+  background: var(--gold-400);
+  color: var(--burgundy-900);
+}
+.lang-toggle__opt:not(.is-active) {
+  border-color: rgba(251, 244, 230, 0.35);
+}
+@media (hover: hover) {
+  .lang-toggle__opt:not(.is-active):hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
+}
+.lang-toggle__opt:focus-visible {
+  outline: 2px solid var(--gold-300);
+  outline-offset: 2px;
+}
+.lang-toggle--menu {
+  justify-content: center;
+  color: var(--cream-50);
+  margin: 4px auto 12px;
+  display: flex;
+}
+.lang-toggle--footer {
+  justify-content: center;
+  color: var(--cream-50);
+  margin-bottom: 14px;
+}
+
+/* Footer credit: the whole phrase is one link; its colour steps through the
+   primary colours (red, yellow, blue), changing every 8 seconds. */
+.site-footer .site-footer__credit {
+  display: inline-block;
+  padding: 10px 4px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: currentColor;
+  animation: creditPrimary 24s infinite;
+}
+.site-footer .site-footer__credit:hover {
+  color: inherit;
+}
+@keyframes creditPrimary {
+  0%,
+  31% {
+    color: #ff8a8a;
+  }
+  33.33%,
+  64.33% {
+    color: #ffd84d;
+  }
+  66.67%,
+  97.67% {
+    color: #8cc8ff;
+  }
+  100% {
+    color: #ff8a8a;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  /* A colour change is not motion, so it keeps rotating for everyone. */
+  .site-footer .site-footer__credit {
+    animation-duration: 24s !important;
+    animation-iteration-count: infinite !important;
   }
 }

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import routes from '../content/routes.json';
+import routes from '../content/routes';
 import { buildFlags, site } from '../content/site';
 import { useCart } from '../context/CartContext';
 import { buildOrderMessage, buildWhatsAppUrl, feeLabel, formatBZD, MAX_ORDER_NOTES_LENGTH, subtotalLabel } from '../lib/order';
@@ -12,6 +12,7 @@ import { BagIcon, CheckIcon, CopyIcon, InfoIcon, WhatsAppIcon } from '../compone
 import { PageHero } from '../components/ui';
 import { PaymentStep } from '../components/PaymentStep';
 import { effectivePayment, findBank } from '../lib/payments';
+import { t } from '../i18n/lang';
 
 const AGE_KEY = 'cojac-age-confirmed-v1';
 
@@ -46,12 +47,12 @@ export default function Order() {
   const payBank = findBank(details.bank);
   const orderTotal = totals.allPriced && fulfilment && fulfilment.feeBZD !== null ? totals.pricedSubtotal + fulfilment.feeBZD : null;
   const errors = {
-    fulfilment: !fulfilment ? 'Please choose delivery, pickup or shipping.' : '',
-    name: details.name.trim().length < 2 ? 'Please enter your name.' : '',
-    address: fulfilment?.asksForArea && details.area.trim().length < 6 ? 'Please enter your exact address.' : '',
-    payment: fulfilment && !payMethod ? 'Please choose how you will pay.' : '',
-    bank: payMethod === 'transfer' && !payBank ? 'Please choose your bank.' : '',
-    age: !ageOk ? `Please confirm you are ${site.alcohol.legalAge} or older.` : '',
+    fulfilment: !fulfilment ? t('Please choose delivery, pickup or shipping.', 'Elige entrega, recoger o envío.') : '',
+    name: details.name.trim().length < 2 ? t('Please enter your name.', 'Escribe tu nombre.') : '',
+    address: fulfilment?.asksForArea && details.area.trim().length < 6 ? t('Please enter your exact address.', 'Escribe tu dirección exacta.') : '',
+    payment: fulfilment && !payMethod ? t('Please choose how you will pay.', 'Elige cómo vas a pagar.') : '',
+    bank: payMethod === 'transfer' && !payBank ? t('Please choose your bank.', 'Elige tu banco.') : '',
+    age: !ageOk ? t(`Please confirm you are ${site.alcohol.legalAge} or older.`, `Confirma que tienes ${site.alcohol.legalAge} años o más.`) : '',
   };
   const firstError = (['fulfilment', 'name', 'address', 'payment', 'bank', 'age'] as const).find((k) => errors[k]);
   const valid = !firstError;
@@ -76,11 +77,11 @@ export default function Order() {
   if (!accepting) {
     return (
       <>
-        <PageHero title="Order requests are closed" lead={`${site.season.closedHeadline} ${site.season.closedText}`} />
+        <PageHero title={t('Order requests are closed', 'Los pedidos están cerrados')} lead={`${site.season.closedHeadline} ${site.season.closedText}`} />
         <section className="section section--paper">
           <div className="container--narrow center">
             <Link to={routes.flavours.path} className="btn">
-              See our flavours
+              {t('See our flavours', 'Ver nuestros sabores')}
             </Link>
           </div>
         </section>
@@ -91,23 +92,31 @@ export default function Order() {
   return (
     <>
       <PageHero
-        title="Your Order Request"
-        lead="Choose your flavours, tell us where to bring them and how you’ll pay (cash on delivery or bank transfer), then send your request to Cojac’s on WhatsApp."
+        title={t('Your Order Request', 'Tu pedido')}
+        lead={t(
+          'Choose your flavours, tell us where to bring them and how you’ll pay (cash on delivery or bank transfer), then send your request to Cojac’s on WhatsApp.',
+          'Elige tus sabores, dinos a dónde llevarlos y cómo vas a pagar (efectivo contra entrega o transferencia bancaria), y envía tu pedido a Cojac’s por WhatsApp.',
+        )}
       />
       <section className="section section--paper order-section">
         <div className="container">
           {resolved.length === 0 ? (
             <div className="order-empty card">
               <BagIcon size={44} />
-              <h2 className="display-m">Your order request is empty</h2>
-              <p>Choose your flavours and quantities first, then come back here to send everything in one WhatsApp message.</p>
+              <h2 className="display-m">{t('Your order request is empty', 'Tu pedido está vacío')}</h2>
+              <p>
+                {t(
+                  'Choose your flavours and quantities first, then come back here to send everything in one WhatsApp message.',
+                  'Primero elige tus sabores y cantidades, y luego vuelve aquí para enviarlo todo en un solo mensaje de WhatsApp.',
+                )}
+              </p>
               <div className="btn-row" style={{ justifyContent: 'center' }}>
                 <Link to={routes.flavours.path} className="btn">
-                  Find Your Flavour
+                  {routes.flavours.nav}
                 </Link>
                 {generalEnquiryUrl() && (
                   <a href={generalEnquiryUrl()!} target="_blank" rel="noopener noreferrer" className="btn btn--ghost-dark">
-                    <WhatsAppIcon /> Just send us a question
+                    <WhatsAppIcon /> {t('Just send us a question', 'Solo envíanos una pregunta')}
                   </a>
                 )}
               </div>
@@ -118,21 +127,21 @@ export default function Order() {
                 <section className="order-step card" aria-labelledby="step-items">
                   <div className="order-step__head">
                     <span className="order-step__num">1</span>
-                    <h2 id="step-items">Your flavours</h2>
+                    <h2 id="step-items">{t('Your flavours', 'Tus sabores')}</h2>
                     <Link to={routes.flavours.path} className="text-link order-step__aside">
-                      + Add more
+                      {t('+ Add more', '+ Añadir más')}
                     </Link>
                   </div>
                   <CartLines />
                   <button type="button" className="drawer__clear" onClick={clear}>
-                    Clear order request
+                    {t('Clear order request', 'Vaciar pedido')}
                   </button>
                 </section>
 
                 <section className="order-step card" aria-labelledby="step-fulfil">
                   <div className="order-step__head">
                     <span className="order-step__num">2</span>
-                    <h2 id="step-fulfil">Your details</h2>
+                    <h2 id="step-fulfil">{t('Your details', 'Tus datos')}</h2>
                   </div>
                   <fieldset
                     className="field"
@@ -140,7 +149,7 @@ export default function Order() {
                     tabIndex={-1}
                     aria-describedby={attempted && errors.fulfilment ? 'fulfilment-error' : undefined}
                   >
-                    <legend>Delivery, pickup or shipping? *</legend>
+                    <legend>{t('Delivery, pickup or shipping?', '¿Entrega, recoger o envío?')} *</legend>
                     <div className="option-grid">
                       {enabledOptions.map((f) => (
                         <label key={f.id} className={`option-card ${details.fulfilment === f.id ? 'is-selected' : ''}`}>
@@ -155,7 +164,7 @@ export default function Order() {
                           <span className="option-card__desc">{f.description}</span>
                           {f.id !== 'advise' && (
                             <span className={`option-card__fee ${f.feeBZD === 0 ? 'is-free' : ''}`}>
-                              {f.feeBZD === 0 ? 'Free' : f.feeBZD === null ? 'Charge confirmed by Cojac’s' : formatBZD(f.feeBZD)}
+                              {feeLabel(f)}
                             </span>
                           )}
                         </label>
@@ -169,7 +178,7 @@ export default function Order() {
                   </fieldset>
 
                   <div className="field">
-                    <label htmlFor="name">Your name *</label>
+                    <label htmlFor="name">{t('Your name', 'Tu nombre')} *</label>
                     <input
                       id="name"
                       className="input"
@@ -190,7 +199,7 @@ export default function Order() {
 
                   {fulfilment?.asksForArea && (
                     <div className="field">
-                      <label htmlFor="area">{fulfilment.areaLabel ?? 'Exact address'} *</label>
+                      <label htmlFor="area">{fulfilment.areaLabel ?? t('Exact address', 'Dirección exacta')} *</label>
                       <textarea
                         id="area"
                         className="textarea textarea--short"
@@ -213,7 +222,7 @@ export default function Order() {
 
                   {site.askPreferredDate && (
                     <div className="field">
-                      <label htmlFor="date">Preferred date (optional)</label>
+                      <label htmlFor="date">{t('Preferred date (optional)', 'Fecha preferida (opcional)')}</label>
                       <input
                         id="date"
                         className="input"
@@ -226,16 +235,16 @@ export default function Order() {
                     </div>
                   )}
                   <div className="field">
-                    <label htmlFor="notes">Notes for Cojac’s (optional)</label>
+                    <label htmlFor="notes">{t('Notes for Cojac’s (optional)', 'Notas para Cojac’s (opcional)')}</label>
                     <textarea
                       id="notes"
                       className="textarea"
                       maxLength={MAX_ORDER_NOTES_LENGTH}
                       value={details.notes}
                       onChange={(e) => setDetails({ notes: e.target.value })}
-                      placeholder="e.g. best time to deliver"
+                      placeholder={t('e.g. best time to deliver', 'p. ej. la mejor hora para entregar')}
                     />
-                    <p className="hint">Please don’t include card or payment details.</p>
+                    <p className="hint">{t('Please don’t include card or payment details.', 'No incluyas datos de tarjeta ni de pago.')}</p>
                   </div>
                 </section>
 
@@ -252,7 +261,7 @@ export default function Order() {
               <aside className="order-summary card" aria-labelledby="step-send">
                 <div className="order-step__head">
                   <span className="order-step__num">4</span>
-                  <h2 id="step-send">Review &amp; send</h2>
+                  <h2 id="step-send">{t('Review & send', 'Revisar y enviar')}</h2>
                 </div>
                 <ul className="summary-lines">
                   {resolved.map((r) => (
@@ -260,13 +269,13 @@ export default function Order() {
                       <span>
                         {r.product.name} <small>{r.sizeLabel} × {r.line.quantity}</small>
                       </span>
-                      <span>{r.lineTotal === null ? 'TBC' : formatBZD(r.lineTotal)}</span>
+                      <span>{r.lineTotal === null ? t('TBC', 'Por confirmar') : formatBZD(r.lineTotal)}</span>
                     </li>
                   ))}
                 </ul>
                 <dl className="summary-totals">
                   <div>
-                    <dt>Subtotal</dt>
+                    <dt>{t('Subtotal', 'Subtotal')}</dt>
                     <dd>{subtotalLabel(totals)}</dd>
                   </div>
                   {fulfilment && fulfilment.id !== 'advise' && (
@@ -277,71 +286,80 @@ export default function Order() {
                   )}
                   {totals.allPriced && fulfilment && fulfilment.feeBZD !== null && (
                     <div className="summary-totals__total">
-                      <dt>Total</dt>
+                      <dt>{t('Total', 'Total')}</dt>
                       <dd>{formatBZD(totals.pricedSubtotal + fulfilment.feeBZD)}</dd>
                     </div>
                   )}
                   {payMethod && (
                     <div>
-                      <dt>Payment</dt>
+                      <dt>{t('Payment', 'Pago')}</dt>
                       <dd>
                         {payMethod === 'cash'
                           ? fulfilment?.id === 'pickup'
-                            ? 'Cash at pickup'
-                            : 'Cash on delivery'
-                          : `Bank transfer${payBank ? ` (${payBank.name})` : ''}`}
+                            ? t('Cash at pickup', 'Efectivo al recoger')
+                            : t('Cash on delivery', 'Efectivo contra entrega')
+                          : `${t('Bank transfer', 'Transferencia bancaria')}${payBank ? ` (${payBank.name})` : ''}`}
                       </dd>
                     </div>
                   )}
                   {details.preferredDate && (
                     <div>
-                      <dt>Preferred date</dt>
+                      <dt>{t('Preferred date', 'Fecha preferida')}</dt>
                       <dd>{formatLongDate(details.preferredDate)}</dd>
                     </div>
                   )}
                 </dl>
                 <p className="summary-note">
-                  <InfoIcon size={16} /> Cojac’s will confirm availability and payment on WhatsApp.
+                  <InfoIcon size={16} /> {t('Cojac’s will confirm availability and payment on WhatsApp.', 'Cojac’s confirmará la disponibilidad y el pago por WhatsApp.')}
                 </p>
 
                 <details className="message-preview">
-                  <summary>Preview your WhatsApp message</summary>
+                  <summary>{t('Preview your WhatsApp message', 'Vista previa de tu mensaje de WhatsApp')}</summary>
                   <pre>{message}</pre>
                 </details>
 
                 <label className={`check age-check ${attempted && errors.age ? 'has-error' : ''}`}>
                   <input id="age-confirm" type="checkbox" checked={ageOk} onChange={(e) => setAgeOk(e.target.checked)} />
                   <span>
-                    I confirm I am {site.alcohol.legalAge} or older. I understand rumpopo contains alcohol and may contain allergens such as egg, dairy or nuts.
+                    {t(
+                      `I confirm I am ${site.alcohol.legalAge} or older. I understand rumpopo contains alcohol and may contain allergens such as egg, dairy or nuts.`,
+                      `Confirmo que tengo ${site.alcohol.legalAge} años o más. Entiendo que el rumpopo contiene alcohol y puede contener alérgenos como huevo, lácteos o nueces.`,
+                    )}
                   </span>
                 </label>
                 {attempted && errors.age && <p className="field-error">{errors.age}</p>}
 
                 {url ? (
                   <a href={url} target="_blank" rel="noopener noreferrer" className="btn btn--whatsapp btn--block send-btn" onClick={onSend}>
-                    <WhatsAppIcon size={22} /> Send Order Request on WhatsApp
+                    <WhatsAppIcon size={22} /> {t('Send Order Request on WhatsApp', 'Enviar pedido por WhatsApp')}
                   </a>
                 ) : (
                   <>
                     <button type="button" className="btn btn--whatsapp btn--block send-btn" disabled aria-describedby="no-number">
-                      <WhatsAppIcon size={22} /> Send Order Request on WhatsApp
+                      <WhatsAppIcon size={22} /> {t('Send Order Request on WhatsApp', 'Enviar pedido por WhatsApp')}
                     </button>
                     <p className="notice notice--danger" id="no-number">
                       {destination.ok === false && destination.reason === 'invalid'
-                        ? 'The WhatsApp order number is not set up correctly yet. Please copy your order details below and contact Cojac’s directly.'
-                        : 'Our WhatsApp order line is being set up. Please copy your order details below and send them to Cojac’s directly.'}
+                        ? t(
+                            'The WhatsApp order number is not set up correctly yet. Please copy your order details below and contact Cojac’s directly.',
+                            'El número de WhatsApp para pedidos aún no está bien configurado. Copia los detalles de tu pedido abajo y contacta a Cojac’s directamente.',
+                          )
+                        : t(
+                            'Our WhatsApp order line is being set up. Please copy your order details below and send them to Cojac’s directly.',
+                            'Estamos configurando nuestra línea de pedidos por WhatsApp. Copia los detalles de tu pedido abajo y envíaselos a Cojac’s directamente.',
+                          )}
                     </p>
                     {previewUrl && (
                       <a href={previewUrl} target="_blank" rel="noopener noreferrer" className="btn btn--ghost-dark btn--block" onClick={onSend}>
-                        Internal preview: open WhatsApp &amp; choose a chat
+                        {t('Internal preview: open WhatsApp & choose a chat', 'Vista interna: abre WhatsApp y elige un chat')}
                       </a>
                     )}
                   </>
                 )}
-                {destination.ok && destination.source === 'qa' && <p className="qa-flag">QA test line, not the business number</p>}
+                {destination.ok && destination.source === 'qa' && <p className="qa-flag">{t('QA test line, not the business number', 'Línea de prueba, no es el número del negocio')}</p>}
 
                 <button type="button" className="btn btn--ghost-dark btn--block" onClick={onCopy}>
-                  <CopyIcon size={18} /> Copy order details
+                  <CopyIcon size={18} /> {t('Copy order details', 'Copiar detalles del pedido')}
                 </button>
 
                 <div className="send-status" role="status" aria-live="polite">
@@ -349,26 +367,45 @@ export default function Order() {
                     <p className="notice">
                       <WhatsAppIcon size={20} />
                       <span>
-                        WhatsApp will open with your order request. Please send the message to complete your enquiry. Cojac’s will confirm
-                        details directly.
+                        {t(
+                          'WhatsApp will open with your order request. Please send the message to complete your enquiry. Cojac’s will confirm details directly.',
+                          'WhatsApp se abrirá con tu pedido. Envía el mensaje para completar tu solicitud. Cojac’s confirmará los detalles directamente.',
+                        )}
                         <br />
-                        <small>WhatsApp didn’t open? Use “Copy order details” and paste it into a chat with Cojac’s.</small>
+                        <small>
+                          {t(
+                            'WhatsApp didn’t open? Use “Copy order details” and paste it into a chat with Cojac’s.',
+                            '¿No se abrió WhatsApp? Usa “Copiar detalles del pedido” y pégalo en un chat con Cojac’s.',
+                          )}
+                        </small>
                       </span>
                     </p>
                   )}
                   {status === 'copied' && (
                     <p className="notice notice--soft">
-                      <CheckIcon size={20} /> Order details copied. Paste them into a WhatsApp chat with Cojac’s and press Send.
+                      <CheckIcon size={20} />{' '}
+                      {t(
+                        'Order details copied. Paste them into a WhatsApp chat with Cojac’s and press Send.',
+                        'Detalles del pedido copiados. Pégalos en un chat de WhatsApp con Cojac’s y presiona Enviar.',
+                      )}
                     </p>
                   )}
                   {status === 'copy-failed' && (
-                    <p className="notice notice--danger">Copying isn’t available in this browser. Open “Preview your WhatsApp message” above and copy the text manually.</p>
+                    <p className="notice notice--danger">
+                      {t(
+                        'Copying isn’t available in this browser. Open “Preview your WhatsApp message” above and copy the text manually.',
+                        'Este navegador no permite copiar. Abre “Vista previa de tu mensaje de WhatsApp” arriba y copia el texto a mano.',
+                      )}
+                    </p>
                   )}
                 </div>
                 <p className="privacy-fine">
-                  WhatsApp is a separate service run by Meta and has its own privacy policy. This website doesn’t store your order or take payments.{' '}
+                  {t(
+                    'WhatsApp is a separate service run by Meta and has its own privacy policy. This website doesn’t store your order or take payments.',
+                    'WhatsApp es un servicio independiente de Meta y tiene su propia política de privacidad. Este sitio web no guarda tu pedido ni recibe pagos.',
+                  )}{' '}
                   <Link to={routes.privacy.path} className="text-link">
-                    Privacy
+                    {t('Privacy', 'Privacidad')}
                   </Link>
                 </p>
               </aside>

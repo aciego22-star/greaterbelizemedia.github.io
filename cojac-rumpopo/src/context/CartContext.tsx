@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useReducer,
 import type { CartLine, OrderDetails } from '../types';
 import { getCatalogue } from '../content/catalogue';
 import { clampQuantity, lineKey, MAX_NOTE_LENGTH, resolveLines, computeTotals, type ResolvedLine, type Totals } from '../lib/order';
+import { t } from '../i18n/lang';
 
 const STORAGE_KEY = 'cojac-order-request-v1';
 
@@ -126,17 +127,17 @@ export function CartProvider({ children }: { children: ReactNode }) {
       add: (productId, variantId, quantity, note) => {
         dispatch({ type: 'add', productId, variantId, quantity, note });
         const p = getCatalogue().find((x) => x.id === productId);
-        announce(`${p?.name ?? 'Item'} added to your order`);
+        announce(t(`${p?.name ?? 'Item'} added to your order`, `${p?.name ?? 'Artículo'} añadido a tu pedido`));
       },
       setQty: (key, quantity) => dispatch({ type: 'setQty', key, quantity }),
       setNote: (key, note) => dispatch({ type: 'setNote', key, note }),
       remove: (key) => {
         dispatch({ type: 'remove', key });
-        announce('Item removed from your order');
+        announce(t('Item removed from your order', 'Artículo eliminado de tu pedido'));
       },
       clear: () => {
         dispatch({ type: 'clear' });
-        announce('Your order request was cleared');
+        announce(t('Your order request was cleared', 'Se vació tu pedido'));
       },
       drawerOpen,
       openDrawer: () => setDrawerOpen(true),

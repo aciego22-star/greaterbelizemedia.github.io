@@ -25,6 +25,12 @@ Nothing below was invented. Each item is either empty in the config (so it is hi
 
 | # | Item | Where |
 |---|---|---|
+| 8b | **Spanish read-through** by a Spanish-speaking family member (the site is fully bilingual; wording is neutral Latin American Spanish with “tú”) | `t('…', '…')` texts, `src/content/routes.ts` |
+
+
+
+| # | Item | Where |
+|---|---|---|
 | 9 | ~~Logo~~ (done: official logo in `public/brand/`). Still needed: bottle label art and official brand colour codes, if any. | `global.css` |
 | 10 | ~~Product photography~~ — **done**: 14 photos (desktop 4:3 + mobile 4:5) for all seven flavours | `public/products/` |
 | 11 | ~~Gallery photos~~ — **done**: nine owner-supplied scenes (desktop 4:3 + mobile 4:5 pairs). Note: the “Chilled on ice” photo shows a bottle labelled “Piña Colada”, which is not on the current menu; confirm the family is happy to show it. | `public/gallery/`, `gallery.ts` |

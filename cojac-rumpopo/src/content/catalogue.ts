@@ -13,14 +13,17 @@
  */
 import type { Product, ProductImage, ProductVariant } from '../types';
 import { buildFlags } from './site';
+import { t } from '../i18n/lang';
 
-const ALCOHOL_NOTE = 'Contains alcohol. For adults of legal drinking age only.';
+const ALCOHOL_NOTE = t('Contains alcohol. For adults of legal drinking age only.', 'Contiene alcohol. Solo para adultos mayores de edad.');
+const HALF = t('Half liter (500 mL)', 'Medio litro (500 mL)');
+const LITER = t('Liter (1 L)', 'Litro (1 L)');
 
 /** Two sizes and two prices, in BZD, as supplied by the family. */
 function sizes(halfLiter: number, liter: number): ProductVariant[] {
   return [
-    { variantId: 'half-liter', bottleSize: 'Half liter (500 mL)', priceBZD: halfLiter, availability: 'on-menu' },
-    { variantId: 'liter', bottleSize: 'Liter (1 L)', priceBZD: liter, availability: 'on-menu' },
+    { variantId: 'half-liter', bottleSize: HALF, priceBZD: halfLiter, availability: 'on-menu' },
+    { variantId: 'liter', bottleSize: LITER, priceBZD: liter, availability: 'on-menu' },
   ];
 }
 
@@ -31,7 +34,7 @@ function photo(base: string, flavour: string): ProductImage[] {
       base,
       src: `/products/${base}_Desktop_1600x1200.jpg`,
       mobileSrc: `/products/${base}_Mobile_1080x1350.jpg`,
-      alt: `Bottle of Cojac’s ${flavour} Rumpopo in front of a Christmas tree`,
+      alt: t(`Bottle of Cojac’s ${flavour} Rumpopo in front of a Christmas tree`, `Botella de rumpopo Cojac’s ${flavour} frente a un árbol de Navidad`),
     },
   ];
 }
@@ -53,9 +56,11 @@ export const products: Product[] = [
     id: 'classic-vanilla',
     slug: 'classic-vanilla',
     name: 'Classic Vanilla Rumpopo',
-    subtitle: 'Where it all started',
-    description:
+    subtitle: t('Where it all started', 'Donde todo comenzó'),
+    description: t(
       'Classic Vanilla may have started it all. The familiar holiday favourite our story began with, made to be rich, smooth and creamy.',
+      'Classic Vanilla quizá lo empezó todo. El favorito navideño de siempre con el que comenzó nuestra historia, hecho para ser rico, suave y cremoso.',
+    ),
     images: photo('Cojacs_Classic_Vanilla_Rumpopo', 'Classic Vanilla'),
     seasonalCollection: 'classic',
     highlighted: true,
@@ -68,9 +73,12 @@ export const products: Product[] = [
     id: 'peanut-delight',
     slug: 'peanut-delight',
     name: 'Peanut Delight Rumpopo',
-    subtitle: 'A customer favourite',
+    subtitle: t('A customer favourite', 'Un favorito de los clientes'),
     description:
-      'One of the flavours many customers now look forward to just as much as the original. Proof that some traditions are worth reinventing.',
+      t(
+        'One of the flavours many customers now look forward to just as much as the original. Proof that some traditions are worth reinventing.',
+        'Uno de los sabores que muchos clientes ahora esperan tanto como el original. La prueba de que algunas tradiciones merecen reinventarse.',
+      ),
     images: photo('Cojacs_Peanut_Delight_Rumpopo', 'Peanut Delight'),
     seasonalCollection: 'customer-favourite',
     highlighted: true,
@@ -84,8 +92,11 @@ export const products: Product[] = [
     id: 'pumpkin-spice',
     slug: 'pumpkin-spice',
     name: 'Pumpkin Spice Rumpopo',
-    subtitle: 'A customer favourite',
-    description: 'A customer favourite with its own seasonal twist, for anyone who believes Christmas should be a little more than classic.',
+    subtitle: t('A customer favourite', 'Un favorito de los clientes'),
+    description: t(
+      'A customer favourite with its own seasonal twist, for anyone who believes Christmas should be a little more than classic.',
+      'Un favorito de los clientes con su propio toque de temporada, para quienes creen que la Navidad debe ser un poco más que clásica.',
+    ),
     images: photo('Cojacs_Pumpkin_Spice_Rumpopo', 'Pumpkin Spice'),
     seasonalCollection: 'customer-favourite',
     highlighted: true,
@@ -98,8 +109,11 @@ export const products: Product[] = [
     id: 'white-chocolate-hazelnut',
     slug: 'white-chocolate-hazelnut',
     name: 'White Chocolate w/ Hazelnut Rumpopo',
-    subtitle: 'Seasonal creation',
-    description: 'White chocolate and hazelnut, made the Cojac’s way. A seasonal creation for anyone looking for something different to discover.',
+    subtitle: t('Seasonal creation', 'Creación de temporada'),
+    description: t(
+      'White chocolate and hazelnut, made the Cojac’s way. A seasonal creation for anyone looking for something different to discover.',
+      'Chocolate blanco y avellana, al estilo Cojac’s. Una creación de temporada para quienes buscan algo diferente por descubrir.',
+    ),
     images: photo('Cojacs_White_Chocolate_Hazelnut_Rumpopo', 'White Chocolate w/ Hazelnut'),
     seasonalCollection: 'seasonal',
     highlighted: true,
@@ -113,8 +127,11 @@ export const products: Product[] = [
     id: 'dark-chocolate-peppermint',
     slug: 'dark-chocolate-peppermint',
     name: 'Dark Chocolate Peppermint Rumpopo',
-    subtitle: 'Seasonal creation',
-    description: 'Dark chocolate and peppermint, a festive pairing for the season, poured the Cojac’s way.',
+    subtitle: t('Seasonal creation', 'Creación de temporada'),
+    description: t(
+      'Dark chocolate and peppermint, a festive pairing for the season, poured the Cojac’s way.',
+      'Chocolate oscuro y menta, una combinación festiva para la temporada, servida al estilo Cojac’s.',
+    ),
     images: photo('Cojacs_Dark_Chocolate_Peppermint_Rumpopo', 'Dark Chocolate Peppermint'),
     seasonalCollection: 'seasonal',
     highlighted: false,
@@ -127,8 +144,11 @@ export const products: Product[] = [
     id: 'snickerdeluxe',
     slug: 'snickerdeluxe',
     name: 'Snickerdeluxe Rumpopo',
-    subtitle: 'Seasonal creation',
-    description: 'One of Cojac’s seasonal creations: a little more indulgent, and something different to discover this Christmas.',
+    subtitle: t('Seasonal creation', 'Creación de temporada'),
+    description: t(
+      'One of Cojac’s seasonal creations: a little more indulgent, and something different to discover this Christmas.',
+      'Una de las creaciones de temporada de Cojac’s: un poco más indulgente, y algo diferente por descubrir esta Navidad.',
+    ),
     images: photo('Cojacs_Snickerdeluxe_Rumpopo', 'Snickerdeluxe'),
     seasonalCollection: 'seasonal',
     highlighted: false,
@@ -141,13 +161,16 @@ export const products: Product[] = [
     id: 'vegan',
     slug: 'vegan',
     name: 'Vegan Rumpopo',
-    subtitle: 'Vegan',
-    description: 'Cojac’s rumpopo, made vegan, so more people at the table can share the season. Like every Cojac’s rumpopo, it contains alcohol.',
+    subtitle: t('Vegan', 'Vegano'),
+    description: t(
+      'Cojac’s rumpopo, made vegan, so more people at the table can share the season. Like every Cojac’s rumpopo, it contains alcohol.',
+      'El rumpopo Cojac’s en versión vegana, para que más personas en la mesa puedan compartir la temporada. Como todo rumpopo Cojac’s, contiene alcohol.',
+    ),
     images: photo('Cojacs_Vegan_Rumpopo', 'Vegan'),
     seasonalCollection: 'seasonal',
     highlighted: false,
     variants: sizes(25, 50),
-    dietaryLabel: 'Vegan (as named by Cojac’s). Contains alcohol.',
+    dietaryLabel: t('Vegan (as named by Cojac’s). Contains alcohol.', 'Vegano (según lo nombra Cojac’s). Contiene alcohol.'),
     editorialNotes: 'Confirm ingredients/allergens for the vegan recipe before publishing them.',
     palette: { cream: '#E3C79C', deep: '#B8955E', accent: '#1F4A3A' },
   },
@@ -161,19 +184,22 @@ export const collections: { id: string; includes: Product['seasonalCollection'][
   {
     id: 'classics',
     includes: ['classic', 'customer-favourite'],
-    title: 'The Classic & Customer Favourites',
-    intro: 'Classic Vanilla started it all, and these are the flavours many customers now look forward to just as much as the original.',
+    title: t('The Classic & Customer Favourites', 'El clásico y los favoritos de los clientes'),
+    intro: t(
+      'Classic Vanilla started it all, and these are the flavours many customers now look forward to just as much as the original.',
+      'Classic Vanilla lo empezó todo, y estos son los sabores que muchos clientes ahora esperan tanto como el original.',
+    ),
   },
   {
     id: 'seasonal',
     includes: ['seasonal', 'new-release'],
-    title: 'Seasonal Creations',
-    intro: 'There’s always something different to discover.',
+    title: t('Seasonal Creations', 'Creaciones de temporada'),
+    intro: t('There’s always something different to discover.', 'Siempre hay algo diferente por descubrir.'),
   },
 ];
 
 /** The two sizes every flavour comes in (for FAQs and summaries). */
-export const sizeNames = ['Half liter (500 mL)', 'Liter (1 L)'];
+export const sizeNames = [HALF, LITER];
 
 /**
  * Internal stakeholder preview only (npm run build:illustrative): sample sizes

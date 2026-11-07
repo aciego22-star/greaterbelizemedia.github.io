@@ -20,6 +20,8 @@
  * Please keep text free of long dashes (house style).
  */
 
+import { dateLocale, t } from '../../i18n/lang';
+
 export type BlogCategoryId =
   | 'seasonal-news'
   | 'new-flavours'
@@ -36,12 +38,36 @@ export interface BlogCategory {
 
 /** Planning taxonomy. A category with no posts shows a friendly "coming soon" state. */
 export const blogCategories: BlogCategory[] = [
-  { id: 'seasonal-news', name: 'Seasonal News', description: 'Season openings, announcements and what is happening in the Cojac’s kitchen.' },
-  { id: 'new-flavours', name: 'New Flavours', description: 'New creations, flavour reveals and the stories behind them.' },
-  { id: 'behind-the-bottle', name: 'Behind the Bottle', description: 'The family, the recipe and the care that goes into every bottle.' },
-  { id: 'holiday-traditions', name: 'Holiday Traditions', description: 'Rumpopo and the Belizean Christmas moments it belongs to.' },
-  { id: 'offers-pop-ups', name: 'Offers & Pop-ups', description: 'Seasonal promotions and where to find Cojac’s around Belize City.' },
-  { id: 'videos-features', name: 'Videos & Features', description: 'Television features, interviews and moments from the journey.' },
+  {
+    id: 'seasonal-news',
+    name: t('Seasonal News', 'Noticias de temporada'),
+    description: t('Season openings, announcements and what is happening in the Cojac’s kitchen.', 'Inicios de temporada, anuncios y lo que pasa en la cocina de Cojac’s.'),
+  },
+  {
+    id: 'new-flavours',
+    name: t('New Flavours', 'Nuevos sabores'),
+    description: t('New creations, flavour reveals and the stories behind them.', 'Nuevas creaciones, sabores revelados y las historias detrás de ellos.'),
+  },
+  {
+    id: 'behind-the-bottle',
+    name: t('Behind the Bottle', 'Detrás de la botella'),
+    description: t('The family, the recipe and the care that goes into every bottle.', 'La familia, la receta y el cuidado que se pone en cada botella.'),
+  },
+  {
+    id: 'holiday-traditions',
+    name: t('Holiday Traditions', 'Tradiciones navideñas'),
+    description: t('Rumpopo and the Belizean Christmas moments it belongs to.', 'El rumpopo y los momentos navideños beliceños de los que forma parte.'),
+  },
+  {
+    id: 'offers-pop-ups',
+    name: t('Offers & Pop-ups', 'Ofertas y ventas especiales'),
+    description: t('Seasonal promotions and where to find Cojac’s around Belize City.', 'Promociones de temporada y dónde encontrar a Cojac’s en la Ciudad de Belice.'),
+  },
+  {
+    id: 'videos-features',
+    name: t('Videos & Features', 'Videos y reportajes'),
+    description: t('Television features, interviews and moments from the journey.', 'Reportajes de televisión, entrevistas y momentos del camino.'),
+  },
 ];
 
 export interface BlogImage {
@@ -79,20 +105,97 @@ export interface BlogPost {
   published: boolean;
 }
 
+const SECRET_FLAVOUR_ES = `
+**¡Cojac’s Sumptuous Rumpopo está oficialmente de vuelta para la temporada navideña 2026!** Extrañamos las conversaciones navideñas, la emoción de conseguir tu botella favorita y esa sensación inconfundible de que por fin llegó la temporada festiva. A todos los que nos han apoyado a lo largo de los años, y a quienes descubren Cojac’s por primera vez: bienvenidos. Nos encanta compartir otra temporada con ustedes.
+
+Pero este regreso trae una pequeña sorpresa. Junto al rumpopo rico y cremoso que ya conoces y quieres, **estamos preparando un sabor completamente nuevo** para la línea Sumptuous. Por ahora mantenemos el sabor en secreto, y tenemos un pequeño reto navideño para nuestros seguidores mientras esperamos la gran revelación.
+
+## Una tradición navideña beliceña que vale la pena celebrar
+
+Pregúntale a un beliceño qué hace especial la Navidad y tendrás muchas respuestas: las reuniones familiares, la música de siempre, la buena comida, las visitas de los seres queridos y esas pequeñas tradiciones que esperamos todo el año. En algún momento de esas conversaciones, el rumpopo casi seguro va a aparecer.
+
+Para muchas familias, el rumpopo es más que una bebida de temporada. Es la botella que se saca para recibir a las visitas, el gusto que se comparte en una reunión navideña y el regalo que pasa entre amigos, vecinos y compañeros. La temporada simplemente no se sentiría igual sin él.
+
+En Cojac’s Sumptuous Rumpopo, llevamos más de quince años siendo parte de esas celebraciones. Lo que empezó con una receta familiar y el amor por un rumpopo delicioso se ha convertido en una tradición anual propia. Siempre hemos respetado el sabor clásico con el que comenzó [nuestro camino](/our-story), y disfrutamos de la creatividad de presentar algo nuevo.
+
+La [promesa detrás de cada botella](/our-guarantee) sigue siendo la misma: **rumpopo rico, suave y cremoso, lleno de sabor y lleno hasta el tope.** Queremos que cada botella se sienta especial, ya sea que la compartas con tu familia o la guardes para un momento tranquilo en las fiestas.
+
+## Algo nuevo llega a la familia Sumptuous en 2026
+
+Este año añadimos una nueva creación a la línea, y decidimos no revelar su nombre todavía. Después de todo, ¿qué gracia tiene en las fiestas revelar todas las sorpresas a la vez?
+
+Esto sí te lo podemos contar: el nuevo sabor trae una inspiración claramente beliceña a una bebida que la gente ya ama. Es una celebración de los sabores, los ingredientes y las tradiciones culinarias de nuestra tierra.
+
+**Esta es tu única pista oficial:**
+
+> Uno de los ingredientes principales de nuestro nuevo sabor de rumpopo es muy popular en la cocina beliceña.
+
+¡Eso es todo lo que revelamos por ahora! Sabemos que la comunidad de Cojac’s está llena de personas a las que les encanta un buen misterio culinario, y estamos ansiosos por ver qué se les ocurre.
+
+## Adivina el sabor secreto y gana una botella gratis
+
+Para celebrar el inicio de la temporada de rumpopo, **tres seguidores tendrán la oportunidad de probar nuestro nuevo sabor por cuenta de la casa.** Las primeras tres personas que adivinen correctamente el nuevo sabor en los comentarios de nuestra publicación oficial del concurso en Facebook recibirán cada una **una botella de medio litro** de la nueva creación de esta temporada.
+
+[[contest]]
+
+Revelaremos el nuevo sabor en nuestros canales oficiales cuando llegue el momento. Hasta entonces, sigan enviando sus respuestas y estén pendientes del anuncio.
+
+## Tu gusto navideño favorito también está de vuelta
+
+Puede que el concurso se lleve todo el misterio, pero el corazón de la temporada sigue siendo lo que siempre nos ha encantado de Cojac’s: hacer un rumpopo delicioso para los momentos que vale la pena compartir.
+
+Nuestros clientes de siempre ya conocen la sensación: el primer sorbo, la textura cremosa, los aromas navideños inconfundibles y la alegría de disfrutar algo que esperaste todo el año. Si eres nuevo por aquí, nos encantaría que este sea el año en que descubras por qué tanta gente espera la temporada de Cojac’s Sumptuous Rumpopo.
+
+También compartiremos más noticias a medida que avancen las fiestas, como la revelación del nuevo sabor, promociones de temporada, ventas especiales y vistazos de lo que pasa [detrás de cámaras](/videos-features). El **Blog navideño** será el lugar para seguir esas historias en un solo sitio.
+
+## Cómo pedir Cojac’s Sumptuous Rumpopo esta temporada
+
+**El rumpopo ya está disponible para la temporada navideña 2026.** Cojac’s está en la Ciudad de Belice y ha anunciado entregas en la Ciudad de Belice y envíos a todo el país. La disponibilidad, los arreglos de entrega y cualquier costo asociado los confirma directamente el negocio cuando se hace un pedido.
+
+En nuestro sitio web puedes [explorar los sabores disponibles](/flavours), revisar tu selección y enviar tu pedido por **WhatsApp**. El sitio no tiene pago con tarjeta ni caja en línea: nuestro equipo confirmará tu pedido y los siguientes pasos en la conversación.
+
+[[order]]
+
+## Por una Navidad verdaderamente suntuosa
+
+Hay algo maravilloso en una tradición que regresa cada año. Aunque el calendario esté lleno y todo lo demás se sienta diferente, algunas cosas nos devuelven a las personas y las celebraciones que amamos.
+
+Agradecemos a todos los que hacen de Cojac’s Sumptuous Rumpopo parte de su temporada navideña. Gracias por recibirnos en sus hogares, compartir nuestras botellas con sus seres queridos y darnos una razón para seguir creando.
+
+**Llegó la temporada de rumpopo. El nuevo sabor ya viene. Y esta Navidad tenemos muchas más sorpresas suntuosas preparadas.**
+
+Estén pendientes de nuestro Blog navideño y de nuestra página oficial de Facebook para la revelación del sabor y los próximos anuncios de temporada.
+
+[[signoff]]
+`;
+
 export const posts: BlogPost[] = [
   {
     slug: 'rumpopo-season-2026-secret-flavour',
-    title: 'Rumpopo Season Is Back in Belize: Can You Guess Cojac’s New Flavour?',
-    seoTitle: 'Rumpopo Season 2026 Is Back | Cojac’s New Flavour Mystery',
-    metaDescription:
+    title: t(
+      'Rumpopo Season Is Back in Belize: Can You Guess Cojac’s New Flavour?',
+      'Volvió la temporada de rumpopo a Belice: ¿adivinas el nuevo sabor de Cojac’s?',
+    ),
+    seoTitle: t('Rumpopo Season 2026 Is Back | Cojac’s New Flavour Mystery', 'Volvió la temporada de rumpopo 2026 | El sabor misterioso de Cojac’s'),
+    metaDescription: t(
       'Rumpopo season is back in Belize! Celebrate Christmas with Cojac’s Sumptuous Rumpopo and guess the secret new 2026 flavour on Facebook.',
-    excerpt:
+      '¡Volvió la temporada de rumpopo a Belice! Celebra la Navidad con Cojac’s Sumptuous Rumpopo y adivina el nuevo sabor secreto de 2026 en Facebook.',
+    ),
+    excerpt: t(
       'The nutmeg is grated, the bottles are chilling, and Cojac’s Sumptuous Rumpopo is back for the 2026 holiday season, with a delicious secret still waiting to be revealed.',
-    dek: 'The nutmeg is grated, the bottles are chilling, and the kitchen has been busy. You know what that means: the sweetest time of the year is back.',
+      'La nuez moscada ya está rallada, las botellas se están enfriando y Cojac’s Sumptuous Rumpopo está de vuelta para la temporada navideña 2026, con un delicioso secreto que aún falta por revelar.',
+    ),
+    dek: t(
+      'The nutmeg is grated, the bottles are chilling, and the kitchen has been busy. You know what that means: the sweetest time of the year is back.',
+      'La nuez moscada ya está rallada, las botellas se están enfriando y la cocina no ha parado. Ya sabes lo que eso significa: volvió la época más dulce del año.',
+    ),
     publishedAt: '2026-11-07',
     updatedAt: '2026-11-07',
     categories: ['seasonal-news', 'new-flavours'],
-    tags: ['rumpopo Belize', 'Belizean rum popo', 'rum popo season 2026', 'Belize Christmas drink', 'new rumpopo flavour'],
+    tags: t(
+      'rumpopo Belize|Belizean rum popo|rum popo season 2026|Belize Christmas drink|new rumpopo flavour',
+      'rumpopo Belice|rum popo beliceño|temporada de rum popo 2026|bebida navideña de Belice|nuevo sabor de rumpopo',
+    ).split('|'),
     author: 'Cojac’s Sumptuous Rumpopo',
     published: true,
     image: {
@@ -106,9 +209,13 @@ export const posts: BlogPost[] = [
       mobileWebpSmall: '/blog/Cojacs_Secret_Flavour_Holiday_Blog_MOBILE_540x675.webp',
       mobileWidth: 1080,
       mobileHeight: 1350,
-      alt: 'Cojac’s 2026 mystery rumpopo flavour giveaway announcement, inviting guesses for three half liter bottle prizes.',
+      alt: t(
+        'Cojac’s 2026 mystery rumpopo flavour giveaway announcement, inviting guesses for three half liter bottle prizes.',
+        'Anuncio del concurso del sabor misterioso de rumpopo Cojac’s 2026, que invita a adivinar para ganar uno de tres premios de una botella de medio litro.',
+      ),
     },
-    body: `
+    body: t(
+      `
 **Cojac’s Sumptuous Rumpopo is officially back for the 2026 holiday season!** We have missed the Christmas conversations, the excitement of getting your favourite bottle, and that unmistakable feeling that the festive season has finally arrived. To everyone who has supported us over the years, and everyone discovering Cojac’s for the first time: welcome back. We are delighted to share another season with you.
 
 But this year’s return comes with a little twist. Alongside the rich, creamy rumpopo you know and love, **we are preparing to introduce an entirely new flavour** to the Sumptuous lineup. We’re keeping the flavour itself under wraps for now, and we have a little holiday challenge for our followers while we wait for the big reveal.
@@ -171,6 +278,8 @@ Keep an eye on our Holiday Blog and official Facebook page for the flavour revea
 
 [[signoff]]
 `,
+      SECRET_FLAVOUR_ES,
+    ),
   },
 ];
 
@@ -207,5 +316,5 @@ export function readingMinutes(post: BlogPost): number {
 /** "7 November 2026" */
 export function formatPostDate(iso: string): string {
   const [y, m, d] = iso.split('-').map(Number);
-  return new Date(Date.UTC(y, m - 1, d, 12)).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+  return new Date(Date.UTC(y, m - 1, d, 12)).toLocaleDateString(dateLocale, { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 }

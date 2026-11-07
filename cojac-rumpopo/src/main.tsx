@@ -9,19 +9,35 @@ import './styles/components.css';
 import './styles/pages.css';
 import App from './App';
 import { CartProvider } from './context/CartContext';
+import { lang, routerBasename } from './i18n/lang';
+import { ARTIFACT_PATH_KEY } from './components/LangToggle';
 
 document.documentElement.classList.remove('no-js');
+document.documentElement.lang = lang === 'es' ? 'es-BZ' : 'en-BZ';
 
 // Artifact previews run inside a sandboxed frame, so they keep navigation in memory.
 // Netlify (production) uses clean URLs with BrowserRouter.
 const isArtifact = import.meta.env.VITE_ARTIFACT === 'true';
-const basename = import.meta.env.BASE_URL.replace(/\/$/, '') || undefined;
+// Spanish pages live under /es: the router treats that prefix as its base, so every
+// internal link stays in the visitor's language.
+const basename = routerBasename();
+
+// After switching language in the artifact preview, reopen the same page.
+let artifactStart = '/';
+if (isArtifact) {
+  try {
+    artifactStart = sessionStorage.getItem(ARTIFACT_PATH_KEY) || '/';
+    sessionStorage.removeItem(ARTIFACT_PATH_KEY);
+  } catch {
+    /* storage blocked */
+  }
+}
 
 const container = document.getElementById('root')!;
 const app = (
   <StrictMode>
     {isArtifact ? (
-      <MemoryRouter>
+      <MemoryRouter initialEntries={[artifactStart]}>
         <CartProvider>
           <App />
         </CartProvider>

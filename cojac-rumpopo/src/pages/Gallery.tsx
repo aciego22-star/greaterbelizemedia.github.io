@@ -4,6 +4,7 @@ import { usePageMeta } from '../lib/usePageMeta';
 import { ArrowIcon, CloseIcon } from '../components/Icons';
 import { PageHero, Reveal } from '../components/ui';
 import { GalleryPicture, GalleryTile } from '../components/sections';
+import { t } from '../i18n/lang';
 
 function Lightbox({ index, onClose, onMove }: { index: number; onClose: () => void; onMove: (d: number) => void }) {
   const item = gallery[index];
@@ -25,21 +26,21 @@ function Lightbox({ index, onClose, onMove }: { index: number; onClose: () => vo
     };
   }, [onClose, onMove]);
   return (
-    <div className="lightbox" role="dialog" aria-modal="true" aria-label={`${item.caption}, image ${index + 1} of ${gallery.length}`} ref={ref} tabIndex={-1}>
-      <button type="button" className="lightbox__backdrop" onClick={onClose} aria-label="Close" tabIndex={-1} />
+    <div className="lightbox" role="dialog" aria-modal="true" aria-label={`${item.caption}, ${t('image', 'imagen')} ${index + 1} ${t('of', 'de')} ${gallery.length}`} ref={ref} tabIndex={-1}>
+      <button type="button" className="lightbox__backdrop" onClick={onClose} aria-label={t('Close', 'Cerrar')} tabIndex={-1} />
       <figure className="lightbox__figure">
         <GalleryPicture item={item} large eager />
         <figcaption>
           {item.caption} <span>· {index + 1} / {gallery.length}</span>
         </figcaption>
       </figure>
-      <button type="button" className="lightbox__nav lightbox__nav--prev" onClick={() => onMove(-1)} aria-label="Previous image">
+      <button type="button" className="lightbox__nav lightbox__nav--prev" onClick={() => onMove(-1)} aria-label={t('Previous image', 'Imagen anterior')}>
         <ArrowIcon size={22} style={{ transform: 'rotate(180deg)' }} />
       </button>
-      <button type="button" className="lightbox__nav lightbox__nav--next" onClick={() => onMove(1)} aria-label="Next image">
+      <button type="button" className="lightbox__nav lightbox__nav--next" onClick={() => onMove(1)} aria-label={t('Next image', 'Imagen siguiente')}>
         <ArrowIcon size={22} />
       </button>
-      <button type="button" className="lightbox__close" onClick={onClose} aria-label="Close gallery">
+      <button type="button" className="lightbox__close" onClick={onClose} aria-label={t('Close gallery', 'Cerrar galería')}>
         <CloseIcon size={24} />
       </button>
     </div>
@@ -56,10 +57,14 @@ export default function Gallery() {
       <PageHero
         title={
           <>
-            Moments from the <em className="italic-gold">Season</em>
+            {t('Moments from the ', 'Momentos de la ')}
+            <em className="italic-gold">{t('Season', 'temporada')}</em>
           </>
         }
-        lead="Bottles, holiday gifting, community events and memories from the Cojac’s rumpopo season."
+        lead={t(
+          'Bottles, holiday gifting, community events and memories from the Cojac’s rumpopo season.',
+          'Botellas, regalos navideños, eventos comunitarios y recuerdos de la temporada de rumpopo Cojac’s.',
+        )}
       />
       <section className="section section--paper">
         <div className="container">

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { site } from '../content/site';
 import { Ornament } from './Art';
 import { Logo } from './ui';
+import { t } from '../i18n/lang';
 
 const KEY = 'cojac-age-confirmed-v1';
 
@@ -45,28 +46,34 @@ export function AgeNotice() {
         <Ornament />
         {state === 'ask' ? (
           <>
-            <h2 id="age-title">Welcome to rumpopo season</h2>
+            <h2 id="age-title">{t('Welcome to rumpopo season', 'Te damos la bienvenida a la temporada de rumpopo')}</h2>
             <p id="age-desc">
-              Our rumpopo contains alcohol. Please confirm you are {site.alcohol.legalAge} or older to continue.
+              {t(
+                `Our rumpopo contains alcohol. Please confirm you are ${site.alcohol.legalAge} or older to continue.`,
+                `Nuestro rumpopo contiene alcohol. Confirma que tienes ${site.alcohol.legalAge} años o más para continuar.`,
+              )}
             </p>
             <div className="age-actions">
               <button type="button" className="btn" onClick={yes}>
-                I’m {site.alcohol.legalAge} or older
+                {t(`I’m ${site.alcohol.legalAge} or older`, `Tengo ${site.alcohol.legalAge} años o más`)}
               </button>
               <button type="button" className="btn btn--ghost-dark" onClick={() => setState('under')}>
-                I’m under {site.alcohol.legalAge}
+                {t(`I’m under ${site.alcohol.legalAge}`, `Tengo menos de ${site.alcohol.legalAge} años`)}
               </button>
             </div>
-            <p className="age-fine">Please enjoy responsibly.</p>
+            <p className="age-fine">{t('Please enjoy responsibly.', 'Disfruta con responsabilidad.')}</p>
           </>
         ) : (
           <>
-            <h2 id="age-title">Thanks for visiting</h2>
+            <h2 id="age-title">{t('Thanks for visiting', 'Gracias por tu visita')}</h2>
             <p id="age-desc">
-              Our rumpopo is only for adults of legal drinking age. We hope you and your family have a very merry Christmas.
+              {t(
+                'Our rumpopo is only for adults of legal drinking age. We hope you and your family have a very merry Christmas.',
+                'Nuestro rumpopo es solo para adultos mayores de edad. Te deseamos a ti y a tu familia una muy feliz Navidad.',
+              )}
             </p>
             <button type="button" className="btn btn--ghost-dark" onClick={() => setState('ask')}>
-              Go back
+              {t('Go back', 'Volver')}
             </button>
           </>
         )}

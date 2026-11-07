@@ -8,6 +8,7 @@ import { asset } from '../lib/whatsapp';
 import { BottleArt, Sparkle } from './Art';
 import { CheckIcon, PlusIcon } from './Icons';
 import { AvailabilityChip, QuantityStepper } from './ui';
+import { t } from '../i18n/lang';
 
 /**
  * Product photo: mobile 4:5 crop at 767px and below, desktop 4:3 above, WebP with
@@ -69,7 +70,7 @@ export function FlavourVisual({ product, large = false }: { product: Product; la
     >
       <span className="flavour-visual__halo" style={{ background: `radial-gradient(circle, ${p.cream}aa, transparent 65%)` }} />
       <BottleArt palette={p} tag={product.name} className="flavour-visual__bottle" />
-      <span className="flavour-visual__label">Illustration · photo coming soon</span>
+      <span className="flavour-visual__label">{t('Illustration · photo coming soon', 'Ilustración · foto muy pronto')}</span>
       <Sparkle className="flavour-visual__spark s1" size={10} />
       <Sparkle className="flavour-visual__spark s2" size={7} />
     </div>
@@ -112,8 +113,8 @@ export function FlavourCard({ product }: { product: Product }) {
       <div className="flavour-card__body">
         <div className="flavour-card__chips">
           <AvailabilityChip value={availability} />
-          {variant?.illustrative && <span className="chip chip--illustrative">Illustrative sizes</span>}
-          {product.dietaryLabel?.startsWith('Vegan') && <span className="chip chip--vegan">Vegan</span>}
+          {variant?.illustrative && <span className="chip chip--illustrative">{t('Illustrative sizes', 'Tamaños ilustrativos')}</span>}
+          {product.dietaryLabel?.startsWith('Vegan') && <span className="chip chip--vegan">{t('Vegan', 'Vegano')}</span>}
         </div>
         <h3 className="flavour-card__name" id={`${uid}-name`}>
           {product.name}
@@ -123,7 +124,7 @@ export function FlavourCard({ product }: { product: Product }) {
         <div className="flavour-card__controls">
           {hasVariants ? (
             <fieldset className="size-picker" disabled={!canAdd}>
-              <legend>Choose a size</legend>
+              <legend>{t('Choose a size', 'Elige un tamaño')}</legend>
               <div className="size-picker__options">
                 {product.variants.map((v) => {
                   const off = !isOrderable(v.availability);
@@ -142,7 +143,7 @@ export function FlavourCard({ product }: { product: Product }) {
                         {v.bottleSize.includes(' (') && <small> {v.bottleSize.split(' (')[1].replace(')', '')}</small>}
                       </span>
                       <span className="size-option__price">
-                        {off ? 'Unavailable' : v.priceBZD !== null ? formatBZD(v.priceBZD) : 'Price TBC'}
+                        {off ? t('Unavailable', 'No disponible') : v.priceBZD !== null ? formatBZD(v.priceBZD) : t('Price TBC', 'Precio por confirmar')}
                       </span>
                     </label>
                   );
@@ -150,10 +151,12 @@ export function FlavourCard({ product }: { product: Product }) {
               </div>
             </fieldset>
           ) : (
-            <p className="flavour-card__tbc">Bottle sizes are confirmed by Cojac’s when you send your request.</p>
+            <p className="flavour-card__tbc">
+              {t('Bottle sizes are confirmed by Cojac’s when you send your request.', 'Cojac’s confirma los tamaños de botella cuando envías tu pedido.')}
+            </p>
           )}
           <div className="flavour-card__price">
-            <span>{variant ? `${variant.bottleSize} × ${qty}` : 'Price'}</span>
+            <span>{variant ? `${variant.bottleSize} × ${qty}` : t('Price', 'Precio')}</span>
             <strong>{variant?.priceBZD != null ? formatBZD(variant.priceBZD * clampQuantity(qty, variant)) : UNKNOWN_PRICE}</strong>
           </div>
         </div>
@@ -161,15 +164,15 @@ export function FlavourCard({ product }: { product: Product }) {
         {canAdd ? (
           <>
             <div className="flavour-card__buy">
-              <QuantityStepper value={qty} onChange={setQty} max={maxQuantityFor(variant)} label={`Quantity of ${product.name}`} />
+              <QuantityStepper value={qty} onChange={setQty} max={maxQuantityFor(variant)} label={`${t('Quantity of', 'Cantidad de')} ${product.name}`} />
               <button type="button" className={`btn flavour-card__add ${added ? 'is-added' : ''}`} onClick={onAdd}>
                 {added ? (
                   <>
-                    <CheckIcon size={18} /> Added
+                    <CheckIcon size={18} /> {t('Added', 'Añadido')}
                   </>
                 ) : (
                   <>
-                    <PlusIcon size={18} /> Add to Order
+                    <PlusIcon size={18} /> {t('Add to Order', 'Añadir al pedido')}
                   </>
                 )}
               </button>
@@ -177,60 +180,65 @@ export function FlavourCard({ product }: { product: Product }) {
             <div className="flavour-card__extras">
               {showNote ? (
                 <label className="flavour-card__note">
-                  <span>Note for this flavour (optional)</span>
+                  <span>{t('Note for this flavour (optional)', 'Nota para este sabor (opcional)')}</span>
                   <input
                     className="input"
                     type="text"
                     value={note}
                     maxLength={MAX_NOTE_LENGTH}
                     onChange={(e) => setNote(e.target.value)}
-                    placeholder="e.g. one bottle for a gift"
+                    placeholder={t('e.g. one bottle for a gift', 'p. ej. una botella para regalo')}
                   />
                 </label>
               ) : (
                 <button type="button" className="link-btn" onClick={() => setShowNote(true)}>
-                  + Add a note
+                  {t('+ Add a note', '+ Añadir una nota')}
                 </button>
               )}
               {added && (
                 <button type="button" className="link-btn" onClick={openDrawer}>
-                  View order request →
+                  {t('View order request →', 'Ver pedido →')}
                 </button>
               )}
             </div>
           </>
         ) : (
           <p className="notice notice--soft flavour-card__closed">
-            {allSoldOut ? 'Sold out for this season.' : 'Order requests are closed until next season.'}
+            {allSoldOut
+              ? t('Sold out for this season.', 'Agotado esta temporada.')
+              : t('Order requests are closed until next season.', 'Los pedidos están cerrados hasta la próxima temporada.')}
           </p>
         )}
 
         <details className="flavour-card__details">
-          <summary>Ingredients, allergens &amp; alcohol</summary>
+          <summary>{t('Ingredients, allergens & alcohol', 'Ingredientes, alérgenos y alcohol')}</summary>
           <dl>
-            <dt>Alcohol</dt>
-            <dd>{product.alcoholInformation ?? 'Contains alcohol. For adults of legal drinking age only.'}</dd>
-            <dt>Allergens</dt>
+            <dt>{t('Alcohol', 'Alcohol')}</dt>
+            <dd>{product.alcoholInformation ?? t('Contains alcohol. For adults of legal drinking age only.', 'Contiene alcohol. Solo para adultos mayores de edad.')}</dd>
+            <dt>{t('Allergens', 'Alérgenos')}</dt>
             <dd>
               {product.allergens && product.allergens.length
-                ? `Contains: ${product.allergens.join(', ')}.`
-                : 'Allergen information for this flavour is being confirmed. Rumpopo may contain egg and dairy. Please ask Cojac’s on WhatsApp about ingredients before ordering.'}
+                ? `${t('Contains', 'Contiene')}: ${product.allergens.join(', ')}.`
+                : t(
+                    'Allergen information for this flavour is being confirmed. Rumpopo may contain egg and dairy. Please ask Cojac’s on WhatsApp about ingredients before ordering.',
+                    'La información de alérgenos de este sabor se está confirmando. El rumpopo puede contener huevo y lácteos. Pregúntale a Cojac’s por WhatsApp sobre los ingredientes antes de pedir.',
+                  )}
             </dd>
             {product.ingredientsDisclosure && (
               <>
-                <dt>Ingredients</dt>
+                <dt>{t('Ingredients', 'Ingredientes')}</dt>
                 <dd>{product.ingredientsDisclosure}</dd>
               </>
             )}
             {product.dietaryLabel && (
               <>
-                <dt>Dietary</dt>
+                <dt>{t('Dietary', 'Dieta')}</dt>
                 <dd>{product.dietaryLabel}</dd>
               </>
             )}
             {product.leadTime && (
               <>
-                <dt>Lead time</dt>
+                <dt>{t('Lead time', 'Tiempo de preparación')}</dt>
                 <dd>{product.leadTime}</dd>
               </>
             )}

@@ -1,5 +1,6 @@
 import { buildFlags, site } from '../content/site';
 import { buildWhatsAppUrl, resolveDestination, type DestinationStatus } from './order';
+import { t } from '../i18n/lang';
 
 export function getDestination(): DestinationStatus {
   return resolveDestination(site.whatsapp.orderNumber, buildFlags.qaWhatsAppNumber);
@@ -9,7 +10,10 @@ export function getDestination(): DestinationStatus {
 export function generalEnquiryUrl(): string | null {
   const d = getDestination();
   if (!d.ok) return null;
-  return buildWhatsAppUrl(d.number, `Hello ${site.brandName}! I have a question about your rumpopo.`);
+  return buildWhatsAppUrl(
+    d.number,
+    t(`Hello ${site.brandName}! I have a question about your rumpopo.`, `¡Hola, ${site.brandName}! Tengo una pregunta sobre su rumpopo.`),
+  );
 }
 
 /** Copies text, with a fallback for older browsers / non-secure contexts. */

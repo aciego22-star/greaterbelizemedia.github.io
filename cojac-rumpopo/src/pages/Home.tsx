@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import routes from '../content/routes.json';
+import routes from '../content/routes';
 import { homeCopy, seasonMoments, guarantee } from '../content/copy';
 import { getCatalogue } from '../content/catalogue';
 import { gallery } from '../content/gallery';
@@ -8,6 +8,7 @@ import { publishedFaqs } from '../content/faqs';
 import { site } from '../content/site';
 import { formatLongDate, getSeasonState } from '../lib/season';
 import { usePageMeta } from '../lib/usePageMeta';
+import { isEs, t } from '../i18n/lang';
 import { Ornament, Sparkle, Sprig } from '../components/Art';
 import { ArrowIcon, WhatsAppIcon } from '../components/Icons';
 import { Reveal, SectionHead } from '../components/ui';
@@ -25,15 +26,23 @@ function Hero() {
         <div className="hero-intro__glow" aria-hidden="true" />
         <div className="container hero-intro__inner">
           <h1 id="hero-title" className="hero__title">
-            There’s Nothing Quite Like <em className="italic-gold">Rumpopo</em> Season
+            {isEs ? (
+              <>
+                No hay nada como la temporada de <em className="italic-gold">rumpopo</em>
+              </>
+            ) : (
+              <>
+                There’s Nothing Quite Like <em className="italic-gold">Rumpopo</em> Season
+              </>
+            )}
           </h1>
           <p className="hero__lead">{homeCopy.heroLead}</p>
           <div className="btn-row hero__ctas">
             <Link to={routes.flavours.path} className="btn btn--gold">
-              Find Your Flavour <ArrowIcon size={18} />
+              {routes.flavours.nav} <ArrowIcon size={18} />
             </Link>
             <Link to={routes.order.path} className="btn btn--whatsapp">
-              <WhatsAppIcon /> Order on WhatsApp
+              <WhatsAppIcon /> {t('Order on WhatsApp', 'Pedir por WhatsApp')}
             </Link>
           </div>
         </div>
@@ -46,12 +55,12 @@ function SeasonStatus() {
   const state = getSeasonState();
   if (state === 'closed' || state === 'upcoming') {
     return (
-      <section className="season-card-wrap" aria-label="Season status">
+      <section className="season-card-wrap" aria-label={t('Season status', 'Estado de la temporada')}>
         <div className="container">
           <Reveal className="season-card season-card--closed">
             <div>
-              <h2 className="display-m">{state === 'closed' ? site.season.closedHeadline : 'Rumpopo season is almost here.'}</h2>
-              <p>{state === 'closed' ? site.season.closedText : 'Order requests open when the season begins.'}</p>
+              <h2 className="display-m">{state === 'closed' ? site.season.closedHeadline : t('Rumpopo season is almost here.', 'La temporada de rumpopo ya casi llega.')}</h2>
+              <p>{state === 'closed' ? site.season.closedText : t('Order requests open when the season begins.', 'Los pedidos se abren cuando empiece la temporada.')}</p>
             </div>
           </Reveal>
         </div>
@@ -64,10 +73,11 @@ function SeasonStatus() {
         <Reveal className="season-card">
           <div className="season-card__intro">
             <h2 id="season-title" className="display-m">
-              Rumpopo season is here!
+              {t('Rumpopo season is here!', '¡Llegó la temporada de rumpopo!')}
             </h2>
             <p>
-              Order requests are open until <strong>{formatLongDate(site.season.seasonClosesOn)}</strong>.
+              {t('Order requests are open until ', 'Los pedidos están abiertos hasta el ')}
+              <strong>{formatLongDate(site.season.seasonClosesOn)}</strong>.
             </p>
           </div>
           <ul className="season-card__list">
@@ -85,9 +95,14 @@ function SeasonStatus() {
           </ul>
           <div className="season-card__cta">
             <Link to={routes.flavours.path} className="btn">
-              Start your order
+              {t('Start your order', 'Empieza tu pedido')}
             </Link>
-            <p className="season-card__fine">Delivery is BZD $5 in Belize City. Shipping charges are confirmed on WhatsApp.</p>
+            <p className="season-card__fine">
+              {t(
+                'Delivery is BZD $5 in Belize City. Shipping charges are confirmed on WhatsApp.',
+                'La entrega cuesta BZD $5 en la Ciudad de Belice. El costo de envío se confirma por WhatsApp.',
+              )}
+            </p>
           </div>
         </Reveal>
       </div>
@@ -109,7 +124,7 @@ function StoryStrip() {
           <p className="lead">{homeCopy.storyParagraphs[0]}</p>
           <p>{homeCopy.storyParagraphs[1]}</p>
           <Link to={routes.story.path} className="text-link">
-            Read our story: Behind the Bottle →
+            {t('Read our story: Behind the Bottle →', 'Lee nuestra historia: detrás de la botella →')}
           </Link>
         </Reveal>
       </div>
@@ -136,8 +151,8 @@ function FeaturedFlavours() {
       <div className="container">
         <SectionHead
           center
-          title={<span id="featured-title">More Than Just Classic Vanilla</span>}
-          lead="Classic Vanilla may have started it all, but it didn’t stop there."
+          title={<span id="featured-title">{t('More Than Just Classic Vanilla', 'Mucho más que vainilla clásica')}</span>}
+          lead={t('Classic Vanilla may have started it all, but it didn’t stop there.', 'Classic Vanilla quizá lo empezó todo, pero no se quedó ahí.')}
         />
         <div className="featured">
           {featured.map((p, i) => (
@@ -147,7 +162,7 @@ function FeaturedFlavours() {
                 <div className="featured__body">
                   <h3>{p.name}</h3>
                   <span className="featured__go">
-                    Choose this flavour <ArrowIcon size={16} />
+                    {t('Choose this flavour', 'Elegir este sabor')} <ArrowIcon size={16} />
                   </span>
                 </div>
               </Link>
@@ -155,9 +170,14 @@ function FeaturedFlavours() {
           ))}
         </div>
         <Reveal className="featured__foot">
-          <p>Seven flavours this season, every one in a half liter (500 mL) or liter (1 L) bottle.</p>
+          <p>
+            {t(
+              'Seven flavours this season, every one in a half liter (500 mL) or liter (1 L) bottle.',
+              'Siete sabores esta temporada, cada uno en botella de medio litro (500 mL) o de litro (1 L).',
+            )}
+          </p>
           <Link to={routes.flavours.path} className="btn btn--ghost-dark">
-            See all flavours
+            {t('See all flavours', 'Ver todos los sabores')}
           </Link>
         </Reveal>
       </div>
@@ -188,7 +208,7 @@ export default function Home() {
           <GuaranteePillars />
           <Reveal className="center-link">
             <Link to={routes.guarantee.path} className="text-link">
-              Read the Cojac’s Guarantee →
+              {t('Read the Cojac’s Guarantee →', 'Lee la garantía Cojac’s →')}
             </Link>
           </Reveal>
         </div>
@@ -198,13 +218,16 @@ export default function Home() {
         <div className="container">
           <SectionHead
             center
-            title={<span id="how-title">Simple, from your phone to your table</span>}
-            lead="No accounts and no card payments online. Pay cash on delivery or by bank transfer, and your order request goes straight to Cojac’s on WhatsApp."
+            title={<span id="how-title">{t('Simple, from your phone to your table', 'Fácil, de tu teléfono a tu mesa')}</span>}
+            lead={t(
+              'No accounts and no card payments online. Pay cash on delivery or by bank transfer, and your order request goes straight to Cojac’s on WhatsApp.',
+              'Sin cuentas y sin pagos con tarjeta en línea. Paga en efectivo contra entrega o por transferencia bancaria, y tu pedido llega directo a Cojac’s por WhatsApp.',
+            )}
           />
           <HowItWorks />
           <Reveal className="center-link">
             <Link to={routes.flavours.path} className="btn">
-              Start your order request
+              {t('Start your order request', 'Empieza tu pedido')}
             </Link>
           </Reveal>
         </div>
@@ -213,9 +236,9 @@ export default function Home() {
       <section className="section section--cream" aria-labelledby="gallery-title">
         <div className="container">
           <div className="split-head">
-            <SectionHead title={<span id="gallery-title">Moments from the season</span>} />
+            <SectionHead title={<span id="gallery-title">{t('Moments from the season', 'Momentos de la temporada')}</span>} />
             <Link to={routes.gallery.path} className="text-link split-head__link">
-              View the gallery →
+              {t('View the gallery →', 'Ver la galería →')}
             </Link>
           </div>
           <div className="gallery-preview">
@@ -232,9 +255,9 @@ export default function Home() {
         <section className="section section--burgundy grain" aria-labelledby="videos-title">
           <div className="container">
             <div className="split-head">
-              <SectionHead title={<span id="videos-title">A few moments from the journey</span>} />
+              <SectionHead title={<span id="videos-title">{t('A few moments from the journey', 'Algunos momentos del camino')}</span>} />
               <Link to={routes.videos.path} className="text-link split-head__link">
-                All videos &amp; features →
+                {t('All videos & features →', 'Todos los videos y reportajes →')}
               </Link>
             </div>
             <div className="video-grid">
@@ -252,9 +275,9 @@ export default function Home() {
         <section className="section section--cream" aria-labelledby="blog-home-title">
           <div className="container">
             <div className="split-head">
-              <SectionHead title={<span id="blog-home-title">From the Holiday Blog</span>} />
+              <SectionHead title={<span id="blog-home-title">{t('From the Holiday Blog', 'Desde el blog navideño')}</span>} />
               <Link to={routes.holidayBlog.path} className="text-link split-head__link">
-                All Holiday Blog stories →
+                {t('All Holiday Blog stories →', 'Todas las historias del blog navideño →')}
               </Link>
             </div>
             <Reveal>
@@ -267,10 +290,10 @@ export default function Home() {
       <section className="section section--paper" aria-labelledby="faq-title">
         <div className="container faq-preview">
           <div>
-            <SectionHead title={<span id="faq-title">Good to know</span>} />
+            <SectionHead title={<span id="faq-title">{t('Good to know', 'Bueno saber')}</span>} />
             <Ornament />
             <Link to={routes.faqs.path} className="text-link">
-              All frequently asked questions →
+              {t('All frequently asked questions →', 'Todas las preguntas frecuentes →')}
             </Link>
           </div>
           <Reveal>

@@ -41,7 +41,7 @@ for (const [label, opts] of [
   }
   await page.waitForURL('**/holiday-blog');
   check('Holiday Blog opens from the navigation', (await page.getByRole('heading', { level: 1, name: /Holiday Blog/ }).count()) === 1);
-  check('footer links to the Holiday Blog', (await page.locator('.site-footer a[href="/holiday-blog"]').count()) === 1);
+  check('footer links to the Holiday Blog', (await page.locator('.site-footer nav a[href="/holiday-blog"]').count()) === 1);
   check('index shows the featured story', (await page.locator('.post-card--featured').count()) === 1);
   check('index shows six topic tiles', (await page.locator('.blog-topic').count()) === 6);
   check('empty topics say "Stories coming soon" (no fake posts)', (await page.getByText('Stories coming soon').count()) === 4);

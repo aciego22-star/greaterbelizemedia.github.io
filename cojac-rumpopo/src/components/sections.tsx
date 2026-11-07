@@ -1,7 +1,7 @@
 import { useId, useState, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import routes from '../content/routes.json';
-import { guarantee } from '../content/copy';
+import routes from '../content/routes';
+import { guarantee, homeCopy } from '../content/copy';
 import { buildFlags, site } from '../content/site';
 import type { FaqItem, GalleryItem, MediaItem } from '../types';
 import { media } from '../content/media';
@@ -12,6 +12,7 @@ import { asset } from '../lib/whatsapp';
 import { CreamIcon, DropsIcon, ExternalIcon, FacebookIcon, FullBottleIcon, PinIcon, PlayIcon, WhiskIcon, WhatsAppIcon, YouTubeIcon, ChevronIcon } from './Icons';
 import { Logo, Reveal } from './ui';
 import { Sparkle, Sprig } from './Art';
+import { t } from '../i18n/lang';
 
 const pillarIcons = [CreamIcon, WhiskIcon, FullBottleIcon, DropsIcon];
 
@@ -35,10 +36,22 @@ export function GuaranteePillars({ large = false }: { large?: boolean }) {
 
 export function HowItWorks() {
   const steps = [
-    { t: 'Choose your flavours', d: 'Browse the season’s rumpopo and pick your favourites.' },
-    { t: 'Build your order request', d: 'Select quantities, add any notes and review everything in one place.' },
-    { t: 'Send it on WhatsApp', d: 'WhatsApp opens with your request ready. Press Send. That’s it.' },
-    { t: 'Pay your way', d: 'Cash on delivery, or bank transfer: send the transfer screenshot in the chat and your order is placed.' },
+    { t: t('Choose your flavours', 'Elige tus sabores'), d: t('Browse the season’s rumpopo and pick your favourites.', 'Mira el rumpopo de la temporada y escoge tus favoritos.') },
+    {
+      t: t('Build your order request', 'Arma tu pedido'),
+      d: t('Select quantities, add any notes and review everything in one place.', 'Elige cantidades, añade notas y revisa todo en un solo lugar.'),
+    },
+    {
+      t: t('Send it on WhatsApp', 'Envíalo por WhatsApp'),
+      d: t('WhatsApp opens with your request ready. Press Send. That’s it.', 'WhatsApp se abre con tu pedido listo. Presiona Enviar. Así de fácil.'),
+    },
+    {
+      t: t('Pay your way', 'Paga como prefieras'),
+      d: t(
+        'Cash on delivery, or bank transfer: send the transfer screenshot in the chat and your order is placed.',
+        'Efectivo contra entrega o transferencia bancaria: envía la captura de la transferencia en el chat y tu pedido queda hecho.',
+      ),
+    },
   ];
   return (
     <ol className="steps">
@@ -101,7 +114,7 @@ export function VideoCard({ item }: { item: MediaItem }) {
       <article className="video-card">
         <div className="video-card__frame">
           {buildFlags.noEmbeds ? (
-            <a className="video-card__poster" href={item.url} target="_blank" rel="noopener noreferrer" aria-label={`Watch on YouTube: ${item.title}`}>
+            <a className="video-card__poster" href={item.url} target="_blank" rel="noopener noreferrer" aria-label={`${t('Watch on YouTube', 'Ver en YouTube')}: ${item.title}`}>
               {item.thumbnail && <Thumb src={item.thumbnail} />}
               <span className="video-card__play">
                 <PlayIcon size={26} />
@@ -116,7 +129,7 @@ export function VideoCard({ item }: { item: MediaItem }) {
               loading="lazy"
             />
           ) : (
-            <button type="button" className="video-card__poster" onClick={() => setPlaying(true)} aria-label={`Play video: ${item.title}`}>
+            <button type="button" className="video-card__poster" onClick={() => setPlaying(true)} aria-label={`${t('Play video', 'Reproducir video')}: ${item.title}`}>
               {item.thumbnail && <Thumb src={item.thumbnail} />}
               <span className="video-card__play">
                 <PlayIcon size={26} />
@@ -130,20 +143,21 @@ export function VideoCard({ item }: { item: MediaItem }) {
           </p>
           <h3>{item.title}</h3>
           <a className="text-link" href={item.url} target="_blank" rel="noopener noreferrer">
-            Watch on YouTube <ExternalIcon size={14} style={{ display: 'inline', verticalAlign: '-2px' }} />
+            {t('Watch on YouTube', 'Ver en YouTube')} <ExternalIcon size={14} style={{ display: 'inline', verticalAlign: '-2px' }} />
           </a>
         </div>
       </article>
     );
   }
+  const fbKind = item.kind === 'reel' ? t('Facebook Reel', 'Reel de Facebook') : t('Facebook Video', 'Video de Facebook');
   return (
     <article className="video-card video-card--external">
-      <a className="video-card__frame video-card__fb" href={item.url} target="_blank" rel="noopener noreferrer" aria-label={`${item.title} (opens Facebook in a new tab)`}>
+      <a className="video-card__frame video-card__fb" href={item.url} target="_blank" rel="noopener noreferrer" aria-label={`${fbKind}: ${item.title} (${t('opens Facebook in a new tab', 'abre Facebook en una pestaña nueva')})`}>
         <Sprig className="video-card__sprig" />
         <span className="video-card__fb-icon">
           <FacebookIcon size={30} />
         </span>
-        <span className="video-card__fb-kind">{item.kind === 'reel' ? 'Facebook Reel' : 'Facebook Video'}</span>
+        <span className="video-card__fb-kind">{fbKind}</span>
         <span className="video-card__play video-card__play--sm">
           <PlayIcon size={20} />
         </span>
@@ -154,7 +168,7 @@ export function VideoCard({ item }: { item: MediaItem }) {
         </p>
         <h3>{item.title}</h3>
         <a className="text-link" href={item.url} target="_blank" rel="noopener noreferrer">
-          Watch on Facebook <ExternalIcon size={14} style={{ display: 'inline', verticalAlign: '-2px' }} />
+          {t('Watch on Facebook', 'Ver en Facebook')} <ExternalIcon size={14} style={{ display: 'inline', verticalAlign: '-2px' }} />
         </a>
       </div>
     </article>
@@ -208,7 +222,7 @@ export function GalleryTile({ item, onOpen, portrait = false }: { item: GalleryI
   return (
     <figure className="gallery-tile">
       {onOpen ? (
-        <button type="button" onClick={onOpen} aria-label={`Open photo: ${item.caption}`}>
+        <button type="button" onClick={onOpen} aria-label={`${t('Open photo', 'Abrir foto')}: ${item.caption}`}>
           {content}
         </button>
       ) : (
@@ -226,19 +240,17 @@ export function FinalCta() {
       <div className="container final-cta__inner">
         <Reveal>
           <Logo size="feature" className="final-cta__logo" />
-          <p className="final-cta__lead">
-            After all, Christmas only comes once a year, and when it does, we believe it should be a little more:
-          </p>
+          <p className="final-cta__lead">{homeCopy.closingLead}</p>
           <h2 id="final-cta-title" className="final-cta__word">
-            Sumptuous.
+            {homeCopy.closingWord}
           </h2>
         </Reveal>
         <Reveal delay={120} className="btn-row" style={{ justifyContent: 'center' }}>
           <Link to={routes.flavours.path} className="btn btn--gold">
-            Find Your Flavour
+            {routes.flavours.nav}
           </Link>
           <Link to={routes.order.path} className="btn btn--whatsapp">
-            <WhatsAppIcon /> Order on WhatsApp
+            <WhatsAppIcon /> {t('Order on WhatsApp', 'Pedir por WhatsApp')}
           </Link>
         </Reveal>
         <p className="final-cta__fine">{site.alcohol.responsibleMessage}</p>
@@ -251,18 +263,21 @@ export function FinalCta() {
 export function TrustStrip() {
   const publisher = media.find((m) => m.publisher)?.publisher;
   const items = [
-    'Belizean family recipe',
-    `${site.experienceStatement[0].toUpperCase()}${site.experienceStatement.slice(1)} of rumpopo`,
-    site.contact.addressLine && `Based on ${site.contact.addressLine}`,
-    publisher && `Featured by ${publisher.replace(/\s*\|.*$/, '')}`,
+    t('Belizean family recipe', 'Receta familiar beliceña'),
+    t(
+      `${site.experienceStatement[0].toUpperCase()}${site.experienceStatement.slice(1)} of rumpopo`,
+      `${site.experienceStatement[0].toUpperCase()}${site.experienceStatement.slice(1)} de rumpopo`,
+    ),
+    site.contact.addressLine && t(`Based on ${site.contact.addressLine}`, `Ubicados en ${site.contact.addressLine}`),
+    publisher && t(`Featured by ${publisher.replace(/\s*\|.*$/, '')}`, `En reportajes de ${publisher.replace(/\s*\|.*$/, '')}`),
   ].filter(Boolean) as string[];
   return (
-    <section className="trust-strip" aria-label="About Cojac’s">
+    <section className="trust-strip" aria-label={t('About Cojac’s', 'Sobre Cojac’s')}>
       <ul className="container">
-        {items.map((t) => (
-          <li key={t}>
+        {items.map((item) => (
+          <li key={item}>
             <Sparkle size={11} />
-            {t}
+            {item}
           </li>
         ))}
       </ul>
@@ -273,25 +288,42 @@ export function TrustStrip() {
 /** "At a glance" facts — short, consistent, machine-friendly answers built from site.ts. */
 export function AtAGlance() {
   const facts: [string, ReactNode][] = [
-    ['What', 'Rumpopo (rum popo): a rich, creamy Belizean Christmas drink that contains alcohol'],
-    ['Who', `${site.brandName}, a Belizean family business`],
-    ['Where', `${site.contact.addressLine}, Belize`],
-    ['Experience', `Sharing rumpopo for ${site.experienceStatement}`],
-    ['Flavours', getCatalogue().map((p) => p.name.replace(/ Rumpopo$/, '')).join(', ')],
-    ['Sizes & prices', `Half liter (500 mL) or liter (1 L), from BZD $${lowestPrice() ?? ''}`],
-    ['Season', `Order requests open until ${formatLongDate(site.season.seasonClosesOn)}`],
+    [t('What', 'Qué'), t('Rumpopo (rum popo): a rich, creamy Belizean Christmas drink that contains alcohol', 'Rumpopo (rum popo): una bebida navideña beliceña, rica y cremosa, que contiene alcohol')],
+    [t('Who', 'Quién'), t(`${site.brandName}, a Belizean family business`, `${site.brandName}, un negocio familiar beliceño`)],
+    [t('Where', 'Dónde'), `${site.contact.addressLine}, ${t('Belize', 'Belice')}`],
+    [t('Experience', 'Experiencia'), t(`Sharing rumpopo for ${site.experienceStatement}`, `Compartiendo rumpopo desde hace ${site.experienceStatement}`)],
+    [t('Flavours', 'Sabores'), getCatalogue().map((p) => p.name.replace(/ Rumpopo$/, '')).join(', ')],
     [
-      'How to order',
+      t('Sizes & prices', 'Tamaños y precios'),
+      t(`Half liter (500 mL) or liter (1 L), from BZD $${lowestPrice() ?? ''}`, `Medio litro (500 mL) o litro (1 L), desde BZD $${lowestPrice() ?? ''}`),
+    ],
+    [
+      t('Season', 'Temporada'),
+      t(`Order requests open until ${formatLongDate(site.season.seasonClosesOn)}`, `Pedidos abiertos hasta el ${formatLongDate(site.season.seasonClosesOn)}`),
+    ],
+    [
+      t('How to order', 'Cómo pedir'),
       <>
-        Choose flavours on <Link to={routes.flavours.path}>Find Your Flavour</Link>, then send your order request on WhatsApp. Cojac’s confirms availability and payment directly.
+        {t('Choose flavours on ', 'Elige tus sabores en ')}
+        <Link to={routes.flavours.path}>{routes.flavours.nav}</Link>
+        {t(
+          ', then send your order request on WhatsApp. Cojac’s confirms availability and payment directly.',
+          ' y luego envía tu pedido por WhatsApp. Cojac’s confirma la disponibilidad y el pago directamente.',
+        )}
       </>,
     ],
-    ['Payment', 'Cash on delivery or at pickup, or bank transfer (Heritage Bank, Belize Bank, Atlantic Bank). No online card payments'],
+    [
+      t('Payment', 'Pago'),
+      t(
+        'Cash on delivery or at pickup, or bank transfer (Heritage Bank, Belize Bank, Atlantic Bank). No online card payments',
+        'Efectivo contra entrega o al recoger, o transferencia bancaria (Heritage Bank, Belize Bank, Atlantic Bank). Sin pagos con tarjeta en línea',
+      ),
+    ],
   ];
   return (
     <section className="glance" aria-labelledby="glance-title">
       <h2 id="glance-title" className="display-m">
-        {site.brandShort} at a glance
+        {t(`${site.brandShort} at a glance`, `${site.brandShort} de un vistazo`)}
       </h2>
       <dl>
         {facts.map(([k, v]) => (
@@ -319,10 +351,15 @@ export function LocationMap() {
         <h2 id="map-title" className="display-m">
           {contact.addressLine}
         </h2>
-        <p>{site.brandName} is based on {contact.addressLine}, Belize. Delivery, pickup and shipping are arranged on WhatsApp.</p>
+        <p>
+          {t(
+            `${site.brandName} is based on ${contact.addressLine}, Belize. Delivery, pickup and shipping are arranged on WhatsApp.`,
+            `${site.brandName} está en ${contact.addressLine}, Belice. Las entregas, la recogida y los envíos se coordinan por WhatsApp.`,
+          )}
+        </p>
         <div className="btn-row">
           <a href={contact.mapUrl} target="_blank" rel="noopener noreferrer" className="btn">
-            <PinIcon size={18} /> Open in Google Maps
+            <PinIcon size={18} /> {t('Open in Google Maps', 'Abrir en Google Maps')}
           </a>
         </div>
       </div>
@@ -330,7 +367,7 @@ export function LocationMap() {
         {show && !buildFlags.noEmbeds && contact.mapEmbedUrl ? (
           <iframe
             src={contact.mapEmbedUrl}
-            title={`Map of ${contact.addressLine}`}
+            title={`${t('Map of', 'Mapa de')} ${contact.addressLine}`}
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
             allowFullScreen
@@ -340,14 +377,14 @@ export function LocationMap() {
             <MapArt />
             {buildFlags.noEmbeds || !contact.mapEmbedUrl ? (
               <a href={contact.mapUrl} target="_blank" rel="noopener noreferrer" className="btn btn--gold">
-                <PinIcon size={18} /> View on Google Maps
+                <PinIcon size={18} /> {t('View on Google Maps', 'Ver en Google Maps')}
               </a>
             ) : (
               <button type="button" className="btn btn--gold" onClick={() => setShow(true)}>
-                <PinIcon size={18} /> Show map
+                <PinIcon size={18} /> {t('Show map', 'Mostrar mapa')}
               </button>
             )}
-            <small>Map by Google</small>
+            <small>{t('Map by Google', 'Mapa de Google')}</small>
           </div>
         )}
       </div>
