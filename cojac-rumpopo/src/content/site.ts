@@ -26,7 +26,7 @@ export const site = {
   ),
 
   /** Public site address — used for canonical links, sitemap and social previews. */
-  siteUrl: 'https://cojacs-rumpopo.netlify.app',
+  siteUrl: 'https://shiny-truffle-ef9459.netlify.app',
 
   /** Family's own description. Do not replace with a founding year until confirmed. */
   experienceStatement: t('more than fifteen years', 'más de quince años'),

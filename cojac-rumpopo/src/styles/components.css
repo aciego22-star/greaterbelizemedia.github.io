@@ -238,7 +238,12 @@
 .site-header__cta {
   display: none;
 }
-@media (min-width: 1000px) {
+/* The full menu appears from 1200px; narrower screens use the menu button, so the
+   English and Spanish labels always fit on one line beside the EN | ESP switch. */
+.nav-link {
+  white-space: nowrap;
+}
+@media (min-width: 1200px) {
   .site-nav {
     display: flex;
   }
@@ -972,69 +977,67 @@
   }
 }
 
-/* Language switch (src/components/LangToggle.tsx) */
-.lang-bar {
-  background: var(--burgundy-900);
-  color: var(--cream-50);
-}
-.lang-bar__inner {
-  display: flex;
-  justify-content: center;
-  padding-block: 4px;
-}
-@media (min-width: 768px) {
-  .lang-bar__inner {
-    justify-content: flex-end;
-  }
-}
+/* Language switch (src/components/LangToggle.tsx): a compact EN | ESP pill
+   beside the basket, following the header's colours. */
 .lang-toggle {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  font-size: 0.85rem;
-  font-weight: 600;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 999px;
+  border: 1px solid rgba(251, 244, 230, 0.35);
+  color: var(--cream-50);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  flex: none;
 }
-.lang-toggle__globe {
-  margin-right: 4px;
-  opacity: 0.85;
+.is-scrolled .lang-toggle {
+  color: var(--burgundy-800);
+  border-color: rgba(107, 21, 37, 0.3);
 }
 .lang-toggle__opt {
-  display: inline-flex;
-  align-items: center;
-  min-height: 36px;
-  padding: 0 14px;
+  display: inline-grid;
+  place-items: center;
+  min-width: 38px;
+  min-height: 34px;
+  padding: 0 8px;
   border-radius: 999px;
   color: inherit;
   text-decoration: none;
-  border: 1px solid transparent;
   touch-action: manipulation;
 }
 .lang-toggle__opt.is-active {
   background: var(--gold-400);
   color: var(--burgundy-900);
 }
-.lang-toggle__opt:not(.is-active) {
-  border-color: rgba(251, 244, 230, 0.35);
-}
-@media (hover: hover) {
-  .lang-toggle__opt:not(.is-active):hover {
-    background: rgba(255, 255, 255, 0.12);
-  }
+.lang-toggle__opt:not(.is-active):hover {
+  background: rgba(127, 127, 127, 0.16);
 }
 .lang-toggle__opt:focus-visible {
   outline: 2px solid var(--gold-300);
   outline-offset: 2px;
 }
 .lang-toggle--menu {
-  justify-content: center;
-  color: var(--cream-50);
-  margin: 4px auto 12px;
   display: flex;
-}
-.lang-toggle--footer {
-  justify-content: center;
+  width: max-content;
+  margin: 4px auto 12px;
   color: var(--cream-50);
-  margin-bottom: 14px;
+}
+
+/* Season banner + header stick together; the banner slides away while scrolling
+   down and back down when scrolling up (see Header in Layout.tsx). */
+.site-top {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  transition: top 0.35s var(--ease);
+}
+.site-top.is-banner-hidden {
+  top: calc(-1 * var(--banner-h, 0px));
+}
+.site-top .site-header {
+  position: relative;
 }
 
 /* Footer credit: the whole phrase is one link; its colour steps through the

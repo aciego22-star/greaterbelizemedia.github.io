@@ -12,7 +12,7 @@ You make all of these edits in plain text files in `src/content/`. After saving,
 
 ## 0b. English and Spanish
 
-The whole site is bilingual. English pages are at `/flavours`, Spanish at `/es/flavours`, and so on. Visitors whose phone or browser is set to Spanish see the Spanish site automatically; everyone can switch with the English | Español buttons at the very top of every page (also in the menu and footer), and the choice is remembered.
+The whole site is bilingual. English pages are at `/flavours`, Spanish at `/es/flavours`, and so on. Visitors whose phone or browser is set to Spanish see the Spanish site automatically; everyone can switch with the EN / ESP buttons beside the basket at the top of every page (also in the phone menu), and the choice is remembered.
 
 **Editing text:** wherever a sentence appears, both versions sit side by side as `t('English text', 'Texto en español')`. Change both. Page names and search titles in Spanish are in `src/content/routes.ts` (English in `routes.json`). Flavour names stay the same in both languages, matching the bottles.
 

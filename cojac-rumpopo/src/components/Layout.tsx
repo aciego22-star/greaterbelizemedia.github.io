@@ -126,18 +126,46 @@ function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
 function Header() {
   const { totals, openDrawer } = useCart();
   const [scrolled, setScrolled] = useState(false);
+  const [bannerHidden, setBannerHidden] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const { pathname } = useLocation();
+  const topRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    // The season banner rides with the sticky header: it tucks away while the
+    // visitor scrolls down to read, and slides back down as soon as they scroll up.
+    let last = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 24);
+      if (y < 80) {
+        setBannerHidden(false);
+        last = y;
+      } else if (y > last + 8) {
+        setBannerHidden(true);
+        last = y;
+      } else if (y < last - 8) {
+        setBannerHidden(false);
+        last = y;
+      }
+    };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+  useEffect(() => {
+    // Keep the banner's height in a CSS variable so it can slide out exactly.
+    const banner = topRef.current?.querySelector<HTMLElement>('.season-banner');
+    if (!banner || !('ResizeObserver' in window)) return;
+    const ro = new ResizeObserver(() => topRef.current?.style.setProperty('--banner-h', `${banner.offsetHeight}px`));
+    ro.observe(banner);
+    return () => ro.disconnect();
   }, []);
   useEffect(() => setMenuOpen(false), [pathname]);
   const count = totals.itemCount;
   return (
     <>
+      <div className={`site-top ${bannerHidden ? 'is-banner-hidden' : ''}`} ref={topRef}>
+      <SeasonBanner />
       <header className={`site-header ${scrolled ? 'is-scrolled' : ''}`}>
         <div className="container site-header__inner">
           <Link to="/" className="site-header__logo" aria-label={`${site.brandName}, ${t('home', 'inicio')}`}>
@@ -159,6 +187,7 @@ function Header() {
             </NavLink>
           </nav>
           <div className="site-header__actions">
+            <LangToggle variant="header" />
             <button type="button" className="cart-btn" onClick={openDrawer} aria-label={t(
                 `Your order request, ${count} ${count === 1 ? 'bottle' : 'bottles'}`,
                 `Tu pedido, ${count} ${count === 1 ? 'botella' : 'botellas'}`,
@@ -181,6 +210,7 @@ function Header() {
           </div>
         </div>
       </header>
+      </div>
       <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
     </>
   );
@@ -244,7 +274,6 @@ function Footer() {
           </div>
         </div>
         <div className="site-footer__legal">
-          <LangToggle variant="footer" />
           <a href={site.credit.url} target="_blank" rel="noopener" className="site-footer__credit">
             {site.credit.label}
           </a>
@@ -307,12 +336,6 @@ export function Layout() {
       <a href="#main" className="skip-link">
         {t('Skip to content', 'Ir al contenido')}
       </a>
-      <div className="lang-bar">
-        <div className="container lang-bar__inner">
-          <LangToggle variant="bar" />
-        </div>
-      </div>
-      <SeasonBanner />
       <Header />
       <main id="main" ref={mainRef} tabIndex={-1}>
         <Outlet />

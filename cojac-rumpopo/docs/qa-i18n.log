@@ -9,14 +9,16 @@ PASS  Pixel 7, es-ES: Spanish browser lands on the Spanish homepage
 PASS  Pixel 7, es-ES: deep link /flavours opens /es/flavours
 
 == Language toggle ==
-PASS  desktop: toggle is at the very top of the page
-PASS  desktop: toggle shows both languages, current one marked
+PASS  desktop: EN / ESP switch sits right beside the basket
+PASS  desktop: switch reads EN and ESP, current one marked
+PASS  desktop: no language switch in the footer
 PASS  desktop: one tap on English opens the same page in English
 PASS  desktop: the English choice is remembered even with a Spanish browser
 PASS  desktop: one tap on Español switches back
 PASS  desktop: the order request is kept when switching language
-PASS  iPhone 13: toggle is at the very top of the page
-PASS  iPhone 13: toggle shows both languages, current one marked
+PASS  iPhone 13: EN / ESP switch sits right beside the basket
+PASS  iPhone 13: switch reads EN and ESP, current one marked
+PASS  iPhone 13: no language switch in the footer
 PASS  iPhone 13: one tap on English opens the same page in English
 PASS  iPhone 13: the English choice is remembered even with a Spanish browser
 PASS  iPhone 13: one tap on Español switches back
@@ -48,6 +50,23 @@ PASS  one tap on a menu item opens the page
 PASS  unknown Spanish address shows the Spanish 404 page
 PASS  no page errors
 
+== Season banner ==
+PASS  iPhone 13: banner shows when the page opens
+PASS  iPhone 13: banner tucks away while scrolling down
+PASS  iPhone 13: header stays on screen
+PASS  iPhone 13: banner slides back down when scrolling up (mid-page)
+PASS  iPhone 13: banner fully visible back at the top
+PASS  desktop: banner shows when the page opens
+PASS  desktop: banner tucks away while scrolling down
+PASS  desktop: header stays on screen
+PASS  desktop: banner slides back down when scrolling up (mid-page)
+PASS  desktop: banner fully visible back at the top
+
+== Homepage length on phones ==
+PASS  phone: the large flavour photo cards are left out
+PASS  phone: “See all flavours” still leads to the flavours
+PASS  desktop: flavour photo cards still shown
+
 == Footer credit ==
 PASS  en: credit reads “Website developed by Austere Automations”
 PASS  en: the whole phrase is one link to Austere Automations
@@ -59,4 +78,4 @@ PASS  es: colour changes every 8 s through red, yellow and blue, then repeats ::
 == One tap: hover styles ==
 PASS  every hover style is limited to mouse/trackpad devices
 
-50/50 checks passed
+65/65 checks passed

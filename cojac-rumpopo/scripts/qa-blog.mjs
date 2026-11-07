@@ -4,10 +4,12 @@
  * No external requests are made: Facebook and WhatsApp links are only inspected.
  */
 import { createRequire } from 'node:module';
+import { readFileSync as readSiteFile } from 'node:fs';
 const require = createRequire(import.meta.url);
 const { chromium, devices } = require('playwright');
 
 const BASE = process.env.QA_BASE || 'http://localhost:4181';
+const SITE_URL = (readSiteFile(new URL('../src/content/site.ts', import.meta.url), 'utf8').match(/siteUrl:\s*'([^']+)'/)?.[1] ?? '').replace(/\/$/, '');
 const POST = '/holiday-blog/rumpopo-season-2026-secret-flavour';
 const results = [];
 const check = (name, ok, extra = '') => {
@@ -87,7 +89,7 @@ for (const [label, opts] of [
 
   // Share links use the real article URL
   const share = await page.locator('.blog-share a').evaluateAll((as) => as.map((a) => a.getAttribute('href')));
-  check('share links carry the canonical article URL', share.every((h) => decodeURIComponent(h).includes('https://cojacs-rumpopo.netlify.app' + POST)), share.length + ' links');
+  check('share links carry the canonical article URL', share.every((h) => decodeURIComponent(h).includes(SITE_URL + POST)), share.length + ' links');
 
   await page.locator('.blog-order a', { hasText: 'Order Through WhatsApp' }).click();
   await page.waitForURL('**/order');

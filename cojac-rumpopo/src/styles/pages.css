@@ -421,6 +421,16 @@
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 22px;
 }
+/* Phones: the large flavour photo cards are left out to keep the homepage short;
+   "See all flavours" below goes straight to every flavour. */
+@media (max-width: 767px) {
+  .featured {
+    display: none;
+  }
+  .featured__foot {
+    margin-top: 4px !important;
+  }
+}
 .featured__link {
   display: block;
   text-decoration: none;

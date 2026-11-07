@@ -4,16 +4,16 @@ import { isArtifactBuild, lang, pathIn, rememberLang, t, type Lang } from '../i1
 
 export const ARTIFACT_PATH_KEY = 'cojac-artifact-path';
 
-const options: { id: Lang; label: string }[] = [
-  { id: 'en', label: 'English' },
-  { id: 'es', label: 'Español' },
+const options: { id: Lang; label: string; short: string }[] = [
+  { id: 'en', label: 'English', short: 'EN' },
+  { id: 'es', label: 'Español', short: 'ESP' },
 ];
 
 /**
  * English / Español switch. One tap loads the same page in the other language
  * (every page exists in both) and remembers the choice for the next visit.
  */
-export function LangToggle({ variant = 'bar' }: { variant?: 'bar' | 'menu' | 'footer' }) {
+export function LangToggle({ variant = 'header' }: { variant?: 'header' | 'menu' }) {
   const { pathname, search, hash } = useLocation();
   const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
@@ -37,10 +37,6 @@ export function LangToggle({ variant = 'bar' }: { variant?: 'bar' | 'menu' | 'fo
 
   return (
     <div className={`lang-toggle lang-toggle--${variant}`} role="group" aria-label={t('Language', 'Idioma')}>
-      <svg className="lang-toggle__globe" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
-        <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="1.6" />
-        <path d="M3 12h18M12 3c2.6 2.6 3.8 5.6 3.8 9s-1.2 6.4-3.8 9c-2.6-2.6-3.8-5.6-3.8-9S9.4 5.6 12 3Z" fill="none" stroke="currentColor" strokeWidth="1.6" />
-      </svg>
       {options.map((o) => {
         const active = o.id === lang;
         return (
@@ -52,8 +48,10 @@ export function LangToggle({ variant = 'bar' }: { variant?: 'bar' | 'menu' | 'fo
             className={`lang-toggle__opt ${active ? 'is-active' : ''}`}
             aria-current={active ? 'true' : undefined}
             onClick={onPick(o.id)}
+            aria-label={`${o.short}, ${o.label}`}
+            title={o.label}
           >
-            {o.label}
+            {o.short}
           </a>
         );
       })}

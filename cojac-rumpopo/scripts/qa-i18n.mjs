@@ -69,21 +69,23 @@ for (const [label, opts] of [
   const page = await ctx.newPage();
   const tap = (loc) => (opts.hasTouch ? loc.tap() : loc.click());
   await page.goto(BASE + '/es/our-story');
-  const bar = page.locator('.lang-bar .lang-toggle');
-  check(`${label}: toggle is at the very top of the page`, (await bar.boundingBox()).y < 10);
-  check(`${label}: toggle shows both languages, current one marked`, (await bar.locator('[aria-current="true"]').innerText()) === 'Español');
+  const bar = page.locator('.site-header .lang-toggle');
+  const [tb, cb] = [await bar.boundingBox(), await page.locator('.site-header .cart-btn').boundingBox()];
+  check(`${label}: EN / ESP switch sits right beside the basket`, Math.abs(tb.y + tb.height / 2 - (cb.y + cb.height / 2)) < 4 && cb.x - (tb.x + tb.width) < 20 && cb.x > tb.x);
+  check(`${label}: switch reads EN and ESP, current one marked`, (await bar.innerText()).replace(/\s+/g, ' ').trim() === 'EN ESP' && (await bar.locator('[aria-current="true"]').innerText()) === 'ESP');
+  check(`${label}: no language switch in the footer`, (await page.locator('.site-footer .lang-toggle').count()) === 0);
   await tap(bar.getByRole('link', { name: 'English' }));
   await page.waitForURL(BASE + '/our-story');
   check(`${label}: one tap on English opens the same page in English`, (await htmlLang(page)) === 'en-BZ' && /Behind the/.test(await h1(page)));
   await page.goto(BASE + '/');
   check(`${label}: the English choice is remembered even with a Spanish browser`, page.url() === BASE + '/' && (await htmlLang(page)) === 'en-BZ');
-  await tap(page.locator('.lang-bar').getByRole('link', { name: 'Español' }));
+  await tap(page.locator('.site-header').getByRole('link', { name: 'Español' }));
   await page.waitForURL(BASE + '/es/');
   check(`${label}: one tap on Español switches back`, (await htmlLang(page)) === 'es-BZ');
   // Cart survives a language switch
   await page.goto(BASE + '/es/flavours');
   await tap(page.locator('article.flavour-card').first().locator('.flavour-card__add'));
-  await tap(page.locator('.lang-bar').getByRole('link', { name: 'English' }));
+  await tap(page.locator('.site-header').getByRole('link', { name: 'English' }));
   await page.waitForURL(BASE + '/flavours');
   await page.waitForTimeout(300);
   check(`${label}: the order request is kept when switching language`, (await page.locator('.site-header .cart-btn__count').innerText()) === '1');
@@ -149,6 +151,50 @@ console.log('\n== Spanish order (iPhone 13, taps only) ==');
   check('unknown Spanish address shows the Spanish 404 page', (await h1(page)) === 'Esta botella parece estar vacía');
   check('no page errors', errors.length === 0, errors.join(' | '));
   await ctx.close();
+}
+
+// ── 3b. Season banner rides with the header ─────────────────────────────
+console.log('\n== Season banner ==');
+for (const [label, opts] of [
+  ['iPhone 13', { ...devices['iPhone 13'] }],
+  ['desktop', { viewport: { width: 1366, height: 900 } }],
+]) {
+  const ctx = await context(opts);
+  const page = await ctx.newPage();
+  await page.goto(BASE + '/');
+  const banner = page.locator('.season-banner');
+  const visible = async () => {
+    const b = await banner.boundingBox();
+    return b && b.y + b.height > 1;
+  };
+  check(`${label}: banner shows when the page opens`, await visible());
+  await page.mouse.wheel(0, 1600);
+  await page.waitForTimeout(700);
+  check(`${label}: banner tucks away while scrolling down`, !(await visible()));
+  check(`${label}: header stays on screen`, (await page.locator('.site-header').boundingBox()).y >= -1);
+  await page.mouse.wheel(0, -300);
+  await page.waitForTimeout(700);
+  check(`${label}: banner slides back down when scrolling up (mid-page)`, await visible());
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.waitForTimeout(500);
+  check(`${label}: banner fully visible back at the top`, (await banner.boundingBox()).y >= 0);
+  await ctx.close();
+}
+
+// ── 3c. Homepage on phones ──────────────────────────────────────────────
+console.log('\n== Homepage length on phones ==');
+{
+  const ctx = await context({ ...devices['iPhone 13'] });
+  const page = await ctx.newPage();
+  await page.goto(BASE + '/');
+  check('phone: the large flavour photo cards are left out', !(await page.locator('.featured').isVisible()));
+  check('phone: “See all flavours” still leads to the flavours', await page.getByRole('link', { name: 'See all flavours' }).isVisible());
+  await ctx.close();
+  const d = await context({ viewport: { width: 1366, height: 900 } });
+  const dp = await d.newPage();
+  await dp.goto(BASE + '/');
+  check('desktop: flavour photo cards still shown', await dp.locator('.featured').isVisible());
+  await d.close();
 }
 
 // ── 4. Footer credit ────────────────────────────────────────────────────
