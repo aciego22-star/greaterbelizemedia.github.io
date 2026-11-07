@@ -44,7 +44,7 @@ for (const [vpName, vp] of Object.entries(viewports)) {
       window.scrollTo(0, 0);
     });
     await page.waitForTimeout(500);
-    const name = `${vpName}${path === '/' ? '-home' : path.replace(/\//g, '-')}.jpg`;
+    const name = `${vpName}${path === '/' ? '-home' : path.replace(/\/+$/, '').replace(/\//g, '-')}.jpg`;
     await page.screenshot({ path: `${OUT}/${name}`, fullPage: true, type: 'jpeg', quality: 62 });
     const hOverflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1);
     report.push({ viewport: vpName, path, status: res?.status(), title: await page.title(), horizontalOverflow: hOverflow, errors });
