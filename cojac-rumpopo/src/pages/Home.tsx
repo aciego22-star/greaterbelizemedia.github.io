@@ -199,7 +199,7 @@ export default function Home() {
           <SectionHead
             center
             title={<span id="how-title">Simple, from your phone to your table</span>}
-            lead="No accounts and no online payment. Your order request goes straight to Cojac’s on WhatsApp."
+            lead="No accounts and no card payments online. Pay cash on delivery or by bank transfer, and your order request goes straight to Cojac’s on WhatsApp."
           />
           <HowItWorks />
           <Reveal className="center-link">

@@ -95,7 +95,7 @@ export const faqs: FaqItem[] = [
     published: true,
     question: 'Can I pay on the website?',
     answer:
-      'No. There is no online payment on this website and we will never ask for card details here. Payment arrangements are agreed directly with Cojac’s when your order is confirmed.',
+      'No. There is no online card payment on this website and we will never ask for card details here. You pay cash on delivery (or at pickup), or by bank transfer from your own banking app.',
   },
   {
     id: 'no-whatsapp',
@@ -155,7 +155,14 @@ export const faqs: FaqItem[] = [
   { id: 'delivery-fees', category: 'delivery', published: false, question: 'How much is delivery or shipping?', answer: '' },
   { id: 'shipping-areas', category: 'delivery', published: false, question: 'Where do you ship?', answer: '' },
   { id: 'pickup', category: 'delivery', published: false, question: 'Can I pick up my order?', answer: '' },
-  { id: 'payment-methods', category: 'ordering', published: false, question: 'Which payment methods do you accept?', answer: '' },
+  {
+    id: 'payment-methods',
+    category: 'ordering',
+    published: true,
+    question: 'How can I pay?',
+    answer:
+      'Cash on delivery for Belize City delivery, cash at pickup, or bank transfer from Heritage Bank, Belize Bank or Atlantic Bank. Shipping orders to other districts are paid by bank transfer. If you pay by bank transfer, send a screenshot of the completed transfer in the WhatsApp chat: your order is placed once Cojac’s receives it.',
+  },
   { id: 'storage', category: 'product', published: false, question: 'How should I store my rumpopo, and how long does it keep?', answer: '' },
   { id: 'gifting', category: 'general', published: false, question: 'Do you offer gift packaging or bulk orders?', answer: '' },
   { id: 'refunds', category: 'general', published: false, question: 'What is your policy if something is wrong with my order?', answer: '' },

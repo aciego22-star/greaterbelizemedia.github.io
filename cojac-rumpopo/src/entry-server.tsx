@@ -47,7 +47,7 @@ export function llmsTxt(): string {
     .join('\n');
   return `# ${site.brandName}
 
-> ${site.brandName} is a Belizean family business that makes rumpopo (also spelled rum popo), a rich, creamy holiday drink containing alcohol, for the Christmas season. Based on ${site.contact.addressLine}. The family has been sharing its rumpopo for ${site.experienceStatement}. Orders are requested through WhatsApp; there is no online payment.
+> ${site.brandName} is a Belizean family business that makes rumpopo (also spelled rum popo), a rich, creamy holiday drink containing alcohol, for the Christmas season. Based on ${site.contact.addressLine}. The family has been sharing its rumpopo for ${site.experienceStatement}. Orders are requested through WhatsApp. Payment is cash on delivery (or at pickup) or bank transfer; there is no online card payment.
 
 Brand tagline: "${site.logoTagline}"
 
@@ -59,6 +59,7 @@ Brand tagline: "${site.logoTagline}"
 - Ordering: choose flavours on the website, then send the order request on WhatsApp; ${site.brandShort} confirms availability, final price, payment and delivery directly
 - Fulfilment options offered this season: ${site.fulfilment.filter((f) => f.enabled && f.id !== 'advise').map((f) => `${f.label}${f.short ? ` (${f.short})` : ''}`).join('; ')}. Delivery and shipping carry a charge confirmed by ${site.brandShort}; pickup is free
 - Sizes: Half liter (500 mL) and Liter (1 L); prices in Belize dollars (BZD) are listed below
+- Payment: cash on delivery (Belize City) or at pickup, or bank transfer from Heritage Bank, Belize Bank or Atlantic Bank. Shipping orders are paid by bank transfer. For transfers, the customer sends a screenshot of the completed transfer in the WhatsApp chat; the order is placed once Cojac’s receives it.
 
 ## The Cojac's Guarantee
 - Rich and creamy: never thin, watered down or lacking in flavour.

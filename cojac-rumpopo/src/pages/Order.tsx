@@ -10,6 +10,8 @@ import { usePageMeta } from '../lib/usePageMeta';
 import { CartLines } from '../components/CartDrawer';
 import { BagIcon, CheckIcon, CopyIcon, InfoIcon, WhatsAppIcon } from '../components/Icons';
 import { PageHero } from '../components/ui';
+import { PaymentStep } from '../components/PaymentStep';
+import { effectivePayment, findBank } from '../lib/payments';
 
 const AGE_KEY = 'cojac-age-confirmed-v1';
 
@@ -40,15 +42,20 @@ export default function Order() {
   // Internal preview only: lets stakeholders open WhatsApp and pick their own chat.
   const previewUrl = !destination.ok && buildFlags.showLaunchNotes ? `https://wa.me/?text=${encodeURIComponent(message)}` : null;
 
+  const payMethod = effectivePayment(details.fulfilment, details.payment);
+  const payBank = findBank(details.bank);
+  const orderTotal = totals.allPriced && fulfilment && fulfilment.feeBZD !== null ? totals.pricedSubtotal + fulfilment.feeBZD : null;
   const errors = {
     fulfilment: !fulfilment ? 'Please choose delivery, pickup or shipping.' : '',
     name: details.name.trim().length < 2 ? 'Please enter your name.' : '',
     address: fulfilment?.asksForArea && details.area.trim().length < 6 ? 'Please enter your exact address.' : '',
+    payment: fulfilment && !payMethod ? 'Please choose how you will pay.' : '',
+    bank: payMethod === 'transfer' && !payBank ? 'Please choose your bank.' : '',
     age: !ageOk ? `Please confirm you are ${site.alcohol.legalAge} or older.` : '',
   };
-  const firstError = (['fulfilment', 'name', 'address', 'age'] as const).find((k) => errors[k]);
+  const firstError = (['fulfilment', 'name', 'address', 'payment', 'bank', 'age'] as const).find((k) => errors[k]);
   const valid = !firstError;
-  const focusId = { fulfilment: 'fulfilment-group', name: 'name', address: 'area', age: 'age-confirm' } as const;
+  const focusId = { fulfilment: 'fulfilment-group', name: 'name', address: 'area', payment: 'payment-group', bank: 'bank-group', age: 'age-confirm' } as const;
   const today = belizeDateString();
 
   const onSend = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -85,7 +92,7 @@ export default function Order() {
     <>
       <PageHero
         title="Your Order Request"
-        lead="Review your flavours, tell us how you’d like to receive them, and send your request to Cojac’s on WhatsApp. No online payment. We confirm everything with you directly."
+        lead="Choose your flavours, tell us where to bring them and how you’ll pay (cash on delivery or bank transfer), then send your request to Cojac’s on WhatsApp."
       />
       <section className="section section--paper order-section">
         <div className="container">
@@ -231,11 +238,20 @@ export default function Order() {
                     <p className="hint">Please don’t include card or payment details.</p>
                   </div>
                 </section>
+
+                <PaymentStep
+                  details={details}
+                  setDetails={setDetails}
+                  fulfilment={fulfilment}
+                  total={orderTotal}
+                  attempted={attempted}
+                  errors={{ payment: errors.payment, bank: errors.bank }}
+                />
               </div>
 
               <aside className="order-summary card" aria-labelledby="step-send">
                 <div className="order-step__head">
-                  <span className="order-step__num">3</span>
+                  <span className="order-step__num">4</span>
                   <h2 id="step-send">Review &amp; send</h2>
                 </div>
                 <ul className="summary-lines">
@@ -263,6 +279,18 @@ export default function Order() {
                     <div className="summary-totals__total">
                       <dt>Total</dt>
                       <dd>{formatBZD(totals.pricedSubtotal + fulfilment.feeBZD)}</dd>
+                    </div>
+                  )}
+                  {payMethod && (
+                    <div>
+                      <dt>Payment</dt>
+                      <dd>
+                        {payMethod === 'cash'
+                          ? fulfilment?.id === 'pickup'
+                            ? 'Cash at pickup'
+                            : 'Cash on delivery'
+                          : `Bank transfer${payBank ? ` (${payBank.name})` : ''}`}
+                      </dd>
                     </div>
                   )}
                   {details.preferredDate && (

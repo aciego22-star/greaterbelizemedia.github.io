@@ -46,7 +46,7 @@ const line = (productId: string, variantId: string | null, quantity: number, not
 const delivery: FulfilmentOption = { id: 'delivery', label: 'Delivery', messageLabel: 'Delivery (Belize City)', description: '', enabled: true, asksForArea: true, chargeLabel: 'Delivery', feeBZD: 5 };
 const pickup: FulfilmentOption = { id: 'pickup', label: 'Pickup', messageLabel: 'Pickup', description: '', enabled: true, asksForArea: false, chargeLabel: 'Pickup', feeBZD: 0 };
 const shipping: FulfilmentOption = { id: 'shipping', label: 'Shipping', messageLabel: 'Shipping (out of district)', description: '', enabled: true, asksForArea: true, chargeLabel: 'Shipping', feeBZD: null };
-const details = { name: '', fulfilment: 'delivery' as const, area: '', preferredDate: '', notes: '' };
+const details = { name: '', fulfilment: 'delivery' as const, area: '', preferredDate: '', notes: '', payment: '' as const, bank: '' as const };
 
 describe('totals', () => {
   it('sums priced lines', () => {

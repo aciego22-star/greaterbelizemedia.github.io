@@ -103,6 +103,7 @@ for (const [label, opts] of [
     check('shipping asks for the exact shipping address', (await page.getByLabel(/exact shipping address/i).count()) === 1);
     check('shipping charge shown as confirmed by Cojac’s', (await page.locator('.summary-totals').innerText()).includes('Charge confirmed by Cojac’s'));
     check('shipping shows no invented total', (await page.locator('.summary-totals__total').count()) === 0);
+    check('shipping is paid by bank transfer only', (await page.locator('#payment-group .option-card').count()) === 1 && (await page.locator('#payment-group input[value="transfer"]').isChecked()));
     // Delivery: BZD $5 within Belize City
     await page.locator('.option-card', { hasText: 'Anywhere in and within Belize City' }).click();
     check('delivery is BZD $5.00', (await page.locator('.summary-totals').innerText()).includes('BZD $5.00'));
@@ -113,6 +114,28 @@ for (const [label, opts] of [
     check('send blocked without an address', (await page.getByText('Please enter your exact address.').count()) === 1 && waUrls.length === 0);
     await page.getByLabel(/your name/i).fill('QA Tester');
     await page.getByLabel(/exact delivery address/i).fill('12 Cleghorn St, blue house beside the church');
+    // Payment: required; delivery offers cash on delivery or bank transfer
+    await send.click();
+    check('send blocked without a payment method', (await page.getByText('Please choose how you will pay.').count()) === 1 && waUrls.length === 0);
+    const payLabels = await page.locator('#payment-group .option-card__title').allInnerTexts();
+    check('delivery offers Cash on delivery and Bank transfer', JSON.stringify(payLabels) === JSON.stringify(['Cash on delivery', 'Bank transfer']), JSON.stringify(payLabels));
+    await page.locator('#payment-group .option-card', { hasText: 'Cash on delivery' }).click();
+    check('cash on delivery shows no bank step', (await page.locator('#bank-group').count()) === 0 && (await page.locator('.summary-totals').innerText()).includes('Cash on delivery'));
+    await page.locator('#payment-group .option-card', { hasText: 'Bank transfer' }).click();
+    const bankNames = await page.locator('.bank-option__name').allInnerTexts();
+    check('bank transfer shows Heritage Bank, Belize Bank and Atlantic Bank', JSON.stringify(bankNames) === JSON.stringify(['Heritage Bank', 'Belize Bank', 'Atlantic Bank']), JSON.stringify(bankNames));
+    check('bank app icons load', (await page.locator('.bank-option img').evaluateAll((imgs) => imgs.filter((i) => i.complete && i.naturalWidth > 0).length)) === 3);
+    await send.click();
+    check('send blocked until a bank is chosen', (await page.getByText('Please choose your bank.').count()) === 1 && waUrls.length === 0);
+    await page.locator('.bank-option', { hasText: 'Belize Bank' }).click();
+    const openHref = await page.locator('.transfer-panel__open').getAttribute('href');
+    const expectHref = label === 'desktop' ? 'https://www.belizebank.com/' : label.startsWith('iPhone') ? 'https://apps.apple.com/bz/app/belize-bank-mobile-banking/id1361907333' : 'intent:';
+    check(`"Open Belize Bank" goes to the ${label === 'desktop' ? 'website' : label.startsWith('iPhone') ? 'App Store app page' : 'installed app (Play Store fallback)'}`, (openHref || '').startsWith(expectHref) && (expectHref !== 'intent:' || (openHref || '').includes('package=com.belizebank.mobile')), (openHref || '').slice(0, 70));
+    const panel = await page.locator('.transfer-panel').innerText();
+    check('transfer panel shows the amount (BZD $166.00)', panel.includes('BZD $166.00'));
+    check('transfer panel asks for the screenshot before the order is placed', /screenshot of your completed transfer/i.test(panel) && /order is placed once Cojac’s receives your transfer screenshot/i.test(panel));
+    check('no invented account number shown', !/Account number/.test(panel));
+    check('summary shows Bank transfer (Belize Bank)', (await page.locator('.summary-totals').innerText()).includes('Bank transfer (Belize Bank)'));
     await page.getByLabel(/preferred date/i).fill('2026-12-20');
     await page.getByLabel(/notes for cojac/i).fill('QA test, please ignore. Special chars: & # ? "quotes" 🎄');
     const [popup] = await Promise.all([ctx.waitForEvent('page', { timeout: 5000 }).catch(() => null), send.click()]);
@@ -132,10 +155,12 @@ for (const [label, opts] of [
       'Address: 12 Cleghorn St, blue house beside the church',
       'Date: Sun, 20 December 2026',
       '"quotes" 🎄',
+      'Payment: Bank transfer (Belize Bank)',
+      'I will send the transfer screenshot in this chat.',
       'Please confirm availability and payment. Thank you!',
     ])
       check(`message contains: ${expect.slice(0, 50)}`, text.includes(expect));
-    check('message is short (≤ 15 lines)', text.split('\n').length <= 15, `${text.split('\n').length} lines`);
+    check('message is short (≤ 17 lines)', text.split('\n').length <= 17, `${text.split('\n').length} lines`);
     check('message has no em/en dashes', !/[—–]/.test(text));
     check('message has no Pumpkin Spice (removed)', !text.includes('Pumpkin'));
     check('honest feedback shown (no "order confirmed")', (await page.getByText('WhatsApp will open with your order request.').count()) === 1 && (await page.getByText(/order confirmed|order placed|payment received/i).count()) === 0);

@@ -16,10 +16,22 @@ PASS  pickup shows a total (BZD $161.00)
 PASS  shipping asks for the exact shipping address
 PASS  shipping charge shown as confirmed by Cojac’s
 PASS  shipping shows no invented total
+PASS  shipping is paid by bank transfer only
 PASS  delivery is BZD $5.00
 PASS  delivery total is BZD $166.00
 PASS  send blocked without a name
 PASS  send blocked without an address
+PASS  send blocked without a payment method
+PASS  delivery offers Cash on delivery and Bank transfer — ["Cash on delivery","Bank transfer"]
+PASS  cash on delivery shows no bank step
+PASS  bank transfer shows Heritage Bank, Belize Bank and Atlantic Bank — ["Heritage Bank","Belize Bank","Atlantic Bank"]
+PASS  bank app icons load
+PASS  send blocked until a bank is chosen
+PASS  "Open Belize Bank" goes to the website — https://www.belizebank.com/
+PASS  transfer panel shows the amount (BZD $166.00)
+PASS  transfer panel asks for the screenshot before the order is placed
+PASS  no invented account number shown
+PASS  summary shows Bank transfer (Belize Bank)
 PASS  WhatsApp opened in a new tab via wa.me — https://wa.me/5016218372?text=Hi%20Cojac
 PASS  destination number is 5016218372
 PASS  message contains: Hi Cojac's Sumptuous Rumpopo! *Order request:*
@@ -32,8 +44,10 @@ PASS  message contains: Name: QA Tester
 PASS  message contains: Address: 12 Cleghorn St, blue house beside the chu
 PASS  message contains: Date: Sun, 20 December 2026
 PASS  message contains: "quotes" 🎄
+PASS  message contains: Payment: Bank transfer (Belize Bank)
+PASS  message contains: I will send the transfer screenshot in this chat.
 PASS  message contains: Please confirm availability and payment. Thank you
-PASS  message is short (≤ 15 lines) — 15 lines
+PASS  message is short (≤ 17 lines) — 17 lines
 PASS  message has no em/en dashes
 PASS  message has no Pumpkin Spice (removed)
 PASS  honest feedback shown (no "order confirmed")
@@ -60,10 +74,22 @@ PASS  pickup shows a total (BZD $161.00)
 PASS  shipping asks for the exact shipping address
 PASS  shipping charge shown as confirmed by Cojac’s
 PASS  shipping shows no invented total
+PASS  shipping is paid by bank transfer only
 PASS  delivery is BZD $5.00
 PASS  delivery total is BZD $166.00
 PASS  send blocked without a name
 PASS  send blocked without an address
+PASS  send blocked without a payment method
+PASS  delivery offers Cash on delivery and Bank transfer — ["Cash on delivery","Bank transfer"]
+PASS  cash on delivery shows no bank step
+PASS  bank transfer shows Heritage Bank, Belize Bank and Atlantic Bank — ["Heritage Bank","Belize Bank","Atlantic Bank"]
+PASS  bank app icons load
+PASS  send blocked until a bank is chosen
+PASS  "Open Belize Bank" goes to the App Store app page — https://apps.apple.com/bz/app/belize-bank-mobile-banking/id1361907333
+PASS  transfer panel shows the amount (BZD $166.00)
+PASS  transfer panel asks for the screenshot before the order is placed
+PASS  no invented account number shown
+PASS  summary shows Bank transfer (Belize Bank)
 PASS  WhatsApp opened in a new tab via wa.me — https://wa.me/5016218372?text=Hi%20Cojac
 PASS  destination number is 5016218372
 PASS  message contains: Hi Cojac's Sumptuous Rumpopo! *Order request:*
@@ -76,8 +102,10 @@ PASS  message contains: Name: QA Tester
 PASS  message contains: Address: 12 Cleghorn St, blue house beside the chu
 PASS  message contains: Date: Sun, 20 December 2026
 PASS  message contains: "quotes" 🎄
+PASS  message contains: Payment: Bank transfer (Belize Bank)
+PASS  message contains: I will send the transfer screenshot in this chat.
 PASS  message contains: Please confirm availability and payment. Thank you
-PASS  message is short (≤ 15 lines) — 15 lines
+PASS  message is short (≤ 17 lines) — 17 lines
 PASS  message has no em/en dashes
 PASS  message has no Pumpkin Spice (removed)
 PASS  honest feedback shown (no "order confirmed")
@@ -105,10 +133,22 @@ PASS  pickup shows a total (BZD $161.00)
 PASS  shipping asks for the exact shipping address
 PASS  shipping charge shown as confirmed by Cojac’s
 PASS  shipping shows no invented total
+PASS  shipping is paid by bank transfer only
 PASS  delivery is BZD $5.00
 PASS  delivery total is BZD $166.00
 PASS  send blocked without a name
 PASS  send blocked without an address
+PASS  send blocked without a payment method
+PASS  delivery offers Cash on delivery and Bank transfer — ["Cash on delivery","Bank transfer"]
+PASS  cash on delivery shows no bank step
+PASS  bank transfer shows Heritage Bank, Belize Bank and Atlantic Bank — ["Heritage Bank","Belize Bank","Atlantic Bank"]
+PASS  bank app icons load
+PASS  send blocked until a bank is chosen
+PASS  "Open Belize Bank" goes to the installed app (Play Store fallback) — intent:#Intent;action=android.intent.action.MAIN;category=android.inte
+PASS  transfer panel shows the amount (BZD $166.00)
+PASS  transfer panel asks for the screenshot before the order is placed
+PASS  no invented account number shown
+PASS  summary shows Bank transfer (Belize Bank)
 PASS  WhatsApp opened in a new tab via wa.me — https://wa.me/5016218372?text=Hi%20Cojac
 PASS  destination number is 5016218372
 PASS  message contains: Hi Cojac's Sumptuous Rumpopo! *Order request:*
@@ -121,8 +161,10 @@ PASS  message contains: Name: QA Tester
 PASS  message contains: Address: 12 Cleghorn St, blue house beside the chu
 PASS  message contains: Date: Sun, 20 December 2026
 PASS  message contains: "quotes" 🎄
+PASS  message contains: Payment: Bank transfer (Belize Bank)
+PASS  message contains: I will send the transfer screenshot in this chat.
 PASS  message contains: Please confirm availability and payment. Thank you
-PASS  message is short (≤ 15 lines) — 15 lines
+PASS  message is short (≤ 17 lines) — 17 lines
 PASS  message has no em/en dashes
 PASS  message has no Pumpkin Spice (removed)
 PASS  honest feedback shown (no "order confirmed")
@@ -133,4 +175,4 @@ PASS  mobile menu lists all 9 sitemap sections — 15 links
 PASS  mobile menu navigation works
 PASS  no page errors
 
-128/128 checks passed
+170/170 checks passed

@@ -38,7 +38,7 @@ export function HowItWorks() {
     { t: 'Choose your flavours', d: 'Browse the season’s rumpopo and pick your favourites.' },
     { t: 'Build your order request', d: 'Select quantities, add any notes and review everything in one place.' },
     { t: 'Send it on WhatsApp', d: 'WhatsApp opens with your request ready. Press Send. That’s it.' },
-    { t: 'Cojac’s confirms', d: 'We confirm availability, final total, payment and delivery or pickup with you directly.' },
+    { t: 'Pay your way', d: 'Cash on delivery, or bank transfer: send the transfer screenshot in the chat and your order is placed.' },
   ];
   return (
     <ol className="steps">
@@ -84,6 +84,16 @@ export function FaqAccordion({ items }: { items: FaqItem[] }) {
   );
 }
 
+/** Video poster: WebP first (made by scripts/make-webp.mjs), original JPG fallback. */
+function Thumb({ src }: { src: string }) {
+  return (
+    <picture>
+      <source type="image/webp" srcSet={asset(src.replace(/\.(jpe?g|png)$/i, '.webp'))} />
+      <img src={asset(src)} alt="" width={480} height={360} loading="lazy" decoding="async" />
+    </picture>
+  );
+}
+
 export function VideoCard({ item }: { item: MediaItem }) {
   const [playing, setPlaying] = useState(false);
   if (item.platform === 'youtube' && item.youtubeId) {
@@ -92,7 +102,7 @@ export function VideoCard({ item }: { item: MediaItem }) {
         <div className="video-card__frame">
           {buildFlags.noEmbeds ? (
             <a className="video-card__poster" href={item.url} target="_blank" rel="noopener noreferrer" aria-label={`Watch on YouTube: ${item.title}`}>
-              {item.thumbnail && <img src={asset(item.thumbnail)} alt="" loading="lazy" decoding="async" />}
+              {item.thumbnail && <Thumb src={item.thumbnail} />}
               <span className="video-card__play">
                 <PlayIcon size={26} />
               </span>
@@ -107,7 +117,7 @@ export function VideoCard({ item }: { item: MediaItem }) {
             />
           ) : (
             <button type="button" className="video-card__poster" onClick={() => setPlaying(true)} aria-label={`Play video: ${item.title}`}>
-              {item.thumbnail && <img src={asset(item.thumbnail)} alt="" loading="lazy" decoding="async" />}
+              {item.thumbnail && <Thumb src={item.thumbnail} />}
               <span className="video-card__play">
                 <PlayIcon size={26} />
               </span>
@@ -276,7 +286,7 @@ export function AtAGlance() {
         Choose flavours on <Link to={routes.flavours.path}>Find Your Flavour</Link>, then send your order request on WhatsApp. Cojac’s confirms availability and payment directly.
       </>,
     ],
-    ['Payment', 'Arranged directly with Cojac’s. No online payment on this website'],
+    ['Payment', 'Cash on delivery or at pickup, or bank transfer (Heritage Bank, Belize Bank, Atlantic Bank). No online card payments'],
   ];
   return (
     <section className="glance" aria-labelledby="glance-title">

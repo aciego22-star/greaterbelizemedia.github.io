@@ -19,6 +19,8 @@ Nothing below was invented. Each item is either empty in the config (so it is hi
 
 | 9c | **Holiday Blog contest link**: the exact Facebook competition post URL, confirmation the flavour is still secret and guesses still open, and any eligibility/age wording the owners want shown | `src/content/blog/contest.ts` | Panel links to the official Facebook page (“Visit Cojac’s Official Facebook Page”) and asks people to find the post. No enter button until the link is supplied. |
 
+| 9d | **Bank account details** (optional): if customers should transfer before messaging, the account name, number and type for the bank(s) Cojac’s uses. Also confirm that **pickup** may be paid in cash (assumed) and that shipping is transfer only. | `src/content/payments.ts → account` | Customers are told Cojac’s will send the account details on WhatsApp. |
+
 ## Should have
 
 | # | Item | Where |

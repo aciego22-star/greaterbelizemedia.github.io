@@ -117,6 +117,10 @@ export interface OrderDetails {
   area: string;
   preferredDate: string;
   notes: string;
+  /** 'cash' or 'transfer' (see content/payments.ts). */
+  payment: 'cash' | 'transfer' | '';
+  /** Customer's bank for transfers. */
+  bank: 'heritage' | 'belize-bank' | 'atlantic' | '';
 }
 
 export interface FaqItem {

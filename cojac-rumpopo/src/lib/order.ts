@@ -4,6 +4,7 @@
  */
 import type { CartLine, FulfilmentOption, OrderDetails, Product, ProductVariant } from '../types';
 import { formatLongDate } from './season';
+import { effectivePayment, findBank, paymentMessageLines } from './payments';
 
 export const MAX_QTY_PER_LINE = 99;
 export const MAX_NOTE_LENGTH = 200;
@@ -144,6 +145,8 @@ export function buildOrderMessage({ brandName, resolved, details, fulfilment }: 
   } else {
     out.push(`*Subtotal: ${subtotalLabel(totals)}*`);
   }
+  const pay = paymentMessageLines(effectivePayment(details.fulfilment, details.payment ?? ''), details.fulfilment, findBank(details.bank ?? ''));
+  out.push(...pay);
   out.push('');
   const name = clean(details.name, 80);
   if (name) out.push(`Name: ${name}`);

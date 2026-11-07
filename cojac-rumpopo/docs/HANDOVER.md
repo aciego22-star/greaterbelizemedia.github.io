@@ -108,6 +108,27 @@ Enter an amount (e.g. `feeBZD: 10`) to show it at checkout and in the WhatsApp m
 
 Customers choose Delivery, Pickup or Shipping and must give their **name**. Delivery and shipping also require the **exact address** (street, house number and a landmark). A preferred date and notes are optional. The WhatsApp message is kept short: items with sizes and prices, the delivery line, the total, name, address, date and notes.
 
+## 5c. Payment (cash or bank transfer)
+
+`src/content/payments.ts`. After choosing delivery, pickup or shipping and entering their name and address, customers choose how they will pay:
+
+| Fulfilment | Payment options |
+|---|---|
+| Delivery (Belize City) | Cash on delivery, or bank transfer |
+| Pickup | Cash at pickup, or bank transfer |
+| Shipping (out of district) | Bank transfer only |
+
+For a bank transfer the customer picks **Heritage Bank, Belize Bank or Atlantic Bank**. A button then opens that bank’s app:
+- On **Android**, it opens the installed app, or Google Play if the app isn’t installed.
+- On **iPhone**, it opens the App Store page, which shows “Open” when the app is installed.
+- On a **computer**, it opens the bank’s website.
+
+The page shows the amount when it is known and the steps to follow. It states clearly that **the order is placed once Cojac’s receives the screenshot of the completed transfer** in the WhatsApp chat. The WhatsApp message adds “Payment: Bank transfer (Belize Bank)” and “I will send the transfer screenshot in this chat.” For cash it adds “Payment: Cash on delivery”.
+
+**Optional: show Cojac’s account details on the site.** Fill in `account` for each bank (account name, number and type). Customers can then transfer straight away; while it is empty, they are told that Cojac’s will send the account details in the chat.
+
+The links to each bank’s app are in the same file (`iosAppStore`, `androidPackage`, `website`); they were checked against the official store listings in November 2026.
+
 ## 6. Contact details and social links (Facebook / Instagram)
 
 `src/content/site.ts → contact` and `social`. Empty values stay hidden. Paste the full profile links, e.g. `facebook: 'https://www.facebook.com/…'` and `instagram: 'https://www.instagram.com/…'`. The WhatsApp, Facebook, Instagram and email logos appear side by side on Connect With Us, in the footer and in the mobile menu (the WhatsApp number itself is not printed — the logo opens the chat), and the links are added to the structured data for Google.

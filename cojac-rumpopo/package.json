@@ -14,7 +14,9 @@
     "typecheck": "tsc -b",
     "qa:screens": "node scripts/qa-screenshots.mjs",
     "qa:flow": "node scripts/qa-order-flow.mjs",
-    "build:artifact": "VITE_ARTIFACT=true VITE_SHOW_LAUNCH_NOTES=true BASE_PATH=./ sh -c 'tsc -b && vite build --outDir dist-artifact'"
+    "build:artifact": "VITE_ARTIFACT=true VITE_SHOW_LAUNCH_NOTES=true BASE_PATH=./ sh -c 'tsc -b && vite build --outDir dist-artifact'",
+    "images": "node scripts/make-webp.mjs",
+    "prebuild": "node scripts/make-webp.mjs"
   },
   "dependencies": {
     "@fontsource-variable/fraunces": "^5.3.0",
@@ -27,6 +29,7 @@
     "@types/react": "^18.3.31",
     "@types/react-dom": "^18.3.7",
     "@vitejs/plugin-react": "^6.2.1",
+    "sharp": "^0.35.5",
     "typescript": "^7.0.2",
     "vite": "^8.3.6",
     "vitest": "^5.1.0"

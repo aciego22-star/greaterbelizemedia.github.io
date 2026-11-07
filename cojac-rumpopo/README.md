@@ -47,6 +47,8 @@ src/content/media.ts       videos & features
 src/content/gallery.ts     gallery photos
 src/content/blog/          Holiday Blog posts (posts.ts) and competition settings (contest.ts)
 src/content/hero.ts        homepage slideshow
+src/content/payments.ts    payment options, the three banks and their app links
+scripts/make-webp.mjs      creates WebP copies of new photos (runs before every build; or npm run images)
 src/content/copy.ts        the family's approved copy (story, guarantee, videos intro)
 src/content/routes.json    page URLs, titles and SEO descriptions
 src/lib/order.ts           order maths + WhatsApp message builder (unit-tested)

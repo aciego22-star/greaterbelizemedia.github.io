@@ -47,7 +47,7 @@ function reducer(state: CartLine[], a: Action): CartLine[] {
   }
 }
 
-const emptyDetails: OrderDetails = { name: '', fulfilment: '', area: '', preferredDate: '', notes: '' };
+const emptyDetails: OrderDetails = { name: '', fulfilment: '', area: '', preferredDate: '', notes: '', payment: '', bank: '' };
 
 function load(): { lines: CartLine[]; details: OrderDetails } {
   try {
