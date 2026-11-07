@@ -134,7 +134,14 @@ for (const [label, opts] of [
     const panel = await page.locator('.transfer-panel').innerText();
     check('transfer panel shows the amount (BZD $166.00)', panel.includes('BZD $166.00'));
     check('transfer panel asks for the screenshot before the order is placed', /screenshot of your completed transfer/i.test(panel) && /order is placed once Cojac’s receives your transfer screenshot/i.test(panel));
-    check('no invented account number shown', !/Account number/.test(panel));
+    check('shows Cojac’s Atlantic Bank account 212001055, recipient Cojac Smith', panel.includes('Atlantic Bank Limited') && panel.includes('212001055') && panel.includes('Cojac Smith'));
+    check('Belize Bank payers are told to send to another bank in Belize', /another bank in Belize/.test(panel));
+    check('with a known total, transfer comes first', /send BZD \$166\.00 to the account above/.test(panel));
+    if (label === 'desktop') {
+      await page.getByRole('button', { name: 'Copy account number' }).click();
+      const clipAcct = await page.evaluate(() => navigator.clipboard.readText().catch(() => ''));
+      check('account number copies to the clipboard', clipAcct === '212001055', clipAcct);
+    }
     check('summary shows Bank transfer (Belize Bank)', (await page.locator('.summary-totals').innerText()).includes('Bank transfer (Belize Bank)'));
     await page.getByLabel(/preferred date/i).fill('2026-12-20');
     await page.getByLabel(/notes for cojac/i).fill('QA test, please ignore. Special chars: & # ? "quotes" 🎄');

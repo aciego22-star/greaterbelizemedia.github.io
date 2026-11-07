@@ -161,7 +161,7 @@ export const faqs: FaqItem[] = [
     published: true,
     question: 'How can I pay?',
     answer:
-      'Cash on delivery for Belize City delivery, cash at pickup, or bank transfer from Heritage Bank, Belize Bank or Atlantic Bank. Shipping orders to other districts are paid by bank transfer. If you pay by bank transfer, send a screenshot of the completed transfer in the WhatsApp chat: your order is placed once Cojac’s receives it.',
+      'Cash on delivery for Belize City delivery, cash at pickup, or bank transfer from Heritage Bank, Belize Bank or Atlantic Bank. Shipping orders to other districts are paid by bank transfer. Transfers go to Cojac’s Atlantic Bank account, shown at checkout (from Heritage Bank or Belize Bank, send it as a transfer to another bank in Belize). Then send a screenshot of the completed transfer in the WhatsApp chat: your order is placed once Cojac’s receives it.',
   },
   { id: 'storage', category: 'product', published: false, question: 'How should I store my rumpopo, and how long does it keep?', answer: '' },
   { id: 'gifting', category: 'general', published: false, question: 'Do you offer gift packaging or bulk orders?', answer: '' },

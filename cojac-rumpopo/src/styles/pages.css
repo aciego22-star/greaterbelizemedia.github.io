@@ -3313,3 +3313,23 @@
     font-size: 0.8rem;
   }
 }
+.transfer-hint {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #fff;
+  border: 1px dashed rgba(162, 122, 60, 0.45);
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+.account-row dd span {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+.account-row dd span {
+  white-space: nowrap;
+}
+.account-row dt {
+  flex: 0 1 auto;
+  min-width: 0;
+}

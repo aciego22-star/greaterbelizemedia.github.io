@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { banks, type BankId, type PaymentMethodId } from '../content/payments';
+import { banks, receivingAccount as acct, type BankId, type PaymentMethodId } from '../content/payments';
 import { bankAppLink, detectPlatform, effectivePayment, findBank, optionsFor, type Platform } from '../lib/payments';
 import { formatBZD } from '../lib/order';
 import { asset, copyText } from '../lib/whatsapp';
@@ -130,25 +130,49 @@ export function PaymentStep({ details, setDetails, fulfilment, total, attempted,
                         <strong>{total !== null ? formatBZD(total) : 'Confirmed by Cojac’s on WhatsApp'}</strong>
                       </dd>
                     </div>
-                    {bank.account && (
+                    {acct && (
                       <>
-                        <CopyRow label="Account name" value={bank.account.accountName} />
-                        <CopyRow label="Account number" value={bank.account.accountNumber} />
                         <div className="account-row">
-                          <dt>Account type</dt>
-                          <dd>{bank.account.accountType}</dd>
+                          <dt>Pay to</dt>
+                          <dd>{acct.bankName}</dd>
                         </div>
+                        <CopyRow label="Account number" value={acct.accountNumber} />
+                        <CopyRow label="Recipient name" value={acct.accountName} />
+                        {acct.accountType && (
+                          <div className="account-row">
+                            <dt>Account type</dt>
+                            <dd>{acct.accountType}</dd>
+                          </div>
+                        )}
                       </>
                     )}
                   </dl>
 
+                  {acct && bank.id !== acct.bankId && (
+                    <p className="transfer-hint">
+                      Paying from {bank.name}: in your app, choose the option to send money to <strong>another bank in Belize</strong> and select{' '}
+                      {acct.bankName}.
+                    </p>
+                  )}
+
                   <ol className="transfer-steps">
-                    {bank.account ? (
+                    {acct && total !== null ? (
                       <>
-                        <li>Transfer the amount in your {bank.name} app.</li>
-                        <li>Tap “Send Order Request on WhatsApp” below.</li>
                         <li>
-                          In the chat, send a <strong>screenshot of your completed transfer</strong>.
+                          In your {bank.name} app, send <strong>{formatBZD(total)}</strong> to the account above.
+                        </li>
+                        <li>
+                          Take a <strong>screenshot of your completed transfer</strong>.
+                        </li>
+                        <li>Tap “Send Order Request on WhatsApp” below and send the screenshot in the chat.</li>
+                      </>
+                    ) : acct ? (
+                      <>
+                        <li>Tap “Send Order Request on WhatsApp” below.</li>
+                        <li>Cojac’s replies with your total, including the shipping charge.</li>
+                        <li>In your {bank.name} app, send that amount to the account above.</li>
+                        <li>
+                          Send a <strong>screenshot of your completed transfer</strong> in the chat.
                         </li>
                       </>
                     ) : (

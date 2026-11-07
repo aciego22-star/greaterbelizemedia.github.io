@@ -125,7 +125,7 @@ For a bank transfer the customer picks **Heritage Bank, Belize Bank or Atlantic 
 
 The page shows the amount when it is known and the steps to follow. It states clearly that **the order is placed once Cojac’s receives the screenshot of the completed transfer** in the WhatsApp chat. The WhatsApp message adds “Payment: Bank transfer (Belize Bank)” and “I will send the transfer screenshot in this chat.” For cash it adds “Payment: Cash on delivery”.
 
-**Optional: show Cojac’s account details on the site.** Fill in `account` for each bank (account name, number and type). Customers can then transfer straight away; while it is empty, they are told that Cojac’s will send the account details in the chat.
+**Receiving account:** all transfers go to `receivingAccount` in the same file: **Atlantic Bank Limited, account 212001055, recipient Cojac Smith**. It is shown at checkout with copy buttons. Customers paying from Heritage Bank or Belize Bank are told to send it as a transfer to another bank in Belize. When the total is known (delivery or pickup), they transfer first, then send the order with the screenshot. For shipping, Cojac’s confirms the total with the shipping charge in the chat first. To change the account, edit those fields; set it to `null` to hide it, and customers will be told the details come in the chat.
 
 The links to each bank’s app are in the same file (`iosAppStore`, `androidPackage`, `website`); they were checked against the official store listings in November 2026.
 

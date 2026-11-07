@@ -30,7 +30,10 @@ PASS  send blocked until a bank is chosen
 PASS  "Open Belize Bank" goes to the website — https://www.belizebank.com/
 PASS  transfer panel shows the amount (BZD $166.00)
 PASS  transfer panel asks for the screenshot before the order is placed
-PASS  no invented account number shown
+PASS  shows Cojac’s Atlantic Bank account 212001055, recipient Cojac Smith
+PASS  Belize Bank payers are told to send to another bank in Belize
+PASS  with a known total, transfer comes first
+PASS  account number copies to the clipboard — 212001055
 PASS  summary shows Bank transfer (Belize Bank)
 PASS  WhatsApp opened in a new tab via wa.me — https://wa.me/5016218372?text=Hi%20Cojac
 PASS  destination number is 5016218372
@@ -88,7 +91,9 @@ PASS  send blocked until a bank is chosen
 PASS  "Open Belize Bank" goes to the App Store app page — https://apps.apple.com/bz/app/belize-bank-mobile-banking/id1361907333
 PASS  transfer panel shows the amount (BZD $166.00)
 PASS  transfer panel asks for the screenshot before the order is placed
-PASS  no invented account number shown
+PASS  shows Cojac’s Atlantic Bank account 212001055, recipient Cojac Smith
+PASS  Belize Bank payers are told to send to another bank in Belize
+PASS  with a known total, transfer comes first
 PASS  summary shows Bank transfer (Belize Bank)
 PASS  WhatsApp opened in a new tab via wa.me — https://wa.me/5016218372?text=Hi%20Cojac
 PASS  destination number is 5016218372
@@ -147,7 +152,9 @@ PASS  send blocked until a bank is chosen
 PASS  "Open Belize Bank" goes to the installed app (Play Store fallback) — intent:#Intent;action=android.intent.action.MAIN;category=android.inte
 PASS  transfer panel shows the amount (BZD $166.00)
 PASS  transfer panel asks for the screenshot before the order is placed
-PASS  no invented account number shown
+PASS  shows Cojac’s Atlantic Bank account 212001055, recipient Cojac Smith
+PASS  Belize Bank payers are told to send to another bank in Belize
+PASS  with a known total, transfer comes first
 PASS  summary shows Bank transfer (Belize Bank)
 PASS  WhatsApp opened in a new tab via wa.me — https://wa.me/5016218372?text=Hi%20Cojac
 PASS  destination number is 5016218372
@@ -175,4 +182,4 @@ PASS  mobile menu lists all 9 sitemap sections — 15 links
 PASS  mobile menu navigation works
 PASS  no page errors
 
-170/170 checks passed
+177/177 checks passed

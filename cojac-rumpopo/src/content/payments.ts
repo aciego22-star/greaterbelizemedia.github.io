@@ -17,19 +17,22 @@
  * Store page, which shows "Open" when the app is installed; on a computer it
  * opens the bank's website.
  *
- * `account`: OPTIONAL. If Cojac's wants customers to transfer straight away,
- * fill in the account that customers of that bank should pay into (name, number,
- * type). While empty, the site tells customers that Cojac's will send the account
- * details in the WhatsApp chat. Never guess these details.
+ * `receivingAccount`: the account ALL transfers are paid into (supplied by the
+ * owner, Nov 2026). Customers of other banks send it as a transfer to another
+ * bank in Belize. Set it to null to hide it; the site then tells customers that
+ * Cojac's will send the account details in the WhatsApp chat.
  */
 import type { FulfilmentId } from '../types';
 
 export type PaymentMethodId = 'cash' | 'transfer';
 export type BankId = 'heritage' | 'belize-bank' | 'atlantic';
 
-export interface BankAccount {
+export interface ReceivingAccount {
+  bankId: BankId;
+  bankName: string;
   accountName: string;
   accountNumber: string;
+  /** Optional, e.g. "Savings". Leave empty if not supplied. */
   accountType: string;
 }
 
@@ -41,7 +44,6 @@ export interface Bank {
   iosAppStore: string;
   androidPackage: string;
   website: string;
-  account: BankAccount | null;
 }
 
 export const banks: Bank[] = [
@@ -53,7 +55,6 @@ export const banks: Bank[] = [
     iosAppStore: 'https://apps.apple.com/bz/app/heritage-bank-ltd/id1484725931',
     androidPackage: 'com.heritage.mobile.android.ui',
     website: 'https://www.heritageibt.com/',
-    account: null,
   },
   {
     id: 'belize-bank',
@@ -63,7 +64,6 @@ export const banks: Bank[] = [
     iosAppStore: 'https://apps.apple.com/bz/app/belize-bank-mobile-banking/id1361907333',
     androidPackage: 'com.belizebank.mobile',
     website: 'https://www.belizebank.com/',
-    account: null,
   },
   {
     id: 'atlantic',
@@ -73,9 +73,16 @@ export const banks: Bank[] = [
     iosAppStore: 'https://apps.apple.com/bz/app/atlantic-bank-mobile-banking/id1608600308',
     androidPackage: 'com.mobilebankingatlanticbank',
     website: 'https://www.atlabank.com/',
-    account: null,
   },
 ];
+
+export const receivingAccount: ReceivingAccount | null = {
+  bankId: 'atlantic',
+  bankName: 'Atlantic Bank Limited',
+  accountName: 'Cojac Smith',
+  accountNumber: '212001055',
+  accountType: '',
+};
 
 /** Payment options offered for each fulfilment choice, in display order. */
 export const paymentOptions: Record<FulfilmentId, { id: PaymentMethodId; label: string; description: string }[]> = {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { banks } from '../src/content/payments';
+import { banks, receivingAccount } from '../src/content/payments';
 import { bankAppLink, detectPlatform, effectivePayment, findBank, optionsFor, paymentMessageLines } from '../src/lib/payments';
 import { buildOrderMessage, lineKey, resolveLines } from '../src/lib/order';
 import type { FulfilmentOption, Product } from '../src/types';
@@ -46,8 +46,9 @@ describe('banks', () => {
     expect(detectPlatform('Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X)')).toBe('ios');
     expect(detectPlatform('Mozilla/5.0 (Windows NT 10.0; Win64; x64)')).toBe('desktop');
   });
-  it('never ships invented account details', () => {
-    for (const b of banks) if (b.account) expect(b.account.accountNumber).toMatch(/^\d[\d -]{4,}$/);
+  it('uses the owner-supplied receiving account', () => {
+    expect(receivingAccount).toEqual({ bankId: 'atlantic', bankName: 'Atlantic Bank Limited', accountName: 'Cojac Smith', accountNumber: '212001055', accountType: '' });
+    expect(banks.some((b) => b.id === receivingAccount!.bankId)).toBe(true);
   });
 });
 
