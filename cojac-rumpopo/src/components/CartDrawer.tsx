@@ -16,7 +16,7 @@ export function CartLines({ compact = false }: { compact?: boolean }) {
         <li key={r.line.key} className="cart-line">
           <div className="cart-line__thumb" style={{ background: `linear-gradient(160deg, ${r.product.palette.cream}, ${r.product.palette.deep})` }}>
             {r.product.images[0] ? (
-              <img src={asset(r.product.images[0].src)} alt="" />
+              <img src={asset(r.product.images[0].base ? `/products/${r.product.images[0].base}_Mobile_540x675.webp` : r.product.images[0].src)} alt="" loading="lazy" />
             ) : (
               <BottleArt palette={r.product.palette} title="" className="cart-line__bottle" />
             )}

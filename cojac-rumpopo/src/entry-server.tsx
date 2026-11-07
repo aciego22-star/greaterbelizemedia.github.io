@@ -30,7 +30,12 @@ export function render(url: string): string {
 /** llms.txt — a plain-language summary for AI assistants, built from the same verified content. */
 export function llmsTxt(): string {
   const base = site.siteUrl.replace(/\/$/, '');
-  const flavours = getCatalogue().map((p) => `- ${p.name}: ${p.description}`).join('\n');
+  const flavours = getCatalogue()
+    .map(
+      (p) =>
+        `- ${p.name} — ${p.variants.map((v) => `${v.bottleSize}${v.priceBZD !== null ? ` BZD $${v.priceBZD}` : ''}`).join(' · ')}${p.dietaryLabel ? ` (${p.dietaryLabel})` : ''}: ${p.description}`,
+    )
+    .join('\n');
   const faqs = publishedFaqs().map((f) => `### ${f.question}\n${f.answer}`).join('\n\n');
   const pages = Object.values(routes)
     .map((r) => `- [${r.nav}](${base}${r.path === '/' ? '/' : r.path}): ${r.description}`)
@@ -51,7 +56,7 @@ Brand tagline: "${site.logoTagline}"
 - Season: order requests accepted until ${formatLongDate(site.season.seasonClosesOn)}
 - Ordering: choose flavours on the website, then send the order request on WhatsApp; ${site.brandShort} confirms availability, final price, payment and delivery directly
 - Fulfilment options offered this season: ${site.fulfilment.filter((f) => f.enabled && f.id !== 'advise').map((f) => `${f.label}${f.short ? ` (${f.short})` : ''}`).join('; ')}. Delivery and shipping carry a charge confirmed by ${site.brandShort}; pickup is free
-- Prices and bottle sizes: confirmed by ${site.brandShort} on request
+- Sizes: Half liter (500 mL) and Liter (1 L); prices in Belize dollars (BZD) are listed below
 
 ## The Cojac's Guarantee
 - Rich and creamy — never thin, watered down or lacking in flavour.
@@ -59,7 +64,7 @@ Brand tagline: "${site.logoTagline}"
 - Filled to the top — bottles are filled properly, right to the top.
 - More than just Classic Vanilla — customer favourites, seasonal creations and new releases.
 
-## Flavours (family favourites; availability confirmed each season)
+## Menu and prices this season (availability confirmed on WhatsApp)
 ${flavours}
 
 ## Pages

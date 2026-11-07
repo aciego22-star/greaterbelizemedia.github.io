@@ -6,6 +6,15 @@
 import type { FaqItem } from '../types';
 import { site } from './site';
 import { formatLongDate } from '../lib/season';
+import { getCatalogue, lowestPrice, sizeNames } from './catalogue';
+
+const menu = getCatalogue();
+const shortName = (name: string) => name.replace(/ Rumpopo$/, '');
+const listText = (xs: string[]) => xs.join(', ').replace(/, ([^,]*)$/, ' and $1');
+const priceLines = menu
+  .map((p) => `${shortName(p.name)}: ${p.variants.map((v) => `${v.bottleSize.split(' (')[0].toLowerCase()} BZD $${v.priceBZD}`).join(', ')}`)
+  .join('; ');
+const from = lowestPrice();
 
 // Answers below are built from the verified settings in site.ts, so they stay
 // consistent with the rest of the website (and with what AI assistants read).
@@ -100,9 +109,8 @@ export const faqs: FaqItem[] = [
     id: 'flavours-this-season',
     category: 'product',
     published: true,
-    question: 'Which flavours are available this season?',
-    answer:
-      'Classic Vanilla started it all, and customer favourites like Peanut Delight and Pumpkin Spice have joined it over the years, alongside seasonal creations and new releases. Availability can change each season, so Cojac’s will confirm your flavours when you send your request.',
+    question: 'Which rumpopo flavours are on the menu this season?',
+    answer: `This season’s menu has ${menu.length} flavours: ${listText(menu.map((p) => shortName(p.name)))}. Cojac’s confirms availability when you send your order request.`,
   },
   {
     id: 'contains-alcohol',
@@ -129,8 +137,20 @@ export const faqs: FaqItem[] = [
   },
 
   // ── Draft stubs: awaiting approved answers from the family ────────────────
-  { id: 'prices', category: 'product', published: false, question: 'How much does a bottle cost?', answer: '' },
-  { id: 'sizes', category: 'product', published: false, question: 'What bottle sizes do you offer?', answer: '' },
+  {
+    id: 'sizes',
+    category: 'product',
+    published: true,
+    question: 'What bottle sizes do you offer?',
+    answer: `Every flavour comes in two sizes: ${listText(sizeNames)}.`,
+  },
+  {
+    id: 'prices',
+    category: 'product',
+    published: from !== null,
+    question: 'How much does a bottle of Cojac’s rumpopo cost?',
+    answer: `Prices start from BZD $${from} for a half liter. This season’s prices (half liter, liter) — ${priceLines}. Delivery and shipping charges are confirmed on WhatsApp; pickup is free.`,
+  },
   { id: 'lead-time', category: 'ordering', published: false, question: 'How far in advance should I order?', answer: '' },
   { id: 'delivery-fees', category: 'delivery', published: false, question: 'How much is delivery or shipping?', answer: '' },
   { id: 'shipping-areas', category: 'delivery', published: false, question: 'Where do you ship?', answer: '' },

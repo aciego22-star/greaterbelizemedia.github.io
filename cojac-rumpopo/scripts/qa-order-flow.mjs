@@ -51,6 +51,8 @@ for (const [label, opts] of [
   await card('Classic Vanilla').getByRole('button', { name: '+ Add a note' }).click();
   await card('Classic Vanilla').getByPlaceholder(/gift/).fill('One bottle wrapped as a gift');
   await card('Classic Vanilla').getByRole('button', { name: /add to order/i }).click();
+  await card('Peanut Delight').locator('.size-option', { has: page.locator('input[value="liter"]') }).click();
+  check('size picker shows Liter price BZD $38.00', (await card('Peanut Delight').locator('.flavour-card__price strong').innerText()) === 'BZD $38.00');
   await card('Peanut Delight').getByRole('button', { name: /add to order/i }).click();
   await card('Pumpkin Spice').getByRole('button', { name: /add to order/i }).click();
   const qty = card('Classic Vanilla').getByRole('spinbutton');
@@ -73,7 +75,8 @@ for (const [label, opts] of [
   await page.waitForURL('**/order');
   const cartLabel = await page.locator('.cart-btn').getAttribute('aria-label');
   check('header count = 7 bottles', /7 bottles/.test(cartLabel || ''), cartLabel);
-  check('no fictional total shown', (await page.locator('.summary-totals').innerText()).includes('To be confirmed by Cojac’s'));
+  // Classic Vanilla half liter 5 × $17 = $85 + Peanut Delight liter 2 × $38 = $76 → $161
+  check('subtotal uses approved prices (BZD $161.00)', (await page.locator('.summary-totals').innerText()).includes('BZD $161.00'));
 
   // Large quantity clamps to 99
   const big = page.getByRole('spinbutton', { name: 'Quantity of Peanut Delight' });
@@ -112,10 +115,10 @@ for (const [label, opts] of [
     const text = decodeURIComponent((url.split('text=')[1] || '').replace(/\+/g, ' '));
     for (const expect of [
       "Hello Cojac's Sumptuous Rumpopo! I'd like to request an order.",
-      '- Classic Vanilla — Size to be confirmed × 5 — price to be confirmed',
+      '- Classic Vanilla Rumpopo — Half liter (500 mL) × 5 — BZD $85.00',
       'Note: One bottle wrapped as a gift',
-      '- Peanut Delight — Size to be confirmed × 2',
-      '*SUBTOTAL:* To be confirmed by Cojac’s',
+      '- Peanut Delight Rumpopo — Liter (1 L) × 2 — BZD $76.00',
+      '*SUBTOTAL:* BZD $161.00',
       '*FULFILMENT:* Delivery',
       '*DELIVERY CHARGE:* Charge applies — amount confirmed by Cojac’s',
       '*AREA:* Kings Park',

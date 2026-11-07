@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, type CSSProperties } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import routes from '../content/routes.json';
 import { collections, getCatalogue } from '../content/catalogue';
@@ -58,7 +58,7 @@ export default function Flavours() {
           )}
 
           {collections.map((c) => {
-            const items = catalogue.filter((p) => p.seasonalCollection === c.id);
+            const items = catalogue.filter((p) => c.includes.includes(p.seasonalCollection));
             if (!items.length) return null;
             return (
               <section key={c.id} className="collection" aria-labelledby={`col-${c.id}`}>
@@ -68,7 +68,7 @@ export default function Flavours() {
                   </h2>
                   <p>{c.intro}</p>
                 </Reveal>
-                <div className="flavour-grid">
+                <div className="flavour-grid" style={{ '--cols': Math.min(items.length, 4) } as CSSProperties}>
                   {items.map((p, i) => (
                     <Reveal key={p.id} delay={i * 90} id={p.slug} className="flavour-grid__item">
                       <FlavourCard product={p} />

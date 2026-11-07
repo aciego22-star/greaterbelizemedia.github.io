@@ -8,6 +8,7 @@ export type Availability =
   | 'available' // confirmed by the family for this season
   | 'limited' // confirmed, but only a few left
   | 'sold-out' // confirmed, none left — cannot be added to an order
+  | 'on-menu' // on this season's confirmed menu (not a live stock count)
   | 'ask' // not yet confirmed this season — customer may ask on WhatsApp
   | 'coming-soon'; // announced but not yet taking requests
 
@@ -33,6 +34,13 @@ export interface FlavourPalette {
   accent: string;
 }
 
+export interface ProductImage {
+  src: string;
+  mobileSrc?: string;
+  base?: string;
+  alt: string;
+}
+
 export interface Product {
   id: string;
   slug: string;
@@ -40,8 +48,13 @@ export interface Product {
   subtitle: string;
   /** Short flavour narrative. Use the family's own words wherever possible. */
   description: string;
-  /** Approved product photos (paths in /public). Leave empty to show the illustrated bottle. */
-  images: { src: string; alt: string }[];
+  /**
+   * Approved product photos. `src` = desktop 4:3 JPG, `mobileSrc` = mobile 4:5 JPG
+   * (both in /public/products). `base` enables the optimised WebP versions that
+   * follow the naming convention <base>_Desktop_1600x1200 / _800x600 and
+   * <base>_Mobile_1080x1350 / _540x675. Leave empty to show the illustrated bottle.
+   */
+  images: ProductImage[];
   seasonalCollection: 'classic' | 'customer-favourite' | 'seasonal' | 'new-release';
   /** Set false to hide the flavour from the site entirely. */
   active: boolean;
@@ -139,6 +152,8 @@ export interface GalleryItem {
   shape: 'tall' | 'wide' | 'square' | 'feature';
   /** CSS object-position for cropping, e.g. '100% 50%' keeps the right side in view. */
   position?: string;
+  /** Bigger version for the lightbox (defaults to src). */
+  large?: string;
   /** Photo credit shown in the lightbox. */
   credit?: string;
 }

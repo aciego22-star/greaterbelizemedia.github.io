@@ -31,7 +31,7 @@ function Lightbox({ index, onClose, onMove }: { index: number; onClose: () => vo
       <button type="button" className="lightbox__backdrop" onClick={onClose} aria-label="Close" tabIndex={-1} />
       <figure className="lightbox__figure">
         {item.src ? (
-          <img src={asset(item.src)} alt={item.alt} />
+          <img src={asset(item.large ?? item.src)} alt={item.alt} />
         ) : (
           <div className="lightbox__placeholder">
             <Sparkle size={28} />

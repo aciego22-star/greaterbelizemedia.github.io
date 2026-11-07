@@ -9,11 +9,12 @@ Date: 6 November 2026 · Build: production (`npm run build`) and QA (`VITE_QA_WH
 | Area | Result |
 |---|---|
 | Unit tests: order maths, WhatsApp message (incl. delivery/pickup/shipping charges), number validation, season dates (`npm test`) | **16 / 16 pass** |
-| End-to-end order flow with the business number 5016218372, on 3 devices (`scripts/qa-order-flow.mjs`); wa.me requests intercepted, so nothing was sent | **104 / 104 checks pass** — see `qa-order-flow-official.log`. Covers pickup = “No charge” with no area field, shipping = town/district plus a charge, and delivery = Belize City area plus a charge. |
+| End-to-end order flow with the business number 5016218372, on 3 devices (`scripts/qa-order-flow.mjs`); wa.me requests intercepted, so nothing was sent | **107 / 107 checks pass** — see `qa-order-flow-official.log`. Includes choosing the Liter size (BZD $38.00), the BZD $161.00 subtotal, itemised prices in the WhatsApp message, and pickup / shipping / delivery charges. |
 | Page sweep: 11 URLs × 4 viewports (1440, 834, 390, 360 px) | **44 / 44**: no console errors, no failed requests, no horizontal overflow — see `screenshots/qa-report.json` |
 | Accessibility: axe-core WCAG 2.0/2.1 A and AA, 10 pages × desktop and mobile | **0 violations** (after contrast fixes for the WhatsApp green, small gold labels and story numerals) |
 | TypeScript strict type check | Pass |
 | **SEO update (Nov 2026):** full-HTML pre-render of all 10 pages | One `<h1>` per page. 190–1,050 words of content per page are readable with JavaScript off. Valid JSON-LD on every page (Organization, WebSite, WebPage type, BreadcrumbList; FAQPage on /faqs). The 404 page has no canonical and is `noindex`. |
+| **Menu & photos (Nov 2026)** | 7 flavours × 2 sizes with approved prices. 14 supplied photos shown whole (`object-fit: contain`; mobile 4:5 at ≤767px, desktop 4:3 above). Checked at 390, 834, 1024, 1100, 1280 and 1440px: no size button, quantity stepper or Add button overflows its card. |
 | Favicon | `/favicon.ico` (16/32/48) + 48/96/192/512 PNG + 180 apple-touch-icon + manifest, linked in the static homepage `<head>` |
 | Hydration | Pre-rendered HTML is hydrated, and the saved cart and age answer are restored after mount. The order flow was re-run: 89/89 (QA number) and 50/50 (no number) pass. The sweep over the served static files found no console errors. |
 | Direct load / refresh of every route | Each route is pre-rendered to its own `index.html` with its own title, description and canonical link. Unknown paths → `404.html` with a 404 status (`_redirects` and `netlify.toml`). |

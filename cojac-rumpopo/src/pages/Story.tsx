@@ -6,6 +6,7 @@ import { site } from '../content/site';
 import { usePageMeta } from '../lib/usePageMeta';
 import { BottleArt, Ornament, Sprig } from '../components/Art';
 import { PageHero, Reveal } from '../components/ui';
+import { ProductPicture } from '../components/FlavourCard';
 import { AtAGlance, FinalCta } from '../components/sections';
 
 export default function Story() {
@@ -78,8 +79,14 @@ export default function Story() {
           <Reveal delay={120} className="evolution__bottles" aria-hidden="true">
             {cat.slice(0, 3).map((p, i) => (
               <div key={p.id} className={`evolution__bottle e${i}`}>
-                <BottleArt palette={p.palette} tag={p.name} title="" />
-                <span>{p.name}</span>
+                {p.images[0] ? (
+                  <div className="evolution__photo">
+                    <ProductPicture image={p.images[0]} mode="mobile" sizes="(min-width: 900px) 180px, 30vw" />
+                  </div>
+                ) : (
+                  <BottleArt palette={p.palette} tag={p.name} title="" />
+                )}
+                <span>{p.name.replace(/ Rumpopo$/, '')}</span>
               </div>
             ))}
           </Reveal>

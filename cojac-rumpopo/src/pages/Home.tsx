@@ -11,12 +11,18 @@ import { usePageMeta } from '../lib/usePageMeta';
 import { BottleArt, CinnamonArt, GlassArt, Ornament, Sparkle, Sprig } from '../components/Art';
 import { ArrowIcon, WhatsAppIcon } from '../components/Icons';
 import { Reveal, SectionHead } from '../components/ui';
-import { FlavourVisual } from '../components/FlavourCard';
+import { FlavourVisual, ProductPicture } from '../components/FlavourCard';
 import { FaqAccordion, FinalCta, GalleryTile, GuaranteePillars, HowItWorks, TrustStrip, VideoCard } from '../components/sections';
 
 function Hero() {
   const all = getCatalogue();
   const [a, b, c] = [all[1] ?? all[0], all[0], all[2] ?? all[0]];
+  // Real product photography when available: Classic Vanilla in front,
+  // Dark Chocolate Peppermint and Pumpkin Spice behind.
+  const pick = (id: string) => all.find((p) => p.id === id && p.images[0]);
+  const front = pick('classic-vanilla') ?? all.find((p) => p.images[0]);
+  const left = pick('dark-chocolate-peppermint') ?? all.find((p) => p.images[0] && p !== front);
+  const right = pick('pumpkin-spice') ?? all.find((p) => p.images[0] && p !== front && p !== left);
   return (
     <section className="hero grain on-dark" aria-labelledby="hero-title">
       <div className="hero__glow" aria-hidden="true" />
@@ -43,7 +49,20 @@ function Hero() {
             </Link>
           </div>
         </div>
-        {b && (
+        {front && left && right ? (
+          <div className="hero__stage hero__stage--photo">
+            <div className="hero__halo" aria-hidden="true" />
+            <figure className="hero__photo hero__photo--left" aria-hidden="true">
+              <ProductPicture image={left.images[0]} mode="mobile" sizes="(min-width: 900px) 200px, 34vw" />
+            </figure>
+            <figure className="hero__photo hero__photo--right" aria-hidden="true">
+              <ProductPicture image={right.images[0]} mode="mobile" sizes="(min-width: 900px) 200px, 34vw" />
+            </figure>
+            <figure className="hero__photo hero__photo--front">
+              <ProductPicture image={front.images[0]} mode="mobile" sizes="(min-width: 900px) 300px, 54vw" eager />
+            </figure>
+          </div>
+        ) : b && (
           <div className="hero__stage" aria-hidden="true">
             <div className="hero__halo" />
             <BottleArt palette={a.palette} className="hero__bottle hero__bottle--left" title="" />
@@ -180,7 +199,7 @@ function FeaturedFlavours() {
           ))}
         </div>
         <Reveal className="featured__foot">
-          <p>This season’s full menu, sizes and prices are confirmed by Cojac’s — ask about seasonal creations and new releases.</p>
+          <p>Seven flavours this season — every one in a half liter (500 mL) or liter (1 L) bottle.</p>
           <Link to={routes.flavours.path} className="btn btn--ghost-dark">
             See all flavours
           </Link>
@@ -192,7 +211,7 @@ function FeaturedFlavours() {
 
 export default function Home() {
   usePageMeta('home');
-  const homeFaqIds = ['what-is-rumpopo', 'how-to-order', 'delivery-areas', 'is-order-confirmed', 'contains-alcohol'];
+  const homeFaqIds = ['what-is-rumpopo', 'how-to-order', 'prices', 'delivery-areas', 'is-order-confirmed'];
   const faqs = homeFaqIds.map((id) => publishedFaqs().find((f) => f.id === id)).filter((f): f is NonNullable<typeof f> => !!f);
   const videos = media.filter((m) => m.featured && m.platform === 'youtube').slice(0, 2);
   return (

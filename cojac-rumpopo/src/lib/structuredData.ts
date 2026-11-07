@@ -169,17 +169,23 @@ function product(id: string): Json | undefined {
       name: v.bottleSize,
       price: v.priceBZD!.toFixed(2),
       priceCurrency: 'BZD',
-      availability:
-        v.availability === 'sold-out' ? 'https://schema.org/SoldOut' : v.availability === 'limited' ? 'https://schema.org/LimitedAvailability' : 'https://schema.org/InStock',
+      // Stock status is only stated when the family marks it; "on-menu" makes no stock claim.
+      ...(v.availability === 'sold-out' && { availability: 'https://schema.org/SoldOut' }),
+      ...(v.availability === 'limited' && { availability: 'https://schema.org/LimitedAvailability' }),
+      ...(v.availability === 'available' && { availability: 'https://schema.org/InStock' }),
+      url: `${pageUrl('flavours')}#${p.slug}`,
+      seller: { '@id': ORG_ID() },
       areaServed: 'BZ',
     }));
   return {
     '@type': 'Product',
-    name: `${p.name} Rumpopo`,
+    name: /rumpopo$/i.test(p.name) ? p.name : `${p.name} Rumpopo`,
+    sku: p.id,
     description: p.description,
     brand: { '@id': ORG_ID() },
     category: 'Alcoholic beverage',
-    ...(p.images[0] && { image: abs(p.images[0].src) }),
+    ...(p.images[0] && { image: [abs(p.images[0].src), ...(p.images[0].mobileSrc ? [abs(p.images[0].mobileSrc)] : [])] }),
+    ...(p.dietaryLabel && { additionalProperty: { '@type': 'PropertyValue', name: 'Dietary', value: p.dietaryLabel } }),
     ...(offers.length && { offers }),
   };
 }

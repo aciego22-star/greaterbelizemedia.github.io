@@ -21,6 +21,26 @@ whatsapp: {
 
 ## 2. Change flavours, sizes and prices
 
+**Current menu (2026/27):**
+
+| Flavour | Half liter (500 mL) | Liter (1 L) |
+|---|---:|---:|
+| Classic Vanilla | BZD $17 | BZD $32 |
+| Peanut Delight | BZD $20 | BZD $38 |
+| Pumpkin Spice | BZD $22 | BZD $42 |
+| White Chocolate w/ Hazelnut | BZD $25 | BZD $48 |
+| Dark Chocolate Peppermint | BZD $22 | BZD $40 |
+| Snickerdeluxe | BZD $25 | BZD $45 |
+| Vegan | BZD $25 | BZD $50 |
+
+**To change a price**, find the flavour in `src/content/catalogue.ts` and edit the two numbers in `variants: sizes(17, 32)` (half liter first, then liter). Everything else — cards, totals, WhatsApp message, FAQs, Google data — updates from that.
+
+**To mark a size sold out**, replace `sizes(…)` with the full list and set `availability: 'sold-out'` on that size.
+
+**Photos** follow the supplied naming, e.g. `Cojacs_Vegan_Rumpopo_Desktop_1600x1200.jpg` and `…_Mobile_1080x1350.jpg` in `public/products/`. A new flavour needs the same pair; add WebP copies (`…_Desktop_800x600.webp`, `…_Desktop_1600x1200.webp`, `…_Mobile_540x675.webp`, `…_Mobile_1080x1350.webp`) for speed, then use `photo('Cojacs_New_Flavour_Rumpopo', 'New Flavour')` in the catalogue entry.
+
+The detailed field reference follows:
+
 `src/content/catalogue.ts`. Each flavour is one block:
 
 ```ts

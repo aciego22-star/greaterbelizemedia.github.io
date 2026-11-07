@@ -8,10 +8,10 @@ Nothing below was invented. Each item is either empty in the config (so it is hi
 |---|---|---|---|
 | 1 | ~~Official WhatsApp order number~~ — **done: +501 621-8372** | `site.ts → whatsapp.orderNumber` | Send button opens WhatsApp to 5016218372. |
 | 2 | **Brand spelling** — the official logo (supplied Nov 2026) reads “Cojac’s”, matching the sitemap. Only needs a final yes from the family. | `site.ts`, `copy.ts`, `catalogue.ts` | Uses “Cojac’s” everywhere. |
-| 3 | **2026/27 flavour list**: which flavours are definitely on this season | `catalogue.ts → confirmedThisSeason`, `active` | Classic Vanilla, Peanut Delight and Pumpkin Spice are shown with “Ask about availability”. |
-| 4 | **Bottle sizes and BZD prices** | `catalogue.ts → variants` | “Bottle sizes are confirmed by Cojac’s” and “Price: To be confirmed by Cojac’s”. No totals are calculated. |
+| 3 | ~~2026/27 flavour list~~ — **done**: Classic Vanilla, Peanut Delight, Pumpkin Spice, White Chocolate w/ Hazelnut, Dark Chocolate Peppermint, Snickerdeluxe, Vegan | `catalogue.ts` | Shown as “On this season’s menu” (no stock claim). |
+| 4 | ~~Bottle sizes and BZD prices~~ — **done**: Half liter (500 mL) and Liter (1 L) for every flavour, BZD $17–$50 | `catalogue.ts → variants` | Live prices, subtotals and itemised WhatsApp messages. |
 | 5 | **Delivery and shipping charge amounts** (options confirmed: Delivery within Belize City limits — charge; Pickup — free; Shipping out-district — charge). Also: pickup location/times, and whether alcohol may be shipped to all districts | `site.ts → fulfilment.feeBZD` | Customers choose Delivery, Pickup or Shipping. Pickup shows “No charge”; delivery and shipping show “Charge applies — amount confirmed by Cojac’s”. |
-| 6 | **Allergen and ingredient statement for each flavour** (egg, milk, nuts and so on) | `catalogue.ts → allergens`, `ingredientsDisclosure` | Shows a generic “may contain egg and dairy — please ask” note. |
+| 6 | **Allergen and ingredient statement for each flavour** (egg, milk, peanut, hazelnut, chocolate…) — especially Peanut Delight, White Chocolate w/ Hazelnut, Snickerdeluxe and the Vegan recipe | `catalogue.ts → allergens`, `ingredientsDisclosure` | Shows a generic “may contain egg and dairy — please ask” note on every card. |
 | 7 | **Legal age and alcohol obligations** (Belize purchasing age, any rules for selling or delivering alcohol) | `site.ts → alcohol` | Shows an 18+ courtesy notice and an age checkbox before sending. This is not age verification. |
 | 8 | **Final domain** | `site.ts → siteUrl` | Placeholder `cojacs-rumpopo.netlify.app`. |
 
@@ -20,8 +20,8 @@ Nothing below was invented. Each item is either empty in the config (so it is hi
 | # | Item | Where |
 |---|---|---|
 | 9 | ~~Logo~~ (done: official logo in `public/brand/`). Still needed: bottle label art and official brand colour codes, if any. | `global.css` |
-| 10 | Product photography for each flavour | `public/products/`, `catalogue.ts → images` |
-| 11 | Gallery photos (bottles, packaging, events, memories). Two stills from the Greater Belize Media YouTube features are in place; **confirm the family and the presenter are happy for them to appear.** | `public/gallery/`, `gallery.ts` |
+| 10 | ~~Product photography~~ — **done**: 14 photos (desktop 4:3 + mobile 4:5) for all seven flavours | `public/products/` |
+| 11 | Gallery now uses the seven product photos plus two Greater Belize Media stills — **confirm the family and presenter are happy for the GBM stills to appear.** More photos (packaging, events, memories) welcome. | `public/gallery/`, `gallery.ts` |
 | 12 | ~~Facebook and Instagram links~~ — **done** (facebook.com/share/1EJbfQLwDq, instagram.com/cojacsumptuousrumpopo). Optional: swap the Facebook *share* link for the page’s permanent address (facebook.com/<page-name>) when known — it is a stronger signal for Google. | `site.ts → social` |
 | 13 | ~~Email~~ — **done: rumpopobze@gmail.com** (email logo beside WhatsApp, Facebook, Instagram). Public phone number still optional. | `site.ts → contact` |
 | 14 | Pickup point: pickup is now offered (free); location and time are confirmed on WhatsApp. Diego St is **not** described as the pickup point unless the family confirms it. | `site.ts → fulfilment.pickup`, `contact.mapUrl` |

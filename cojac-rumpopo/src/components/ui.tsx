@@ -121,13 +121,14 @@ const availabilityText: Record<Availability, string> = {
   available: 'Available this season',
   limited: 'Limited — few left',
   'sold-out': 'Sold out',
+  'on-menu': 'On this season’s menu',
   ask: 'Ask about availability',
   'coming-soon': 'Coming soon',
 };
 
 export function AvailabilityChip({ value }: { value: Availability }) {
   const cls =
-    value === 'available' || value === 'limited' ? 'chip--available' : value === 'sold-out' ? 'chip--soldout' : 'chip--ask';
+    value === 'available' || value === 'limited' || value === 'on-menu' ? 'chip--available' : value === 'sold-out' ? 'chip--soldout' : 'chip--ask';
   return (
     <span className={`chip ${cls}`}>
       <span className="chip-dot" />

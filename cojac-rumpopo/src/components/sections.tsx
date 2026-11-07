@@ -5,7 +5,7 @@ import { guarantee } from '../content/copy';
 import { buildFlags, site } from '../content/site';
 import type { FaqItem, GalleryItem, MediaItem } from '../types';
 import { media } from '../content/media';
-import { getCatalogue } from '../content/catalogue';
+import { getCatalogue, lowestPrice } from '../content/catalogue';
 import { formatLongDate } from '../lib/season';
 import { asset } from '../lib/whatsapp';
 import { CreamIcon, DropsIcon, ExternalIcon, FacebookIcon, FullBottleIcon, PinIcon, PlayIcon, WhiskIcon, WhatsAppIcon, YouTubeIcon, ChevronIcon } from './Icons';
@@ -239,7 +239,8 @@ export function AtAGlance() {
     ['Who', `${site.brandName}, a Belizean family business`],
     ['Where', `${site.contact.addressLine}, Belize`],
     ['Experience', `Sharing rumpopo for ${site.experienceStatement}`],
-    ['Flavours', getCatalogue().map((p) => p.name).join(', ') + ', plus seasonal creations and new releases'],
+    ['Flavours', getCatalogue().map((p) => p.name.replace(/ Rumpopo$/, '')).join(', ')],
+    ['Sizes & prices', `Half liter (500 mL) or liter (1 L) — from BZD $${lowestPrice() ?? ''}`],
     ['Season', `Order requests open until ${formatLongDate(site.season.seasonClosesOn)}`],
     [
       'How to order',
