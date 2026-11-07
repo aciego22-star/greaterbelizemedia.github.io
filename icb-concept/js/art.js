@@ -818,6 +818,11 @@ window.ICB = window.ICB || {};
     road: '<path d="M5.9 20.5L10.1 4M18.1 20.5L13.9 4"/><path d="M12 6.3v2.4M12 11.1v2.4M12 15.9v2.4"/>',
     people: '<circle cx="9.2" cy="8.1" r="3.1"/><path d="M3.6 19.9a5.6 5.6 0 0111.2 0"/><path d="M16.1 5.55a3.1 3.1 0 010 5.1M17.6 14.6a5.6 5.6 0 012.8 5.3"/>',
     storm: '<path d="M7.5 15.6a3.9 3.9 0 01.3-7.8 5.2 5.2 0 019.7 1.05 3.4 3.4 0 01-.6 6.75z"/><path d="M5.6 18.6h8.2a1.9 1.9 0 10-1.9-1.9M8.4 21.4h6.4a1.7 1.7 0 10-1.7-1.7"/>',
+    /* A windscreen seen from the front, with a chip and the cracks
+       running off it. The car glyph already stands for a motor claim,
+       so the glass needs a mark of its own or the two claim pathways
+       read as the same thing. */
+    windscreen: '<path d="M3.2 16.4l2.3-7.1A2.4 2.4 0 017.8 7.6h8.4a2.4 2.4 0 012.3 1.7l2.3 7.1a1 1 0 01-.95 1.3H4.15a1 1 0 01-.95-1.3z"/><path d="M12 11.1l-2.2 1.5M12 11.1l2.4 1M12 11.1l-.5 2.6"/><circle cx="12" cy="11.1" r="0.85" fill="currentColor" stroke="none"/>',
     question: '<circle cx="12" cy="12" r="8.6"/><path d="M9.45 9.5a2.6 2.6 0 115.1.75c-.35 1.15-1.9 1.45-2.4 2.5a2.4 2.4 0 00-.15 1.05"/><circle cx="12" cy="16.85" r="0.75" fill="currentColor" stroke="none"/>',
 
     /* Utility marks */

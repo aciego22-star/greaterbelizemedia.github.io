@@ -7,9 +7,15 @@
    settlement steps a claim requires. Those instructions belong to ICB and
    are given by an ICB claims representative.
 
-   The five forms are ICB's own PDFs, supplied by the client on 21 Oct
-   2026 and served from this site rather than linked away to the site
-   being replaced. formFile is the file each pathway hands over.
+   The forms are ICB's own PDFs, served from this site rather than
+   linked away to the site being replaced. formFile is the file each
+   pathway hands over. Five arrived on 21 Oct 2026; four more on 7 Nov
+   2026 (personal accident, public liability, windscreen, inland
+   cargo), which is why there are nine pathways here and not five.
+
+   A pathway's id is also the address of its online form, at
+   /claims/form/<id>, so it must match the id of the matching entry in
+   ICB.DATA.claimForms.
 
    INTERNAL TODO (not client-facing):
    - The hurricane form's own title page reads "PROPERTY CATASTROPHE
@@ -53,6 +59,15 @@ ICB.DATA.claims = {
       glyph: "people"
     },
     {
+      id: "windscreen",
+      anchor: "windscreen",
+      name: { en: "Windscreen claim", es: "Reclamo de parabrisas" },
+      formLabel: "Windscreen Claim Form",
+      formFile: "assets/forms/icb-windscreen-claim-form.pdf",
+      lead: { en: "For damage to the glass of a vehicle insured with ICB.", es: "Por daños al cristal de un vehículo asegurado con ICB." },
+      glyph: "windscreen"
+    },
+    {
       id: "property",
       anchor: "property",
       name: { en: "Property claim", es: "Reclamo de propiedad" },
@@ -78,6 +93,33 @@ ICB.DATA.claims = {
       formFile: "assets/forms/icb-property-catastrophe-claim-form.pdf",
       lead: { en: "For property loss or damage following a hurricane.", es: "Por pérdida o daño a la propiedad después de un huracán." },
       glyph: "storm"
+    },
+    {
+      id: "inland-cargo",
+      anchor: "inland-cargo",
+      name: { en: "Inland cargo claim", es: "Reclamo de carga terrestre" },
+      formLabel: "Inland Cargo Claim Form",
+      formFile: "assets/forms/icb-inland-cargo-claim-form.pdf",
+      lead: { en: "For loss or damage to cargo or heavy equipment in transit within Belize.", es: "Por pérdida o daño a carga o equipo pesado en tránsito dentro de Belice." },
+      glyph: "container"
+    },
+    {
+      id: "public-liability",
+      anchor: "public-liability",
+      name: { en: "Public liability claim", es: "Reclamo de responsabilidad civil" },
+      formLabel: "Public Liability Claim Form",
+      formFile: "assets/forms/icb-public-liability-claim-form.pdf",
+      lead: { en: "For an accident where someone else was injured or their property damaged.", es: "Por un accidente en el que otra persona resultó lesionada o su propiedad dañada." },
+      glyph: "scales"
+    },
+    {
+      id: "personal-accident",
+      anchor: "personal-accident",
+      name: { en: "Personal accident claim", es: "Reclamo de accidente personal" },
+      formLabel: "Personal Accident Claim Form",
+      formFile: "assets/forms/icb-personal-accident-claim-form.pdf",
+      lead: { en: "For medical costs after an accident, under a personal accident policy.", es: "Por gastos médicos tras un accidente, bajo una póliza de accidentes personales." },
+      glyph: "shield"
     }
   ],
 

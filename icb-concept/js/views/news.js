@@ -83,7 +83,10 @@ ICB.views = ICB.views || {};
           "</div>" +
         "</section>" +
 
-        '<section class="section section--flush-top" aria-label="' +
+        /* Not flush-top. The first card's picture is full width on a
+           narrow screen, and with the padding removed it butted
+           straight into the black hero with no air at all. */
+        '<section class="section" aria-label="' +
           esc(T("Latest from ICB", "Lo más reciente de ICB")) + '">' +
           '<div class="shell shell--narrow">' +
             '<div class="news-list">' + entries.map(card).join("") + "</div>" +

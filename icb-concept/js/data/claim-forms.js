@@ -1,11 +1,23 @@
 /* ============================================================================
    ICB.DATA.claimForms — ICB's five claim forms, as structured fields.
 
-   SOURCE: the five PDFs ICB supplied on 21 Oct 2026, which are also
-   served for download from assets/forms. Every question below is taken
-   from them. Nothing is added, reworded into a different question, or
-   left out, because the thing a claimant signs here has to be the thing
-   ICB's form asks.
+   SOURCE: the five PDFs ICB supplied on 21 Oct 2026 and the four more
+   supplied on 7 Nov 2026 (windscreen, inland cargo, public liability,
+   personal accident), all of which are also served for download from
+   assets/forms. Every question below is taken from them. Nothing is
+   added, reworded into a different question, or left out, because the
+   thing a claimant signs here has to be the thing ICB's form asks.
+
+   ONE EXCEPTION, AND ONLY FOR LABELS. Where ICB's printed form has a
+   plain grammatical slip in a QUESTION, the question is written here
+   in correct English: the public liability form asks "Where did the
+   accident occurred", and the windscreen form says "ATTACH PROFORMA
+   INVOICE/ ESTIMATE TO THE IS FORM". It is the same question either
+   way, and a visitor reading a slip on a polished page reads it as
+   ours. Declarations, releases and anything a claimant signs under are
+   NEVER touched: those are reproduced exactly, slips included. Both
+   slips are listed in OPEN-QUESTIONS.md so ICB can correct the
+   printed forms if it wants to.
 
    WHY THE ENGLISH LABEL IS THE ONE IN THE PDF. The site is read in two
    languages, so every question is written here in both. The completed
@@ -21,10 +33,18 @@
    INTERNAL TODO (not client-facing), all for ICB rather than for us:
    - ICB's claims team must confirm they accept a signature drawn on a
      screen on these forms. Nothing here should go live until they do.
-   - Several forms ask for a stamp beside the signature. A stamp cannot
-     be drawn on a phone. Today the completed PDF leaves the space and
-     notes it; confirm what ICB wants instead.
+   - Several forms ask for a stamp beside the signature, and the four
+     added on 7 Nov add three more: inland cargo ("Insured's Signature
+     & Stamp"), public liability ("where signing on behalf of a Company
+     please affix official stamp") and personal accident. A stamp
+     cannot be drawn on a phone. Today the completed PDF leaves the
+     space and notes it; confirm what ICB wants instead.
+   - The personal accident form has a section only a doctor can
+     complete. ICB's own form says it may be left blank if an itemized
+     bill is attached, so that is what the online form says too.
+     Confirm the claims team is happy to receive it that way.
    - The Spanish wording needs a read by a Belizean Spanish speaker.
+     This now covers 376 fields across nine forms.
 
    FIELD SHAPE
      k    key, unique inside its form, and the column name in the PDF
@@ -72,7 +92,25 @@ ICB.DATA = ICB.DATA || {};
     buildingNote:
       "BUILDING: The Claim should be accompanied by a Tradesman's Estimate, obtained at Insured's expense, of the cost of putting the Building into the same state as it was immediately before the damage; Improvements should not be included in such estimate.",
     contentsNote:
-      "CONTENTS: It is essential to give a full list of the articles destroyed or damaged, with the particulars set out below. In the case of Stock the \"estimated value immediately before the damage\" (column 5) must not exceed the value before sale, i.e. it must not be based on the selling price."
+      "CONTENTS: It is essential to give a full list of the articles destroyed or damaged, with the particulars set out below. In the case of Stock the \"estimated value immediately before the damage\" (column 5) must not exceed the value before sale, i.e. it must not be based on the selling price.",
+
+    /* The four forms ICB supplied on 7 Nov 2026. Same rule: verbatim. */
+    windscreenDeclaration:
+      "I/We do declare that the foregoing particulars are true in all aspects.",
+    cargoDeclaration:
+      "I hereby declare that the foregoing particulars are true and correct to the best of my knowledge and belief.",
+    cargoAttachments:
+      "The following documents are to be attached to the completed form: 1. Copy Policy of Insurance. 2. Copy of contract of carriage. 3. Documentary evidence to show the extent of the loss or damage.",
+    liabilityNoAdmission:
+      "The Company does not admit liability by the issue of this form.",
+    liabilityDeclaration:
+      "I HEREBY DECLARE THAT THE ABOVE IS A FULL, TRUE AND ACCURATE STATEMENT.",
+    liabilityStamp:
+      "Where signing on behalf of a Company please affix official stamp.",
+    personalAccidentRelease:
+      "The undersigned hereby makes claim for benefits and authorizes any physician or hospital or other person to release and furnish INSURANCE CORP. OF BELIZE LTD. or its representatives any and all information concerning any injury, including medical history, consultations, or treatments and copies of all hospital or medical records that same may be included as a part of the proofs of claim submitted to the Corporation. It is understood that the furnishings of this form shall not constitute nor be considered an admission by the Corporation that there was any insurance in force, nor constitute a waiver of any of the Corporations's rights to defend.",
+    physicianNote:
+      "To be completed by attending physician. Complete this Section or attach an itemized bill."
   };
 
   /* Short helpers, so a hundred and seventy field objects stay readable
@@ -141,7 +179,11 @@ ICB.DATA = ICB.DATA || {};
     attachmentHint: {
       motor: { en: "Photographs of the damage, the police report, and an estimate of repairs.", es: "Fotografías de los daños, el informe policial y un estimado de la reparación." },
       property: { en: "Photographs of the damage, a tradesman's estimate, and the police report where one was made.", es: "Fotografías de los daños, un estimado de un contratista y el informe policial si se hizo uno." },
-      marine: { en: "Photographs of the vessel showing damaged areas, the police report, the report from the Belize Port Authority, and invoices or estimates for repairs and parts.", es: "Fotografías de la embarcación mostrando las áreas dañadas, el informe policial, el informe de la Autoridad Portuaria de Belice, y facturas o estimados de reparación y repuestos." }
+      marine: { en: "Photographs of the vessel showing damaged areas, the police report, the report from the Belize Port Authority, and invoices or estimates for repairs and parts.", es: "Fotografías de la embarcación mostrando las áreas dañadas, el informe policial, el informe de la Autoridad Portuaria de Belice, y facturas o estimados de reparación y repuestos." },
+      windscreen: { en: "Photographs of the damaged glass, and the proforma invoice or estimate, which ICB's form asks to be attached.", es: "Fotografías del cristal dañado y la factura proforma o el estimado, que el formulario de ICB pide adjuntar." },
+      cargo: { en: "A copy of the policy of insurance, a copy of the contract of carriage, and documentary evidence showing the extent of the loss or damage. Photographs of the damage help too.", es: "Copia de la póliza de seguro, copia del contrato de transporte y pruebas documentales que muestren la magnitud de la pérdida o el daño. Las fotografías del daño también ayudan." },
+      liability: { en: "Photographs of the damage or injury, any police report, and estimates or invoices for the damage claimed.", es: "Fotografías del daño o la lesión, cualquier informe policial, y estimados o facturas por los daños reclamados." },
+      accident: { en: "The itemized medical bill, medical reports, and receipts for anything you have already paid. ICB's form says the physician's section may be left blank if an itemized bill is attached.", es: "La factura médica detallada, los informes médicos y los recibos de lo que ya haya pagado. El formulario de ICB indica que la sección del médico puede dejarse en blanco si se adjunta una factura detallada." }
     },
 
     forms: [
@@ -758,6 +800,392 @@ ICB.DATA = ICB.DATA || {};
               f("sigClaimant", "signature", "Signed", "Firmado", { req: true }),
               f("collisionDiagram", "sketch", "In case of collision, a diagram showing how it happened", "En caso de colisión, un diagrama que muestre cómo ocurrió",
                 { h: { en: "Draw with your finger, or with the mouse on a computer.", es: "Dibuje con el dedo, o con el ratón en una computadora." } })
+            ]
+          }
+        ]
+      },
+
+      /* ================================================================
+         6. WINDSCREEN CLAIM FORM
+         ================================================================ */
+      {
+        id: "windscreen",
+        pathway: "windscreen",
+        pdfTitle: "WINDSCREEN CLAIM FORM",
+        title: { en: "Windscreen Claim Form", es: "Formulario de reclamo de parabrisas" },
+        lead: { en: "For damage to the glass of a vehicle insured with ICB.", es: "Por daños al cristal de un vehículo asegurado con ICB." },
+        release: null,
+        declaration: "windscreenDeclaration",
+        steps: [
+          {
+            id: "insured",
+            title: { en: "Insured's name and address", es: "Nombre y dirección del asegurado" },
+            fields: [
+              half("name", "text", "Name", "Nombre", { req: true }),
+              half("occupation", "text", "Occupation", "Ocupación"),
+              f("homeAddress", "long", "Home Address", "Dirección de residencia"),
+              half("homePhone", "tel", "Telephone No.", "Número de teléfono", { req: true }),
+              half("cellular", "tel", "Cellular No.", "Número de celular"),
+              f("businessAddress", "long", "Business Address", "Dirección del trabajo"),
+              half("businessPhone", "tel", "Telephone No. (business)", "Número de teléfono (trabajo)"),
+              half("policyNo", "text", "Policy No.", "Número de póliza", { req: true }),
+              half("email", "email", "Email for ICB to reply to", "Correo para que ICB responda",
+                   { h: { en: "Not on ICB's printed form. Used only so the claims team can reach you.", es: "No aparece en el formulario impreso de ICB. Solo para que el equipo de reclamos pueda contactarle." } }),
+              half("driverName", "text", "Driver's Name", "Nombre del conductor"),
+              half("licence", "text", "Licence Type / No.", "Tipo y número de licencia")
+            ]
+          },
+          {
+            id: "vehicle",
+            title: { en: "Vehicle details", es: "Datos del vehículo" },
+            fields: [
+              half("makeModel", "text", "Make & Model", "Marca y modelo", { req: true }),
+              half("year", "text", "Year", "Año"),
+              half("registration", "text", "Registration #", "Número de matrícula", { req: true }),
+              half("chassis", "text", "Chassis / VIN #", "Número de chasis o VIN")
+            ]
+          },
+          {
+            id: "claim",
+            title: { en: "Claim details", es: "Datos del reclamo" },
+            fields: [
+              half("incidentDate", "date", "Date of incident", "Fecha del incidente", { req: true }),
+              half("incidentTime", "time", "Time", "Hora"),
+              f("where", "long", "Where did damage occur?", "¿Dónde ocurrió el daño?", { req: true }),
+              f("otherDamage", "long", "Was there any other damage to the vehicle?", "¿Hubo algún otro daño al vehículo?"),
+              half("estimate", "money", "Estimate of Repairs", "Estimado de la reparación"),
+              f("repairer", "long", "Repairer's name & address", "Nombre y dirección del taller"),
+              note("PLEASE ATTACH PROFORMA INVOICE / ESTIMATE TO THIS FORM.",
+                   "POR FAVOR ADJUNTE LA FACTURA PROFORMA O EL ESTIMADO A ESTE FORMULARIO.")
+            ]
+          },
+          {
+            id: "damage",
+            title: { en: "Damage details", es: "Detalles del daño" },
+            fields: [
+              f("howOccurred", "long", "Describe how damage occurred", "Describa cómo ocurrió el daño", { req: true, rows: 6 })
+            ]
+          },
+          {
+            id: "attachments",
+            title: { en: "Photographs and documents", es: "Fotografías y documentos" },
+            fields: [
+              f("attachments", "attachments", "Attach photographs and documents", "Adjunte fotografías y documentos", { hintKey: "windscreen" })
+            ]
+          },
+          {
+            id: "sign",
+            title: { en: "Declaration and signatures", es: "Declaración y firmas" },
+            fields: [
+              note(LEGAL.windscreenDeclaration,
+                   "Yo/Nosotros declaramos que los datos anteriores son verdaderos en todos sus aspectos."),
+              f("sigInsured", "signature", "Insured's signature", "Firma del asegurado", { req: true }),
+              half("insuredDate", "date", "Date", "Fecha"),
+              /* ICB's form has a second signature line for the driver,
+                 who is often not the policyholder. Left optional: a
+                 policyholder who was driving signs once. */
+              f("sigDriver", "signature", "Driver's signature", "Firma del conductor",
+                { h: { en: "Only if the driver was someone other than the insured.", es: "Solo si el conductor fue una persona distinta del asegurado." } }),
+              half("driverDate", "date", "Date", "Fecha")
+            ]
+          }
+        ]
+      },
+
+      /* ================================================================
+         7. INLAND CARGO CLAIM FORM
+         ================================================================ */
+      {
+        id: "inland-cargo",
+        pathway: "inland-cargo",
+        pdfTitle: "INLAND CARGO CLAIM FORM",
+        title: { en: "Inland Cargo Claim Form", es: "Formulario de reclamo de carga terrestre" },
+        lead: { en: "For loss or damage to cargo or heavy equipment in transit within Belize.", es: "Por pérdida o daño a carga o equipo pesado en tránsito dentro de Belice." },
+        release: null,
+        declaration: "cargoDeclaration",
+        steps: [
+          {
+            id: "insured",
+            title: { en: "The insured", es: "El asegurado" },
+            fields: [
+              half("policyNo", "text", "Policy No.", "Número de póliza", { req: true }),
+              half("name", "text", "Name", "Nombre", { req: true }),
+              f("address", "long", "Address", "Dirección"),
+              half("contact", "tel", "Contact No.", "Número de contacto", { req: true }),
+              half("email", "email", "Email for ICB to reply to", "Correo para que ICB responda",
+                   { h: { en: "Not on ICB's printed form. Used only so the claims team can reach you.", es: "No aparece en el formulario impreso de ICB. Solo para que el equipo de reclamos pueda contactarle." } })
+            ]
+          },
+          {
+            id: "transit",
+            title: { en: "Cargo (containerize) and heavy equipment", es: "Carga (contenedorizada) y equipo pesado" },
+            fields: [
+              f("fromTo", "text", "From / To", "Desde / Hasta", { req: true }),
+              half("transportDate", "date", "Transport Date", "Fecha del transporte"),
+              half("deliveryTaken", "date", "Date Delivery Taken", "Fecha en que se recibió la entrega"),
+              half("arrivalDate", "date", "Date of Arrival", "Fecha de llegada")
+            ]
+          },
+          {
+            id: "loss",
+            title: { en: "The loss", es: "La pérdida" },
+            fields: [
+              half("discoveredDate", "date", "Date loss / damage discovered", "Fecha en que se descubrió la pérdida o el daño", { req: true }),
+              f("lossLocation", "text", "Location of Loss", "Lugar de la pérdida", { req: true })
+            ]
+          },
+          {
+            id: "consignee",
+            title: { en: "Consignee and cargo", es: "Consignatario y carga" },
+            fields: [
+              f("consigneeName", "text", "Consignee's Name", "Nombre del consignatario"),
+              f("consigneeAddress", "long", "Address", "Dirección"),
+              f("consigneeContact", "tel", "Contact Numbers", "Números de contacto"),
+              f("cargoDescription", "long", "Description of Cargo (containerize) & Heavy Equipment", "Descripción de la carga (contenedorizada) y el equipo pesado", { req: true, rows: 5 })
+            ]
+          },
+          {
+            id: "details",
+            title: { en: "Details of loss or damage", es: "Detalles de la pérdida o el daño" },
+            fields: [
+              f("lossDetails", "long", "Details of loss / damage", "Detalles de la pérdida o el daño", { req: true, rows: 7 }),
+              half("repairEstimate", "money", "Damage / Repair Estimate", "Estimado del daño o la reparación")
+            ]
+          },
+          {
+            id: "attachments",
+            title: { en: "Documents to attach", es: "Documentos para adjuntar" },
+            fields: [
+              note(LEGAL.cargoAttachments,
+                   "Los siguientes documentos deben adjuntarse al formulario completado: 1. Copia de la póliza de seguro. 2. Copia del contrato de transporte. 3. Pruebas documentales que muestren la magnitud de la pérdida o el daño."),
+              f("attachments", "attachments", "Attach documents and photographs", "Adjunte documentos y fotografías", { hintKey: "cargo" })
+            ]
+          },
+          {
+            id: "sign",
+            title: { en: "Declaration and signature", es: "Declaración y firma" },
+            fields: [
+              note(LEGAL.cargoDeclaration,
+                   "Por la presente declaro que los datos anteriores son verdaderos y correctos según mi leal saber y entender."),
+              half("signDate", "date", "Date", "Fecha"),
+              f("sigInsured", "signature", "Insured's Signature", "Firma del asegurado", { req: true })
+            ]
+          }
+        ]
+      },
+
+      /* ================================================================
+         8. PUBLIC LIABILITY INSURANCE CLAIM FORM
+         ================================================================ */
+      {
+        id: "public-liability",
+        pathway: "public-liability",
+        pdfTitle: "PUBLIC LIABILITY INSURANCE CLAIM FORM",
+        title: { en: "Public Liability Claim Form", es: "Formulario de reclamo de responsabilidad civil" },
+        lead: { en: "For an accident where someone else was injured or their property damaged.", es: "Por un accidente en el que otra persona resultó lesionada o su propiedad dañada." },
+        release: null,
+        declaration: "liabilityDeclaration",
+        steps: [
+          {
+            id: "notice",
+            title: { en: "Before you start", es: "Antes de empezar" },
+            fields: [
+              note(LEGAL.liabilityNoAdmission,
+                   "La Compañía no admite responsabilidad por el hecho de emitir este formulario.")
+            ]
+          },
+          {
+            id: "policy",
+            title: { en: "The policy", es: "La póliza" },
+            fields: [
+              half("policyNo", "text", "Policy No.", "Número de póliza", { req: true }),
+              half("lastPremiumDate", "date", "Date of payment of last premium", "Fecha de pago de la última prima"),
+              f("insuredName", "text", "Name of Insured", "Nombre del asegurado", { req: true }),
+              f("address", "long", "Address", "Dirección"),
+              half("occupation", "text", "Occupation", "Ocupación"),
+              half("contact", "tel", "Contact number for ICB to reply to", "Número de contacto para que ICB responda",
+                   { h: { en: "Not on ICB's printed form. Used only so the claims team can reach you.", es: "No aparece en el formulario impreso de ICB. Solo para que el equipo de reclamos pueda contactarle." } }),
+              half("email", "email", "Email for ICB to reply to", "Correo para que ICB responda",
+                   { h: { en: "Not on ICB's printed form either.", es: "Tampoco aparece en el formulario impreso de ICB." } })
+            ]
+          },
+          {
+            id: "accident",
+            title: { en: "The accident", es: "El accidente" },
+            fields: [
+              half("accidentDate", "date", "Date of Accident", "Fecha del accidente", { req: true }),
+              half("accidentTime", "time", "Time", "Hora"),
+              f("accidentPlace", "long", "Where did the accident occur?", "¿Dónde ocurrió el accidente?", { req: true }),
+              f("accidentCause", "long", "Cause of Accident and the circumstances under which it arose", "Causa del accidente y las circunstancias en que se produjo", { req: true, rows: 7 })
+            ]
+          },
+          {
+            id: "witnesses",
+            title: { en: "Witnesses", es: "Testigos" },
+            fields: [
+              f("witnesses", "table", "Names and Addresses of Witnesses", "Nombres y direcciones de los testigos",
+                { cols: [
+                  { k: "name", l: { en: "Name", es: "Nombre" }, w: 3 },
+                  { k: "address", l: { en: "Address", es: "Dirección" }, w: 6 }
+                ], rows: 3 })
+            ]
+          },
+          {
+            id: "others",
+            title: { en: "Who was hurt, and what was damaged", es: "Quién resultó herido y qué se dañó" },
+            fields: [
+              f("injuredParties", "table", "Names & Addresses of persons injured or whose property was damaged", "Nombres y direcciones de las personas lesionadas o cuya propiedad resultó dañada",
+                { cols: [
+                  { k: "name", l: { en: "Name", es: "Nombre" }, w: 3 },
+                  { k: "address", l: { en: "Address", es: "Dirección" }, w: 6 }
+                ], rows: 3 }),
+              f("bodilyInjuries", "long", "Full details of injuries sustained (bodily injuries)", "Detalles completos de las lesiones sufridas (lesiones corporales)", { rows: 5 }),
+              f("propertyDamage", "long", "Full details of damage sustained (damage of property)", "Detalles completos de los daños sufridos (daños a la propiedad)", { rows: 5 })
+            ]
+          },
+          {
+            id: "attachments",
+            title: { en: "Photographs and documents", es: "Fotografías y documentos" },
+            fields: [
+              f("attachments", "attachments", "Attach photographs and documents", "Adjunte fotografías y documentos", { hintKey: "liability" })
+            ]
+          },
+          {
+            id: "sign",
+            title: { en: "Declaration and signature", es: "Declaración y firma" },
+            fields: [
+              note(LEGAL.liabilityDeclaration,
+                   "POR LA PRESENTE DECLARO QUE LO ANTERIOR ES UNA DECLARACIÓN COMPLETA, VERDADERA Y EXACTA."),
+              note(LEGAL.liabilityStamp,
+                   "Si firma en nombre de una empresa, por favor estampe el sello oficial."),
+              half("signDate", "date", "Date", "Fecha"),
+              f("sigInsured", "signature", "Insured's signature", "Firma del asegurado", { req: true })
+            ]
+          }
+        ]
+      },
+
+      /* ================================================================
+         9. PERSONAL ACCIDENT CLAIM FORM
+
+         Two statements on one form: the attending physician's and the
+         policyholder's. ICB's own form says the physician's section may
+         be completed OR an itemized bill attached, so it is asked here
+         and plainly marked as the doctor's to fill, rather than left
+         out or demanded of a claimant who cannot answer it.
+         ================================================================ */
+      {
+        id: "personal-accident",
+        pathway: "personal-accident",
+        pdfTitle: "PERSONAL ACCIDENT CLAIM FORM",
+        title: { en: "Personal Accident Claim Form", es: "Formulario de reclamo de accidente personal" },
+        lead: { en: "For medical costs after an accident, under a personal accident policy.", es: "Por gastos médicos tras un accidente, bajo una póliza de accidentes personales." },
+        release: "personalAccidentRelease",
+        declaration: null,
+        steps: [
+          {
+            id: "policyholder",
+            title: { en: "Policyholder's statement", es: "Declaración del titular de la póliza" },
+            fields: [
+              half("policyNo", "text", "Policy No.", "Número de póliza", { req: true }),
+              half("premium", "money", "Premium", "Prima"),
+              half("policyDate", "date", "Policy Date", "Fecha de la póliza"),
+              half("dlp", "text", "D.L.P.", "D.L.P."),
+              f("name", "text", "Name (as appears on Policy)", "Nombre (tal como aparece en la póliza)", { req: true }),
+              half("age", "text", "Age", "Edad"),
+              half("contact", "tel", "Contact Number", "Número de contacto", { req: true }),
+              f("address", "long", "Address", "Dirección"),
+              half("occupation", "text", "Occupation", "Ocupación"),
+              half("premiumPayer", "text", "Premium Payer", "Quien paga la prima"),
+              half("email", "email", "Email for ICB to reply to", "Correo para que ICB responda",
+                   { h: { en: "Not on ICB's printed form. Used only so the claims team can reach you.", es: "No aparece en el formulario impreso de ICB. Solo para que el equipo de reclamos pueda contactarle." } })
+            ]
+          },
+          {
+            id: "accident",
+            title: { en: "The accident", es: "El accidente" },
+            fields: [
+              f("howAndWhere", "long", "How and where did the accident happen", "Cómo y dónde ocurrió el accidente", { req: true, rows: 6 }),
+              f("witnessesAny", "yesno", "Were there any witnesses?", "¿Hubo testigos?"),
+              f("witnesses", "long", "If yes, give names and addresses", "Si los hubo, indique nombres y direcciones", { rows: 4 })
+            ]
+          },
+          {
+            id: "doctors",
+            title: { en: "Doctors and past injuries", es: "Médicos y lesiones anteriores" },
+            fields: [
+              f("doctors", "table", "List below all the doctors you have seen for this condition", "Liste a continuación todos los médicos que ha consultado por esta condición",
+                { cols: [
+                  { k: "name", l: { en: "Name", es: "Nombre" }, w: 3 },
+                  { k: "address", l: { en: "Address", es: "Dirección" }, w: 4 },
+                  { k: "date", l: { en: "Date", es: "Fecha" }, w: 2 }
+                ], rows: 4 }),
+              f("pastInjuries", "long", "List below all other injuries as a result of an accident for which you have received medical treatment in the past 5 years", "Liste a continuación todas las demás lesiones por accidente por las que ha recibido tratamiento médico en los últimos 5 años", { rows: 5 })
+            ]
+          },
+          {
+            id: "physician",
+            title: { en: "Attending physician's statement", es: "Declaración del médico tratante" },
+            fields: [
+              note("To be completed by your attending physician. This section may be left blank if an itemized bill is attached instead, which is what ICB's own form says.",
+                   "A completar por su médico tratante. Esta sección puede dejarse en blanco si en su lugar se adjunta una factura detallada, que es lo que indica el propio formulario de ICB."),
+              f("patientName", "text", "Patient's Name", "Nombre del paciente"),
+              half("costConsultation", "money", "Consultation", "Consulta"),
+              half("costMedicines", "money", "Medicines Supplied", "Medicamentos suministrados"),
+              half("costUltrasound", "money", "Ultra Sound", "Ultrasonido"),
+              half("costXray", "money", "X-ray", "Radiografía"),
+              half("costEmergency", "money", "Emergency Room", "Sala de emergencias"),
+              half("costOther", "money", "Other", "Otros"),
+              half("costTotal", "money", "Total due", "Total adeudado"),
+              f("diagnosis", "long", "Diagnosis (describe complications, if any)", "Diagnóstico (describa las complicaciones, si las hubo)", { rows: 5 }),
+              half("accidentDate", "date", "Date Accident Occurred", "Fecha en que ocurrió el accidente"),
+              half("firstConsultation", "date", "First consultation date", "Fecha de la primera consulta"),
+              f("moreTreatment", "yesno", "Does the patient require additional treatment?", "¿El paciente requiere tratamiento adicional?"),
+              f("moreTreatmentDates", "long", "If yes, give dates of additional treatment", "Si es así, indique las fechas del tratamiento adicional", { rows: 3 }),
+              f("previousAccidents", "yesno", "Has there been any previous accidents?", "¿Ha habido accidentes anteriores?"),
+              f("previousInjuries", "long", "If yes, describe injuries", "Si los hubo, describa las lesiones", { rows: 3 }),
+              f("inpatient", "yesno", "Was patient confined as an inpatient in a hospital for this condition?", "¿El paciente estuvo internado en un hospital por esta condición?"),
+              f("surgery", "text", "Type of surgical procedure performed, if any", "Tipo de procedimiento quirúrgico realizado, si lo hubo"),
+              half("surgeryDate", "date", "Date of Surgery", "Fecha de la cirugía"),
+              half("surgeryFee", "money", "Fee charged for surgery", "Honorarios cobrados por la cirugía"),
+              f("physicianName", "text", "Physician's name", "Nombre del médico"),
+              half("physicianDegree", "text", "Degree", "Título"),
+              f("physicianAddress", "long", "Address", "Dirección"),
+              f("sigPhysician", "signature", "Physician's signature", "Firma del médico"),
+              half("physicianDate", "date", "Date", "Fecha")
+            ]
+          },
+          {
+            id: "attachments",
+            title: { en: "Bills and medical documents", es: "Facturas y documentos médicos" },
+            fields: [
+              f("attachments", "attachments", "Attach the itemized bill and any medical documents", "Adjunte la factura detallada y cualquier documento médico", { hintKey: "accident" })
+            ]
+          },
+          {
+            id: "sign",
+            title: { en: "Claim and authorization", es: "Reclamo y autorización" },
+            fields: [
+              note(LEGAL.personalAccidentRelease,
+                   "El abajo firmante presenta el reclamo de beneficios y autoriza a cualquier médico, hospital u otra persona a divulgar y proporcionar a INSURANCE CORP. OF BELIZE LTD. o a sus representantes toda la información relativa a cualquier lesión, incluidos antecedentes médicos, consultas o tratamientos, y copias de todos los expedientes hospitalarios o médicos, para que se incluyan como parte de las pruebas del reclamo presentado a la Corporación. Queda entendido que la entrega de este formulario no constituye ni se considerará una admisión por parte de la Corporación de que existía seguro vigente, ni una renuncia a ninguno de los derechos de la Corporación a defenderse."),
+              half("signDate", "date", "Date", "Fecha"),
+              f("sigPolicyholder", "signature", "Policyholder's signature", "Firma del titular de la póliza", { req: true })
+            ]
+          },
+          {
+            id: "assignment",
+            title: { en: "Assignment of medical benefit", es: "Cesión del beneficio médico" },
+            fields: [
+              note("Optional. Complete this only if you want ICB to pay the medical benefit directly to the provider who treated you, rather than to you.",
+                   "Opcional. Complete esta sección solo si desea que ICB pague el beneficio médico directamente al proveedor que le atendió, en lugar de a usted."),
+              half("servicesFrom", "date", "In consideration of the services rendered from", "En consideración de los servicios prestados desde"),
+              half("servicesTo", "date", "to", "hasta"),
+              half("assignPolicyNo", "text", "I hereby authorize payment of the medical benefits payable on Policy No.", "Por la presente autorizo el pago de los beneficios médicos pagaderos bajo la póliza n.º"),
+              half("assignPayee", "text", "directly to", "directamente a"),
+              note("but not to exceed the medical charges for these services. I understand I am financially responsible to the above for charges not covered by this assignment.",
+                   "pero sin exceder los cargos médicos por dichos servicios. Entiendo que soy responsable financieramente ante dicho proveedor por los cargos no cubiertos por esta cesión."),
+              half("assignDate", "date", "Date", "Fecha"),
+              f("sigAssignment", "signature", "Policyholder's signature", "Firma del titular de la póliza")
             ]
           }
         ]

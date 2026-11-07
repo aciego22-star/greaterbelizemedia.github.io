@@ -196,6 +196,66 @@ If the site goes live much later than November, those publication dates
 are worth refreshing to the real launch date. One field per entry in
 `js/data/news.js`.
 
+## The nine claim forms, and four small things on the paper
+
+ICB sent nine claim forms on 7 Nov 2026. Five were the ones already on
+the site. Four were new and are now live, downloadable and fillable
+online in both languages: **windscreen, inland cargo, public liability
+and personal accident**.
+
+Four things came out of reading them side by side with what we hold.
+
+### 1. The marine form ICB resent has a typo the one we hold does not
+
+The copy on the site reads "ALL FACTS MATERIAL TO THE QUESTION OF
+INSURANCE LIABILITY ARE STATED ABOVE OR **ATTACHED** HERETO". The file
+resent on 7 Nov reads "**ATTACKED** HERETO". Everything else in the two
+files matches.
+
+We kept the one we hold, because it reads correctly and it is what
+claimants have been downloading. Worth ICB correcting the master file.
+
+### 2. The property form ICB resent moves one field
+
+The version on the site has "Sum Insured" and "Contact Number" on one
+line, then "Name of Insured" below. The version resent on 7 Nov drops
+the separate contact field and asks for "Name of Insured & Phone
+Numbers" instead.
+
+We kept the one we hold, which keeps the phone number in a field of its
+own. Which is current? If it is the new one, it is a two-minute change.
+
+### 3. Two slips in the printed text of the new forms
+
+Neither is ours and neither changes what is being asked, but both would
+look like ours on a polished page, so the online forms ask the question
+in correct English and the PDFs are untouched:
+
+- The public liability form asks "Where did the accident **occurred**".
+- The windscreen form says "PLEASE ATTACH PROFORMA INVOICE/ ESTIMATE TO
+  **THE IS** FORM".
+
+Declarations, releases and anything a claimant signs under are
+reproduced exactly as printed, slips included.
+
+### 4. Three more forms ask for a stamp
+
+This is the stamp question already on this list, now wider. Inland
+cargo asks for "Insured's Signature & Stamp". Public liability says
+"where signing on behalf of a Company please affix official stamp".
+A stamp cannot be drawn on a phone. The completed PDF leaves the space
+and says so; ICB needs to say what it wants instead.
+
+### And one thing to confirm about the personal accident form
+
+That form has a whole section only an attending physician can fill in.
+ICB's own form says "Complete this Section or attach an itemized bill",
+so the online version asks it, marks it plainly as the doctor's to
+complete, and tells the claimant it can be left blank if the bill is
+attached. Confirm the claims team is content to receive it that way,
+since it is the only one of the nine that cannot be finished by the
+claimant alone.
+
 ## Already flagged, still open
 
 Smaller things raised earlier and not yet answered.

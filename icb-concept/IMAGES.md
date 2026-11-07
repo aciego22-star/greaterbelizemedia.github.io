@@ -351,14 +351,26 @@ shows, and writes a lighter rendition of each to
 `build/preview/news` for the one-file preview, the same arrangement
 the branch photographs and the two campaign films use.
 
-**The preview is getting full.** The one-file build is at 15.16 MB
-against a hard 16 MB ceiling, and it stops itself at 15.5. Each new
-What's New entry costs it roughly 90 KB, so there is room for about
-three more before something has to give. When it does, the lever is the
-two campaign films: they are 6.2 MB of the bundle once base64 is
-counted, and a lighter preview encode of them would free more than
-every photograph on the site put together. The deployed site is not
-affected by any of this.
+**The preview ran out of room on 7 Nov 2026, and the films paid for
+it.** Four new claim forms pushed the one-file build to 15.62 MB
+against its own 15.5 MB stop, so the two campaign films were re-encoded
+for the preview from 854x480 at 286 kb/s to 768x432 at about 200 kb/s,
+with audio at 64 kb/s. That took 1.2 MB off each, 3.2 MB off the bundle
+once base64 is counted, and the build came back to 14.07 MB.
+
+They are preview encodes only: `assets/video` still holds the
+full-quality 1280x720 files, and those are what the deployed folder and
+the ZIP ship. The films in the one-file preview are there so a reviewer
+can check the player, the sound and the content, not to judge the
+picture. Re-encode with:
+
+    ffmpeg -i assets/video/<film>.mp4 -vf scale=768:-2 \
+      -c:v libx264 -preset slow -crf 31 -maxrate 230k -bufsize 600k \
+      -profile:v main -c:a aac -b:a 64k -ac 2 -movflags +faststart \
+      build/preview/<film>.mp4
+
+That leaves about 1.4 MB of headroom. The next lever, if it is ever
+needed, is the nine claim form PDFs, which are 1 MB of the bundle.
 
 ## The bee on the signage
 
