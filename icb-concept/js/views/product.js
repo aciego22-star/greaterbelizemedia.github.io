@@ -206,8 +206,12 @@ ICB.views = ICB.views || {};
       var ana = "";
       if (p.anaPathways && p.anaPathways.length) {
         var btns = p.anaPathways.map(function (a, i) {
+          /* A pathway with a direct destination of its own goes
+             straight there; the rest go to ICB's page, which is where
+             those pathways actually live. */
           return '<a class="btn btn-sm ' + (i === 0 ? "btn-primary" : "btn-ghost") + '" href="' +
-            R.esc(anaUrl) + '" target="_blank" rel="noopener noreferrer">' + R.esc(a.label) + "</a>";
+            R.esc(a.href || anaUrl) + '" target="_blank" rel="noopener noreferrer">' +
+            R.esc(ICB.t(a.label)) + "</a>";
         }).join("");
         ana = '<div class="ana-block rv">' +
           "<h3>" + R.esc(ICB.s("throughANA")) + "</h3>" +

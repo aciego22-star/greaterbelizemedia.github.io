@@ -282,6 +282,114 @@ attached. Confirm the claims team is content to receive it that way,
 since it is the only one of the nine that cannot be finished by the
 claimant alone.
 
+## Settled on 7 Nov 2026 by reading ICB's own live site
+
+This session gained outbound network access, so a run of things on
+this list stopped being questions. ICB's current site, the one being
+replaced, was read directly, along with its claim form PDFs and
+icbcovernote.com.
+
+**One thing to understand first:** ICB's live site is OLDER than the
+directory they sent on 20 Oct. It lists seventeen locations, not
+twenty-two, and still carries the Benque Viejo Agency the revision
+removed. So where the two disagree, the directory wins. Where they
+agree, the question is closed.
+
+### Closed outright
+
+| Question | Answer |
+| --- | --- |
+| Orange Walk: 38 or 48 Belize Corozal Road? | **#48.** What ICB publishes and what we hold. The signboard's 38 is the outlier. |
+| Southside: 26A-C or #38 Central American Boulevard? | **#38.** Same: ICB publishes it, we hold it, the sign is the outlier. |
+| Benque Viejo Border email | **icb_benqueagency@** — ICB publishes it, we hold it. The sign's icb_benqueviejo@ is the outlier. |
+| Punta Gorda email | **icb_pg@** with the underscore. ICB publishes it, we hold it. |
+| Which marine and property claim forms are current? | **The ones we serve.** All five of our PDFs are byte-for-byte identical to the files ICB's claims page serves today. The marine and property files resent on 7 Nov are not. |
+| Is "Hurricane Claim Form" ICB's name for it? | **Yes**, that is the wording on their claims page, even though the PDF's own title page says Property Catastrophe. |
+| Is icbcovernote.com ICB's? | **Yes.** It titles itself "ICB Kiosk Landing", is signed Insurance Corporation of Belize, and carries ICB's telephone, email and website. Safe to link. |
+| The ANA Seguros direct links | **Found**, on ICB's own Mexican Insurance page. Claims and FAQs now go straight to ANA. |
+
+Every telephone number, WhatsApp number and email address we hold for
+the seventeen locations ICB still publishes matches their site exactly.
+Not one difference.
+
+### Confirmed by a second source
+
+Two of the three address changes in the 20 Oct revision are now backed
+by the photographs as well as the directory, against ICB's older live
+site:
+
+- **San Pedro.** Live site says Pescador Drive. The directory and the
+  signboard in the photograph both say Coconut Drive.
+- **Punta Gorda.** Live site says #31 Main Middle Street. The
+  directory and the signboard both say George Price Street.
+
+### New, and worth a decision
+
+**1. /micro-insurance is ICB's Mexican Insurance page.**
+
+The redirect for it was removed at ICB's instruction. Reading the live
+site shows why that probably looked wrong: the slug says
+micro-insurance but the page is titled "Mexican Insurance | ICB
+Insurance" and it is what the old menu's Mexican Insurance link opens.
+
+As things stand, anyone following an existing link to it lands on a
+404 after the cutover, and whatever search position it holds is lost.
+One line puts it right:
+
+    /micro-insurance        /insurance/mexican      301
+
+Not added, because the removal was an instruction and this is new
+evidence rather than a new instruction. ICB's call.
+
+**2. ICB's own "View Coverage" link is broken.**
+
+On their Mexican Insurance page, the Click here for Coverage button
+points at
+`auto-insurance-ana.com/Turistas/Pages/Turistas/anareclutamiento/coverages.html`,
+which returns 404. The Claims and FAQs links beside it both work. Our
+View Coverage button goes to ICB's own page rather than repeating a
+dead link; put the direct link back when ANA fix theirs.
+
+**3. Independence has two addresses.**
+
+ICB's live site says New School St., Independence Village. The 20 Oct
+directory says 219, Corner of Hercules & Toucan Streets. No photograph
+to break the tie, and unlike San Pedro and Punta Gorda there is no
+second source. We publish the directory's version, since it is the
+newer document. Worth one question to Mr Sal.
+
+**4. ICB's own claims page is behind.**
+
+It publishes five forms. The four Mr Sal sent on 7 Nov are not on it.
+They came from him directly so they are real, but ICB may want to know
+their website is missing four of its own claim forms.
+
+**5. A claims email we did not have.**
+
+The kiosk site gives `icb_claims1@icbinsurance.com` for filing a claim,
+alongside the 613-0579 WhatsApp number we already hold. Not used on the
+site yet. Worth asking whether that is the address claimants should be
+given.
+
+### What this leaves for Mr Sal
+
+Three things, and only three, that no amount of reading can settle:
+
+1. **The Moro Agency WhatsApp number**, 669-9497 on the sign against
+   609-0497 in the directory. The branch is too new to be on the live
+   site, so there is no third source.
+2. **The branch opening hours**, and whether they vary branch to
+   branch.
+3. **The kiosk itself**: its hours, what payment it takes, and whether
+   the Border Branch numbers are the right contacts for it. The
+   product behind it is now confirmed from ICB's own site.
+
+Plus the two emails on signboards for branches too new to appear on
+the live site: Benque Town Board and San Juan. Given that every single
+published address follows the `icb_name@` pattern and three signboards
+have now been shown to be the outlier, the likelihood is that the
+directory is right about these too.
+
 ## Already flagged, still open
 
 Smaller things raised earlier and not yet answered.

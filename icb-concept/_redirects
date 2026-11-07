@@ -16,6 +16,10 @@
 # Pages that moved. Views over thirty days in brackets.
 # ---------------------------------------------------------------------
 
+# Home, which the old site answers at both / and /home. Verified
+# against the live site on 7 Nov 2026.
+/home                   /                       301
+
 # General Insurance [166]
 /products               /insurance              301
 
@@ -52,4 +56,21 @@
 #     not-found page, which at least has the header and a way home.
 #     Wix keeps its uploads under /_files/, so if anything else there
 #     turns out to be linked from outside, a wildcard rule goes here.
+#
+#   /micro-insurance
+#     WORTH A SECOND LOOK BEFORE LAUNCH. This rule was removed at ICB's
+#     instruction. Reading the live site on 7 Nov 2026 shows what the
+#     page actually is: /micro-insurance is ICB's MEXICAN INSURANCE
+#     page. Its title is "Mexican Insurance | ICB Insurance" and it is
+#     the page the old site's own menu links to under that name. The
+#     slug is simply mislabelled, which is the likeliest reason the
+#     rule looked wrong when it was raised.
+#
+#     As it stands, anyone who follows an existing link to
+#     /micro-insurance, or finds it in a search result, lands on a 404
+#     after the cutover. The fix, if ICB agrees, is one line:
+#         /micro-insurance        /insurance/mexican      301
+#     Not added here, because its removal was an instruction and this
+#     is new evidence rather than a new instruction. Raised in
+#     OPEN-QUESTIONS.md.
 # ---------------------------------------------------------------------

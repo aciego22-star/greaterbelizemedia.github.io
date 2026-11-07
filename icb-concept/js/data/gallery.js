@@ -66,12 +66,12 @@ ICB.DATA.gallery = {
       caption: { en: "ICB Corporate Office, Daly Street", es: "Oficina Corporativa de ICB, Daly Street" },
       alt: "Street view of the ICB Corporate Office building on Daly Street, Belize City"
     },
-    /* INTERNAL TODO (not client-facing): the sign in this photograph
-       reads "26A-C Central America Blvd", while the branch record in
-       js/data/locations.js carries "#38 Central American Boulevard".
-       One of the two is out of date. Confirm the current address with
-       ICB; the card caption is unaffected either way, since it comes
-       from the branch record rather than from the image. */
+    /* SETTLED 7 Nov 2026. The sign in this photograph reads "26A-C
+       Central America Blvd" while the branch record carries "#38
+       Central American Boulevard". ICB's own live site publishes #38,
+       so the record is right and the signboard is the outlier. Left
+       here as a note rather than deleted, so nobody reads the sign in
+       the picture and files it again. */
     {
       locationId: "belize-city-southside",
       src: "assets/img/branches/southside.jpg",
@@ -196,10 +196,11 @@ ICB.DATA.gallery = {
     /* The western border branch. Its sign carries the branch telephone
        and WhatsApp numbers, and both match the branch record.
 
-       INTERNAL TODO (not client-facing): the sign reads
-       icb_benqueviejo@icbinsurance.com, while the directory ICB sent
-       carries icb_benqueagency@icbinsurance.com for this branch. One of
-       the two is out of date. Raised with ICB. */
+       SETTLED 7 Nov 2026: the sign reads
+       icb_benqueviejo@icbinsurance.com, the directory carries
+       icb_benqueagency@icbinsurance.com, and ICB's own live site
+       publishes icb_benqueagency@. The record is right; the signboard
+       is the outlier. */
     {
       locationId: "benque-viejo-border",
       src: "assets/img/branches/benque-viejo-border.webp",
@@ -304,10 +305,14 @@ ICB.DATA.gallery = {
        number and the 722-2291 landline, all matching the branch
        record.
 
-       INTERNAL TODO (not client-facing): the sign reads
-       icb.pg@icbinsurance.com with a dot, while the directory carries
-       icb_pg@icbinsurance.com with an underscore. The same dot against
-       underscore difference as Benque Town Board. Raised with ICB. */
+       SETTLED 7 Nov 2026: the sign reads icb.pg@icbinsurance.com with
+       a dot, the directory carries icb_pg@ with an underscore, and
+       ICB's own live site publishes icb_pg@. The record is right.
+
+       Worth knowing: the live site also gives this branch's address as
+       "#31 Main Middle Street", where the revised directory and the
+       signboard in this photograph both say George Price Street. Two
+       sources against one, and the two are the newer ones. */
     {
       locationId: "punta-gorda",
       src: "assets/img/branches/punta-gorda.webp",

@@ -444,11 +444,29 @@ ICB.DATA.products = [
     /* ANA Seguros pathways published on ICB's Mexican Insurance page.
        INTERNAL TODO: confirm the direct URLs with ICB; these route to the
        ICB page that carries them today. */
+    /* ICB's four ANA Seguros pathways.
+
+       href, where present, is the destination ICB itself links to from
+       its Mexican Insurance page, read off that page on 7 Nov 2026.
+       Without one the button goes to ICB's own page, which is where
+       the pathway lives.
+
+       Buy Now has no direct link because the purchase widget is
+       embedded in ICB's page rather than hosted by ANA.
+
+       View Coverage has none either, and this is the one to tell ICB
+       about: the link on their own page,
+       auto-insurance-ana.com/Turistas/Pages/Turistas/anareclutamiento/coverages.html,
+       returns 404. Rather than repeat a broken link, the button goes
+       to ICB's page, where the rest of the pathways are. Put the
+       direct link back the moment ANA fix theirs. */
     anaPathways: [
       { label: { en: "Buy Now", es: "Comprar ahora" }, key: "mexican" },
       { label: { en: "View Coverage", es: "Ver cobertura" }, key: "mexican" },
-      { label: { en: "Claims", es: "Reclamos" }, key: "mexican" },
-      { label: { en: "FAQs", es: "Preguntas frecuentes" }, key: "mexican" }
+      { label: { en: "Claims", es: "Reclamos" }, key: "mexican",
+        href: "https://auto-insurance-ana.com/turistas/pages/Turistas/WhatDo.html" },
+      { label: { en: "FAQs", es: "Preguntas frecuentes" }, key: "mexican",
+        href: "https://auto-insurance-ana.com/turistas/pages/Turistas/FAQs.html" }
     ],
     status: null,
     glyph: "border",

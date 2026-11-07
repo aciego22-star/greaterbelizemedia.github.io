@@ -222,7 +222,18 @@ ICB.DATA.news = {
       /* Draft. See the note at the head of this file, and the questions
          in OPEN-QUESTIONS.md. It renders like any other entry so that
          Mr Sal can read it in place; the flag is what the launch
-         checklist in DEPLOY.md looks for. */
+         checklist in DEPLOY.md looks for.
+
+         Narrowed on 7 Nov 2026 by reading ICB's own sites. The
+         icbcovernote.com link is safe: that site titles itself "ICB
+         Kiosk Landing", is signed "Insurance Corporation of Belize"
+         and carries ICB's own telephone, email and website. It also
+         publishes the coverage periods, which are now in the article
+         below, and the documents a driver needs, which the article
+         already had right. What is still unconfirmed is the physical
+         kiosk rather than the product: its hours, what payment it
+         takes, and whether the Border Branch numbers are the right
+         contacts for it. */
       id: "benque-viejo-border-kiosk",
       draft: true,
       published: "2026-11-07",
@@ -282,6 +293,12 @@ ICB.DATA.news = {
         { type: "p", text: {
           en: "Keep your vehicle registration, passport and valid driver's licence handy. ICB's published short-term insurance process asks for vehicle, passport and driver's licence details. Know how long you plan to drive in Belize so you can check which coverage period fits your visit.",
           es: "Tenga a mano el documento de matrícula de su vehículo, su pasaporte y su licencia de conducir vigente. El proceso publicado por ICB para el seguro de corta duración solicita datos del vehículo, del pasaporte y de la licencia. Tenga presente cuánto tiempo planea conducir en Belice para poder elegir el período de cobertura adecuado."
+        } },
+        /* The five periods ICB publishes on its own short-term motor
+           insurance site. Verbatim from that page, 7 Nov 2026. */
+        { type: "p", text: {
+          en: "ICB publishes five coverage periods for this cover: one day, three days, one week, two weeks, or one month.",
+          es: "ICB publica cinco períodos de cobertura para este seguro: un día, tres días, una semana, dos semanas o un mes."
         } },
         { type: "p", text: {
           en: "Before you drive onward, check the vehicle details on your insurance documents, confirm when cover begins and ends, and keep your proof of insurance accessible during your trip.",

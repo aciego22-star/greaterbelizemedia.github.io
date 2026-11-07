@@ -17,13 +17,21 @@
    /claims/form/<id>, so it must match the id of the matching entry in
    ICB.DATA.claimForms.
 
+   SETTLED 7 Nov 2026, against ICB's own live claims page:
+   - The hurricane form's title page reads "PROPERTY CATASTROPHE CLAIM
+     FORM", and ICB's published listing calls it the Hurricane Claim
+     Form. The listing name is what the button says, because that is
+     the name a claimant was told to look for, and it is confirmed as
+     ICB's published wording.
+   - The five form titles above read exactly as ICB's claims page
+     lists them, and the five PDFs are byte-for-byte the files that
+     page serves.
+
    INTERNAL TODO (not client-facing):
-   - The hurricane form's own title page reads "PROPERTY CATASTROPHE
-     CLAIM FORM", while ICB's published claims listing calls it the
-     Hurricane Claim Form. The listing name is what the button says,
-     because that is the name a claimant was told to look for. Worth
-     confirming which ICB wants shown.
-   - Confirm the published form titles read exactly as listed here.
+   - ICB's live claims page publishes five forms. The four added on
+     7 Nov (windscreen, inland cargo, public liability, personal
+     accident) are not on it. They came from Mr Sal directly, so they
+     are real, but ICB may want to know its own site is behind.
    ========================================================================== */
 window.ICB = window.ICB || {};
 ICB.DATA = ICB.DATA || {};

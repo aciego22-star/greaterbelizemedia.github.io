@@ -133,8 +133,12 @@ ICB.DATA.site = {
        IT department supplied on 27 Oct 2026; an earlier draft had it
        pointing at a different page of theirs.
 
-       INTERNAL TODO: swap in the direct ANA Seguros links (Buy Now,
-       View Coverage, Claims, FAQs) once ICB supplies them. */
+       The direct ANA Seguros links were read off ICB's own Mexican
+       Insurance page on 7 Nov 2026 and are now on the product's
+       anaPathways in js/data/products.js. Claims and FAQs go straight
+       to ANA; Buy Now stays here because the purchase widget is
+       embedded in ICB's page; View Coverage stays here because ICB's
+       own link for it returns 404. */
     mexicanInsurance: "https://www.icbinsurance.com/ana-seguros-quote",
     website: "https://www.icbinsurance.com"
   },
