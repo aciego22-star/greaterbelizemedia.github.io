@@ -378,11 +378,23 @@ if the address really is ICB's.
    iframe hides whose origin is really taking the number. If ICB would
    rather it were embedded, that is their call to make knowingly.
 
-**3. The branch opening hours**, and whether they vary branch to
+**3. The home carousel's dots sit below the fold on a short phone.**
+Raised here because the fix is ICB's to choose, not ours. The hero is
+taller than a phone screen, so the dots at the foot of it are out of
+sight until the visitor scrolls; they work first time once reached,
+and nothing covers them. The only way to bring them into view at rest
+is a shorter hero, and the hero's height is set by the artwork: ICB's
+upright What's New composition is 621px tall at 360px wide, against
+616px of room above the quick bar. So it is a choice between cropping
+that artwork, running it smaller with the slide's own ground showing
+around it, or leaving the dots where they are. Left as they are
+meanwhile, which is the only one of the three that costs ICB nothing.
+
+**4. The branch opening hours**, and whether they vary branch to
 branch. The door at Independence posts hours that differ from the ones
 ICB gave us on three counts.
 
-**4. ICB's own "View Coverage" link is broken.** On their Mexican
+**5. ICB's own "View Coverage" link is broken.** On their Mexican
 Insurance page it points at an ANA Seguros URL that returns 404, and
 on 8 Nov every other spelling of that address was tried and returns
 404 too, so there is no page at ANA behind it. The Claims and FAQs
@@ -395,7 +407,7 @@ four covers ANA offers and the limit ranges for each. Those came off
 ANA's own server, not from anywhere else. Still worth passing on so
 ANA can fix their link.
 
-**5. Where a completed claim form should land.** The site emails them
+**6. Where a completed claim form should land.** The site emails them
 to `icb@icbinsurance.com`, the general address, because that is the
 only one ICB publishes anywhere near a claims context: their claims
 page carries no email at all. `icb_claims1@icbinsurance.com` exists

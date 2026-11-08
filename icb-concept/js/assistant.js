@@ -235,8 +235,25 @@ window.ICB = window.ICB || {};
      furthest it will go whatever the screen: on a wide monitor an
      uncapped reach would carry it halfway across the page, a long way
      from where anyone looks for a chat button. */
-  var REACH_X = 0.88, MAX_X = 820;
-  var REACH_Y = 0.66, MAX_Y = 520;
+  /* NARROWED 8 Nov 2026, on ICB's instruction that every tap and click
+     do its job first time.
+
+     These were 0.88 / 820 and 0.66 / 520, which let the bee cross most
+     of the page. A sweep of every page found it over the hero's
+     buttons, over Short-Term Insurance's own buttons and over footer
+     links at different moments, and a click aimed at any of those
+     opened the assistant instead. The note above offers "it eases to a
+     stop the moment a pointer reaches it" as the compensation, and in
+     this one case that makes it worse rather than better: if the bee
+     is sitting over the button you are going for, moving to the button
+     IS reaching the bee, so it parks exactly where you were aiming.
+
+     Narrowed to an orbit around its own corner. It still flies, it
+     still does not repeat, and it no longer leaves the corner it
+     lives in. On a touch screen it does not fly at all; see
+     stillness(). */
+  var REACH_X = 0.20, MAX_X = 130;
+  var REACH_Y = 0.22, MAX_Y = 150;
 
   /* Above 1 the bee favours its corner and only occasionally makes the
      long trip out, which is both more bee and less in the way than an
@@ -358,8 +375,33 @@ window.ICB = window.ICB || {};
       flight.y.toFixed(1) + "px,0)";
   }
 
+  /* When the bee should not fly at all.
+
+     Reduced motion, as always. And anywhere there is no hover, which
+     in practice means a touch screen.
+
+     The reason is in the note above this block: a moving target is a
+     harder target, and the first thing given back in exchange is that
+     the bee eases to a stop the moment a pointer reaches it, so you
+     never chase it. On a phone there is no pointer and no hover. The
+     finger arrives already pressing, so that mitigation cannot fire,
+     and the trade has a cost with nothing on the other side.
+
+     Worse than being a hard target, a flying pill is over something
+     else, and on 8 Nov 2026 a sweep of every page found it over the
+     hero's buttons, footer links and FAQ rows at different moments.
+     A tap aimed at File a claim opened the assistant instead. That is
+     intermittent by nature, which is the hardest kind of fault to
+     report and the easiest to dismiss as a mis-tap.
+
+     So on a touch screen the bee stays in its corner, where it is
+     still a bee and still the assistant, and every tap underneath it
+     lands on what the visitor aimed at. It still flies on a mouse,
+     where hovering stops it before the click. */
   function stillness() {
-    return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!window.matchMedia) return false;
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+           window.matchMedia("(hover: none)").matches;
   }
 
   function takeOff() {

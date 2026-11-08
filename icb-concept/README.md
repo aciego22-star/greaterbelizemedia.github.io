@@ -362,6 +362,58 @@ San Juan Agency is the current case. A call button on a number that takes
 no calls is a dead end, and assuming otherwise is the kind of guess this
 project does not make.
 
+## One tap, one result
+
+ICB asked on 8 Nov 2026 that every tap and click do its job first time.
+`check/onetap.js` sweeps 19 routes at phone and desktop width and holds
+three things at zero:
+
+- **Occluded.** Every control is hit-tested at its own centre, after
+  being scrolled to the middle of the screen so that sitting briefly
+  under the sticky header does not count. Anything else answering at
+  that point means the first press goes somewhere the visitor did not
+  aim.
+- **Hover-only.** Read from the stylesheet rather than guessed at:
+  any `:hover` rule that changes `opacity`, `visibility`, `display` or
+  `pointer-events` on something pressable, where the resting state is
+  inert. A phone has no hover, so the first tap applies the state and
+  the second one acts. None exist here.
+- **Dead.** Drawn to look pressable, with no link and no handler.
+
+Tap size is printed but not asserted. It is dominated by links inside
+running prose, where a line of text is the right size for a line of
+text, and by controls whose invisible hit area is larger than their
+paint: the carousel dots paint 36x28 and answer across 44x48.
+
+Two faults it found, both fixed, and one thing it cannot fix:
+
+- **The hero's own buttons were behind the quick bar** at rest on a
+  short phone. At 360x740 Explore insurance and File a claim sat at
+  y 687 with the bar starting at 677, so a tap on either went to Call.
+  A full-screen slide's words are anchored to the bottom of the slide,
+  and below 720px the hero is taller than the screen. They now clear
+  the bar by `--bar-clear`, which costs nothing because those slides'
+  words are far shorter than the row they sit in.
+- **The assistant flew over things.** The launcher drifts on a loop
+  that does not repeat, and the compensation for being a moving target
+  is that it stops when a pointer reaches it. On a touch screen there
+  is no pointer, and on a mouse, if it is over the button you are going
+  for, moving to the button is reaching it, so it parks exactly where
+  you were aiming. It no longer flies at all without hover, its orbit
+  elsewhere is a fifth of what it was, and below 560px it is the bee
+  alone rather than a 157px pill.
+- **The carousel dots are below the fold** at rest on phones shorter
+  than about 870px, because the hero is taller than the screen and
+  they live at the foot of it. They are not covered once scrolled to,
+  and a tap on them lands first time. Making them float was tried and
+  reverted: held above the bar they covered the slides' own buttons,
+  which is a worse trade, and the two cannot be reconciled because the
+  controls would anchor to the viewport while the buttons anchor to
+  the slide. The hero cannot be shortened to fit either: ICB's upright
+  What's New composition alone is 621px at 360px wide, against 616px
+  of room above the bar. Shortening it means cropping ICB's artwork,
+  which is theirs to decide.
+
 ## Content rules
 
 Every public-facing sentence in this concept is one of three things:

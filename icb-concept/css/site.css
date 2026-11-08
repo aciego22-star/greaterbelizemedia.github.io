@@ -3190,7 +3190,14 @@ select.input {
 }
 
 @media (max-width: 719px) {
-  :root { --header-h: 60px; }
+  :root {
+    --header-h: 60px;
+    /* How much the quick bar covers at the foot of the screen.
+       Anything anchored to the bottom of a full-screen hero slide has
+       to clear it. Declared next to the bar being switched on, so the
+       two cannot drift apart. */
+    --bar-clear: var(--quickbar-h);
+  }
   .quick-bar { display: block; }
   body { padding-bottom: calc(var(--quickbar-h) + env(safe-area-inset-bottom)); }
   body.sheet-open .quick-bar { display: none; }
@@ -4346,6 +4353,34 @@ select,
 
 .bee-label { white-space: nowrap; }
 
+/* On a narrow phone the launcher is the bee alone.
+
+   With the words it is 157px wide, and sitting in the bottom right
+   above the quick bar that is wide enough to reach the second button
+   of the hero's pair: measured at 360x740 on 8 Nov 2026 it was over
+   the middle of File a claim and of About ICB, so a tap on either
+   opened the assistant. Dropping the label takes it to about 56px, a
+   round badge in the corner, which is the shape a chat launcher
+   usually has on a phone and clears the middle of every control
+   underneath it.
+
+   The label stays in the accessible name, which is on the button
+   itself, so nothing is lost to a screen reader; and it comes back
+   with the open state, where the panel is covering that corner
+   anyway. */
+@media (max-width: 560px) {
+  .bee:not(.is-open) .bee-label {
+    position: absolute;
+    width: 1px; height: 1px;
+    margin: -1px; padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .bee:not(.is-open) .bee-pill { padding: 0.35rem; }
+}
+
 /* One control, two states: the label reads "Talk to Bee" shut and
    "Close" open, and the cross only appears with the second. */
 .bee-x { display: none; width: 17px; height: 17px; }
@@ -4993,7 +5028,22 @@ body.sheet-open .bee { display: none; }
      data. See phonePos in js/views/home.js. */
   .hero-slide--photo .hero-media img { object-position: var(--hero-phone-pos, 10% center); }
   .hero-slide--photo .hero-scrim { display: block; }
-  .hero-slide--photo .hero-slide-copy { padding-bottom: 76px; }
+  /* Clear of the quick bar.
+
+     A full-screen slide's words are anchored to the bottom of the
+     slide, and below 720px the hero is taller than the screen, so that
+     bottom is behind the quick bar. Measured at rest on 8 Nov 2026 at
+     360x740: Explore insurance and File a claim sat at y 687 with the
+     bar starting at 677, so the hero's two main buttons were under it
+     and a tap on either one went to Call. They were reachable after a
+     scroll, which is how this survived.
+
+     The clearance costs nothing. These slides' words are far shorter
+     than the row they sit in, so moving them up does not make the hero
+     any taller, does not touch the pictures, and does not change the
+     film's framing. check/herofill.js and check/signcheck.js hold all
+     three of those. */
+  .hero-slide--photo .hero-slide-copy { padding-bottom: calc(76px + var(--bar-clear, 0px)); }
 
   /* ---- except the film, which stays full screen ----
 
@@ -5050,7 +5100,7 @@ body.sheet-open .bee { display: none; }
   .hero-slide--video .hero-film-poster,
   .hero-slide--video .hero-video { object-position: center 38%; }
   .hero-slide--video .hero-scrim { display: block; }
-  .hero-slide--video .hero-slide-copy { padding-bottom: var(--sp-4); }
+  .hero-slide--video .hero-slide-copy { padding-bottom: calc(var(--sp-4) + var(--bar-clear, 0px)); }
 
   /* The controls are in the flow now, so they need a layer of their
      own to stay above the one slide that reaches underneath them. */
