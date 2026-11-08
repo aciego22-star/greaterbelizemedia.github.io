@@ -39,8 +39,17 @@ ICB.views = ICB.views || {};
      ========================================================================== */
   var SLIDES = [
     {
+      /* The head office. Three cuts of one aerial rather than one file
+         stretched across every shape: the hero box runs from 2.67:1 on
+         a wide desktop to 0.58:1 on a phone, and a single wide photo
+         asked to fill that was losing three fifths of its width on a
+         phone, which left the building as an anonymous roof. The phone
+         cut is taken from the left of the frame, where the building
+         carries its name. See build/hero-webp.py. */
       kind: "photo",
-      src: "assets/img/icb-hq.webp",
+      srcWide: "assets/img/heroes/icb-hq-wide.webp",
+      srcMid: "assets/img/heroes/icb-hq-mid.webp",
+      srcTall: "assets/img/heroes/icb-hq-tall.webp",
       alt: { en: "Insurance Corporation of Belize headquarters in Belize City", es: "Sede de Insurance Corporation of Belize en Ciudad de Belice" },
       eyebrow: "Insurance Corporation of Belize Ltd.",
       title: { en: "Protecting Belize since 1981.", es: "Protegiendo a Belice desde 1981." },
@@ -113,8 +122,22 @@ ICB.views = ICB.views || {};
     var R = ICB.render;
     var media = ICB.DATA.site.media;
 
+    /* A photographic slide, cut to three shapes. The browser takes the
+       first <source> whose query matches, so these run widest first:
+       the landscape cut on desktops, an upright-tablet cut in the
+       middle, and the phone cut as the <img> fallback, which is also
+       what anything without <picture> support gets. Every one of them
+       is close to the shape of the box it lands in, so `cover` fills
+       the slide without throwing much away. */
     if (s.kind === "photo") {
-      return '<div class="hero-media" aria-hidden="true"><img data-asset="' + R.esc(s.src) + '" alt="">' +
+      var shot = s.srcTall
+        ? "<picture>" +
+            '<source media="(min-width: 1024px)" data-asset-srcset="' + R.esc(s.srcWide) + '">' +
+            '<source media="(min-width: 561px)" data-asset-srcset="' + R.esc(s.srcMid) + '">' +
+            '<img data-asset="' + R.esc(s.srcTall) + '" alt="">' +
+          "</picture>"
+        : '<img data-asset="' + R.esc(s.src) + '" alt="">';
+      return '<div class="hero-media" aria-hidden="true">' + shot +
         '<div class="hero-scrim"></div></div>';
     }
 
@@ -123,12 +146,18 @@ ICB.views = ICB.views || {};
         '<div class="hero-scrim hero-scrim--light"></div></div>';
     }
 
-    /* Brand lockup. A <picture> picks the composition that suits the shape
-       of the viewport, which is about proportion rather than device: the
-       banner from 561px up, where the hero box is wide enough to carry a
-       landscape lockup, and the vertical poster on phones. Both are
-       contained, so neither is ever cropped or stretched, and the
-       wordmark stays legible at both sizes. */
+    /* Brand lockup. A <picture> picks the composition that suits the
+       shape of the viewport, which is about proportion rather than
+       device: the banner from 561px up, where the hero box is wide
+       enough to carry a landscape composition, and the vertical poster
+       on phones.
+
+       A lockup floating on its own ground is still contained, because
+       cropping a logo is vandalism. A `full` composition is not: it is
+       built to run edge to edge, both files are cut to the shape of the
+       box they land in, and it fills the slide. That is the difference
+       between the two and the reason the What's New slide no longer has
+       a strip of empty ground down each side. */
     if (s.kind === "brand") {
       var art = "<picture>" +
         '<source media="(min-width: 561px)" data-asset-srcset="' + R.esc(s.srcWide) + '">' +

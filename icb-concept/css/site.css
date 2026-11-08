@@ -4801,3 +4801,101 @@ body.sheet-open .bee { display: none; }
 @media (prefers-reduced-motion: reduce) {
   .social-link { transition: none; }
 }
+
+/* ===================== Hero: fill, do not letterbox =====================
+
+   Measured on the built site, the hero box runs from 2.67:1 on a 1920
+   desktop to 0.58:1 on a 390 phone. One picture cannot serve that, and
+   trying produced both of the faults ICB reported: the head office
+   losing three fifths of its width on a phone, and the What's New
+   artwork sitting between two strips of empty ground on every desktop.
+
+   The answer is upstream, in build/hero-webp.py: each photographic
+   slide is cut to three shapes and each composed slide is supplied in
+   two, so whatever the box is doing there is a file close to its
+   proportions. These rules finish the job by filling the box rather
+   than fitting inside it. They come last in the file so they settle
+   the order against the earlier --brand and --full blocks.
+   ====================================================================== */
+
+/* A composition built to run edge to edge now does. It is cut to the
+   box's shape upstream, so `cover` takes only a few percent off the
+   long edge and never reaches the headline painted inside it. A lockup
+   floating on its own ground keeps `contain`: cropping a logo is not a
+   trade-off, it is damage. */
+.hero-media--full img {
+  object-fit: cover;
+  object-position: center;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* An upright tablet is the awkward middle: tall enough that a landscape
+   photograph has to give up real width. Taking some height out of the
+   box there brings its shape back towards the picture's, so less is
+   lost, and a hero of this height still reads as a hero on a tablet. */
+@media (min-width: 561px) and (max-width: 1023px) {
+  .hero-slider { min-height: clamp(380px, 48vh, 470px); }
+}
+
+/* The campaign poster is upright, 0.81:1, and a wide screen cannot show
+   it whole and full-bleed at once: one of those has to give, and with a
+   composition carrying its own wording it cannot be the crop. So on a
+   wide screen it keeps its own column beside the copy, as before, but a
+   wider one that runs the full height of the slide instead of floating
+   in the middle of a field of grey. */
+@media (min-width: 769px) {
+  /* The column is cut to the poster's own shape rather than to a round
+     percentage, so the poster fills it exactly: full height of the
+     slide, nothing cropped, and no ground showing inside the column
+     either. Away from a wide screen the cap takes over and the poster
+     simply centres in what is left. */
+  .hero-slide--light .hero-media--contain {
+    inset: 0 0 0 auto;
+    width: auto;
+    aspect-ratio: 1086 / 1346;
+    max-width: 46%;
+  }
+  .hero-slide--light .hero-media--contain img {
+    object-fit: contain;
+    object-position: center center;
+    padding: 0;
+  }
+}
+
+/* On a phone it takes the top of the slide edge to edge rather than
+   sitting in a white box with margins around it.
+
+   Something has to go, because the poster is upright and the space it
+   gets here is not. The crop is placed so the thing it takes is the
+   poster's own "Protect Your Investment" headline, which the slide
+   repeats in its eyebrow two lines further down. What survives is
+   everything that is only said once: the four categories, the bee, the
+   line "By Land, Sea or Air ICB is there!", and the lockup under it.
+   Nothing is left half cut. */
+@media (max-width: 768px) {
+  .hero-slide--light .hero-media--contain img {
+    object-fit: cover;
+    object-position: center 63%;
+    padding: 0;
+  }
+}
+
+/* The film. On a narrow screen a 16:9 frame loses about two thirds of
+   its width, and the driver the shot is built around was ending up
+   half out of frame against the right edge. Holding the frame left of
+   centre keeps him in it. Poster and video together, so the still and
+   the moving picture do not jump when playback starts. */
+@media (max-width: 768px) {
+  .hero-media--film img,
+  .hero-media--film video,
+  .hero-film-poster,
+  .hero-video { object-position: 38% 38%; }
+}
+
+/* The footer's brand column is centred at every width, logo, tagline
+   and address alike, so the social row centres with it. It was the one
+   thing in that column hanging off to the left, by as much as 130px on
+   a desktop. */
+.social-row--footer ul { justify-content: center; }
