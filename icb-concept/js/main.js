@@ -147,6 +147,9 @@ window.ICB = window.ICB || {};
               '<a href="tel:' + R.esc(site.corporate.phoneTel) + '">' + R.esc(site.corporate.phoneDisplay) + "</a><br>" +
               '<a href="mailto:' + R.esc(site.corporate.email) + '">' + R.esc(site.corporate.email) + "</a>" +
             "</address></div>" +
+            /* ICB's own accounts, under the address where a visitor
+               looking for a way to reach them is already looking. */
+            R.socialRow({ cls: "social-row--footer" }) +
           "</div>" + cols +
         "</div>" +
         '<div class="footer-base">' +
@@ -287,6 +290,43 @@ window.ICB = window.ICB || {};
     ICB.hydrateAssets(document);
   };
 
+  /* -------------------- Outside links in the preview --------------------
+
+     The single-file preview is shown inside a sandboxed frame, and that
+     sandbox is not granted allow-popups. A target="_blank" click there
+     is swallowed in silence: no new tab, no error, nothing moves. It
+     looks exactly like a dead link, and it is every outside link on the
+     site, not one of them.
+
+     The deployed site has no such sandbox and none of this runs there.
+     Here the click is intercepted, a new tab is tried first, and if the
+     sandbox refuses it the frame itself goes to the address, which it
+     is allowed to do. Either way the link does what it says.
+
+     Same test the assistant and the quote page use: an asset map with
+     anything in it means this is the bundled single file. */
+  function isSandboxedPreview() {
+    return Object.keys(ICB.ASSETS || {}).length > 0;
+  }
+
+  function initPreviewLinks() {
+    if (!isSandboxedPreview()) return;
+    document.addEventListener("click", function (e) {
+      var a = e.target.closest ? e.target.closest('a[target="_blank"]') : null;
+      if (!a) return;
+      var href = a.getAttribute("href") || "";
+      if (!/^https?:\/\//i.test(href)) return;
+      /* A plain left click only: let the browser handle the modified
+         ones, and anything it can already open for itself. */
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey ||
+          e.shiftKey || e.altKey) return;
+      e.preventDefault();
+      var win = null;
+      try { win = window.open(href, "_blank", "noopener"); } catch (err) { win = null; }
+      if (!win) window.location.href = href;
+    });
+  }
+
   function boot() {
     R = ICB.render;
     ICB.i18n.init();
@@ -295,6 +335,7 @@ window.ICB = window.ICB || {};
     initLangSwitch();
     ICB.renderChrome();
     initBackToTop();
+    initPreviewLinks();
     // Absent in the build that ships without the assistant.
     if (ICB.assistant) ICB.assistant.init();
     ICB.router.init();

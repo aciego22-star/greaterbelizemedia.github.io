@@ -293,6 +293,12 @@ ICB.views = ICB.views || {};
                   '<a class="msg-action" href="mailto:' + R.esc(site.corporate.email) + '">' + ICB.art.glyph("mail") + "<span>" + R.esc(site.corporate.email) + "</span></a>" +
                   '<a class="msg-action" href="#/locations">' + ICB.art.glyph("marker") + "<span>" + R.esc(T("Every branch and agency", "Todas las sucursales y agencias")) + "</span></a>" +
                 "</div>" +
+                /* The social accounts belong on the page whose whole job
+                   is ways to reach ICB, not only in the footer. */
+                R.socialRow({
+                  cls: "social-row--rail",
+                  title: { en: "Follow ICB", es: "Siga a ICB" }
+                }) +
                 ICB.render.assistBadge(true) +
               "</aside>" +
             "</div>" +

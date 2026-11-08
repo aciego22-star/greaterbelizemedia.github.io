@@ -684,8 +684,46 @@ window.ICB = window.ICB || {};
       : month + " " + day + ", " + m[1];
   }
 
+  /* ICB's social accounts, as a row of logos.
+
+     The logo is the whole link and carries no visible text, which is
+     what ICB asked for and what the row on their own site does. That
+     makes the accessible name load-bearing rather than a nicety: the
+     <a> gets an aria-label, the mark inside is aria-hidden, and the
+     row is a <ul> inside a <nav> so a screen reader can announce it as
+     a group and skip it in one move. The visible title is for sighted
+     readers and is hidden from the accessibility tree where the nav
+     label already says the same thing.
+
+     Each opens in a new tab, like every other outbound link here, and
+     carries the same quiet "opens <host>" note for a screen reader. */
+  function socialRow(opts) {
+    var o = opts || {};
+    var list = (ICB.DATA.site.social || []);
+    if (!list.length) return "";
+    var label = ICB.T("ICB on social media", "ICB en redes sociales");
+    return '' +
+      '<nav class="social-row' + (o.cls ? " " + o.cls : "") + '" aria-label="' + esc(label) + '">' +
+        (o.title ? '<h3 class="social-row-title" aria-hidden="true">' + esc(ICB.t(o.title)) + "</h3>" : "") +
+        "<ul>" + list.map(function (n) {
+          /* The name goes in hidden text inside the link rather than in
+             an aria-label. An aria-label replaces the link's contents
+             outright, which would have thrown away the "opens
+             facebook.com" note every other outbound link here carries.
+             Hidden text adds to the name instead of replacing it, so a
+             screen reader gets "ICB on Facebook (opens facebook.com)". */
+          return '<li><a class="social-link" href="' + esc(n.href) + '"' + extAttrs() + ">" +
+            ICB.art.brandIcon(n.id, "social-icon") +
+            '<span class="visually-hidden">' + esc(ICB.t(n.label)) + "</span>" +
+            extNote(hostOf(n.href)) +
+          "</a></li>";
+        }).join("") + "</ul>" +
+      "</nav>";
+  }
+
   ICB.render = {
     esc: esc,
+    socialRow: socialRow,
     waHref: waHref,
     longDate: longDate,
     branchGallery: branchGallery,

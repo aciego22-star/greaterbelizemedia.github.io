@@ -4720,3 +4720,84 @@ body.sheet-open .bee { display: none; }
 .ana-small { margin: var(--sp-7) 0 0; }
 .ana-small h2 { font-size: var(--fs-500); margin: 0 0 var(--sp-3); }
 .ana-small p { margin: 0 0 var(--sp-4); color: var(--c-text-soft); }
+
+/* ========================= Social accounts =========================
+
+   A row of logos, each one a link and nothing else. ICB asked for the
+   links to sit behind the marks, which is what their own cover note
+   site does, so the accessible name is carried on the <a> rather than
+   shown; see socialRow() in js/render.js.
+
+   The tap target is 44px square whatever the mark inside measures,
+   which is the smallest a finger reliably hits. The marks inherit
+   currentColor so the same row works on the footer's dark ground and
+   on the contact rail's light one.
+   ================================================================== */
+
+.social-row { margin: var(--sp-5) 0 0; }
+.social-row ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+.social-row-title {
+  margin: 0 0 var(--sp-3);
+  font-size: var(--fs-200);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  color: inherit;
+  border: 1px solid transparent;
+  transition: background-color var(--t-fast) var(--ease),
+              color var(--t-fast) var(--ease),
+              border-color var(--t-fast) var(--ease);
+}
+.social-icon { width: 21px; height: 21px; display: block; }
+
+/* In the footer the row sits on ICB's dark ground. */
+.social-row--footer .social-link {
+  color: var(--c-text-inverse-soft);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+.social-row--footer .social-link:hover,
+.social-row--footer .social-link:focus-visible {
+  color: var(--c-text-inverse);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.34);
+}
+
+/* On the contact rail and the About page it sits on paper. */
+.social-row--rail .social-link,
+.social-row--centred .social-link {
+  color: var(--c-text-soft);
+  border-color: var(--c-line);
+}
+.social-row--rail .social-link:hover,
+.social-row--rail .social-link:focus-visible,
+.social-row--centred .social-link:hover,
+.social-row--centred .social-link:focus-visible {
+  color: var(--c-cta);
+  border-color: var(--c-cta);
+  background: var(--c-tint);
+}
+
+.social-row--rail { margin-top: var(--sp-5); }
+.social-row--centred { margin-top: var(--sp-6); text-align: center; }
+.social-row--centred ul { justify-content: center; }
+
+.social-link:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .social-link { transition: none; }
+}

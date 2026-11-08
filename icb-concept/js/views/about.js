@@ -103,6 +103,12 @@ ICB.views = ICB.views || {};
                 { label: { en: "Find ICB near you", es: "Encontrar ICB cerca de usted" }, href: "#/locations" }
               ]
             }) +
+            /* Somebody who has just read about the company is the most
+               likely person on the site to want to follow it. */
+            R.socialRow({
+              cls: "social-row--centred",
+              title: { en: "Follow ICB", es: "Siga a ICB" }
+            }) +
           "</div>" +
         "</section>" +
         /* ICB's own answers to the questions this page raises.

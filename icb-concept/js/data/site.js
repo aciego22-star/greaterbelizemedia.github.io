@@ -39,6 +39,45 @@ ICB.DATA.site = {
     email: "icb@icbinsurance.com"
   },
 
+  /* ICB's own accounts.
+
+     WHERE THESE CAME FROM. All four were read on 8 Nov 2026 off the
+     social icon row of ICB's own cover note site,
+     icbcovernote.com/copy-of-home, the page ICB directed us to as
+     authoritative. They were not searched for, guessed or assembled
+     from a handle: a wrong social link on an insurer's site points
+     customers at somebody else's account, so the only acceptable
+     source is ICB publishing it themselves.
+
+     The site this one replaces carries only the LinkedIn one, in a
+     corner of the header. Facebook and Instagram were asked for;
+     LinkedIn is here so the move does not quietly lose the one link
+     ICB already had, and YouTube because it is where ICB's own films
+     live and this site already features two of them. Any of the four
+     can be dropped by deleting its line.
+
+     The Instagram address is stored without the ?hl=en that ICB's
+     copy carries. That parameter forces the page into English, which
+     is the wrong thing to do to a reader who has chosen Spanish.
+
+     label is the accessible name, not visible text: these render as
+     logos alone, so the name on the link is the only thing a screen
+     reader has to go on. */
+  social: [
+    { id: "facebook", network: "Facebook",
+      label: { en: "ICB on Facebook", es: "ICB en Facebook" },
+      href: "https://www.facebook.com/ICBinsuranceBelize/" },
+    { id: "instagram", network: "Instagram",
+      label: { en: "ICB on Instagram", es: "ICB en Instagram" },
+      href: "https://www.instagram.com/insurancecorporationofbelize/" },
+    { id: "linkedin", network: "LinkedIn",
+      label: { en: "ICB on LinkedIn", es: "ICB en LinkedIn" },
+      href: "https://www.linkedin.com/company/insurance-corporation-of-belize-limited/" },
+    { id: "youtube", network: "YouTube",
+      label: { en: "ICB on YouTube", es: "ICB en YouTube" },
+      href: "https://www.youtube.com/@InsuranceCorporationofBelize" }
+  ],
+
   /* Departments that take enquiries in their own right, as against the
      22 branches and agencies in ICB.DATA.locations.
 
