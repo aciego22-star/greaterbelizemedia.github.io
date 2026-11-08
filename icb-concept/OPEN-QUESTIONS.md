@@ -441,7 +441,25 @@ None of this affects the safety advice, which is why the brochure is
 offered as-is. The advice itself is also set out as a page, in both
 languages, which is what most people will actually read.
 
-### Open: an upright composition of the head office
+### Settled 8 Nov 2026: the upright head office frame arrived
+
+ICB supplied it the same day it was asked for, and it is exactly
+right. The file is the untrimmed original with 706 rows of sky added
+above it and nothing else altered: the lower 1284x954 was checked
+against the original pixel for pixel and the difference is zero. The
+join is invisible, a step of 1.5 in 255 across it, and the sky added
+is flat overcast with nothing recognisable invented in it.
+
+The phone hero takes it whole, at its own 0.773, and now fills the
+slide with no ground left underneath. Because the picture is taller
+than the slot at every phone width, what little has to go comes off
+the top, and the top is the added sky. The building, the street and
+the cars are never touched at any width.
+
+What follows is the problem as it stood, kept because the arithmetic
+explains why a rebuild was the only way out of it.
+
+### Closed: why an upright composition was needed
 
 The first slide is the one that sells the site and it has to show the
 whole building. On a wide screen it does. On a phone it cannot, and
@@ -475,7 +493,7 @@ of the original is already open overcast above the skyline, so the
 extension would be flat grey and would not have to invent a single
 building. The revised brief went to ICB on 8 Nov 2026.
 
-WORTH ASKING FOR FIRST. The best file anyone has sent is 1284 across.
+STILL WORTH ASKING FOR. The best file anyone has sent is 1284 across.
 A full-bleed desktop hero is 1440 to 1920, so it is being stretched
 there. The drone that shot this almost certainly wrote something far
 larger, and the native file would beat anything generated, settle the

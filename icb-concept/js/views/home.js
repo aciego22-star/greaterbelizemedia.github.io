@@ -40,15 +40,18 @@ ICB.views = ICB.views || {};
   var SLIDES = [
     {
       /* The head office, cut three ways, and the phone one comes from
-         a different file: see the note on its job in
-         build/hero-webp.py. The square shows the whole building with
-         margin on every side and is the most upright frame this
-         photograph can give without anything being invented. */
+         its own file: the upright frame ICB supplied on 8 Nov 2026,
+         which is the original with sky added above it and nothing
+         else altered. See the note on its job in build/hero-webp.py.
+         It carries no --hero-ar because on a phone this slide fills
+         whatever height is left above its words rather than keeping
+         a shape of its own; the picture is taller than that space at
+         every phone width, so the little that goes comes off the top,
+         and the top is sky. */
       kind: "photo",
       srcWide: "assets/img/heroes/icb-hq-wide.webp",
       srcMid: "assets/img/heroes/icb-hq-mid.webp",
       srcStack: "assets/img/heroes/icb-hq-stack.webp",
-      mobileAR: 1.0,
       alt: { en: "Insurance Corporation of Belize headquarters in Belize City", es: "Sede de Insurance Corporation of Belize en Ciudad de Belice" },
       eyebrow: "Insurance Corporation of Belize Ltd.",
       title: { en: "Protecting Belize since 1981.", es: "Protegiendo a Belice desde 1981." },

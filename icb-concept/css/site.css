@@ -4955,27 +4955,25 @@ body.sheet-open .bee { display: none; }
      matches, and the controls sit on it. */
   .hero-slide--brand { justify-content: flex-start; }
 
-  /* The photograph slide is the shortest of the set, because every
-     slide shares the tallest one's height: a slider that resized on
-     each turn would shove the page up and down every few seconds.
+  /* The photograph slide fills the height it is given, which is the
+     tallest slide's, because a slider that resized on each turn would
+     shove the page up and down every few seconds.
 
-     It was stretched to fill that height for a while and the stretch
-     is gone again. Filling a 0.82 slot from a 2.34 photograph means
-     cutting the building in half, and this is the slide that sells
-     the site; the whole head office has to be in it. With a
-     photograph this wide and a slot this tall you can have the whole
-     building or a filled slot, not both, and the building wins.
-
-     So the picture keeps its own shape and the room left over is
-     given to the words, which centre in it. That reads as a column
-     with air around it rather than as a picture with a hole under it.
-     A portrait composition of the building would close it properly
-     and is on the list; see OPEN-QUESTIONS.md. */
-  .hero-slide--photo > .shell {
+     It can fill it now. Before the upright frame arrived this slide
+     had to choose between the whole building and a filled slot, and
+     it chose the building, leaving a band of ground underneath. The
+     upright frame settles it: the picture is taller than the slot at
+     every phone width, so filling the slot takes a little off the
+     top, and the top is the sky that was added. The building, the
+     street and the cars are never touched. */
+  .hero-slide--photo .hero-media {
     flex: 1 1 auto;
-    display: flex;
-    align-items: center;
+    aspect-ratio: auto;
+    min-height: 0;
   }
+  /* Anchored to the foot, so whatever is trimmed is taken from the
+     sky and never from the street. */
+  .hero-slide--photo .hero-media img { object-position: center bottom; }
 
   /* ---- except the film, which stays full screen ----
 
