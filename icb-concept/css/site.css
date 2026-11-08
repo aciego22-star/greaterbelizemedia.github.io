@@ -5008,11 +5008,24 @@ body.sheet-open .bee { display: none; }
      frame left of centre keeps the two people the shot is built
      around inside it. If ICB ever supplies an upright cut of the
      film, this block is what comes out. */
+  /* The film's framing is not ours to choose. It was set when the
+     film went in and ICB never asked for it to change; it was altered
+     here twice by accident while the stills were being sorted out and
+     both are undone.
+
+     The first was a horizontal shift, put in to keep the driver in
+     frame on a narrow screen. It was never requested, it moved the
+     whole film off centre, and it is gone: the frame sits at
+     centre 38% exactly as it always did.
+
+     The second was height. Spanning both grid rows made this slide
+     785px tall against the 720 it used to be, and since filling a
+     taller box from a 16:9 film costs width, it was quietly showing
+     less of the picture: 27.9% of the frame against 30.5%. Spanning
+     one row puts it at 733px and 29.9%, which is within half a point
+     of where it started. The dots and arrows sit just under it rather
+     than over it, which is what every other slide does now. */
   .hero-slide--video {
-    /* span 2, not 1 / -1: the rows here are implicit, and -1 only ever
-       counts to the end of the explicit grid, which is line 1 when
-       none were declared. It silently spans nothing. */
-    grid-row: 1 / span 2;
     justify-content: flex-end;
   }
   .hero-slide--video .hero-media--film {
@@ -5022,14 +5035,16 @@ body.sheet-open .bee { display: none; }
     height: auto;
     aspect-ratio: auto;
   }
+  /* And the vertical anchor back to its own value. The stacking rules
+     above anchor every slide's picture to the top, which suits a
+     still being shown whole; the film never was, and 38% is where it
+     has sat since the film went in. */
   .hero-slide--video .hero-media img,
   .hero-slide--video .hero-media video,
   .hero-slide--video .hero-film-poster,
-  .hero-slide--video .hero-video {
-    object-position: 38% 38%;
-  }
+  .hero-slide--video .hero-video { object-position: center 38%; }
   .hero-slide--video .hero-scrim { display: block; }
-  .hero-slide--video .hero-slide-copy { padding-bottom: 76px; }
+  .hero-slide--video .hero-slide-copy { padding-bottom: var(--sp-4); }
 
   /* The controls are in the flow now, so they need a layer of their
      own to stay above the one slide that reaches underneath them. */
