@@ -336,30 +336,17 @@ in the article, and it is no longer a draft. The one thing nobody
 publishes anywhere is the kiosk's own opening hours, so the article
 does not state them.
 
-**/micro-insurance is still open.** See below.
+**/micro-insurance is closed.** It was raised again on 8 Nov 2026 and
+has been withdrawn the same day. The record is with the other settled
+items, below.
 
 ### Still open
 
-**1. The /micro-insurance redirect.**
-
-Still the one decision outstanding, and there is now a second,
-stronger piece of evidence. On 7 Nov the page itself was titled
-"Mexican Insurance | ICB Insurance". On 8 Nov the live site's own
-navigation settled it: every page of icbinsurance.com carries a menu
-whose **Mexican Insurance** item links to `/micro-insurance`. It is
-not an inference about what the page holds; it is where ICB's menu
-sends people.
-
-The redirect was removed on instruction. As things stand, anyone
-following an existing link to it lands on a 404 after the cutover.
-One line in `_redirects` puts it right and the line is written out
-there as a comment. ICB's call.
-
-**2. The branch opening hours**, and whether they vary branch to
+**1. The branch opening hours**, and whether they vary branch to
 branch. The door at Independence posts hours that differ from the ones
 ICB gave us on three counts.
 
-**3. ICB's own "View Coverage" link is broken.** On their Mexican
+**2. ICB's own "View Coverage" link is broken.** On their Mexican
 Insurance page it points at an ANA Seguros URL that returns 404, and
 on 8 Nov every other spelling of that address was tried and returns
 404 too, so there is no page at ANA behind it. The Claims and FAQs
@@ -372,7 +359,7 @@ four covers ANA offers and the limit ranges for each. Those came off
 ANA's own server, not from anywhere else. Still worth passing on so
 ANA can fix their link.
 
-**4. Where a completed claim form should land.** The site emails them
+**3. Where a completed claim form should land.** The site emails them
 to `icb@icbinsurance.com`, the general address, because that is the
 only one ICB publishes anywhere near a claims context: their claims
 page carries no email at all. `icb_claims1@icbinsurance.com` exists
@@ -530,10 +517,9 @@ slide as well.
 
 ### Still waiting: the Spanish on the carried-over resources
 
-ICB publishes the hurricane guide, the fire prevention advice and the
-travel insurance questions in English only. All three were translated
-here so that half of ICB's customers can read their own insurer's
-safety advice. That Spanish needs the same review by a Belizean
+ICB publishes the hurricane guide and the fire prevention advice in
+English only. Both were translated here so that half of ICB's
+customers can read their own insurer's safety advice. That Spanish needs the same review by a Belizean
 Spanish speaker that the 376 claim-form fields are waiting on. The
 figures, wind speeds, telephone numbers and policy limits are ICB's
 own and were not touched.
@@ -745,6 +731,22 @@ email addresses rather than settling them one at a time.
   sale in future it is written fresh, against whatever ICB wants said
   at the time, rather than inherited from how Travel Insurance was
   handled.
+
+  **Both came back on 8 Nov 2026 and were taken out again the same
+  day.** Bringing ICB's consumer resources across from the live site
+  carried their Travel Emergency Insurance questions with the hurricane
+  and fire material, as a resources card, a guide page in both
+  languages, a route, a PDF and a redirect. Separately, reading the live
+  site's navigation produced evidence that `/micro-insurance` is ICB's
+  own Mexican Insurance page, and a redirect for it was drafted in
+  `_redirects` and raised here as a decision for ICB. Neither should
+  have happened. The instruction above is not a provisional state
+  waiting on better information; it is the instruction. Everything
+  carried over has been removed, the drafted redirect is gone, and
+  `_redirects` now carries **do not add a rule here** at both
+  addresses. What this item is for is to stop the next tidy-up, so the
+  two places it failed are worth naming: content brought across
+  wholesale from the old site, and evidence mistaken for a mandate.
 - **The live site lists 17 locations**, against the 22 in ICB's revised
   directory of 20 Oct. It still shows Benque Viejo Agency, which that
   revision dropped, and is missing Caye Caulker, Benque Town Board, San

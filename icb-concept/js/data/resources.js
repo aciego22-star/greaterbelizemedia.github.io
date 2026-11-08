@@ -57,7 +57,13 @@ ICB.DATA.resources = {
      four megabyte PDF and a page of loose bullets. The content was
      brought across on 8 Nov 2026 and now lives at #/resources/<id>, in
      both languages, with ICB's original PDFs offered beside it. See
-     js/data/guides.js. */
+     js/data/guides.js.
+
+     Two cards, and only two. ICB's consumer resources page lists a
+     third, and it is deliberately absent: on 28 Oct 2026 ICB instructed
+     that the product it concerns come off this site entirely. See
+     js/data/guides.js and OPEN-QUESTIONS.md before adding anything to
+     this array to make it match the old page. */
   safety: [
     {
       label: { en: "Hurricane guide", es: "Guía de huracanes" },
@@ -70,12 +76,6 @@ ICB.DATA.resources = {
       description: { en: "ICB's fire prevention advice for the home, the kitchen and the yard.", es: "Los consejos de prevención de incendios de ICB para la casa, la cocina y el patio." },
       route: "#/resources/fire-safety",
       glyph: "shield"
-    },
-    {
-      label: { en: "Travel insurance questions", es: "Preguntas sobre Travel Insurance" },
-      description: { en: "What the travel emergency policy for visitors costs, how long it lasts, and the full schedule of benefits.", es: "Cuánto cuesta la póliza de emergencia de viaje para visitantes, cuánto dura, y el cuadro completo de beneficios." },
-      route: "#/resources/travel-faqs",
-      glyph: "compass"
     }
   ],
 

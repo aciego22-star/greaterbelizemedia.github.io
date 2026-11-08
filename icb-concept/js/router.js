@@ -170,10 +170,11 @@ ICB.views = ICB.views || {};
         : { view: "notfound", navId: null };
     }
     /* resources/<id>: one of ICB's consumer resources, the hurricane
-       guide, the fire prevention advice or the travel insurance
-       questions. ICB published these as downloads; here each is a page
-       with its own address, so a branch can send somebody straight to
-       the hurricane checklist rather than to a four megabyte PDF. */
+       guide or the fire prevention advice. ICB published these as
+       downloads; here each is a page with its own address, so a branch
+       can send somebody straight to the hurricane checklist rather than
+       to a four megabyte PDF. Any other id answers not-found, which is
+       what keeps a stale link to withdrawn material from resolving. */
     if (p[0] === "resources" && p.length === 2) {
       return ICB.DATA.guideById(p[1])
         ? { view: "guide", navId: "resources", guideId: p[1] }

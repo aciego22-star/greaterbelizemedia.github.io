@@ -50,13 +50,12 @@
 # ---------------------------------------------------------------------
 
 # ---------------------------------------------------------------------
-# The two documents the consumer resources page linked. Both are served
-# from this site now, at assets/docs, and the material in them is set
-# out as pages in both languages. An old link to the file lands on the
-# page that carries it, which is more use than the download on its own.
+# ICB's Hurricane Guide. The PDF is served from this site now, at
+# assets/docs, and the material in it is set out as a page in both
+# languages. An old link to the file lands on the page that carries it,
+# which is more use than the download on its own.
 # ---------------------------------------------------------------------
 /_files/ugd/393da5_0aaa50a4096a4e9687094908e5078c7c.pdf   /resources/hurricane     301
-/_files/ugd/393da5_36df911e189a4204b0a11d26aa4d64c6.pdf   /resources/travel-faqs   301
 
 # ---------------------------------------------------------------------
 # Not carried over, deliberately.
@@ -74,25 +73,20 @@
 #     turns out to be linked from outside, a wildcard rule goes here.
 #
 #   /micro-insurance
-#     WORTH A SECOND LOOK BEFORE LAUNCH. This rule was removed at ICB's
-#     instruction. Reading the live site on 7 Nov 2026 shows what the
-#     page actually is: /micro-insurance is ICB's MEXICAN INSURANCE
-#     page. Its title is "Mexican Insurance | ICB Insurance" and it is
-#     the page the old site's own menu links to under that name. The
-#     slug is simply mislabelled, which is the likeliest reason the
-#     rule looked wrong when it was raised.
+#     SETTLED. DO NOT ADD A RULE HERE. ICB instructed on 28 Oct 2026
+#     that this redirect be removed, and that Travel Insurance go with
+#     it. Both are off the site. /micro-insurance answers 404 after the
+#     cutover by decision, not by oversight.
 #
-#     Confirmed again on 8 Nov 2026, and this time from the old site's
-#     own navigation rather than from the page: every page of the live
-#     site carries a menu whose "Mexican Insurance" item links to
-#     /micro-insurance. It is not a guess about what the page contains;
-#     it is where ICB's own menu sends people.
+#     The slug does resolve to a live page of ICB's own, and the one
+#     line that would send it somewhere useful is easy to work out. It
+#     is still not to be added. The instruction is the instruction; a
+#     rule here needs a fresh one from ICB. The full record of what the
+#     address points at is in OPEN-QUESTIONS.md under the settled items,
+#     so nobody has to go looking for it twice.
 #
-#     As it stands, anyone who follows an existing link to
-#     /micro-insurance, or finds it in a search result, lands on a 404
-#     after the cutover. The fix, if ICB agrees, is one line:
-#         /micro-insurance        /insurance/mexican      301
-#     Not added here, because its removal was an instruction and this
-#     is still evidence rather than a new instruction. Raised in
-#     OPEN-QUESTIONS.md.
+#   /_files/ugd/393da5_36df911e189a4204b0a11d26aa4d64c6.pdf
+#     A document the old consumer resources page links, concerning the
+#     product withdrawn above. There is nothing on this site to send it
+#     to, by the same instruction. Falls through to the not-found page.
 # ---------------------------------------------------------------------

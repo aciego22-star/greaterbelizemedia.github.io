@@ -2,12 +2,20 @@
    ICB.DATA.guides — the safety and information material ICB publishes.
 
    WHERE THIS CAME FROM. Every word below is ICB's own, read off
-   icbinsurance.com/consumer-resourses on 8 Nov 2026 and out of the two
-   PDFs that page links: ICB's Hurricane Guide (a four-page brochure) and
-   their Travel Emergency Insurance frequently asked questions. The old
-   page offered the hurricane material only as a four megabyte download
-   and the fire advice only as a wall of bullets. It is set out properly
-   here and the original PDFs are still offered, unmodified, beside it.
+   icbinsurance.com/consumer-resourses on 8 Nov 2026, together with
+   ICB's Hurricane Guide, the four-page brochure that page links. The
+   old page offered the hurricane material only as a four megabyte
+   download and the fire advice only as a wall of bullets. It is set
+   out properly here and ICB's original brochure is still offered,
+   unmodified, beside it.
+
+   WHAT IS NOT HERE. Two entries, and only two. ICB's consumer
+   resources page carries a third item, and it is not reproduced here:
+   ICB instructed on 28 Oct 2026 that the product it concerns come off
+   this site entirely, and that instruction governs this file whatever
+   the old site still lists. Adding a third entry to match the old page
+   would undo it. Do not. OPEN-QUESTIONS.md holds the instruction and
+   the reasoning, and check/guides.js asserts the count.
 
    CONTENT RULE, UNCHANGED. Nothing here is newly written insurance
    guidance. Figures, limits, wind speeds, telephone numbers and policy
@@ -283,93 +291,9 @@ ICB.DATA = ICB.DATA || {};
     ]
   };
 
-  /* ---- ICB's travel emergency insurance questions ------------------ */
-
-  var travel = {
-    id: "travel-faqs",
-    glyph: "compass",
-    nav: { en: "Travel insurance FAQs", es: "Preguntas sobre Travel Insurance" },
-    title: { en: "Travel insurance questions.", es: "Preguntas sobre travel insurance." },
-    lead: {
-      en: "The questions ICB answers most often about the travel emergency policy for visitors to Belize, and what the policy pays.",
-      es: "Las preguntas que ICB responde con más frecuencia sobre la póliza de emergencia de viaje para visitantes a Belice, y lo que la póliza paga."
-    },
-    seoDescription: {
-      en: "ICB's answers on travel emergency insurance for visitors to Belize: what it costs, how long it covers, COVID-19 cover, pre-existing conditions, and the full schedule of benefits.",
-      es: "Las respuestas de ICB sobre travel emergency insurance para visitantes a Belice: cuánto cuesta, cuánto tiempo cubre, cobertura de COVID-19, condiciones preexistentes, y el cuadro completo de beneficios."
-    },
-    doc: {
-      file: "assets/docs/icb-travel-insurance-faqs.pdf",
-      label: { en: "Travel Emergency Insurance FAQs", es: "Travel Emergency Insurance FAQs" },
-      meta: { en: "PDF, as published by ICB", es: "PDF, tal como lo publica ICB" }
-    },
-    blocks: [
-      { type: "h", text: { en: "Buying the cover", es: "Comprar la cobertura" } },
-      { type: "qa",
-        q: { en: "How can I purchase coverage?", es: "¿Cómo puedo comprar la cobertura?" },
-        a: { en: "Through ICB's travel insurance site, belizetravelinsurance.com.", es: "A través del sitio de travel insurance de ICB, belizetravelinsurance.com." } },
-      { type: "qa",
-        q: { en: "What does the policy cost?", es: "¿Cuánto cuesta la póliza?" },
-        a: { en: "US$18.00 per visitor.", es: "US$18.00 por visitante." } },
-      { type: "qa",
-        q: { en: "Is there a family plan?", es: "¿Hay un plan familiar?" },
-        a: { en: "No. Each member of the family needs a separate policy.", es: "No. Cada miembro de la familia necesita una póliza aparte." } },
-      { type: "qa",
-        q: { en: "Can I buy more than one plan to increase my benefits?", es: "¿Puedo comprar más de un plan para aumentar mis beneficios?" },
-        a: { en: "No. One policy per visitor per trip.", es: "No. Una póliza por visitante por viaje." } },
-      { type: "qa",
-        q: { en: "How long does the cover last?", es: "¿Cuánto dura la cobertura?" },
-        a: { en: "Twenty one days, starting on your arrival into Belize. Twenty one days is also the maximum the policy will provide.", es: "Veintiún días, a partir de su llegada a Belice. Veintiún días es también el máximo que ofrece la póliza." } },
-
-      { type: "h", text: { en: "Proving you have it", es: "Comprobar que la tiene" } },
-      { type: "qa",
-        q: { en: "How do I prove I have purchased the cover?", es: "¿Cómo compruebo que compré la cobertura?" },
-        a: { en: "Once you have paid online you receive confirmation of payment, and the system generates an electronic certificate you can print or save. That certificate is your proof of purchase.", es: "Una vez que pague en línea recibe la confirmación del pago, y el sistema genera un certificado electrónico que puede imprimir o guardar. Ese certificado es su comprobante de compra." } },
-      { type: "qa",
-        q: { en: "How do I get another copy of my certificate?", es: "¿Cómo obtengo otra copia de mi certificado?" },
-        a: { en: "Log in at belizetravelinsurance.com, select the policy and print it. You can also ask for help at info@icbinsurance.com.", es: "Inicie sesión en belizetravelinsurance.com, seleccione la póliza e imprímala. También puede pedir ayuda en info@icbinsurance.com." } },
-      { type: "qa",
-        q: { en: "Would an international insurance policy be accepted instead?", es: "¿Se aceptaría una póliza de seguro internacional en su lugar?" },
-        a: { en: "No. The policy must be issued by an insurance company registered in Belize and must have been approved by the Supervisor of Insurance in Belize.", es: "No. La póliza debe ser emitida por una compañía de seguros registrada en Belice y debe haber sido aprobada por el Supervisor of Insurance de Belice." } },
-
-      { type: "h", text: { en: "COVID-19", es: "COVID-19" } },
-      { type: "qa",
-        q: { en: "Does the policy cover the COVID-19 test required before entry into Belize?", es: "¿La póliza cubre la prueba de COVID-19 requerida antes de entrar a Belice?" },
-        a: { en: "No.", es: "No." } },
-      { type: "qa",
-        q: { en: "Does the policy include COVID-19 coverage?", es: "¿La póliza incluye cobertura de COVID-19?" },
-        a: { en: "Yes. Medical emergency treatment or services that become necessary because of COVID-19 are covered, up to the policy limit.", es: "Sí. El tratamiento o los servicios de emergencia médica que se vuelvan necesarios por COVID-19 están cubiertos, hasta el límite de la póliza." } },
-      { type: "qa",
-        q: { en: "Does it cover mandatory quarantine costs?", es: "¿Cubre los costos de cuarentena obligatoria?" },
-        a: { en: "Yes. The benefits include the cost of mandatory quarantine lodging or accommodation after a positive COVID-19 diagnosis.", es: "Sí. Los beneficios incluyen el costo de hospedaje o alojamiento por cuarentena obligatoria tras un diagnóstico positivo de COVID-19." } },
-
-      { type: "h", text: { en: "Conditions, deductibles and waiting", es: "Condiciones, deducibles y espera" } },
-      { type: "qa",
-        q: { en: "Does the policy cover pre-existing conditions?", es: "¿La póliza cubre condiciones preexistentes?" },
-        a: { en: "Yes. Medical emergency services, treatment or supplies relating to a pre-existing condition are covered, up to the limit shown in the schedule of benefits.", es: "Sí. Los servicios, tratamientos o suministros de emergencia médica relacionados con una condición preexistente están cubiertos, hasta el límite que muestra el cuadro de beneficios." } },
-      { type: "qa",
-        q: { en: "Is there a deductible or a copayment?", es: "¿Hay deducible o copago?" },
-        a: { en: "No. The policy pays 100% of the costs up to the limits in the schedule of benefits.", es: "No. La póliza paga el 100% de los costos hasta los límites del cuadro de beneficios." } },
-      { type: "qa",
-        q: { en: "Is there a waiting period before the cover is active?", es: "¿Hay un período de espera antes de que la cobertura esté activa?" },
-        a: { en: "No. The cover is effective on your arrival into Belize.", es: "No. La cobertura entra en vigor a su llegada a Belice." } },
-
-      { type: "h", text: { en: "Schedule of benefits", es: "Cuadro de beneficios" } },
-      { type: "pairs", rows: [
-        { k: { en: "Maximum policy limit", es: "Límite máximo de la póliza" }, v: "US$50,000.00" },
-        { k: { en: "Medical emergency services, including hospital services, in-hospital miscellaneous charges, out-patient charges, emergency room, emergency surgery, local ambulance and prescription drugs", es: "Servicios de emergencia médica, incluidos servicios hospitalarios, cargos varios intrahospitalarios, cargos ambulatorios, sala de emergencia, cirugía de emergencia, ambulancia local y medicamentos recetados" }, v: { en: "100% of eligible expenses, up to the policy limit", es: "100% de los gastos elegibles, hasta el límite de la póliza" } },
-        { k: { en: "Repatriation of mortal remains", es: "Repatriación de restos mortales" }, v: { en: "Up to US$5,000", es: "Hasta US$5,000" } },
-        { k: { en: "Emergency air evacuation, and transportation of a close relative", es: "Evacuación aérea de emergencia, y transporte de un familiar cercano" }, v: { en: "Up to a combined maximum of US$20,000", es: "Hasta un máximo combinado de US$20,000" } },
-        { k: { en: "Emergency expenses relating to a pre-existing condition", es: "Gastos de emergencia relacionados con una condición preexistente" }, v: { en: "Up to a combined maximum of US$25,000", es: "Hasta un máximo combinado de US$25,000" } },
-        { k: { en: "Quarantine, lodging or accommodation due to COVID-19", es: "Cuarentena, hospedaje o alojamiento por COVID-19" }, v: { en: "Up to US$2,000.00, maximum US$300.00 per day", es: "Hasta US$2,000.00, máximo US$300.00 por día" } },
-        { k: { en: "Reimbursement of hotel expense due to inability to travel", es: "Reembolso de gastos de hotel por imposibilidad de viajar" }, v: { en: "Up to US$3,000.00", es: "Hasta US$3,000.00" } }
-      ] }
-    ]
-  };
-
   ICB.DATA.guides = {
     section: { en: "Consumer resources", es: "Recursos para el consumidor" },
-    entries: [hurricane, fire, travel]
+    entries: [hurricane, fire]
   };
 
   ICB.DATA.guideById = function (id) {

@@ -18,7 +18,6 @@ visual has been supplied.
 | Claims page hero | Film frame: customer completing paperwork with ICB |
 | Property / Motor / Liability page insets | Native-scale crops of the campaign artwork panels |
 | Liability card + page | Film frame: handshake with an ICB representative |
-| Travel card + page | Supplied image: traveller at the departure gate |
 | Cargo card + page | Supplied image: container ship, port and freight trucks |
 | Mexican Insurance card + page | Supplied photograph: Aduana Mexico at Subteniente Lopez |
 | Contact / Locations page heroes | Film frame and the HQ building |

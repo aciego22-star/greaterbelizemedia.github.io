@@ -270,13 +270,13 @@ quotes, guaranteed prices, approval, "get covered now".
 
 The href carries the category, and the enquiry form reads it, so a
 visitor who clicked Request a quote on Motor never gets asked what they
-want to insure. The New Insurance Enquiry lists only quotable categories:
-offering Travel there would invite an enquiry for a suspended product.
+want to insure. The New Insurance Enquiry lists only quotable
+categories, so the form cannot invite an enquiry for something ICB is
+not selling through this site.
 
-Travel carries `quote: false` while sales are suspended and has no quote
-route anywhere. Mexican Insurance also carries `quote: false`: ICB
-arranges it through ANA Seguros, so the page leads with ANA's published
-pathways rather than an ICB quote.
+Mexican Insurance carries `quote: false`: ICB arranges it through ANA
+Seguros, so the page leads with ANA's published pathways rather than an
+ICB quote.
 
 ## Payments: ICB is paid by bank transfer
 
@@ -347,9 +347,6 @@ data files for `INTERNAL TODO` for the full list. The open items are:
 - **Claims forms.** Form buttons open ICB's official claims page. Set
   direct PDF URLs per pathway in `js/data/claims.js` when ICB supplies
   them (`external.claimsForms` in `js/data/site.js` holds the default).
-- **Travel Insurance.** The page reflects ICB's current published
-  suspension of sales, and carries no action implying cover can be
-  arranged. Clear `suspended` in `js/data/products.js` if that changes.
 - **Mexican Insurance.** The ANA Seguros pathways (Buy Now, View
   Coverage, Claims, FAQs) all route to ICB's Mexican Insurance page
   until ICB supplies the direct ANA URLs.
