@@ -39,17 +39,15 @@ ICB.views = ICB.views || {};
      ========================================================================== */
   var SLIDES = [
     {
-      /* The head office. Three cuts of one aerial rather than one file
-         stretched across every shape: the hero box runs from 2.67:1 on
-         a wide desktop to 0.58:1 on a phone, and a single wide photo
-         asked to fill that was losing three fifths of its width on a
-         phone, which left the building as an anonymous roof. The phone
-         cut is taken from the left of the frame, where the building
-         carries its name. See build/hero-webp.py. */
+      /* The head office, cut twice: a wide one for desktops and a
+         gentler landscape one for everything below. On a phone the
+         slide stacks and shows that second cut whole, so the building
+         is never zoomed into. See the stacking rules in site.css and
+         the cutting in build/hero-webp.py. */
       kind: "photo",
       srcWide: "assets/img/heroes/icb-hq-wide.webp",
       srcMid: "assets/img/heroes/icb-hq-mid.webp",
-      srcTall: "assets/img/heroes/icb-hq-tall.webp",
+      mobileAR: 1.34,
       alt: { en: "Insurance Corporation of Belize headquarters in Belize City", es: "Sede de Insurance Corporation of Belize en Ciudad de Belice" },
       eyebrow: "Insurance Corporation of Belize Ltd.",
       title: { en: "Protecting Belize since 1981.", es: "Protegiendo a Belice desde 1981." },
@@ -62,6 +60,7 @@ ICB.views = ICB.views || {};
     {
       kind: "artwork",
       light: true,
+      mobileAR: 1086 / 1346,
       src: "assets/img/icb-protect-artwork.jpg",
       alt: { en: "ICB Protect Your Investment campaign artwork: liabilities, motor, marine and property", es: "Arte de la campaña Protect Your Investment de ICB: responsabilidad civil, vehículos, embarcaciones y propiedad" },
       eyebrow: { en: "Protect your investment", es: "Proteja su inversión" },
@@ -94,6 +93,7 @@ ICB.views = ICB.views || {};
          premium financing. */
       kind: "brand",
       full: true,
+      mobileAR: 900 / 1552,
       artCarriesCopy: true,
       srcWide: "assets/img/heroes/whats-new-wide.webp",
       srcTall: "assets/img/heroes/whats-new-tall.webp",
@@ -118,6 +118,16 @@ ICB.views = ICB.views || {};
     }
   ];
 
+  /* Below the stacking breakpoint a slide is no longer a picture with
+     words laid over it: the media sits at the top at its own shape and
+     the words go underneath. For that the media block has to know the
+     shape of the file it is holding, and only the slide data knows it,
+     so it is written out here as a custom property and the stylesheet
+     reads it. Without one the block falls back to 4:3. */
+  function arStyle(s) {
+    return s.mobileAR ? ' style="--hero-ar: ' + (Math.round(s.mobileAR * 10000) / 10000) + '"' : "";
+  }
+
   function slideMedia(s) {
     var R = ICB.render;
     var media = ICB.DATA.site.media;
@@ -130,19 +140,19 @@ ICB.views = ICB.views || {};
        is close to the shape of the box it lands in, so `cover` fills
        the slide without throwing much away. */
     if (s.kind === "photo") {
-      var shot = s.srcTall
+      var shot = s.srcWide
         ? "<picture>" +
             '<source media="(min-width: 1024px)" data-asset-srcset="' + R.esc(s.srcWide) + '">' +
-            '<source media="(min-width: 561px)" data-asset-srcset="' + R.esc(s.srcMid) + '">' +
-            '<img data-asset="' + R.esc(s.srcTall) + '" alt="">' +
+            '<img data-asset="' + R.esc(s.srcMid) + '" alt="">' +
           "</picture>"
         : '<img data-asset="' + R.esc(s.src) + '" alt="">';
-      return '<div class="hero-media" aria-hidden="true">' + shot +
+      return '<div class="hero-media"' + arStyle(s) + ' aria-hidden="true">' + shot +
         '<div class="hero-scrim"></div></div>';
     }
 
     if (s.kind === "artwork") {
-      return '<div class="hero-media hero-media--contain" aria-hidden="true"><img data-asset="' + R.esc(s.src) + '" alt="">' +
+      return '<div class="hero-media hero-media--contain"' + arStyle(s) + ' aria-hidden="true">' +
+        '<img data-asset="' + R.esc(s.src) + '" alt="">' +
         '<div class="hero-scrim hero-scrim--light"></div></div>';
     }
 
@@ -160,7 +170,7 @@ ICB.views = ICB.views || {};
        a strip of empty ground down each side. */
     if (s.kind === "brand") {
       var art = "<picture>" +
-        '<source media="(min-width: 561px)" data-asset-srcset="' + R.esc(s.srcWide) + '">' +
+        '<source media="(min-width: 769px)" data-asset-srcset="' + R.esc(s.srcWide) + '">' +
         '<img data-asset="' + R.esc(s.srcTall) + '" alt="">' +
       "</picture>";
       /* A composition that paints its own button becomes a link, with a
@@ -173,9 +183,9 @@ ICB.views = ICB.views || {};
       var cls = "hero-media hero-media--brand" + (s.full ? " hero-media--full" : "");
       if (s.href) {
         return '<a class="' + cls + ' hero-media--act" href="' + R.esc(s.href) + '"' +
-          ' aria-label="' + R.esc(ICB.t(s.linkLabel || s.title)) + '">' + art + "</a>";
+          arStyle(s) + ' aria-label="' + R.esc(ICB.t(s.linkLabel || s.title)) + '">' + art + "</a>";
       }
-      return '<div class="' + cls + '" aria-hidden="true">' + art + "</div>";
+      return '<div class="' + cls + '"' + arStyle(s) + ' aria-hidden="true">' + art + "</div>";
     }
 
     /* Film slide.
@@ -189,7 +199,9 @@ ICB.views = ICB.views || {};
 
        If even muted playback is refused, the poster stays and a play
        button appears as a fallback. */
-    return '<div class="hero-media hero-media--film">' +
+    /* 16:9, which is the film's own shape and so the shape the block
+       takes when the slide stacks. */
+    return '<div class="hero-media hero-media--film" style="--hero-ar: 1.7778">' +
       '<img class="hero-film-poster" data-asset="' + R.esc(media.heroVideoPoster) + '" alt="" aria-hidden="true">' +
       (media.heroVideoAvailable
         ? '<video class="hero-video" muted loop playsinline preload="metadata" data-asset-defer' +

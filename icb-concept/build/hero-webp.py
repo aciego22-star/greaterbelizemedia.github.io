@@ -15,8 +15,15 @@ What's New artwork was doing on every desktop.
 So each slide is cut to the shapes the box actually takes:
 
     wide   2.34:1   desktops, where the box sits near 2.35
-    mid    1.34:1   tablets held upright
-    tall   0.58:1   phones
+    mid    1.34:1   everything narrower
+
+Below 769px a slide stops being a picture with words laid over it: the
+media sits at the top at its own shape, uncropped, and the words go
+underneath. So a phone does not need a portrait cut of a photograph.
+It needs a landscape one shown whole, which is what mid is, and that
+is why there are two photographic cuts here and not three. Composed
+artwork still needs its upright version, because that one fills the
+slide on its own and carries its own words.
 
 The page picks one with two media queries and `object-fit: cover`, so
 every slide fills its box edge to edge at every width and no crop is
@@ -54,7 +61,6 @@ JOBS = [
     # lettering and the flags rather than an anonymous stretch of roof.
     ("ICB_HQ_Wide.jpg",          "icb-hq-wide", 2.340, 0.50, 1800, 980),
     ("ICB_HQ_Wide.jpg",          "icb-hq-mid",  1.340, 0.46, 1200, 700),
-    ("ICB_HQ_Wide.jpg",          "icb-hq-tall", 0.580, 0.28,  760, 460),
 
     # --- What's New, slide 3. Finished compositions: the headline and
     # the painted button are in the artwork, so these are resized, never

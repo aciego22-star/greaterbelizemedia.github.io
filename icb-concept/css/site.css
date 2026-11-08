@@ -937,17 +937,10 @@ button {
     background:
       linear-gradient(0deg, rgba(247, 245, 244, 0.96) 0%, rgba(247, 245, 244, 0.8) 30%, rgba(247, 245, 244, 0) 58%);
   }
-  /* Artwork slide on mobile: the poster gets the top half on its own, the
-     copy sits beneath it. Nothing overlaps the artwork. */
-  .hero-slide--light .hero-media--contain { inset: 0 0 52% 0; }
-  /* The brand slide's vertical composition needs the full height; only
-     the action row and the slider chrome sit below it. */
-  /* The vertical composition is almost exactly the hero's own aspect, so
-     containing it costs almost no space and keeps the whole lockup,
-     including its red and black sweep, intact. */
-  /* Below 769px the slider chrome sits lower, so less needs reserving. */
-  .hero-media--brand img { padding: var(--sp-3) var(--sp-3) 64px; }
-  .hero-slide--light .hero-media--contain img { object-fit: contain; object-position: center center; }
+  /* The poster, the brand composition and everything else are laid out
+     by the stacking block at the end of this file. What is left here is
+     the slide's own colouring. */
+  .hero-media--brand img { padding: 0; }
   .hero-slide--light .hero-scrim--light { display: none; }
   .hero-slide--light { background: var(--c-bg); }
   .hero-slide--light .hero-slide-copy { padding-bottom: 96px; }
@@ -4835,7 +4828,7 @@ body.sheet-open .bee { display: none; }
    photograph has to give up real width. Taking some height out of the
    box there brings its shape back towards the picture's, so less is
    lost, and a hero of this height still reads as a hero on a tablet. */
-@media (min-width: 561px) and (max-width: 1023px) {
+@media (min-width: 769px) and (max-width: 1023px) {
   .hero-slider { min-height: clamp(380px, 48vh, 470px); }
 }
 
@@ -4864,34 +4857,103 @@ body.sheet-open .bee { display: none; }
   }
 }
 
-/* On a phone it takes the top of the slide edge to edge rather than
-   sitting in a white box with margins around it.
+/* ---------------- Stacked hero, below 769px ----------------------
 
-   Something has to go, because the poster is upright and the space it
-   gets here is not. The crop is placed so the thing it takes is the
-   poster's own "Protect Your Investment" headline, which the slide
-   repeats in its eyebrow two lines further down. What survives is
-   everything that is only said once: the four categories, the bee, the
-   line "By Land, Sea or Air ICB is there!", and the lockup under it.
-   Nothing is left half cut. */
+   Asked for by ICB on 8 Nov 2026, and the right answer. Above this
+   width a hero slide is a picture with words laid over it, and the
+   picture has to fill a box whose shape it cannot control. Below it,
+   that arrangement has nothing good left to offer: the box is taller
+   than any photograph, so filling it means a deep zoom, and fitting it
+   means bars. The campaign poster was losing 35% of itself this way.
+
+   So the slide stops overlaying and starts stacking. The media takes
+   the top at its own aspect ratio, which the slide tells it through
+   --hero-ar, and the words go underneath on the slider's own ground.
+   Because the block is exactly the shape of the file inside it, there
+   is nothing to crop and nothing to letterbox: every hero is whole.
+
+   The slider becomes a grid with every slide in one cell, so its
+   height is the tallest slide's rather than a guess, and the crossfade
+   between them is untouched. */
 @media (max-width: 768px) {
-  .hero-slide--light .hero-media--contain img {
-    object-fit: cover;
-    object-position: center 63%;
-    padding: 0;
+  .hero-slider {
+    display: grid;
+    min-height: 0;
   }
-}
+  .hero-slide {
+    position: relative;
+    inset: auto;
+    grid-area: 1 / 1;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+  }
 
-/* The film. On a narrow screen a 16:9 frame loses about two thirds of
-   its width, and the driver the shot is built around was ending up
-   half out of frame against the right edge. Holding the frame left of
-   centre keeps him in it. Poster and video together, so the still and
-   the moving picture do not jump when playback starts. */
-@media (max-width: 768px) {
-  .hero-media--film img,
-  .hero-media--film video,
+  .hero-media,
+  .hero-media--contain,
+  .hero-media--brand,
+  .hero-media--full,
+  .hero-media--film {
+    position: relative;
+    inset: auto;
+    flex: none;
+    width: 100%;
+    height: auto;
+    aspect-ratio: var(--hero-ar, 4 / 3);
+  }
+  /* The picture fills a block of its own shape, so `cover` has nothing
+     to take: this is "100% auto, from the top" with the block keeping
+     the space while the bytes are still arriving. */
+  .hero-media img,
+  .hero-media video,
+  .hero-media picture,
   .hero-film-poster,
-  .hero-video { object-position: 38% 38%; }
+  .hero-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    transform: none;
+  }
+  .hero-slide.is-active .hero-media img,
+  .hero-slide.is-active .hero-media video { transform: none; transition: none; }
+
+  /* Nothing is laid over the media now, so the gradient that made room
+     for it would only be dirtying the photograph. */
+  .hero-scrim { display: none; }
+
+  .hero-slide > .shell { width: 100%; }
+
+  /* The dots and arrows come out of the overlay and into the flow, as
+     a second grid row under the slides. Floating at the foot of the
+     slide they were landing behind the fixed action bar and below the
+     fold, so nobody could see there were four slides at all. In the
+     flow they are always the last thing in the hero and always
+     reachable, and the copy above them no longer has to reserve a
+     hundred pixels of empty space for something sitting on top of it. */
+  .hero-controls {
+    position: static;
+    grid-area: 2 / 1;
+    padding-bottom: var(--sp-4);
+  }
+  .hero-slide-copy {
+    padding-top: var(--sp-4);
+    padding-bottom: var(--sp-4);
+  }
+  .hero-slide--light .hero-slide-copy { padding-bottom: var(--sp-4); }
+  /* The quiet copy block on a slide whose artwork says it all has
+     nothing to show, so it should not take a band of space either. */
+  .hero-slide-copy--quiet { padding: 0; }
+
+  /* The composition carries its own words and has no copy block below
+     it. It keeps its own shape like every other slide rather than
+     being stretched to the height of the tallest one, which was
+     costing it an eighth of its width. What is left underneath is the
+     slider's own ground, which the artwork's bottom edge already
+     matches, and the controls sit on it. */
+  .hero-slide--brand { justify-content: flex-start; }
 }
 
 /* The footer's brand column is centred at every width, logo, tagline
