@@ -16,7 +16,7 @@ So each slide is cut to the shapes the box actually takes:
 
     wide   2.34:1   desktops, where the box sits near 2.35
     mid    1.34:1   upright tablets
-    stack  0.77:1   phones, where the slide stacks
+    stack  1.35:1   phones, which run this slide full screen
 
 Below 769px a slide stops being a picture with words laid over it: the
 media sits at the top at its own shape, uncropped, and the words go
@@ -75,19 +75,23 @@ JOBS = [
     # from the untrimmed original, a square holds the whole building
     # with margin to spare and invents nothing. Anything narrower than
     # about 0.95 starts cutting into the right-hand wing.
-    # The upright frame, supplied 8 Nov 2026. It is the untrimmed
-    # original with 706 rows of sky added above it and nothing else
-    # touched: the lower 1284x954 of this file is pixel for pixel the
-    # original, checked, zero difference. The join is invisible, a
-    # step of 1.5 in 255, and the sky it adds is flat overcast with
-    # nothing recognisable invented in it.
+    # The phone cut. ICB wants this slide full screen with the words
+    # over it, no band of sky above and no ground below, so the file
+    # it needs is the untrimmed original exactly as shot: 1284x954,
+    # every row of it real, nothing added.
     #
-    # Taken whole, at its own 0.773. The slide gives it a slot between
-    # 0.79 and 0.855 depending on the phone, all of which are wider
-    # than the picture, so what little has to go comes off the top,
-    # and the top is the added sky. The building, the street and the
-    # cars are never touched at any width.
-    ("ICB_HQ_Tall.png",          "icb-hq-stack", None,  None, 1000, 560),
+    # The upright frame with sky added was tried here and is wrong for
+    # this arrangement. Filling a box this tall crops width, not
+    # height, so a taller file does widen the view, but it also puts
+    # its new sky across the top of the hero and pushes the building
+    # down behind the headline. Four amounts of added sky were
+    # rendered and compared; none beat the original. The frame is kept
+    # in the repository for the stacked arrangement, should it return.
+    #
+    # Nothing is cut here. What the phone sees of it is decided by the
+    # object-position in site.css, which is set from the measured
+    # position of the signage rather than by eye.
+    ("ICB_HQ_Original.jpg",      "icb-hq-stack", None,  None, 1100, 600),
 
     # --- What's New, slide 3. Finished compositions: the headline and
     # the painted button are in the artwork, so these are resized, never

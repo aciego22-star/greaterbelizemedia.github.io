@@ -4955,25 +4955,41 @@ body.sheet-open .bee { display: none; }
      matches, and the controls sit on it. */
   .hero-slide--brand { justify-content: flex-start; }
 
-  /* The photograph slide fills the height it is given, which is the
-     tallest slide's, because a slider that resized on each turn would
-     shove the page up and down every few seconds.
+  /* The photograph slide runs full screen with the words over it, the
+     way it always has on the live site. Stacking was tried here and
+     ICB does not want it on this slide: it wants the picture filling
+     the hero, no band of sky at the top, no ground underneath, and
+     the building pulled back far enough that its name is readable.
 
-     It can fill it now. Before the upright frame arrived this slide
-     had to choose between the whole building and a filled slot, and
-     it chose the building, leaving a band of ground underneath. The
-     upright frame settles it: the picture is taller than the slot at
-     every phone width, so filling the slot takes a little off the
-     top, and the top is the sky that was added. The building, the
-     street and the cars are never touched. */
-  .hero-slide--photo .hero-media {
-    flex: 1 1 auto;
-    aspect-ratio: auto;
-    min-height: 0;
+     Filling a box this tall from a landscape photograph means losing
+     width, so the question is only how much and from where. The cut
+     served here is sized so the loss leaves the sign inside the
+     frame, and the frame is held left of centre, which is the side
+     the sign is on. */
+  .hero-slide--photo {
+    grid-row: 1 / span 2;
+    justify-content: flex-end;
   }
-  /* Anchored to the foot, so whatever is trimmed is taken from the
-     sky and never from the street. */
-  .hero-slide--photo .hero-media img { object-position: center bottom; }
+  .hero-slide--photo .hero-media {
+    position: absolute;
+    inset: 0;
+    flex: none;
+    width: auto;
+    height: auto;
+    aspect-ratio: auto;
+  }
+  /* 14%, and the number is derived rather than eyeballed. The signage
+     sits between 16.5% and 28% across the photograph, measured off
+     the file. A box this tall shows between 31% and 41% of the
+     photograph's width depending on the phone, and holding the frame
+     at 14% puts the left edge of what is seen at around 10%, which
+     clears the sign by a comfortable margin on the narrowest phone
+     sold and still takes in the corner of the building. Anything
+     above about 19.5% starts shaving the first letter at 320px.
+     check/signcheck.js measures this at seven widths. */
+  .hero-slide--photo .hero-media img { object-position: 14% center; }
+  .hero-slide--photo .hero-scrim { display: block; }
+  .hero-slide--photo .hero-slide-copy { padding-bottom: 76px; }
 
   /* ---- except the film, which stays full screen ----
 
