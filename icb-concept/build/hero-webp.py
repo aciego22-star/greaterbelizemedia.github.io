@@ -15,7 +15,8 @@ What's New artwork was doing on every desktop.
 So each slide is cut to the shapes the box actually takes:
 
     wide   2.34:1   desktops, where the box sits near 2.35
-    mid    1.34:1   everything narrower
+    mid    1.34:1   upright tablets
+    stack  0.82:1   phones, where the slide stacks
 
 Below 769px a slide stops being a picture with words laid over it: the
 media sits at the top at its own shape, uncropped, and the words go
@@ -61,6 +62,13 @@ JOBS = [
     # lettering and the flags rather than an anonymous stretch of roof.
     ("ICB_HQ_Wide.jpg",          "icb-hq-wide", 2.340, 0.50, 1800, 980),
     ("ICB_HQ_Wide.jpg",          "icb-hq-mid",  1.340, 0.46, 1200, 700),
+    # The stacked phone cut. Below 769px this slide shows the photo
+    # above its words, and the space left over for the photo is set by
+    # the tallest slide in the set, not by this one. At 0.82 the cut
+    # lands within a few percent of that space at every phone width, so
+    # it fills it without a gap underneath and without a visible crop.
+    # Taken left of centre, where the building carries its name.
+    ("ICB_HQ_Wide.jpg",          "icb-hq-stack", 0.820, 0.34,  900, 520),
 
     # --- What's New, slide 3. Finished compositions: the headline and
     # the painted button are in the artwork, so these are resized, never

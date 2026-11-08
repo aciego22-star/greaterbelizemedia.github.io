@@ -4955,6 +4955,20 @@ body.sheet-open .bee { display: none; }
      matches, and the controls sit on it. */
   .hero-slide--brand { justify-content: flex-start; }
 
+  /* The photograph slide is the shortest of the set, so left to its
+     own shape it sat with a band of empty ground beneath it: the
+     height of a cell is the tallest slide's, because a slider that
+     resized on every turn would shove the page up and down every few
+     seconds. So this one stretches into whatever is left above its
+     words. The cut it is served is within a few percent of that at
+     every phone width, so filling it costs about three percent rather
+     than the third it would have cost from the landscape cut. */
+  .hero-slide--photo .hero-media {
+    flex: 1 1 auto;
+    aspect-ratio: auto;
+    min-height: 0;
+  }
+
   /* ---- except the film, which stays full screen ----
 
      Stacking is right for a still: you look at it, so it should be
