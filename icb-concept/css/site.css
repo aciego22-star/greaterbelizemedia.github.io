@@ -4954,6 +4954,52 @@ body.sheet-open .bee { display: none; }
      slider's own ground, which the artwork's bottom edge already
      matches, and the controls sit on it. */
   .hero-slide--brand { justify-content: flex-start; }
+
+  /* ---- except the film, which stays full screen ----
+
+     Stacking is right for a still: you look at it, so it should be
+     whole. A film is not looked at, it is watched, and a watched
+     thing wants the screen. Stacked it became a letterbox strip with
+     a field of empty ground under it, which is worse than a crop.
+
+     So this slide alone keeps the arrangement every slide had before:
+     the picture fills the hero, the words sit on top of it at the
+     bottom, and the gradient behind them comes back so they stay
+     readable. It spans both grid rows so the picture runs the whole
+     height of the hero and the controls ride over it, as they used
+     to, rather than stopping short above them.
+
+     It costs a hard crop, about two thirds of the width, because
+     there is one 16:9 frame and no upright cut of it. Holding the
+     frame left of centre keeps the two people the shot is built
+     around inside it. If ICB ever supplies an upright cut of the
+     film, this block is what comes out. */
+  .hero-slide--video {
+    /* span 2, not 1 / -1: the rows here are implicit, and -1 only ever
+       counts to the end of the explicit grid, which is line 1 when
+       none were declared. It silently spans nothing. */
+    grid-row: 1 / span 2;
+    justify-content: flex-end;
+  }
+  .hero-slide--video .hero-media--film {
+    position: absolute;
+    inset: 0;
+    width: auto;
+    height: auto;
+    aspect-ratio: auto;
+  }
+  .hero-slide--video .hero-media img,
+  .hero-slide--video .hero-media video,
+  .hero-slide--video .hero-film-poster,
+  .hero-slide--video .hero-video {
+    object-position: 38% 38%;
+  }
+  .hero-slide--video .hero-scrim { display: block; }
+  .hero-slide--video .hero-slide-copy { padding-bottom: 76px; }
+
+  /* The controls are in the flow now, so they need a layer of their
+     own to stay above the one slide that reaches underneath them. */
+  .hero-controls { position: relative; z-index: 5; }
 }
 
 /* The footer's brand column is centred at every width, logo, tagline
