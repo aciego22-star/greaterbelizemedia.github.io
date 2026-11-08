@@ -11,7 +11,7 @@ visual has been supplied.
 
 | Placement | Source |
 | --- | --- |
-| Hero slides 1-5 | HQ photograph, Protect Your Investment artwork, the signage photograph, the border kiosk, the film |
+| Hero slides 1-5 | HQ photograph, Protect Your Investment artwork, the What's New compositions, the border kiosk, the film |
 | Property card + page | Film frame: couple at their Belizean home |
 | Motor card + page | Film frame: couple with their vehicle |
 | Marine Hull card + page | Supplied photograph: red and black motorboat underway |
@@ -24,8 +24,9 @@ visual has been supplied.
 | Business feature | Film frame: ICB team member in branded uniform |
 | About page hero | HQ photograph |
 | ICB in Motion featured video | The compressed campaign film + poster frame |
-| Hero slide 3 | ICB signage: supplied landscape and upright pair, cut three ways |
+| Hero slide 3 | What's New at ICB, two supplied compositions |
 | Hero slide 4 | The Benque Viejo border kiosk: supplied landscape and upright pair, cut three ways |
+| What's New page hero | ICB signage on the headquarters wall, supplied landscape frame |
 | Locations page hero | The headquarters building, supplied landscape frame |
 | Branch gallery (23 of 23 tiles) | Every location |
 | Insurance page hero | Supplied photograph of an ICB office building |

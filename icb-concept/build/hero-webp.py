@@ -79,21 +79,23 @@ JOBS = [
     # to that.
     ("ICB_HQ_New_Portrait.png",  "icb-hq-stack", None, None,  941, 560, 0.50),
 
-    # --- What's New, slide 3. ICB replaced the two supplied
-    # compositions with a photograph of their own signage on 8 Nov
-    # 2026, so this slide stopped being a finished lockup that painted
-    # its own headline and became an ordinary photographic slide with
-    # real copy and a real button. Three cuts, like the head office.
+    # --- What's New, slide 3. Finished compositions: the headline and
+    # the painted button are in the artwork, so these are resized,
+    # never cut. ICB supplies the two shapes separately.
     #
-    # The wide one is taken from the landscape frame, where trimming to
-    # 2.34 only takes sky and foreground: the lettering runs almost the
-    # full width of that file, so nothing may come off the sides.
-    # The other two come from the upright frame for exactly that
-    # reason, and are held high enough to keep the roundel and all
-    # three lines of the name.
-    ("ICB_Sign_Wide.png",        "whats-new-wide",  2.340, 0.50, 1672, 980, 0.49),
-    ("ICB_Sign_Portrait.png",    "whats-new-mid",   1.340, 0.50, 1260, 700, 0.449),
-    ("ICB_Sign_Portrait.png",    "whats-new-stack", 1.000, 0.50,  941, 560, 0.449),
+    # These were briefly replaced on 8 Nov 2026 with cuts of ICB's
+    # signage photograph, on a misreading: ICB sent that photograph for
+    # the What's New PAGE hero, not for this slide. Reverted the same
+    # day. The signage now lives below as icb-sign-wide.
+    ("ICB_Whats_New_Wide.webp",  "whats-new-wide", None, None, 1800, 980, 0.50),
+    ("ICB_Whats_New_Tall.jpg",   "whats-new-tall", 0.580, 0.47,  900, 540, 0.50),
+
+    # --- ICB's signage, for the What's New page hero at /news. An
+    # interior page hero is a wide band that crops with object-fit, so
+    # the 16:9 frame ICB supplied is resized and never cut; where the
+    # band sits in it is set by pos on the news-hero slot in
+    # js/data/images.js.
+    ("ICB_Sign_Wide.png",        "icb-sign-wide", None, None, 1672, 980, 0.50),
 
     # --- The border kiosk, slide 4, added 8 Nov 2026. The kiosk at
     # Benque Viejo is where ICB sells short-term motor cover to drivers
@@ -102,13 +104,17 @@ JOBS = [
     #
     # Wide and mid come from the landscape frame: the kiosk sits just
     # left of centre in it, at 0.485 across, so the mid cut is held
-    # there rather than at the middle. The phone cut comes from the
-    # upright frame, squared off, because the sky above the kiosk and
-    # the gravel below it are the parts worth losing and the building
-    # is what is left.
+    # there rather than at the middle.
+    #
+    # The phone cut is the upright frame taken WHOLE, like the head
+    # office above it. ICB asked for this slide to run full screen on a
+    # phone with no band of ground under it, and filling a box that
+    # tall needs a picture at least that tall: a square cut was tried
+    # first and left the slide stacked with the slider's own ground
+    # showing beneath it.
     ("ICB_Kiosk_Wide.png",       "icb-kiosk-wide",  2.340, 0.50, 1672, 980, 0.52),
     ("ICB_Kiosk_Wide.png",       "icb-kiosk-mid",   1.340, 0.485, 1260, 700, 0.50),
-    ("ICB_Kiosk_Portrait.png",   "icb-kiosk-stack", 1.000, 0.50,  941, 560, 0.449),
+    ("ICB_Kiosk_Portrait.png",   "icb-kiosk-stack", None,  None,  941, 560, 0.50),
 
     # --- The headquarters building, for the Locations page hero. Not a
     # slider slide: it fills the interior page hero band, which runs

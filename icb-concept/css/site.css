@@ -4984,8 +4984,14 @@ body.sheet-open .bee { display: none; }
      that width, so almost everything is in shot. Holding it a little
      left of centre keeps the corner of the building and the sign
      clear of the edge on the narrowest phone sold.
-     check/signcheck.js measures this at seven widths. */
-  .hero-slide--photo .hero-media img { object-position: 10% center; }
+     check/signcheck.js measures this at seven widths.
+
+     It is the DEFAULT, not the rule. It belongs to the head office and
+     to the measurements behind it; a second photographic slide framed
+     to the same number would be cropped to suit a building it does not
+     contain. Any other such slide sets --hero-phone-pos from its own
+     data. See phonePos in js/views/home.js. */
+  .hero-slide--photo .hero-media img { object-position: var(--hero-phone-pos, 10% center); }
   .hero-slide--photo .hero-scrim { display: block; }
   .hero-slide--photo .hero-slide-copy { padding-bottom: 76px; }
 
@@ -5170,46 +5176,14 @@ body.sheet-open .bee { display: none; }
 .stm-hours { color: var(--c-text-soft); font-size: var(--fs-300); }
 .stm-branch .btn-row { margin: var(--sp-4) 0 0; }
 
-/* -------- A photographic hero slide that stacks on a phone --------
-
-   Below 769px .hero-slide--photo runs full screen with the words over
-   the picture and the frame held at 10% from the left. That block was
-   written for one slide, the head office, at ICB's instruction and
-   against measurements of where its signage sits; it is not a general
-   rule about photographs, and applying it to a second photograph would
-   crop that one to whatever suits the first.
-
-   So a photographic slide can opt out and take the ordinary stacked
-   arrangement instead: the picture at the top at its own shape, whole,
-   and the words underneath. Used by the What's New and border kiosk
-   slides, which carry their own phone cut shaped to match.
-   ----------------------------------------------------------------- */
-@media (max-width: 768px) {
-  /* grid-row: 1, not auto. The base .hero-slide rule puts every slide
-     in cell 1/1 so they stack on top of each other and crossfade;
-     .hero-slide--photo then widens that to `1 / span 2` so the head
-     office runs under the controls. Undoing it with `auto` does not
-     restore the default, it hands the slide to auto-placement and
-     drops it into a row of its own below the carousel, where it is
-     never shown. Naming row 1 explicitly is what puts it back. */
-  .hero-slide--photo.hero-slide--stacks {
-    grid-row: 1;
-    justify-content: flex-start;
-  }
-  .hero-slide--photo.hero-slide--stacks .hero-media {
-    position: relative;
-    inset: auto;
-    width: 100%;
-    height: auto;
-    aspect-ratio: var(--hero-ar, 4 / 3);
-  }
-  .hero-slide--photo.hero-slide--stacks .hero-media img { object-position: center top; }
-  .hero-slide--photo.hero-slide--stacks .hero-scrim { display: none; }
-  .hero-slide--photo.hero-slide--stacks .hero-slide-copy {
-    padding-top: var(--sp-4);
-    padding-bottom: var(--sp-4);
-  }
-}
+/* The stacked photographic hero slide, which used to live here, is
+   gone. It let a photo slide opt out of running full screen on a phone
+   and take the ordinary stacked arrangement instead, and was written
+   for the border kiosk slide on 8 Nov 2026. ICB asked the same day for
+   that slide to be immersive and full with no space below it, which is
+   what .hero-slide--photo already does, so the modifier had no user
+   left. Removed rather than kept against a future need: an unused rule
+   in a file this size is a trap, and git has it. */
 
 /* The ICB roundel on a hero slide. Asked for on the border kiosk slide,
    where the only ICB mark in the photograph is the small signboard over

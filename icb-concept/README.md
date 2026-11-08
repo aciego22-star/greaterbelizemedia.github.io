@@ -185,16 +185,22 @@ Five slides since 8 Nov 2026, in a fixed order the array in
 photograph, the Protect Your Investment campaign artwork, What's New,
 Short-Term Insurance at the border kiosk, and the film.
 
-Slides 3 and 4 are photographs cut to three shapes each, and both carry
-`stack: true`. Below 769px a photographic slide normally runs full
-screen with the words over it, which was asked for on slide 1 and tuned
-to where that building's signage sits; `stack` opts out of that and
-takes the ordinary stacked arrangement instead, picture whole at the top
-and words underneath. A slide that stacks states its phone cut's shape
-in `mobileAR` so the block is exactly the shape of the file in it.
-Measured across seven widths, neither loses more than a quarter of its
-width and neither shows a bar at any size; `check/herofill.js` holds
-them to that.
+Slide 3 is a pair of supplied compositions that paint their own heading
+and button, which is why the whole artwork is the link. **Do not swap
+it for a photograph.** It was swapped once, on 8 Nov 2026, for the
+signage photograph ICB sent for the What's New *page* hero, and put
+back the same day.
+
+Slide 4, the border kiosk, is a photograph cut to three shapes and runs
+full screen on a phone with the words over it, which ICB asked for:
+immersive, no band of ground underneath. That is what `.hero-slide--photo`
+does by default, so the slide carries no `mobileAR`. It does carry
+`phonePos`, because the default phone framing of 10% from the left
+belongs to slide 1 and was measured against where that building's
+signage sits; any other photographic slide states its own. Measured
+across seven widths it loses at most a quarter of its width, at
+upright-tablet size, and shows no bar anywhere; `check/herofill.js`
+holds it to that.
 
 Slide 4 also carries `logo: true`, which paints ICB's own roundel on a
 white plate above the eyebrow. ICB asked for it because the only ICB

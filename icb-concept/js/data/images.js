@@ -119,6 +119,12 @@ ICB.DATA.images = {
       ],
       alt: "Insurance Corporation of Belize offices around the country"
     },
+    /* ICB's signage on the headquarters wall, on the What's New page.
+       Held right of centre so the roundel and the lettering sit clear
+       of the copy column rather than behind it. */
+    "news-hero":        { src: "assets/img/heroes/icb-sign-wide.webp", pos: "58% 34%",
+                          alt: "The Insurance Corporation of Belize Limited name and roundel in steel on the headquarters wall" },
+
     /* The border kiosk, on the Short-Term Insurance page. The same
        frame as the home carousel slide that links to it, held right of
        centre so the kiosk clears the copy column. */

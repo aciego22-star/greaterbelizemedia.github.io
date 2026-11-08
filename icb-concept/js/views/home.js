@@ -38,13 +38,12 @@ ICB.views = ICB.views || {};
                competing against it (see artCarriesCopy)
        video   poster and a play control; never autoplays (see initFilmSlide)
 
-     stack: true on a photographic slide
-       Below 769px a photo slide runs full screen with the words over it.
-       That arrangement was asked for on slide 1 and measured against
-       where that building's signage sits; it is not a general rule. A
-       slide carrying stack: true takes the ordinary stacked arrangement
-       instead, picture whole at the top and words underneath, and gives
-       mobileAR the shape of its own phone cut. See .hero-slide--stacks.
+     phonePos on a photographic slide
+       Below 769px a photo slide fills the hero and the words sit over
+       it, so something has to be chosen out of the frame. The default
+       holds it at 10% from the left, which belongs to slide 1 and was
+       measured against where that building's signage sits. Any other
+       photographic slide states its own.
      ========================================================================== */
   var SLIDES = [
     {
@@ -85,42 +84,47 @@ ICB.views = ICB.views || {};
       ]
     },
     {
-      /* What's New at ICB.
+      /* What's New at ICB. Two supplied compositions, each already a
+         finished piece with the heading, the line underneath and a
+         painted "Explore the latest updates" button. Overlaying our own
+         headline would fight them, so artCarriesCopy keeps the eyebrow
+         and title in the document for screen readers and the slide
+         label while painting neither, and the artwork is shown whole at
+         both sizes.
 
-         Until 8 Nov 2026 this slide was two supplied compositions, each
-         a finished piece that painted its own heading and its own
-         "Explore the latest updates" button. ICB replaced them that day
-         with a photograph of their own signage, so the slide became an
-         ordinary photographic one: a real headline, a real button, and
-         a scrim to keep them readable. artCarriesCopy and the painted
-         button are gone with the artwork that justified them.
+         href is what makes the painted button real. Without it the
+         artwork offers an action a visitor cannot take and a keyboard
+         user cannot reach at all, so the whole composition is the link,
+         which is also what someone tapping the painted button expects.
 
-         It stacks on a phone rather than running full screen, because
-         the full-screen treatment on slide 1 is cut to that building
-         and holds the frame at 10% from the left. The three cuts here
-         come from the two frames ICB supplied: the wide one from the
-         landscape frame, where the lettering runs nearly the full width
-         and nothing may come off the sides, and the other two from the
-         upright frame. See build/hero-webp.py.
+         LEAVE THIS SLIDE ALONE. It was swapped for a photograph of
+         ICB's signage on 8 Nov 2026 and put straight back the same
+         day: that photograph was sent for the What's New PAGE hero at
+         /news, which is where it now is, and nobody asked for this
+         slide to change. It is the same pair of files it has always
+         been.
 
-         This slide replaced the Nationwide Cash Express lockup on
-         8 Nov 2026. NCE itself is unaffected: it is still named on the
+         This replaced the Nationwide Cash Express lockup on 8 Nov 2026.
+         Its two files are still in assets/img/brands/ and nothing else
+         referenced them, so the slide can come back by swapping these
+         four lines. NCE itself is unaffected: it is still named on the
          payments page and in the FAQ as the sister company that handles
          premium financing. */
-      kind: "photo",
-      stack: true,
-      mobileAR: 1,
+      kind: "brand",
+      full: true,
+      mobileAR: 900 / 1552,
+      artCarriesCopy: true,
       srcWide: "assets/img/heroes/whats-new-wide.webp",
-      srcMid: "assets/img/heroes/whats-new-mid.webp",
-      srcStack: "assets/img/heroes/whats-new-stack.webp",
-      alt: { en: "The Insurance Corporation of Belize Limited name and roundel in steel on the headquarters wall", es: "El nombre y el emblema de Insurance Corporation of Belize Limited en acero sobre el muro de la sede" },
+      srcTall: "assets/img/heroes/whats-new-tall.webp",
+      href: "#/news",
+      alt: { en: "What's New at ICB: the redesigned ICB website on a laptop and a phone, the Talk to Bee button, ICB's team at the AML/CFT conference, the Benque Viejo border kiosk, and the ClaimsVAULT Belize partner artwork", es: "Novedades de ICB: el nuevo sitio web de ICB en una computadora port\u00e1til y un tel\u00e9fono, el bot\u00f3n para hablar con Bee, el equipo de ICB en la conferencia AML/CFT, el quiosco fronterizo de Benque Viejo y la imagen de colaboradores de ClaimsVAULT Belize" },
       eyebrow: { en: "ICB in action", es: "ICB en acci\u00f3n" },
       title: { en: "What's new at ICB.", es: "Novedades de ICB." },
-      lead: { en: "A new website, a new assistant, a border kiosk and a claims partnership. Here is what ICB has been doing.", es: "Un nuevo sitio web, un nuevo asistente, un quiosco fronterizo y una alianza para reclamos. Esto es lo que ICB ha estado haciendo." },
-      actions: [
-        { label: { en: "Explore the latest updates", es: "Ver las novedades" }, href: "#/news", primary: true },
-        { label: { en: "About ICB", es: "Acerca de ICB" }, href: "#/about" }
-      ]
+      linkLabel: { en: "Explore the latest updates from ICB", es: "Ver las novedades de ICB" },
+      /* No action row: the artwork paints its own button and href makes
+         it work. A second, real button would sit on top of the painted
+         one. */
+      actions: []
     },
     {
       /* Short-Term Insurance at the border, added 8 Nov 2026 at ICB's
@@ -139,12 +143,16 @@ ICB.views = ICB.views || {};
          scale, so ICB's own roundel is placed in the copy block. The
          file is the logo the header and footer already use, unmodified.
 
-         Stacks on a phone, like the slide above it, with its own square
-         phone cut taken from the upright frame ICB supplied. */
+         Runs full screen on a phone, like the head office, because ICB
+         asked for it: immersive, no band of ground underneath. That is
+         what .hero-slide--photo does by default, so this slide carries
+         no stack flag and no mobileAR. It does set phonePos, because
+         the default of 10% from the left belongs to the head office
+         and was measured against where that building's signage sits;
+         the kiosk is in the middle of its own upright frame. */
       kind: "photo",
-      stack: true,
       logo: true,
-      mobileAR: 1,
+      phonePos: "center center",
       srcWide: "assets/img/heroes/icb-kiosk-wide.webp",
       srcMid: "assets/img/heroes/icb-kiosk-mid.webp",
       srcStack: "assets/img/heroes/icb-kiosk-stack.webp",
@@ -190,6 +198,11 @@ ICB.views = ICB.views || {};
        is close to the shape of the box it lands in, so `cover` fills
        the slide without throwing much away. */
     if (s.kind === "photo") {
+      /* Where the phone's cut is anchored when this slide fills the
+         hero. Written as a custom property because only the slide data
+         knows it; the stylesheet reads it and falls back to the head
+         office's 10%. */
+      var pos = s.phonePos ? ' style="--hero-phone-pos: ' + s.phonePos + '"' : "";
       var shot = s.srcWide
         ? "<picture>" +
             '<source media="(min-width: 1024px)" data-asset-srcset="' + R.esc(s.srcWide) + '">' +
@@ -197,7 +210,7 @@ ICB.views = ICB.views || {};
             '<img data-asset="' + R.esc(s.srcStack) + '" alt="">' +
           "</picture>"
         : '<img data-asset="' + R.esc(s.src) + '" alt="">';
-      return '<div class="hero-media"' + arStyle(s) + ' aria-hidden="true">' + shot +
+      return '<div class="hero-media"' + arStyle(s) + pos + ' aria-hidden="true">' + shot +
         '<div class="hero-scrim"></div></div>';
     }
 
@@ -286,7 +299,6 @@ ICB.views = ICB.views || {};
         return '<a class="btn btn-lg ' + cls + '" href="' + R.esc(a.href) + '">' + R.esc(a.label) + "</a>";
       }).join("");
       return '<article class="hero-slide hero-slide--' + s.kind + (i === 0 ? " is-active" : "") + (s.light ? " hero-slide--light" : "") +
-        (s.stack ? " hero-slide--stacks" : "") +
         '" role="group" aria-roledescription="slide"' +
         ' aria-label="' + R.esc(T((i + 1) + " of " + SLIDES.length, (i + 1) + " de " + SLIDES.length)) + '" data-slide="' + i + '"' +
         (s.light ? ' data-light="1"' : "") + (i === 0 ? "" : ' aria-hidden="true"') + ">" +

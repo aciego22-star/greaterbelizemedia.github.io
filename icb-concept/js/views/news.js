@@ -73,9 +73,16 @@ ICB.views = ICB.views || {};
            otherwise trim to length. */
         '<section class="page-hero on-dark" aria-labelledby="news-title"' +
           ' data-seo-description="' + esc(lead) + '">' +
+          /* ICB's signage, supplied 8 Nov 2026 for this hero. */
+          '<div class="page-hero-art art-panel" data-img-slot="news-hero" aria-hidden="true">' +
+            ICB.art.panel("heritage") + "</div>" +
           '<div class="shell">' +
-            R.crumbsHome(ICB.DATA.news.section) +
+            /* Crumbs inside page-hero-inner, not beside it: the art
+               panel covers the whole hero and page-hero-inner is the
+               element that sits above it, so a sibling of it paints
+               underneath the photograph and is simply not there. */
             '<div class="page-hero-inner">' +
+              R.crumbsHome(ICB.DATA.news.section) +
               '<span class="eyebrow">' + esc(ICB.t(ICB.DATA.news.section)) + "</span>" +
               '<h1 id="news-title">' + esc(T("What's new at ICB.", "Novedades de ICB.")) + "</h1>" +
               '<p class="hero-lead">' + esc(lead) + "</p>" +

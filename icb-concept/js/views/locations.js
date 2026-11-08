@@ -36,12 +36,16 @@ ICB.views = ICB.views || {};
       });
 
       return '' +
-        /* --whole-media because the slot now holds a photograph of the
-           headquarters building rather than generated art: the hero is
-           shaped around the picture so the whole facade is in frame,
-           instead of the picture being cropped to whatever shape the
-           copy happens to make. ICB supplied the frame on 8 Nov 2026. */
-        '<section class="page-hero page-hero--whole-media on-dark" aria-labelledby="loc-title">' +
+        /* An ordinary page hero, with the words over the photograph.
+           --whole-media was tried here first, which shows the frame
+           whole and, below 720px, moves it to a band above the copy
+           rather than behind it. ICB asked on 8 Nov 2026 for the words
+           over the picture instead, so it is back to the standard
+           treatment: the photograph is the background at every width
+           and the scrim carries the copy. The frame is cropped by
+           object-fit as a result, which is the trade, and where it is
+           cropped from is set by pos on the locations-hero slot. */
+        '<section class="page-hero on-dark" aria-labelledby="loc-title">' +
           '<div class="page-hero-art art-panel" data-img-slot="locations-hero" aria-hidden="true">' + ICB.art.panel("hero-nation") + "</div>" +
           '<div class="shell page-hero-inner">' +
             R.crumbsHome({ en: "Locations", es: "Ubicaciones" }) +
