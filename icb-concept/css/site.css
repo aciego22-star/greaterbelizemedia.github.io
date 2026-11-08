@@ -4978,16 +4978,14 @@ body.sheet-open .bee { display: none; }
     height: auto;
     aspect-ratio: auto;
   }
-  /* 14%, and the number is derived rather than eyeballed. The signage
-     sits between 16.5% and 28% across the photograph, measured off
-     the file. A box this tall shows between 31% and 41% of the
-     photograph's width depending on the phone, and holding the frame
-     at 14% puts the left edge of what is seen at around 10%, which
-     clears the sign by a comfortable margin on the narrowest phone
-     sold and still takes in the corner of the building. Anything
-     above about 19.5% starts shaving the first letter at 320px.
+  /* 10%, derived rather than eyeballed. On the upright frame ICB
+     supplied the signage sits between 7% and 25% across the picture,
+     measured off the file, and a phone sees between 81% and 89% of
+     that width, so almost everything is in shot. Holding it a little
+     left of centre keeps the corner of the building and the sign
+     clear of the edge on the narrowest phone sold.
      check/signcheck.js measures this at seven widths. */
-  .hero-slide--photo .hero-media img { object-position: 14% center; }
+  .hero-slide--photo .hero-media img { object-position: 10% center; }
   .hero-slide--photo .hero-scrim { display: block; }
   .hero-slide--photo .hero-slide-copy { padding-bottom: 76px; }
 

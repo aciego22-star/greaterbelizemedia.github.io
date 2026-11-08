@@ -56,58 +56,47 @@ PREVIEW_QUALITY = 64
 # edge. It only bites when the source is wider than the shape asked for.
 # 0.5 is the middle and is right for most things.
 JOBS = [
-    # --- The head office, slide 1. A wide aerial. The tall cut is taken
-    # left of centre on purpose: that is where the building carries its
-    # name, so a phone gets "INSURANCE CORPORATION OF BELIZE LIMITED"
-    # lettering and the flags rather than an anonymous stretch of roof.
-    ("ICB_HQ_Wide.jpg",          "icb-hq-wide", 2.340, 0.50, 1800, 980),
-    ("ICB_HQ_Wide.jpg",          "icb-hq-mid",  1.340, 0.46, 1200, 700),
-    # The phone cut, and the one file here taken from a different
-    # source. ICB_HQ_Wide is a 2x export of the same frame with the top
-    # and bottom trimmed away, and comparing the same patch of wall at
-    # the same size shows it is an upscale: twice the pixels, no more
-    # detail, slightly softer. It is kept for the two landscape cuts
-    # because at the size those are shown the difference is invisible
-    # and the framing is a touch wider.
+    # --- The head office, slide 1. ICB supplied a matched pair on
+    # 8 Nov 2026, one landscape and one upright, and all three cuts
+    # come from them so the slide looks the same at every width. They
+    # are regenerated rather than retouched: compared against the
+    # photograph they are built from, the sky is blue instead of
+    # overcast, the signage reads red instead of the navy actually on
+    # the wall, and the anniversary banner and the two people at the
+    # door survive in the upright one but not the landscape. Raised
+    # with ICB; theirs to settle, and recorded in OPEN-QUESTIONS.md.
     #
-    # For an upright cut it is the wrong file, because the sky and the
-    # street it trimmed are exactly what an upright frame needs. Taken
-    # from the untrimmed original, a square holds the whole building
-    # with margin to spare and invents nothing. Anything narrower than
-    # about 0.95 starts cutting into the right-hand wing.
-    # The phone cut. ICB wants this slide full screen with the words
-    # over it, no band of sky above and no ground below, so the file
-    # it needs is the untrimmed original exactly as shot: 1284x954,
-    # every row of it real, nothing added.
-    #
-    # The upright frame with sky added was tried here and is wrong for
-    # this arrangement. Filling a box this tall crops width, not
-    # height, so a taller file does widen the view, but it also puts
-    # its new sky across the top of the hero and pushes the building
-    # down behind the headline. Four amounts of added sky were
-    # rendered and compared; none beat the original. The frame is kept
-    # in the repository for the stacked arrangement, should it return.
-    #
-    # Nothing is cut here. What the phone sees of it is decided by the
-    # object-position in site.css, which is set from the measured
-    # position of the signage rather than by eye.
-    ("ICB_HQ_Original.jpg",      "icb-hq-stack", None,  None, 1100, 600),
+    # The landscape one is cut wider still for desktops, and the trim
+    # is taken off the sky rather than split, because splitting it
+    # takes the road and the parked cars out of the bottom of the
+    # frame.
+    ("ICB_HQ_New_Wide.png",      "icb-hq-wide", 2.340, 0.50, 1672, 980, 0.42),
+    ("ICB_HQ_New_Wide.png",      "icb-hq-mid",  1.340, 0.47, 1260, 700, 0.50),
+    # The upright one is taken whole. At 0.563 it is close enough to
+    # the shape a phone gives this slide that nearly nine tenths of
+    # its width survives, and the signage sits between 7% and 25%
+    # across it, measured off the file. check/signcheck.js holds it
+    # to that.
+    ("ICB_HQ_New_Portrait.png",  "icb-hq-stack", None, None,  941, 560, 0.50),
 
     # --- What's New, slide 3. Finished compositions: the headline and
-    # the painted button are in the artwork, so these are resized, never
-    # cut. ICB supplies the two shapes separately.
-    ("ICB_Whats_New_Wide.webp",  "whats-new-wide", None, None, 1800, 980),
-    # The tall composition arrives at 0.62 and the phone box sits nearer
-    # 0.58, so it is trimmed the last fraction here rather than being
-    # cropped live by the browser, which would have taken the slice off
-    # both edges and clipped the first letter of the headline. The focus
-    # is a shade left of middle to keep that left margin intact.
-    ("ICB_Whats_New_Tall.jpg",   "whats-new-tall", 0.580, 0.47,  900, 540),
+    # the painted button are in the artwork, so these are resized,
+    # never cut. ICB supplies the two shapes separately.
+    ("ICB_Whats_New_Wide.webp",  "whats-new-wide", None, None, 1800, 980, 0.50),
+    ("ICB_Whats_New_Tall.jpg",   "whats-new-tall", 0.580, 0.47,  900, 540, 0.50),
 ]
 
 
-def cut(im, aspect, focus):
-    """The largest window of this shape that fits, centred on focus."""
+def cut(im, aspect, focus, vfocus=0.5):
+    """The largest window of this shape that fits, centred on focus.
+
+    focus is where the middle of the window sits across the frame and
+    vfocus is the same down it, 0.0 top to 1.0 bottom. Only one of them
+    ever applies: trimming the sides of a wide source uses focus,
+    trimming the top and bottom of a tall one uses vfocus. The second
+    matters when a landscape photograph is cut wider still, because
+    splitting the difference takes the road out of the bottom of the
+    frame and the trim is better taken off the sky."""
     w, h = im.size
     if w / h > aspect:                      # source too wide: trim the sides
         cw = int(round(h * aspect))
@@ -115,13 +104,13 @@ def cut(im, aspect, focus):
         left = max(0, min(w - cw, centre - cw // 2))
         return im.crop((left, 0, left + cw, h))
     ch = int(round(w / aspect))             # source too tall: trim top and bottom
-    top = max(0, (h - ch) // 2)
+    top = max(0, min(h - ch, int(round(h * vfocus)) - ch // 2))
     return im.crop((0, top, w, top + ch))
 
 
 os.makedirs(OUT, exist_ok=True)
 os.makedirs(PREVIEW_DIR, exist_ok=True)
-for src, stem, aspect, focus, width, prev_width in JOBS:
+for src, stem, aspect, focus, width, prev_width, vfocus in JOBS:
     path_in = os.path.join(SRC, src)
     if not os.path.exists(path_in):
         print("%-18s skipped, %s is not in this folder" % (stem, src))
@@ -129,7 +118,7 @@ for src, stem, aspect, focus, width, prev_width in JOBS:
     im = Image.open(path_in).convert("RGB")
     before = im.size
     if aspect is not None:
-        im = cut(im, aspect, focus)
+        im = cut(im, aspect, focus, vfocus)
     full = im.resize((width, max(1, round(im.height * width / im.width))), Image.LANCZOS) \
         if im.width > width else im
     path = os.path.join(OUT, stem + ".webp")

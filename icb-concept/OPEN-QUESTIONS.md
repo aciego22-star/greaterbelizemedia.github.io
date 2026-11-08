@@ -441,6 +441,34 @@ None of this affects the safety advice, which is why the brochure is
 offered as-is. The advice itself is also set out as a page, in both
 languages, which is what most people will actually read.
 
+### For ICB to confirm: the head office slide is now a regenerated image
+
+ICB supplied a matched pair of the head office on 8 Nov 2026, one
+landscape and one upright, and all three cuts of that slide now come
+from them. They look very good and they solved the framing problem
+outright. They are also not photographs of the building as it stands,
+and ICB should know that before launch rather than after.
+
+Compared against the photograph they are built from:
+
+1. **The signage reads red.** On the wall it is navy. The red is
+   ICB's brand colour, so this may well be deliberate, but the sign
+   on the building is not that colour today.
+2. **The sky is blue with cloud.** The day it was shot was overcast.
+3. **The 40th anniversary banner and the two people at the door are
+   in the upright one and gone from the landscape one.** So a phone
+   and a desktop show slightly different buildings. Nobody is likely
+   to notice, but it is there.
+4. Everything is sharper than the source could carry, which means
+   detail has been drawn rather than recorded. The architecture, the
+   wording of the sign, the flags and the fountain all check out.
+
+None of this is wrong to publish if ICB are happy with it. It is
+their building and their brand. The question is only whether they
+want their head office shown with signage in a colour it is not, and
+whether the banner should be in both or neither. A real photograph
+taken on a clear day would settle all of it.
+
 ### Settled 8 Nov 2026: the upright head office frame arrived
 
 ICB supplied it the same day it was asked for, and it is exactly
