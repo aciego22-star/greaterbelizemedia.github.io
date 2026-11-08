@@ -61,7 +61,7 @@ const MIME = { png: "image/png", jpg: "image/jpeg", jpeg: "image/jpeg", webp: "i
 const PREVIEW_DIR = path.join(root, "build", "preview");
 const assets = {};
 
-const PREVIEW_OF = { "assets/video": "", "assets/img/branches": "branches", "assets/img/news": "news" };
+const PREVIEW_OF = { "assets/video": "", "assets/img/branches": "branches", "assets/img/news": "news", "assets/img/heroes": "heroes" };
 
 function sourceFor(dir, name) {
   const sub = PREVIEW_OF[dir];

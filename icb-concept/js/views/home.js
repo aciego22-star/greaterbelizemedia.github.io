@@ -24,7 +24,7 @@ ICB.views = ICB.views || {};
 
        1. ICB headquarters photograph
        2. "By land, sea or air, ICB is there" campaign artwork
-       3. Nationwide Cash Express brand lockup
+       3. What's New at ICB
        4. The ICB film
 
      After that the carousel may cycle, and the visitor may jump around;
@@ -64,29 +64,38 @@ ICB.views = ICB.views || {};
       ]
     },
     {
-      /* Nationwide Cash Express. Two supplied compositions, each already a
-         finished lockup with mascot, wordmark and tagline. Overlaying our
-         own headline would fight them, so artCarriesCopy keeps the eyebrow
-         and title in the document for screen readers and the slide label
-         while painting neither, and the artwork is shown whole at both
-         sizes.
+      /* What's New at ICB. Two supplied compositions, each already a
+         finished piece with the heading, the line underneath and a
+         painted "Explore the latest updates" button. Overlaying our own
+         headline would fight them, so artCarriesCopy keeps the eyebrow
+         and title in the document for screen readers and the slide
+         label while painting neither, and the artwork is shown whole at
+         both sizes.
 
-         INTERNAL TODO (not client-facing): confirm with ICB and Nationwide
-         Cash Express what this slide should say and where it should link.
-         It currently makes no claim beyond the artwork's own wording and
-         routes to ICB's contact page. */
+         href is what makes the painted button real. Without it the
+         artwork offers an action a visitor cannot take and a keyboard
+         user cannot reach at all, so the whole composition is the link,
+         which is also what someone tapping the painted button expects.
+
+         This replaced the Nationwide Cash Express lockup on 8 Nov 2026.
+         Its two files are still in assets/img/brands/ and nothing else
+         referenced them, so the slide can come back by swapping these
+         four lines. NCE itself is unaffected: it is still named on the
+         payments page and in the FAQ as the sister company that handles
+         premium financing. */
       kind: "brand",
-      light: true,
+      full: true,
       artCarriesCopy: true,
-      srcWide: "assets/img/brands/nce-wide.webp",
-      srcTall: "assets/img/brands/nce-tall.webp",
-      alt: { en: "Nationwide Cash Express: the mascot holding a Belize one hundred dollar note, beside the Nationwide Cash Express wordmark and the line Send Money Across Belize", es: "Nationwide Cash Express: la mascota sosteniendo un billete de cien dólares beliceños, junto al logotipo de Nationwide Cash Express y la línea Send Money Across Belize" },
-      eyebrow: "Nationwide Cash Express",
-      title: { en: "Send money across Belize.", es: "Envíe dinero por todo Belice." },
-      /* No action row. The lockup fills the slide, and an overlaid button
-         would either sit on the artwork or collide with the slider
-         chrome at some widths. Every action stays one row below in the
-         header and the "What can we help you with?" panel. */
+      srcWide: "assets/img/heroes/whats-new-wide.webp",
+      srcTall: "assets/img/heroes/whats-new-tall.webp",
+      href: "#/news",
+      alt: { en: "What's New at ICB: the redesigned ICB website on a laptop and a phone, the Talk to Bee button, ICB's team at the AML/CFT conference, the Benque Viejo border kiosk, and the ClaimsVAULT Belize partner artwork", es: "Novedades de ICB: el nuevo sitio web de ICB en una computadora portátil y un teléfono, el botón para hablar con Bee, el equipo de ICB en la conferencia AML/CFT, el quiosco fronterizo de Benque Viejo y la imagen de colaboradores de ClaimsVAULT Belize" },
+      eyebrow: { en: "ICB in action", es: "ICB en acción" },
+      title: { en: "What's new at ICB.", es: "Novedades de ICB." },
+      linkLabel: { en: "Explore the latest updates from ICB", es: "Ver las novedades de ICB" },
+      /* No action row: the artwork paints its own button and href makes
+         it work. A second, real button would sit on top of the painted
+         one. */
       actions: []
     },
     {
@@ -121,12 +130,23 @@ ICB.views = ICB.views || {};
        contained, so neither is ever cropped or stretched, and the
        wordmark stays legible at both sizes. */
     if (s.kind === "brand") {
-      return '<div class="hero-media hero-media--brand" aria-hidden="true">' +
-        "<picture>" +
-          '<source media="(min-width: 561px)" data-asset-srcset="' + R.esc(s.srcWide) + '">' +
-          '<img data-asset="' + R.esc(s.srcTall) + '" alt="">' +
-        "</picture>" +
-      "</div>";
+      var art = "<picture>" +
+        '<source media="(min-width: 561px)" data-asset-srcset="' + R.esc(s.srcWide) + '">' +
+        '<img data-asset="' + R.esc(s.srcTall) + '" alt="">' +
+      "</picture>";
+      /* A composition that paints its own button becomes a link, with a
+         name of its own, so the action it offers can actually be taken
+         and can be reached from a keyboard. Without href the artwork
+         stays decorative and hidden from assistive tech, which is right
+         for a lockup that asks nothing of anyone. */
+      /* full: the composition runs edge to edge and is its own
+         backdrop, so it is not inset the way a lockup is. */
+      var cls = "hero-media hero-media--brand" + (s.full ? " hero-media--full" : "");
+      if (s.href) {
+        return '<a class="' + cls + ' hero-media--act" href="' + R.esc(s.href) + '"' +
+          ' aria-label="' + R.esc(ICB.t(s.linkLabel || s.title)) + '">' + art + "</a>";
+      }
+      return '<div class="' + cls + '" aria-hidden="true">' + art + "</div>";
     }
 
     /* Film slide.

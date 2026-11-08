@@ -28,14 +28,15 @@
                article. An insurance company's news page that states
                figures and legal requirements should show its working.
 
-   DRAFT, AND IT MATTERS
-   benque-viejo-border-kiosk is marked draft: true. ICB has not confirmed
-   what is sold at the kiosk, its hours, the documents it asks for or
-   whether the Border Branch numbers are the right contacts for it. It is
-   published here so Mr Sal can read it in place on a site that is still
-   noindexed and still under review. It must not go to launch unanswered:
-   DEPLOY.md's launch checklist carries the line, and the questions are
-   in OPEN-QUESTIONS.md.
+   ONE FLAG, AND IT MATTERS
+   launchDay: true marks an entry that is only TRUE once the redesigned
+   site is live on ICB's own domain. There is one, the launch
+   announcement, and its date must match the day the site actually goes
+   up. DEPLOY.md's launch checklist carries the line.
+
+   (benque-viejo-border-kiosk was held as a draft until 8 Nov 2026,
+   when ICB's own short-term motor insurance site answered what was
+   missing. See the note on that entry.)
    ========================================================================== */
 window.ICB = window.ICB || {};
 ICB.DATA = ICB.DATA || {};
@@ -46,6 +47,136 @@ ICB.DATA.news = {
   section: { en: "What's New at ICB", es: "Novedades de ICB" },
 
   entries: [
+    {
+      /* The launch announcement. It is true the moment the redesigned
+         site is live on ICB's own domain and not a day before, which is
+         why DEPLOY.md's launch checklist asks whoever ships it to check
+         this date against the day they actually go live. Nothing hides
+         it in the meantime: the whole site is noindexed until launch,
+         so the only people who can read it are the people reviewing it.
+
+         The claims paragraph names nine forms rather than the five in
+         the supplied copy. The copy was written before ICB sent the
+         other four on 7 Nov; the site carries all nine, so the article
+         says nine. */
+      id: "icb-belize-new-website-launch",
+      launchDay: true,
+      published: "2026-11-23",
+      dated: {
+        label: { en: "Published", es: "Publicado" },
+        text: { en: "Monday, November 23, 2026", es: "Lunes 23 de noviembre de 2026" },
+        iso: "2026-11-23"
+      },
+      category: { en: "Company News", es: "Noticias corporativas" },
+      title: {
+        en: "ICB launches a new website with Bee, online claim forms and branch WhatsApp",
+        es: "ICB estrena su sitio web con Bee, formularios de reclamo en línea y WhatsApp por sucursal"
+      },
+      seoTitle: {
+        en: "New ICB Belize website, Bee, claims and branch WhatsApp",
+        es: "Nuevo sitio de ICB Belice, Bee, reclamos y WhatsApp"
+      },
+      seoDescription: {
+        en: "Explore ICB Belize's redesigned bilingual website. Ask Bee, complete and sign official claim forms online, and find an ICB branch on WhatsApp.",
+        es: "Explore el nuevo sitio bilingüe de ICB Belice. Consulte a Bee, complete y firme formularios de reclamo y contacte a su sucursal por WhatsApp."
+      },
+      excerpt: {
+        en: "Meet Bee, fill in and sign official ICB claim forms on your device, and reach a participating branch directly on WhatsApp.",
+        es: "Conozca a Bee, complete y firme los formularios oficiales de ICB en su dispositivo y contacte a una sucursal por WhatsApp."
+      },
+      hero: {
+        wide: "assets/img/news/website-launch-wide.webp",
+        wideW: 1600, wideH: 900,
+        tall: "assets/img/news/website-launch-tall.webp",
+        tallW: 900, tallH: 1125,
+        alt: {
+          en: "Redesigned ICB homepage and mobile gallery showing ICB's headquarters and the Talk to Bee button.",
+          es: "Nueva página de inicio y galería móvil de ICB, con una vista de su sede y el botón para hablar con Bee."
+        },
+        caption: {
+          en: "The redesigned ICB website on desktop and mobile, featuring the Talk to Bee entry point.",
+          es: "El nuevo sitio web de ICB en computadora y teléfono, con acceso al asistente Bee."
+        }
+      },
+      body: [
+        { type: "p", text: {
+          en: "The Insurance Corporation of Belize (ICB) has redesigned icbinsurance.com to make it easier to get help, explore insurance and take the next step on a claim. The site is available in English and Spanish and is designed for both phones and computers. The web address is the same. The biggest changes are what you can do once you get there.",
+          es: "Insurance Corporation of Belize (ICB) ha renovado icbinsurance.com para que sea más fácil pedir ayuda, explorar opciones de seguro y dar el siguiente paso en un reclamo. El sitio está disponible en inglés y español y se puede usar desde un teléfono o una computadora. La dirección web es la misma. Los cambios principales están en lo que ahora puede hacer desde el sitio."
+        } },
+
+        { type: "h", text: {
+          en: "Meet Bee, ICB's bilingual AI Employee",
+          es: "Conozca a Bee, el asistente bilingüe con IA de ICB"
+        } },
+        { type: "p", text: {
+          en: "Talk to Bee when you need a starting point. Ask in English or Spanish about ICB's insurance options, how to begin a claim, or which branch to contact. Bee can point you to the appropriate official claim form, explain ICB's published bank-transfer instructions and find an office's contact information. You can ask a general question at any hour, including when the offices are closed.",
+          es: "Converse con Bee en inglés o español para informarse sobre los seguros de ICB, saber cómo iniciar un reclamo o localizar una sucursal. Bee puede indicarle cuál es el formulario oficial que corresponde, explicarle las instrucciones de ICB para transferencias bancarias y ayudarle a encontrar los datos de contacto de una oficina. Puede hacer preguntas generales a cualquier hora, incluso cuando las oficinas están cerradas."
+        } },
+        { type: "p", text: {
+          en: "If you would like to speak with someone, ask Bee for the office's phone number, WhatsApp or email. ICB representatives handle coverage decisions, quotations and claims.",
+          es: "Si prefiere hablar con una persona, pídale a Bee el teléfono, WhatsApp o correo de la oficina correspondiente. El personal de ICB se encarga de las decisiones sobre cobertura, las cotizaciones y los reclamos."
+        } },
+        { type: "actions", items: [
+          { label: { en: "Talk to Bee", es: "Converse con Bee" }, href: "#/bee" }
+        ] },
+
+        { type: "h", text: {
+          en: "Fill in, sign and send official ICB claim forms from your device",
+          es: "Complete, firme y envíe los formularios oficiales de ICB desde su dispositivo"
+        } },
+        { type: "p", text: {
+          en: "The Claims Centre guides you to the appropriate form: an insured motor accident, a third-party motor claim, a windscreen claim, a property claim, hurricane damage, a marine claim, an inland cargo claim, a public liability claim or a personal accident claim. You can download a blank copy, or select Fill it out online to work through the form on a phone or computer.",
+          es: "En la sección de reclamos puede encontrar el formulario que corresponde: accidente de un vehículo asegurado, reclamo vehicular de terceros, parabrisas, daños a la propiedad, daños por huracán, reclamo marítimo, carga terrestre, responsabilidad civil o accidente personal. Puede descargar un formulario en blanco o completarlo en línea desde un teléfono o una computadora."
+        } },
+        { type: "p", text: {
+          en: "The online form lets you enter details, sign on screen, add supporting photos or files, and review your information before preparing the completed PDF. On a supported device, the Send option opens your sharing menu so you can choose the appropriate channel and finish sending it to ICB. If your device uses the email fallback, attach the saved PDF and any supporting files to the email and send it. You can also download a copy for your records.",
+          es: "El formulario en línea le permite ingresar sus datos, firmar en pantalla, agregar fotos o archivos de respaldo y revisar la información antes de preparar el PDF. En dispositivos compatibles, la opción de envío abre el menú para compartir, donde puede elegir el canal correspondiente y completar el envío a ICB. Si su dispositivo abre el correo electrónico, adjunte el PDF guardado y los archivos de respaldo antes de enviarlo. También puede descargar una copia para sus archivos."
+        } },
+        { type: "actions", items: [
+          { label: { en: "Find your claim form", es: "Encuentre su formulario" }, href: "#/claims" }
+        ] },
+
+        { type: "h", text: {
+          en: "Choose an ICB branch and open WhatsApp directly",
+          es: "Elija una sucursal y abra WhatsApp directamente"
+        } },
+        { type: "p", text: {
+          en: "Use Locations to find a branch or agency by district, check its contact details and hours, and get directions. Select WhatsApp ICB, choose a district and pick a WhatsApp-enabled office to open a conversation with that location. Phone and email details are also listed where available.",
+          es: "En Sucursales puede buscar una oficina por distrito, consultar sus horarios y datos de contacto, y ver cómo llegar. Seleccione WhatsApp ICB, elija un distrito y seleccione una oficina con WhatsApp para iniciar la conversación. También se muestran los datos de teléfono y correo cuando están disponibles."
+        } },
+        { type: "actions", items: [
+          { label: { en: "Find a branch", es: "Buscar una sucursal" }, href: "#/locations" }
+        ] },
+
+        { type: "h", text: {
+          en: "Explore insurance, payment instructions and customer resources",
+          es: "Explore los seguros, las instrucciones de pago y los recursos"
+        } },
+        { type: "p", text: {
+          en: "Explore insurance options for motor vehicles, property, marine hull, cargo, liability and Mexican insurance. Use the guided insurance finder to narrow your options, or send a quote enquiry. Business insurance has its own starting point for commercial customers.",
+          es: "Consulte las opciones de seguro para vehículos, propiedades, embarcaciones, carga, responsabilidad civil y México. Use el buscador guiado de seguros o envíe una solicitud de cotización. Los clientes comerciales tienen su propia sección de seguros para empresas."
+        } },
+        { type: "p", text: {
+          en: "The payments page has ICB's bank-transfer instructions and how to send proof of payment to your branch afterwards. The Resource Centre brings together useful forms and information, and the questions and answers cover policies, renewals, payments and claims.",
+          es: "La página de pagos tiene las instrucciones de ICB para transferencias bancarias y cómo enviar el comprobante a su sucursal después. El Centro de recursos reúne formularios e información útil, y las preguntas frecuentes abarcan pólizas, renovaciones, pagos y reclamos."
+        } },
+        { type: "p", text: {
+          en: "The gallery has photographs of every ICB branch and agency and ICB's campaign films in English and Spanish. On a phone, the quick links put Call, WhatsApp, Branches and Enquire within easy reach.",
+          es: "La galería tiene fotografías de todas las sucursales y agencias de ICB y los videos de campaña en inglés y español. En el teléfono, los accesos rápidos ponen a mano las opciones de llamada, WhatsApp, sucursales y consultas."
+        } },
+        { type: "actions", items: [
+          { label: { en: "Explore insurance", es: "Ver seguros" }, href: "#/insurance" },
+          { label: { en: "How to pay ICB", es: "Cómo pagarle a ICB" }, href: "#/payments" },
+          { label: { en: "Questions and answers", es: "Preguntas y respuestas" }, href: "#/faq" }
+        ] }
+      ],
+      sources: [
+        { label: { en: "ICB's redesigned website", es: "El nuevo sitio web de ICB" },
+          note: { en: "Everything described here is on the site itself.", es: "Todo lo descrito aquí está en el propio sitio." },
+          href: "https://www.icbinsurance.com/" }
+      ]
+    },
+
     {
       id: "icb-claimsvault-belize",
       published: "2026-11-07",
@@ -219,10 +350,19 @@ ICB.DATA.news = {
     },
 
     {
-      /* Draft. See the note at the head of this file, and the questions
-         in OPEN-QUESTIONS.md. It renders like any other entry so that
-         Mr Sal can read it in place; the flag is what the launch
-         checklist in DEPLOY.md looks for.
+      /* No longer a draft, cleared 8 Nov 2026.
+
+         It was held back because nobody had confirmed what is sold at
+         this kiosk, what a driver has to bring or how the cover works.
+         ICB's own short-term motor insurance site answers all of that
+         in its own words, and the client pointed us at it: the vehicle
+         types, the five coverage periods, the exact details the
+         process asks for, that payment is by card, and the Schedule 1
+         a driver must print and display. Everything below now comes
+         from that page or from the Act it cites.
+
+         One thing is still not published anywhere: the kiosk's own
+         opening hours. The article does not state them.
 
          Narrowed on 7 Nov 2026 by reading ICB's own sites. The
          icbcovernote.com link is safe: that site titles itself "ICB
@@ -235,7 +375,6 @@ ICB.DATA.news = {
          takes, and whether the Border Branch numbers are the right
          contacts for it. */
       id: "benque-viejo-border-kiosk",
-      draft: true,
       published: "2026-11-07",
       category: { en: "Customer Services", es: "Servicios al cliente" },
       title: {
@@ -290,19 +429,27 @@ ICB.DATA.news = {
           en: "What to have ready",
           es: "Qué debe tener a mano"
         } },
+        /* Everything in this section is ICB's own published process,
+           read off their short-term motor insurance site. */
         { type: "p", text: {
-          en: "Keep your vehicle registration, passport and valid driver's licence handy. ICB's published short-term insurance process asks for vehicle, passport and driver's licence details. Know how long you plan to drive in Belize so you can check which coverage period fits your visit.",
-          es: "Tenga a mano el documento de matrícula de su vehículo, su pasaporte y su licencia de conducir vigente. El proceso publicado por ICB para el seguro de corta duración solicita datos del vehículo, del pasaporte y de la licencia. Tenga presente cuánto tiempo planea conducir en Belice para poder elegir el período de cobertura adecuado."
-        } },
-        /* The five periods ICB publishes on its own short-term motor
-           insurance site. Verbatim from that page, 7 Nov 2026. */
-        { type: "p", text: {
-          en: "ICB publishes five coverage periods for this cover: one day, three days, one week, two weeks, or one month.",
-          es: "ICB publica cinco períodos de cobertura para este seguro: un día, tres días, una semana, dos semanas o un mes."
+          en: "Four things: your passport, your valid driver's licence, the vehicle registration, and a credit card. ICB's published process asks for the number, issuing country and expiry from both the passport and the licence, your name, telephone and email, and the vehicle's make, model, year, VIN and licence plate number, along with the owner's details.",
+          es: "Cuatro cosas: su pasaporte, su licencia de conducir vigente, el documento de matrícula del vehículo y una tarjeta de crédito. El proceso publicado por ICB solicita el número, el país de emisión y la fecha de vencimiento tanto del pasaporte como de la licencia, su nombre, teléfono y correo electrónico, y la marca, el modelo, el año, el VIN y la matrícula del vehículo, junto con los datos del propietario."
         } },
         { type: "p", text: {
-          en: "Before you drive onward, check the vehicle details on your insurance documents, confirm when cover begins and ends, and keep your proof of insurance accessible during your trip.",
-          es: "Antes de continuar su viaje, compruebe los datos del vehículo en los documentos del seguro, confirme cuándo empieza y termina la cobertura y mantenga el comprobante del seguro a mano."
+          en: "Cover is written for private vehicles, commercial vehicles, heavy duty vehicles and passenger buses, over five periods: one day, three days, one week, two weeks, or one month. Know roughly how long you plan to drive in Belize and you can pick the one that fits.",
+          es: "La cobertura se emite para vehículos particulares, vehículos comerciales, vehículos de carga pesada y autobuses de pasajeros, en cinco períodos: un día, tres días, una semana, dos semanas o un mes. Si sabe aproximadamente cuánto tiempo conducirá en Belice, podrá elegir el que le convenga."
+        } },
+        { type: "h", text: {
+          en: "Print Schedule 1 and put it on the windscreen",
+          es: "Imprima el Schedule 1 y colóquelo en el parabrisas"
+        } },
+        { type: "p", text: {
+          en: "This is the step people miss. ICB states that under the Motor Vehicle Insurance (Third Party Risks) Act, Chapter 231, Revised Edition 2020, you are required to print the Schedule 1 that arrives by email and display it on the windscreen of the insured vehicle in order to comply with the law. Being insured is not enough on its own; the document has to be showing.",
+          es: "Este es el paso que más se pasa por alto. ICB indica que, conforme a la Ley de Seguro de Vehículos (Riesgos frente a Terceros), capítulo 231, edición revisada de 2020, usted debe imprimir el Schedule 1 que recibe por correo y exhibirlo en el parabrisas del vehículo asegurado para cumplir con la ley. No basta con estar asegurado: el documento tiene que estar a la vista."
+        } },
+        { type: "p", text: {
+          en: "Before you drive onward, check the vehicle details on your insurance documents and confirm when cover begins and ends.",
+          es: "Antes de continuar su viaje, compruebe los datos del vehículo en los documentos del seguro y confirme cuándo empieza y termina la cobertura."
         } },
         { type: "h", text: {
           en: "Questions before you travel",
@@ -320,10 +467,14 @@ ICB.DATA.news = {
         ] }
       ],
       sources: [
-        { label: { en: "ICB's short-term motor insurance guide", es: "Guía de ICB sobre el seguro de corta duración" },
-          note: { en: "ICB's visitor product, its third-party cover and the information its published purchase process asks for. That page describes the online process; the kiosk may differ.",
-                  es: "El producto de ICB para visitantes, su cobertura frente a terceros y la información que solicita el proceso publicado. Esa página describe el proceso en línea; el quiosco puede ser distinto." },
+        { label: { en: "ICB's short-term motor insurance site", es: "Sitio de ICB sobre el seguro de corta duración" },
+          note: { en: "ICB's visitor product, its third-party cover, the vehicle types and coverage periods, and everything its published process asks for.",
+                  es: "El producto de ICB para visitantes, su cobertura frente a terceros, los tipos de vehículo y los períodos de cobertura, y todo lo que solicita el proceso publicado." },
           href: "https://www.icbcovernote.com/" },
+        { label: { en: "ICB's step-by-step purchase guide", es: "Guía paso a paso de compra de ICB" },
+          note: { en: "The six steps, the documents to have ready, and the Schedule 1 that must be printed and displayed on the windscreen.",
+                  es: "Los seis pasos, los documentos que debe tener a mano y el Schedule 1 que debe imprimirse y exhibirse en el parabrisas." },
+          href: "https://www.icbcovernote.com/copy-of-home" },
         { label: { en: "Motor Vehicle Insurance (Third Party Risks) Act, Chapter 231",
                    es: "Ley de Seguro de Vehículos (Riesgos frente a Terceros), capítulo 231" },
           note: { en: "Section 3 sets out the general third-party insurance requirement for vehicles used on public roads.",

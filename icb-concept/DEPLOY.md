@@ -115,24 +115,22 @@ or connect the Git repository for automatic deploys from a branch.
 
 ## Launch day: two switches
 
-### 1. The draft article in What's New
+### 1. The date on the launch announcement
 
-`js/data/news.js` marks one entry `draft: true`:
-**benque-viejo-border-kiosk**. ICB has not confirmed what is sold at
-the kiosk, its hours, the documents it asks for, or whether the Border
-Branch telephone and WhatsApp are the right contacts for it. It is on
-the site so Mr Sal can read it in place while the site is still
-noindexed and under review.
+`js/data/news.js` marks one entry `launchDay: true`:
+**icb-belize-new-website-launch**, the article announcing the
+redesigned site. It is dated **Monday, 23 November 2026**, in three
+places in that entry: `published`, and the `iso` and `text` inside
+`dated`.
 
-Before launch, either get those answers and clear the flag, or take the
-entry out. Do not launch with the flag still set. To check:
+That article is only true once the site is actually live on ICB's own
+domain. If the cutover happens on a different day, change all three to
+that day before you ship. To find them:
 
-    grep -n "draft: true" js/data/news.js
+    grep -n "launchDay\|2026-11-23\|November 23" js/data/news.js
 
-The questions are in OPEN-QUESTIONS.md. The flag is inert in the build,
-which is the point: it is a marker for a person, not a switch that
-hides anything, because an entry hidden from the preview is an entry
-nobody reviews.
+The flag is inert in the build. It is a marker for a person, not a
+switch: an entry hidden from the preview is an entry nobody reviews.
 
 ### 2. The one that keeps the site out of Google
 

@@ -133,10 +133,16 @@ ICB.views = ICB.views || {};
             hero(e) +
             '<div class="news-body">' + e.body.map(block).join("") + "</div>" +
             sources(e) +
-            '<p class="news-published">' +
-              esc(T("Published on this site on ", "Publicado en este sitio el ")) +
-              '<time datetime="' + esc(e.published) + '">' + esc(R.longDate(e.published)) + "</time>" +
-            "</p>" +
+            /* The publication line exists to keep two different dates
+               apart: the day of the thing, at the top, and the day the
+               article went up, here. Where they are the same date the
+               line says nothing the dateline has not already said, so
+               it is left off rather than printed twice. */
+            (e.dated && e.dated.iso === e.published ? "" :
+              '<p class="news-published">' +
+                esc(T("Published on this site on ", "Publicado en este sitio el ")) +
+                '<time datetime="' + esc(e.published) + '">' + esc(R.longDate(e.published)) + "</time>" +
+              "</p>") +
           "</div>" +
         "</section>" +
 

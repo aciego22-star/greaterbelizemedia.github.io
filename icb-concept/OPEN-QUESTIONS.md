@@ -142,38 +142,26 @@ verified branch listings is the strongest local search asset ICB has.
 
 ---
 
-## What's New at ICB: the draft entry
+## What's New at ICB: the kiosk entry, now cleared
 
-Added 7 Nov 2026 with the section itself. Three entries went up;
-**the Benque Viejo border kiosk one is a draft and is marked as such
-in the data**, because it describes an insurance product and nobody at
-ICB has confirmed the details yet.
+Added 7 Nov 2026 with the section itself, held as a draft because it
+described an insurance product nobody at ICB had confirmed.
 
-It is on the site rather than held back, so Mr Sal can read it in
-place. The whole site is still noindexed and still on the review
-subdomain, so nothing has been published to the public. But it must
-not go to launch unanswered, and DEPLOY.md's launch checklist now
-carries that as its first item.
+**Cleared 8 Nov 2026.** The client pointed us at ICB's own short-term
+motor insurance site, which answers it in ICB's words: the vehicle
+types it covers, the five coverage periods, every detail the purchase
+process asks for, that payment is by card, and the Schedule 1 a driver
+must print and display on the windscreen under Chapter 231. The
+article now carries all of that and the draft flag is gone.
 
-**What ICB needs to confirm:**
+What nobody publishes anywhere is the kiosk's own opening hours, so
+the article does not state them. That is the only piece still missing
+and it does not hold anything up.
 
-1. That short-term third-party motor insurance is what is sold at this
-   kiosk, which vehicles are eligible, what coverage periods exist,
-   what documents a driver must bring, and how a visitor is given
-   proof of cover. The online guide covers ICB's general offering; a
-   kiosk at a border crossing may work differently.
-2. The kiosk's hours, what payment it takes, and whether the Border
-   Branch telephone and WhatsApp are the right contacts for kiosk
-   questions. The draft labels both as branch contacts.
-3. Whether `icbcovernote.com` is ICB's own site and whether ICB wants
-   the article to link to it. The draft does, on the strength of the
-   copy pack naming it as ICB's short-term motor insurance guide, and
-   an insurer's own news page should not send a reader to a domain
-   nobody has confirmed is theirs.
-4. Whether anything else is sold at the kiosk. The draft covers motor
-   insurance and does not claim it is the only service.
-5. Whether ICB wants to say this is the only kiosk of its kind in
-   Belize. The draft does not say it.
+The one flag left in `js/data/news.js` is `launchDay: true` on the
+launch announcement, which is only true once the site is live on ICB's
+own domain. DEPLOY.md's checklist asks whoever ships it to check that
+date against the real cutover day.
 
 ## What's New: two decisions that were taken as defaults
 
@@ -323,72 +311,62 @@ site:
 - **Punta Gorda.** Live site says #31 Main Middle Street. The
   directory and the signboard both say George Price Street.
 
-### New, and worth a decision
+### Answered by the client, 8 Nov 2026
 
-**1. /micro-insurance is ICB's Mexican Insurance page.**
+**Where the directory and anything else disagree, the directory wins.**
+That settles the last of them, and in every case the site already
+publishes the directory's version, so nothing had to change:
 
-The redirect for it was removed at ICB's instruction. Reading the live
-site shows why that probably looked wrong: the slug says
-micro-insurance but the page is titled "Mexican Insurance | ICB
-Insurance" and it is what the old menu's Mexican Insurance link opens.
+- **Independence address.** 219, Corner of Hercules & Toucan Streets,
+  not the live site's New School St.
+- **Moro Agency WhatsApp.** 609-0497, not the signboard's 669-9497.
+- **Benque Town Board email.** icb_benquetown@ with the underscore,
+  not the sign's icb.benquetown@ with a dot.
+- **San Juan email.** icb_sanjuan@, not the two-letter prefix on the
+  sign.
 
-As things stand, anyone following an existing link to it lands on a
-404 after the cutover, and whatever search position it holds is lost.
-One line puts it right:
+**ICB's own site being four claim forms behind is not worth raising.**
+They will not be using it much longer.
 
-    /micro-insurance        /insurance/mexican      301
+**The kiosk is answered.** ICB's short-term motor insurance site sets
+out the vehicle types, the five coverage periods, every detail the
+purchase process asks for, that payment is by card, and the Schedule 1
+a driver must print and display under Chapter 231. All of that is now
+in the article, and it is no longer a draft. The one thing nobody
+publishes anywhere is the kiosk's own opening hours, so the article
+does not state them.
 
-Not added, because the removal was an instruction and this is new
-evidence rather than a new instruction. ICB's call.
+**/micro-insurance is still open.** See below.
 
-**2. ICB's own "View Coverage" link is broken.**
+### Still open
 
-On their Mexican Insurance page, the Click here for Coverage button
-points at
-`auto-insurance-ana.com/Turistas/Pages/Turistas/anareclutamiento/coverages.html`,
-which returns 404. The Claims and FAQs links beside it both work. Our
-View Coverage button goes to ICB's own page rather than repeating a
-dead link; put the direct link back when ANA fix theirs.
+**1. The /micro-insurance redirect.**
 
-**3. Independence has two addresses.**
+Unchanged from 7 Nov and still the one decision outstanding.
+/micro-insurance is ICB's Mexican Insurance page, titled as such on
+their live site. Its redirect was removed on instruction. As things
+stand, anyone following an existing link to it lands on a 404 after
+the cutover. One line in `_redirects` puts it right and the line is
+written out there as a comment. ICB's call.
 
-ICB's live site says New School St., Independence Village. The 20 Oct
-directory says 219, Corner of Hercules & Toucan Streets. No photograph
-to break the tie, and unlike San Pedro and Punta Gorda there is no
-second source. We publish the directory's version, since it is the
-newer document. Worth one question to Mr Sal.
+**2. The branch opening hours**, and whether they vary branch to
+branch. The door at Independence posts hours that differ from the ones
+ICB gave us on three counts.
 
-**4. ICB's own claims page is behind.**
+**3. ICB's own "View Coverage" link is broken.** On their Mexican
+Insurance page it points at an ANA Seguros URL that returns 404. The
+Claims and FAQs links beside it work and now go straight to ANA from
+our product page. Worth passing on so ANA can fix it.
 
-It publishes five forms. The four Mr Sal sent on 7 Nov are not on it.
-They came from him directly so they are real, but ICB may want to know
-their website is missing four of its own claim forms.
-
-**5. A claims email we did not have.**
-
-The kiosk site gives `icb_claims1@icbinsurance.com` for filing a claim,
-alongside the 613-0579 WhatsApp number we already hold. Not used on the
-site yet. Worth asking whether that is the address claimants should be
-given.
-
-### What this leaves for Mr Sal
-
-Three things, and only three, that no amount of reading can settle:
-
-1. **The Moro Agency WhatsApp number**, 669-9497 on the sign against
-   609-0497 in the directory. The branch is too new to be on the live
-   site, so there is no third source.
-2. **The branch opening hours**, and whether they vary branch to
-   branch.
-3. **The kiosk itself**: its hours, what payment it takes, and whether
-   the Border Branch numbers are the right contacts for it. The
-   product behind it is now confirmed from ICB's own site.
-
-Plus the two emails on signboards for branches too new to appear on
-the live site: Benque Town Board and San Juan. Given that every single
-published address follows the `icb_name@` pattern and three signboards
-have now been shown to be the outlier, the likelihood is that the
-directory is right about these too.
+**4. Where a completed claim form should land.** The site emails them
+to `icb@icbinsurance.com`, the general address, because that is the
+only one ICB publishes anywhere near a claims context: their claims
+page carries no email at all. `icb_claims1@icbinsurance.com` exists
+but appears only on the kiosk site, and the client confirms it is for
+kiosk claims specifically. If ICB wants a dedicated claims inbox for
+forms submitted from the website, one line in `js/data/site.js`
+changes it. This is the same decision as question 1 at the top of this
+file, now with the evidence attached.
 
 ## Already flagged, still open
 

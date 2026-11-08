@@ -33,6 +33,8 @@ JOBS = [
     ("02_ClaimsVAULT_Belize/ICB_ClaimsVAULT_Belize_Mobile_1080x540.webp", "claimsvault-tall", 900, 560),
     ("03_Benque_Viejo_Border_Kiosk_DRAFT/ICB_Benque_Viejo_Border_Kiosk_Desktop_1920x1080.webp", "benque-kiosk-wide", 1600, 820),
     ("03_Benque_Viejo_Border_Kiosk_DRAFT/ICB_Benque_Viejo_Border_Kiosk_Mobile_1080x1350.webp", "benque-kiosk-tall", 900, 560),
+    ("ICB_New_Website_Launch_Desktop_1920x1080.webp", "website-launch-wide", 1600, 820),
+    ("ICB_New_Website_Launch_Mobile_1080x1350.webp", "website-launch-tall", 900, 560),
 ]
 
 os.makedirs(OUT, exist_ok=True)

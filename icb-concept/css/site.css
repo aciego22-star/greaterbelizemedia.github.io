@@ -628,6 +628,21 @@ button {
 /* The ground matches the artwork's own background, so the contained
    lockup reads as the whole slide rather than a pasted-in box. */
 .hero-media--brand { background: #FEFEFE; }
+/* A composition that is itself a link. It is an <a>, so it needs to be
+   told to behave like the <div> it replaced, and it carries its own
+   dark backdrop: the artwork here is dark navy, where the lockup this
+   replaced was white, and #FEFEFE behind a contained dark picture reads
+   as two white bars. The focus ring is inset because the element fills
+   the slide and a ring outside it would be off-screen. */
+.hero-media--act {
+  display: block;
+  background: var(--c-brand-deep);
+  cursor: pointer;
+}
+.hero-media--act:focus-visible {
+  outline: 3px solid var(--c-accent);
+  outline-offset: -5px;
+}
 .hero-media--brand picture { display: contents; }
 .hero-media--brand img {
   object-fit: contain;
@@ -639,6 +654,27 @@ button {
   padding: clamp(16px, 3vw, 40px) clamp(16px, 4vw, 64px) clamp(104px, 14vh, 128px);
 }
 .hero-slide.is-active .hero-media--brand img { transform: none; transition: none; }
+
+/* A composition that runs edge to edge rather than a lockup floating in
+   space. It keeps its whole shape, so contain and not cover, but it
+   drops the side and top inset a floating lockup needs: only the bottom
+   clearance stays, so the slider's dots and arrows are not sitting on
+   the artwork. That inset was costing the picture about eighty pixels of
+   height and, because a contained picture is held back by whichever edge
+   runs out first, nearly twice that in width. The backdrop is sampled
+   from the artwork's own dark ground, so what letterboxing is left reads
+   as part of the picture rather than as a bar beside it.
+
+   This has to come after the --brand rules above, not before them: the
+   two selectors are the same weight, so source order is the only thing
+   deciding which padding the artwork gets. It stays above the two
+   narrow-screen overrides further down, which reserve less because the
+   slider chrome sits lower there; those still apply. */
+.hero-media--full { background: #0A0D15; }
+.hero-media--full img {
+  padding: 0 0 clamp(104px, 14vh, 128px);
+  object-position: center;
+}
 
 /* Nothing is laid over the lockup, so the slide needs no copy column. */
 .hero-slide--brand { align-items: stretch; }
