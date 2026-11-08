@@ -552,17 +552,18 @@ function serve(dir) {
   const routes = await page.evaluate(() => {
     /* claimForm is a route per claim type, not a page of its own, so it
        is enumerated from the forms rather than from the view name. */
-    /* anaQuote is skipped by name because its route is not its view
-       name: it lives under the product it belongs to, at
-       insurance/mexican/quote, and is added by hand below. */
+    /* anaQuote and visitorMotor are skipped by name because neither
+       route is its view name: both live under the product they belong
+       to, at insurance/mexican/quote and insurance/motor/visitors, and
+       both are added by hand below. */
     const skip = { home: 1, product: 1, notfound: 1, claimForm: 1, newsEntry: 1,
-                   guide: 1, anaQuote: 1 };
+                   guide: 1, anaQuote: 1, visitorMotor: 1 };
     return [""].concat(
       Object.keys(ICB.views).filter(v => !skip[v]),
       (ICB.DATA.products || []).map(p => "insurance/" + p.id),
       (((ICB.DATA.news && ICB.DATA.news.entries) || [])).map(e => "news/" + e.id),
       (((ICB.DATA.guides && ICB.DATA.guides.entries) || [])).map(g => "resources/" + g.id),
-      ["insurance/mexican/quote"],
+      ["insurance/mexican/quote", "insurance/motor/visitors"],
       ((ICB.DATA.claimForms && ICB.DATA.claimForms.forms) || []).map(f => "claims/form/" + f.id));
   });
 

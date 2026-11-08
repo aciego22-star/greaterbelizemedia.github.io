@@ -180,6 +180,15 @@ ICB.views = ICB.views || {};
         ? { view: "guide", navId: "resources", guideId: p[1] }
         : { view: "notfound", navId: null };
     }
+    /* insurance/motor/visitors: ICB's Short-Term Insurance, the
+       third-party cover they sell to drivers bringing a vehicle into
+       Belize, online and at the Benque Viejo border kiosk. Filed under
+       Motor because that is what it is, and alongside the Mexican quote
+       below because the two are mirror images: one covers a visitor
+       driving in, the other a Belizean driving out. */
+    if (p[0] === "insurance" && p[1] === "motor" && p[2] === "visitors" && p.length === 3) {
+      return { view: "visitorMotor", navId: "insurance" };
+    }
     /* insurance/mexican/quote: ANA Seguros' quote tool, which ICB sells
        against as ANA's agent. Under the product rather than beside it,
        because that is what it belongs to. */

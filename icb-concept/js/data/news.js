@@ -459,7 +459,11 @@ ICB.DATA.news = {
           en: "If you have questions about the kiosk or your vehicle before you travel, contact ICB's Benque Viejo Border Branch.",
           es: "Si tiene preguntas sobre el quiosco o su vehículo antes de viajar, comuníquese con la sucursal fronteriza de ICB en Benque Viejo."
         } },
+        /* The product has had a page of its own since 8 Nov 2026, so
+           that goes first: this article is the story, and the page is
+           where somebody actually buying it should end up. */
         { type: "actions", items: [
+          { label: { en: "Short-Term Insurance", es: "Short-Term Insurance" }, href: "#/insurance/motor/visitors" },
           { label: { en: "Call +501 823-2319", es: "Llamar al +501 823-2319" }, href: "tel:+5018232319" },
           { label: { en: "WhatsApp +501 613-0548", es: "WhatsApp +501 613-0548" }, wa: "5016130548" },
           { label: { en: "ICB's short-term motor insurance guide", es: "Guía de ICB sobre el seguro de corta duración" },

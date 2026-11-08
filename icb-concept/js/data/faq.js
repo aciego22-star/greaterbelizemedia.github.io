@@ -360,9 +360,22 @@ ICB.DATA = ICB.DATA || {};
                2026 that the two are the same thing: the portal IS the
                bank transfer route, a payment made through the
                customer's own bank with the confirmation sent to their
-               branch. ICB does not take card payments on a web page,
-               and the kiosk on their network is a physical terminal
-               near the border rather than a site.
+               branch.
+
+               AMENDED 8 Nov 2026. This note used to go on to say that
+               ICB takes no card payment on a web page and that the
+               kiosk is a physical terminal rather than a site. The
+               first half is right about premiums and wrong as a flat
+               statement, and the second is wrong: kiosk.icbinsurance.com
+               is ICB's own online sales system and it takes a card, for
+               the short-term cover sold to drivers bringing a vehicle
+               into Belize. The kiosk at Benque Viejo is a real building
+               as well, and both are set out at
+               #/insurance/motor/visitors.
+
+               So the answer below is scoped to premiums, which is what
+               the question asks about, and the sentence that would have
+               contradicted the new page is gone.
 
                So the name stays, because it is ICB's, and a second
                sentence says what it is. A customer who reads "portal"
@@ -371,8 +384,8 @@ ICB.DATA = ICB.DATA || {};
                left in English in both languages, as ICB's names are
                throughout. */
             q: T("How can I pay my insurance premium?", "¿Cómo puedo pagar mi prima de seguro?"),
-            a: T("Accepted forms of payment include Cash, Cheque, Credit Card, ICB Payment Portal, and Premium Financing through Nationwide Cash Express.\n\nThe ICB Payment Portal is a transfer made through your own bank, followed by sending the confirmation to your branch. There is no payment page to log in to on this website. The payments page has the account numbers and the steps.",
-                 "Las formas de pago aceptadas incluyen efectivo, cheque, tarjeta de crédito, el ICB Payment Portal y financiamiento de prima a través de Nationwide Cash Express.\n\nEl ICB Payment Portal es una transferencia hecha desde su propio banco, seguida del envío del comprobante a su sucursal. No hay una página de pago con inicio de sesión en este sitio web. La página de pagos tiene los números de cuenta y los pasos."),
+            a: T("Accepted forms of payment include Cash, Cheque, Credit Card, ICB Payment Portal, and Premium Financing through Nationwide Cash Express.\n\nThe ICB Payment Portal is a transfer made through your own bank, followed by sending the confirmation to your branch. There is no payment page to log in to on this website. The payments page has the account numbers and the steps.\n\nShort-Term Insurance for visiting drivers is the one thing bought and paid for online, by card, on ICB's own system.",
+                 "Las formas de pago aceptadas incluyen efectivo, cheque, tarjeta de crédito, el ICB Payment Portal y financiamiento de prima a través de Nationwide Cash Express.\n\nEl ICB Payment Portal es una transferencia hecha desde su propio banco, seguida del envío del comprobante a su sucursal. No hay una página de pago con inicio de sesión en este sitio web. La página de pagos tiene los números de cuenta y los pasos.\n\nEl Short-Term Insurance para conductores visitantes es lo único que se compra y se paga en línea, con tarjeta, en el sistema propio de ICB."),
             link: { label: T("How to pay ICB", "Cómo pagarle a ICB"), href: "#/payments" },
             on: ["payments"]
           },

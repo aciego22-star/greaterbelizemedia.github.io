@@ -119,10 +119,19 @@ ICB.DATA.images = {
       ],
       alt: "Insurance Corporation of Belize offices around the country"
     },
+    /* The border kiosk, on the Short-Term Insurance page. The same
+       frame as the home carousel slide that links to it, held right of
+       centre so the kiosk clears the copy column. */
+    "visitor-motor-hero": { src: "assets/img/heroes/icb-kiosk-wide.webp", pos: "62% center",
+                          alt: "The Insurance Corporation of Belize kiosk at the Benque Viejo border crossing" },
     "contact-hero":     { src: "assets/img/heroes/contact.jpg", pos: "72% center",
                           alt: "An ICB representative meeting with customers, from the Life Happens Fast film" },
-    "locations-hero":   { src: "assets/img/gallery/hq-street.jpg", pos: "72% center",
-                          alt: "The ICB headquarters building in Belize City" },
+    /* ICB supplied this frame on 8 Nov 2026 to replace the Daly Street
+       street view that was here. It is the headquarters building itself,
+       shot square on, and the hero is given --whole-media so the whole
+       facade is in shot rather than a slice of it. */
+    "locations-hero":   { src: "assets/img/heroes/icb-building-wide.webp", pos: "center 45%",
+                          alt: "The Insurance Corporation of Belize headquarters building in Belize City" },
 
     "business-band":    { src: "assets/img/business-team.jpg", pos: "center 35%",
                           alt: "An ICB team member at work, from the Life Happens Fast film" },

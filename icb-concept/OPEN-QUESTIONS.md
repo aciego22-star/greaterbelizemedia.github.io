@@ -328,13 +328,28 @@ publishes the directory's version, so nothing had to change:
 **ICB's own site being four claim forms behind is not worth raising.**
 They will not be using it much longer.
 
-**The kiosk is answered.** ICB's short-term motor insurance site sets
-out the vehicle types, the five coverage periods, every detail the
-purchase process asks for, that payment is by card, and the Schedule 1
-a driver must print and display under Chapter 231. All of that is now
-in the article, and it is no longer a draft. The one thing nobody
-publishes anywhere is the kiosk's own opening hours, so the article
-does not state them.
+**The kiosk is answered, and now has a page.** ICB's short-term motor
+insurance site sets out the vehicle types, the five coverage periods,
+every detail the purchase process asks for, that payment is by card,
+and the Schedule 1 a driver must print and display under Chapter 231.
+
+On 8 Nov 2026 ICB said this product should be at the front of the site
+rather than sitting in a news article, which is right: it is the one
+ICB product somebody may need before they have ever heard of ICB, and
+they are standing at a border post on a phone when they need it. It is
+now a page, `#/insurance/motor/visitors`, reachable from the footer,
+from Motor Insurance and from the home carousel.
+
+Three further facts were read off icbcovernote.com that day and are on
+the page: the cover pays up to $50,000 BZD for injury or death of a
+third party, up to $200,000 BZD per incident, and up to $20,000 BZD for
+damage to property. The $20,000 matches the Third-Party Act figure
+already on the Motor page from ICB's own graphic, which is a good sign
+the two describe the same underlying cover.
+
+The kiosk's own opening hours still are not published anywhere. The
+page gives the Benque Viejo Border Branch's hours instead, from ICB's
+directory, and attributes them to the branch rather than to the kiosk.
 
 **/micro-insurance is closed.** It was raised again on 8 Nov 2026 and
 has been withdrawn the same day. The record is with the other settled
@@ -342,11 +357,32 @@ items, below.
 
 ### Still open
 
-**1. The branch opening hours**, and whether they vary branch to
+**1. Does ICB want a premium shown for Short-Term Insurance?** ICB
+publishes no price for it: not on icbcovernote.com, not on the kiosk
+site before you have entered a vehicle, nowhere. So the new page states
+none, and says so in as many words rather than leaving a gap that looks
+like an oversight. If there is a rate card, it would make the page
+considerably more useful, and it is the first thing a driver wants to
+know. If there is not, the page is right as it stands.
+
+**2. Is kiosk.icbinsurance.com ICB's own system, operated by ICB?** It
+is on ICB's domain and it is what icbcovernote.com's own Buy Now button
+points at, so the page treats it as ICB's and says so. Worth one line
+of confirmation, because the page tells a visitor to check the address
+in their browser before entering a card, and that advice is only sound
+if the address really is ICB's.
+
+   Related, and deliberately not done: the purchase is linked, not
+   embedded. ICB's old site embeds ANA Seguros' quote tool and this
+   build carries that over, but a card field is different, and an
+   iframe hides whose origin is really taking the number. If ICB would
+   rather it were embedded, that is their call to make knowingly.
+
+**3. The branch opening hours**, and whether they vary branch to
 branch. The door at Independence posts hours that differ from the ones
 ICB gave us on three counts.
 
-**2. ICB's own "View Coverage" link is broken.** On their Mexican
+**4. ICB's own "View Coverage" link is broken.** On their Mexican
 Insurance page it points at an ANA Seguros URL that returns 404, and
 on 8 Nov every other spelling of that address was tried and returns
 404 too, so there is no page at ANA behind it. The Claims and FAQs
@@ -359,7 +395,7 @@ four covers ANA offers and the limit ranges for each. Those came off
 ANA's own server, not from anywhere else. Still worth passing on so
 ANA can fix their link.
 
-**3. Where a completed claim form should land.** The site emails them
+**5. Where a completed claim form should land.** The site emails them
 to `icb@icbinsurance.com`, the general address, because that is the
 only one ICB publishes anywhere near a claims context: their claims
 page carries no email at all. `icb_claims1@icbinsurance.com` exists
@@ -514,6 +550,18 @@ there. The drone that shot this almost certainly wrote something far
 larger, and the native file would beat anything generated, settle the
 upright frame without inventing anything, and sharpen the desktop
 slide as well.
+
+### Still waiting: the Spanish on Short-Term Insurance
+
+ICB publishes icbcovernote.com in English only, though the kiosk system
+itself offers English or Spanish at step one. The Spanish on
+`#/insurance/motor/visitors` was written here and needs the same review
+by a Belizean Spanish speaker that the claim forms and the consumer
+resources are waiting on. ICB's product and statute names are left in
+English in both languages, as they are everywhere else: Short-Term
+Insurance, Schedule 1, and the Motor Vehicle Insurance (Third Party
+Risks) Act. The three BZD figures are ICB's own and are identical in
+both.
 
 ### Still waiting: the Spanish on the carried-over resources
 

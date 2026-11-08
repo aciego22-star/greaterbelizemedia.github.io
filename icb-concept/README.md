@@ -180,6 +180,28 @@ foot of the homepage tapping Home would see nothing happen at all.
 
 ## The hero carousel
 
+Five slides since 8 Nov 2026, in a fixed order the array in
+`js/views/home.js` is the only source of truth for: the headquarters
+photograph, the Protect Your Investment campaign artwork, What's New,
+Short-Term Insurance at the border kiosk, and the film.
+
+Slides 3 and 4 are photographs cut to three shapes each, and both carry
+`stack: true`. Below 769px a photographic slide normally runs full
+screen with the words over it, which was asked for on slide 1 and tuned
+to where that building's signage sits; `stack` opts out of that and
+takes the ordinary stacked arrangement instead, picture whole at the top
+and words underneath. A slide that stacks states its phone cut's shape
+in `mobileAR` so the block is exactly the shape of the file in it.
+Measured across seven widths, neither loses more than a quarter of its
+width and neither shows a bar at any size; `check/herofill.js` holds
+them to that.
+
+Slide 4 also carries `logo: true`, which paints ICB's own roundel on a
+white plate above the eyebrow. ICB asked for it because the only ICB
+mark in that photograph is the signboard over the kiosk door, which is
+unreadable at hero scale. It is hidden below 769px, where the header's
+own logo is a couple of centimetres above it on the same screen.
+
 Autoplay is driven by the active progress bar's CSS fill animation: when
 it completes, the slider advances, and pausing the animation pauses the
 clock. It holds for a hidden tab, for a pointer held down on the picture
@@ -280,6 +302,14 @@ ICB quote.
 
 ## Payments: ICB is paid by bank transfer
 
+One exception, confirmed 8 Nov 2026: ICB's Short-Term Insurance for
+visiting drivers IS bought and paid for online, by card, on ICB's own
+system at `kiosk.icbinsurance.com`. That is ICB's origin, not ours, and
+this site links to it rather than framing it, because a card field
+belongs on the origin whose name is in the address bar. Everything below
+is about premiums on ordinary policies, which is what the rest of the
+site deals with.
+
 ICB does not take payments on its website. Earlier drafts of this concept
 linked an external billing host and mentioned a kiosk service; both were
 wrong and every trace of them is gone, including the external `payments`
@@ -350,6 +380,10 @@ data files for `INTERNAL TODO` for the full list. The open items are:
 - **Mexican Insurance.** The ANA Seguros pathways (Buy Now, View
   Coverage, Claims, FAQs) all route to ICB's Mexican Insurance page
   until ICB supplies the direct ANA URLs.
+- **Short-Term Insurance.** ICB publishes no premium for it anywhere, so
+  `#/insurance/motor/visitors` states none. If ICB ever publishes a rate
+  table, it belongs on that page; until then the page says what the
+  cover is and sends people to ICB's own system to be priced.
 - **Branch details.** Several branches have no published landline,
   street address or email reachable from here. Those cards offer the
   Corporate Office line, clearly labelled as the Corporate Office, and

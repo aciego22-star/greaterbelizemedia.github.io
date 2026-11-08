@@ -186,6 +186,20 @@ ICB.DATA.site = {
        #/insurance/mexican/quote. This address is now only a fallback
        for a pathway that names no destination of its own. */
     mexicanInsurance: "https://www.icbinsurance.com/ana-seguros-quote",
+    /* Short-Term Insurance for visiting drivers. These two are ICB's
+       own: shortTermBuy is the system that sells and takes payment for
+       it, shortTermGuide is the page explaining the cover and the six
+       steps. Both were read on 8 Nov 2026 and are set out at
+       #/insurance/motor/visitors.
+
+       They are the exception to the note above about payments. ICB
+       takes no card payment for an ordinary premium, and this site
+       takes none at all; this one product is bought and paid for on
+       ICB's own kiosk system, which is why it is linked rather than
+       embedded. A card field belongs on the origin whose name is in
+       the address bar. */
+    shortTermBuy: "https://kiosk.icbinsurance.com",
+    shortTermGuide: "https://www.icbcovernote.com",
     website: "https://www.icbinsurance.com"
   },
 
@@ -236,6 +250,11 @@ ICB.DATA.site = {
         links: [
           { label: "Property Insurance", href: "#/insurance/property" },
           { label: "Motor Insurance", href: "#/insurance/motor" },
+          /* ICB asked on 8 Nov 2026 for the short-term cover sold to
+             visiting drivers at the border to be reachable from the
+             footer. Its name is ICB's, so it stays in English in both
+             languages like every other product name here. */
+          { label: "Short-Term Insurance", href: "#/insurance/motor/visitors" },
           { label: "Marine Hull Insurance", href: "#/insurance/marine" },
           { label: "Cargo Insurance", href: "#/insurance/cargo" },
           { label: "Liability & Miscellaneous", href: "#/insurance/liability" },

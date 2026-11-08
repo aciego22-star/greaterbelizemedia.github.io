@@ -25,7 +25,8 @@ ICB.views = ICB.views || {};
        1. ICB headquarters photograph
        2. "By land, sea or air, ICB is there" campaign artwork
        3. What's New at ICB
-       4. The ICB film
+       4. Short-Term Insurance at the Benque Viejo border kiosk
+       5. The ICB film
 
      After that the carousel may cycle, and the visitor may jump around;
      only the opening sequence is guaranteed.
@@ -36,6 +37,14 @@ ICB.views = ICB.views || {};
        brand   light slide, a finished lockup shown whole with no copy
                competing against it (see artCarriesCopy)
        video   poster and a play control; never autoplays (see initFilmSlide)
+
+     stack: true on a photographic slide
+       Below 769px a photo slide runs full screen with the words over it.
+       That arrangement was asked for on slide 1 and measured against
+       where that building's signage sits; it is not a general rule. A
+       slide carrying stack: true takes the ordinary stacked arrangement
+       instead, picture whole at the top and words underneath, and gives
+       mobileAR the shape of its own phone cut. See .hero-slide--stacks.
      ========================================================================== */
   var SLIDES = [
     {
@@ -76,40 +85,77 @@ ICB.views = ICB.views || {};
       ]
     },
     {
-      /* What's New at ICB. Two supplied compositions, each already a
-         finished piece with the heading, the line underneath and a
-         painted "Explore the latest updates" button. Overlaying our own
-         headline would fight them, so artCarriesCopy keeps the eyebrow
-         and title in the document for screen readers and the slide
-         label while painting neither, and the artwork is shown whole at
-         both sizes.
+      /* What's New at ICB.
 
-         href is what makes the painted button real. Without it the
-         artwork offers an action a visitor cannot take and a keyboard
-         user cannot reach at all, so the whole composition is the link,
-         which is also what someone tapping the painted button expects.
+         Until 8 Nov 2026 this slide was two supplied compositions, each
+         a finished piece that painted its own heading and its own
+         "Explore the latest updates" button. ICB replaced them that day
+         with a photograph of their own signage, so the slide became an
+         ordinary photographic one: a real headline, a real button, and
+         a scrim to keep them readable. artCarriesCopy and the painted
+         button are gone with the artwork that justified them.
 
-         This replaced the Nationwide Cash Express lockup on 8 Nov 2026.
-         Its two files are still in assets/img/brands/ and nothing else
-         referenced them, so the slide can come back by swapping these
-         four lines. NCE itself is unaffected: it is still named on the
+         It stacks on a phone rather than running full screen, because
+         the full-screen treatment on slide 1 is cut to that building
+         and holds the frame at 10% from the left. The three cuts here
+         come from the two frames ICB supplied: the wide one from the
+         landscape frame, where the lettering runs nearly the full width
+         and nothing may come off the sides, and the other two from the
+         upright frame. See build/hero-webp.py.
+
+         This slide replaced the Nationwide Cash Express lockup on
+         8 Nov 2026. NCE itself is unaffected: it is still named on the
          payments page and in the FAQ as the sister company that handles
          premium financing. */
-      kind: "brand",
-      full: true,
-      mobileAR: 900 / 1552,
-      artCarriesCopy: true,
+      kind: "photo",
+      stack: true,
+      mobileAR: 1,
       srcWide: "assets/img/heroes/whats-new-wide.webp",
-      srcTall: "assets/img/heroes/whats-new-tall.webp",
-      href: "#/news",
-      alt: { en: "What's New at ICB: the redesigned ICB website on a laptop and a phone, the Talk to Bee button, ICB's team at the AML/CFT conference, the Benque Viejo border kiosk, and the ClaimsVAULT Belize partner artwork", es: "Novedades de ICB: el nuevo sitio web de ICB en una computadora portátil y un teléfono, el botón para hablar con Bee, el equipo de ICB en la conferencia AML/CFT, el quiosco fronterizo de Benque Viejo y la imagen de colaboradores de ClaimsVAULT Belize" },
-      eyebrow: { en: "ICB in action", es: "ICB en acción" },
+      srcMid: "assets/img/heroes/whats-new-mid.webp",
+      srcStack: "assets/img/heroes/whats-new-stack.webp",
+      alt: { en: "The Insurance Corporation of Belize Limited name and roundel in steel on the headquarters wall", es: "El nombre y el emblema de Insurance Corporation of Belize Limited en acero sobre el muro de la sede" },
+      eyebrow: { en: "ICB in action", es: "ICB en acci\u00f3n" },
       title: { en: "What's new at ICB.", es: "Novedades de ICB." },
-      linkLabel: { en: "Explore the latest updates from ICB", es: "Ver las novedades de ICB" },
-      /* No action row: the artwork paints its own button and href makes
-         it work. A second, real button would sit on top of the painted
-         one. */
-      actions: []
+      lead: { en: "A new website, a new assistant, a border kiosk and a claims partnership. Here is what ICB has been doing.", es: "Un nuevo sitio web, un nuevo asistente, un quiosco fronterizo y una alianza para reclamos. Esto es lo que ICB ha estado haciendo." },
+      actions: [
+        { label: { en: "Explore the latest updates", es: "Ver las novedades" }, href: "#/news", primary: true },
+        { label: { en: "About ICB", es: "Acerca de ICB" }, href: "#/about" }
+      ]
+    },
+    {
+      /* Short-Term Insurance at the border, added 8 Nov 2026 at ICB's
+         request and placed here, straight after What's New, because
+         that is where they asked for it.
+
+         ICB sells short-term third-party cover to drivers bringing a
+         foreign-registered vehicle in from Guatemala, online and at
+         this kiosk at the Benque Viejo crossing. It is the one ICB
+         product a visitor may need before they have heard of ICB, and
+         it had been sitting in a news article. The slide carries them
+         to the page.
+
+         logo: the only ICB mark in the photograph is the small
+         signboard over the kiosk door, which is unreadable at hero
+         scale, so ICB's own roundel is placed in the copy block. The
+         file is the logo the header and footer already use, unmodified.
+
+         Stacks on a phone, like the slide above it, with its own square
+         phone cut taken from the upright frame ICB supplied. */
+      kind: "photo",
+      stack: true,
+      logo: true,
+      mobileAR: 1,
+      srcWide: "assets/img/heroes/icb-kiosk-wide.webp",
+      srcMid: "assets/img/heroes/icb-kiosk-mid.webp",
+      srcStack: "assets/img/heroes/icb-kiosk-stack.webp",
+      alt: { en: "The yellow and blue Insurance Corporation of Belize kiosk at the Benque Viejo border crossing", es: "El quiosco amarillo y azul de Insurance Corporation of Belize en el paso fronterizo de Benque Viejo" },
+      eyebrow: "Short-Term Insurance",
+      title: { en: "Driving into Belize? Insured at the border.", es: "\u00bfEntra a Belice conduciendo? Asegurado en la frontera." },
+      lead: { en: "Third-party cover for a visiting vehicle, by the day, the week or the month. Online, or at the Benque Viejo crossing.", es: "Cobertura ante terceros para un veh\u00edculo visitante, por d\u00eda, por semana o por mes. En l\u00ednea, o en el paso de Benque Viejo." },
+      actions: [
+        { label: { en: "Short-Term Insurance", es: "Short-Term Insurance" }, href: "#/insurance/motor/visitors", primary: true },
+        { label: { en: "Find the border branch", es: "Ver la sucursal fronteriza" }, href: "#/locations" }
+      ]
     },
     {
       kind: "video",
@@ -240,6 +286,7 @@ ICB.views = ICB.views || {};
         return '<a class="btn btn-lg ' + cls + '" href="' + R.esc(a.href) + '">' + R.esc(a.label) + "</a>";
       }).join("");
       return '<article class="hero-slide hero-slide--' + s.kind + (i === 0 ? " is-active" : "") + (s.light ? " hero-slide--light" : "") +
+        (s.stack ? " hero-slide--stacks" : "") +
         '" role="group" aria-roledescription="slide"' +
         ' aria-label="' + R.esc(T((i + 1) + " of " + SLIDES.length, (i + 1) + " de " + SLIDES.length)) + '" data-slide="' + i + '"' +
         (s.light ? ' data-light="1"' : "") + (i === 0 ? "" : ' aria-hidden="true"') + ">" +
@@ -249,6 +296,11 @@ ICB.views = ICB.views || {};
            line, so the words stay in the document for assistive tech but
            are not painted over the lockup. */
         '<div class="shell"><div class="hero-slide-copy' + (s.artCarriesCopy ? " hero-slide-copy--quiet" : "") + '">' +
+          /* ICB's roundel, where the photograph underneath carries no
+             legible ICB mark of its own. Decorative: the slide is
+             already named by its heading and its aria-label, so a
+             second announcement of the brand would only be noise. */
+          (s.logo ? '<img class="hero-logo hs-rise" data-asset="assets/img/icb-logo.png" alt="" aria-hidden="true">' : "") +
           '<span class="eyebrow hs-rise">' + R.esc(s.eyebrow) + "</span>" +
           '<h2 class="hs-rise">' + R.esc(s.title) + "</h2>" +
           (s.lead ? '<p class="hero-lead hs-rise">' + R.esc(s.lead) + "</p>" : "") +

@@ -226,6 +226,25 @@ ICB.views = ICB.views || {};
         "</div>";
       }
 
+      /* A service of ICB's own that belongs to this product but is not
+         a cover option of it. Motor has one: the short-term cover sold
+         to drivers bringing a vehicle into Belize, which is Motor
+         Insurance but bought at a border post for a week rather than
+         arranged for a year. ICB asked on 8 Nov 2026 for it to be
+         reachable from here. Driven by serviceLink on the product
+         record, so a second one needs no code. */
+      var service = "";
+      if (p.serviceLink) {
+        service = '<div class="ana-block rv">' +
+          "<h3>" + R.esc(ICB.t(p.serviceLink.heading)) + "</h3>" +
+          "<p>" + R.esc(ICB.t(p.serviceLink.body)) + "</p>" +
+          '<div class="btn-row">' +
+            '<a class="btn btn-sm btn-primary" href="' + R.esc(p.serviceLink.href) + '">' +
+              R.esc(ICB.t(p.serviceLink.label)) + "</a>" +
+          "</div>" +
+        "</div>";
+      }
+
       /* Hero actions. */
       var heroActions;
       if (ana) {
@@ -260,7 +279,7 @@ ICB.views = ICB.views || {};
 
       /* The published-lists block only earns its section if it has lists,
          a status note, or something in the aside worth showing. */
-      var hasLists = !!(p.covers.length || p.availableFor || ana || p.audience || statusNote);
+      var hasLists = !!(p.covers.length || p.availableFor || ana || service || p.audience || statusNote);
 
       return '' +
         /* heroPhoto: "whole" means the photograph has a subject that must
@@ -305,6 +324,7 @@ ICB.views = ICB.views || {};
                 labelledList(p.coversLabel || ICB.s("whatICBOffers"), p.covers, R) +
                 labelledList(ICB.s("availableFor"), p.availableFor, R) +
                 ana +
+                service +
               "</div>" +
               '<aside class="prod-side rv">' +
                 "<h3>" + R.esc(ICB.s("goodToKnow")) + "</h3>" +

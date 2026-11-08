@@ -36,7 +36,12 @@ ICB.views = ICB.views || {};
       });
 
       return '' +
-        '<section class="page-hero on-dark" aria-labelledby="loc-title">' +
+        /* --whole-media because the slot now holds a photograph of the
+           headquarters building rather than generated art: the hero is
+           shaped around the picture so the whole facade is in frame,
+           instead of the picture being cropped to whatever shape the
+           copy happens to make. ICB supplied the frame on 8 Nov 2026. */
+        '<section class="page-hero page-hero--whole-media on-dark" aria-labelledby="loc-title">' +
           '<div class="page-hero-art art-panel" data-img-slot="locations-hero" aria-hidden="true">' + ICB.art.panel("hero-nation") + "</div>" +
           '<div class="shell page-hero-inner">' +
             R.crumbsHome({ en: "Locations", es: "Ubicaciones" }) +

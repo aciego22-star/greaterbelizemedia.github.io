@@ -154,6 +154,19 @@ ICB.DATA.products = [
     standfirst: { en: "Protection for the road ahead.", es: "Protección para el camino por delante." },
     quote: true,
 
+    /* ICB's short-term cover for visiting drivers. It is Motor
+       Insurance, sold by the day rather than the year to somebody who
+       has just driven in from Guatemala, so it belongs on this page
+       rather than beside it. Rendered by the product view's service
+       block; see js/views/visitor-motor.js for the page itself. */
+    serviceLink: {
+      heading: { en: "Visiting Belize with a vehicle?", es: "¿Visita Belice con un vehículo?" },
+      body: { en: "ICB sells short-term third-party cover by the day, the week or the month, online and at their kiosk at the Benque Viejo border crossing with Guatemala.",
+              es: "ICB vende cobertura ante terceros de corta duración por día, por semana o por mes, en línea y en su quiosco en el paso fronterizo de Benque Viejo con Guatemala." },
+      label: { en: "Short-Term Insurance", es: "Short-Term Insurance" },
+      href: "#/insurance/motor/visitors"
+    },
+
     intro: {
       title: { en: "What Motor Insurance is for.", es: "Para qué sirve Motor Insurance." },
       body: [

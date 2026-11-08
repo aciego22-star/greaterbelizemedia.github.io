@@ -437,9 +437,15 @@ window.ICB = window.ICB || {};
   }
 
   /* Branch gallery grid. limit trims it for the homepage teaser. */
+  /* limit is the home page's strip; the Gallery page passes none and
+     gets everything. homeHidden drops a tile from the strip only, for a
+     frame that earns its place in the full gallery but not in the six
+     the home page has room for. */
   function branchGallery(limit) {
     var all = ICB.DATA.galleryBranches();
-    var list = limit ? all.slice(0, limit) : all;
+    var list = limit
+      ? all.filter(function (b) { return !b.homeHidden; }).slice(0, limit)
+      : all;
     var photoIndex = -1;
     return list.map(function (b) {
       if (b.src) photoIndex += 1;

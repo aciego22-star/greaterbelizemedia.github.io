@@ -79,11 +79,44 @@ JOBS = [
     # to that.
     ("ICB_HQ_New_Portrait.png",  "icb-hq-stack", None, None,  941, 560, 0.50),
 
-    # --- What's New, slide 3. Finished compositions: the headline and
-    # the painted button are in the artwork, so these are resized,
-    # never cut. ICB supplies the two shapes separately.
-    ("ICB_Whats_New_Wide.webp",  "whats-new-wide", None, None, 1800, 980, 0.50),
-    ("ICB_Whats_New_Tall.jpg",   "whats-new-tall", 0.580, 0.47,  900, 540, 0.50),
+    # --- What's New, slide 3. ICB replaced the two supplied
+    # compositions with a photograph of their own signage on 8 Nov
+    # 2026, so this slide stopped being a finished lockup that painted
+    # its own headline and became an ordinary photographic slide with
+    # real copy and a real button. Three cuts, like the head office.
+    #
+    # The wide one is taken from the landscape frame, where trimming to
+    # 2.34 only takes sky and foreground: the lettering runs almost the
+    # full width of that file, so nothing may come off the sides.
+    # The other two come from the upright frame for exactly that
+    # reason, and are held high enough to keep the roundel and all
+    # three lines of the name.
+    ("ICB_Sign_Wide.png",        "whats-new-wide",  2.340, 0.50, 1672, 980, 0.49),
+    ("ICB_Sign_Portrait.png",    "whats-new-mid",   1.340, 0.50, 1260, 700, 0.449),
+    ("ICB_Sign_Portrait.png",    "whats-new-stack", 1.000, 0.50,  941, 560, 0.449),
+
+    # --- The border kiosk, slide 4, added 8 Nov 2026. The kiosk at
+    # Benque Viejo is where ICB sells short-term motor cover to drivers
+    # bringing a foreign-registered vehicle in from Guatemala, and the
+    # slide carries people to the page about it.
+    #
+    # Wide and mid come from the landscape frame: the kiosk sits just
+    # left of centre in it, at 0.485 across, so the mid cut is held
+    # there rather than at the middle. The phone cut comes from the
+    # upright frame, squared off, because the sky above the kiosk and
+    # the gravel below it are the parts worth losing and the building
+    # is what is left.
+    ("ICB_Kiosk_Wide.png",       "icb-kiosk-wide",  2.340, 0.50, 1672, 980, 0.52),
+    ("ICB_Kiosk_Wide.png",       "icb-kiosk-mid",   1.340, 0.485, 1260, 700, 0.50),
+    ("ICB_Kiosk_Portrait.png",   "icb-kiosk-stack", 1.000, 0.50,  941, 560, 0.449),
+
+    # --- The headquarters building, for the Locations page hero. Not a
+    # slider slide: it fills the interior page hero band, which runs
+    # near 16:9 at every width (see .page-hero--whole-media). The frame
+    # ICB supplied on 8 Nov 2026 is already 16:9, so it is resized and
+    # never cut. It replaces the Daly Street street view that was in
+    # that slot, which ICB also asked to be taken off the home page.
+    ("ICB_HQ_Building_Wide.png", "icb-building-wide", None, None, 1672, 980, 0.50),
 ]
 
 

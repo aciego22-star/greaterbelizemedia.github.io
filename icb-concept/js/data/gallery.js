@@ -60,9 +60,16 @@ ICB.DATA.gallery = {
       caption: { en: "ICB Headquarters, Belize City", es: "Sede de ICB, Ciudad de Belice" },
       alt: "The Insurance Corporation of Belize headquarters in Belize City"
     },
+    /* homeHidden: ICB asked on 8 Nov 2026 for this frame to come off
+       the home page. It sat second in the strip, directly under the
+       headquarters tile above it, so the first two things the strip
+       showed were the same organisation's two Belize City addresses
+       before it reached a single district branch. It keeps its place
+       in the full gallery, where there is room for both. */
     {
       locationId: "corporate",
       src: "assets/img/gallery/hq-street.jpg",
+      homeHidden: true,
       caption: { en: "ICB Corporate Office, Daly Street", es: "Oficina Corporativa de ICB, Daly Street" },
       alt: "Street view of the ICB Corporate Office building on Daly Street, Belize City"
     },
@@ -426,7 +433,10 @@ ICB.DATA.galleryBranches = function () {
       sub: loc.district ? loc.district + " District" : "",
       type: loc.type || "",
       alt: b.alt || (loc.name ? loc.name + ", Insurance Corporation of Belize" : ""),
-      light: !!b.light
+      light: !!b.light,
+      /* This mapper rebuilds every entry from scratch, so a flag that
+         is not named here is silently dropped on the way out. */
+      homeHidden: !!b.homeHidden
     };
   });
 };

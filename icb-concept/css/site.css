@@ -5056,3 +5056,185 @@ body.sheet-open .bee { display: none; }
    thing in that column hanging off to the left, by as much as 130px on
    a desktop. */
 .social-row--footer ul { justify-content: center; }
+
+/* ================= Short-Term Insurance (visiting drivers) =================
+
+   The page at /insurance/motor/visitors. ICB sells short-term third-party
+   cover to drivers bringing a foreign-registered vehicle in, online and at
+   the Benque Viejo border kiosk, and asked on 8 Nov 2026 for it to be put
+   at the front of the site rather than left as a news article.
+
+   Everything here is layout for that page. The one rule worth explaining
+   is .stm-alert: the Schedule 1 step is the one a driver can comply with
+   and still be stopped for, because the document has to be visible on the
+   windscreen rather than merely to exist. It is given the weight of a
+   warning for that reason and not for emphasis.
+   ========================================================================= */
+
+.note-line {
+  color: var(--c-text-soft);
+  font-size: var(--fs-300);
+  margin-top: calc(-1 * var(--sp-2));
+}
+
+/* Short, equal facts read better as a row of tokens than as a list. */
+.chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--sp-5);
+}
+.chip-list .chip {
+  display: inline-block;
+  padding: 0.42rem 0.85rem;
+  border: 1px solid var(--c-line-soft);
+  border-radius: 999px;
+  background: var(--c-tint);
+  font-size: var(--fs-300);
+  font-weight: 600;
+  color: var(--c-brand);
+  white-space: nowrap;
+}
+
+.stm-pair {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--sp-4) var(--sp-6);
+  margin: var(--sp-6) 0;
+}
+.stm-pair > div > h2 { margin-bottom: var(--sp-3); }
+
+/* The six steps. Numbered by the list itself for assistive tech, and
+   painted with a counter of our own so the figure can be styled; the
+   painted one is hidden from the accessibility tree so it is not read
+   out twice. */
+.stm-steps {
+  list-style: none;
+  padding: 0;
+  margin: var(--sp-5) 0 var(--sp-6);
+  display: grid;
+  gap: var(--sp-3);
+}
+.stm-steps > li {
+  position: relative;
+  padding: var(--sp-4) var(--sp-4) var(--sp-4) calc(var(--sp-6) + 28px);
+  background: var(--c-surface);
+  border: 1px solid var(--c-line-soft);
+  border-radius: var(--r-md);
+}
+.stm-step-n {
+  position: absolute;
+  left: var(--sp-4);
+  top: var(--sp-4);
+  font-size: var(--fs-400);
+  font-weight: 700;
+  color: var(--c-cta);
+  font-variant-numeric: tabular-nums;
+}
+.stm-steps h3 { font-size: var(--fs-500); margin: 0 0 var(--sp-2); }
+.stm-steps p { margin: 0; color: var(--c-text-soft); }
+
+.stm-cta {
+  margin: var(--sp-6) 0;
+  padding: var(--sp-5);
+  background: var(--c-tint);
+  border: 1px solid var(--c-line-soft);
+  border-radius: var(--r-md);
+}
+.stm-cta p:first-child { margin-top: 0; }
+.stm-cta .btn-row { margin-bottom: 0; }
+.stm-cta--quiet { background: transparent; }
+
+.stm-alert {
+  margin: var(--sp-7) 0;
+  padding: var(--sp-5);
+  border: 1px solid var(--c-accent);
+  border-left-width: 4px;
+  border-radius: var(--r-md);
+  background: var(--red-050);
+}
+.stm-alert h2 { margin-top: 0; font-size: var(--fs-600); color: var(--c-brand); }
+.stm-alert p:last-child { margin-bottom: 0; }
+
+.stm-branch {
+  margin: var(--sp-5) 0 var(--sp-6);
+  padding: var(--sp-5);
+  border: 1px solid var(--c-line-soft);
+  border-radius: var(--r-md);
+  background: var(--c-surface);
+}
+.stm-branch h3 { margin: 0 0 var(--sp-2); font-size: var(--fs-500); }
+.stm-branch p { margin: 0 0 var(--sp-2); }
+.stm-hours { color: var(--c-text-soft); font-size: var(--fs-300); }
+.stm-branch .btn-row { margin: var(--sp-4) 0 0; }
+
+/* -------- A photographic hero slide that stacks on a phone --------
+
+   Below 769px .hero-slide--photo runs full screen with the words over
+   the picture and the frame held at 10% from the left. That block was
+   written for one slide, the head office, at ICB's instruction and
+   against measurements of where its signage sits; it is not a general
+   rule about photographs, and applying it to a second photograph would
+   crop that one to whatever suits the first.
+
+   So a photographic slide can opt out and take the ordinary stacked
+   arrangement instead: the picture at the top at its own shape, whole,
+   and the words underneath. Used by the What's New and border kiosk
+   slides, which carry their own phone cut shaped to match.
+   ----------------------------------------------------------------- */
+@media (max-width: 768px) {
+  /* grid-row: 1, not auto. The base .hero-slide rule puts every slide
+     in cell 1/1 so they stack on top of each other and crossfade;
+     .hero-slide--photo then widens that to `1 / span 2` so the head
+     office runs under the controls. Undoing it with `auto` does not
+     restore the default, it hands the slide to auto-placement and
+     drops it into a row of its own below the carousel, where it is
+     never shown. Naming row 1 explicitly is what puts it back. */
+  .hero-slide--photo.hero-slide--stacks {
+    grid-row: 1;
+    justify-content: flex-start;
+  }
+  .hero-slide--photo.hero-slide--stacks .hero-media {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: auto;
+    aspect-ratio: var(--hero-ar, 4 / 3);
+  }
+  .hero-slide--photo.hero-slide--stacks .hero-media img { object-position: center top; }
+  .hero-slide--photo.hero-slide--stacks .hero-scrim { display: none; }
+  .hero-slide--photo.hero-slide--stacks .hero-slide-copy {
+    padding-top: var(--sp-4);
+    padding-bottom: var(--sp-4);
+  }
+}
+
+/* The ICB roundel on a hero slide. Asked for on the border kiosk slide,
+   where the only ICB mark in the photograph is the small signboard over
+   the kiosk door and is unreadable at hero scale. The file is ICB's own
+   logo, unmodified and merely sized.
+
+   It sits on a white plate, as it does in the footer, because the mark
+   is drawn in black and red on transparency: over a dark photograph
+   the black strokes disappear and what is left reads as a broken
+   logo. The plate is the same treatment and the same reason.
+
+   Hidden below 769px, where the slide stacks and the header's own ICB
+   logo is a couple of centimetres above it on the same screen. A
+   second one there is a repetition that costs a phone sixty pixels of
+   height and pushes the slide's button under the quick bar. */
+.hero-logo {
+  display: none;
+  background: #FFFFFF;
+  border-radius: var(--r-sm);
+  padding: 7px 9px;
+  width: auto;
+  height: clamp(42px, 3.6vw, 56px);
+  margin-bottom: var(--sp-4);
+  box-shadow: 0 2px 14px rgba(6, 6, 7, 0.28);
+}
+@media (min-width: 769px) {
+  .hero-logo { display: block; }
+}
