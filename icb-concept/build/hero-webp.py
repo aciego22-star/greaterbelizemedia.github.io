@@ -62,13 +62,20 @@ JOBS = [
     # lettering and the flags rather than an anonymous stretch of roof.
     ("ICB_HQ_Wide.jpg",          "icb-hq-wide", 2.340, 0.50, 1800, 980),
     ("ICB_HQ_Wide.jpg",          "icb-hq-mid",  1.340, 0.46, 1200, 700),
-    # The stacked phone cut. Below 769px this slide shows the photo
-    # above its words, and the space left over for the photo is set by
-    # the tallest slide in the set, not by this one. At 0.82 the cut
-    # lands within a few percent of that space at every phone width, so
-    # it fills it without a gap underneath and without a visible crop.
-    # Taken left of centre, where the building carries its name.
-    ("ICB_HQ_Wide.jpg",          "icb-hq-stack", 0.820, 0.34,  900, 520),
+    # The phone cut, and the one file here taken from a different
+    # source. ICB_HQ_Wide is a 2x export of the same frame with the top
+    # and bottom trimmed away, and comparing the same patch of wall at
+    # the same size shows it is an upscale: twice the pixels, no more
+    # detail, slightly softer. It is kept for the two landscape cuts
+    # because at the size those are shown the difference is invisible
+    # and the framing is a touch wider.
+    #
+    # For an upright cut it is the wrong file, because the sky and the
+    # street it trimmed are exactly what an upright frame needs. Taken
+    # from the untrimmed original, a square holds the whole building
+    # with margin to spare and invents nothing. Anything narrower than
+    # about 0.95 starts cutting into the right-hand wing.
+    ("ICB_HQ_Original.jpg",      "icb-hq-stack", 1.000, 0.44,  954, 540),
 
     # --- What's New, slide 3. Finished compositions: the headline and
     # the painted button are in the artwork, so these are resized, never

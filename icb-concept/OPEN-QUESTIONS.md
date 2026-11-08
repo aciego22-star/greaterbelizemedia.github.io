@@ -447,23 +447,40 @@ The first slide is the one that sells the site and it has to show the
 whole building. On a wide screen it does. On a phone it cannot, and
 no amount of cutting will change that.
 
-The arithmetic: the photograph is 2.34 wide to 1 tall. The space the
-slide gets on a phone is about 0.82 wide to 1 tall. The building
-itself is roughly 2.8 to 1. Fit the whole building into that slot and
-it fills under a third of the height, so the rest has to be sky and
-street that was never photographed. Fill the slot instead and the
-building loses half its width, which is the crop ICB rejected on
-8 Nov. Whole building or filled slot. Not both.
+TWO FILES, AND THE FIRST BRIEF WENT OUT AGAINST THE WRONG ONE. ICB
+sent an aerial twice: an untrimmed frame at 1284x954, and a 2576x1101
+version of the same shot. The wide one looks like the better file and
+is not. Compared patch for patch at the same size it carries no more
+detail, only more pixels and a little softness: it is an upscale of
+the same frame with the top and bottom trimmed off. The landscape
+cuts still come from it, because at the size those are shown the
+difference cannot be seen and the framing is slightly wider. The
+upright cut must not, because the sky and street it trimmed away are
+exactly what an upright frame needs.
 
-Until an upright composition exists the slide keeps its own shape and
-the words centre in the room left over, which reads as a column with
-air around it rather than a picture with a hole beneath it.
+THE ARITHMETIC, measured on the untrimmed original rather than
+guessed from the trimmed one. The building occupies 865 of its 1284
+pixels across and about 525 of its 954 down, so the building itself
+is roughly 1.65 to 1, not the 2.8 quoted in the first brief. The slot
+this slide gets on a phone is about 0.82 to 1. A square crop is the
+most upright frame that still holds the whole building with margin;
+below about 0.95 the right-hand wing starts going. So the slide now
+takes a square, which invents nothing, shows the whole building, the
+street below it and the neighbourhood behind, and leaves 68px over
+instead of the 167px it left before.
 
-What would close it: one upright composition, 4:5, 1200 x 1500, the
-same real photograph of the real building, whole, with margin around
-it and no text baked in. The brief went to ICB on 8 Nov 2026. When it
-arrives it is two lines: a job in build/hero-webp.py and a srcStack on
-the slide in js/views/home.js.
+Closing the last 68px needs a genuinely upright frame, and that needs
+about 30% more height than the photograph has. It can be sky: the top
+of the original is already open overcast above the skyline, so the
+extension would be flat grey and would not have to invent a single
+building. The revised brief went to ICB on 8 Nov 2026.
+
+WORTH ASKING FOR FIRST. The best file anyone has sent is 1284 across.
+A full-bleed desktop hero is 1440 to 1920, so it is being stretched
+there. The drone that shot this almost certainly wrote something far
+larger, and the native file would beat anything generated, settle the
+upright frame without inventing anything, and sharpen the desktop
+slide as well.
 
 ### Still waiting: the Spanish on the carried-over resources
 

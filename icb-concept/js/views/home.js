@@ -39,15 +39,16 @@ ICB.views = ICB.views || {};
      ========================================================================== */
   var SLIDES = [
     {
-      /* The head office, cut twice: a wide one for desktops and a
-         gentler landscape one for everything below. On a phone the
-         slide stacks and shows that second cut whole, so the building
-         is never zoomed into. See the stacking rules in site.css and
-         the cutting in build/hero-webp.py. */
+      /* The head office, cut three ways, and the phone one comes from
+         a different file: see the note on its job in
+         build/hero-webp.py. The square shows the whole building with
+         margin on every side and is the most upright frame this
+         photograph can give without anything being invented. */
       kind: "photo",
       srcWide: "assets/img/heroes/icb-hq-wide.webp",
       srcMid: "assets/img/heroes/icb-hq-mid.webp",
-      mobileAR: 1.34,
+      srcStack: "assets/img/heroes/icb-hq-stack.webp",
+      mobileAR: 1.0,
       alt: { en: "Insurance Corporation of Belize headquarters in Belize City", es: "Sede de Insurance Corporation of Belize en Ciudad de Belice" },
       eyebrow: "Insurance Corporation of Belize Ltd.",
       title: { en: "Protecting Belize since 1981.", es: "Protegiendo a Belice desde 1981." },
@@ -143,7 +144,8 @@ ICB.views = ICB.views || {};
       var shot = s.srcWide
         ? "<picture>" +
             '<source media="(min-width: 1024px)" data-asset-srcset="' + R.esc(s.srcWide) + '">' +
-            '<img data-asset="' + R.esc(s.srcMid) + '" alt="">' +
+            '<source media="(min-width: 769px)" data-asset-srcset="' + R.esc(s.srcMid) + '">' +
+            '<img data-asset="' + R.esc(s.srcStack) + '" alt="">' +
           "</picture>"
         : '<img data-asset="' + R.esc(s.src) + '" alt="">';
       return '<div class="hero-media"' + arStyle(s) + ' aria-hidden="true">' + shot +
