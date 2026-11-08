@@ -441,6 +441,30 @@ None of this affects the safety advice, which is why the brochure is
 offered as-is. The advice itself is also set out as a page, in both
 languages, which is what most people will actually read.
 
+### Open: an upright composition of the head office
+
+The first slide is the one that sells the site and it has to show the
+whole building. On a wide screen it does. On a phone it cannot, and
+no amount of cutting will change that.
+
+The arithmetic: the photograph is 2.34 wide to 1 tall. The space the
+slide gets on a phone is about 0.82 wide to 1 tall. The building
+itself is roughly 2.8 to 1. Fit the whole building into that slot and
+it fills under a third of the height, so the rest has to be sky and
+street that was never photographed. Fill the slot instead and the
+building loses half its width, which is the crop ICB rejected on
+8 Nov. Whole building or filled slot. Not both.
+
+Until an upright composition exists the slide keeps its own shape and
+the words centre in the room left over, which reads as a column with
+air around it rather than a picture with a hole beneath it.
+
+What would close it: one upright composition, 4:5, 1200 x 1500, the
+same real photograph of the real building, whole, with margin around
+it and no text baked in. The brief went to ICB on 8 Nov 2026. When it
+arrives it is two lines: a job in build/hero-webp.py and a srcStack on
+the slide in js/views/home.js.
+
 ### Still waiting: the Spanish on the carried-over resources
 
 ICB publishes the hurricane guide, the fire prevention advice and the

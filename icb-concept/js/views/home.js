@@ -47,7 +47,7 @@ ICB.views = ICB.views || {};
       kind: "photo",
       srcWide: "assets/img/heroes/icb-hq-wide.webp",
       srcMid: "assets/img/heroes/icb-hq-mid.webp",
-      srcStack: "assets/img/heroes/icb-hq-stack.webp",
+      mobileAR: 1.34,
       alt: { en: "Insurance Corporation of Belize headquarters in Belize City", es: "Sede de Insurance Corporation of Belize en Ciudad de Belice" },
       eyebrow: "Insurance Corporation of Belize Ltd.",
       title: { en: "Protecting Belize since 1981.", es: "Protegiendo a Belice desde 1981." },
@@ -143,15 +143,9 @@ ICB.views = ICB.views || {};
       var shot = s.srcWide
         ? "<picture>" +
             '<source media="(min-width: 1024px)" data-asset-srcset="' + R.esc(s.srcWide) + '">' +
-            '<source media="(min-width: 769px)" data-asset-srcset="' + R.esc(s.srcMid) + '">' +
-            '<img data-asset="' + R.esc(s.srcStack) + '" alt="">' +
+            '<img data-asset="' + R.esc(s.srcMid) + '" alt="">' +
           "</picture>"
         : '<img data-asset="' + R.esc(s.src) + '" alt="">';
-      /* No --hero-ar on this one. Below 769px it is the shortest slide
-         in the set, so instead of keeping a shape of its own it takes
-         whatever height is left above its words, and the cut it is
-         given is close enough to that to fill it without a gap and
-         without a crop worth seeing. */
       return '<div class="hero-media"' + arStyle(s) + ' aria-hidden="true">' + shot +
         '<div class="hero-scrim"></div></div>';
     }
