@@ -4600,3 +4600,123 @@ body.sheet-open .bee { display: none; }
 @media (max-width: 639px) {
   .news-list--compact .news-card { grid-template-columns: 1fr; }
 }
+
+/* ================== Consumer resources and the ANA quote ==================
+
+   Two things arrive together here because they share a shape: a column of
+   reference material a visitor reads rather than clicks through. The
+   guide pages carry ICB's hurricane, fire and travel material; the quote
+   page carries ANA Seguros' tool with ICB's explanation around it.
+   ========================================================================= */
+
+.guide-doc {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-3) var(--sp-4);
+  margin: 0 0 var(--sp-6);
+  padding: var(--sp-4);
+  background: var(--c-tint);
+  border: 1px solid var(--c-line-soft);
+  border-radius: var(--radius-md);
+}
+.guide-doc-meta { font-size: var(--fs-200); color: var(--c-text-soft); }
+
+.guide-intro {
+  font-size: var(--fs-400);
+  color: var(--c-text-soft);
+  margin: 0 0 var(--sp-6);
+}
+
+.guide-body > h2 {
+  margin: var(--sp-7) 0 var(--sp-3);
+  font-size: var(--fs-500);
+}
+.guide-body > h2:first-child { margin-top: 0; }
+.guide-body > p { margin: 0 0 var(--sp-4); }
+
+.guide-list { margin: 0 0 var(--sp-5); padding-left: 1.15em; display: grid; gap: var(--sp-2); }
+.guide-list li { padding-left: 0.15em; }
+
+/* The figures. A table because these are pairs, and a screen reader
+   should be told which half is the label. It scrolls on its own below
+   the narrow breakpoint rather than forcing the page sideways. */
+.guide-table-wrap { margin: 0 0 var(--sp-5); overflow-x: auto; }
+.guide-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-300);
+}
+.guide-table th,
+.guide-table td {
+  text-align: left;
+  vertical-align: top;
+  padding: var(--sp-3) var(--sp-4) var(--sp-3) 0;
+  border-bottom: 1px solid var(--c-line-soft);
+}
+.guide-table th { font-weight: 700; width: 38%; padding-right: var(--sp-5); }
+.guide-table tr:last-child th,
+.guide-table tr:last-child td { border-bottom: 0; }
+@media (max-width: 559px) {
+  .guide-table th, .guide-table td { display: block; width: auto; padding-right: 0; }
+  .guide-table th { border-bottom: 0; padding-bottom: 0; }
+}
+
+.guide-qa { margin: 0 0 var(--sp-5); }
+.guide-qa h3 { margin: 0 0 var(--sp-2); font-size: var(--fs-400); }
+.guide-qa p { margin: 0; color: var(--c-text-soft); }
+
+.guide-note {
+  margin: var(--sp-6) 0 0;
+  padding: var(--sp-4);
+  border-left: 3px solid var(--c-accent);
+  background: var(--c-tint);
+  font-size: var(--fs-300);
+}
+.guide-source {
+  margin: var(--sp-6) 0 0;
+  font-size: var(--fs-200);
+  color: var(--c-text-soft);
+}
+
+/* ---- the ANA quote page ---- */
+
+/* Nothing outside ICB's domain is fetched until this is pressed, so the
+   button says what it does and the note beside it says why it waits. */
+.ana-open {
+  margin: var(--sp-6) 0 0;
+  padding: var(--sp-5);
+  background: var(--c-tint);
+  border: 1px solid var(--c-line-soft);
+  border-radius: var(--radius-md);
+}
+.ana-open-note { margin: 0 0 var(--sp-4); font-size: var(--fs-300); color: var(--c-text-soft); }
+
+.ana-box:empty { display: none; }
+.ana-box { margin: var(--sp-5) 0 0; }
+
+/* ANA's tool reports its own height and the frame grows to match, so the
+   form is not trapped in a short box with a scrollbar of its own. The
+   starting height is a sensible first screen; the message handler takes
+   over as soon as the tool is up. */
+.ana-frame {
+  display: block;
+  width: 100%;
+  height: 880px;
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-md);
+  background: #fff;
+}
+.ana-loading, .ana-note {
+  margin: 0;
+  padding: var(--sp-5);
+  border: 1px solid var(--c-line-soft);
+  border-radius: var(--radius-md);
+  background: var(--c-tint);
+  font-size: var(--fs-300);
+}
+.ana-note p:first-child { margin-top: 0; }
+
+.ana-small { margin: var(--sp-7) 0 0; }
+.ana-small h2 { font-size: var(--fs-500); margin: 0 0 var(--sp-3); }
+.ana-small p { margin: 0 0 var(--sp-4); color: var(--c-text-soft); }

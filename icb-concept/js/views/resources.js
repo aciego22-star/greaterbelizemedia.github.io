@@ -42,7 +42,12 @@ ICB.views = ICB.views || {};
       var official = data.official.map(function (o) {
         return o.route ? siteCard(o, R) : externalCard(o, R, ext);
       }).join("");
-      var safety = data.safety.map(function (o) { return externalCard(o, R, ext); }).join("");
+      /* Same rule as the official grid: the card type follows the
+         destination, not the section it sits in. The safety material
+         used to be entirely off-site; it is on this site now. */
+      var safety = data.safety.map(function (o) {
+        return o.route ? siteCard(o, R) : externalCard(o, R, ext);
+      }).join("");
       var onSite = data.onSite.map(function (o) { return siteCard(o, R); }).join("");
 
       /* The reserved slot for future consumer guides is no longer painted.

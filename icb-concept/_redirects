@@ -23,8 +23,11 @@
 # General Insurance [166]
 /products               /insurance              301
 
-# Mexican Insurance [85]
-/ana-seguros-quote      /insurance/mexican      301
+# Mexican Insurance [85]. The old address is the page that carried ANA
+# Seguros' quote tool, and that tool is now embedded at the address
+# below, so the redirect lands on the same thing rather than one click
+# away from it.
+/ana-seguros-quote      /insurance/mexican/quote    301
 
 # Consumer resources [41]. The old address is misspelled; the redirect
 # keeps anyone who followed a link to it from landing on nothing.
@@ -47,12 +50,25 @@
 # ---------------------------------------------------------------------
 
 # ---------------------------------------------------------------------
+# The two documents the consumer resources page linked. Both are served
+# from this site now, at assets/docs, and the material in them is set
+# out as pages in both languages. An old link to the file lands on the
+# page that carries it, which is more use than the download on its own.
+# ---------------------------------------------------------------------
+/_files/ugd/393da5_0aaa50a4096a4e9687094908e5078c7c.pdf   /resources/hurricane     301
+/_files/ugd/393da5_36df911e189a4204b0a11d26aa4d64c6.pdf   /resources/travel-faqs   301
+
+# ---------------------------------------------------------------------
 # Not carried over, deliberately.
 #
 #   /_files/ugd/393da5_fe2e06d561ee417793c061ae5c1508fa.pdf
-#     A PDF linked from the old home page. Checked with ICB on 27 Oct
-#     2026: not significant, and the content worth keeping has already
-#     been carried across. Left to fall through to the site's own
+#     A PDF linked from the old home page, and from the WhatsApp icon
+#     on the consumer resources page. Read on 8 Nov 2026: it is a
+#     40th-anniversary sheet of fifteen branch WhatsApp numbers, dated
+#     September 2022. Every number on it is already in this site's
+#     branch records, from the newer directory ICB supplied in October
+#     2025, so there is nothing here to carry over. Checked with ICB on
+#     27 Oct 2026: not significant. Left to fall through to the site's own
 #     not-found page, which at least has the header and a way home.
 #     Wix keeps its uploads under /_files/, so if anything else there
 #     turns out to be linked from outside, a wildcard rule goes here.
@@ -66,11 +82,17 @@
 #     slug is simply mislabelled, which is the likeliest reason the
 #     rule looked wrong when it was raised.
 #
+#     Confirmed again on 8 Nov 2026, and this time from the old site's
+#     own navigation rather than from the page: every page of the live
+#     site carries a menu whose "Mexican Insurance" item links to
+#     /micro-insurance. It is not a guess about what the page contains;
+#     it is where ICB's own menu sends people.
+#
 #     As it stands, anyone who follows an existing link to
 #     /micro-insurance, or finds it in a search result, lands on a 404
 #     after the cutover. The fix, if ICB agrees, is one line:
 #         /micro-insurance        /insurance/mexican      301
 #     Not added here, because its removal was an instruction and this
-#     is new evidence rather than a new instruction. Raised in
+#     is still evidence rather than a new instruction. Raised in
 #     OPEN-QUESTIONS.md.
 # ---------------------------------------------------------------------

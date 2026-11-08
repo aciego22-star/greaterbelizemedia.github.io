@@ -7,10 +7,13 @@
    a page of this site that only restates published ICB information.
 
    INTERNAL TODO (not client-facing):
-   - Swap the shared consumerResources link for direct URLs once ICB
-     supplies them for Hurricane Safety, the hurricane tracking map and
-     Fire Prevention.
-   - Confirm the ANA Seguros resource URLs for Mexican Insurance.
+   - Hurricane Safety, the tracking map and Fire Prevention no longer
+     point at the old site. The material was read off ICB's consumer
+     resources page and out of their two PDFs on 8 Nov 2026 and now
+     lives in js/data/guides.js, rendered at #/resources/<id>, with
+     ICB's original PDFs served from assets/docs beside it.
+   - The ANA Seguros resource URLs were read off ICB's own Mexican
+     Insurance page on 7 Nov 2026 and are on the product's anaPathways.
    - The seven consumer-education articles written for the first draft of
      this concept were removed here. They are not ICB material. If ICB
      wants consumer guides, they can be written and approved, then dropped
@@ -36,10 +39,10 @@ ICB.DATA.resources = {
       glyph: "card"
     },
     {
-      label: { en: "Consumer resources on icbinsurance.com", es: "Recursos para el consumidor en icbinsurance.com" },
-      description: { en: "ICB's published consumer information, including hurricane and fire preparation material.", es: "La información para el consumidor publicada por ICB, incluido material de preparación ante huracanes e incendios." },
-      hrefKey: "consumerResources",
-      glyph: "shield"
+      label: { en: "Mexican Insurance quote", es: "Cotización de Mexican Insurance" },
+      description: { en: "ANA Seguros' quote tool for driving into Mexico, with ICB as your agent.", es: "La herramienta de cotización de ANA Seguros para viajar en auto a México, con ICB como su agente." },
+      route: "#/insurance/mexican/quote",
+      glyph: "border"
     },
     {
       label: { en: "Mexican Insurance through ANA Seguros", es: "Mexican Insurance a través de ANA Seguros" },
@@ -49,20 +52,30 @@ ICB.DATA.resources = {
     }
   ],
 
-  /* Safety material ICB publishes. These point at ICB's consumer
-     resources page until direct URLs are supplied. */
+  /* Safety material ICB publishes. It used to be a pair of cards that
+     sent a visitor back to the old site, because all ICB offered was a
+     four megabyte PDF and a page of loose bullets. The content was
+     brought across on 8 Nov 2026 and now lives at #/resources/<id>, in
+     both languages, with ICB's original PDFs offered beside it. See
+     js/data/guides.js. */
   safety: [
     {
-      label: { en: "Hurricane safety", es: "Seguridad ante huracanes" },
-      description: { en: "ICB's hurricane preparation material and the hurricane tracking map.", es: "El material de preparación ante huracanes de ICB y el mapa de seguimiento de huracanes." },
-      hrefKey: "consumerResources",
+      label: { en: "Hurricane guide", es: "Guía de huracanes" },
+      description: { en: "The emergency numbers, the warning phases, the supplies checklist, and what to do before, during and after a storm.", es: "Los números de emergencia, las fases de aviso, la lista de suministros, y qué hacer antes, durante y después de una tormenta." },
+      route: "#/resources/hurricane",
       glyph: "storm"
     },
     {
       label: { en: "Fire prevention", es: "Prevención de incendios" },
-      description: { en: "ICB's fire prevention material.", es: "El material de prevención de incendios de ICB." },
-      hrefKey: "consumerResources",
+      description: { en: "ICB's fire prevention advice for the home, the kitchen and the yard.", es: "Los consejos de prevención de incendios de ICB para la casa, la cocina y el patio." },
+      route: "#/resources/fire-safety",
       glyph: "shield"
+    },
+    {
+      label: { en: "Travel insurance questions", es: "Preguntas sobre Travel Insurance" },
+      description: { en: "What the travel emergency policy for visitors costs, how long it lasts, and the full schedule of benefits.", es: "Cuánto cuesta la póliza de emergencia de viaje para visitantes, cuánto dura, y el cuadro completo de beneficios." },
+      route: "#/resources/travel-faqs",
+      glyph: "compass"
     }
   ],
 

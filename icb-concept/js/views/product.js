@@ -206,11 +206,17 @@ ICB.views = ICB.views || {};
       var ana = "";
       if (p.anaPathways && p.anaPathways.length) {
         var btns = p.anaPathways.map(function (a, i) {
-          /* A pathway with a direct destination of its own goes
-             straight there; the rest go to ICB's page, which is where
-             those pathways actually live. */
-          return '<a class="btn btn-sm ' + (i === 0 ? "btn-primary" : "btn-ghost") + '" href="' +
-            R.esc(a.href || anaUrl) + '" target="_blank" rel="noopener noreferrer">' +
+          /* Three kinds of destination. A route is a page of this site
+             and stays in the tab; an href is ANA's own page and opens
+             in a new one; anything left goes to ICB's page, which is
+             where that pathway still lives. */
+          var cls = "btn btn-sm " + (i === 0 ? "btn-primary" : "btn-ghost");
+          if (a.route) {
+            return '<a class="' + cls + '" href="' + R.esc(a.route) + '">' +
+              R.esc(ICB.t(a.label)) + "</a>";
+          }
+          return '<a class="' + cls + '" href="' + R.esc(a.href || anaUrl) +
+            '" target="_blank" rel="noopener noreferrer">' +
             R.esc(ICB.t(a.label)) + "</a>";
         }).join("");
         ana = '<div class="ana-block rv">' +
@@ -224,7 +230,7 @@ ICB.views = ICB.views || {};
       var heroActions;
       if (ana) {
         heroActions =
-          '<a class="btn btn-gold" href="' + R.esc(anaUrl) + '" target="_blank" rel="noopener noreferrer">' + R.esc(ICB.s("buyNow")) + "</a>" +
+          '<a class="btn btn-gold" href="#/insurance/mexican/quote">' + R.esc(ICB.s("buyNow")) + "</a>" +
           '<a class="btn btn-light" href="tel:' + R.esc(site.corporate.phoneTel) + '">' + R.esc(ICB.s("callN", { n: site.corporate.phoneDisplay })) + "</a>";
       } else {
         heroActions =
@@ -235,7 +241,7 @@ ICB.views = ICB.views || {};
       /* Next-step band. */
       var bandActions = [];
       if (quotable) bandActions.push({ label: ICB.s("requestQuote"), href: quoteHref });
-      if (ana) bandActions.push({ label: ICB.s("goToANA"), href: anaUrl, external: true });
+      if (ana) bandActions.push({ label: ICB.s("buyNow"), href: "#/insurance/mexican/quote" });
       if (!quotable && !ana) bandActions.push({ label: ICB.s("contactICB"), href: "#/contact?topic=other&category=" + p.id });
       bandActions.push({ label: ICB.s("callN", { n: site.corporate.phoneDisplay }), href: "tel:" + site.corporate.phoneTel });
       bandActions.push({ label: ICB.s("visitABranch"), href: "#/locations" });

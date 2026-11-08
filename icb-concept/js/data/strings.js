@@ -45,6 +45,14 @@ ICB.STRINGS = {
     assistantLoading: "Connecting you to ICB Assist.",
     assistantPreviewNote: "This preview cannot reach outside services, so the assistant does not load here. It runs normally on the published site.",
     assistantOfflineNote: "The assistant could not be reached just now. You can open it in a new tab, or call ICB on +501 224-5328.",
+
+    /* The ANA Seguros quote tool on #/insurance/mexican/quote. ANA runs
+       it, so the wording says so: a visitor should know whose system
+       they have just been connected to. */
+    anaLoading: "Connecting you to the ANA Seguros quote tool.",
+    anaFrameTitle: "ANA Seguros quote tool",
+    anaPreviewNote: "This preview cannot reach outside services, so the quote tool does not load here. It runs normally on the published site.",
+    anaOfflineNote: "The ANA Seguros quote tool could not be reached just now. You can open it directly, or any ICB branch can arrange this cover for you.",
     belize: "Belize",
     qbCall: "Call",
     qbBranches: "Branches",
@@ -232,6 +240,11 @@ ICB.STRINGS = {
     assistantLoading: "Conectándole con ICB Assist.",
     assistantPreviewNote: "Esta vista previa no puede conectarse con servicios externos, así que el asistente no carga aquí. Funciona con normalidad en el sitio publicado.",
     assistantOfflineNote: "No se pudo conectar con el asistente en este momento. Puede abrirlo en una pestaña nueva o llamar a ICB al +501 224-5328.",
+
+    anaLoading: "Conectándole con la herramienta de cotización de ANA Seguros.",
+    anaFrameTitle: "Herramienta de cotización de ANA Seguros",
+    anaPreviewNote: "Esta vista previa no puede conectarse con servicios externos, así que la herramienta de cotización no carga aquí. Funciona con normalidad en el sitio publicado.",
+    anaOfflineNote: "No se pudo conectar con la herramienta de cotización de ANA Seguros en este momento. Puede abrirla directamente, o cualquier sucursal de ICB puede gestionarle esta cobertura.",
     belize: "Belice",
     qbCall: "Llamar",
     qbBranches: "Sucursales",

@@ -342,21 +342,35 @@ does not state them.
 
 **1. The /micro-insurance redirect.**
 
-Unchanged from 7 Nov and still the one decision outstanding.
-/micro-insurance is ICB's Mexican Insurance page, titled as such on
-their live site. Its redirect was removed on instruction. As things
-stand, anyone following an existing link to it lands on a 404 after
-the cutover. One line in `_redirects` puts it right and the line is
-written out there as a comment. ICB's call.
+Still the one decision outstanding, and there is now a second,
+stronger piece of evidence. On 7 Nov the page itself was titled
+"Mexican Insurance | ICB Insurance". On 8 Nov the live site's own
+navigation settled it: every page of icbinsurance.com carries a menu
+whose **Mexican Insurance** item links to `/micro-insurance`. It is
+not an inference about what the page holds; it is where ICB's menu
+sends people.
+
+The redirect was removed on instruction. As things stand, anyone
+following an existing link to it lands on a 404 after the cutover.
+One line in `_redirects` puts it right and the line is written out
+there as a comment. ICB's call.
 
 **2. The branch opening hours**, and whether they vary branch to
 branch. The door at Independence posts hours that differ from the ones
 ICB gave us on three counts.
 
 **3. ICB's own "View Coverage" link is broken.** On their Mexican
-Insurance page it points at an ANA Seguros URL that returns 404. The
-Claims and FAQs links beside it work and now go straight to ANA from
-our product page. Worth passing on so ANA can fix it.
+Insurance page it points at an ANA Seguros URL that returns 404, and
+on 8 Nov every other spelling of that address was tried and returns
+404 too, so there is no page at ANA behind it. The Claims and FAQs
+links beside it both work and go straight to ANA from our product
+page.
+
+Rather than leave the pathway pointing at nothing, **View Coverage
+now lands on our own quote page**, at the section that sets out the
+four covers ANA offers and the limit ranges for each. Those came off
+ANA's own server, not from anywhere else. Still worth passing on so
+ANA can fix their link.
 
 **4. Where a completed claim form should land.** The site emails them
 to `icb@icbinsurance.com`, the general address, because that is the
@@ -367,6 +381,75 @@ kiosk claims specifically. If ICB wants a dedicated claims inbox for
 forms submitted from the website, one line in `js/data/site.js`
 changes it. This is the same decision as question 1 at the top of this
 file, now with the evidence attached.
+
+### Raised 8 Nov 2026: ANA Seguros' quote tool takes card details
+
+Carrying ANA's quote tool over meant reading how it works, and one
+thing in it should be put to ANA rather than left alone.
+
+The tool is ANA's, not ICB's. It is loaded from
+`auto-insurance-ana.com`, keyed to ICB's agent code, and it does the
+whole job: it quotes, it issues the policy, and it takes the card
+payment. Nothing about the pricing lives in ICB's page, which is why
+it is embedded here rather than rebuilt.
+
+Inside ANA's own `Turistas.js`, the card payment step chooses where
+to post by looking at the hostname of the page it is running in. On
+`auto-insurance-ana.com` it posts to their live server. From anywhere
+else it falls back to `desarrollo.anaseguros.com.mx` — "desarrollo"
+being Spanish for development. The call carries the cardholder name,
+the card number, the expiry and the security code.
+
+**This is not something this build introduced, and it is not a
+regression.** ICB's current page serves the tool from the Wix file
+host, which is not ANA's domain either, so ICB's live site already
+takes that same fallback today. Our copy behaves identically.
+Quoting is unaffected: the quote endpoint is hardcoded to the live
+server. Both hosts resolve and answer, on neighbouring addresses, so
+this is a naming question rather than a dead endpoint.
+
+Two things for ICB to ask ANA:
+
+1. Which host should receive a customer's card details when the tool
+   runs on ICB's own site, and is `desarrollo` the intended one?
+2. Does `www.icbinsurance.com` need registering their end? ANA's
+   access check is sent the embedding page's address, and it accepted
+   the Wix one, so it may not be enforced. Better asked than assumed.
+
+Neither blocks launch. Both are ANA's code and ANA's call.
+
+### Raised 8 Nov 2026: three things in ICB's hurricane brochure
+
+The brochure is served exactly as ICB publishes it, byte for byte.
+It is their document and nothing in it was altered. Three things in
+it are worth ICB knowing about, for whenever it is next reprinted.
+
+1. **It carries Nationwide Cash Express branding**, twice on the back
+   page, including a half-page logo. The NCE slide came off the home
+   page last round at ICB's instruction, so the brochure is now the
+   one place on the site where that branding still appears.
+
+2. **"INSURANCE CORPRATION"** is printed on two pages, missing the O.
+
+3. **The branch directory in it is out of date.** It predates the
+   October 2025 directory the site is built from. Among other things
+   it gives the San Estevan Agency the Corozal Town email address.
+   The site's own branch records are correct; only the brochure is
+   stale.
+
+None of this affects the safety advice, which is why the brochure is
+offered as-is. The advice itself is also set out as a page, in both
+languages, which is what most people will actually read.
+
+### Still waiting: the Spanish on the carried-over resources
+
+ICB publishes the hurricane guide, the fire prevention advice and the
+travel insurance questions in English only. All three were translated
+here so that half of ICB's customers can read their own insurer's
+safety advice. That Spanish needs the same review by a Belizean
+Spanish speaker that the 376 claim-form fields are waiting on. The
+figures, wind speeds, telephone numbers and policy limits are ICB's
+own and were not touched.
 
 ## Already flagged, still open
 

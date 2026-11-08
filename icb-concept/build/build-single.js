@@ -61,7 +61,7 @@ const MIME = { png: "image/png", jpg: "image/jpeg", jpeg: "image/jpeg", webp: "i
 const PREVIEW_DIR = path.join(root, "build", "preview");
 const assets = {};
 
-const PREVIEW_OF = { "assets/video": "", "assets/img/branches": "branches", "assets/img/news": "news", "assets/img/heroes": "heroes" };
+const PREVIEW_OF = { "assets/video": "", "assets/img/branches": "branches", "assets/img/news": "news", "assets/img/heroes": "heroes", "assets/docs": "docs" };
 
 function sourceFor(dir, name) {
   const sub = PREVIEW_OF[dir];
@@ -96,6 +96,12 @@ collectAssets("assets/video", "assets/video/");
    deployed site does, instead of reaching for a folder that is not
    beside it. */
 collectAssets("assets/forms", "assets/forms/");
+/* ICB's consumer brochures: the hurricane guide and the travel
+   insurance questions. Same reason as the claim forms. The hurricane
+   guide is bundled from its lighter rendition, which build/doc-preview.py
+   makes and PREVIEW_OF points at; the deployed site and the ZIP always
+   carry ICB's own file. */
+collectAssets("assets/docs", "assets/docs/");
 
 /* The map is seeded in js/assets.js, ahead of every data file and view,
    so ICB.ASSETS is populated before anything renders. Base64 cannot

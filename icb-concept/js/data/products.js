@@ -451,18 +451,20 @@ ICB.DATA.products = [
        Without one the button goes to ICB's own page, which is where
        the pathway lives.
 
-       Buy Now has no direct link because the purchase widget is
-       embedded in ICB's page rather than hosted by ANA.
+       Buy Now and View Coverage both land on this site now, at
+       #/insurance/mexican/quote. ANA's quote tool was carried over on
+       8 Nov 2026 and is embedded there; see js/views/ana-quote.js.
 
-       View Coverage has none either, and this is the one to tell ICB
-       about: the link on their own page,
+       View Coverage used to be the awkward one. The link on ICB's own
+       page,
        auto-insurance-ana.com/Turistas/Pages/Turistas/anareclutamiento/coverages.html,
-       returns 404. Rather than repeat a broken link, the button goes
-       to ICB's page, where the rest of the pathways are. Put the
-       direct link back the moment ANA fix theirs. */
+       returns 404, and so does every other spelling of it, so there is
+       no page at ANA to send anyone to. The quote page answers it
+       instead: the four covers and their limit ranges are set out
+       there, above the tool that prices them. */
     anaPathways: [
-      { label: { en: "Buy Now", es: "Comprar ahora" }, key: "mexican" },
-      { label: { en: "View Coverage", es: "Ver cobertura" }, key: "mexican" },
+      { label: { en: "Buy Now", es: "Comprar ahora" }, route: "#/insurance/mexican/quote" },
+      { label: { en: "View Coverage", es: "Ver cobertura" }, route: "#/insurance/mexican/quote@cover" },
       { label: { en: "Claims", es: "Reclamos" }, key: "mexican",
         href: "https://auto-insurance-ana.com/turistas/pages/Turistas/WhatDo.html" },
       { label: { en: "FAQs", es: "Preguntas frecuentes" }, key: "mexican",

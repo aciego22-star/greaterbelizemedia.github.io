@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Mexican Insurance Quote</title>
+
+<!-- ============================================================
+     ANA Seguros' quote tool, carried over from ICB's old site.
+
+     WHAT THIS IS, AND WHY IT IS NOT REBUILT HERE. The "quote
+     calculator" on ICB's current Mexican Insurance page is not
+     ICB's calculator and holds no rate table. It is ANA Seguros'
+     own system, loaded from auto-insurance-ana.com and keyed to
+     ICB's agent code below. Every premium is worked out on ANA's
+     server, and the same tool goes on to issue the policy and take
+     the card payment. There is nothing in ICB's page to copy, and
+     reproducing ANA's rating ourselves would mean inventing
+     numbers that would drift the first time ANA changed a rate.
+     So the tool itself is carried over, exactly as ICB runs it.
+
+     The markup is the same markup, loading the same six files and
+     passing the same Negocio value, which is ICB's agent code and
+     is already public in the page source of ICB's current site. It
+     is read off that page, not guessed. What has changed is where
+     the file lives: ICB's copy sits on the Wix file host that
+     serves their old site, which disappears when they leave it, so
+     this copy is served from ICB's own domain instead.
+
+     NOTHING ON THIS SITE LOADS IT UNLESS ASKED. Every other page
+     makes zero requests outside ICB's domain. This file is only
+     fetched once a visitor presses the button on
+     /insurance/mexican/quote, the same bargain the Talk to Bee
+     panel strikes. That is also why this is a separate document
+     rather than script tags in the site itself: an old copy of
+     jQuery in the page would otherwise sit underneath everything
+     the site does, whether or not anyone wanted a quote.
+
+     ONE THING FOR ICB TO PUT TO ANA. Inside Turistas.js the card
+     payment step picks its endpoint from the hostname: on
+     auto-insurance-ana.com it posts to their live server, and from
+     anywhere else it falls back to desarrollo.anaseguros.com.mx,
+     a host named for development. ICB's current page is served
+     from the Wix file host, so it already takes that fallback
+     today and this copy behaves no differently. Quoting is
+     unaffected, since the quote endpoint is hardcoded to the live
+     server. It is ANA's code and ANA's call, but ICB should ask
+     them to confirm which host should receive a customer's card
+     details, and whether this domain needs registering their end.
+     Recorded in OPEN-QUESTIONS.md.
+     ============================================================ -->
+
+<style>
+  html, body { margin: 0; padding: 0; background: #fff; }
+  body { font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  #PnlTuristas { padding: 4px 0 24px; }
+  /* Until ANA's own stylesheets arrive the panel is empty, and an empty
+     white box reads as a broken feature. This says what is happening,
+     and ANA's scripts replace the panel's contents when they land. */
+  .ana-wait { padding: 40px 20px; text-align: center; color: #55555c; }
+</style>
+
+<link href="https://auto-insurance-ana.com/Turistas/Styles/blitzer/jquery-ui-1.10.3.custom.css" rel="stylesheet">
+<script src="https://auto-insurance-ana.com/Turistas/Scripts/jQuery/jquery-1.9.1.js"></script>
+<script src="https://auto-insurance-ana.com/Turistas/Scripts/jQuery/jquery-ui-1.10.3.custom.js"></script>
+<script src="https://auto-insurance-ana.com/Turistas/Scripts/ASHT/jQuery.ASHT_CORE.js"></script>
+<script src="https://auto-insurance-ana.com/Turistas/Scripts/TopZindex/jquery.topzindex.js"></script>
+<script src="https://auto-insurance-ana.com/Turistas/Scripts/Turistas/Script.js"></script>
+<script src="https://auto-insurance-ana.com/Turistas/Scripts/Turistas/Turistas.js"></script>
+</head>
+<body>
+  <div id="PnlTuristas"><p class="ana-wait">Loading the ANA Seguros quote tool.</p></div>
+
+  <script>
+    /* ICB's agent code with ANA Seguros, as published on ICB's own
+       Mexican Insurance page. Everything the tool shows, including
+       ICB's logo at the top of it, is keyed to this value. */
+    (function () {
+      function start() {
+        if (typeof jQuery === "undefined" || typeof Login === "undefined") {
+          document.getElementById("PnlTuristas").innerHTML =
+            '<p class="ana-wait">The ANA Seguros quote tool could not be reached just now. ' +
+            'Please try again, or contact your nearest ICB branch.</p>';
+          /* Tell the page around us, so it can offer the same way out. */
+          try { parent.postMessage({ icbAna: "failed" }, "*"); } catch (e) {}
+          return;
+        }
+        jQuery(function () {
+          Login.Parametros.name = "PnlTuristas";
+          Login.Parametros.Negocio = "00da2d6210994e58af1b6bedc9718b13";
+          Login.Iniciar();
+          try { parent.postMessage({ icbAna: "ready" }, "*"); } catch (e) {}
+        });
+      }
+      /* The frame reports its height so the page around it can grow with
+         the tool rather than trapping it in a scrolling box. ANA's form
+         gets much taller once a quote comes back. */
+      function measure() {
+        try {
+          var h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+          parent.postMessage({ icbAna: "height", height: h }, "*");
+        } catch (e) {}
+      }
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", start);
+      } else { start(); }
+      setInterval(measure, 500);
+      window.addEventListener("load", measure);
+    })();
+  </script>
+</body>
+</html>

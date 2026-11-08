@@ -123,6 +123,12 @@ ICB.DATA.site = {
        21 Oct 2026 and they are served from this site, listed per claim
        type in ICB.DATA.claims. Nothing should link a claimant to the
        site this one replaces. */
+    /* Nothing links here any more. ICB's consumer resources page held an
+       intro, two PDF downloads and a page of fire-safety bullets; all of
+       it was carried across on 8 Nov 2026 and lives at #/resources, with
+       the two PDFs served from assets/docs. Kept as a record of where
+       the material came from, and because _redirects points the old
+       address at our page. */
     consumerResources: "https://www.icbinsurance.com/consumer-resourses",
     /* NO PAYMENT PORTAL. ICB does not take payments through its own
        website. Earlier drafts linked an external billing host and a
@@ -136,9 +142,10 @@ ICB.DATA.site = {
        The direct ANA Seguros links were read off ICB's own Mexican
        Insurance page on 7 Nov 2026 and are now on the product's
        anaPathways in js/data/products.js. Claims and FAQs go straight
-       to ANA; Buy Now stays here because the purchase widget is
-       embedded in ICB's page; View Coverage stays here because ICB's
-       own link for it returns 404. */
+       to ANA. Buy Now and View Coverage no longer come here at all:
+       ANA's quote tool was carried over on 8 Nov 2026 and both land on
+       #/insurance/mexican/quote. This address is now only a fallback
+       for a pathway that names no destination of its own. */
     mexicanInsurance: "https://www.icbinsurance.com/ana-seguros-quote",
     website: "https://www.icbinsurance.com"
   },

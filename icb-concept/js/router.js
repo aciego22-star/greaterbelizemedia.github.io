@@ -169,6 +169,22 @@ ICB.views = ICB.views || {};
         ? { view: "claimForm", navId: "claims", formId: p[2] }
         : { view: "notfound", navId: null };
     }
+    /* resources/<id>: one of ICB's consumer resources, the hurricane
+       guide, the fire prevention advice or the travel insurance
+       questions. ICB published these as downloads; here each is a page
+       with its own address, so a branch can send somebody straight to
+       the hurricane checklist rather than to a four megabyte PDF. */
+    if (p[0] === "resources" && p.length === 2) {
+      return ICB.DATA.guideById(p[1])
+        ? { view: "guide", navId: "resources", guideId: p[1] }
+        : { view: "notfound", navId: null };
+    }
+    /* insurance/mexican/quote: ANA Seguros' quote tool, which ICB sells
+       against as ANA's agent. Under the product rather than beside it,
+       because that is what it belongs to. */
+    if (p[0] === "insurance" && p[1] === "mexican" && p[2] === "quote" && p.length === 3) {
+      return { view: "anaQuote", navId: "insurance" };
+    }
     /* news/<id>: one What's New article. A route of its own, so each
        article is a page a reader can link to, share and find, rather
        than a panel that only exists once the listing has opened it. */
@@ -335,6 +351,7 @@ ICB.views = ICB.views || {};
     ctx.productId = match.productId || null;
     ctx.formId = match.formId || null;
     ctx.newsId = match.newsId || null;
+    ctx.guideId = match.guideId || null;
 
     var view = ICB.views[match.view] || ICB.views.notfound;
     mount.innerHTML = view.render(ctx) || "";
