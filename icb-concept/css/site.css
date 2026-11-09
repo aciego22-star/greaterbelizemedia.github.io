@@ -5343,3 +5343,30 @@ body.sheet-open .bee { display: none; }
   .is-asking .bee-pill,
   .is-asking .social-link { animation: none; }
 }
+
+/* ---------------- The home page's branch strip ----------------------
+
+   Five tiles, three across the top and two centred beneath them, which
+   ICB asked for on 9 Nov 2026 and which is a desktop arrangement only.
+
+   Six columns is the trick. Each tile spans two of them, so three fill
+   the first row exactly; the fourth and fifth are placed by hand at
+   columns 2 and 4, which leaves one column free at each end and centres
+   the pair. Done with auto-flow the two would sit left and the row
+   would read as an unfinished third.
+
+   The wide lead tile that the full gallery gives its first photograph
+   is cancelled here. It exists to set a rhythm across twenty-two
+   branches; across five it just makes the top row lopsided.
+
+   Below 1024px this all gives way to the ordinary auto-filling grid,
+   which already does the right thing with five tiles on a tablet or a
+   phone and does not need the arithmetic.
+   ==================================================================== */
+@media (min-width: 1024px) {
+  .gallery--home { grid-template-columns: repeat(6, 1fr); }
+  .gallery--home .gallery-item,
+  .gallery--home .gallery-item:first-child { grid-column: span 2; }
+  .gallery--home .gallery-item:nth-child(4) { grid-column: 2 / span 2; }
+  .gallery--home .gallery-item:nth-child(5) { grid-column: 4 / span 2; }
+}

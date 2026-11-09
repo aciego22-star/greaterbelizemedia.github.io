@@ -762,7 +762,12 @@ ICB.views = ICB.views || {};
             center: true,
             id: "gallery-title"
           }) +
-          '<div class="gallery gallery--branches">' + R.branchGallery(6) + "</div>" +
+          /* Five, and five is the layout: three across the top and two
+             centred under them on a desktop. See .gallery--home. ICB
+             asked on 9 Nov 2026 for San Estevan to come off this strip
+             with nothing in its place, so the count went to five
+             rather than letting the next branch slide up into it. */
+          '<div class="gallery gallery--branches gallery--home">' + R.branchGallery(5) + "</div>" +
           '<div class="btn-row" style="margin-top: var(--sp-6); justify-content: center;">' +
             '<a class="btn btn-outline" href="#/gallery">' + R.esc(T("See the full gallery", "Ver la galería completa")) + "</a>" +
           "</div>" +

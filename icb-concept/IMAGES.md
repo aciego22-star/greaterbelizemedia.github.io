@@ -11,6 +11,7 @@ visual has been supplied.
 
 | Placement | Source |
 | --- | --- |
+| Home branch strip | Five tiles, three over two centred on desktop; San Estevan and the Daly Street street view are gallery-only |
 | Hero slides 1-5 | HQ photograph, Protect Your Investment artwork, the What's New compositions, the border kiosk, the film |
 | Property card + page | Film frame: couple at their Belizean home |
 | Motor card + page | Film frame: couple with their vehicle |

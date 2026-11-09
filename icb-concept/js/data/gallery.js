@@ -137,9 +137,15 @@ ICB.DATA.gallery = {
        when ICB send it, and delete the caption below so the tile falls
        back to the branch name like every other one. Nothing else
        changes. */
+    /* homeHidden: ICB asked on 9 Nov 2026 for this one to come off the
+       home page, and for nothing to take its place. It is the only
+       tile in the strip that is not an ICB building: the frame is the
+       village welcome sign, because no photograph of the agency has
+       been supplied yet. It keeps its place in the full gallery. */
     {
       locationId: "san-estevan",
       src: "assets/img/branches/san-estevan.webp",
+      homeHidden: true,
       caption: { en: "San Estevan Village", es: "Aldea San Estevan" },
       alt: "The welcome sign at the entrance to San Estevan Village, Orange Walk District"
     },
