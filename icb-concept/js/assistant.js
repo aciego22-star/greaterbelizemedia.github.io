@@ -171,10 +171,11 @@ window.ICB = window.ICB || {};
   function setOpen(next, fromEl) {
     if (next === open) return;
     open = next;
-    /* Opening grounds it for good. It flies home first, so the panel never
-       opens off a pill that is halfway across the screen, and it is still
-       there when the panel closes. */
-    if (open) ground();
+    /* Opening it answers the invitation, so the invitation stops, and
+       stays stopped when the panel closes again. The pointerdown
+       handler already covers a press on the pill; this covers every
+       other way in, including ICB.assistant.open() from elsewhere. */
+    calm();
     panel.hidden = !open;
     root.classList.toggle("is-open", open);
     pill.setAttribute("aria-expanded", String(open));
@@ -202,240 +203,73 @@ window.ICB = window.ICB || {};
 
 
   /* ------------------------------------------------------------------ */
-  /* Flight                                                             */
+  /* The launcher does not move                                         */
   /*                                                                    */
-  /* ICB's mascot is a bee, so the launcher flies like one instead of   */
-  /* sitting in the corner: a slow wide drift with smaller, quicker     */
-  /* bobs on top of it, wandering the right of the screen and now and   */
-  /* again taking a wider excursion.                                    */
+  /* It used to fly: ICB's mascot is a bee, so the pill drifted on three */
+  /* sines per axis whose frequencies never came back into phase, with   */
+  /* a wider excursion now and again.                                    */
   /*                                                                    */
-  /* Three waves on each axis, and the frequencies are deliberately not  */
-  /* multiples of one another. Harmonically related waves close into a   */
-  /* loop and the bee would visibly patrol a circuit; these do not meet  */
-  /* again for hours, so the path never repeats while anyone is looking. */
-  /*                                                                    */
-  /* A moving target is a harder target, which is the honest cost of     */
-  /* this, so three things give it back. It eases to a stop the moment a */
-  /* pointer or the keyboard reaches it, so you never chase it. It flies */
-  /* home and stays there while the panel is open, because a panel       */
-  /* hanging off a moving pill would be seasick. And it does not fly at  */
-  /* all for anyone who has asked their system for reduced motion.       */
+  /* ICB asked on 9 Nov 2026 for the movement to go and for the pill to  */
+  /* ask for attention by pulsing instead. That is the right call and    */
+  /* the flight had already been narrowed twice: a launcher that moves   */
+  /* is a launcher that is over something else, and a sweep of the site  */
+  /* the day before found it over the hero's buttons, over Short-Term    */
+  /* Insurance's buttons and over footer links at different moments.     */
+  /* The compensation written into it, that it stops when a pointer      */
+  /* reaches it, inverted in exactly the case that mattered: if it was   */
+  /* sitting over the button you were going for, moving to the button    */
+  /* WAS reaching it, so it parked on your target.                       */
+  /*                                                                     */
+  /* All of it is gone rather than switched off, and the pill sits where */
+  /* the stylesheet puts it. The pulse that replaces it is attention(),  */
+  /* below, and it costs nothing underneath: it is a ring drawn outside  */
+  /* the pill's own box, so it changes no layout and intercepts no tap.  */
   /* ------------------------------------------------------------------ */
 
-  var FLIGHT = {
-    x: [{ a: 0.54, f: 0.041, p: 0.00 },
-        { a: 0.31, f: 0.107, p: 1.73 },
-        { a: 0.15, f: 0.253, p: 4.11 }],
-    y: [{ a: 0.47, f: 0.059, p: 2.31 },
-        { a: 0.34, f: 0.151, p: 5.24 },
-        { a: 0.19, f: 0.317, p: 0.87 }]
-  };
+  /* ------------------------------------------------------------------ */
+  /* Asking for attention                                               */
+  /*                                                                    */
+  /* The launcher and ICB's social links pulse red for 20 seconds after  */
+  /* the page loads, then stop. Touching any of them stops all of them   */
+  /* at once, because they are one invitation and not five; so does      */
+  /* opening the assistant, and so does closing it again, which is what  */
+  /* "it calms down" has to mean for it to stay calm.                    */
+  /*                                                                     */
+  /* One class on the root element drives it, so the stylesheet owns     */
+  /* what the pulse looks like and this file only decides when. The      */
+  /* social rows are rendered by two other views and may not exist yet   */
+  /* when this runs; a class on the root does not care.                  */
+  /*                                                                     */
+  /* The rate is deliberate. WCAG 2.3.1 draws the line at three flashes  */
+  /* a second and this runs at a little over one, so it reads as a pulse */
+  /* rather than a strobe and cannot put anyone at risk. Anyone who has  */
+  /* asked their system for reduced motion gets no pulse at all.         */
+  /* ------------------------------------------------------------------ */
 
-  /* How much of the room available to it the bee actually uses, and the
-     furthest it will go whatever the screen: on a wide monitor an
-     uncapped reach would carry it halfway across the page, a long way
-     from where anyone looks for a chat button. */
-  /* NARROWED 8 Nov 2026, on ICB's instruction that every tap and click
-     do its job first time.
+  var ATTENTION_MS = 20000;
+  var attnTimer = null;
 
-     These were 0.88 / 820 and 0.66 / 520, which let the bee cross most
-     of the page. A sweep of every page found it over the hero's
-     buttons, over Short-Term Insurance's own buttons and over footer
-     links at different moments, and a click aimed at any of those
-     opened the assistant instead. The note above offers "it eases to a
-     stop the moment a pointer reaches it" as the compensation, and in
-     this one case that makes it worse rather than better: if the bee
-     is sitting over the button you are going for, moving to the button
-     IS reaching the bee, so it parks exactly where you were aiming.
-
-     Narrowed to an orbit around its own corner. It still flies, it
-     still does not repeat, and it no longer leaves the corner it
-     lives in. On a touch screen it does not fly at all; see
-     stillness(). */
-  var REACH_X = 0.20, MAX_X = 130;
-  var REACH_Y = 0.22, MAX_Y = 150;
-
-  /* Above 1 the bee favours its corner and only occasionally makes the
-     long trip out, which is both more bee and less in the way than an
-     even spread would be. Only a little above: measured at 1.25 and 1.35
-     it barely left the corner, roaming 408px of a 1440px screen when the
-     brief was to cross it. */
-  var BIAS_X = 1.12, BIAS_Y = 1.18;
-
-  /* Three sines of differing phase almost never peak together, so their
-     sum keeps well inside its nominal range and the bee used about half
-     the room it had. The gain pushes it back out; the clamp catches the
-     rare moment they do align, and reads as the bee holding at the end of
-     a sweep before turning back. */
-  var GAIN = 1.28;
-
-  /* Measured at 6 and 3.5 the bee took a second and a half to come fully
-     to rest under a pointer, which is a long time to wait on a button.
-     These bring it to a stop in about two thirds of a second, still a
-     glide rather than a freeze. */
-  var SETTLE = 9;     /* how fast the clock eases to a stop, per second */
-  var FOLLOW = 5;     /* how closely the pill tracks the point it is given */
-
-  var flight = {
-    raf: null, last: null, t: 0,
-    speed: 1, wanted: 1,
-    x: 0, y: 0,
-    homing: false,
-    grounded: false,
-    box: null
-  };
-
-  function wave(set, t) {
-    var v = 0;
-    for (var i = 0; i < set.length; i++) {
-      v += set[i].a * Math.sin(2 * Math.PI * set[i].f * t + set[i].p);
-    }
-    v *= GAIN;
-    return v < -1 ? -1 : v > 1 ? 1 : v;
+  function calm() {
+    if (attnTimer) { clearTimeout(attnTimer); attnTimer = null; }
+    document.documentElement.classList.remove("is-asking");
   }
 
-  /* The room the bee has, measured when it changes rather than every
-     frame: the launcher's own box already clears the header, the quick
-     bar and the safe areas, so the bee inherits all of that for free. */
-  function measure() {
-    if (!root || !pill) return null;
-    var band = root.getBoundingClientRect();
-    var inset = parseFloat(getComputedStyle(root).right) || 16;
-    var pw = pill.offsetWidth, ph = pill.offsetHeight;
-    var left = Math.max(0, Math.min(REACH_X * (band.right - inset - pw), MAX_X));
-    /* The climb is tied to the width it has to play with as well as to the
-       band. A phone is tall and narrow, and left to the band alone the bee
-       roamed 153px across and 420px up: a yo-yo, not a bee, and most of
-       the screen with it. Holding the box near a landscape shape keeps the
-       flight reading as flight at any size. */
-    flight.box = {
-      left: left,
-      up: Math.max(0, Math.min(REACH_Y * (band.height - ph), MAX_Y, left * 1.6))
-    };
-    return flight.box;
-  }
-
-  function fly(ts) {
-    flight.raf = requestAnimationFrame(fly);
-    if (flight.last === null) flight.last = ts;
-    /* Capped, so a tab that was in the background does not come back and
-       teleport the bee across the screen. */
-    var dt = Math.min(0.05, (ts - flight.last) / 1000);
-    flight.last = ts;
-    if (document.hidden) return;
-
-    flight.speed += (flight.wanted - flight.speed) * Math.min(1, dt * SETTLE);
-    /* An exponential ease approaches nought without ever arriving, and the
-       bee went on creeping about three pixels a second under a pointer
-       that was trying to click it. Below a fortieth of speed there is
-       nothing left worth easing, so it stops properly. */
-    if (flight.wanted === 0 && flight.speed < 0.025) flight.speed = 0;
-    flight.t += dt * flight.speed;
-
-    var box = flight.box || measure();
-    if (!box) return;
-
-    var tx = 0, ty = 0;
-    if (!flight.homing) {
-      /* Each wave lands in -1..1; folded to 0..1 and bent by the bias, it
-         becomes a distance out from the corner. */
-      tx = -Math.pow((wave(FLIGHT.x, flight.t) + 1) / 2, BIAS_X) * box.left;
-      ty = -Math.pow((wave(FLIGHT.y, flight.t) + 1) / 2, BIAS_Y) * box.up;
-      /* Back to top owns the bottom left corner. Rather than collide and
-         be pushed out, the bee simply swings wider the higher it is,
-         which keeps that corner clear without a single sharp correction. */
-      var high = box.up ? -ty / box.up : 0;
-      tx *= 0.5 + 0.5 * high;
-    }
-
-    /* Exponential approach rather than a jump: it smooths the handover
-       when the bee starts homing, and when the clock has eased to a stop
-       it is what brings the bee gently to rest instead of freezing it
-       mid-stride. */
-    var k = 1 - Math.exp(-FOLLOW * dt);
-    flight.x += (tx - flight.x) * k;
-    flight.y += (ty - flight.y) * k;
-    /* Same again for the position: once it is within a twentieth of a
-       pixel of where it is headed it is there, and a still bee is still. */
-    if (Math.abs(tx - flight.x) < 0.05) flight.x = tx;
-    if (Math.abs(ty - flight.y) < 0.05) flight.y = ty;
-
-    /* Parked, and nothing left to animate: drop the frame loop and hand
-       the position back to the stylesheet, so the pill sits in its corner
-       on its own rather than being held there sixty times a second. */
-    if (flight.grounded && flight.x === 0 && flight.y === 0) {
-      cancelAnimationFrame(flight.raf);
-      flight.raf = null;
-      pill.style.transform = "";
-      pill.style.willChange = "auto";
-      return;
-    }
-
-    pill.style.transform = "translate3d(" + flight.x.toFixed(1) + "px," +
-      flight.y.toFixed(1) + "px,0)";
-  }
-
-  /* When the bee should not fly at all.
-
-     Reduced motion, as always. And anywhere there is no hover, which
-     in practice means a touch screen.
-
-     The reason is in the note above this block: a moving target is a
-     harder target, and the first thing given back in exchange is that
-     the bee eases to a stop the moment a pointer reaches it, so you
-     never chase it. On a phone there is no pointer and no hover. The
-     finger arrives already pressing, so that mitigation cannot fire,
-     and the trade has a cost with nothing on the other side.
-
-     Worse than being a hard target, a flying pill is over something
-     else, and on 8 Nov 2026 a sweep of every page found it over the
-     hero's buttons, footer links and FAQ rows at different moments.
-     A tap aimed at File a claim opened the assistant instead. That is
-     intermittent by nature, which is the hardest kind of fault to
-     report and the easiest to dismiss as a mis-tap.
-
-     So on a touch screen the bee stays in its corner, where it is
-     still a bee and still the assistant, and every tap underneath it
-     lands on what the visitor aimed at. It still flies on a mouse,
-     where hovering stops it before the click. */
-  function stillness() {
-    if (!window.matchMedia) return false;
-    return window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
-           window.matchMedia("(hover: none)").matches;
-  }
-
-  function takeOff() {
-    if (!pill || flight.raf || flight.grounded || stillness()) return;
-    measure();
-    /* A random phase, so two people looking at the site are not watching
-       the same bee fly the same path. */
-    flight.t = Math.random() * 600;
-    flight.last = null;
-    flight.raf = requestAnimationFrame(fly);
-  }
-
-  /* Ease to a hover rather than stopping dead: the bee is a target, and a
-     target you have to chase is a bad one. */
-  function settle(yes) {
-    if (flight.grounded) return;
-    flight.wanted = yes ? 0 : 1;
-  }
-
-  /* Grounded for good, the moment the assistant is opened.
-     The flight is an introduction. Someone who has opened the chat has
-     already met the bee and come for something else, and a launcher still
-     looping across their reading is in the way rather than a greeting. So
-     it flies home to the bottom right corner it started in and parks
-     there for the rest of the visit.
-     This also retires the one discontinuity the flight had. Leaving the
-     homing state used to hand the pill a target from a clock that had been
-     frozen mid flight, which on a phone, where no pointerleave follows a
-     tap to resume the flight and hide it, stranded the bee out in the
-     middle of the screen. There is no longer any way back out of homing. */
-  function ground() {
-    flight.grounded = true;
-    flight.homing = true;
-    flight.wanted = 0;
+  function attention() {
+    if (window.matchMedia &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    document.documentElement.classList.add("is-asking");
+    attnTimer = setTimeout(calm, ATTENTION_MS);
+    /* Anything the pulse is drawing attention to stops the whole thing
+       the moment it is touched. Capture, and pointerdown rather than
+       click, so it calms on the way down instead of after a social
+       link has already begun opening a new tab. */
+    document.addEventListener("pointerdown", function (e) {
+      if (e.target.closest(".bee-pill, .social-link")) calm();
+    }, true);
+    document.addEventListener("keydown", function (e) {
+      if ((e.key === "Enter" || e.key === " ") &&
+          e.target.closest && e.target.closest(".bee-pill, .social-link")) calm();
+    }, true);
   }
 
   ICB.assistant = {
@@ -460,20 +294,7 @@ window.ICB = window.ICB || {};
 
       pill.addEventListener("click", function () { setOpen(!open, pill); });
 
-      /* Reaching for it stops it. Pointer and keyboard both, because a
-         control that moves while you are tabbing to it is worse than one
-         that moves while you are pointing at it. */
-      pill.addEventListener("pointerenter", function () { settle(true); });
-      pill.addEventListener("pointerleave", function () { if (!open) settle(false); });
-      pill.addEventListener("focus", function () { settle(true); });
-      pill.addEventListener("blur", function () { if (!open) settle(false); });
-      /* A finger has no hover, so the touch itself is the signal. */
-      pill.addEventListener("touchstart", function () { settle(true); }, { passive: true });
-
-      window.addEventListener("resize", measure, { passive: true });
-      window.addEventListener("orientationchange", measure);
-
-      takeOff();
+      attention();
 
       document.addEventListener("keydown", function (e) {
         if (e.key === "Escape" && open) { setOpen(false); pill.focus(); }

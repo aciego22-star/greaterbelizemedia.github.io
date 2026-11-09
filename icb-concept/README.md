@@ -394,14 +394,49 @@ Two faults it found, both fixed, and one thing it cannot fix:
   and below 720px the hero is taller than the screen. They now clear
   the bar by `--bar-clear`, which costs nothing because those slides'
   words are far shorter than the row they sit in.
-- **The assistant flew over things.** The launcher drifts on a loop
-  that does not repeat, and the compensation for being a moving target
-  is that it stops when a pointer reaches it. On a touch screen there
-  is no pointer, and on a mouse, if it is over the button you are going
-  for, moving to the button is reaching it, so it parks exactly where
-  you were aiming. It no longer flies at all without hover, its orbit
-  elsewhere is a fifth of what it was, and below 560px it is the bee
-  alone rather than a 157px pill.
+- **The assistant flew over things.** The launcher drifted on a loop
+  that did not repeat, and the compensation for being a moving target
+  was that it stopped when a pointer reached it. On a touch screen
+  there is no pointer, and on a mouse, if it was over the button you
+  were going for, moving to the button was reaching it, so it parked
+  exactly where you were aiming. ICB asked on 9 Nov 2026 for the
+  movement to go. **The flight is gone**, all of it, and the pill sits
+  where the stylesheet puts it. It asks for attention by pulsing
+  instead; see below.
+- **The hero's second button and the launcher.** With the launcher
+  parked in the bottom-right corner, the full-screen slides lift their
+  words clear of both it and the quick bar through `--bar-clear`,
+  which costs nothing because their words are far shorter than the row
+  they sit in. The campaign poster cannot do that: it stacks, so its
+  buttons are the end of its content and padding below them moves
+  nothing. On a 390px phone the launcher covers the middle of its
+  second button. Narrowing that row to wrap the buttons clear was
+  tried and reverted, because this is the tallest slide and its height
+  is the row's height: the film went from 70.9% of its frame cropped
+  to 73.1% and the other three slides' buttons were pushed back down
+  into the launcher. One slide's fix broke three. Raised with ICB.
+
+## Asking for attention
+
+The Talk to Bee launcher and ICB's social links pulse red for twenty
+seconds after the page loads and then stop. Touching any of them stops
+all of them at once, because they are one invitation rather than five;
+so does opening the assistant, and so does closing it again.
+
+`js/assistant.js` owns the timing and puts one class on the root
+element, so the stylesheet owns what it looks like and the social rows,
+which two other views render and which may not exist when the script
+runs, need no wiring of their own.
+
+Two things about it are deliberate and should not be "tightened" later.
+It is a ring drawn with `box-shadow` outside each control's own box,
+not a border: a border would change the box and shift what is around
+it, while a ring costs no layout and takes no taps, so the thing asking
+for attention is never the thing standing in front of something else.
+And it runs at one pulse every 1.1 seconds. WCAG 2.3.1 draws the line
+at three flashes a second, and content that crosses it can trigger a
+seizure, so the urgency is paid for in contrast and in the size of the
+ring rather than in speed. Reduced motion gets no pulse at all.
 - **The carousel dots are below the fold** at rest on phones shorter
   than about 870px, because the hero is taller than the screen and
   they live at the foot of it. They are not covered once scrolled to,

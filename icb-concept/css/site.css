@@ -23,6 +23,16 @@
   --red-300: #F0716E;
   --red-100: #F8D9DA;
   --red-050: #FCF0F0;
+  /* The logo red again, as channels, for the one place that needs to
+     fade it: rgba() cannot take a hex custom property, so the pulse in
+     "Asking for attention" reads this instead of carrying its own copy
+     of the colour and drifting from the scale above. */
+  --red-500-rgb: 209, 33, 38;
+  /* And a step brighter, for the same reason. The pulse has to read
+     against the launcher itself, which is already red-600: a ring in
+     the logo red around a darker red pill is nearly invisible, so the
+     ring is lit a shade above whatever it surrounds. */
+  --red-400-rgb: 229, 80, 78;
 
   /* Black / charcoal ladder (warm neutral, never blue) */
   --black-950: #0B0B0C;
@@ -103,6 +113,9 @@
   /* Talk to Bee. Shared so the footer's clearance and the pill itself
      cannot drift apart. */
   --bee-pill-h: 56px;
+  /* And its width, measured at 157px, for the one slide that has to
+     keep its buttons out from under it. */
+  --bee-pill-w: 157px;
 }
 
 /* ============================ Reset / base ============================ */
@@ -3192,11 +3205,24 @@ select.input {
 @media (max-width: 719px) {
   :root {
     --header-h: 60px;
-    /* How much the quick bar covers at the foot of the screen.
-       Anything anchored to the bottom of a full-screen hero slide has
-       to clear it. Declared next to the bar being switched on, so the
-       two cannot drift apart. */
-    --bar-clear: var(--quickbar-h);
+    /* How much of the foot of the screen is spoken for. Anything
+       anchored to the bottom of a full-screen hero slide has to clear
+       it. Declared next to the bar being switched on, so the two
+       cannot drift apart.
+
+       Two things, not one. The quick bar owns the bottom edge, and
+       the Talk to Bee launcher sits just above it in the right-hand
+       corner: 157px of pill, which on a 360px screen is exactly where
+       the second of the hero's two buttons lands. Measured at rest on
+       9 Nov 2026, the launcher was over the middle of File a claim
+       and of About ICB, so a tap on either opened the assistant.
+
+       The extra is generous on purpose. The hero is taller than the
+       screen by a different amount at every size, so the gap between
+       a slide's bottom and the viewport's bottom is not a constant,
+       and the clearance has to cover the worst of them rather than
+       the average. */
+    --bar-clear: calc(var(--quickbar-h) + var(--bee-pill-h) + 20px);
   }
   .quick-bar { display: block; }
   body { padding-bottom: calc(var(--quickbar-h) + env(safe-area-inset-bottom)); }
@@ -4353,33 +4379,6 @@ select,
 
 .bee-label { white-space: nowrap; }
 
-/* On a narrow phone the launcher is the bee alone.
-
-   With the words it is 157px wide, and sitting in the bottom right
-   above the quick bar that is wide enough to reach the second button
-   of the hero's pair: measured at 360x740 on 8 Nov 2026 it was over
-   the middle of File a claim and of About ICB, so a tap on either
-   opened the assistant. Dropping the label takes it to about 56px, a
-   round badge in the corner, which is the shape a chat launcher
-   usually has on a phone and clears the middle of every control
-   underneath it.
-
-   The label stays in the accessible name, which is on the button
-   itself, so nothing is lost to a screen reader; and it comes back
-   with the open state, where the panel is covering that corner
-   anyway. */
-@media (max-width: 560px) {
-  .bee:not(.is-open) .bee-label {
-    position: absolute;
-    width: 1px; height: 1px;
-    margin: -1px; padding: 0;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-  .bee:not(.is-open) .bee-pill { padding: 0.35rem; }
-}
 
 /* One control, two states: the label reads "Talk to Bee" shut and
    "Close" open, and the cross only appears with the second. */
@@ -4978,6 +4977,32 @@ body.sheet-open .bee { display: none; }
     padding-bottom: var(--sp-4);
   }
   .hero-slide--light .hero-slide-copy { padding-bottom: var(--sp-4); }
+
+  /* The campaign poster's buttons and the launcher overlap on a
+     narrow phone, and it is left that way on purpose.
+
+     This slide stacks: the artwork sits on top and the words follow,
+     so its buttons are the last thing in the content and padding
+     below them moves nothing. The only way to shift them is to make
+     the slide shorter or the button row narrower, and both were
+     tried on 9 Nov 2026.
+
+     Narrowing the row wraps the buttons clear of the corner, and
+     costs one button's height. This is the tallest slide in the
+     carousel, so that height becomes the row's height, and the row's
+     height is every other slide's height too: the film grew with it
+     and went from 70.9% of its frame cropped to 73.1%, and the three
+     full-screen slides' own buttons, which hang off the bottom of
+     that row, were pushed back down into the launcher. One slide's
+     fix broke three.
+
+     Shortening it instead means cropping ICB's campaign artwork,
+     which carries wording and is not ours to cut.
+
+     So it stays, and it is in OPEN-QUESTIONS.md: on a 390px phone the
+     launcher covers the middle of this slide's second button, and a
+     small scroll clears it. Everything else on the site takes one
+     tap. */
   /* The quiet copy block on a slide whose artwork says it all has
      nothing to show, so it should not take a band of space either. */
   .hero-slide-copy--quiet { padding: 0; }
@@ -5261,4 +5286,60 @@ body.sheet-open .bee { display: none; }
 }
 @media (min-width: 769px) {
   .hero-logo { display: block; }
+}
+
+/* ======================= Asking for attention =======================
+
+   ICB asked on 9 Nov 2026 for the Talk to Bee launcher to stop flying
+   and to pulse instead, and for ICB's social links to pulse with it,
+   for about twenty seconds after the page loads.
+
+   It is a ring, drawn with box-shadow outside each control's own box.
+   That matters: a border would change the box and shift what is
+   around it, and a ring costs no layout and takes no taps, so the
+   thing that is asking for attention is never the thing standing in
+   front of something else.
+
+   THE RATE IS DELIBERATE. One pulse every 1.1 seconds, a little over
+   one flash a second. WCAG 2.3.1 draws the line at three a second and
+   content that crosses it can trigger a seizure, so "aggressively" is
+   paid for in contrast and in the size of the ring rather than in
+   speed. js/assistant.js owns the twenty seconds and the stopping;
+   this file only says what it looks like.
+   ==================================================================== */
+
+@keyframes icb-ask {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(var(--red-500-rgb), 0); border-color: var(--icb-ask-rest, rgba(255, 255, 255, 0.16)); }
+  18%      { box-shadow: 0 0 0 4px rgba(var(--red-500-rgb), 0.95), 0 0 20px 7px rgba(var(--red-500-rgb), 0.6); border-color: rgb(var(--red-500-rgb)); }
+  55%      { box-shadow: 0 0 0 10px rgba(var(--red-500-rgb), 0); border-color: var(--icb-ask-rest, rgba(255, 255, 255, 0.16)); }
+}
+
+.is-asking .bee-pill,
+.is-asking .social-link {
+  animation: icb-ask 1.1s var(--ease, ease) infinite;
+}
+
+/* The launcher's own shadow is part of it, so the ring is added to
+   that one rather than replacing it and letting the pill fall flat
+   every time the ring fades. */
+@keyframes icb-ask-pill {
+  0%, 100% { box-shadow: 0 10px 30px rgba(10, 10, 11, 0.32), 0 0 0 0 rgba(var(--red-400-rgb), 0); }
+  18%      { box-shadow: 0 10px 30px rgba(10, 10, 11, 0.32), 0 0 0 5px rgba(var(--red-400-rgb), 1), 0 0 26px 10px rgba(var(--red-400-rgb), 0.75); }
+  55%      { box-shadow: 0 10px 30px rgba(10, 10, 11, 0.32), 0 0 0 12px rgba(var(--red-400-rgb), 0); }
+}
+.is-asking .bee-pill { animation-name: icb-ask-pill; }
+
+/* Once it is open the invitation has been answered, and a pulsing
+   launcher behind an open panel is just noise. js/assistant.js drops
+   the class as well; this is the belt to that braces, for the instant
+   between the two. */
+.is-asking .bee.is-open .bee-pill { animation: none; }
+
+/* A ring on a dark ground needs less glow to read than one on paper,
+   and the footer row sits on ICB's black. */
+.is-asking .social-row--footer .social-link { animation-name: icb-ask; }
+
+@media (prefers-reduced-motion: reduce) {
+  .is-asking .bee-pill,
+  .is-asking .social-link { animation: none; }
 }

@@ -292,9 +292,14 @@ ICB.DATA.site = {
     legal: "Insurance Corporation of Belize Ltd.",
     /* The agency credit. conceptLead names the studio and is the linked
        part; the rest of the sentence stays plain text, so the line reads
-       as attribution rather than as an advert. */
-    conceptNote: { en: "Concept experience by ", es: "Concepto creado por " },
+       as attribution rather than as an advert.
+
+       Reworded on 9 Nov 2026 at the studio's request, from "Concept
+       experience by" to what the work actually is now that it is a
+       built site with an assistant in it, and pointed at the studio's
+       own home page rather than the service page it used to open. */
+    conceptNote: { en: "Website and AI developed by ", es: "Sitio web e IA desarrollados por " },
     conceptLead: "Austere Automations",
-    conceptHref: "https://austereautomations.com/website-development-belize"
+    conceptHref: "https://austereautomations.com/#"
   }
 };

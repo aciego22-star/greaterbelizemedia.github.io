@@ -390,11 +390,30 @@ that artwork, running it smaller with the slide's own ground showing
 around it, or leaving the dots where they are. Left as they are
 meanwhile, which is the only one of the three that costs ICB nothing.
 
-**4. The branch opening hours**, and whether they vary branch to
+**4. The campaign poster's second button sits under the Talk to Bee
+launcher on a 390px phone.** One tap on "Request a quote" there opens
+the assistant instead; a small scroll clears it. Every other control
+on the site takes one tap.
+
+This slide stacks on a phone, artwork above and words below, so its
+buttons are the last thing in its content and no amount of padding
+moves them up. There are two ways out and both cost something that is
+ICB's to spend. Wrapping the buttons so they clear the corner makes
+this slide taller, and because it is the tallest slide in the carousel
+its height is every slide's height: tried on 9 Nov 2026, it took the
+film from 70.9% of its frame cropped to 73.1% and pushed three other
+slides' buttons back down into the launcher. Making the slide shorter
+means cropping the campaign artwork, which carries wording.
+
+A third way, if ICB prefers it: drop the one-line lead from that slide
+on phones only. It buys back the height the wrap costs, the artwork
+already carries the message, and nothing else moves.
+
+**5. The branch opening hours**, and whether they vary branch to
 branch. The door at Independence posts hours that differ from the ones
 ICB gave us on three counts.
 
-**5. ICB's own "View Coverage" link is broken.** On their Mexican
+**6. ICB's own "View Coverage" link is broken.** On their Mexican
 Insurance page it points at an ANA Seguros URL that returns 404, and
 on 8 Nov every other spelling of that address was tried and returns
 404 too, so there is no page at ANA behind it. The Claims and FAQs
@@ -407,7 +426,7 @@ four covers ANA offers and the limit ranges for each. Those came off
 ANA's own server, not from anywhere else. Still worth passing on so
 ANA can fix their link.
 
-**6. Where a completed claim form should land.** The site emails them
+**7. Where a completed claim form should land.** The site emails them
 to `icb@icbinsurance.com`, the general address, because that is the
 only one ICB publishes anywhere near a claims context: their claims
 page carries no email at all. `icb_claims1@icbinsurance.com` exists
