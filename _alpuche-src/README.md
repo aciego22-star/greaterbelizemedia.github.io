@@ -12,6 +12,14 @@ node _alpuche-src/build.mjs --production --site-url=https://<confirmed-domain>
 node _alpuche-src/build.mjs --out=/some/dir       # build somewhere else
 ```
 
+### Local preview (no hosting)
+
+```bash
+node _alpuche-src/build.mjs --local     # → _alpuche-src/dist-local/jose-m-alpuche-preview/
+```
+
+Unzip, then double-click `index.html`. Every link points at an `index.html` file and the fonts are embedded, so the whole site, including the assistant and the contact preselect, works from disk with no server.
+
 ### Netlify bundle
 
 ```bash

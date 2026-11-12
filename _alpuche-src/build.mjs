@@ -20,7 +20,9 @@ const args = Object.fromEntries(process.argv.slice(2).map((a) => {
 const PRODUCTION = !!args.production;
 // --netlify: site served from a domain root; adds _headers, _redirects and 404.html.
 const NETLIFY = !!args.netlify;
-const OUT = path.resolve(args.out || (NETLIFY ? path.join(SRC, 'dist-netlify') : path.join(SRC, '..', 'demos', 'jose-m-alpuche')));
+// --local: opens straight from disk (file://): links point at index.html files and fonts are inlined.
+const LOCAL = !!args.local;
+const OUT = path.resolve(args.out || (NETLIFY ? path.join(SRC, 'dist-netlify') : LOCAL ? path.join(SRC, 'dist-local', 'jose-m-alpuche-preview') : path.join(SRC, '..', 'demos', 'jose-m-alpuche')));
 // Absolute base used for Open Graph URLs. Production canonicals need the confirmed domain.
 // Netlify preview without a known URL: og:url is omitted and og:image is root-relative.
 const SITE_URL = String(args['site-url'] || (NETLIFY ? '' : 'https://greaterbelizemedia.github.io/demos/jose-m-alpuche')).replace(/\/$/, '');
@@ -157,7 +159,9 @@ function rel(from, to) {
   const rest = qi < 0 ? '' : to.slice(qi);
   const depth = from.split('/').filter(Boolean).length;
   const r = '../'.repeat(depth) + p.replace(/^\//, '');
-  return (r || './') + rest;
+  const out = r || './';
+  if (LOCAL && out.endsWith('/')) return (out === './' ? '' : out) + 'index.html' + rest;
+  return out + rest;
 }
 
 // Inline Markdown: links, bold, italic. `ctx.route` is the current page route.
@@ -474,8 +478,7 @@ ${SITE_URL ? `<meta property="og:url" content="${absUrl(meta.route)}">\n` : ''}<
 <meta name="theme-color" content="#11171b">
 <meta name="x-source-ids" content="${esc((meta.source_ids || []).join(', '))}">
 <link rel="icon" href="${imgPath(ctx, 'jma-mark-160.jpg')}">
-<link rel="preload" href="${ctx.assets}fonts/cormorant-garamond-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="${ctx.assets}css/site.css">
+${LOCAL ? '' : `<link rel="preload" href="${ctx.assets}fonts/cormorant-garamond-latin.woff2" as="font" type="font/woff2" crossorigin>\n`}<link rel="stylesheet" href="${ctx.assets}css/site.css">
 ${PRODUCTION && crumbs ? breadcrumbJsonLd(crumbs) : ''}
 </head>
 <body>
@@ -949,6 +952,13 @@ function build() {
   }
 
   if (NETLIFY) writeNetlifyFiles();
+  if (LOCAL) {
+    // Browsers restrict web fonts loaded from file:// URLs, so embed them in the stylesheet.
+    const cssFile = path.join(OUT, 'assets', 'css', 'site.css');
+    const css = fs.readFileSync(cssFile, 'utf8').replace(/url\("\.\.\/fonts\/([^"]+\.woff2)"\)/g, (_, f) =>
+      `url("data:font/woff2;base64,${fs.readFileSync(path.join(SRC, 'static', 'fonts', f)).toString('base64')}")`);
+    fs.writeFileSync(cssFile, css);
+  }
   if (PRODUCTION) {
     const urls = pages.map((p) => `  <url><loc>${absUrl(p.meta.route)}</loc></url>`).join('\n');
     fs.writeFileSync(path.join(OUT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`);
