@@ -145,7 +145,14 @@ export function Logo({ size = 'header', className = '' }: { size?: 'header' | 'm
   return (
     <picture className={`logo logo--${size} ${className}`}>
       <source type="image/webp" srcSet={`${asset('/brand/cojacs-logo-160')}.webp 160w, ${src320}.webp 320w, ${src640}.webp 640w`} sizes={size === 'feature' ? '260px' : size === 'footer' ? '170px' : '80px'} />
-      <img src={`${src320}.png`} width={320} height={289} alt={`${site.brandName}: ${site.logoTagline}`} decoding="async" />
+      <img
+        src={`${src320}.png`}
+        width={320}
+        height={289}
+        alt={`${site.brandName}: ${site.logoTagline}`}
+        decoding="async"
+        loading={size === 'header' ? 'eager' : 'lazy'}
+      />
     </picture>
   );
 }

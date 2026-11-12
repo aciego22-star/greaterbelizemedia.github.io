@@ -11,6 +11,9 @@
 import type { FulfilmentOption } from '../types';
 import { t } from '../i18n/lang';
 
+/** Delivery charge anywhere in Belize City, in BZD (BZD $7 from 12 Nov 2026). Used in every text that mentions it. */
+export const DELIVERY_FEE_BZD = 7;
+
 export const site = {
   /**
    * Brand name. "Cojac's" matches the official logo supplied by the family
@@ -80,8 +83,11 @@ export const site = {
     {
       id: 'delivery',
       label: t('Delivery', 'Entrega'),
-      short: t('BZD $5 anywhere in Belize City', 'BZD $5 en cualquier parte de la Ciudad de Belice'),
-      description: t('Anywhere in and within Belize City. Delivery is BZD $5.', 'En cualquier parte de la Ciudad de Belice. La entrega cuesta BZD $5.'),
+      short: t(`BZD $${DELIVERY_FEE_BZD} anywhere in Belize City`, `BZD $${DELIVERY_FEE_BZD} en cualquier parte de la Ciudad de Belice`),
+      description: t(
+        `Anywhere in and within Belize City. Delivery is BZD $${DELIVERY_FEE_BZD}.`,
+        `En cualquier parte de la Ciudad de Belice. La entrega cuesta BZD $${DELIVERY_FEE_BZD}.`,
+      ),
       enabled: true,
       asksForArea: true,
       areaLabel: t('Exact delivery address', 'Dirección exacta de entrega'),
@@ -91,7 +97,7 @@ export const site = {
       ),
       messageLabel: t('Delivery (Belize City)', 'Entrega (Ciudad de Belice)'),
       chargeLabel: t('Delivery', 'Entrega'),
-      feeBZD: 5,
+      feeBZD: DELIVERY_FEE_BZD,
     },
     {
       id: 'pickup',
@@ -164,7 +170,6 @@ export const site = {
   alcohol: {
     /** LAUNCH BLOCKER: confirm the legal purchasing age and obligations with the family / counsel. */
     legalAge: 18,
-    showAgeNotice: true,
     responsibleMessage: t(
       'Rumpopo contains alcohol. Please enjoy responsibly. Not for sale to minors.',
       'El rumpopo contiene alcohol. Disfrútalo con responsabilidad. Prohibida su venta a menores de edad.',

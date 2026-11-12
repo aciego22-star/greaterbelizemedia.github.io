@@ -1,8 +1,9 @@
 /**
  * HOMEPAGE HERO SLIDESHOW
  * Supplied by the family (Nov 2026). Rotates every `intervalMs`, in this order, and loops.
- * Each slide has a desktop (16:9) and a mobile (9:16) image in /public/hero, as both
- * a high-quality WebP (served first) and the original PNG (fallback).
+ * Each slide has a desktop (16:9) and a mobile (9:16) image in /public/hero. The build
+ * (scripts/make-webp.mjs) makes the smaller sizes phones and laptops load, plus a light
+ * JPG fallback; the large PNG originals are kept in /originals/hero (not deployed).
  * To add, remove or reorder slides, edit this list — nothing else needs to change.
  */
 import { t } from '../i18n/lang';

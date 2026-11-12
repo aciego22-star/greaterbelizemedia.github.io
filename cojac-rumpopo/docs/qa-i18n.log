@@ -32,12 +32,13 @@ PASS  Spanish toast
 PASS  one tap opens the order drawer (Spanish)
 PASS  one tap goes to the Spanish order page
 PASS  one tap picks cash on delivery
-PASS  total shown: BZD $81.00
+PASS  total shown: BZD $83.00
+PASS  18+ box ticked with one tap
 PASS  WhatsApp goes to the business number
 PASS  message line: *Solicitud de pedido:*
 PASS  message line: 2 × Peanut Delight Rumpopo (Litro): BZD $76.00
-PASS  message line: Entrega (Ciudad de Belice): BZD $5.00
-PASS  message line: *Total: BZD $81.00*
+PASS  message line: Entrega (Ciudad de Belice): BZD $7.00
+PASS  message line: *Total: BZD $83.00*
 PASS  message line: Pago: Efectivo contra entrega
 PASS  message line: Nombre: Ana Pérez
 PASS  message line: Dirección: 12 Cleghorn St, casa azul
@@ -67,6 +68,20 @@ PASS  phone: the large flavour photo cards are left out
 PASS  phone: “See all flavours” still leads to the flavours
 PASS  desktop: flavour photo cards still shown
 
+== Menu ==
+PASS  en: seven flavours on the menu :: Classic Vanilla Rumpopo, Peanut Delight Rumpopo, Pumpkin Spice Rumpopo, White Chocolate w/ Hazelnut Rumpopo, Coquito Rumpopo, Snickerdeluxe Rumpopo, Vegan Rumpopo
+PASS  en: Dark Chocolate Peppermint removed
+PASS  en: Coquito at BZD $25.00 / $45.00 :: BZD $25.00 / BZD $45.00
+PASS  en: Coquito photo loads
+PASS  en: no age pop-up
+PASS  en: under-18 small print in the footer :: Alcoholic beverages will not be sold to anyone under 18.
+PASS  es: seven flavours on the menu :: Classic Vanilla Rumpopo, Peanut Delight Rumpopo, Pumpkin Spice Rumpopo, White Chocolate w/ Hazelnut Rumpopo, Coquito Rumpopo, Snickerdeluxe Rumpopo, Vegan Rumpopo
+PASS  es: Dark Chocolate Peppermint removed
+PASS  es: Coquito at BZD $25.00 / $45.00 :: BZD $25.00 / BZD $45.00
+PASS  es: Coquito photo loads
+PASS  es: no age pop-up
+PASS  es: under-18 small print in the footer :: No se venden bebidas alcohólicas a menores de 18 años.
+
 == Footer credit ==
 PASS  en: credit reads “Website developed by Austere Automations”
 PASS  en: the whole phrase is one link to Austere Automations
@@ -78,4 +93,4 @@ PASS  es: colour changes every 8 s through red, yellow and blue, then repeats ::
 == One tap: hover styles ==
 PASS  every hover style is limited to mouse/trackpad devices
 
-65/65 checks passed
+78/78 checks passed

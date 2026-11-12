@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build && vite build --ssr src/entry-server.tsx --outDir dist-ssr && node scripts/prerender-routes.mjs",
+    "build": "tsc -b && vite build && vite build --ssr src/entry-server.tsx --outDir dist-ssr && node scripts/prerender-routes.mjs && node scripts/compress-fallbacks.mjs",
     "build:preview": "VITE_SHOW_LAUNCH_NOTES=true npm run build",
     "build:illustrative": "VITE_SHOW_LAUNCH_NOTES=true VITE_ILLUSTRATIVE_MENU=true npm run build",
     "preview": "vite preview --port 4173",

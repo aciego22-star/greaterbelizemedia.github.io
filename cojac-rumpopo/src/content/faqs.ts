@@ -5,7 +5,7 @@
  * Each text is written t('English', 'Español').
  */
 import type { FaqItem } from '../types';
-import { site } from './site';
+import { DELIVERY_FEE_BZD, site } from './site';
 import { formatLongDate } from '../lib/season';
 import { getCatalogue, lowestPrice, sizeNames } from './catalogue';
 import { t } from '../i18n/lang';
@@ -181,8 +181,8 @@ export const faqs: FaqItem[] = [
     published: from !== null,
     question: t('How much does a bottle of Cojac’s rumpopo cost?', '¿Cuánto cuesta una botella de rumpopo Cojac’s?'),
     answer: t(
-      `Prices start from BZD $${from} for a half liter. This season’s prices (half liter, liter): ${priceLines}. Delivery in Belize City is BZD $5, pickup is free, and shipping charges are confirmed on WhatsApp.`,
-      `Los precios empiezan desde BZD $${from} por medio litro. Precios de esta temporada (medio litro, litro): ${priceLines}. La entrega en la Ciudad de Belice cuesta BZD $5, recoger es gratis y el costo de envío se confirma por WhatsApp.`,
+      `Prices start from BZD $${from} for a half liter. This season’s prices (half liter, liter): ${priceLines}. Delivery in Belize City is BZD $${DELIVERY_FEE_BZD}, pickup is free, and shipping charges are confirmed on WhatsApp.`,
+      `Los precios empiezan desde BZD $${from} por medio litro. Precios de esta temporada (medio litro, litro): ${priceLines}. La entrega en la Ciudad de Belice cuesta BZD $${DELIVERY_FEE_BZD}, recoger es gratis y el costo de envío se confirma por WhatsApp.`,
     ),
   },
 

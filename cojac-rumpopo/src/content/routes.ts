@@ -60,7 +60,7 @@ const es: Record<RouteKey, Omit<RouteInfo, 'path'>> = {
     nav: 'Pedir',
     title: 'Pide rumpopo por WhatsApp | Cojac’s Sumptuous Rumpopo',
     description:
-      'Arma tu pedido de rumpopo y envíaselo a Cojac’s por WhatsApp. Entrega por BZD $5 en cualquier parte de la Ciudad de Belice, opción de recoger y envíos a otros distritos.',
+      'Arma tu pedido de rumpopo y envíaselo a Cojac’s por WhatsApp. Entrega por BZD $7 en cualquier parte de la Ciudad de Belice, opción de recoger y envíos a otros distritos.',
   },
   faqs: {
     nav: 'Preguntas frecuentes',

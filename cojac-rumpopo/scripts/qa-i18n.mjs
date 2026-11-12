@@ -126,12 +126,14 @@ console.log('\n== Spanish order (iPhone 13, taps only) ==');
   await page.getByLabel(/Dirección exacta de entrega/).fill('12 Cleghorn St, casa azul');
   await page.locator('#payment-group .option-card', { hasText: 'Efectivo contra entrega' }).tap();
   check('one tap picks cash on delivery', await page.locator('#payment-group input[value="cash"]').isChecked());
-  check('total shown: BZD $81.00', (await page.locator('.summary-totals').innerText()).includes('BZD $81.00'));
+  check('total shown: BZD $83.00', (await page.locator('.summary-totals').innerText()).includes('BZD $83.00'));
+  await page.locator('#age-confirm').tap();
+  check('18+ box ticked with one tap', await page.locator('#age-confirm').isChecked());
   const send = page.getByRole('link', { name: 'Enviar pedido por WhatsApp' });
   const href = await send.getAttribute('href');
   const msg = decodeURIComponent(href.split('?text=')[1]);
   check('WhatsApp goes to the business number', href.startsWith('https://wa.me/5016218372?text='));
-  for (const line of ['*Solicitud de pedido:*', '2 × Peanut Delight Rumpopo (Litro): BZD $76.00', 'Entrega (Ciudad de Belice): BZD $5.00', '*Total: BZD $81.00*', 'Pago: Efectivo contra entrega', 'Nombre: Ana Pérez', 'Dirección: 12 Cleghorn St, casa azul']) {
+  for (const line of ['*Solicitud de pedido:*', '2 × Peanut Delight Rumpopo (Litro): BZD $76.00', 'Entrega (Ciudad de Belice): BZD $7.00', '*Total: BZD $83.00*', 'Pago: Efectivo contra entrega', 'Nombre: Ana Pérez', 'Dirección: 12 Cleghorn St, casa azul']) {
     check(`message line: ${line}`, msg.includes(line), msg.includes(line) ? '' : msg);
   }
   check('message has no long dashes', !/[—–]/.test(msg));
@@ -195,6 +197,25 @@ console.log('\n== Homepage length on phones ==');
   await dp.goto(BASE + '/');
   check('desktop: flavour photo cards still shown', await dp.locator('.featured').isVisible());
   await d.close();
+}
+
+// ── 3d. This season's menu (Nov 12 update) ──────────────────────────────
+console.log('\n== Menu ==');
+for (const [lang, path] of [['en', '/flavours'], ['es', '/es/flavours']]) {
+  const ctx = await context({ viewport: { width: 1366, height: 900 } });
+  const page = await ctx.newPage();
+  await page.goto(BASE + path);
+  const names = await page.locator('article.flavour-card h3').allInnerTexts();
+  check(`${lang}: seven flavours on the menu`, names.length === 7, names.join(', '));
+  check(`${lang}: Dark Chocolate Peppermint removed`, !(await page.content()).includes('Peppermint'));
+  const coquito = page.locator('article.flavour-card', { has: page.getByRole('heading', { name: 'Coquito Rumpopo' }) });
+  const prices = (await coquito.locator('.size-option__price').allInnerTexts()).join(' / ');
+  check(`${lang}: Coquito at BZD $25.00 / $45.00`, prices === 'BZD $25.00 / BZD $45.00', prices);
+  check(`${lang}: Coquito photo loads`, await coquito.locator('img').evaluate((img) => img.complete && img.naturalWidth > 0));
+  check(`${lang}: no age pop-up`, (await page.getByRole('dialog').count()) === 0);
+  const small = (await page.locator('.site-footer__age').innerText()).trim();
+  check(`${lang}: under-18 small print in the footer`, small === (lang === 'es' ? 'No se venden bebidas alcohólicas a menores de 18 años.' : 'Alcoholic beverages will not be sold to anyone under 18.'), small);
+  await ctx.close();
 }
 
 // ── 4. Footer credit ────────────────────────────────────────────────────

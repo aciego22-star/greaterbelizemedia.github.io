@@ -15,11 +15,20 @@ function Slide({ i, active, show }: { i: number; active: boolean; show: boolean 
     >
       {show && (
         <picture>
-          <source media="(max-width: 767px)" type="image/webp" srcSet={asset(`${s.mobile}.webp`)} />
-          <source media="(max-width: 767px)" srcSet={asset(`${s.mobile}.png`)} />
-          <source type="image/webp" srcSet={asset(`${s.desktop}.webp`)} />
+          <source
+            media="(max-width: 767px)"
+            type="image/webp"
+            srcSet={`${asset(`${s.mobile}-540.webp`)} 540w, ${asset(`${s.mobile}-720.webp`)} 720w, ${asset(`${s.mobile}.webp`)} 941w`}
+            sizes="100vw"
+          />
+          <source media="(max-width: 767px)" srcSet={asset(`${s.mobile}.jpg`)} />
+          <source
+            type="image/webp"
+            srcSet={`${asset(`${s.desktop}-960.webp`)} 960w, ${asset(`${s.desktop}-1280.webp`)} 1280w, ${asset(`${s.desktop}.webp`)} 1672w`}
+            sizes="100vw"
+          />
           <img
-            src={asset(`${s.desktop}.png`)}
+            src={asset(`${s.desktop}.jpg`)}
             width={1672}
             height={941}
             alt={s.alt}
@@ -56,12 +65,19 @@ export function HeroSlideshow() {
   }, []);
 
   useEffect(() => {
-    setLoaded((prev) => {
-      const next = new Set(prev);
-      next.add(current);
-      next.add((current + 1) % n);
-      return next.size === prev.size ? prev : next;
-    });
+    // Fetch the next photo a little before it is due, not straight away, so the
+    // first photo (the one people see) gets the connection to itself.
+    const timer = window.setTimeout(
+      () =>
+        setLoaded((prev) => {
+          const next = new Set(prev);
+          next.add(current);
+          next.add((current + 1) % n);
+          return next.size === prev.size ? prev : next;
+        }),
+      Math.max(0, heroIntervalMs - 2500),
+    );
+    return () => window.clearTimeout(timer);
   }, [current, n]);
 
   const go = useCallback((i: number) => setCurrent(((i % n) + n) % n), [n]);
@@ -88,7 +104,7 @@ export function HeroSlideshow() {
     >
       <div className="hero-slides__track" aria-live={paused ? 'polite' : 'off'}>
         {heroSlides.map((s, i) => (
-          <Slide key={s.id} i={i} active={i === current} show={loaded.has(i)} />
+          <Slide key={s.id} i={i} active={i === current} show={loaded.has(i) || i === current} />
         ))}
       </div>
       {n > 1 && (

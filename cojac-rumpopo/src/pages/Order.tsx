@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import routes from '../content/routes';
 import { buildFlags, site } from '../content/site';
@@ -14,8 +14,6 @@ import { PaymentStep } from '../components/PaymentStep';
 import { effectivePayment, findBank } from '../lib/payments';
 import { t } from '../i18n/lang';
 
-const AGE_KEY = 'cojac-age-confirmed-v1';
-
 export default function Order() {
   usePageMeta('order');
   const { resolved, totals, details, setDetails, clear } = useCart();
@@ -25,13 +23,6 @@ export default function Order() {
   const fulfilment = enabledOptions.find((f) => f.id === details.fulfilment);
 
   const [ageOk, setAgeOk] = useState(false);
-  useEffect(() => {
-    try {
-      if (localStorage.getItem(AGE_KEY) === 'yes') setAgeOk(true);
-    } catch {
-      /* storage unavailable */
-    }
-  }, []);
   const [attempted, setAttempted] = useState(false);
   const [status, setStatus] = useState<'idle' | 'opened' | 'copied' | 'copy-failed'>('idle');
 

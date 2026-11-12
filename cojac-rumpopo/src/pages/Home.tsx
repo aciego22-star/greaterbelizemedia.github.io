@@ -5,7 +5,7 @@ import { getCatalogue } from '../content/catalogue';
 import { gallery } from '../content/gallery';
 import { media } from '../content/media';
 import { publishedFaqs } from '../content/faqs';
-import { site } from '../content/site';
+import { DELIVERY_FEE_BZD, site } from '../content/site';
 import { formatLongDate, getSeasonState } from '../lib/season';
 import { usePageMeta } from '../lib/usePageMeta';
 import { isEs, t } from '../i18n/lang';
@@ -99,8 +99,8 @@ function SeasonStatus() {
             </Link>
             <p className="season-card__fine">
               {t(
-                'Delivery is BZD $5 in Belize City. Shipping charges are confirmed on WhatsApp.',
-                'La entrega cuesta BZD $5 en la Ciudad de Belice. El costo de envío se confirma por WhatsApp.',
+                `Delivery is BZD $${DELIVERY_FEE_BZD} in Belize City. Shipping charges are confirmed on WhatsApp.`,
+                `La entrega cuesta BZD $${DELIVERY_FEE_BZD} en la Ciudad de Belice. El costo de envío se confirma por WhatsApp.`,
               )}
             </p>
           </div>

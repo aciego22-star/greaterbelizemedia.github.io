@@ -19,7 +19,7 @@ export function lineKey(productId: string, variantId: string | null): string {
 
 export const CHARGE_TBC = t('Charge confirmed by Cojac’s', 'Costo confirmado por Cojac’s');
 
-/** "Free", "BZD $5.00" or "Charge confirmed by Cojac’s". */
+/** "Free", "BZD $7.00" or "Charge confirmed by Cojac’s". */
 export function feeLabel(f: Pick<FulfilmentOption, 'feeBZD'>): string {
   if (f.feeBZD === 0) return t('Free', 'Gratis');
   if (f.feeBZD === null) return CHARGE_TBC;

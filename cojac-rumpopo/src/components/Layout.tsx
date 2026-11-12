@@ -9,7 +9,6 @@ import { BagIcon, ChevronIcon, CloseIcon, MenuIcon, PhoneIcon, PinIcon, WhatsApp
 import { Sparkle } from './Art';
 import { Logo, SocialIcons } from './ui';
 import { CartDrawer } from './CartDrawer';
-import { AgeNotice } from './AgeNotice';
 import { LangToggle } from './LangToggle';
 import { t } from '../i18n/lang';
 
@@ -277,6 +276,12 @@ function Footer() {
           <a href={site.credit.url} target="_blank" rel="noopener" className="site-footer__credit">
             {site.credit.label}
           </a>
+          <p className="site-footer__age">
+            {t(
+              `Alcoholic beverages will not be sold to anyone under ${site.alcohol.legalAge}.`,
+              `No se venden bebidas alcohólicas a menores de ${site.alcohol.legalAge} años.`,
+            )}
+          </p>
           {buildFlags.showLaunchNotes && (
             <p>
               <Link to="/launch-notes" className="site-footer__preview">
@@ -344,7 +349,6 @@ export function Layout() {
       <StickyOrderBar />
       <CartDrawer />
       <Toast />
-      <AgeNotice />
     </>
   );
 }

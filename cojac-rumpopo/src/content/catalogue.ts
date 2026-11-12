@@ -2,7 +2,8 @@
  * ─────────────────────────────────────────────────────────────────────────────
  *  FLAVOUR CATALOGUE — edit each season. See docs/HANDOVER.md.
  *
- *  2026/27 menu supplied by the family (Nov 2026): seven flavours, each in a
+ *  2026/27 menu supplied by the family (Nov 2026): seven flavours (Coquito
+ *  replaced Dark Chocolate Peppermint on 12 Nov 2026), each in a
  *  Half liter (500 mL) and a Liter (1 L) bottle, with approved BZD prices and
  *  product photography in /public/products.
  *
@@ -124,20 +125,21 @@ export const products: Product[] = [
   },
   {
     ...common,
-    id: 'dark-chocolate-peppermint',
-    slug: 'dark-chocolate-peppermint',
-    name: 'Dark Chocolate Peppermint Rumpopo',
-    subtitle: t('Seasonal creation', 'Creación de temporada'),
+    id: 'coquito',
+    slug: 'coquito',
+    name: 'Coquito Rumpopo',
+    subtitle: t('New this season', 'Nuevo esta temporada'),
     description: t(
-      'Dark chocolate and peppermint, a festive pairing for the season, poured the Cojac’s way.',
-      'Chocolate oscuro y menta, una combinación festiva para la temporada, servida al estilo Cojac’s.',
+      'New to the menu this season: Coquito, a festive holiday favourite, poured the Cojac’s way.',
+      'Nuevo en el menú esta temporada: Coquito, un favorito festivo de las fiestas, servido al estilo Cojac’s.',
     ),
-    images: photo('Cojacs_Dark_Chocolate_Peppermint_Rumpopo', 'Dark Chocolate Peppermint'),
-    seasonalCollection: 'seasonal',
+    images: photo('Cojacs_Coquito_Rumpopo', 'Coquito'),
+    seasonalCollection: 'new-release',
     highlighted: false,
-    variants: sizes(22, 40),
+    variants: sizes(25, 45),
     dietaryLabel: null,
-    palette: { cream: '#B08A72', deep: '#7A5546', accent: '#1F4A3A' },
+    editorialNotes: 'Added 12 Nov 2026. Confirm ingredients/allergens before publishing them.',
+    palette: { cream: '#F1E4C8', deep: '#D2BC8E', accent: '#7A1F2B' },
   },
   {
     ...common,

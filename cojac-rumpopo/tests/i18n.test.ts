@@ -56,8 +56,8 @@ describe('Spanish content', () => {
     } as Parameters<typeof order.buildOrderMessage>[0]);
     expect(msg).toContain('¡Hola, Cojac\'s Sumptuous Rumpopo! *Solicitud de pedido:*');
     expect(msg).toContain('2 × Peanut Delight Rumpopo (Litro): BZD $76.00');
-    expect(msg).toContain('Entrega (Ciudad de Belice): BZD $5.00');
-    expect(msg).toContain('*Total: BZD $81.00*');
+    expect(msg).toContain('Entrega (Ciudad de Belice): BZD $7.00');
+    expect(msg).toContain('*Total: BZD $83.00*');
     expect(msg).toContain('Pago: Efectivo contra entrega');
     expect(msg).toContain('Nombre: Ana');
     expect(msg).toContain('Dirección: 12 Cleghorn St');

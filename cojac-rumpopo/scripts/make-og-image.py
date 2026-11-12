@@ -2,7 +2,7 @@
 Run from the cojac-rumpopo folder:  python3 scripts/make-og-image.py"""
 from PIL import Image
 
-src = Image.open('public/hero/Cojacs_Hero_01_Cocktail_Desktop_16x9.png').convert('RGB')
+src = Image.open('originals/hero/Cojacs_Hero_01_Cocktail_Desktop_16x9.png').convert('RGB')
 w, h = src.size
 crop_h = int(w / (1200 / 630))
 top = (h - crop_h) // 2

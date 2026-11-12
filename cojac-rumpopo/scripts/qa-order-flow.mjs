@@ -38,12 +38,14 @@ for (const [label, opts] of [
   page.on('pageerror', (e) => errors.push(String(e)));
   page.on('console', (m) => m.type() === 'error' && !m.text().includes('ERR_FAILED') && errors.push(m.text()));
 
-  // Age notice appears on first visit
+  // No age pop-up on arrival; the under-18 notice is small print in the footer
   await page.goto(BASE + '/flavours');
-  const gate = page.getByRole('dialog', { name: /welcome to rumpopo season/i });
-  check('age notice shown on first visit', await gate.waitFor({ timeout: 4000 }).then(() => true, () => false));
-  await page.getByRole('button', { name: /or older/i }).click();
-  check('age notice dismissed', !(await gate.isVisible()));
+  await page.waitForTimeout(800);
+  check('no age pop-up when the site opens', (await page.getByRole('dialog').count()) === 0);
+  check(
+    'footer small print: not sold to anyone under 18',
+    (await page.locator('.site-footer__age').innerText()).trim() === 'Alcoholic beverages will not be sold to anyone under 18.',
+  );
 
   // Add items: 2 x Classic Vanilla with a note, 1 x Peanut Delight, then 3 more Classic Vanilla (merges)
   const card = (name) => page.locator('article.flavour-card', { has: page.getByRole('heading', { name }) });
@@ -111,10 +113,10 @@ for (const [label, opts] of [
     check('shipping charge shown as confirmed by Cojac’s', (await page.locator('.summary-totals').innerText()).includes('Charge confirmed by Cojac’s'));
     check('shipping shows no invented total', (await page.locator('.summary-totals__total').count()) === 0);
     check('shipping is paid by bank transfer only', (await page.locator('#payment-group .option-card').count()) === 1 && (await page.locator('#payment-group input[value="transfer"]').isChecked()));
-    // Delivery: BZD $5 within Belize City
+    // Delivery: BZD $7 within Belize City
     await page.locator('.option-card', { hasText: 'Anywhere in and within Belize City' }).click();
-    check('delivery is BZD $5.00', (await page.locator('.summary-totals').innerText()).includes('BZD $5.00'));
-    check('delivery total is BZD $166.00', (await page.locator('.summary-totals__total').innerText()).includes('BZD $166.00'));
+    check('delivery is BZD $7.00', (await page.locator('.summary-totals').innerText()).includes('BZD $7.00'));
+    check('delivery total is BZD $168.00', (await page.locator('.summary-totals__total').innerText()).includes('BZD $168.00'));
     // Name and exact address are required
     await send.click();
     check('send blocked without a name', (await page.getByText('Please enter your name.').count()) === 1 && waUrls.length === 0);
@@ -139,11 +141,11 @@ for (const [label, opts] of [
     const expectHref = label === 'desktop' ? 'https://www.belizebank.com/' : label.startsWith('iPhone') ? 'https://apps.apple.com/bz/app/belize-bank-mobile-banking/id1361907333' : 'intent:';
     check(`"Open Belize Bank" goes to the ${label === 'desktop' ? 'website' : label.startsWith('iPhone') ? 'App Store app page' : 'installed app (Play Store fallback)'}`, (openHref || '').startsWith(expectHref) && (expectHref !== 'intent:' || (openHref || '').includes('package=com.belizebank.mobile')), (openHref || '').slice(0, 70));
     const panel = await page.locator('.transfer-panel').innerText();
-    check('transfer panel shows the amount (BZD $166.00)', panel.includes('BZD $166.00'));
+    check('transfer panel shows the amount (BZD $168.00)', panel.includes('BZD $168.00'));
     check('transfer panel asks for the screenshot before the order is placed', /screenshot of your completed transfer/i.test(panel) && /order is placed once Cojac’s receives your transfer screenshot/i.test(panel));
     check('shows Cojac’s Atlantic Bank account 212001055, recipient Cojac Smith', panel.includes('Atlantic Bank Limited') && panel.includes('212001055') && panel.includes('Cojac Smith'));
     check('Belize Bank payers are told to send to another bank in Belize', /another bank in Belize/.test(panel));
-    check('with a known total, transfer comes first', /send BZD \$166\.00 to the account above/.test(panel));
+    check('with a known total, transfer comes first', /send BZD \$168\.00 to the account above/.test(panel));
     if (label === 'desktop') {
       await page.getByRole('button', { name: 'Copy account number' }).click();
       const clipAcct = await page.evaluate(() => navigator.clipboard.readText().catch(() => ''));
@@ -152,6 +154,11 @@ for (const [label, opts] of [
     check('summary shows Bank transfer (Belize Bank)', (await page.locator('.summary-totals').innerText()).includes('Bank transfer (Belize Bank)'));
     await page.getByLabel(/preferred date/i).fill('2026-12-20');
     await page.getByLabel(/notes for cojac/i).fill('QA test, please ignore. Special chars: & # ? "quotes" 🎄');
+    // The 18+ confirmation at checkout is still required (the arrival pop-up is gone)
+    check('age box starts unticked at checkout', !(await page.locator('#age-confirm').isChecked()));
+    await send.click();
+    check('send blocked until the 18+ box is ticked', (await page.getByText('Please confirm you are 18 or older.').count()) === 1 && waUrls.length === 0);
+    await page.locator('#age-confirm').check();
     const [popup] = await Promise.all([ctx.waitForEvent('page', { timeout: 5000 }).catch(() => null), send.click()]);
     await page.waitForTimeout(800);
     const url = waUrls[0] || popup?.url() || '';
@@ -163,8 +170,8 @@ for (const [label, opts] of [
       '5 × Classic Vanilla Rumpopo (Half liter): BZD $85.00',
       'Note: One bottle wrapped as a gift',
       '2 × Peanut Delight Rumpopo (Liter): BZD $76.00',
-      'Delivery (Belize City): BZD $5.00',
-      '*Total: BZD $166.00*',
+      'Delivery (Belize City): BZD $7.00',
+      '*Total: BZD $168.00*',
       'Name: QA Tester',
       'Address: 12 Cleghorn St, blue house beside the church',
       'Date: Sun, 20 December 2026',

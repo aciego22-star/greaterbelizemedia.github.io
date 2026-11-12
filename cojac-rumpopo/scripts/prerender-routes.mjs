@@ -35,7 +35,18 @@ const LANGS = { en, es };
 const siteTs = readFileSync(join(root, 'src/content/site.ts'), 'utf8');
 const siteUrl = (siteTs.match(/siteUrl:\s*'([^']+)'/)?.[1] ?? '').replace(/\/$/, '');
 const PLACEHOLDER = /https:\/\/cojacs-rumpopo\.netlify\.app/g;
-const template = readFileSync(join(dist, 'index.html'), 'utf8').replace(PLACEHOLDER, siteUrl);
+let template = readFileSync(join(dist, 'index.html'), 'utf8').replace(PLACEHOLDER, siteUrl);
+// Speed: build the stylesheet into each page instead of a separate file the page must
+// wait for, so phones can draw the page as soon as the HTML arrives (~18 KB compressed).
+template = template.replace(/<link rel="stylesheet"[^>]*href="([^"]+)"[^>]*>/, (tag, href) => {
+  const file = join(dist, href.replace(/^\//, ''));
+  try {
+    return `<style>${readFileSync(file, 'utf8').replace(/<\/style/gi, '<\\/style')}</style>`;
+  } catch {
+    return tag;
+  }
+});
+
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 const setMeta = (html, attr, key, value) =>

@@ -1,7 +1,7 @@
 
 == desktop (official) ==
-PASS  age notice shown on first visit
-PASS  age notice dismissed
+PASS  no age pop-up when the site opens
+PASS  footer small print: not sold to anyone under 18
 PASS  fly to basket: photo floats toward the basket
 PASS  fly to basket: shows ×2 badge
 PASS  fly to basket: flyer is hidden from screen readers
@@ -22,8 +22,8 @@ PASS  shipping asks for the exact shipping address
 PASS  shipping charge shown as confirmed by Cojac’s
 PASS  shipping shows no invented total
 PASS  shipping is paid by bank transfer only
-PASS  delivery is BZD $5.00
-PASS  delivery total is BZD $166.00
+PASS  delivery is BZD $7.00
+PASS  delivery total is BZD $168.00
 PASS  send blocked without a name
 PASS  send blocked without an address
 PASS  send blocked without a payment method
@@ -33,21 +33,23 @@ PASS  bank transfer shows Heritage Bank, Belize Bank and Atlantic Bank — ["Her
 PASS  bank app icons load
 PASS  send blocked until a bank is chosen
 PASS  "Open Belize Bank" goes to the website — https://www.belizebank.com/
-PASS  transfer panel shows the amount (BZD $166.00)
+PASS  transfer panel shows the amount (BZD $168.00)
 PASS  transfer panel asks for the screenshot before the order is placed
 PASS  shows Cojac’s Atlantic Bank account 212001055, recipient Cojac Smith
 PASS  Belize Bank payers are told to send to another bank in Belize
 PASS  with a known total, transfer comes first
 PASS  account number copies to the clipboard — 212001055
 PASS  summary shows Bank transfer (Belize Bank)
+PASS  age box starts unticked at checkout
+PASS  send blocked until the 18+ box is ticked
 PASS  WhatsApp opened in a new tab via wa.me — https://wa.me/5016218372?text=Hi%20Cojac
 PASS  destination number is 5016218372
 PASS  message contains: Hi Cojac's Sumptuous Rumpopo! *Order request:*
 PASS  message contains: 5 × Classic Vanilla Rumpopo (Half liter): BZD $85.
 PASS  message contains: Note: One bottle wrapped as a gift
 PASS  message contains: 2 × Peanut Delight Rumpopo (Liter): BZD $76.00
-PASS  message contains: Delivery (Belize City): BZD $5.00
-PASS  message contains: *Total: BZD $166.00*
+PASS  message contains: Delivery (Belize City): BZD $7.00
+PASS  message contains: *Total: BZD $168.00*
 PASS  message contains: Name: QA Tester
 PASS  message contains: Address: 12 Cleghorn St, blue house beside the chu
 PASS  message contains: Date: Sun, 20 December 2026
@@ -66,8 +68,8 @@ PASS  clear empties the order
 PASS  no page errors
 
 == iPhone 13 (official) ==
-PASS  age notice shown on first visit
-PASS  age notice dismissed
+PASS  no age pop-up when the site opens
+PASS  footer small print: not sold to anyone under 18
 PASS  fly to basket: photo floats toward the basket
 PASS  fly to basket: shows ×2 badge
 PASS  fly to basket: flyer is hidden from screen readers
@@ -88,8 +90,8 @@ PASS  shipping asks for the exact shipping address
 PASS  shipping charge shown as confirmed by Cojac’s
 PASS  shipping shows no invented total
 PASS  shipping is paid by bank transfer only
-PASS  delivery is BZD $5.00
-PASS  delivery total is BZD $166.00
+PASS  delivery is BZD $7.00
+PASS  delivery total is BZD $168.00
 PASS  send blocked without a name
 PASS  send blocked without an address
 PASS  send blocked without a payment method
@@ -99,20 +101,22 @@ PASS  bank transfer shows Heritage Bank, Belize Bank and Atlantic Bank — ["Her
 PASS  bank app icons load
 PASS  send blocked until a bank is chosen
 PASS  "Open Belize Bank" goes to the App Store app page — https://apps.apple.com/bz/app/belize-bank-mobile-banking/id1361907333
-PASS  transfer panel shows the amount (BZD $166.00)
+PASS  transfer panel shows the amount (BZD $168.00)
 PASS  transfer panel asks for the screenshot before the order is placed
 PASS  shows Cojac’s Atlantic Bank account 212001055, recipient Cojac Smith
 PASS  Belize Bank payers are told to send to another bank in Belize
 PASS  with a known total, transfer comes first
 PASS  summary shows Bank transfer (Belize Bank)
+PASS  age box starts unticked at checkout
+PASS  send blocked until the 18+ box is ticked
 PASS  WhatsApp opened in a new tab via wa.me — https://wa.me/5016218372?text=Hi%20Cojac
 PASS  destination number is 5016218372
 PASS  message contains: Hi Cojac's Sumptuous Rumpopo! *Order request:*
 PASS  message contains: 5 × Classic Vanilla Rumpopo (Half liter): BZD $85.
 PASS  message contains: Note: One bottle wrapped as a gift
 PASS  message contains: 2 × Peanut Delight Rumpopo (Liter): BZD $76.00
-PASS  message contains: Delivery (Belize City): BZD $5.00
-PASS  message contains: *Total: BZD $166.00*
+PASS  message contains: Delivery (Belize City): BZD $7.00
+PASS  message contains: *Total: BZD $168.00*
 PASS  message contains: Name: QA Tester
 PASS  message contains: Address: 12 Cleghorn St, blue house beside the chu
 PASS  message contains: Date: Sun, 20 December 2026
@@ -132,8 +136,8 @@ PASS  mobile menu navigation works
 PASS  no page errors
 
 == Pixel 7 (official) ==
-PASS  age notice shown on first visit
-PASS  age notice dismissed
+PASS  no age pop-up when the site opens
+PASS  footer small print: not sold to anyone under 18
 PASS  fly to basket: photo floats toward the basket
 PASS  fly to basket: shows ×2 badge
 PASS  fly to basket: flyer is hidden from screen readers
@@ -154,8 +158,8 @@ PASS  shipping asks for the exact shipping address
 PASS  shipping charge shown as confirmed by Cojac’s
 PASS  shipping shows no invented total
 PASS  shipping is paid by bank transfer only
-PASS  delivery is BZD $5.00
-PASS  delivery total is BZD $166.00
+PASS  delivery is BZD $7.00
+PASS  delivery total is BZD $168.00
 PASS  send blocked without a name
 PASS  send blocked without an address
 PASS  send blocked without a payment method
@@ -165,20 +169,22 @@ PASS  bank transfer shows Heritage Bank, Belize Bank and Atlantic Bank — ["Her
 PASS  bank app icons load
 PASS  send blocked until a bank is chosen
 PASS  "Open Belize Bank" goes to the installed app (Play Store fallback) — intent:#Intent;action=android.intent.action.MAIN;category=android.inte
-PASS  transfer panel shows the amount (BZD $166.00)
+PASS  transfer panel shows the amount (BZD $168.00)
 PASS  transfer panel asks for the screenshot before the order is placed
 PASS  shows Cojac’s Atlantic Bank account 212001055, recipient Cojac Smith
 PASS  Belize Bank payers are told to send to another bank in Belize
 PASS  with a known total, transfer comes first
 PASS  summary shows Bank transfer (Belize Bank)
+PASS  age box starts unticked at checkout
+PASS  send blocked until the 18+ box is ticked
 PASS  WhatsApp opened in a new tab via wa.me — https://wa.me/5016218372?text=Hi%20Cojac
 PASS  destination number is 5016218372
 PASS  message contains: Hi Cojac's Sumptuous Rumpopo! *Order request:*
 PASS  message contains: 5 × Classic Vanilla Rumpopo (Half liter): BZD $85.
 PASS  message contains: Note: One bottle wrapped as a gift
 PASS  message contains: 2 × Peanut Delight Rumpopo (Liter): BZD $76.00
-PASS  message contains: Delivery (Belize City): BZD $5.00
-PASS  message contains: *Total: BZD $166.00*
+PASS  message contains: Delivery (Belize City): BZD $7.00
+PASS  message contains: *Total: BZD $168.00*
 PASS  message contains: Name: QA Tester
 PASS  message contains: Address: 12 Cleghorn St, blue house beside the chu
 PASS  message contains: Date: Sun, 20 December 2026
@@ -197,4 +203,4 @@ PASS  mobile menu lists all 9 sitemap sections — 17 links
 PASS  mobile menu navigation works
 PASS  no page errors
 
-192/192 checks passed
+198/198 checks passed

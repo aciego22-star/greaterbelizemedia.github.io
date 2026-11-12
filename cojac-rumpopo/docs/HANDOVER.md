@@ -8,7 +8,7 @@ You make all of these edits in plain text files in `src/content/`. After saving,
 
 ## 0. Homepage slideshow
 
-`src/content/hero.ts` lists the four hero photos (desktop 16:9 and mobile 9:16, in `public/hero/`). They rotate every 6 seconds in the listed order and loop. To change the order, move the entries; to change the speed, edit `heroIntervalMs`. For a new photo, add a desktop and mobile PNG plus WebP copies with the same naming and a new entry with a short description (`alt`) of the photo.
+`src/content/hero.ts` lists the four hero photos (desktop 16:9 and mobile 9:16, in `public/hero/`). They rotate every 6 seconds in the listed order and loop. To change the order, move the entries; to change the speed, edit `heroIntervalMs`. For a new photo, add the desktop and mobile versions (PNG or JPG, same naming) to `public/hero/` and a new entry with a short description (`alt`). The build makes the WebP copies, the smaller phone and laptop sizes and a light JPG fallback. Then move the big PNG originals to `originals/hero/` so they are not uploaded with the site.
 
 ## 0b. English and Spanish
 
@@ -45,8 +45,8 @@ whatsapp: {
 | Peanut Delight | BZD $20 | BZD $38 |
 | Pumpkin Spice | BZD $22 | BZD $42 |
 | White Chocolate w/ Hazelnut | BZD $25 | BZD $48 |
-| Dark Chocolate Peppermint | BZD $22 | BZD $40 |
 | Snickerdeluxe | BZD $25 | BZD $45 |
+| Coquito (new, Nov 2026) | BZD $25 | BZD $45 |
 | Vegan | BZD $25 | BZD $50 |
 
 **To change a price**, find the flavour in `src/content/catalogue.ts` and edit the two numbers in `variants: sizes(17, 32)` (half liter first, then liter). Everything else — cards, totals, WhatsApp message, FAQs, Google data — updates from that.
@@ -112,7 +112,7 @@ The detailed field reference follows:
 
 | Option | Meaning | `feeBZD` today |
 |---|---|---|
-| Delivery | Anywhere in and within Belize City | `5` → BZD $5.00 |
+| Delivery | Anywhere in and within Belize City | `7` → BZD $7.00 (set once as `DELIVERY_FEE_BZD` at the top of `site.ts`; every text that mentions it updates) |
 | Pickup | Free | `0` → “Free” |
 | Shipping | Out of district (anywhere outside Belize City), with a charge | `null` → “Charge confirmed by Cojac’s” |
 
