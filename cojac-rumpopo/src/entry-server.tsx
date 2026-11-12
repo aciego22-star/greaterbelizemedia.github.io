@@ -43,7 +43,7 @@ export function llmsTxt(): string {
     .join('\n');
   const faqs = publishedFaqs().map((f) => `### ${f.question}\n${f.answer}`).join('\n\n');
   const pages = Object.values(routes)
-    .map((r) => `- [${r.nav}](${base}${r.path === '/' ? '/' : r.path}): ${r.description}`)
+    .map((r) => `- [${r.nav}](${base}${r.path === '/' ? '/' : `${r.path}/`}): ${r.description}`)
     .join('\n');
   const videos = media
     .map((m) => `- ${site.brandName}, ${m.title}${m.publisher ? ` (${m.publisher}, ${m.platform === 'youtube' ? 'YouTube' : 'Facebook'})` : ''}: ${m.url}`)
@@ -78,7 +78,7 @@ ${pages}
 
 ## Holiday Blog
 ${publishedPosts()
-  .map((p) => `* [${p.title}](${base}${postPath(p.slug)}) (${formatPostDate(p.publishedAt)}): ${p.excerpt}`)
+  .map((p) => `* [${p.title}](${base}${postPath(p.slug)}/) (${formatPostDate(p.publishedAt)}): ${p.excerpt}`)
   .join('\n')}
 ${contest.status === 'active' ? '\nMystery flavour competition (2026): the new flavour is secret. Official hint: one of the main ingredients is popular in Belizean cooking. Guesses are made only in the comments of Cojac’s official Facebook competition post (one answer per comment, multiple guesses allowed); the first three correct answers each win one half liter bottle of the new flavour. Guesses are not collected on this website.\n' : ''}
 ## Media features

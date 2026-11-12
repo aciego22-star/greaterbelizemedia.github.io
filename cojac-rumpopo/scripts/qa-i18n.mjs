@@ -75,7 +75,7 @@ for (const [label, opts] of [
   check(`${label}: switch reads EN and ESP, current one marked`, (await bar.innerText()).replace(/\s+/g, ' ').trim() === 'EN ESP' && (await bar.locator('[aria-current="true"]').innerText()) === 'ESP');
   check(`${label}: no language switch in the footer`, (await page.locator('.site-footer .lang-toggle').count()) === 0);
   await tap(bar.getByRole('link', { name: 'English' }));
-  await page.waitForURL(BASE + '/our-story');
+  await page.waitForURL(new RegExp(`^${BASE}/our-story/?$`));
   check(`${label}: one tap on English opens the same page in English`, (await htmlLang(page)) === 'en-BZ' && /Behind the/.test(await h1(page)));
   await page.goto(BASE + '/');
   check(`${label}: the English choice is remembered even with a Spanish browser`, page.url() === BASE + '/' && (await htmlLang(page)) === 'en-BZ');
@@ -86,7 +86,7 @@ for (const [label, opts] of [
   await page.goto(BASE + '/es/flavours');
   await tap(page.locator('article.flavour-card').first().locator('.flavour-card__add'));
   await tap(page.locator('.site-header').getByRole('link', { name: 'English' }));
-  await page.waitForURL(BASE + '/flavours');
+  await page.waitForURL(new RegExp(`^${BASE}/flavours/?$`));
   await page.waitForTimeout(300);
   check(`${label}: the order request is kept when switching language`, (await page.locator('.site-header .cart-btn__count').innerText()) === '1');
   await ctx.close();

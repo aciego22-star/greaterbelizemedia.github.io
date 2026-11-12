@@ -29,7 +29,7 @@ export const site = {
   ),
 
   /** Public site address — used for canonical links, sitemap and social previews. */
-  siteUrl: 'https://shiny-truffle-ef9459.netlify.app',
+  siteUrl: 'https://rumpopo.com',
 
   /** Family's own description. Do not replace with a founding year until confirmed. */
   experienceStatement: t('more than fifteen years', 'más de quince años'),

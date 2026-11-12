@@ -54,7 +54,8 @@ const setMeta = (html, attr, key, value) =>
 
 /** Router path ("/flavours") → site path in a language ("/flavours" or "/es/flavours"). */
 const inLang = (lang, path) => (lang === 'en' ? path : path === '/' ? '/es/' : `/es${path}`);
-const urlFor = (lang, path) => siteUrl + inLang(lang, path);
+/** Public address: always ends in "/", the form Netlify serves without a redirect. */
+const urlFor = (lang, path) => siteUrl + inLang(lang, path).replace(/([^/])$/, '$1/');
 const fileFor = (lang, path) => {
   const p = inLang(lang, path);
   return p.endsWith('/') ? join(dist, p.slice(1), 'index.html') : join(dist, p.slice(1), 'index.html');
@@ -181,9 +182,12 @@ writeFileSync(
 writeFileSync(join(dist, 'robots.txt'), readFileSync(join(dist, 'robots.txt'), 'utf8').replace(PLACEHOLDER, siteUrl));
 writeFileSync(
   join(dist, 'llms.txt'),
-  en.llmsTxt() + `\n## Spanish version\nEvery page is also available in Spanish under ${siteUrl}/es/ (for example ${siteUrl}/es/flavours).\n`,
+  en.llmsTxt() + `\n## Spanish version\nEvery page is also available in Spanish under ${siteUrl}/es/ (for example ${siteUrl}/es/flavours/).\n`,
 );
 // Unknown Spanish paths get the Spanish "page not found"; everything else the English one.
-writeFileSync(join(dist, '_redirects'), '/es/*  /es/404.html  404\n/*  /404.html  404\n');
+// The site's old Netlify address sends visitors and search engines to rumpopo.com.
+const OLD_HOSTS = ['shiny-truffle-ef9459.netlify.app'];
+const hostRedirects = OLD_HOSTS.flatMap((h) => [`https://${h}/*  ${siteUrl}/:splat  301!`, `http://${h}/*  ${siteUrl}/:splat  301!`]).join('\n');
+writeFileSync(join(dist, '_redirects'), `${hostRedirects}\n/es/*  /es/404.html  404\n/*  /404.html  404\n`);
 rmSync(join(root, 'dist-ssr'), { recursive: true, force: true });
 console.log(`Pre-rendered ${urls.length} pages in English and Spanish (full HTML + JSON-LD) + 404 pages, sitemap.xml, robots.txt, llms.txt for ${siteUrl}`);

@@ -13,7 +13,7 @@ import { getCatalogue } from '../content/catalogue';
 import { getDestination } from './whatsapp';
 import { buildWhatsAppUrl } from './order';
 import { categoryName, postPath, publishedPosts, findPost, wordCount, type BlogPost } from '../content/blog/posts';
-import { isEs, localPath, t } from '../i18n/lang';
+import { isEs, localPublicPath, t } from '../i18n/lang';
 
 const IN_LANG = isEs ? 'es-BZ' : 'en-BZ';
 
@@ -22,9 +22,9 @@ type Json = Record<string, unknown>;
 
 const origin = () => site.siteUrl.replace(/\/$/, '');
 const abs = (path: string) => origin() + (path.startsWith('/') ? path : `/${path}`);
-const pageUrl = (key: RouteKey) => abs(localPath(routes[key].path));
-const homeUrl = () => abs(localPath('/'));
-const postUrl = (slug: string) => abs(localPath(postPath(slug)));
+const pageUrl = (key: RouteKey) => abs(localPublicPath(routes[key].path));
+const homeUrl = () => abs(localPublicPath('/'));
+const postUrl = (slug: string) => abs(localPublicPath(postPath(slug)));
 const ORG_ID = () => `${origin()}/#organization`;
 const SITE_ID = () => `${origin()}/#website`;
 

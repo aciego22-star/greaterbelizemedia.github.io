@@ -10,6 +10,19 @@
 # Every page is pre-rendered to its own folder (e.g. /flavours/index.html), so
 # direct visits and refreshes work without rewrites. Unknown paths get the
 # branded "page not found" view with a real 404 status.
+# The old Netlify address sends everyone to the official domain.
+[[redirects]]
+  from = "https://shiny-truffle-ef9459.netlify.app/*"
+  to = "https://rumpopo.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://shiny-truffle-ef9459.netlify.app/*"
+  to = "https://rumpopo.com/:splat"
+  status = 301
+  force = true
+
 [[redirects]]
   from = "/es/*"
   to = "/es/404.html"

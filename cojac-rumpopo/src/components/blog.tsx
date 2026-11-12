@@ -7,7 +7,7 @@ import { categoryName, formatPostDate, postPath, readingMinutes, type BlogImage,
 import { asset, copyText } from '../lib/whatsapp';
 import { ArrowIcon, CheckIcon, CopyIcon, FacebookIcon, WhatsAppIcon } from './Icons';
 import { Sparkle } from './Art';
-import { localPath, t } from '../i18n/lang';
+import { localPublicPath, t } from '../i18n/lang';
 
 /* ── Images ─────────────────────────────────────────────────────────────── */
 
@@ -229,7 +229,7 @@ export function OrderButtons() {
 /* ── Share links (real article URL; no counts) ─────────────────────────── */
 
 export function ShareLinks({ post }: { post: BlogPost }) {
-  const url = site.siteUrl.replace(/\/$/, '') + localPath(postPath(post.slug));
+  const url = site.siteUrl.replace(/\/$/, '') + localPublicPath(postPath(post.slug));
   const [copied, setCopied] = useState(false);
   const enc = encodeURIComponent;
   return (

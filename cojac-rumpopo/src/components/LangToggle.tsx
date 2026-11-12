@@ -1,6 +1,6 @@
 import type { MouseEvent } from 'react';
 import { useLocation } from 'react-router-dom';
-import { isArtifactBuild, lang, pathIn, rememberLang, t, type Lang } from '../i18n/lang';
+import { isArtifactBuild, lang, publicPath, rememberLang, t, type Lang } from '../i18n/lang';
 
 export const ARTIFACT_PATH_KEY = 'cojac-artifact-path';
 
@@ -42,7 +42,7 @@ export function LangToggle({ variant = 'header' }: { variant?: 'header' | 'menu'
         return (
           <a
             key={o.id}
-            href={isArtifactBuild ? '#' : `${base}${pathIn(o.id, pathname)}${search}${hash}`}
+            href={isArtifactBuild ? '#' : `${base}${publicPath(o.id, pathname)}${search}${hash}`}
             hrefLang={o.id}
             lang={o.id}
             className={`lang-toggle__opt ${active ? 'is-active' : ''}`}

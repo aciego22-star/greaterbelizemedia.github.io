@@ -188,9 +188,56 @@ export const faqs: FaqItem[] = [
 
   // ── Draft stubs: awaiting approved answers from the family ────────────────
   { id: 'lead-time', category: 'ordering', published: false, question: t('How far in advance should I order?', '¿Con cuánta anticipación debo pedir?'), answer: '' },
-  { id: 'delivery-fees', category: 'delivery', published: false, question: t('How much is delivery or shipping?', '¿Cuánto cuesta la entrega o el envío?'), answer: '' },
-  { id: 'shipping-areas', category: 'delivery', published: false, question: t('Where do you ship?', '¿A dónde hacen envíos?'), answer: '' },
-  { id: 'pickup', category: 'delivery', published: false, question: t('Can I pick up my order?', '¿Puedo recoger mi pedido?'), answer: '' },
+  {
+    id: 'delivery-fees',
+    category: 'delivery',
+    published: on('delivery'),
+    question: t('How much is delivery or shipping?', '¿Cuánto cuesta la entrega o el envío?'),
+    answer: t(
+      `Delivery is BZD $${DELIVERY_FEE_BZD} anywhere in Belize City. Pickup is free. Shipping to other districts carries a charge that Cojac’s confirms with you on WhatsApp before you pay.`,
+      `La entrega cuesta BZD $${DELIVERY_FEE_BZD} en cualquier parte de la Ciudad de Belice. Recoger es gratis. El envío a otros distritos tiene un costo que Cojac’s confirma contigo por WhatsApp antes de que pagues.`,
+    ),
+  },
+  {
+    id: 'shipping-areas',
+    category: 'delivery',
+    published: on('shipping'),
+    question: t('Do you ship outside Belize City?', '¿Hacen envíos fuera de la Ciudad de Belice?'),
+    answer: t(
+      'Yes. Cojac’s ships out of district, to anywhere outside Belize City. The shipping charge is confirmed on WhatsApp, and shipping orders are paid by bank transfer before they are sent.',
+      'Sí. Cojac’s hace envíos fuera del distrito, a cualquier lugar fuera de la Ciudad de Belice. El costo de envío se confirma por WhatsApp, y los pedidos con envío se pagan por transferencia bancaria antes de enviarse.',
+    ),
+  },
+  {
+    id: 'pickup',
+    category: 'delivery',
+    published: on('pickup'),
+    question: t('Can I pick up my order?', '¿Puedo recoger mi pedido?'),
+    answer: t(
+      'Yes, pickup is free. Choose Pickup when you build your order, and Cojac’s will tell you where and when to collect it on WhatsApp. You can pay in cash at pickup or by bank transfer.',
+      'Sí, recoger es gratis. Elige Recoger al armar tu pedido y Cojac’s te dirá por WhatsApp dónde y cuándo recogerlo. Puedes pagar en efectivo al recoger o por transferencia bancaria.',
+    ),
+  },
+  {
+    id: 'rumpopo-slush',
+    category: 'product',
+    published: true,
+    question: t('Where can I get the Rumpopo Slush?', '¿Dónde puedo conseguir el Rumpopo Slush?'),
+    answer: t(
+      'The Sumptuous Rumpopo Slush is made with Cojac’s rumpopo in collaboration with Puma Freetown, and is available exclusively at Puma Freetown for $12. It is a special blend with extra rum, so it is for adults only.',
+      'El Sumptuous Rumpopo Slush está hecho con rumpopo Cojac’s en colaboración con Puma Freetown, y está disponible exclusivamente en Puma Freetown por $12. Es una mezcla especial con más ron, así que es solo para adultos.',
+    ),
+  },
+  {
+    id: 'age',
+    category: 'product',
+    published: true,
+    question: t('Do you sell to anyone under 18?', '¿Venden a menores de 18 años?'),
+    answer: t(
+      `No. Alcoholic beverages will not be sold to anyone under ${site.alcohol.legalAge}.`,
+      `No. No se venden bebidas alcohólicas a menores de ${site.alcohol.legalAge} años.`,
+    ),
+  },
   {
     id: 'payment-methods',
     category: 'ordering',

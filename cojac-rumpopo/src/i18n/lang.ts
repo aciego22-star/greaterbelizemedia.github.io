@@ -93,6 +93,21 @@ export function rememberLang(l: Lang) {
  */
 export const LANG_REDIRECT_SCRIPT = `(function(){try{var k='${LANG_STORAGE_KEY}',s=localStorage.getItem(k),l=location,p=l.pathname,es=/^\\/es(\\/|$)/.test(p);if(!s){var n=(navigator.languages&&navigator.languages[0])||navigator.language||'';if(/^es\\b/i.test(n))s='es';}if(s==='es'&&!es){l.replace('/es'+(p==='/'?'/':p)+l.search+l.hash);}else if(s==='en'&&es&&localStorage.getItem(k)==='en'){l.replace((p.replace(/^\\/es/,'')||'/')+l.search+l.hash);}}catch(e){}})();`;
 
+/**
+ * Public address of a page as the host serves it: always ends in "/" ("/flavours/",
+ * "/es/flavours/"), because Netlify redirects "/flavours" to "/flavours/". Use this for
+ * canonical links, hreflang, the sitemap, structured data and share links.
+ */
+export function publicPath(target: Lang, routerPath: string): string {
+  const p = pathIn(target, routerPath);
+  return p.endsWith('/') ? p : `${p}/`;
+}
+
+/** publicPath in the current language. */
+export function localPublicPath(routerPath: string): string {
+  return publicPath(lang, routerPath);
+}
+
 /** A router path ("/flavours") as a site-relative URL path in the current language ("/es/flavours"). */
 export function localPath(routerPath: string): string {
   return pathIn(lang, routerPath);
