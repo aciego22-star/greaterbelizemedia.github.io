@@ -155,7 +155,8 @@
       if (select) select.value = label ? key : '';
     }
 
-    var params = new URLSearchParams(window.location.search);
+    // window.__routeQuery is set by the single-file preview, which routes with the URL hash.
+    var params = new URLSearchParams(window.__routeQuery != null ? window.__routeQuery : window.location.search);
     applyArea(params.get('area'));
     if (select) {
       select.addEventListener('change', function () { applyArea(select.value); });

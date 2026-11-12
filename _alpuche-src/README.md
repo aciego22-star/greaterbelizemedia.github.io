@@ -20,6 +20,15 @@ node _alpuche-src/build.mjs --local     # → _alpuche-src/dist-local/jose-m-alp
 
 Unzip, then double-click `index.html`. Every link points at an `index.html` file and the fonts are embedded, so the whole site, including the assistant and the contact preselect, works from disk with no server.
 
+### Single-file preview
+
+```bash
+node _alpuche-src/build.mjs --local && node _alpuche-src/scripts/make-single.cjs
+# → _alpuche-src/dist-local/jose-m-alpuche-single-file-preview.html
+```
+
+All 17 pages, CSS, fonts, images and scripts in one HTML file with hash routing (`#/practice-areas/real-estate/`). It works from disk or in a single-file viewer such as the Claude app's side panel. Without JavaScript it shows the home page.
+
 ### Netlify bundle
 
 ```bash
