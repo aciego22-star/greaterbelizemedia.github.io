@@ -15,7 +15,7 @@ Nothing below was invented. Each item is either empty in the config (so it is hi
 | 7 | **Legal age and alcohol obligations** (Belize purchasing age, any rules for selling or delivering alcohol) | `site.ts → alcohol` | No pop-up on arrival (removed 12 Nov 2026). The footer carries the small print “Alcoholic beverages will not be sold to anyone under 18.”, and the order page still asks for an 18+ tick before sending. This is not age verification. |
 | 8 | **Final domain** | `site.ts → siteUrl` | Set to the live Netlify address `shiny-truffle-ef9459.netlify.app`. If the Netlify site is renamed or a custom domain is added, update this and rebuild, so Google’s links point to the right address. |
 
-| 9b | **Hero photos**: confirm the four slideshow images (cocktail, gift bags, glass bottles, holiday collection) show packaging Cojac’s actually offers, since customers may expect it | `public/hero/`, `hero.ts` | Shown on the homepage. |
+| 9b | **Hero slides**: the first slide is the family’s Rumpopo Slush promotion (Puma Freetown, $12); remove it from `hero.ts` when the promotion ends. Also confirm the four slideshow images (cocktail, gift bags, glass bottles, holiday collection) show packaging Cojac’s actually offers, since customers may expect it | `public/hero/`, `hero.ts` | Shown on the homepage. |
 
 | 9e | **Coquito and the mystery flavour**: if Coquito is the secret flavour from the Facebook competition, listing it on the menu reveals it. Confirm, and the blog’s competition panel can be switched to “revealed” (`contest.ts → status`) | `catalogue.ts`, `src/content/blog/contest.ts` | Coquito is on the menu; the blog still says the flavour is secret. |
 

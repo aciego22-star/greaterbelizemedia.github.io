@@ -14,11 +14,33 @@ export interface HeroSlide {
   desktop: string;
   mobile: string;
   alt: string;
+  /**
+   * 'contain' shows the whole image (for artwork with words or prices near the edges);
+   * any spare space is filled with `backdrop`. Photos use the default 'cover'.
+   */
+  fit?: 'cover' | 'contain';
+  /** CSS backgrounds behind a 'contain' slide, matched to the artwork's edges. */
+  backdrop?: { desktop: string; mobile: string };
 }
 
 export const heroIntervalMs = 6000;
 
 export const heroSlides: HeroSlide[] = [
+  {
+    // Promotion supplied by the family (Nov 2026): shown first.
+    id: 'rumpopo-slush',
+    desktop: '/hero/Cojacs_Hero_00_Rumpopo_Slush_Desktop_16x9',
+    mobile: '/hero/Cojacs_Hero_00_Rumpopo_Slush_Mobile_9x16',
+    alt: t(
+      'Sumptuous Rumpopo Slush, available now, exclusively at Puma Freetown, $12. Extra boozy! A Cojac’s Sumptuous Rumpopo slush in collaboration with Puma Freetown: a special blend with extra rum.',
+      'Sumptuous Rumpopo Slush, ya disponible, exclusivamente en Puma Freetown, $12. ¡Con más alcohol! Un slush de Cojac’s Sumptuous Rumpopo en colaboración con Puma Freetown: una mezcla especial con más ron.',
+    ),
+    fit: 'contain',
+    backdrop: {
+      desktop: 'linear-gradient(90deg, #316d10 0 50%, #bf0403 50% 100%)',
+      mobile: '#2e6c07',
+    },
+  },
   {
     id: 'cocktail',
     desktop: '/hero/Cojacs_Hero_01_Cocktail_Desktop_16x9',

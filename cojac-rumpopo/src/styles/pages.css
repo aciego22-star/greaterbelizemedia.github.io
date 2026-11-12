@@ -2340,6 +2340,25 @@
   object-position: center;
   transform: scale(1.001);
 }
+/* Artwork with words and prices (e.g. a promotion): always shown whole, with the
+   spare space filled in colours matched to its edges. */
+.hero-slides__slide--contain {
+  background: var(--slide-bg-desktop, var(--burgundy-900));
+}
+.hero-slides__slide--contain img {
+  object-fit: contain;
+}
+@media (max-width: 767px) {
+  .hero-slides__slide--contain {
+    background: var(--slide-bg-mobile, var(--burgundy-900));
+  }
+  /* Keep a strip at the bottom for the slideshow controls, so they never sit on
+     the artwork's words or price. */
+  .hero-slides__slide--contain img {
+    height: calc(100% - 56px);
+    object-position: center top;
+  }
+}
 @media (prefers-reduced-motion: no-preference) {
   .hero-slides__slide.is-active img {
     animation: heroZoom 7.5s ease-out both;

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
 import { heroIntervalMs, heroSlides } from '../content/hero';
 import { asset } from '../lib/whatsapp';
 import { t } from '../i18n/lang';
@@ -7,7 +7,12 @@ function Slide({ i, active, show }: { i: number; active: boolean; show: boolean 
   const s = heroSlides[i];
   return (
     <div
-      className={`hero-slides__slide ${active ? 'is-active' : ''}`}
+      className={`hero-slides__slide ${active ? 'is-active' : ''} ${s.fit === 'contain' ? 'hero-slides__slide--contain' : ''}`}
+      style={
+        s.backdrop
+          ? ({ '--slide-bg-desktop': s.backdrop.desktop, '--slide-bg-mobile': s.backdrop.mobile } as CSSProperties)
+          : undefined
+      }
       role="group"
       aria-roledescription={t('slide', 'diapositiva')}
       aria-label={`${i + 1} ${t('of', 'de')} ${heroSlides.length}`}

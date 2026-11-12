@@ -8,7 +8,7 @@ You make all of these edits in plain text files in `src/content/`. After saving,
 
 ## 0. Homepage slideshow
 
-`src/content/hero.ts` lists the four hero photos (desktop 16:9 and mobile 9:16, in `public/hero/`). They rotate every 6 seconds in the listed order and loop. To change the order, move the entries; to change the speed, edit `heroIntervalMs`. For a new photo, add the desktop and mobile versions (PNG or JPG, same naming) to `public/hero/` and a new entry with a short description (`alt`). The build makes the WebP copies, the smaller phone and laptop sizes and a light JPG fallback. Then move the big PNG originals to `originals/hero/` so they are not uploaded with the site.
+`src/content/hero.ts` lists the hero slides: the Rumpopo Slush promotion (Puma Freetown) first, then the four photos (desktop 16:9 and mobile 9:16, in `public/hero/`). They rotate every 6 seconds in the listed order and loop. To change the order, move the entries; to change the speed, edit `heroIntervalMs`. For artwork with words or prices (like the Slush promotion), add `fit: 'contain'` and a `backdrop` colour so the whole image is always shown. For a new photo, add the desktop and mobile versions (PNG or JPG, same naming) to `public/hero/` and a new entry with a short description (`alt`). The build makes the WebP copies, the smaller phone and laptop sizes and a light JPG fallback. Then move the big PNG originals to `originals/hero/` so they are not uploaded with the site.
 
 ## 0b. English and Spanish
 
