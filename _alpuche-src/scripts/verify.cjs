@@ -30,6 +30,8 @@ const section = (t) => console.log('\n' + t);
   section('Routes, metadata, links and images');
   const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 } });
   const page = await ctx.newPage();
+  const cspErrors = [];
+  page.on('console', (m) => { if (/Content Security Policy|Refused to/i.test(m.text())) cspErrors.push(m.text()); });
   const checked = new Map();
   const outbound = new Set();
   for (const route of ROUTES) {
@@ -51,7 +53,7 @@ const section = (t) => console.log('\n' + t);
     }));
     ok(/noindex/.test(info.robots), `${route} is noindex`);
     ok(info.title && info.desc, `${route} has title and description`);
-    ok(/^https?:\/\/.+\.jpg$/.test(info.og), `${route} has absolute og:image`);
+    ok((process.env.OG_RELATIVE_OK ? /^(https?:\/\/.+|\/assets\/img\/.+)\.jpg$/ : /^https?:\/\/.+\.jpg$/).test(info.og), `${route} has og:image`);
     ok(info.h1 === 1, `${route} has one h1 (found ${info.h1})`);
     ok(info.lang === 'en', `${route} lang=en`);
     ok(info.noticeLink, `${route} footer links to photo credits`);
@@ -82,6 +84,7 @@ const section = (t) => console.log('\n' + t);
   ok(failed.length === 0, `no failed asset requests (${failed.join(', ')})`);
   ok((await page.request.get(BASE + '/website-notice/')).ok() &&
      await page.goto(BASE + '/website-notice/').then(() => page.locator('#photo-credits').count()) === 1, 'website notice has #photo-credits anchor');
+  ok(cspErrors.length === 0, `no Content-Security-Policy violations (${cspErrors.slice(0, 3).join(' | ')})`);
   console.log(`  ${checked.size} internal URLs checked; ${outbound.size} distinct external links (not fetched).`);
 
   // 2. Assistant -----------------------------------------------------------

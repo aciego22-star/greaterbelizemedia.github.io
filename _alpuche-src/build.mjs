@@ -18,9 +18,12 @@ const args = Object.fromEntries(process.argv.slice(2).map((a) => {
   return [k, v.length ? v.join('=') : true];
 }));
 const PRODUCTION = !!args.production;
-const OUT = path.resolve(args.out || path.join(SRC, '..', 'demos', 'jose-m-alpuche'));
+// --netlify: site served from a domain root; adds _headers, _redirects and 404.html.
+const NETLIFY = !!args.netlify;
+const OUT = path.resolve(args.out || (NETLIFY ? path.join(SRC, 'dist-netlify') : path.join(SRC, '..', 'demos', 'jose-m-alpuche')));
 // Absolute base used for Open Graph URLs. Production canonicals need the confirmed domain.
-const SITE_URL = String(args['site-url'] || 'https://greaterbelizemedia.github.io/demos/jose-m-alpuche').replace(/\/$/, '');
+// Netlify preview without a known URL: og:url is omitted and og:image is root-relative.
+const SITE_URL = String(args['site-url'] || (NETLIFY ? '' : 'https://greaterbelizemedia.github.io/demos/jose-m-alpuche')).replace(/\/$/, '');
 if (PRODUCTION && !args['site-url']) {
   console.error('Production builds need --site-url=<confirmed domain>.');
   process.exit(1);
@@ -448,14 +451,14 @@ function breadcrumbJsonLd(crumbs) {
   })}</script>`;
 }
 
-function layout(page, ctx, mainHtml, { crumbs } = {}) {
+function layout(page, ctx, mainHtml, { crumbs, base } = {}) {
   const { meta } = page;
-  const ogImage = `${SITE_URL}/assets/${ogImageFor(page)}`;
+  const ogImage = `${SITE_URL}/assets/${ogImageFor(page)}`; // root-relative when SITE_URL is empty
   return `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+${base ? `<base href="${base}">\n` : ''}<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>${esc(meta.title)}</title>
 <meta name="description" content="${esc(meta.description)}">
 ${PRODUCTION ? `<link rel="canonical" href="${absUrl(meta.route)}">` : '<meta name="robots" content="noindex, nofollow, noarchive">'}
@@ -463,8 +466,7 @@ ${PRODUCTION ? `<link rel="canonical" href="${absUrl(meta.route)}">` : '<meta na
 <meta property="og:site_name" content="José M. Alpuche, Attorney-at-Law">
 <meta property="og:title" content="${esc(meta.title)}">
 <meta property="og:description" content="${esc(meta.description)}">
-<meta property="og:url" content="${absUrl(meta.route)}">
-<meta property="og:image" content="${ogImage}">
+${SITE_URL ? `<meta property="og:url" content="${absUrl(meta.route)}">\n` : ''}<meta property="og:image" content="${ogImage}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="en_BZ">
@@ -946,12 +948,57 @@ function build() {
     console.log(`  ${route.padEnd(52)} ← ${page.file}`);
   }
 
+  if (NETLIFY) writeNetlifyFiles();
   if (PRODUCTION) {
     const urls = pages.map((p) => `  <url><loc>${absUrl(p.meta.route)}</loc></url>`).join('\n');
     fs.writeFileSync(path.join(OUT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`);
     fs.writeFileSync(path.join(OUT, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${SITE_URL}/sitemap.xml\n`);
   }
   console.log(`Built ${pages.length} pages → ${path.relative(process.cwd(), OUT) || OUT} (${PRODUCTION ? 'production' : 'private preview, noindex'})`);
+}
+
+// ---------------------------------------------------------------------------
+// Netlify extras
+// ---------------------------------------------------------------------------
+function writeNetlifyFiles() {
+  // 404 page: rendered as if at "/" with <base href="/"> so links work at any missing depth.
+  const ctx = { route: '/', assets: 'assets/' };
+  const page = { meta: { route: '/404/', title: 'Page not found | José M. Alpuche', description: 'The page you were looking for could not be found.', hero_image: '', source_ids: [] } };
+  const main = `${pageHead(page, ctx, {
+    crumbs: [{ label: 'Home', route: '/' }, { label: 'Page not found', route: '/404/' }],
+    h1: 'Page not found',
+    standfirst: 'The page you were looking for is not here. It may have moved, or the address may be mistyped.',
+    photoName: null,
+  })}
+<div class="shell section-tight"><div class="prose">
+  <p>Try one of these instead:</p>
+  <ul>${[['/', 'Home'], ['/practice-areas/', 'Practice Areas'], ['/insights/', 'Belize Legal Guides'], ['/contact/', 'Contact the office']].map(([r, l]) => `<li><a href="${rel('/', r)}">${l}</a></li>`).join('')}</ul>
+</div></div>
+${genericBand(ctx)}`;
+  let html = layout(page, ctx, main, { base: '/' });
+  if (PRODUCTION) html = html.replace(/<link rel="canonical"[^>]*>\n/, '<meta name="robots" content="noindex">\n');
+  fs.writeFileSync(path.join(OUT, '404.html'), html);
+
+  // Headers. connect-src 'none' and form-action 'none' enforce that the demo cannot send anything.
+  const csp = [
+    "default-src 'self'", "script-src 'self'", "style-src 'self' 'unsafe-inline'", "img-src 'self' data:",
+    "font-src 'self'", "connect-src 'none'", "form-action 'none'", "frame-ancestors 'none'", "base-uri 'self'", "object-src 'none'",
+  ].join('; ');
+  const headers = [
+    '/*',
+    ...(PRODUCTION ? [] : ['  X-Robots-Tag: noindex, nofollow, noarchive']),
+    `  Content-Security-Policy: ${csp}`,
+    '  X-Content-Type-Options: nosniff',
+    '  Referrer-Policy: strict-origin-when-cross-origin',
+    '  Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()',
+    '',
+    '/assets/*',
+    '  Cache-Control: public, max-age=86400',
+    '',
+  ];
+  fs.writeFileSync(path.join(OUT, '_headers'), headers.join('\n'));
+  // Planned redirect from the firm's current Services URL (confirm existing URLs before launch).
+  fs.writeFileSync(path.join(OUT, '_redirects'), '/services    /practice-areas/  301\n/services/*  /practice-areas/  301\n');
 }
 
 build();

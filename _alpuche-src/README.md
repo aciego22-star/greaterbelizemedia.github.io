@@ -12,6 +12,20 @@ node _alpuche-src/build.mjs --production --site-url=https://<confirmed-domain>
 node _alpuche-src/build.mjs --out=/some/dir       # build somewhere else
 ```
 
+### Netlify bundle
+
+```bash
+node _alpuche-src/build.mjs --netlify [--site-url=https://<site>.netlify.app]   # → _alpuche-src/dist-netlify/
+node _alpuche-src/scripts/serve-netlify.cjs                                     # local test at http://localhost:8081/
+```
+
+Zip the *contents* of `dist-netlify/` so that `index.html` is at the root of the zip, then drag the zip onto Netlify’s deploy area. The bundle adds:
+- `_headers`: noindex (`X-Robots-Tag`), a Content-Security-Policy with `connect-src 'none'` and `form-action 'none'` so the demo cannot transmit anything, and basic security headers;
+- `_redirects`: `/services/` → `/practice-areas/` (301);
+- `404.html`.
+
+Without `--site-url`, `og:url` is omitted and `og:image` is root-relative, so link previews in some apps will show no image. Once the Netlify address is known, rebuild with `--site-url` for full share previews.
+
 The builder has no dependencies. It needs Node 18 or later. All links are relative, so the output works from any folder or domain root.
 
 | Path | What it holds |
