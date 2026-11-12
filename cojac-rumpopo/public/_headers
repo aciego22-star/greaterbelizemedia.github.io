@@ -22,3 +22,6 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
   X-Frame-Options: SAMEORIGIN
+
+/site.webmanifest
+  Content-Type: application/manifest+json
