@@ -10,7 +10,6 @@
   var aborter = typeof AbortController !== 'undefined' ? new AbortController() : null;
   window.__siteAbort = aborter;
   var opts = aborter ? { signal: aborter.signal } : false;
-  var passiveOpts = aborter ? { signal: aborter.signal, passive: true } : { passive: true };
 
   var meta = function (name) { var m = document.querySelector('meta[name="' + name + '"]'); return m ? m.content : ''; };
   var linkMode = window.__linkMode || meta('alpuche-links') || 'dir';
@@ -297,36 +296,6 @@
     var area = el.getAttribute('data-area') || '';
     chat.openIntake(area);
   }, opts);
-
-  // ---------- Keep the assistant button off links and controls ----------
-  if (assistant) {
-    var ticking = false;
-    var overlaps = function (a, b) { return a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top; };
-    var check = function () {
-      ticking = false;
-      if (!assistant.isConnected) return;
-      if (assistant.open) { assistant.classList.remove('is-tucked'); return; }
-      // The fixed container is not moved by the summary's transform, so it gives the resting position.
-      var box = assistant.getBoundingClientRect();
-      var pad = 6;
-      var zone = { left: box.left - pad, right: box.right + pad, top: box.top - pad, bottom: box.bottom + pad };
-      var hit = false;
-      var targets = document.querySelectorAll('main a, main button, main input, main select, main textarea, footer a');
-      for (var i = 0; i < targets.length && !hit; i++) {
-        var r = targets[i].getBoundingClientRect();
-        if (r.bottom < zone.top || r.top > zone.bottom) continue;
-        var rects = targets[i].getClientRects();
-        for (var j = 0; j < rects.length; j++) if (overlaps(rects[j], zone)) { hit = true; break; }
-      }
-      assistant.classList.toggle('is-tucked', hit);
-    };
-    var schedule = function () { if (!ticking) { ticking = true; window.requestAnimationFrame(check); } };
-    window.addEventListener('scroll', schedule, passiveOpts);
-    window.addEventListener('resize', schedule, opts);
-    assistant.addEventListener('toggle', schedule);
-    window.addEventListener('load', schedule, opts);
-    schedule();
-  }
 
   // ---------- Contact page: practice carried from ?area= ----------
   var areasEl = document.getElementById('contact-areas');

@@ -25,6 +25,27 @@ done
 convert "$SRC/brand/jma-monogram.jpeg" -crop 513x405+14+19 +repage -strip -quality 90 "$OUT/jma-mark.jpg"
 convert "$OUT/jma-mark.jpg" -resize 160x -strip -quality 90 "$OUT/jma-mark-160.jpg"
 
+# Firm nameplate (supplied by the agency, 13 Nov 2026): backgrounds for the Practice Areas,
+# Our Team, What to Expect and Contact page heads. Desktop PNG has a transparent background and is
+# flattened onto the site ink; the mobile JPEG's outer white is flood-filled with ink from the corners.
+if [ -f "$SRC/brand/nameplate-desktop.png" ]; then
+  convert "$SRC/brand/nameplate-desktop.png" -background '#11171b' -flatten -strip "$OUT/plaque-desktop-src.png"
+  for w in 1024 1600; do
+    convert "$OUT/plaque-desktop-src.png" -resize ${w}x -strip -interlace Plane -quality $q "$OUT/plaque-desktop-$w.jpg"
+    convert "$OUT/plaque-desktop-src.png" -resize ${w}x -strip -quality $q "$OUT/plaque-desktop-$w.webp"
+  done
+  rm "$OUT/plaque-desktop-src.png"
+fi
+if [ -f "$SRC/brand/nameplate-mobile.jpg" ]; then
+  convert "$SRC/brand/nameplate-mobile.jpg" -fuzz 12% -fill '#11171b' -draw 'color 0,0 floodfill' -draw 'color 940,0 floodfill' \
+    -draw 'color 0,1671 floodfill' -draw 'color 940,1671 floodfill' -strip "$OUT/plaque-mobile-src.png"
+  for w in 640 940; do
+    convert "$OUT/plaque-mobile-src.png" -resize ${w}x -strip -interlace Plane -quality $q "$OUT/plaque-mobile-$w.jpg"
+    convert "$OUT/plaque-mobile-src.png" -resize ${w}x -strip -quality $q "$OUT/plaque-mobile-$w.webp"
+  done
+  rm "$OUT/plaque-mobile-src.png"
+fi
+
 # Belize photography: resized only (no crop or tonal change in the files).
 for name in belize-city-harbour belize-city-courthouse macal-river-san-ignacio placencia-beach baron-bliss-lighthouse; do
   f="$SRC/belize/$name.jpg"

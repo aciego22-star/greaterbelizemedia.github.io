@@ -50,8 +50,15 @@ for (const [route, html] of Object.entries(pages)) {
   const title = (html.match(/<title>([\s\S]*?)<\/title>/) || [])[1] || '';
   let body = html.slice(html.indexOf('<body>') + 6, html.indexOf('<!-- scripts -->'));
   body = body
-    .replace(/<source [^>]*>/g, '')
+    // Keep the phone/desktop switch for art-directed images (the nameplate): one embedded file per source.
+    .replace(/<source media="([^"]+)"[^>]*?srcset="([^"]+)"[^>]*>/g, (m, media, set) => {
+      if (!/type="image\/webp"/.test(m)) return '';
+      const files = set.split(',').map((x) => x.trim().split(' ')[0].split('/').pop());
+      return `<source media="${media}" data-srcset="${imageKey(files[files.length - 1])}">`;
+    })
+    .replace(/<source (?![^>]*data-srcset)[^>]*>/g, '')
     .replace(/\s(srcset|sizes)="[^"]*"/g, '')
+    .replace(/<source media="([^"]+)" data-srcset/g, '<source media="$1" data-srcset')
     .replace(/\ssrc="(?:\.\.\/)*assets\/img\/([^"]+)"/g, (_, f) => ` data-img="${imageKey(f)}"`)
     .replace(/\shref="([^"]+)"/g, (m, href) => {
       const h = toHashRoute(href.replace(/&amp;/g, '&'), route);
@@ -100,6 +107,7 @@ const router = `
     window.__currentRoute = pages[r.route] ? r.route : '/';
     window.__linkMode = 'hash';
     app.innerHTML = page.body;
+    app.querySelectorAll('source[data-srcset]').forEach(function (src) { src.srcset = images[src.getAttribute('data-srcset')]; });
     app.querySelectorAll('img[data-img]').forEach(function (img) { img.src = images[img.getAttribute('data-img')]; img.removeAttribute('loading'); });
     document.title = page.title.replace(/&amp;/g, '&');
     initSite();

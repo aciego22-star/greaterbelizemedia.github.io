@@ -427,10 +427,10 @@ let KB = null;
 function assistant(ctx) {
   const demo = !LEAD_ENDPOINT;
   return `<details class="office-assistant" id="alpuche-ai">
-  <summary>Alpuche AI</summary>
+  <summary><span class="ai-mark"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5.2 4h13.6A2.2 2.2 0 0 1 21 6.2v8.6a2.2 2.2 0 0 1-2.2 2.2H11l-4.6 3.5c-.6.5-1.4 0-1.4-.7V17h.2A2.2 2.2 0 0 1 3 14.8V6.2A2.2 2.2 0 0 1 5.2 4Zm3.3 6.1a1.3 1.3 0 1 0 0 2.6 1.3 1.3 0 0 0 0-2.6Zm3.5 0a1.3 1.3 0 1 0 0 2.6 1.3 1.3 0 0 0 0-2.6Zm3.5 0a1.3 1.3 0 1 0 0 2.6 1.3 1.3 0 0 0 0-2.6Z"/></svg></span><span class="ai-label">Alpuche AI</span></summary>
   <div class="assistant-panel" role="group" aria-labelledby="assistant-title">
     <div class="assistant-top">
-      <div><p class="assistant-label">Automated assistant${demo ? ' · demo' : ''}</p><h2 id="assistant-title">Alpuche AI</h2></div>
+      <div class="assistant-id"><span class="ai-mark"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5.2 4h13.6A2.2 2.2 0 0 1 21 6.2v8.6a2.2 2.2 0 0 1-2.2 2.2H11l-4.6 3.5c-.6.5-1.4 0-1.4-.7V17h.2A2.2 2.2 0 0 1 3 14.8V6.2A2.2 2.2 0 0 1 5.2 4Zm3.3 6.1a1.3 1.3 0 1 0 0 2.6 1.3 1.3 0 0 0 0-2.6Zm3.5 0a1.3 1.3 0 1 0 0 2.6 1.3 1.3 0 0 0 0-2.6Zm3.5 0a1.3 1.3 0 1 0 0 2.6 1.3 1.3 0 0 0 0-2.6Z"/></svg></span><div><p class="assistant-label">Automated assistant${demo ? ' · demo' : ''}</p><h2 id="assistant-title">Alpuche AI</h2></div></div>
       <button type="button" class="assistant-close">Close</button>
     </div>
     <div class="chat-log" role="log" aria-live="polite" aria-label="Conversation with Alpuche AI" tabindex="0">
@@ -588,15 +588,26 @@ function breadcrumb(crumbs, ctx) {
 }
 
 // Interior page head: breadcrumb, eyebrow, H1, standfirst, optional photo.
-function pageHead(page, ctx, { crumbs, eyebrow, h1, standfirst, photoName: pn }) {
-  const typographic = !pn;
-  return `<section class="page-head${typographic ? ' typographic' : ' has-figure'}">
+// Firm nameplate as the page-head background: portrait version on phones, landscape on larger screens.
+function plaqueBackground(ctx) {
+  const set = (name, widths, ext) => widths.map((w) => `${imgPath(ctx, `${name}-${w}.${ext}`)} ${w}w`).join(', ');
+  return `<picture class="head-bg">
+    <source media="(max-width: 780px)" type="image/webp" srcset="${set('plaque-mobile', [640, 940], 'webp')}" sizes="100vw">
+    <source media="(max-width: 780px)" srcset="${set('plaque-mobile', [640, 940], 'jpg')}" sizes="100vw">
+    <source type="image/webp" srcset="${set('plaque-desktop', [1024, 1600], 'webp')}" sizes="(max-width: 1050px) 100vw, 80vw">
+    <img src="${imgPath(ctx, 'plaque-desktop-1024.jpg')}" srcset="${set('plaque-desktop', [1024, 1600], 'jpg')}" sizes="(max-width: 1050px) 100vw, 80vw" width="1600" height="900" alt="" fetchpriority="high" decoding="async">
+  </picture>`;
+}
+
+function pageHead(page, ctx, { crumbs, eyebrow, h1, standfirst, photoName: pn, plaque = false }) {
+  const cls = plaque ? ' has-plaque' : pn ? ' has-figure' : ' typographic';
+  return `<section class="page-head${cls}">
+  ${plaque ? plaqueBackground(ctx) : ''}
   <div class="shell page-head-inner">
     ${breadcrumb(crumbs, ctx)}
     ${eyebrow ? `<p class="eyebrow">${esc(eyebrow)}</p>` : ''}
     <h1>${inline(h1, ctx)}</h1>
     ${standfirst ? `<p class="standfirst">${standfirst}</p>` : ''}
-    ${typographic ? '<div class="head-rule" aria-hidden="true"></div>' : ''}
   </div>
 </section>
 ${pn ? `<figure class="shell head-figure"><div class="frame">${photo(pn, ctx, { sizes: '(max-width: 1388px) calc(100vw - 68px), 1280px', eager: true })}</div>${photoCredit(pn)}</figure>` : ''}`;
@@ -833,7 +844,7 @@ function renderPracticeHub(page, ctx) {
   const groups = secs.filter((s) => s.blocks.some((b) => b.type === 'h' && b.level === 3));
   const closing = secs.find((s) => !groups.includes(s));
   const closingParas = closing.blocks.filter((b) => !isLinkRow(b));
-  const main = `${pageHead(page, ctx, { crumbs, h1: I.h1, standfirst: inline(I.paras[0].text, ctx), photoName: null })}
+  const main = `${pageHead(page, ctx, { crumbs, h1: I.h1, standfirst: inline(I.paras[0].text, ctx), photoName: null, plaque: true })}
 <div class="shell section">
   ${groups.map((g) => `<section class="card-group" aria-labelledby="${g.id}"><h2 id="${g.id}">${inline(g.title, ctx)}</h2><div class="card-grid">${cardsFromSection(g.blocks, ctx)}</div></section>`).join('\n')}
 </div>
@@ -885,7 +896,7 @@ function renderAbout(page, ctx) {
     return `<li><strong>${inline(m[1], ctx)}</strong><span>${inline(m[2], ctx)}</span></li>`;
   }).join('');
   const closingRow = principles.blocks.find(isLinkRow);
-  const main = `${pageHead(page, ctx, { crumbs, h1: I.h1, standfirst: inline(I.paras[0].text, ctx), photoName: null })}
+  const main = `${pageHead(page, ctx, { crumbs, h1: I.h1, standfirst: inline(I.paras[0].text, ctx), photoName: null, plaque: true })}
 <div class="shell section">${bioSecs.map(bio).join('\n')}</div>
 <section class="sand" aria-labelledby="${principles.id}"><div class="shell section">
   <h2 id="${principles.id}" style="max-width:20ch;margin-bottom:32px">${inline(principles.title, ctx)}</h2>
@@ -905,7 +916,7 @@ function renderWorking(page, ctx) {
     const [, n, t] = s.title.match(/^(\d+)\.\s+(.*)$/);
     return `<li class="step"><span class="step-number" aria-hidden="true">${n}</span><div><h2 id="${s.id}"><span class="visually-hidden">Step ${n}: </span>${inline(t, ctx)}</h2>${prose(s.blocks, ctx)}</div></li>`;
   }).join('');
-  const main = `${pageHead(page, ctx, { crumbs, h1: I.h1, standfirst: inline(I.paras[0].text, ctx), photoName: null })}
+  const main = `${pageHead(page, ctx, { crumbs, h1: I.h1, standfirst: inline(I.paras[0].text, ctx), photoName: null, plaque: true })}
 <div class="shell article-layout">
   <div>
     <ol class="steps">${stepHtml}</ol>
@@ -929,7 +940,7 @@ function renderContact(page, ctx) {
   notices[notices.length - 1].blocks = notices[notices.length - 1].blocks.filter((b) => b !== footerRow);
   const areaMap = Object.fromEntries(PRACTICES.map((p) => [p.key, p.label]));
 
-  const main = `${pageHead(page, ctx, { crumbs, h1: I.h1, standfirst: inline(I.paras[0].text, ctx), photoName: null })}
+  const main = `${pageHead(page, ctx, { crumbs, h1: I.h1, standfirst: inline(I.paras[0].text, ctx), photoName: null, plaque: true })}
 <div class="shell contact-grid">
   <section class="office-card dark" aria-labelledby="office-title">
     <h2 id="office-title">Belize City office</h2>

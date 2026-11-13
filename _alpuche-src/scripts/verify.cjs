@@ -54,6 +54,22 @@ const section = (t) => console.log('\n' + t);
         [...document.querySelectorAll('a')].filter((a) => /[→↗]/.test(getComputedStyle(a, '::after').content + getComputedStyle(a, '::before').content)).length,
       waNumberShown: /625[\s-]?3032/.test(document.body.innerText),
       gridLines: [...document.querySelectorAll('.practice-card')].filter((c) => parseFloat(getComputedStyle(c).borderLeftWidth) || parseFloat(getComputedStyle(c).borderBottomWidth)).length,
+      lines: (() => {
+        const bad = [];
+        for (const el of document.querySelectorAll('body *')) {
+          if (el.closest('svg') || el.matches('input, textarea, select, script, style')) continue;
+          const cs = getComputedStyle(el);
+          for (const side of ['Top', 'Right', 'Bottom', 'Left']) {
+            const w = parseFloat(cs['border' + side + 'Width']);
+            const c = cs['border' + side + 'Color'];
+            if (w > 0 && cs['border' + side + 'Style'] !== 'none' && c !== 'transparent' && !/,\s*0\)$/.test(c)) { bad.push((el.className || el.tagName) + ' border-' + side.toLowerCase()); break; }
+          }
+          const r = el.getBoundingClientRect();
+          const bg = cs.backgroundColor;
+          if (r.width >= 16 && r.height > 0 && r.height <= 3 && bg !== 'transparent' && !/,\s*0\)$/.test(bg)) bad.push('rule:' + (el.className || el.tagName));
+        }
+        return bad;
+      })(),
       facebook: !!document.querySelector('footer a[href="https://www.facebook.com/alpuchelaw"][target="_blank"][rel~="noopener"] svg.icon-facebook'),
       whatsapp: !!document.querySelector('footer a[href="https://wa.me/5016253032"][target="_blank"][rel~="noopener"] svg.icon-whatsapp'),
     }));
@@ -66,6 +82,7 @@ const section = (t) => console.log('\n' + t);
     ok(info.arrows === 0, `${route} has no arrows (${info.arrows})`);
     ok(!info.waNumberShown, `${route} does not show the WhatsApp number`);
     ok(info.gridLines === 0, `${route} practice cards have no grid lines`);
+    ok(info.lines.length === 0, `${route} has no lines, rules or borders (${info.lines.slice(0, 5).join('; ')})`);
     ok(info.facebook, `${route} footer links to the firm’s Facebook, with its icon`);
     ok(info.whatsapp, `${route} footer links to the firm’s WhatsApp, with its icon`);
     if (route !== '/') ok(info.crumbs, `${route} has breadcrumb`);
@@ -126,6 +143,8 @@ const section = (t) => console.log('\n' + t);
   const chatRequests = [];
   cp.on('request', (r) => chatRequests.push(r.url()));
   ok((await cp.locator('.office-assistant > summary').innerText()).trim() === 'Alpuche AI', 'assistant is labelled “Alpuche AI”');
+  const pulse = await cp.evaluate(() => { const cs = getComputedStyle(document.querySelector('.office-assistant > summary'), '::after'); return [cs.animationName, cs.animationDuration, cs.animationIterationCount].join(' '); });
+  ok(pulse === 'ai-pulse 10s infinite', `launcher pulses every 10 seconds (${pulse})`);
   await cp.click('.office-assistant > summary');
   ok(await cp.waitForSelector('.chat-log .is-typing', { timeout: 1500 }).then(() => true).catch(() => false), 'typing indicator shows before the greeting');
   await waitReply(cp, 0);
@@ -285,23 +304,37 @@ const section = (t) => console.log('\n' + t);
       await p.goto(BASE + route, { waitUntil: 'load' });
       const overflow = await p.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
       ok(overflow <= 0, `${name} ${route}: no horizontal overflow (${overflow}px)`);
-      // Sample several scroll positions: the visible assistant toggle must not cover a control.
-      const collisions = await p.evaluate(async () => {
-        const hits = [];
+      // Alpuche AI stays in view, unmoved, at every scroll position.
+      const hidden = await p.evaluate(async () => {
+        const misses = [];
         const max = document.documentElement.scrollHeight - innerHeight;
         for (const f of [0, 0.25, 0.5, 0.75, 1]) {
           window.scrollTo({ top: max * f, behavior: 'instant' });
-          await new Promise((r) => setTimeout(r, 450));
-          const s = document.querySelector('.office-assistant > summary').getBoundingClientRect();
-          for (const el of document.querySelectorAll('main a, main button, main input, main select, main textarea, footer a, header a, header summary')) {
-            for (const r of el.getClientRects()) {
-              if (r.left < s.right && r.right > s.left && r.top < s.bottom && r.bottom > s.top) hits.push(`${el.textContent.trim().slice(0, 30)} @${f}`);
-            }
-          }
+          await new Promise((r) => setTimeout(r, 120));
+          const el = document.querySelector('.office-assistant > summary');
+          const r = el.getBoundingClientRect();
+          const cs = getComputedStyle(el);
+          if (!(r.top >= 0 && r.bottom <= innerHeight && r.left >= 0 && r.right <= innerWidth) || cs.transform !== 'none' || cs.opacity !== '1' || cs.visibility !== 'visible') misses.push(f);
         }
-        return hits;
+        return misses;
       });
-      ok(collisions.length === 0, `${name} ${route}: assistant covers no control (${collisions.join('; ')})`);
+      ok(hidden.length === 0, `${name} ${route}: Alpuche AI stays visible while scrolling (${hidden.join(', ')})`);
+      if (['/practice-areas/', '/about/', '/working-with-us/', '/contact/'].includes(route)) {
+        const plaque = await p.evaluate(async () => {
+          window.scrollTo({ top: 0, behavior: 'instant' });
+          const img = document.querySelector('.page-head.has-plaque .head-bg img');
+          if (!img) return null;
+          if (!img.complete) await new Promise((r) => { img.onload = img.onerror = r; });
+          const ir = img.getBoundingClientRect();
+          const h1 = document.querySelector('.page-head h1').getBoundingClientRect();
+          return { src: img.currentSrc, ok: img.naturalWidth > 0, alt: img.getAttribute('alt'), plateBottom: ir.top + ((642 + 410) / 1670) * ir.height, h1Top: h1.top, vw: innerWidth };
+        });
+        ok(plaque && plaque.ok && plaque.alt === '', `${name} ${route}: nameplate background loads (decorative)`);
+        if (plaque) {
+          ok(plaque.vw <= 780 ? /plaque-mobile/.test(plaque.src) : /plaque-desktop/.test(plaque.src), `${name} ${route}: ${plaque.vw <= 780 ? 'mobile' : 'desktop'} nameplate used (${plaque.src.split('/').pop()})`);
+          if (plaque.vw <= 780) ok(plaque.h1Top >= plaque.plateBottom - 1, `${name} ${route}: heading sits below the nameplate on phones`);
+        }
+      }
     }
     // Hero: portrait, CTA and photographer credit visible in the first screens.
     await p.goto(BASE + '/');

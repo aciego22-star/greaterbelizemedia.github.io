@@ -59,5 +59,12 @@ Design changes made at the agency's direction (13 Nov 2026):
 - **No arrows.** Removed from all links, including the ↗ that marked outside links in article text.
 - **Open card layouts.** The ruled grid lines are gone from the home page practice cards and the matching layouts: the practice areas and guides pages, the team page principles and the contact page notices.
 - **No topic shortcuts.** Alpuche AI no longer shows topic buttons. Visitors type their questions; “Start an enquiry” remains.
+- **Nameplate headers.** The firm's nameplate image is the background for the Practice Areas, Our Team, What to Expect and Contact headers. On desktop the words sit over its dark JMA side; on phones the nameplate sits above the words so the heading never covers the engraved lettering.
+- **Clean finish.** No rules, dividers, borders or grid lines anywhere on the site; spacing and background tones separate content.
+- **Alpuche AI.** The button now stays visible at all times, with a rounded launcher and a soft gold pulse every 10 seconds (off for visitors who prefer reduced motion).
+
+**To confirm with the firm**
+- The rights to the nameplate image.
+- The nameplate reads “Notary Public”, but the site and Alpuche AI do not list notarial services. Alpuche AI currently tells visitors to call about any service that isn't listed. If José offers notarial services, add them to the practice copy and the knowledge base.
 
 Also recheck the Ministry of Natural Resources links, which returned intermittent errors during research.
