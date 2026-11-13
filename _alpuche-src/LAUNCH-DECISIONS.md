@@ -35,6 +35,23 @@ The firm, or the agency and the firm together, need to settle these before the d
     - The firm should confirm who monitors that number. Automated WhatsApp messages from the firm's side would be charged per message by Meta and are not used.
 12. **Structured data.** Add LegalService and Person schema only after the public details are confirmed. The preview omits them.
 
+## Card payments (Pay an invoice)
+**How the firm's current page works** (alpuchelaw.com/payment, checked 13 Nov 2026 without submitting anything): a WordPress page running a custom plugin, `bblcpg-plugin-Alpuche-corrected`. The client enters first name, last name, email, invoice number and amount and ticks a terms box. WordPress then asks Belize Bank to create a payment and gets back a link to Belize Bank's own payment page. The client is sent there to enter card details, then sees a confirmation and receipt. Card details never touch the firm's website.
+
+**What the demo has:** `/payment/` with the same fields, checks and copy, in the new design, linked from the footer and from Alpuche AI. The address is the same as today's, so links in existing invoices keep working. In the demo, Pay now checks the details and explains the next step. Nothing is sent anywhere.
+
+**To make it take real payments:**
+- **Server step.** The step that talks to Belize Bank needs the firm's merchant username and password, so it cannot run in the browser. The new site is static, so the plan is a small Netlify Function (serverless; covered by Netlify's free tier at this volume) that replaces the plugin's server code. It also needs a return page that confirms with the bank whether the payment succeeded.
+- **From the firm:**
+  - the plugin folder from the WordPress hosting (`wp-content/plugins/bblcpg-plugin-Alpuche-corrected`), or Belize Bank's integration guide;
+  - who built or maintains the plugin (its internal field names suggest it was adapted from another client's plugin);
+  - the merchant credentials, entered directly into Netlify's environment settings by the firm or the agency (never in the code, email or chat);
+  - Belize Bank's approval of the new return address, and a test account to try payments before going live;
+  - confirmation that the current gateway still works (a recent successful payment) and which currency it charges in;
+  - whether the firm receives an email for each payment, and from whom (the plugin or the bank).
+- **Terms & Service Agreement.** The current checkbox links to nothing (`#`). The firm needs to supply the terms, or the wording changes.
+- **Switch-over.** When alpuchelaw.com moves to the new site, the old WordPress payment page stops working. The payment function must be live and tested before the domain moves, or the WordPress site must keep running on a subdomain for a short overlap.
+
 ## Articles (blog)
 - **Starter articles.** The three articles (16, 17 and 20 June 2022) are Mr. Alpuche's own Facebook posts. The wording is his, lightly edited for the web, with subheadings, a byline, the original date and a general-information note added. Please ask him to confirm each one is still accurate before launch, especially the probate time frame (four to twelve months) and the land title statement.
 - **More posts.** The fourth post in the agency's screenshot (on naming a guardian for your children in your will) was cut off, so it has not been added. Send the full text of this and any other posts to add; each one becomes a Markdown file (see the README).
@@ -42,7 +59,7 @@ The firm, or the agency and the firm together, need to settle these before the d
 - **Home page.** A “From the office” section shows the three newest articles above the closing band. The menu now has six items, so between 1051 px and 1120 px wide the header uses the Menu button.
 
 ## Copy added during the build (for approval)
-The 18 Markdown pages and the articles are rendered as written. The build added a small amount of interface copy that the firm should approve:
+The 19 Markdown pages and the articles are rendered as written. The build added a small amount of interface copy that the firm should approve:
 - Home practice section: “Each practice area has its own page with examples, Belize context and common questions. See all practice areas.”
 - The side card on practice pages, guides and What to Expect: “Speak with the office · Share the general topic and any important date. Janine can explain how to arrange an initial consultation.”
 - The closing band on practice pages: “Start with the general subject and any important date. Contacting the office does not mean the firm has accepted the matter.”

@@ -12,6 +12,7 @@ const ROUTES = [
   '/insights/starting-a-business-in-belize/', '/insights/planning-retirement-in-belize/', '/website-notice/',
   '/articles/', '/articles/when-the-sole-shareholder-of-a-belize-company-dies/',
   '/articles/how-long-does-a-land-title-take-in-belize/', '/articles/buying-real-estate-in-belize-do-your-due-diligence/',
+  '/payment/',
 ];
 const ARTICLE_ROUTES = ROUTES.filter((r) => /^\/articles\/.+/.test(r));
 const PHOTO_PAGES = {
@@ -438,6 +439,38 @@ const section = (t) => console.log('\n' + t);
     await p.setViewportSize({ width: 1100, height: 800 });
     await p.goto(BASE + '/');
     ok(await p.evaluate(() => getComputedStyle(document.querySelector('.desktop-nav')).display === 'none' && getComputedStyle(document.querySelector('.mobile-nav')).display !== 'none'), '1100px: Menu button instead of a crowded menu');
+    await c.close();
+  }
+
+  // Pay an invoice: same fields as the firm's current page; never asks for card details; demo sends nothing.
+  section('Pay an invoice');
+  for (const [name, opts] of [['desktop', { viewport: { width: 1366, height: 900 } }], ['mobile', devices['iPhone 13']]]) {
+    const c = await browser.newContext(opts);
+    const p = await c.newPage();
+    const offsite = [];
+    p.on('request', (r) => { if (!r.url().startsWith(BASE.replace(/\/demos.*$/, '')) && !r.url().startsWith('data:')) offsite.push(r.url()); });
+    await p.goto(BASE + '/payment/');
+    const names = await p.$$eval('.pay-form input', (els) => els.map((e) => e.name));
+    ok(JSON.stringify(names) === JSON.stringify(['first_name', 'last_name', 'email', 'invoice', 'amount', 'agree']), `${name}: payment form has the current fields (${names.join(', ')})`);
+    ok(!(await p.$('input[autocomplete^="cc-"], input[name*="card" i], input[name*="cvv" i]')), `${name}: no card fields on this site`);
+    await p.click('.pay-submit');
+    ok(/6 highlighted/.test(await p.textContent('[data-pay-alert]')), `${name}: empty form lists six problems`);
+    ok(await p.evaluate(() => document.activeElement.id) === 'pay-first_name', `${name}: focus moves to the first problem`);
+    ok(await p.locator('.pay-form [aria-invalid="true"]').count() === 6, `${name}: each problem field is marked invalid`);
+    await p.fill('#pay-first_name', 'Maria'); await p.fill('#pay-last_name', 'Lopez'); await p.fill('#pay-email', 'maria@example');
+    await p.fill('#pay-invoice', 'INV-1042'); await p.fill('#pay-amount', '0'); await p.check('#pay-agree');
+    await p.click('.pay-submit');
+    ok(/valid email/.test(await p.textContent('#pay-email-err')) && /more than zero/.test(await p.textContent('#pay-amount-err')), `${name}: bad email and zero amount are caught`);
+    await p.fill('#pay-email', 'maria@example.com'); await p.fill('#pay-amount', '1,250.5');
+    await p.click('.pay-submit');
+    ok(await p.isVisible('[data-pay-done]') && !(await p.isVisible('.pay-form')), `${name}: valid details show the next step`);
+    ok(/INV-1042, amount 1,250\.50/.test(await p.textContent('[data-pay-summary]')), `${name}: summary repeats invoice and amount`);
+    ok(/No payment has been made/.test(await p.textContent('[data-pay-done]')), `${name}: demo says no payment was made`);
+    await p.click('[data-pay-edit]');
+    ok(await p.isVisible('.pay-form') && (await p.inputValue('#pay-invoice')) === 'INV-1042', `${name}: Edit details keeps what was typed`);
+    await p.fill('#pay-invoice', '<img src=x onerror=alert(1)>'); await p.click('.pay-submit');
+    ok(/as it appears/.test(await p.textContent('#pay-invoice-err')), `${name}: odd characters in the invoice number are refused`);
+    ok(offsite.length === 0, `${name}: the payment demo contacts no outside server (${offsite.join(', ')})`);
     await c.close();
   }
 

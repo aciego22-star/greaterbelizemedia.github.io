@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pay an Invoice | José M. Alpuche, Attorney-at-Law</title>
+<meta name="description" content="Clients of José M. Alpuche, Attorney-at-Law, can pay an invoice by credit or debit card through Belize Bank Limited’s secure payment gateway.">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta property="og:type" content="website">
+
+<meta property="og:site_name" content="José M. Alpuche, Attorney-at-Law">
+<meta property="og:title" content="Pay an Invoice | José M. Alpuche, Attorney-at-Law">
+<meta property="og:description" content="Clients of José M. Alpuche, Attorney-at-Law, can pay an invoice by credit or debit card through Belize Bank Limited’s secure payment gateway.">
+<meta property="og:url" content="https://greaterbelizemedia.github.io/demos/jose-m-alpuche/payment/">
+<meta property="og:image" content="https://greaterbelizemedia.github.io/demos/jose-m-alpuche/assets/img/og-brand.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_BZ">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#11171b">
+<meta name="x-source-ids" content="FIRM-PAYMENT">
+<meta name="alpuche-route" content="/payment/">
+<meta name="alpuche-root" content="../">
+<meta name="alpuche-links" content="dir">
+<link rel="icon" href="../assets/img/jma-mark-160.jpg">
+<link rel="preload" href="../assets/fonts/cormorant-garamond-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/css/site.css?v=db486c5772">
+
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="shell header-inner">
+    <a class="brand" href="../"><span class="mark"><img src="../assets/img/jma-mark-160.jpg" width="160" height="126" alt=""></span><span class="brand-text"><strong>José M. Alpuche</strong><span>Attorney-at-Law</span></span></a>
+    <nav class="desktop-nav" aria-label="Main navigation"><a href="../practice-areas/">Practice Areas</a><a href="../about/">Our Team</a><a href="../working-with-us/">What to Expect</a><a href="../insights/">Belize Legal Guides</a><a href="../articles/">Articles</a><a href="../contact/">Contact</a></nav>
+    <div class="header-actions">
+      <a class="header-cta" href="../contact/" data-intake>Request a consultation</a>
+      <a class="header-call" href="tel:+5012231194" aria-label="Call the office on +501 223-1194">Call</a>
+      <details class="mobile-nav">
+        <summary aria-label="Menu">Menu</summary>
+        <nav aria-label="Mobile navigation"><a href="../practice-areas/">Practice Areas</a><a href="../about/">Our Team</a><a href="../working-with-us/">What to Expect</a><a href="../insights/">Belize Legal Guides</a><a href="../articles/">Articles</a><a href="../contact/">Contact</a><a class="button button-gold" href="../contact/" data-intake>Request a consultation</a></nav>
+      </details>
+    </div>
+  </div>
+</header>
+<main id="main" tabindex="-1">
+<section class="page-head typographic">
+  
+  <div class="shell page-head-inner">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><ol><li><a href="../">Home</a></li><li><span aria-current="page">Pay an invoice</span></li></ol></nav>
+    <p class="eyebrow">Secure card payment</p>
+    <h1>Pay an invoice</h1>
+    <p class="standfirst">Clients of the office can pay an invoice by credit or debit card. Enter your details below and you will be taken to Belize Bank’s secure payment page to complete the payment.</p>
+  </div>
+</section>
+
+<div class="shell pay-grid">
+  <section class="pay-card" aria-labelledby="pay-title">
+    <h2 id="pay-title">Payment details</h2>
+    <p class="pay-required">Fields marked with an asterisk (*) are required.</p>
+    <div class="pay-alert" role="alert" data-pay-alert hidden></div>
+    <form class="pay-form" data-payment-form novalidate>
+      <div class="pay-row">
+        <div class="pay-field">
+        <label for="pay-first_name">First name <span aria-hidden="true">*</span></label>
+        
+        <input id="pay-first_name" name="first_name" required aria-required="true" aria-describedby="pay-first_name-err" type="text" autocomplete="given-name" maxlength="60">
+        <p class="pay-err" id="pay-first_name-err"></p>
+      </div>
+        <div class="pay-field">
+        <label for="pay-last_name">Last name <span aria-hidden="true">*</span></label>
+        
+        <input id="pay-last_name" name="last_name" required aria-required="true" aria-describedby="pay-last_name-err" type="text" autocomplete="family-name" maxlength="60">
+        <p class="pay-err" id="pay-last_name-err"></p>
+      </div>
+      </div>
+      <div class="pay-field">
+        <label for="pay-email">Email <span aria-hidden="true">*</span></label>
+        <p class="pay-hint" id="pay-email-hint">Your payment receipt is sent here.</p>
+        <input id="pay-email" name="email" required aria-required="true" aria-describedby="pay-email-hint pay-email-err" type="email" autocomplete="email" maxlength="120" inputmode="email">
+        <p class="pay-err" id="pay-email-err"></p>
+      </div>
+      <div class="pay-row">
+        <div class="pay-field">
+        <label for="pay-invoice">Invoice number <span aria-hidden="true">*</span></label>
+        <p class="pay-hint" id="pay-invoice-hint">As shown on your invoice.</p>
+        <input id="pay-invoice" name="invoice" required aria-required="true" aria-describedby="pay-invoice-hint pay-invoice-err" type="text" autocomplete="off" maxlength="30" spellcheck="false">
+        <p class="pay-err" id="pay-invoice-err"></p>
+      </div>
+        <div class="pay-field">
+        <label for="pay-amount">Amount <span aria-hidden="true">*</span></label>
+        <p class="pay-hint" id="pay-amount-hint">The amount you are paying.</p>
+        <input id="pay-amount" name="amount" required aria-required="true" aria-describedby="pay-amount-hint pay-amount-err" type="text" inputmode="decimal" autocomplete="off" maxlength="12" placeholder="0.00">
+        <p class="pay-err" id="pay-amount-err"></p>
+      </div>
+      </div>
+      <div class="pay-field pay-check">
+        <label><input type="checkbox" name="agree" id="pay-agree" aria-describedby="pay-agree-err"> I agree to the firm’s Terms &amp; Service Agreement. <span aria-hidden="true">*</span></label>
+        <p class="pay-err" id="pay-agree-err"></p>
+      </div>
+      <button type="submit" class="button button-gold pay-submit">Pay now</button>
+      <p class="pay-secure">You will be taken to Belize Bank Limited’s secure payment page to enter your card details. Do not send card details by email, WhatsApp or chat.</p>
+      <noscript><p class="pay-alert">Please turn on JavaScript to pay online, or contact the office on +501 223-1194.</p></noscript>
+    </form>
+    <div class="pay-done" data-pay-done hidden tabindex="-1">
+      <p class="pay-done-label">Demo</p>
+      <h2>Details checked</h2>
+      <p data-pay-summary></p>
+      <p>On the live site you would now be taken to Belize Bank’s secure payment page to enter your card details. <strong>This preview is not connected to Belize Bank. No payment has been made.</strong></p>
+      <button type="button" class="button pay-edit" data-pay-edit>Edit details</button>
+    </div>
+    <p class="ai-intake-demo">Demo: this preview does not connect to Belize Bank. Pressing Pay now checks the form and shows the next step.</p>
+  </section>
+  <div class="pay-info">
+    <h2 id="how-it-works">How it works</h2>
+    <ol class="steps pay-steps"><li class="step"><span class="step-number" aria-hidden="true">1</span><div><h3>Enter your details</h3><p>Your name, email address, the invoice number and the amount to pay. Fields marked with an asterisk (*) are required.</p></div></li><li class="step"><span class="step-number" aria-hidden="true">2</span><div><h3>Pay on Belize Bank’s secure page</h3><p>You are then redirected to the Belize Bank Payment Gateway to enter your credit or debit card details. Card details are entered only on Belize Bank Limited’s secure system; this website never sees or stores them.</p></div></li><li class="step"><span class="step-number" aria-hidden="true">3</span><div><h3>Confirmation and receipt</h3><p>After a successful payment you will see a confirmation on screen and receive a payment receipt for your records.</p></div></li></ol>
+    <h2 id="questions-about-a-payment" class="pay-q">Questions about a payment</h2>
+    <p>If you have any questions or encounter any issues during the payment process, please contact the office by telephone or email. Thank you for trusting the Law Office of José M. Alpuche with your legal matters.</p>
+    <p class="pay-contact"><a href="tel:+5012231194">+501 223-1194</a> · <a href="mailto:contact@alpuchelaw.com?subject=Invoice%20payment">contact@alpuchelaw.com</a></p>
+  </div>
+</div>
+</main>
+<footer class="site-footer">
+  <div class="shell footer-grid">
+    <div class="footer-brand"><a class="brand" href="../"><span class="mark"><img src="../assets/img/jma-mark-160.jpg" width="160" height="126" alt=""></span><span class="brand-text"><strong>José M. Alpuche</strong><span>Attorney-at-Law</span></span></a><address>The Northern Shops, Suite 19<br>1½ Miles Philip Goldson Highway<br>Belize City, Belize</address></div>
+    <nav aria-labelledby="f-practice"><h2 id="f-practice">Practice areas</h2><ul><li><a href="../practice-areas/real-estate/">Real Estate</a></li><li><a href="../practice-areas/corporate-commercial/">Corporate &amp; Commercial</a></li><li><a href="../practice-areas/banking-finance-tax-regulatory/">Banking, Finance, Tax &amp; Regulatory</a></li><li><a href="../practice-areas/dispute-resolution/">Dispute Resolution</a></li><li><a href="../practice-areas/intellectual-property/">Intellectual Property</a></li><li><a href="../practice-areas/family-law/">Family Law</a></li><li><a href="../practice-areas/qualified-retired-persons/">Qualified Retired Persons Programme</a></li></ul></nav>
+    <nav aria-labelledby="f-firm"><h2 id="f-firm">The firm</h2><ul>
+      <li><a href="../about/">Our Team</a></li>
+      <li><a href="../working-with-us/">What to Expect</a></li>
+      <li><a href="../insights/">Belize Legal Guides</a></li>
+      <li><a href="../articles/">Articles</a></li>
+      <li><a href="../contact/">Contact</a></li>
+      <li><a href="../payment/">Pay an invoice</a></li>
+      <li><a href="../website-notice/">Website notice</a></li>
+      <li><a href="../website-notice/#photo-credits">Photo credits</a></li>
+    </ul></nav>
+    <div><h2>Contact the office</h2><ul>
+      <li><a href="tel:+5012231194">+501 223-1194</a></li>
+      <li><a href="tel:+5012231195">+501 223-1195</a></li>
+      <li><a href="mailto:contact@alpuchelaw.com">contact@alpuchelaw.com</a></li>
+      <li class="social"><a class="icon-link" href="https://wa.me/5016253032" target="_blank" rel="noopener" title="WhatsApp"><svg class="icon icon-whatsapp" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg><span class="visually-hidden">Message the office on WhatsApp</span></a><a class="icon-link" href="https://www.facebook.com/alpuchelaw" target="_blank" rel="noopener" title="Facebook"><svg class="icon icon-facebook" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z"/></svg><span class="visually-hidden">José M. Alpuche on Facebook</span></a></li>
+      <li>Monday to Friday, 8:00 a.m. to 5:00 p.m. Belize time</li>
+    </ul></div>
+  </div>
+  <div class="shell footer-bottom">
+    <span>José M. Alpuche · Attorney-at-Law · Belize City</span>
+    <span class="preview-flag">Private preview for firm review. Draft content, not yet approved for publication.</span>
+  </div>
+</footer>
+<details class="office-assistant" id="alpuche-ai">
+  <summary><span class="ai-mark"><img src="../assets/img/jma-mark-160.jpg" width="160" height="126" alt=""></span><span class="ai-label">Alpuche AI</span></summary>
+  <div class="assistant-panel" role="group" aria-labelledby="assistant-title">
+    <div class="assistant-top">
+      <div class="assistant-id"><span class="ai-mark"><img src="../assets/img/jma-mark-160.jpg" width="160" height="126" alt=""></span><div><p class="assistant-label">AI assistant · demo</p><h2 id="assistant-title">Alpuche AI</h2></div></div>
+      <div class="assistant-tools"><button type="button" class="assistant-new" aria-label="New chat: clear this conversation">New chat</button><button type="button" class="assistant-close">Close</button></div>
+    </div>
+    <div class="chat-log" role="log" aria-live="polite" aria-label="Conversation with Alpuche AI" tabindex="0">
+      <p class="chat-nojs">Alpuche AI needs JavaScript. You can call the office on +501 223-1194 or email contact@alpuchelaw.com.</p>
+    </div>
+    <div class="chat-chips" role="group" aria-label="Suggested replies"></div>
+    <div class="chat-input">
+      <label for="chat-text" class="visually-hidden">Message Alpuche AI</label>
+      <input id="chat-text" type="text" maxlength="500" placeholder="Type your question…" autocomplete="off" enterkeyhint="send" disabled>
+      <button type="button" class="chat-send" disabled>Send</button>
+    </div>
+    <p class="assistant-foot">Automated assistant, not an attorney. It can’t give legal advice. Please don’t share confidential details. <a href="../website-notice/">Website notice</a></p>
+  </div>
+</details>
+<!-- scripts -->
+<script src="../assets/js/alpuche-ai-data.js?v=db486c5772" defer></script>
+<script src="../assets/js/alpuche-ai.js?v=db486c5772" defer></script>
+<script src="../assets/js/site.js?v=db486c5772" defer></script>
+</body>
+</html>

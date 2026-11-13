@@ -388,6 +388,7 @@ function footer(ctx) {
       <li><a href="${rel(ctx.route, '/insights/')}">Belize Legal Guides</a></li>
       <li><a href="${rel(ctx.route, '/articles/')}">Articles</a></li>
       <li><a href="${rel(ctx.route, '/contact/')}">Contact</a></li>
+      <li><a href="${rel(ctx.route, '/payment/')}">Pay an invoice</a></li>
       <li><a href="${rel(ctx.route, '/website-notice/')}">Website notice</a></li>
       <li><a href="${rel(ctx.route, '/website-notice/')}#photo-credits">Photo credits</a></li>
     </ul></nav>
@@ -471,7 +472,7 @@ function assistant(ctx) {
 const plain = (t) => String(t).replace(/\[([^\]]+)\]\([^)\s]+\)/g, '$1').replace(/\*\*|\*/g, '').replace(/\s+/g, ' ').trim();
 const PAGE_NAMES = {
   '/': 'Home', '/about/': 'Our Team', '/practice-areas/': 'Practice Areas', '/working-with-us/': 'What to Expect',
-  '/contact/': 'Contact', '/insights/': 'Belize Legal Guides', '/articles/': 'Articles', '/website-notice/': 'Website notice',
+  '/contact/': 'Contact', '/insights/': 'Belize Legal Guides', '/articles/': 'Articles', '/payment/': 'Pay an invoice', '/website-notice/': 'Website notice',
 };
 function pageName(page) {
   const r = page.meta.route;
@@ -491,7 +492,7 @@ function assistantDocs(pages) {
   };
   for (const page of pages) {
     // Home and the two hub pages summarise the full pages, which answer better.
-    if (['/', '/practice-areas/', '/insights/', '/articles/'].includes(page.meta.route)) continue;
+    if (['/', '/practice-areas/', '/insights/', '/articles/', '/payment/'].includes(page.meta.route)) continue;
     const { intro, sections: secs } = sections(page.blocks);
     const h1 = intro.find((b) => b.type === 'h' && b.level === 1);
     add(page, 'intro', h1 ? h1.text : pageName(page), intro.filter((b) => b.type !== 'h'), '');
@@ -1091,6 +1092,67 @@ function renderContact(page, ctx) {
   return layout(page, ctx, main, { crumbs });
 }
 
+// Invoice payments. The firm's current site collects these details and hands the visitor to
+// Belize Bank's hosted payment page, where the card details are entered. This page keeps the same
+// fields and flow. Card numbers are never asked for here. In this demo nothing is sent anywhere:
+// going live needs a small server function that holds the bank credentials (see LAUNCH-DECISIONS.md).
+function renderPayment(page, ctx) {
+  const { intro, sections: secs } = sections(page.blocks);
+  const I = splitIntro(intro);
+  const crumbs = [{ label: 'Home', route: '/' }, { label: 'Pay an invoice', route: '/payment/' }];
+  const how = secs.find((s) => /^How it works/.test(s.title));
+  const questions = secs.find((s) => /^Questions/.test(s.title));
+  const steps = sections(how.blocks.map((b) => (b.type === 'h' && b.level === 3 ? { ...b, level: 2 } : b))).sections;
+  const field = (id, label, attrs, hint = '') => `<div class="pay-field">
+        <label for="pay-${id}">${label} <span aria-hidden="true">*</span></label>
+        ${hint ? `<p class="pay-hint" id="pay-${id}-hint">${hint}</p>` : ''}
+        <input id="pay-${id}" name="${id}" required aria-required="true"${hint ? ` aria-describedby="pay-${id}-hint pay-${id}-err"` : ` aria-describedby="pay-${id}-err"`} ${attrs}>
+        <p class="pay-err" id="pay-${id}-err"></p>
+      </div>`;
+  const main = `${pageHead(page, ctx, { crumbs, eyebrow: 'Secure card payment', h1: I.h1, standfirst: inline(I.paras[0].text, ctx), photoName: null })}
+<div class="shell pay-grid">
+  <section class="pay-card" aria-labelledby="pay-title">
+    <h2 id="pay-title">Payment details</h2>
+    <p class="pay-required">Fields marked with an asterisk (*) are required.</p>
+    <div class="pay-alert" role="alert" data-pay-alert hidden></div>
+    <form class="pay-form" data-payment-form novalidate>
+      <div class="pay-row">
+        ${field('first_name', 'First name', 'type="text" autocomplete="given-name" maxlength="60"')}
+        ${field('last_name', 'Last name', 'type="text" autocomplete="family-name" maxlength="60"')}
+      </div>
+      ${field('email', 'Email', 'type="email" autocomplete="email" maxlength="120" inputmode="email"', 'Your payment receipt is sent here.')}
+      <div class="pay-row">
+        ${field('invoice', 'Invoice number', 'type="text" autocomplete="off" maxlength="30" spellcheck="false"', 'As shown on your invoice.')}
+        ${field('amount', 'Amount', 'type="text" inputmode="decimal" autocomplete="off" maxlength="12" placeholder="0.00"', 'The amount you are paying.')}
+      </div>
+      <div class="pay-field pay-check">
+        <label><input type="checkbox" name="agree" id="pay-agree" aria-describedby="pay-agree-err"> I agree to the firm’s Terms &amp; Service Agreement. <span aria-hidden="true">*</span></label>
+        <p class="pay-err" id="pay-agree-err"></p>
+      </div>
+      <button type="submit" class="button button-gold pay-submit">Pay now</button>
+      <p class="pay-secure">You will be taken to Belize Bank Limited’s secure payment page to enter your card details. Do not send card details by email, WhatsApp or chat.</p>
+      <noscript><p class="pay-alert">Please turn on JavaScript to pay online, or contact the office on ${OFFICE.phones[0].label}.</p></noscript>
+    </form>
+    <div class="pay-done" data-pay-done hidden tabindex="-1">
+      <p class="pay-done-label">Demo</p>
+      <h2>Details checked</h2>
+      <p data-pay-summary></p>
+      <p>On the live site you would now be taken to Belize Bank’s secure payment page to enter your card details. <strong>This preview is not connected to Belize Bank. No payment has been made.</strong></p>
+      <button type="button" class="button pay-edit" data-pay-edit>Edit details</button>
+    </div>
+    <p class="ai-intake-demo">Demo: this preview does not connect to Belize Bank. Pressing Pay now checks the form and shows the next step.</p>
+  </section>
+  <div class="pay-info">
+    <h2 id="${how.id}">${inline(how.title, ctx)}</h2>
+    <ol class="steps pay-steps">${steps.map((st, i) => `<li class="step"><span class="step-number" aria-hidden="true">${i + 1}</span><div><h3>${inline(st.title, ctx)}</h3>${prose(st.blocks, ctx)}</div></li>`).join('')}</ol>
+    <h2 id="${questions.id}" class="pay-q">${inline(questions.title, ctx)}</h2>
+    ${prose(questions.blocks, ctx)}
+    <p class="pay-contact"><a href="tel:${OFFICE.phones[0].tel}">${OFFICE.phones[0].label}</a> · <a href="mailto:${OFFICE.email}?subject=Invoice%20payment">${OFFICE.email}</a></p>
+  </div>
+</div>`;
+  return layout(page, ctx, main, { crumbs });
+}
+
 function renderNotice(page, ctx) {
   const { intro, sections: secs } = sections(page.blocks);
   const I = splitIntro(intro);
@@ -1121,6 +1183,7 @@ function template(route) {
   if (route === '/articles/') return renderArticlesHub;
   if (route.startsWith('/articles/')) return renderArticle;
   if (route.startsWith('/insights/')) return renderGuide;
+  if (route === '/payment/') return renderPayment;
   return { '/about/': renderAbout, '/working-with-us/': renderWorking, '/contact/': renderContact, '/website-notice/': renderNotice }[route];
 }
 

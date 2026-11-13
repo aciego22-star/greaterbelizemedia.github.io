@@ -1,4 +1,4 @@
-/* José M. Alpuche website: menu, Alpuche AI chat, consultation buttons and contact page.
+/* José M. Alpuche website: menu, Alpuche AI chat, consultation buttons, contact and payment pages.
    Alpuche AI answers in the browser (see alpuche-ai.js). The only network request it can make
    is sending an enquiry the visitor has reviewed and confirmed, and only when a lead endpoint
    is configured at build time. Nothing is stored in the browser. */
@@ -327,6 +327,78 @@
     var area = el.getAttribute('data-area') || '';
     chat.openIntake(area);
   }, opts);
+
+  // ---------- Pay an invoice ----------
+  // Same fields and checks as the firm's current payment page. In this demo nothing leaves the
+  // browser: a valid form shows the next step (Belize Bank's secure page) instead of redirecting.
+  // Card details are never asked for on this site.
+  var payForm = document.querySelector('[data-payment-form]');
+  if (payForm) {
+    var payAlert = document.querySelector('[data-pay-alert]');
+    var payDone = document.querySelector('[data-pay-done]');
+    var payCard = payForm.closest('.pay-card');
+    var payIntro = payCard ? payCard.querySelector('.pay-required') : null;
+    var cleanAmount = function (v) { return String(v || '').replace(/[\s,]/g, '').replace(/^(BZ)?\$/i, ''); };
+    var rules = {
+      first_name: function (v) { return v ? (v.length <= 60 ? '' : 'Please shorten your first name.') : 'Please enter your first name.'; },
+      last_name: function (v) { return v ? (v.length <= 60 ? '' : 'Please shorten your last name.') : 'Please enter your last name.'; },
+      email: function (v) { return !v ? 'Please enter your email address.' : (/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v) ? '' : 'Please enter a valid email address, for example name@example.com.'); },
+      invoice: function (v) { return !v ? 'Please enter the invoice number.' : (/^[A-Za-z0-9][A-Za-z0-9 \/#.-]{0,29}$/.test(v) ? '' : 'Please enter the invoice number as it appears on your invoice.'); },
+      amount: function (v) {
+        var a = cleanAmount(v);
+        if (!a) return 'Please enter the amount.';
+        if (!/^\d{1,7}(\.\d{1,2})?$/.test(a)) return 'Please enter the amount in numbers, for example 250.00.';
+        return parseFloat(a) > 0 ? '' : 'The amount must be more than zero.';
+      },
+    };
+    var setError = function (input, msg) {
+      var err = document.getElementById(input.id + '-err');
+      if (err) err.textContent = msg;
+      if (msg) input.setAttribute('aria-invalid', 'true'); else input.removeAttribute('aria-invalid');
+    };
+    var checkField = function (input) {
+      var rule = rules[input.name];
+      if (!rule) return '';
+      var msg = rule(input.value.trim());
+      setError(input, msg);
+      return msg;
+    };
+    payForm.querySelectorAll('input[type="text"], input[type="email"]').forEach(function (input) {
+      input.addEventListener('blur', function () { if (input.value.trim() || input.hasAttribute('aria-invalid')) checkField(input); }, opts);
+      input.addEventListener('input', function () { if (input.hasAttribute('aria-invalid')) checkField(input); }, opts);
+    });
+    var agree = payForm.querySelector('#pay-agree');
+    agree.addEventListener('change', function () { if (agree.checked) setError(agree, ''); }, opts);
+    payForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      var firstBad = null;
+      var count = 0;
+      payForm.querySelectorAll('input[type="text"], input[type="email"]').forEach(function (input) {
+        if (checkField(input)) { count++; firstBad = firstBad || input; }
+      });
+      if (!agree.checked) { setError(agree, 'Please confirm that you agree to the Terms & Service Agreement.'); count++; firstBad = firstBad || agree; } else setError(agree, '');
+      if (count) {
+        payAlert.textContent = count === 1 ? 'Please correct the highlighted field.' : 'Please correct the ' + count + ' highlighted fields.';
+        payAlert.hidden = false;
+        firstBad.focus();
+        return;
+      }
+      payAlert.hidden = true;
+      var amount = parseFloat(cleanAmount(payForm.amount.value)).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      // textContent only: what the visitor typed is never inserted as HTML.
+      document.querySelector('[data-pay-summary]').textContent = 'Invoice ' + payForm.invoice.value.trim() + ', amount ' + amount + ', for ' + payForm.first_name.value.trim() + ' ' + payForm.last_name.value.trim() + ' (' + payForm.email.value.trim() + ').';
+      payForm.hidden = true;
+      if (payIntro) payIntro.hidden = true;
+      payDone.hidden = false;
+      payDone.focus();
+    }, opts);
+    document.querySelector('[data-pay-edit]').addEventListener('click', function () {
+      payDone.hidden = true;
+      payForm.hidden = false;
+      if (payIntro) payIntro.hidden = false;
+      payForm.first_name.focus();
+    }, opts);
+  }
 
   // ---------- Contact page: practice carried from ?area= ----------
   var areasEl = document.getElementById('contact-areas');
