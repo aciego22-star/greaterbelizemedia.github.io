@@ -58,3 +58,18 @@ for name in belize-city-harbour belize-city-courthouse macal-river-san-ignacio p
   # 1200x630 social card crop
   convert "$f" -resize 1200x630^ -gravity center -extent 1200x630 -strip -quality 82 "$OUT/og-$name.jpg"
 done
+
+# Office sign photographs (supplied by the agency, 13 Nov 2026): backgrounds for the
+# What to Expect and Contact headers. Landscape for desktop and tablet, portrait for phones.
+if [ -f "$SRC/brand/office-sign-desktop.jpg" ]; then
+  for w in 1024 1600; do
+    convert "$SRC/brand/office-sign-desktop.jpg" -resize ${w}x -strip -interlace Plane -quality $q "$OUT/sign-desktop-$w.jpg"
+    convert "$SRC/brand/office-sign-desktop.jpg" -resize ${w}x -strip -quality $q "$OUT/sign-desktop-$w.webp"
+  done
+fi
+if [ -f "$SRC/brand/office-sign-mobile.png" ]; then
+  for w in 640 940; do
+    convert "$SRC/brand/office-sign-mobile.png" -resize ${w}x -strip -interlace Plane -quality $q "$OUT/sign-mobile-$w.jpg"
+    convert "$SRC/brand/office-sign-mobile.png" -resize ${w}x -strip -quality $q "$OUT/sign-mobile-$w.webp"
+  done
+fi

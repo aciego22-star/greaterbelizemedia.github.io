@@ -340,7 +340,7 @@ const section = (t) => console.log('\n' + t);
         return misses;
       });
       ok(headerGone.length === 0, `${name} ${route}: header and menu stay at the top while scrolling (${headerGone.join(', ')})`);
-      if (['/practice-areas/', '/about/', '/working-with-us/'].includes(route)) {
+      if (['/practice-areas/', '/about/'].includes(route)) {
         const plaque = await p.evaluate(async () => {
           window.scrollTo({ top: 0, behavior: 'instant' });
           const img = document.querySelector('.page-head.has-plaque .head-bg img');
@@ -356,7 +356,24 @@ const section = (t) => console.log('\n' + t);
           if (plaque.vw <= 780) ok(plaque.h1Top >= plaque.plateBottom - 1, `${name} ${route}: heading sits below the nameplate on phones`);
         }
       }
-      if (route === '/contact/') ok(await p.locator('.page-head.has-plaque, .page-head .head-bg').count() === 0, `${name} ${route}: no nameplate on the contact page`);
+      if (['/working-with-us/', '/contact/'].includes(route)) {
+        const sign = await p.evaluate(async () => {
+          window.scrollTo({ top: 0, behavior: 'instant' });
+          const img = document.querySelector('.page-head.bg-sign .head-bg img');
+          if (!img) return null;
+          if (!img.complete) await new Promise((r) => { img.onload = img.onerror = r; });
+          const bg = document.querySelector('.page-head.bg-sign .head-bg').getBoundingClientRect();
+          const h1 = document.querySelector('.page-head h1').getBoundingClientRect();
+          const sf = document.querySelector('.page-head .standfirst').getBoundingClientRect();
+          return { src: img.currentSrc, ok: img.naturalWidth > 0, alt: img.getAttribute('alt'), bgBottom: bg.bottom, bgLeft: bg.left, bgWidth: bg.width, h1Top: h1.top, textRight: Math.max(h1.right, sf.right), vw: innerWidth };
+        });
+        ok(sign && sign.ok && sign.alt === '', `${name} ${route}: office sign background loads (decorative)`);
+        if (sign) {
+          ok(sign.vw <= 780 ? /sign-mobile/.test(sign.src) : /sign-desktop/.test(sign.src), `${name} ${route}: ${sign.vw <= 780 ? 'portrait' : 'landscape'} sign photo used (${sign.src.split('/').pop()})`);
+          if (sign.vw <= 780) ok(sign.h1Top >= sign.bgBottom - 1, `${name} ${route}: heading sits below the sign photo on phones`);
+          else ok(sign.textRight <= sign.bgLeft + sign.bgWidth * 0.25, `${name} ${route}: words stay on the dark side, clear of the sign`);
+        }
+      }
     }
     // Hero: portrait, CTA and photographer credit visible in the first screens.
     await p.goto(BASE + '/');

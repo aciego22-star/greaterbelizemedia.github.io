@@ -593,20 +593,21 @@ function breadcrumb(crumbs, ctx) {
 
 // Interior page head: breadcrumb, eyebrow, H1, standfirst, optional photo.
 // Firm nameplate as the page-head background: portrait version on phones, landscape on larger screens.
-function plaqueBackground(ctx) {
+// Art-directed header background: the firm's nameplate ('plaque') or the office sign photo ('sign').
+function plaqueBackground(ctx, kind = 'plaque') {
   const set = (name, widths, ext) => widths.map((w) => `${imgPath(ctx, `${name}-${w}.${ext}`)} ${w}w`).join(', ');
   return `<picture class="head-bg">
-    <source media="(max-width: 780px)" type="image/webp" srcset="${set('plaque-mobile', [640, 940], 'webp')}" sizes="100vw">
-    <source media="(max-width: 780px)" srcset="${set('plaque-mobile', [640, 940], 'jpg')}" sizes="100vw">
-    <source type="image/webp" srcset="${set('plaque-desktop', [1024, 1600], 'webp')}" sizes="(max-width: 1050px) 100vw, 80vw">
-    <img src="${imgPath(ctx, 'plaque-desktop-1024.jpg')}" srcset="${set('plaque-desktop', [1024, 1600], 'jpg')}" sizes="(max-width: 1050px) 100vw, 80vw" width="1600" height="900" alt="" fetchpriority="high" decoding="async">
+    <source media="(max-width: 780px)" type="image/webp" srcset="${set(`${kind}-mobile`, [640, 940], 'webp')}" sizes="100vw">
+    <source media="(max-width: 780px)" srcset="${set(`${kind}-mobile`, [640, 940], 'jpg')}" sizes="100vw">
+    <source type="image/webp" srcset="${set(`${kind}-desktop`, [1024, 1600], 'webp')}" sizes="(max-width: 1050px) 100vw, 80vw">
+    <img src="${imgPath(ctx, `${kind}-desktop-1024.jpg`)}" srcset="${set(`${kind}-desktop`, [1024, 1600], 'jpg')}" sizes="(max-width: 1050px) 100vw, 80vw" width="1600" height="900" alt="" fetchpriority="high" decoding="async">
   </picture>`;
 }
 
 function pageHead(page, ctx, { crumbs, eyebrow, h1, standfirst, photoName: pn, plaque = false }) {
-  const cls = plaque ? ' has-plaque' : pn ? ' has-figure' : ' typographic';
+  const cls = plaque ? ` has-plaque${plaque === 'sign' ? ' bg-sign' : ''}` : pn ? ' has-figure' : ' typographic';
   return `<section class="page-head${cls}">
-  ${plaque ? plaqueBackground(ctx) : ''}
+  ${plaque ? plaqueBackground(ctx, plaque === 'sign' ? 'sign' : 'plaque') : ''}
   <div class="shell page-head-inner">
     ${breadcrumb(crumbs, ctx)}
     ${eyebrow ? `<p class="eyebrow">${esc(eyebrow)}</p>` : ''}
@@ -920,7 +921,7 @@ function renderWorking(page, ctx) {
     const [, n, t] = s.title.match(/^(\d+)\.\s+(.*)$/);
     return `<li class="step"><span class="step-number" aria-hidden="true">${n}</span><div><h2 id="${s.id}"><span class="visually-hidden">Step ${n}: </span>${inline(t, ctx)}</h2>${prose(s.blocks, ctx)}</div></li>`;
   }).join('');
-  const main = `${pageHead(page, ctx, { crumbs, h1: I.h1, standfirst: inline(I.paras[0].text, ctx), photoName: null, plaque: true })}
+  const main = `${pageHead(page, ctx, { crumbs, h1: I.h1, standfirst: inline(I.paras[0].text, ctx), photoName: null, plaque: 'sign' })}
 <div class="shell article-layout">
   <div>
     <ol class="steps">${stepHtml}</ol>
@@ -944,8 +945,8 @@ function renderContact(page, ctx) {
   notices[notices.length - 1].blocks = notices[notices.length - 1].blocks.filter((b) => b !== footerRow);
   const areaMap = Object.fromEntries(PRACTICES.map((p) => [p.key, p.label]));
 
-  // Contact keeps a plain typographic head: the nameplate already appears on three other pages.
-  const main = `${pageHead(page, ctx, { crumbs, h1: I.h1, standfirst: inline(I.paras[0].text, ctx), photoName: null })}
+  // Contact and What to Expect use the office sign photograph; the nameplate stays on Practice Areas and Our Team.
+  const main = `${pageHead(page, ctx, { crumbs, h1: I.h1, standfirst: inline(I.paras[0].text, ctx), photoName: null, plaque: 'sign' })}
 <div class="shell contact-grid">
   <section class="office-card dark" aria-labelledby="office-title">
     <h2 id="office-title">Belize City office</h2>

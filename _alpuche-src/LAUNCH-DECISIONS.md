@@ -59,7 +59,8 @@ Design changes made at the agency's direction (13 Nov 2026):
 - **No arrows.** Removed from all links, including the ↗ that marked outside links in article text.
 - **Open card layouts.** The ruled grid lines are gone from the home page practice cards and the matching layouts: the practice areas and guides pages, the team page principles and the contact page notices.
 - **No topic shortcuts.** Alpuche AI no longer shows topic buttons. Visitors type their questions; “Start an enquiry” remains.
-- **Nameplate headers.** The firm's nameplate image is the background for the Practice Areas, Our Team and What to Expect headers. On desktop the words sit over its dark JMA side; on phones the nameplate sits above the words so the heading never covers the engraved lettering. Contact has a plain header, so the plate isn't repeated.
+- **Nameplate headers.** The firm's nameplate image is the background for the Practice Areas and Our Team headers. On desktop the words sit over its dark JMA side; on phones the nameplate sits above the words so the heading never covers the engraved lettering.
+- **Office sign headers.** The photograph of the office sign is the background for the What to Expect and Contact headers. On desktop and tablet the landscape photo sits on the right with the words on a dark fade to the left. On phones the portrait photo is cropped to the sign and shown above the heading.
 - **Clean finish.** No rules, dividers, borders or grid lines anywhere on the site; spacing and background tones separate content.
 - **Alpuche AI.** The button now stays visible at all times, with a rounded launcher and a soft gold pulse every 10 seconds (off for visitors who prefer reduced motion).
 - **Pinned header.** The header with the menu stays at the top of the screen while scrolling, on every page and screen size.
@@ -70,7 +71,8 @@ Design changes made at the agency's direction (13 Nov 2026):
   - **Services.** Practice-area questions list the seven areas. “Do you handle …?” gets a plain “Yes.” and that practice's scope. Services the site doesn't list are named back: “Criminal defence is not among the firm's listed practice areas…”.
 
 **To confirm with the firm**
-- The rights to the nameplate image.
+- The rights to the nameplate image and the office sign photographs.
+- The sign shows “alpuchelaw.com”, while the site's email is contact@alpuchelaw.com. Confirm the firm's own domain and whether this site will replace it.
 - Alpuche AI's front-desk copy:
   - the one-line scope for each practice (`scope` in `PRACTICES`, `build.mjs`), drawn from the practice pages;
   - the rewritten knowledge-base answers;

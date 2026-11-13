@@ -173,6 +173,12 @@ address, .office { color: var(--on-ink); font-style: normal; font-size: .96rem; 
 .page-head.has-plaque .breadcrumb { align-self: flex-start; }
 .page-head.has-plaque h1, .page-head.has-plaque .standfirst { text-shadow: 0 2px 20px rgba(0, 0, 0, .5); }
 .page-head.has-plaque .standfirst { color: #ece9e2; }
+/* Office sign photo: a bright photograph, so it sits on the right and the words on a dark fade. */
+.page-head.bg-sign { background: var(--ink); }
+.page-head.bg-sign .head-bg { left: auto; width: 62%; }
+.page-head.bg-sign .head-bg img { object-fit: cover; object-position: 44% 42%; }
+.page-head.bg-sign::before { background: linear-gradient(90deg, var(--ink) 0%, var(--ink) 40%, rgba(17, 23, 27, .7) 47%, rgba(17, 23, 27, .12) 60%, rgba(17, 23, 27, 0) 100%); }
+.page-head.bg-sign h1, .page-head.bg-sign .standfirst { max-width: min(40vw, 640px); }
 
 /* ---------- Article layout ---------- */
 .article-layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: clamp(40px, 6vw, 96px); align-items: start; padding-block: clamp(48px, 6vw, 88px); }
@@ -376,6 +382,9 @@ address, .office { color: var(--on-ink); font-style: normal; font-size: .96rem; 
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .card-grid.three { grid-template-columns: minmax(0, 1fr); }
   .page-head.has-plaque::before { background: linear-gradient(90deg, rgba(17, 23, 27, .93) 0%, rgba(17, 23, 27, .78) 55%, rgba(17, 23, 27, .5) 100%); }
+  .page-head.bg-sign .head-bg { width: 54%; }
+  .page-head.bg-sign::before { background: linear-gradient(90deg, var(--ink) 0%, var(--ink) 46%, rgba(17, 23, 27, .6) 52%, rgba(17, 23, 27, .1) 62%, rgba(17, 23, 27, 0) 100%); }
+  .page-head.bg-sign h1, .page-head.bg-sign .standfirst { max-width: 44vw; }
 }
 
 /* Mobile header and menu (shared by tablet and phone) */
@@ -421,6 +430,12 @@ address, .office { color: var(--on-ink); font-style: normal; font-size: .96rem; 
   .page-head.has-plaque::before { background: linear-gradient(180deg, rgba(17, 23, 27, 0) 0%, rgba(17, 23, 27, 0) 55%, rgba(17, 23, 27, .35) 100%); }
   .page-head.has-plaque .page-head-inner { min-height: 0; justify-content: flex-start; padding-bottom: 52px; }
   .page-head.has-plaque .breadcrumb ol { margin-bottom: calc(43.6vw + 48px); }
+  /* Phones: the portrait sign photo, cropped to the sign, sits under the breadcrumb and fades into the heading. */
+  .page-head.bg-sign .head-bg { top: 72px; left: 0; width: 100%; height: calc(80vw); overflow: hidden; }
+  .page-head.bg-sign .head-bg img { top: -30vw; }
+  .page-head.bg-sign::before { background: linear-gradient(180deg, rgba(17, 23, 27, 0) 0, rgba(17, 23, 27, 0) calc(72px + 58vw), var(--ink) calc(72px + 80vw)); }
+  .page-head.bg-sign .breadcrumb ol { margin-bottom: calc(80vw + 28px); }
+  .page-head.bg-sign h1, .page-head.bg-sign .standfirst { max-width: none; }
   .service { grid-template-columns: minmax(0, 1fr); }
   .principles, .notice-pair { grid-template-columns: minmax(0, 1fr); gap: 28px; }
   .step { grid-template-columns: 3rem minmax(0, 1fr); gap: 4px 14px; }
