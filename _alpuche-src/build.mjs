@@ -26,6 +26,14 @@ const OUT = path.resolve(args.out || (NETLIFY ? path.join(SRC, 'dist-netlify') :
 // Absolute base used for Open Graph URLs. Production canonicals need the confirmed domain.
 // Netlify preview without a known URL: og:url is omitted and og:image is root-relative.
 const SITE_URL = String(args['site-url'] || (NETLIFY ? '' : 'https://greaterbelizemedia.github.io/demos/jose-m-alpuche')).replace(/\/$/, '');
+// Lead delivery for Alpuche AI. Without an endpoint the assistant runs in demo mode (nothing is sent).
+const LEAD_ENDPOINT = typeof args['lead-endpoint'] === 'string' ? args['lead-endpoint'] : '';
+// Optional click-to-chat WhatsApp number (digits with country code). Off unless the firm confirms a number.
+const WHATSAPP = typeof args.whatsapp === 'string' ? args.whatsapp.replace(/[^\d+]/g, '') : '';
+if (LEAD_ENDPOINT && !/^https:\/\/|^http:\/\/localhost[:/]/.test(LEAD_ENDPOINT)) {
+  console.error('--lead-endpoint must be an https:// URL.');
+  process.exit(1);
+}
 if (PRODUCTION && !args['site-url']) {
   console.error('Production builds need --site-url=<confirmed domain>.');
   process.exit(1);
@@ -221,6 +229,15 @@ function prose(blocks, ctx, opts = {}) {
   }).join('\n');
 }
 
+// Consultation buttons keep their /contact/ link (works without JavaScript) and open the
+// Alpuche AI enquiry, carrying the practice from ?area=, when JavaScript is available.
+function intakeAttrs(href) {
+  if (!/^\/contact\//.test(href)) return '';
+  const m = href.match(/[?&]area=([a-z-]+)/);
+  const area = m && PRACTICES.some((p) => p.key === m[1]) ? m[1] : '';
+  return ` data-intake${area ? ` data-area="${area}"` : ''}`;
+}
+
 // Render a list of links as actions: contact/consultation links become the primary button.
 function actionRow(links, ctx, cls = 'actions', { dark = false } = {}) {
   let primaryUsed = false;
@@ -228,7 +245,7 @@ function actionRow(links, ctx, cls = 'actions', { dark = false } = {}) {
     const isPrimary = !primaryUsed && /^\/contact\//.test(l.href);
     if (isPrimary) primaryUsed = true;
     const label = inline(l.label, ctx);
-    if (isPrimary) return link(l.href, label, ctx, ' class="button button-gold"');
+    if (isPrimary) return link(l.href, label, ctx, ` class="button button-gold"${intakeAttrs(l.href)}`);
     return link(l.href, `${label}<span class="arrow" aria-hidden="true">→</span>`, ctx, ' class="text-link"');
   });
   return `<div class="${cls}">${items.join('')}</div>`;
@@ -286,11 +303,11 @@ function header(ctx) {
     ${brand(ctx)}
     <nav class="desktop-nav" aria-label="Main navigation">${nav()}</nav>
     <div class="header-actions">
-      <a class="header-cta" href="${rel(ctx.route, '/contact/')}">Request a consultation</a>
+      <a class="header-cta" href="${rel(ctx.route, '/contact/')}" data-intake>Request a consultation</a>
       <a class="header-call" href="tel:${OFFICE.phones[0].tel}" aria-label="Call the office on ${OFFICE.phones[0].label}">Call</a>
       <details class="mobile-nav">
         <summary aria-label="Menu">Menu</summary>
-        <nav aria-label="Mobile navigation">${nav()}<a class="button button-gold" href="${rel(ctx.route, '/contact/')}">Request a consultation</a></nav>
+        <nav aria-label="Mobile navigation">${nav()}<a class="button button-gold" href="${rel(ctx.route, '/contact/')}" data-intake>Request a consultation</a></nav>
       </details>
     </div>
   </div>
@@ -366,21 +383,10 @@ function parseKnowledgeBase() {
     const head = chunk.match(/^### ([A-Z]+-\d+) · (.+)$/m);
     if (!head) continue;
     const field = (name) => (chunk.match(new RegExp(`^${name} — (.+?)\\s*$`, 'm')) || [])[1];
-    entries[head[1]] = { id: head[1], title: head[2], answer: field('Answer'), next: field('Next'), sources: field('Sources') };
+    entries[head[1]] = { id: head[1], title: head[2], answer: field('Answer'), next: field('Next'), sources: field('Sources'), examples: (field('Examples') || '').split(/(?<=[?.])\s+/).map((x) => x.trim()).filter(Boolean) };
   }
   return entries;
 }
-
-const ASSISTANT_TOPICS = [
-  { key: 'property', group: 'start', label: 'Buying property', question: 'I want to buy property in Belize.', kb: 'RE-01' },
-  { key: 'business', group: 'start', label: 'Starting a business', question: 'Can you help me set up a business in Belize?', kb: 'CO-01' },
-  { key: 'retirement', group: 'start', label: 'Retiring in Belize', question: 'Can you help me retire in Belize?', kb: 'QRP-01' },
-  { key: 'contact', group: 'start', label: 'Contact the office', question: 'How can I contact the office?', kb: 'FIR-05' },
-  { key: 'deadline', group: 'handoff', label: 'I have a hearing tomorrow', question: 'I have a hearing tomorrow. What should I do?', kb: 'CON-06', urgent: true },
-  { key: 'documents', group: 'handoff', label: 'Can I send my passport here?', question: 'Can I upload my passport or contract here?', kb: 'CON-04' },
-  { key: 'fees', group: 'handoff', label: 'What does a consultation cost?', question: 'How much is an initial consultation?', kb: 'CON-03' },
-  { key: 'unlisted', group: 'handoff', label: 'Do you handle criminal defence?', question: 'Do you handle criminal defence?', kb: 'FIR-09' },
-];
 
 const NEXT_LABELS = {
   '/about/': 'Meet José and Janine',
@@ -406,34 +412,95 @@ function nextLabel(href) {
 
 let KB = null;
 function assistant(ctx) {
-  const topics = {};
-  for (const t of ASSISTANT_TOPICS) {
-    const e = KB[t.kb];
-    if (!e) throw new Error(`Knowledge base entry ${t.kb} not found`);
-    topics[t.key] = {
-      kb: t.kb, question: t.question, answer: e.answer, urgent: !!t.urgent,
-      next: e.next ? { href: rel(ctx.route, e.next), label: nextLabel(e.next) } : null,
-    };
-  }
-  const btns = (group) => ASSISTANT_TOPICS.filter((t) => t.group === group)
-    .map((t) => `<button type="button" data-topic="${t.key}" aria-pressed="false">${esc(t.label)}</button>`).join('');
-  const json = JSON.stringify({ topics }).replace(/</g, '\\u003c');
-  return `<details class="office-assistant">
-  <summary>Office assistant</summary>
+  const demo = !LEAD_ENDPOINT;
+  return `<details class="office-assistant" id="alpuche-ai">
+  <summary>Alpuche AI</summary>
   <div class="assistant-panel" role="group" aria-labelledby="assistant-title">
     <div class="assistant-top">
-      <div><p class="assistant-label">Demonstration · prepared answers</p><h2 id="assistant-title">Office assistant</h2></div>
+      <div><p class="assistant-label">Automated assistant${demo ? ' · demo' : ''}</p><h2 id="assistant-title">Alpuche AI</h2></div>
       <button type="button" class="assistant-close">Close</button>
     </div>
-    <p class="assistant-intro">I’m the firm’s automated assistant. I can help you find a practice area or contact the office. Please keep names of other parties, documents and private details out of this chat.</p>
-    <div class="assistant-group"><p id="aq-start">Common questions</p><div class="sample-questions" role="group" aria-labelledby="aq-start">${btns('start')}</div></div>
-    <div class="assistant-group"><p id="aq-handoff">When the office should step in</p><div class="sample-questions" role="group" aria-labelledby="aq-handoff">${btns('handoff')}</div></div>
-    <div class="assistant-answer" aria-live="polite" aria-atomic="true"></div>
-    <a class="assistant-browse" href="${rel(ctx.route, '/practice-areas/')}">Browse all practice areas →</a>
-    <p class="assistant-foot">This demonstration uses prepared answers only. Nothing you choose is sent or saved, and free-text chat is switched off. The assistant cannot give legal advice or confirm appointments. <a href="${rel(ctx.route, '/website-notice/')}">Website notice</a></p>
+    <div class="chat-log" role="log" aria-live="polite" aria-label="Conversation with Alpuche AI" tabindex="0">
+      <p class="chat-nojs">Alpuche AI needs JavaScript. You can call the office on ${OFFICE.phones[0].label} or email ${OFFICE.email}.</p>
+    </div>
+    <div class="chat-chips" role="group" aria-label="Suggested replies"></div>
+    <div class="chat-input">
+      <label for="chat-text" class="visually-hidden">Message Alpuche AI</label>
+      <input id="chat-text" type="text" maxlength="500" placeholder="Type your question…" autocomplete="off" enterkeyhint="send" disabled>
+      <button type="button" class="chat-send" disabled>Send</button>
+    </div>
+    <p class="assistant-foot">Automated assistant, not an attorney. It can’t give legal advice. Please don’t share confidential details. <a href="${rel(ctx.route, '/website-notice/')}">Website notice</a></p>
   </div>
-</details>
-<script type="application/json" id="assistant-data">${json}</script>`;
+</details>`;
+}
+
+// Everything published on the site, split into sections, services and FAQs, for Alpuche AI.
+const plain = (t) => String(t).replace(/\[([^\]]+)\]\([^)\s]+\)/g, '$1').replace(/\*\*|\*/g, '').replace(/\s+/g, ' ').trim();
+const PAGE_NAMES = {
+  '/': 'Home', '/about/': 'Our Team', '/practice-areas/': 'Practice Areas', '/working-with-us/': 'What to Expect',
+  '/contact/': 'Contact', '/insights/': 'Belize Legal Guides', '/website-notice/': 'Website notice',
+};
+function pageName(page) {
+  const r = page.meta.route;
+  if (PAGE_NAMES[r]) return PAGE_NAMES[r];
+  if (PRACTICE_BY_ROUTE[r]) return PRACTICE_BY_ROUTE[r].label;
+  const h1 = page.blocks.find((b) => b.type === 'h' && b.level === 1);
+  return h1 ? plain(h1.text) : r;
+}
+
+function assistantDocs(pages) {
+  const docs = [];
+  const add = (page, kind, title, blocks, anchor) => {
+    const text = blocks.filter((b) => !isLinkRow(b) && !isItalicOnly(b))
+      .map((b) => (b.type === 'ul' ? b.items.map(plain).join('. ') : plain(b.text || ''))).join(' ').trim();
+    if (text.length < 40) return;
+    docs.push({ kind, id: `${page.meta.route}#${anchor || ''}:${slug(title)}`, route: page.meta.route, anchor: anchor || '', page: pageName(page), title: plain(title), text });
+  };
+  for (const page of pages) {
+    // Home and the two hub pages summarise the full pages, which answer better.
+    if (['/', '/practice-areas/', '/insights/'].includes(page.meta.route)) continue;
+    const { intro, sections: secs } = sections(page.blocks);
+    const h1 = intro.find((b) => b.type === 'h' && b.level === 1);
+    add(page, 'intro', h1 ? h1.text : pageName(page), intro.filter((b) => b.type !== 'h'), '');
+    for (const sec of secs) {
+      if (/frequently asked questions/i.test(sec.title)) {
+        let q = null; let a = [];
+        const flush = () => { if (q) add(page, 'faq', q, a, slug(q)); };
+        for (const b of sec.blocks) {
+          if (b.type === 'h' && b.level === 3) { flush(); q = b.text; a = []; } else a.push(b);
+        }
+        flush();
+        continue;
+      }
+      let head = []; let sub = null; const subs = [];
+      for (const b of sec.blocks) {
+        const m = b.type === 'p' && b.text.match(/^\*\*(.+?)\.\*\*\s+(.*)$/);
+        if (m) { add(page, 'service', `${m[1]} (${pageName(page)})`, [{ type: 'p', text: m[2] }], sec.id); continue; }
+        if (b.type === 'h' && b.level === 3) { sub = { title: b.text, blocks: [] }; subs.push(sub); continue; }
+        (sub ? sub.blocks : head).push(b);
+      }
+      add(page, 'section', sec.title, head, sec.id);
+      for (const ss of subs) add(page, 'section', ss.title, ss.blocks, page.meta.route === '/contact/' ? slug(ss.title) : sec.id);
+    }
+  }
+  return docs;
+}
+
+function writeAssistantData(pages) {
+  const pagesMap = Object.fromEntries(pages.map((p) => [p.meta.route, pageName(p)]));
+  const data = {
+    built: new Date().toISOString().slice(0, 10),
+    office: { phones: OFFICE.phones, email: OFFICE.email, address: OFFICE.address, hours: OFFICE.hours },
+    practices: PRACTICES,
+    kb: Object.fromEntries(Object.entries(KB).map(([id, e]) => [id, { title: e.title, answer: e.answer, next: e.next || null, examples: e.examples }])),
+    docs: assistantDocs(pages),
+    pages: pagesMap,
+    nextLabels: NEXT_LABELS,
+    transport: { mode: LEAD_ENDPOINT ? 'endpoint' : 'demo', endpoint: LEAD_ENDPOINT, whatsapp: WHATSAPP, firmWhatsApp: false },
+  };
+  const js = `/* Generated by build.mjs from content/*.md and ai/knowledge-base.md. Do not edit. */\n(function (r) { r.ALPUCHE_AI_DATA = ${JSON.stringify(data).replace(/</g, '\\u003c')}; })(typeof self !== 'undefined' ? self : this);\n`;
+  fs.writeFileSync(path.join(OUT, 'assets', 'js', 'alpuche-ai-data.js'), js);
+  return data;
 }
 
 // ---------------------------------------------------------------------------
@@ -477,6 +544,9 @@ ${SITE_URL ? `<meta property="og:url" content="${absUrl(meta.route)}">\n` : ''}<
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#11171b">
 <meta name="x-source-ids" content="${esc((meta.source_ids || []).join(', '))}">
+<meta name="alpuche-route" content="${esc(meta.route)}">
+<meta name="alpuche-root" content="${ctx.assets.replace(/assets\/$/, '')}">
+<meta name="alpuche-links" content="${LOCAL ? 'file' : 'dir'}">
 <link rel="icon" href="${imgPath(ctx, 'jma-mark-160.jpg')}">
 ${LOCAL ? '' : `<link rel="preload" href="${ctx.assets}fonts/cormorant-garamond-latin.woff2" as="font" type="font/woff2" crossorigin>\n`}<link rel="stylesheet" href="${ctx.assets}css/site.css">
 ${PRODUCTION && crumbs ? breadcrumbJsonLd(crumbs) : ''}
@@ -488,6 +558,9 @@ ${mainHtml}
 </main>
 ${footer(ctx)}
 ${assistant(ctx)}
+<!-- scripts -->
+<script src="${ctx.assets}js/alpuche-ai-data.js" defer></script>
+<script src="${ctx.assets}js/alpuche-ai.js" defer></script>
 <script src="${ctx.assets}js/site.js" defer></script>
 </body>
 </html>
@@ -547,7 +620,7 @@ function renderFaq(sec, ctx) {
     if (b.type === 'h' && b.level === 3) { cur = { q: b.text, a: [] }; items.push(cur); }
     else if (cur) cur.a.push(b);
   }
-  return `<h2 id="${sec.id}">${inline(sec.title, ctx)}</h2><div class="faq">${items.map((it) => `<div class="faq-item"><h3>${inline(it.q, ctx)}</h3>${prose(it.a, ctx)}</div>`).join('')}</div>`;
+  return `<h2 id="${sec.id}">${inline(sec.title, ctx)}</h2><div class="faq">${items.map((it) => `<div class="faq-item"><h3 id="${slug(it.q)}">${inline(it.q, ctx)}</h3>${prose(it.a, ctx)}</div>`).join('')}</div>`;
 }
 
 function renderSection(sec, ctx) {
@@ -564,7 +637,7 @@ function asideCard(ctx, { area, label }) {
   const href = area ? `/contact/?area=${area}` : '/contact/';
   return `<div class="aside-card"><p class="aside-label">${label ? esc(label) : 'Consultation'}</p><h2>Speak with the office</h2>
 <p>Share the general topic and any important date. Janine can explain how to arrange an initial consultation.</p>
-<a class="button button-gold" href="${rel(ctx.route, href)}">Request a consultation</a>
+<a class="button button-gold" href="${rel(ctx.route, href)}"${intakeAttrs(href)}>Request a consultation</a>
 <a class="aside-call" href="tel:${OFFICE.phones[0].tel}">Call ${OFFICE.phones[0].label}</a></div>`;
 }
 
@@ -841,7 +914,6 @@ function renderContact(page, ctx) {
   const footerRow = notices[notices.length - 1].blocks.find(isLinkRow);
   notices[notices.length - 1].blocks = notices[notices.length - 1].blocks.filter((b) => b !== footerRow);
   const areaMap = Object.fromEntries(PRACTICES.map((p) => [p.key, p.label]));
-  const opts = PRACTICES.map((p) => `<option value="${p.key}">${esc(p.label)}</option>`).join('');
 
   const main = `${pageHead(page, ctx, { crumbs, h1: I.h1, standfirst: inline(I.paras[0].text, ctx), photoName: null })}
 <div class="shell contact-grid">
@@ -865,19 +937,13 @@ function renderContact(page, ctx) {
         <a class="text-link" href="tel:${OFFICE.phones[0].tel}">Call the office<span class="arrow" aria-hidden="true">→</span></a>
       </div>
     </section>
-    <form class="preview-form" data-preview-form autocomplete="off" novalidate aria-describedby="preview-banner">
-      <fieldset style="border:0;margin:0;padding:0">
-        <legend>Enquiry form (preview)</legend>
-        <p class="preview-banner" id="preview-banner"><strong>Preview only.</strong> This form is not connected. Nothing you type is sent, stored or tracked. Please use the phone or email above to reach the office.</p>
-        <div class="field"><label for="f-name">Your name</label><input type="text" id="f-name" name="name" autocomplete="off"></div>
-        <fieldset class="field radios-wrap" style="border:0;padding:0;margin-inline:0"><legend class="label">Preferred reply</legend>
-          <div class="radios"><label><input type="radio" name="reply" value="phone"> Phone</label><label><input type="radio" name="reply" value="email"> Email</label></div></fieldset>
-        <div class="field"><label for="f-area">Type of matter</label><select id="f-area" name="area"><option value="">Not sure yet</option>${opts}</select></div>
-        <div class="field"><label for="f-desc">Short description</label><span class="hint" id="f-desc-hint">General topic and any important date only. Leave out other people’s names, identification numbers, financial details and documents.</span><textarea id="f-desc" name="description" maxlength="500" aria-describedby="f-desc-hint"></textarea></div>
-        <button type="button" class="button button-gold" data-preview-submit>Preview: send enquiry</button>
-        <p class="form-status" role="status" aria-live="polite"></p>
-      </fieldset>
-    </form>
+    <section class="ai-intake" aria-labelledby="ai-intake-title">
+      <p class="ai-intake-label">Alpuche AI</p>
+      <h2 id="ai-intake-title">Prefer to send a message?</h2>
+      <p>Alpuche AI, the firm’s automated assistant, takes a short enquiry and passes it to the office. It asks for your name, how you’d like to be contacted and a sentence or two about the matter${LEAD_ENDPOINT ? ', then emails you a confirmation' : ''}. Keep it general: no names of other people, ID numbers or documents.</p>
+      <button type="button" class="button button-gold" data-intake data-contact-intake hidden>Start an enquiry with Alpuche AI</button>
+      ${LEAD_ENDPOINT ? '' : '<p class="ai-intake-demo">Demo: enquiries are not sent anywhere yet.</p>'}
+    </section>
   </div>
 </div>
 <div class="shell section-tight" style="padding-top:0">
@@ -935,6 +1001,7 @@ function build() {
 
   fs.rmSync(OUT, { recursive: true, force: true });
   copyDir(path.join(SRC, 'static'), path.join(OUT, 'assets'));
+  const aiData = writeAssistantData(pages);
 
   // Home first: its closing copy is reused by other pages.
   pages.sort((a, b) => (a.meta.route === '/' ? -1 : b.meta.route === '/' ? 1 : 0));
@@ -964,12 +1031,20 @@ function build() {
     fs.writeFileSync(path.join(OUT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`);
     fs.writeFileSync(path.join(OUT, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${SITE_URL}/sitemap.xml\n`);
   }
-  console.log(`Built ${pages.length} pages → ${path.relative(process.cwd(), OUT) || OUT} (${PRODUCTION ? 'production' : 'private preview, noindex'})`);
+  console.log(`Built ${pages.length} pages, Alpuche AI: ${Object.keys(aiData.kb).length} curated answers + ${aiData.docs.length} site passages (${aiData.transport.mode}) → ${path.relative(process.cwd(), OUT) || OUT} (${PRODUCTION ? 'production' : 'private preview, noindex'})`);
 }
 
 // ---------------------------------------------------------------------------
 // Netlify extras
 // ---------------------------------------------------------------------------
+// The only host the site may contact: the configured enquiry endpoint (Apps Script answers
+// through script.googleusercontent.com after a redirect). Without one, nothing at all.
+function connectSrc() {
+  if (!LEAD_ENDPOINT) return "'none'";
+  const origin = new URL(LEAD_ENDPOINT).origin;
+  return origin === 'https://script.google.com' ? `${origin} https://script.googleusercontent.com` : origin;
+}
+
 function writeNetlifyFiles() {
   // 404 page: rendered as if at "/" with <base href="/"> so links work at any missing depth.
   const ctx = { route: '/', assets: 'assets/' };
@@ -989,10 +1064,10 @@ ${genericBand(ctx)}`;
   if (PRODUCTION) html = html.replace(/<link rel="canonical"[^>]*>\n/, '<meta name="robots" content="noindex">\n');
   fs.writeFileSync(path.join(OUT, '404.html'), html);
 
-  // Headers. connect-src 'none' and form-action 'none' enforce that the demo cannot send anything.
+  // Headers. connect-src allows only the enquiry endpoint (or nothing); form-action 'none' blocks form posts.
   const csp = [
     "default-src 'self'", "script-src 'self'", "style-src 'self' 'unsafe-inline'", "img-src 'self' data:",
-    "font-src 'self'", "connect-src 'none'", "form-action 'none'", "frame-ancestors 'none'", "base-uri 'self'", "object-src 'none'",
+    "font-src 'self'", `connect-src ${connectSrc()}`, "form-action 'none'", "frame-ancestors 'none'", "base-uri 'self'", "object-src 'none'",
   ].join('; ');
   const headers = [
     '/*',

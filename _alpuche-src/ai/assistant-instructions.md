@@ -35,3 +35,20 @@ Never claim that a transcript was deleted, redacted, reviewed or transferred. If
 Use a visibly labelled demo panel or a clearly marked sample conversation. Route suggested questions to prepared answers in the knowledge base. Navigation and official links can work. Keep the demo free of data collection, outbound messaging, external model calls and file uploads. If free text is shown, avoid transmission and persistence, preface it with a sample-only notice, and surface the emergency/urgent guidance before any generic response. A quick-question implementation is sufficient for the initial presentation.
 
 For a live deployment, use an approved provider and server-side credentials if needed. Require firm approval of the knowledge base, handoff channels, privacy disclosure, data flows, vendor terms, logging, access and retention before enabling chat or intake. Rerun the test cases after each material change. A page or source can be updated without training a new model by replacing the approved retrieval content.
+
+## Addendum, 13 November 2026: Alpuche AI with free text and enquiries
+
+The demo assistant is now named **Alpuche AI**. It accepts typed questions and shows a short typing indicator (about one to two seconds) before each reply. It still runs entirely in the browser with no model or external service.
+
+- **Answers.** Curated knowledge-base entries come first. Otherwise it retrieves passages from every published section and FAQ on the site. The escalation order above is applied before any answer: danger, sensitive details (the message is hidden and never repeated), urgent dates, role changes, then legal-advice requests (the guardrail says it cannot give legal advice and offers an enquiry).
+- **Enquiries.** These replace the contact-page form. After a notice and consent, the assistant collects:
+  - matter type
+  - name
+  - reply channel (email or phone)
+  - contact detail
+  - an optional confirmation email (phone path only)
+  - whether a date is coming up
+  - a short, general description, which is refused if it contains ID or account numbers.
+
+  The visitor reviews a summary before sending. Delivery is by email through a Google Apps Script web app (`integrations/google-apps-script/`), and the visitor gets a confirmation that does not repeat their message. Without a configured endpoint the assistant runs in demo mode and shows the emails it would send.
+- **Not changed.** The assistant still cannot schedule, accept instructions, take payments, review documents or give legal advice. The firm must approve the recipient, retention, conflicts handling and privacy notice before enquiries go to the firm.

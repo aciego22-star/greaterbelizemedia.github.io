@@ -48,7 +48,7 @@ function toHashRoute(href, fromRoute) {
 const out = {};
 for (const [route, html] of Object.entries(pages)) {
   const title = (html.match(/<title>([\s\S]*?)<\/title>/) || [])[1] || '';
-  let body = html.slice(html.indexOf('<body>') + 6, html.lastIndexOf('<script src='));
+  let body = html.slice(html.indexOf('<body>') + 6, html.indexOf('<!-- scripts -->'));
   body = body
     .replace(/<source [^>]*>/g, '')
     .replace(/\s(srcset|sizes)="[^"]*"/g, '')
@@ -68,6 +68,8 @@ for (const [route, html] of Object.entries(pages)) {
 const homeStatic = out['/'].body.replace(/\sdata-img="([^"]+)"/g, (_, k) => ` src="${images[k]}"`);
 const css = fs.readFileSync(path.join(ROOT, 'assets', 'css', 'site.css'), 'utf8');
 const siteJs = fs.readFileSync(path.join(ROOT, 'assets', 'js', 'site.js'), 'utf8');
+const aiData = fs.readFileSync(path.join(ROOT, 'assets', 'js', 'alpuche-ai-data.js'), 'utf8');
+const aiEngine = fs.readFileSync(path.join(ROOT, 'assets', 'js', 'alpuche-ai.js'), 'utf8');
 const json = (o) => JSON.stringify(o).replace(/</g, '\\u003c');
 
 const router = `
@@ -95,6 +97,8 @@ const router = `
     if (!r) return;
     var page = pages[r.route] || pages['/'];
     window.__routeQuery = r.query;
+    window.__currentRoute = pages[r.route] ? r.route : '/';
+    window.__linkMode = 'hash';
     app.innerHTML = page.body;
     app.querySelectorAll('img[data-img]').forEach(function (img) { img.src = images[img.getAttribute('data-img')]; img.removeAttribute('loading'); });
     document.title = page.title.replace(/&amp;/g, '&');
@@ -106,6 +110,8 @@ const router = `
   document.addEventListener('click', function (e) {
     var a = e.target.closest && e.target.closest('a[href^="#"]');
     if (!a) return;
+    // Consultation buttons open the Alpuche AI enquiry (handled in site.js) instead of navigating.
+    if (a.hasAttribute('data-intake') && window.__alpucheEngine) return;
     var href = a.getAttribute('href');
     e.preventDefault();
     if (href.charAt(1) === '/') {
@@ -135,6 +141,8 @@ const doc = `<!doctype html>
 <div id="app">${homeStatic}</div>
 <script type="application/json" id="pages">${json(out)}</script>
 <script type="application/json" id="images">${json(images)}</script>
+<script>${aiData.replace(/<\/script/gi, '<\\/script')}</script>
+<script>${aiEngine.replace(/<\/script/gi, '<\\/script')}</script>
 <script>${router}</script>
 </body>
 </html>

@@ -87,68 +87,128 @@ const section = (t) => console.log('\n' + t);
   ok(cspErrors.length === 0, `no Content-Security-Policy violations (${cspErrors.slice(0, 3).join(' | ')})`);
   console.log(`  ${checked.size} internal URLs checked; ${outbound.size} distinct external links (not fetched).`);
 
-  // 2. Assistant -----------------------------------------------------------
-  section('Office assistant (prepared answers)');
-  const expectations = {
-    property: { text: 'title searches', next: '/practice-areas/real-estate/' },
-    business: { text: 'Online Business Registry System', next: '/practice-areas/corporate-commercial/' },
-    retirement: { text: 'Belize Tourism Board', next: '/practice-areas/qualified-retired-persons/' },
-    contact: { text: 'contact@alpuchelaw.com', next: '/contact/' },
-    deadline: { text: 'I cannot determine a legal deadline', next: '/contact/' },
-    documents: { text: 'keep documents and personal details out of this chat', next: '/contact/' },
-    fees: { text: 'Ask the office about current consultation', next: '/contact/' },
-    unlisted: { text: 'not listed', next: '/contact/' },
-  };
-  await page.goto(BASE + '/practice-areas/real-estate/');
-  const requests = [];
-  page.on('request', (r) => requests.push(r.url()));
-  await page.click('.office-assistant > summary');
-  for (const [topic, exp] of Object.entries(expectations)) {
-    await page.click(`button[data-topic="${topic}"]`);
-    const ans = await page.locator('.assistant-answer').innerText();
-    ok(ans.includes(exp.text), `assistant "${topic}" answer contains "${exp.text}"`);
-    const href = await page.locator('.assistant-answer a.answer-next').evaluate((a) => a.href);
-    ok(href.startsWith(BASE + exp.next), `assistant "${topic}" routes to ${exp.next} (got ${href})`);
+  // 2. Alpuche AI chat -------------------------------------------------------
+  section('Alpuche AI chat');
+  const botCount = (pg) => pg.locator('.chat-log .msg-bot:not(.is-typing)').count();
+  const lastBot = (pg) => pg.locator('.chat-log .msg-bot:not(.is-typing)').last();
+  async function waitReply(pg, before) {
+    await pg.waitForFunction((n) => document.querySelectorAll('.chat-log .msg-bot:not(.is-typing)').length > n && !document.querySelector('.chat-log .is-typing'), before, { timeout: 15000 });
   }
-  ok(await page.locator('.assistant-answer.urgent').count() === 0, 'last answer not flagged urgent');
-  await page.click('button[data-topic="deadline"]');
-  ok(await page.locator('.assistant-answer.urgent a[href="tel:+5012231194"]').count() === 1, 'urgent answer flagged and offers tap-to-call');
-  ok(requests.length === 0, `assistant makes no network requests (${requests.length})`);
-  await page.keyboard.press('Escape');
-  ok(!(await page.locator('.office-assistant').evaluate((d) => d.open)), 'Escape closes the assistant');
-  ok(await page.evaluate(() => document.activeElement.matches('.office-assistant > summary')), 'focus returns to the assistant toggle');
-  ok(page.url() === BASE + '/practice-areas/real-estate/', 'closing keeps the current page');
-  await page.keyboard.press('Enter');
-  ok(await page.locator('.office-assistant').evaluate((d) => d.open), 'assistant opens from the keyboard');
-  await page.click('.assistant-close');
-  ok(!(await page.locator('.office-assistant').evaluate((d) => d.open)), 'Close button dismisses the assistant');
+  async function say(pg, text) {
+    const before = await botCount(pg);
+    await pg.fill('#chat-text', text);
+    await pg.click('.chat-send');
+    await waitReply(pg, before);
+    return lastBot(pg);
+  }
+  async function tap(pg, label) {
+    const before = await botCount(pg);
+    await pg.locator('.chat-chips button', { hasText: label }).first().click();
+    await waitReply(pg, before);
+    return lastBot(pg);
+  }
+  const chatCtx = await browser.newContext({ viewport: { width: 1366, height: 900 } });
+  const cp = await chatCtx.newPage();
+  const chatErrors = [];
+  cp.on('pageerror', (e) => chatErrors.push(e.message));
+  await cp.goto(BASE + '/practice-areas/real-estate/', { waitUntil: 'networkidle' });
+  const chatRequests = [];
+  cp.on('request', (r) => chatRequests.push(r.url()));
+  ok((await cp.locator('.office-assistant > summary').innerText()).trim() === 'Alpuche AI', 'assistant is labelled “Alpuche AI”');
+  await cp.click('.office-assistant > summary');
+  ok(await cp.waitForSelector('.chat-log .is-typing', { timeout: 1500 }).then(() => true).catch(() => false), 'typing indicator shows before the greeting');
+  await waitReply(cp, 0);
+  ok(/automated assistant/i.test(await lastBot(cp).innerText()) && /can’t give legal advice/.test(await lastBot(cp).innerText()), 'greeting identifies as automated and mentions no legal advice');
+  // Timing: a reply arrives after roughly one to two seconds, with the indicator showing meanwhile.
+  await cp.fill('#chat-text', 'Where is the office?');
+  const t0 = Date.now();
+  await cp.click('.chat-send');
+  ok(await cp.locator('.chat-log .is-typing').isVisible(), 'typing indicator shows while “thinking”');
+  await waitReply(cp, 1);
+  const delay = Date.now() - t0;
+  ok(delay >= 900 && delay <= 2800, `reply delay is about one to two seconds (${delay} ms)`);
+  ok(/Northern Shops/.test(await lastBot(cp).innerText()), 'free-text question answered (office location)');
+  ok((await lastBot(cp).locator('a.msg-link').getAttribute('href')).includes('contact/'), 'answer links to the contact page');
+  await cp.evaluate(() => { window.ALPUCHE_TYPING_SCALE = 0.15; });
+  let bubble = await say(cp, 'Do I have a case against my landlord?');
+  ok(/not able to give legal advice/.test(await bubble.innerText()) && await bubble.evaluate((el) => el.classList.contains('is-guard')), 'legal-advice question gets the guardrail');
+  ok(await cp.locator('.chat-chips button', { hasText: 'Start an enquiry' }).count() === 1, 'guardrail offers an enquiry');
+  bubble = await say(cp, 'Here is my passport number A12345678');
+  ok(!(await cp.content()).includes('A12345678'), 'passport number never appears on the page');
+  ok(await cp.locator('.msg-user.is-redacted').count() === 1, 'visitor’s message hidden');
+  bubble = await say(cp, 'Someone is trying to hurt me right now');
+  ok(await bubble.locator('a[href="tel:911"]').count() === 1 && await bubble.evaluate((el) => el.classList.contains('is-urgent')), 'danger → 911 first, tap-to-call');
+  bubble = await say(cp, 'I have a hearing tomorrow');
+  ok(await bubble.locator('a[href="tel:+5012231194"]').count() >= 1, 'urgent date → call the office, tap-to-call');
+  bubble = await say(cp, 'Is registering a business name the same as a trademark?');
+  ok((await bubble.locator('a.msg-link').getAttribute('href')).includes('intellectual-property'), 'site content answer links to the right page');
+  bubble = await tap(cp, 'Start an enquiry');
+  ok(/pass a short enquiry/.test(await bubble.innerText()), 'chip starts an enquiry');
+  bubble = await tap(cp, 'Not now');
+  ok(/haven’t sent anything/.test(await bubble.innerText()), 'enquiry can be declined');
+  ok(chatRequests.length === 0, `chat makes no network requests (${chatRequests.length})`);
+  await cp.keyboard.press('Escape');
+  ok(!(await cp.locator('.office-assistant').evaluate((d) => d.open)), 'Escape closes Alpuche AI');
+  ok(await cp.evaluate(() => document.activeElement.matches('.office-assistant > summary')), 'focus returns to the toggle');
+  ok(cp.url() === BASE + '/practice-areas/real-estate/', 'closing keeps the current page');
+  await cp.keyboard.press('Enter');
+  ok(await cp.locator('.office-assistant').evaluate((d) => d.open), 'Alpuche AI opens from the keyboard');
+  ok(await cp.locator('.chat-log .msg').count() > 10, 'conversation kept while the page stays open');
+  await cp.click('.assistant-close');
+  ok(!(await cp.locator('.office-assistant').evaluate((d) => d.open)), 'Close button dismisses Alpuche AI');
+  ok(chatErrors.length === 0, `no script errors (${chatErrors.join(' | ')})`);
 
-  // 3. Contact preselect and preview form ----------------------------------
+  // 3. Enquiry through Alpuche AI (demo mode) -------------------------------------
+  section('Enquiry through Alpuche AI');
+  const ep = await chatCtx.newPage();
+  await ep.addInitScript(() => { window.ALPUCHE_TYPING_SCALE = 0.15; });
+  await ep.goto(BASE + '/practice-areas/real-estate/', { waitUntil: 'networkidle' });
+  const enquiryRequests = [];
+  ep.on('request', (r) => enquiryRequests.push(r.url()));
+  await ep.click('.contact-band a.button[data-intake]');
+  await waitReply(ep, 0);
+  ok(ep.url() === BASE + '/practice-areas/real-estate/', 'consultation button opens Alpuche AI instead of leaving the page');
+  ok(/no names of other people/.test(await lastBot(ep).innerText()), 'enquiry starts with the notice');
+  bubble = await tap(ep, 'Continue');
+  ok(/Real Estate/.test(await bubble.innerText()), 'practice carried from the button');
+  await tap(ep, 'Yes');
+  await say(ep, 'Jane Doe');
+  await tap(ep, 'Email');
+  ok(await ep.locator('#chat-text').getAttribute('type') === 'email', 'email step switches the keyboard to email');
+  await say(ep, 'jane@example.com');
+  await tap(ep, 'No');
+  bubble = await say(ep, 'Buying a lot near Placencia from an overseas seller');
+  const summary = await bubble.innerText();
+  ok(/Real Estate/.test(summary) && /Jane Doe/.test(summary) && /jane@example\.com/.test(summary), 'review summary shows the details');
+  bubble = await tap(ep, 'Send to the office');
+  ok(/nothing was sent/.test(await bubble.innerText()), 'demo mode says nothing was sent');
+  ok(await bubble.locator('details.msg-preview').count() === 2, 'demo shows the office email and visitor confirmation');
+  ok(enquiryRequests.length === 0, 'demo enquiry makes no network requests');
+  ok(await ep.evaluate(() => localStorage.length + sessionStorage.length) === 0, 'nothing stored in web storage');
+
   section('Contact page');
-  await page.goto(BASE + '/contact/?area=real-estate');
-  ok(await page.locator('select[name=area]').inputValue() === 'real-estate', '?area=real-estate preselects the practice');
-  ok((await page.locator('[data-area-note]').innerText()).includes('Real Estate'), 'practice shown in enquiry note');
-  ok((await page.locator('a.button[data-mail-subject]').getAttribute('href')).includes('Real%20Estate'), 'email subject carries the practice');
-  await page.goto(BASE + '/contact/?area=%3Cimg%20src%3Dx%20onerror%3Dalert(1)%3E');
-  ok(!(await page.locator('[data-area-note]').isVisible()), 'unknown area value ignored');
-  ok(!(await page.content()).includes('onerror=alert'), 'arbitrary area value never rendered');
-  ok(await page.locator('select[name=area]').inputValue() === '', 'unknown area leaves select at "Not sure yet"');
-  await page.goto(BASE + '/contact/?area=family-law');
-  const formRequests = [];
-  page.on('request', (r) => formRequests.push(r.url()));
-  await page.fill('#f-name', 'Test Person');
-  await page.fill('#f-desc', 'Sample text');
-  await page.click('[data-preview-submit]');
-  ok((await page.locator('.form-status').innerText()).includes('nothing was sent'), 'preview submit explains nothing was sent');
-  ok(await page.inputValue('#f-name') === '' && await page.inputValue('#f-desc') === '', 'preview submit clears fields');
-  ok(formRequests.length === 0, 'preview form makes no network requests');
-  ok(await page.evaluate(() => localStorage.length + sessionStorage.length) === 0, 'nothing stored in web storage');
-  ok(await page.locator('form[action]').count() === 0, 'form has no action');
+  await ep.goto(BASE + '/contact/?area=real-estate', { waitUntil: 'networkidle' });
+  ok(await ep.locator('form').count() === 0, 'enquiry form removed');
+  ok(await ep.locator('.office-card a[href="tel:+5012231194"]').isVisible(), 'phone still prominent');
+  const startBtn = ep.locator('[data-contact-intake]');
+  ok(await startBtn.isVisible() && /Real Estate/.test(await startBtn.innerText()), 'Alpuche AI button carries the practice');
+  ok((await ep.locator('[data-area-note]').innerText()).includes('Real Estate'), 'practice shown in note');
+  ok((await ep.locator('a.button[data-mail-subject]').getAttribute('href')).includes('Real%20Estate'), 'email subject carries the practice');
+  await startBtn.click();
+  await waitReply(ep, 0);
+  bubble = await tap(ep, 'Continue');
+  ok(/Real Estate/.test(await bubble.innerText()), 'contact page enquiry starts with the practice');
+  await ep.goto(BASE + '/contact/?area=%3Cimg%20src%3Dx%20onerror%3Dalert(1)%3E');
+  ok(!(await ep.locator('[data-area-note]').isVisible()), 'unknown area value ignored');
+  ok(!(await ep.content()).includes('onerror=alert'), 'arbitrary area value never rendered');
+  ok((await startBtn.innerText()).trim() === 'Start an enquiry with Alpuche AI', 'unknown area leaves the generic button');
+  await chatCtx.close();
 
   // 4. Mobile flows ---------------------------------------------------------
   section('Mobile (iPhone 13)');
   const m = await browser.newContext({ ...devices['iPhone 13'] });
   const mp = await m.newPage();
+  await mp.addInitScript(() => { window.ALPUCHE_TYPING_SCALE = 0.15; });
   await mp.goto(BASE + '/');
   ok(await mp.locator('.desktop-nav').isHidden(), 'desktop nav hidden');
   ok(await mp.locator('a.header-call[href^="tel:"]').isVisible(), 'tap-to-call visible in header');
@@ -159,24 +219,36 @@ const section = (t) => console.log('\n' + t);
   for (const l of ['Practice Areas', 'Our Team', 'What to Expect', 'Belize Legal Guides', 'Contact']) ok(labels.includes(l), `menu has "${l}"`);
   await mp.keyboard.press('Escape');
   ok(await mp.locator('.mobile-nav nav').isHidden(), 'Escape closes the menu');
-  // Demo script: assistant → Retiring in Belize → QRP page.
+  // Demo script: Alpuche AI → Retiring in Belize → QRP page.
   await mp.waitForTimeout(300);
   await mp.click('.office-assistant > summary', { force: true });
-  await mp.click('button[data-topic="retirement"]');
+  await waitReply(mp, 0);
   const panel = await mp.locator('.assistant-panel').boundingBox();
   const vp = mp.viewportSize();
-  ok(panel.x >= 0 && panel.x + panel.width <= vp.width && panel.y >= 60, 'assistant panel fits the screen below the header');
-  await mp.click('.assistant-answer a.answer-next');
+  ok(panel.x >= 0 && panel.x + panel.width <= vp.width && panel.y >= 60 && panel.y + panel.height <= vp.height, 'chat panel fits the screen below the header');
+  const inputBox = await mp.locator('#chat-text').boundingBox();
+  ok(inputBox && inputBox.y + inputBox.height <= vp.height, 'message box visible on the phone');
+  ok(await mp.locator('#chat-text').evaluate((el) => parseFloat(getComputedStyle(el).fontSize) >= 16), 'message box text is 16px (no iPhone zoom)');
+  await tap(mp, 'Retiring in Belize');
+  await lastBot(mp).locator('a.msg-link').click();
   await mp.waitForLoadState('load');
   ok(mp.url() === BASE + '/practice-areas/qualified-retired-persons/', 'retirement answer leads to the QRP page');
-  // Demo script: Real Estate → guide → contact carries practice.
+  // Demo script: Real Estate → guide → consultation opens the enquiry with the practice.
   await mp.goto(BASE + '/');
   await mp.click('.practice-card a[href*="real-estate"]');
   ok(mp.url().endsWith('/practice-areas/real-estate/'), 'home practice card opens Real Estate');
   await mp.click('.contact-band a[href*="buying-property-in-belize"]');
   ok(mp.url().endsWith('/insights/buying-property-in-belize/'), 'Real Estate links to the property guide');
   await mp.click('.contact-band a.button[href*="area=real-estate"]');
-  ok(await mp.locator('select[name=area]').inputValue() === 'real-estate', 'guide consultation link preselects Real Estate');
+  await waitReply(mp, 0);
+  const b2 = await tap(mp, 'Continue');
+  ok(/Real Estate/.test(await b2.innerText()), 'guide consultation button opens the enquiry for Real Estate');
+  await mp.goto(BASE + '/');
+  await mp.click('.mobile-nav > summary');
+  await mp.click('.mobile-nav nav a.button[data-intake]');
+  await waitReply(mp, 0);
+  ok(await mp.locator('.office-assistant').evaluate((d) => d.open) && await mp.locator('.mobile-nav nav').isHidden(), 'menu’s consultation button closes the menu and opens the enquiry');
+  await m.close();
 
   // 5. Layout: overflow and assistant collisions at three widths -----------
   section('Layout at desktop, tablet and mobile widths');

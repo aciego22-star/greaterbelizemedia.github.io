@@ -1,98 +1,263 @@
-/* José M. Alpuche demo: menu, office assistant (prepared answers only) and contact preview.
-   Nothing on this site sends, stores or logs what a visitor types or selects. */
+/* José M. Alpuche website: menu, Alpuche AI chat, consultation buttons and contact page.
+   Alpuche AI answers in the browser (see alpuche-ai.js). The only network request it can make
+   is sending an enquiry the visitor has reviewed and confirmed, and only when a lead endpoint
+   is configured at build time. Nothing is stored in the browser. */
 (function () {
   'use strict';
+
+  // The single-file preview re-runs this script on every page change; drop old listeners.
+  if (window.__siteAbort) window.__siteAbort.abort();
+  var aborter = typeof AbortController !== 'undefined' ? new AbortController() : null;
+  window.__siteAbort = aborter;
+  var opts = aborter ? { signal: aborter.signal } : false;
+  var passiveOpts = aborter ? { signal: aborter.signal, passive: true } : { passive: true };
+
+  var meta = function (name) { var m = document.querySelector('meta[name="' + name + '"]'); return m ? m.content : ''; };
+  var linkMode = window.__linkMode || meta('alpuche-links') || 'dir';
+  var rootPrefix = meta('alpuche-root');
+  var currentRoute = window.__currentRoute || meta('alpuche-route') || '/';
+  var query = new URLSearchParams(window.__routeQuery != null ? window.__routeQuery : window.location.search);
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var coarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+
+  // Site route ("/contact/?area=x#y") → link that works in this build (folder, file:// or single file).
+  function toHref(route) {
+    if (!route || /^(https?:|mailto:|tel:)/.test(route)) return route;
+    if (linkMode === 'hash') return '#' + route;
+    var m = route.match(/^([^?#]*)(.*)$/);
+    var p = m[1].replace(/^\//, '');
+    if (linkMode === 'file' && (p === '' || /\/$/.test(p))) p += 'index.html';
+    return (rootPrefix + p || './') + m[2];
+  }
 
   // ---------- Disclosures: mobile menu and assistant ----------
   var mobileMenu = document.querySelector('.mobile-nav');
   var assistant = document.querySelector('.office-assistant');
 
   if (mobileMenu) {
-    mobileMenu.querySelectorAll('a').forEach(function (link) {
-      link.addEventListener('click', function () { mobileMenu.open = false; });
+    mobileMenu.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () { mobileMenu.open = false; });
     });
     document.addEventListener('click', function (event) {
       if (mobileMenu.open && !mobileMenu.contains(event.target)) mobileMenu.open = false;
-    });
+    }, opts);
   }
 
-  [mobileMenu, assistant].forEach(function (disclosure) {
-    if (!disclosure) return;
-    disclosure.addEventListener('keydown', function (event) {
-      if (event.key === 'Escape' && disclosure.open) {
-        disclosure.open = false;
-        disclosure.querySelector('summary').focus();
-      }
+  [mobileMenu, assistant].forEach(function (d) {
+    if (!d) return;
+    d.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && d.open) { d.open = false; d.querySelector('summary').focus(); }
     });
   });
 
-  // Only one overlay open at a time.
   if (mobileMenu && assistant) {
     mobileMenu.addEventListener('toggle', function () { if (mobileMenu.open) assistant.open = false; });
     assistant.addEventListener('toggle', function () { if (assistant.open) mobileMenu.open = false; });
   }
 
-  // ---------- Office assistant ----------
-  var dataEl = document.getElementById('assistant-data');
-  if (assistant && dataEl) {
-    var data = JSON.parse(dataEl.textContent);
-    var answerBox = assistant.querySelector('.assistant-answer');
-    var closeBtn = assistant.querySelector('.assistant-close');
-    var buttons = assistant.querySelectorAll('button[data-topic]');
+  // ---------- Alpuche AI ----------
+  var data = window.ALPUCHE_AI_DATA;
+  var lib = window.AlpucheAI;
+  var chat = null;
 
-    // Turn the office phone numbers and email in a prepared answer into links.
-    function appendWithLinks(parent, text) {
+  if (assistant && data && lib) {
+    var engine = window.__alpucheEngine || (window.__alpucheEngine = lib.createEngine(data));
+    var session = engine.newSession({ route: currentRoute });
+    var log = assistant.querySelector('.chat-log');
+    var chipsBox = assistant.querySelector('.chat-chips');
+    var input = assistant.querySelector('#chat-text');
+    var sendBtn = assistant.querySelector('.chat-send');
+    var closeBtn = assistant.querySelector('.assistant-close');
+    var busy = false;
+    var started = false;
+
+    log.textContent = '';
+    input.disabled = false;
+    sendBtn.disabled = false;
+
+    var scrollToEnd = function () { log.scrollTop = log.scrollHeight; };
+
+    // Office phone numbers, email and 911 in answers become tap-to-call / mail links.
+    function appendText(parent, text) {
       var pattern = /(\+501 223-119[45])|(contact@alpuchelaw\.com)|(\b911\b)/g;
       var last = 0;
-      var match;
-      while ((match = pattern.exec(text))) {
-        if (match.index > last) parent.appendChild(document.createTextNode(text.slice(last, match.index)));
+      var m;
+      while ((m = pattern.exec(text))) {
+        if (m.index > last) parent.appendChild(document.createTextNode(text.slice(last, m.index)));
         var a = document.createElement('a');
-        a.textContent = match[0];
-        if (match[1]) a.href = 'tel:' + match[1].replace(/[^+\d]/g, '');
-        else if (match[2]) a.href = 'mailto:' + match[2];
-        else a.href = 'tel:911';
+        a.textContent = m[0];
+        a.href = m[1] ? 'tel:' + m[1].replace(/[^+\d]/g, '') : m[2] ? 'mailto:' + m[2] : 'tel:911';
         parent.appendChild(a);
         last = pattern.lastIndex;
       }
       if (last < text.length) parent.appendChild(document.createTextNode(text.slice(last)));
     }
 
-    buttons.forEach(function (button) {
-      button.addEventListener('click', function () {
-        var topic = data.topics[button.dataset.topic];
-        if (!topic) return;
-        buttons.forEach(function (b) { b.setAttribute('aria-pressed', b === button ? 'true' : 'false'); });
+    function addUser(text, redacted) {
+      var div = document.createElement('div');
+      div.className = 'msg msg-user' + (redacted ? ' is-redacted' : '');
+      var p = document.createElement('p');
+      p.textContent = redacted ? 'Message hidden: it looked like it contained personal details.' : text;
+      div.appendChild(p);
+      log.appendChild(div);
+      scrollToEnd();
+      return div;
+    }
 
-        var asked = document.createElement('p');
-        asked.className = 'asked';
-        var askedLabel = document.createElement('strong');
-        askedLabel.textContent = 'Sample question: ';
-        asked.appendChild(askedLabel);
-        asked.appendChild(document.createTextNode(topic.question));
-
-        var answer = document.createElement('p');
-        answer.className = 'answer-text';
-        appendWithLinks(answer, topic.answer);
-
-        var nodes = [asked, answer];
-        if (topic.next) {
-          var link = document.createElement('a');
-          link.className = 'answer-next';
-          link.href = topic.next.href;
-          link.textContent = topic.next.label + ' →';
-          nodes.push(link);
-        }
-        answerBox.classList.toggle('urgent', !!topic.urgent);
-        answerBox.dataset.kb = topic.kb;
-        answerBox.replaceChildren.apply(answerBox, nodes);
-        // Bring the answer into view inside the panel (it can sit below the fold on phones).
-        var panel = assistant.querySelector('.assistant-panel');
-        var top = answerBox.offsetTop - 8;
-        if (top + answerBox.offsetHeight > panel.scrollTop + panel.clientHeight || top < panel.scrollTop) {
-          panel.scrollTop = Math.max(0, Math.min(top, panel.scrollHeight - panel.clientHeight));
-        }
+    function addBot(msg) {
+      var div = document.createElement('div');
+      div.className = 'msg msg-bot' + (msg.kind ? ' is-' + msg.kind : '');
+      if (msg.text) { var p = document.createElement('p'); appendText(p, msg.text); div.appendChild(p); }
+      if (msg.summary) {
+        var dl = document.createElement('dl');
+        msg.summary.forEach(function (row) {
+          var dt = document.createElement('dt'); dt.textContent = row[0];
+          var dd = document.createElement('dd'); dd.textContent = row[1];
+          dl.appendChild(dt); dl.appendChild(dd);
+        });
+        div.appendChild(dl);
+      }
+      if (msg.note) { var n = document.createElement('p'); n.className = 'msg-note'; n.textContent = msg.note; div.appendChild(n); }
+      (msg.previews || []).forEach(function (pv) {
+        var det = document.createElement('details');
+        det.className = 'msg-preview';
+        var sum = document.createElement('summary'); sum.textContent = pv.title;
+        var pre = document.createElement('pre'); pre.textContent = pv.body;
+        det.appendChild(sum); det.appendChild(pre);
+        div.appendChild(det);
       });
+      (msg.links || []).filter(Boolean).forEach(function (l) {
+        var a = document.createElement('a');
+        a.className = 'msg-link';
+        a.href = l.href || toHref(l.route);
+        if (/^https?:/.test(a.getAttribute('href'))) { a.rel = 'noopener'; a.target = '_blank'; }
+        a.textContent = l.label + ' →';
+        div.appendChild(a);
+      });
+      log.appendChild(div);
+      scrollToEnd();
+    }
+
+    function setChips(chips) {
+      chipsBox.textContent = '';
+      (chips || []).forEach(function (c) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.textContent = c.label;
+        b.addEventListener('click', function () { if (!busy) run({ action: c.action, area: c.area }, c.label); });
+        chipsBox.appendChild(b);
+      });
+    }
+
+    function setInput(spec) {
+      spec = spec || {};
+      input.type = spec.type || 'text';
+      input.placeholder = spec.placeholder || 'Type your question…';
+      input.setAttribute('autocomplete', spec.autocomplete || 'off');
+      input.setAttribute('inputmode', spec.type === 'email' ? 'email' : spec.type === 'tel' ? 'tel' : 'text');
+    }
+
+    // Show "Alpuche AI is typing…" for about a second or two before each reply.
+    function typing(ms, label) {
+      var div = document.createElement('div');
+      div.className = 'msg msg-bot is-typing';
+      div.setAttribute('aria-label', label || 'Alpuche AI is typing');
+      div.innerHTML = '<span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="typing-label">' + (label || 'Alpuche AI is typing…') + '</span>';
+      log.appendChild(div);
+      scrollToEnd();
+      return new Promise(function (resolve) {
+        setTimeout(function () { div.remove(); resolve(); }, ms);
+      });
+    }
+
+    function delayFor(out) {
+      var scale = typeof window.ALPUCHE_TYPING_SCALE === 'number' ? window.ALPUCHE_TYPING_SCALE : 1;
+      var len = out.messages.reduce(function (n, m) { return n + (m.text || '').length; }, 0);
+      return Math.round((900 + Math.min(1100, len * 4)) * scale);
+    }
+
+    function lock(on) {
+      busy = on;
+      log.setAttribute('aria-busy', on ? 'true' : 'false');
+      sendBtn.disabled = on;
+      chipsBox.querySelectorAll('button').forEach(function (b) { b.disabled = on; });
+    }
+
+    function render(out) {
+      var before = log.children.length;
+      out.messages.forEach(addBot);
+      setChips(out.chips);
+      setInput(out.input);
+      // Long replies: show their beginning; short ones: show the end of the conversation.
+      var first = log.children[before];
+      if (first && log.scrollHeight - first.offsetTop > log.clientHeight) log.scrollTop = Math.max(0, first.offsetTop - 8);
+      else scrollToEnd();
+    }
+
+    function deliver(payload) {
+      var t = data.transport || {};
+      if (t.mode !== 'endpoint' || !t.endpoint) {
+        return new Promise(function (r) { setTimeout(function () { r({ ok: true, mode: 'demo' }); }, 600); });
+      }
+      var ctrl = typeof AbortController !== 'undefined' ? new AbortController() : null;
+      var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, 20000);
+      // text/plain keeps this a "simple" request, which Google Apps Script accepts without a preflight.
+      return fetch(t.endpoint, { method: 'POST', body: JSON.stringify(payload), headers: { 'Content-Type': 'text/plain;charset=utf-8' }, signal: ctrl ? ctrl.signal : undefined, credentials: 'omit', redirect: 'follow' })
+        .then(function (res) { return res.json(); })
+        .then(function (json) { clearTimeout(timer); return { ok: !!(json && json.ok), mode: 'sent', ref: json && json.ref }; })
+        .catch(function () { clearTimeout(timer); return { ok: false }; });
+    }
+
+    function run(inputObj, userLabel) {
+      if (busy) return;
+      started = true;
+      var out = engine.handle(session, inputObj);
+      if (userLabel != null) addUser(userLabel, out.redactUser);
+      setChips([]);
+      lock(true);
+      if (out.send) {
+        typing(900, 'Sending your enquiry…').then(function () {
+          return deliver(out.send);
+        }).then(function (res) {
+          var after = engine.handle(session, { action: 'intake:result', ok: res.ok, mode: res.mode, payload: out.send });
+          lock(false);
+          render(after);
+        });
+        return;
+      }
+      typing(delayFor(out)).then(function () {
+        if (!assistant.isConnected) return;
+        lock(false);
+        render(out);
+        if (!coarse && assistant.open) input.focus();
+      });
+    }
+
+    function submit() {
+      var text = input.value.trim();
+      if (!text || busy) return;
+      input.value = '';
+      run({ text: text }, text);
+    }
+
+    sendBtn.addEventListener('click', submit);
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); submit(); }
+    });
+
+    function greet() {
+      if (started) return;
+      started = true;
+      var out = engine.greeting();
+      lock(true);
+      typing(Math.round(700 * (typeof window.ALPUCHE_TYPING_SCALE === 'number' ? window.ALPUCHE_TYPING_SCALE : 1))).then(function () { lock(false); render(out); });
+    }
+
+    assistant.addEventListener('toggle', function () {
+      if (assistant.open) {
+        greet();
+        if (!coarse) setTimeout(function () { input.focus(); }, 50);
+      }
     });
 
     if (closeBtn) {
@@ -101,14 +266,33 @@
         assistant.querySelector('summary').focus();
       });
     }
+
+    chat = {
+      openIntake: function (area) {
+        started = true;
+        assistant.open = true;
+        run({ action: 'intake:start', area: area || null }, null);
+      },
+    };
   }
+
+  // ---------- Consultation buttons open the Alpuche AI enquiry ----------
+  document.addEventListener('click', function (event) {
+    var el = event.target.closest && event.target.closest('[data-intake]');
+    if (!el || !chat) return;
+    event.preventDefault();
+    if (mobileMenu) mobileMenu.open = false;
+    var area = el.getAttribute('data-area') || '';
+    chat.openIntake(area);
+  }, opts);
 
   // ---------- Keep the assistant button off links and controls ----------
   if (assistant) {
     var ticking = false;
-    function overlaps(a, b) { return a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top; }
-    function check() {
+    var overlaps = function (a, b) { return a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top; };
+    var check = function () {
       ticking = false;
+      if (!assistant.isConnected) return;
       if (assistant.open) { assistant.classList.remove('is-tucked'); return; }
       // The fixed container is not moved by the summary's transform, so it gives the resting position.
       var box = assistant.getBoundingClientRect();
@@ -119,59 +303,42 @@
       for (var i = 0; i < targets.length && !hit; i++) {
         var r = targets[i].getBoundingClientRect();
         if (r.bottom < zone.top || r.top > zone.bottom) continue;
-        var rects = targets[i].getClientRects(); // per line, for wrapped inline links
+        var rects = targets[i].getClientRects();
         for (var j = 0; j < rects.length; j++) if (overlaps(rects[j], zone)) { hit = true; break; }
       }
       assistant.classList.toggle('is-tucked', hit);
-    }
-    function schedule() { if (!ticking) { ticking = true; window.requestAnimationFrame(check); } }
-    window.addEventListener('scroll', schedule, { passive: true });
-    window.addEventListener('resize', schedule);
+    };
+    var schedule = function () { if (!ticking) { ticking = true; window.requestAnimationFrame(check); } };
+    window.addEventListener('scroll', schedule, passiveOpts);
+    window.addEventListener('resize', schedule, opts);
     assistant.addEventListener('toggle', schedule);
-    window.addEventListener('load', schedule);
+    window.addEventListener('load', schedule, opts);
     schedule();
   }
 
-  // ---------- Contact page: practice preselect and preview form ----------
-  var form = document.querySelector('[data-preview-form]');
+  // ---------- Contact page: practice carried from ?area= ----------
   var areasEl = document.getElementById('contact-areas');
-  if (form && areasEl) {
+  if (areasEl) {
     var areas = JSON.parse(areasEl.textContent); // { key: label } for the seven known practice areas
-    var select = form.querySelector('select[name="area"]');
+    var key = query.get('area');
+    // Only whitelisted labels are ever rendered; the raw query value is never written to the page.
+    var label = key && Object.prototype.hasOwnProperty.call(areas, key) ? areas[key] : null;
     var note = document.querySelector('[data-area-note]');
-    var noteLabel = note && note.querySelector('[data-area-label]');
-    var mailLinks = document.querySelectorAll('[data-mail-subject]');
-    var status = form.querySelector('.form-status');
-
-    function applyArea(key) {
-      var label = Object.prototype.hasOwnProperty.call(areas, key) ? areas[key] : null;
-      // Only whitelisted labels are ever rendered; the raw query value is never written to the page.
-      if (note) note.classList.toggle('is-visible', !!label);
-      if (noteLabel) noteLabel.textContent = label || '';
-      mailLinks.forEach(function (a) {
-        var subject = 'Consultation enquiry' + (label ? ' – ' + label : '');
-        a.href = 'mailto:contact@alpuchelaw.com?subject=' + encodeURIComponent(subject);
-      });
-      if (select) select.value = label ? key : '';
+    if (note) {
+      note.classList.toggle('is-visible', !!label);
+      var nl = note.querySelector('[data-area-label]');
+      if (nl) nl.textContent = label || '';
     }
-
-    // window.__routeQuery is set by the single-file preview, which routes with the URL hash.
-    var params = new URLSearchParams(window.__routeQuery != null ? window.__routeQuery : window.location.search);
-    applyArea(params.get('area'));
-    if (select) {
-      select.addEventListener('change', function () { applyArea(select.value); });
+    document.querySelectorAll('[data-mail-subject]').forEach(function (a) {
+      a.href = 'mailto:contact@alpuchelaw.com?subject=' + encodeURIComponent('Consultation enquiry' + (label ? ' – ' + label : ''));
+    });
+    var start = document.querySelector('[data-contact-intake]');
+    if (start) {
+      if (label) {
+        start.setAttribute('data-area', key);
+        start.textContent = 'Start a ' + label + ' enquiry with Alpuche AI';
+      }
+      start.hidden = !chat;
     }
-
-    var submit = form.querySelector('[data-preview-submit]');
-    if (submit) {
-      submit.addEventListener('click', function () {
-        // Simulation only: clear every field and confirm nothing was sent or kept.
-        form.reset();
-        applyArea(params.get('area'));
-        status.textContent = 'Preview only: nothing was sent or saved, and the fields have been cleared. ' +
-          'After the firm approves a workflow, this step would send a short, non-confidential enquiry to the office.';
-      });
-    }
-    form.addEventListener('submit', function (event) { event.preventDefault(); });
   }
 })();

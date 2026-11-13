@@ -62,23 +62,32 @@ To change copy, edit the Markdown and rebuild. The office details live once, in 
 
 ```bash
 npx http-server -p 8080 -s .          # from the repo root
-node _alpuche-src/scripts/verify.cjs  # 435 checks
+node _alpuche-src/scripts/verify.cjs  # 446 browser checks
+node _alpuche-src/scripts/test-assistant.cjs     # 206 engine checks: the 24 handoff cases, guardrails, site answers, enquiry flow
+node _alpuche-src/scripts/test-apps-script.cjs   # 25 checks of Code.gs with Google services mocked
+node _alpuche-src/scripts/verify-endpoint.cjs    # enquiry delivery against a mock endpoint, with Netlify's CSP
 ```
 
 The suite checks:
 - every route returns 200, every internal link resolves and no assets fail;
 - each page has noindex, title, description, absolute og:image, a single H1, a breadcrumb, the photo-credit link and a consultation route;
 - each practice page has a practice-specific consultation link, and each page with a Belize photo shows its credit;
-- all eight assistant topics give the expected knowledge-base answer and route, with no network requests, keyboard open/close and Escape;
+- consultation buttons open the Alpuche AI enquiry with the practice carried over, and the assistant opens and closes from the keyboard, including Escape;
 - contact preselect: known `?area=` values are applied and unknown or hostile values are ignored and never rendered;
-- the preview form sends nothing, stores nothing and clears its fields;
+- Alpuche AI: the typing delay, free-text answers, guardrails (legal advice, hidden ID numbers, 911, urgent dates), and the full enquiry in demo mode with no network requests;
 - both mobile demo scripts in the brief;
 - no horizontal overflow, and the assistant button never covering a control, at 1366, 820, 390 and 320 px;
 - the hero CTA in the first screen, and the portrait shown in full with its photographer credit.
 
 ## Behaviour notes
 
-- **Office assistant.** Uses prepared answers only, taken verbatim from `ai/knowledge-base.md` at build time. There are four opening topics (property, business, retirement, contact) and four hand-off examples (urgent hearing, documents, fees, unlisted service). There is no free text, no model call and no storage. When the button would cover a link, it slides into the right-hand gutter.
-- **Contact preselect.** `/contact/?area=<key>` accepts only the seven practice keys. It sets the preview form’s matter type, adds a note and puts the practice in the email subject. The plain `/contact/` URL is canonical.
-- **Enquiry form.** Simulation only. It has no `action`, its button is `type="button"`, and its values are cleared on “send”.
+- **Alpuche AI.** A chat assistant that runs in the browser, with no model and no external service (`static/js/alpuche-ai.js`).
+  - **Answers:** curated answers from `ai/knowledge-base.md`, plus every section and FAQ published on the site. Both are indexed at build time into `assets/js/alpuche-ai-data.js`, so rebuilding after a copy change updates what it knows.
+  - **Safety:** it applies the handoff's escalation order (danger, sensitive details, urgent dates, role changes) and refuses legal advice before answering.
+  - **Typing:** a typing indicator shows for about 1–2 s before each reply.
+  - **Enquiries:** it collects a short enquiry, after a notice and consent, then shows a review before anything is sent.
+  - **Delivery:** with `--lead-endpoint=<Apps Script /exec URL>`, the enquiry is posted to that endpoint, which emails the inbox and the visitor (`integrations/google-apps-script/SETUP-EMAIL.md`). Without it, demo mode shows the two emails instead.
+  - **Button placement:** when the button would cover a link, it slides into the right-hand gutter.
+- **Contact preselect.** `/contact/?area=<key>` accepts only the seven practice keys. It labels the Alpuche AI button with the practice, adds a note and puts the practice in the email subject. The plain `/contact/` URL is canonical.
+- **Enquiries.** The contact-page form has been removed. “Request a consultation” buttons open Alpuche AI's enquiry, carrying the practice. Without JavaScript they still link to the contact page.
 - **Images.** The portrait and Janine’s photo are cropped only to remove blank capture margins. The JMA mark is cropped to its black artwork. The Belize photos are resized, and some layouts frame them with CSS `object-fit`.

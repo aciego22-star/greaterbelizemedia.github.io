@@ -1,6 +1,6 @@
 # Assistant test coverage
 
-The demo implements prepared answers for eight topics. The remaining cases are acceptance criteria for a production assistant (see `test-cases.tsv`). The demo answers are covered by `scripts/verify.cjs`.
+**Update, 13 November 2026.** Alpuche AI now accepts typed questions. All 24 cases below are tested as typed input in `scripts/test-assistant.cjs`, and all pass. Each test checks the expected behaviour and the “must not” column. Case 13 is now answered from the Intellectual Property page FAQ (“Is registering a company or business name the same as registering a trademark?”). The table below is the original mapping to knowledge-base entries.
 
 | # | Input (abridged) | Knowledge-base entry | Demo status |
 |---|---|---|---|

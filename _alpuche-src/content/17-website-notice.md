@@ -16,7 +16,9 @@ Sending an enquiry, using the website assistant or receiving a reply about avail
 
 ## Using the website assistant
 
-The website assistant is automated. It can help you find a practice area or public office contact information. It cannot review your case, calculate a deadline, accept instructions, confirm an appointment or give legal advice. Information shared with the website assistant should be limited to general questions. Please keep confidential details, identification numbers, financial records and documents out of the chat.
+The website assistant, Alpuche AI, is automated. It can answer general questions using information published on this website, help you find a practice area or public office contact information, and pass a short enquiry to the office. It cannot review your case, calculate a deadline, accept instructions, confirm an appointment or give legal advice.
+
+If you choose to send an enquiry, Alpuche AI asks for your name, how you would like to be contacted, your email address or phone number, the type of matter, whether a date is coming up and a short, general description. It shows you a summary before anything is sent. The enquiry is sent to the office by email and, if you give an email address, you receive an automated confirmation. Please keep confidential details, identification numbers, financial records and documents out of the chat and the enquiry.
 
 ## External information
 

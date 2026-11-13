@@ -2,7 +2,7 @@
 //   node _alpuche-src/scripts/verify-local.cjs _alpuche-src/dist-local/jose-m-alpuche-preview
 const { chromium, devices } = require('playwright');
 const fs = require('fs'); const path = require('path');
-const ROOT = process.argv[2];
+const ROOT = path.resolve(process.argv[2]);
 const start = 'file://' + path.join(ROOT, 'index.html');
 let fails = 0, passes = 0; const ok = (c, m) => { if (c) passes++; else { fails++; console.log('  ✗ ' + m); } };
 (async () => {
@@ -31,12 +31,18 @@ let fails = 0, passes = 0; const ok = (c, m) => { if (c) passes++; else { fails+
   console.log('pages crawled:', seen.size);
   // Assistant + contact preselect from disk.
   await p.goto('file://' + path.join(ROOT, 'practice-areas/real-estate/index.html'));
-  await p.click('.office-assistant > summary'); await p.click('button[data-topic="retirement"]');
-  await p.click('.assistant-answer a.answer-next'); await p.waitForLoadState('load');
+  await p.evaluate(() => { window.ALPUCHE_TYPING_SCALE = 0.1; });
+  const wr = (n) => p.waitForFunction((k) => document.querySelectorAll('.chat-log .msg-bot:not(.is-typing)').length > k && !document.querySelector('.chat-log .is-typing'), n, { timeout: 10000 });
+  await p.click('.office-assistant > summary'); await wr(0);
+  await p.locator('.chat-chips button', { hasText: 'Retiring in Belize' }).click(); await wr(1);
+  await p.locator('.chat-log .msg-bot .msg-link').last().click(); await p.waitForLoadState('load');
   ok(p.url().endsWith('practice-areas/qualified-retired-persons/index.html'), 'assistant link works from disk');
+  await p.goto('file://' + path.join(ROOT, 'contact/index.html?area=real-estate'));
+  ok(/Real Estate/.test(await p.locator('[data-contact-intake]').innerText()), 'contact page carries the practice from disk');
   await p.goto('file://' + path.join(ROOT, 'practice-areas/real-estate/index.html'));
-  await p.click('.contact-band a.button[href*="area=real-estate"]'); await p.waitForLoadState('load');
-  ok(await p.locator('select[name=area]').inputValue() === 'real-estate', 'consultation link preselects practice from disk');
+  await p.evaluate(() => { window.ALPUCHE_TYPING_SCALE = 0.1; });
+  await p.click('.contact-band a.button[href*="area=real-estate"]'); await wr(0);
+  ok(p.url().endsWith('practice-areas/real-estate/index.html') && await p.locator('.office-assistant').evaluate((d) => d.open), 'consultation button opens Alpuche AI from disk');
   // Mobile menu from disk
   const m = await b.newPage({ ...devices['iPhone 13'] });
   await m.goto(start); await m.click('.mobile-nav > summary'); await m.click('.mobile-nav nav a >> text=Our Team'); await m.waitForLoadState('load');
