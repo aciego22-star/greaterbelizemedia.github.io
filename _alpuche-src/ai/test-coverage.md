@@ -1,5 +1,11 @@
 # Assistant test coverage
 
+**Update, 13 November 2026 (front desk).** `scripts/test-assistant.cjs` also has a front-desk section of about 90 everyday questions, all passing:
+- the agency's “What type of legal matters do you guys do?”, which must list the seven practice areas, not give contact details;
+- hours for today and tomorrow, checked against a fixed Belize clock;
+- yes/no service questions, unlisted services, fees, the people, and the assistant itself;
+- a check that no answer uses casual phrasing.
+
 **Update, 13 November 2026.** Alpuche AI now accepts typed questions. All 24 cases below are tested as typed input in `scripts/test-assistant.cjs`, and all pass. Each test checks the expected behaviour and the “must not” column. Case 13 is now answered from the Intellectual Property page FAQ (“Is registering a company or business name the same as registering a trademark?”). The table below is the original mapping to knowledge-base entries.
 
 | # | Input (abridged) | Knowledge-base entry | Demo status |

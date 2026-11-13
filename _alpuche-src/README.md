@@ -84,6 +84,7 @@ The suite checks:
 - **Alpuche AI.** A chat assistant that runs in the browser, with no model and no external service (`static/js/alpuche-ai.js`).
   - **Answers:** curated answers from `ai/knowledge-base.md`, plus every section and FAQ published on the site. Both are indexed at build time into `assets/js/alpuche-ai-data.js`, so rebuilding after a copy change updates what it knows.
   - **Safety:** it applies the handoff's escalation order (danger, sensitive details, urgent dates, role changes) and refuses legal advice before answering.
+  - **Front desk:** it answers exactly what was asked, leading with the answer (“Yes. The firm advises and represents clients in Belize divorce matters…”), in a formal front-desk register. Office facts come from `OFFICE` in `build.mjs`: “Are you open now?” uses the visitor's clock converted to Belize time (`OFFICE.hoursSpec`, UTC−6). “Do you handle …?” draws on each practice's `scope` line in `PRACTICES`. Services the site doesn't list are named back to the visitor, and several office facts in one question are answered together.
   - **Typing:** a typing indicator shows for about 1–2 s before each reply.
   - **Enquiries:** it collects a short enquiry, after a notice and consent, then shows a review before anything is sent.
   - **WhatsApp:** visitors can choose WhatsApp as the reply channel or open a pre-filled chat to the firm's number. The number comes from `OFFICE.whatsapp` in `build.mjs`; `--whatsapp=off` disables this.
@@ -91,7 +92,7 @@ The suite checks:
   - **Launcher:** always visible (it no longer slides away), with a gold pulse every 10 s while closed; the pulse is off for visitors who prefer reduced motion.
 - **Contact preselect.** `/contact/?area=<key>` accepts only the seven practice keys. It labels the Alpuche AI button with the practice, adds a note and puts the practice in the email subject. The plain `/contact/` URL is canonical.
 - **Enquiries.** The contact-page form has been removed. “Request a consultation” buttons open Alpuche AI's enquiry, carrying the practice. Without JavaScript they still link to the contact page.
-- **Nameplate headers.** `plaque-desktop-*` and `plaque-mobile-*`, from the firm's nameplate images (see `scripts/make-images.sh`), are art-directed per screen size with `<picture>` in `pageHead({ plaque: true })`.
+- **Nameplate headers.** On Practice Areas, Our Team and What to Expect. `plaque-desktop-*` and `plaque-mobile-*`, from the firm's nameplate images (see `scripts/make-images.sh`), are art-directed per screen size with `<picture>` in `pageHead({ plaque: true })`. Contact uses a plain header, at the agency's direction, so the plate isn't repeated.
 - **No lines.** The stylesheet uses no borders or rules. `verify.cjs` fails if any element on any page draws one.
 - **Brand icons.** The WhatsApp and Facebook glyphs come from Simple Icons (CC0 1.0). They are inlined as SVG from `ICON_PATHS` in `build.mjs` and shown in each brand's colour beside every WhatsApp and Facebook link: contact page, footer and Alpuche AI.
 - **Mobile hero.** At 780 px and below, the portrait comes first under the header and the words follow. This is the agency's direction of 13 Nov 2026; the original brief put the title and CTA first. Desktop and tablet keep the words and portrait side by side.

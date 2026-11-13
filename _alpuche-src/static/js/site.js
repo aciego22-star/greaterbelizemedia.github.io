@@ -126,6 +126,20 @@
         });
         div.appendChild(dl);
       }
+      if (msg.items && msg.items.length) {
+        var ul = document.createElement('ul');
+        ul.className = 'msg-list';
+        msg.items.forEach(function (it) {
+          var li = document.createElement('li');
+          var ia = document.createElement('a');
+          ia.href = it.href || toHref(it.route);
+          ia.textContent = it.label;
+          li.appendChild(ia);
+          ul.appendChild(li);
+        });
+        div.appendChild(ul);
+      }
+      if (msg.after) { var pa = document.createElement('p'); appendText(pa, msg.after); div.appendChild(pa); }
       if (msg.note) { var n = document.createElement('p'); n.className = 'msg-note'; n.textContent = msg.note; div.appendChild(n); }
       (msg.previews || []).forEach(function (pv) {
         var det = document.createElement('details');
@@ -183,7 +197,7 @@
 
     function delayFor(out) {
       var scale = typeof window.ALPUCHE_TYPING_SCALE === 'number' ? window.ALPUCHE_TYPING_SCALE : 1;
-      var len = out.messages.reduce(function (n, m) { return n + (m.text || '').length; }, 0);
+      var len = out.messages.reduce(function (n, m) { return n + (m.text || '').length + (m.after || '').length + (m.items || []).length * 12; }, 0);
       return Math.round((900 + Math.min(1100, len * 4)) * scale);
     }
 

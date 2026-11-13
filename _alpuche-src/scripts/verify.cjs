@@ -148,7 +148,7 @@ const section = (t) => console.log('\n' + t);
   await cp.click('.office-assistant > summary');
   ok(await cp.waitForSelector('.chat-log .is-typing', { timeout: 1500 }).then(() => true).catch(() => false), 'typing indicator shows before the greeting');
   await waitReply(cp, 0);
-  ok(/automated assistant/i.test(await lastBot(cp).innerText()) && /can’t give legal advice/.test(await lastBot(cp).innerText()), 'greeting identifies as automated and mentions no legal advice');
+  ok(/automated front-desk assistant/i.test(await lastBot(cp).innerText()) && /can’t give legal advice/.test(await lastBot(cp).innerText()), 'greeting identifies as automated and mentions no legal advice');
   ok((await cp.locator('.chat-chips button').allInnerTexts()).join('|') === 'Start an enquiry', 'no topic shortcut buttons, only “Start an enquiry”');
   // Timing: a reply arrives after roughly one to two seconds, with the indicator showing meanwhile.
   await cp.fill('#chat-text', 'Where is the office?');
@@ -159,7 +159,7 @@ const section = (t) => console.log('\n' + t);
   const delay = Date.now() - t0;
   ok(delay >= 900 && delay <= 2800, `reply delay is about one to two seconds (${delay} ms)`);
   ok(/Northern Shops/.test(await lastBot(cp).innerText()), 'free-text question answered (office location)');
-  ok((await lastBot(cp).locator('a.msg-link').getAttribute('href')).includes('contact/'), 'answer links to the contact page');
+  ok((await lastBot(cp).locator('a.msg-link').first().getAttribute('href')).includes('contact/'), 'answer links to the contact page');
   await cp.evaluate(() => { window.ALPUCHE_TYPING_SCALE = 0.15; });
   let bubble = await say(cp, 'Do I have a case against my landlord?');
   ok(/not able to give legal advice/.test(await bubble.innerText()) && await bubble.evaluate((el) => el.classList.contains('is-guard')), 'legal-advice question gets the guardrail');
@@ -172,16 +172,19 @@ const section = (t) => console.log('\n' + t);
   bubble = await say(cp, 'I have a hearing tomorrow');
   ok(await bubble.locator('a[href="tel:+5012231194"]').count() >= 1, 'urgent date → call the office, tap-to-call');
   bubble = await say(cp, 'Is registering a business name the same as a trademark?');
-  ok((await bubble.locator('a.msg-link').getAttribute('href')).includes('intellectual-property'), 'site content answer links to the right page');
+  ok((await bubble.locator('a.msg-link').first().getAttribute('href')).includes('intellectual-property'), 'site content answer links to the right page');
   bubble = await say(cp, 'Can I WhatsApp you?');
   ok(await bubble.locator('a.msg-link[href="https://wa.me/5016253032"] svg.icon-whatsapp').count() === 1, 'chat WhatsApp link has the WhatsApp icon');
   ok(!/625[\s-]?3032/.test(await bubble.innerText()) && !/[→↗]/.test(await bubble.innerText()), 'WhatsApp answer hides the number and has no arrows');
   bubble = await say(cp, 'Are you on Facebook?');
   ok(await bubble.locator('a.msg-link[href="https://www.facebook.com/alpuchelaw"] svg.icon-facebook').count() === 1, 'chat Facebook link has the Facebook icon');
+  bubble = await say(cp, 'What type of legal matters do you guys do?');
+  ok(await bubble.locator('ul.msg-list li a').count() === 7 && (await bubble.locator('ul.msg-list li a').first().getAttribute('href')).includes('practice-areas/real-estate'), 'practice-areas question lists all seven areas as links');
+  ok(!/Call the office or email/.test(await bubble.innerText()), 'practice-areas question is not answered with contact details');
   bubble = await tap(cp, 'Start an enquiry');
   ok(/pass a short enquiry/.test(await bubble.innerText()), 'chip starts an enquiry');
   bubble = await tap(cp, 'Not now');
-  ok(/haven’t sent anything/.test(await bubble.innerText()), 'enquiry can be declined');
+  ok(/Nothing has been sent/.test(await bubble.innerText()), 'enquiry can be declined');
   ok(chatRequests.length === 0, `chat makes no network requests (${chatRequests.length})`);
   await cp.keyboard.press('Escape');
   ok(!(await cp.locator('.office-assistant').evaluate((d) => d.open)), 'Escape closes Alpuche AI');
@@ -204,7 +207,7 @@ const section = (t) => console.log('\n' + t);
   await ep.click('.contact-band a.button[data-intake]');
   await waitReply(ep, 0);
   ok(ep.url() === BASE + '/practice-areas/real-estate/', 'consultation button opens Alpuche AI instead of leaving the page');
-  ok(/no names of other people/.test(await lastBot(ep).innerText()), 'enquiry starts with the notice');
+  ok(/no names of other parties/.test(await lastBot(ep).innerText()), 'enquiry starts with the notice');
   bubble = await tap(ep, 'Continue');
   ok(/Real Estate/.test(await bubble.innerText()), 'practice carried from the button');
   await tap(ep, 'Yes');
@@ -275,7 +278,7 @@ const section = (t) => console.log('\n' + t);
   ok(inputBox && inputBox.y + inputBox.height <= vp.height, 'message box visible on the phone');
   ok(await mp.locator('#chat-text').evaluate((el) => parseFloat(getComputedStyle(el).fontSize) >= 16), 'message box text is 16px (no iPhone zoom)');
   await say(mp, 'Can you help me retire in Belize?');
-  await lastBot(mp).locator('a.msg-link').click();
+  await lastBot(mp).locator('a.msg-link').first().click();
   await mp.waitForLoadState('load');
   ok(mp.url() === BASE + '/practice-areas/qualified-retired-persons/', 'retirement answer leads to the QRP page');
   // Demo script: Real Estate → guide → consultation opens the enquiry with the practice.
@@ -319,7 +322,7 @@ const section = (t) => console.log('\n' + t);
         return misses;
       });
       ok(hidden.length === 0, `${name} ${route}: Alpuche AI stays visible while scrolling (${hidden.join(', ')})`);
-      if (['/practice-areas/', '/about/', '/working-with-us/', '/contact/'].includes(route)) {
+      if (['/practice-areas/', '/about/', '/working-with-us/'].includes(route)) {
         const plaque = await p.evaluate(async () => {
           window.scrollTo({ top: 0, behavior: 'instant' });
           const img = document.querySelector('.page-head.has-plaque .head-bg img');
@@ -335,6 +338,7 @@ const section = (t) => console.log('\n' + t);
           if (plaque.vw <= 780) ok(plaque.h1Top >= plaque.plateBottom - 1, `${name} ${route}: heading sits below the nameplate on phones`);
         }
       }
+      if (route === '/contact/') ok(await p.locator('.page-head.has-plaque, .page-head .head-bg').count() === 0, `${name} ${route}: no nameplate on the contact page`);
     }
     // Hero: portrait, CTA and photographer credit visible in the first screens.
     await p.goto(BASE + '/');

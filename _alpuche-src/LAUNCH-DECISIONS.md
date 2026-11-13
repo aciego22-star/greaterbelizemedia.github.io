@@ -59,12 +59,20 @@ Design changes made at the agency's direction (13 Nov 2026):
 - **No arrows.** Removed from all links, including the ↗ that marked outside links in article text.
 - **Open card layouts.** The ruled grid lines are gone from the home page practice cards and the matching layouts: the practice areas and guides pages, the team page principles and the contact page notices.
 - **No topic shortcuts.** Alpuche AI no longer shows topic buttons. Visitors type their questions; “Start an enquiry” remains.
-- **Nameplate headers.** The firm's nameplate image is the background for the Practice Areas, Our Team, What to Expect and Contact headers. On desktop the words sit over its dark JMA side; on phones the nameplate sits above the words so the heading never covers the engraved lettering.
+- **Nameplate headers.** The firm's nameplate image is the background for the Practice Areas, Our Team and What to Expect headers. On desktop the words sit over its dark JMA side; on phones the nameplate sits above the words so the heading never covers the engraved lettering. Contact has a plain header, so the plate isn't repeated.
 - **Clean finish.** No rules, dividers, borders or grid lines anywhere on the site; spacing and background tones separate content.
 - **Alpuche AI.** The button now stays visible at all times, with a rounded launcher and a soft gold pulse every 10 seconds (off for visitors who prefer reduced motion).
+- **Alpuche AI as a digital front desk.** It answers exactly what was asked, leading with the answer, in a formal legal register (“Yes. The firm advises and represents clients in Belize divorce matters.”, “No. The office is open Monday to Friday only…”). The knowledge base (v0.10) was rewritten in the same register; facts, links and sources are unchanged.
+  - **New answers.** They cover: today's opening (using Belize time), the address with directions, phone and email, fees, the team, José's education and experience, languages, video meetings, visiting, response times, preparing for a consultation and what happens after an enquiry.
+  - **Services.** Practice-area questions list the seven areas. “Do you handle …?” gets a plain “Yes.” and that practice's scope. Services the site doesn't list are named back: “Criminal defence is not among the firm's listed practice areas…”.
 
 **To confirm with the firm**
 - The rights to the nameplate image.
+- Alpuche AI's front-desk copy:
+  - the one-line scope for each practice (`scope` in `PRACTICES`, `build.mjs`), drawn from the practice pages;
+  - the rewritten knowledge-base answers;
+  - honorifics: it calls the attorney “Mr. Alpuche” and uses Janine's full name.
+- Where the site is silent, Alpuche AI says so rather than guessing: languages, video consultations, parking, response times, weekend hours beyond the published Monday–Friday. Confirm these if the firm wants them answered.
 - The nameplate reads “Notary Public”, but the site and Alpuche AI do not list notarial services. Alpuche AI currently tells visitors to call about any service that isn't listed. If José offers notarial services, add them to the practice copy and the knowledge base.
 
 Also recheck the Ministry of Natural Resources links, which returned intermittent errors during research.

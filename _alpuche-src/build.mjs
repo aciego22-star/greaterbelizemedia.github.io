@@ -51,6 +51,8 @@ const OFFICE = {
   whatsapp: { label: '+501 625-3032', href: 'https://wa.me/5016253032' },
   facebook: 'https://www.facebook.com/alpuchelaw',
   hours: 'Monday to Friday, 8:00 a.m. to 5:00 p.m. Belize time',
+  // For Alpuche AI's "are you open now?" answers. Belize keeps Central Standard Time (UTC-6) all year.
+  hoursSpec: { days: [1, 2, 3, 4, 5], open: 8, close: 17, utcOffset: -6 },
   directions: 'https://www.google.com/maps/search/?api=1&query=Northern+Shops+1.5+Miles+Philip+Goldson+Highway+Belize+City',
 };
 // Click-to-chat WhatsApp for Alpuche AI: the firm's number by default; --whatsapp=off disables it.
@@ -64,14 +66,15 @@ const ICON_PATHS = {
 const ICONS = Object.fromEntries(Object.entries(ICON_PATHS).map(([k, d]) =>
   [k, `<svg class="icon icon-${k}" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="${d}"/></svg>`]));
 
+// `scope` is Alpuche AI's one-line summary of each practice, taken from the practice pages' service lists.
 const PRACTICES = [
-  { key: 'real-estate', label: 'Real Estate', route: '/practice-areas/real-estate/' },
-  { key: 'corporate-commercial', label: 'Corporate & Commercial', route: '/practice-areas/corporate-commercial/' },
-  { key: 'banking-finance-tax-regulatory', label: 'Banking, Finance, Tax & Regulatory', route: '/practice-areas/banking-finance-tax-regulatory/' },
-  { key: 'dispute-resolution', label: 'Dispute Resolution', route: '/practice-areas/dispute-resolution/' },
-  { key: 'intellectual-property', label: 'Intellectual Property', route: '/practice-areas/intellectual-property/' },
-  { key: 'family-law', label: 'Family Law', route: '/practice-areas/family-law/' },
-  { key: 'qualified-retired-persons', label: 'Qualified Retired Persons Programme', route: '/practice-areas/qualified-retired-persons/' },
+  { key: 'real-estate', label: 'Real Estate', route: '/practice-areas/real-estate/', scope: 'title and ownership checks, purchase and sale terms, transfer documentation and registration, and closings involving an overseas party' },
+  { key: 'corporate-commercial', label: 'Corporate & Commercial', route: '/practice-areas/corporate-commercial/', scope: 'company and partnership structures and formation, shareholder and partnership arrangements, joint ventures and transactions, and commercial agreements, both local and cross-border' },
+  { key: 'banking-finance-tax-regulatory', label: 'Banking, Finance, Tax & Regulatory', route: '/practice-areas/banking-finance-tax-regulatory/', scope: 'facility agreements, guarantees, mortgages and charges, Belize tax advice and representation, and regulatory questions' },
+  { key: 'dispute-resolution', label: 'Dispute Resolution', route: '/practice-areas/dispute-resolution/', scope: 'advice and representation in Belize court proceedings, arbitration, mediation and settlement' },
+  { key: 'intellectual-property', label: 'Intellectual Property', route: '/practice-areas/intellectual-property/', scope: 'trademark and patent registration, copyright protection, and protection beyond Belize' },
+  { key: 'family-law', label: 'Family Law', route: '/practice-areas/family-law/', scope: 'divorce and separation, adoption, and family arrangements and existing orders' },
+  { key: 'qualified-retired-persons', label: 'Qualified Retired Persons Programme', route: '/practice-areas/qualified-retired-persons/', scope: 'advice for people considering Belize’s retirement programme, including the application sequence, related property decisions, and plans for personal goods or business activity' },
 ];
 const PRACTICE_BY_ROUTE = Object.fromEntries(PRACTICES.map((p) => [p.route, p]));
 
@@ -503,8 +506,9 @@ function writeAssistantData(pages) {
   const pagesMap = Object.fromEntries(pages.map((p) => [p.meta.route, pageName(p)]));
   const data = {
     built: new Date().toISOString().slice(0, 10),
-    office: { phones: OFFICE.phones, email: OFFICE.email, address: OFFICE.address, hours: OFFICE.hours, whatsapp: WHATSAPP ? { href: `https://wa.me/${WHATSAPP}` } : null, facebook: OFFICE.facebook },
+    office: { phones: OFFICE.phones, email: OFFICE.email, address: OFFICE.address, hours: OFFICE.hours, hoursSpec: OFFICE.hoursSpec, directions: OFFICE.directions, whatsapp: WHATSAPP ? { href: `https://wa.me/${WHATSAPP}` } : null, facebook: OFFICE.facebook },
     practices: PRACTICES,
+    guides: GUIDES,
     kb: Object.fromEntries(Object.entries(KB).map(([id, e]) => [id, { title: e.title, answer: e.answer, next: e.next || null, examples: e.examples }])),
     docs: assistantDocs(pages),
     pages: pagesMap,
@@ -940,7 +944,8 @@ function renderContact(page, ctx) {
   notices[notices.length - 1].blocks = notices[notices.length - 1].blocks.filter((b) => b !== footerRow);
   const areaMap = Object.fromEntries(PRACTICES.map((p) => [p.key, p.label]));
 
-  const main = `${pageHead(page, ctx, { crumbs, h1: I.h1, standfirst: inline(I.paras[0].text, ctx), photoName: null, plaque: true })}
+  // Contact keeps a plain typographic head: the nameplate already appears on three other pages.
+  const main = `${pageHead(page, ctx, { crumbs, h1: I.h1, standfirst: inline(I.paras[0].text, ctx), photoName: null })}
 <div class="shell contact-grid">
   <section class="office-card dark" aria-labelledby="office-title">
     <h2 id="office-title">Belize City office</h2>
