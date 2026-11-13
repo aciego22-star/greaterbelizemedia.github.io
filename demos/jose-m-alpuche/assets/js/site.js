@@ -88,11 +88,19 @@
         var a = document.createElement('a');
         a.textContent = m[0];
         a.href = m[1] ? 'tel:' + m[1].replace(/[^+\d]/g, '') : m[2] ? 'mailto:' + m[2] : m[4] ? (wa ? wa.href : 'tel:+5016253032') : 'tel:911';
-        if (m[4]) { a.target = '_blank'; a.rel = 'noopener'; }
+        if (m[4]) { a.target = '_blank'; a.rel = 'noopener'; addIcon(a, 'whatsapp'); }
         parent.appendChild(a);
         last = pattern.lastIndex;
       }
       if (last < text.length) parent.appendChild(document.createTextNode(text.slice(last)));
+    }
+
+    // Brand icons (WhatsApp, Facebook) are fixed SVG strings generated at build time.
+    function addIcon(el, name) {
+      var svg = name && data.icons && data.icons[name];
+      if (!svg) return;
+      el.insertAdjacentHTML('afterbegin', svg);
+      el.classList.add('with-icon');
     }
 
     function addUser(text, redacted) {
@@ -134,6 +142,7 @@
         a.href = l.href || toHref(l.route);
         if (/^https?:/.test(a.getAttribute('href'))) { a.rel = 'noopener'; a.target = '_blank'; }
         a.textContent = l.label + ' →';
+        addIcon(a, l.icon);
         div.appendChild(a);
       });
       log.appendChild(div);
@@ -146,6 +155,7 @@
         var b = document.createElement('button');
         b.type = 'button';
         b.textContent = c.label;
+        addIcon(b, c.icon);
         b.addEventListener('click', function () { if (!busy) run({ action: c.action, area: c.area }, c.label); });
         chipsBox.appendChild(b);
       });

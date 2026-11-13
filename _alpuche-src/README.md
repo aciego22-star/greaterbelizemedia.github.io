@@ -91,4 +91,6 @@ The suite checks:
   - **Button placement:** when the button would cover a link, it slides into the right-hand gutter.
 - **Contact preselect.** `/contact/?area=<key>` accepts only the seven practice keys. It labels the Alpuche AI button with the practice, adds a note and puts the practice in the email subject. The plain `/contact/` URL is canonical.
 - **Enquiries.** The contact-page form has been removed. “Request a consultation” buttons open Alpuche AI's enquiry, carrying the practice. Without JavaScript they still link to the contact page.
+- **Brand icons.** The WhatsApp and Facebook glyphs come from Simple Icons (CC0 1.0). They are inlined as SVG from `ICON_PATHS` in `build.mjs` and shown in each brand's colour beside every WhatsApp and Facebook link: contact page, footer and Alpuche AI.
+- **Mobile hero.** At 780 px and below, the portrait comes first under the header and the words follow. This is the agency's direction of 13 Nov 2026; the original brief put the title and CTA first. Desktop and tablet keep the words and portrait side by side.
 - **Images.** The portrait and Janine’s photo are cropped only to remove blank capture margins. The JMA mark is cropped to its black artwork. The Belize photos are resized, and some layouts frame them with CSS `object-fit`.

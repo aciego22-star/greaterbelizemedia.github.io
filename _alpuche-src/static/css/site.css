@@ -323,12 +323,12 @@ address, .office { padding-left: 21px; border-left: 1px solid #a38d70; color: va
   .header-cta, .desktop-break { display: none; }
   .mobile-nav nav { padding-inline: 20px; }
   .hero-grid { grid-template-columns: minmax(0, 1fr); min-height: 0; }
-  .hero-copy { padding: 44px 0 34px; }
+  .hero-copy { padding: 34px 0 40px; }
   .eyebrow { margin-bottom: 15px; }
   .hero h1 { max-width: 14ch; font-size: clamp(3rem, 12.5vw, 3.7rem); line-height: .95; }
   .hero .intro { margin-top: 18px; }
   .hero .actions { gap: 14px 20px; margin-top: 24px; }
-  .hero-portrait { margin-inline: -20px; padding-top: 4px; }
+  .hero-portrait { order: -1; margin-inline: -20px; padding-top: 0; }
   .portrait-frame { width: min(100%, 400px); }
   .credentials-inner { grid-template-columns: 1fr; gap: 9px; padding-block: 18px; }
   .credentials-inner li { padding-inline-start: 12px; }
@@ -435,3 +435,12 @@ address, .office { padding-left: 21px; border-left: 1px solid #a38d70; color: va
 .ai-intake p { margin-top: 10px; }
 .ai-intake .button { margin-top: 18px; }
 .ai-intake-demo { color: var(--muted); font-size: .82rem; }
+
+/* Brand icons (WhatsApp, Facebook) beside their links */
+.icon { display: inline-block; flex: none; width: 1.1em; height: 1.1em; vertical-align: -0.18em; }
+.icon-whatsapp { fill: #25d366; }
+.icon-facebook { fill: #0866ff; }
+.with-icon { display: inline-flex; align-items: center; gap: .45em; }
+.with-icon .icon { vertical-align: 0; }
+.chat-chips button.with-icon { gap: .4em; }
+.msg-link.with-icon { display: flex; width: fit-content; }

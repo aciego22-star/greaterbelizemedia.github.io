@@ -50,7 +50,8 @@ const section = (t) => console.log('\n' + t);
       contactLinks: [...document.querySelectorAll('a[href*="contact/"]')].map((a) => a.getAttribute('href')),
       crumbs: !!document.querySelector('nav.breadcrumb'),
       noticeLink: !!document.querySelector('footer a[href*="website-notice/#photo-credits"]'),
-      facebook: !!document.querySelector('footer a[href="https://www.facebook.com/alpuchelaw"][target="_blank"][rel~="noopener"]'),
+      facebook: !!document.querySelector('footer a[href="https://www.facebook.com/alpuchelaw"][target="_blank"][rel~="noopener"] svg.icon-facebook'),
+      whatsapp: !!document.querySelector('footer a[href="https://wa.me/5016253032"][target="_blank"][rel~="noopener"] svg.icon-whatsapp'),
     }));
     ok(/noindex/.test(info.robots), `${route} is noindex`);
     ok(info.title && info.desc, `${route} has title and description`);
@@ -58,7 +59,8 @@ const section = (t) => console.log('\n' + t);
     ok(info.h1 === 1, `${route} has one h1 (found ${info.h1})`);
     ok(info.lang === 'en', `${route} lang=en`);
     ok(info.noticeLink, `${route} footer links to photo credits`);
-    ok(info.facebook, `${route} footer links to the firm’s Facebook`);
+    ok(info.facebook, `${route} footer links to the firm’s Facebook, with its icon`);
+    ok(info.whatsapp, `${route} footer links to the firm’s WhatsApp, with its icon`);
     if (route !== '/') ok(info.crumbs, `${route} has breadcrumb`);
     ok(info.contactLinks.length > 0, `${route} reaches the contact page`);
     for (const img of info.imgs) ok(img.w && img.h && img.alt !== null, `${route} image has dimensions and alt: ${img.src}`);
@@ -144,6 +146,11 @@ const section = (t) => console.log('\n' + t);
   ok(await bubble.locator('a[href="tel:+5012231194"]').count() >= 1, 'urgent date → call the office, tap-to-call');
   bubble = await say(cp, 'Is registering a business name the same as a trademark?');
   ok((await bubble.locator('a.msg-link').getAttribute('href')).includes('intellectual-property'), 'site content answer links to the right page');
+  bubble = await say(cp, 'Can I WhatsApp you?');
+  ok(await bubble.locator('a.msg-link[href="https://wa.me/5016253032"] svg.icon-whatsapp').count() === 1, 'chat WhatsApp link has the WhatsApp icon');
+  ok(await bubble.locator('p a[href="https://wa.me/5016253032"] svg.icon-whatsapp').count() === 1, 'WhatsApp number in the answer text has the icon');
+  bubble = await say(cp, 'Are you on Facebook?');
+  ok(await bubble.locator('a.msg-link[href="https://www.facebook.com/alpuchelaw"] svg.icon-facebook').count() === 1, 'chat Facebook link has the Facebook icon');
   bubble = await tap(cp, 'Start an enquiry');
   ok(/pass a short enquiry/.test(await bubble.innerText()), 'chip starts an enquiry');
   bubble = await tap(cp, 'Not now');
@@ -175,6 +182,7 @@ const section = (t) => console.log('\n' + t);
   ok(/Real Estate/.test(await bubble.innerText()), 'practice carried from the button');
   await tap(ep, 'Yes');
   await say(ep, 'Jane Doe');
+  ok(await ep.locator('.chat-chips button', { hasText: 'WhatsApp' }).locator('svg.icon-whatsapp').count() === 1, 'WhatsApp reply option has the icon');
   await tap(ep, 'Email');
   ok(await ep.locator('#chat-text').getAttribute('type') === 'email', 'email step switches the keyboard to email');
   await say(ep, 'jane@example.com');
@@ -182,6 +190,7 @@ const section = (t) => console.log('\n' + t);
   bubble = await say(ep, 'Buying a lot near Placencia from an overseas seller');
   const summary = await bubble.innerText();
   ok(/Real Estate/.test(summary) && /Jane Doe/.test(summary) && /jane@example\.com/.test(summary), 'review summary shows the details');
+  ok(await ep.locator('.chat-chips button', { hasText: 'Send on WhatsApp instead' }).locator('svg.icon-whatsapp').count() === 1, '“Send on WhatsApp instead” has the icon');
   bubble = await tap(ep, 'Send to the office');
   ok(/nothing was sent/.test(await bubble.innerText()), 'demo mode says nothing was sent');
   ok(await bubble.locator('details.msg-preview').count() === 2, 'demo shows the office email and visitor confirmation');
@@ -192,9 +201,10 @@ const section = (t) => console.log('\n' + t);
   await ep.goto(BASE + '/contact/?area=real-estate', { waitUntil: 'networkidle' });
   ok(await ep.locator('form').count() === 0, 'enquiry form removed');
   ok(await ep.locator('.office-card a[href="tel:+5012231194"]').isVisible(), 'phone still prominent');
-  ok(await ep.locator('.office-card a[href="https://wa.me/5016253032"]', { hasText: '+501 625-3032' }).isVisible(), 'WhatsApp link in the contact details');
-  ok(await ep.locator('.actions a[href="https://wa.me/5016253032"]', { hasText: 'Message on WhatsApp' }).isVisible(), 'WhatsApp next to email and call');
-  ok(await ep.locator('.office-card a[href="https://www.facebook.com/alpuchelaw"]').isVisible(), 'Facebook link in the contact details');
+  ok(await ep.locator('.office-card a[href="https://wa.me/5016253032"]', { hasText: '+501 625-3032' }).locator('svg.icon-whatsapp').isVisible(), 'WhatsApp link with icon in the contact details');
+  ok(await ep.locator('.actions a[href="https://wa.me/5016253032"]', { hasText: 'Message on WhatsApp' }).locator('svg.icon-whatsapp').isVisible(), 'WhatsApp (with icon) next to email and call');
+  ok(await ep.locator('.office-card a[href="https://www.facebook.com/alpuchelaw"] svg.icon-facebook').isVisible(), 'Facebook link with icon in the contact details');
+  ok(await ep.locator('svg.icon-whatsapp').evaluateAll((els) => els.every((e) => getComputedStyle(e).fill === 'rgb(37, 211, 102)')), 'WhatsApp icons use WhatsApp green');
   ok(await ep.locator('a[href^="https://wa.me/"], a[href^="https://www.facebook.com/"]').evaluateAll((els) => els.every((a) => a.target === '_blank' && a.rel.includes('noopener'))), 'WhatsApp and Facebook open in a new tab safely');
   const startBtn = ep.locator('[data-contact-intake]');
   ok(await startBtn.isVisible() && /Real Estate/.test(await startBtn.innerText()), 'Alpuche AI button carries the practice');
@@ -288,9 +298,18 @@ const section = (t) => console.log('\n' + t);
     const hero = await p.evaluate(() => {
       const cta = document.querySelector('.hero .button-gold').getBoundingClientRect();
       const img = document.querySelector('.hero-portrait img').getBoundingClientRect();
-      return { ctaTop: cta.top, imgW: img.width, imgH: img.height, vh: innerHeight };
+      const h1 = document.querySelector('.hero h1').getBoundingClientRect();
+      const header = document.querySelector('.site-header').getBoundingClientRect();
+      return { ctaTop: cta.top, imgW: img.width, imgH: img.height, imgTop: img.top, imgBottom: img.bottom, h1Top: h1.top, headerBottom: header.bottom, vh: innerHeight, vw: innerWidth };
     });
-    ok(hero.ctaTop + 47 <= hero.vh, `${name}: consultation CTA in first screen (top ${Math.round(hero.ctaTop)} of ${hero.vh})`);
+    if (hero.vw <= 780) {
+      // Phones: the portrait comes first, right below the header, with the words underneath.
+      ok(hero.imgTop <= hero.headerBottom + 2 && hero.imgBottom <= hero.vh, `${name}: portrait first, fully in the first screen (top ${Math.round(hero.imgTop)}, bottom ${Math.round(hero.imgBottom)} of ${hero.vh})`);
+      ok(hero.h1Top >= hero.imgBottom, `${name}: heading sits below the portrait`);
+    } else {
+      ok(hero.ctaTop + 47 <= hero.vh, `${name}: consultation CTA in first screen (top ${Math.round(hero.ctaTop)} of ${hero.vh})`);
+      ok(hero.h1Top < hero.imgBottom && hero.imgTop < hero.vh, `${name}: words and portrait side by side`);
+    }
     ok(Math.abs(hero.imgW / hero.imgH - 710 / 1066) < 0.01, `${name}: portrait keeps full photographed area (credit included)`);
     await c.close();
   }

@@ -261,7 +261,7 @@
       var e = kb[id];
       var msg = { text: e.answer, links: [], kb: id };
       if (e.next) msg.links.push(link(e.next));
-      if ((id === 'FIR-05' || id === 'FIR-10') && office.whatsapp) msg.links.push({ href: office.whatsapp.href, label: 'Message the office on WhatsApp' });
+      if ((id === 'FIR-05' || id === 'FIR-10') && office.whatsapp) msg.links.push({ href: office.whatsapp.href, label: 'Message the office on WhatsApp', icon: 'whatsapp' });
       if (extra) Object.keys(extra).forEach(function (k) { msg[k] = extra[k]; });
       return msg;
     }
@@ -379,7 +379,7 @@
       if (has(P.fees, t) && detectPractice(t) === 'real-estate') return reply([kbMsg('RE-05')], { chips: [offerIntake(session, 'real-estate')] });
       if (has(P.fees, t)) return reply([kbMsg('CON-03')], { chips: [offerIntake(session)] });
       if (/\bfacebook\b/.test(t) && office.facebook) {
-        return reply([{ text: 'You can follow the firm on Facebook. For an enquiry, call the office, message it on WhatsApp or send an email.', links: [{ href: office.facebook, label: 'José M. Alpuche on Facebook' }, link('/contact/')] }], { intent: 'facebook' });
+        return reply([{ text: 'You can follow the firm on Facebook. For an enquiry, call the office, message it on WhatsApp or send an email.', links: [{ href: office.facebook, label: 'José M. Alpuche on Facebook', icon: 'facebook' }, link('/contact/')] }], { chips: [offerIntake(session)], intent: 'facebook' });
       }
       if (has(P.channels, t)) return reply([kbMsg('FIR-10')]);
       if (has(P.hours, t)) return reply([kbMsg('FIR-06')]);
@@ -465,7 +465,7 @@
           return reply([{ text: 'What name should the office use?' }], { input: { type: 'text', placeholder: 'Your name', autocomplete: 'name' }, chips: [{ label: 'Cancel', action: 'intake:cancel' }], intent: 'intake:name' });
         case 'channel':
           var chips = [{ label: 'Email', action: 'intake:channel:email' }, { label: 'Phone call', action: 'intake:channel:phone' }];
-          if (transport.firmWhatsApp) chips.push({ label: 'WhatsApp', action: 'intake:channel:whatsapp' });
+          if (transport.firmWhatsApp) chips.push({ label: 'WhatsApp', action: 'intake:channel:whatsapp', icon: 'whatsapp' });
           return reply([{ text: 'Thanks, ' + lead.name.split(' ')[0] + '. How would you like the office to contact you?' }], { chips: chips, intent: 'intake:channel' });
         case 'contact':
           if (lead.channel === 'email') return reply([{ text: 'What email address should they use?' }], { input: { type: 'email', placeholder: 'name@example.com', autocomplete: 'email' }, intent: 'intake:contact' });
@@ -498,7 +498,7 @@
       var lead = session.intake.lead;
       session.intake.step = 'review';
       var chips = [{ label: 'Send to the office', action: 'intake:send' }, { label: 'Start again', action: 'intake:restart' }, { label: 'Cancel', action: 'intake:cancel' }];
-      if (transport.whatsapp) chips.splice(1, 0, { label: 'Send on WhatsApp instead', action: 'intake:whatsapp' });
+      if (transport.whatsapp) chips.splice(1, 0, { label: 'Send on WhatsApp instead', action: 'intake:whatsapp', icon: 'whatsapp' });
       return reply([{
         text: 'Here’s what I’ll send to the office:',
         summary: summaryLines(lead),
@@ -643,7 +643,7 @@
         case 'whatsapp':
           var pw = payload(session);
           var url = 'https://wa.me/' + String(transport.whatsapp).replace(/\D/g, '') + '?text=' + encodeURIComponent(whatsappText(pw));
-          return reply([{ text: 'Tap below to open WhatsApp with your enquiry ready to send. It will only be sent when you press send in WhatsApp.', links: [{ href: url, label: 'Open WhatsApp' }] }], { chips: [{ label: 'Send by email instead', action: 'intake:send' }, { label: 'Cancel', action: 'intake:cancel' }] });
+          return reply([{ text: 'Tap below to open WhatsApp with your enquiry ready to send. It will only be sent when you press send in WhatsApp.', links: [{ href: url, label: 'Open WhatsApp', icon: 'whatsapp' }] }], { chips: [{ label: 'Send by email instead', action: 'intake:send' }, { label: 'Cancel', action: 'intake:cancel' }] });
         case 'result':
           return result(session, extra || {});
       }
