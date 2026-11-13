@@ -164,21 +164,16 @@ address, .office { color: var(--on-ink); font-style: normal; font-size: .96rem; 
 .head-figure .frame { position: relative; overflow: hidden; aspect-ratio: 2 / 1; background: var(--deep); }
 .head-figure img { width: 100%; height: 100%; object-fit: cover; }
 
-/* Nameplate background (Practice Areas, Our Team, What to Expect, Contact) */
-.page-head.has-plaque { position: relative; overflow: hidden; isolation: isolate; }
-.head-bg { position: absolute; inset: 0; z-index: -2; }
-.head-bg img { width: 100%; height: 100%; object-fit: contain; object-position: right center; }
-.page-head.has-plaque::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgba(17, 23, 27, .95) 0%, rgba(17, 23, 27, .88) 36%, rgba(17, 23, 27, .52) 64%, rgba(17, 23, 27, .2) 100%); }
-.page-head.has-plaque .page-head-inner { display: flex; flex-direction: column; justify-content: center; min-height: clamp(440px, 40vw, 580px); padding-bottom: clamp(64px, 7vw, 96px); }
+/* Image headers: nameplate (Practice Areas, Our Team) and office sign (What to Expect, Contact).
+   The words and the image sit side by side, or stacked on phones; words never sit on the image. */
+.page-head.has-plaque { display: grid; grid-template-columns: minmax(0, 54fr) minmax(0, 46fr); }
+.page-head.has-plaque .page-head-inner { grid-column: 1; grid-row: 1; display: flex; flex-direction: column; justify-content: center; width: auto; min-height: clamp(420px, 38vw, 560px); margin: 0; padding: 34px 48px clamp(56px, 6vw, 88px) max(52px, calc((100vw - 1280px) / 2)); }
 .page-head.has-plaque .breadcrumb { align-self: flex-start; }
-.page-head.has-plaque h1, .page-head.has-plaque .standfirst { text-shadow: 0 2px 20px rgba(0, 0, 0, .5); }
-.page-head.has-plaque .standfirst { color: #ece9e2; }
-/* Office sign photo: a bright photograph, so it sits on the right and the words on a dark fade. */
-.page-head.bg-sign { background: var(--ink); }
-.page-head.bg-sign .head-bg { left: auto; width: 62%; }
-.page-head.bg-sign .head-bg img { object-fit: cover; object-position: 44% 42%; }
-.page-head.bg-sign::before { background: linear-gradient(90deg, var(--ink) 0%, var(--ink) 40%, rgba(17, 23, 27, .7) 47%, rgba(17, 23, 27, .12) 60%, rgba(17, 23, 27, 0) 100%); }
-.page-head.bg-sign h1, .page-head.bg-sign .standfirst { max-width: min(40vw, 640px); }
+.page-head.has-plaque h1 { max-width: 14ch; }
+.head-bg { grid-column: 2; grid-row: 1; position: relative; display: block; min-height: 100%; overflow: hidden; }
+.head-bg img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center; }
+.page-head:not(.bg-sign) .head-bg img { width: calc(100% - clamp(20px, 3.5vw, 56px)); }
+.page-head.bg-sign .head-bg img { object-fit: cover; object-position: 44% 42%; -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 16%); mask-image: linear-gradient(90deg, transparent 0, #000 16%); }
 
 /* ---------- Article layout ---------- */
 .article-layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: clamp(40px, 6vw, 96px); align-items: start; padding-block: clamp(48px, 6vw, 88px); }
@@ -294,8 +289,8 @@ address, .office { color: var(--on-ink); font-style: normal; font-size: .96rem; 
 .office-assistant > summary::-webkit-details-marker { display: none; }
 .office-assistant > summary:hover { transform: translateY(-2px); box-shadow: 0 18px 40px rgba(8, 12, 15, .4), 0 4px 10px rgba(8, 12, 15, .24), inset 0 1px 0 rgba(255, 255, 255, .1); }
 .office-assistant > summary:focus-visible { outline-offset: 3px; }
-.ai-mark { display: grid; place-items: center; width: 36px; height: 36px; flex: none; border-radius: 50%; background: radial-gradient(circle at 32% 28%, #f7ead4 0%, var(--gold) 55%, #c7a676 100%); color: var(--ink); box-shadow: inset 0 -2px 4px rgba(113, 80, 50, .25); }
-.ai-mark img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; background: #000; }
+.ai-mark { display: block; width: 44px; height: 35px; flex: none; overflow: hidden; border-radius: 3px; background: #000; }
+.ai-mark img { display: block; width: 100%; height: 100%; object-fit: contain; }
 /* A soft gold pulse every 10 seconds while the assistant is closed. */
 .office-assistant > summary::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; animation: ai-pulse 10s ease-out 2s infinite; }
 .office-assistant > summary .ai-mark { animation: ai-bump 10s ease-out 2s infinite; }
@@ -381,10 +376,7 @@ address, .office { color: var(--on-ink); font-style: normal; font-size: .96rem; 
   .aside-card { max-width: var(--measure); }
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .card-grid.three { grid-template-columns: minmax(0, 1fr); }
-  .page-head.has-plaque::before { background: linear-gradient(90deg, rgba(17, 23, 27, .93) 0%, rgba(17, 23, 27, .78) 55%, rgba(17, 23, 27, .5) 100%); }
-  .page-head.bg-sign .head-bg { width: 54%; }
-  .page-head.bg-sign::before { background: linear-gradient(90deg, var(--ink) 0%, var(--ink) 46%, rgba(17, 23, 27, .6) 52%, rgba(17, 23, 27, .1) 62%, rgba(17, 23, 27, 0) 100%); }
-  .page-head.bg-sign h1, .page-head.bg-sign .standfirst { max-width: 44vw; }
+  .page-head.has-plaque .page-head-inner { padding-left: 34px; padding-right: 32px; }
 }
 
 /* Mobile header and menu (shared by tablet and phone) */
@@ -423,19 +415,15 @@ address, .office { color: var(--on-ink); font-style: normal; font-size: .96rem; 
   .page-head h1 { font-size: clamp(2.6rem, 11vw, 3.4rem); }
   .breadcrumb ol { margin-bottom: 30px; }
   .head-figure .frame { aspect-ratio: 3 / 2; }
-  /* Phones: the portrait nameplate image sits in full view under the breadcrumb (its plate starts
-     68.3% of the image width down and is 43.6% of the width tall); the words follow on the image's
-     dark lower area so the heading never sits on the engraved lettering. */
-  .head-bg img { position: absolute; left: 0; top: calc(72px - 68.3vw); width: 100%; height: auto; }
-  .page-head.has-plaque::before { background: linear-gradient(180deg, rgba(17, 23, 27, 0) 0%, rgba(17, 23, 27, 0) 55%, rgba(17, 23, 27, .35) 100%); }
-  .page-head.has-plaque .page-head-inner { min-height: 0; justify-content: flex-start; padding-bottom: 52px; }
-  .page-head.has-plaque .breadcrumb ol { margin-bottom: calc(43.6vw + 48px); }
-  /* Phones: the portrait sign photo, cropped to the sign, sits under the breadcrumb and fades into the heading. */
-  .page-head.bg-sign .head-bg { top: 72px; left: 0; width: 100%; height: calc(80vw); overflow: hidden; }
-  .page-head.bg-sign .head-bg img { top: -30vw; }
-  .page-head.bg-sign::before { background: linear-gradient(180deg, rgba(17, 23, 27, 0) 0, rgba(17, 23, 27, 0) calc(72px + 58vw), var(--ink) calc(72px + 80vw)); }
-  .page-head.bg-sign .breadcrumb ol { margin-bottom: calc(80vw + 28px); }
-  .page-head.bg-sign h1, .page-head.bg-sign .standfirst { max-width: none; }
+  /* Phones: the image comes first, cropped to the plate or the sign, and the words follow below it. */
+  .page-head.has-plaque { grid-template-columns: minmax(0, 1fr); }
+  .head-bg { grid-column: 1; grid-row: 1; min-height: 0; aspect-ratio: 100 / 56; }
+  .page-head.bg-sign .head-bg { aspect-ratio: 100 / 76; }
+  .head-bg img { object-fit: cover; object-position: 50% 51%; }
+  .page-head:not(.bg-sign) .head-bg img { width: 100%; }
+  .page-head.bg-sign .head-bg img { object-position: 50% 27%; -webkit-mask-image: linear-gradient(180deg, #000 82%, transparent 100%); mask-image: linear-gradient(180deg, #000 82%, transparent 100%); }
+  .page-head.has-plaque .page-head-inner { grid-column: 1; grid-row: 2; min-height: 0; justify-content: flex-start; padding: 26px 20px 52px; }
+  .page-head.has-plaque h1 { max-width: none; }
   .service { grid-template-columns: minmax(0, 1fr); }
   .principles, .notice-pair { grid-template-columns: minmax(0, 1fr); gap: 28px; }
   .step { grid-template-columns: 3rem minmax(0, 1fr); gap: 4px 14px; }

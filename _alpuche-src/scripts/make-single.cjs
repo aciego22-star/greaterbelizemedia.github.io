@@ -24,10 +24,8 @@ const pages = {};
 
 const images = {};
 function imageKey(file) {
-  // Prefer the larger WebP for photos so banners stay sharp; fall back to the referenced file.
-  let candidate = file.replace(/-(640|1024)\.jpg$/, (m, w) => '-1600.webp');
-  if (!fs.existsSync(path.join(IMG, candidate))) candidate = file.replace(/-1600\.webp$/, '-1544.webp');
-  if (!fs.existsSync(path.join(IMG, candidate))) candidate = file.replace(/-1544\.webp$/, '-1280.webp');
+  // Phone-sized WebP (1024 px wide at most) keeps the preview small enough to open as a page in the app.
+  let candidate = file.replace(/-(640|1024|1280|1544|1600)\.(jpg|webp)$/, '-1024.webp');
   if (!fs.existsSync(path.join(IMG, candidate))) candidate = file.replace(/\.jpg$/, '.webp');
   if (!fs.existsSync(path.join(IMG, candidate))) candidate = file;
   if (!images[candidate]) {
@@ -54,7 +52,7 @@ for (const [route, html] of Object.entries(pages)) {
     .replace(/<source media="([^"]+)"[^>]*?srcset="([^"]+)"[^>]*>/g, (m, media, set) => {
       if (!/type="image\/webp"/.test(m)) return '';
       const files = set.split(',').map((x) => x.trim().split(' ')[0].split('/').pop());
-      return `<source media="${media}" data-srcset="${imageKey(files[files.length - 1])}">`;
+      return `<source media="${media}" data-srcset="${imageKey(files[0])}">`;
     })
     .replace(/<source (?![^>]*data-srcset)[^>]*>/g, '')
     .replace(/\s(srcset|sizes)="[^"]*"/g, '')

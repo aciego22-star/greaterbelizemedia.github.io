@@ -39,6 +39,8 @@ const section = (t) => console.log('\n' + t);
     ok(res.status() === 200, `${route} returns 200 (got ${res.status()})`);
     const info = await page.evaluate(() => ({
       robots: document.querySelector('meta[name=robots]')?.content || '',
+      viewport: document.querySelector('meta[name=viewport]')?.content || '',
+      versioned: [...document.querySelectorAll('link[rel=stylesheet], script[src]')].every((el) => /\?v=[a-f0-9]{10}$/.test(el.getAttribute('href') || el.getAttribute('src'))),
       title: document.title,
       desc: document.querySelector('meta[name=description]')?.content || '',
       og: document.querySelector('meta[property="og:image"]')?.content || '',
@@ -74,6 +76,8 @@ const section = (t) => console.log('\n' + t);
       whatsapp: !!document.querySelector('footer a[href="https://wa.me/5016253032"][target="_blank"][rel~="noopener"] svg.icon-whatsapp'),
     }));
     ok(/noindex/.test(info.robots), `${route} is noindex`);
+    ok(!/viewport-fit=cover/.test(info.viewport), `${route} keeps the page clear of the iPhone status bar (no viewport-fit=cover)`);
+    ok(info.versioned, `${route} stylesheet and scripts carry a version stamp, so a new deploy is never shown with cached old files`);
     ok(info.title && info.desc, `${route} has title and description`);
     ok((process.env.OG_RELATIVE_OK ? /^(https?:\/\/.+|\/assets\/img\/.+)\.jpg$/ : /^https?:\/\/.+\.jpg$/).test(info.og), `${route} has og:image`);
     ok(info.h1 === 1, `${route} has one h1 (found ${info.h1})`);
@@ -340,38 +344,24 @@ const section = (t) => console.log('\n' + t);
         return misses;
       });
       ok(headerGone.length === 0, `${name} ${route}: header and menu stay at the top while scrolling (${headerGone.join(', ')})`);
-      if (['/practice-areas/', '/about/'].includes(route)) {
-        const plaque = await p.evaluate(async () => {
+      if (['/practice-areas/', '/about/', '/working-with-us/', '/contact/'].includes(route)) {
+        const kind = ['/practice-areas/', '/about/'].includes(route) ? 'plaque' : 'sign';
+        const head = await p.evaluate(async () => {
           window.scrollTo({ top: 0, behavior: 'instant' });
           const img = document.querySelector('.page-head.has-plaque .head-bg img');
           if (!img) return null;
           if (!img.complete) await new Promise((r) => { img.onload = img.onerror = r; });
-          const ir = img.getBoundingClientRect();
-          const h1 = document.querySelector('.page-head h1').getBoundingClientRect();
-          return { src: img.currentSrc, ok: img.naturalWidth > 0, alt: img.getAttribute('alt'), plateBottom: ir.top + ((642 + 410) / 1670) * ir.height, h1Top: h1.top, vw: innerWidth };
+          const pic = img.getBoundingClientRect();
+          const words = ['.page-head .breadcrumb', '.page-head h1', '.page-head .standfirst'].map((q) => document.querySelector(q)).filter(Boolean).map((el) => el.getBoundingClientRect());
+          const overlaps = words.filter((w) => w.left < pic.right && w.right > pic.left && w.top < pic.bottom && w.bottom > pic.top).length;
+          const overlay = getComputedStyle(document.querySelector('.page-head.has-plaque'), '::before').content;
+          return { src: img.currentSrc, ok: img.naturalWidth > 0, alt: img.getAttribute('alt'), overlaps, overlay, picTop: pic.top, h1Top: document.querySelector('.page-head h1').getBoundingClientRect().top, vw: innerWidth };
         });
-        ok(plaque && plaque.ok && plaque.alt === '', `${name} ${route}: nameplate background loads (decorative)`);
-        if (plaque) {
-          ok(plaque.vw <= 780 ? /plaque-mobile/.test(plaque.src) : /plaque-desktop/.test(plaque.src), `${name} ${route}: ${plaque.vw <= 780 ? 'mobile' : 'desktop'} nameplate used (${plaque.src.split('/').pop()})`);
-          if (plaque.vw <= 780) ok(plaque.h1Top >= plaque.plateBottom - 1, `${name} ${route}: heading sits below the nameplate on phones`);
-        }
-      }
-      if (['/working-with-us/', '/contact/'].includes(route)) {
-        const sign = await p.evaluate(async () => {
-          window.scrollTo({ top: 0, behavior: 'instant' });
-          const img = document.querySelector('.page-head.bg-sign .head-bg img');
-          if (!img) return null;
-          if (!img.complete) await new Promise((r) => { img.onload = img.onerror = r; });
-          const bg = document.querySelector('.page-head.bg-sign .head-bg').getBoundingClientRect();
-          const h1 = document.querySelector('.page-head h1').getBoundingClientRect();
-          const sf = document.querySelector('.page-head .standfirst').getBoundingClientRect();
-          return { src: img.currentSrc, ok: img.naturalWidth > 0, alt: img.getAttribute('alt'), bgBottom: bg.bottom, bgLeft: bg.left, bgWidth: bg.width, h1Top: h1.top, textRight: Math.max(h1.right, sf.right), vw: innerWidth };
-        });
-        ok(sign && sign.ok && sign.alt === '', `${name} ${route}: office sign background loads (decorative)`);
-        if (sign) {
-          ok(sign.vw <= 780 ? /sign-mobile/.test(sign.src) : /sign-desktop/.test(sign.src), `${name} ${route}: ${sign.vw <= 780 ? 'portrait' : 'landscape'} sign photo used (${sign.src.split('/').pop()})`);
-          if (sign.vw <= 780) ok(sign.h1Top >= sign.bgBottom - 1, `${name} ${route}: heading sits below the sign photo on phones`);
-          else ok(sign.textRight <= sign.bgLeft + sign.bgWidth * 0.25, `${name} ${route}: words stay on the dark side, clear of the sign`);
+        ok(head && head.ok && head.alt === '', `${name} ${route}: ${kind === 'plaque' ? 'nameplate' : 'office sign'} image loads (decorative)`);
+        if (head) {
+          ok(new RegExp(`${kind}-${head.vw <= 780 ? 'mobile' : 'desktop'}`).test(head.src), `${name} ${route}: ${head.vw <= 780 ? 'phone' : 'wide'} version used (${head.src.split('/').pop()})`);
+          ok(head.overlaps === 0 && (head.overlay === 'none' || head.overlay === 'normal'), `${name} ${route}: no words over the image`);
+          if (head.vw <= 780) ok(head.picTop < head.h1Top, `${name} ${route}: image comes first on phones, words below`);
         }
       }
     }

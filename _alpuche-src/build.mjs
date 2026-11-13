@@ -9,6 +9,7 @@
 //   --out=<dir>  output directory (default: demos/jose-m-alpuche at the repo root)
 
 import fs from 'node:fs';
+import crypto from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -55,6 +56,15 @@ const OFFICE = {
   hoursSpec: { days: [1, 2, 3, 4, 5], open: 8, close: 17, utcOffset: -6 },
   directions: 'https://www.google.com/maps/search/?api=1&query=Northern+Shops+1.5+Miles+Philip+Goldson+Highway+Belize+City',
 };
+// Version stamp on the stylesheet and scripts. It changes whenever the site's styles, scripts, copy or
+// build change, so a new deploy is never shown with yesterday's cached CSS or JavaScript.
+const ASSET_VERSION = (() => {
+  const h = crypto.createHash('sha256');
+  const add = (dir) => { for (const f of fs.readdirSync(dir).sort()) { const full = path.join(dir, f); if (fs.statSync(full).isDirectory()) add(full); else h.update(f).update(fs.readFileSync(full)); } };
+  for (const d of ['static/css', 'static/js', 'content', 'ai']) add(path.join(SRC, d));
+  h.update(fs.readFileSync(path.join(SRC, 'build.mjs'))).update(JSON.stringify(args));
+  return h.digest('hex').slice(0, 10);
+})();
 // Click-to-chat WhatsApp for Alpuche AI: the firm's number by default; --whatsapp=off disables it.
 const WHATSAPP = args.whatsapp === 'off' ? '' : (typeof args.whatsapp === 'string' ? args.whatsapp : OFFICE.whatsapp.href).replace(/\D/g, '');
 
@@ -547,7 +557,7 @@ function layout(page, ctx, mainHtml, { crumbs, base } = {}) {
 <html lang="en">
 <head>
 <meta charset="utf-8">
-${base ? `<base href="${base}">\n` : ''}<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+${base ? `<base href="${base}">\n` : ''}<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(meta.title)}</title>
 <meta name="description" content="${esc(meta.description)}">
 ${PRODUCTION ? `<link rel="canonical" href="${absUrl(meta.route)}">` : '<meta name="robots" content="noindex, nofollow, noarchive">'}
@@ -566,7 +576,7 @@ ${SITE_URL ? `<meta property="og:url" content="${absUrl(meta.route)}">\n` : ''}<
 <meta name="alpuche-root" content="${ctx.assets.replace(/assets\/$/, '')}">
 <meta name="alpuche-links" content="${LOCAL ? 'file' : 'dir'}">
 <link rel="icon" href="${imgPath(ctx, 'jma-mark-160.jpg')}">
-${LOCAL ? '' : `<link rel="preload" href="${ctx.assets}fonts/cormorant-garamond-latin.woff2" as="font" type="font/woff2" crossorigin>\n`}<link rel="stylesheet" href="${ctx.assets}css/site.css">
+${LOCAL ? '' : `<link rel="preload" href="${ctx.assets}fonts/cormorant-garamond-latin.woff2" as="font" type="font/woff2" crossorigin>\n`}<link rel="stylesheet" href="${ctx.assets}css/site.css?v=${ASSET_VERSION}">
 ${PRODUCTION && crumbs ? breadcrumbJsonLd(crumbs) : ''}
 </head>
 <body>
@@ -577,9 +587,9 @@ ${mainHtml}
 ${footer(ctx)}
 ${assistant(ctx)}
 <!-- scripts -->
-<script src="${ctx.assets}js/alpuche-ai-data.js" defer></script>
-<script src="${ctx.assets}js/alpuche-ai.js" defer></script>
-<script src="${ctx.assets}js/site.js" defer></script>
+<script src="${ctx.assets}js/alpuche-ai-data.js?v=${ASSET_VERSION}" defer></script>
+<script src="${ctx.assets}js/alpuche-ai.js?v=${ASSET_VERSION}" defer></script>
+<script src="${ctx.assets}js/site.js?v=${ASSET_VERSION}" defer></script>
 </body>
 </html>
 `;
