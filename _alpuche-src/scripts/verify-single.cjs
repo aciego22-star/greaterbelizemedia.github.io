@@ -30,7 +30,7 @@ async function exercise(f, label) {
   ok((await h1(f)).includes('Real estate'), `${label} home card opens Real Estate`);
   if (await f.locator('.toc').isVisible()) {
   await f.click('.toc a[href="#frequently-asked-questions"]');
-  ok(await f.evaluate(() => Math.abs(document.getElementById('frequently-asked-questions').getBoundingClientRect().top) < 40), `${label} in-page TOC link scrolls`);
+  ok(await f.evaluate(() => { const top = document.getElementById('frequently-asked-questions').getBoundingClientRect().top; const hb = document.querySelector('.site-header').getBoundingClientRect().bottom; return top >= hb - 1 && top < hb + 60; }), `${label} in-page TOC link scrolls to just below the pinned header`);
   }
   await f.click('.contact-band a[href*="buying-property"]');
   ok((await h1(f)).includes('Buying property'), `${label} Real Estate → property guide`);

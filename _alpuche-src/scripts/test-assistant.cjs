@@ -189,6 +189,25 @@ expect('What is Alpuche AI?', { intent: 'about-assistant', includes: ['^I’m Al
 expect('Can you help me?', { intent: 'about-assistant', includes: ['^Certainly\\.'] });
 expect('Do I have to come to Belize to hire you?', { intent: 'CON-02', includes: ['^Not to make an enquiry\\.'], excludes: ['^Yes'] });
 expect('I live in the US, can I still hire you?', { intent: 'CON-02', includes: ['^Yes\\. You may contact the office from abroad'] });
+// Advice requests and vague matters: a consultation, never an unrelated site passage.
+for (const q of ['I need advice on a matter?', 'I need legal advice', 'I need some help with a legal issue', 'I have a legal problem', 'I need a lawyer', 'I want to talk to someone about a problem']) {
+  expect(q, { intent: 'advice-offer', includes: ['^Certainly\\. Advice on a particular matter is given by the attorney'], excludes: ['assessment, transaction or compliance'], chip: 'intake:start' });
+}
+expect('I have a question about my divorce', { intent: 'advice-offer', includes: ['about your Family Law matter'] });
+expect('my landlord wont return my deposit', { intent: 'advice-offer', includes: ['^Thank you for explaining'] });
+expect('my neighbour built a fence on my land', { intent: 'advice-offer', includes: ['Real Estate matter'], excludes: ['buying or selling'] });
+expect('someone owes me money', { intent: 'DR-01', excludes: ['tax'] });
+expect('how long does company registration take', { intent: 'timing', includes: ['^The website does not give timescales'], excludes: ['type of property'] });
+expect('Tell me about the firm', { intent: 'about-firm', includes: ['^The firm is the Belize City law practice of José M\\. Alpuche'] });
+expect('Is the office open at 7pm?', { intent: 'hours:at', includes: ['^No\\.'] });
+expect('Can I come at 10:30am?', { intent: 'hours:at', includes: ['^Yes\\.', 'telephone ahead'] });
+expect('Are you open on public holidays?', { intent: 'hours:holiday', includes: ['does not list public-holiday hours'] });
+expect('Is it free to ask questions here?', { intent: 'about-assistant', includes: ['^Yes\\. Using Alpuche AI costs nothing'] });
+expect('My son was arrested', { intent: 'arrest', includes: ['criminal defence attorney'], excludes: ['type of document'] });
+expect('What do I need to bring?', { intent: 'prepare' });
+expect("What's the difference between a business name and a company?", { intent: 'CO-02' });
+expect('ok', { intent: 'ack' });
+expect('what is the weather like in San Pedro', { intent: 'fallback' });
 check(/^Good afternoon, and welcome to the office of José M\. Alpuche/.test(text(at('2026-11-13T20:14:00Z').greeting())) && /^Good morning/.test(text(at('2026-11-12T13:15:00Z').greeting())), 'greeting uses the time of day in Belize');
 // Register: no casual phrasing in any answer above.
 const casual = /\b(you guys|gonna|wanna|no worries|awesome|cool|hey there|yep|sure thing|ok so)\b|!/i;

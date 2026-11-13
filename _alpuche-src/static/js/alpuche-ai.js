@@ -152,8 +152,12 @@
     return { items: indexed, df: df, n: indexed.length, avg: total / Math.max(1, indexed.length) };
   }
 
+  // Words that say "this is a legal question" without saying what it is about.
+  var GENERIC = new Set(('matter issue problem question legal law help advice advise case situation thing something ' +
+    'lawyer attorney service information info regard concern about assist assistance support person someone talk speak ' +
+    'belize belizean way good best right correct wrong new old type kind sort').split(' '));
   function search(index, query, filter) {
-    var q = Array.from(new Set(tokens(query)));
+    var q = Array.from(new Set(tokens(query))).filter(function (x) { return !GENERIC.has(x); });
     if (!q.length) return [];
     var k1 = 1.2;
     var b = 0.75;
@@ -214,8 +218,12 @@
     notOurs: /\b(survey\w*|valuations?|apprais\w*|inspections?|build(ing)? permits?|construction|architect\w*|accounting|bookkeeping|audit\w*|realtors?|(real )?estate agents?|translat\w*|private investigat\w*|insurance)\b/,
     reachJose: /\b(reach|contact|get hold of|get in touch with|call|email|phone) (jose|mr alpuche|the attorney|the lawyer|him)\b/,
     helpMe: /^(can you help( me)?|could you help( me)?|can you assist( me)?|i need (some )?help|help|help me|please help|i have a question|can i ask (you )?(a )?question)\W*$/,
+    seekAdvice: /\b(i|we) (need|want|would like|am looking for|'?m looking for|am seeking|'?m seeking|require|could use|need to get|want to get) (some |a little |urgent |professional |proper )?(legal )?(advice|counsel|guidance|help|assistance|representation|a consultation|to consult|to see (a|the) (lawyer|attorney))\b|\b(looking|seeking) for (legal )?(advice|help|assistance|representation)\b|\b(need|want) (a|an) (lawyer|attorney)( to)?\b|\bi need (advice|help) (on|with|about|regarding|for)\b|\b(talk|speak) (to|with) (someone|somebody|a person) (about|regarding)\b/,
+    vagueMatter: /\b(i|we) (have|'?ve got|got|am facing|'?m facing|am dealing with|'?m dealing with|am having|'?m having) (a|an|some|this) (small |big |serious |urgent |personal |private |legal |family |business )?(legal )?(matter|issue|problem|question|situation|case|dispute|concern|query|enquiry|inquiry)\b|\b(i|we) (have|'?ve got) (a )?(question|questions|query) (about|regarding|on)\b/,
+    timing: /\bhow long (does|will|would|do|is|can)\b|\bhow (quickly|fast|soon) (can|will|does|do)\b.{0,30}\b(register|form|incorporat|transfer|complet|finish|done|process)|\b(timeframe|time frame|timeline|turnaround time)\b/,
+    aboutFirm: /\b(tell me (more )?about (the firm|your firm|the practice|the office|yourselves|you guys|the company)|about (the|your) (firm|practice)|what is (this|the|your) (firm|practice)|who is the firm|describe (the|your) firm)\b/,
     wantTo: /\b(i (want|need|would like|wish|plan|intend|hope) to|i'?d like to|i (am|'?m) (planning|looking|hoping|trying) to|i (am|'?m) (buying|selling|starting|opening|forming|getting|registering)|we (want|need|would like|plan|intend) to|i need (a|an|help|some help))\b/,
-    prepare: /\b(what (should|do|must) i (bring|prepare|have ready|take)|how (should|do|can) i prepare|prepare for (the|my|a) (first )?(consultation|meeting|appointment|discussion)|bring to (the|my|a) (first )?(consultation|meeting|appointment))\b/,
+    prepare: /\b(what (should|do|must) i (bring|prepare|have ready|take)|what do i need to (bring|prepare|have)|how (should|do|can) i prepare|prepare for (the|my|a) (first )?(consultation|meeting|appointment|discussion)|bring to (the|my|a) (first )?(consultation|meeting|appointment))\b/,
     process: /\b(what happens (after|next|when|once|then)|what (is|are) the (next )?steps?|how does (it|the process|this) work|what (is|does) the process|what to expect|what can i expect)\b/,
     getStarted: /\bhow (do|can|should) i (get started|start|begin|proceed|become a client|hire you|retain you|engage you)\b(?!\s+(a|an|my|the|with|on)\b)/,
     mediatorRole: /\b(act as|be|serve as) (a |my |our |the )?(mediator|arbitrator)\b/,
@@ -227,7 +235,7 @@
     privacy: /\b(privacy|personal data|my data|data protection|cookies?|tracking|(is|are) (this|my|the) (chat|conversation|information|info|data|details) (stored|saved|recorded|kept|logged|private|secure|safe)|do you (store|save|keep|record|log))\b/,
     howAreYou: /^((hi|hello|hey|good (morning|afternoon|evening)),? )?(how are you( doing| today)?|how('?s| is) it going|how do you do)[\s?!.,]*$/,
     bye: /^(bye|goodbye|good bye|see you|that'?s all|that is all|no,? that'?s (all|it)|nothing else)\b/,
-    hours: /\b(office hours|opening hours|business hours|working hours|your hours|the hours|hours of (business|operation)|hours|what time|closing time|lunch( hour| break| time)?|(are|is) (you|the office|your office|it|the firm) (open|closed)|you open|office open|open (on|today|tomorrow|tonight|now|right now|late|early|until|till|at|during|over|this)|weekends?|saturdays?|sundays?|public holidays?|when (do|does) (you|the office|it) (open|close))\b/,
+    hours: /\b(office hours|opening hours|business hours|working hours|your hours|the hours|hours of (business|operation)|hours|what time|closing time|lunch( hour| break| time)?|(are|is) (you|the office|your office|it|the firm) (open|closed)|you open|office open|open (on|today|tomorrow|tonight|now|right now|late|early|until|till|at|during|over|this)|weekends?|saturdays?|sundays?|public holidays?|when (do|does) (you|the office|it) (open|close)|(come|visit|arrive|drop by|stop by|call) (in |by )?(at|around|before|after) \d+(?:[:.]\d\d)? ?(?:a\.?m|p\.?m)?)\b/,
     location: /\b(where (are|is) (you|the office|your office|the firm|it)|address|located|location|directions|find (you|the office)|map|get there|how do i get (to|there))\b/,
     contact: /\b(contact (you|the office|the firm|details|information|info)|reach (you|the office|the firm|someone)|speak to (someone|a person|a human)|talk to (someone|a person|a human)|get hold of|how (do|can) i (contact|reach|get in touch))\b/,
     janine: /\bjanine\b/,
@@ -418,6 +426,14 @@
         }
         return reply([{ text: text, links: [contactLink()] }], { intent: 'hours:now' });
       }
+      var at = t.match(/\b(?:at|by|after|before|around) (\d{1,2})(?::(\d{2}))? ?(a\.?m\.?|p\.?m\.?)?/);
+      if (at) {
+        var hh = parseInt(at[1], 10) % 12 + (/^p/.test(at[3] || '') || (!at[3] && parseInt(at[1], 10) < 7) ? 12 : 0);
+        var mm = parseInt(at[2] || '0', 10);
+        var inHours = hh * 60 + mm >= hoursSpec.open * 60 && hh * 60 + mm < hoursSpec.close * 60;
+        return reply([{ text: (inHours ? 'Yes. ' : 'No. ') + 'The office is open ' + HOURS + '.' + (/\b(come|visit|arrive|drop|stop)\b/.test(t) ? ' Please telephone ahead so that a time can be arranged.' : ''), links: [contactLink()] }], { intent: 'hours:at' });
+      }
+      if (/\bholiday/.test(t)) return reply([{ text: 'The website does not list public-holiday hours. The office is open ' + HOURS + '; around public holidays, please telephone ahead to confirm.', links: [contactLink()] }], { intent: 'hours:holiday' });
       if (/\blunch\b/.test(t)) return reply([{ text: 'The website does not mention a lunch-hour closure. The office is open ' + HOURS + '; if you plan to visit around midday, please telephone ahead.', links: [contactLink()] }], { intent: 'hours:lunch' });
       if (/\b(close|closes|closing|shut|until|till)\b/.test(t)) return reply([{ text: 'The office closes at ' + CLOSE + ', Belize time, Monday to Friday.', links: [contactLink()] }], { intent: 'hours:close' });
       if (/\b(what time|when) (do|does) (you|the office|it) open\b|\bopening time\b|\bopen at what time\b|\bhow early\b/.test(t)) return reply([{ text: 'The office opens at ' + OPEN + ', Belize time, Monday to Friday.', links: [contactLink()] }], { intent: 'hours:open' });
@@ -446,7 +462,7 @@
       { re: /\b(incorporat\w*|company formation|(company|business) registration|(form|forming|register|registering|set up|setting up|start|starting|open|opening) (up )?(a |an |my |our )?(new )?(company|business|llc|llp|corporation|partnership))\b/, kb: 'CO-01' },
       { re: /\barbitrat\w*/, kb: 'DR-02' },
       { re: /\bmediat\w*/, kb: 'DR-03' },
-      { re: /\b(litigat\w*|lawsuits?|court (cases?|matters?|proceedings?|work)|civil (cases?|disputes?|claims?|matters?)|disputes?|in court|go(ing)? to court|court|trials?|hearings?)\b/, kb: 'DR-01' },
+      { re: /\b(litigat\w*|lawsuits?|court (cases?|matters?|proceedings?|work)|civil (cases?|disputes?|claims?|matters?)|disputes?|in court|go(ing)? to court|court|trials?|hearings?|owes? (me|us)|owed|debts?|unpaid|overdue|recover\w*|breach\w*)\b/, kb: 'DR-01' },
       { re: /\btrademarks?\b|\b(brand|logo) (protection|registration)\b|\b(protect|register) (my |a |our )?(brand|logo|business name)\b/, kb: 'IP-01' },
       { re: /\bpatents?\b|\binventions?\b/, kb: 'IP-02' },
       { re: /\bcopyrights?\b/, kb: 'IP-03' },
@@ -460,14 +476,15 @@
       { re: /\btax(es|ation)?\b/, kb: 'BFT-03' },
       { re: /\b(regulatory|regulation|licen[cs]ing|licen[cs]es?|compliance)\b/, practice: 'banking-finance-tax-regulatory' },
       { re: /\b(contracts?|agreements?)\b/, kb: 'CO-05' },
-      { re: /\b(conveyanc\w*|real ?estate|propert(y|ies)|lands?|houses?|homes?|lots?|condos?|villas?|title)\b/, kb: 'RE-01' },
-      { re: /\b(corporate|commercial|compan(y|ies)|business(es)?|llcs?)\b/, practice: 'corporate-commercial' },
+      { re: /\b(conveyanc\w*|(buy|buying|purchas\w*|sell|selling|sale of|transfer\w*) (a |some |my |the |our )?(land|property|house|home|lot|condo|villa|parcel)|property (purchase|sale|transaction|transfer)s?)\b/, kb: 'RE-01' },
+      { re: /\b(real ?estate|propert(y|ies)|lands?|houses?|homes?|lots?|condos?|villas?|title)\b/, kb: 'RE-01', broad: true },
+      { re: /\b(corporate|commercial|compan(y|ies)|business(es)?|llcs?)\b/, practice: 'corporate-commercial', broad: true },
     ];
     function findService(t) {
       for (var i = 0; i < SERVICES.length; i++) {
         if (SERVICES[i].re.test(t)) {
           var s = SERVICES[i];
-          return { kb: s.kb || null, practice: s.practice || practiceForKb(s.kb) };
+          return { kb: s.kb || null, practice: s.practice || practiceForKb(s.kb), broad: !!s.broad };
         }
       }
       return null;
@@ -479,7 +496,7 @@
       { re: /\b(criminal|defen[cs]e (attorney|lawyer)|dui|drunk driving|murder|theft|assault charges?|drug charges?)\b/, label: 'Criminal defence' },
       { re: /\b(wills|a will|my will|last will|testament|probate|estate planning|inheritance|executors?)\b/, label: 'Wills, probate and estate planning', plural: true },
       { re: /\b(employment law|employment (matters?|disputes?|cases?|contracts?)|wrongful dismissal|unfair dismissal|fired|labou?r (law|matters?|disputes?)|employment)\b/, label: 'Employment law' },
-      { re: /\b(immigration|visas?|citizenship|work permits?|residency permits?|permanent residen\w*)\b/, label: 'General immigration work' },
+      { re: /\b(immigration|visas?|citizenship|work permits?|residency|residency permits?|permanent residen\w*)\b/, label: 'General immigration and residency work, other than the Qualified Retired Persons Programme,' },
       { re: /\b(personal injury|accident claims?|car accidents?|medical malpractice|negligence claims?|slip and fall)\b/, label: 'Personal injury claims', plural: true },
       { re: /\b(bankruptcy|insolvency|liquidation)\b/, label: 'Bankruptcy and insolvency work' },
       { re: /\btraffic (tickets?|offen[cs]es?|matters?|violations?)\b/, label: 'Traffic matters', plural: true },
@@ -507,6 +524,7 @@
       if (has(P.greeting, t)) return reply([{ text: salutation() + '. How may I help you?' }], { chips: SUGGESTIONS, intent: 'greeting' });
       if (has(P.howAreYou, t) && words <= 6) return reply([{ text: 'Very well, thank you. How may I help you today?' }], { chips: SUGGESTIONS, intent: 'greeting' });
       if (has(P.thanks, t) && words <= 6) return reply([{ text: 'You’re welcome. Is there anything else I can help you with?' }], { chips: SUGGESTIONS, intent: 'thanks' });
+      if (/^(ok|okay|alright|all right|fine|sure|yes|yeah|yep|no|nope|hmm+|k|right|i see|understood|noted)[\s!.,]*$/.test(t)) return reply([{ text: 'Very well. Is there anything else I can help you with?' }], { chips: SUGGESTIONS, intent: 'ack' });
       if (has(P.bye, t) && words <= 6) return reply([{ text: 'Thank you for contacting the office of José M. Alpuche, Attorney-at-Law. Good day.' }], { chips: [], intent: 'bye' });
 
       // 1. Immediate danger
@@ -530,6 +548,10 @@
       }
 
       // 3. Hearings, deadlines, papers served. A general "Do you handle trials?" is a service question, not an emergency.
+      if (/\b(arrest\w*|in custody|detained|in jail|locked up|at the police station|charged with)\b/.test(t) && !has(P.cap, t)) {
+        session.urgentSeen = true;
+        return reply([{ text: 'If someone has been arrested or detained, please seek prompt assistance from a criminal defence attorney. Criminal defence is not among the firm’s listed practice areas; you may telephone the office on ' + phone1 + ' to ask whether it can suggest an appropriate next step.', kind: 'urgent', links: [contactLink()], kb: 'FIR-09' }], { intent: 'arrest' });
+      }
       var capOnly = has(P.cap, t) && !has(P.timeSoon, t) && !/\b(my|i|im|me|we|our|us|mine)\b/.test(t.replace(P.cap, ' '));
       if (has(P.urgent, t) && !capOnly) {
         session.urgentSeen = true;
@@ -554,6 +576,16 @@
 
       if (/\bjanine\b/.test(t) && /\b(advice|advise|attorney|lawyer|legal)\b/.test(t)) {
         return reply([{ text: 'Legal advice is given by the attorney, Mr. Alpuche. Janine Ebanks-Alpuche is the practice manager: she oversees the administration of the practice, provides paralegal support and can explain how to arrange a consultation.', links: [link('/about/')], kb: 'FIR-03' }], { intent: 'FIR-03' });
+      }
+
+      // "I need advice on a matter" / "I have a legal problem": route to a consultation.
+      var specificLegal = has(P.legal, t.replace(/\b(legal advice|advice|advise me|give me advice)\b/g, ' '));
+      if ((has(P.seekAdvice, t) || has(P.vagueMatter, t)) && !specificLegal && !has(P.qualify, t)) {
+        var ap = findService(t);
+        var apKey = (ap && ap.practice) || detectPractice(t);
+        var aText = 'Certainly. Advice on a particular matter is given by the attorney, Mr. Alpuche, at a consultation; I’m not able to advise you myself. The office arranges consultations: please telephone ' + phone1 + ', or I can pass a short enquiry to the office now' + (apKey ? ' about your ' + practiceByKey[apKey].label + ' matter' : '') + '. Shall I begin?';
+        if (has(P.timeSoon, t)) aText += ' If a date is approaching, please telephone the office promptly.';
+        return reply([{ text: aText, links: [apKey ? link(practiceByKey[apKey].route) : link('/practice-areas/', 'Browse practice areas')] }], { chips: [offerIntake(session, apKey), { label: 'Not now', action: 'offer:no' }], intent: 'advice-offer' });
       }
 
       // 5. Legal advice guardrail
@@ -585,6 +617,12 @@
       if (has(P.helpMe, t)) {
         return reply([{ text: 'Certainly. I can answer questions about the firm, its practice areas, the office and what to expect, or pass a short enquiry to the office. What would you like to know?' }], { chips: SUGGESTIONS, intent: 'about-assistant' });
       }
+      if (/\b(free|cost|charge|pay)\b/.test(t) && /\b(here|this chat|the chat|chat|to ask|alpuche ai|this service|use you|using you|talk to you)\b/.test(t)) {
+        return reply([{ text: 'Yes. Using Alpuche AI costs nothing. Consultation fees are a separate matter, confirmed by the office.' }], { chips: SUGGESTIONS, intent: 'about-assistant' });
+      }
+      if (has(P.aboutFirm, t)) {
+        return reply([{ text: 'The firm is the Belize City law practice of José M. Alpuche, Attorney-at-Law, who leads its legal work, with Janine Ebanks-Alpuche as practice manager. It acts for individuals, families and businesses in real estate; corporate and commercial; banking, finance, tax and regulatory; dispute resolution; intellectual property; family law; and the Qualified Retired Persons Programme.', links: [link('/about/'), link('/practice-areas/', 'Browse practice areas')] }], { chips: SUGGESTIONS, intent: 'about-firm' });
+      }
       if (has(P.botAbilities, t)) {
         return reply([{ text: 'I can tell you about the firm’s practice areas, the attorney and practice manager, office hours and contact details, and what to expect when you contact the office. I can also take a short enquiry and pass it to the office. I can’t give legal advice, book appointments or accept documents.', links: [link('/practice-areas/', 'Browse practice areas')] }], { chips: SUGGESTIONS, intent: 'about-assistant' });
       }
@@ -596,7 +634,11 @@
       if (has(P.retireCtx, t) && has(P.qrpWork, t) && !has(P.cap, t)) return reply([kbMsg('QRP-04')], { chips: [offerIntake(session, 'qualified-retired-persons')] });
       if (has(P.retireCtx, t) && /\b(cost|fee|fees|how much|price)\b/.test(t)) return reply([kbMsg('QRP-02')], { chips: [offerIntake(session, 'qualified-retired-persons')] });
       if (has(P.retireCtx, t) && /\b(spouse|wife|husband|partner|family|dependant|dependent|child|children|documents?)\b/.test(t)) return reply([kbMsg('QRP-03')], { chips: [offerIntake(session, 'qualified-retired-persons')] });
-      if (has(P.propertyCost, t)) return reply([kbMsg('RE-05')], { chips: [offerIntake(session, 'real-estate')] });
+      if (has(P.propertyCost, t) && detectPractice(t) !== 'corporate-commercial') return reply([kbMsg('RE-05')], { chips: [offerIntake(session, 'real-estate')] });
+      if (has(P.timing, t) && !has(P.responseTime, t)) {
+        var tk = (findService(t) || {}).practice || detectPractice(t);
+        return reply([{ text: 'The website does not give timescales. Timing depends on the matter, and the office can discuss it once it has reviewed the details' + (tk === 'corporate-commercial' ? '; company registrations are handled through the Belize Companies and Corporate Affairs Registry’s Online Business Registry System.' : '.'), links: [tk ? link(practiceByKey[tk].route) : contactLink()] }], { chips: [offerIntake(session, tk)], intent: 'timing' });
+      }
       if (has(P.confidential, t)) return reply([kbMsg('CON-05')], { chips: [offerIntake(session)] });
       if (has(P.responseTime, t)) {
         return reply([{ text: 'The office does not publish a response time. If a hearing, deadline or closing date is approaching, please telephone ' + phone1 + ' rather than waiting for a reply.', links: [contactLink()] }], { chips: [offerIntake(session)], intent: 'response-time' });
@@ -693,6 +735,12 @@
         if (svc.kb) { var sm = kbMsg(svc.kb); sm.text = 'Yes. ' + sm.text; return reply([sm], { chips: [offerIntake(session, svc.practice)], intent: svc.kb }); }
         return practiceScope(svc.practice, true);
       }
+      if (svc && !yesNo && !has(P.overseas, t) && !has(P.intake, t) && /\b(i|my|me|we|our|us|someone|somebody)\b/.test(t)) {
+        if (svc.kb && !svc.broad) return reply([kbMsg(svc.kb)], { chips: [offerIntake(session, svc.practice)], intent: svc.kb });
+        if (svc.broad && !/\?$/.test(String(raw).trim()) && words >= 4) {
+          return reply([{ text: 'Thank you for explaining. That would need to be reviewed by the attorney, Mr. Alpuche, at a consultation; I’m not able to advise on it myself. Please telephone the office on ' + phone1 + ', or I can pass a short enquiry to the office now about your ' + practiceByKey[svc.practice].label + ' matter. Shall I begin?', links: [link(practiceByKey[svc.practice].route)] }], { chips: [offerIntake(session, svc.practice), { label: 'Not now', action: 'offer:no' }], intent: 'advice-offer' });
+        }
+      }
       if (has(P.child, t) && !has(P.retireCtx, t)) {
         var fa = kbMsg('FA-03');
         if (has(P.timeSoon, t)) fa.text += ' If this is time-sensitive, please telephone the office promptly on ' + phone1 + '.';
@@ -701,6 +749,7 @@
       if (has(P.registeredAgent, t)) return reply([kbMsg('CO-03')], { chips: [offerIntake(session, 'corporate-commercial')] });
       if (has(P.mediation, t)) return reply([kbMsg('DR-03')], { chips: [offerIntake(session, 'dispute-resolution')] });
       if (has(P.practiceList, t) || (has(P.cap, t) && /\b(cases?|matters?|law|clients?|anything|everything|all)\b/.test(t))) return practiceList();
+      if (/\bbusiness name\b/.test(t) && /\b(compan|incorporat|llc)/.test(t) && !/trademark/.test(t)) return reply([kbMsg('CO-02')], { chips: [offerIntake(session, 'corporate-commercial')], intent: 'CO-02' });
       if (has(P.prepare, t)) {
         return reply([{ text: 'Please write down your main question, the outcome you want and any important dates, and identify the documents you already have: for a property purchase, perhaps the title reference and proposed terms; for a business matter, a term sheet or draft agreement; for a dispute, the notice you received or the contract. Keep the documents for the meeting, or ask the office how to provide them.', links: [link('/working-with-us/')] }], { chips: [offerIntake(session)], intent: 'prepare' });
       }
@@ -745,7 +794,8 @@
       var results = search(index, t);
       var top = results[0];
       var overseas = has(P.overseas, t);
-      if (top && top.score >= 2.2 && top.coverage >= 0.34) {
+      var qLen = Array.from(new Set(tokens(t))).filter(function (x) { return !GENERIC.has(x); }).length;
+      if (top && top.score >= 2.2 && top.coverage >= (qLen >= 2 ? 0.5 : 0.34)) {
         var d = top.doc;
         var practiceKey = detectPractice(t) || (d.route && practices.filter(function (p) { return d.route.indexOf(p.route) === 0; }).map(function (p) { return p.key; })[0]) || null;
         var msg;
@@ -760,7 +810,10 @@
         return reply([msg], { chips: [offerIntake(session, practiceKey)], intent: d.kind === 'kb' ? d.id : 'site:' + d.id });
       }
 
-      // 9. Fallback
+      // 9. Fallback. A visitor describing their own situation is routed to a consultation.
+      if (/\b(i|my|me|we|our|i'?m|i'?ve)\b/.test(t) && words >= 3 && !/\?$/.test(String(raw).trim())) {
+        return reply([{ text: 'Thank you for explaining. That would need to be reviewed by the attorney, Mr. Alpuche, at a consultation; I’m not able to advise on it myself. Please telephone the office on ' + phone1 + ', or I can pass a short enquiry to the office now. Shall I begin?', links: [link('/practice-areas/', 'Browse practice areas')] }], { chips: [offerIntake(session), { label: 'Not now', action: 'offer:no' }], intent: 'advice-offer' });
+      }
       return reply([{
         text: 'I’m afraid I don’t have that information. The office will be able to help: please telephone ' + phone1 + ' or email ' + office.email + ', or I can pass an enquiry to the office.',
         links: [link('/practice-areas/', 'Browse practice areas')],

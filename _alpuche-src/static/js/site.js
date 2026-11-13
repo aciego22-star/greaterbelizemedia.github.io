@@ -67,6 +67,7 @@
     var input = assistant.querySelector('#chat-text');
     var sendBtn = assistant.querySelector('.chat-send');
     var closeBtn = assistant.querySelector('.assistant-close');
+    var newBtn = assistant.querySelector('.assistant-new');
     var busy = false;
     var started = false;
 
@@ -205,6 +206,7 @@
       busy = on;
       log.setAttribute('aria-busy', on ? 'true' : 'false');
       sendBtn.disabled = on;
+      if (newBtn) newBtn.disabled = on;
       chipsBox.querySelectorAll('button').forEach(function (b) { b.disabled = on; });
     }
 
@@ -284,6 +286,21 @@
         if (!coarse) setTimeout(function () { input.focus(); }, 50);
       }
     });
+
+    // New chat: forget this conversation and start again with a fresh greeting.
+    if (newBtn) {
+      newBtn.addEventListener('click', function () {
+        if (busy) return;
+        session = engine.newSession({ route: currentRoute });
+        log.textContent = '';
+        input.value = '';
+        setChips([]);
+        setInput({});
+        started = false;
+        greet();
+        if (!coarse) input.focus();
+      });
+    }
 
     if (closeBtn) {
       closeBtn.addEventListener('click', function () {

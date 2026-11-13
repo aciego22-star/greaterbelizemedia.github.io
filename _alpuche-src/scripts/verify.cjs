@@ -181,6 +181,9 @@ const section = (t) => console.log('\n' + t);
   bubble = await say(cp, 'What type of legal matters do you guys do?');
   ok(await bubble.locator('ul.msg-list li a').count() === 7 && (await bubble.locator('ul.msg-list li a').first().getAttribute('href')).includes('practice-areas/real-estate'), 'practice-areas question lists all seven areas as links');
   ok(!/Call the office or email/.test(await bubble.innerText()), 'practice-areas question is not answered with contact details');
+  bubble = await say(cp, 'I need advice on a matter?');
+  ok(/^Certainly\. Advice on a particular matter is given by the attorney/.test(await bubble.innerText()), 'advice request is routed to a consultation, not a site passage');
+  ok(await cp.locator('.office-assistant > summary .ai-mark img[src*="jma-mark"]').count() === 1 && await cp.locator('.assistant-top .ai-mark img[src*="jma-mark"]').count() === 1, 'launcher and panel show the JMA logo');
   bubble = await tap(cp, 'Start an enquiry');
   ok(/pass a short enquiry/.test(await bubble.innerText()), 'chip starts an enquiry');
   bubble = await tap(cp, 'Not now');
@@ -193,6 +196,10 @@ const section = (t) => console.log('\n' + t);
   await cp.keyboard.press('Enter');
   ok(await cp.locator('.office-assistant').evaluate((d) => d.open), 'Alpuche AI opens from the keyboard');
   ok(await cp.locator('.chat-log .msg').count() > 10, 'conversation kept while the page stays open');
+  const beforeClear = await cp.locator('.chat-log .msg').count();
+  await cp.click('.assistant-new');
+  await waitReply(cp, 0);
+  ok(beforeClear > 3 && await cp.locator('.chat-log .msg').count() === 1 && /welcome to the office/.test(await lastBot(cp).innerText()), `New chat clears the conversation and greets again (${beforeClear} → 1)`);
   await cp.click('.assistant-close');
   ok(!(await cp.locator('.office-assistant').evaluate((d) => d.open)), 'Close button dismisses Alpuche AI');
   ok(chatErrors.length === 0, `no script errors (${chatErrors.join(' | ')})`);
@@ -322,6 +329,17 @@ const section = (t) => console.log('\n' + t);
         return misses;
       });
       ok(hidden.length === 0, `${name} ${route}: Alpuche AI stays visible while scrolling (${hidden.join(', ')})`);
+      const headerGone = await p.evaluate(async () => {
+        const misses = [];
+        for (const f of [0.3, 0.6, 1]) {
+          window.scrollTo({ top: (document.documentElement.scrollHeight - innerHeight) * f, behavior: 'instant' });
+          await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+          const r = document.querySelector('.site-header').getBoundingClientRect();
+          if (Math.abs(r.top) > 1 || r.height < 40) misses.push(f);
+        }
+        return misses;
+      });
+      ok(headerGone.length === 0, `${name} ${route}: header and menu stay at the top while scrolling (${headerGone.join(', ')})`);
       if (['/practice-areas/', '/about/', '/working-with-us/'].includes(route)) {
         const plaque = await p.evaluate(async () => {
           window.scrollTo({ top: 0, behavior: 'instant' });

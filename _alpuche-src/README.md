@@ -89,10 +89,12 @@ The suite checks:
   - **Enquiries:** it collects a short enquiry, after a notice and consent, then shows a review before anything is sent.
   - **WhatsApp:** visitors can choose WhatsApp as the reply channel or open a pre-filled chat to the firm's number. The number comes from `OFFICE.whatsapp` in `build.mjs`; `--whatsapp=off` disables this.
   - **Delivery:** with `--lead-endpoint=<Apps Script /exec URL>`, the enquiry is posted to that endpoint, which emails the inbox and the visitor (`integrations/google-apps-script/SETUP-EMAIL.md`). Without it, demo mode shows the two emails instead.
+  - **Panel:** the JMA logo on the launcher and panel header; “New chat” (`.assistant-new`) clears the log and starts a fresh session.
   - **Launcher:** always visible (it no longer slides away), with a gold pulse every 10 s while closed; the pulse is off for visitors who prefer reduced motion.
 - **Contact preselect.** `/contact/?area=<key>` accepts only the seven practice keys. It labels the Alpuche AI button with the practice, adds a note and puts the practice in the email subject. The plain `/contact/` URL is canonical.
 - **Enquiries.** The contact-page form has been removed. “Request a consultation” buttons open Alpuche AI's enquiry, carrying the practice. Without JavaScript they still link to the contact page.
 - **Nameplate headers.** On Practice Areas, Our Team and What to Expect. `plaque-desktop-*` and `plaque-mobile-*`, from the firm's nameplate images (see `scripts/make-images.sh`), are art-directed per screen size with `<picture>` in `pageHead({ plaque: true })`. Contact uses a plain header, at the agency's direction, so the plate isn't repeated.
+- **Pinned header.** `.site-header` is `position: sticky`; `scroll-padding-top` keeps in-page links clear of it. `verify.cjs` checks it stays at the top while scrolling on every page and width.
 - **No lines.** The stylesheet uses no borders or rules. `verify.cjs` fails if any element on any page draws one.
 - **Brand icons.** The WhatsApp and Facebook glyphs come from Simple Icons (CC0 1.0). They are inlined as SVG from `ICON_PATHS` in `build.mjs` and shown in each brand's colour beside every WhatsApp and Facebook link: contact page, footer and Alpuche AI.
 - **Mobile hero.** At 780 px and below, the portrait comes first under the header and the words follow. This is the agency's direction of 13 Nov 2026; the original brief put the title and CTA first. Desktop and tablet keep the words and portrait side by side.
