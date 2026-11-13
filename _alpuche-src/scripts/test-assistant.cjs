@@ -172,6 +172,10 @@ expect('What happens after I send an enquiry?', { intent: 'process', includes: [
 expect('How do I get started?', { intent: 'get-started', includes: ['^To begin, please telephone or email the office'] });
 expect('How do I start a company in Belize?', { intent: /CO-01|CO-02|site:/, excludes: ['^To begin'] });
 expect('Do you have any guides?', { intent: 'guides' });
+expect('Do you have a blog?', { intent: 'articles', includes: ['articles on Belize law'], route: '/articles/' });
+expect('Does Mr Alpuche write articles?', { intent: 'articles' });
+expect('Where can I read his articles', { intent: 'articles' });
+expect('Can you help me draft articles of association for my company?', { excludes: ['writes short articles'] });
 expect('Do you have WhatsApp?', { intent: 'FIR-10', includes: ['^Yes\\. You may message the office on WhatsApp'], excludes: ['language', '625'] });
 expect('Is this chat confidential?', { intent: 'CON-05', includes: ['does not create an attorney–client relationship'] });
 expect('how are you', { intent: 'greeting', includes: ['^Very well, thank you'] });

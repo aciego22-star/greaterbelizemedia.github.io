@@ -58,6 +58,31 @@ The builder has no dependencies. It needs Node 18 or later. All links are relati
 
 To change copy, edit the Markdown and rebuild. The office details live once, in `OFFICE` in `build.mjs`.
 
+### Adding an article (blog post)
+Create one Markdown file in `content/articles/` (the file name is for your own sorting, e.g. `2026-11-20-short-title.md`) and rebuild:
+
+```
+---
+route: "/articles/short-title-in-plain-words/"
+title: "Search-result title | José M. Alpuche"
+description: "One or two sentences shown in search results and on the article card."
+date: "2026-11-20"
+practice: "real-estate"
+first_published: "the firm’s Facebook page"
+source_ids: ["FIRM-FACEBOOK"]
+---
+
+# The headline
+
+Opening paragraph.
+
+## A subheading
+
+More paragraphs. Links use [text](/insights/buying-property-in-belize/).
+```
+
+`practice` is one of the keys in `PRACTICES` (or leave it out); `first_published` is optional. The build adds the article to the Articles page, the home page (the three newest), the matching practice page's “Related articles” list, Alpuche AI's search, the sitemap and the RSS feed (`/articles/feed.xml`, launch builds only), with BlogPosting structured data. Each article ends with the general-information note automatically.
+
 ## Verify
 
 ```bash

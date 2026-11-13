@@ -35,8 +35,14 @@ The firm, or the agency and the firm together, need to settle these before the d
     - The firm should confirm who monitors that number. Automated WhatsApp messages from the firm's side would be charged per message by Meta and are not used.
 12. **Structured data.** Add LegalService and Person schema only after the public details are confirmed. The preview omits them.
 
+## Articles (blog)
+- **Starter articles.** The three articles (16, 17 and 20 June 2022) are Mr. Alpuche's own Facebook posts. The wording is his, lightly edited for the web, with subheadings, a byline, the original date and a general-information note added. Please ask him to confirm each one is still accurate before launch, especially the probate time frame (four to twelve months) and the land title statement.
+- **More posts.** The fourth post in the agency's screenshot (on naming a guardian for your children in your will) was cut off, so it has not been added. Send the full text of this and any other posts to add; each one becomes a Markdown file (see the README).
+- **Wording to review.** “Buying real estate in Belize is a great investment” is his original line. The search description softens it to “can be a great investment”.
+- **Home page.** A “From the office” section shows the three newest articles above the closing band. The menu now has six items, so between 1051 px and 1120 px wide the header uses the Menu button.
+
 ## Copy added during the build (for approval)
-The 17 Markdown pages are rendered as written. The build added a small amount of interface copy that the firm should approve:
+The 18 Markdown pages and the articles are rendered as written. The build added a small amount of interface copy that the firm should approve:
 - Home practice section: “Each practice area has its own page with examples, Belize context and common questions. See all practice areas.”
 - The side card on practice pages, guides and What to Expect: “Speak with the office · Share the general topic and any important date. Janine can explain how to arrange an initial consultation.”
 - The closing band on practice pages: “Start with the general subject and any important date. Contacting the office does not mean the firm has accepted the matter.”
@@ -56,6 +62,7 @@ Design changes made at the agency's direction (13 Nov 2026):
 - **Phone layout.** On phones the home page shows Mr. Alpuche's portrait first, with the headline and consultation button below it. The original brief had the words and button first.
 - **Brand icons.** WhatsApp and Facebook icons, in their brand colours, appear beside every WhatsApp and Facebook link.
 - **WhatsApp number hidden.** The number is not shown anywhere on the site; the WhatsApp icon is the link (wa.me). In the footer, WhatsApp and Facebook appear as icons only.
+- **No resting underlines.** Card links, “Read more” style links, the guide list and the contact links on the home page are no longer underlined until you point at them; pointing at a practice or article card underlines its label, heading and link together. Links inside article text stay underlined so readers can spot them.
 - **No arrows.** Removed from all links, including the ↗ that marked outside links in article text.
 - **Open card layouts.** The ruled grid lines are gone from the home page practice cards and the matching layouts: the practice areas and guides pages, the team page principles and the contact page notices.
 - **No topic shortcuts.** Alpuche AI no longer shows topic buttons. Visitors type their questions; “Start an enquiry” remains.

@@ -231,7 +231,8 @@
     responseTime: /\bhow (long|soon|quickly|fast) (will|does|do|would|until|before)\b.{0,40}\b(respond|reply|hear back|get back|call (me )?back|contact me|answer|response|hear from)\b|\bwhen will (i hear|someone (call|contact|get back)|you (call|get back|respond|reply|contact)|the office (call|contact|respond|reply))\b|\bresponse time\b|\bturnaround\b/,
     botIdentity: /\b((are|r) you|is this|am i (talking|speaking|chatting) (to|with)) (a |an )?(real |actual |live )?(person|human( being)?|people|lawyer|attorney|bot|robot|chat ?bot|ai|machine|computer|automated|real|someone)\b|\bwho (am i (talking|speaking|chatting) (to|with)|are you)\b|\bwhat are you\b|\bwhat is alpuche ai\b/,
     botAbilities: /\bwhat (can you do|are you able to do|are you capable of)\b|\bwhat can i ask( you)?\b|\bhow (does this|do you) work\b|\bhow can you help( me)?\b/,
-    guides: /\b(guides?|articles?|resources|blog|insights|publications?)\b/,
+    articles: /\b(blogs?|newsletters?|articles?(?! of (association|incorporation|continuance)))\b/,
+    guides: /\b(guides?|resources|insights|publications?)\b/,
     privacy: /\b(privacy|personal data|my data|data protection|cookies?|tracking|(is|are) (this|my|the) (chat|conversation|information|info|data|details) (stored|saved|recorded|kept|logged|private|secure|safe)|do you (store|save|keep|record|log))\b/,
     howAreYou: /^((hi|hello|hey|good (morning|afternoon|evening)),? )?(how are you( doing| today)?|how('?s| is) it going|how do you do)[\s?!.,]*$/,
     bye: /^(bye|goodbye|good bye|see you|that'?s all|that is all|no,? that'?s (all|it)|nothing else)\b/,
@@ -758,6 +759,9 @@
       }
       if (has(P.process, t)) {
         return reply([{ text: 'Once the office has your enquiry, it can discuss availability, any initial information the firm needs and whether a consultation is the right next step. The firm may need to check for conflicts before discussing details. If it can assist, it will confirm the work involved, the fee arrangements and whether it has accepted the matter.', links: [link('/working-with-us/')] }], { chips: [offerIntake(session)], intent: 'process' });
+      }
+      if (has(P.articles, t) && (data.articles || []).length) {
+        return reply([{ text: 'Mr. Alpuche writes short articles on Belize law. The most recent are:', items: data.articles.slice(0, 3).map(function (a) { return { label: a.label, route: a.route }; }), after: 'Each gives general information only, not legal advice.', links: [link('/articles/', 'See all articles')] }], { chips: SUGGESTIONS, intent: 'articles' });
       }
       if (has(P.guides, t)) {
         return reply([{ text: 'The firm publishes three Belize legal guides:', items: (data.guides || []).map(function (g) { return { label: g.label, route: g.route }; }), after: 'Each gives general information only, not legal advice.' }], { chips: SUGGESTIONS, intent: 'guides' });

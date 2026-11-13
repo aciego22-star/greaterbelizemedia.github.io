@@ -99,8 +99,14 @@ const NAV = [
   { label: 'Our Team', route: '/about/' },
   { label: 'What to Expect', route: '/working-with-us/' },
   { label: 'Belize Legal Guides', route: '/insights/' },
+  { label: 'Articles', route: '/articles/' },
   { label: 'Contact', route: '/contact/' },
 ];
+
+// Articles (the blog): one Markdown file each in content/articles/, newest first. Filled in by build().
+let ARTICLES = [];
+const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const longDate = (iso) => { const [y, m, d] = iso.split('-').map(Number); return `${d} ${MONTHS[m - 1]} ${y}`; };
 
 // Belize photography: credits from assets/IMAGE-CREDITS.md. Widths match scripts/make-images.sh output.
 const PHOTOS = {
@@ -380,6 +386,7 @@ function footer(ctx) {
       <li><a href="${rel(ctx.route, '/about/')}">Our Team</a></li>
       <li><a href="${rel(ctx.route, '/working-with-us/')}">What to Expect</a></li>
       <li><a href="${rel(ctx.route, '/insights/')}">Belize Legal Guides</a></li>
+      <li><a href="${rel(ctx.route, '/articles/')}">Articles</a></li>
       <li><a href="${rel(ctx.route, '/contact/')}">Contact</a></li>
       <li><a href="${rel(ctx.route, '/website-notice/')}">Website notice</a></li>
       <li><a href="${rel(ctx.route, '/website-notice/')}#photo-credits">Photo credits</a></li>
@@ -464,7 +471,7 @@ function assistant(ctx) {
 const plain = (t) => String(t).replace(/\[([^\]]+)\]\([^)\s]+\)/g, '$1').replace(/\*\*|\*/g, '').replace(/\s+/g, ' ').trim();
 const PAGE_NAMES = {
   '/': 'Home', '/about/': 'Our Team', '/practice-areas/': 'Practice Areas', '/working-with-us/': 'What to Expect',
-  '/contact/': 'Contact', '/insights/': 'Belize Legal Guides', '/website-notice/': 'Website notice',
+  '/contact/': 'Contact', '/insights/': 'Belize Legal Guides', '/articles/': 'Articles', '/website-notice/': 'Website notice',
 };
 function pageName(page) {
   const r = page.meta.route;
@@ -484,7 +491,7 @@ function assistantDocs(pages) {
   };
   for (const page of pages) {
     // Home and the two hub pages summarise the full pages, which answer better.
-    if (['/', '/practice-areas/', '/insights/'].includes(page.meta.route)) continue;
+    if (['/', '/practice-areas/', '/insights/', '/articles/'].includes(page.meta.route)) continue;
     const { intro, sections: secs } = sections(page.blocks);
     const h1 = intro.find((b) => b.type === 'h' && b.level === 1);
     add(page, 'intro', h1 ? h1.text : pageName(page), intro.filter((b) => b.type !== 'h'), '');
@@ -519,6 +526,7 @@ function writeAssistantData(pages) {
     office: { phones: OFFICE.phones, email: OFFICE.email, address: OFFICE.address, hours: OFFICE.hours, hoursSpec: OFFICE.hoursSpec, directions: OFFICE.directions, whatsapp: WHATSAPP ? { href: `https://wa.me/${WHATSAPP}` } : null, facebook: OFFICE.facebook },
     practices: PRACTICES,
     guides: GUIDES,
+    articles: ARTICLES.map((a) => ({ label: a.h1, route: a.route, date: a.date })),
     kb: Object.fromEntries(Object.entries(KB).map(([id, e]) => [id, { title: e.title, answer: e.answer, next: e.next || null, examples: e.examples }])),
     docs: assistantDocs(pages),
     pages: pagesMap,
@@ -550,7 +558,7 @@ function breadcrumbJsonLd(crumbs) {
   })}</script>`;
 }
 
-function layout(page, ctx, mainHtml, { crumbs, base } = {}) {
+function layout(page, ctx, mainHtml, { crumbs, base, jsonLd: extraJsonLd } = {}) {
   const { meta } = page;
   const ogImage = `${SITE_URL}/assets/${ogImageFor(page)}`; // root-relative when SITE_URL is empty
   return `<!doctype html>
@@ -561,7 +569,8 @@ ${base ? `<base href="${base}">\n` : ''}<meta name="viewport" content="width=dev
 <title>${esc(meta.title)}</title>
 <meta name="description" content="${esc(meta.description)}">
 ${PRODUCTION ? `<link rel="canonical" href="${absUrl(meta.route)}">` : '<meta name="robots" content="noindex, nofollow, noarchive">'}
-<meta property="og:type" content="website">
+<meta property="og:type" content="${meta.date ? 'article' : 'website'}">
+${meta.date ? `<meta property="article:published_time" content="${meta.date}">\n<meta property="article:author" content="${OFFICE.name}">\n` : ''}${PRODUCTION && ARTICLES.length ? `<link rel="alternate" type="application/rss+xml" title="Articles by ${OFFICE.name}" href="${SITE_URL}/articles/feed.xml">\n` : ''}
 <meta property="og:site_name" content="José M. Alpuche, Attorney-at-Law">
 <meta property="og:title" content="${esc(meta.title)}">
 <meta property="og:description" content="${esc(meta.description)}">
@@ -577,7 +586,7 @@ ${SITE_URL ? `<meta property="og:url" content="${absUrl(meta.route)}">\n` : ''}<
 <meta name="alpuche-links" content="${LOCAL ? 'file' : 'dir'}">
 <link rel="icon" href="${imgPath(ctx, 'jma-mark-160.jpg')}">
 ${LOCAL ? '' : `<link rel="preload" href="${ctx.assets}fonts/cormorant-garamond-latin.woff2" as="font" type="font/woff2" crossorigin>\n`}<link rel="stylesheet" href="${ctx.assets}css/site.css?v=${ASSET_VERSION}">
-${PRODUCTION && crumbs ? breadcrumbJsonLd(crumbs) : ''}
+${PRODUCTION && crumbs ? breadcrumbJsonLd(crumbs) : ''}${PRODUCTION && extraJsonLd ? `\n<script type="application/ld+json">${JSON.stringify(extraJsonLd).replace(/</g, '\\u003c')}</script>` : ''}
 </head>
 <body>
 ${header(ctx)}
@@ -775,7 +784,17 @@ ${cardHtml}
   </div>
 </section>
 
-${contactBand(ctx, HOME_CLOSING).replace('class="dark contact-band"', 'id="contact" class="dark contact-band"')}`;
+${ARTICLES.length ? `<section id="articles" class="sand" aria-labelledby="articles-title">
+  <div class="shell section">
+    <div class="section-heading">
+      <h2 id="articles-title">From the office</h2>
+      <p>Short articles by José M. Alpuche on Belize property, business and family questions. <a href="${rel(ctx.route, '/articles/')}">See all articles</a>.</p>
+    </div>
+    <div class="practice-grid">${ARTICLES.slice(0, 3).map((a) => articleCard(a, ctx, 'h3')).join('\n')}</div>
+  </div>
+</section>
+
+` : ''}${contactBand(ctx, HOME_CLOSING).replace('class="dark contact-band"', 'id="contact" class="dark contact-band"')}`;
   return layout(page, ctx, main);
 }
 
@@ -797,7 +816,7 @@ function renderPractice(page, ctx) {
     ${prose(introRest, ctx, { ledeFirst: true })}
     ${bodySecs.map((s) => renderSection(s, ctx)).join('\n')}
   </article>
-  <aside class="aside" aria-label="Page tools">${toc(bodySecs, ctx)}${asideCard(ctx, { area: practice.key, label: practice.label })}</aside>
+  <aside class="aside" aria-label="Page tools">${toc(bodySecs, ctx)}${asideCard(ctx, { area: practice.key, label: practice.label })}${relatedArticles(ctx, practice.key)}</aside>
 </div>
 ${contactBand(ctx, {
     title: closing.title,
@@ -889,6 +908,80 @@ function renderInsightsHub(page, ctx) {
 </div>
 ${contactBand(ctx, { ...HOME_CLOSING, related: splitClosing(linksIn(linkRow.text)).related })}`;
   return layout(page, ctx, main, { crumbs });
+}
+
+// ---------------------------------------------------------------------------
+// Articles (blog)
+// ---------------------------------------------------------------------------
+function articleInfo(page) {
+  const { meta, blocks } = page;
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(meta.date || '')) throw new Error(`${page.file}: date must be "YYYY-MM-DD"`);
+  const practice = PRACTICES.find((p) => p.key === meta.practice) || null;
+  const h1 = (blocks.find((b) => b.type === 'h' && b.level === 1) || {}).text;
+  if (!h1) throw new Error(`${page.file}: needs a "# Title" line`);
+  return { route: meta.route, h1, date: meta.date, practice, description: meta.description, firstPublished: meta.first_published || '' };
+}
+
+function articleCard(a, ctx, tag = 'h2') {
+  const label = [a.practice ? a.practice.label : 'Article', longDate(a.date)].map(esc).join(' · ');
+  return `<article class="practice-card article-card"><p class="card-label">${label}</p><${tag}>${inline(a.h1, ctx)}</${tag}><p>${esc(a.description)}</p>` +
+    `${link(a.route, 'Read the article', ctx, ' class="card-link"')}</article>`;
+}
+
+function relatedArticles(ctx, practiceKey, exceptRoute) {
+  const list = ARTICLES.filter((a) => a.practice && a.practice.key === practiceKey && a.route !== exceptRoute).slice(0, 3);
+  if (!list.length) return '';
+  return `<nav class="aside-articles" aria-label="Related articles"><p>Related articles</p><ul>${list.map((a) =>
+    `<li><a href="${rel(ctx.route, a.route)}">${inline(a.h1, ctx)}</a><span>${longDate(a.date)}</span></li>`).join('')}</ul></nav>`;
+}
+
+function renderArticlesHub(page, ctx) {
+  const { intro } = sections(page.blocks);
+  const I = splitIntro(intro);
+  const crumbs = [{ label: 'Home', route: '/' }, { label: 'Articles', route: '/articles/' }];
+  const main = `${pageHead(page, ctx, { crumbs, h1: I.h1, standfirst: inline(I.paras[0].text, ctx), photoName: null })}
+<div class="shell section-tight">
+  <div class="card-grid three article-list">${ARTICLES.map((a) => articleCard(a, ctx)).join('\n')}</div>
+</div>
+${genericBand(ctx)}`;
+  const jsonLd = {
+    '@context': 'https://schema.org', '@type': 'Blog', name: `Articles by ${OFFICE.name}`, url: absUrl('/articles/'),
+    blogPost: ARTICLES.map((a) => ({ '@type': 'BlogPosting', headline: plain(a.h1), datePublished: a.date, url: absUrl(a.route) })),
+  };
+  return layout(page, ctx, main, { crumbs, jsonLd });
+}
+
+function renderArticle(page, ctx) {
+  const a = articleInfo(page);
+  const { intro, sections: secs } = sections(page.blocks);
+  const I = splitIntro(intro);
+  const crumbs = [{ label: 'Home', route: '/' }, { label: 'Articles', route: '/articles/' }, { label: plain(a.h1), route: a.route }];
+  const byline = `By ${OFFICE.name}, ${OFFICE.role} · <time datetime="${a.date}">${longDate(a.date)}</time>`;
+  const firstPub = a.firstPublished ? ` First published on ${esc(a.firstPublished)} on ${longDate(a.date)}.` : '';
+  const area = a.practice ? a.practice.key : null;
+  const related = [
+    ...(a.practice ? [{ label: a.practice.label, href: a.practice.route }] : []),
+    { label: 'All articles', href: '/articles/' },
+  ];
+  const main = `${pageHead(page, ctx, { crumbs, eyebrow: a.practice ? a.practice.label : 'Article', h1: I.h1, standfirst: null, photoName: null })}
+<div class="shell article-layout">
+  <article class="prose article-body">
+    <p class="byline">${byline}</p>
+    ${prose(I.paras, ctx, { ledeFirst: true })}
+    ${secs.map((s) => renderSection(s, ctx)).join('\n')}
+    <p class="note">This article gives general information about Belize law and is not legal advice for a particular matter.${firstPub} The law or practice may have changed since then, so please contact the office before acting on it.</p>
+  </article>
+  <aside class="aside" aria-label="Article tools">${asideCard(ctx, { area, label: a.practice ? a.practice.label : 'Next step' })}${area ? relatedArticles(ctx, area, a.route) : ''}</aside>
+</div>
+${contactBand(ctx, { ...HOME_CLOSING, related })}`;
+  const jsonLd = {
+    '@context': 'https://schema.org', '@type': 'BlogPosting', headline: plain(a.h1), description: a.description,
+    datePublished: a.date, dateModified: a.date, url: absUrl(a.route), mainEntityOfPage: absUrl(a.route),
+    image: `${SITE_URL}/assets/${ogImageFor(page)}`,
+    author: { '@type': 'Person', name: OFFICE.name, jobTitle: OFFICE.role, url: absUrl('/about/') },
+    publisher: { '@type': 'LegalService', name: `${OFFICE.name}, ${OFFICE.role}`, url: absUrl('/') },
+  };
+  return layout(page, ctx, main, { crumbs, jsonLd });
 }
 
 function renderAbout(page, ctx) {
@@ -1025,6 +1118,8 @@ function template(route) {
   if (route === '/practice-areas/') return renderPracticeHub;
   if (route.startsWith('/practice-areas/')) return renderPractice;
   if (route === '/insights/') return renderInsightsHub;
+  if (route === '/articles/') return renderArticlesHub;
+  if (route.startsWith('/articles/')) return renderArticle;
   if (route.startsWith('/insights/')) return renderGuide;
   return { '/about/': renderAbout, '/working-with-us/': renderWorking, '/contact/': renderContact, '/website-notice/': renderNotice }[route];
 }
@@ -1042,6 +1137,15 @@ function build() {
   KB = parseKnowledgeBase();
   const files = fs.readdirSync(path.join(SRC, 'content')).filter((f) => f.endsWith('.md')).sort();
   const pages = files.map((f) => ({ file: f, ...parseFile(path.join(SRC, 'content', f)) }));
+  const articleDir = path.join(SRC, 'content', 'articles');
+  const articlePages = fs.existsSync(articleDir)
+    ? fs.readdirSync(articleDir).filter((f) => f.endsWith('.md')).map((f) => ({ file: `articles/${f}`, ...parseFile(path.join(articleDir, f)) }))
+    : [];
+  for (const p of articlePages) {
+    if (!/^\/articles\/[a-z0-9-]+\/$/.test(p.meta.route || '')) throw new Error(`${p.file}: route must look like "/articles/some-title/"`);
+  }
+  ARTICLES = articlePages.map(articleInfo).sort((x, y) => y.date.localeCompare(x.date) || x.route.localeCompare(y.route));
+  pages.push(...articlePages.sort((x, y) => y.meta.date.localeCompare(x.meta.date)));
 
   fs.rmSync(OUT, { recursive: true, force: true });
   copyDir(path.join(SRC, 'static'), path.join(OUT, 'assets'));
@@ -1071,7 +1175,11 @@ function build() {
     fs.writeFileSync(cssFile, css);
   }
   if (PRODUCTION) {
-    const urls = pages.map((p) => `  <url><loc>${absUrl(p.meta.route)}</loc></url>`).join('\n');
+    const urls = pages.map((p) => `  <url><loc>${absUrl(p.meta.route)}</loc>${p.meta.date ? `<lastmod>${p.meta.date}</lastmod>` : ''}</url>`).join('\n');
+    if (ARTICLES.length) {
+      const items = ARTICLES.map((a) => `    <item>\n      <title>${esc(plain(a.h1))}</title>\n      <link>${absUrl(a.route)}</link>\n      <guid>${absUrl(a.route)}</guid>\n      <pubDate>${new Date(`${a.date}T12:00:00-06:00`).toUTCString()}</pubDate>\n      <description>${esc(a.description)}</description>\n    </item>`).join('\n');
+      fs.writeFileSync(path.join(OUT, 'articles', 'feed.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0">\n  <channel>\n    <title>Articles by ${esc(OFFICE.name)}, ${OFFICE.role}</title>\n    <link>${absUrl('/articles/')}</link>\n    <description>Short articles on Belize law from the office of ${esc(OFFICE.name)}.</description>\n    <language>en</language>\n${items}\n  </channel>\n</rss>\n`);
+    }
     fs.writeFileSync(path.join(OUT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`);
     fs.writeFileSync(path.join(OUT, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${SITE_URL}/sitemap.xml\n`);
   }

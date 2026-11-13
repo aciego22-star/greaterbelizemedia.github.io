@@ -62,7 +62,7 @@ button, summary { cursor: pointer; }
 .brand-text strong { font: 600 1.3rem/1.15 var(--serif); }
 .brand-text span { color: var(--on-ink); font-size: .71rem; }
 .desktop-nav { display: flex; gap: clamp(16px, 2.2vw, 36px); align-items: center; }
-.desktop-nav a { padding-block: .4rem; font-size: .84rem; font-weight: 500; text-decoration: none; }
+.desktop-nav a { padding-block: .4rem; font-size: .84rem; font-weight: 500; text-decoration: none; white-space: nowrap; }
 .desktop-nav a:hover { text-decoration: underline; text-underline-offset: .4em; }
 .desktop-nav a[aria-current] { color: var(--gold); }
 .header-actions { display: flex; align-items: center; gap: 10px; }
@@ -75,7 +75,8 @@ button, summary { cursor: pointer; }
 .button { display: inline-flex; min-height: 47px; align-items: center; justify-content: center; padding: .7rem 1.16rem; border: 0; font-size: .9rem; font-weight: 600; text-decoration: none; }
 .button-gold { color: var(--ink); background: var(--gold); }
 .button-gold:hover { background: var(--gold-hover); }
-.text-link { font-size: .94rem; font-weight: 600; }
+.text-link { font-size: .94rem; font-weight: 600; text-decoration: none; }
+.text-link:hover, .text-link:focus-visible { text-decoration: underline; }
 .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 26px; }
 
 /* ---------- Home hero ---------- */
@@ -101,6 +102,9 @@ button, summary { cursor: pointer; }
 .section-tight { padding-block: clamp(44px, 5vw, 72px); }
 .section-heading { display: grid; grid-template-columns: 1.6fr 1fr; gap: 35px; align-items: end; margin-bottom: clamp(36px, 4vw, 56px); }
 .section-heading p { color: var(--muted); max-width: 51ch; }
+.section-heading a, .related a, .office a { font-weight: 600; text-decoration: none; }
+.section-heading a { color: var(--ink); }
+.section-heading a:hover, .related a:hover, .office a:hover, .section-heading a:focus-visible, .related a:focus-visible, .office a:focus-visible { text-decoration: underline; }
 h2 { font-size: clamp(2.4rem, 4.3vw, 4.4rem); line-height: .98; letter-spacing: -.04em; }
 .sand { background: var(--sand); }
 
@@ -112,10 +116,12 @@ h2 { font-size: clamp(2.4rem, 4.3vw, 4.4rem); line-height: .98; letter-spacing: 
 .practice-card .card-label { margin-bottom: 10px; color: var(--bronze); font-size: .72rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; }
 .practice-card h3 { font-size: clamp(1.6rem, 2.2vw, 2.15rem); line-height: 1.04; letter-spacing: -.01em; }
 .practice-card p { margin-top: 12px; color: var(--muted); font-size: .94rem; }
-.practice-card .card-link { margin-top: auto; padding-top: 16px; font-size: .88rem; font-weight: 600; text-decoration: underline; text-underline-offset: .25em; }
+.practice-card .card-link { margin-top: auto; padding-top: 16px; font-size: .88rem; font-weight: 600; text-decoration: none; text-underline-offset: .25em; }
 .practice-card .card-link::after { content: ""; position: absolute; inset: 0; }
-.practice-card:hover h3 { text-decoration: underline; text-underline-offset: .14em; text-decoration-thickness: 1px; }
-.practice-card:hover .card-link { text-decoration-thickness: 2px; }
+/* No lines at rest; pointing at (or tapping, or tabbing to) a card underlines its label, heading and link. */
+.practice-card .card-label { text-underline-offset: .32em; }
+.practice-card:hover :is(.card-label, h3, .card-link), .practice-card:focus-within :is(.card-label, h3, .card-link) { text-decoration: underline; text-decoration-thickness: 1px; }
+.practice-card:hover h3, .practice-card:focus-within h3 { text-underline-offset: .14em; }
 .practice-card .card-link:focus-visible { outline: none; }
 .practice-card:has(.card-link:focus-visible) { outline: 3px solid var(--focus); outline-offset: 8px; }
 .card-group + .card-group { margin-top: clamp(56px, 7vw, 96px); }
@@ -131,10 +137,13 @@ h2 { font-size: clamp(2.4rem, 4.3vw, 4.4rem); line-height: .98; letter-spacing: 
 .person-caption strong { font: 600 1.42rem var(--serif); }
 .person-caption span { color: var(--muted); font-size: .8rem; }
 .guide-links { display: grid; gap: 12px; margin: 24px 0 28px; padding: 0; list-style: none; }
-.guide-links a { font-size: 1rem; font-weight: 600; text-decoration: underline; text-underline-offset: .25em; }
+.guide-links a { font-size: 1rem; font-weight: 600; text-decoration: none; text-underline-offset: .25em; }
+.guide-links a:hover, .guide-links a:focus-visible { text-decoration: underline; }
 
 /* Photo credits under images */
 .credit { margin-top: 9px; color: var(--muted); font-size: .76rem; line-height: 1.5; }
+.credit a { text-decoration: none; }
+.credit a:hover, .credit a:focus-visible { text-decoration: underline; }
 .dark .credit { color: var(--on-ink-muted); }
 
 /* ---------- Dark contact band ---------- */
@@ -210,6 +219,16 @@ address, .office { color: var(--on-ink); font-style: normal; font-size: .96rem; 
 .aside-card p { margin-top: 10px; color: var(--on-ink); font-size: .9rem; }
 .aside-card .button { width: 100%; margin-top: 18px; }
 .aside-card .aside-call { display: block; margin-top: 12px; font-size: .9rem; font-weight: 600; }
+
+/* Articles */
+.article-body .byline { color: var(--muted); font-size: .86rem; letter-spacing: .01em; }
+.article-body .byline + * { margin-top: 1.6em; }
+.aside-articles p { margin-bottom: 10px; color: var(--bronze); font-size: .72rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; }
+.aside-articles ul { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none; }
+.aside-articles a { display: block; font: 600 1.18rem/1.15 var(--serif); text-decoration: none; }
+.aside-articles a:hover, .aside-articles a:focus-visible { text-decoration: underline; text-underline-offset: .14em; }
+.aside-articles span { display: block; margin-top: 3px; color: var(--muted); font-size: .8rem; }
+.article-list .practice-card h2 { font-size: clamp(1.6rem, 2.2vw, 2.15rem); line-height: 1.04; letter-spacing: -.01em; }
 
 .page-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 26px; margin-top: 2.6em; }
 .hub-intro { max-width: 60ch; }
@@ -361,6 +380,13 @@ address, .office { color: var(--on-ink); font-style: normal; font-size: .96rem; 
 @media (max-width: 1180px) {
   .desktop-nav { gap: 18px; }
   .desktop-nav a { font-size: .8rem; }
+}
+
+/* Six menu items fit on one line from 1121px; below that the header uses the Menu button. */
+@media (max-width: 1120px) {
+  .desktop-nav { display: none; }
+  .mobile-nav { display: block; }
+  .header-call { display: inline-flex; }
 }
 
 @media (max-width: 1050px) {

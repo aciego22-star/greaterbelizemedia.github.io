@@ -10,7 +10,10 @@ const ROUTES = [
   '/practice-areas/intellectual-property/', '/practice-areas/family-law/', '/practice-areas/qualified-retired-persons/',
   '/working-with-us/', '/contact/', '/insights/', '/insights/buying-property-in-belize/',
   '/insights/starting-a-business-in-belize/', '/insights/planning-retirement-in-belize/', '/website-notice/',
+  '/articles/', '/articles/when-the-sole-shareholder-of-a-belize-company-dies/',
+  '/articles/how-long-does-a-land-title-take-in-belize/', '/articles/buying-real-estate-in-belize-do-your-due-diligence/',
 ];
+const ARTICLE_ROUTES = ROUTES.filter((r) => /^\/articles\/.+/.test(r));
 const PHOTO_PAGES = {
   '/': 'Jasmine Halki', '/practice-areas/real-estate/': 'Jasmine Halki', '/practice-areas/corporate-commercial/': 'Jasmine Halki',
   '/practice-areas/banking-finance-tax-regulatory/': 'Jasmine Halki', '/practice-areas/dispute-resolution/': 'Haakon S. Krohn',
@@ -383,6 +386,58 @@ const section = (t) => console.log('\n' + t);
       ok(hero.h1Top < hero.imgBottom && hero.imgTop < hero.vh, `${name}: words and portrait side by side`);
     }
     ok(Math.abs(hero.imgW / hero.imgH - 710 / 1066) < 0.01, `${name}: portrait keeps full photographed area (credit included)`);
+    await c.close();
+  }
+
+  // Links without resting underlines; pointing at a card underlines its label, heading and link.
+  section('Home page links and articles');
+  {
+    const c = await browser.newContext({ viewport: { width: 1366, height: 900 } });
+    const p = await c.newPage();
+    await p.goto(BASE + '/');
+    const underlined = await p.evaluate(() => [...document.querySelectorAll('main a')]
+      .filter((a) => a.offsetParent && getComputedStyle(a).textDecorationLine.includes('underline')).map((a) => a.textContent.trim()));
+    ok(underlined.length === 0, `home: no link is underlined at rest (found: ${underlined.join(' | ')})`);
+    const card = p.locator('#practice .practice-card').first();
+    await card.hover();
+    const hovered = await card.evaluate((el) => ['.card-label', 'h3', '.card-link'].map((q) => getComputedStyle(el.querySelector(q)).textDecorationLine));
+    ok(hovered.every((d) => d.includes('underline')), `home: hovering a practice card underlines label, heading and link (${hovered.join(', ')})`);
+    const arts = await p.$$eval('#articles .article-card', (els) => els.map((e) => e.querySelector('a').getAttribute('href')));
+    ok(arts.length === 3, `home: "From the office" shows the three latest articles (${arts.length})`);
+    await p.goto(BASE + '/articles/');
+    const listed = await p.$$eval('.article-list .article-card', (els) => els.map((e) => e.querySelector('.card-label').textContent));
+    ok(listed.length === ARTICLE_ROUTES.length, `articles hub lists every article (${listed.length})`);
+    ok(/20 June 2022/.test(listed[0] || ''), `articles hub is newest first (${listed[0]})`);
+    for (const r of ARTICLE_ROUTES) {
+      await p.goto(BASE + r);
+      const info = await p.evaluate(() => ({
+        byline: (document.querySelector('.byline') || {}).textContent || '',
+        note: (document.querySelector('.article-body .note') || {}).textContent || '',
+        og: (document.querySelector('meta[property="og:type"]') || {}).content,
+        published: !!document.querySelector('meta[property="article:published_time"]'),
+        current: (document.querySelector('.desktop-nav a[aria-current]') || {}).textContent,
+      }));
+      ok(/^By José M\. Alpuche/.test(info.byline) && /\d{4}/.test(info.byline), `${r}: byline with author and date`);
+      ok(/not legal advice/.test(info.note) && /First published/.test(info.note), `${r}: general-information note with first-published date`);
+      ok(info.og === 'article' && info.published, `${r}: marked as an article for search and sharing`);
+      ok(info.current === 'Articles', `${r}: Articles highlighted in the menu`);
+    }
+    await p.goto(BASE + '/practice-areas/real-estate/');
+    ok(await p.locator('.aside-articles li').count() >= 1, 'real estate page links its related articles');
+    // Six menu items stay on one line wherever the full menu shows.
+    for (const w of [1121, 1180, 1280, 1366, 1600]) {
+      await p.setViewportSize({ width: w, height: 800 });
+      await p.goto(BASE + '/');
+      const h = await p.evaluate(() => {
+        const nav = document.querySelector('.desktop-nav');
+        const inner = document.querySelector('.header-inner');
+        return { shown: getComputedStyle(nav).display !== 'none', oneLine: [...nav.children].every((a) => a.getBoundingClientRect().height < 40), fits: inner.scrollWidth <= inner.clientWidth };
+      });
+      ok(h.shown && h.oneLine && h.fits, `${w}px: full menu on one line, header fits (${JSON.stringify(h)})`);
+    }
+    await p.setViewportSize({ width: 1100, height: 800 });
+    await p.goto(BASE + '/');
+    ok(await p.evaluate(() => getComputedStyle(document.querySelector('.desktop-nav')).display === 'none' && getComputedStyle(document.querySelector('.mobile-nav')).display !== 'none'), '1100px: Menu button instead of a crowded menu');
     await c.close();
   }
 
