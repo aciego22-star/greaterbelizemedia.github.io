@@ -50,6 +50,7 @@ const section = (t) => console.log('\n' + t);
       contactLinks: [...document.querySelectorAll('a[href*="contact/"]')].map((a) => a.getAttribute('href')),
       crumbs: !!document.querySelector('nav.breadcrumb'),
       noticeLink: !!document.querySelector('footer a[href*="website-notice/#photo-credits"]'),
+      facebook: !!document.querySelector('footer a[href="https://www.facebook.com/alpuchelaw"][target="_blank"][rel~="noopener"]'),
     }));
     ok(/noindex/.test(info.robots), `${route} is noindex`);
     ok(info.title && info.desc, `${route} has title and description`);
@@ -57,6 +58,7 @@ const section = (t) => console.log('\n' + t);
     ok(info.h1 === 1, `${route} has one h1 (found ${info.h1})`);
     ok(info.lang === 'en', `${route} lang=en`);
     ok(info.noticeLink, `${route} footer links to photo credits`);
+    ok(info.facebook, `${route} footer links to the firm’s Facebook`);
     if (route !== '/') ok(info.crumbs, `${route} has breadcrumb`);
     ok(info.contactLinks.length > 0, `${route} reaches the contact page`);
     for (const img of info.imgs) ok(img.w && img.h && img.alt !== null, `${route} image has dimensions and alt: ${img.src}`);
@@ -190,6 +192,10 @@ const section = (t) => console.log('\n' + t);
   await ep.goto(BASE + '/contact/?area=real-estate', { waitUntil: 'networkidle' });
   ok(await ep.locator('form').count() === 0, 'enquiry form removed');
   ok(await ep.locator('.office-card a[href="tel:+5012231194"]').isVisible(), 'phone still prominent');
+  ok(await ep.locator('.office-card a[href="https://wa.me/5016253032"]', { hasText: '+501 625-3032' }).isVisible(), 'WhatsApp link in the contact details');
+  ok(await ep.locator('.actions a[href="https://wa.me/5016253032"]', { hasText: 'Message on WhatsApp' }).isVisible(), 'WhatsApp next to email and call');
+  ok(await ep.locator('.office-card a[href="https://www.facebook.com/alpuchelaw"]').isVisible(), 'Facebook link in the contact details');
+  ok(await ep.locator('a[href^="https://wa.me/"], a[href^="https://www.facebook.com/"]').evaluateAll((els) => els.every((a) => a.target === '_blank' && a.rel.includes('noopener'))), 'WhatsApp and Facebook open in a new tab safely');
   const startBtn = ep.locator('[data-contact-intake]');
   ok(await startBtn.isVisible() && /Real Estate/.test(await startBtn.innerText()), 'Alpuche AI button carries the practice');
   ok((await ep.locator('[data-area-note]').innerText()).includes('Real Estate'), 'practice shown in note');

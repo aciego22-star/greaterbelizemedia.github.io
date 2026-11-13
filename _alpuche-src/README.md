@@ -86,6 +86,7 @@ The suite checks:
   - **Safety:** it applies the handoff's escalation order (danger, sensitive details, urgent dates, role changes) and refuses legal advice before answering.
   - **Typing:** a typing indicator shows for about 1–2 s before each reply.
   - **Enquiries:** it collects a short enquiry, after a notice and consent, then shows a review before anything is sent.
+  - **WhatsApp:** visitors can choose WhatsApp as the reply channel or open a pre-filled chat to the firm's number. The number comes from `OFFICE.whatsapp` in `build.mjs`; `--whatsapp=off` disables this.
   - **Delivery:** with `--lead-endpoint=<Apps Script /exec URL>`, the enquiry is posted to that endpoint, which emails the inbox and the visitor (`integrations/google-apps-script/SETUP-EMAIL.md`). Without it, demo mode shows the two emails instead.
   - **Button placement:** when the button would cover a link, it slides into the right-hand gutter.
 - **Contact preselect.** `/contact/?area=<key>` accepts only the seven practice keys. It labels the Alpuche AI button with the practice, adds a note and puts the practice in the email subject. The plain `/contact/` URL is canonical.

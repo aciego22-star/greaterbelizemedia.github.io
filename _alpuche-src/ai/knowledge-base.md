@@ -1,6 +1,6 @@
 # José M. Alpuche website assistant knowledge base
 
-Version 0.9 · 12 November 2026 · public-information draft for firm review. Use with assistant-instructions.md. Routes refer to the proposed site. Source IDs resolve in ../SOURCE-REGISTER.md. Source labels, dates and section IDs are for review and retrieval. The visitor should see a brief answer and a useful next step.
+Version 0.9.1 · 13 November 2026 (FIR-05 and FIR-10 now include the firm’s WhatsApp number, +501 625-3032, supplied by the agency; confirm with the firm) · public-information draft for firm review. Use with assistant-instructions.md. Routes refer to the proposed site. Source IDs resolve in ../SOURCE-REGISTER.md. Source labels, dates and section IDs are for review and retrieval. The visitor should see a brief answer and a useful next step.
 
 ## Firm and contact
 
@@ -30,7 +30,7 @@ Sources — FIRM-HOME, FIRM-CONTACT
 
 ### FIR-05 · Phone and email
 Examples — Can I speak to someone? How can I contact the office?  
-Answer — Call +501 223-1194 or +501 223-1195, or email contact@alpuchelaw.com. For a first enquiry, share only the general topic and how the office can reach you.  
+Answer — Call +501 223-1194 or +501 223-1195, message +501 625-3032 on WhatsApp, or email contact@alpuchelaw.com. For a first enquiry, share only the general topic and how the office can reach you.  
 Next — /contact/  
 Sources — FIRM-CONTACT
 
@@ -60,7 +60,7 @@ Sources — FIRM-HOME, FIRM-CONTACT
 
 ### FIR-10 · WhatsApp, language and availability
 Examples — Can I WhatsApp you? Do you offer appointments in Spanish? Do you have a slot today?  
-Answer — The office publishes telephone and email contact details. Call or email to ask about messaging options, language arrangements or availability. I can share the contact page.  
+Answer — You can message the office on WhatsApp at +501 625-3032, or call or email. Ask the office about language arrangements or availability. I can share the contact page.  
 Next — /contact/  
 Sources — FIRM-CONTACT
 

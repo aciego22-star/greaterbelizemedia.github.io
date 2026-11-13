@@ -7,7 +7,7 @@ The firm, or the agency and the firm together, need to settle these before the d
 2. **Production domain.** It sets canonicals, Open Graph URLs and the sitemap (`--production --site-url=…`). Keep `/about/` and `/contact/`, and redirect `/services/` to `/practice-areas/` with a 301 once the existing URLs are confirmed.
 
 ## Facts to confirm with the firm
-3. **Office details.** Suite and address, both phone lines, the inbox and the published hours (Monday to Friday, 8:00 a.m. to 5:00 p.m.). They appear in the header, footer, contact page and assistant, all from one source.
+3. **Office details.** Suite and address, both phone lines, the inbox and the published hours (Monday to Friday, 8:00 a.m. to 5:00 p.m.). They appear in the header, footer, contact page and assistant, all from one source. The WhatsApp number (+501 625-3032) and Facebook page (facebook.com/alpuchelaw) were added on the agency’s information; confirm both with the firm.
 4. **Bar Association wording.** The copy uses the dated “Elected President … in March 2026”. Confirm the current title before using an undated “President” label.
 5. **Practice scope.** Confirm family law beyond divorce and adoption, cross-border work, registered-agent referrals (the firm’s own licensed-agent status is unconfirmed) and any narrower financial or regulatory services.
 6. **Consultation workflow.** Who answers enquiries, consultation fees, conflict screening, and how documents are shared securely. The site makes no fee, response-time or booking promises.
@@ -30,9 +30,9 @@ The firm, or the agency and the firm together, need to settle these before the d
 
     These are sent by email from Google's servers to the chosen inbox. Nothing is stored on the website, there are no analytics, and the chat transcript is not sent. Link the notice from the assistant's consent step.
 11. **Assistant content.** The firm should approve, and own, the knowledge base (`ai/knowledge-base.md`) and the site copy the assistant searches. The guardrail wording also needs approval: no legal advice, emergencies, urgent dates, hidden personal details. All 24 handoff test cases pass with typed questions (`ai/test-coverage.md`); rerun `scripts/test-assistant.cjs` after any content change. WhatsApp:
-    - The assistant does not offer it, because the firm has no published WhatsApp number.
-    - If the firm confirms one, a free click-to-chat hand-off can be switched on (`--whatsapp=`). The visitor's own WhatsApp opens with the enquiry written out.
-    - Automated WhatsApp messages from the firm's side are charged per message by Meta.
+    - The firm's WhatsApp number (+501 625-3032) is on the contact page, in the assistant's contact answers and as an enquiry reply option.
+    - At the review step, visitors can also choose “Send on WhatsApp instead”. This free click-to-chat opens their own WhatsApp with the enquiry written out, and nothing is sent until they press send.
+    - The firm should confirm who monitors that number. Automated WhatsApp messages from the firm's side would be charged per message by Meta and are not used.
 12. **Structured data.** Add LegalService and Person schema only after the public details are confirmed. The preview omits them.
 
 ## Copy added during the build (for approval)

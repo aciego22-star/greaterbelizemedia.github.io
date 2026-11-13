@@ -261,6 +261,7 @@
       var e = kb[id];
       var msg = { text: e.answer, links: [], kb: id };
       if (e.next) msg.links.push(link(e.next));
+      if ((id === 'FIR-05' || id === 'FIR-10') && office.whatsapp) msg.links.push({ href: office.whatsapp.href, label: 'Message the office on WhatsApp' });
       if (extra) Object.keys(extra).forEach(function (k) { msg[k] = extra[k]; });
       return msg;
     }
@@ -377,6 +378,9 @@
       }
       if (has(P.fees, t) && detectPractice(t) === 'real-estate') return reply([kbMsg('RE-05')], { chips: [offerIntake(session, 'real-estate')] });
       if (has(P.fees, t)) return reply([kbMsg('CON-03')], { chips: [offerIntake(session)] });
+      if (/\bfacebook\b/.test(t) && office.facebook) {
+        return reply([{ text: 'You can follow the firm on Facebook. For an enquiry, call the office, message it on WhatsApp or send an email.', links: [{ href: office.facebook, label: 'José M. Alpuche on Facebook' }, link('/contact/')] }], { intent: 'facebook' });
+      }
       if (has(P.channels, t)) return reply([kbMsg('FIR-10')]);
       if (has(P.hours, t)) return reply([kbMsg('FIR-06')]);
       if (has(P.location, t)) return reply([kbMsg('FIR-04')]);
@@ -465,7 +469,7 @@
           return reply([{ text: 'Thanks, ' + lead.name.split(' ')[0] + '. How would you like the office to contact you?' }], { chips: chips, intent: 'intake:channel' });
         case 'contact':
           if (lead.channel === 'email') return reply([{ text: 'What email address should they use?' }], { input: { type: 'email', placeholder: 'name@example.com', autocomplete: 'email' }, intent: 'intake:contact' });
-          return reply([{ text: 'What phone number should they use? Include the country code if you’re outside Belize.' }], { input: { type: 'tel', placeholder: '+501 …', autocomplete: 'tel' }, intent: 'intake:contact' });
+          return reply([{ text: (lead.channel === 'whatsapp' ? 'What WhatsApp number should they use?' : 'What phone number should they use?') + ' Include the country code if you’re outside Belize.' }], { input: { type: 'tel', placeholder: '+501 …', autocomplete: 'tel' }, intent: 'intake:contact' });
         case 'confirmEmail':
           return reply([{ text: 'Would you like an email confirmation of your enquiry? Enter your email address, or tap Skip.' }], { input: { type: 'email', placeholder: 'name@example.com (optional)', autocomplete: 'email' }, chips: [{ label: 'Skip', action: 'intake:skip' }], intent: 'intake:confirmEmail' });
         case 'date':

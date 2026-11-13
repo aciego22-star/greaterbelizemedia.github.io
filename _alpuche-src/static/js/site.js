@@ -79,14 +79,16 @@
 
     // Office phone numbers, email and 911 in answers become tap-to-call / mail links.
     function appendText(parent, text) {
-      var pattern = /(\+501 223-119[45])|(contact@alpuchelaw\.com)|(\b911\b)/g;
+      var wa = data.office && data.office.whatsapp;
+      var pattern = /(\+501 223-119[45])|(contact@alpuchelaw\.com)|(\b911\b)|(\+501 625-3032)/g;
       var last = 0;
       var m;
       while ((m = pattern.exec(text))) {
         if (m.index > last) parent.appendChild(document.createTextNode(text.slice(last, m.index)));
         var a = document.createElement('a');
         a.textContent = m[0];
-        a.href = m[1] ? 'tel:' + m[1].replace(/[^+\d]/g, '') : m[2] ? 'mailto:' + m[2] : 'tel:911';
+        a.href = m[1] ? 'tel:' + m[1].replace(/[^+\d]/g, '') : m[2] ? 'mailto:' + m[2] : m[4] ? (wa ? wa.href : 'tel:+5016253032') : 'tel:911';
+        if (m[4]) { a.target = '_blank'; a.rel = 'noopener'; }
         parent.appendChild(a);
         last = pattern.lastIndex;
       }
