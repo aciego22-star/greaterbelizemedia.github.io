@@ -55,5 +55,9 @@ The 17 Markdown pages are rendered as written. The build added a small amount of
 Design changes made at the agency's direction (13 Nov 2026):
 - **Phone layout.** On phones the home page shows Mr. Alpuche's portrait first, with the headline and consultation button below it. The original brief had the words and button first.
 - **Brand icons.** WhatsApp and Facebook icons, in their brand colours, appear beside every WhatsApp and Facebook link.
+- **WhatsApp number hidden.** The number is not shown anywhere on the site; the WhatsApp icon is the link (wa.me). In the footer, WhatsApp and Facebook appear as icons only.
+- **No arrows.** Removed from all links, including the ↗ that marked outside links in article text.
+- **Open card layouts.** The ruled grid lines are gone from the home page practice cards and the matching layouts: the practice areas and guides pages, the team page principles and the contact page notices.
+- **No topic shortcuts.** Alpuche AI no longer shows topic buttons. Visitors type their questions; “Start an enquiry” remains.
 
 Also recheck the Ministry of Natural Resources links, which returned intermittent errors during research.

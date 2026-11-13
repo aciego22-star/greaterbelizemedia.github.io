@@ -267,13 +267,8 @@
     }
 
     var CHIP_START = { label: 'Start an enquiry', action: 'intake:start' };
-    var SUGGESTIONS = [
-      { label: 'Buying property', action: 'kb:RE-01' },
-      { label: 'Starting a business', action: 'kb:CO-01' },
-      { label: 'Retiring in Belize', action: 'kb:QRP-01' },
-      { label: 'Contact the office', action: 'kb:FIR-05' },
-      CHIP_START,
-    ];
+    // Visitors type their questions; the only standing option is to start an enquiry.
+    var SUGGESTIONS = [CHIP_START];
 
     function reply(messages, opts) {
       opts = opts || {};
@@ -293,7 +288,7 @@
 
     function greeting() {
       return reply([{
-        text: 'Hello, I’m Alpuche AI, the firm’s automated assistant. I can answer questions about the firm and its services, point you to the right page, or pass a short enquiry to the office. I can’t give legal advice. Please keep names of other parties, documents and private details out of this chat.',
+        text: 'Hello, I’m Alpuche AI, the firm’s automated assistant. Type a question about the firm and its services and I’ll point you to the right page, or I can pass a short enquiry to the office. I can’t give legal advice. Please keep names of other parties, documents and private details out of this chat.',
       }], { chips: SUGGESTIONS, intent: 'greeting' });
     }
 
@@ -306,7 +301,7 @@
     // ----- Answering free text -------------------------------------------------
     function answer(session, raw) {
       var t = normalise(raw);
-      if (!t) return reply([{ text: 'Type a question, or choose one of the options below.' }], { chips: SUGGESTIONS });
+      if (!t) return reply([{ text: 'Type your question in the box below.' }], { chips: SUGGESTIONS });
 
       // 1. Immediate danger
       if (has(P.danger, t)) {
@@ -393,7 +388,7 @@
       }
       if (has(P.registeredAgent, t)) return reply([kbMsg('CO-03')], { chips: [offerIntake(session, 'corporate-commercial')] });
       if (has(P.mediation, t)) return reply([kbMsg('DR-03')], { chips: [offerIntake(session, 'dispute-resolution')] });
-      if (has(P.practiceList, t)) return reply([kbMsg('FIR-08')], { chips: SUGGESTIONS.slice(0, 3).concat([CHIP_START]) });
+      if (has(P.practiceList, t)) return reply([kbMsg('FIR-08')], { chips: [CHIP_START] });
       if (has(P.intake, t)) {
         var ip = detectPractice(t);
         return reply([{
@@ -662,13 +657,13 @@
           return reply([{
             text: 'Demo mode: nothing was sent. In the live version, the office would receive your enquiry by email' + (p.email ? ' and a confirmation would go to ' + p.email : '') + '. Here is what those emails would say:',
             previews: [{ title: 'Email to the office', body: pv.toOffice }].concat(pv.toVisitor ? [{ title: 'Confirmation to the visitor', body: pv.toVisitor }] : []),
-          }], { chips: SUGGESTIONS.slice(0, 4), intent: 'intake:demo' });
+          }], { chips: [], intent: 'intake:demo' });
         }
         return reply([{
           text: 'Done. Your enquiry has been sent to the office (reference ' + p.ref + ').' + (p.email ? ' A confirmation is on its way to ' + p.email + '.' : '') +
             ' The office will contact you by ' + channelText + '. If a date is close, please call ' + phone1 + '.',
           kind: 'success',
-        }], { chips: SUGGESTIONS.slice(0, 4), intent: 'intake:sent' });
+        }], { chips: [], intent: 'intake:sent' });
       }
       return reply([{
         text: 'I couldn’t send that just now. Please call the office on ' + phone1 + ' or email ' + office.email + '.',

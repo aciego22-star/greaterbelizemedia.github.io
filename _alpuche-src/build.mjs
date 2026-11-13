@@ -258,7 +258,7 @@ function actionRow(links, ctx, cls = 'actions', { dark = false } = {}) {
     if (isPrimary) primaryUsed = true;
     const label = inline(l.label, ctx);
     if (isPrimary) return link(l.href, label, ctx, ` class="button button-gold"${intakeAttrs(l.href)}`);
-    return link(l.href, `${label}<span class="arrow" aria-hidden="true">→</span>`, ctx, ' class="text-link"');
+    return link(l.href, `${label}`, ctx, ' class="text-link"');
   });
   return `<div class="${cls}">${items.join('')}</div>`;
 }
@@ -337,7 +337,7 @@ function officeBlock() {
 // Closing dark band. `title`/`body`/`links` come from the page Markdown when available.
 function contactBand(ctx, { title, bodyHtml, links, related = [] }) {
   const relatedHtml = related.length
-    ? `<div class="related"><p>Related</p><ul>${related.map((l) => `<li>${link(l.href, `${inline(l.label, ctx)}<span class="arrow" aria-hidden="true">→</span>`, ctx)}</li>`).join('')}</ul></div>`
+    ? `<div class="related"><p>Related</p><ul>${related.map((l) => `<li>${link(l.href, `${inline(l.label, ctx)}`, ctx)}</li>`).join('')}</ul></div>`
     : '';
   return `<section class="dark contact-band" aria-labelledby="closing-title">
   <div class="shell section contact-band-inner">
@@ -375,8 +375,7 @@ function footer(ctx) {
       <li><a href="tel:${OFFICE.phones[0].tel}">${OFFICE.phones[0].label}</a></li>
       <li><a href="tel:${OFFICE.phones[1].tel}">${OFFICE.phones[1].label}</a></li>
       <li><a href="mailto:${OFFICE.email}">${OFFICE.email}</a></li>
-      <li><a class="with-icon" href="${OFFICE.whatsapp.href}" target="_blank" rel="noopener">${ICONS.whatsapp}WhatsApp ${OFFICE.whatsapp.label}</a></li>
-      <li><a class="with-icon" href="${OFFICE.facebook}" target="_blank" rel="noopener">${ICONS.facebook}Facebook</a></li>
+      <li class="social"><a class="icon-link" href="${OFFICE.whatsapp.href}" target="_blank" rel="noopener" title="WhatsApp">${ICONS.whatsapp}<span class="visually-hidden">Message the office on WhatsApp</span></a><a class="icon-link" href="${OFFICE.facebook}" target="_blank" rel="noopener" title="Facebook">${ICONS.facebook}<span class="visually-hidden">José M. Alpuche on Facebook</span></a></li>
       <li>${OFFICE.hours}</li>
     </ul></div>
   </div>
@@ -504,7 +503,7 @@ function writeAssistantData(pages) {
   const pagesMap = Object.fromEntries(pages.map((p) => [p.meta.route, pageName(p)]));
   const data = {
     built: new Date().toISOString().slice(0, 10),
-    office: { phones: OFFICE.phones, email: OFFICE.email, address: OFFICE.address, hours: OFFICE.hours, whatsapp: WHATSAPP ? OFFICE.whatsapp : null, facebook: OFFICE.facebook },
+    office: { phones: OFFICE.phones, email: OFFICE.email, address: OFFICE.address, hours: OFFICE.hours, whatsapp: WHATSAPP ? { href: `https://wa.me/${WHATSAPP}` } : null, facebook: OFFICE.facebook },
     practices: PRACTICES,
     kb: Object.fromEntries(Object.entries(KB).map(([id, e]) => [id, { title: e.title, answer: e.answer, next: e.next || null, examples: e.examples }])),
     docs: assistantDocs(pages),
@@ -687,7 +686,7 @@ function renderHome(page, ctx) {
   const cardHtml = cards.map((c) => {
     const p = PRACTICE_BY_ROUTE[c.link.href];
     return `<article class="practice-card"><p class="card-label">${esc(p.label)}</p><h3>${inline(c.title, ctx)}</h3>${c.paras.map((b) => `<p>${inline(b.text, ctx)}</p>`).join('')}` +
-      `${link(c.link.href, `${inline(c.link.label, ctx)}<span class="arrow" aria-hidden="true">↗</span>`, ctx, ' class="card-link"')}</article>`;
+      `${link(c.link.href, `${inline(c.link.label, ctx)}`, ctx, ' class="card-link"')}</article>`;
   }).join('\n');
 
   const creds = credRow.text.split(' · ').map((t) => `<li>${inline(t.replace(/\*\*/g, ''), ctx)}</li>`).join('');
@@ -731,7 +730,7 @@ ${cardHtml}
     <div>
       <h2 id="team-title">${inline(team.title, ctx)}</h2>
       ${teamParas.map((b) => `<p>${inline(b.text, ctx)}</p>`).join('')}
-      ${link(teamLink.href, `${inline(teamLink.label, ctx)}<span class="arrow" aria-hidden="true">↗</span>`, ctx, ' class="text-link"')}
+      ${link(teamLink.href, `${inline(teamLink.label, ctx)}`, ctx, ' class="text-link"')}
     </div>
     <figure>
       <div class="photo-frame janine-frame">${janinePortrait(ctx)}</div>
@@ -745,8 +744,8 @@ ${cardHtml}
   <div>
     <h2 id="guides-title">${inline(abroad.title, ctx)}</h2>
     ${abroadParas.map((b) => `<p>${inline(b.text, ctx)}</p>`).join('')}
-    <ul class="guide-links">${GUIDES.map((g) => `<li><a href="${rel(ctx.route, g.route)}">${esc(g.label)}<span class="arrow" aria-hidden="true">↗</span></a></li>`).join('')}</ul>
-    ${link(abroadLink.href, `${inline(abroadLink.label, ctx)}<span class="arrow" aria-hidden="true">→</span>`, ctx, ' class="text-link"')}
+    <ul class="guide-links">${GUIDES.map((g) => `<li><a href="${rel(ctx.route, g.route)}">${esc(g.label)}</a></li>`).join('')}</ul>
+    ${link(abroadLink.href, `${inline(abroadLink.label, ctx)}`, ctx, ' class="text-link"')}
   </div>
 </section>
 
@@ -824,7 +823,7 @@ function cardsFromSection(blocks, ctx) {
     else if (cur) cur.paras.push(b);
   }
   return cards.map((c) => `<article class="practice-card"><h3>${inline(c.title, ctx)}</h3>${c.paras.map((b) => `<p>${inline(b.text, ctx)}</p>`).join('')}` +
-    `${link(c.link.href, `Explore ${inline(c.title, ctx)}<span class="arrow" aria-hidden="true">↗</span>`, ctx, ' class="card-link"')}</article>`).join('\n');
+    `${link(c.link.href, `Explore ${inline(c.title, ctx)}`, ctx, ' class="card-link"')}</article>`).join('\n');
 }
 
 function renderPracticeHub(page, ctx) {
@@ -854,7 +853,7 @@ function renderInsightsHub(page, ctx) {
     const paras = s.blocks.filter((b) => !isLinkRow(b) && b !== note);
     const l = linksIn(s.blocks.find(isLinkRow).text)[0];
     return `<article class="practice-card"><p class="card-label">Guide</p><h3 id="${s.id}">${inline(s.title, ctx)}</h3>${paras.map((b) => `<p>${inline(b.text, ctx)}</p>`).join('')}` +
-      `${link(l.href, `${inline(l.label, ctx)}<span class="arrow" aria-hidden="true">↗</span>`, ctx, ' class="card-link"')}</article>`;
+      `${link(l.href, `${inline(l.label, ctx)}`, ctx, ' class="card-link"')}</article>`;
   }).join('\n');
   const main = `${pageHead(page, ctx, { crumbs, h1: I.h1, standfirst: inline(I.paras[0].text, ctx), photoName: pn })}
 <div class="shell section-tight">
@@ -936,7 +935,7 @@ function renderContact(page, ctx) {
     <h2 id="office-title">Belize City office</h2>
     <dl>
       <div><dt>Telephone</dt><dd class="big"><a href="tel:${OFFICE.phones[0].tel}">${OFFICE.phones[0].label}</a><br><a href="tel:${OFFICE.phones[1].tel}">${OFFICE.phones[1].label}</a></dd></div>
-      <div><dt>WhatsApp</dt><dd><a class="with-icon" href="${OFFICE.whatsapp.href}" target="_blank" rel="noopener" data-whatsapp>${ICONS.whatsapp}${OFFICE.whatsapp.label}</a></dd></div>
+      <div><dt>WhatsApp</dt><dd><a class="icon-link" href="${OFFICE.whatsapp.href}" target="_blank" rel="noopener" title="Message the office on WhatsApp" data-whatsapp>${ICONS.whatsapp}<span class="visually-hidden">Message the office on WhatsApp</span></a></dd></div>
       <div><dt>Email</dt><dd><a href="mailto:${OFFICE.email}?subject=Consultation%20enquiry" data-mail-subject>${OFFICE.email}</a></dd></div>
       <div><dt>Address</dt><dd>${OFFICE.address.join('<br>')}</dd></div>
       <div><dt>Office hours</dt><dd>${OFFICE.hours}.</dd></div>
@@ -951,8 +950,8 @@ function renderContact(page, ctx) {
       <p class="area-note" data-area-note role="status">Your enquiry is about: <strong data-area-label></strong>. Mention it when you call or email.</p>
       <div class="actions" style="margin-top:22px">
         <a class="button button-gold" href="mailto:${OFFICE.email}?subject=Consultation%20enquiry" data-mail-subject>Email the office</a>
-        <a class="text-link" href="tel:${OFFICE.phones[0].tel}">Call the office<span class="arrow" aria-hidden="true">→</span></a>
-        <a class="text-link with-icon" href="${OFFICE.whatsapp.href}" target="_blank" rel="noopener">${ICONS.whatsapp}Message on WhatsApp<span class="arrow" aria-hidden="true">→</span></a>
+        <a class="text-link" href="tel:${OFFICE.phones[0].tel}">Call the office</a>
+        <a class="text-link with-icon" href="${OFFICE.whatsapp.href}" target="_blank" rel="noopener">${ICONS.whatsapp}Message on WhatsApp</a>
       </div>
     </section>
     <section class="ai-intake" aria-labelledby="ai-intake-title">

@@ -141,7 +141,7 @@
         a.className = 'msg-link';
         a.href = l.href || toHref(l.route);
         if (/^https?:/.test(a.getAttribute('href'))) { a.rel = 'noopener'; a.target = '_blank'; }
-        a.textContent = l.label + ' →';
+        a.textContent = l.label;
         addIcon(a, l.icon);
         div.appendChild(a);
       });

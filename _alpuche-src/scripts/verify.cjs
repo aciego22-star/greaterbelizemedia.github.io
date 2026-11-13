@@ -50,6 +50,10 @@ const section = (t) => console.log('\n' + t);
       contactLinks: [...document.querySelectorAll('a[href*="contact/"]')].map((a) => a.getAttribute('href')),
       crumbs: !!document.querySelector('nav.breadcrumb'),
       noticeLink: !!document.querySelector('footer a[href*="website-notice/#photo-credits"]'),
+      arrows: (document.body.innerText.match(/[→↗]/g) || []).length +
+        [...document.querySelectorAll('a')].filter((a) => /[→↗]/.test(getComputedStyle(a, '::after').content + getComputedStyle(a, '::before').content)).length,
+      waNumberShown: /625[\s-]?3032/.test(document.body.innerText),
+      gridLines: [...document.querySelectorAll('.practice-card')].filter((c) => parseFloat(getComputedStyle(c).borderLeftWidth) || parseFloat(getComputedStyle(c).borderBottomWidth)).length,
       facebook: !!document.querySelector('footer a[href="https://www.facebook.com/alpuchelaw"][target="_blank"][rel~="noopener"] svg.icon-facebook'),
       whatsapp: !!document.querySelector('footer a[href="https://wa.me/5016253032"][target="_blank"][rel~="noopener"] svg.icon-whatsapp'),
     }));
@@ -59,6 +63,9 @@ const section = (t) => console.log('\n' + t);
     ok(info.h1 === 1, `${route} has one h1 (found ${info.h1})`);
     ok(info.lang === 'en', `${route} lang=en`);
     ok(info.noticeLink, `${route} footer links to photo credits`);
+    ok(info.arrows === 0, `${route} has no arrows (${info.arrows})`);
+    ok(!info.waNumberShown, `${route} does not show the WhatsApp number`);
+    ok(info.gridLines === 0, `${route} practice cards have no grid lines`);
     ok(info.facebook, `${route} footer links to the firm’s Facebook, with its icon`);
     ok(info.whatsapp, `${route} footer links to the firm’s WhatsApp, with its icon`);
     if (route !== '/') ok(info.crumbs, `${route} has breadcrumb`);
@@ -123,6 +130,7 @@ const section = (t) => console.log('\n' + t);
   ok(await cp.waitForSelector('.chat-log .is-typing', { timeout: 1500 }).then(() => true).catch(() => false), 'typing indicator shows before the greeting');
   await waitReply(cp, 0);
   ok(/automated assistant/i.test(await lastBot(cp).innerText()) && /can’t give legal advice/.test(await lastBot(cp).innerText()), 'greeting identifies as automated and mentions no legal advice');
+  ok((await cp.locator('.chat-chips button').allInnerTexts()).join('|') === 'Start an enquiry', 'no topic shortcut buttons, only “Start an enquiry”');
   // Timing: a reply arrives after roughly one to two seconds, with the indicator showing meanwhile.
   await cp.fill('#chat-text', 'Where is the office?');
   const t0 = Date.now();
@@ -148,7 +156,7 @@ const section = (t) => console.log('\n' + t);
   ok((await bubble.locator('a.msg-link').getAttribute('href')).includes('intellectual-property'), 'site content answer links to the right page');
   bubble = await say(cp, 'Can I WhatsApp you?');
   ok(await bubble.locator('a.msg-link[href="https://wa.me/5016253032"] svg.icon-whatsapp').count() === 1, 'chat WhatsApp link has the WhatsApp icon');
-  ok(await bubble.locator('p a[href="https://wa.me/5016253032"] svg.icon-whatsapp').count() === 1, 'WhatsApp number in the answer text has the icon');
+  ok(!/625[\s-]?3032/.test(await bubble.innerText()) && !/[→↗]/.test(await bubble.innerText()), 'WhatsApp answer hides the number and has no arrows');
   bubble = await say(cp, 'Are you on Facebook?');
   ok(await bubble.locator('a.msg-link[href="https://www.facebook.com/alpuchelaw"] svg.icon-facebook').count() === 1, 'chat Facebook link has the Facebook icon');
   bubble = await tap(cp, 'Start an enquiry');
@@ -201,7 +209,9 @@ const section = (t) => console.log('\n' + t);
   await ep.goto(BASE + '/contact/?area=real-estate', { waitUntil: 'networkidle' });
   ok(await ep.locator('form').count() === 0, 'enquiry form removed');
   ok(await ep.locator('.office-card a[href="tel:+5012231194"]').isVisible(), 'phone still prominent');
-  ok(await ep.locator('.office-card a[href="https://wa.me/5016253032"]', { hasText: '+501 625-3032' }).locator('svg.icon-whatsapp').isVisible(), 'WhatsApp link with icon in the contact details');
+  const waLink = ep.locator('.office-card a[href="https://wa.me/5016253032"]');
+  ok(await waLink.locator('svg.icon-whatsapp').isVisible() && !/625/.test(await waLink.innerText()), 'WhatsApp in the contact details is the icon, number hidden');
+  ok(/WhatsApp/.test(await waLink.textContent()), 'WhatsApp icon link has an accessible name');
   ok(await ep.locator('.actions a[href="https://wa.me/5016253032"]', { hasText: 'Message on WhatsApp' }).locator('svg.icon-whatsapp').isVisible(), 'WhatsApp (with icon) next to email and call');
   ok(await ep.locator('.office-card a[href="https://www.facebook.com/alpuchelaw"] svg.icon-facebook').isVisible(), 'Facebook link with icon in the contact details');
   ok(await ep.locator('svg.icon-whatsapp').evaluateAll((els) => els.every((e) => getComputedStyle(e).fill === 'rgb(37, 211, 102)')), 'WhatsApp icons use WhatsApp green');
@@ -245,7 +255,7 @@ const section = (t) => console.log('\n' + t);
   const inputBox = await mp.locator('#chat-text').boundingBox();
   ok(inputBox && inputBox.y + inputBox.height <= vp.height, 'message box visible on the phone');
   ok(await mp.locator('#chat-text').evaluate((el) => parseFloat(getComputedStyle(el).fontSize) >= 16), 'message box text is 16px (no iPhone zoom)');
-  await tap(mp, 'Retiring in Belize');
+  await say(mp, 'Can you help me retire in Belize?');
   await lastBot(mp).locator('a.msg-link').click();
   await mp.waitForLoadState('load');
   ok(mp.url() === BASE + '/practice-areas/qualified-retired-persons/', 'retirement answer leads to the QRP page');

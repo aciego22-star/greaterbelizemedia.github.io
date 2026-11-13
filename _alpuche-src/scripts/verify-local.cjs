@@ -34,7 +34,7 @@ let fails = 0, passes = 0; const ok = (c, m) => { if (c) passes++; else { fails+
   await p.evaluate(() => { window.ALPUCHE_TYPING_SCALE = 0.1; });
   const wr = (n) => p.waitForFunction((k) => document.querySelectorAll('.chat-log .msg-bot:not(.is-typing)').length > k && !document.querySelector('.chat-log .is-typing'), n, { timeout: 10000 });
   await p.click('.office-assistant > summary'); await wr(0);
-  await p.locator('.chat-chips button', { hasText: 'Retiring in Belize' }).click(); await wr(1);
+  await p.fill('#chat-text', 'Can you help me retire in Belize?'); await p.click('.chat-send'); await wr(1);
   await p.locator('.chat-log .msg-bot .msg-link').last().click(); await p.waitForLoadState('load');
   ok(p.url().endsWith('practice-areas/qualified-retired-persons/index.html'), 'assistant link works from disk');
   await p.goto('file://' + path.join(ROOT, 'contact/index.html?area=real-estate'));
