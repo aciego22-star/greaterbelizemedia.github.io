@@ -2,7 +2,8 @@
  * Schema.org structured data (JSON-LD), generated from the content files so it can
  * never disagree with what the page shows. Rules:
  *  - Only verified facts: empty settings are simply left out.
- *  - No prices, offers, ratings or reviews unless approved in catalogue.ts.
+ *  - No prices or offers unless approved in catalogue.ts. No ratings or reviews: Google
+ *    only allows them when the reviews themselves are shown on the page.
  *  - Videos become VideoObject only when an uploadDate has been entered in media.ts.
  */
 import routes from '../content/routes';
@@ -12,6 +13,7 @@ import { media } from '../content/media';
 import { getCatalogue } from '../content/catalogue';
 import { getDestination } from './whatsapp';
 import { buildWhatsAppUrl } from './order';
+import { isAcceptingOrders } from './season';
 import { categoryName, postPath, publishedPosts, findPost, wordCount, type BlogPost } from '../content/blog/posts';
 import { isEs, localPublicPath, t } from '../i18n/lang';
 
@@ -185,6 +187,18 @@ function webpage(key: RouteKey): Json {
   return page;
 }
 
+/**
+ * Google availability for a bottle size: while order requests are open, a flavour on
+ * this season's menu can be ordered (InStock); sold out and closed seasons say so.
+ */
+function offerAvailability(a: string): string {
+  if (a === 'sold-out') return 'https://schema.org/SoldOut';
+  if (!isAcceptingOrders()) return 'https://schema.org/OutOfStock';
+  if (a === 'limited') return 'https://schema.org/LimitedAvailability';
+  if (a === 'coming-soon') return 'https://schema.org/PreOrder';
+  return 'https://schema.org/InStock';
+}
+
 /** Product markup only for flavours the family has confirmed; offers only for approved prices. */
 function product(id: string): Json | undefined {
   const p = getCatalogue().find((x) => x.id === id);
@@ -196,10 +210,9 @@ function product(id: string): Json | undefined {
       name: v.bottleSize,
       price: v.priceBZD!.toFixed(2),
       priceCurrency: 'BZD',
-      // Stock status is only stated when the family marks it; "on-menu" makes no stock claim.
-      ...(v.availability === 'sold-out' && { availability: 'https://schema.org/SoldOut' }),
-      ...(v.availability === 'limited' && { availability: 'https://schema.org/LimitedAvailability' }),
-      ...(v.availability === 'available' && { availability: 'https://schema.org/InStock' }),
+      availability: offerAvailability(v.availability),
+      // Season prices hold until the last day of the season.
+      priceValidUntil: site.season.seasonClosesOn,
       url: `${pageUrl('flavours')}#${p.slug}`,
       seller: { '@id': ORG_ID() },
       areaServed: 'BZ',
