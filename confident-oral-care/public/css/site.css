@@ -535,9 +535,21 @@ figcaption { font-size: 0.92rem; color: var(--muted); margin-top: 12px; }
 .video-placeholder-media { position: relative; display: block; border-radius: var(--radius); overflow: hidden; }
 .video-placeholder-media img { aspect-ratio: 16 / 9; object-fit: cover; }
 .video-badge { position: absolute; left: 16px; bottom: 16px; display: inline-flex; gap: 8px; align-items: center; padding: 8px 14px; border-radius: 999px; background: rgba(251, 248, 243, 0.94); font-weight: 600; font-size: 0.9rem; }
-.video-grid { display: grid; gap: 32px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr)); }
-.video-item { margin: 0; }
-.video-item video { width: 100%; border-radius: var(--radius); background: #000; aspect-ratio: 16 / 9; }
+.video-grid { display: grid; gap: clamp(32px, 5vw, 56px); }
+.video-item { margin: 0; display: grid; gap: 18px clamp(28px, 5vw, 72px); align-items: center; }
+.video-item video { width: 100%; height: auto; border-radius: var(--radius); background: #1d1712; }
+.video-portrait .video-frame { width: min(100%, 300px); margin-inline: auto; }
+.video-portrait video { max-height: min(70vh, 540px); width: auto; max-width: 100%; margin-inline: auto; }
+@media (min-width: 760px) { .video-portrait .video-frame { margin-inline: 0; } }
+@media (min-width: 760px) {
+  .video-portrait { grid-template-columns: auto minmax(0, 1fr); }
+  .video-portrait figcaption { max-width: 520px; }
+}
+.video-item figcaption { font-size: 1rem; color: var(--text); margin: 0; }
+.video-item figcaption p { color: var(--muted); }
+.video-title { font-size: clamp(1.6rem, 1.4rem + 0.8vw, 2.2rem); margin-bottom: 0.5rem; }
+.video-title .muted { font-family: var(--sans); font-size: 0.9rem; font-weight: 500; letter-spacing: 0; }
+.video-more { margin-top: clamp(28px, 4vw, 44px); }
 .transcript { margin-top: 10px; }
 .transcript summary { cursor: pointer; font-weight: 600; }
 

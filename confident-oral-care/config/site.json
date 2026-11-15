@@ -13,12 +13,30 @@
     },
     "galleryVideos": [
       {
-        "_comment": "Example entry. Set src to a video path to publish it; entries with a null src are hidden and the Instagram placeholder is shown instead.",
+        "_comment": "Instagram reel supplied by the clinic. Web copy is silent: the reel's music track is likely licensed for Instagram only.",
+        "id": "route-to-confident",
+        "title": "The route to ConfiDent",
+        "src": "/media/route-to-confident.mp4",
+        "type": "video/mp4",
+        "width": 652,
+        "height": 1160,
+        "runtime": "0:27",
+        "poster": "/img/web/route-to-confident-poster.jpg",
+        "description": "A drive through Belize City at dusk to The Boardwalk Belize, ending at ConfiDent’s front doors. This video has no sound.",
+        "captions": null,
+        "transcript": null
+      },
+      {
+        "_comment": "Clinic tour placeholder. Set src (and captions or transcript if it has speech) to publish it; entries with a null src are hidden.",
+        "id": "clinic-tour",
         "title": "A look around ConfiDent",
         "src": null,
         "type": "video/mp4",
+        "width": null,
+        "height": null,
         "runtime": null,
         "poster": "/img/web/reception-desktop-1152.jpg",
+        "description": null,
         "captions": null,
         "transcript": null
       }

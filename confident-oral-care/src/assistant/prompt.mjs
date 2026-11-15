@@ -59,7 +59,7 @@ ${visitTypes}
 # Clinic facts (approved)
 - Practice: ${clinic.practice}. Tagline: ${clinic.tagline}.
 - Clinician: ${clinic.clinician.name}, ${clinic.clinician.designation}.
-- Address: ${clinic.address}. Directions: ${site.directionsUrl}
+- Address: ${clinic.address}. Directions: ${site.directionsUrl}${site.siteConfig.media.galleryVideos.some((v) => v.id === 'route-to-confident' && v.src) ? ' A short video of the drive to the clinic is at [Find your way](/contact#find-your-way).' : ''}
 - Phone: ${clinic.phone.label} (${clinic.phone.href}). Email: ${clinic.email.label} (general enquiries).
 - Published appointment channels: ${clinic.publishedAppointmentChannels.join(' and ')}. Online requests are also available at /appointments.
 - Instagram (also the DM route): ${clinic.socialLinks.instagram}

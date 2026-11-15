@@ -112,6 +112,32 @@ test('gallery has a distinct #videos section and the hero has no video until one
   assert.ok(!pages.get('/').includes('<video'));
 });
 
+test('the route video plays only on request, with a poster, in the gallery and beside the directions', async () => {
+  for (const route of ['/gallery', '/contact']) {
+    const html = pages.get(route);
+    const video = html.match(/<video[^>]*>/)[0];
+    assert.match(video, /controls/);
+    assert.match(video, /preload="metadata"/);
+    assert.match(video, /poster="\/img\/web\/route-to-confident-poster\.jpg"/);
+    assert.ok(!/autoplay/.test(video), `${route} gallery clip must not autoplay`);
+    assert.ok(html.includes('src="/media/route-to-confident.mp4"'));
+  }
+  assert.ok(pages.get('/contact').includes('id="find-your-way"'));
+  const res = await fetch(`${base}/media/route-to-confident.mp4`, { method: 'HEAD' });
+  assert.equal(res.status, 200);
+  assert.equal(res.headers.get('content-type'), 'video/mp4');
+  assert.equal(res.headers.get('accept-ranges'), 'bytes');
+  const part = await fetch(`${base}/media/route-to-confident.mp4`, { headers: { range: 'bytes=0-1023' } });
+  assert.equal(part.status, 206);
+  assert.equal((await part.arrayBuffer()).byteLength, 1024);
+  assert.match(part.headers.get('content-range'), /^bytes 0-1023\/\d+$/);
+  const tail = await fetch(`${base}/media/route-to-confident.mp4`, { headers: { range: 'bytes=-500' } });
+  assert.equal(tail.status, 206);
+  assert.equal((await tail.arrayBuffer()).byteLength, 500);
+  const bad = await fetch(`${base}/media/route-to-confident.mp4`, { headers: { range: 'bytes=999999999-' } });
+  assert.equal(bad.status, 416);
+});
+
 test('booking API: availability, prepare and complete over HTTP with a session cookie', async () => {
   const res = await fetch(`${base}/api/availability?visitType=general-consultation`);
   const cookie = res.headers.get('set-cookie').split(';')[0];

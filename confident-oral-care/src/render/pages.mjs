@@ -400,20 +400,32 @@ ${pageHead({ eyebrow: 'Plan your visit', title: firstVisit.title, crumbs: [{ lab
 
 /* --------------------------------------------------------------- Gallery */
 
-function videoItem(v) {
-  return `<figure class="video-item">
-    <video controls preload="none" playsinline poster="${esc(v.poster)}">
-      <source src="${esc(v.src)}" type="${esc(v.type || 'video/mp4')}">
-      ${v.captions ? `<track kind="captions" src="${esc(v.captions)}" srclang="en" label="English" default>` : ''}
-    </video>
-    <figcaption><strong>${esc(v.title)}</strong>${v.runtime ? ` <span class="muted">(${esc(v.runtime)})</span>` : ''}</figcaption>
-    ${v.transcript ? `<details class="transcript"><summary>Read the transcript</summary><p>${esc(v.transcript)}</p></details>` : ''}
+function videoItem(v, { headingLevel = 3, extra = '' } = {}) {
+  const portrait = v.width && v.height && v.height > v.width;
+  const size = v.width && v.height ? ` width="${v.width}" height="${v.height}"` : '';
+  return `<figure class="video-item${portrait ? ' video-portrait' : ''}">
+    <div class="video-frame">
+      <video controls preload="metadata" playsinline poster="${esc(v.poster)}"${size} aria-label="${esc(v.title)}">
+        <source src="${esc(v.src)}" type="${esc(v.type || 'video/mp4')}">
+        ${v.captions ? `<track kind="captions" src="${esc(v.captions)}" srclang="en" label="English" default>` : ''}
+      </video>
+    </div>
+    <figcaption>
+      <h${headingLevel} class="video-title">${esc(v.title)}${v.runtime ? ` <span class="muted">(${esc(v.runtime)})</span>` : ''}</h${headingLevel}>
+      ${v.description ? `<p>${esc(v.description)}</p>` : ''}
+      ${v.transcript ? `<details class="transcript"><summary>Read the transcript</summary><p>${esc(v.transcript)}</p></details>` : ''}
+      ${extra}
+    </figcaption>
   </figure>`;
+}
+
+function publishedVideos(site) {
+  return site.siteConfig.media.galleryVideos.filter((v) => v.src);
 }
 
 export function galleryPage(site) {
   const { gallery } = site.pages;
-  const videos = site.siteConfig.media.galleryVideos.filter((v) => v.src);
+  const videos = publishedVideos(site);
   const body = `
 ${pageHead({ eyebrow: 'Gallery', title: gallery.title, lead: gallery.intro, crumbs: [{ label: 'Home', href: '/' }, { label: 'Gallery' }] })}
 <section class="section section-tight" aria-labelledby="photos-title">
@@ -438,7 +450,8 @@ ${pageHead({ eyebrow: 'Gallery', title: gallery.title, lead: gallery.intro, crum
       <p class="eyebrow">Watch</p>
       <h2 id="videos-title">${esc(gallery.videosTitle)}</h2>
     </div>
-    ${videos.length ? `<div class="video-grid">${videos.map(videoItem).join('')}</div>` : `
+    ${videos.length ? `<div class="video-grid">${videos.map((v) => videoItem(v)).join('')}</div>
+    <p class="video-more"><a class="text-link" href="${esc(site.clinic.socialLinks.instagram)}" rel="noopener">${esc(gallery.instagramCta)}${icon('arrow', 'icon icon-arrow')}</a></p>` : `
     <div class="video-placeholder">
       <a class="video-placeholder-media" href="${esc(site.clinic.socialLinks.instagram)}" rel="noopener">
         ${picture(photo(site, 'reception'), { alt: 'Reception at ConfiDent Oral Care', sizes: '(min-width: 900px) 60vw, 100vw', className: 'framed', landscapeOnly: true })}
@@ -542,7 +555,8 @@ ${pageHead({ eyebrow: 'Contact Us', title: contact.title, crumbs: [{ label: 'Hom
     </div>
   </div>
 </section>
-<section class="section section-ivory cta-band">
+${routeSection(site)}
+<section class="section cta-band">
   <div class="container narrow center">
     <h2>Ready to arrange a visit?</h2>
     <div class="btn-row center">
@@ -552,6 +566,20 @@ ${pageHead({ eyebrow: 'Contact Us', title: contact.title, crumbs: [{ label: 'Hom
   </div>
 </section>`;
   return layout(site, { title: 'Contact us', path: '/contact', description: contact.metaDescription, body, jsonLd: dentistJsonLd(site) });
+}
+
+function routeSection(site) {
+  const route = publishedVideos(site).find((v) => v.id === 'route-to-confident');
+  if (!route) return '';
+  return `<section class="section section-ivory" id="find-your-way" aria-labelledby="route-title">
+  <div class="container">
+    <div class="section-intro">
+      <p class="eyebrow">Directions</p>
+      <h2 id="route-title">Find your way to The Boardwalk</h2>
+    </div>
+    ${videoItem(route, { extra: `<div class="btn-row"><a class="btn btn-primary" href="${esc(site.directionsUrl)}" rel="noopener">Get directions</a><a class="btn btn-secondary" href="${site.clinic.phone.href}">Call ${esc(site.clinic.phone.label)}</a></div>` })}
+  </div>
+</section>`;
 }
 
 /* ---------------------------------------------------------- Appointments */

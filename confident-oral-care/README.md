@@ -70,7 +70,16 @@ Restart the server after editing configuration.
 
 The video then plays muted, inline and on a loop, with a visible pause/play button. The reception photo stays as the poster and fallback, and it's shown instead of the video when autoplay is blocked, the visitor prefers reduced motion, or the file fails to load. No layout change is needed.
 
-For the Gallery **Videos** section, fill in the entry in `media.galleryVideos`: `src`, `runtime`, and `captions` (a WebVTT file) or `transcript` for spoken content. Gallery clips play only when the visitor starts them. While no clip has a `src`, the section shows the reception still and links to Instagram.
+For the Gallery **Videos** section, add or fill in an entry in `media.galleryVideos`: `src`, `width`/`height`, `runtime`, `description`, and `captions` (a WebVTT file) or `transcript` for spoken content. A placeholder entry for the clinic tour (`clinic-tour`) is already there and stays hidden until it has a `src`. Gallery clips play only when the visitor starts them.
+
+### The route video (supplied Instagram reel)
+
+`public/media/route-to-confident.mp4` is the clinic's "Route to ConfiDent" reel: 27 seconds of driving to The Boardwalk, ending at ConfiDent's doors. It appears in Gallery → Videos and in a "Find your way to The Boardwalk" section on Contact Us, next to Get directions. confident AI also points to it when asked for directions.
+
+- **No audio.** The web copy has the audio removed. The reel's soundtrack is music with no narration, and music added in Instagram is generally licensed for use on Instagram only. If the clinic confirms the track is original or cleared for the website, re-encode from the original reel with audio (`-c:a aac -b:a 96k` instead of `-an` below), and remove "This video has no sound." from its `description`.
+- **Not in the hero.** It's a vertical 652 × 1160 clip of the road, not the clinic tour the brief describes for the hero. Stretched across a desktop hero, it would be blurry and would hide the reception signage. The hero keeps the reception photo until the tour arrives.
+- **Encoding.** `ffmpeg -i reel.mp4 -an -c:v libx264 -preset slow -crf 27 -maxrate 1000k -bufsize 2000k -pix_fmt yuv420p -movflags +faststart route-to-confident.mp4` (3.4 MB). The poster is the opening "ROUTE TO: ConfiDent" frame.
+- The server supports HTTP byte ranges, which iOS Safari needs to play video.
 
 ## confident AI
 
@@ -147,7 +156,7 @@ The app is a single Node process with no build step. It needs a **persistent dis
 
 ## Quality checks performed
 
-- 28 automated tests (`npm test`) cover:
+- 29 automated tests (`npm test`) cover:
   - slot generation (lunch, cutoff, notice, busy block, Saturday)
   - Belize time conversion
   - confirmed booking with one observable event
@@ -166,6 +175,7 @@ The app is a single Node process with no build step. It needs a **persistent dis
   - every internal link and anchor
   - home section order and first-screen CTA
   - booking over HTTP, including cross-session and cross-origin refusal
+  - gallery and contact videos (poster, no autoplay) and byte-range responses
 - Browser checks with Playwright at 390 px and 1440 px:
   - hero poster without video
   - the video variant with a temporary sample clip: autoplay, pause/play, reduced motion

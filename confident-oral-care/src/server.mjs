@@ -111,11 +111,28 @@ async function serveStatic(req, res, pathname) {
   if (!info.isFile()) return false;
   const type = TYPES[extname(file)] ?? 'application/octet-stream';
   const longCache = /\.(woff2|webp|jpg|png|svg|mp4|webm)$/.test(file);
-  res.writeHead(200, {
+  const headers = {
     'Content-Type': type,
-    'Content-Length': info.size,
+    'Accept-Ranges': 'bytes',
     'Cache-Control': longCache ? 'public, max-age=604800' : 'public, max-age=300',
-  });
+  };
+  // Byte ranges: required for video playback (iOS Safari will not play media without 206 responses).
+  const range = /^bytes=(\d*)-(\d*)$/.exec(req.headers.range || '');
+  if (range && (range[1] || range[2])) {
+    let start = range[1] ? Number(range[1]) : info.size - Number(range[2]);
+    let end = range[1] && range[2] ? Number(range[2]) : info.size - 1;
+    start = Math.max(0, start);
+    end = Math.min(end, info.size - 1);
+    if (start > end || start >= info.size) {
+      res.writeHead(416, { 'Content-Range': `bytes */${info.size}` });
+      return res.end(), true;
+    }
+    res.writeHead(206, { ...headers, 'Content-Length': end - start + 1, 'Content-Range': `bytes ${start}-${end}/${info.size}` });
+    if (req.method === 'HEAD') return res.end(), true;
+    createReadStream(file, { start, end }).pipe(res);
+    return true;
+  }
+  res.writeHead(200, { ...headers, 'Content-Length': info.size });
   if (req.method === 'HEAD') return res.end(), true;
   createReadStream(file).pipe(res);
   return true;
