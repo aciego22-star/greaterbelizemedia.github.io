@@ -85,7 +85,14 @@ export function initAssistant() {
     if (available !== null) return available;
     try {
       const res = await fetch('/api/assistant/status', { credentials: 'same-origin' });
-      available = (await res.json()).available === true;
+      const status = await res.json();
+      available = status.available === true;
+      if (status.mode === 'demo' && !panel.querySelector('.ai-demo-note')) {
+        const note = document.createElement('p');
+        note.className = 'ai-static-note ai-demo-note';
+        note.textContent = 'Demo mode: confident AI is giving scripted answers for this preview, using the real booking system. The live version runs on Claude.';
+        log.before(note);
+      }
     } catch {
       available = false;
     }

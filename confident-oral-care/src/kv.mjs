@@ -1,10 +1,7 @@
-import { mkdir, readdir, readFile, rename, writeFile } from 'node:fs/promises';
-import { dirname, join, relative, sep } from 'node:path';
-
 /**
  * Minimal key-value storage used for the test calendar, staff-review requests, booking records and
  * chat history. Keys look like "events/CD-ABC123". Three backends:
- *   FileKV   - JSON files under data/ (Node server)
+ *   FileKV   - JSON files under data/ (Node server, src/kv-file.mjs)
  *   BlobsKV  - Netlify Blobs (Netlify Functions)
  *   MemoryKV - tests
  * createJSON() is atomic (create-if-absent) on every backend; the scheduler relies on it so two
@@ -12,61 +9,10 @@ import { dirname, join, relative, sep } from 'node:path';
  */
 
 const SAFE = /^[A-Za-z0-9._-]+$/;
-function checkKey(key) {
+export function checkKey(key) {
   const parts = key.split('/');
   if (!parts.every((p) => SAFE.test(p) && p !== '.' && p !== '..')) throw new Error(`Invalid key: ${key}`);
   return parts;
-}
-
-export class FileKV {
-  constructor(dir) { this.dir = dir; }
-
-  path(key) { return `${join(this.dir, ...checkKey(key))}.json`; }
-
-  async getJSON(key) {
-    try {
-      return JSON.parse(await readFile(this.path(key), 'utf8'));
-    } catch (err) {
-      if (err.code === 'ENOENT') return null;
-      throw err;
-    }
-  }
-
-  async setJSON(key, value) {
-    const file = this.path(key);
-    await mkdir(dirname(file), { recursive: true });
-    const tmp = `${file}.${process.pid}.${Date.now()}.tmp`;
-    await writeFile(tmp, JSON.stringify(value, null, 2));
-    await rename(tmp, file);
-  }
-
-  async createJSON(key, value) {
-    const file = this.path(key);
-    await mkdir(dirname(file), { recursive: true });
-    try {
-      await writeFile(file, JSON.stringify(value, null, 2), { flag: 'wx' });
-      return true;
-    } catch (err) {
-      if (err.code === 'EEXIST') return false;
-      throw err;
-    }
-  }
-
-  async list(prefix) {
-    const base = join(this.dir, ...checkKey(prefix.replace(/\/$/, '')));
-    const out = [];
-    const walk = async (dir) => {
-      let entries;
-      try { entries = await readdir(dir, { withFileTypes: true }); } catch (err) { if (err.code === 'ENOENT') return; throw err; }
-      for (const e of entries) {
-        const full = join(dir, e.name);
-        if (e.isDirectory()) await walk(full);
-        else if (e.name.endsWith('.json')) out.push(relative(this.dir, full).slice(0, -5).split(sep).join('/'));
-      }
-    };
-    await walk(base);
-    return out.sort();
-  }
 }
 
 export class MemoryKV {

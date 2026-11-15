@@ -2,6 +2,7 @@
 // Used by the Node server (src/server.mjs) and the Netlify Function (netlify/functions/api.mjs).
 
 import { createAssistant } from './assistant/assistant.mjs';
+import { createDemoAssistant } from './assistant/demo.mjs';
 import { testCalendarPage } from './render/pages.mjs';
 import { createScheduling } from './scheduling/index.mjs';
 import { SchedulingError } from './scheduling/service.mjs';
@@ -9,18 +10,23 @@ import { formatDateLong, formatTime } from './scheduling/time.mjs';
 import { resolveSecret } from './scheduling/tokens.mjs';
 import { loadSite } from './site.mjs';
 
-export async function createCore({ kv, client = null, logger = console, now, fault, env = process.env }) {
+export async function createCore({ kv, client = null, logger = console, now, fault, env = globalThis.process?.env ?? {} }) {
   const site = await loadSite();
   const secret = await resolveSecret(kv, env.SESSION_SECRET);
   const scheduling = createScheduling({ config: site.scheduling, clinic: site.clinic, kv, secret, now, logger, fault });
-  const assistant = createAssistant({
-    site,
-    scheduling,
-    client,
-    kv,
-    config: { model: env.ANTHROPIC_MODEL, effort: env.ANTHROPIC_EFFORT, fallbacks: env.ANTHROPIC_FALLBACKS },
-    logger,
-  });
+  // Claude when an API key is configured; otherwise, on preview sites, the scripted demo assistant
+  // (ASSISTANT_DEMO=on|off overrides). A live site without a key shows the phone/Instagram fallback.
+  const demo = !client && (env.ASSISTANT_DEMO ? env.ASSISTANT_DEMO !== 'off' : Boolean(site.siteConfig.preview));
+  const assistant = demo
+    ? createDemoAssistant({ site, scheduling, kv, now, logger })
+    : createAssistant({
+      site,
+      scheduling,
+      client,
+      kv,
+      config: { model: env.ANTHROPIC_MODEL, effort: env.ANTHROPIC_EFFORT, fallbacks: env.ANTHROPIC_FALLBACKS },
+      logger,
+    });
   const tz = site.scheduling.timeZone;
   const previewLabel = site.scheduling.mode === 'test' ? site.scheduling.previewLabel : null;
 
@@ -42,7 +48,7 @@ export async function createCore({ kv, client = null, logger = console, now, fau
   /** Handles /api/* requests. `body` is the parsed JSON body for POSTs. */
   async function handleApi({ method, pathname, searchParams, body = {}, sessionId }) {
     if (method === 'GET' && pathname === '/api/assistant/status') {
-      return ok({ available: assistant.available, previewLabel });
+      return ok({ available: assistant.available, mode: assistant.mode ?? (assistant.available ? 'claude' : 'off'), previewLabel });
     }
     if (method === 'GET' && pathname === '/api/visit-types') {
       return ok({ visitTypes: scheduling.listVisitTypes(), services: scheduling.serviceNames, previewLabel });

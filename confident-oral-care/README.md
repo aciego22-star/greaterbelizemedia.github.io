@@ -93,6 +93,15 @@ For the Gallery **Videos** section, add or fill in an entry in `media.galleryVid
 - **Safety and scope.** The assistant never gives clinical advice and directs emergencies to emergency care. It can't see or discuss anyone's appointments. Changes and cancellations are routed to the team.
 - **Failure handling.** API errors, refusals and calendar outages all fall back to "I can’t confirm a time right now. Please call +501 628-8233 or send the practice a message on Instagram." Each session is capped at 40 turns and 15 messages per minute.
 
+### Demo mode (previews without an API key)
+
+When no `ANTHROPIC_API_KEY` is set and the site is a preview (`site.json` → `"preview": true`), confident AI runs in **demo mode** (`src/assistant/demo.mjs`):
+- **Answers:** scripted, rule-based replies drawn from the same approved clinic records.
+- **Booking:** it uses the real scheduler for times, the booking form and staff-review requests.
+- **Labelling:** the panel says it's a demo.
+
+Setting a key switches to Claude automatically. `ASSISTANT_DEMO=on|off` overrides the default. A live site (`"preview": false`) without a key shows the phone and Instagram fallback instead.
+
 ## Scheduling
 
 ```
@@ -188,7 +197,9 @@ This writes `deliverables/confident-oral-care-netlify.zip`. Upload it as-is to N
 
 The function keeps each assistant reply under Netlify's 60-second function limit: a 25-second timeout per Claude request, one retry, and a 45-second overall deadline.
 
-`npm run export` also writes `deliverables/confident-oral-care-preview.html`. It's a single self-contained file of every page for offline review. It has no server, so booking and the AI chat are switched off in it.
+`npm run export` also writes `deliverables/confident-oral-care-preview.html`, a single self-contained file (about 5.5 MB) for reviewing the site on any device:
+- **Runs in the page:** the real application core runs inside the file (`src/preview/browser.mjs`), so booking, the test calendar, the route video and confident AI in demo mode all work offline.
+- **Test data:** stored in that browser's localStorage. The file's top banner links to the test calendar and has a "Reset test data" button.
 
 ## Before going live
 
@@ -204,7 +215,7 @@ The function keeps each assistant reply under Netlify's 60-second function limit
 
 ## Quality checks performed
 
-- 34 automated tests (`npm test`) cover:
+- 37 automated tests (`npm test`) cover:
   - slot generation (lunch, cutoff, notice, busy block, Saturday)
   - Belize time conversion
   - confirmed booking with one observable event

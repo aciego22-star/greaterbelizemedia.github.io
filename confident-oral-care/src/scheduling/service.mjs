@@ -1,4 +1,3 @@
-import { randomBytes } from 'node:crypto';
 import { readAll } from '../kv.mjs';
 import { CalendarTimeoutError, SlotConflictError } from './errors.mjs';
 import { statusMessages } from './messages.mjs';
@@ -20,7 +19,7 @@ export class SchedulingError extends Error {
 }
 
 function randomRef(length = 6) {
-  return Array.from(randomBytes(length), (b) => REF_ALPHABET[b % REF_ALPHABET.length]).join('');
+  return Array.from(globalThis.crypto.getRandomValues(new Uint8Array(length)), (b) => REF_ALPHABET[b % REF_ALPHABET.length]).join('');
 }
 
 /** Serializes async work per key within one process (the slot claim covers multiple instances). */

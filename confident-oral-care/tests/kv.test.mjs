@@ -5,7 +5,8 @@ import { join } from 'node:path';
 import { after, test } from 'node:test';
 import { getStore } from '@netlify/blobs';
 import { BlobsServer } from '@netlify/blobs/server';
-import { BlobsKV, FileKV, MemoryKV } from '../src/kv.mjs';
+import { FileKV } from '../src/kv-file.mjs';
+import { BlobsKV, MemoryKV } from '../src/kv.mjs';
 
 const blobsServer = new BlobsServer({ directory: await mkdtemp(join(tmpdir(), 'blobs-')), token: 'test-token' });
 const { port } = await blobsServer.start();

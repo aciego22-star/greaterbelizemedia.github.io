@@ -6,7 +6,9 @@
 // The Netlify zip is the full site: pre-rendered pages plus one pre-bundled Netlify Function
 // (netlify/functions/api.mjs) for the booking API, confident AI and the test calendar, with data in
 // Netlify Blobs. No build step or npm install is needed; upload the zip as-is.
-// The single-file preview has no server, so it runs in "static preview" mode.
+// The single-file preview runs the real application core inside the page (src/preview/browser.mjs):
+// booking, the test calendar and confident AI in demo mode all work offline, with test data kept in
+// the browser's localStorage.
 
 import { execFileSync } from 'node:child_process';
 import { build } from 'esbuild';
@@ -145,10 +147,11 @@ async function inlinePictures(html) {
     const better = src.replace('confident-logo-240.png', 'confident-logo-480.webp');
     return `<img${a.replace(/\s(srcset|sizes)="[^"]*"/g, '')}src="${await dataUri(better)}"${b.replace(/\s(srcset|sizes)="[^"]*"/g, '')}>`;
   });
-  // Videos: show the poster (the clip itself plays on the full site).
-  html = await replaceAsync(html, /<video[^>]*poster="([^"]+)"[^>]*>[\s\S]*?<\/video>/g, async (whole, poster) => (
-    `<div class="video-poster-static"><img src="${await dataUri(poster)}" alt="Video poster: the route to ConfiDent" width="652" height="1160"><span>Video plays on the full site</span></div>`
-  ));
+  // Videos: inline poster; the clip itself is embedded once and attached by script.
+  html = await replaceAsync(html, /<video([^>]*)poster="([^"]+)"([^>]*)>([\s\S]*?)<\/video>/g, async (whole, a, poster, b, inner) => {
+    const src = (inner.match(/<source src="([^"]+)"/) || [])[1];
+    return `<video${a}poster="${await dataUri(poster)}"${b} data-inline-src="${src}"></video>`;
+  });
   return html;
 }
 
@@ -171,8 +174,8 @@ function scopeIds(main, slug, routeSet) {
 }
 
 async function exportSingle() {
-  const routeSet = new Set(routes.keys());
-  const pagesHtml = new Map([...routes].map(([path, render]) => [path, render()]));
+  const routeSet = new Set(fullRoutes.keys());
+  const pagesHtml = new Map([...fullRoutes].map(([path, render]) => [path, render()]));
   const home = pagesHtml.get('/');
   const mainStart = home.indexOf('<main id="main" tabindex="-1">');
   const mainEnd = home.indexOf('</main>');
@@ -186,6 +189,8 @@ async function exportSingle() {
     titles[`r-${slug}`] = html.match(/<title>([^<]+)<\/title>/)[1].replace(/&amp;/g, '&').replace(/&#39;/g, "'").replace(/&quot;/g, '"');
     sections.push(`<section class="route${path === '/' ? ' route-home' : ''}" id="r-${slug}">${scopeIds(main, slug, routeSet)}</section>`);
   }
+  sections.push('<section class="route" id="r-test-calendar"><div class="container section"><p class="loading">Loading the test calendar…</p></div></section>');
+  titles['r-test-calendar'] = 'Test calendar | ConfiDent Oral Care';
 
   // Shell links (header, footer, assistant panel) -> route anchors.
   shell = shell.replace(/href="(\/[^"#?]*)(?:\?[^"#]*)?(?:#([^"]*))?"/g, (m, path, hash) => {
@@ -193,7 +198,7 @@ async function exportSingle() {
     const target = slugFor(path);
     return `href="#${hash ? `${target}--${hash}` : `r-${target}`}"`;
   });
-  shell = shell.replace('%%ROUTES%%', sections.join('\n'));
+  shell = shell.replace('%%ROUTES%%', () => sections.join('\n'));
 
   // Inline CSS with fonts.
   let css = await readFile(join(ROOT, 'public/css/site.css'), 'utf8');
@@ -204,17 +209,15 @@ async function exportSingle() {
 .route:target, .route:has(:target) { display: block; }
 .route-home { display: block; }
 main:has(.route:not(.route-home):target, .route:not(.route-home) :target) .route-home { display: none; }
-.video-poster-static { position: relative; width: min(100%, 300px); }
-.video-poster-static img { border-radius: var(--radius); width: 100%; height: auto; }
-.video-poster-static span { position: absolute; left: 12px; bottom: 12px; background: rgba(251,248,243,.94); padding: 6px 12px; border-radius: 999px; font-size: .85rem; font-weight: 600; }
-.single-banner { background: #fff7e6; border-bottom: 1px dashed var(--gold-text); font-size: .85rem; padding: 8px var(--gutter); text-align: center; }
+.single-banner { background: #fff7e6; border-bottom: 1px dashed var(--gold-text); font-size: .85rem; padding: 8px var(--gutter); text-align: center; margin: 0; }
+.single-banner a, .single-banner button { font: inherit; font-weight: 650; color: var(--gold-text); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; }
 `;
   shell = shell
     .replace(/<link rel="preload"[^>]*>\n?/g, '')
-    .replace('<link rel="stylesheet" href="/css/site.css">', `<style>${css}</style>`)
+    .replace('<link rel="stylesheet" href="/css/site.css">', () => `<style>${css}</style>`)
     .replace(/<link rel="icon"[^>]*>/, `<link rel="icon" href="${await dataUri('/img/favicon.svg')}">`)
     .replace(/<meta property="og:image"[^>]*>\n?/, '')
-    .replace('<a class="skip-link" href="#main">', '<p class="single-banner">Single-file preview of the ConfiDent Oral Care site. Online booking, confident AI chat and the route video run on the full site.</p>\n<a class="skip-link" href="#main">');
+    .replace('<a class="skip-link" href="#main">', '<p class="single-banner">Preview file: booking and confident AI (demo mode) work in this page, and test bookings are saved in this browser only. <a href="#r-test-calendar">Test calendar</a> · <button type="button" data-preview-reset>Reset test data</button></p>\n<a class="skip-link" href="#main">');
 
   shell = await inlinePictures(shell);
 
@@ -226,6 +229,32 @@ main:has(.route:not(.route-home):target, .route:not(.route-home) :target) .route
     src = src.replace(/^export /gm, '');
     return `const ${name} = (() => {\n${src}\nreturn { ${exported.join(', ')} };\n})();\nconst { ${exported.join(', ')} } = ${name};\n`;
   };
+  const shims = {
+    'node:crypto': join(ROOT, 'src/preview/shims/crypto.mjs'),
+    'node:fs/promises': join(ROOT, 'src/preview/shims/fs.mjs'),
+    '@anthropic-ai/sdk': join(ROOT, 'src/preview/shims/anthropic.mjs'),
+  };
+  const runtime = await build({
+    entryPoints: [join(ROOT, 'src/preview/browser.mjs')],
+    bundle: true,
+    write: false,
+    format: 'iife',
+    platform: 'browser',
+    define: { 'process.env': '{}' }, // server environment variables don't exist in the page
+    target: 'es2020',
+    minify: true,
+    legalComments: 'none',
+    logLevel: 'warning',
+    plugins: [{
+      name: 'preview-shims',
+      setup(b) {
+        b.onResolve({ filter: /^(node:crypto|node:fs\/promises|@anthropic-ai\/sdk)$/ }, (args) => ({ path: shims[args.path] }));
+      },
+    }],
+  });
+  const runtimeJs = runtime.outputFiles[0].text;
+  const videoData = (await readFile(join(ROOT, 'public/media/route-to-confident.mp4'))).toString('base64');
+
   const routeMap = Object.fromEntries([...routeSet].map((p) => [p, `#r-${slugFor(p)}`]));
   const bundle = [
     await bundleModule('booking.js', '__booking'),
@@ -242,17 +271,38 @@ document.addEventListener('click', (e) => {
   const hash = ROUTES[url.pathname];
   if (hash) { e.preventDefault(); location.hash = hash.slice(1); document.getElementById('ai-panel').hidden = true; }
 }, true);
-const syncTitle = () => {
+const syncTitle = async () => {
   const target = location.hash && document.getElementById(location.hash.slice(1));
   const section = target ? target.closest('.route') : null;
   document.title = TITLES[section ? section.id : 'r-home'];
   if (section && target === section) window.scrollTo(0, 0);
+  if (section && section.id === 'r-test-calendar') section.innerHTML = await window.__confidentPreview.calendarMain();
 };
+document.querySelector('[data-preview-reset]')?.addEventListener('click', () => {
+  if (confirm('Clear the test bookings and chat saved in this browser?')) window.__confidentPreview.reset();
+});
+// Attach the embedded route video to every player (one copy in the file).
+const videoEl = document.getElementById('route-video-data');
+if (videoEl) {
+  const attach = () => {
+    const bin = atob(videoEl.textContent.trim());
+    const bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i += 1) bytes[i] = bin.charCodeAt(i);
+    const url = URL.createObjectURL(new Blob([bytes], { type: 'video/mp4' }));
+    document.querySelectorAll('video[data-inline-src]').forEach((v) => { v.src = url; });
+  };
+  (window.requestIdleCallback || ((fn) => setTimeout(fn, 300)))(attach);
+}
 window.addEventListener('hashchange', syncTitle);
 syncTitle();
 `,
   ].join('\n');
-  shell = shell.replace('<script type="module" src="/js/site.js"></script>', `<script type="module">\n${bundle.replace(/<\/script/gi, '<\\/script')}\n</script>`);
+  // Function replacements: inserted code may contain "$&"-style sequences that String.replace would expand.
+  const scripts = `<script>\n${runtimeJs.replace(/<\/script/gi, '<\\/script')}\n</script>\n<script type="module">\n${bundle.replace(/<\/script/gi, '<\\/script')}\n</script>`;
+  shell = shell.replace('<script type="module" src="/js/site.js"></script>', () => scripts);
+  // Insert at the document's own </body> (the embedded runtime contains page templates with "</body>").
+  const bodyEnd = shell.lastIndexOf('</body>');
+  shell = `${shell.slice(0, bodyEnd)}<script type="application/octet-stream" id="route-video-data">${videoData}</script>\n${shell.slice(bodyEnd)}`;
 
   const file = join(OUT, 'confident-oral-care-preview.html');
   await writeFile(file, shell);

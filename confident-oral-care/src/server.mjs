@@ -5,7 +5,7 @@ import { extname, join, normalize, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createCore } from './app.mjs';
 import { createClaudeClient } from './assistant/assistant.mjs';
-import { FileKV } from './kv.mjs';
+import { FileKV } from './kv-file.mjs';
 import { notFoundPage } from './render/pages.mjs';
 import { pageRoutes } from './render/routes.mjs';
 import { sessionCookie, sessionFromCookie } from './session.mjs';
