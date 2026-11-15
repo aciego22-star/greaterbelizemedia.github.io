@@ -6,14 +6,18 @@
   "socialImage": "/img/web/og-reception.jpg",
   "media": {
     "heroVideo": {
-      "_comment": "Set mp4 (and optionally webm) to a compressed clip path, e.g. /media/clinic-tour.mp4, to replace the poster. Leave null to show the reception photography.",
-      "mp4": null,
+      "_comment": "The hero is a slideshow: the two photos, then this video. Images change every intervalSeconds; the video plays to the end (with sound where the browser allows), then the slideshow returns to the first photo.",
+      "mp4": "/media/route-to-confident.mp4",
       "webm": null,
-      "title": "A look around ConfiDent"
+      "title": "The route to ConfiDent",
+      "poster": "/img/web/route-to-confident-poster.jpg",
+      "backdrop": "/img/web/route-to-confident-backdrop.jpg",
+      "width": 652,
+      "height": 1160
     },
     "galleryVideos": [
       {
-        "_comment": "Instagram reel supplied by the clinic. Web copy is silent: the reel's music track is likely licensed for Instagram only.",
+        "_comment": "Instagram reel supplied by the clinic, with its original soundtrack (music only, no narration).",
         "id": "route-to-confident",
         "title": "The route to ConfiDent",
         "src": "/media/route-to-confident.mp4",
@@ -22,7 +26,7 @@
         "height": 1160,
         "runtime": "0:27",
         "poster": "/img/web/route-to-confident-poster.jpg",
-        "description": "A drive through Belize City at dusk to The Boardwalk Belize, ending at ConfiDent’s front doors. This video has no sound.",
+        "description": "A drive through Belize City at dusk to The Boardwalk Belize, ending at ConfiDent’s front doors. Music only, no narration.",
         "captions": null,
         "transcript": null
       },
@@ -35,11 +39,18 @@
         "width": null,
         "height": null,
         "runtime": null,
-        "poster": "/img/web/reception-desktop-1152.jpg",
+        "poster": "/img/web/reception-desktop-1200.jpg",
         "description": null,
         "captions": null,
         "transcript": null
       }
-    ]
+    ],
+    "heroSlides": {
+      "intervalSeconds": 6,
+      "photos": [
+        "reception",
+        "opening-day"
+      ]
+    }
   }
 }

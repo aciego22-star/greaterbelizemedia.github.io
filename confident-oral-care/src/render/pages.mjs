@@ -1,6 +1,6 @@
 import { visitTypeForService } from '../site.mjs';
 import { layout } from './layout.mjs';
-import { esc, icon, picture } from './util.mjs';
+import { esc, icon, picture, singlePicture } from './util.mjs';
 
 const photo = (site, id) => site.pages.gallery.photos.find((p) => p.id === id);
 
@@ -16,11 +16,10 @@ function breadcrumbs(items) {
   )).join('')}</ol></nav>`;
 }
 
-function pageHead({ eyebrow, title, lead, crumbs }) {
+function pageHead({ title, lead, crumbs }) {
   return `<section class="page-head">
   <div class="container">
     ${crumbs ? breadcrumbs(crumbs) : ''}
-    ${eyebrow ? `<p class="eyebrow">${esc(eyebrow)}</p>` : ''}
     <h1>${esc(title)}</h1>
     ${lead ? `<p class="lead">${esc(lead)}</p>` : ''}
   </div>
@@ -32,7 +31,6 @@ function contactPanel(site, { heading = 'Visit us at The Boardwalk', tone = 'ivo
   return `<section class="section section-${tone} contact-band" aria-labelledby="visit-heading">
   <div class="container contact-band-grid">
     <div>
-      <p class="eyebrow">Find us</p>
       <h2 id="visit-heading">${esc(heading)}</h2>
       <p class="address">${icon('pin')}<span><strong>ConfiDent Oral Care</strong><br>${esc(clinic.address)}</span></p>
       <p><a class="text-link" href="${esc(site.directionsUrl)}" rel="noopener">Get directions${icon('arrow', 'icon icon-arrow')}</a></p>
@@ -85,42 +83,74 @@ function dentistJsonLd(site) {
 
 /* ------------------------------------------------------------------ Home */
 
-function heroMedia(site) {
-  const reception = photo(site, 'reception');
-  const video = site.siteConfig.media.heroVideo;
-  const poster = picture(reception, {
-    alt: 'Reception at ConfiDent Oral Care, with gold ConfiDent signage reading Where confidence begins',
-    className: 'hero-picture', priority: true, breakpoint: 760,
+/** Immersive hero slideshow: the photos, then the video (config: site.json media.heroSlides / heroVideo). */
+function heroSlides(site) {
+  const { heroSlides: cfg, heroVideo: video } = site.siteConfig.media;
+  const alts = {
+    reception: 'Reception at ConfiDent Oral Care, with gold ConfiDent signage reading Where confidence begins',
+    'opening-day': 'Dr. Brittni Haylock outside ConfiDent Oral Care on opening day, beside white and gold balloons and the Where confidence begins sign',
+  };
+  const slides = cfg.photos.map((id, i) => {
+    const p = photo(site, id);
+    return { label: p.title, html: picture(p, { alt: alts[id] ?? p.alt, className: 'hero-picture', priority: i === 0, loading: 'eager', breakpoint: 760 }) };
   });
-  if (!video.mp4 && !video.webm) return `<div class="hero-media">${poster}</div>`;
-  return `<div class="hero-media" data-hero-video>
-    ${poster}
-    <video class="hero-video" muted loop playsinline preload="none" poster="/img/web/reception-desktop-1536.jpg" aria-label="${esc(video.title)}">
-      ${video.webm ? `<source src="${esc(video.webm)}" type="video/webm">` : ''}
-      ${video.mp4 ? `<source src="${esc(video.mp4)}" type="video/mp4">` : ''}
-    </video>
-    <button class="video-toggle" type="button" data-paused="false" hidden>
-      <span class="when-playing">${icon('pause')}<span class="visually-hidden">Pause video</span></span>
-      <span class="when-paused">${icon('play')}<span class="visually-hidden">Play video</span></span>
-    </button>
-  </div>`;
+  if (video?.mp4) {
+    slides.push({
+      label: video.title,
+      video: true,
+      html: `${video.backdrop ? `<img class="hero-video-backdrop" src="${esc(video.backdrop)}" alt="" aria-hidden="true">` : ''}
+      <video class="hero-video" playsinline preload="none" poster="${esc(video.poster)}"${video.width ? ` width="${video.width}" height="${video.height}"` : ''} aria-label="${esc(video.title)}">
+        ${video.webm ? `<source src="${esc(video.webm)}" type="video/webm">` : ''}
+        <source src="${esc(video.mp4)}" type="video/mp4">
+      </video>`,
+    });
+  }
+  const total = slides.length;
+  return {
+    slides: slides.map((sl, i) => `<div class="hero-slide${i === 0 ? ' is-active' : ''}${sl.video ? ' hero-slide-video' : ''}" role="group" aria-roledescription="slide" aria-label="${i + 1} of ${total}: ${esc(sl.label)}"${i === 0 ? '' : ' aria-hidden="true"'}>
+      ${sl.html}
+    </div>`).join('\n    '),
+    controls: `<div class="hero-controls" role="group" aria-label="Slideshow controls">
+      <button class="hero-ctl hero-prev" type="button" data-hero-prev>${icon('prev')}<span class="visually-hidden">Previous slide</span></button>
+      <div class="hero-dots">${slides.map((sl, i) => `<button class="hero-dot" type="button" data-hero-dot="${i}"${i === 0 ? ' aria-current="true"' : ''}><span class="visually-hidden">Show slide ${i + 1}: ${esc(sl.label)}</span></button>`).join('')}</div>
+      <button class="hero-ctl hero-next" type="button" data-hero-next>${icon('next')}<span class="visually-hidden">Next slide</span></button>
+      <button class="hero-ctl" type="button" data-hero-pause>
+        <span class="when-running">${icon('pause')}<span class="visually-hidden">Pause slideshow</span></span>
+        <span class="when-paused">${icon('play')}<span class="visually-hidden">Play slideshow</span></span>
+      </button>
+      ${video?.mp4 ? `<button class="hero-ctl hero-sound" type="button" data-hero-sound hidden>
+        <span class="when-muted">${icon('mute')}<span class="hero-sound-hint">Tap for sound</span><span class="visually-hidden">Turn sound on</span></span>
+        <span class="when-sound">${icon('volume')}<span class="visually-hidden">Mute</span></span>
+      </button>` : ''}
+    </div>`,
+    interval: cfg.intervalSeconds ?? 6,
+  };
 }
 
 export function homePage(site) {
   const { home, firstVisit } = site.pages;
   const { clinic } = site;
+  const hero = heroSlides(site);
   const body = `
-<section class="hero" aria-labelledby="hero-title">
-  ${heroMedia(site)}
+<section class="hero hero-slides" aria-labelledby="hero-title" aria-roledescription="carousel" data-hero data-interval="${hero.interval}">
+  <div class="hero-track">
+    ${hero.slides}
+  </div>
+  <div class="hero-shade" aria-hidden="true"></div>
   <div class="hero-copy">
-    <p class="eyebrow">ConfiDent Oral Care</p>
     <h1 id="hero-title">${esc(home.hero.title)}</h1>
     <p class="hero-location">${esc(home.hero.location)}</p>
-    <p class="hero-body">${esc(home.hero.body)}</p>
     <div class="btn-row">
       <a class="btn btn-primary" href="/appointments">Request an appointment</a>
-      <a class="btn btn-secondary" href="/services">Explore our services</a>
+      <a class="btn btn-secondary" href="/services"><span class="label-long">Explore our services</span><span class="label-short" aria-hidden="true">Our services</span></a>
     </div>
+  </div>
+  ${hero.controls}
+</section>
+
+<section class="hero-intro" aria-label="Welcome">
+  <div class="container narrow">
+    <p>${esc(home.hero.body)}</p>
   </div>
 </section>
 
@@ -133,7 +163,6 @@ export function homePage(site) {
       })}
     </div>
     <div class="split-copy">
-      <p class="eyebrow">Meet your dentist</p>
       <h2 id="meet-title">${esc(home.meet.title)}</h2>
       <p class="designation">${esc(clinic.clinician.designation)}</p>
       <hr class="rule">
@@ -146,7 +175,6 @@ export function homePage(site) {
 <section class="section section-ivory" aria-labelledby="services-title">
   <div class="container">
     <div class="section-intro">
-      <p class="eyebrow">Explore our services</p>
       <h2 id="services-title">${esc(home.services.title)}</h2>
       <p>${esc(home.services.body)}</p>
     </div>
@@ -166,7 +194,6 @@ export function homePage(site) {
 <section class="section first-visit-band" aria-labelledby="first-title">
   <div class="container split">
     <div class="split-copy">
-      <p class="eyebrow">Your first visit</p>
       <h2 id="first-title">Start with what you’d like to talk about</h2>
       <p>${esc(home.firstVisit.body)}</p>
       <div class="btn-row">
@@ -183,12 +210,11 @@ export function homePage(site) {
 <section class="section section-ivory" aria-labelledby="inside-title">
   <div class="container">
     <div class="section-intro">
-      <p class="eyebrow">Gallery</p>
       <h2 id="inside-title">${esc(home.inside.title)}</h2>
       <p>${esc(home.inside.body)}</p>
     </div>
     <div class="gallery-preview">
-      ${site.pages.gallery.photos.map((p) => `<a class="gallery-preview-item" href="/gallery#${p.id}">
+      ${site.pages.gallery.photos.filter((p) => !p.single).slice(0, 2).map((p) => `<a class="gallery-preview-item" href="/gallery#${p.id}">
         ${picture(p, { sizes: '(min-width: 900px) 50vw, 100vw', className: 'framed', landscapeOnly: true })}
         <span class="caption">${esc(p.title)}</span>
       </a>`).join('')}
@@ -203,7 +229,6 @@ export function homePage(site) {
 <section class="section" aria-labelledby="blog-title">
   <div class="container">
     <div class="section-intro">
-      <p class="eyebrow">Dental blog</p>
       <h2 id="blog-title">${esc(home.blog.title)}</h2>
       <p>${esc(home.blog.body)}</p>
     </div>
@@ -223,7 +248,7 @@ ${contactPanel(site)}`;
 export function aboutPage(site) {
   const { about } = site.pages;
   const body = `
-${pageHead({ eyebrow: 'About ConfiDent', title: about.title, crumbs: [{ label: 'Home', href: '/' }, { label: 'About' }] })}
+${pageHead({ title: about.title, crumbs: [{ label: 'Home', href: '/' }, { label: 'About' }] })}
 <section class="section section-tight">
   <div class="container split split-media-left">
     <div class="split-media">
@@ -246,7 +271,6 @@ ${pageHead({ eyebrow: 'About ConfiDent', title: about.title, crumbs: [{ label: '
 <section class="section section-ivory" aria-labelledby="opening-title">
   <div class="container">
     <div class="section-intro">
-      <p class="eyebrow">The practice</p>
       <h2 id="opening-title">Opening day at The Boardwalk</h2>
     </div>
     <figure class="wide-figure">
@@ -268,7 +292,7 @@ ${contactPanel(site, { tone: 'plain' })}`;
 export function servicesPage(site) {
   const { servicesIndex } = site;
   const body = `
-${pageHead({ eyebrow: 'Services', title: servicesIndex.title, lead: servicesIndex.intro, crumbs: [{ label: 'Home', href: '/' }, { label: 'Services' }] })}
+${pageHead({ title: servicesIndex.title, lead: servicesIndex.intro, crumbs: [{ label: 'Home', href: '/' }, { label: 'Services' }] })}
 <section class="section section-tight">
   <div class="container">
     <nav class="treatment-index" aria-labelledby="index-title">
@@ -315,7 +339,6 @@ export function categoryPage(site, category) {
   const relatedArticles = site.articles.filter((a) => a.explore.some((e) => e.href === category.path) || category.nextSteps.some((n) => n.href === `/blog/${a.slug}`));
   const body = `
 ${pageHead({
-    eyebrow: 'Services',
     title: category.title,
     crumbs: [{ label: 'Home', href: '/' }, { label: 'Services', href: '/services' }, { label: category.title }],
   })}
@@ -373,7 +396,7 @@ export function firstVisitPage(site) {
   const { firstVisit } = site.pages;
   const guide = site.articles.find((a) => a.slug === 'getting-ready-for-your-first-dental-visit');
   const body = `
-${pageHead({ eyebrow: 'Plan your visit', title: firstVisit.title, crumbs: [{ label: 'Home', href: '/' }, { label: 'Your First Visit' }] })}
+${pageHead({ title: firstVisit.title, crumbs: [{ label: 'Home', href: '/' }, { label: 'Your First Visit' }] })}
 <section class="section section-tight">
   <div class="container narrow">
     <ol class="steps steps-large" role="list">
@@ -427,7 +450,7 @@ export function galleryPage(site) {
   const { gallery } = site.pages;
   const videos = publishedVideos(site);
   const body = `
-${pageHead({ eyebrow: 'Gallery', title: gallery.title, lead: gallery.intro, crumbs: [{ label: 'Home', href: '/' }, { label: 'Gallery' }] })}
+${pageHead({ title: gallery.title, lead: gallery.intro, crumbs: [{ label: 'Home', href: '/' }, { label: 'Gallery' }] })}
 <section class="section section-tight" aria-labelledby="photos-title">
   <div class="container">
     <h2 id="photos-title" class="visually-hidden">Photos</h2>
@@ -435,7 +458,7 @@ ${pageHead({ eyebrow: 'Gallery', title: gallery.title, lead: gallery.intro, crum
       ${gallery.photos.map((p, i) => `<li class="gallery-item" id="${p.id}">
         <figure>
           <button class="gallery-open" type="button" data-index="${i}" aria-haspopup="dialog">
-            ${picture(p, { sizes: '(min-width: 900px) 50vw, 100vw', className: 'framed' })}
+            ${p.single ? singlePicture(p, { sizes: '(min-width: 1000px) 33vw, (min-width: 640px) 50vw, 100vw', className: 'framed' }) : picture(p, { sizes: '(min-width: 1000px) 33vw, (min-width: 640px) 50vw, 100vw', className: 'framed', landscapeOnly: true })}
             <span class="gallery-zoom">${icon('expand')}<span class="visually-hidden">View larger: ${esc(p.title)}</span></span>
           </button>
           <figcaption>${esc(p.title)}</figcaption>
@@ -447,7 +470,6 @@ ${pageHead({ eyebrow: 'Gallery', title: gallery.title, lead: gallery.intro, crum
 <section class="section section-ivory" id="videos" aria-labelledby="videos-title" tabindex="-1">
   <div class="container">
     <div class="section-intro">
-      <p class="eyebrow">Watch</p>
       <h2 id="videos-title">${esc(gallery.videosTitle)}</h2>
     </div>
     ${videos.length ? `<div class="video-grid">${videos.map((v) => videoItem(v)).join('')}</div>
@@ -480,7 +502,7 @@ ${pageHead({ eyebrow: 'Gallery', title: gallery.title, lead: gallery.intro, crum
 
 export function blogPage(site) {
   const body = `
-${pageHead({ eyebrow: 'Dental blog', title: site.blogIndex.title, lead: site.blogIndex.intro, crumbs: [{ label: 'Home', href: '/' }, { label: 'Dental Blog' }] })}
+${pageHead({ title: site.blogIndex.title, lead: site.blogIndex.intro, crumbs: [{ label: 'Home', href: '/' }, { label: 'Dental Blog' }] })}
 <section class="section section-tight">
   <div class="container">
     ${articleCards(site, site.articles, 2)}
@@ -493,7 +515,6 @@ export function articlePage(site, article) {
   const others = site.articles.filter((a) => a.slug !== article.slug);
   const body = `
 ${pageHead({
-    eyebrow: 'Dental blog',
     title: article.title,
     lead: article.excerpt,
     crumbs: [{ label: 'Home', href: '/' }, { label: 'Dental Blog', href: '/blog' }, { label: article.title }],
@@ -523,7 +544,7 @@ export function contactPage(site) {
   const { contact } = site.pages;
   const { clinic } = site;
   const body = `
-${pageHead({ eyebrow: 'Contact Us', title: contact.title, crumbs: [{ label: 'Home', href: '/' }, { label: 'Contact Us' }] })}
+${pageHead({ title: contact.title, crumbs: [{ label: 'Home', href: '/' }, { label: 'Contact Us' }] })}
 <section class="section section-tight">
   <div class="container contact-grid">
     <div class="contact-card">
@@ -574,7 +595,6 @@ function routeSection(site) {
   return `<section class="section section-ivory" id="find-your-way" aria-labelledby="route-title">
   <div class="container">
     <div class="section-intro">
-      <p class="eyebrow">Directions</p>
       <h2 id="route-title">Find your way to The Boardwalk</h2>
     </div>
     ${videoItem(route, { extra: `<div class="btn-row"><a class="btn btn-primary" href="${esc(site.directionsUrl)}" rel="noopener">Get directions</a><a class="btn btn-secondary" href="${site.clinic.phone.href}">Call ${esc(site.clinic.phone.label)}</a></div>` })}
@@ -589,7 +609,7 @@ export function appointmentsPage(site) {
   const { clinic } = site;
   const test = site.scheduling.mode === 'test';
   const body = `
-${pageHead({ eyebrow: 'Appointments', title: appointments.title, lead: appointments.intro, crumbs: [{ label: 'Home', href: '/' }, { label: 'Appointments' }] })}
+${pageHead({ title: appointments.title, lead: appointments.intro, crumbs: [{ label: 'Home', href: '/' }, { label: 'Appointments' }] })}
 <section class="section section-tight" aria-label="Ways to arrange a visit">
   <div class="container">
     <ul class="option-grid" role="list">
@@ -616,7 +636,6 @@ ${pageHead({ eyebrow: 'Appointments', title: appointments.title, lead: appointme
 </section>
 <section class="section section-ivory" id="booking" aria-labelledby="booking-title" tabindex="-1">
   <div class="container narrow">
-    <p class="eyebrow">Book online</p>
     <h2 id="booking-title">Choose a visit type</h2>
     ${site.staticPreview ? `<div class="result result-review static-booking">
       <h3>Online booking is not part of this static preview</h3>
@@ -637,7 +656,7 @@ ${contactPanel(site, { tone: 'plain' })}`;
 export function testCalendarPage(site, { events, staffRequests, scheduling, formatEvent }) {
   const sorted = [...events].sort((a, b) => a.start.localeCompare(b.start));
   const body = `
-${pageHead({ eyebrow: 'Preview only', title: 'Test calendar', lead: 'Events saved by the test booking flow, shown in Belize time. This calendar is isolated from the practice’s live operations.' })}
+${pageHead({ title: 'Test calendar', lead: 'Events saved by the test booking flow, shown in Belize time. This calendar is isolated from the practice’s live operations.' })}
 <section class="section section-tight">
   <div class="container">
     <p class="test-banner" role="note"><strong>Test data.</strong> Adapter: ${esc(scheduling.adapter.name)} · Time zone: ${esc(scheduling.timeZone)}. Recurring test busy block: ${esc(site.scheduling.testBusyBlocks.map((b) => `${b.weekday} ${b.start}–${b.end}`).join(', '))}.</p>

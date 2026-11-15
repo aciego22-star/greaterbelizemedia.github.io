@@ -22,6 +22,8 @@ const PATHS = {
   prev: '<path d="m15 5-7 7 7 7"/>',
   next: '<path d="m9 5 7 7-7 7"/>',
   expand: '<path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>',
+  volume: '<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4.5 4.5 0 0 1 0 6M18 6.5a8 8 0 0 1 0 11"/>',
+  mute: '<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="m16 9.5 5 5M21 9.5l-5 5"/>',
 };
 
 export function icon(name, cls = 'icon') {
@@ -44,6 +46,16 @@ export function picture(photo, {
   return `<picture class="${esc(className)}">${portraitSources}
     <source type="image/webp" srcset="${set(photo.landscape, photo.landscapeWidths, 'webp')}" sizes="${sizes}">
     <img src="/img/web/${photo.landscape}-${fallbackWidth}.jpg" srcset="${set(photo.landscape, photo.landscapeWidths, 'jpg')}" sizes="${sizes}" width="${lw}" height="${lh}" alt="${esc(alt)}" ${priority ? 'fetchpriority="high"' : `loading="${loading}"`} decoding="async">
+  </picture>`;
+}
+
+/** Responsive photo with a single crop (gallery photos without a portrait/landscape pair). */
+export function singlePicture(photo, { alt = photo.alt, sizes = '100vw', className = '', loading = 'lazy' } = {}) {
+  const set = (ext) => photo.widths.map((w) => `/img/web/${photo.single}-${w}.${ext} ${w}w`).join(', ');
+  const [w, h] = photo.size;
+  return `<picture class="${esc(className)}">
+    <source type="image/webp" srcset="${set('webp')}" sizes="${sizes}">
+    <img src="/img/web/${photo.single}-${photo.widths[0]}.jpg" srcset="${set('jpg')}" sizes="${sizes}" width="${w}" height="${h}" alt="${esc(alt)}" loading="${loading}" decoding="async">
   </picture>`;
 }
 

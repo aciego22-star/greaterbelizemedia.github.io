@@ -16,10 +16,13 @@ OUT = ROOT / "public" / "img" / "web"
 
 # name -> widths to generate (the original width is always included)
 PHOTOS = {
-    "reception-desktop": [768, 1152],
+    "reception-desktop": [768, 1200],
     "reception-mobile": [480, 720],
     "opening-desktop": [768, 1200],
     "opening-mobile": [480, 720],
+    "team-celebration": [640],
+    "reception-team": [640],
+    "waiting-area": [640],
 }
 
 

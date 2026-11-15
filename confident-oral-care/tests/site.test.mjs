@@ -100,22 +100,40 @@ test('the home page sections appear in the briefed order with a first-screen app
   const html = pages.get('/');
   const order = ['hero-title', 'meet-title', 'services-title', 'first-title', 'inside-title', 'blog-title', 'visit-heading', '<footer'].map((k) => html.indexOf(k));
   assert.deepEqual([...order].sort((a, b) => a - b), order);
-  const hero = html.slice(html.indexOf('class="hero"'), html.indexOf('meet-title'));
+  const hero = html.slice(html.indexOf('data-hero'), html.indexOf('meet-title'));
   assert.ok(hero.includes('href="/appointments">Request an appointment</a>'));
   assert.ok(html.includes('class="btn btn-primary header-cta" href="/appointments"'));
   assert.ok(hero.includes('fetchpriority="high"'), 'hero poster loads eagerly');
 });
 
-test('gallery has a distinct #videos section and the hero has no video until one is configured', () => {
-  assert.ok(pages.get('/gallery').includes('id="videos"'));
-  assert.ok(pages.get('/gallery').includes(`href="${clinic.socialLinks.instagram}"`));
-  assert.ok(!pages.get('/').includes('<video'));
+test('home hero: reception photo, opening-day photo, then the video, with small controls', () => {
+  const html = pages.get('/');
+  const hero = html.slice(html.indexOf('data-hero'), html.indexOf('meet-title'));
+  const labels = [...hero.matchAll(/aria-roledescription="slide" aria-label="([^"]+)"/g)].map((m) => m[1]);
+  assert.deepEqual(labels, ['1 of 3: Our reception', '2 of 3: Opening day at The Boardwalk', '3 of 3: The route to ConfiDent']);
+  assert.match(hero, /data-interval="6"/);
+  assert.match(hero, /<video class="hero-video" playsinline preload="none" poster="\/img\/web\/route-to-confident-poster\.jpg"/);
+  assert.ok(!/<video[^>]*\smuted/.test(hero), 'hero video is not forced muted (sound where the browser allows)');
+  for (const ctl of ['data-hero-prev', 'data-hero-next', 'data-hero-pause', 'data-hero-sound']) assert.ok(hero.includes(ctl), ctl);
+  assert.equal((hero.match(/data-hero-dot=/g) || []).length, 3);
+});
+
+test('no eyebrow labels anywhere on the site', () => {
+  for (const [route, html] of pages) assert.ok(!html.includes('class="eyebrow"'), route);
+});
+
+test('gallery has all five photos and a distinct #videos section', () => {
+  const html = pages.get('/gallery');
+  assert.ok(html.includes('id="videos"'));
+  for (const id of ['reception', 'opening-day', 'celebration', 'reception-desk', 'waiting-area']) assert.ok(html.includes(`id="${id}"`), id);
+  assert.ok(html.includes('/img/web/team-celebration-640.webp'));
+  assert.ok(html.includes(`href="${clinic.socialLinks.instagram}"`));
 });
 
 test('the route video plays only on request, with a poster, in the gallery and beside the directions', async () => {
   for (const route of ['/gallery', '/contact']) {
     const html = pages.get(route);
-    const video = html.match(/<video[^>]*>/)[0];
+    const video = html.slice(html.indexOf('<main')).match(/<video[^>]*>/)[0];
     assert.match(video, /controls/);
     assert.match(video, /preload="metadata"/);
     assert.match(video, /poster="\/img\/web\/route-to-confident-poster\.jpg"/);

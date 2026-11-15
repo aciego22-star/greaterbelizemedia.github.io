@@ -53,41 +53,157 @@ function initNav() {
   }
 }
 
-/* ------------------------------------------------------------ Hero video */
+/* ------------------------------------------------------------- Hero slides */
 
-function initHeroVideo() {
-  const wrap = document.querySelector('[data-hero-video]');
-  if (!wrap) return;
-  const video = wrap.querySelector('video');
-  const button = wrap.querySelector('.video-toggle');
-  const showPoster = () => { video.hidden = true; button.hidden = true; };
-  const sync = () => button.setAttribute('data-paused', String(video.paused));
+// Photos change every few seconds; the video plays to the end, then the show returns to the first
+// photo. The video tries to play with sound. Browsers only allow sound after the visitor has
+// interacted with the page, so until then it plays muted with a small "Tap for sound" button,
+// and the first tap or key press anywhere turns the sound on.
+function initHero() {
+  const hero = document.querySelector('[data-hero]');
+  if (!hero) return;
+  const slides = [...hero.querySelectorAll('.hero-slide')];
+  const dots = [...hero.querySelectorAll('[data-hero-dot]')];
+  const video = hero.querySelector('.hero-video');
+  const soundBtn = hero.querySelector('[data-hero-sound]');
+  const pauseBtn = hero.querySelector('[data-hero-pause]');
+  const interval = Number(hero.dataset.interval || 6) * 1000;
+  let index = 0;
+  let timer = null;
+  let paused = reducedMotion.matches;
+  let held = false; // keyboard focus inside the hero
+  let wantSound = true;
+  let interacted = false;
 
-  video.addEventListener('error', showPoster, true);
-  video.querySelectorAll('source').forEach((s) => s.addEventListener('error', () => {
-    if (video.networkState === HTMLMediaElement.NETWORK_NO_SOURCE) showPoster();
-  }));
-  video.addEventListener('play', sync);
-  video.addEventListener('pause', sync);
-  button.addEventListener('click', () => (video.paused ? video.play().catch(showPoster) : video.pause()));
+  const isVideoSlide = (i = index) => Boolean(video) && slides[i].contains(video);
 
-  // Reduced motion: keep the poster and let people start playback themselves.
-  if (reducedMotion.matches) {
-    video.hidden = true;
-    button.hidden = false;
-    button.setAttribute('data-paused', 'true');
-    button.addEventListener('click', () => { video.hidden = false; }, { once: true });
-    return;
+  function updateSound() {
+    if (!soundBtn) return;
+    soundBtn.hidden = !isVideoSlide();
+    soundBtn.classList.toggle('is-on', Boolean(video) && !video.muted);
   }
-  video.preload = 'auto';
-  button.hidden = false;
-  video.play().then(sync).catch(() => {
-    // Autoplay blocked: keep the poster visible, offer a play button.
-    video.hidden = true;
-    button.setAttribute('data-paused', 'true');
-    button.addEventListener('click', () => { video.hidden = false; }, { once: true });
+
+  function schedule() {
+    clearTimeout(timer);
+    if (paused || held || document.hidden) return;
+    if (isVideoSlide() && !video.paused) return; // advances on "ended"
+    timer = setTimeout(() => show(index + 1), interval);
+  }
+
+  async function playVideo() {
+    if (!video) return;
+    video.preload = 'auto';
+    video.currentTime = 0;
+    video.muted = !(wantSound && interacted);
+    try {
+      await video.play();
+    } catch {
+      if (!video.muted) {
+        video.muted = true; // sound blocked until the visitor interacts
+        try { await video.play(); } catch { /* playback blocked entirely: the poster stays */ }
+      }
+    }
+    // Some browsers allow sound without a tap: try once.
+    if (video.muted && wantSound && !interacted && !video.paused) {
+      video.muted = false;
+      setTimeout(() => { if (video.paused) { video.muted = true; video.play().catch(() => {}); } updateSound(); }, 150);
+    }
+    updateSound();
+    schedule();
+  }
+
+  function show(next) {
+    const prev = index;
+    index = (next + slides.length) % slides.length;
+    if (prev !== index) {
+      slides[prev].classList.remove('is-active');
+      slides[prev].setAttribute('aria-hidden', 'true');
+      dots[prev]?.removeAttribute('aria-current');
+    }
+    slides[index].classList.add('is-active');
+    slides[index].removeAttribute('aria-hidden');
+    dots[index]?.setAttribute('aria-current', 'true');
+    if (video) {
+      if (isVideoSlide()) {
+        if (!paused) playVideo();
+      } else {
+        video.pause();
+        if (isVideoSlide(index + 1)) video.preload = 'auto'; // warm up before its turn
+      }
+    }
+    updateSound();
+    schedule();
+  }
+
+  function setPaused(value) {
+    paused = value;
+    hero.classList.toggle('is-paused', paused);
+    if (video && isVideoSlide()) {
+      if (paused) video.pause();
+      else playVideo();
+    }
+    schedule();
+  }
+
+  hero.querySelector('[data-hero-prev]')?.addEventListener('click', () => show(index - 1));
+  hero.querySelector('[data-hero-next]')?.addEventListener('click', () => show(index + 1));
+  dots.forEach((dot, i) => dot.addEventListener('click', () => show(i)));
+  pauseBtn?.addEventListener('click', () => setPaused(!paused));
+  soundBtn?.addEventListener('click', () => {
+    interacted = true;
+    wantSound = video.muted;
+    video.muted = !wantSound;
+    if (video.paused && !paused) video.play().catch(() => {});
+    updateSound();
   });
-  reducedMotion.addEventListener('change', (e) => { if (e.matches) video.pause(); });
+
+  if (video) {
+    video.addEventListener('ended', () => show(index + 1));
+    video.addEventListener('error', () => {
+      // Missing or unplayable video: drop its slide from the rotation.
+      const i = slides.findIndex((sl) => sl.contains(video));
+      if (i < 0) return;
+      slides[i].remove();
+      dots[i]?.remove();
+      slides.splice(i, 1);
+      dots.splice(i, 1);
+      soundBtn?.remove();
+      if (index >= slides.length) show(0);
+    }, true);
+    // The first tap or key press anywhere unlocks sound for the video.
+    const unlock = (e) => {
+      if (e.target.closest?.('[data-hero-sound]')) return;
+      interacted = true;
+      if (isVideoSlide() && wantSound && video.muted && !video.paused) video.muted = false;
+      updateSound();
+      ['pointerdown', 'keydown'].forEach((t) => document.removeEventListener(t, unlock, true));
+    };
+    ['pointerdown', 'keydown'].forEach((t) => document.addEventListener(t, unlock, true));
+  }
+
+  // Hold the slideshow while keyboard focus is on the hero controls or buttons (the hero fills the
+  // screen, so hovering doesn't pause it; the pause button does).
+  hero.addEventListener('focusin', () => { held = hero.matches(':focus-within:has(:focus-visible)'); schedule(); });
+  hero.addEventListener('focusout', (e) => { if (!hero.contains(e.relatedTarget)) { held = false; schedule(); } });
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) { clearTimeout(timer); if (video && !video.paused) video.pause(); }
+    else if (!paused && isVideoSlide()) video.play().catch(() => {});
+    else schedule();
+  });
+
+  // Swipe on touch screens.
+  let startX = null;
+  hero.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; }, { passive: true });
+  hero.addEventListener('touchend', (e) => {
+    if (startX === null) return;
+    const dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) > 50) show(index + (dx < 0 ? 1 : -1));
+    startX = null;
+  });
+
+  reducedMotion.addEventListener('change', (e) => { if (e.matches) setPaused(true); });
+  hero.classList.toggle('is-paused', paused);
+  show(0);
 }
 
 /* --------------------------------------------------------------- Gallery */
@@ -145,7 +261,7 @@ function initBookingPage() {
 }
 
 initNav();
-initHeroVideo();
+initHero();
 initGallery();
 initBookingPage();
 initAssistant();

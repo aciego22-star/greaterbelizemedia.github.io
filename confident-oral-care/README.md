@@ -63,23 +63,41 @@ tests/               node:test suites
 
 Restart the server after editing configuration.
 
-### Adding the clinic tour video
+### Home hero slideshow
 
-1. Compress the clip for the web, for example H.264 MP4 at 1280–1920 px wide and about 4–8 Mbit/s, with no audio track for the hero. Put it in `public/media/`.
-2. In `config/site.json`, set `media.heroVideo.mp4` to `/media/your-clip.mp4` (add `webm` if you have one).
+The home page opens with a full-screen slideshow configured in `config/site.json`:
+- **Order:** the reception photo, then the opening-day photo (`media.heroSlides.photos`), then the video (`media.heroVideo`).
+- **Timing:** photos change every `intervalSeconds` (6). The video plays to the end, then the slideshow returns to the first photo.
+- **Responsive images:** each photo uses its desktop crop on wide screens and its phone crop on narrow ones.
+- **Video layout:** the vertical video fills phone screens. On wide screens it's centred over a blurred backdrop.
+- **Controls:** small previous/next, dots, pause/play and sound buttons. Phones also support swipe, and prev/next are hidden there.
+- **Reduced motion:** with that setting, the slideshow doesn't move or autoplay. Keyboard focus on the controls holds the current slide.
+- **Sound:** the video plays with its original soundtrack where the browser allows it. Most browsers, and Safari on iPhone always, block sound until the visitor has tapped, clicked or pressed a key on the page. Until then it plays muted with a small "Tap for sound" button, and the first interaction anywhere turns the sound on.
+- **Missing video:** if the video fails to load, its slide is dropped from the rotation.
 
-The video then plays muted, inline and on a loop, with a visible pause/play button. The reception photo stays as the poster and fallback, and it's shown instead of the video when autoplay is blocked, the visitor prefers reduced motion, or the file fails to load. No layout change is needed.
+The greeting, location and buttons are real HTML over a soft shade at the bottom of the hero. The longer welcome sentence sits in a band just below it.
 
-For the Gallery **Videos** section, add or fill in an entry in `media.galleryVideos`: `src`, `width`/`height`, `runtime`, `description`, and `captions` (a WebVTT file) or `transcript` for spoken content. A placeholder entry for the clinic tour (`clinic-tour`) is already there and stays hidden until it has a `src`. Gallery clips play only when the visitor starts them.
+### Videos
 
-### The route video (supplied Instagram reel)
+`public/media/route-to-confident.mp4` is the clinic's "Route to ConfiDent" reel, with its original soundtrack (music only, no narration). It's 27 seconds of driving to The Boardwalk, ending at ConfiDent's doors, re-encoded with `-crf 27 -maxrate 1000k -c:a aac -b:a 128k`. It plays:
+- in the home hero
+- in Gallery → Videos
+- in the "Find your way to The Boardwalk" section on Contact Us
 
-`public/media/route-to-confident.mp4` is the clinic's "Route to ConfiDent" reel: 27 seconds of driving to The Boardwalk, ending at ConfiDent's doors. It appears in Gallery → Videos and in a "Find your way to The Boardwalk" section on Contact Us, next to Get directions. confident AI also points to it when asked for directions.
+The reel's music was likely added in Instagram, and Instagram music is generally licensed for Instagram only. The clinic should confirm it may be used on the website, or supply a version with cleared or original audio.
 
-- **No audio.** The web copy has the audio removed. The reel's soundtrack is music with no narration, and music added in Instagram is generally licensed for use on Instagram only. If the clinic confirms the track is original or cleared for the website, re-encode from the original reel with audio (`-c:a aac -b:a 96k` instead of `-an` below), and remove "This video has no sound." from its `description`.
-- **Not in the hero.** It's a vertical 652 × 1160 clip of the road, not the clinic tour the brief describes for the hero. Stretched across a desktop hero, it would be blurry and would hide the reception signage. The hero keeps the reception photo until the tour arrives.
-- **Encoding.** `ffmpeg -i reel.mp4 -an -c:v libx264 -preset slow -crf 27 -maxrate 1000k -bufsize 2000k -pix_fmt yuv420p -movflags +faststart route-to-confident.mp4` (3.4 MB). The poster is the opening "ROUTE TO: ConfiDent" frame.
-- The server supports HTTP byte ranges, which iOS Safari needs to play video.
+To add the clinic tour later, fill in the `clinic-tour` entry in `media.galleryVideos`: `src`, `width`/`height`, `runtime`, `description`, and `captions` or `transcript` if it has speech. The server supports HTTP byte ranges, which iOS Safari needs to play video.
+
+### Gallery
+
+The gallery shows five photos in a masonry layout at their natural shapes, with a keyboard-accessible photo viewer:
+- reception
+- opening day
+- celebrating opening day
+- at the reception desk
+- in the waiting area
+
+The photo records live in `content/pages.mjs` (`gallery.photos`). Paired photos have desktop and phone crops; single photos have one. Web sizes are generated by `npm run images`.
 
 ## confident AI
 
