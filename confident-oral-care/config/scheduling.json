@@ -1,0 +1,66 @@
+{
+  "_comment": "Demo scheduling configuration. Durations, the test resource, the busy block and the cutoffs are DEMO ASSUMPTIONS pending clinic confirmation. Bookable windows are deliberately separate from the public hours in clinic-data.json.",
+  "mode": "test",
+  "previewLabel": "Test booking. Use sample details for this demonstration.",
+  "timeZone": "America/Belize",
+  "adapter": "local",
+  "local": {
+    "calendarFile": "data/test-calendar.json"
+  },
+  "google": {
+    "calendarId": null,
+    "serviceAccountKeyFile": null
+  },
+  "staffReviewFile": "data/staff-review-requests.json",
+  "bookingRecordsFile": "data/booking-records.json",
+  "slotStepMinutes": 30,
+  "minimumNoticeMinutes": 120,
+  "bookingHorizonDays": 28,
+  "maxRangeDays": 14,
+  "slotReferenceTtlMinutes": 30,
+  "calendarWriteTimeoutMs": 8000,
+  "resources": [
+    { "id": "test-chair-1", "label": "Test resource (demo chair)" }
+  ],
+  "bookableWindows": {
+    "Monday": [{ "start": "09:00", "end": "12:00" }, { "start": "14:00", "end": "17:00" }],
+    "Tuesday": [{ "start": "09:00", "end": "12:00" }, { "start": "14:00", "end": "17:00" }],
+    "Wednesday": [{ "start": "09:00", "end": "12:00" }, { "start": "14:00", "end": "17:00" }],
+    "Thursday": [{ "start": "09:00", "end": "12:00" }, { "start": "14:00", "end": "17:00" }],
+    "Friday": [{ "start": "09:00", "end": "12:00" }, { "start": "14:00", "end": "17:00" }],
+    "Saturday": [{ "start": "09:00", "end": "13:00" }]
+  },
+  "closedDates": [],
+  "testBusyBlocks": [
+    { "weekday": "Wednesday", "start": "10:00", "end": "11:00", "label": "Busy (test block)", "resource": "test-chair-1" }
+  ],
+  "visitTypes": [
+    {
+      "id": "general-consultation",
+      "label": "General consultation",
+      "description": "A 30-minute visit to talk through everyday dental care, a change you’ve noticed, or a treatment you’re considering.",
+      "durationMinutes": 30,
+      "booking": "direct",
+      "resources": ["test-chair-1"],
+      "servicePage": "/services/consultations-diagnostics#general-consultations"
+    },
+    {
+      "id": "orthodontic-consultation",
+      "label": "Orthodontic consultation",
+      "description": "Questions about tooth position, your bite, retainers, or orthodontic care you’ve had before. The team reviews these requests and contacts you to arrange a time.",
+      "durationMinutes": 30,
+      "booking": "staff-review",
+      "resources": ["test-chair-1"],
+      "servicePage": "/services/consultations-diagnostics#orthodontic-consultations"
+    },
+    {
+      "id": "other-visit",
+      "label": "Another treatment or visit",
+      "description": "Ask about any treatment on our menu. The team reviews the request and contacts you to arrange the right appointment.",
+      "durationMinutes": null,
+      "booking": "staff-review",
+      "resources": [],
+      "servicePage": "/services"
+    }
+  ]
+}

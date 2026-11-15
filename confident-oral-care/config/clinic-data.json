@@ -1,0 +1,305 @@
+{
+  "practice": "ConfiDent Oral Care",
+  "tagline": "Where confidence begins",
+  "clinician": {
+    "name": "Dr. Brittni Haylock",
+    "designation": "DDS & Orthodontist"
+  },
+  "address": "The Boardwalk Belize, Belize City, Belize",
+  "timeZone": "America/Belize",
+  "phone": {
+    "label": "+501 628-8233",
+    "e164": "+5016288233",
+    "href": "tel:+5016288233"
+  },
+  "email": {
+    "label": "info@confidentoc.com",
+    "href": "mailto:info@confidentoc.com"
+  },
+  "socialLinks": {
+    "instagram": "https://www.instagram.com/confidentoralcare.bz/",
+    "facebook": "https://www.facebook.com/share/1F7DRqRkB8/?mibextid=wwXIfr"
+  },
+  "publishedAppointmentChannels": [
+    "Phone",
+    "Instagram DM"
+  ],
+  "publicHours": [
+    {
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "ranges": [
+        {
+          "opens": "09:00",
+          "closes": "12:00"
+        },
+        {
+          "opens": "14:00",
+          "closes": "17:00"
+        }
+      ]
+    },
+    {
+      "days": [
+        "Saturday"
+      ],
+      "ranges": [
+        {
+          "opens": "09:00",
+          "closes": "13:00"
+        }
+      ]
+    }
+  ],
+  "publishedHoursCaption": {
+    "lastAppointment": "17:00",
+    "clinicCloses": "18:00",
+    "note": "The caption gives these times separately from the hours graphic. Confirm the booking rule for each day before enabling live slots."
+  },
+  "aiName": "confident AI",
+  "serviceGroups": [
+    {
+      "title": "Consultations & Diagnostics",
+      "slug": "consultations-diagnostics",
+      "reference": "consultations-and-diagnostics.jpg",
+      "services": [
+        {
+          "name": "General consultations",
+          "slug": "general-consultations",
+          "aliases": [
+            "consultation",
+            "dental consultation",
+            "general consultation",
+            "first consultation"
+          ]
+        },
+        {
+          "name": "Orthodontic consultations",
+          "slug": "orthodontic-consultations",
+          "aliases": [
+            "orthodontic consultation",
+            "orthodontic assessment",
+            "orthodontist consult"
+          ]
+        },
+        {
+          "name": "Digital X-rays",
+          "slug": "digital-x-rays",
+          "aliases": [
+            "dental X-ray",
+            "digital radiographs"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "General & Preventive Dentistry",
+      "slug": "general-preventive-dentistry",
+      "reference": "general-and-preventive.jpg",
+      "services": [
+        {
+          "name": "Cleanings",
+          "slug": "cleanings",
+          "aliases": [
+            "cleaning",
+            "dental cleaning",
+            "teeth cleaning"
+          ]
+        },
+        {
+          "name": "Fluoride treatments",
+          "slug": "fluoride-treatments",
+          "aliases": [
+            "fluoride"
+          ]
+        },
+        {
+          "name": "Dental sealants",
+          "slug": "dental-sealants",
+          "aliases": [
+            "sealants"
+          ]
+        },
+        {
+          "name": "Fillings",
+          "slug": "fillings",
+          "aliases": [
+            "dental filling",
+            "cavity filling"
+          ]
+        },
+        {
+          "name": "Teeth whitening",
+          "slug": "teeth-whitening",
+          "aliases": [
+            "whitening"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Orthodontics & Protective Appliances",
+      "slug": "orthodontics-protective-appliances",
+      "reference": "orthodontics-and-appliances.jpg",
+      "services": [
+        {
+          "name": "Mouthguards",
+          "slug": "mouthguards",
+          "aliases": [
+            "mouthguard",
+            "mouth guard",
+            "sports mouthguard"
+          ]
+        },
+        {
+          "name": "Fixed retainers",
+          "slug": "fixed-retainers",
+          "aliases": [
+            "fixed retainer",
+            "bonded retainer"
+          ]
+        },
+        {
+          "name": "Removable retainers",
+          "slug": "removable-retainers",
+          "aliases": [
+            "removable retainer"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Crowns & Recementation",
+      "slug": "crowns-recementation",
+      "reference": "crowns.jpg",
+      "services": [
+        {
+          "name": "Zirconia crowns",
+          "slug": "zirconia-crowns",
+          "aliases": [
+            "zirconia crown",
+            "ceramic crown"
+          ]
+        },
+        {
+          "name": "Crown recementation",
+          "slug": "crown-recementation",
+          "aliases": [
+            "loose crown",
+            "crown came off",
+            "reattach a crown"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Root Canal Treatments",
+      "slug": "root-canal-treatments",
+      "reference": "root-canals.jpg",
+      "services": [
+        {
+          "name": "Anterior and posterior root canal treatment",
+          "slug": "anterior-and-posterior-root-canal-treatment",
+          "aliases": [
+            "root canal",
+            "anterior root canal",
+            "posterior root canal",
+            "front tooth root canal",
+            "back tooth root canal"
+          ]
+        },
+        {
+          "name": "Root canal retreatment",
+          "slug": "root-canal-retreatment",
+          "aliases": [
+            "endodontic retreatment",
+            "retreatments"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Extractions & Oral Surgery",
+      "slug": "extractions-oral-surgery",
+      "reference": "extractions.jpg",
+      "services": [
+        {
+          "name": "Tooth extractions",
+          "slug": "tooth-extractions",
+          "aliases": [
+            "extractions",
+            "tooth removal"
+          ]
+        },
+        {
+          "name": "Surgical extractions",
+          "slug": "surgical-extractions",
+          "aliases": [
+            "surgical extraction"
+          ]
+        },
+        {
+          "name": "Dry socket care",
+          "slug": "dry-socket-care",
+          "aliases": [
+            "dry socket",
+            "dry socket assessment"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Dentures & Prosthodontics",
+      "slug": "dentures-prosthodontics",
+      "reference": "dentures.jpg",
+      "services": [
+        {
+          "name": "Partial dentures",
+          "slug": "partial-dentures",
+          "aliases": [
+            "partial denture",
+            "partial plate"
+          ]
+        },
+        {
+          "name": "Flippers",
+          "slug": "flippers",
+          "aliases": [
+            "flipper",
+            "dental flipper",
+            "temporary partial denture"
+          ]
+        },
+        {
+          "name": "Immediate dentures",
+          "slug": "immediate-dentures",
+          "aliases": [
+            "immediate denture",
+            "denture fitted after extraction"
+          ]
+        },
+        {
+          "name": "Full dentures",
+          "slug": "full-dentures",
+          "aliases": [
+            "full denture",
+            "complete dentures",
+            "complete denture"
+          ]
+        }
+      ]
+    }
+  ],
+  "pendingClinicDetails": {
+    "calendarProvider": null,
+    "appointmentRules": null,
+    "prices": null,
+    "insurance": null,
+    "paymentMethods": null
+  }
+}

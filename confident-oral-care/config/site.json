@@ -1,0 +1,27 @@
+{
+  "_comment": "Website configuration. Clinic facts (contact, hours, services) live in clinic-data.json; booking rules live in scheduling.json.",
+  "preview": true,
+  "canonicalOrigin": null,
+  "basePath": "",
+  "socialImage": "/img/web/og-reception.jpg",
+  "media": {
+    "heroVideo": {
+      "_comment": "Set mp4 (and optionally webm) to a compressed clip path, e.g. /media/clinic-tour.mp4, to replace the poster. Leave null to show the reception photography.",
+      "mp4": null,
+      "webm": null,
+      "title": "A look around ConfiDent"
+    },
+    "galleryVideos": [
+      {
+        "_comment": "Example entry. Set src to a video path to publish it; entries with a null src are hidden and the Instagram placeholder is shown instead.",
+        "title": "A look around ConfiDent",
+        "src": null,
+        "type": "video/mp4",
+        "runtime": null,
+        "poster": "/img/web/reception-desktop-1152.jpg",
+        "captions": null,
+        "transcript": null
+      }
+    ]
+  }
+}
