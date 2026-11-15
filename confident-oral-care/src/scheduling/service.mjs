@@ -1,12 +1,15 @@
 import { randomBytes } from 'node:crypto';
-import { CalendarTimeoutError } from './adapters/local.mjs';
+import { readAll } from '../kv.mjs';
+import { CalendarTimeoutError, SlotConflictError } from './errors.mjs';
 import { statusMessages } from './messages.mjs';
 import {
   addDays, compareDates, formatDateLong, formatDateShort, formatTime, isValidDateString,
   minutesOf, partsInZone, timeOfMinutes, weekdayOf, zonedToUtc,
 } from './time.mjs';
+import { createTokens } from './tokens.mjs';
 
 const REF_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+const FINAL = new Set(['confirmed', 'staff_review_recorded']);
 
 export class SchedulingError extends Error {
   constructor(code, message, extra = {}) {
@@ -17,15 +20,10 @@ export class SchedulingError extends Error {
 }
 
 function randomRef(length = 6) {
-  const bytes = randomBytes(length);
-  return Array.from(bytes, (b) => REF_ALPHABET[b % REF_ALPHABET.length]).join('');
+  return Array.from(randomBytes(length), (b) => REF_ALPHABET[b % REF_ALPHABET.length]).join('');
 }
 
-function opaqueId(prefix) {
-  return `${prefix}_${randomBytes(18).toString('base64url')}`;
-}
-
-/** Serializes async work per key (one staff resource at a time). */
+/** Serializes async work per key within one process (the slot claim covers multiple instances). */
 class KeyedLock {
   constructor() { this.tails = new Map(); }
   async run(key, fn) {
@@ -42,7 +40,6 @@ class KeyedLock {
       if (this.tails.get(key) === tail) this.tails.delete(key);
     }
   }
-  /** Acquire several keys in a fixed order (deadlock-free). */
   runMany(keys, fn) {
     const sorted = [...new Set(keys)].sort();
     const step = (i) => (i === sorted.length ? fn() : this.run(sorted[i], () => step(i + 1)));
@@ -60,7 +57,7 @@ function withTimeout(promise, ms) {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export function validateContact(input = {}, { requireService = false, services = [] } = {}) {
+export function validateContact(input = {}, { services = [] } = {}) {
   const errors = {};
   const clean = (v, max) => (typeof v === 'string' ? v.trim().slice(0, max) : '');
   const contact = {
@@ -78,7 +75,6 @@ export function validateContact(input = {}, { requireService = false, services =
   if (contact.email && !EMAIL_RE.test(contact.email)) errors.email = 'Enter a valid email address.';
   if (contact.isMinor && contact.patientName.length < 2) errors.patientName = 'Enter the patient’s name.';
   if (contact.service && !services.includes(contact.service)) errors.service = 'Choose a service from the list.';
-  if (requireService && !contact.service) errors.service = 'Choose a service.';
   return { contact, errors, ok: Object.keys(errors).length === 0 };
 }
 
@@ -88,20 +84,20 @@ export function validateContact(input = {}, { requireService = false, services =
  * Flow: findAvailability -> prepareBooking | prepareStaffReview -> completeReview.
  * Claude may call the first two steps through tools; only the patient's submission of the
  * structured review screen calls completeReview, which performs the calendar write.
+ *
+ * Slot references and review steps are signed tokens bound to the visitor's session, so the
+ * service keeps no in-memory state and runs unchanged on a single server or serverless functions.
+ * The booking reference inside the review token is the idempotency key for retries.
  */
-export function createSchedulingService({
-  config, clinic, adapter, staffStore, recordsStore, now = () => new Date(), logger = console,
-}) {
+export function createSchedulingService({ config, clinic, adapter, kv, secret, now = () => new Date(), logger = console }) {
   const tz = config.timeZone;
   const messages = statusMessages(clinic);
+  const tokens = createTokens(secret);
   const lock = new KeyedLock();
-  const slotRefs = new Map(); // slotRef -> { sessionId, visitTypeId, start, end, resourceIds, expires }
-  const reviews = new Map(); // reviewId -> review state
-  const idempotency = new Map(); // `${sessionId}:${key}` -> Promise<result>
   const serviceNames = clinic.serviceGroups.flatMap((g) => g.services.map((s) => s.name));
-
   const visitTypes = new Map(config.visitTypes.map((v) => [v.id, v]));
   const resourceLabel = new Map(config.resources.map((r) => [r.id, r.label]));
+  const previewLabel = config.mode === 'test' ? config.previewLabel : null;
 
   function publicVisitType(v) {
     return {
@@ -121,12 +117,6 @@ export function createSchedulingService({
     };
   }
 
-  function sweepExpired() {
-    const t = now().getTime();
-    for (const [ref, slot] of slotRefs) if (slot.expires < t) slotRefs.delete(ref);
-    for (const [id, review] of reviews) if (review.expires < t && !review.result) reviews.delete(id);
-  }
-
   /** Candidate starts for one day from the bookable windows (whole visit must fit in a window). */
   function candidatesForDay(day, duration) {
     if (config.closedDates.includes(day)) return [];
@@ -141,8 +131,8 @@ export function createSchedulingService({
     return out;
   }
 
-  function overlaps(busy, resource, start, end) {
-    return busy.some((b) => b.resource === resource && b.start < end && b.end > start);
+  function overlaps(busy, resource, start, end, ignoreRef = null) {
+    return busy.some((b) => b.resource === resource && b.start < end && b.end > start && (!ignoreRef || b.bookingRef !== ignoreRef));
   }
 
   function admissibleRange(fromDate, toDate) {
@@ -157,9 +147,11 @@ export function createSchedulingService({
     return { from, to, today, lastBookable, empty: compareDates(from, lastBookable) > 0 };
   }
 
-  /** Returns only available times, each with a session-scoped opaque reference. */
+  const earliestStart = () => new Date(now().getTime() + config.minimumNoticeMinutes * 60_000);
+
+  /** Returns only available times. */
   async function computeSlots(visitType, from, to) {
-    const earliest = new Date(now().getTime() + config.minimumNoticeMinutes * 60_000);
+    const earliest = earliestStart();
     const candidates = [];
     for (let day = from; compareDates(day, to) <= 0; day = addDays(day, 1)) {
       candidates.push(...candidatesForDay(day, visitType.durationMinutes).filter((c) => c.start >= earliest));
@@ -176,20 +168,14 @@ export function createSchedulingService({
   }
 
   function issueSlotRef(sessionId, visitType, slot) {
-    const slotRef = opaqueId('slot');
-    slotRefs.set(slotRef, {
-      sessionId,
-      visitTypeId: visitType.id,
-      start: slot.start,
-      end: slot.end,
-      resourceIds: slot.freeResources,
-      expires: now().getTime() + config.slotReferenceTtlMinutes * 60_000,
+    const slotRef = tokens.sign({
+      t: 'slot', sid: sessionId, v: visitType.id, s: slot.start.toISOString(), e: slot.end.toISOString(),
+      r: slot.freeResources, exp: now().getTime() + config.slotReferenceTtlMinutes * 60_000,
     });
     return { slotRef, ...slotView(slot.start, slot.end) };
   }
 
   async function findAvailability({ sessionId, visitTypeId, fromDate, toDate, limit = 40 }) {
-    sweepExpired();
     const visitType = visitTypes.get(visitTypeId);
     if (!visitType) throw new SchedulingError('unknown_visit_type', 'Unknown visit type.');
     if (visitType.booking !== 'direct') {
@@ -211,7 +197,7 @@ export function createSchedulingService({
     };
   }
 
-  /** Real alternatives after a slot is lost: the next available times from that day onward. */
+  /** Real alternatives after a slot is lost: the next available times after it. */
   async function alternativesAfter(sessionId, visitType, start, count = 5) {
     const day = partsInZone(start, tz).date;
     const range = admissibleRange(day, addDays(day, config.maxRangeDays - 1));
@@ -221,209 +207,170 @@ export function createSchedulingService({
     return (later.length ? later : slots).slice(0, count).map((s) => issueSlotRef(sessionId, visitType, s));
   }
 
-  function reviewView(review) {
-    const visitType = visitTypes.get(review.visitTypeId);
+  function reviewView(token, payload) {
+    const visitType = visitTypes.get(payload.v);
     return {
-      reviewId: review.reviewId,
-      kind: review.kind,
+      reviewId: token,
+      kind: payload.k,
       visitType: publicVisitType(visitType),
-      ...(review.kind === 'booking' ? { slot: slotView(review.start, review.end) } : {}),
-      previewLabel: config.mode === 'test' ? config.previewLabel : null,
-      services: review.kind === 'staff-review' && visitType.id === 'other-visit' ? serviceNames : undefined,
-      expiresAt: new Date(review.expires).toISOString(),
+      ...(payload.k === 'booking' ? { slot: slotView(new Date(payload.s), new Date(payload.e)) } : {}),
+      previewLabel,
+      services: payload.k === 'staff-review' && visitType.id === 'other-visit' ? serviceNames : undefined,
+      expiresAt: new Date(payload.exp).toISOString(),
     };
+  }
+
+  function readToken(token, type, sessionId) {
+    const p = tokens.verify(token);
+    if (!p || p.t !== type || p.sid !== sessionId) return null;
+    return p;
   }
 
   async function prepareBooking({ sessionId, slotRef }) {
-    sweepExpired();
-    const slot = slotRefs.get(slotRef);
-    if (!slot || slot.sessionId !== sessionId) {
+    const slot = readToken(slotRef, 'slot', sessionId);
+    if (!slot || slot.exp < now().getTime() || !visitTypes.has(slot.v)) {
       throw new SchedulingError('invalid_slot', 'That time is no longer held. Please choose a time again.');
     }
-    const visitType = visitTypes.get(slot.visitTypeId);
+    const visitType = visitTypes.get(slot.v);
+    const start = new Date(slot.s);
+    const end = new Date(slot.e);
     // Non-binding freshness check so the patient doesn't fill the form for a slot that is already gone.
-    const busy = await adapter.getBusy({ resourceIds: slot.resourceIds, from: slot.start, to: slot.end });
-    const free = slot.resourceIds.filter((r) => !overlaps(busy, r, slot.start, slot.end));
-    if (!free.length || slot.start < new Date(now().getTime() + config.minimumNoticeMinutes * 60_000)) {
-      slotRefs.delete(slotRef);
-      throw new SchedulingError('slot_taken', messages.slotTaken, {
-        alternatives: await alternativesAfter(sessionId, visitType, slot.start),
-      });
+    const busy = await adapter.getBusy({ resourceIds: slot.r, from: start, to: end });
+    if (!slot.r.some((r) => !overlaps(busy, r, start, end)) || start < earliestStart()) {
+      throw new SchedulingError('slot_taken', messages.slotTaken, { alternatives: await alternativesAfter(sessionId, visitType, start) });
     }
-    const review = {
-      reviewId: opaqueId('rev'),
-      kind: 'booking',
-      sessionId,
-      visitTypeId: visitType.id,
-      start: slot.start,
-      end: slot.end,
-      resourceIds: slot.resourceIds,
-      bookingRef: `CD-${randomRef()}`,
-      state: 'open',
-      expires: now().getTime() + config.slotReferenceTtlMinutes * 60_000,
+    const payload = {
+      t: 'rev', k: 'booking', sid: sessionId, v: visitType.id, s: slot.s, e: slot.e, r: slot.r,
+      ref: `CD-${randomRef()}`, exp: now().getTime() + config.slotReferenceTtlMinutes * 60_000,
     };
-    reviews.set(review.reviewId, review);
-    return reviewView(review);
+    return reviewView(tokens.sign(payload), payload);
   }
 
   async function prepareStaffReview({ sessionId, visitTypeId }) {
-    sweepExpired();
     const visitType = visitTypes.get(visitTypeId);
     if (!visitType) throw new SchedulingError('unknown_visit_type', 'Unknown visit type.');
-    if (visitType.booking !== 'staff-review') {
-      throw new SchedulingError('not_staff_review', 'This visit type can be booked directly.');
-    }
-    const review = {
-      reviewId: opaqueId('rev'),
-      kind: 'staff-review',
-      sessionId,
-      visitTypeId,
-      requestRef: `REQ-${randomRef()}`,
-      state: 'open',
-      expires: now().getTime() + 60 * 60_000,
+    if (visitType.booking !== 'staff-review') throw new SchedulingError('not_staff_review', 'This visit type can be booked directly.');
+    const payload = { t: 'rev', k: 'staff-review', sid: sessionId, v: visitTypeId, ref: `REQ-${randomRef()}`, exp: now().getTime() + 60 * 60_000 };
+    return reviewView(tokens.sign(payload), payload);
+  }
+
+  function confirmedResult(review, eventId, resource) {
+    const view = slotView(new Date(review.s), new Date(review.e));
+    return {
+      status: 'confirmed',
+      bookingRef: review.ref,
+      eventId,
+      slot: view,
+      visitType: publicVisitType(visitTypes.get(review.v)),
+      message: messages.confirmed({ dateLabel: view.dateLabel, timeLabel: view.timeLabel, bookingRef: review.ref }),
+      previewLabel,
+      resourceLabel: resourceLabel.get(resource),
     };
-    reviews.set(review.reviewId, review);
-    return reviewView(review);
+  }
+
+  async function record(review, eventId, resource, contact, extra = {}) {
+    try {
+      await kv.createJSON(`booking-records/${review.ref}`, {
+        bookingRef: review.ref, eventId, visitTypeId: review.v, resource, start: review.s, end: review.e,
+        contact, mode: config.mode, createdAt: now().toISOString(), ...extra,
+      });
+    } catch (err) {
+      // The calendar event (with its booking reference) is the source of truth; don't un-confirm it.
+      logger.error('[scheduling] booking record write failed for', review.ref, err.name);
+    }
   }
 
   async function writeBooking(review, contact) {
-    const visitType = visitTypes.get(review.visitTypeId);
-    const view = slotView(review.start, review.end);
-    const confirmed = async (eventId, resource, extra = {}) => {
-      review.state = 'confirmed';
-      review.resource = resource;
-      try {
-        await recordsStore.append({
-          bookingRef: review.bookingRef, eventId, visitTypeId: visitType.id, resource,
-          start: review.start.toISOString(), end: review.end.toISOString(),
-          contact, mode: config.mode, createdAt: now().toISOString(), ...extra,
-        });
-      } catch (err) {
-        // The calendar event (with its booking reference) is the source of truth; don't un-confirm it.
-        logger.error('[scheduling] booking record write failed for', review.bookingRef, err.name);
-      }
-      return {
-        status: 'confirmed',
-        bookingRef: review.bookingRef,
-        eventId,
-        slot: view,
-        visitType: publicVisitType(visitType),
-        message: messages.confirmed({ dateLabel: view.dateLabel, timeLabel: view.timeLabel, bookingRef: review.bookingRef }),
-        previewLabel: config.mode === 'test' ? config.previewLabel : null,
-        resourceLabel: resourceLabel.get(resource),
-      };
-    };
+    const visitType = visitTypes.get(review.v);
+    const start = new Date(review.s);
+    const end = new Date(review.e);
 
-    // A previous attempt may have written the event before timing out: reconcile first.
-    if (review.state === 'unresolved') {
-      const existing = await adapter.findEventByBookingRef(review.bookingRef);
-      if (existing) return confirmed(existing.id, existing.resource ?? review.resource, { reconciled: true });
+    // An earlier attempt with this booking reference may already have saved the event (retry,
+    // double submit or a timed-out write): reconcile before writing anything.
+    const existing = await adapter.findEventByBookingRef(review.ref);
+    if (existing) {
+      await record(review, existing.id, existing.resource, contact, { reconciled: true });
+      return confirmedResult(review, existing.id, existing.resource);
     }
 
-    // Authoritative availability recheck under the resource lock.
-    const busy = await adapter.getBusy({ resourceIds: review.resourceIds, from: review.start, to: review.end });
-    const resource = review.resource ?? review.resourceIds.find((r) => !overlaps(busy, r, review.start, review.end));
-    if (!resource || (review.resource && overlaps(busy, review.resource, review.start, review.end))) {
-      review.state = 'slot_taken';
-      return {
-        status: 'slot_taken',
-        message: messages.slotTaken,
-        alternatives: await alternativesAfter(review.sessionId, visitType, review.start),
-      };
-    }
-    review.resource = resource;
+    const slotTaken = async () => ({
+      status: 'slot_taken', message: messages.slotTaken, alternatives: await alternativesAfter(review.sid, visitType, start),
+    });
+
+    // Authoritative availability recheck.
+    const busy = await adapter.getBusy({ resourceIds: review.r, from: start, to: end });
+    const resource = review.r.find((r) => !overlaps(busy, r, start, end, review.ref));
+    if (!resource) return slotTaken();
 
     try {
       const { eventId } = await withTimeout(adapter.createEvent({
-        bookingRef: review.bookingRef,
+        bookingRef: review.ref,
         resource,
-        start: review.start,
-        end: review.end,
-        title: `ConfiDent appointment ${review.bookingRef}${config.mode === 'test' ? ' (TEST)' : ''}`,
+        start,
+        end,
+        title: `ConfiDent appointment ${review.ref}${config.mode === 'test' ? ' (TEST)' : ''}`,
         visitTypeId: visitType.id,
       }), config.calendarWriteTimeoutMs);
-      return await confirmed(eventId, resource);
+      await record(review, eventId, resource, contact);
+      return confirmedResult(review, eventId, resource);
     } catch (err) {
+      if (err instanceof SlotConflictError) return slotTaken();
       if (!(err instanceof CalendarTimeoutError)) throw err;
       // Timed out: the write may or may not have landed. Reconcile with the original reference.
-      review.state = 'unresolved';
-      let existing = null;
-      try { existing = await adapter.findEventByBookingRef(review.bookingRef); } catch { /* still unresolved */ }
-      if (existing) return confirmed(existing.id, resource, { reconciled: true });
+      let landed = null;
+      try { landed = await adapter.findEventByBookingRef(review.ref); } catch { /* still unresolved */ }
+      if (landed) {
+        await record(review, landed.id, resource, contact, { reconciled: true });
+        return confirmedResult(review, landed.id, resource);
+      }
       return { status: 'unconfirmed', retryable: true, message: messages.unavailable };
     }
   }
 
-  async function runComplete(review, contactInput) {
-    const visitType = visitTypes.get(review.visitTypeId);
-    const { contact, errors, ok } = validateContact(contactInput, {
-      requireService: false,
-      services: serviceNames,
-    });
-    if (!ok) return { status: 'invalid', errors };
+  async function completeReview({ sessionId, reviewId, contact: contactInput }) {
+    const review = readToken(reviewId, 'rev', sessionId);
+    if (!review || !visitTypes.has(review.v)) {
+      return { status: 'invalid_review', message: 'This request has expired. Please start again.' };
+    }
+    const visitType = visitTypes.get(review.v);
+    const { contact, errors, ok } = validateContact(contactInput, { services: serviceNames });
 
-    if (review.kind === 'staff-review') {
+    if (review.k === 'staff-review') {
       try {
-        await staffStore.append({
-          requestRef: review.requestRef,
-          visitTypeId: visitType.id,
-          status: 'pending-staff-review',
-          contact,
-          mode: config.mode,
-          createdAt: now().toISOString(),
-        });
-        review.state = 'recorded';
-        return {
-          status: 'staff_review_recorded',
-          requestRef: review.requestRef,
-          visitType: publicVisitType(visitType),
-          message: messages.staffReviewRecorded,
-          previewLabel: config.mode === 'test' ? config.previewLabel : null,
-        };
+        // Identical retries return the recorded request.
+        const recorded = await kv.getJSON(`staff-requests/${review.ref}`);
+        if (!recorded) {
+          if (!ok) return { status: 'invalid', errors };
+          if (review.exp < now().getTime()) return { status: 'expired', message: 'This request has expired. Please start again.' };
+          await kv.createJSON(`staff-requests/${review.ref}`, {
+            requestRef: review.ref, visitTypeId: visitType.id, status: 'pending-staff-review',
+            contact, mode: config.mode, createdAt: now().toISOString(),
+          });
+        }
       } catch (err) {
-        logger.error('[scheduling] staff review store failed:', err.message);
+        logger.error('[scheduling] staff review store failed:', err.name);
         return { status: 'unavailable', message: messages.unavailable };
       }
-    }
-
-    if (review.expires < now().getTime() && review.state === 'open') {
-      return { status: 'expired', message: 'This time is no longer held. Please choose a time again.' };
+      return {
+        status: 'staff_review_recorded',
+        requestRef: review.ref,
+        visitType: publicVisitType(visitType),
+        message: messages.staffReviewRecorded,
+        previewLabel,
+      };
     }
 
     try {
-      return await lock.runMany(review.resourceIds, () => writeBooking(review, contact));
+      // A retry after success must still say "confirmed", even once the review step has expired.
+      const existing = await adapter.findEventByBookingRef(review.ref);
+      if (existing) return confirmedResult(review, existing.id, existing.resource);
+      if (!ok) return { status: 'invalid', errors };
+      if (review.exp < now().getTime()) return { status: 'expired', message: 'This time is no longer held. Please choose a time again.' };
+      return await lock.runMany(review.r, () => writeBooking(review, contact));
     } catch (err) {
       logger.error('[scheduling] calendar error:', err.name);
       return { status: 'unavailable', message: messages.unavailable };
     }
-  }
-
-  async function completeReview({ sessionId, reviewId, idempotencyKey, contact }) {
-    const review = reviews.get(reviewId);
-    if (!review || review.sessionId !== sessionId) {
-      return { status: 'invalid_review', message: 'This request has expired. Please start again.' };
-    }
-    const key = typeof idempotencyKey === 'string' && idempotencyKey.length >= 8 ? `${sessionId}:${idempotencyKey}` : null;
-    if (key && idempotency.has(key)) return idempotency.get(key);
-    // An identical retry for a finished review returns the same outcome and reference.
-    if (review.result && ['confirmed', 'staff_review_recorded', 'slot_taken'].includes(review.result.status)) {
-      return review.result;
-    }
-    if (review.inFlight) return review.inFlight;
-
-    const run = runComplete(review, contact).then((result) => {
-      if (['confirmed', 'staff_review_recorded', 'slot_taken'].includes(result.status)) review.result = result;
-      return result;
-    }).finally(() => { review.inFlight = null; });
-    review.inFlight = run;
-    if (key) {
-      idempotency.set(key, run);
-      // Only keep final outcomes; allow a retry after a validation error or an unresolved write.
-      run.then((result) => {
-        if (!['confirmed', 'staff_review_recorded', 'slot_taken'].includes(result.status)) idempotency.delete(key);
-      });
-    }
-    return run;
   }
 
   return {
@@ -431,6 +378,7 @@ export function createSchedulingService({
     mode: config.mode,
     previewLabel: config.previewLabel,
     messages,
+    isFinal: (status) => FINAL.has(status),
     listVisitTypes: () => config.visitTypes.map(publicVisitType),
     findAvailability,
     prepareBooking,
@@ -438,6 +386,6 @@ export function createSchedulingService({
     completeReview,
     serviceNames,
     adapter,
-    listStaffRequests: () => staffStore.all(),
+    listStaffRequests: () => readAll(kv, 'staff-requests/'),
   };
 }

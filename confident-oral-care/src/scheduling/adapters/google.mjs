@@ -1,6 +1,6 @@
 import { createHash, createSign } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
-import { CalendarTimeoutError, CalendarUnavailableError } from './local.mjs';
+import { CalendarTimeoutError, CalendarUnavailableError } from '../errors.mjs';
 
 /**
  * Google Calendar adapter (service account). NOT exercised in the preview build: it needs a

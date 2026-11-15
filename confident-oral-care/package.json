@@ -16,6 +16,10 @@
     "export": "node scripts/export-static.mjs --single"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^1.8.0"
+    "@anthropic-ai/sdk": "^1.8.0",
+    "@netlify/blobs": "^11.1.9"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2"
   }
 }

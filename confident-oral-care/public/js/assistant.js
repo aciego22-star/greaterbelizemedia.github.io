@@ -113,7 +113,7 @@ export function initAssistant() {
     if (!(await checkStatus())) {
       addMessage('ai', facts.staticPreview
         ? `In this static preview I can’t answer typed questions; that part runs on the clinic’s server. Try the suggestions below, call [${facts.phone}](${facts.phoneHref}), or message the practice on [Instagram](${facts.instagram}).`
-        : `${facts.messages.unavailable}\n\nYou can still [request an appointment online](/appointments#booking) or use the suggestions below.`);
+        : `${facts.messages.unavailable}\n\nThe suggestions below can still help you find a service, check the hours or get directions.`);
       return;
     }
     busy = true;

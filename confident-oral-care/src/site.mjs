@@ -1,5 +1,6 @@
-import { readFile } from 'node:fs/promises';
-import { join } from 'node:path';
+import clinicData from '../config/clinic-data.json' with { type: 'json' };
+import schedulingConfig from '../config/scheduling.json' with { type: 'json' };
+import siteJson from '../config/site.json' with { type: 'json' };
 import { articles, blogIndex } from '../content/blog.mjs';
 import * as pages from '../content/pages.mjs';
 import { categories as categoryCopy, servicesIndex } from '../content/treatments.mjs';
@@ -11,10 +12,10 @@ import { statusMessages } from './scheduling/messages.mjs';
  * page copy. The website and confident AI both read from the object returned here.
  */
 export async function loadSite(root, { staticPreview = false } = {}) {
-  const readJson = async (rel) => JSON.parse(await readFile(join(root, rel), 'utf8'));
-  const clinic = await readJson('config/clinic-data.json');
-  const siteConfig = await readJson('config/site.json');
-  const scheduling = await readJson('config/scheduling.json');
+  // Imported (not read from disk) so the serverless bundle carries the same records.
+  const clinic = structuredClone(clinicData);
+  const siteConfig = structuredClone(siteJson);
+  const scheduling = structuredClone(schedulingConfig);
 
   const categories = clinic.serviceGroups.map((group) => {
     const copy = categoryCopy.find((c) => c.slug === group.slug);

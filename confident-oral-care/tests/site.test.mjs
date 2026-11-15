@@ -147,9 +147,9 @@ test('booking API: availability, prepare and complete over HTTP with a session c
   const prep = await (await fetch(`${base}/api/booking/prepare`, { method: 'POST', headers, body: JSON.stringify({ slotRef: avail.slots[0].slotRef }) })).json();
   assert.equal(prep.status, 'ok');
   // Another session cannot use this review.
-  const other = await (await fetch(`${base}/api/booking/complete`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ reviewId: prep.review.reviewId, idempotencyKey: 'x-12345678', contact: { name: 'Test', phone: '6000000' } }) })).json();
+  const other = await (await fetch(`${base}/api/booking/complete`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ reviewId: prep.review.reviewId, contact: { name: 'Test', phone: '6000000' } }) })).json();
   assert.equal(other.status, 'invalid_review');
-  const done = await (await fetch(`${base}/api/booking/complete`, { method: 'POST', headers, body: JSON.stringify({ reviewId: prep.review.reviewId, idempotencyKey: 'x-12345678', contact: { name: 'Test Patient', phone: '+501 600-0000' } }) })).json();
+  const done = await (await fetch(`${base}/api/booking/complete`, { method: 'POST', headers, body: JSON.stringify({ reviewId: prep.review.reviewId, contact: { name: 'Test Patient', phone: '+501 600-0000' } }) })).json();
   assert.equal(done.status, 'confirmed');
   assert.equal(done.eventId, undefined, 'internal calendar IDs are not exposed');
   const cal = await (await fetch(`${base}/preview/test-calendar`)).text();

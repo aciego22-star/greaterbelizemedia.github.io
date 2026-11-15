@@ -1,13 +1,15 @@
-// Static export for static hosts such as Netlify, plus a single-file preview.
+// Netlify package and single-file preview.
 //
 //   node scripts/export-static.mjs            -> deliverables/netlify-site/ and deliverables/confident-oral-care-netlify.zip
 //   node scripts/export-static.mjs --single   -> also deliverables/confident-oral-care-preview.html (one self-contained file)
 //
-// A static host has no server, so online booking and confident AI's conversation are switched off
-// ("static preview" mode) and visitors are pointed to phone and Instagram instead. The full experience
-// needs the Node server (npm start).
+// The Netlify zip is the full site: pre-rendered pages plus one pre-bundled Netlify Function
+// (netlify/functions/api.mjs) for the booking API, confident AI and the test calendar, with data in
+// Netlify Blobs. No build step or npm install is needed; upload the zip as-is.
+// The single-file preview has no server, so it runs in "static preview" mode.
 
 import { execFileSync } from 'node:child_process';
+import { build } from 'esbuild';
 import { cp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { dirname, extname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -20,8 +22,10 @@ const OUT = join(ROOT, 'deliverables');
 const SITE_DIR = join(OUT, 'netlify-site');
 const single = process.argv.includes('--single');
 
-const site = await loadSite(ROOT, { staticPreview: true });
+const fullSite = await loadSite(ROOT);
+const site = await loadSite(ROOT, { staticPreview: true }); // single-file preview only
 const routes = pageRoutes(site);
+const fullRoutes = pageRoutes(fullSite);
 
 const fileFor = (path) => (path === '/' ? 'index.html' : `${path.slice(1)}.html`);
 
@@ -31,27 +35,49 @@ async function exportSite() {
   await rm(SITE_DIR, { recursive: true, force: true });
   await mkdir(SITE_DIR, { recursive: true });
 
-  for (const [path, render] of routes) {
+  for (const [path, render] of fullRoutes) {
     const file = join(SITE_DIR, fileFor(path));
     await mkdir(dirname(file), { recursive: true });
     await writeFile(file, render());
   }
-  await writeFile(join(SITE_DIR, '404.html'), notFoundPage(site));
+  await writeFile(join(SITE_DIR, '404.html'), notFoundPage(fullSite));
+
+  // One self-contained function file (all dependencies included).
+  await build({
+    entryPoints: [join(ROOT, 'netlify/functions/api.mjs')],
+    outfile: join(SITE_DIR, 'netlify/functions/api.mjs'),
+    bundle: true,
+    platform: 'node',
+    format: 'esm',
+    target: 'node20',
+    legalComments: 'none',
+    logLevel: 'warning',
+    banner: { js: "import { createRequire as __cr } from 'node:module'; const require = __cr(import.meta.url);" },
+  });
+  await writeFile(join(SITE_DIR, 'netlify.toml'), `# ConfiDent Oral Care: pre-built site. No build command; publish the zip root as-is.
+[build]
+  publish = "."
+
+[functions]
+  directory = "netlify/functions"
+`);
 
   const filter = (src) => !src.includes(`${join('public', 'img', 'original')}`);
   for (const dir of ['css', 'js', 'fonts', 'img', 'media']) {
     await cp(join(ROOT, 'public', dir), join(SITE_DIR, dir), { recursive: true, filter });
   }
 
-  const preview = Boolean(site.siteConfig.preview);
+  const preview = Boolean(fullSite.siteConfig.preview);
   await writeFile(join(SITE_DIR, 'robots.txt'), preview ? 'User-agent: *\nDisallow: /\n' : 'User-agent: *\nAllow: /\n');
 
   // Explicit clean-URL rewrites (status 200) so /about serves about.html on any Netlify setting,
   // then a 404 fallback.
-  const redirects = [...routes.keys()]
+  // Keep deployment files private, then clean-URL rewrites. /api/* and /preview/test-calendar are
+  // served by the function (its config.path).
+  const redirects = ['/netlify/*  /404.html  404!', '/netlify.toml  /404.html  404!'];
+  redirects.push(...[...fullRoutes.keys()]
     .filter((p) => p !== '/')
-    .map((p) => `${p}  /${fileFor(p)}  200`);
-  redirects.push('/preview/*  /404.html  404', '/api/*  /404.html  404');
+    .map((p) => `${p}  /${fileFor(p)}  200`));
   await writeFile(join(SITE_DIR, '_redirects'), `${redirects.join('\n')}\n`);
 
   await writeFile(join(SITE_DIR, '_headers'), `/*

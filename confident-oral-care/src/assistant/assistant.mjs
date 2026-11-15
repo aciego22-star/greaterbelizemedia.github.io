@@ -65,7 +65,20 @@ function textOf(content) {
  * confident AI: a manual tool-use loop over the Claude Messages API.
  * Conversation history lives server-side in the visitor's session and is only ever appended to.
  */
-export function createAssistant({ site, scheduling, client, config = {}, logger = console }) {
+export function createAssistant({ site, scheduling, client, kv = null, config = {}, logger = console }) {
+  // Conversation state per visitor session: in the key-value store when given (serverless), else in memory.
+  const memory = new Map();
+  const freshState = () => ({ messages: [], turns: 0, notes: [] });
+  const chatKey = (sessionId) => `chats/${sessionId}`;
+  async function loadState(sessionId) {
+    if (!kv) return memory.get(sessionId) ?? freshState();
+    return (await kv.getJSON(chatKey(sessionId))) ?? freshState();
+  }
+  async function saveState(sessionId, state) {
+    if (!kv) return void memory.set(sessionId, state);
+    await kv.setJSON(chatKey(sessionId), { ...state, updatedAt: new Date().toISOString() });
+  }
+  const deadlineMs = config.deadlineMs ?? 45_000; // stay inside a 60 s serverless execution limit
   const model = config.model || 'claude-opus-5-5';
   const effort = config.effort || 'low';
   const fallbacks = config.fallbacks ?? 'default';
@@ -136,12 +149,19 @@ export function createAssistant({ site, scheduling, client, config = {}, logger 
     }
   }
 
-  async function handleMessage({ session, text, page }) {
+  async function handleMessage({ sessionId, text, page }) {
     const message = String(text ?? '').trim().slice(0, 800);
     if (!message) return { reply: '', actions: [] };
     if (!client) return { reply: unavailable, actions: [], degraded: true };
-    session.assistant ??= { messages: [], turns: 0, notes: [] };
-    const state = session.assistant;
+    const session = { id: sessionId };
+    const started = Date.now();
+    let state;
+    try {
+      state = await loadState(sessionId);
+    } catch (err) {
+      logger.error('[assistant] could not load conversation', err.name);
+      return { reply: unavailable, actions: [], degraded: true };
+    }
     if (state.turns >= MAX_TURNS_PER_SESSION) {
       return { reply: `We’ve reached the limit for this conversation. Please call ${site.clinic.phone.label} or message the practice on Instagram.`, actions: [], degraded: true };
     }
@@ -159,6 +179,7 @@ export function createAssistant({ site, scheduling, client, config = {}, logger 
 
     try {
       for (let round = 0; round <= MAX_TOOL_ROUNDS; round += 1) {
+        if (Date.now() - started > deadlineMs) throw new Error('Assistant deadline reached');
         const response = await callClaude(state.messages);
         state.messages.push({ role: 'assistant', content: response.content });
         const said = textOf(response.content);
@@ -180,10 +201,12 @@ export function createAssistant({ site, scheduling, client, config = {}, logger 
         state.messages.push({ role: 'user', content: results });
       }
       state.turns += 1;
+      await saveState(sessionId, state);
       return { reply: replyParts.join('\n\n') || unavailable, actions };
     } catch (err) {
       // Drop the incomplete turn so the stored conversation stays valid for the next request.
       state.messages.length = checkpoint;
+      await saveState(sessionId, state).catch(() => {});
       if (err instanceof Anthropic.RateLimitError) logger.error('[assistant] rate limited');
       else if (err instanceof Anthropic.APIError) logger.error('[assistant] API error', err.status);
       else logger.error('[assistant] error', err.name, err.message);
@@ -192,8 +215,7 @@ export function createAssistant({ site, scheduling, client, config = {}, logger 
   }
 
   /** Website outcomes (never contact details) are passed to the assistant with the next message. */
-  function noteOutcome(session, result) {
-    session.assistant ??= { messages: [], turns: 0, notes: [] };
+  async function noteOutcome(sessionId, result) {
     const label = {
       confirmed: `The visitor's booking was confirmed by the calendar: ${result.slot?.dateLabel} at ${result.slot?.timeLabel} Belize time, reference ${result.bookingRef}.`,
       staff_review_recorded: `The visitor's staff-review request was recorded (reference ${result.requestRef}). No time is set yet.`,
@@ -201,7 +223,14 @@ export function createAssistant({ site, scheduling, client, config = {}, logger 
       unconfirmed: 'The booking could not be confirmed (calendar did not respond). Nothing is confirmed.',
       unavailable: 'The booking could not be completed because the calendar was unavailable. Nothing is confirmed.',
     }[result.status];
-    if (label) session.assistant.notes.push(label);
+    if (!label) return;
+    try {
+      const state = await loadState(sessionId);
+      state.notes.push(label);
+      await saveState(sessionId, state);
+    } catch (err) {
+      logger.error('[assistant] could not save outcome note', err.name);
+    }
   }
 
   return { available: Boolean(client), model, handleMessage, noteOutcome, systemPrompt, tools };
@@ -209,5 +238,6 @@ export function createAssistant({ site, scheduling, client, config = {}, logger 
 
 export function createClaudeClient() {
   if (!process.env.ANTHROPIC_API_KEY && !process.env.ANTHROPIC_AUTH_TOKEN) return null;
-  return new Anthropic();
+  // Per-request timeout and a single retry keep the whole tool loop inside a 60 s function limit.
+  return new Anthropic({ timeout: 25_000, maxRetries: 1 });
 }

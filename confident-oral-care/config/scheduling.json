@@ -3,16 +3,11 @@
   "mode": "test",
   "previewLabel": "Test booking. Use sample details for this demonstration.",
   "timeZone": "America/Belize",
-  "adapter": "local",
-  "local": {
-    "calendarFile": "data/test-calendar.json"
-  },
+  "adapter": "test-calendar",
   "google": {
     "calendarId": null,
     "serviceAccountKeyFile": null
   },
-  "staffReviewFile": "data/staff-review-requests.json",
-  "bookingRecordsFile": "data/booking-records.json",
   "slotStepMinutes": 30,
   "minimumNoticeMinutes": 120,
   "bookingHorizonDays": 28,
@@ -20,19 +15,78 @@
   "slotReferenceTtlMinutes": 30,
   "calendarWriteTimeoutMs": 8000,
   "resources": [
-    { "id": "test-chair-1", "label": "Test resource (demo chair)" }
+    {
+      "id": "test-chair-1",
+      "label": "Test resource (demo chair)"
+    }
   ],
   "bookableWindows": {
-    "Monday": [{ "start": "09:00", "end": "12:00" }, { "start": "14:00", "end": "17:00" }],
-    "Tuesday": [{ "start": "09:00", "end": "12:00" }, { "start": "14:00", "end": "17:00" }],
-    "Wednesday": [{ "start": "09:00", "end": "12:00" }, { "start": "14:00", "end": "17:00" }],
-    "Thursday": [{ "start": "09:00", "end": "12:00" }, { "start": "14:00", "end": "17:00" }],
-    "Friday": [{ "start": "09:00", "end": "12:00" }, { "start": "14:00", "end": "17:00" }],
-    "Saturday": [{ "start": "09:00", "end": "13:00" }]
+    "Monday": [
+      {
+        "start": "09:00",
+        "end": "12:00"
+      },
+      {
+        "start": "14:00",
+        "end": "17:00"
+      }
+    ],
+    "Tuesday": [
+      {
+        "start": "09:00",
+        "end": "12:00"
+      },
+      {
+        "start": "14:00",
+        "end": "17:00"
+      }
+    ],
+    "Wednesday": [
+      {
+        "start": "09:00",
+        "end": "12:00"
+      },
+      {
+        "start": "14:00",
+        "end": "17:00"
+      }
+    ],
+    "Thursday": [
+      {
+        "start": "09:00",
+        "end": "12:00"
+      },
+      {
+        "start": "14:00",
+        "end": "17:00"
+      }
+    ],
+    "Friday": [
+      {
+        "start": "09:00",
+        "end": "12:00"
+      },
+      {
+        "start": "14:00",
+        "end": "17:00"
+      }
+    ],
+    "Saturday": [
+      {
+        "start": "09:00",
+        "end": "13:00"
+      }
+    ]
   },
   "closedDates": [],
   "testBusyBlocks": [
-    { "weekday": "Wednesday", "start": "10:00", "end": "11:00", "label": "Busy (test block)", "resource": "test-chair-1" }
+    {
+      "weekday": "Wednesday",
+      "start": "10:00",
+      "end": "11:00",
+      "label": "Busy (test block)",
+      "resource": "test-chair-1"
+    }
   ],
   "visitTypes": [
     {
@@ -41,7 +95,9 @@
       "description": "A 30-minute visit to talk through everyday dental care, a change you’ve noticed, or a treatment you’re considering.",
       "durationMinutes": 30,
       "booking": "direct",
-      "resources": ["test-chair-1"],
+      "resources": [
+        "test-chair-1"
+      ],
       "servicePage": "/services/consultations-diagnostics#general-consultations"
     },
     {
@@ -50,7 +106,9 @@
       "description": "Questions about tooth position, your bite, retainers, or orthodontic care you’ve had before. The team reviews these requests and contacts you to arrange a time.",
       "durationMinutes": 30,
       "booking": "staff-review",
-      "resources": ["test-chair-1"],
+      "resources": [
+        "test-chair-1"
+      ],
       "servicePage": "/services/consultations-diagnostics#orthodontic-consultations"
     },
     {
@@ -62,5 +120,6 @@
       "resources": [],
       "servicePage": "/services"
     }
-  ]
+  ],
+  "_storage": "Test calendar events, staff-review requests, booking records and chat history are kept in the key-value store: data/ when running the Node server, Netlify Blobs (store \"confident-oral-care\") when deployed to Netlify."
 }

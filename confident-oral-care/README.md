@@ -96,23 +96,39 @@ For the Gallery **Videos** section, add or fill in an entry in `media.galleryVid
 ## Scheduling
 
 ```
-findAvailability(visitType, from, to)    -> free slots + session-scoped slot refs
-prepareBooking(slotRef) / prepareStaffReview(visitType)  -> review (booking reference issued)
-completeReview(reviewId, idempotencyKey, contact)        -> confirmed | staff_review_recorded |
+findAvailability(visitType, from, to)    -> free slots + signed, session-bound slot refs
+prepareBooking(slotRef) / prepareStaffReview(visitType)  -> signed review (booking reference issued)
+completeReview(reviewId, contact)                        -> confirmed | staff_review_recorded |
                                                             slot_taken (+ real alternatives) |
                                                             unconfirmed | unavailable | invalid
 ```
 
 - Slots come from `bookableWindows`, the visit duration (the whole visit must fit inside a window), the minimum notice, the booking horizon, and the calendar's busy times for each visit type's resources. All day and time rules are worked out in **America/Belize**.
-- On completion, the service takes a per-resource lock, rechecks live availability, then writes the event. **Confirmed is shown only after the calendar returns an event ID**, or after reconciliation finds the event.
-- Retries are idempotent. The same idempotency key or review returns the original result and booking reference. A timed-out write is reconciled by its booking reference before any second write.
-- Calendar events carry a neutral title (`ConfiDent appointment CD-XXXXXX (TEST)`). Patient contact details are stored only in `data/booking-records.json` (or `data/staff-review-requests.json`) and are never logged.
+- Slot references and review steps are HMAC-signed tokens bound to the visitor's session cookie, with their own expiry. The service keeps no in-memory state, so it runs the same on one server or on serverless functions.
+- On completion, the service rechecks live availability, then writes the event. The test calendar first claims `slots/<resource>/<start>` with an atomic create-if-absent write and reads the claim back. Two bookings can't hold the same time, even across instances. **Confirmed is shown only after the event is saved**, or after reconciliation finds it.
+- Retries are idempotent. The booking reference inside the review token is the idempotency key, and an identical retry returns the original result. A timed-out write is reconciled by its booking reference before any second write.
+- Calendar events carry a neutral title (`ConfiDent appointment CD-XXXXXX (TEST)`). Patient contact details are stored only under `booking-records/` and `staff-requests/` in the data store, and are never logged.
+
+### Data storage
+
+Everything is kept in one small key-value store:
+- **Node server:** JSON files under `data/`.
+- **Netlify:** Netlify Blobs, store `confident-oral-care`. No setup is needed.
+
+| Key prefix | Contents |
+|---|---|
+| `events/` | Test calendar events |
+| `slots/` | Slot claims |
+| `booking-records/` | Patient contact details for confirmed bookings |
+| `staff-requests/` | Staff-review requests with contact details |
+| `chats/` | confident AI conversation history per session (may contain what visitors typed) |
+| `config/signing-secret` | Generated signing secret (unless `SESSION_SECRET` is set) |
 
 ### Calendar adapters
 
 | Adapter | Status |
 |---|---|
-| `local` (default) | Persistent JSON test calendar at `data/test-calendar.json`, with a recurring test busy block. Used for the preview. |
+| `test-calendar` (default) | Persistent test calendar in the data store, with a recurring test busy block. Used for the preview. |
 | `google` | Implemented against the Calendar REST API (freeBusy, events.insert with a deterministic event ID, events.get for reconciliation) using a service account. **Not yet exercised.** Verify it against a dedicated test calendar before relying on it. Set `"adapter": "google"` and `google.calendars` in `scheduling.json`. |
 | Microsoft 365 | Not implemented. Add a class with the same three methods (`getBusy`, `createEvent`, `findEventByBookingRef`) using Graph `getSchedule` and `events`. |
 
@@ -138,31 +154,41 @@ The app is a single Node process with no build step. It needs a **persistent dis
   docker build -t confident-preview .
   docker run -p 3000:3000 -e ANTHROPIC_API_KEY=... -v confident-data:/app/data confident-preview
   ```
-- **Single instance.** Sessions, slot holds and the booking lock are held in memory, and the JSON store suits one process. To run several instances, move them to a shared store (for example Redis or Postgres) and use a database or provider-level lock.
 - Set `PREVIEW_TOKEN` to protect `/preview/test-calendar` on a shared preview URL.
-- This folder sits in the `greaterbelizemedia.github.io` repository. GitHub Pages serves static files only, so it can't run the booking or AI backend. Deploy this folder to a Node host instead.
+- The `greaterbelizemedia.github.io` GitHub Pages site can't run the booking or AI backend. Use Netlify (below) or a Node host.
 
-## Static export (Netlify and other static hosts)
+## Netlify (zip upload, full site)
 
 ```bash
 npm run export
 ```
 
-This writes to `deliverables/`, which is git-ignored:
+This writes `deliverables/confident-oral-care-netlify.zip`. Upload it as-is to Netlify (Deploys → drag and drop the zip). There is no build step and no `npm install`. The zip contains:
 
-- **`netlify-site/`** and **`confident-oral-care-netlify.zip`**: every page pre-rendered as HTML, plus CSS, JS, fonts, images and the route video. Also included:
-  - `_redirects`: clean URLs such as `/about` → `about.html`, and the 404 page.
-  - `_headers`: `noindex` while `preview` is true, plus security and caching headers.
-  - `robots.txt`.
-- **`confident-oral-care-preview.html`**: the whole site in one self-contained file (about 1.2 MB). It works offline and makes no outside requests. Each page is a section reached through the header links. The route video shows as its poster.
+- **Pages:** every page pre-rendered as HTML, plus CSS, JS, fonts, images and the route video.
+- **`netlify/functions/api.mjs`:** one pre-bundled Netlify Function, with all dependencies inside. It serves `/api/*` (booking, availability, confident AI) and `/preview/test-calendar`, and stores data in Netlify Blobs.
+- **`netlify.toml`:** publish the zip root, functions in `netlify/functions`.
+- **`_redirects`:**
+  - clean URLs, for example `/about` → `about.html`
+  - a forced 404 for `/netlify/*` and `/netlify.toml`, so deployment files are never served
+- **`_headers`:** `noindex` while `preview` is true, plus security and caching headers.
 
-A static host has no server, so the export runs in **static preview mode**:
-- Online booking is replaced by a notice that lists the visit types and gives the phone and Instagram options.
-- confident AI's suggestions (services, hours, directions) still work, but typed questions get a short "not available in this preview" reply.
+**Netlify environment variables** (Site configuration → Environment variables). Netlify applies them on the next deploy, so add them before uploading or upload again afterwards.
 
-The live booking flow, the test calendar and the Claude conversation need the Node server (`npm start`).
+| Variable | Required | Notes |
+|---|---|---|
+| `ANTHROPIC_API_KEY` | For confident AI | Without it, the assistant shows the phone and Instagram fallback. The booking form works either way. |
+| `ANTHROPIC_MODEL` | No | Default `claude-opus-5-5` |
+| `PREVIEW_TOKEN` | No | If set, the test calendar needs `/preview/test-calendar?token=<value>` |
+| `SESSION_SECRET` | No | Generated and stored in Blobs if not set |
 
-**Deploying to Netlify:** unzip `confident-oral-care-netlify.zip` and drag the resulting folder onto the Netlify deploys page (Netlify Drop). Netlify's documentation is inconsistent about uploading a zip directly, but a folder is accepted either way. No build command is needed.
+**Check after uploading:**
+1. Open `https://<your-site>/api/assistant/status`. You should see `{"available":true,...}`, or `false` without an API key.
+2. If it shows the site's 404 page instead, Netlify didn't deploy the function. The pages still work, and booking and the assistant fall back to phone and Instagram.
+
+The function keeps each assistant reply under Netlify's 60-second function limit: a 25-second timeout per Claude request, one retry, and a 45-second overall deadline.
+
+`npm run export` also writes `deliverables/confident-oral-care-preview.html`. It's a single self-contained file of every page for offline review. It has no server, so booking and the AI chat are switched off in it.
 
 ## Before going live
 
@@ -174,11 +200,11 @@ The live booking flow, the test calendar and the Claude conversation need the No
 - [ ] Decide how online changes and cancellations should be authenticated. Until then they go to the team.
 - [ ] Add the clinic tour video, plus captions or a transcript for gallery clips with speech.
 - [ ] Optional: if a web licence for **Glossy** is obtained, add the WOFF2 to `public/fonts/` and put it first in `--serif` in `public/css/site.css`. The preview uses the brief's working pair, **Cormorant Garamond** and **Red Hat Display**, self-hosted under the SIL Open Font License (licences in `public/fonts/`).
-- [ ] Privacy notice for the booking form and the assistant. Data retention policy for `data/`.
+- [ ] Privacy notice for the booking form and the assistant. Data retention policy for stored booking records and chat history (`data/` or Netlify Blobs).
 
 ## Quality checks performed
 
-- 29 automated tests (`npm test`) cover:
+- 34 automated tests (`npm test`) cover:
   - slot generation (lunch, cutoff, notice, busy block, Saturday)
   - Belize time conversion
   - confirmed booking with one observable event
@@ -198,10 +224,13 @@ The live booking flow, the test calendar and the Claude conversation need the No
   - home section order and first-screen CTA
   - booking over HTTP, including cross-session and cross-origin refusal
   - gallery and contact videos (poster, no autoplay) and byte-range responses
+  - two server instances sharing storage racing for one slot, and tampered or expired references
+  - storage backends: memory, files, and Netlify Blobs via Netlify's local Blobs server
 - Browser checks with Playwright at 390 px and 1440 px:
   - hero poster without video
   - the video variant with a temporary sample clip: autoplay, pause/play, reduced motion
   - keyboard access to the Services submenu, the mobile menu (Escape) and the gallery lightbox (arrows, Escape, focus return)
   - the assistant panel and its booking widget on mobile
   - the full booking flow
-- **Not exercised:** live Claude API calls (no API key in the build environment) and the Google Calendar adapter.
+- The Netlify package was tested locally: the bundled function file ran against Netlify's local Blobs server, with a stand-in Claude endpoint. Form booking, AI-led booking, staff review, the test calendar, persistence across restarts, hidden deployment files, and the fallback when the function is missing all passed.
+- **Not exercised:** live Claude API calls (no API key in the build environment), a deploy on Netlify itself, and the Google Calendar adapter. Netlify's local Blobs server doesn't serialise simultaneous conditional writes, so the cross-instance slot claim relies on production Blobs behaving as documented. The read-back check narrows the gap.

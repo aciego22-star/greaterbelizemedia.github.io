@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import Anthropic from '@anthropic-ai/sdk';
 import { createAssistant } from '../src/assistant/assistant.mjs';
+import { MemoryKV } from '../src/kv.mjs';
 import { loadSite } from '../src/site.mjs';
 import { makeScheduling, ROOT, silentLogger, TEST_CONTACT } from './helpers.mjs';
 
@@ -28,8 +29,11 @@ async function setup(steps) {
   const site = await loadSite(ROOT);
   const sched = await makeScheduling({ now: new Date() });
   const client = steps ? fakeClient(steps) : null;
-  const assistant = createAssistant({ site, scheduling: sched.service, client, logger: silentLogger });
-  return { site, ...sched, client, assistant, session: { id: 'sess-ai' } };
+  const chatKv = new MemoryKV();
+  const assistant = createAssistant({ site, scheduling: sched.service, client, kv: chatKv, logger: silentLogger });
+  const session = { id: 'sess-ai' };
+  const chat = async () => (await chatKv.getJSON(`chats/${session.id}`)) ?? { messages: [] };
+  return { site, ...sched, client, assistant, session, chat };
 }
 
 test('system prompt carries the approved clinic records and no volatile values', async () => {
@@ -85,7 +89,7 @@ test('consultation request: availability -> structured form; booking only happen
       assert.ok(result.available.length > 0);
       assert.ok(result.available.length <= 12);
       offered = result.available[0];
-      assert.match(offered.slot_ref, /^slot_/);
+      assert.match(offered.slot_ref, /^[\w-]+\.[\w-]+$/);
       assert.match(offered.when, / at \d{1,2}:\d{2} [ap]\.m\.$/);
       return msg([toolUse('tu_2', 'open_booking_form', { slot_ref: offered.slot_ref })], 'tool_use');
     },
@@ -95,7 +99,7 @@ test('consultation request: availability -> structured form; booking only happen
       return msg([{ type: 'text', text: 'Please check the details and add your name and one contact method in the form below.' }]);
     },
   ]);
-  const out = await ctx.assistant.handleMessage({ session: ctx.session, text: 'I’d like to book a consultation next week', page: '/appointments' });
+  const out = await ctx.assistant.handleMessage({ sessionId: ctx.session.id, text: 'I’d like to book a consultation next week', page: '/appointments' });
   assert.equal(out.degraded, undefined);
   assert.match(out.reply, /Let me check\./);
   assert.equal(out.actions.length, 1);
@@ -110,7 +114,7 @@ test('consultation request: availability -> structured form; booking only happen
   assert.equal((await ctx.adapter.listEvents()).length, 1);
 
   // Conversation history: user, assistant(tool_use), user(tool_result), assistant(tool_use), user(tool_result), assistant(text).
-  assert.deepEqual(ctx.session.assistant.messages.map((m) => m.role), ['user', 'assistant', 'user', 'assistant', 'user', 'assistant']);
+  assert.deepEqual((await ctx.chat()).messages.map((m) => m.role), ['user', 'assistant', 'user', 'assistant', 'user', 'assistant']);
   assert.ok(!JSON.stringify(ctx.client.calls).includes('Test Patient'), 'contact details never reach Claude');
 });
 
@@ -119,7 +123,7 @@ test('staff-review visit opens a request form with no time', async () => {
     () => msg([toolUse('tu_1', 'open_staff_review_form', { visit_type: 'orthodontic-consultation' })], 'tool_use'),
     () => msg([{ type: 'text', text: 'The team will review your request.' }]),
   ]);
-  const out = await ctx.assistant.handleMessage({ session: ctx.session, text: 'Orthodontic consultation please' });
+  const out = await ctx.assistant.handleMessage({ sessionId: ctx.session.id, text: 'Orthodontic consultation please' });
   assert.equal(out.actions[0].review.kind, 'staff-review');
   assert.equal(out.actions[0].review.slot, undefined);
 });
@@ -134,7 +138,7 @@ test('a made-up slot reference is rejected back to Claude as a tool error', asyn
       return msg([{ type: 'text', text: 'Let me look up times again.' }]);
     },
   ]);
-  const out = await ctx.assistant.handleMessage({ session: ctx.session, text: 'Book 9am Monday' });
+  const out = await ctx.assistant.handleMessage({ sessionId: ctx.session.id, text: 'Book 9am Monday' });
   assert.equal(out.actions.length, 0);
 });
 
@@ -149,7 +153,7 @@ test('calendar outage inside a tool returns the contact fallback to Claude', asy
     },
   ]);
   ctx.adapter.fault = 'unavailable';
-  const out = await ctx.assistant.handleMessage({ session: ctx.session, text: 'Any times?' });
+  const out = await ctx.assistant.handleMessage({ sessionId: ctx.session.id, text: 'Any times?' });
   assert.match(out.reply, /can’t confirm a time right now/);
 });
 
@@ -157,22 +161,22 @@ test('API failure: visitor sees the phone/Instagram fallback and history is roll
   const ctx = await setup([
     () => { throw new Anthropic.APIError(529, { type: 'error', error: { type: 'overloaded_error', message: 'Overloaded' } }, 'Overloaded', new Headers()); },
   ]);
-  const out = await ctx.assistant.handleMessage({ session: ctx.session, text: 'Hello' });
+  const out = await ctx.assistant.handleMessage({ sessionId: ctx.session.id, text: 'Hello' });
   assert.equal(out.degraded, true);
   assert.equal(out.reply, 'I can’t confirm a time right now. Please call +501 628-8233 or send the practice a message on Instagram.');
-  assert.equal(ctx.session.assistant.messages.length, 0);
+  assert.equal((await ctx.chat()).messages.length, 0);
 });
 
 test('refusal stop reason is handled without exposing a partial answer as final', async () => {
   const ctx = await setup([() => msg([], 'refusal')]);
-  const out = await ctx.assistant.handleMessage({ session: ctx.session, text: '...' });
+  const out = await ctx.assistant.handleMessage({ sessionId: ctx.session.id, text: '...' });
   assert.match(out.reply, /contact the team at \+501 628-8233/);
 });
 
 test('without an API key the assistant degrades to the contact message', async () => {
   const ctx = await setup(null);
   assert.equal(ctx.assistant.available, false);
-  const out = await ctx.assistant.handleMessage({ session: ctx.session, text: 'Hi' });
+  const out = await ctx.assistant.handleMessage({ sessionId: ctx.session.id, text: 'Hi' });
   assert.equal(out.degraded, true);
   assert.match(out.reply, /\+501 628-8233/);
 });
@@ -186,6 +190,6 @@ test('booking outcomes are passed to Claude as website notes on the next turn, w
       return msg([{ type: 'text', text: 'You’re all set.' }]);
     },
   ]);
-  ctx.assistant.noteOutcome(ctx.session, { status: 'confirmed', bookingRef: 'CD-TEST01', slot: { dateLabel: 'Tuesday, 17 November 2026', timeLabel: '9:00 a.m.' } });
-  await ctx.assistant.handleMessage({ session: ctx.session, text: 'Thanks!' });
+  await ctx.assistant.noteOutcome(ctx.session.id, { status: 'confirmed', bookingRef: 'CD-TEST01', slot: { dateLabel: 'Tuesday, 17 November 2026', timeLabel: '9:00 a.m.' } });
+  await ctx.assistant.handleMessage({ sessionId: ctx.session.id, text: 'Thanks!' });
 });

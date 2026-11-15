@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { formatTime, zonedToUtc } from '../src/scheduling/time.mjs';
-import { makeScheduling, TEST_CONTACT } from './helpers.mjs';
+import { makeScheduling, MONDAY_8AM, TEST_CONTACT } from './helpers.mjs';
 
 const S1 = 'session-one';
 const S2 = 'session-two';
@@ -36,7 +36,7 @@ test('availability follows bookable windows, notice, lunch, cutoff and the busy 
   const all = result.slots.map((s) => s.timeLabel);
   assert.ok(!all.includes('5:00 p.m.'));
   assert.ok(!all.includes('12:00 p.m.') || byDay['2026-11-21'].includes('12:00 p.m.'));
-  for (const s of result.slots) assert.match(s.slotRef, /^slot_/);
+  for (const s of result.slots) assert.match(s.slotRef, /^[\w-]+\.[\w-]+$/);
 });
 
 test('past dates and far-future ranges are clamped to the admissible window', async () => {
@@ -91,6 +91,34 @@ test('two sessions competing for one slot: only one is confirmed, the other gets
   assert.ok(loser.alternatives.length > 0);
   assert.ok(!loser.alternatives.some((s) => s.date === '2026-11-19' && s.timeLabel === '2:00 p.m.'));
   assert.equal((await adapter.listEvents()).length, 1);
+});
+
+test('separate server instances sharing storage cannot double-book a slot', async () => {
+  const { MemoryKV } = await import('../src/kv.mjs');
+  const kv = new MemoryKV();
+  const a = await makeScheduling({ kv });
+  const b = await makeScheduling({ kv }); // a second instance: own lock, same storage
+  const pick = async (inst, sid) => {
+    const { slots } = await inst.service.findAvailability({ sessionId: sid, visitTypeId: 'general-consultation', fromDate: '2026-11-20', toDate: '2026-11-20' });
+    return inst.service.prepareBooking({ sessionId: sid, slotRef: slots.find((s) => s.timeLabel === '3:00 p.m.').slotRef });
+  };
+  const [ra, rb] = await Promise.all([pick(a, S1), pick(b, S2)]);
+  const results = await Promise.all([
+    a.service.completeReview({ sessionId: S1, reviewId: ra.reviewId, contact: TEST_CONTACT }),
+    b.service.completeReview({ sessionId: S2, reviewId: rb.reviewId, contact: TEST_CONTACT }),
+  ]);
+  assert.deepEqual(results.map((r) => r.status).sort(), ['confirmed', 'slot_taken']);
+  assert.equal((await a.adapter.listEvents()).length, 1);
+});
+
+test('tampered or expired references are rejected', async () => {
+  const { service, setNow } = await makeScheduling();
+  const { slots } = await service.findAvailability({ sessionId: S1, visitTypeId: 'general-consultation', fromDate: '2026-11-17', toDate: '2026-11-17' });
+  const [data, sig] = slots[0].slotRef.split('.');
+  const forged = `${Buffer.from(JSON.stringify({ ...JSON.parse(Buffer.from(data, 'base64url')), s: '2026-11-17T23:00:00.000Z' })).toString('base64url')}.${sig}`;
+  await assert.rejects(service.prepareBooking({ sessionId: S1, slotRef: forged }), { code: 'invalid_slot' });
+  setNow(new Date(MONDAY_8AM.getTime() + 31 * 60_000));
+  await assert.rejects(service.prepareBooking({ sessionId: S1, slotRef: slots[0].slotRef }), { code: 'invalid_slot' });
 });
 
 test('slot references are scoped to the session that received them', async () => {
