@@ -6,6 +6,7 @@ import { extname, join, normalize, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createAssistant, createClaudeClient } from './assistant/assistant.mjs';
 import * as pages from './render/pages.mjs';
+import { pageRoutes } from './render/routes.mjs';
 import { createScheduling } from './scheduling/index.mjs';
 import { SchedulingError } from './scheduling/service.mjs';
 import { formatDateLong, formatTime } from './scheduling/time.mjs';
@@ -158,18 +159,7 @@ export async function createApp({ root = ROOT, client = createClaudeClient(), lo
   const preview = Boolean(site.siteConfig.preview);
   const tz = site.scheduling.timeZone;
 
-  const routes = new Map([
-    ['/', () => pages.homePage(site)],
-    ['/about', () => pages.aboutPage(site)],
-    ['/services', () => pages.servicesPage(site)],
-    ['/first-visit', () => pages.firstVisitPage(site)],
-    ['/gallery', () => pages.galleryPage(site)],
-    ['/blog', () => pages.blogPage(site)],
-    ['/contact', () => pages.contactPage(site)],
-    ['/appointments', () => pages.appointmentsPage(site)],
-  ]);
-  for (const c of site.categories) routes.set(c.path, () => pages.categoryPage(site, c));
-  for (const a of site.articles) routes.set(`/blog/${a.slug}`, () => pages.articlePage(site, a));
+  const routes = pageRoutes(site);
 
   async function api(req, res, url, session) {
     const p = url.pathname;

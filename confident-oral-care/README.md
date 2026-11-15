@@ -142,6 +142,28 @@ The app is a single Node process with no build step. It needs a **persistent dis
 - Set `PREVIEW_TOKEN` to protect `/preview/test-calendar` on a shared preview URL.
 - This folder sits in the `greaterbelizemedia.github.io` repository. GitHub Pages serves static files only, so it can't run the booking or AI backend. Deploy this folder to a Node host instead.
 
+## Static export (Netlify and other static hosts)
+
+```bash
+npm run export
+```
+
+This writes to `deliverables/`, which is git-ignored:
+
+- **`netlify-site/`** and **`confident-oral-care-netlify.zip`**: every page pre-rendered as HTML, plus CSS, JS, fonts, images and the route video. Also included:
+  - `_redirects`: clean URLs such as `/about` → `about.html`, and the 404 page.
+  - `_headers`: `noindex` while `preview` is true, plus security and caching headers.
+  - `robots.txt`.
+- **`confident-oral-care-preview.html`**: the whole site in one self-contained file (about 1.2 MB). It works offline and makes no outside requests. Each page is a section reached through the header links. The route video shows as its poster.
+
+A static host has no server, so the export runs in **static preview mode**:
+- Online booking is replaced by a notice that lists the visit types and gives the phone and Instagram options.
+- confident AI's suggestions (services, hours, directions) still work, but typed questions get a short "not available in this preview" reply.
+
+The live booking flow, the test calendar and the Claude conversation need the Node server (`npm start`).
+
+**Deploying to Netlify:** unzip `confident-oral-care-netlify.zip` and drag the resulting folder onto the Netlify deploys page (Netlify Drop). Netlify's documentation is inconsistent about uploading a zip directly, but a folder is accepted either way. No build command is needed.
+
 ## Before going live
 
 - [ ] Clinic confirms the calendar provider, the visit types that can be booked directly, durations, resources, latest start per day (including Saturday), notice and cutoffs.

@@ -104,6 +104,7 @@ function clinicFacts(site) {
     hoursNote: site.pages.contact.hoursNote,
     categories: site.categories.map((c) => ({ title: c.title, path: c.path, card: c.card })),
     messages: { unavailable: site.statusMessages.unavailable },
+    staticPreview: Boolean(site.staticPreview),
   };
   return `<script type="application/json" id="clinic-facts">${JSON.stringify(facts).replace(/</g, '\\u003c')}</script>`;
 }
@@ -123,6 +124,7 @@ function assistantPanel(site) {
       </div>
       <button class="icon-btn" type="button" data-ai-close>${icon('close')}<span class="visually-hidden">Close confident AI</span></button>
     </header>
+    ${site.staticPreview ? `<p class="ai-static-note">Static preview: confident AI’s conversation and online booking run on the clinic’s server and are switched off here. The suggestions below still work.</p>` : ''}
     <div class="ai-log" role="log" aria-live="polite" aria-relevant="additions" tabindex="0" aria-label="Conversation with confident AI"></div>
     <div class="ai-suggestions" aria-label="Suggested actions" role="group">
       <button type="button" class="chip" data-ai-action="find-service">Find a service</button>

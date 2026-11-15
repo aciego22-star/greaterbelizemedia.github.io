@@ -618,9 +618,14 @@ ${pageHead({ eyebrow: 'Appointments', title: appointments.title, lead: appointme
   <div class="container narrow">
     <p class="eyebrow">Book online</p>
     <h2 id="booking-title">Choose a visit type</h2>
-    <div class="booking" data-booking data-test="${test}">
+    ${site.staticPreview ? `<div class="result result-review static-booking">
+      <h3>Online booking is not part of this static preview</h3>
+      <p>On the full site, this is where patients choose a visit type and an available time, and confident AI can open the same booking form. Both run on the clinic’s server with the test calendar.</p>
+      <ul class="static-visit-types">${site.scheduling.visitTypes.map((v) => `<li><strong>${esc(v.label)}</strong>: ${esc(v.description)}</li>`).join('')}</ul>
+      <p>To arrange a visit now, call <a href="${clinic.phone.href}">${esc(clinic.phone.label)}</a> or <a href="${esc(clinic.socialLinks.instagram)}" rel="noopener">message us on Instagram</a>.</p>
+    </div>` : `<div class="booking" data-booking data-test="${test}">
       <noscript><p>Online booking needs JavaScript. Please call <a href="${clinic.phone.href}">${esc(clinic.phone.label)}</a> or <a href="${esc(clinic.socialLinks.instagram)}">message us on Instagram</a>.</p></noscript>
-    </div>
+    </div>`}
   </div>
 </section>
 ${contactPanel(site, { tone: 'plain' })}`;

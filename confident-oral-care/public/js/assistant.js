@@ -81,6 +81,7 @@ export function initAssistant() {
   }
 
   async function checkStatus() {
+    if (facts.staticPreview) return false;
     if (available !== null) return available;
     try {
       const res = await fetch('/api/assistant/status', { credentials: 'same-origin' });
@@ -110,7 +111,9 @@ export function initAssistant() {
     if (!message || busy) return;
     addMessage('user', message);
     if (!(await checkStatus())) {
-      addMessage('ai', `${facts.messages.unavailable}\n\nYou can still [request an appointment online](/appointments#booking) or use the suggestions below.`);
+      addMessage('ai', facts.staticPreview
+        ? `In this static preview I can’t answer typed questions; that part runs on the clinic’s server. Try the suggestions below, call [${facts.phone}](${facts.phoneHref}), or message the practice on [Instagram](${facts.instagram}).`
+        : `${facts.messages.unavailable}\n\nYou can still [request an appointment online](/appointments#booking) or use the suggestions below.`);
       return;
     }
     busy = true;
@@ -146,6 +149,10 @@ export function initAssistant() {
     'request-appointment': async () => {
       if (await checkStatus()) return send('I’d like to request an appointment.');
       addMessage('user', 'Request an appointment');
+      if (facts.staticPreview) {
+        addMessage('ai', `Online booking isn’t part of this static preview. To arrange a visit, call [${facts.phone}](${facts.phoneHref}) or message the practice on [Instagram](${facts.instagram}). See [Appointments](/appointments) for the visit types.`);
+        return;
+      }
       addMessage('ai', 'Choose a visit type below. You can also call or message the practice on Instagram.');
       bookingWidget();
     },

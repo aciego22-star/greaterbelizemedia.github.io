@@ -10,7 +10,7 @@ import { statusMessages } from './scheduling/messages.mjs';
  * Loads the single editable source of clinic facts (config/clinic-data.json) and merges it with the
  * page copy. The website and confident AI both read from the object returned here.
  */
-export async function loadSite(root) {
+export async function loadSite(root, { staticPreview = false } = {}) {
   const readJson = async (rel) => JSON.parse(await readFile(join(root, rel), 'utf8'));
   const clinic = await readJson('config/clinic-data.json');
   const siteConfig = await readJson('config/site.json');
@@ -44,6 +44,8 @@ export async function loadSite(root) {
     hours: formatHours(clinic.publicHours),
     directionsUrl,
     statusMessages: statusMessages(clinic),
+    // Static export (no server): online booking and confident AI's conversation are switched off.
+    staticPreview,
   };
 }
 

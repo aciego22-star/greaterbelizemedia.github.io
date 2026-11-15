@@ -31,7 +31,12 @@ function initNav() {
       button.setAttribute('aria-expanded', String(open));
       menu.classList.toggle('is-open', open);
     };
-    button.addEventListener('click', () => setOpen(button.getAttribute('aria-expanded') !== 'true'));
+    let openedByHover = false;
+    button.addEventListener('click', () => {
+      // A mouse user who hovered the menu open and then clicks the arrow expects it to stay open.
+      if (openedByHover) { openedByHover = false; setOpen(true); return; }
+      setOpen(button.getAttribute('aria-expanded') !== 'true');
+    });
     item.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && button.getAttribute('aria-expanded') === 'true') {
         e.stopPropagation();
@@ -41,8 +46,10 @@ function initNav() {
     });
     item.addEventListener('focusout', (e) => { if (!item.contains(e.relatedTarget)) setOpen(false); });
     const hoverCapable = window.matchMedia('(hover: hover) and (min-width: 1100px)');
-    item.addEventListener('mouseenter', () => { if (hoverCapable.matches) setOpen(true); });
-    item.addEventListener('mouseleave', () => { if (hoverCapable.matches) setOpen(false); });
+    item.addEventListener('mouseenter', () => {
+      if (hoverCapable.matches && button.getAttribute('aria-expanded') !== 'true') { openedByHover = true; setOpen(true); }
+    });
+    item.addEventListener('mouseleave', () => { if (hoverCapable.matches) { openedByHover = false; setOpen(false); } });
   }
 }
 
