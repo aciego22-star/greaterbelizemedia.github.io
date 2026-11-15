@@ -13,7 +13,8 @@
     "test": "node --test tests/*.test.mjs",
     "images": "python3 scripts/build-images.py",
     "start:env": "node --env-file=.env src/server.mjs",
-    "export": "node scripts/export-static.mjs --single"
+    "export": "node scripts/export-static.mjs --single",
+    "walkthrough": "mkdir -p deliverables/walkthrough && node scripts/walkthrough-capture.cjs http://localhost:${PORT:-3000} deliverables/walkthrough && python3 scripts/walkthrough-pdf.py deliverables/walkthrough deliverables/ConfiDent-preview-walkthrough.pdf public/img/web/confident-logo.png"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.8.0",

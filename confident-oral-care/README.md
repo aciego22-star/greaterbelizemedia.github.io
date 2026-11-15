@@ -201,6 +201,17 @@ The function keeps each assistant reply under Netlify's 60-second function limit
 - **Runs in the page:** the real application core runs inside the file (`src/preview/browser.mjs`), so booking, the test calendar, the route video and confident AI in demo mode all work offline.
 - **Test data:** stored in that browser's localStorage. The file's top banner links to the test calendar and has a "Reset test data" button.
 
+## Visual walkthrough (PDF)
+
+With the server running (`npm start`, demo mode), run `npm run walkthrough` to produce `deliverables/ConfiDent-preview-walkthrough.pdf`. It contains:
+- every page at phone size
+- the confident AI conversation and booking
+- the booking form steps and the staff-review request
+- the test calendar
+- desktop views
+
+It needs Playwright with Chromium and Pillow. Restart the server on a clean `data/` folder first if you want an empty test calendar.
+
 ## Before going live
 
 - [ ] Clinic confirms the calendar provider, the visit types that can be booked directly, durations, resources, latest start per day (including Saturday), notice and cutoffs.

@@ -73,6 +73,8 @@ body {
 }
 
 img, picture, video, svg { display: block; max-width: 100%; }
+/* Layout rules like .field { display: grid } must not override the hidden attribute. */
+[hidden] { display: none !important; }
 img { height: auto; }
 
 h1, h2, h3, h4 {
