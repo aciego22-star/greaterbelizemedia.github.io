@@ -7,7 +7,7 @@
   "credit": {
     "_comment": "Footer credit. Set url to the agency's website to make the name a link; leave it null for plain text.",
     "name": "Austere Automations",
-    "url": null
+    "url": "https://austereautomations.com/"
   },
   "media": {
     "heroVideo": {

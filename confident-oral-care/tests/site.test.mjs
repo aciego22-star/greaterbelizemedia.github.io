@@ -249,6 +249,6 @@ test('the footer credits Austere Automations in both languages', () => {
   for (const [route, html] of pages) {
     const footer = html.slice(html.indexOf('<footer'), html.indexOf('</footer>'));
     const label = route.startsWith('/es') ? 'Sitio web y concepto de IA por' : 'Website &amp; AI concept by';
-    assert.match(footer, new RegExp(`class="footer-credit">${label} (<a [^>]+>)?Austere Automations`), `credit on ${route}`);
+    assert.match(footer, new RegExp(`class="footer-credit">${label} <a href="https://austereautomations.com/" rel="noopener" target="_blank">Austere Automations</a>`), `credit on ${route}`);
   }
 });
