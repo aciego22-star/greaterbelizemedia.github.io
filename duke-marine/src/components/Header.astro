@@ -543,8 +543,12 @@ const featureImg: Record<string, string> = {
       -webkit-backdrop-filter: none;
       backdrop-filter: none;
       box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06), var(--shadow);
-      transform: none;
     }
+    /* Deliberately no `transform: none` in that block. It used to sit there
+       with the opacity rules and cancelled the hide-on-scroll translate for
+       .is-hidden, so on a phone the bar stayed pinned for the whole page and
+       cut every breadcrumb and pill in half as it passed behind. Opacity is a
+       background concern; the transform is not. */
     .nav {
       display: none;
     }

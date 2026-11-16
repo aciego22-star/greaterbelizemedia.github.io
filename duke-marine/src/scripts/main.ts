@@ -46,11 +46,16 @@ function initHeader() {
   const header = document.querySelector<HTMLElement>('[data-header]');
   if (!header) return;
   let last = 0;
+  // The bar may tuck away once the reader has scrolled past the bar itself,
+  // rather than after a flat 400px. Measured rather than hard coded, because
+  // the phone header is the bar plus the category strip and so is nearly twice
+  // the height of the desktop one. At 400px a phone reader spent most of a
+  // screen with the page sliding behind a bar that would not move.
+  const hideAfter = () => header.offsetHeight + 40;
   const onScroll = () => {
     const y = window.scrollY;
     header.classList.toggle('is-scrolled', y > 20);
-    // hide on scroll-down, show on scroll-up (past the fold)
-    if (y > 400) {
+    if (y > hideAfter()) {
       header.classList.toggle('is-hidden', y > last && y - last > 4);
     } else {
       header.classList.remove('is-hidden');
