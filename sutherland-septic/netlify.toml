@@ -67,3 +67,7 @@
   from = "/blog/septic-backing-up"
   to = "/blog-septic-backing-up.html"
   status = 200
+[[redirects]]
+  from = "/blog/commercial-septic-care"
+  to = "/blog-commercial-septic-care.html"
+  status = 200
