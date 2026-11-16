@@ -27,6 +27,93 @@ HUB = {
 }
 
 ARTICLES = [
+ {
+  "slug":  "meats-belmopan.html",
+  "date":  "2026-11-16",
+  "date_label": "November 16, 2026",
+  "title": "Carne Asada, Pollo Asado, Carnitas, Al Pastor: Which One To Order",
+  "seo_title": "Carne Asada, Al Pastor, Carnitas or Birria | Taco Taco Belmopan, Belize",
+  "meta":  "What the five meats at Taco Taco Mexican Restaurant in Belmopan actually are, and "
+           "which to pick: carne asada, pollo asado, carnitas, al pastor and birria, on tacos, "
+           "burritos, tortas, bowls and plates.",
+  "hero":  "meats-wide.jpg",
+  "hero_fallback": "menu-carne-asada.jpg",
+  "hero_alt": "Trays of carne asada, pollo asado, carnitas, al pastor and birria on the line at "
+              "Taco Taco Mexican Restaurant in Belmopan Belize",
+  "excerpt": "Twenty-five things on our menu say meat of your choice. Here is what the five "
+             "actually are, so you can pick on purpose instead of picking the word you know.",
+  "blocks": [
+   {"t":"p","x":"Count the places our menu says *meat of your choice* and you get to "
+                "**twenty-five**: tacos, burritos, tortas, taco bowls, quesadillas, "
+                "chimichangas, nachos, tostadas, the plato combos and most of breakfast."},
+   {"t":"p","x":"Which means the meat is the decision you actually make here, more than the "
+                "dish is. And most people make it by picking the one word they already know."},
+   {"t":"p","x":"So here is what the five are."},
+
+   {"t":"h","x":"Carne Asada"},
+   {"t":"p","x":"**Grilled beef.** The safe one, and there is nothing wrong with that: "
+                "straightforward, savoury, and it goes with everything on the menu."},
+   {"t":"img","src":"menu-carne-asada.jpg",
+    "x":"A tray of carne asada, grilled beef, on the line at Taco Taco in Belmopan"},
+   {"t":"p","x":"If you are ordering for somebody whose taste you do not know, order this."},
+
+   {"t":"h","x":"Pollo Asado"},
+   {"t":"p","x":"**Grilled chicken.** Lighter than the beef and the pork, and the one that "
+                "leaves the most room for everything it is sitting with: the rice, the beans, "
+                "the salsa, the guacamole."},
+   {"t":"img","src":"menu-pollo-asado.jpg",
+    "x":"A tray of pollo asado, grilled chicken, on the line at Taco Taco in Belmopan"},
+   {"t":"p","x":"Good choice in a burrito or a taco bowl, where there is a lot else going on."},
+
+   {"t":"h","x":"Carnitas"},
+   {"t":"p","x":"**Pork**, and the richest of the three everyday meats. Carnitas is pork cooked "
+                "slowly until it falls apart on its own, and the word means *little meats*, "
+                "which is what it turns into."},
+   {"t":"img","src":"menu-carnitas.jpg",
+    "x":"A tray of carnitas, slow-cooked pork, on the line at Taco Taco in Belmopan"},
+   {"t":"p","x":"Soft, deep and a little sweet from the cooking rather than from anything "
+                "added. If you usually order beef, this is the one to break the habit on."},
+
+   {"t":"h","x":"Al Pastor"},
+   {"t":"p","x":"**Pork again, and nothing like the carnitas.** Al pastor is marinated in "
+                "chiles and spices before it is cooked, which is where the colour comes from, "
+                "and it arrives with more going on: a little heat, a little tang."},
+   {"t":"img","src":"menu-al-pastor.jpg",
+    "x":"A tray of al pastor, marinated pork, on the line at Taco Taco in Belmopan"},
+   {"t":"p","x":"The name means *shepherd style*, and the method came to Mexico with Lebanese "
+                "immigrants who were cooking lamb on a vertical spit. The pork and the chiles "
+                "are what Mexico did with it."},
+   {"t":"p","x":"Order carnitas and al pastor on the same visit and you will never confuse them "
+                "again."},
+
+   {"t":"h","x":"Birria, The One That Costs A Dollar More"},
+   {"t":"p","x":"**Add $1 to any item** and the meat becomes birria: slow-cooked in a seasoned "
+                "broth until it pulls apart, with the broth served alongside as consomé."},
+   {"t":"img","src":"menu-birria.jpg",
+    "x":"A tray of slow-cooked birria meat on the line at Taco Taco in Belmopan"},
+   {"t":"p","x":"It is the only one that changes the price, and the only one with a whole "
+                "section of the menu to itself: tacos, ramen, pizza, soup, burritos and "
+                "quesadillas. We wrote about all of it separately."},
+   {"t":"cta","x":"Read: Birria, Eight Ways","href":"birria-belmopan.html"},
+
+   {"t":"h","x":"One Rule Worth Knowing"},
+   {"t":"p","x":"Anything already built around birria comes with **birria or carnitas pork "
+                "only**, and no other meat. Everywhere else on the menu, all five are open to "
+                "you."},
+
+   {"t":"h","x":"If You Still Cannot Decide"},
+   {"t":"p","x":"Order a single taco. **A corn taco is $5 and a flour taco is $6**, which makes "
+                "it the cheapest way in Belmopan to settle an argument about pork."},
+   {"t":"p","x":"Two visits and you have tried all five for the price of one combo."},
+   {"t":"social"},
+
+   {"t":"h","x":"Come And Pick One"},
+   {"t":"p","x":"We are at **11 Aloe Vera Ave., West Belmopan**, open **Monday to Thursday from "
+                "10AM** and **Friday to Sunday from 8AM**, until 8PM every day."},
+   {"t":"kicker","x":"Five meats. Twenty-five ways to order them."},
+   {"t":"cta","x":"Start Your Order","href":"menu.html"},
+  ],
+ },
  # Newest first: the hub and the sitemap both walk this list in order.
  {
   "slug":  "birria-belmopan.html",

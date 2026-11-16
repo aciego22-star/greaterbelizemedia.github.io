@@ -558,6 +558,144 @@ ES.update({
    "Nuestros vecinos siguen volviendo, y nos dicen por qué. Reseñas traducidas del inglés.",
 })
 
+# ---------------------------------------------------------------- the meats article
+ES.update({
+ "Carne Asada, Pollo Asado, Carnitas, Al Pastor: Which One To Order":
+   "Carne asada, pollo asado, carnitas, al pastor: cu\u00e1l pedir",
+ "Carne Asada, Al Pastor, Carnitas or Birria | Taco Taco Belmopan, Belize":
+   "Carne asada, al pastor, carnitas o birria | Taco Taco Belmop\u00e1n, Belice",
+ "What the five meats at Taco Taco Mexican Restaurant in Belmopan actually are, and "
+ "which to pick: carne asada, pollo asado, carnitas, al pastor and birria, on tacos, "
+ "burritos, tortas, bowls and plates.":
+   "Qu\u00e9 son realmente las cinco carnes de Taco Taco Mexican Restaurant en "
+   "Belmop\u00e1n, y cu\u00e1l elegir: carne asada, pollo asado, carnitas, al pastor y "
+   "birria, en tacos, burritos, tortas, bowls y platos.",
+ "Twenty-five things on our menu say meat of your choice. Here is what the five actually "
+ "are, so you can pick on purpose instead of picking the word you know.":
+   "Veinticinco cosas en nuestro men\u00fa dicen carne de su elecci\u00f3n. Esto es lo que "
+   "son realmente las cinco, para que elija a prop\u00f3sito y no por la palabra que ya "
+   "conoce.",
+ "November 16, 2026": "16 de noviembre de 2026",
+
+ # the opening
+ "Count the places our menu says": "Cuente los lugares donde nuestro men\u00fa dice",
+ "and you get to": "y llega a",
+ "twenty-five": "veinticinco",
+ ": tacos, burritos, tortas, taco bowls, quesadillas, chimichangas, nachos, tostadas, "
+ "the plato combos and most of breakfast.":
+   ": tacos, burritos, tortas, taco bowls, quesadillas, chimichangas, nachos, tostadas, "
+   "los combos de plato y casi todo el desayuno.",
+ "Which means the meat is the decision you actually make here, more than the dish is. And "
+ "most people make it by picking the one word they already know.":
+   "O sea que la carne es la decisi\u00f3n que de verdad se toma aqu\u00ed, m\u00e1s que "
+   "el platillo. Y la mayor\u00eda la toma eligiendo la \u00fanica palabra que ya conoce.",
+ "So here is what the five are.": "As\u00ed que esto es lo que son las cinco.",
+
+ # headings
+ "Birria, The One That Costs A Dollar More":
+   "Birria, la que cuesta un d\u00f3lar m\u00e1s",
+ "One Rule Worth Knowing": "Una regla que vale la pena saber",
+ "If You Still Cannot Decide": "Si a\u00fan no se decide",
+ "Come And Pick One": "Venga y elija una",
+ "Five meats. Twenty-five ways to order them.":
+   "Cinco carnes. Veinticinco maneras de pedirlas.",
+ "Read: Birria, Eight Ways": "Lea: Birria de ocho maneras",
+
+ # carne asada
+ "Grilled beef.": "Carne de res a la parrilla.",
+ "The safe one, and there is nothing wrong with that: straightforward, savoury, and it goes "
+ "with everything on the menu.":
+   "La segura, y no tiene nada de malo: directa, sabrosa, y combina con todo en el "
+   "men\u00fa.",
+ "If you are ordering for somebody whose taste you do not know, order this.":
+   "Si pide para alguien cuyo gusto no conoce, pida esta.",
+
+ # pollo asado
+ "Grilled chicken.": "Pollo a la parrilla.",
+ "Lighter than the beef and the pork, and the one that leaves the most room for everything "
+ "it is sitting with: the rice, the beans, the salsa, the guacamole.":
+   "M\u00e1s ligero que la res y el cerdo, y el que deja m\u00e1s espacio a todo lo que lo "
+   "acompa\u00f1a: el arroz, los frijoles, la salsa, el guacamole.",
+ "Good choice in a burrito or a taco bowl, where there is a lot else going on.":
+   "Buena opci\u00f3n en un burrito o un taco bowl, donde hay mucho m\u00e1s pasando.",
+
+ # carnitas
+ ", and the richest of the three everyday meats. Carnitas is pork cooked slowly until it "
+ "falls apart on its own, and the word means":
+   ", y la m\u00e1s sustanciosa de las tres carnes de diario. Las carnitas son cerdo cocido "
+   "lentamente hasta que se deshace solo, y la palabra significa",
+ "little meats": "carnes peque\u00f1as",
+ ", which is what it turns into.": ", que es en lo que se convierte.",
+ "Soft, deep and a little sweet from the cooking rather than from anything added. If you "
+ "usually order beef, this is the one to break the habit on.":
+   "Suave, profunda y un poco dulce por la cocci\u00f3n, no por algo a\u00f1adido. Si "
+   "normalmente pide res, con esta hay que romper la costumbre.",
+
+ # al pastor
+ "Pork again, and nothing like the carnitas.":
+   "Cerdo otra vez, y nada parecido a las carnitas.",
+ "Al pastor is marinated in chiles and spices before it is cooked, which is where the "
+ "colour comes from, and it arrives with more going on: a little heat, a little tang.":
+   "El al pastor se marina en chiles y especias antes de cocinarse, de ah\u00ed viene el "
+   "color, y llega con m\u00e1s cosas pasando: un poco de picante, un poco de acidez.",
+ "The name means": "El nombre significa",
+ "shepherd style": "al estilo del pastor",
+ ", and the method came to Mexico with Lebanese immigrants who were cooking lamb on a "
+ "vertical spit. The pork and the chiles are what Mexico did with it.":
+   ", y el m\u00e9todo lleg\u00f3 a M\u00e9xico con inmigrantes libaneses que cocinaban "
+   "cordero en un trompo vertical. El cerdo y los chiles son lo que M\u00e9xico hizo con "
+   "\u00e9l.",
+ "Order carnitas and al pastor on the same visit and you will never confuse them again.":
+   "Pida carnitas y al pastor en la misma visita y no volver\u00e1 a confundirlas.",
+
+ # birria
+ "and the meat becomes birria: slow-cooked in a seasoned broth until it pulls apart, with "
+ "the broth served alongside as consom\u00e9.":
+   "y la carne se vuelve birria: cocida lentamente en un caldo sazonado hasta que se "
+   "deshace, con el caldo servido al lado como consom\u00e9.",
+ "It is the only one that changes the price, and the only one with a whole section of the "
+ "menu to itself: tacos, ramen, pizza, soup, burritos and quesadillas. We wrote about all "
+ "of it separately.":
+   "Es la \u00fanica que cambia el precio, y la \u00fanica con una secci\u00f3n entera "
+   "del men\u00fa para ella sola: tacos, ramen, pizza, sopa, burritos y quesadillas. "
+   "Escribimos sobre todo eso aparte.",
+ "Anything already built around birria comes with":
+   "Todo lo que ya est\u00e1 hecho alrededor de la birria viene con",
+ "birria or carnitas pork only": "birria o carnitas de cerdo solamente",
+ ", and no other meat. Everywhere else on the menu, all five are open to you.":
+   ", y ninguna otra carne. En todo lo dem\u00e1s del men\u00fa, las cinco est\u00e1n "
+   "disponibles.",
+
+ # the close
+ "Order a single taco.": "Pida un solo taco.",
+ "A corn taco is $5 and a flour taco is $6":
+   "Un taco de ma\u00edz cuesta $5 y uno de harina $6",
+ ", which makes it the cheapest way in Belmopan to settle an argument about pork.":
+   ", lo que lo hace la manera m\u00e1s barata en Belmop\u00e1n de zanjar una discusi\u00f3n "
+   "sobre el cerdo.",
+ "Two visits and you have tried all five for the price of one combo.":
+   "Dos visitas y ya prob\u00f3 las cinco por el precio de un combo.",
+
+ # the photographs
+ "Trays of carne asada, pollo asado, carnitas, al pastor and birria on the line at Taco "
+ "Taco Mexican Restaurant in Belmopan Belize":
+   "Bandejas de carne asada, pollo asado, carnitas, al pastor y birria en la l\u00ednea de "
+   "Taco Taco Mexican Restaurant en Belmop\u00e1n, Belice",
+ "A tray of carne asada, grilled beef, on the line at Taco Taco in Belmopan":
+   "Una bandeja de carne asada en la l\u00ednea de Taco Taco en Belmop\u00e1n",
+ "A tray of pollo asado, grilled chicken, on the line at Taco Taco in Belmopan":
+   "Una bandeja de pollo asado en la l\u00ednea de Taco Taco en Belmop\u00e1n",
+ "A tray of carnitas, slow-cooked pork, on the line at Taco Taco in Belmopan":
+   "Una bandeja de carnitas, cerdo cocido lentamente, en la l\u00ednea de Taco Taco en "
+   "Belmop\u00e1n",
+ "A tray of al pastor, marinated pork, on the line at Taco Taco in Belmopan":
+   "Una bandeja de al pastor, cerdo marinado, en la l\u00ednea de Taco Taco en "
+   "Belmop\u00e1n",
+ "A tray of slow-cooked birria meat on the line at Taco Taco in Belmopan":
+   "Una bandeja de carne de birria cocida lentamente en la l\u00ednea de Taco Taco en "
+   "Belmop\u00e1n",
+})
+
 # ---------------------------------------------------------------- the birria article
 # Fragments as well as sentences: **bold** and *italic* split a paragraph into
 # separate text nodes, and the pass translates each node on its own.
