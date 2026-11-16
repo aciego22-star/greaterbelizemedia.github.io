@@ -19,6 +19,8 @@ const ROUTES = [
   '/blog/getting-ready-for-your-first-dental-visit', '/blog/what-to-ask-about-retainers', '/blog/preparing-for-a-denture-consultation',
 ];
 
+const ES_ROUTES = ROUTES.map((r) => (r === '/' ? '/es' : `/es${r}`));
+
 before(async () => {
   clinic = await loadJson('config/clinic-data.json');
   const dataDir = await mkdtemp(join(tmpdir(), 'confident-site-'));
@@ -26,7 +28,7 @@ before(async () => {
   server = createServer(app.handler);
   await new Promise((r) => server.listen(0, r));
   base = `http://localhost:${server.address().port}`;
-  for (const route of ROUTES) {
+  for (const route of [...ROUTES, ...ES_ROUTES]) {
     const res = await fetch(base + route);
     assert.equal(res.status, 200, route);
     pages.set(route, await res.text());
@@ -102,7 +104,8 @@ test('the home page sections appear in the briefed order with a first-screen app
   assert.deepEqual([...order].sort((a, b) => a - b), order);
   const hero = html.slice(html.indexOf('data-hero'), html.indexOf('meet-title'));
   assert.ok(hero.includes('href="/appointments">Request an appointment</a>'));
-  assert.ok(html.includes('class="btn btn-primary header-cta" href="/appointments"'));
+  assert.ok(!html.includes('header-cta'), 'the appointment button is no longer in the header');
+  assert.match(html, /<nav class="lang-switch"[^>]*>\s*<a href="\/" hreflang="en"[^>]*aria-current="true"/);
   assert.ok(hero.includes('fetchpriority="high"'), 'hero poster loads eagerly');
 });
 
@@ -110,22 +113,22 @@ test('home hero: reception photo, opening-day photo, then the video, with small 
   const html = pages.get('/');
   const hero = html.slice(html.indexOf('data-hero'), html.indexOf('meet-title'));
   const labels = [...hero.matchAll(/aria-roledescription="slide" aria-label="([^"]+)"/g)].map((m) => m[1]);
-  assert.deepEqual(labels, ['1 of 3: Our reception', '2 of 3: Opening day at The Boardwalk', '3 of 3: The route to ConfiDent']);
+  assert.deepEqual(labels, ['1 of 4: Our reception', '2 of 4: Opening day at The Boardwalk', '3 of 4: Our treatment room', '4 of 4: The route to ConfiDent']);
   assert.match(hero, /data-interval="6"/);
   assert.match(hero, /<video class="hero-video" playsinline preload="none" poster="\/img\/web\/route-to-confident-poster\.jpg"/);
   assert.ok(!/<video[^>]*\smuted/.test(hero), 'hero video is not forced muted (sound where the browser allows)');
   for (const ctl of ['data-hero-prev', 'data-hero-next', 'data-hero-pause', 'data-hero-sound']) assert.ok(hero.includes(ctl), ctl);
-  assert.equal((hero.match(/data-hero-dot=/g) || []).length, 3);
+  assert.equal((hero.match(/data-hero-dot=/g) || []).length, 4);
 });
 
 test('no eyebrow labels anywhere on the site', () => {
   for (const [route, html] of pages) assert.ok(!html.includes('class="eyebrow"'), route);
 });
 
-test('gallery has all five photos and a distinct #videos section', () => {
+test('gallery has all six photos and a distinct #videos section', () => {
   const html = pages.get('/gallery');
   assert.ok(html.includes('id="videos"'));
-  for (const id of ['reception', 'opening-day', 'celebration', 'reception-desk', 'waiting-area']) assert.ok(html.includes(`id="${id}"`), id);
+  for (const id of ['reception', 'opening-day', 'treatment-room', 'celebration', 'reception-desk', 'waiting-area']) assert.ok(html.includes(`id="${id}"`), id);
   assert.ok(html.includes('/img/web/team-celebration-640.webp'));
   assert.ok(html.includes(`href="${clinic.socialLinks.instagram}"`));
 });
@@ -176,4 +179,66 @@ test('booking API: availability, prepare and complete over HTTP with a session c
   // Cross-origin POSTs are refused.
   const xo = await fetch(`${base}/api/booking/prepare`, { method: 'POST', headers: { ...headers, origin: 'https://evil.example' }, body: '{}' });
   assert.equal(xo.status, 403);
+});
+
+test('every Spanish page renders in Spanish with matching English alternates', () => {
+  for (const route of ES_ROUTES) {
+    const html = pages.get(route);
+    assert.match(html, /<html lang="es">/, route);
+    const enPath = route === '/es' ? '/' : route.slice(3);
+    assert.ok(html.includes(`hreflang="en" href="${enPath}"`), `${route} alternate`);
+    assert.ok(html.includes(`<a href="${enPath}" hreflang="en" lang="en"`), `${route} language switch`);
+  }
+  assert.ok(pages.get('/es').includes('Donde comienza la confianza'));
+  assert.ok(pages.get('/es/services/crowns-recementation').includes('Coronas de zirconia'));
+  assert.ok(pages.get('/es/blog/what-to-ask-about-retainers').includes('¿Qué debo preguntar sobre los retenedores?'));
+  assert.ok(pages.get('/es/contact').includes('Lunes a viernes'));
+  assert.ok(pages.get('/es/services').includes('href="/es/services/dentures-prosthodontics#immediate-dentures"'));
+  const titles = new Set(ES_ROUTES.map((r) => pages.get(r).match(/<title>([^<]+)<\/title>/)[1]));
+  assert.equal(titles.size, ES_ROUTES.length, 'unique Spanish titles');
+});
+
+test('WhatsApp replaces Instagram DM, and the menu has Home, WhatsApp and Facebook', () => {
+  for (const [route, html] of pages) {
+    const head = html.slice(html.indexOf('<header'), html.indexOf('</header>'));
+    assert.ok(head.includes('href="https://wa.me/5016288233"'), `menu WhatsApp on ${route}`);
+    assert.ok(head.includes(`href="${clinic.socialLinks.facebook.replace(/&/g, '&amp;')}"`), `menu Facebook on ${route}`);
+    assert.match(head, route.startsWith('/es') ? /<a href="\/es"[^>]*>Inicio<\/a>/ : /<a href="\/"[^>]*>Home<\/a>/, `Home link on ${route}`);
+    const footer = html.slice(html.indexOf('<footer'), html.indexOf('</footer>'));
+    assert.ok(footer.includes('href="https://wa.me/5016288233"'), `footer WhatsApp on ${route}`);
+    assert.ok(!/Instagram DM|message us on Instagram|Message us on Instagram/.test(html), `no Instagram DM wording on ${route}`);
+    assert.ok(html.includes('data-back-to-top'), `back to top on ${route}`);
+  }
+});
+
+test('nothing served to visitors names the assistant technology', async () => {
+  const assets = await Promise.all(['/js/site.js', '/js/assistant.js', '/js/booking.js', '/css/site.css'].map(async (a) => (await fetch(base + a)).text()));
+  for (const text of [...pages.values(), ...assets]) assert.ok(!/claude|anthropic/i.test(text));
+  const status = await (await fetch(`${base}/api/assistant/status`)).text();
+  assert.ok(!/claude|anthropic/i.test(status));
+});
+
+test('the assistant panel has two quick actions, a new-chat button and the logo launcher', () => {
+  const html = pages.get('/');
+  const panel = html.slice(html.indexOf('id="ai-panel"'));
+  assert.deepEqual([...panel.matchAll(/data-ai-action="([^"]+)"/g)].map((m) => m[1]), ['request-appointment', 'find-service']);
+  assert.ok(panel.includes('data-ai-new'));
+  assert.match(html, /<button class="ai-launcher"[^>]*>\s*<img class="ai-launcher-logo"/);
+});
+
+test('booking API answers in Spanish for the Spanish site', async () => {
+  const res = await fetch(`${base}/api/availability?visitType=general-consultation&lang=es`);
+  const cookie = res.headers.get('set-cookie').split(';')[0];
+  const avail = await res.json();
+  assert.equal(avail.visitType.label, 'Consulta general');
+  assert.match(avail.slots[0].dateLabel, /^(lunes|martes|miércoles|jueves|viernes|sábado), \d+ de \w+ de \d{4}$/);
+  assert.match(avail.slots[0].timeLabel, /[ap]\. m\.$/);
+  const headers = { 'content-type': 'application/json', cookie };
+  const prep = await (await fetch(`${base}/api/booking/prepare`, { method: 'POST', headers, body: JSON.stringify({ slotRef: avail.slots[1].slotRef, lang: 'es' }) })).json();
+  const bad = await (await fetch(`${base}/api/booking/complete`, { method: 'POST', headers, body: JSON.stringify({ reviewId: prep.review.reviewId, contact: { name: 'A' }, lang: 'es' }) })).json();
+  assert.equal(bad.errors.name, 'Escriba un nombre.');
+  const done = await (await fetch(`${base}/api/booking/complete`, { method: 'POST', headers, body: JSON.stringify({ reviewId: prep.review.reviewId, contact: { name: 'Paciente de prueba', phone: '+501 600-0000' }, lang: 'es' }) })).json();
+  assert.match(done.message, /^Su cita está confirmada para el /);
+  const types = await (await fetch(`${base}/api/visit-types?lang=es`)).json();
+  assert.ok(types.services.some((o) => o.value === 'Zirconia crowns' && o.label === 'Coronas de zirconia'));
 });

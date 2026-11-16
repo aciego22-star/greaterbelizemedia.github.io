@@ -148,7 +148,7 @@ test('calendar outage inside a tool returns the contact fallback to Claude', asy
     (params) => {
       const r = lastToolResult(params);
       assert.equal(r.error, 'availability_temporarily_unavailable');
-      assert.equal(r.message_for_visitor, 'I can’t confirm a time right now. Please call +501 628-8233 or send the practice a message on Instagram.');
+      assert.equal(r.message_for_visitor, 'I can’t confirm a time right now. Please call +501 628-8233 or send the practice a message on WhatsApp.');
       return msg([{ type: 'text', text: r.message_for_visitor }]);
     },
   ]);
@@ -157,13 +157,13 @@ test('calendar outage inside a tool returns the contact fallback to Claude', asy
   assert.match(out.reply, /can’t confirm a time right now/);
 });
 
-test('API failure: visitor sees the phone/Instagram fallback and history is rolled back', async () => {
+test('API failure: visitor sees the phone/WhatsApp fallback and history is rolled back', async () => {
   const ctx = await setup([
     () => { throw new Anthropic.APIError(529, { type: 'error', error: { type: 'overloaded_error', message: 'Overloaded' } }, 'Overloaded', new Headers()); },
   ]);
   const out = await ctx.assistant.handleMessage({ sessionId: ctx.session.id, text: 'Hello' });
   assert.equal(out.degraded, true);
-  assert.equal(out.reply, 'I can’t confirm a time right now. Please call +501 628-8233 or send the practice a message on Instagram.');
+  assert.equal(out.reply, 'I can’t confirm a time right now. Please call +501 628-8233 or send the practice a message on WhatsApp.');
   assert.equal((await ctx.chat()).messages.length, 0);
 });
 

@@ -109,7 +109,7 @@ export function createAssistant({ site, scheduling, client, kv = null, config = 
     try {
       if (block.name === 'find_available_times') {
         const result = await scheduling.findAvailability({
-          sessionId: session.id, visitTypeId: input.visit_type, fromDate: input.from_date, toDate: input.to_date,
+          sessionId: session.id, visitTypeId: input.visit_type, fromDate: input.from_date, toDate: input.to_date, locale: session.locale,
         });
         return {
           time_zone: 'Belize time',
@@ -121,7 +121,7 @@ export function createAssistant({ site, scheduling, client, kv = null, config = 
         };
       }
       if (block.name === 'open_booking_form') {
-        const review = await scheduling.prepareBooking({ sessionId: session.id, slotRef: input.slot_ref });
+        const review = await scheduling.prepareBooking({ sessionId: session.id, slotRef: input.slot_ref, locale: session.locale });
         actions.push({ type: 'review', review });
         return {
           status: 'form_shown',
@@ -130,7 +130,7 @@ export function createAssistant({ site, scheduling, client, kv = null, config = 
         };
       }
       if (block.name === 'open_staff_review_form') {
-        const review = await scheduling.prepareStaffReview({ sessionId: session.id, visitTypeId: input.visit_type });
+        const review = await scheduling.prepareStaffReview({ sessionId: session.id, visitTypeId: input.visit_type, locale: session.locale });
         actions.push({ type: 'review', review });
         return { status: 'form_shown', note: 'The visitor now sees a staff-review request form. No appointment time is set.' };
       }
@@ -149,11 +149,11 @@ export function createAssistant({ site, scheduling, client, kv = null, config = 
     }
   }
 
-  async function handleMessage({ sessionId, text, page }) {
+  async function handleMessage({ sessionId, text, page, locale = 'en' }) {
     const message = String(text ?? '').trim().slice(0, 800);
     if (!message) return { reply: '', actions: [] };
     if (!client) return { reply: unavailable, actions: [], degraded: true };
-    const session = { id: sessionId };
+    const session = { id: sessionId, locale };
     const started = Date.now();
     let state;
     try {
@@ -163,11 +163,11 @@ export function createAssistant({ site, scheduling, client, kv = null, config = 
       return { reply: unavailable, actions: [], degraded: true };
     }
     if (state.turns >= MAX_TURNS_PER_SESSION) {
-      return { reply: `We’ve reached the limit for this conversation. Please call ${site.clinic.phone.label} or message the practice on Instagram.`, actions: [], degraded: true };
+      return { reply: `We’ve reached the limit for this conversation. Please call ${site.clinic.phone.label} or message the practice on WhatsApp.`, actions: [], degraded: true };
     }
 
     const nowDate = new Date();
-    const context = `[Website context] Current date and time in Belize: ${formatDateLong(nowDate, tz)}, ${formatTime(nowDate, tz)}.${page ? ` Visitor is on ${page}.` : ''}`;
+    const context = `[Website context] Current date and time in Belize: ${formatDateLong(nowDate, tz)}, ${formatTime(nowDate, tz)}.${page ? ` Visitor is on ${page}.` : ''}${locale === 'es' ? ' The visitor is using the Spanish site: reply in Spanish and use /es links.' : ''}`;
     const content = [{ type: 'text', text: context }];
     for (const note of state.notes.splice(0)) content.push({ type: 'text', text: `[Website note] ${note}` });
     content.push({ type: 'text', text: message });
@@ -186,7 +186,7 @@ export function createAssistant({ site, scheduling, client, kv = null, config = 
         if (said) replyParts.push(said);
 
         if (response.stop_reason === 'refusal') {
-          replyParts.push(`I can’t help with that here. Please contact the team at ${site.clinic.phone.label} or on Instagram.`);
+          replyParts.push(`I can’t help with that here. Please contact the team at ${site.clinic.phone.label} or on WhatsApp.`);
           break;
         }
         if (response.stop_reason !== 'tool_use') break;
@@ -233,7 +233,11 @@ export function createAssistant({ site, scheduling, client, kv = null, config = 
     }
   }
 
-  return { available: Boolean(client), model, handleMessage, noteOutcome, systemPrompt, tools };
+  async function reset(sessionId) {
+    await saveState(sessionId, freshState());
+  }
+
+  return { available: Boolean(client), model, handleMessage, noteOutcome, reset, systemPrompt, tools };
 }
 
 export function createClaudeClient() {

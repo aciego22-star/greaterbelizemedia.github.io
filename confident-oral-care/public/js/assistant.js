@@ -1,11 +1,14 @@
 // confident AI panel. Conversation state lives on the server; this only renders it.
 import { mountBooking } from './booking.js';
 
-const GREETING = 'Hi, I’m confident AI, ConfiDent Oral Care’s virtual assistant. I can help you find a service, answer questions about the practice, or request an appointment.';
-const STORE_KEY = 'confident-ai-log';
 const facts = JSON.parse(document.getElementById('clinic-facts')?.textContent || '{}');
+const S = facts.strings || {};
+const LANG = facts.locale || 'en';
+const STORE_KEY = `confident-ai-log-${LANG}`;
+const SEEN_KEY = 'confident-ai-seen';
+const fill = (str, values = {}) => String(str).replace(/\{(\w+)\}/g, (m, k) => (k in values ? values[k] : m));
 
-const ALLOWED_LINK = /^(\/(?!\/)|tel:|mailto:|https:\/\/(www\.)?(instagram\.com|facebook\.com|google\.com\/maps)\/)/;
+const ALLOWED_LINK = /^(\/(?!\/)|tel:|mailto:|https:\/\/(www\.)?(instagram\.com|facebook\.com|google\.com\/maps|wa\.me)\/)/;
 
 function escapeHtml(s) {
   return s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -30,6 +33,8 @@ export function renderMarkdown(text) {
   }).join('');
 }
 
+const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+
 export function initAssistant() {
   const panel = document.getElementById('ai-panel');
   if (!panel) return;
@@ -38,6 +43,7 @@ export function initAssistant() {
   const textarea = form.querySelector('textarea');
   const sendBtn = form.querySelector('button[type=submit]');
   const launcher = document.querySelector('.ai-launcher');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   let opener = null;
   let available = null;
   let busy = false;
@@ -46,16 +52,22 @@ export function initAssistant() {
   try { history = JSON.parse(sessionStorage.getItem(STORE_KEY) || '[]'); } catch { history = []; }
   const persist = () => { try { sessionStorage.setItem(STORE_KEY, JSON.stringify(history.slice(-30))); } catch { /* ignore */ } };
 
+  // The launcher glows every few seconds until the visitor has opened the assistant once.
+  let seen = false;
+  try { seen = localStorage.getItem(SEEN_KEY) === '1'; } catch { /* ignore */ }
+  if (!seen && !reducedMotion.matches) launcher?.classList.add('is-calling');
+  const markSeen = () => {
+    launcher?.classList.remove('is-calling');
+    try { localStorage.setItem(SEEN_KEY, '1'); } catch { /* ignore */ }
+  };
+
   const scroll = () => { log.scrollTop = log.scrollHeight; };
 
   function addMessage(role, content, { html = false, save = true } = {}) {
     const el = document.createElement('div');
     el.className = `msg msg-${role}`;
-    if (role === 'ai' || role === 'note') {
-      el.innerHTML = html ? content : renderMarkdown(content);
-    } else {
-      el.textContent = content;
-    }
+    if (role === 'ai' || role === 'note') el.innerHTML = html ? content : renderMarkdown(content);
+    else el.textContent = content;
     log.append(el);
     if (save) { history.push({ role, content, html }); persist(); }
     scroll();
@@ -73,26 +85,33 @@ export function initAssistant() {
 
   function typing() {
     const el = document.createElement('div');
-    el.className = 'msg msg-ai';
-    el.innerHTML = '<span class="visually-hidden">confident AI is typing</span><span class="typing" aria-hidden="true"><span></span><span></span><span></span></span>';
+    el.className = 'msg msg-ai msg-typing';
+    el.innerHTML = `<span class="visually-hidden">${escapeHtml(S.typing || '')}</span><span class="typing" aria-hidden="true"><span></span><span></span><span></span></span>`;
     log.append(el);
     scroll();
     return el;
   }
 
+  /** Show the typing indicator for about three seconds (or as long as the reply takes). */
+  async function thinkThen(work) {
+    const indicator = typing();
+    const minimum = 2700 + Math.round(Math.random() * 600);
+    const started = Date.now();
+    try {
+      const result = await work();
+      const left = minimum - (Date.now() - started);
+      if (left > 0) await wait(left);
+      return result;
+    } finally {
+      indicator.remove();
+    }
+  }
+
   async function checkStatus() {
-    if (facts.staticPreview) return false;
     if (available !== null) return available;
     try {
-      const res = await fetch('/api/assistant/status', { credentials: 'same-origin' });
-      const status = await res.json();
-      available = status.available === true;
-      if (status.mode === 'demo' && !panel.querySelector('.ai-demo-note')) {
-        const note = document.createElement('p');
-        note.className = 'ai-static-note ai-demo-note';
-        note.textContent = 'Demo mode: confident AI is giving scripted answers for this preview, using the real booking system. The live version runs on Claude.';
-        log.before(note);
-      }
+      const res = await fetch(`/api/assistant/status?lang=${LANG}`, { credentials: 'same-origin' });
+      available = (await res.json()).available === true;
     } catch {
       available = false;
     }
@@ -104,43 +123,55 @@ export function initAssistant() {
       ...options,
       source: 'assistant',
       headingLevel: 3,
-      onResult: (result) => {
-        if (result.status === 'confirmed' || result.status === 'staff_review_recorded') {
-          history.push({ role: 'note', content: result.message, html: false });
-          persist();
+      onResult: async (result) => {
+        let reply = null;
+        if (result.status === 'confirmed') {
+          reply = fill(S.bookedFollowUp, { when: `${result.slot.dateLabel}, ${result.slot.timeLabel}`, ref: result.bookingRef });
+          if (facts.calendarUrl) reply += `\n\n${fill(S.bookedSeeIt, { calendar: facts.calendarUrl, phone: facts.phone })}`;
+        } else if (result.status === 'staff_review_recorded') {
+          reply = fill(S.requestFollowUp, { ref: result.requestRef });
+        }
+        if (!reply) return;
+        // Hold the conversation while confident AI "types" the follow-up.
+        busy = true;
+        sendBtn.disabled = true;
+        try {
+          await thinkThen(async () => {});
+          addMessage('ai', reply);
+        } finally {
+          busy = false;
+          sendBtn.disabled = false;
         }
       },
     }));
   }
 
-  async function send(text) {
+  async function send(text, { echo = text } = {}) {
     const message = text.trim();
     if (!message || busy) return;
-    addMessage('user', message);
-    if (!(await checkStatus())) {
-      addMessage('ai', facts.staticPreview
-        ? `In this static preview I can’t answer typed questions; that part runs on the clinic’s server. Try the suggestions below, call [${facts.phone}](${facts.phoneHref}), or message the practice on [Instagram](${facts.instagram}).`
-        : `${facts.messages.unavailable}\n\nThe suggestions below can still help you find a service, check the hours or get directions.`);
-      return;
-    }
+    if (echo) addMessage('user', echo);
     busy = true;
     sendBtn.disabled = true;
-    const indicator = typing();
     try {
-      const res = await fetch('/api/assistant', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        credentials: 'same-origin',
-        body: JSON.stringify({ message, page: location.pathname }),
+      if (!(await checkStatus())) {
+        await thinkThen(async () => {});
+        addMessage('ai', `${facts.messages.unavailable}\n\n${S.unavailableExtra}`);
+        return;
+      }
+      const data = await thinkThen(async () => {
+        const res = await fetch('/api/assistant', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          credentials: 'same-origin',
+          body: JSON.stringify({ message, page: location.pathname, lang: LANG }),
+        });
+        return res.json();
       });
-      const data = await res.json();
-      indicator.remove();
       if (data.reply) addMessage('ai', data.reply);
       for (const action of data.actions || []) {
         if (action.type === 'review') bookingWidget({ review: action.review });
       }
     } catch {
-      indicator.remove();
       addMessage('ai', facts.messages.unavailable);
     } finally {
       busy = false;
@@ -149,25 +180,42 @@ export function initAssistant() {
   }
 
   const actions = {
-    'find-service': () => {
-      addMessage('user', 'Find a service');
-      addMessage('ai', `Here are the services at ConfiDent Oral Care:\n\n${facts.categories.map((c) => `- [${c.title}](${c.path})`).join('\n')}\n\nOr tell me what you’re looking for and I’ll point you to the right page. You can also see the [full treatment index](/services).`);
+    'find-service': async () => {
+      if (busy) return;
+      addMessage('user', S.findServiceUser);
+      busy = true;
+      await thinkThen(async () => {});
+      busy = false;
+      addMessage('ai', `${S.findServiceReply}\n\n${facts.categories.map((c) => `- [${c.title}](${c.path})`).join('\n')}\n\n${S.findServiceAfter}`);
     },
     'request-appointment': async () => {
-      if (await checkStatus()) return send('I’d like to request an appointment.');
-      addMessage('user', 'Request an appointment');
-      if (facts.staticPreview) {
-        addMessage('ai', `Online booking isn’t part of this static preview. To arrange a visit, call [${facts.phone}](${facts.phoneHref}) or message the practice on [Instagram](${facts.instagram}). See [Appointments](/appointments) for the visit types.`);
-        return;
-      }
-      addMessage('ai', 'Choose a visit type below. You can also call or message the practice on Instagram.');
+      if (await checkStatus()) return send(S.requestAppointmentUser);
+      addMessage('user', S.requestAppointmentUser);
       bookingWidget();
     },
-    hours: () => {
-      addMessage('user', 'Check opening hours');
-      addMessage('ai', `Posted hours:\n\n${facts.hours.map((h) => `- **${h.days}:** ${h.time}`).join('\n')}\n\n${facts.hoursNote}\n\nWe’re at ${facts.address}. See [Contact Us](/contact) or call [${facts.phone}](${facts.phoneHref}).`);
-    },
   };
+
+  function greet() {
+    addMessage('ai', S.greeting, { save: false });
+  }
+
+  async function newChat() {
+    if (busy) return;
+    if (history.length && !window.confirm(S.newChatConfirm)) return;
+    history = [];
+    persist();
+    log.replaceChildren();
+    greet();
+    textarea.focus();
+    try {
+      await fetch('/api/assistant/reset', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify({ lang: LANG }),
+      });
+    } catch { /* the next message starts fresh on the server anyway */ }
+  }
 
   function setViewportVars() {
     const vv = window.visualViewport;
@@ -178,14 +226,15 @@ export function initAssistant() {
 
   function open(prompt) {
     opener = document.activeElement;
+    markSeen();
     if (panel.hidden) {
       panel.hidden = false;
-      launcher?.setAttribute('aria-expanded', 'true');
+      document.body.classList.add('ai-open');
       document.querySelectorAll('[data-ai-open]').forEach((b) => b.setAttribute('aria-expanded', 'true'));
       if (window.matchMedia('(max-width: 600px)').matches) document.body.classList.add('ai-open-mobile');
       setViewportVars();
       if (!log.childElementCount) {
-        addMessage('ai', GREETING, { save: false });
+        greet();
         for (const m of history) addMessage(m.role, m.content, { html: m.html, save: false });
       }
     }
@@ -196,7 +245,7 @@ export function initAssistant() {
 
   function close() {
     panel.hidden = true;
-    document.body.classList.remove('ai-open-mobile');
+    document.body.classList.remove('ai-open-mobile', 'ai-open');
     document.querySelectorAll('[data-ai-open]').forEach((b) => b.setAttribute('aria-expanded', 'false'));
     (opener && document.contains(opener) && opener !== document.body ? opener : launcher)?.focus();
   }
@@ -206,11 +255,11 @@ export function initAssistant() {
     if (trigger) { e.preventDefault(); open(trigger.dataset.aiPrompt); }
   });
   panel.querySelector('[data-ai-close]').addEventListener('click', close);
+  panel.querySelector('[data-ai-new]')?.addEventListener('click', newChat);
   panel.addEventListener('keydown', (e) => { if (e.key === 'Escape') { e.stopPropagation(); close(); } });
   panel.querySelectorAll('[data-ai-action]').forEach((el) => {
     const fn = actions[el.dataset.aiAction];
     if (fn) el.addEventListener('click', (e) => { e.preventDefault(); fn(); });
-    else if (el.tagName === 'A') { el.target = '_blank'; el.rel = 'noopener'; }
   });
 
   form.addEventListener('submit', (e) => {

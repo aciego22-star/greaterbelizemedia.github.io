@@ -63,9 +63,9 @@ export const firstVisit = {
 };
 
 export const gallery = {
-  metaDescription: 'Photos of the reception and opening day at ConfiDent Oral Care, The Boardwalk Belize, Belize City, plus clinic videos.',
+  metaDescription: 'Photos of the reception, treatment room and opening day at ConfiDent Oral Care, The Boardwalk Belize, Belize City, plus clinic videos.',
   title: 'A look inside ConfiDent',
-  intro: 'Explore the reception and opening-day photos from our practice at The Boardwalk Belize.',
+  intro: 'Explore our reception, treatment room and opening-day photos from the practice at The Boardwalk Belize.',
   photos: [
     {
       id: 'reception',
@@ -83,6 +83,16 @@ export const gallery = {
       alt: 'Opening-day portrait outside ConfiDent beside white and gold balloons and the welcome sign',
       landscape: 'opening-desktop',
       portrait: 'opening-mobile',
+      landscapeWidths: [768, 1200, 1672],
+      portraitWidths: [480, 720, 941],
+      size: { landscape: [1672, 941], portrait: [941, 1672] },
+    },
+    {
+      id: 'treatment-room',
+      title: 'Our treatment room',
+      alt: 'Treatment room with a grey dental chair, an arched gold-framed mirror and a softly lit wave on the wall',
+      landscape: 'treatment-desktop',
+      portrait: 'treatment-mobile',
       landscapeWidths: [768, 1200, 1672],
       portraitWidths: [480, 720, 941],
       size: { landscape: [1672, 941], portrait: [941, 1672] },
@@ -118,14 +128,14 @@ export const gallery = {
 };
 
 export const appointments = {
-  metaDescription: 'Request an appointment at ConfiDent Oral Care in Belize City. Ask confident AI, use the booking form, call +501 628-8233, or send an Instagram DM.',
+  metaDescription: 'Request an appointment at ConfiDent Oral Care in Belize City. Ask confident AI, use the booking form, call +501 628-8233, or message us on WhatsApp.',
   title: 'Request an appointment',
-  intro: 'Choose a visit type or ask confident AI to help you find a starting point. You can also reach the team by phone or Instagram DM.',
+  intro: 'Choose a visit type or ask confident AI to help you find a starting point. You can also reach the team by phone or WhatsApp.',
 };
 
 export const contact = {
-  metaDescription: 'Contact ConfiDent Oral Care at The Boardwalk Belize, Belize City: phone, email, posted hours, directions, Instagram, and Facebook.',
+  metaDescription: 'Contact ConfiDent Oral Care at The Boardwalk Belize, Belize City: phone, WhatsApp, email, posted hours, directions, Instagram, and Facebook.',
   title: 'Visit us at The Boardwalk',
-  arrange: 'Call the clinic or message us on Instagram to arrange a visit. Email is available for general enquiries.',
+  arrange: 'Call the clinic or message us on WhatsApp to arrange a visit. Email is available for general enquiries.',
   hoursNote: 'The clinic’s hours announcement lists 5 p.m. as the last appointment slot and 6 p.m. as closing time. Call the clinic to confirm late appointments.',
 };

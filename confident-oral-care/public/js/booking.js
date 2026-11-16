@@ -2,6 +2,9 @@
 // confident AI panel; both call the same scheduling API.
 
 const facts = JSON.parse(document.getElementById('clinic-facts')?.textContent || '{}');
+const S = facts.strings || {};
+const LANG = facts.locale || 'en';
+const fill = (str, values = {}) => String(str).replace(/\{(\w+)\}/g, (m, k) => (k in values ? values[k] : m));
 
 function h(tag, attrs = {}, ...children) {
   const el = document.createElement(tag);
@@ -17,10 +20,11 @@ function h(tag, attrs = {}, ...children) {
 }
 
 async function api(path, body) {
+  if (!body) path += `${path.includes('?') ? '&' : '?'}lang=${LANG}`;
   const res = await fetch(path, body ? {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
-    body: JSON.stringify(body),
+    body: JSON.stringify({ ...body, lang: LANG }),
     credentials: 'same-origin',
   } : { credentials: 'same-origin' });
   let data = {};
@@ -40,8 +44,8 @@ function addDays(dateStr, n) {
 
 function fallbackLinks() {
   return h('p', {},
-    h('a', { href: facts.phoneHref }, `Call ${facts.phone}`), ' · ',
-    h('a', { href: facts.instagram, rel: 'noopener' }, 'Message us on Instagram'));
+    h('a', { href: facts.phoneHref }, fill(S.callPhone, { phone: facts.phone })), ' · ',
+    h('a', { href: facts.whatsapp, rel: 'noopener' }, S.messageWhatsApp));
 }
 
 let uid = 0;
@@ -66,7 +70,7 @@ export function mountBooking(container, {
     container.dataset.mounted = '1';
   };
 
-  const previewNote = () => (previewLabel ? h('p', { class: 'test-banner', role: 'note' }, h('strong', {}, 'Test booking. '), previewLabel.replace(/^Test booking\.\s*/, '')) : null);
+  const previewNote = () => (previewLabel ? h('p', { class: 'test-banner', role: 'note' }, h('strong', {}, `${S.testBooking} `), previewLabel.replace(/^(Test booking|Cita de prueba)\.\s*/, '')) : null);
   const errorBox = (title, message, ...extra) => h('div', { class: 'result result-error', role: 'alert' }, h(H, {}, title), h('p', {}, message), ...extra);
 
   async function loadVisitTypes() {
@@ -81,16 +85,16 @@ export function mountBooking(container, {
   function chooseVisit(selected = initialVisit) {
     const name = `${id}-visit`;
     const form = h('form', { class: 'booking-step', novalidate: true },
-      h(H, { tabindex: '-1', 'data-step-heading': true }, 'What would you like to book?'),
+      h(H, { tabindex: '-1', 'data-step-heading': true }, S.whatWouldYouBook),
       h('fieldset', { class: 'visit-options' },
-        h('legend', { class: 'visually-hidden' }, 'Visit type'),
+        h('legend', { class: 'visually-hidden' }, S.visit),
         visitTypes.map((v, i) => h('label', { class: 'visit-option' },
           h('input', { type: 'radio', name, value: v.id, checked: selected ? v.id === selected : i === 0 }),
           h('span', {},
-            h('strong', {}, v.label, v.booking === 'staff-review' ? h('span', { class: 'badge' }, 'Team arranges time') : v.durationMinutes ? h('span', { class: 'badge' }, `${v.durationMinutes} min`) : null),
+            h('strong', {}, v.label, v.booking === 'staff-review' ? h('span', { class: 'badge' }, S.teamArranges) : v.durationMinutes ? h('span', { class: 'badge' }, fill(S.minutes, { n: v.durationMinutes })) : null),
             h('span', {}, v.description)),
         ))),
-      h('div', { class: 'form-actions' }, h('button', { class: 'btn btn-primary', type: 'submit' }, 'Continue')));
+      h('div', { class: 'form-actions' }, h('button', { class: 'btn btn-primary', type: 'submit' }, S.continue)));
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const visit = visitTypes.find((v) => v.id === form.elements[name].value);
@@ -98,7 +102,7 @@ export function mountBooking(container, {
       const button = form.querySelector('button[type=submit]');
       button.disabled = true;
       const { ok, data } = await api('/api/booking/prepare', { visitType: visit.id });
-      if (!ok) { button.disabled = false; return render(errorBox('Something went wrong', data.message || facts.messages.unavailable, fallbackLinks())); }
+      if (!ok) { button.disabled = false; return render(errorBox(S.somethingWrong, data.message || facts.messages.unavailable, fallbackLinks())); }
       reviewStep(data.review);
     });
     render(previewNote(), form);
@@ -106,12 +110,12 @@ export function mountBooking(container, {
 
   /* Step 2: date and time (available times only) */
   async function chooseSlot(visit, notice = null, alternatives = null) {
-    const heading = h(H, { tabindex: '-1', 'data-step-heading': true }, `Choose a time: ${visit.label}`);
+    const heading = h(H, { tabindex: '-1', 'data-step-heading': true }, fill(S.chooseTime, { visit: visit.label }));
     const status = h('div', { 'aria-live': 'polite' });
     const days = h('div', { class: 'slot-days' });
-    const back = h('button', { class: 'link-button', type: 'button', onclick: () => chooseVisit(visit.id) }, 'Change visit type');
+    const back = h('button', { class: 'link-button', type: 'button', onclick: () => chooseVisit(visit.id) }, S.changeVisit);
     let selectedRef = null;
-    const continueBtn = h('button', { class: 'btn btn-primary', type: 'button', disabled: true }, 'Continue');
+    const continueBtn = h('button', { class: 'btn btn-primary', type: 'button', disabled: true }, S.continue);
 
     const renderSlots = (slots) => {
       days.replaceChildren();
@@ -125,7 +129,7 @@ export function mountBooking(container, {
         for (const s of day.slots) {
           const btn = h('button', {
             type: 'button', class: 'slot-btn', 'aria-pressed': 'false', 'data-ref': s.slotRef,
-            'aria-label': `${s.dateLabel} at ${s.timeLabel}, Belize time`,
+            'aria-label': fill(S.slotAria, { date: s.dateLabel, time: s.timeLabel }),
             onclick: () => {
               days.querySelectorAll('.slot-btn').forEach((b) => b.setAttribute('aria-pressed', 'false'));
               btn.setAttribute('aria-pressed', 'true');
@@ -139,25 +143,25 @@ export function mountBooking(container, {
       }
     };
 
-    const prevBtn = h('button', { class: 'btn btn-secondary', type: 'button' }, '← Earlier');
-    const nextBtn = h('button', { class: 'btn btn-secondary', type: 'button' }, 'Later →');
+    const prevBtn = h('button', { class: 'btn btn-secondary', type: 'button' }, S.earlier);
+    const nextBtn = h('button', { class: 'btn btn-secondary', type: 'button' }, S.later);
     const range = h('span', { class: 'range' });
     const load = async () => {
       selectedRef = null;
       continueBtn.disabled = true;
-      status.replaceChildren(h('p', { class: 'loading' }, 'Checking available times…'));
+      status.replaceChildren(h('p', { class: 'loading' }, S.checking));
       days.replaceChildren();
       const { ok, data } = await api(`/api/availability?visitType=${encodeURIComponent(visit.id)}&from=${weekStart}&to=${addDays(weekStart, 6)}`);
       if (!ok) {
-        status.replaceChildren(errorBox('Times unavailable', data.message || facts.messages.unavailable, fallbackLinks()));
+        status.replaceChildren(errorBox(S.timesUnavailable, data.message || facts.messages.unavailable, fallbackLinks()));
         return;
       }
       weekStart = data.fromDate;
-      range.textContent = `${data.slots[0]?.shortDateLabel ?? data.fromDate} onward · Belize time`;
+      range.textContent = fill(S.onward, { date: data.slots[0]?.shortDateLabel ?? data.fromDate });
       prevBtn.disabled = weekStart <= todayInBelize();
       nextBtn.disabled = addDays(weekStart, 7) > data.lastBookableDate;
       if (!data.slots.length) {
-        status.replaceChildren(h('p', { class: 'status-msg' }, 'No times are available in this week. Try later dates, or call the clinic.'));
+        status.replaceChildren(h('p', { class: 'status-msg' }, S.noTimesWeek));
         return;
       }
       status.replaceChildren();
@@ -181,9 +185,9 @@ export function mountBooking(container, {
       h('div', { class: 'form-actions' }, continueBtn, back)];
     render(h('div', { class: 'booking-step' }, ...children));
     if (alternatives) {
-      range.textContent = 'Next available options · Belize time';
+      range.textContent = S.nextOptions;
       if (alternatives.length) renderSlots(alternatives);
-      else status.replaceChildren(h('p', { class: 'status-msg' }, 'No other times are available right now.'), fallbackLinks());
+      else status.replaceChildren(h('p', { class: 'status-msg' }, S.noOtherTimes), fallbackLinks());
     } else {
       await load();
     }
@@ -203,45 +207,45 @@ export function mountBooking(container, {
     const input = (name, type, attrs = {}) => h('input', { id: `${id}-${name}`, name, type, ...attrs });
 
     const minor = h('input', { type: 'checkbox', name: 'isMinor', id: `${id}-minor` });
-    const nameLabel = h('label', { for: `${id}-name` }, 'Your name');
-    const patientField = field('patientName', 'Patient’s name', input('patientName', 'text', { autocomplete: 'off' }));
+    const nameLabel = h('label', { for: `${id}-name` }, S.yourName);
+    const patientField = field('patientName', S.patientName, input('patientName', 'text', { autocomplete: 'off' }));
     patientField.hidden = true;
     minor.addEventListener('change', () => {
       patientField.hidden = !minor.checked;
-      nameLabel.textContent = minor.checked ? 'Responsible adult’s name' : 'Your name';
+      nameLabel.textContent = minor.checked ? S.adultName : S.yourName;
     });
     const nameField = h('div', { class: 'field' }, nameLabel, input('name', 'text', { autocomplete: 'name', required: true }), h('span', { class: 'field-error', id: `${id}-name-error`, hidden: true }));
 
     const serviceSelect = review.services ? h('select', { id: `${id}-service`, name: 'service' },
-      h('option', { value: '' }, 'Choose a treatment (optional)'),
-      review.services.map((s) => h('option', { value: s, selected: s === initialService }, s))) : null;
+      h('option', { value: '' }, S.chooseTreatment),
+      review.services.map((s) => h('option', { value: s.value, selected: s.value === initialService }, s.label))) : null;
 
     const summary = h('div', { class: 'review-summary' },
       h('dl', {},
-        h('dt', {}, 'Visit'), h('dd', {}, review.visitType.label),
-        booking ? [h('dt', {}, 'Date'), h('dd', {}, review.slot.dateLabel), h('dt', {}, 'Time'), h('dd', {}, `${review.slot.timeLabel} Belize time`)]
-          : [h('dt', {}, 'Time'), h('dd', {}, 'The team will contact you to arrange a time')],
-        h('dt', {}, 'Where'), h('dd', {}, 'The Boardwalk Belize, Belize City')));
+        h('dt', {}, S.visit), h('dd', {}, review.visitType.label),
+        booking ? [h('dt', {}, S.date), h('dd', {}, review.slot.dateLabel), h('dt', {}, S.time), h('dd', {}, fill(S.belizeTime, { time: review.slot.timeLabel }))]
+          : [h('dt', {}, S.time), h('dd', {}, S.teamWillContact)],
+        h('dt', {}, S.where), h('dd', {}, S.whereValue)));
 
     const formStatus = h('div', { 'aria-live': 'assertive' });
-    const submit = h('button', { class: 'btn btn-primary', type: 'submit' }, booking ? 'Confirm booking' : 'Send request');
+    const submit = h('button', { class: 'btn btn-primary', type: 'submit' }, booking ? S.confirmBooking : S.sendRequest);
     const form = h('form', { class: 'booking-step', novalidate: true },
-      h(H, { tabindex: '-1', 'data-step-heading': true }, booking ? 'Review and confirm' : 'Request a visit'),
+      h(H, { tabindex: '-1', 'data-step-heading': true }, booking ? S.reviewConfirm : S.requestVisit),
       summary,
-      h('p', { class: 'small muted' }, 'Enter one way for the team to reach you. If you’re booking for a child, use the responsible adult’s details.'),
+      h('p', { class: 'small muted' }, S.contactHelp),
       h('div', { class: 'form-grid' },
         nameField,
-        h('label', { class: 'check' }, minor, h('span', {}, 'I’m booking for someone under 18')),
+        h('label', { class: 'check' }, minor, h('span', {}, S.minor)),
         patientField,
         h('div', { class: 'form-grid two' },
-          field('phone', 'Phone', input('phone', 'tel', { autocomplete: 'tel', inputmode: 'tel' })),
-          field('email', 'Email', input('email', 'email', { autocomplete: 'email' }))),
+          field('phone', S.phone, input('phone', 'tel', { autocomplete: 'tel', inputmode: 'tel' })),
+          field('email', S.email, input('email', 'email', { autocomplete: 'email' }))),
         h('span', { class: 'field-error', id: `${id}-contact-error`, hidden: true }),
-        serviceSelect ? field('service', 'Treatment', serviceSelect) : null,
-        !booking ? field('preferredTimes', 'Preferred days or times (optional)', h('textarea', { id: `${id}-preferredTimes`, name: 'preferredTimes', rows: 2, maxlength: 200 })) : null),
+        serviceSelect ? field('service', S.treatment, serviceSelect) : null,
+        !booking ? field('preferredTimes', S.preferred, h('textarea', { id: `${id}-preferredTimes`, name: 'preferredTimes', rows: 2, maxlength: 200 })) : null),
       formStatus,
       h('div', { class: 'form-actions' }, submit,
-        h('button', { class: 'link-button', type: 'button', onclick: () => chooseVisit(review.visitType.id) }, 'Start again')));
+        h('button', { class: 'link-button', type: 'button', onclick: () => chooseVisit(review.visitType.id) }, S.startAgain)));
 
     const showErrors = (errors = {}) => {
       for (const el of form.querySelectorAll('.field-error')) { el.hidden = true; el.textContent = ''; }
@@ -262,7 +266,7 @@ export function mountBooking(container, {
 
     const submitOnce = async () => {
       submit.disabled = true;
-      formStatus.replaceChildren(h('p', { class: 'loading' }, booking ? 'Saving your booking…' : 'Sending your request…'));
+      formStatus.replaceChildren(h('p', { class: 'loading' }, booking ? S.saving : S.sending));
       const fd = new FormData(form);
       const contact = Object.fromEntries(fd.entries());
       contact.isMinor = minor.checked;
@@ -293,43 +297,44 @@ export function mountBooking(container, {
     const visit = visitTypes.find((v) => v.id === review.visitType.id) ?? review.visitType;
     if (result.status === 'confirmed') {
       return render(previewNote(), h('div', { class: 'result result-confirmed', role: 'status' },
-        h(H, { tabindex: '-1', 'data-step-heading': true }, 'Appointment confirmed'),
+        h(H, { tabindex: '-1', 'data-step-heading': true }, S.confirmed),
         h('p', {}, result.message),
-        h('p', {}, 'Booking reference: ', h('span', { class: 'ref' }, result.bookingRef)),
-        h('p', { class: 'small muted' }, `To change or cancel, call ${facts.phone} or message the practice on Instagram.`)));
+        h('p', {}, S.bookingRef, h('span', { class: 'ref' }, result.bookingRef)),
+        facts.calendarUrl ? h('p', {}, h('a', { class: 'text-link', href: facts.calendarUrl }, S.seeCalendar)) : null,
+        h('p', { class: 'small muted' }, fill(S.changeCancel, { phone: facts.phone }))));
     }
     if (result.status === 'staff_review_recorded') {
       return render(previewNote(), h('div', { class: 'result result-review', role: 'status' },
-        h(H, { tabindex: '-1', 'data-step-heading': true }, 'Request received'),
+        h(H, { tabindex: '-1', 'data-step-heading': true }, S.requestReceived),
         h('p', {}, result.message),
-        h('p', {}, 'Request reference: ', h('span', { class: 'ref' }, result.requestRef)),
-        h('p', { class: 'small muted' }, 'No appointment time has been set yet.')));
+        h('p', {}, S.requestRef, h('span', { class: 'ref' }, result.requestRef)),
+        h('p', { class: 'small muted' }, S.noTimeYet)));
     }
     if (result.status === 'slot_taken') return chooseSlot(visit, result.message, result.alternatives || []);
     if (result.status === 'unconfirmed') {
-      const again = h('button', { class: 'btn btn-secondary', type: 'button' }, 'Check again');
+      const again = h('button', { class: 'btn btn-secondary', type: 'button' }, S.checkAgain);
       again.addEventListener('click', async () => {
         again.disabled = true;
         showResult(await retry(), review, retry);
       });
       return render(previewNote(), h('div', { class: 'result result-error', role: 'alert' },
-        h(H, { tabindex: '-1', 'data-step-heading': true }, 'Not confirmed'),
+        h(H, { tabindex: '-1', 'data-step-heading': true }, S.notConfirmed),
         h('p', {}, result.message),
-        h('p', { class: 'small' }, 'Your booking is not confirmed. “Check again” looks up the same request; it will not create a second booking.'),
+        h('p', { class: 'small' }, S.notConfirmedHelp),
         h('div', { class: 'form-actions' }, again), fallbackLinks()));
     }
     if (result.status === 'expired' || result.status === 'invalid_review') {
-      return render(errorBox('Please start again', result.message, h('button', { class: 'btn btn-secondary', type: 'button', onclick: () => chooseVisit(visit.id) }, 'Start again')));
+      return render(errorBox(S.pleaseStartAgain, result.message, h('button', { class: 'btn btn-secondary', type: 'button', onclick: () => chooseVisit(visit.id) }, S.startAgain)));
     }
-    return render(previewNote(), errorBox('Not confirmed', facts.messages.unavailable, fallbackLinks()));
+    return render(previewNote(), errorBox(S.notConfirmed, facts.messages.unavailable, fallbackLinks()));
   }
 
   (async () => {
-    container.replaceChildren(h('p', { class: 'loading' }, 'Loading booking options…'));
+    container.replaceChildren(h('p', { class: 'loading' }, S.loadingBooking));
     try {
       await loadVisitTypes();
     } catch {
-      return render(errorBox('Online booking unavailable', facts.messages.unavailable, fallbackLinks()));
+      return render(errorBox(S.bookingUnavailable, facts.messages.unavailable, fallbackLinks()));
     }
     if (initialReview) return reviewStep(initialReview);
     const preset = visitTypes.find((v) => v.id === initialVisit);

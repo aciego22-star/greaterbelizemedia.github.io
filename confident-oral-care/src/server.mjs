@@ -7,7 +7,7 @@ import { createCore } from './app.mjs';
 import { createClaudeClient } from './assistant/assistant.mjs';
 import { FileKV } from './kv-file.mjs';
 import { notFoundPage } from './render/pages.mjs';
-import { pageRoutes } from './render/routes.mjs';
+import { allPageRoutes } from './render/routes.mjs';
 import { sessionCookie, sessionFromCookie } from './session.mjs';
 
 export const ROOT = resolve(fileURLToPath(import.meta.url), '../..');
@@ -106,7 +106,7 @@ export async function createApp({ root = ROOT, client = createClaudeClient(), lo
   const core = await createCore({ kv, client, logger, now, fault });
   const { site } = core;
   const preview = Boolean(site.siteConfig.preview);
-  const routes = pageRoutes(site);
+  const routes = allPageRoutes(core.sites);
 
   async function handler(req, res) {
     const started = Date.now();
@@ -148,7 +148,7 @@ export async function createApp({ root = ROOT, client = createClaudeClient(), lo
       const page = routes.get(path);
       if (page) return send(res, 200, page());
       if (await serveStatic(req, res, path)) return;
-      return send(res, 404, notFoundPage(site));
+      return send(res, 404, notFoundPage(path === '/es' || path.startsWith('/es/') ? core.sites.es : site));
     } catch (err) {
       if (err.status) return json(res, err.status, { status: 'bad_request', message: err.message });
       logger.error('[server] unhandled error:', err);

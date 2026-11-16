@@ -2,6 +2,8 @@
 
 export const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const ES_WEEKDAYS = { Sunday: 'domingo', Monday: 'lunes', Tuesday: 'martes', Wednesday: 'miércoles', Thursday: 'jueves', Friday: 'viernes', Saturday: 'sábado' };
+const ES_MONTHS = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
 
 const partFormatters = new Map();
 function partFormatter(timeZone) {
@@ -70,22 +72,24 @@ export function compareDates(a, b) {
   return a < b ? -1 : a > b ? 1 : 0;
 }
 
-/** "Tuesday, 17 November 2026" */
-export function formatDateLong(date, timeZone) {
+/** "Tuesday, 17 November 2026" / "martes, 17 de noviembre de 2026" */
+export function formatDateLong(date, timeZone, locale = 'en') {
   const p = partsInZone(date, timeZone);
+  if (locale === 'es') return `${ES_WEEKDAYS[p.weekday]}, ${p.day} de ${ES_MONTHS[p.month - 1]} de ${p.year}`;
   return `${p.weekday}, ${p.day} ${MONTHS[p.month - 1]} ${p.year}`;
 }
 
-/** "Tue 17 Nov" */
-export function formatDateShort(date, timeZone) {
+/** "Tue 17 Nov" / "mar 17 nov" */
+export function formatDateShort(date, timeZone, locale = 'en') {
   const p = partsInZone(date, timeZone);
+  if (locale === 'es') return `${ES_WEEKDAYS[p.weekday].slice(0, 3)} ${p.day} ${ES_MONTHS[p.month - 1].slice(0, 3)}`;
   return `${p.weekday.slice(0, 3)} ${p.day} ${MONTHS[p.month - 1].slice(0, 3)}`;
 }
 
 /** "9:00 a.m." / "12:30 p.m." */
-export function formatTime(date, timeZone) {
+export function formatTime(date, timeZone, locale = 'en') {
   const p = partsInZone(date, timeZone);
-  const suffix = p.hour < 12 ? 'a.m.' : 'p.m.';
+  const suffix = locale === 'es' ? (p.hour < 12 ? 'a. m.' : 'p. m.') : (p.hour < 12 ? 'a.m.' : 'p.m.');
   const hour12 = p.hour % 12 === 0 ? 12 : p.hour % 12;
   return `${hour12}:${String(p.minute).padStart(2, '0')} ${suffix}`;
 }

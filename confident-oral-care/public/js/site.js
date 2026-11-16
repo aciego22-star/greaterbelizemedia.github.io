@@ -260,7 +260,28 @@ function initBookingPage() {
   });
 }
 
+/* ----------------------------------------------------------- Back to top */
+
+function initBackToTop() {
+  const button = document.querySelector('[data-back-to-top]');
+  if (!button) return;
+  button.hidden = false;
+  let ticking = false;
+  const update = () => {
+    button.classList.toggle('is-visible', window.scrollY > Math.max(600, window.innerHeight * 0.8));
+    button.tabIndex = button.classList.contains('is-visible') ? 0 : -1;
+    ticking = false;
+  };
+  window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+  button.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: reducedMotion.matches ? 'auto' : 'smooth' });
+    document.querySelector('.brand')?.focus({ preventScroll: true });
+  });
+  update();
+}
+
 initNav();
+initBackToTop();
 initHero();
 initGallery();
 initBookingPage();

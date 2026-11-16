@@ -24,7 +24,7 @@ npm run start:env           # or: npm start (without loading .env)
 # open http://localhost:3000
 ```
 
-- Without `ANTHROPIC_API_KEY`, everything except the AI conversation still works. The assistant panel's suggested actions (services, hours, directions, booking form) work, and typed questions get the phone and Instagram fallback.
+- Without `ANTHROPIC_API_KEY`, everything except the AI conversation still works. The assistant panel's suggested actions (services, hours, directions, booking form) work, and typed questions get the phone and WhatsApp fallback.
 - The test calendar view is at **http://localhost:3000/preview/test-calendar**.
 - Run the tests (scheduling, assistant tool loop, links and pages) with `npm test`.
 - Simulate a calendar outage with `CALENDAR_FAULT=unavailable npm start`.
@@ -62,6 +62,13 @@ tests/               node:test suites
 | Bookable times, visit types, durations, cutoffs | `config/scheduling.json` | Booking form and AI availability. These are deliberately separate from the public hours. |
 
 Restart the server after editing configuration.
+
+### Spanish site
+
+Every page has a Spanish version under `/es` (for example `/es/services`). The header's EN/ES switch moves between the two versions of the same page.
+- **Interface text:** `content/i18n.mjs` (menu, buttons, booking form, assistant messages).
+- **Page, treatment and blog copy:** `content/es/*.mjs`. Slugs stay the same as English.
+- **Review:** the Spanish copy is a translation draft. The clinic should review it before launch.
 
 ### Home hero slideshow
 
@@ -109,16 +116,21 @@ The photo records live in `content/pages.mjs` (`gallery.photos`). Paired photos 
   - `open_staff_review_form` (visit type) shows a request form for staff-reviewed visits.
 - **Final write.** Only the patient's submission of the review form calls the booking endpoint. Claude never receives names, phone numbers or emails. It gets a short website note about the outcome, such as the booking reference.
 - **Safety and scope.** The assistant never gives clinical advice and directs emergencies to emergency care. It can't see or discuss anyone's appointments. Changes and cancellations are routed to the team.
-- **Failure handling.** API errors, refusals and calendar outages all fall back to "I can’t confirm a time right now. Please call +501 628-8233 or send the practice a message on Instagram." Each session is capped at 40 turns and 15 messages per minute.
+- **Personality.** It writes like a friendly front-desk person, replies in the visitor's language (Spanish replies link to `/es` pages), and never names the technology or provider behind it.
+- **Payments.** It states that payments aren't taken through the assistant or the website.
+- **Booking and the calendar.** A booking made from the chat form blocks the time immediately; confident AI then says where to see it (the test calendar in previews). Times already taken through the calendar or booking page are never offered again.
+- **Panel.** Replies appear after a short "typing" pause (about 3 seconds). The quick actions are "Request an appointment" and "Find a service". "Start new chat" clears the conversation (`POST /api/assistant/reset`). The launcher shows the clinic logo and pulses every 6 seconds until the visitor opens it once.
+- **Failure handling.** API errors, refusals and calendar outages all fall back to "I can’t confirm a time right now. Please call +501 628-8233 or send the practice a message on WhatsApp." Each session is capped at 40 turns and 15 messages per minute.
 
 ### Demo mode (previews without an API key)
 
 When no `ANTHROPIC_API_KEY` is set and the site is a preview (`site.json` → `"preview": true`), confident AI runs in **demo mode** (`src/assistant/demo.mjs`):
 - **Answers:** scripted, rule-based replies drawn from the same approved clinic records.
 - **Booking:** it uses the real scheduler for times, the booking form and staff-review requests.
-- **Labelling:** the panel says it's a demo.
+- **Languages:** it answers in English or Spanish, following the page and the visitor's wording.
+- **Labelling:** nothing visitor-facing names the technology behind the assistant, in demo mode or live.
 
-Setting a key switches to Claude automatically. `ASSISTANT_DEMO=on|off` overrides the default. A live site (`"preview": false`) without a key shows the phone and Instagram fallback instead.
+Setting a key switches to Claude automatically. `ASSISTANT_DEMO=on|off` overrides the default. A live site (`"preview": false`) without a key shows the phone and WhatsApp fallback instead.
 
 ## Scheduling
 
@@ -204,14 +216,14 @@ This writes `deliverables/confident-oral-care-netlify.zip`. Upload it as-is to N
 
 | Variable | Required | Notes |
 |---|---|---|
-| `ANTHROPIC_API_KEY` | For confident AI | Without it, the assistant shows the phone and Instagram fallback. The booking form works either way. |
+| `ANTHROPIC_API_KEY` | For confident AI | Without it, the assistant shows the phone and WhatsApp fallback. The booking form works either way. |
 | `ANTHROPIC_MODEL` | No | Default `claude-opus-5-5` |
 | `PREVIEW_TOKEN` | No | If set, the test calendar needs `/preview/test-calendar?token=<value>` |
 | `SESSION_SECRET` | No | Generated and stored in Blobs if not set |
 
 **Check after uploading:**
 1. Open `https://<your-site>/api/assistant/status`. You should see `{"available":true,...}`, or `false` without an API key.
-2. If it shows the site's 404 page instead, Netlify didn't deploy the function. The pages still work, and booking and the assistant fall back to phone and Instagram.
+2. If it shows the site's 404 page instead, Netlify didn't deploy the function. The pages still work, and booking and the assistant fall back to phone and WhatsApp.
 
 The function keeps each assistant reply under Netlify's 60-second function limit: a 25-second timeout per Claude request, one retry, and a 45-second overall deadline.
 

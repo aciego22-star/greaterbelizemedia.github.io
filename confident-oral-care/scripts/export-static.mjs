@@ -16,18 +16,18 @@ import { cp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { dirname, extname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { notFoundPage } from '../src/render/pages.mjs';
-import { pageRoutes } from '../src/render/routes.mjs';
-import { loadSite } from '../src/site.mjs';
+import { allPageRoutes, pageRoutes } from '../src/render/routes.mjs';
+import { loadSites } from '../src/site.mjs';
 
 const ROOT = resolve(fileURLToPath(import.meta.url), '../..');
 const OUT = join(ROOT, 'deliverables');
 const SITE_DIR = join(OUT, 'netlify-site');
 const single = process.argv.includes('--single');
 
-const fullSite = await loadSite(ROOT);
-const site = await loadSite(ROOT, { staticPreview: true }); // single-file preview only
-const routes = pageRoutes(site);
-const fullRoutes = pageRoutes(fullSite);
+const sites = await loadSites(ROOT);
+const fullSite = sites.en;
+const routes = allPageRoutes(sites); // every page, English and Spanish (Netlify package)
+const fullRoutes = pageRoutes(sites.en); // the single-file preview is English-only
 
 const fileFor = (path) => (path === '/' ? 'index.html' : `${path.slice(1)}.html`);
 
@@ -37,12 +37,14 @@ async function exportSite() {
   await rm(SITE_DIR, { recursive: true, force: true });
   await mkdir(SITE_DIR, { recursive: true });
 
-  for (const [path, render] of fullRoutes) {
+  for (const [path, render] of routes) {
     const file = join(SITE_DIR, fileFor(path));
     await mkdir(dirname(file), { recursive: true });
     await writeFile(file, render());
   }
   await writeFile(join(SITE_DIR, '404.html'), notFoundPage(fullSite));
+  await mkdir(join(SITE_DIR, 'es'), { recursive: true });
+  await writeFile(join(SITE_DIR, 'es', '404.html'), notFoundPage(sites.es));
 
   // One self-contained function file (all dependencies included).
   await build({
@@ -77,9 +79,10 @@ async function exportSite() {
   // Keep deployment files private, then clean-URL rewrites. /api/* and /preview/test-calendar are
   // served by the function (its config.path).
   const redirects = ['/netlify/*  /404.html  404!', '/netlify.toml  /404.html  404!'];
-  redirects.push(...[...fullRoutes.keys()]
+  redirects.push(...[...routes.keys()]
     .filter((p) => p !== '/')
     .map((p) => `${p}  /${fileFor(p)}  200`));
+  redirects.push('/es/*  /es/404.html  404');
   await writeFile(join(SITE_DIR, '_redirects'), `${redirects.join('\n')}\n`);
 
   await writeFile(join(SITE_DIR, '_headers'), `/*

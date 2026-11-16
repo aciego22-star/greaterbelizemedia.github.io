@@ -1,3 +1,5 @@
+import { categories as categoriesEs } from '../../content/es/treatments.mjs';
+import { ui } from '../../content/i18n.mjs';
 import { readAll } from '../kv.mjs';
 import { CalendarTimeoutError, SlotConflictError } from './errors.mjs';
 import { statusMessages } from './messages.mjs';
@@ -56,7 +58,13 @@ function withTimeout(promise, ms) {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export function validateContact(input = {}, { services = [] } = {}) {
+const ERRORS = {
+  en: { name: 'Enter a name.', contact: 'Enter a phone number or an email address.', phone: 'Enter a valid phone number.', email: 'Enter a valid email address.', patientName: 'Enter the patient’s name.', service: 'Choose a service from the list.' },
+  es: { name: 'Escriba un nombre.', contact: 'Escriba un teléfono o un correo electrónico.', phone: 'Escriba un teléfono válido.', email: 'Escriba un correo electrónico válido.', patientName: 'Escriba el nombre del paciente.', service: 'Elija un servicio de la lista.' },
+};
+
+export function validateContact(input = {}, { services = [], locale = 'en' } = {}) {
+  const E = ERRORS[locale] ?? ERRORS.en;
   const errors = {};
   const clean = (v, max) => (typeof v === 'string' ? v.trim().slice(0, max) : '');
   const contact = {
@@ -68,12 +76,12 @@ export function validateContact(input = {}, { services = [] } = {}) {
     preferredTimes: clean(input.preferredTimes, 200),
     service: clean(input.service, 80),
   };
-  if (contact.name.length < 2) errors.name = 'Enter a name.';
-  if (!contact.phone && !contact.email) errors.contact = 'Enter a phone number or an email address.';
-  if (contact.phone && !/^[+()\d\s-]{7,30}$/.test(contact.phone)) errors.phone = 'Enter a valid phone number.';
-  if (contact.email && !EMAIL_RE.test(contact.email)) errors.email = 'Enter a valid email address.';
-  if (contact.isMinor && contact.patientName.length < 2) errors.patientName = 'Enter the patient’s name.';
-  if (contact.service && !services.includes(contact.service)) errors.service = 'Choose a service from the list.';
+  if (contact.name.length < 2) errors.name = E.name;
+  if (!contact.phone && !contact.email) errors.contact = E.contact;
+  if (contact.phone && !/^[+()\d\s-]{7,30}$/.test(contact.phone)) errors.phone = E.phone;
+  if (contact.email && !EMAIL_RE.test(contact.email)) errors.email = E.email;
+  if (contact.isMinor && contact.patientName.length < 2) errors.patientName = E.patientName;
+  if (contact.service && !services.includes(contact.service)) errors.service = E.service;
   return { contact, errors, ok: Object.keys(errors).length === 0 };
 }
 
@@ -90,29 +98,41 @@ export function validateContact(input = {}, { services = [] } = {}) {
  */
 export function createSchedulingService({ config, clinic, adapter, kv, secret, now = () => new Date(), logger = console }) {
   const tz = config.timeZone;
-  const messages = statusMessages(clinic);
+  const messagesByLocale = { en: statusMessages(clinic, 'en'), es: statusMessages(clinic, 'es') };
+  const messages = messagesByLocale.en;
+  const msg = (locale) => messagesByLocale[locale] ?? messages;
   const tokens = createTokens(secret);
   const lock = new KeyedLock();
   const serviceNames = clinic.serviceGroups.flatMap((g) => g.services.map((s) => s.name));
+  const esServiceName = Object.fromEntries(categoriesEs.flatMap((c) => Object.entries(c.names ?? {})));
+  const serviceOptions = (locale) => clinic.serviceGroups.flatMap((g) => g.services.map((sv) => ({
+    value: sv.name, label: locale === 'es' ? (esServiceName[sv.slug] ?? sv.name) : sv.name,
+  })));
+  const INVALID = {
+    en: { slot: 'That time is no longer held. Please choose a time again.', review: 'This request has expired. Please start again.', unknown: 'Unknown visit type.', direct: 'This visit type can be booked directly.' },
+    es: { slot: 'Ese horario ya no está reservado para usted. Elija una hora de nuevo.', review: 'Esta solicitud venció. Empiece de nuevo, por favor.', unknown: 'Tipo de visita desconocido.', direct: 'Este tipo de visita se puede reservar directamente.' },
+  };
+  const inv = (locale) => INVALID[locale] ?? INVALID.en;
   const visitTypes = new Map(config.visitTypes.map((v) => [v.id, v]));
   const resourceLabel = new Map(config.resources.map((r) => [r.id, r.label]));
   const previewLabel = config.mode === 'test' ? config.previewLabel : null;
 
-  function publicVisitType(v) {
+  function publicVisitType(v, locale = 'en') {
+    const tr = ui[locale]?.visitTypes?.[v.id] ?? {};
     return {
-      id: v.id, label: v.label, description: v.description, booking: v.booking,
-      durationMinutes: v.durationMinutes, servicePage: v.servicePage,
+      id: v.id, label: tr.label ?? v.label, description: tr.description ?? v.description, booking: v.booking,
+      durationMinutes: v.durationMinutes, servicePage: locale === 'es' ? `/es${v.servicePage}` : v.servicePage,
     };
   }
 
-  function slotView(start, end) {
+  function slotView(start, end, locale = 'en') {
     return {
       start: start.toISOString(),
       end: end.toISOString(),
       date: partsInZone(start, tz).date,
-      dateLabel: formatDateLong(start, tz),
-      shortDateLabel: formatDateShort(start, tz),
-      timeLabel: formatTime(start, tz),
+      dateLabel: formatDateLong(start, tz, locale),
+      shortDateLabel: formatDateShort(start, tz, locale),
+      timeLabel: formatTime(start, tz, locale),
     };
   }
 
@@ -166,55 +186,55 @@ export function createSchedulingService({ config, clinic, adapter, kv, secret, n
       .filter((c) => c.freeResources.length > 0);
   }
 
-  function issueSlotRef(sessionId, visitType, slot) {
+  function issueSlotRef(sessionId, visitType, slot, locale = 'en') {
     const slotRef = tokens.sign({
       t: 'slot', sid: sessionId, v: visitType.id, s: slot.start.toISOString(), e: slot.end.toISOString(),
       r: slot.freeResources, exp: now().getTime() + config.slotReferenceTtlMinutes * 60_000,
     });
-    return { slotRef, ...slotView(slot.start, slot.end) };
+    return { slotRef, ...slotView(slot.start, slot.end, locale) };
   }
 
-  async function findAvailability({ sessionId, visitTypeId, fromDate, toDate, limit = 40 }) {
+  async function findAvailability({ sessionId, visitTypeId, fromDate, toDate, limit = 40, locale = 'en' }) {
     const visitType = visitTypes.get(visitTypeId);
-    if (!visitType) throw new SchedulingError('unknown_visit_type', 'Unknown visit type.');
+    if (!visitType) throw new SchedulingError('unknown_visit_type', inv(locale).unknown);
     if (visitType.booking !== 'direct') {
-      return { visitType: publicVisitType(visitType), staffReview: true, slots: [], timeZone: tz };
+      return { visitType: publicVisitType(visitType, locale), staffReview: true, slots: [], timeZone: tz };
     }
     const range = admissibleRange(fromDate, toDate);
     if (range.empty) {
-      return { visitType: publicVisitType(visitType), slots: [], timeZone: tz, fromDate: range.from, toDate: range.to, lastBookableDate: range.lastBookable };
+      return { visitType: publicVisitType(visitType, locale), slots: [], timeZone: tz, fromDate: range.from, toDate: range.to, lastBookableDate: range.lastBookable };
     }
     const slots = await computeSlots(visitType, range.from, range.to);
     return {
-      visitType: publicVisitType(visitType),
+      visitType: publicVisitType(visitType, locale),
       timeZone: tz,
       fromDate: range.from,
       toDate: range.to,
       lastBookableDate: range.lastBookable,
       truncated: slots.length > limit,
-      slots: slots.slice(0, limit).map((s) => issueSlotRef(sessionId, visitType, s)),
+      slots: slots.slice(0, limit).map((s) => issueSlotRef(sessionId, visitType, s, locale)),
     };
   }
 
   /** Real alternatives after a slot is lost: the next available times after it. */
-  async function alternativesAfter(sessionId, visitType, start, count = 5) {
+  async function alternativesAfter(sessionId, visitType, start, count = 5, locale = 'en') {
     const day = partsInZone(start, tz).date;
     const range = admissibleRange(day, addDays(day, config.maxRangeDays - 1));
     if (range.empty) return [];
     const slots = await computeSlots(visitType, range.from, range.to);
     const later = slots.filter((s) => s.start > start);
-    return (later.length ? later : slots).slice(0, count).map((s) => issueSlotRef(sessionId, visitType, s));
+    return (later.length ? later : slots).slice(0, count).map((s) => issueSlotRef(sessionId, visitType, s, locale));
   }
 
-  function reviewView(token, payload) {
+  function reviewView(token, payload, locale = 'en') {
     const visitType = visitTypes.get(payload.v);
     return {
       reviewId: token,
       kind: payload.k,
-      visitType: publicVisitType(visitType),
-      ...(payload.k === 'booking' ? { slot: slotView(new Date(payload.s), new Date(payload.e)) } : {}),
-      previewLabel,
-      services: payload.k === 'staff-review' && visitType.id === 'other-visit' ? serviceNames : undefined,
+      visitType: publicVisitType(visitType, locale),
+      ...(payload.k === 'booking' ? { slot: slotView(new Date(payload.s), new Date(payload.e), locale) } : {}),
+      previewLabel: locale === 'es' && previewLabel ? 'Cita de prueba. Use datos de ejemplo para esta demostración.' : previewLabel,
+      services: payload.k === 'staff-review' && visitType.id === 'other-visit' ? serviceOptions(locale) : undefined,
       expiresAt: new Date(payload.exp).toISOString(),
     };
   }
@@ -225,10 +245,10 @@ export function createSchedulingService({ config, clinic, adapter, kv, secret, n
     return p;
   }
 
-  async function prepareBooking({ sessionId, slotRef }) {
+  async function prepareBooking({ sessionId, slotRef, locale = 'en' }) {
     const slot = readToken(slotRef, 'slot', sessionId);
     if (!slot || slot.exp < now().getTime() || !visitTypes.has(slot.v)) {
-      throw new SchedulingError('invalid_slot', 'That time is no longer held. Please choose a time again.');
+      throw new SchedulingError('invalid_slot', inv(locale).slot);
     }
     const visitType = visitTypes.get(slot.v);
     const start = new Date(slot.s);
@@ -236,32 +256,32 @@ export function createSchedulingService({ config, clinic, adapter, kv, secret, n
     // Non-binding freshness check so the patient doesn't fill the form for a slot that is already gone.
     const busy = await adapter.getBusy({ resourceIds: slot.r, from: start, to: end });
     if (!slot.r.some((r) => !overlaps(busy, r, start, end)) || start < earliestStart()) {
-      throw new SchedulingError('slot_taken', messages.slotTaken, { alternatives: await alternativesAfter(sessionId, visitType, start) });
+      throw new SchedulingError('slot_taken', msg(locale).slotTaken, { alternatives: await alternativesAfter(sessionId, visitType, start, 5, locale) });
     }
     const payload = {
       t: 'rev', k: 'booking', sid: sessionId, v: visitType.id, s: slot.s, e: slot.e, r: slot.r,
       ref: `CD-${randomRef()}`, exp: now().getTime() + config.slotReferenceTtlMinutes * 60_000,
     };
-    return reviewView(tokens.sign(payload), payload);
+    return reviewView(tokens.sign(payload), payload, locale);
   }
 
-  async function prepareStaffReview({ sessionId, visitTypeId }) {
+  async function prepareStaffReview({ sessionId, visitTypeId, locale = 'en' }) {
     const visitType = visitTypes.get(visitTypeId);
-    if (!visitType) throw new SchedulingError('unknown_visit_type', 'Unknown visit type.');
-    if (visitType.booking !== 'staff-review') throw new SchedulingError('not_staff_review', 'This visit type can be booked directly.');
+    if (!visitType) throw new SchedulingError('unknown_visit_type', inv(locale).unknown);
+    if (visitType.booking !== 'staff-review') throw new SchedulingError('not_staff_review', inv(locale).direct);
     const payload = { t: 'rev', k: 'staff-review', sid: sessionId, v: visitTypeId, ref: `REQ-${randomRef()}`, exp: now().getTime() + 60 * 60_000 };
-    return reviewView(tokens.sign(payload), payload);
+    return reviewView(tokens.sign(payload), payload, locale);
   }
 
-  function confirmedResult(review, eventId, resource) {
-    const view = slotView(new Date(review.s), new Date(review.e));
+  function confirmedResult(review, eventId, resource, locale = 'en') {
+    const view = slotView(new Date(review.s), new Date(review.e), locale);
     return {
       status: 'confirmed',
       bookingRef: review.ref,
       eventId,
       slot: view,
-      visitType: publicVisitType(visitTypes.get(review.v)),
-      message: messages.confirmed({ dateLabel: view.dateLabel, timeLabel: view.timeLabel, bookingRef: review.ref }),
+      visitType: publicVisitType(visitTypes.get(review.v), locale),
+      message: msg(locale).confirmed({ dateLabel: view.dateLabel, timeLabel: view.timeLabel, bookingRef: review.ref }),
       previewLabel,
       resourceLabel: resourceLabel.get(resource),
     };
@@ -279,7 +299,7 @@ export function createSchedulingService({ config, clinic, adapter, kv, secret, n
     }
   }
 
-  async function writeBooking(review, contact) {
+  async function writeBooking(review, contact, locale = 'en') {
     const visitType = visitTypes.get(review.v);
     const start = new Date(review.s);
     const end = new Date(review.e);
@@ -289,11 +309,11 @@ export function createSchedulingService({ config, clinic, adapter, kv, secret, n
     const existing = await adapter.findEventByBookingRef(review.ref);
     if (existing) {
       await record(review, existing.id, existing.resource, contact, { reconciled: true });
-      return confirmedResult(review, existing.id, existing.resource);
+      return confirmedResult(review, existing.id, existing.resource, locale);
     }
 
     const slotTaken = async () => ({
-      status: 'slot_taken', message: messages.slotTaken, alternatives: await alternativesAfter(review.sid, visitType, start),
+      status: 'slot_taken', message: msg(locale).slotTaken, alternatives: await alternativesAfter(review.sid, visitType, start, 5, locale),
     });
 
     // Authoritative availability recheck.
@@ -311,7 +331,7 @@ export function createSchedulingService({ config, clinic, adapter, kv, secret, n
         visitTypeId: visitType.id,
       }), config.calendarWriteTimeoutMs);
       await record(review, eventId, resource, contact);
-      return confirmedResult(review, eventId, resource);
+      return confirmedResult(review, eventId, resource, locale);
     } catch (err) {
       if (err instanceof SlotConflictError) return slotTaken();
       if (!(err instanceof CalendarTimeoutError)) throw err;
@@ -320,19 +340,19 @@ export function createSchedulingService({ config, clinic, adapter, kv, secret, n
       try { landed = await adapter.findEventByBookingRef(review.ref); } catch { /* still unresolved */ }
       if (landed) {
         await record(review, landed.id, resource, contact, { reconciled: true });
-        return confirmedResult(review, landed.id, resource);
+        return confirmedResult(review, landed.id, resource, locale);
       }
-      return { status: 'unconfirmed', retryable: true, message: messages.unavailable };
+      return { status: 'unconfirmed', retryable: true, message: msg(locale).unavailable };
     }
   }
 
-  async function completeReview({ sessionId, reviewId, contact: contactInput }) {
+  async function completeReview({ sessionId, reviewId, contact: contactInput, locale = 'en' }) {
     const review = readToken(reviewId, 'rev', sessionId);
     if (!review || !visitTypes.has(review.v)) {
-      return { status: 'invalid_review', message: 'This request has expired. Please start again.' };
+      return { status: 'invalid_review', message: inv(locale).review };
     }
     const visitType = visitTypes.get(review.v);
-    const { contact, errors, ok } = validateContact(contactInput, { services: serviceNames });
+    const { contact, errors, ok } = validateContact(contactInput, { services: serviceNames, locale });
 
     if (review.k === 'staff-review') {
       try {
@@ -340,7 +360,7 @@ export function createSchedulingService({ config, clinic, adapter, kv, secret, n
         const recorded = await kv.getJSON(`staff-requests/${review.ref}`);
         if (!recorded) {
           if (!ok) return { status: 'invalid', errors };
-          if (review.exp < now().getTime()) return { status: 'expired', message: 'This request has expired. Please start again.' };
+          if (review.exp < now().getTime()) return { status: 'expired', message: inv(locale).review };
           await kv.createJSON(`staff-requests/${review.ref}`, {
             requestRef: review.ref, visitTypeId: visitType.id, status: 'pending-staff-review',
             contact, mode: config.mode, createdAt: now().toISOString(),
@@ -348,13 +368,13 @@ export function createSchedulingService({ config, clinic, adapter, kv, secret, n
         }
       } catch (err) {
         logger.error('[scheduling] staff review store failed:', err.name);
-        return { status: 'unavailable', message: messages.unavailable };
+        return { status: 'unavailable', message: msg(locale).unavailable };
       }
       return {
         status: 'staff_review_recorded',
         requestRef: review.ref,
-        visitType: publicVisitType(visitType),
-        message: messages.staffReviewRecorded,
+        visitType: publicVisitType(visitType, locale),
+        message: msg(locale).staffReviewRecorded,
         previewLabel,
       };
     }
@@ -362,13 +382,13 @@ export function createSchedulingService({ config, clinic, adapter, kv, secret, n
     try {
       // A retry after success must still say "confirmed", even once the review step has expired.
       const existing = await adapter.findEventByBookingRef(review.ref);
-      if (existing) return confirmedResult(review, existing.id, existing.resource);
+      if (existing) return confirmedResult(review, existing.id, existing.resource, locale);
       if (!ok) return { status: 'invalid', errors };
-      if (review.exp < now().getTime()) return { status: 'expired', message: 'This time is no longer held. Please choose a time again.' };
-      return await lock.runMany(review.r, () => writeBooking(review, contact));
+      if (review.exp < now().getTime()) return { status: 'expired', message: inv(locale).slot };
+      return await lock.runMany(review.r, () => writeBooking(review, contact, locale));
     } catch (err) {
       logger.error('[scheduling] calendar error:', err.name);
-      return { status: 'unavailable', message: messages.unavailable };
+      return { status: 'unavailable', message: msg(locale).unavailable };
     }
   }
 
@@ -378,7 +398,9 @@ export function createSchedulingService({ config, clinic, adapter, kv, secret, n
     previewLabel: config.previewLabel,
     messages,
     isFinal: (status) => FINAL.has(status),
-    listVisitTypes: () => config.visitTypes.map(publicVisitType),
+    listVisitTypes: (locale = 'en') => config.visitTypes.map((v) => publicVisitType(v, locale)),
+    serviceOptions,
+    msg,
     findAvailability,
     prepareBooking,
     prepareStaffReview,

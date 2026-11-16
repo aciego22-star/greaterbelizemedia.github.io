@@ -161,7 +161,7 @@ test('calendar outage: availability errors and bookings are never shown as confi
   adapter.fault = 'unavailable';
   const result = await service.completeReview({ sessionId: S1, reviewId: review.reviewId, idempotencyKey: 'key-55555555', contact: TEST_CONTACT });
   assert.equal(result.status, 'unavailable');
-  assert.equal(result.message, 'I can’t confirm a time right now. Please call +501 628-8233 or send the practice a message on Instagram.');
+  assert.equal(result.message, 'I can’t confirm a time right now. Please call +501 628-8233 or send the practice a message on WhatsApp.');
   await assert.rejects(service.findAvailability({ sessionId: S1, visitTypeId: 'general-consultation' }));
 });
 

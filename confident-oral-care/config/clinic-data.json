@@ -16,13 +16,17 @@
     "label": "info@confidentoc.com",
     "href": "mailto:info@confidentoc.com"
   },
+  "whatsapp": {
+    "label": "+501 628-8233",
+    "href": "https://wa.me/5016288233"
+  },
   "socialLinks": {
     "instagram": "https://www.instagram.com/confidentoralcare.bz/",
     "facebook": "https://www.facebook.com/share/1F7DRqRkB8/?mibextid=wwXIfr"
   },
   "publishedAppointmentChannels": [
     "Phone",
-    "Instagram DM"
+    "WhatsApp"
   ],
   "publicHours": [
     {

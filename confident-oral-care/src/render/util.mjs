@@ -18,11 +18,13 @@ const PATHS = {
   play: '<path d="M8 5.5v13l11-6.5-11-6.5Z"/>',
   pause: '<path d="M8 5h3v14H8zM13 5h3v14h-3z"/>',
   close: '<path d="M6 6l12 12M18 6 6 18"/>',
+  plus: '<path d="M12 5v14M5 12h14"/>',
   chevron: '<path d="m6 9 6 6 6-6"/>',
   prev: '<path d="m15 5-7 7 7 7"/>',
   next: '<path d="m9 5 7 7-7 7"/>',
   expand: '<path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>',
   volume: '<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4.5 4.5 0 0 1 0 6M18 6.5a8 8 0 0 1 0 11"/>',
+  whatsapp: '<path d="M4.5 19.5l1.2-3.6A8 8 0 1 1 8.4 18.6Z"/><path d="M9.2 8.6c.3-.6.6-.6.9-.6h.5c.2 0 .4.1.5.4l.7 1.7c.1.2 0 .5-.1.6l-.5.6c-.1.1-.1.3 0 .5a6.2 6.2 0 0 0 2.8 2.6c.2.1.4.1.5 0l.6-.7c.2-.2.4-.2.6-.1l1.6.8c.2.1.4.3.3.6-.1.8-.7 1.6-1.6 1.7-2.5.3-6.9-3.4-7-6.2 0-.9.1-1.4.2-1.9Z"/>',
   mute: '<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="m16 9.5 5 5M21 9.5l-5 5"/>',
 };
 
@@ -59,29 +61,35 @@ export function singlePicture(photo, { alt = photo.alt, sizes = '100vw', classNa
   </picture>`;
 }
 
-/** "09:00" -> "9 a.m.", "12:00" -> "noon", "17:00" -> "5 p.m." */
-export function formatClock(hhmm, { suffix = true } = {}) {
+const ES_DAYS = { Monday: 'lunes', Tuesday: 'martes', Wednesday: 'miércoles', Thursday: 'jueves', Friday: 'viernes', Saturday: 'sábado', Sunday: 'domingo' };
+
+/** "09:00" -> "9 a.m." / "9 a. m."; "12:00" -> "noon" / "mediodía" */
+export function formatClock(hhmm, { suffix = true, locale = 'en' } = {}) {
   const [h, m] = hhmm.split(':').map(Number);
-  if (h === 12 && m === 0) return 'noon';
+  if (h === 12 && m === 0) return locale === 'es' ? 'mediodía' : 'noon';
   const hour = h % 12 === 0 ? 12 : h % 12;
   const base = m ? `${hour}:${String(m).padStart(2, '0')}` : `${hour}`;
-  return suffix ? `${base} ${h < 12 ? 'a.m.' : 'p.m.'}` : base;
+  const mer = locale === 'es' ? (h < 12 ? 'a. m.' : 'p. m.') : (h < 12 ? 'a.m.' : 'p.m.');
+  return suffix ? `${base} ${mer}` : base;
 }
 
-export function formatRange({ opens, closes }) {
+export function formatRange({ opens, closes }, locale = 'en') {
   const sameHalf = (Number(opens.slice(0, 2)) < 12) === (Number(closes.slice(0, 2)) < 12);
   const noon = opens === '12:00' || closes === '12:00';
-  if (sameHalf && !noon) return `${formatClock(opens, { suffix: false })}–${formatClock(closes)}`;
-  return `${formatClock(opens)}–${formatClock(closes)}`;
+  if (sameHalf && !noon) return `${formatClock(opens, { suffix: false, locale })}–${formatClock(closes, { locale })}`;
+  return `${formatClock(opens, { locale })}–${formatClock(closes, { locale })}`;
 }
 
-export function formatDays(days) {
-  return days.length > 2 ? `${days[0]}–${days[days.length - 1]}` : days.join(' and ');
+export function formatDays(days, locale = 'en') {
+  const name = (d) => (locale === 'es' ? ES_DAYS[d] : d);
+  const cap = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+  if (days.length > 2) return locale === 'es' ? `${cap(name(days[0]))} a ${name(days[days.length - 1])}` : `${days[0]}–${days[days.length - 1]}`;
+  return cap(days.map(name).join(locale === 'es' ? ' y ' : ' and '));
 }
 
-export function formatHours(publicHours) {
+export function formatHours(publicHours, locale = 'en') {
   return publicHours.map((h) => ({
-    days: formatDays(h.days),
-    time: h.ranges.map(formatRange).join(' and '),
+    days: formatDays(h.days, locale),
+    time: h.ranges.map((r) => formatRange(r, locale)).join(locale === 'es' ? ' y ' : ' and '),
   }));
 }

@@ -8,17 +8,18 @@ import { createScheduling } from './scheduling/index.mjs';
 import { SchedulingError } from './scheduling/service.mjs';
 import { formatDateLong, formatTime } from './scheduling/time.mjs';
 import { resolveSecret } from './scheduling/tokens.mjs';
-import { loadSite } from './site.mjs';
+import { loadSites } from './site.mjs';
 
 export async function createCore({ kv, client = null, logger = console, now, fault, env = globalThis.process?.env ?? {} }) {
-  const site = await loadSite();
+  const sites = await loadSites();
+  const site = sites.en;
   const secret = await resolveSecret(kv, env.SESSION_SECRET);
   const scheduling = createScheduling({ config: site.scheduling, clinic: site.clinic, kv, secret, now, logger, fault });
   // Claude when an API key is configured; otherwise, on preview sites, the scripted demo assistant
   // (ASSISTANT_DEMO=on|off overrides). A live site without a key shows the phone/Instagram fallback.
   const demo = !client && (env.ASSISTANT_DEMO ? env.ASSISTANT_DEMO !== 'off' : Boolean(site.siteConfig.preview));
   const assistant = demo
-    ? createDemoAssistant({ site, scheduling, kv, now, logger })
+    ? createDemoAssistant({ site, sites, scheduling, kv, now, logger })
     : createAssistant({
       site,
       scheduling,
@@ -47,11 +48,13 @@ export async function createCore({ kv, client = null, logger = console, now, fau
 
   /** Handles /api/* requests. `body` is the parsed JSON body for POSTs. */
   async function handleApi({ method, pathname, searchParams, body = {}, sessionId }) {
+    const locale = (method === 'GET' ? searchParams.get('lang') : body.lang) === 'es' ? 'es' : 'en';
+    const unavailable = sites[locale].statusMessages.unavailable;
     if (method === 'GET' && pathname === '/api/assistant/status') {
       return ok({ available: assistant.available, mode: assistant.mode ?? (assistant.available ? 'claude' : 'off'), previewLabel });
     }
     if (method === 'GET' && pathname === '/api/visit-types') {
-      return ok({ visitTypes: scheduling.listVisitTypes(), services: scheduling.serviceNames, previewLabel });
+      return ok({ visitTypes: scheduling.listVisitTypes(locale), services: scheduling.serviceOptions(locale), previewLabel: locale === 'es' && previewLabel ? 'Cita de prueba. Use datos de ejemplo para esta demostración.' : previewLabel });
     }
     if (method === 'GET' && pathname === '/api/availability') {
       if (!allow(sessionId, 'availability', 60, 60_000)) return ok({ status: 'rate_limited' }, 429);
@@ -61,12 +64,13 @@ export async function createCore({ kv, client = null, logger = console, now, fau
           visitTypeId: searchParams.get('visitType'),
           fromDate: searchParams.get('from'),
           toDate: searchParams.get('to'),
+          locale,
         });
         return ok({ status: 'ok', ...result });
       } catch (err) {
         if (err instanceof SchedulingError) return ok({ status: err.code, message: err.message }, 400);
         logger.error('[api] availability failed:', err.name);
-        return ok({ status: 'unavailable', message: site.statusMessages.unavailable }, 503);
+        return ok({ status: 'unavailable', message: unavailable }, 503);
       }
     }
     if (method !== 'POST') return ok({ status: 'not_found' }, 404);
@@ -75,32 +79,36 @@ export async function createCore({ kv, client = null, logger = console, now, fau
       if (!allow(sessionId, 'prepare', 30, 60_000)) return ok({ status: 'rate_limited' }, 429);
       try {
         const review = body.slotRef
-          ? await scheduling.prepareBooking({ sessionId, slotRef: String(body.slotRef) })
-          : await scheduling.prepareStaffReview({ sessionId, visitTypeId: String(body.visitType || '') });
+          ? await scheduling.prepareBooking({ sessionId, slotRef: String(body.slotRef), locale })
+          : await scheduling.prepareStaffReview({ sessionId, visitTypeId: String(body.visitType || ''), locale });
         return ok({ status: 'ok', review });
       } catch (err) {
         if (err instanceof SchedulingError) {
           return ok({ status: err.code, message: err.message, alternatives: err.alternatives }, err.code === 'slot_taken' ? 409 : 400);
         }
         logger.error('[api] prepare failed:', err.name);
-        return ok({ status: 'unavailable', message: site.statusMessages.unavailable }, 503);
+        return ok({ status: 'unavailable', message: unavailable }, 503);
       }
     }
     if (pathname === '/api/booking/complete') {
       if (!allow(sessionId, 'complete', 12, 60_000)) return ok({ status: 'rate_limited' }, 429);
-      const result = await scheduling.completeReview({ sessionId, reviewId: String(body.reviewId || ''), contact: body.contact });
+      const result = await scheduling.completeReview({ sessionId, reviewId: String(body.reviewId || ''), contact: body.contact, locale });
       if (body.source === 'assistant') await assistant.noteOutcome(sessionId, result);
       // Log the outcome without personal data.
       logger.log(`[booking] ${result.status}${result.bookingRef ? ` ${result.bookingRef}` : ''}${result.requestRef ? ` ${result.requestRef}` : ''}`);
       const { eventId, ...publicResult } = result;
       return ok(publicResult);
     }
+    if (pathname === '/api/assistant/reset') {
+      await assistant.reset?.(sessionId);
+      return ok({ status: 'ok' });
+    }
     if (pathname === '/api/assistant') {
       if (busy.has(sessionId)) return ok({ reply: 'One moment, I’m still answering your last message.', actions: [] }, 429);
       if (!allow(sessionId, 'assistant', 15, 60_000)) return ok({ reply: 'Please wait a moment before sending another message.', actions: [] }, 429);
       busy.add(sessionId);
       try {
-        return ok(await assistant.handleMessage({ sessionId, text: body.message, page: typeof body.page === 'string' ? body.page.slice(0, 120) : null }));
+        return ok(await assistant.handleMessage({ sessionId, text: body.message, page: typeof body.page === 'string' ? body.page.slice(0, 120) : null, locale }));
       } finally {
         busy.delete(sessionId);
       }
@@ -123,5 +131,5 @@ export async function createCore({ kv, client = null, logger = console, now, fau
     return { status: 200, html: testCalendarPage(site, { events, staffRequests, scheduling: { adapter, timeZone: tz }, formatEvent }) };
   }
 
-  return { site, scheduling, assistant, handleApi, previewCalendar };
+  return { site, sites, scheduling, assistant, handleApi, previewCalendar };
 }

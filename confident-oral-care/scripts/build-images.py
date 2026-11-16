@@ -20,6 +20,8 @@ PHOTOS = {
     "reception-mobile": [480, 720],
     "opening-desktop": [768, 1200],
     "opening-mobile": [480, 720],
+    "treatment-desktop": [768, 1200],
+    "treatment-mobile": [480, 720],
     "team-celebration": [640],
     "reception-team": [640],
     "waiting-area": [640],
