@@ -42,7 +42,8 @@ function header(site, current, path) {
         <li>${navLink(site, '/contact', current, t.nav.contact)}</li>
       </ul>
       <ul class="nav-social" aria-label="${esc(t.nav.social)}">
-        <li><a href="${esc(clinic.whatsapp.href)}" rel="noopener" target="_blank">${icon('whatsapp')}<span class="nav-social-label">WhatsApp ${esc(clinic.whatsapp.label)}</span></a></li>
+        <li><a href="${esc(clinic.whatsapp.href)}" rel="noopener" target="_blank">${icon('whatsapp')}<span class="nav-social-label">WhatsApp</span></a></li>
+        <li><a href="${esc(clinic.socialLinks.instagram)}" rel="noopener" target="_blank">${icon('instagram')}<span class="nav-social-label">Instagram</span></a></li>
         <li><a href="${esc(clinic.socialLinks.facebook)}" rel="noopener" target="_blank">${icon('facebook')}<span class="nav-social-label">Facebook</span></a></li>
         <li class="nav-phone"><a href="${clinic.phone.href}">${icon('phone')}<span class="nav-social-label">${esc(clinic.phone.label)}</span></a></li>
       </ul>
@@ -56,6 +57,13 @@ function header(site, current, path) {
     </button>
   </div>
 </header>`;
+}
+
+function credit(site) {
+  const c = site.siteConfig.credit;
+  if (!c?.name) return '';
+  const name = c.url ? `<a href="${esc(c.url)}" rel="noopener" target="_blank">${esc(c.name)}</a>` : esc(c.name);
+  return `<p class="footer-credit">${esc(site.t.footer.creditBefore)} ${name}</p>`;
 }
 
 function footer(site) {
@@ -100,6 +108,7 @@ function footer(site) {
   <div class="container footer-base">
     <p>© ${new Date().getFullYear()} ConfiDent Oral Care</p>
     ${site.siteConfig.preview ? `<p>${esc(t.footer.preview)}</p>` : ''}
+    ${credit(site)}
   </div>
 </footer>`;
 }

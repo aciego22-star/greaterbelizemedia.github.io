@@ -60,6 +60,7 @@ tests/               node:test suites
 | Confirmed fees, insurance, payment methods, policies | `pendingClinicDetails` in `config/clinic-data.json` | While a value is `null`, the AI says it's not confirmed and refers visitors to the team. When you fill it in, the AI quotes it. |
 | Page, treatment or blog copy | `content/*.mjs` | Website, plus the AI's service knowledge |
 | Bookable times, visit types, durations, cutoffs | `config/scheduling.json` | Booking form and AI availability. These are deliberately separate from the public hours. |
+| Footer credit ("Website & AI concept by …") | `credit` in `config/site.json` | Set `url` to make the agency name a link; `null` shows plain text. |
 
 Restart the server after editing configuration.
 

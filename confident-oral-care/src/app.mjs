@@ -16,7 +16,7 @@ export async function createCore({ kv, client = null, logger = console, now, fau
   const secret = await resolveSecret(kv, env.SESSION_SECRET);
   const scheduling = createScheduling({ config: site.scheduling, clinic: site.clinic, kv, secret, now, logger, fault });
   // Claude when an API key is configured; otherwise, on preview sites, the scripted demo assistant
-  // (ASSISTANT_DEMO=on|off overrides). A live site without a key shows the phone/Instagram fallback.
+  // (ASSISTANT_DEMO=on|off overrides). A live site without a key shows the phone/WhatsApp fallback.
   const demo = !client && (env.ASSISTANT_DEMO ? env.ASSISTANT_DEMO !== 'off' : Boolean(site.siteConfig.preview));
   const assistant = demo
     ? createDemoAssistant({ site, sites, scheduling, kv, now, logger })
@@ -43,7 +43,9 @@ export async function createCore({ kv, client = null, logger = console, now, fau
     if (rate.size > 5000) rate.clear();
     return true;
   }
-  const busy = new Set();
+  // Sessions with a reply in progress. Entries expire, so a request the platform cut off can't block a visitor.
+  const busy = new Map();
+  const BUSY_MS = 50_000;
   const ok = (json, status = 200) => ({ status, json });
 
   /** Handles /api/* requests. `body` is the parsed JSON body for POSTs. */
@@ -104,9 +106,14 @@ export async function createCore({ kv, client = null, logger = console, now, fau
       return ok({ status: 'ok' });
     }
     if (pathname === '/api/assistant') {
-      if (busy.has(sessionId)) return ok({ reply: 'One moment, I’m still answering your last message.', actions: [] }, 429);
-      if (!allow(sessionId, 'assistant', 15, 60_000)) return ok({ reply: 'Please wait a moment before sending another message.', actions: [] }, 429);
-      busy.add(sessionId);
+      const es = locale === 'es';
+      if (busy.has(sessionId) && Date.now() - busy.get(sessionId) < BUSY_MS) {
+        return ok({ reply: es ? 'Un momento, todavía estoy respondiendo su último mensaje.' : 'One moment, I’m still answering your last message.', actions: [] }, 429);
+      }
+      if (!allow(sessionId, 'assistant', 15, 60_000)) {
+        return ok({ reply: es ? 'Por favor espere un momento antes de enviar otro mensaje.' : 'Please wait a moment before sending another message.', actions: [] }, 429);
+      }
+      busy.set(sessionId, Date.now());
       try {
         return ok(await assistant.handleMessage({ sessionId, text: body.message, page: typeof body.page === 'string' ? body.page.slice(0, 120) : null, locale }));
       } finally {

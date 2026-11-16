@@ -20,7 +20,7 @@ function getCore() {
   return corePromise;
 }
 
-const UNAVAILABLE = 'I can’t confirm a time right now. Please call +501 628-8233 or send the practice a message on Instagram.';
+const UNAVAILABLE = 'I can’t confirm a time right now. Please call +501 628-8233 or send the practice a message on WhatsApp.';
 
 export default async (req) => {
   const url = new URL(req.url);
@@ -39,7 +39,7 @@ export default async (req) => {
     core = await getCore();
   } catch (err) {
     console.error('[function] startup failed:', err.name, err.message);
-    return reply(503, { status: 'unavailable', available: false, message: UNAVAILABLE });
+    return reply(503, { status: 'unavailable', available: false, message: UNAVAILABLE, reply: UNAVAILABLE, actions: [] });
   }
 
   const session = sessionFromCookie(req.headers.get('cookie'));
@@ -68,7 +68,7 @@ export default async (req) => {
     return reply(result.status, result.json);
   } catch (err) {
     console.error('[function] error:', err.name, err.message);
-    return reply(500, { status: 'unavailable', message: UNAVAILABLE });
+    return reply(500, { status: 'unavailable', message: UNAVAILABLE, reply: UNAVAILABLE, actions: [] });
   }
 };
 

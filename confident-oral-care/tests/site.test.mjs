@@ -198,11 +198,13 @@ test('every Spanish page renders in Spanish with matching English alternates', (
   assert.equal(titles.size, ES_ROUTES.length, 'unique Spanish titles');
 });
 
-test('WhatsApp replaces Instagram DM, and the menu has Home, WhatsApp and Facebook', () => {
+test('WhatsApp replaces Instagram DM, and the menu has Home, WhatsApp, Instagram and Facebook', () => {
   for (const [route, html] of pages) {
     const head = html.slice(html.indexOf('<header'), html.indexOf('</header>'));
     assert.ok(head.includes('href="https://wa.me/5016288233"'), `menu WhatsApp on ${route}`);
     assert.ok(head.includes(`href="${clinic.socialLinks.facebook.replace(/&/g, '&amp;')}"`), `menu Facebook on ${route}`);
+    assert.ok(head.includes(`href="${clinic.socialLinks.instagram.replace(/&/g, '&amp;')}"`), `menu Instagram on ${route}`);
+    assert.ok(head.includes('<span class="nav-social-label">WhatsApp</span>'), `menu WhatsApp label has no number on ${route}`);
     assert.match(head, route.startsWith('/es') ? /<a href="\/es"[^>]*>Inicio<\/a>/ : /<a href="\/"[^>]*>Home<\/a>/, `Home link on ${route}`);
     const footer = html.slice(html.indexOf('<footer'), html.indexOf('</footer>'));
     assert.ok(footer.includes('href="https://wa.me/5016288233"'), `footer WhatsApp on ${route}`);
@@ -241,4 +243,12 @@ test('booking API answers in Spanish for the Spanish site', async () => {
   assert.match(done.message, /^Su cita está confirmada para el /);
   const types = await (await fetch(`${base}/api/visit-types?lang=es`)).json();
   assert.ok(types.services.some((o) => o.value === 'Zirconia crowns' && o.label === 'Coronas de zirconia'));
+});
+
+test('the footer credits Austere Automations in both languages', () => {
+  for (const [route, html] of pages) {
+    const footer = html.slice(html.indexOf('<footer'), html.indexOf('</footer>'));
+    const label = route.startsWith('/es') ? 'Sitio web y concepto de IA por' : 'Website &amp; AI concept by';
+    assert.match(footer, new RegExp(`class="footer-credit">${label} (<a [^>]+>)?Austere Automations`), `credit on ${route}`);
+  }
 });

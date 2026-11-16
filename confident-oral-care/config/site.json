@@ -4,6 +4,11 @@
   "canonicalOrigin": null,
   "basePath": "",
   "socialImage": "/img/web/og-reception.jpg",
+  "credit": {
+    "_comment": "Footer credit. Set url to the agency's website to make the name a link; leave it null for plain text.",
+    "name": "Austere Automations",
+    "url": null
+  },
   "media": {
     "heroVideo": {
       "_comment": "The hero is a slideshow: the two photos, then this video. Images change every intervalSeconds; the video plays to the end (with sound where the browser allows), then the slideshow returns to the first photo.",

@@ -35,6 +35,31 @@ export function renderMarkdown(text) {
 
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 
+/**
+ * fetch with a time limit and one retry. The first request after the site has been idle can hit a
+ * cold server function; a short pause and a second try usually succeeds.
+ */
+async function request(url, options = {}, { timeoutMs = 30000, retries = 1 } = {}) {
+  for (let attempt = 0; ; attempt += 1) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      const res = await fetch(url, { credentials: 'same-origin', ...options, signal: controller.signal });
+      if ([502, 503, 504].includes(res.status) && attempt < retries) throw new Error(`HTTP ${res.status}`);
+      return res;
+    } catch (err) {
+      if (attempt >= retries) throw err;
+      await wait(1200);
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+}
+
+async function readJson(res) {
+  try { return await res.json(); } catch { return {}; }
+}
+
 export function initAssistant() {
   const panel = document.getElementById('ai-panel');
   if (!panel) return;
@@ -46,6 +71,7 @@ export function initAssistant() {
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   let opener = null;
   let available = null;
+  let statusCheck = null;
   let busy = false;
   let history = [];
 
@@ -107,15 +133,24 @@ export function initAssistant() {
     }
   }
 
-  async function checkStatus() {
-    if (available !== null) return available;
-    try {
-      const res = await fetch(`/api/assistant/status?lang=${LANG}`, { credentials: 'same-origin' });
-      available = (await res.json()).available === true;
-    } catch {
-      available = false;
+  /** Asks the server once whether the assistant is on. A failed check is not remembered, so the next message tries again. */
+  function checkStatus() {
+    if (available !== null) return Promise.resolve(available);
+    if (!statusCheck) {
+      statusCheck = (async () => {
+        try {
+          const res = await request(`/api/assistant/status?lang=${LANG}`);
+          if (!res.ok) return false;
+          available = (await readJson(res)).available === true;
+          return available;
+        } catch {
+          return false;
+        } finally {
+          statusCheck = null;
+        }
+      })();
     }
-    return available;
+    return statusCheck;
   }
 
   function bookingWidget(options = {}) {
@@ -159,20 +194,20 @@ export function initAssistant() {
         return;
       }
       const data = await thinkThen(async () => {
-        const res = await fetch('/api/assistant', {
+        const res = await request('/api/assistant', {
           method: 'POST',
           headers: { 'content-type': 'application/json' },
-          credentials: 'same-origin',
           body: JSON.stringify({ message, page: location.pathname, lang: LANG }),
         });
-        return res.json();
+        return readJson(res);
       });
-      if (data.reply) addMessage('ai', data.reply);
+      // Always answer: an error response without a reply still gets the phone/WhatsApp message.
+      addMessage('ai', data.reply || facts.messages.unavailable);
       for (const action of data.actions || []) {
         if (action.type === 'review') bookingWidget({ review: action.review });
       }
     } catch {
-      addMessage('ai', facts.messages.unavailable);
+      addMessage('ai', `${facts.messages.unavailable}\n\n${S.unavailableExtra}`);
     } finally {
       busy = false;
       sendBtn.disabled = false;
@@ -184,8 +219,8 @@ export function initAssistant() {
       if (busy) return;
       addMessage('user', S.findServiceUser);
       busy = true;
-      await thinkThen(async () => {});
-      busy = false;
+      sendBtn.disabled = true;
+      try { await thinkThen(async () => {}); } finally { busy = false; sendBtn.disabled = false; }
       addMessage('ai', `${S.findServiceReply}\n\n${facts.categories.map((c) => `- [${c.title}](${c.path})`).join('\n')}\n\n${S.findServiceAfter}`);
     },
     'request-appointment': async () => {
@@ -208,12 +243,11 @@ export function initAssistant() {
     greet();
     textarea.focus();
     try {
-      await fetch('/api/assistant/reset', {
+      await request('/api/assistant/reset', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        credentials: 'same-origin',
         body: JSON.stringify({ lang: LANG }),
-      });
+      }, { retries: 0 });
     } catch { /* the next message starts fresh on the server anyway */ }
   }
 
@@ -264,6 +298,8 @@ export function initAssistant() {
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
+    // While a reply is on its way, keep what the visitor typed in the box instead of dropping it.
+    if (busy || !textarea.value.trim()) return;
     const value = textarea.value;
     textarea.value = '';
     textarea.style.height = '';

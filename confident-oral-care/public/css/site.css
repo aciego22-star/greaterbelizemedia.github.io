@@ -723,7 +723,15 @@ figcaption { font-size: 0.92rem; color: var(--muted); margin-top: 12px; }
 .footer-nav a, .footer-social a { text-decoration: none; display: inline-flex; gap: 10px; align-items: center; min-height: 32px; }
 .footer-nav a:hover, .footer-social a:hover { text-decoration: underline; color: var(--text); }
 .footer-social .icon { color: var(--gold-text); }
+.footer-credit a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+.footer-credit a:hover { color: var(--text); }
 .footer-base { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 8px 32px; justify-content: space-between; font-size: 0.88rem; color: var(--muted); }
+@media (max-width: 600px) {
+  .footer-grid { text-align: center; justify-items: center; }
+  .footer-nav ul, .footer-social ul { justify-items: center; }
+  .footer-hours .hours-list { justify-items: center; }
+  .footer-base { flex-direction: column; align-items: center; text-align: center; }
+}
 
 /* ------------------------------------------------------------ confident AI */
 
@@ -837,7 +845,7 @@ body.nav-open .ai-launcher, body.nav-open .back-to-top { display: none; }
 /* Back to top */
 .back-to-top {
   position: fixed; z-index: 49;
-  right: max(18px, env(safe-area-inset-right)); bottom: calc(max(16px, env(safe-area-inset-bottom)) + 64px);
+  left: max(18px, env(safe-area-inset-left)); bottom: max(16px, env(safe-area-inset-bottom));
   width: 44px; height: 44px; border-radius: 50%;
   display: grid; place-items: center;
   background: rgba(251, 248, 243, 0.94); color: var(--text);
@@ -849,4 +857,4 @@ body.nav-open .ai-launcher, body.nav-open .back-to-top { display: none; }
 .back-to-top:hover { border-color: var(--text); }
 .back-to-top .icon-up { transform: rotate(180deg); width: 18px; height: 18px; }
 body.ai-open .back-to-top { display: none; }
-@media (max-width: 600px) { .back-to-top { bottom: calc(max(16px, env(safe-area-inset-bottom)) + 58px); } }
+@media (max-width: 600px) { .back-to-top { left: max(14px, env(safe-area-inset-left)); bottom: calc(max(16px, env(safe-area-inset-bottom)) + 2px); } }

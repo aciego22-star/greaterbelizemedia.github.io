@@ -19,6 +19,7 @@ export const ui = {
       tagline: 'Dental and orthodontic care at The Boardwalk Belize, Belize City.',
       footerNav: 'Footer', explore: 'Explore', hours: 'Posted hours', follow: 'Follow us',
       requestAppointment: 'Request an Appointment', preview: 'Client preview. Not for public release.',
+      creditBefore: 'Website & AI concept by',
     },
     common: {
       requestAppointment: 'Request an appointment', exploreServices: 'Explore our services', ourServices: 'Our services',
@@ -126,6 +127,7 @@ export const ui = {
       tagline: 'Atención dental y de ortodoncia en The Boardwalk Belize, Belize City.',
       footerNav: 'Pie de página', explore: 'Explorar', hours: 'Horario publicado', follow: 'Síganos',
       requestAppointment: 'Solicitar una cita', preview: 'Vista previa para el cliente. No publicar.',
+      creditBefore: 'Sitio web y concepto de IA por',
     },
     common: {
       requestAppointment: 'Solicitar una cita', exploreServices: 'Ver nuestros servicios', ourServices: 'Servicios',
