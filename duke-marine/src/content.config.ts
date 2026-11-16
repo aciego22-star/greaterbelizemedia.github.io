@@ -25,6 +25,12 @@ const news = defineCollection({
     /** Decorative full-bleed image behind the article title. */
     heroImage: z.string().optional(),
     /**
+     * Hold this article at the top of the blog, above newer ones. For a
+     * notice that stays relevant past its publication date, such as a
+     * public announcement with a deadline attached.
+     */
+    pinned: z.boolean().default(false),
+    /**
      * Drop the cover picture from the top of the article. For a piece that
      * opens with its own artwork, such as a public notice, the cover would
      * only repeat it. `image` still feeds the share card and the listing.

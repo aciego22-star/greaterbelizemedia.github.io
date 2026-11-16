@@ -6,8 +6,13 @@ import Media from '../../components/Media.astro';
 import Icon from '../../components/Icon.astro';
 import CtaBanner from '../../components/CtaBanner.astro';
 
+// Pinned articles hold the top of the list, then everything else newest
+// first. Without this a notice that still matters is pushed down by the
+// next thing published, however routine that happens to be.
 const posts = (await getCollection('news')).sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+  (a, b) =>
+    Number(b.data.pinned) - Number(a.data.pinned) ||
+    b.data.date.valueOf() - a.data.date.valueOf(),
 );
 const [featured, ...rest] = posts;
 
@@ -51,6 +56,11 @@ const crumbs = [{ label: 'Blog' }];
             <div class="feat__body">
               <span class="post__meta">
                 <span class="post__cat">{featured.data.category}</span>
+                {featured.data.pinned && (
+                  <span class="post__pinned">
+                    <Icon name="anchor" size={13} /> Pinned
+                  </span>
+                )}
                 <span>{fmt(featured.data.date)}</span>
               </span>
               <h2>{featured.data.title}</h2>
@@ -204,6 +214,21 @@ const crumbs = [{ label: 'Blog' }];
     background: color-mix(in srgb, var(--accent) 14%, transparent);
     color: var(--accent-strong);
     font-weight: 600;
+  }
+  /* Marks the article held at the top of the list, so an older post sitting
+     above a newer one reads as deliberate rather than as a broken sort. */
+  .post__pinned {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.32rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-pill);
+    background: color-mix(in srgb, var(--gold) 16%, transparent);
+    color: var(--gold);
+    font-weight: 600;
+  }
+  .post__pinned :global(svg) {
+    flex: none;
   }
   .post__body h3 {
     font-size: 1.15rem;

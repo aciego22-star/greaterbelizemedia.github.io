@@ -3,6 +3,9 @@ title: 'Belize Port Authority Announces Registration & Licensing Exercise 2027'
 date: 2026-10-28
 excerpt: 'The Belize Port Authority is reminding vessel owners and operators to keep their vessel registrations valid and their licences current. Here are the required documents and who to contact.'
 category: 'News'
+# Held at the top of the blog: the exercise runs through 2027, so it stays
+# relevant long after newer articles are published. Remove this line to unpin.
+pinned: true
 author: 'Duke Marine'
 seed: 'news-bpa-registration-2027'
 image: '/media/hero-bpa-desktop.jpg'
