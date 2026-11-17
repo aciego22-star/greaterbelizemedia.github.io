@@ -5,6 +5,20 @@ import PageHero from '../../components/PageHero.astro';
 import Media from '../../components/Media.astro';
 import Icon from '../../components/Icon.astro';
 import CtaBanner from '../../components/CtaBanner.astro';
+import sharp from 'sharp';
+import { fileURLToPath } from 'node:url';
+
+/** Intrinsic size of a picture in public/, read at build time, so a card can
+ *  reserve the right space for a photograph it is going to show whole. */
+async function intrinsicSize(publicPath: string) {
+  try {
+    const file = fileURLToPath(new URL(`../../../public${publicPath}`, import.meta.url));
+    const { width, height } = await sharp(file).metadata();
+    return width && height ? { width, height } : null;
+  } catch {
+    return null;
+  }
+}
 
 // Pinned articles hold the top of the list, then everything else newest
 // first. Without this a notice that still matters is pushed down by the
@@ -15,6 +29,15 @@ const posts = (await getCollection('news')).sort(
     b.data.date.valueOf() - a.data.date.valueOf(),
 );
 const [featured, ...rest] = posts;
+
+const cardSrc = (p: { data: Record<string, any> }) =>
+  p.data.cardImage ?? p.data.image ?? '/media/life/kingfish-lift.jpg';
+const sizes = new Map<string, { width: number; height: number } | null>();
+for (const p of posts) {
+  const src = cardSrc(p);
+  if (!sizes.has(src)) sizes.set(src, await intrinsicSize(src));
+}
+
 
 const fmt = (d: Date) =>
   d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -49,7 +72,8 @@ const crumbs = [{ label: 'Blog' }];
                 src={featured.data.cardImage ?? featured.data.image ?? "/media/life/kingfish-lift.jpg"}
                 alt={(featured.data.cardImage ? featured.data.cardImageAlt : undefined) ?? featured.data.imageAlt ?? "An angler holding a kingfish on a Belize fishing trip"}
                 class="feat__img"
-                style={featured.data.imagePosition ? `object-position:${featured.data.imagePosition}` : undefined}
+                width={sizes.get(cardSrc(featured))?.width}
+                height={sizes.get(cardSrc(featured))?.height}
                 loading="lazy"
               />
             </div>
@@ -82,7 +106,8 @@ const crumbs = [{ label: 'Blog' }];
                       src={post.data.cardImage ?? post.data.image}
                       alt={(post.data.cardImage ? post.data.cardImageAlt : undefined) ?? post.data.imageAlt ?? ""}
                       class="post__img"
-                      style={post.data.imagePosition ? `object-position:${post.data.imagePosition}` : undefined}
+                      width={sizes.get(cardSrc(post))?.width}
+                      height={sizes.get(cardSrc(post))?.height}
                       loading="lazy"
                     />
                   ) : (
@@ -133,12 +158,18 @@ const crumbs = [{ label: 'Blog' }];
     border-radius: var(--radius-lg);
     overflow: hidden;
   }
+  /* Shown whole, not cropped to a landscape box. Four of the five covers are
+     upright, and 16/10 cut the top off a person standing in frame. Centred at
+     its own proportions and capped in height, so nothing is sliced and there
+     are no filler bars either side. */
   .feat__img {
     display: block;
-    width: 100%;
-    height: 100%;
-    aspect-ratio: 16 / 10;
-    object-fit: cover;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: 60svh;
+    margin-inline: auto;
+    border-radius: inherit;
   }
   .feat__body h2 {
     margin: 0.7rem 0 0.7rem;
@@ -179,9 +210,11 @@ const crumbs = [{ label: 'Blog' }];
 }
   .post__img {
     display: block;
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: 340px;
+    margin-inline: auto;
   }
   .post__media {
     overflow: hidden;

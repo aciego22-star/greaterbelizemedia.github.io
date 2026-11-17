@@ -45,22 +45,59 @@ function initReveal() {
 function initHeader() {
   const header = document.querySelector<HTMLElement>('[data-header]');
   if (!header) return;
-  let last = 0;
-  // The bar may tuck away once the reader has scrolled past the bar itself,
-  // rather than after a flat 400px. Measured rather than hard coded, because
-  // the phone header is the bar plus the category strip and so is nearly twice
-  // the height of the desktop one. At 400px a phone reader spent most of a
-  // screen with the page sliding behind a bar that would not move.
-  const hideAfter = () => header.offsetHeight + 40;
+  // The bar may tuck away once the reader has scrolled past it, rather than
+  // after a flat 400px: the phone header is the bar plus the category strip,
+  // nearly twice the desktop height, and 400px was most of a phone screen
+  // spent reading behind a bar that would not move. Measured once and on
+  // resize rather than inside the handler, where reading it let the threshold
+  // shift as the bar shrank at `is-scrolled` and fed back into the decision.
+  let floor = 0;
+  const measure = () => {
+    floor = header.offsetHeight + 40;
+  };
+  measure();
+  window.addEventListener('resize', measure);
+
+  // Hysteresis. Judging each scroll event on a delta of a few pixels made the
+  // bar flicker on a phone: momentum scrolling delivers uneven deltas, and a
+  // single small one read as a change of direction. The bar now moves only
+  // after a sustained run of travel, measured from where the direction last
+  // turned, so jitter below that does nothing.
+  const TRAVEL = 90;
+  let lastY = Math.max(0, window.scrollY);
+  let anchor = lastY;
+  let dir = 0;
+  let hidden = false;
+
+  const setHidden = (next: boolean) => {
+    if (next === hidden) return;
+    hidden = next;
+    header.classList.toggle('is-hidden', next);
+  };
+
   const onScroll = () => {
-    const y = window.scrollY;
+    const y = Math.max(0, window.scrollY);
     header.classList.toggle('is-scrolled', y > 20);
-    if (y > hideAfter()) {
-      header.classList.toggle('is-hidden', y > last && y - last > 4);
-    } else {
-      header.classList.remove('is-hidden');
+
+    if (y <= floor) {
+      setHidden(false);
+      anchor = y;
+      lastY = y;
+      dir = 0;
+      return;
     }
-    last = y;
+
+    const delta = y - lastY;
+    if (delta === 0) return;
+
+    const next = delta > 0 ? 1 : -1;
+    if (next !== dir) {
+      dir = next;
+      anchor = lastY;
+    }
+    if (dir === 1 && y - anchor > TRAVEL) setHidden(true);
+    else if (dir === -1 && anchor - y > TRAVEL) setHidden(false);
+    lastY = y;
   };
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
