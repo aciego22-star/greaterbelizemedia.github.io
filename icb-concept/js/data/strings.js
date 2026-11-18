@@ -41,10 +41,10 @@ ICB.STRINGS = {
     assistantOpen: "Talk to Bee",
     assistantClose: "Close",
     assistantTitle: "ICB Assist",
-    assistantNewTab: "Open in a new tab",
+    assistantNewTab: "Contact ICB",
     assistantLoading: "Connecting you to ICB Assist.",
     assistantPreviewNote: "This preview cannot reach outside services, so the assistant does not load here. It runs normally on the published site.",
-    assistantOfflineNote: "The assistant could not be reached just now. You can open it in a new tab, or call ICB on +501 224-5328.",
+    assistantOfflineNote: "The assistant could not be reached just now. You can contact ICB directly, or call +501 224-5328.",
 
     /* The ANA Seguros quote tool on #/insurance/mexican/quote. ANA runs
        it, so the wording says so: a visitor should know whose system
@@ -236,10 +236,10 @@ ICB.STRINGS = {
     assistantOpen: "Hable con Bee",
     assistantClose: "Cerrar",
     assistantTitle: "ICB Assist",
-    assistantNewTab: "Abrir en una pestaña nueva",
+    assistantNewTab: "Contactar a ICB",
     assistantLoading: "Conectándole con ICB Assist.",
     assistantPreviewNote: "Esta vista previa no puede conectarse con servicios externos, así que el asistente no carga aquí. Funciona con normalidad en el sitio publicado.",
-    assistantOfflineNote: "No se pudo conectar con el asistente en este momento. Puede abrirlo en una pestaña nueva o llamar a ICB al +501 224-5328.",
+    assistantOfflineNote: "No se pudo conectar con el asistente en este momento. Puede comunicarse con ICB directamente o llamar al +501 224-5328.",
 
     anaLoading: "Conectándole con la herramienta de cotización de ANA Seguros.",
     anaFrameTitle: "Herramienta de cotización de ANA Seguros",

@@ -50,6 +50,24 @@
 # ---------------------------------------------------------------------
 
 # ---------------------------------------------------------------------
+# The assistant's forwarding rule is NOT in this file, on purpose.
+#
+# The page asks this site for the assistant's frame, at /assistant/*,
+# and the host forwards that to the supplier. The supplier's address is
+# therefore somewhere, and the one place it must not be is anywhere a
+# browser can fetch. Netlify's own documentation does not say whether a
+# _redirects file in the published folder is served to visitors, and
+# the common report is that it is, so this file is treated as public
+# and the rule is set in the host's dashboard instead.
+#
+# REQUIRED AT DEPLOY. Without it /assistant/* is a 404, the assistant
+# reports itself unavailable and offers ICB's contact page. Nothing
+# looks broken, but nobody can talk to Bee. The exact rule is in
+# DEPLOY.md under "Talk to Bee".
+# ---------------------------------------------------------------------
+
+
+# ---------------------------------------------------------------------
 # ICB's Hurricane Guide. The PDF is served from this site now, at
 # assets/docs, and the material in it is set out as a page in both
 # languages. An old link to the file lands on the page that carries it,

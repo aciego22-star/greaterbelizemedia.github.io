@@ -67,6 +67,9 @@ const PORT = 8571;
    The four root files earn their place by being at the root and nowhere
    else. A crawler probes /favicon.ico and /robots.txt by path, not by
    following a link, so a file one directory down may as well not exist. */
+const strip = require("./strip-comments");
+const stripped = [];
+
 const SHIP = ["index.html", "css", "js", "assets",
               "favicon.ico", "site.webmanifest", "robots.txt", "sitemap.xml",
               /* Optional, and absent until there is something to put in
@@ -466,6 +469,10 @@ function finish(html, info, DATA) {
 }
 
 /* ------------------------------------------------------------------ */
+/* Code and markup are rewritten on the way out rather than copied,
+   because the source's comments are not for ICB. See
+   build/strip-comments.js for what went wrong and why this is here.
+   Everything else is copied byte for byte. */
 function copyInto(from, to, rel) {
   if (fs.statSync(from).isDirectory()) {
     fs.mkdirSync(to, { recursive: true });
@@ -476,6 +483,16 @@ function copyInto(from, to, rel) {
   }
   if (SKIP.has(rel)) return;
   fs.mkdirSync(path.dirname(to), { recursive: true });
+  const ext = path.extname(from);
+  if (ext === ".js" || ext === ".css" || ext === ".html") {
+    const src = fs.readFileSync(from, "utf8");
+    const clean = ext === ".js" ? strip.js(src, rel)
+                : ext === ".css" ? strip.css(src)
+                : strip.html(src);
+    fs.writeFileSync(to, strip.audit(clean, rel));
+    stripped.push(rel);
+    return;
+  }
   fs.copyFileSync(from, to);
 }
 
@@ -641,7 +658,11 @@ function serve(dir) {
 
       const dir = path.join(OUT, lang === "es" ? "es" : "", route);
       fs.mkdirSync(dir, { recursive: true });
-      fs.writeFileSync(path.join(dir, "index.html"), html);
+      /* The prerender is a copy of the live DOM, so index.html's own
+         comments ride along into all seventy-two pages. That is how the
+         assistant's vendor came to be named on every one of them. */
+      fs.writeFileSync(path.join(dir, "index.html"),
+        strip.audit(strip.html(html), "page " + (lang === "es" ? "es/" : "") + route));
       written.push({ route, lang, bytes: Buffer.byteLength(html), title: info.title });
     }
   }

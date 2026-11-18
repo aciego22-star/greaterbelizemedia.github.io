@@ -27,23 +27,63 @@ that specific build.
 
 ## Talk to Bee
 
-The assistant is Chatbase, embedded exactly as supplied:
+**This section names the supplier. Do not send this file to ICB.** The
+whole point of what follows is that they do not learn it from us.
 
-    https://www.chatbase.co/chatbot-iframe/goJ6R0Hw-bYT3iEd4kaKE
+The assistant is a third-party service. Until 18 Nov 2026 the site
+loaded its frame straight from the supplier, which put the supplier's
+name and URL in the JavaScript on every page, and in a comment in
+index.html that the prerender copied into all seventy-two of them. ICB
+read it there. The build now strips every comment out of what it ships
+(see `build/strip-comments.js`) and the page asks this site for the
+frame instead:
 
-The iframe is not created until the pill is tapped, so a visitor who never
-opens it makes no request off ICB's own domain. It is the site's only
-outside connection, and js/assistant.js is the only place that URL
-appears, so changing the assistant means changing one line.
+    /assistant/chatbot-iframe/goJ6R0Hw-bYT3iEd4kaKE
+
+### Required at deploy: the forwarding rule
+
+Set this in the Netlify dashboard, under Site configuration, Redirects
+and rewrites. **Not in `_redirects`.** Netlify's documentation does not
+say whether a `_redirects` file in the published folder is served to
+visitors, and the common report is that it is, which would put the
+supplier's address back in public view at `/_redirects`.
+
+    From:    /assistant/*
+    To:      https://www.chatbase.co/:splat
+    Status:  200   (rewrite, not redirect)
+
+A 200 is a rewrite: the browser is never told where the content came
+from and the address bar does not change. A 301 or 302 would send the
+visitor to the supplier and defeat the exercise entirely.
+
+**If the rule is missing**, `/assistant/*` is a 404, `reachable()` in
+`js/assistant.js` sees the 404 and the panel reports the assistant as
+unavailable and offers ICB's contact page. Nothing looks broken, but
+nobody can talk to Bee. Check it once per site, after the first deploy
+to a new host: open the assistant and watch it connect.
+
+### What this does and does not hide
+
+It keeps the supplier out of everything ICB receives: the source of
+every page, the JavaScript, the stylesheet, the ZIP. That is what was
+asked for and it is achieved.
+
+It does not make the embed anonymous to someone who opens the network
+tab and looks. The frame's own document is forwarded through this site,
+but the application inside it talks to its own servers afterwards, and
+those calls are the supplier's own addresses. No arrangement short of
+rebuilding the assistant changes that. Worth saying plainly rather than
+letting anyone believe the embed is untraceable.
 
 Two things the deployed host must allow, and every ordinary static host
 does by default:
 
-- a frame to www.chatbase.co. A Content-Security-Policy with a
-  frame-src directive would need www.chatbase.co added to it.
+- a frame to the supplier. A Content-Security-Policy with a `frame-src`
+  directive would need their host added to it.
 - microphone permission to reach the frame, which is what
-  allow="microphone" on the iframe requests. A Permissions-Policy header
-  of microphone=() would switch the assistant's dictation button off.
+  `allow="microphone"` on the iframe requests. A Permissions-Policy
+  header of `microphone=()` would switch the assistant's dictation
+  button off.
 
 Where the connection cannot be made the panel says so and offers the
 assistant in a new tab, rather than showing an empty frame. That is what

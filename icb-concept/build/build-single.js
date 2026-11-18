@@ -12,21 +12,27 @@
 const fs = require("fs");
 const path = require("path");
 
-const root = path.join(__dirname, "..");
-const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
+const strip = require("./strip-comments");
 
+const root = path.join(__dirname, "..");
+/* Stripped here, before anything is inlined: once the base64 and the
+   script bodies are in, this is no longer markup to walk. */
+const html = strip.html(fs.readFileSync(path.join(root, "index.html"), "utf8"));
+
+/* Every stylesheet and script loses its comments on the way in, for the
+   same reason the folder build does. See build/strip-comments.js. */
 function inline(source) {
   let out = source.replace(
     /<link rel="stylesheet" href="([^"]+)">/g,
     (m, href) => {
-      const css = fs.readFileSync(path.join(root, href), "utf8");
+      const css = strip.css(fs.readFileSync(path.join(root, href), "utf8"));
       return "<style>\n" + css + "\n</style>";
     }
   );
   out = out.replace(
     /<script src="([^"]+)"><\/script>/g,
     (m, src) => {
-      const js = fs.readFileSync(path.join(root, src), "utf8")
+      const js = strip.js(fs.readFileSync(path.join(root, src), "utf8"), src)
         .replace(/<\/script/gi, "<\\/script");
       return "<script>\n" + js + "\n</script>";
     }
@@ -105,8 +111,10 @@ collectAssets("assets/docs", "assets/docs/");
 /* The map is seeded in js/assets.js, ahead of every data file and view,
    so ICB.ASSETS is populated before anything renders. Base64 cannot
    contain "</script", so no escaping is needed. */
-const SEED = "ICB.ASSETS = ICB.ASSETS || {};";
-if (!result.includes(SEED)) {
+/* Matched loosely because the seed has been through the comment strip
+   by now, which reprints the file and takes the spaces out of it. */
+const SEED = /ICB\.ASSETS\s*=\s*ICB\.ASSETS\s*\|\|\s*\{\s*\}\s*;/;
+if (!SEED.test(result)) {
   console.error("Build error: the ICB.ASSETS seed line is missing. Did js/assets.js change?");
   process.exit(1);
 }

@@ -2,10 +2,11 @@
    Talk to Bee — the ICB assistant launcher.
 
    A pill in ICB red sits in the bottom right on every page. Tapping it
-   opens a panel holding the Chatbase assistant exactly as supplied: their
-   iframe, their chrome, their header. Nothing here restyles the assistant
-   itself, so what ICB approved in the Chatbase preview is what a visitor
-   sees.
+   opens a panel holding the assistant exactly as the supplier serves it:
+   their iframe, their chrome, their header. Nothing here restyles the
+   assistant itself, so what ICB approved is what a visitor sees.
+
+   The supplier is not named anywhere a visitor can reach. See SRC.
 
    THE IFRAME IS NOT CREATED UNTIL THE PILL IS TAPPED. That is the whole
    point of "until engaged": every other page on this site makes zero
@@ -17,14 +18,35 @@
    Where that connection cannot be made, the panel says so and offers the
    assistant in a new tab rather than showing an empty white box: that is
    the case in the single-file preview, whose sandbox refuses every
-   outside request, and on any network that cannot reach chatbase.co.
+   outside request, and on any network that cannot reach the service.
    ========================================================================== */
 window.ICB = window.ICB || {};
 
 (function () {
   "use strict";
 
-  var SRC = "https://www.chatbase.co/chatbot-iframe/goJ6R0Hw-bYT3iEd4kaKE";
+  /* The assistant is served from ICB's own address.
+
+     It is a third-party service, and until 18 Nov 2026 this line named
+     the supplier and their URL in full. That shipped: it was in the
+     JavaScript on every page, and in a comment in index.html that the
+     prerender copied into all seventy-two of them. ICB read it. Who
+     built what is under the agency's hood is not something a client
+     learns by pressing Ctrl+U.
+
+     So the frame is loaded from a path on this site and the host
+     forwards it. The rule lives in _redirects, which the host consumes
+     at deploy time and never serves, so the supplier's address is in
+     the deployment's configuration and nowhere a browser can read it.
+
+     IF THE FORWARD IS NOT CONFIGURED, nothing breaks in an ugly way:
+     reachable() fails, and the panel says the assistant cannot be
+     reached and offers a branch instead, which is the same thing it
+     already does in the single-file preview and on a network that
+     blocks it. That is the fallback this change leans on, and it is
+     why it is safe to make before the forward has been proved on the
+     live host. It still needs proving there. */
+  var SRC = "/assistant/chatbot-iframe/goJ6R0Hw-bYT3iEd4kaKE";
 
   /* How long to wait for the frame before saying it did not arrive. Long
      enough for a slow phone on a Belizean mobile connection, short enough
@@ -68,8 +90,12 @@ window.ICB = window.ICB || {};
         '<div class="bee-note" data-bee-note aria-live="polite" hidden>' +
           badge("bee-note-mark") +
           '<p data-bee-note-text></p>' +
-          '<a class="btn btn-primary btn-sm" data-bee-note-link href="' + SRC + '"' +
-            ' target="_blank" rel="noopener noreferrer" hidden>' +
+          /* Not the frame's own address. If the probe said the
+             assistant cannot be reached, a link to the same place
+             cannot be reached either, and offering it is offering a
+             dead button. The contact page is a real way through. */
+          '<a class="btn btn-primary btn-sm" data-bee-note-link href="#/contact"' +
+            " hidden>" +
             esc(ICB.s("assistantNewTab")) +
           "</a>" +
         "</div>" +
@@ -107,7 +133,7 @@ window.ICB = window.ICB || {};
     });
   }
 
-  /* Can we get to chatbase.co at all?
+  /* Can we get to the assistant at all?
 
      The frame's own load event cannot answer that. A cross-origin iframe
      fires load for the browser's own error page exactly as readily as for
@@ -116,12 +142,22 @@ window.ICB = window.ICB || {};
      with the request blocked, load fired inside 400ms and the panel
      cheerfully declared itself ready over a torn-page placeholder.
 
-     A no-cors request does answer it. It resolves opaquely when the
-     origin is reachable and rejects when the network refuses or a sandbox
-     forbids the connection, which is the distinction that matters. Asking
-     first also means the broken-frame placeholder is never painted at
-     all: the panel goes from "connecting" either to the assistant or to
-     an explanation, and never through a white rectangle. */
+     A request answers it, and now that the frame is served from this
+     site's own address the answer can be a real one. It used to be a
+     no-cors probe at the supplier, which resolves opaquely: reachable
+     and unreachable could be told apart, but a 404 could not be told
+     from a working page, because an opaque response has no status to
+     read. Same-origin, the status is readable, so a host that has not
+     been given the forwarding rule fails the probe instead of framing
+     its own 404 page. That matters: the rule is set on the host rather
+     than in anything this build ships, so "not configured yet" is a
+     state that will really happen, and it should look like the
+     assistant being unavailable rather than like a broken frame.
+
+     Asking first also means the broken-frame placeholder is never
+     painted at all: the panel goes from "connecting" either to the
+     assistant or to an explanation, and never through a white
+     rectangle. */
   function reachable() {
     if (typeof fetch !== "function" || typeof Promise !== "function") {
       return { then: function (fn) { fn(true); } };
@@ -129,8 +165,8 @@ window.ICB = window.ICB || {};
     var giveUp = new Promise(function (resolve) {
       setTimeout(function () { resolve(false); }, GIVE_UP);
     });
-    var probe = fetch(SRC, { mode: "no-cors", cache: "no-store" })
-      .then(function () { return true; }, function () { return false; });
+    var probe = fetch(SRC, { cache: "no-store" })
+      .then(function (res) { return !!res && res.ok; }, function () { return false; });
     return Promise.race([probe, giveUp]);
   }
 

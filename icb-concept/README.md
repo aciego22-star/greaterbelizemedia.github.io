@@ -464,7 +464,23 @@ official form, contact ICB, and the claims team explains the applicable
 next steps. It deliberately does not describe documents, reports,
 evidence or settlement.
 
-Development notes live in code comments, never on the page. Search the
+Development notes live in code comments, and the build strips every
+comment out of what it ships. Both halves matter: the first is why this
+codebase explains itself, and the second is because the first one alone
+was not enough. On 18 Nov 2026 ICB read about seven hundred lines of
+internal notes in the deployed JavaScript, including nineteen marked
+INTERNAL TODO which said they were not client-facing while being served
+to everyone, and the assistant's supplier named in a comment that the
+prerender had copied into all seventy-two pages. "Client-facing" does
+not mean the rendered page. It means anything the client receives.
+
+`build/strip-comments.js` does the stripping and also refuses to write a
+file that still contains one of the markers this codebase uses, so a new
+note cannot reach ICB even if someone forgets. It is not a minifier:
+compress and mangle are both off, so nothing is renamed or
+restructured.
+
+Search the
 data files for `INTERNAL TODO` for the full list. The open items are:
 
 - **Claims forms.** Form buttons open ICB's official claims page. Set
