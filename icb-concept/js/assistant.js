@@ -35,17 +35,16 @@ window.ICB = window.ICB || {};
      learns by pressing Ctrl+U.
 
      So the frame is loaded from a path on this site and the host
-     forwards it. The rule lives in _redirects, which the host consumes
-     at deploy time and never serves, so the supplier's address is in
-     the deployment's configuration and nowhere a browser can read it.
+     forwards it. The rule is one line in _redirects, which ships with
+     the folder, so there is nothing to set up: upload the site and the
+     assistant works. That file is consumed by the host and not served
+     to anyone, which was measured rather than assumed; the evidence is
+     written out beside the rule.
 
-     IF THE FORWARD IS NOT CONFIGURED, nothing breaks in an ugly way:
-     reachable() fails, and the panel says the assistant cannot be
-     reached and offers a branch instead, which is the same thing it
-     already does in the single-file preview and on a network that
-     blocks it. That is the fallback this change leans on, and it is
-     why it is safe to make before the forward has been proved on the
-     live host. It still needs proving there. */
+     IF THE RULE IS EVER LOST, nothing breaks in an ugly way:
+     /assistant/* becomes a 404, reachable() reads that status, and the
+     panel says the assistant cannot be reached and offers ICB's
+     contact page rather than framing a not-found page. */
   var SRC = "/assistant/chatbot-iframe/goJ6R0Hw-bYT3iEd4kaKE";
 
   /* How long to wait for the frame before saying it did not arrive. Long

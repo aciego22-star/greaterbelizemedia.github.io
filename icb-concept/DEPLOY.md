@@ -40,27 +40,44 @@ frame instead:
 
     /assistant/chatbot-iframe/goJ6R0Hw-bYT3iEd4kaKE
 
-### Required at deploy: the forwarding rule
+### Nothing to set up
 
-Set this in the Netlify dashboard, under Site configuration, Redirects
-and rewrites. **Not in `_redirects`.** Netlify's documentation does not
-say whether a `_redirects` file in the published folder is served to
-visitors, and the common report is that it is, which would put the
-supplier's address back in public view at `/_redirects`.
+The forwarding rule ships with the site, one line in `_redirects`:
 
-    From:    /assistant/*
-    To:      https://www.chatbase.co/:splat
-    Status:  200   (rewrite, not redirect)
+    /assistant/*   https://www.chatbase.co/:splat   200
 
-A 200 is a rewrite: the browser is never told where the content came
-from and the address bar does not change. A 301 or 302 would send the
-visitor to the supplier and defeat the exercise entirely.
+Upload the folder and the assistant works. There is no dashboard step,
+no environment variable and nothing to remember on a redeploy.
 
-**If the rule is missing**, `/assistant/*` is a 404, `reachable()` in
-`js/assistant.js` sees the 404 and the panel reports the assistant as
-unavailable and offers ICB's contact page. Nothing looks broken, but
-nobody can talk to Bee. Check it once per site, after the first deploy
-to a new host: open the assistant and watch it connect.
+A 200 is a rewrite rather than a redirect: the browser is never told
+where the content came from and the address bar does not change. A 301
+would send the visitor to the supplier and defeat the exercise.
+
+**Why `_redirects` is a safe place for the address.** Because it is not
+served. Netlify's own documentation does not say either way, so it was
+measured on the deployed site rather than assumed, on 18 Nov 2026
+against icb.austereautomations.com:
+
+    /_redirects     404     the site's own not-found page
+    /netlify.toml   404
+    /robots.txt     200     a real file in the same folder
+
+The last line is the control: files in the published folder are served,
+and these two are not, because the host consumes them at deploy time.
+This is observed behaviour rather than a documented guarantee, so it is
+worth re-running those three requests if the site ever moves to another
+host.
+
+**If the line is ever lost**, `/assistant/*` becomes a 404, the probe in
+`js/assistant.js` reads that status, and the panel reports the assistant
+unavailable and offers ICB's contact page rather than framing a
+not-found page. Verified.
+
+**One caveat about handover.** The line is in the deployable folder, so
+whoever operates the site can read it. That is unavoidable for anyone
+running the deployment, and it is a different thing from the public
+being able to read it. If the site is ever handed to ICB's own IT to
+deploy, they will see the supplier there.
 
 ### What this does and does not hide
 

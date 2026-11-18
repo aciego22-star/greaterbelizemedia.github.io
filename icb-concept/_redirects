@@ -50,21 +50,40 @@
 # ---------------------------------------------------------------------
 
 # ---------------------------------------------------------------------
-# The assistant's forwarding rule is NOT in this file, on purpose.
+# The assistant, served from ICB's own address.
 #
-# The page asks this site for the assistant's frame, at /assistant/*,
-# and the host forwards that to the supplier. The supplier's address is
-# therefore somewhere, and the one place it must not be is anywhere a
-# browser can fetch. Netlify's own documentation does not say whether a
-# _redirects file in the published folder is served to visitors, and
-# the common report is that it is, so this file is treated as public
-# and the rule is set in the host's dashboard instead.
+# Talk to Bee is a third-party service. Until 18 Nov 2026 the site
+# loaded its frame straight from the supplier, which put the supplier's
+# name and URL in the JavaScript on every page, and ICB read it there.
+# Who the agency builds with is not something a client learns from
+# view-source.
 #
-# REQUIRED AT DEPLOY. Without it /assistant/* is a 404, the assistant
-# reports itself unavailable and offers ICB's contact page. Nothing
-# looks broken, but nobody can talk to Bee. The exact rule is in
-# DEPLOY.md under "Talk to Bee".
+# So the page asks this site for the frame and the host forwards it. A
+# 200 is a rewrite, not a redirect: the browser is never told where the
+# content came from and the address bar never changes. A 301 here would
+# send the visitor to the supplier and defeat the whole exercise.
+#
+# THIS FILE IS NOT SERVED, which is what makes it the right place for
+# the address. Netlify's documentation does not say so either way, so
+# it was measured on the deployed site rather than assumed:
+#
+#     /_redirects     404     (the site's own not-found page)
+#     /netlify.toml   404
+#     /robots.txt     200     (a real file in the same folder)
+#
+# The last line is the control: files in the published folder are
+# served, and these two are not, because the host consumes them at
+# deploy time. Checked 18 Nov 2026 against icb.austereautomations.com.
+# Worth re-checking if the site ever moves to another host, because
+# this is behaviour rather than a promise.
+#
+# Nothing to configure anywhere: upload the folder and the assistant
+# works. If this line is ever lost, /assistant/* becomes a 404, and
+# js/assistant.js reads that status and has the panel say the assistant
+# cannot be reached and offer ICB's contact page, rather than framing a
+# not-found page.
 # ---------------------------------------------------------------------
+/assistant/*   https://www.chatbase.co/:splat   200
 
 
 # ---------------------------------------------------------------------
