@@ -118,15 +118,24 @@ window.ICB = window.ICB || {};
           "<h3>" + esc(ICB.t(c.name)) + "</h3>" +
         "</div>" +
         '<p class="pathway-lead">' + esc(ICB.t(c.lead)) + "</p>" +
+        /* One button, the form itself. There used to be a second,
+           "Fill it out online", opening a copy of the form that filled
+           in on the device and made its own PDF. ICB asked for it to
+           go on 4 Nov 2026 and the reasons are good ones: it never
+           sent anything to ICB, so the claimant still had to; answers
+           sat in the device's storage, which on a shared computer is
+           somebody else's claim; it only ever produced an English PDF;
+           and it had to be kept in step with every change ICB made to
+           the real forms. One version of each form, the one the
+           branches use, is worth more than a convenience that did not
+           convey. */
         '<div class="pathway-actions">' +
           '<a class="btn btn-primary btn-sm" data-asset-href="' + esc(c.formFile) + '"' +
             ' href="' + esc(c.formFile) + '" download>' +
-            ICB.art.glyph("download") + "<span>" + esc(c.formLabel) + "</span></a>" +
-          '<a class="btn btn-gold btn-sm" href="#/claims/form/' + esc(c.id) + '">' +
-            ICB.art.glyph("edit") + "<span>" + esc(ICB.s("cfFillOnline")) + "</span></a>" +
+            ICB.art.glyph("download") + "<span>" +
+            esc(ICB.s("claimsFormBtn", { form: c.formLabel })) + "</span></a>" +
         "</div>" +
-        '<p class="pathway-note">' + esc(ICB.s("claimsFormNote")) + " " +
-          esc(ICB.s("cfFillOnlineNote")) + "</p>" +
+        '<p class="pathway-note">' + esc(ICB.s("claimsFormNote")) + "</p>" +
       "</article>";
   }
 
@@ -241,6 +250,13 @@ window.ICB = window.ICB || {};
     out += '<div class="band-inner">';
     if (opts.eyebrow) out += '<span class="eyebrow">' + esc(ICB.t(opts.eyebrow)) + "</span>";
     out += "<" + (opts.hTag || "h2") + ">" + esc(ICB.t(opts.title)) + "</" + (opts.hTag || "h2") + ">";
+    /* A small line under the title, for a heading that has to stay in
+       one language. ICB's slogan is painted on their wall in English
+       and stays in English on both versions of the site; on the
+       Spanish page, ICB asked for a small translation underneath it,
+       which is what this renders. Give gloss an empty string for the
+       language that needs none and nothing is printed. */
+    if (opts.gloss && ICB.t(opts.gloss)) out += '<p class="band-gloss">' + esc(ICB.t(opts.gloss)) + "</p>";
     if (opts.body) out += "<p>" + esc(ICB.t(opts.body)) + "</p>";
     if (opts.actions && opts.actions.length) {
       out += '<div class="btn-row">';

@@ -567,21 +567,18 @@ function serve(dir) {
   /* The app is asked what routes it has, rather than being told, so this
      cannot fall behind a route someone adds later. */
   const routes = await page.evaluate(() => {
-    /* claimForm is a route per claim type, not a page of its own, so it
-       is enumerated from the forms rather than from the view name. */
     /* anaQuote and visitorMotor are skipped by name because neither
        route is its view name: both live under the product they belong
        to, at insurance/mexican/quote and insurance/motor/visitors, and
        both are added by hand below. */
-    const skip = { home: 1, product: 1, notfound: 1, claimForm: 1, newsEntry: 1,
+    const skip = { home: 1, product: 1, notfound: 1, newsEntry: 1,
                    guide: 1, anaQuote: 1, visitorMotor: 1 };
     return [""].concat(
       Object.keys(ICB.views).filter(v => !skip[v]),
       (ICB.DATA.products || []).map(p => "insurance/" + p.id),
       (((ICB.DATA.news && ICB.DATA.news.entries) || [])).map(e => "news/" + e.id),
       (((ICB.DATA.guides && ICB.DATA.guides.entries) || [])).map(g => "resources/" + g.id),
-      ["insurance/mexican/quote", "insurance/motor/visitors"],
-      ((ICB.DATA.claimForms && ICB.DATA.claimForms.forms) || []).map(f => "claims/form/" + f.id));
+      ["insurance/mexican/quote", "insurance/motor/visitors"]);
   });
 
   const written = [];
@@ -712,7 +709,14 @@ function serve(dir) {
      means exactly what it says. The marker tells the app which of the
      two it is looking at; nothing else in the build carries it. */
   notFound = notFound.replace(/<html\b/i, '<html data-notfound');
-  fs.writeFileSync(path.join(OUT, "404.html"), notFound);
+  /* Stripped and audited like every other page. It was not, until
+     19 Nov 2026: the loop above strips each page as it writes it, and
+     this one is written down here on its own, so it kept all seven of
+     the shell's HTML comments. The comments were the whole point of
+     strip-comments.js, and 404.html is the one page a visitor reaches
+     by accident rather than on purpose. */
+  fs.writeFileSync(path.join(OUT, "404.html"),
+    strip.audit(strip.html(notFound), "page 404.html"));
 
   await browser.close();
   server.close();
@@ -838,8 +842,17 @@ function serve(dir) {
   fs.writeFileSync(path.join(OUT, "llms.txt"), llms.join("\n"));
 
   const byLang = l => written.filter(w => w.lang === l).length;
+  /* Last thing before the summary: read back everything just written
+     and refuse to call it a build if any of it kept its comments. See
+     the note on sweep() in build/strip-comments.js for the file that
+     got through without one. _redirects carries the assistant's proxy
+     rule, which names the vendor; Netlify consumes that file and never
+     serves it, which was verified against the live host. */
+  const swept = strip.sweep(OUT, { skip: ["_redirects"] });
+
   console.log("\ndist/site");
   console.log("  pages      " + written.length + "  (" + byLang("en") + " English, " + byLang("es") + " Spanish)");
+  console.log("  stripped   " + stripped.length + " assets, " + swept + " shipped files swept clean");
   console.log("  smallest   " + Math.min(...written.map(w => w.bytes)) + " bytes");
   console.log("  sitemap    " + written.length + " URLs with hreflang pairs");
   console.log("  origin     " + ORIGIN + "   (set ICB_ORIGIN to change)");

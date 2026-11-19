@@ -151,7 +151,7 @@ ICB.DATA.products = [
     route: "#/insurance/motor",
     name: "Motor Insurance",
     kicker: { en: "For every vehicle on Belizean roads", es: "Para cada vehículo en las carreteras de Belice" },
-    short: { en: "Liability Only, Collision and Upsets, and Comprehensive cover for personal and commercial vehicles.", es: "Cobertura Liability Only, Collision and Upsets y Comprehensive para vehículos personales y comerciales." },
+    short: { en: "Liability Only, Collision and Upsets, and Comprehensive cover for personal and commercial vehicles.", es: "Vehículos personales y comerciales, con tres coberturas: Liability Only, Collision and Upsets, Comprehensive." },
     standfirst: { en: "Protection for the road ahead.", es: "Protección para el camino por delante." },
     quote: true,
 
@@ -358,7 +358,7 @@ ICB.DATA.products = [
     route: "#/insurance/liability",
     name: "Liability & Miscellaneous",
     kicker: { en: "Specialty cover for wider responsibilities", es: "Cobertura especializada para responsabilidades más amplias" },
-    short: { en: "Cash in Transit and Fidelity Guarantees, Personal Accident, Tour Operators Liability, General Liability and Contractors All Risk.", es: "Cash in Transit and Fidelity Guarantees, Personal Accident, Tour Operators Liability, General Liability y Contractors All Risk." },
+    short: { en: "Cash in Transit and Fidelity Guarantees, Personal Accident, Tour Operators Liability, General Liability and Contractors All Risk.", es: "Cinco coberturas de ICB: Cash in Transit and Fidelity Guarantees, Personal Accident, Tour Operators Liability, General Liability, Contractors All Risk." },
     standfirst: { en: "Protection for risks that do not always fit into a standard property, motor or marine policy.", es: "Protección para riesgos que no siempre encajan en una póliza estándar de propiedad, vehículo o embarcación." },
     quote: true,
 
@@ -422,7 +422,7 @@ ICB.DATA.products = [
     route: "#/insurance/mexican",
     name: "Mexican Motor Insurance",
     kicker: { en: "Driving into Mexico?", es: "¿Va manejando hacia México?" },
-    short: { en: "Access ICB's Mexican Insurance options through ANA Seguros.", es: "Acceda a las opciones de Mexican Insurance de ICB a través de ANA Seguros." },
+    short: { en: "Access ICB's Mexican Motor Insurance options through ANA Seguros.", es: "Mexican Motor Insurance de ICB, a través de ANA Seguros." },
     standfirst: { en: "Coverage options for motorists travelling into Mexico.", es: "Opciones de cobertura para conductores que viajan a México." },
     /* ICB presents this line entirely through ANA Seguros, so the page
        leads with those pathways. A secondary ICB enquiry may follow, but
@@ -504,6 +504,17 @@ ICB.DATA.productById = function (id) {
    flag rather than a hunt through the views. */
 ICB.DATA.quotableProducts = function () {
   return ICB.DATA.products.filter(function (p) { return p.quote === true; });
+};
+
+/* What the New Insurance enquiry offers, which is not the same list.
+   Everything quotable, plus Mexican Motor Insurance: ICB does not quote
+   that one themselves, they arrange it through ANA Seguros, so it has
+   quote: false and was missing from the enquiry entirely. Asking about
+   it is still a reasonable thing to want to do. */
+ICB.DATA.enquiryProducts = function () {
+  return ICB.DATA.products.filter(function (p) {
+    return p.quote === true || p.id === "mexican";
+  });
 };
 
 /* The canonical route into the enquiry flow with the product already

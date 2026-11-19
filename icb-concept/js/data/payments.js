@@ -29,7 +29,7 @@ ICB.DATA = ICB.DATA || {};
 
 ICB.DATA.payments = {
   heading: { en: "Make a payment to ICB", es: "Hacer un pago a ICB" },
-  standfirst: { en: "ICB does not process payments through this website. Pay by bank transfer, then send your confirmation to your branch.", es: "ICB no procesa pagos por este sitio web. Pague por transferencia bancaria y luego envíe su comprobante a su sucursal." },
+  standfirst: { en: "ICB does not process payments through this website. Pay by bank transfer, then send your confirmation to your branch. You can also pay by cash, cheque or card at any branch.", es: "ICB no procesa pagos por este sitio web. Pague por transferencia bancaria y luego envíe su comprobante a su sucursal. También puede pagar en efectivo, con cheque o con tarjeta en cualquier sucursal." },
 
   intro: [
     { en: "ICB does not process payments directly through this website. Use your bank's mobile or online banking service to transfer your payment to one of the ICB accounts below.", es: "ICB no procesa pagos directamente por este sitio web. Use la aplicación o la banca en línea de su banco para transferir su pago a una de las cuentas de ICB que aparecen abajo." },
@@ -39,7 +39,7 @@ ICB.DATA.payments = {
   steps: [
     { n: 1, title: { en: "Choose one of ICB's banks", es: "Elija uno de los bancos de ICB" }, body: { en: "ICB holds accounts at Atlantic Bank, Belize Bank and Heritage Bank. Any of the three is fine.", es: "ICB tiene cuentas en Atlantic Bank, Belize Bank y Heritage Bank. Cualquiera de los tres sirve." } },
     { n: 2, title: { en: "Copy the account number", es: "Copie el número de cuenta" }, body: { en: "Each account below has a copy button, so you copy the number exactly.", es: "Cada cuenta de abajo tiene un botón para copiar, así copia el número exactamente." } },
-    { n: 3, title: { en: "Make the transfer", es: "Haga la transferencia" }, body: { en: "Open your bank's mobile app or online banking service and send the payment to that account.", es: "Abra la aplicación de su banco o su banca en línea y envíe el pago a esa cuenta." } },
+    { n: 3, title: { en: "Make the transfer", es: "Haga la transferencia" }, body: { en: "Open your bank's mobile app or online banking service and send the payment to that account. Put your policy number and your name in the reference, so ICB can match the payment to your policy.", es: "Abra la aplicación de su banco o su banca en línea y envíe el pago a esa cuenta. Escriba su número de póliza y su nombre en la referencia, para que ICB pueda relacionar el pago con su póliza." } },
     { n: 4, title: { en: "Take a screenshot", es: "Tome una captura de pantalla" }, body: { en: "Capture the payment confirmation your bank shows you once the transfer is done.", es: "Capture el comprobante de pago que le muestra su banco una vez hecha la transferencia." } },
     { n: 5, title: { en: "Send it to your branch", es: "Envíela a su sucursal" }, body: { en: "Choose your ICB branch below and send the screenshot on WhatsApp. You will need to attach it yourself.", es: "Elija su sucursal de ICB abajo y envíe la captura por WhatsApp. Usted debe adjuntarla." } },
     { n: 6, title: { en: "Wait for verification", es: "Espere la verificación" }, body: { en: "ICB verifies the payment before official documents are issued.", es: "ICB verifica el pago antes de emitir documentos oficiales." } }
@@ -155,7 +155,7 @@ ICB.DATA.payments = {
     /* The customer attaches the file. A wa.me link cannot carry one, and
        saying so is better than letting someone assume it was sent. */
     attachNote: { en: "Attach the screenshot yourself once WhatsApp opens. A link cannot carry the file for you.", es: "Adjunte usted mismo la captura cuando se abra WhatsApp. Un enlace no puede llevar el archivo por usted." },
-    prefill: { en: "Hello ICB, I am sending my payment confirmation for verification.", es: "Hola ICB, le envío mi comprobante de pago para verificación." }
+    prefill: { en: "Hello ICB, I am sending my payment confirmation for verification. My policy number is:", es: "Hola ICB, le envío mi comprobante de pago para verificación. Mi número de póliza es:" }
   },
 
   /* Email is offered for help, NOT as a place to send receipts. ICB has

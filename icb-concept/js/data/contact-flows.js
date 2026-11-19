@@ -9,9 +9,21 @@ ICB.DATA = ICB.DATA || {};
 ICB.DATA.contactFlows = {
   intro: { en: "Tell us what you need and we will point you to the right ICB team.", es: "Cuéntenos qué necesita y le indicaremos el equipo de ICB indicado." },
 
+  /* What a visitor sees after pressing send. It has to be honest,
+     because nothing is transmitted: this is a static site with no
+     inbox behind it, pending ICB's decision on where enquiries should
+     land.
+
+     It said "This concept form does not send messages yet. In the full
+     experience..." until 19 Nov 2026. Both phrases describe the stage
+     the build is at rather than anything the visitor needs, and on
+     icbinsurance.com they would read as ICB telling its own customers
+     the site is a draft. The wording below says the same true thing
+     and then does the only useful part: hands over the phone number
+     and the address that do work. */
   demoNotice: {
-    title: { en: "Thanks. Here is where this would go next.", es: "Gracias. Aquí es donde esto seguiría." },
-    body: { en: "This concept form does not send messages yet. In the full experience, your enquiry would reach the right ICB team for follow-up. To reach ICB today, call +501 224-5328 or email icb@icbinsurance.com.", es: "Este formulario de concepto todavía no envía mensajes. En la experiencia completa, su consulta llegaría al equipo de ICB indicado para darle seguimiento. Para contactar a ICB hoy, llame al +501 224-5328 o escriba a icb@icbinsurance.com." },
+    title: { en: "Thanks. Here is the quickest way to reach ICB.", es: "Gracias. Esta es la vía más rápida para contactar a ICB." },
+    body: { en: "This form does not send your enquiry. Call +501 224-5328 or email icb@icbinsurance.com and an ICB representative will take it from there.", es: "Este formulario no envía su consulta. Llame al +501 224-5328 o escriba a icb@icbinsurance.com y un representante de ICB seguirá desde ahí." },
     actions: [
       { label: { en: "Call +501 224-5328", es: "Llamar al +501 224-5328" }, href: "tel:+5012245328", kind: "tel" },
       { label: { en: "Email icb@icbinsurance.com", es: "Escribir a icb@icbinsurance.com" }, href: "mailto:icb@icbinsurance.com", kind: "mail" }
@@ -36,7 +48,7 @@ ICB.DATA.contactFlows = {
       description: { en: "I want to explore cover for something new.", es: "Quiero explorar cobertura para algo nuevo." },
       fields: [
         {
-          id: "category", label: { en: "What would you like to protect?", es: "¿Qué le gustaría proteger?" }, type: "select", required: true,
+          id: "category", label: { en: "What would you like cover for?", es: "¿Para qué desea cobertura?" }, type: "select", required: true,
           optionsFrom: "products"
         },
         { id: "message", label: { en: "Tell us a little about it", es: "Cuéntenos un poco al respecto" }, type: "textarea", required: false,
@@ -49,7 +61,7 @@ ICB.DATA.contactFlows = {
       description: { en: "I already have a policy with ICB.", es: "Ya tengo una póliza con ICB." },
       fields: [
         { id: "message", label: { en: "How can we help with your policy?", es: "¿Cómo podemos ayudarle con su póliza?" }, type: "textarea", required: true,
-          help: { en: "Please do not include policy numbers or payment details in this concept form.", es: "Por favor no incluya números de póliza ni datos de pago en este formulario de concepto." } }
+          help: { en: "Please do not include policy numbers or payment details.", es: "Por favor no incluya números de póliza ni datos de pago." } }
       ],
       /* Payment is by bank transfer, not through this website. */
       sideNote: { en: "Paying a premium? ICB is paid by bank transfer.", es: "¿Va a pagar una prima? A ICB se le paga por transferencia bancaria." },

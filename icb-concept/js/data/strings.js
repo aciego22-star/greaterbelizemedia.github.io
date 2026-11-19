@@ -61,28 +61,20 @@ ICB.STRINGS = {
     emailICB: "Email ICB",
     emailN: "Email {n}",
     contactICB: "Contact ICB",
-    /* The online claim form. "Fill it out online" rather than "Contact
-       ICB" on a claim pathway: the button now opens the form itself, and
-       a label that does not say so leaves a claimant tapping to find
-       out. Contact ICB stays the label everywhere it still means that. */
-    cfFillOnline: "Fill it out online",
+    /* There were twenty-two cf* strings here, the copy of the online
+       claim form: progress counters, file limits, the privacy line,
+       the sent-and-saved confirmations. ICB had the form removed on
+       4 Nov 2026 and its five files went with it, which left these
+       with nothing reading them. They are gone rather than kept
+       "in case": copy for a feature that does not exist is copy
+       nobody maintains, and it shipped to every visitor in the
+       string table. Do not restore the form; see claimCard() in
+       js/render.js. */
     faqEyebrow: "Questions and answers",
     faqHeading: "Questions people ask about this",
     faqLead: "{n} questions ICB is asked, answered by ICB.",
     faqSeeAll: "See all questions",
     faqSeeAllMore: "See the other {n} questions",
-    cfIntro: "This is ICB's own {title}, filled in and signed on your own phone or computer. It runs to {steps} short sections, and nothing is sent to ICB until you have read it back and pressed send.",
-    cfFillOnlineNote: "Fill in, sign and send from this device.",
-    cfAnswered: "{done} of {total} answered.",
-    cfStillBlank: "{n} still to answer before this reaches ICB:",
-    cfFileLimit: "Up to {n} files, {mb} MB each.",
-    cfTooMany: "Only {n} files can be attached.",
-    cfTooBig: "{name} is larger than {mb} MB and was not attached.",
-    cfPrivacy: "Everything you type stays on this device until you send it. Your answers are saved here so you can come back to them, and cleared when the form is sent. Nothing is sent to ICB, or to anyone else, until you choose to send it.",
-    cfShareText: "{form}, completed and signed online. Reference {ref}.",
-    cfSent: "Sent. Your reference is {ref}. Keep it for when you speak to ICB.",
-    cfDownloaded: "Saved to this device. Your reference is {ref}.",
-    cfSavedAttach: "Saved to this device as {name}. Your reference is {ref}. Attach that file to the email that is opening.",
     talkToICB: "Talk to ICB",
     visitABranch: "Visit a branch",
     findYourBranch: "Find your branch",
@@ -129,8 +121,32 @@ ICB.STRINGS = {
     quizUnsureExtra: "Liability & Miscellaneous is ICB's published category for specialty cover.",
 
     /* ---- claims ---- */
+    /* The button is the form's own name, which is printed in English
+       on the PDF and is the name a branch or a claims representative
+       will have told the claimant to look for. In Spanish the name
+       still cannot change, but the word that says what the button DOES
+       can, and ICB asked on 4 Nov 2026 for the Spanish page's buttons
+       to be translated. So Spanish adds "Descargar" in front, and
+       English leaves the name to stand on its own beside the download
+       glyph and the line underneath. Spanish PDFs are ICB's to make
+       and are still outstanding; see ICB-FEEDBACK.md. */
     claimsFormBtn: "{form}",
-    claimsFormNote: "ICB's own form, downloaded to your device.",
+    /* ICB asked for one line under each form, 4 Nov 2026: "Download
+       the form, fill it in and sign it, then send it to [Claims
+       contact]." The old line, "Fill in, sign and send from this
+       device", described the online form that has since been removed,
+       and never said where a finished form goes.
+
+       The claims contact is the one part of their sentence that cannot
+       be written yet: ICB publishes no claims address, and the
+       613-0579 WhatsApp line is given as being for the progress of a
+       claim already reported, so it is not the place to send a new
+       one. The destination here is the one ICB names itself, in step 3
+       further down this page: contact ICB or the branch closest to
+       you. The day Claims gives an address, this line becomes
+       "... then take it to your nearest ICB office or send it to
+       <address>" and the FOR ICB note in ICB-FEEDBACK.md comes off. */
+    claimsFormNote: "Download it, fill it in and sign it, then take it to your nearest ICB office.",
 
     /* ---- locations ---- */
     filterByDistrict: "Filter by district",
@@ -256,24 +272,11 @@ ICB.STRINGS = {
     emailICB: "Escribir a ICB",
     emailN: "Escribir a {n}",
     contactICB: "Comunicarse con ICB",
-    cfFillOnline: "Llenarlo en línea",
     faqEyebrow: "Preguntas y respuestas",
     faqHeading: "Preguntas frecuentes sobre esto",
     faqLead: "{n} preguntas que le hacen a ICB, respondidas por ICB.",
     faqSeeAll: "Ver todas las preguntas",
     faqSeeAllMore: "Ver las otras {n} preguntas",
-    cfIntro: "Este es el {title} propio de ICB, llenado y firmado en su teléfono o computadora. Tiene {steps} secciones cortas, y nada se envía a ICB hasta que usted lo haya revisado y presionado enviar.",
-    cfFillOnlineNote: "Llene, firme y envíe desde este dispositivo.",
-    cfAnswered: "{done} de {total} respondidas.",
-    cfStillBlank: "Faltan {n} por responder antes de que esto llegue a ICB:",
-    cfFileLimit: "Hasta {n} archivos, {mb} MB cada uno.",
-    cfTooMany: "Solo se pueden adjuntar {n} archivos.",
-    cfTooBig: "{name} pesa más de {mb} MB y no se adjuntó.",
-    cfPrivacy: "Todo lo que escribe queda en este dispositivo hasta que usted lo envíe. Sus respuestas se guardan aquí para que pueda volver a ellas, y se borran cuando se envía el formulario. Nada se envía a ICB, ni a nadie más, hasta que usted decida enviarlo.",
-    cfShareText: "{form}, completado y firmado en línea. Referencia {ref}.",
-    cfSent: "Enviado. Su referencia es {ref}. Guárdela para cuando hable con ICB.",
-    cfDownloaded: "Guardado en este dispositivo. Su referencia es {ref}.",
-    cfSavedAttach: "Guardado en este dispositivo como {name}. Su referencia es {ref}. Adjunte ese archivo al correo que se está abriendo.",
     talkToICB: "Hablar con ICB",
     visitABranch: "Visitar una sucursal",
     findYourBranch: "Encontrar su sucursal",
@@ -320,8 +323,8 @@ ICB.STRINGS = {
     quizUnsureExtra: "Liability & Miscellaneous es la categoría que ICB publica para coberturas especializadas.",
 
     /* ---- claims ---- */
-    claimsFormBtn: "{form}",
-    claimsFormNote: "El formulario propio de ICB, descargado a su dispositivo.",
+    claimsFormBtn: "Descargar {form}",
+    claimsFormNote: "Descárguelo, llénelo y fírmelo, y llévelo a la oficina de ICB más cercana.",
 
     /* ---- locations ---- */
     filterByDistrict: "Filtrar por distrito",

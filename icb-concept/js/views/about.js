@@ -96,6 +96,16 @@ ICB.views = ICB.views || {};
             R.band({
               eyebrow: { en: "Since 1981", es: "Desde 1981" },
               title: site.org.positiveDifference,
+              /* The slogan stays in English in both languages: it is
+                 painted on ICB's wall. Rofel's review of 4 Nov 2026
+                 says of the English line on the Spanish page "it may
+                 be on purpose" and asks for the slogan to be kept with
+                 a small Spanish translation underneath, which is ICB
+                 approving the translation they were owed. So the gloss
+                 is its own quiet line under the heading rather than
+                 the first half of a sentence about branches, which is
+                 where it had been wedged. */
+              gloss: { en: "", es: "Marcando una diferencia positiva en un Belice en cambio." },
               body: { en: "Explore the cover ICB offers today, or walk into any branch and say hello.", es: "Conozca la cobertura que ICB ofrece hoy, o pase por cualquier sucursal a saludar." },
               motif: "heritage",
               actions: [

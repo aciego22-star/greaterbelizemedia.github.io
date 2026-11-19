@@ -35,7 +35,14 @@ ICB.views = ICB.views || {};
        ICB enquiry, so it is not listed here and stays reachable from
        its own page by its own route. */
     if (field.optionsFrom === "products") {
-      return ICB.DATA.quotableProducts().map(function (p) { return { value: p.id, label: p.name }; });
+      /* Quotable products, and Mexican Motor Insurance with them.
+         It carries quote: false because ICB arranges it through ANA
+         Seguros rather than quoting it themselves, and that kept it
+         out of this list entirely: someone wanting cover to drive into
+         Mexico found five products here and not the one they came for.
+         ICB asked for it on 4 Nov 2026. Being on the list is an
+         enquiry, not a quote, and the note under the form says so. */
+      return ICB.DATA.enquiryProducts().map(function (p) { return { value: p.id, label: p.name }; });
     }
     if (field.optionsFrom === "claims") {
       return ICB.DATA.claims.pathways.map(function (c) { return { value: c.id, label: c.name }; });
@@ -119,8 +126,13 @@ ICB.views = ICB.views || {};
     out += '<form data-contact-form novalidate>';
     ICB.DATA.contactFlows.commonFields.forEach(function (f) { out += renderField(f, state.values); });
     (topic.fields || []).forEach(function (f) { out += renderField(f, state.values); });
-    out += '<p class="help">' + R.esc(T("This concept form asks only for routing basics. Please do not include policy numbers or payment details.",
-      "Este formulario de concepto solo pide lo básico para dirigir su consulta. Por favor no incluya números de póliza ni datos de pago.")) + "</p>";
+    /* "This concept form" is what this line used to say, in both
+       languages. The word is ours, not ICB's: it describes the stage
+       the build is at, which is no business of the person filling the
+       form in on icbinsurance.com. The sentence says the same thing
+       without it. */
+    out += '<p class="help">' + R.esc(T("This form asks only for routing basics. Please do not include policy numbers or payment details.",
+      "Este formulario solo pide lo básico para dirigir su consulta. Por favor no incluya números de póliza ni datos de pago.")) + "</p>";
 
     if (topic.sideNote) {
       var sa = topic.sideAction;

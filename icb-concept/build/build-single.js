@@ -156,6 +156,14 @@ if (leftoverLinks || leftoverScripts) {
   process.exit(1);
 }
 
+/* This file IS the preview ICB opens, so it gets the same gate the
+   folder build has. Each asset went through the strippers on the way
+   in; this reads the finished document once more and refuses to write
+   it if a forbidden word survived. It was not here until 19 Nov 2026,
+   which meant the one artifact ICB actually receives was the one
+   output nothing checked. */
+strip.audit(result, "dist/icb-concept.html");
+
 const outDir = path.join(root, "dist");
 fs.mkdirSync(outDir, { recursive: true });
 const outFile = path.join(outDir, "icb-concept.html");

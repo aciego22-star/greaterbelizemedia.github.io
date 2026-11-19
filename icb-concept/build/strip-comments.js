@@ -159,4 +159,57 @@ function audit(text, label) {
   return text;
 }
 
-module.exports = { js, css, html, audit };
+/* ----------------------------------------------------------------
+   The sweep, which is the gate that cannot be forgotten.
+
+   audit() above only sees what a caller hands it, and on 19 Nov 2026
+   that turned out to be the weakness: build-static.js strips each page
+   inside the loop that writes it, and 404.html is written on its own
+   below that loop, so it shipped with all seven of the shell's HTML
+   comments in it. The page a lost visitor lands on was the one page
+   still carrying development notes.
+
+   So the build calls this at the end, over the directory it has just
+   finished writing, and it reads every file rather than every file
+   somebody remembered. A comment marker in a shipped .js, .css or
+   .html is a strip that did not run. */
+function sweep(dir, opts) {
+  const fs = require("fs");
+  const path = require("path");
+  const skip = (opts && opts.skip) || [];
+  const problems = [];
+  let read = 0;
+
+  (function walk(d) {
+    for (const name of fs.readdirSync(d)) {
+      const full = path.join(d, name);
+      const rel = path.relative(dir, full);
+      if (skip.indexOf(rel) >= 0) continue;
+      const st = fs.statSync(full);
+      if (st.isDirectory()) { walk(full); continue; }
+      const ext = path.extname(name).toLowerCase();
+      if ([".html", ".js", ".css"].indexOf(ext) < 0) continue;
+      read += 1;
+      const text = fs.readFileSync(full, "utf8");
+      /* The single-file build pastes base64 and whole script bodies
+         into one document, where "/*" and "<!--" can legitimately
+         appear inside a data URI or a string. Only the multi-page
+         output is swept for markers; the word list runs on both. */
+      if (!(opts && opts.markersOff)) {
+        if (ext === ".html" && /<!--(?!\[if )/.test(text)) problems.push(rel + ": HTML comment");
+        if (ext === ".css" && /\/\*/.test(text)) problems.push(rel + ": CSS comment");
+        if (ext === ".js" && /^\s*(\/\*|\/\/)/m.test(text)) problems.push(rel + ": JS comment");
+      }
+      for (const re of FORBIDDEN) if (re.test(text)) problems.push(rel + ": " + re);
+    }
+  })(dir);
+
+  if (problems.length) {
+    throw new Error("strip-comments: " + problems.length +
+      " file(s) in " + dir + " were written without being stripped:\n    " +
+      problems.join("\n    "));
+  }
+  return read;
+}
+
+module.exports = { js, css, html, audit, sweep };

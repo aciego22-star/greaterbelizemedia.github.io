@@ -25,7 +25,7 @@ ICB.views = ICB.views || {};
     },
     {
       title: { en: "Vehicles and fleets", es: "Vehículos y flotas" },
-      body: { en: "Motor cover is available for the vehicles a business runs.", es: "Hay cobertura Motor para los vehículos que opera un negocio." },
+      body: { en: "Motor Insurance covers the vehicles a business runs.", es: "Motor Insurance cubre los vehículos que opera un negocio." },
       items: [{ en: "Commercial Vehicles", es: "Vehículos comerciales" }, { en: "Taxis & Buses", es: "Taxis y autobuses" }, { en: "Heavy Duty Vehicles", es: "Vehículos de carga pesada" }],
       glyph: "car",
       links: [{ label: "Motor Insurance", href: "#/insurance/motor" }]
@@ -47,7 +47,7 @@ ICB.views = ICB.views || {};
     {
       title: { en: "Liability and specialty", es: "Responsabilidad civil y especialidades" },
       body: { en: "Liability and miscellaneous products for businesses and contractors.", es: "Productos de responsabilidad civil y otros para negocios y contratistas." },
-      items: ["General Liability", "Tour Operators Liability", "Contractors All Risk", "Money Insurance", "Personal Accident"],
+      items: ["General Liability", "Tour Operators Liability", "Contractors All Risk", "Cash in Transit and Fidelity Guarantees", "Personal Accident"],
       glyph: "scales",
       links: [{ label: "Liability & Miscellaneous", href: "#/insurance/liability" }]
     }

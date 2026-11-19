@@ -30,10 +30,13 @@ offline, and from disk.
 - `js/data/news.js` + `js/views/news*.js` — What's New at ICB: a listing
   at `/news` and one real page per article at `/news/<slug>`, both
   languages, each with its own title, canonical and hreflang pair
-- `js/data/claim-forms.js` — ICB's nine claim forms as structured
-  fields, 376 of them in both languages. Each one is downloadable as
-  ICB's own PDF and fillable on the device, signed with a finger, with
-  the completed PDF written in the browser by `js/pdf.js`
+- `js/data/claims.js` — the nine claim pathways, each handing over
+  ICB's own PDF from `assets/forms/`. There was once a second route
+  here, an on-device version of each form that generated a signed PDF
+  in the browser; ICB asked for it to be removed on 4 Nov 2026 and five
+  files went with it. Do not rebuild it without asking them first: the
+  reasons are in `claimCard()` in `js/render.js` and in
+  `ICB-FEEDBACK.md`
 - `js/assets.js` — asset resolver: views emit `data-asset="assets/..."`
   and it hydrates real `src`/`poster` properties after mount
 - `build/build-single.js` — optional one-file build (`dist/`)

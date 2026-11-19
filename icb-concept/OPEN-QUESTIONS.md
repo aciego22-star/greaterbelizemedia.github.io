@@ -8,64 +8,35 @@ Recorded 27 Oct 2026.
 
 ---
 
-## 1. Where a submitted claim should land
+## 1. Where a submitted claim should land. Closed 4 Nov 2026
 
-**Who decides:** ICB. This is a decision about their customers' data,
-not a technical preference.
+**ICB answered this by removing the question.** It used to ask where a
+claim form filled in on a phone should be sent, and set out three ways
+of doing it. ICB's page-by-page review asked instead for the online
+form to go and the downloadable PDFs to stay, and that is done.
 
-A claimant can now fill in, sign and send any of the five claim forms
-from their phone. The question is where the completed form goes.
-
-**What it does today.** Pressing Send opens the device's own share
-sheet with the completed PDF and any photographs attached, ready for
-WhatsApp or email to ICB. On a desktop the file is saved and a
-pre-addressed email opens for it. Nothing passes through us or any
-third party.
-
-**Why that default.** The two motor forms carry an authorisation to
-release medical and Social Security records. Until ICB says otherwise,
-the safest arrangement is the one where that authorisation never sits
-on a server belonging to neither ICB nor the claimant.
-
-**The three options put to ICB:**
-
-1. As built. Works today, costs nothing, nobody holds a copy. The
-   claimant has to finish the share step, and ICB gets no record of a
-   claim that was abandoned.
-2. A tracked inbox. Claims arrive as email to a claims address with
-   everything attached, through the website host's own form service.
-   Better operationally. The host holds a copy. Free to 100 claims a
-   month, paid above that.
-3. ICB's own endpoint. Data goes nowhere but ICB. Their IT has to
-   stand it up and keep it running.
-
-**What changes:** `submit()` in `js/views/claim-form.js`, which is the
-only place that decides what Send does. Nothing else moves.
+Nothing is submitted from the website now, so there is nothing to
+route. What replaces it is a plainer question, and it is open: **where
+should a claimant send a form they have filled in by hand?** ICB
+publishes no claims address anywhere, and the 613-0579 WhatsApp line is
+given as being for the progress of a claim already reported. Until
+Claims answers, the line under each form says to take it to the nearest
+ICB office, which is the route ICB's own page already names. See
+ICB-FEEDBACK.md, "Claims page: it doesn't say where to send a finished
+form".
 
 ---
 
-## 2. Signatures drawn on a screen, and the stamp
+## 2. Signatures drawn on a screen, and the stamp. Closed 4 Nov 2026
 
-**Who decides:** ICB's claims manager, and whoever advises them on it.
+Closed by the same decision. Nobody signs on a screen now. A claimant
+prints ICB's own form and signs it in ink, which is what the claims
+team accepted before this website existed, so the question of whether
+they would accept a drawn signature no longer arises.
 
-**The signature.** Belize's Electronic Transactions Act gives
-electronic signatures legal effect, but these forms carry a declaration
-that the claim is forfeited for a false statement, and the claimant
-motor form contemplates a parent or guardian signing for a minor. ICB
-has to confirm their claims team will accept a signature drawn on a
-screen on these particular forms. Nothing should go live until they do.
-
-**The stamp.** Several forms provide for a stamp beside the signature.
-A stamp cannot be drawn on a phone. The completed PDF currently says so
-in plain words rather than leaving a reader to wonder:
-
-> Where ICB's printed form provides for a stamp, none is applied here.
-> This form was completed and signed on a device.
-
-Ask ICB what they would rather have there.
-
-**What changes:** the closing note in `js/claim-pdf.js`, and possibly a
-field in `js/data/claim-forms.js`.
+The stamp turned out not to be a question either. That is set out under
+"The nine claim forms" below, and is worth reading once because it
+corrects something this file got wrong.
 
 ---
 
@@ -215,16 +186,17 @@ own. Which is current? If it is the new one, it is a two-minute change.
 
 ### 3. Two slips in the printed text of the new forms
 
-Neither is ours and neither changes what is being asked, but both would
-look like ours on a polished page, so the online forms ask the question
-in correct English and the PDFs are untouched:
+Neither is ours and neither changes what is being asked. The PDFs are
+ICB's and are served exactly as ICB supplied them, slips included, so
+nothing on the site corrects them. ICB may want to correct them on the
+paper:
 
 - The public liability form asks "Where did the accident **occurred**".
 - The windscreen form says "PLEASE ATTACH PROFORMA INVOICE/ ESTIMATE TO
   **THE IS** FORM".
 
-Declarations, releases and anything a claimant signs under are
-reproduced exactly as printed, slips included.
+Declarations, releases and anything a claimant signs under reach the
+claimant exactly as ICB printed them.
 
 ### 4. The stamp, which turned out not to be a question
 
@@ -249,26 +221,23 @@ wonder why a claim form would want a postage stamp, which says how
 small a thing this is and that the question as we first put it was the
 confusing part.
 
-**What the site does now.** On the six forms that have the line, the
-signature step says plainly what the stamp is and that a signature is
-all an individual needs, and the completed PDF carries the same
-sentence instead of an apology. A business that stamps its paperwork
-is told it can print the finished form and stamp it. The other three
-forms say nothing, because their paper says nothing.
+**What the site does now.** Nothing, and that is the right answer. The
+online form that used to explain the stamp was removed on 4 Nov 2026,
+so a claimant downloads ICB's paper and the stamp line on it says what
+it has always said. A company stamps the form it prints. An individual
+signs their name.
 
-Nothing here is a statement about what ICB will accept. If the claims
-team ever wants a stamped copy from a company, that is between them
-and the claimant, and the printed form is still there to stamp.
+Kept here because this file once told ICB the stamp was a blocker, and
+it was not.
 
-### And one thing to confirm about the personal accident form
+### And one thing about the personal accident form. Closed 4 Nov 2026
 
-That form has a whole section only an attending physician can fill in.
-ICB's own form says "Complete this Section or attach an itemized bill",
-so the online version asks it, marks it plainly as the doctor's to
-complete, and tells the claimant it can be left blank if the bill is
-attached. Confirm the claims team is content to receive it that way,
-since it is the only one of the nine that cannot be finished by the
-claimant alone.
+That form has a whole section only an attending physician can fill in,
+and ICB's own form says "Complete this Section or attach an itemized
+bill". This used to be a question because the online version had to
+decide how to present a section the claimant cannot answer. On paper it
+is not a question: the claimant takes the form to the doctor, as they
+always did.
 
 ## Settled on 7 Nov 2026 by reading ICB's own live site
 
@@ -289,7 +258,7 @@ agree, the question is closed.
 | --- | --- |
 | Orange Walk: 38 or 48 Belize Corozal Road? | **#48.** What ICB publishes and what we hold. The signboard's 38 is the outlier. |
 | Southside: 26A-C or #38 Central American Boulevard? | **#38.** Same: ICB publishes it, we hold it, the sign is the outlier. |
-| Benque Viejo Border email | **icb_benqueagency@** — ICB publishes it, we hold it. The sign's icb_benqueviejo@ is the outlier. |
+| Benque Viejo Border email | **icb_benqueagency@**, which ICB publishes and we hold. The sign's icb_benqueviejo@ is the outlier. |
 | Punta Gorda email | **icb_pg@** with the underscore. ICB publishes it, we hold it. |
 | Which marine and property claim forms are current? | **The ones we serve.** All five of our PDFs are byte-for-byte identical to the files ICB's claims page serves today. The marine and property files resent on 7 Nov are not. |
 | Is "Hurricane Claim Form" ICB's name for it? | **Yes**, that is the wording on their claims page, even though the PDF's own title page says Property Catastrophe. |
@@ -450,8 +419,8 @@ it is embedded here rather than rebuilt.
 Inside ANA's own `Turistas.js`, the card payment step chooses where
 to post by looking at the hostname of the page it is running in. On
 `auto-insurance-ana.com` it posts to their live server. From anywhere
-else it falls back to `desarrollo.anaseguros.com.mx` — "desarrollo"
-being Spanish for development. The call carries the cardholder name,
+else it falls back to `desarrollo.anaseguros.com.mx`. "Desarrollo" is
+Spanish for development. The call carries the cardholder name,
 the card number, the expiry and the security code.
 
 **This is not something this build introduced, and it is not a

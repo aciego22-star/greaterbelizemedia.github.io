@@ -77,12 +77,12 @@ ICB.DATA.news = {
         es: "Nuevo sitio de ICB Belice, Bee, reclamos y WhatsApp"
       },
       seoDescription: {
-        en: "Explore ICB Belize's redesigned bilingual website. Ask Bee, complete and sign official claim forms online, and find an ICB branch on WhatsApp.",
-        es: "Explore el nuevo sitio bilingüe de ICB Belice. Consulte a Bee, complete y firme formularios de reclamo y contacte a su sucursal por WhatsApp."
+        en: "Explore ICB Belize's redesigned bilingual website. Ask Bee, download ICB's official claim forms, and find an ICB branch on WhatsApp.",
+        es: "Explore el nuevo sitio bilingüe de ICB Belice. Consulte a Bee, descargue los formularios oficiales de reclamo de ICB y contacte a su sucursal por WhatsApp."
       },
       excerpt: {
-        en: "Meet Bee, fill in and sign official ICB claim forms on your device, and reach a participating branch directly on WhatsApp.",
-        es: "Conozca a Bee, complete y firme los formularios oficiales de ICB en su dispositivo y contacte a una sucursal por WhatsApp."
+        en: "Meet Bee, download ICB's official claim forms, and reach a participating branch directly on WhatsApp.",
+        es: "Conozca a Bee, descargue los formularios oficiales de reclamo de ICB y contacte a una sucursal por WhatsApp."
       },
       hero: {
         wide: "assets/img/news/website-launch-wide.webp",
@@ -125,12 +125,8 @@ ICB.DATA.news = {
           es: "Complete, firme y envíe los formularios oficiales de ICB desde su dispositivo"
         } },
         { type: "p", text: {
-          en: "The Claims Centre guides you to the appropriate form: an insured motor accident, a third-party motor claim, a windscreen claim, a property claim, hurricane damage, a marine claim, an inland cargo claim, a public liability claim or a personal accident claim. You can download a blank copy, or select Fill it out online to work through the form on a phone or computer.",
-          es: "En la sección de reclamos puede encontrar el formulario que corresponde: accidente de un vehículo asegurado, reclamo vehicular de terceros, parabrisas, daños a la propiedad, daños por huracán, reclamo marítimo, carga terrestre, responsabilidad civil o accidente personal. Puede descargar un formulario en blanco o completarlo en línea desde un teléfono o una computadora."
-        } },
-        { type: "p", text: {
-          en: "The online form lets you enter details, sign on screen, add supporting photos or files, and review your information before preparing the completed PDF. On a supported device, the Send option opens your sharing menu so you can choose the appropriate channel and finish sending it to ICB. If your device uses the email fallback, attach the saved PDF and any supporting files to the email and send it. You can also download a copy for your records.",
-          es: "El formulario en línea le permite ingresar sus datos, firmar en pantalla, agregar fotos o archivos de respaldo y revisar la información antes de preparar el PDF. En dispositivos compatibles, la opción de envío abre el menú para compartir, donde puede elegir el canal correspondiente y completar el envío a ICB. Si su dispositivo abre el correo electrónico, adjunte el PDF guardado y los archivos de respaldo antes de enviarlo. También puede descargar una copia para sus archivos."
+          en: "The Claims Centre guides you to the appropriate form: an insured motor accident, a third-party motor claim, a windscreen claim, a property claim, hurricane damage, a marine claim, an inland cargo claim, a public liability claim or a personal accident claim. Each one downloads as ICB's own official form, ready to print, fill in and sign.",
+          es: "En la sección de reclamos puede encontrar el formulario que corresponde: accidente de un vehículo asegurado, reclamo vehicular de terceros, parabrisas, daños a la propiedad, daños por huracán, reclamo marítimo, carga terrestre, responsabilidad civil o accidente personal. Cada uno se descarga como el formulario oficial de ICB, listo para imprimir, llenar y firmar."
         } },
         { type: "actions", items: [
           { label: { en: "Find your claim form", es: "Encuentre su formulario" }, href: "#/claims" }

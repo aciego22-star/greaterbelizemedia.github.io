@@ -64,7 +64,7 @@ ICB.views = ICB.views || {};
             R.sectionHead({
               eyebrow: { en: "Claim pathways", es: "Vías de reclamo" },
               title: { en: "Start with your claim type.", es: "Empiece por su tipo de reclamo." },
-              sub: { en: "Each pathway carries ICB's own claim form, ready to download.", es: "Cada vía incluye el formulario de reclamo propio de ICB, listo para descargar." },
+              sub: { en: "Each pathway links to ICB's official claim form, ready to download.", es: "Cada vía enlaza al formulario de reclamo oficial de ICB, listo para descargar." },
               id: "pathways-title"
             }) +
             '<div class="pathway-grid">' + cards + "</div>" +

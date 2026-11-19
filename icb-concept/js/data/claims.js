@@ -13,9 +13,11 @@
    2026 (personal accident, public liability, windscreen, inland
    cargo), which is why there are nine pathways here and not five.
 
-   A pathway's id is also the address of its online form, at
-   /claims/form/<id>, so it must match the id of the matching entry in
-   ICB.DATA.claimForms.
+   A pathway's id used to be the address of its online form, at
+   /claims/form/<id>. That form was removed at ICB's request on 4 Nov
+   2026 and the route with it, so an id is now only an anchor on this
+   page. Do not restore the online form: the reasons it went are
+   recorded in claimCard() in js/render.js.
 
    SETTLED 7 Nov 2026, against ICB's own live claims page:
    - The hurricane form's title page reads "PROPERTY CATASTROPHE CLAIM

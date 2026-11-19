@@ -3,8 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ICB Concept Experience</title>
-  <meta name="description" content="A next-generation digital experience concept for Insurance Corporation of Belize Ltd. Prepared by Austere Automations for private review.">
+  <!-- The shell's own title and description, for the moment before the
+       router sets the real ones and for anything that reads the file
+       without running it. The static build replaces both per page.
+
+       They read "ICB Concept Experience" and "A next-generation digital
+       experience concept ... prepared for private review" until 19 Nov
+       2026. On icbinsurance.com that is the browser tab and the line
+       under ICB's own name in a search result. -->
+  <title>ICB | Protecting Belize since 1981</title>
+  <meta name="description" content="Insurance Corporation of Belize Ltd. has insured Belize since 1981: property, motor, marine, cargo and liability cover, with branches and agencies countrywide.">
   <!-- LAUNCH SWITCH. This single line is the only thing keeping the site
        out of Google, and it stays until the day it goes live on ICB's own
        domain.
@@ -39,7 +47,7 @@
   <link rel="stylesheet" href="css/fonts.css">
   <link rel="stylesheet" href="css/site.css">
 </head>
-<body data-app="icb-concept">
+<body>
   <a class="skip-link" href="#main">Skip to content</a>
   <p class="visually-hidden" aria-live="polite" id="route-announcer"></p>
 
@@ -96,8 +104,8 @@
        choose one for the reader. -->
   <noscript>
     <div class="noscript-note">
-      <p lang="es">Esta vista previa de concepto requiere JavaScript. Para comunicarse hoy con Insurance Corporation of Belize, llame al +501 224-5328 o escriba a icb@icbinsurance.com.</p>
-      <p lang="en">This concept preview requires JavaScript. To reach Insurance Corporation of Belize today, call +501 224-5328 or email icb@icbinsurance.com.</p>
+      <p lang="es">Esta página necesita JavaScript para mostrarse. Para comunicarse hoy con Insurance Corporation of Belize, llame al +501 224-5328 o escriba a icb@icbinsurance.com.</p>
+      <p lang="en">This page needs JavaScript to display. To reach Insurance Corporation of Belize today, call +501 224-5328 or email icb@icbinsurance.com.</p>
     </div>
   </noscript>
 
@@ -107,7 +115,6 @@
   <script src="js/data/site.js"></script>
   <script src="js/data/products.js"></script>
   <script src="js/data/claims.js"></script>
-  <script src="js/data/claim-forms.js"></script>
   <script src="js/data/faq.js"></script>
   <script src="js/data/locations.js"></script>
   <script src="js/data/gallery.js"></script>
@@ -122,14 +129,10 @@
   <script src="js/render.js"></script>
   <!-- The claim form: a PDF writer, the form runner, and the document
        it produces. Loaded before the views that use them. -->
-  <script src="js/pdf.js"></script>
-  <script src="js/claimform.js"></script>
-  <script src="js/claim-pdf.js"></script>
   <script src="js/views/home.js"></script>
   <script src="js/views/insurance.js"></script>
   <script src="js/views/product.js"></script>
   <script src="js/views/claims.js"></script>
-  <script src="js/views/claim-form.js"></script>
   <script src="js/views/faq.js"></script>
   <script src="js/views/locations.js"></script>
   <script src="js/views/news.js"></script>

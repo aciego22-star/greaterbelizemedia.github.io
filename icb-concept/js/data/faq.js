@@ -192,15 +192,15 @@ ICB.DATA = ICB.DATA || {};
           {
             q: T("What does home or property insurance cover?",
                  "¿Qué cubre el seguro de vivienda o propiedad?"),
-            a: T("Property insurance may cover buildings, contents or both against the events listed in the policy. Damage caused by fire, hurricane, flood and earthquake are generally covered.",
-                 "El seguro de propiedad puede cubrir edificios, contenido o ambos contra los eventos indicados en la póliza. Los daños por incendio, huracán, inundación y terremoto generalmente están cubiertos."),
+            a: T("Property insurance may cover buildings, contents or both against the events listed in the policy. Damage caused by fire, hurricane, flood and earthquake are generally covered, depending on the cover you choose.",
+                 "El seguro de propiedad puede cubrir edificios, contenido o ambos contra los eventos indicados en la póliza. Los daños por incendio, huracán, inundación y terremoto generalmente están cubiertos, según la cobertura que elija."),
             on: ["product:property"]
           },
           {
             q: T("What does renters or content insurance cover?",
                  "¿Qué cubre el seguro de inquilino o de contenido?"),
-            a: T("Renters or Content insurance covers the contents (appliances, furniture, etc.) of your home against the events listed in the policy. Damage caused by fire, hurricane, flood and earthquake are generally covered.",
-                 "El seguro de inquilino o de contenido cubre el contenido de su casa (electrodomésticos, muebles, etc.) contra los eventos indicados en la póliza. Los daños por incendio, huracán, inundación y terremoto generalmente están cubiertos."),
+            a: T("Renters or Content insurance covers the contents (appliances, furniture, etc.) of your home against the events listed in the policy. Damage caused by fire, hurricane, flood and earthquake are generally covered, depending on the cover you choose.",
+                 "El seguro de inquilino o de contenido cubre el contenido de su casa (electrodomésticos, muebles, etc.) contra los eventos indicados en la póliza. Los daños por incendio, huracán, inundación y terremoto generalmente están cubiertos, según la cobertura que elija."),
             on: ["product:property"]
           },
           {
@@ -260,6 +260,39 @@ ICB.DATA = ICB.DATA || {};
             q: T("What documents do I need to apply?", "¿Qué documentos necesito para solicitar?"),
             a: T("That depends on the type of insurance that you need.",
                  "Depende del tipo de seguro que necesite."),
+            /* ICB's own table, as they published it, with the changes
+               they asked for on 4 Nov 2026: every product the site
+               sells appears, and each row carries the name its product
+               page carries.
+
+               What changed and why:
+               - "Marine Cargo Insurance" is "Cargo Insurance", the
+                 name on its page, which covers air, land, marine,
+                 domestic and overseas transit, not marine alone.
+               - The Property row names ICB's four categories, so
+                 Renters is answered rather than left out.
+               - General Liability, Tour Operators Liability, Cash in
+                 Transit and Fidelity Guarantees, and Mexican Motor
+                 Insurance are new rows. ICB's answer for a product
+                 whose documents are not listed is already in this
+                 table five times over: contact the nearest office. It
+                 is used for the new rows too, rather than a document
+                 list nobody at ICB has given us.
+               - "Money Insurance" was what ICB called the first of
+                 those; it is Cash in Transit and Fidelity Guarantees
+                 everywhere now, at their request.
+
+               The two motor rows keep ICB's own names. Renaming them
+               to the cover names on the Motor page (Liability Only,
+               Collision and Upsets, Comprehensive) would assert a
+               mapping between ICB's two sets of motor names that no
+               one at ICB has confirmed. That mapping is an open
+               question with them; see ICB-FEEDBACK.md.
+
+               Employers Liability and Public Liability are ICB's own
+               rows and stay. They are not on the Liability page, which
+               is a gap on the page rather than an error here: a claim
+               form exists for Public Liability. Flagged for ICB. */
             table: {
               cols: [T("Type of Insurance", "Tipo de seguro"), T("Documents Needed", "Documentos requeridos")],
               rows: [
@@ -268,20 +301,32 @@ ICB.DATA = ICB.DATA || {};
                 [T("Motor Comprehensive Insurance", "Motor Comprehensive Insurance"),
                  T("Certificate of Registration\nVehicle Pictures\nVehicle History\nVehicle Valuation Survey",
                    "Certificado de registro\nFotografías del vehículo\nHistorial del vehículo\nPeritaje de valuación del vehículo")],
-                [T("Marine Cargo Insurance", "Marine Cargo Insurance"),
+                [T("Cargo Insurance", "Cargo Insurance"),
                  T("Declaration Form\nAirway Bill / Bill of Lading", "Formulario de declaración\nGuía aérea o conocimiento de embarque")],
                 [T("Marine Hull Insurance\nMarine Vessel Third Party and Passenger Liability Insurance",
                    "Marine Hull Insurance\nMarine Vessel Third Party and Passenger Liability Insurance"),
                  T("Vessel Registration Certificate\nSea-Worthiness Certificate\nCaptain License\nValuation / Survey Report",
                    "Certificado de registro de la embarcación\nCertificado de navegabilidad\nLicencia de capitán\nInforme de valuación o peritaje")],
-                [T("Property Insurance", "Property Insurance"),
+                /* One line, not two. A cell with a line break in it
+                   renders as a bullet list, which is right for the
+                   marine row above, where two products share one
+                   document list, and wrong here, where the four names
+                   are categories of the product beside them. */
+                [T("Property Insurance (Home Owners, Small Business, Commercial, Renters)",
+                   "Property Insurance (Home Owners, Small Business, Commercial, Renters)"),
                  T("Pictures of Structures / Risk\nSigned Proposal Form\nDescription of Structures / Risk",
                    "Fotografías de las estructuras o del riesgo\nFormulario de propuesta firmado\nDescripción de las estructuras o del riesgo")],
                 [T("Bonds", "Bonds"), T("Contact nearest ICB Office", "Comuníquese con la oficina de ICB más cercana")],
                 [T("Contractors All Risk", "Contractors All Risk"), T("Contact nearest ICB Office", "Comuníquese con la oficina de ICB más cercana")],
                 [T("Employers Liability", "Employers Liability"), T("Contact nearest ICB Office", "Comuníquese con la oficina de ICB más cercana")],
                 [T("Public Liability", "Public Liability"), T("Contact nearest ICB Office", "Comuníquese con la oficina de ICB más cercana")],
-                [T("Personal Accident", "Personal Accident"), T("Contact nearest ICB Office", "Comuníquese con la oficina de ICB más cercana")]
+                [T("General Liability", "General Liability"), T("Contact nearest ICB Office", "Comuníquese con la oficina de ICB más cercana")],
+                [T("Personal Accident", "Personal Accident"), T("Contact nearest ICB Office", "Comuníquese con la oficina de ICB más cercana")],
+                [T("Tour Operators Liability", "Tour Operators Liability"), T("Contact nearest ICB Office", "Comuníquese con la oficina de ICB más cercana")],
+                [T("Cash in Transit and Fidelity Guarantees", "Cash in Transit and Fidelity Guarantees"),
+                 T("Contact nearest ICB Office", "Comuníquese con la oficina de ICB más cercana")],
+                [T("Mexican Motor Insurance", "Mexican Motor Insurance"),
+                 T("Contact nearest ICB Office", "Comuníquese con la oficina de ICB más cercana")]
               ]
             },
             on: ["insurance"]
@@ -377,15 +422,21 @@ ICB.DATA = ICB.DATA || {};
                the question asks about, and the sentence that would have
                contradicted the new page is gone.
 
-               So the name stays, because it is ICB's, and a second
-               sentence says what it is. A customer who reads "portal"
-               and goes looking for a login will not find one, and the
-               sentence is what stops that. The product name itself is
-               left in English in both languages, as ICB's names are
-               throughout. */
+               AMENDED 19 Nov 2026. The name is now gone. ICB's
+               review of 4 Nov says plainly "There is no portal atm"
+               and asks for it to be dropped from this answer, so the
+               method is called what ICB confirmed it to be: a bank
+               transfer. The sentence that used to warn there is no
+               login went with it, because nothing in the answer now
+               sends anyone looking for one.
+
+               Keep it that way unless ICB builds a portal. If they
+               do, the name comes back here and on the payments page
+               together, not in one place alone, which is the mismatch
+               Rofel found. */
             q: T("How can I pay my insurance premium?", "¿Cómo puedo pagar mi prima de seguro?"),
-            a: T("Accepted forms of payment include Cash, Cheque, Credit Card, ICB Payment Portal, and Premium Financing through Nationwide Cash Express.\n\nThe ICB Payment Portal is a transfer made through your own bank, followed by sending the confirmation to your branch. There is no payment page to log in to on this website. The payments page has the account numbers and the steps.\n\nShort-Term Insurance for visiting drivers is the one thing bought and paid for online, by card, on ICB's own system.",
-                 "Las formas de pago aceptadas incluyen efectivo, cheque, tarjeta de crédito, el ICB Payment Portal y financiamiento de prima a través de Nationwide Cash Express.\n\nEl ICB Payment Portal es una transferencia hecha desde su propio banco, seguida del envío del comprobante a su sucursal. No hay una página de pago con inicio de sesión en este sitio web. La página de pagos tiene los números de cuenta y los pasos.\n\nEl Short-Term Insurance para conductores visitantes es lo único que se compra y se paga en línea, con tarjeta, en el sistema propio de ICB."),
+            a: T("Accepted forms of payment include Cash, Cheque, Credit Card, bank transfer, and Premium Financing through Nationwide Cash Express.\n\nA bank transfer is made through your own bank, followed by sending the confirmation to your branch. The payments page has the account numbers and the steps.\n\nShort-Term Insurance for visiting drivers is the one thing bought and paid for online, by card, on ICB's own system.",
+                 "Las formas de pago aceptadas incluyen efectivo, cheque, tarjeta de crédito, transferencia bancaria y financiamiento de prima a través de Nationwide Cash Express.\n\nLa transferencia bancaria se hace desde su propio banco, seguida del envío del comprobante a su sucursal. La página de pagos tiene los números de cuenta y los pasos.\n\nEl Short-Term Insurance para conductores visitantes es lo único que se compra y se paga en línea, con tarjeta, en el sistema propio de ICB."),
             link: { label: T("How to pay ICB", "Cómo pagarle a ICB"), href: "#/payments" },
             on: ["payments"]
           },

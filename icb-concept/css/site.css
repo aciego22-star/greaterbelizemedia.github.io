@@ -2323,6 +2323,14 @@ button {
 .band-art svg { width: 100%; height: 100%; }
 .band-inner { position: relative; max-width: 38rem; }
 .band h2, .band h3 { color: var(--c-text-inverse); }
+/* A translation of the heading above it, not a paragraph of its own:
+   smaller, lighter, and tucked up against the heading. */
+.band-gloss {
+  margin-top: calc(var(--sp-2) * -1);
+  font-size: var(--fs-300);
+  font-style: italic;
+  opacity: 0.86;
+}
 .band p { color: var(--c-text-inverse-soft); }
 .band .btn-row { margin-top: var(--sp-5); }
 

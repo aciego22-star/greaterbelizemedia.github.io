@@ -160,15 +160,11 @@ ICB.views = ICB.views || {};
         ? { view: "product", navId: "insurance", productId: p[1] }
         : { view: "notfound", navId: null };
     }
-    /* claims/form/<id>: ICB's claim forms, filled in on the device. A
-       route of its own rather than a mode of the claims page, so a
-       claimant can be sent straight to the right form and so the form
-       has its own address to come back to. */
-    if (p[0] === "claims" && p[1] === "form" && p.length === 3) {
-      return ICB.claimform && ICB.claimform.formById(p[2])
-        ? { view: "claimForm", navId: "claims", formId: p[2] }
-        : { view: "notfound", navId: null };
-    }
+    /* claims/form/<id> is gone. ICB asked on 4 Nov 2026 for the
+       on-device claim form to be removed; see claimCard in
+       js/render.js for why. The address now answers not-found, which
+       is the honest reply, and any old link to one lands on a page
+       that offers the real forms. */
     /* resources/<id>: one of ICB's consumer resources, the hurricane
        guide or the fire prevention advice. ICB published these as
        downloads; here each is a page with its own address, so a branch
@@ -371,7 +367,13 @@ ICB.views = ICB.views || {};
 
     // A view's title may be a plain string or an { en, es } pair.
     var title = ICB.t(typeof view.title === "function" ? view.title(ctx) : view.title);
-    document.title = title || "ICB Concept Experience";
+    /* The fallback a view with no title of its own would get. It read
+       "ICB Concept Experience" until 19 Nov 2026, which would have sat
+       in the browser tab, the bookmark and the history entry of anyone
+       who hit such a view on icbinsurance.com. Every view does carry a
+       title, so this never fired, but a string that would embarrass
+       ICB if it ever did is not worth keeping for the sake of it. */
+    document.title = title || "Insurance Corporation of Belize";
 
     setNav(match.navId);
     /* Whole document, not just the mount: the header, the mobile menu
@@ -400,7 +402,7 @@ ICB.views = ICB.views || {};
         '<div class="section-head">' +
           '<span class="eyebrow">ICB</span>' +
           "<h1>" + R.esc({ en: "That page is not here.", es: "Esta página no está aquí." }) + "</h1>" +
-          "<p>" + R.esc({ en: "The link may have moved. Everything on this concept site is reachable from the menu.", es: "El enlace pudo haber cambiado. Todo en este sitio de concepto se alcanza desde el menú." }) + "</p>" +
+          "<p>" + R.esc({ en: "The link may have moved. Everything on this site is reachable from the menu.", es: "El enlace pudo haber cambiado. Todo en este sitio se alcanza desde el menú." }) + "</p>" +
         "</div>" +
         '<div class="btn-row"><a class="btn btn-primary" href="#/">' + ICB.t({ en: "Back to the homepage", es: "Volver al inicio" }) + "</a>" +
         '<a class="btn btn-outline" href="#/insurance">' + ICB.t({ en: "Explore insurance", es: "Ver seguros" }) + "</a></div>" +
