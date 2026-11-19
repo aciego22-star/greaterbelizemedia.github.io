@@ -5370,3 +5370,60 @@ body.sheet-open .bee { display: none; }
   .gallery--home .gallery-item:nth-child(4) { grid-column: 2 / span 2; }
   .gallery--home .gallery-item:nth-child(5) { grid-column: 4 / span 2; }
 }
+
+/* The lightbox's step arrows.
+
+   ICB asked on 4 Nov 2026 for a way through the gallery without
+   closing and reopening twenty-two times. They sit against the left
+   and right edges of the overlay rather than against the photograph,
+   because the photograph is a different size every time and a control
+   that moves with it is a control you have to look for. */
+.lightbox-step {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(10, 10, 11, 0.55);
+  color: var(--inv);
+  cursor: pointer;
+  transition: background-color var(--t-fast) var(--ease),
+              border-color var(--t-fast) var(--ease);
+}
+.lightbox-step .glyph { width: 24px; height: 24px; }
+.lightbox-step:hover { background: rgba(10, 10, 11, 0.8); border-color: rgba(255, 255, 255, 0.7); }
+.lightbox-step:focus-visible { outline: 2px solid var(--c-cta); outline-offset: 3px; }
+.lightbox-prev { left: 10px; }
+.lightbox-next { right: 10px; }
+
+/* Which of the twenty-two you are looking at. */
+.lightbox-count {
+  margin-left: var(--sp-2);
+  color: var(--c-text-inverse-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+/* On a phone the arrows go under the picture rather than over it:
+   48px of control on each side of a 390px screen is most of the
+   photograph, and a tap meant for the arrow lands on the backdrop and
+   closes the thing you were reading. */
+@media (max-width: 639px) {
+  .lightbox-step {
+    position: static;
+    transform: none;
+  }
+  .lightbox figcaption {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    flex-wrap: wrap;
+  }
+  .lightbox { display: flex; flex-direction: column; }
+  .lightbox-prev { order: 2; }
+  .lightbox-next { order: 3; }
+}

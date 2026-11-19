@@ -850,7 +850,19 @@ ICB.views = ICB.views || {};
     });
   };
 
-  /* Shared lightbox: used by the homepage gallery and the Gallery page. */
+  /* Shared lightbox: used by the homepage gallery and the Gallery page.
+
+     It steps through the whole set. It used to open one photograph and
+     offer nothing but Close, so seeing the second office meant closing,
+     finding the next tile and opening it again, twenty-two times. ICB
+     asked on 4 Nov 2026 for arrows, and they are the arrows a gallery
+     is expected to have: buttons, the left and right keys, and a wrap
+     at each end so neither one is ever a dead control.
+
+     One overlay is built and its contents repainted, rather than an
+     overlay per photograph. The dialog keeps its place in the focus
+     order that way, and the browser keeps the decoded images it has
+     already seen, so stepping back along the row is instant. */
   var lbOverlay = null, lbCloser = null;
   ICB.closeLightbox = function () { if (lbCloser) lbCloser(); };
   ICB.initLightbox = function (mount) {
@@ -861,29 +873,67 @@ ICB.views = ICB.views || {};
     mount.addEventListener("click", function (e) {
       var btn = e.target.closest("[data-lightbox]");
       if (!btn) return;
-      var g = ICB.GALLERY_ITEMS[parseInt(btn.getAttribute("data-lightbox"), 10)];
-      if (!g) return;
+      var items = ICB.GALLERY_ITEMS || [];
+      var idx = parseInt(btn.getAttribute("data-lightbox"), 10);
+      if (!items[idx]) return;
+
       var overlay = document.createElement("div");
       overlay.className = "lightbox-overlay";
-      overlay.innerHTML =
-        '<figure class="lightbox" role="dialog" aria-modal="true" aria-label="' + R.esc(g.caption) + '">' +
-          ((g.webp && g.webp.length)
-            ? "<picture>" + g.webp.map(function (c) {
-                return '<source type="image/webp" data-asset-srcset="' + R.esc(c.src) + '">';
-              }).join("") +
-              '<img data-asset="' + R.esc(g.src) + '" alt="' + R.esc(g.alt) + '"></picture>'
-            : '<img data-asset="' + R.esc(g.src) + '" alt="' + R.esc(g.alt) + '">') +
-          '<figcaption>' + R.esc(g.caption) + "</figcaption>" +
-          '<button type="button" class="lightbox-close" data-lb-close aria-label="' + R.esc(ICB.s("closeImage")) + '">' + ICB.art.glyph("close") + "</button>" +
-        "</figure>";
       document.body.appendChild(overlay);
-      /* The overlay is a child of body, not of the view mount, so neither
-         the boot pass nor the router's per-view pass ever reaches it. It
-         has to resolve its own data-asset or the frame opens empty, which
-         is exactly what it was doing. */
-      ICB.hydrateAssets(overlay, true);
+
+      function picture(g) {
+        return (g.webp && g.webp.length)
+          ? "<picture>" + g.webp.map(function (c) {
+              return '<source type="image/webp" data-asset-srcset="' + R.esc(c.src) + '">';
+            }).join("") +
+            '<img data-asset="' + R.esc(g.src) + '" alt="' + R.esc(g.alt) + '"></picture>'
+          : '<img data-asset="' + R.esc(g.src) + '" alt="' + R.esc(g.alt) + '">';
+      }
+
+      function paint() {
+        var g = items[idx];
+        var many = items.length > 1;
+        overlay.innerHTML =
+          '<figure class="lightbox" role="dialog" aria-modal="true" aria-label="' + R.esc(g.caption) + '">' +
+            picture(g) +
+            '<figcaption>' + R.esc(g.caption) +
+              (many ? ' <span class="lightbox-count">' +
+                 R.esc((idx + 1) + " / " + items.length) + "</span>" : "") +
+            "</figcaption>" +
+            (many
+              ? '<button type="button" class="lightbox-step lightbox-prev" data-lb-step="-1"' +
+                  ' aria-label="' + R.esc(ICB.s("prevImage")) + '">' + ICB.art.glyph("chev-left") + "</button>" +
+                '<button type="button" class="lightbox-step lightbox-next" data-lb-step="1"' +
+                  ' aria-label="' + R.esc(ICB.s("nextImage")) + '">' + ICB.art.glyph("chev-right") + "</button>"
+              : "") +
+            '<button type="button" class="lightbox-close" data-lb-close aria-label="' + R.esc(ICB.s("closeImage")) + '">' + ICB.art.glyph("close") + "</button>" +
+          "</figure>";
+        /* The overlay is a child of body, not of the view mount, so
+           neither the boot pass nor the router's per-view pass ever
+           reaches it. It has to resolve its own data-asset or the frame
+           opens empty, which is exactly what it was doing. */
+        ICB.hydrateAssets(overlay, true);
+      }
+
+      /* Wraps at both ends. A disabled arrow on the last photograph is
+         a control that stops working without saying why; wrapping is
+         what a gallery of a known size should do. */
+      function step(by) {
+        var n = items.length;
+        idx = ((idx + by) % n + n) % n;
+        var held = document.activeElement;
+        var wasStep = held && held.getAttribute && held.getAttribute("data-lb-step");
+        paint();
+        var back = wasStep
+          ? overlay.querySelector('[data-lb-step="' + wasStep + '"]')
+          : overlay.querySelector("[data-lb-close]");
+        if (back) back.focus();
+      }
+
+      paint();
       document.body.style.overflow = "hidden";
       lbOverlay = overlay;
+
       function close(keepFocus) {
         overlay.remove();
         lbOverlay = null;
@@ -893,8 +943,15 @@ ICB.views = ICB.views || {};
         if (keepFocus !== false && btn.isConnected) btn.focus();
       }
       lbCloser = function () { close(false); };
-      function onKey(ev) { if (ev.key === "Escape") close(); }
+      function onKey(ev) {
+        if (ev.key === "Escape") return close();
+        if (items.length < 2) return;
+        if (ev.key === "ArrowLeft") { ev.preventDefault(); step(-1); }
+        if (ev.key === "ArrowRight") { ev.preventDefault(); step(1); }
+      }
       overlay.addEventListener("click", function (ev) {
+        var s = ev.target.closest("[data-lb-step]");
+        if (s) { step(parseInt(s.getAttribute("data-lb-step"), 10)); return; }
         if (ev.target === overlay || ev.target.closest("[data-lb-close]")) close();
       });
       document.addEventListener("keydown", onKey);

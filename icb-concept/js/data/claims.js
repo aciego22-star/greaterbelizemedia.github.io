@@ -38,10 +38,10 @@ ICB.DATA = ICB.DATA || {};
 
 ICB.DATA.claims = {
   /* Verbatim service values published by ICB: */
-  values: { en: "Clear and consistent communication. Empathy to claimants. Excellent follow through and follow up. Fair and accurate settlements. Prompt and final resolutions.", es: "Comunicación clara y constante. Empatía con los reclamantes. Excelente seguimiento. Liquidaciones justas y exactas. Resoluciones rápidas y definitivas." },
+  values: { en: "Clear and consistent communication. Empathy for claimants. Excellent follow through and follow up. Fair and accurate settlements. Prompt and final resolutions.", es: "Comunicación clara y constante. Empatía con los reclamantes. Excelente seguimiento. Liquidaciones justas y exactas. Resoluciones rápidas y definitivas." },
   valuesList: [
     { en: "Clear and consistent communication", es: "Comunicación clara y constante" },
-    { en: "Empathy to claimants", es: "Empatía con los reclamantes" },
+    { en: "Empathy for claimants", es: "Empatía con los reclamantes" },
     { en: "Excellent follow through and follow up", es: "Excelente seguimiento" },
     { en: "Fair and accurate settlements", es: "Liquidaciones justas y exactas" },
     { en: "Prompt and final resolutions", es: "Resoluciones rápidas y definitivas" }
@@ -142,7 +142,7 @@ ICB.DATA.claims = {
     {
       n: 2,
       title: { en: "Access the relevant official ICB claim form", es: "Acceda al formulario oficial de reclamo de ICB" },
-      body: { en: "Each pathway links to the claim forms published by ICB.", es: "Cada vía enlaza a los formularios de reclamo publicados por ICB." }
+      body: { en: "Each pathway links to ICB's official claim form.", es: "Cada vía enlaza al formulario de reclamo oficial de ICB." }
     },
     {
       n: 3,

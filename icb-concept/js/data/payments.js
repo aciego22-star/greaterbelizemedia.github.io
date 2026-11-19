@@ -38,7 +38,7 @@ ICB.DATA.payments = {
 
   steps: [
     { n: 1, title: { en: "Choose one of ICB's banks", es: "Elija uno de los bancos de ICB" }, body: { en: "ICB holds accounts at Atlantic Bank, Belize Bank and Heritage Bank. Any of the three is fine.", es: "ICB tiene cuentas en Atlantic Bank, Belize Bank y Heritage Bank. Cualquiera de los tres sirve." } },
-    { n: 2, title: { en: "Copy the account number", es: "Copie el número de cuenta" }, body: { en: "Each account below has a copy button, so the number goes across exactly as published.", es: "Cada cuenta de abajo tiene un botón para copiar, así el número pasa exactamente como está publicado." } },
+    { n: 2, title: { en: "Copy the account number", es: "Copie el número de cuenta" }, body: { en: "Each account below has a copy button, so you copy the number exactly.", es: "Cada cuenta de abajo tiene un botón para copiar, así copia el número exactamente." } },
     { n: 3, title: { en: "Make the transfer", es: "Haga la transferencia" }, body: { en: "Open your bank's mobile app or online banking service and send the payment to that account.", es: "Abra la aplicación de su banco o su banca en línea y envíe el pago a esa cuenta." } },
     { n: 4, title: { en: "Take a screenshot", es: "Tome una captura de pantalla" }, body: { en: "Capture the payment confirmation your bank shows you once the transfer is done.", es: "Capture el comprobante de pago que le muestra su banco una vez hecha la transferencia." } },
     { n: 5, title: { en: "Send it to your branch", es: "Envíela a su sucursal" }, body: { en: "Choose your ICB branch below and send the screenshot on WhatsApp. You will need to attach it yourself.", es: "Elija su sucursal de ICB abajo y envíe la captura por WhatsApp. Usted debe adjuntarla." } },

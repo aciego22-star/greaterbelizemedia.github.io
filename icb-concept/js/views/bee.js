@@ -77,7 +77,7 @@ ICB.views = ICB.views || {};
             R.sectionHead({
               eyebrow: { en: "What Bee does", es: "Lo que hace Bee" },
               title: { en: "Six things Bee can help with.", es: "Seis cosas en las que Bee puede ayudar." },
-              sub: { en: "Everything Bee knows comes from what ICB publishes.", es: "Todo lo que Bee sabe viene de lo que ICB publica." },
+              sub: { en: "Everything Bee knows comes from ICB's own information.", es: "Todo lo que Bee sabe viene de la información propia de ICB." },
               id: "bee-can-title"
             }) +
             '<div class="bee-grid">' + canDo + "</div>" +

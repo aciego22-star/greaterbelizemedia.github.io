@@ -185,7 +185,7 @@ ICB.views = ICB.views || {};
 
             '<h2>' + T("What it covers.", "Qué cubre.") + "</h2>" +
             "<p>" + T(
-              "These are the protection levels ICB publishes for this cover. A limit is the most a policy may respond with, not an amount paid on every claim.",
+              "These are ICB's protection levels for this cover. A limit is the most a policy may respond with, not an amount paid on every claim.",
               "Estos son los niveles de protección que ICB publica para esta cobertura. Un límite es lo máximo que puede responder una póliza, no un monto que se pague en cada reclamo.") + "</p>" +
             '<div class="guide-table-wrap"><table class="guide-table"><tbody>' +
               limits.map(function (l) {
@@ -193,7 +193,7 @@ ICB.views = ICB.views || {};
               }).join("") +
             "</tbody></table></div>" +
             '<p class="note-line">' + T(
-              "ICB publishes no price for this cover. What it costs depends on the vehicle and the period, and ICB's own system works it out once you have chosen both.",
+              "ICB does not list a price for this cover. What it costs depends on the vehicle and the period, and ICB's own system works it out once you have chosen both.",
               "ICB no publica un precio para esta cobertura. Lo que cuesta depende del vehículo y del período, y el sistema de ICB lo calcula una vez que usted elige ambos.") + "</p>" +
 
             '<div class="stm-pair">' +
@@ -279,7 +279,7 @@ ICB.views = ICB.views || {};
 
             '<h2>' + T("If you need to claim.", "Si necesita presentar un reclamo.") + "</h2>" +
             "<p>" + T(
-              "ICB publishes a separate set of contacts for claims on this cover. Use these rather than the general claims line.",
+              "ICB has a separate set of contacts for claims on this cover. Use these rather than the general claims line.",
               "ICB publica un conjunto aparte de contactos para los reclamos de esta cobertura. Use estos en lugar de la línea general de reclamos.") + "</p>" +
             '<ul class="guide-list">' +
               '<li><a href="mailto:icb_claims1@icbinsurance.com">icb_claims1@icbinsurance.com</a></li>' +

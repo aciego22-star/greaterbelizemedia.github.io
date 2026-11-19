@@ -51,7 +51,7 @@ ICB.DATA.bee = {
       glyph: "shield",
       title: { en: "Explain ICB's insurance", es: "Explicar los seguros de ICB" },
       body: {
-        en: "Ask what a type of ICB cover is for and Bee explains it in plain language, using ICB's own descriptions. Product names stay as ICB publishes them.",
+        en: "Ask what a type of ICB cover is for and Bee explains it in plain language, using ICB's own descriptions. Product names stay exactly as ICB uses them.",
         es: "Pregunte para qué sirve un tipo de cobertura de ICB y Bee lo explica en lenguaje sencillo, usando las descripciones de ICB. Los nombres de los productos se mantienen como ICB los publica."
       }
     },

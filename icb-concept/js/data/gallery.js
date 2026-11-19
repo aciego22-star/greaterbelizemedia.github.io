@@ -54,24 +54,20 @@ ICB.DATA = ICB.DATA || {};
 ICB.DATA.gallery = {
 
   branches: [
+    /* One card for Daly Street, not two. There used to be a second
+       directly beneath this one, a street view captioned "ICB
+       Corporate Office", and ICB pointed out on 4 Nov 2026 that both
+       photographs are the same building: the gallery opened by showing
+       the same address twice under two names before reaching a single
+       district branch. The street view is gone and this frame, the
+       larger of the two and the one the grid gives double width, is
+       the building's single card. assets/img/gallery/hq-street.jpg is
+       still in the repository and nothing references it. */
     {
       locationId: "corporate",
       src: "assets/img/icb-hq.webp",
       caption: { en: "ICB Headquarters, Belize City", es: "Sede de ICB, Ciudad de Belice" },
       alt: "The Insurance Corporation of Belize headquarters in Belize City"
-    },
-    /* homeHidden: ICB asked on 8 Nov 2026 for this frame to come off
-       the home page. It sat second in the strip, directly under the
-       headquarters tile above it, so the first two things the strip
-       showed were the same organisation's two Belize City addresses
-       before it reached a single district branch. It keeps its place
-       in the full gallery, where there is room for both. */
-    {
-      locationId: "corporate",
-      src: "assets/img/gallery/hq-street.jpg",
-      homeHidden: true,
-      caption: { en: "ICB Corporate Office, Daly Street", es: "Oficina Corporativa de ICB, Daly Street" },
-      alt: "Street view of the ICB Corporate Office building on Daly Street, Belize City"
     },
     /* SETTLED 7 Nov 2026. The sign in this photograph reads "26A-C
        Central America Blvd" while the branch record carries "#38
@@ -301,18 +297,23 @@ ICB.DATA.gallery = {
       src: "assets/img/branches/moro.webp",
       alt: "The Insurance Corporation of Belize agency office in Santa Cruz Village, Stann Creek District"
     },
-    {
-      locationId: "bella-vista",
-      src: "assets/img/branches/bella-vista.webp",
-      alt: "The Insurance Corporation of Belize Bella Vista Agency office on 3rd Street, Bella Vista Village"
-    },
     /* The sign carries Main Road, Santa Cruz Village, the 616-7612
        WhatsApp number and wilson.velasquez@icbinsurance.com, all three
-       matching the branch record. Trimmed at the bottom. */
+       matching the branch record. Trimmed at the bottom.
+
+       Ordered here rather than after Bella Vista: this grid runs by
+       district, and Velasquez is Stann Creek like Moro above it. It
+       had been sitting between the two Toledo offices and splitting
+       them. */
     {
       locationId: "velasquez",
       src: "assets/img/branches/velasquez.webp",
       alt: "The Insurance Corporation of Belize Velasquez Agency, a blue office on the main road in Santa Cruz Village"
+    },
+    {
+      locationId: "bella-vista",
+      src: "assets/img/branches/bella-vista.webp",
+      alt: "The Insurance Corporation of Belize Bella Vista Agency office on 3rd Street, Bella Vista Village"
     },
     /* The sign carries George Price Street, the 615-8046 WhatsApp
        number and the 722-2291 landline, all matching the branch

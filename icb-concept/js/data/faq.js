@@ -92,8 +92,8 @@ ICB.DATA = ICB.DATA || {};
           },
           {
             q: T("How can I contact ICB?", "¿Cómo puedo comunicarme con ICB?"),
-            a: T("You can visit your nearest office, email icb@icbinsurance.com or call 224-5328/9.",
-                 "Puede visitar la oficina más cercana, escribir a icb@icbinsurance.com o llamar al 224-5328/9."),
+            a: T("You can visit your nearest office, email icb@icbinsurance.com or call +501 224-5328/9.",
+                 "Puede visitar la oficina más cercana, escribir a icb@icbinsurance.com o llamar al +501 224-5328/9."),
             on: ["contact"]
           },
           {
@@ -122,8 +122,8 @@ ICB.DATA = ICB.DATA || {};
           {
             q: T("How can I contact ICB from outside of Belize?",
                  "¿Cómo puedo comunicarme con ICB desde fuera de Belice?"),
-            a: T("Please email icb@icbinsurance.com or call 224-5328/9. You may also send a WhatsApp message to your branch.",
-                 "Escriba a icb@icbinsurance.com o llame al 224-5328/9. También puede enviar un mensaje de WhatsApp a su sucursal."),
+            a: T("Please email icb@icbinsurance.com or call +501 224-5328/9. You may also send a WhatsApp message to your branch.",
+                 "Escriba a icb@icbinsurance.com o llame al +501 224-5328/9. También puede enviar un mensaje de WhatsApp a su sucursal."),
             link: { label: T("Branch contact listing", "Directorio de sucursales"), href: "#/locations" },
             on: ["contact"]
           }

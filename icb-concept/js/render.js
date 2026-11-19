@@ -262,11 +262,11 @@ window.ICB = window.ICB || {};
      terms, legal requirements or what a visitor should buy. */
   var QUIZ_OPTIONS = [
     { id: "home", label: { en: "My home", es: "Mi casa" }, glyph: "house", productId: "property",
-      blurb: { en: "Homeowners and renters are both part of ICB's published property categories.", es: "Home Owners y Renters forman parte de las categorías de propiedad que publica ICB." } },
+      blurb: { en: "Homeowners and renters are both covered under Property Insurance.", es: "Home Owners y Renters están cubiertos bajo Property Insurance." } },
     { id: "vehicle", label: { en: "My vehicle", es: "Mi vehículo" }, glyph: "car", productId: "motor",
       blurb: { en: "From personal vehicles to taxis, buses and heavy-duty equipment.", es: "Desde vehículos personales hasta taxis, autobuses y equipo pesado." } },
     { id: "business", label: { en: "My business", es: "Mi negocio" }, glyph: "briefcase", special: "business",
-      blurb: { en: "ICB publishes insurance categories for businesses across Belize.", es: "ICB publica categorías de seguros para empresas en todo Belice." } },
+      blurb: { en: "ICB offers insurance for businesses across Belize.", es: "ICB ofrece seguros para empresas en todo Belice." } },
     { id: "boat", label: { en: "A boat or vessel", es: "Una embarcación" }, glyph: "boat", productId: "marine",
       blurb: { en: "Marine Hull Insurance, customizable to third party and passenger liability.", es: "Marine Hull Insurance, personalizable para responsabilidad ante terceros y pasajeros." } },
     { id: "goods", label: { en: "Goods in transit", es: "Mercancía en tránsito" }, glyph: "container", productId: "cargo",
@@ -299,7 +299,7 @@ window.ICB = window.ICB || {};
         " " + esc(ICB.s("quizUnsureExtra")) + "</p>" +
         '<div class="btn-row">' +
         '<a class="btn btn-primary" href="#/contact?topic=new-cover">' + esc(ICB.s("talkToICB")) + "</a>" +
-        '<a class="btn btn-ghost" href="#/insurance/liability">Liability &amp; Miscellaneous</a>' +
+        '<a class="btn btn-ghost" href="#/insurance">' + esc(ICB.s("seeAllInsurance")) + "</a>" +
         "</div>";
     } else {
       var p = ICB.DATA.productById(opt.productId);

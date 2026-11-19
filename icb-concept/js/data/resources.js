@@ -28,7 +28,7 @@ ICB.DATA.resources = {
   official: [
     {
       label: { en: "Claims forms", es: "Formularios de reclamo" },
-      description: { en: "The Insured Motor Accident, Claimant Motor Accident, Property, Marine and Hurricane forms published by ICB.", es: "Los formularios Insured Motor Accident, Claimant Motor Accident, Property, Marine y Hurricane publicados por ICB." },
+      description: { en: "The Insured Motor Accident, Claimant Motor Accident, Property, Marine and Hurricane forms, straight from ICB.", es: "Los formularios Insured Motor Accident, Claimant Motor Accident, Property, Marine y Hurricane, directamente de ICB." },
       route: "#/claims@forms",
       glyph: "document"
     },
@@ -46,7 +46,7 @@ ICB.DATA.resources = {
     },
     {
       label: { en: "Mexican Insurance through ANA Seguros", es: "Mexican Insurance a través de ANA Seguros" },
-      description: { en: "Buy Now, View Coverage, Claims and FAQs, as published by ICB.", es: "Buy Now, View Coverage, Claims y FAQs, tal como los publica ICB." },
+      description: { en: "Buy Now, View Coverage, Claims and FAQs from ANA Seguros.", es: "Buy Now, View Coverage, Claims y FAQs de ANA Seguros." },
       hrefKey: "mexicanInsurance",
       glyph: "border"
     }

@@ -62,7 +62,7 @@ ICB.views = ICB.views || {};
             R.crumbsHome({ en: "Resources", es: "Recursos" }) +
             '<span class="eyebrow">' + T("ICB Resource Centre", "Centro de recursos de ICB") + '</span>' +
             '<h1 id="res-title">' + T("Consumer Resources.", "Recursos para el consumidor.") + '</h1>' +
-            '<p class="hero-lead">' + T("The forms, portals and safety material ICB publishes, gathered in one place.", "Los formularios, portales y material de seguridad que publica ICB, reunidos en un solo lugar.") + '</p>' +
+            '<p class="hero-lead">' + T("ICB's forms and safety information, all in one place.", "Los formularios y la información de seguridad de ICB, todo en un solo lugar.") + '</p>' +
           "</div>" +
         "</section>" +
 
@@ -81,7 +81,7 @@ ICB.views = ICB.views || {};
           '<div class="shell">' +
             R.sectionHead({
               eyebrow: { en: "Safety material", es: "Material de seguridad" },
-              title: { en: "Preparation ICB publishes.", es: "Preparación que publica ICB." },
+              title: { en: "Be prepared.", es: "Esté preparado." },
               sub: { en: "Hurricane season and fire prevention information from icbinsurance.com.", es: "Información sobre temporada de huracanes y prevención de incendios, de icbinsurance.com." },
               id: "safety-title"
             }) +

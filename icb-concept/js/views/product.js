@@ -177,8 +177,20 @@ ICB.views = ICB.views || {};
       var anaUrl = site.external.mexicanInsurance;
       var quoteHref = ICB.DATA.quoteHref(p.id);
 
+      /* A Good to know line may name somewhere on this site, and
+         naming it without linking it leaves the reader to go and find
+         it. linkPhrase is the words to turn into the link, matched
+         against the escaped text so the escaping is never bypassed. */
       var gtk = p.goodToKnow.map(function (g) {
-        return '<li class="rv"><p>' + R.esc(g) + "</p></li>";
+        var text = R.esc(g);
+        if (g && g.href && g.linkPhrase) {
+          var phrase = R.esc(g.linkPhrase);
+          if (text.indexOf(phrase) !== -1) {
+            text = text.replace(phrase,
+              '<a href="' + R.esc(g.href) + '">' + phrase + "</a>");
+          }
+        }
+        return '<li class="rv"><p>' + text + "</p></li>";
       }).join("");
 
       var claims = "";

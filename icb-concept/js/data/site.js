@@ -258,7 +258,7 @@ ICB.DATA.site = {
           { label: "Marine Hull Insurance", href: "#/insurance/marine" },
           { label: "Cargo Insurance", href: "#/insurance/cargo" },
           { label: "Liability & Miscellaneous", href: "#/insurance/liability" },
-          { label: "Mexican Insurance", href: "#/insurance/mexican" }
+          { label: "Mexican Motor Insurance", href: "#/insurance/mexican" }
         ]
       },
       {

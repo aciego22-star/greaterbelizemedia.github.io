@@ -91,7 +91,7 @@ ICB.DATA.products = [
 
     /* ICB's published Property categories, unchanged. */
     covers: ["Home Owners", "Small Business", "Commercial", "Renters"],
-    coversLabel: { en: "Property categories ICB publishes", es: "Categorías de propiedad que publica ICB" },
+    coversLabel: { en: "Property we cover", es: "Propiedades que cubrimos" },
     categoryNotes: [
       { name: "Home Owners", note: { en: "Protection options for the home you own and live in.", es: "Opciones de protección para la vivienda que usted posee y habita." } },
       { name: "Small Business", note: { en: "Property protection for eligible small-business premises and assets.", es: "Protección de propiedad para locales y activos elegibles de pequeños negocios." } },
@@ -134,7 +134,8 @@ ICB.DATA.products = [
     audience: { en: "For homeowners, renters, small businesses and commercial property owners across Belize.", es: "Para propietarios, inquilinos, pequeños negocios y dueños de propiedad comercial en todo Belice." },
     goodToKnow: [
       { en: "An ICB representative reviews your needs with you before any cover is arranged.", es: "Un representante de ICB revisa sus necesidades con usted antes de contratar cualquier cobertura." },
-      { en: "Hurricane and fire preparation information is available in the Resource Centre.", es: "En el Centro de recursos hay información sobre preparación ante huracanes e incendios." },
+      { en: "Hurricane and fire preparation information is available in the Resource Centre.", es: "En el Centro de recursos hay información sobre preparación ante huracanes e incendios.",
+        linkPhrase: { en: "Resource Centre", es: "Centro de recursos" }, href: "#/resources" },
       { en: "Branch teams across the country can look at your property needs in person.", es: "Los equipos de las sucursales de todo el país pueden ver sus necesidades en persona." }
     ],
     status: null,
@@ -185,7 +186,7 @@ ICB.DATA.products = [
        invention about what someone is buying. */
     coverageOptions: {
       title: { en: "Motor coverage options highlighted by ICB.", es: "Opciones de cobertura de Motor que destaca ICB." },
-      sub: { en: "Figures below are the protection levels ICB publishes. A limit is the most a policy may respond with, not an amount paid on every claim.", es: "Las cifras siguientes son los niveles de protección que publica ICB. Un límite es lo máximo que puede responder una póliza, no un monto que se pague en cada reclamo." },
+      sub: { en: "Figures below are ICB's protection levels. A limit is the most a policy may respond with, not an amount paid on every claim.", es: "Las cifras siguientes son los niveles de protección de ICB. Un límite es lo máximo que puede responder una póliza, no un monto que se pague en cada reclamo." },
       items: [
         {
           name: "Third-Party Act",
@@ -270,7 +271,7 @@ ICB.DATA.products = [
     },
 
     covers: [{ en: "Barges", es: "Barcazas" }, { en: "Tug Boats", es: "Remolcadores" }, { en: "Dredgers", es: "Dragas" }, { en: "Water Taxis", es: "Taxis acuáticos" }, { en: "Fishing Vessels", es: "Embarcaciones de pesca" }, { en: "Yachts", es: "Yates" }, { en: "Personal Vessels", es: "Embarcaciones particulares" }],
-    coversLabel: { en: "Vessels ICB publishes cover for", es: "Embarcaciones para las que ICB publica cobertura" },
+    coversLabel: { en: "Vessels we cover", es: "Embarcaciones que cubrimos" },
 
     forWho: {
       title: { en: "Who may find it relevant?", es: "¿A quién le puede servir?" },
@@ -327,7 +328,7 @@ ICB.DATA.products = [
     },
 
     covers: [{ en: "Air Transit", es: "Tránsito aéreo" }, { en: "Land Transit", es: "Tránsito terrestre" }, { en: "Marine Transit", es: "Tránsito marítimo" }, { en: "Domestic Transit", es: "Tránsito nacional" }, { en: "Overseas Transit", es: "Tránsito al extranjero" }],
-    coversLabel: { en: "Transit ICB publishes cover for", es: "Tránsitos para los que ICB publica cobertura" },
+    coversLabel: { en: "Goods in transit we cover", es: "Mercancía en tránsito que cubrimos" },
 
     forWho: {
       title: { en: "Who may find it relevant?", es: "¿A quién le puede servir?" },
@@ -357,7 +358,7 @@ ICB.DATA.products = [
     route: "#/insurance/liability",
     name: "Liability & Miscellaneous",
     kicker: { en: "Specialty cover for wider responsibilities", es: "Cobertura especializada para responsabilidades más amplias" },
-    short: { en: "Money Insurance, Personal Accident, Tour Operators Liability, General Liability and Contractors All Risk.", es: "Money Insurance, Personal Accident, Tour Operators Liability, General Liability y Contractors All Risk." },
+    short: { en: "Cash in Transit and Fidelity Guarantees, Personal Accident, Tour Operators Liability, General Liability and Contractors All Risk.", es: "Cash in Transit and Fidelity Guarantees, Personal Accident, Tour Operators Liability, General Liability y Contractors All Risk." },
     standfirst: { en: "Protection for risks that do not always fit into a standard property, motor or marine policy.", es: "Protección para riesgos que no siempre encajan en una póliza estándar de propiedad, vehículo o embarcación." },
     quote: true,
 
@@ -372,10 +373,10 @@ ICB.DATA.products = [
     /* Introductory descriptions only. No limits, exclusions, occupations,
        project sizes or eligibility rules, none of which ICB publishes. */
     coverageOptions: {
-      title: { en: "What ICB publishes under Liability & Miscellaneous.", es: "Lo que ICB publica bajo Liability & Miscellaneous." },
+      title: { en: "What we offer for Liability & Miscellaneous Insurance.", es: "Lo que ofrecemos en Liability & Miscellaneous Insurance." },
       sub: { en: "Short introductions only. An ICB representative can explain how any of them would apply to your situation.", es: "Solo introducciones breves. Un representante de ICB puede explicarle cómo aplicaría cualquiera de ellas a su situación." },
       items: [
-        { name: "Money Insurance",
+        { name: "Cash in Transit and Fidelity Guarantees",
           blurb: { en: "An option for businesses seeking protection around eligible money-related risks.", es: "Una opción para negocios que buscan protección frente a riesgos elegibles relacionados con el manejo de dinero." } },
         { name: "Personal Accident",
           blurb: { en: "Protection designed around eligible accidental-injury risks.", es: "Protección diseñada en torno a riesgos elegibles de lesión accidental." } },
@@ -388,7 +389,7 @@ ICB.DATA.products = [
       ]
     },
 
-    covers: ["Money Insurance", "Personal Accident", "Tour Operators Liability", "General Liability", "Contractors All Risk"],
+    covers: ["Cash in Transit and Fidelity Guarantees", "Personal Accident", "Tour Operators Liability", "General Liability", "Contractors All Risk"],
 
     forWho: {
       title: { en: "Who may find it relevant?", es: "¿A quién le puede servir?" },
@@ -419,7 +420,7 @@ ICB.DATA.products = [
   {
     id: "mexican",
     route: "#/insurance/mexican",
-    name: "Mexican Insurance",
+    name: "Mexican Motor Insurance",
     kicker: { en: "Driving into Mexico?", es: "¿Va manejando hacia México?" },
     short: { en: "Access ICB's Mexican Insurance options through ANA Seguros.", es: "Acceda a las opciones de Mexican Insurance de ICB a través de ANA Seguros." },
     standfirst: { en: "Coverage options for motorists travelling into Mexico.", es: "Opciones de cobertura para conductores que viajan a México." },
@@ -452,7 +453,7 @@ ICB.DATA.products = [
     audience: { en: "For drivers travelling from Belize into Mexico.", es: "Para conductores que viajan de Belice a México." },
     goodToKnow: [
       { en: "ICB's Mexican Insurance is provided through ANA Seguros.", es: "Mexican Insurance de ICB se ofrece a través de ANA Seguros." },
-      { en: "The pathways below are the ones ICB publishes: Buy Now, View Coverage, Claims and FAQs.", es: "Las rutas de abajo son las que publica ICB: Buy Now, View Coverage, Claims y FAQs." }
+      { en: "Use the buttons above to buy, view coverage, make a claim or read the FAQs.", es: "Use los botones de arriba para comprar, ver la cobertura, presentar un reclamo o leer las FAQs." }
     ],
     /* ANA Seguros pathways published on ICB's Mexican Insurance page.
        INTERNAL TODO: confirm the direct URLs with ICB; these route to the

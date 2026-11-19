@@ -117,7 +117,7 @@ ICB.DATA.locations = [
         { days: ["Sunday"], opens: "07:00", closes: "18:00" }
       ]
     },
-    mapQuery: "Santa Elena Border Crossing, Corozal, Belize",
+    mapQuery: "Insurance Corporation of Belize, Santa Elena Border Crossing, Corozal, Belize",
     map: { x: 146.2, y: 68.1 },
     note: null
   },
@@ -165,7 +165,7 @@ ICB.DATA.locations = [
     phones: [{ display: "+501 322-0659", tel: "+5013220659" }],
     whatsapps: [],
     email: "icb_sanestevan@icbinsurance.com",
-    mapQuery: "San Estevan Village, Orange Walk District, Belize",
+    mapQuery: "Insurance Corporation of Belize, San Estevan Village, Orange Walk District, Belize",
     map: { x: 128.0, y: 139.3 },
     note: null
   },
@@ -212,7 +212,7 @@ ICB.DATA.locations = [
     phones: [{ display: "+501 670-6970", tel: "+5016706970" }],
     whatsapps: [{ display: "+501 613-0470", wa: "5016130470", receipt: true }],
     email: "icb_ladyville@icbinsurance.com",
-    mapQuery: "Airport Plaza, Northern Highway, Ladyville, Belize",
+    mapQuery: "Insurance Corporation of Belize, Airport Plaza, Northern Highway, Ladyville, Belize",
     map: { x: 160.3, y: 219.8 },
     note: null
   },
@@ -226,7 +226,7 @@ ICB.DATA.locations = [
     phones: [{ display: "+501 226-4099", tel: "+5012264099" }],
     whatsapps: [{ display: "+501 610-2941", wa: "5016102941", receipt: true }],
     email: "icb_sanpedro@icbinsurance.com",
-    mapQuery: "Coconut Drive, San Pedro Town, Ambergris Caye, Belize",
+    mapQuery: "Insurance Corporation of Belize, Coconut Drive, San Pedro Town, Ambergris Caye, Belize",
     map: { x: 211.6, y: 160.2 },
     note: null
   },
@@ -240,7 +240,7 @@ ICB.DATA.locations = [
     phones: [{ display: "+501 226-0398", tel: "+5012260398" }],
     whatsapps: [{ display: "+501 626-4748", wa: "5016264748" }],
     email: "icb_cayecaulker@icbinsurance.com",
-    mapQuery: "Avenida Hicaco, Caye Caulker, Belize",
+    mapQuery: "Insurance Corporation of Belize, Avenida Hicaco, Caye Caulker, Belize",
     map: { x: 202.3, y: 189.6 },
     note: null
   },
@@ -318,7 +318,7 @@ ICB.DATA.locations = [
           opens: "07:00", closes: "18:00" }
       ]
     },
-    mapQuery: "Western Border Crossing, Benque Viejo del Carmen, Belize",
+    mapQuery: "Insurance Corporation of Belize, Western Border Crossing, Benque Viejo del Carmen, Belize",
     map: { x: 24.2, y: 296.8 },
     note: null
   },
@@ -332,7 +332,7 @@ ICB.DATA.locations = [
     phones: [],
     whatsapps: [{ display: "+501 656-7521", wa: "5016567521" }],
     email: "icb_benquetown@icbinsurance.com",
-    mapQuery: "39 George Street, Benque Viejo del Carmen, Belize",
+    mapQuery: "Insurance Corporation of Belize, 39 George Street, Benque Viejo del Carmen, Belize",
     map: { x: 27.7, y: 300.6 },
     note: null
   },
@@ -348,7 +348,7 @@ ICB.DATA.locations = [
     phones: [{ display: "+501 522-0706", tel: "+5015220706" }],
     whatsapps: [{ display: "+501 614-9682", wa: "5016149682", receipt: true }],
     email: "icb_dangriga@icbinsurance.com",
-    mapQuery: "Market Square, Dangriga Town, Belize",
+    mapQuery: "Insurance Corporation of Belize, Market Square, Dangriga Town, Belize",
     map: { x: 171.4, y: 316.2 },
     note: null
   },
@@ -362,7 +362,7 @@ ICB.DATA.locations = [
     phones: [{ display: "+501 523-3555", tel: "+5015233555" }],
     whatsapps: [],
     email: "icb_seinebight@icbinsurance.com",
-    mapQuery: "Main Street, Seine Bight Village, Stann Creek District, Belize",
+    mapQuery: "Insurance Corporation of Belize, Main Street, Seine Bight Village, Stann Creek District, Belize",
     map: { x: 149.0, y: 374.4 },
     note: null
   },
@@ -384,7 +384,7 @@ ICB.DATA.locations = [
     phones: [],
     whatsapps: [{ display: "+501 671-7916", wa: "5016717916" }],
     email: "icb_sanjuan@icbinsurance.com",
-    mapQuery: "San Juan Village, Stann Creek District, Belize",
+    mapQuery: "Insurance Corporation of Belize, San Juan Village, Stann Creek District, Belize",
     map: { x: 123.5, y: 382.6 },
     note: null
   },
@@ -398,7 +398,7 @@ ICB.DATA.locations = [
     phones: [{ display: "+501 523-2041", tel: "+5015232041" }],
     whatsapps: [{ display: "+501 615-6951", wa: "5016156951", receipt: true }],
     email: "icb_independence@icbinsurance.com",
-    mapQuery: "Corner of Hercules and Toucan Streets, Independence, Belize",
+    mapQuery: "Insurance Corporation of Belize, Corner of Hercules and Toucan Streets, Independence, Belize",
     map: { x: 142.4, y: 388.0 },
     note: null
   },
@@ -415,8 +415,8 @@ ICB.DATA.locations = [
     address: "#22 Police Station Street, Santa Cruz Village",
     phones: [],
     whatsapps: [{ display: "+501 609-0497", wa: "5016090497" }],
-    email: "William.moro@icbinsurance.com",
-    mapQuery: "Santa Cruz Village, Stann Creek District, Belize",
+    email: "william.moro@icbinsurance.com",
+    mapQuery: "Insurance Corporation of Belize Moro Agency, #22 Police Station Street, Santa Cruz Village, Stann Creek District, Belize",
     map: { x: 137.9, y: 359.8 },
     note: null
   },
@@ -429,8 +429,8 @@ ICB.DATA.locations = [
     address: "Main Road, Santa Cruz Village",
     phones: [],
     whatsapps: [{ display: "+501 616-7612", wa: "5016167612" }],
-    email: "Wilson.velasquez@icbinsurance.com",
-    mapQuery: "Santa Cruz Village, Stann Creek District, Belize",
+    email: "wilson.velasquez@icbinsurance.com",
+    mapQuery: "Insurance Corporation of Belize Velasquez Agency, Main Road, Santa Cruz Village, Stann Creek District, Belize",
     map: { x: 141.5, y: 362.8 },
     note: null
   },
@@ -446,7 +446,7 @@ ICB.DATA.locations = [
     phones: [{ display: "+501 722-2291", tel: "+5017222291" }],
     whatsapps: [{ display: "+501 615-8046", wa: "5016158046", receipt: true }],
     email: "icb_pg@icbinsurance.com",
-    mapQuery: "George Price Street, Punta Gorda Town, Belize",
+    mapQuery: "Insurance Corporation of Belize, George Price Street, Punta Gorda Town, Belize",
     map: { x: 79.4, y: 459.3 },
     note: null
   },
@@ -469,7 +469,7 @@ ICB.DATA.locations = [
     phones: [],
     whatsapps: [{ display: "+501 679-3896", wa: "5016793896" }],
     email: "icb_bellavista@icbinsurance.com",
-    mapQuery: "Bella Vista Village, Toledo District, Belize",
+    mapQuery: "Insurance Corporation of Belize, Bella Vista Village, Toledo District, Belize",
     map: { x: 123.8, y: 391.8 },
     note: null
   }

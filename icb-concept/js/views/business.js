@@ -102,7 +102,7 @@ ICB.views = ICB.views || {};
             R.sectionHead({
               eyebrow: { en: "Built around your operation", es: "Pensado para su operación" },
               title: { en: "Cover for every side of the business.", es: "Cobertura para cada lado del negocio." },
-              sub: { en: "These are ICB's published categories. Your ICB representative helps you see which ones apply.", es: "Estas son las categorías que ICB publica. Su representante de ICB le ayuda a ver cuáles aplican." },
+              sub: { en: "These are the types of cover we offer. Your ICB representative helps you see which ones apply.", es: "Estos son los tipos de cobertura que ofrecemos. Su representante de ICB le ayuda a ver cuáles aplican." },
               id: "seg-title"
             }) +
             '<div class="card-grid">' + segs + "</div>" +

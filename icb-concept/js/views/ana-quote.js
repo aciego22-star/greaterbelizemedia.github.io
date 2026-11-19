@@ -148,7 +148,7 @@ ICB.views = ICB.views || {};
             R.crumbs([
               { label: ICB.s("home"), href: "#/" },
               { label: { en: "Insurance", es: "Seguros" }, href: "#/insurance" },
-              { label: "Mexican Insurance", href: "#/insurance/mexican" },
+              { label: "Mexican Motor Insurance", href: "#/insurance/mexican" },
               { label: T("Quote", "Cotización") }
             ]) +
             '<div class="page-hero-inner">' +
