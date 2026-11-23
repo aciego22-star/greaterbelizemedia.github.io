@@ -119,17 +119,16 @@ function t(k,d){return TT_TXT[k]||d;}
   var off=(promoOn()&&basket.length&&sub>0)?round2(promoBase()*PROMO.pct/100):0;
   if(off>sub) off=sub;                       // belt and braces; cannot happen at 5%
   var net=round2(sub-off);
-  // The courier's fee is part of what she charges, and she confirmed on
-  // 7 November that the register taxes it too, so it goes in before GST.
-  var fee=(basket.length&&feeEl())?round2(parseFloat(feeEl().getAttribute('data-fee'))||0):0;
+  // The delivery charge left the website on 23 November: she works it out with
+  // the customer on WhatsApp and rings it up by hand, so the site must not
+  // quote one, and must not tax one it never quoted.
   var base=GST.on ? (GST.deals===false
-            ? round2(basket.reduce(function(a,b){return a+(b.deal?0:b.qty*b.price);},0)+fee)
-            : round2(net+fee)) : 0;
-  var cap=round2(net+fee);
-  if(base>cap) base=cap;
+            ? round2(basket.reduce(function(a,b){return a+(b.deal?0:b.qty*b.price);},0))
+            : net) : 0;
+  if(base>net) base=net;
   var gst=(GST.on&&basket.length&&base>0)?round2(base*GST.rate/100):0;
-  return {sub:sub, off:off, net:net, fee:fee, gst:gst,
-          total:round2(net+fee+gst), on:off>0, taxed:gst>0, delivered:fee>0};
+  return {sub:sub, off:off, net:net, gst:gst,
+          total:round2(net+gst), on:off>0, taxed:gst>0};
  }
 
  /* ---- who the order is for, and how they are getting it ----
@@ -150,12 +149,6 @@ function t(k,d){return TT_TXT[k]||d;}
  function fulfilEl(){return document.querySelector('input[name=bp-fulfil]:checked');}
  function whenEl(){return document.querySelector('input[name=bp-when]:checked');}
  function zoneEl(){return document.querySelector('input[name=bp-zone]:checked');}
- /* The fee only counts while Delivery is the chosen fulfilment: a zone left
-    selected from last Friday must not quietly charge somebody collecting. */
- function feeEl(){
-  var f=fulfilEl();
-  return (f&&f.value==='Delivery') ? zoneEl() : null;
- }
  /* "When do you want it?" is the right question for a delivery and the wrong
     one for a table, so the label follows the choice above it. */
  function whenLabel(how){
@@ -175,7 +168,6 @@ function t(k,d){return TT_TXT[k]||d;}
    o.addr=(addrEl&&addrEl.value||'').trim().replace(/\s*\n\s*/g,', ');
    var z=zoneEl();
    o.zone=z?z.value:'';
-   o.fee=z?(parseFloat(z.getAttribute('data-fee'))||0):0;
   }
   return o;
  }
@@ -233,10 +225,6 @@ function t(k,d){return TT_TXT[k]||d;}
  document.querySelectorAll('input[name=bp-fulfil]').forEach(function(r){
   r.addEventListener('change',function(){
    syncDelivery(); clearMarks(); saveWho();
-   // The fulfilment decides whether the delivery fee counts, so the totals
-   // have to be redrawn: switching from Delivery to Pickup was leaving the
-   // fee on the bill and the row on screen.
-   renderPanel(); renderBar();
    // Fields appear out of nowhere below the fold otherwise, and on a short
    // phone the customer never learns they are there. Whichever block the
    // choice just revealed is the one to bring up.
@@ -255,8 +243,8 @@ function t(k,d){return TT_TXT[k]||d;}
   });
  });
  document.querySelectorAll('input[name=bp-zone]').forEach(function(r){
-  // The fee changes the total, so the panel has to be redrawn, not just saved.
-  r.addEventListener('change',function(){ clearMarks(); saveWho(); renderPanel(); renderBar(); });
+  // The area is a note for the kitchen now, not a price, so nothing is redrawn.
+  r.addEventListener('change',function(){ clearMarks(); saveWho(); });
  });
  if(addrEl) addrEl.addEventListener('input',function(){ clearMarks(); saveWho(); });
  if(timeEl) timeEl.addEventListener('change',function(){ clearMarks(); saveWho(); });
@@ -432,21 +420,18 @@ function t(k,d){return TT_TXT[k]||d;}
   var sum=$('bp-sum'), gstRow=$('bp-gst-row'), disc=sum&&sum.querySelector('.bp-disc');
   if(sum){
    // The block shows for a discount, for the tax, or for both.
-   sum.hidden=!(b.on||b.taxed||b.delivered);
+   sum.hidden=!(b.on||b.taxed);
    if(disc) disc.hidden=!b.on;
    if(b.on){
     $('bp-disc-l').textContent=PROMO.line||'';
     $('bp-disc').textContent='\u2212'+money(b.off);
    }
-   var feeRow=$('bp-fee-row');
-   if(feeRow) feeRow.hidden=!b.delivered;
-   if(b.delivered) $('bp-fee').textContent=money(b.fee);
    if(gstRow) gstRow.hidden=!b.taxed;
    if(b.taxed){
     $('bp-gst-l').textContent=GST.line||'GST';
     $('bp-gst').textContent=money(b.gst);
    }
-   if(b.on||b.taxed||b.delivered){
+   if(b.on||b.taxed){
     $('bp-sub-l').textContent=(b.on&&PROMO.subtotal)||GST.subtotal||'Subtotal';
     $('bp-sub').textContent=money(b.sub);
    }
@@ -564,10 +549,9 @@ function t(k,d){return TT_TXT[k]||d;}
   // the customer was shown, to the cent. When the promotion is not running this
   // is the single total line the site has always sent.
   var b=bill(), tail;
-  if(b.on||b.taxed||b.delivered){
+  if(b.on||b.taxed){
    tail='\n\n'+(GST.subtotal||'Subtotal')+': BZD '+money(b.sub);
    if(b.on) tail+='\n\uD83C\uDDE7\uD83C\uDDFF '+(PROMO.line||'')+': \u2212BZD '+money(b.off);
-   if(b.delivered) tail+='\n'+t('wa_fee_line','Delivery')+': BZD '+money(b.fee);
    if(b.taxed) tail+='\n'+(GST.line||'GST')+': BZD '+money(b.gst);
    tail+='\n'+((b.on&&PROMO.final)||GST.total||'Total')+': BZD '+money(b.total);
   }else{
@@ -582,7 +566,9 @@ function t(k,d){return TT_TXT[k]||d;}
   if(w.how==='Delivery'&&w.zone) head+='\n'+t('wa_zone','Delivery area')+': '+w.zone;
   if(w.when) head+='\n'+t('wa_when','When')+': '+(w.when==='At a time'&&w.at?w.at:w.when);
   if(head) head+='\n';
-  if(w.how==='Delivery') tail+='\n'+t('wa_fee','Delivery charge to be confirmed on WhatsApp.');
+  // She prices the run herself when the ticket lands, so the total above is
+  // the food only and the message says so rather than leaving her to explain it.
+  if(w.how==='Delivery') tail+='\n'+t('wa_fee','Delivery charge is worked out with you on WhatsApp and is not in the total above.');
   return t('wa_intro','Hi Taco Taco! I would like to place this order:')+'\n'+head+'\n'+lines.join('\n')+tail;
  }
  /* ---- the basket empties once the order has gone ----------------------

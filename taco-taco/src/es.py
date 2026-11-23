@@ -1181,6 +1181,10 @@ ES.update({
  "Where are we delivering to?": "\u00bfA d\u00f3nde entregamos?",
  "Belmopan city": "Ciudad de Belmop\u00e1n",
  "Armenia, Roaring Creek or Camalote": "Armenia, Roaring Creek o Camalote",
+ "We work out the delivery charge with you on WhatsApp once your order comes "
+ "through, so it is not in the total below.":
+   "El costo de la entrega lo acordamos con usted por WhatsApp cuando entra su "
+   "pedido, por eso no est\u00e1 incluido en el total de abajo.",
  "We deliver in Belmopan city and to Armenia, Roaring Creek and Camalote. "
  "Anywhere else, message us on WhatsApp and we will see what we can do.":
    "Entregamos en la ciudad de Belmop\u00e1n y en Armenia, Roaring Creek y "
@@ -1263,7 +1267,7 @@ JS = {
  "wa_how": "Pedido para",
  "wa_addr": "Direcci\u00f3n",
  "wa_when": "Para",
- "wa_fee": "El costo de la entrega se confirma por WhatsApp.",
+ "wa_fee": "El costo de la entrega se acuerda con usted por WhatsApp y no est\u00e1 incluido en el total de arriba.",
  "who_addr": "Direcci\u00f3n de entrega",
  "who_when": "\u00bfPara cu\u00e1ndo lo quiere?",
  # The same question, asked of somebody collecting or sitting down

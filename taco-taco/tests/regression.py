@@ -2,7 +2,8 @@ import http.server, socketserver, threading, functools, re, os, sys
 from playwright.sync_api import sync_playwright
 D="/home/user/greaterbelizemedia.github.io/taco-taco/dist"
 H=functools.partial(http.server.SimpleHTTPRequestHandler, directory=D)
-class Q(socketserver.TCPServer):
+class Q(socketserver.ThreadingTCPServer):
+    daemon_threads=True
     allow_reuse_address=True
     def log_message(self,*a): pass
 srv=Q(("127.0.0.1",8735),H); threading.Thread(target=srv.serve_forever,daemon=True).start()
@@ -95,29 +96,65 @@ with sync_playwright() as p:
             ck(tot is not None and abs(tot-round(sub+gstv,2))<0.02, "total = subtotal + GST on pickup (%s)"%tot)
         ck(not shown("#bp-fee-row"), "no delivery fee row on pickup")
         ck(not shown(".bp-disc"), "no discount row when nothing is discounted")
-        print("   -- delivery zones --")
+        print("   -- delivery areas (no price since 23 Nov) --")
         dl=pg.query_selector("input[name='bp-fulfil'][value='Delivery']")
         ck(dl is not None, "Delivery option exists")
         if dl:
             dl.click(force=True); pg.wait_for_timeout(700)
-            for z in pg.query_selector_all("input[name='bp-zone']"):
-                f=float(z.get_attribute("data-fee")); zn=z.get_attribute("value")
+            zs=pg.query_selector_all("input[name='bp-zone']")
+            ck(len(zs)==2, "both delivery areas still offered (%d)"%len(zs))
+            ck(not pg.query_selector_all("input[name='bp-zone'][data-fee]"),
+               "no zone carries a price")
+            note=pg.query_selector(".bp-zone-note")
+            ck(note is not None and note.is_visible(), "the charge note shows with the areas")
+            if note:
+                nt=note.inner_text().lower()
+                print("      note:", note.inner_text())
+                ck("whatsapp" in nt, "note sends them to WhatsApp for the charge")
+                ck("not in the total" in nt, "note says the charge is not in the total")
+            for z in zs:
+                zn=z.get_attribute("value")
                 z.click(force=True); pg.wait_for_timeout(500)
-                s2=money("#bp-sub"); fe=money("#bp-fee"); g2=money("#bp-gst"); t2=money("#bp-total")
-                print("      %-36s fee=%s sub=%s gst=%s total=%s"%(zn,fe,s2,g2,t2))
-                ck(shown("#bp-fee-row"), "fee row shows for %s"%zn)
-                ck(fe is not None and abs(fe-f)<0.01, "fee is $%d for %s"%(f,zn))
+                s2=money("#bp-sub"); g2=money("#bp-gst"); t2=money("#bp-total")
+                print("      %-36s sub=%s gst=%s total=%s"%(zn,s2,g2,t2))
+                ck(not shown("#bp-fee-row"), "no fee row for %s"%zn)
+                ck(pg.query_selector("#bp-fee-row") is None, "the fee row is gone from the markup")
                 if s2 is not None and g2 is not None:
-                    ck(abs(g2-round((s2+f)*0.125,2))<0.02, "GST charged on food + the $%d delivery (%.2f vs %.2f)"%(f,g2,round((s2+f)*0.125,2)))
-                    ck(t2 is not None and abs(t2-round(s2+f+g2,2))<0.02, "total = food + $%d delivery + GST (%s)"%(f,t2))
-            pk=pg.query_selector("input[name='bp-fulfil'][value='Pickup']")
-            if pk:
-                pk.click(force=True); pg.wait_for_timeout(600)
-                ck(not shown("#bp-fee-row"), "fee row clears when switching back off delivery")
-                s3=money("#bp-sub"); g3=money("#bp-gst"); t3=money("#bp-total")
-                print("      back to pickup: sub=%s gst=%s total=%s"%(s3,g3,t3))
-                if s3 is not None and g3 is not None:
-                    ck(t3 is not None and abs(t3-round(s3+g3,2))<0.02, "total drops back to food + GST (%s)"%t3)
+                    ck(abs(g2-round(s2*0.125,2))<0.02,
+                       "GST is on the food only for %s (%.2f)"%(zn,g2))
+                    ck(t2 is not None and abs(t2-round(s2+g2,2))<0.02,
+                       "total is food + GST only for %s (%s)"%(zn,t2))
+            # the ticket the kitchen reads
+            nm=pg.query_selector("#bp-who-name")
+            if nm: nm.fill("Regression Test"); pg.wait_for_timeout(200)
+            ad=pg.query_selector("#bp-addr")
+            if ad: ad.fill("11 Aloe Vera Ave"); pg.wait_for_timeout(200)
+            w=pg.query_selector("input[name='bp-when'][value='ASAP']")
+            if w: w.click(force=True); pg.wait_for_timeout(300)
+            pg.evaluate("()=>{window.__wa=null;window.open=function(u){window.__wa=u;return {focus:function(){}};};}")
+            send=pg.query_selector("#bp-send")
+            if send:
+                send.click(); pg.wait_for_timeout(500)
+                go=pg.query_selector("#bp-ask-go")
+                if go and go.is_visible(): go.click(); pg.wait_for_timeout(600)
+                href=pg.evaluate("()=>window.__wa")
+                ck(href is not None, "send hands the order to WhatsApp")
+                if href:
+                    from urllib.parse import unquote
+                    msg=unquote(href.split("text=",1)[1].replace("+"," ")) if "text=" in href else ""
+                    print("      --- whatsapp ticket ---")
+                    for ln in msg.split("\n"):
+                        if ln.strip(): print("        "+ln)
+                    low=msg.lower()
+                    ck("delivery area:" in low and ("belmopan" in low or "armenia" in low),
+                       "the ticket still names the delivery area")
+                    ck("worked out with you on whatsapp" in low,
+                       "the ticket says the charge is worked out on WhatsApp")
+                    ck("delivery: bzd" not in low, "the ticket quotes no delivery charge")
+                    ck("total: bzd $16.88" in low, "the ticket totals the food and GST only")
+                no=pg.query_selector("#bp-ask-no")
+                if no and no.is_visible(): no.click(); pg.wait_for_timeout(300)
+
         print("   -- collection time --")
         for val in ["Pickup","Dine-In"]:
             r=pg.query_selector("input[name='bp-fulfil'][value='%s']"%val)
@@ -158,17 +195,14 @@ with sync_playwright() as p:
     ck(empty==0, "no empty menu category left behind (%d)"%empty)
     pg2.close()
 
-    print("\n[5] DELIVERY ZONES")
-    pg.goto(B+"/index.html", wait_until="load"); pg.wait_for_timeout(600)
-    for sel in ["#intro-x","#promo-x","#gstbar .gstbar-x"]:
-        el=pg.query_selector(sel)
-        if el and el.is_visible(): el.click(); pg.wait_for_timeout(200)
-    zones=pg.eval_on_selector_all(".bp-zone-opt","e=>e.map(x=>x.innerText.replace(/\\n/g,' ')+' | fee='+x.querySelector('input').getAttribute('data-fee'))")
-    for z in zones: print("   ", z)
-    ck(len(zones)==2, "two delivery zones offered (%d)"%len(zones))
+    print("\n[5] DELIVERY AREAS")
+    zones=pg.eval_on_selector_all(".bp-zone-opt","e=>e.map(x=>x.innerText.replace(/\\n/g,' ').trim())")
+    for z in zones: print("    ", z)
+    ck(len(zones)==2, "two delivery areas offered (%d)"%len(zones))
     txt=" ".join(zones).lower()
     for place in ["belmopan","armenia","roaring creek","camalote"]:
-        ck(place in txt, "zone copy names %s"%place)
+        ck(place in txt, "area copy names %s"%place)
+    ck("$" not in " ".join(zones), "no dollar figure printed against an area")
 
     print("\n[6] INTRO POPUP")
     ctx3=br.new_context(viewport={"width":390,"height":844})
