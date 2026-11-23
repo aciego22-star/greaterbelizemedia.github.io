@@ -110,6 +110,12 @@ window.ICB = window.ICB || {};
      opened: a claimant on a phone who taps a form wants it saved, not a
      new tab they lose when they switch apps. data-asset-href so the
      single-file preview downloads the bundled copy. */
+  /* Falls back to the English file rather than to nothing, so a
+     pathway added without a Spanish form still hands over a form. */
+  function formFileFor(c) {
+    return (ICB.i18n.get() === "es" && c.formFileEs) ? c.formFileEs : c.formFile;
+  }
+
   function claimCard(c) {
     return '' +
       '<article class="pathway rv" id="claim-' + esc(c.anchor) + '" data-anchor="' + esc(c.anchor) + '">' +
@@ -129,9 +135,16 @@ window.ICB = window.ICB || {};
            the real forms. One version of each form, the one the
            branches use, is worth more than a convenience that did not
            convey. */
+        /* The form in the language being read. Both are published;
+           which one the button hands over follows the page, because a
+           bilingual site that gives a Spanish reader an English form
+           is the thing ICB asked us to fix on 4 Nov 2026. The button's
+           label keeps ICB's English form name in both languages, and
+           so does the Spanish PDF's own header, so a branch sees the
+           same name across the counter either way. */
         '<div class="pathway-actions">' +
-          '<a class="btn btn-primary btn-sm" data-asset-href="' + esc(c.formFile) + '"' +
-            ' href="' + esc(c.formFile) + '" download>' +
+          '<a class="btn btn-primary btn-sm" data-asset-href="' + esc(formFileFor(c)) + '"' +
+            ' href="' + esc(formFileFor(c)) + '" download>' +
             ICB.art.glyph("download") + "<span>" +
             esc(ICB.s("claimsFormBtn", { form: c.formLabel })) + "</span></a>" +
         "</div>" +

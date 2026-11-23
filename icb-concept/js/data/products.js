@@ -92,12 +92,70 @@ ICB.DATA.products = [
     /* ICB's published Property categories, unchanged. */
     covers: ["Home Owners", "Small Business", "Commercial", "Renters"],
     coversLabel: { en: "Property we cover", es: "Propiedades que cubrimos" },
-    categoryNotes: [
-      { name: "Home Owners", note: { en: "Protection options for the home you own and live in.", es: "Opciones de protección para la vivienda que usted posee y habita." } },
-      { name: "Small Business", note: { en: "Property protection for eligible small-business premises and assets.", es: "Protección de propiedad para locales y activos elegibles de pequeños negocios." } },
-      { name: "Commercial", note: { en: "Property protection designed around commercial premises and related exposures.", es: "Protección de propiedad diseñada para locales comerciales y exposiciones relacionadas." } },
-      { name: "Renters", note: { en: "Protection options for renters seeking cover for eligible personal belongings and related risks.", es: "Opciones de protección para inquilinos que buscan cubrir pertenencias personales elegibles y riesgos relacionados." } }
-    ],
+    /* The four categories, described.
+
+       ICB's review of 4 Nov 2026: "The page lists Home Owners, Small
+       Business, Commercial and Renters. Only Homeowners is described."
+       They were right twice over. There WAS a line for each of the
+       other three, sitting in a categoryNotes array that no view ever
+       rendered, so it had never appeared on the page at all.
+
+       WHERE THE FACTS COME FROM. ICB's own products page carries one
+       sentence that covers all four: "All Property Policies protects
+       against standards perils, and can be further customized to
+       include additional coverage options: Liability to the Public,
+       Compensation for death of the Insured, Business Interruption,
+       Additional expenses for accommodation and loss of rent." That is
+       the backbone of every paragraph below. Each one says what is
+       being protected, that it starts from the standard perils, and
+       which of ICB's named options tend to come up for that kind of
+       property. Nothing here states a policy term, a limit or what a
+       claim will pay.
+
+       The three levels in coverageOptions above are NOT repeated here.
+       They come from ICB's Homeowners graphic and belong to Home
+       Owners; attaching them to a warehouse would be inventing cover.
+
+       Written 23 Nov 2026 at Albert's instruction, after ICB asked for
+       the gap to be filled. Still worth a read by the Property
+       department: the facts are ICB's, the way they are put is ours. */
+    categories: {
+      title: { en: "Which category fits your property.", es: "Qué categoría corresponde a su propiedad." },
+      sub: {
+        en: "ICB writes Property Insurance for four kinds of property. All four start from the standard perils. What changes is what is being protected, and which of the additional options tend to matter. Availability always depends on the policy selected.",
+        es: "ICB ofrece Property Insurance para cuatro tipos de propiedad. Las cuatro parten de los riesgos estándar. Lo que cambia es qué se protege y cuáles de las opciones adicionales suelen importar. La disponibilidad siempre depende de la póliza que se elija."
+      },
+      items: [
+        {
+          name: "Home Owners",
+          blurb: {
+            en: "The home you own and live in, and what you keep inside it. This is the category ICB describes in the most detail, and the three levels of cover it publishes are set out in the next section, from fire, lightning and explosion at the narrowest to householder's all-risk at the broadest. The middle level is the one written with Belize weather in mind, because it names major catastrophic events. Contents such as furniture, appliances and electronics can be covered alongside the building, depending on the policy selected.",
+            es: "La vivienda que usted posee y habita, y lo que guarda dentro. Es la categoría que ICB describe con más detalle, y los tres niveles de cobertura que publica aparecen en la siguiente sección, desde Fire, Lightning & Explosion en el más acotado hasta Householder's All-Risk en el más amplio. El nivel intermedio es el pensado para el clima de Belice, porque nombra los eventos catastróficos mayores. El contenido, como muebles, electrodomésticos y equipos electrónicos, puede cubrirse junto con el inmueble, según la póliza que se elija."
+          }
+        },
+        {
+          name: "Small Business",
+          blurb: {
+            en: "A small business keeps its working life in one building: the stock on the shelves, the chest freezer, the sewing machines, the computer the accounts live on. This category is Property Insurance for those premises and the things inside them. It starts where every ICB property policy starts, with the standard perils, and two of the additional options ICB lists tend to come up first. Business Interruption answers the harder question after a fire, which is not what the building cost but what the closed weeks cost. Liability to the Public is the one for the risks that arrive with customers walking through the door.",
+            es: "Un pequeño negocio tiene toda su vida de trabajo en un solo local: la mercancía en los estantes, el congelador, las máquinas de coser, la computadora donde están las cuentas. Esta categoría es Property Insurance para ese local y para lo que hay adentro. Parte de donde parten todas las pólizas de propiedad de ICB, de los riesgos estándar, y dos de las opciones adicionales que ICB enumera suelen ser las primeras en surgir. Business Interruption responde la pregunta más difícil después de un incendio, que no es cuánto costó el edificio sino cuánto cuestan las semanas cerrado. Liability to the Public atiende los riesgos que llegan con los clientes que entran por la puerta."
+          }
+        },
+        {
+          name: "Commercial",
+          blurb: {
+            en: "Property at a larger scale: a warehouse, a plant, an office building, or several sites under one owner. The cover begins in the same place as the rest, with the standard perils, and then follows the shape of the operation. Business Interruption and Liability to the Public are on the same list of additional options, and so is loss of rent, which is usually the first thing a landlord of commercial space asks about. Sums insured, valuation surveys and how several buildings sit on one policy are worked out with ICB's Property department rather than settled from a page like this one.",
+            es: "Propiedad a mayor escala: una bodega, una planta, un edificio de oficinas o varias sedes de un mismo dueño. La cobertura empieza en el mismo lugar que las demás, en los riesgos estándar, y de ahí sigue la forma de la operación. Business Interruption y Liability to the Public están en la misma lista de opciones adicionales, igual que la pérdida de alquiler, que suele ser lo primero que pregunta quien arrienda un local comercial. Las sumas aseguradas, los peritajes de valuación y la manera en que varios inmuebles conviven en una sola póliza se definen con el departamento de Propiedad de ICB, no desde una página como esta."
+          }
+        },
+        {
+          name: "Renters",
+          blurb: {
+            en: "When you rent, the building belongs to someone else. What you carried into it does not: the furniture, the fridge, the television, the tools you work with. This category is Property Insurance written around that line, for the contents rather than the structure, which is the part a renter would actually have to replace. It starts from the standard perils like the rest, and additional expenses for accommodation is among the options ICB lists, which is the one that matters in the week after a fire or a storm when you need somewhere to sleep.",
+            es: "Cuando usted alquila, el edificio es de otra persona. Lo que usted llevó adentro no: los muebles, la refrigeradora, el televisor, las herramientas con las que trabaja. Esta categoría es Property Insurance escrita en torno a esa línea, para el contenido y no para la estructura, que es la parte que un inquilino sí tendría que reponer. Parte de los riesgos estándar como las demás, y entre las opciones que ICB enumera están los gastos adicionales de alojamiento, que son los que importan en la semana siguiente a un incendio o una tormenta, cuando hace falta dónde dormir."
+          }
+        }
+      ]
+    },
 
     /* Named in ICB's material as available additions. Framed as available,
        never as included, which is the distinction that matters here. */

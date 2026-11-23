@@ -43,6 +43,14 @@ offline, and from disk.
 - `build/branch-webp.py`, `build/news-webp.py` — the photograph and hero
   image pipelines, each writing a full-size file for the site and a
   lighter rendition for the one-file preview
+- `build/doc-preview.py` — lighter renditions of published PDFs for the
+  one-file preview, kept only where rasterising actually beats ICB's own
+  file. The deployed site always serves ICB's original
+- `build/forms-es.js` + `build/forms-es-data.js` — the nine claim forms
+  in Spanish, written to `assets/forms/<name>-es.pdf`. Read the header
+  of `forms-es.js` before changing either: the declarations on the
+  Spanish forms are deliberately bilingual, and that is what keeps a
+  signature valid rather than a translation of one
 
 See `DEPLOY.md` for hosting and `IMAGES.md` for the photography plan.
 

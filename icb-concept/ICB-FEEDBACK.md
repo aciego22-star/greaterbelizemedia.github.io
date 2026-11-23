@@ -12,9 +12,12 @@ with your document. Each one opens with where it stands:
 - **For ICB.** Needs a fact or a decision only ICB has. Nothing was
   invented to fill the gap.
 
-Thirty-seven items. Twenty-two are done, four are partly done, and
-eleven are waiting on an answer from ICB. The eleven are gathered at
-the end of this file as well, so nobody has to go hunting for them.
+Thirty-seven items. Twenty-seven are done, two are partly done, and
+eight are waiting on an answer from ICB. The eight are gathered at the
+end of this file as well, so nobody has to go hunting for them.
+
+Updated 23 November 2026, after Mr Sal's answer on where claim forms
+should go and a decision to build the Spanish claim forms.
 
 ---
 
@@ -113,14 +116,32 @@ Worth checking the same way for anything else Bee has outgrown.
 
 ## Property Insurance page: Only Homeowners is explained
 
-**For ICB.**
+**Done.** There is a paragraph for each of the four categories now,
+under a new heading, "Which category fits your property", before the
+Homeowners detail.
 
-The page lists Home Owners, Small Business, Commercial and Renters, and
-describes only the first. Writing the other three means writing new
-statements about what ICB covers, which is ICB's to write.
+You were right twice over on this one. There *was* a line for each of
+the other three categories, written months ago, sitting in the page's
+data where nothing ever displayed it. So the page had never shown them
+at all.
 
-Two or three sentences from the Property department on each of Renters,
-Small Business and Commercial, and they go straight in.
+The paragraphs are built on the one sentence ICB's own products page
+has that covers all four: "All Property Policies protects against
+standards perils, and can be further customized to include additional
+coverage options: Liability to the Public, Compensation for death of
+the Insured, Business Interruption, Additional expenses for
+accommodation and loss of rent." Each paragraph says what is being
+protected, that it starts from the standard perils, and which of ICB's
+named options tend to come up for that kind of property. Small
+Business leads on Business Interruption, Commercial on loss of rent,
+Renters on additional expenses for accommodation.
+
+The three cover levels ICB publishes for Homeowners are deliberately
+NOT repeated for the other three. They come from ICB's Homeowners
+graphic, and attaching them to a warehouse would be inventing cover.
+
+**For ICB:** the facts are ICB's, the way they are put is ours. Worth
+five minutes of the Property department's time to read.
 
 ## Property Insurance page: "Resource Centre" isn't a link
 
@@ -186,27 +207,19 @@ rebuilds it by accident.
 
 ## Claims page: It doesn't say where to send a finished form
 
-**Partly done.** The line is there. The address is not.
+**Done.** Mr Sal answered it, and the answer was simpler than the
+question.
 
-Your reasoning is right and the gap is real. The honest position is
-that ICB publishes no claims address anywhere. The claims page carries
-no email, and `icb_claims1@icbinsurance.com` was confirmed by ICB as
-being for kiosk claims specifically.
-
-Your document suggests "[Claims email] or WhatsApp +501 613-0579".
-613-0579 is the kiosk claims WhatsApp, and the site already presents it
-as the line for the progress of a claim already reported, so pointing
-new claims at it needs confirming rather than assuming.
-
-So the line under each form sends the claimant to the destination ICB's
-own page already names, in step 3: the nearest office.
+ICB would rather a claimant came into a branch with the form than sent
+it anywhere. So there is no claims email to publish, and the line under
+each form is the right one as written:
 
 > Download it, fill it in and sign it, then take it to your nearest ICB
 > office.
 
-**Still for ICB:** the address, and the WhatsApp number, a completed
-form should go to. The line becomes "take it to your nearest ICB office
-or send it to [address]" the day Claims answers.
+The 613-0579 WhatsApp line stays on the claims page where it is, for a
+claim already reported. Nothing on the site now suggests a completed
+form should be emailed, because it should not be.
 
 ## Claims page: The text under each form is confusing
 
@@ -225,18 +238,36 @@ all read it from one place.
 
 ## Claims page: There's no Spanish version of the claim forms
 
-**Partly done.** The buttons are answered. The PDFs are ICB's to make.
+**Done.** All nine exist in Spanish now.
 
-On the Spanish page the buttons now read **Descargar Insured Motor
-Accident Form**, and so on for all nine. The form's name stays in
-English because it is the name printed on the paper and the name a
-branch will have told the claimant to look for. The word that says what
-the button does is Spanish, which is what was missing.
+The Spanish page hands over a Spanish form and the English page an
+English one, the same way every other page on the site follows the
+language being read. The English PDFs are ICB's own files and have not
+been touched.
 
-**Still for ICB:** Spanish versions of the PDFs themselves. Worth
-knowing before that work starts that a form filled in by hand in
-Spanish still has to be read by whoever processes it, so this is a
-Claims department decision rather than a translation job.
+Four things worth knowing about how they were made, because this is
+the one document on the site that somebody signs:
+
+- Every question is a translation of a question ICB actually asks.
+  Nothing was added, dropped or improved.
+- **The declarations are bilingual.** The Spanish is first and ICB's
+  own English sits underneath it in smaller type, so a claimant signs
+  under words they can read and the words ICB wrote are still on the
+  page that was signed. The same goes for the authorisation to release
+  medical and Social Security records on the motor forms, and for the
+  liability wording on the marine and public liability forms.
+- Where ICB's paper has a slip, the Spanish asks the question
+  correctly and the English PDF keeps the slip. Three of them: "TO THE
+  IS FORM" on the windscreen form, "Where did the accident occurred"
+  on public liability, and "at the state of the damage" on property.
+- ICB's form names stay in English, in the header, with the Spanish
+  name under them. A branch should recognise the document across a
+  counter whichever version is handed over.
+
+**For ICB, and it is a short one:** the claims team should confirm they
+will accept a form completed in Spanish. Rule two above is what makes
+that an easy yes rather than a legal question, since the declaration
+the claimant signs is still ICB's own in English.
 
 ## Claims page: Claim PDFs show "Microsoft Word" in the browser tab
 
@@ -334,14 +365,23 @@ gallery is 22 cards now.
 
 ## Business page: Bonds aren't listed
 
-**For ICB.**
+**Done.** There is a bonds block on the Business page now, under the
+category cards, with a link to ask about one.
 
-The FAQ says ICB offers bonds, so the gap is real. Adding a category
-means writing what the bonds are and who they are for, which is new
-copy about a product nobody has described to us.
+It is deliberately not a sixth category card. A bond is not a kind of
+cover sitting alongside property or motor, and pushing one into a card
+next to Marine Hull would misrepresent what it is. It gets its own
+block and its own heading: "And bonds, which are not quite insurance."
 
-A sentence or two from Business on bonds, and which categories they
-belong under, and it goes in.
+Everything in it comes from ICB's own FAQ answer, which is the whole of
+what ICB publishes on the subject: a bond supports a stated obligation,
+it works differently from ordinary insurance, and the applicant may
+have to provide collateral security. Nothing is said about which bonds
+ICB writes, for whom, or on what terms, because nobody has told us.
+
+**For ICB:** same as the property paragraphs. Worth a read by whoever
+handles bonds, and if they would rather it sat under a named category
+after all, that is a small change.
 
 ## Business page: The Spanish version keeps category names in English
 
@@ -403,15 +443,26 @@ and FAQ pages fixed together, as you predicted.
 
 ## Payments page: Agency customers can't send their confirmation
 
-**For ICB.**
+**Partly done,** and your update turned out to be exactly right.
 
-Your document has the heading and "Update: Only Seine Bight and San
-Estevan", then stops, with no description and no solution.
+Of the 22 offices, 14 are on the payment-confirmation list. Six of the
+eight that are not do have a WhatsApp line; ICB's directory just does
+not say those lines take receipts, so the site does not claim they do.
+Seine Bight and San Estevan are different: they have no WhatsApp number
+published at all, which is precisely the two you named.
 
-The site builds its payment-confirmation list from which branches have
-a WhatsApp number marked as taking receipts. If those two should be on
-that list, or off it, it is a one-line change. What was this one going
-to say?
+ICB has since confirmed both should be on the list.
+
+**Still for ICB, and it is one line each:** the WhatsApp number for
+Seine Bight and the WhatsApp number for San Estevan. The site builds
+the confirmation directory from those numbers, so they are all that is
+missing. A bank account number and a number somebody sends a payment
+screenshot to are the two things on this site nobody should guess at,
+which is why these are being asked for rather than inferred from the
+office telephone.
+
+While we are here: if the other six agency lines do take payment
+confirmations, say so and they go on the list too.
 
 ## Payments page: Nothing says what to put in the transfer reference
 
@@ -534,55 +585,76 @@ was gone, but they were still in the file every page downloads. Removed.
 
 ---
 
-# The eleven waiting on ICB
+# What is still waiting on ICB
 
-Grouped by who can answer, so this can be forwarded as it is.
+Grouped by who can answer, so this can be forwarded as it is. Eight
+items, down from eleven, and three of those eight are a sentence of
+confirmation rather than work.
 
 **Claims department**
 
-1. The address and WhatsApp number a completed claim form should be
-   sent to. One line goes under all nine forms the day it arrives.
-2. Whether Spanish versions of the nine claim PDFs should be made.
+1. Confirm the claims team will accept a claim form completed in
+   Spanish. The nine Spanish forms are built and on the site. The
+   declaration a claimant signs is bilingual, with ICB's own English
+   under the Spanish, which is what should make this a short yes.
 
 **Motor department**
 
-3. The Bodily Injury limit on Third-Party Act.
-4. How the flyer's motor options (Third-Party Act, Act Plus, Levels 1
-   to 4, Comprehensive) map to the website's (Liability Only, Collision
-   and Upsets, Comprehensive).
+2. The Bodily Injury limit on Third-Party Act. It goes in beside the
+   $20,000 property damage figure the same day.
 
 **Property and Business**
 
-5. Two or three sentences each on Renters, Small Business and
-   Commercial.
-6. A sentence or two on bonds, and which business categories they
-   belong under.
+3. A read of the four new Property category paragraphs and the new
+   bonds block. The facts in them are ICB's own, taken from ICB's
+   products page and ICB's FAQ. The way they are put is ours, and they
+   are about ICB's products, so they are worth five minutes.
 
 **Accounts**
 
-7. The full Heritage Bank account number and the account name.
+4. The full Heritage Bank account number and the account name. The FAQ
+   and the Payments page will show whatever Accounts confirms, from one
+   place, so they cannot drift apart again.
 
-**Whoever looks after Bee**
+**Branch operations**
 
-8. Bee is giving out a travel insurance page that does not exist, and
-   describing travel insurance as temporarily suspended. It also treats
-   the Payment Portal as a separate channel. Neither is on the website
-   and neither can be fixed from it.
+5. The WhatsApp number for Seine Bight Agency and for San Estevan
+   Agency, so both can go on the payment-confirmation list.
+6. A photograph of the San Estevan office. The frame there now is the
+   village welcome sign, with no ICB building in it, and it is
+   captioned as the village for that reason.
+
+**Whoever is nearest the signs**
+
+7. Orange Walk: is it #38, as the sign and ICB's own live site say, or
+   #48, as the directory says? And Moro: the sign reads MORIO AGENCY
+   with different contact details from the directory. Which is right?
+   An exact map pin for Moro and for Velasquez would settle the last
+   of it, since both are in Santa Cruz Village and a search by name can
+   only find what Google already knows about.
 
 **Rofel**
 
-9. "Kiosk Portal is now" has no text under it.
-10. "Agency customers can't send their confirmation" has no description
-    or solution, only "Update: Only Seine Bight and San Estevan".
-11. What the CC Portal is, and whether it belongs on the Resources
-    page.
+8. Three of your headings have no text under them, so there is nothing
+   to act on: "Kiosk Portal is now"; "Agency customers can't send their
+   confirmation", which had only the update; and "(include CC Portal)"
+   beside the Resources item.
 
-**And three photographs or facts, from whoever is nearest**
+---
 
-- A photograph of the San Estevan office.
-- Orange Walk: is it #38, as the sign and ICB's live site say, or #48,
-  as the directory says?
-- Moro: the sign reads MORIO AGENCY with different contact details from
-  the directory. Which is right?
-- An exact map pin for Moro and for Velasquez, both in Santa Cruz
-  Village.
+# Handled elsewhere, not waiting on ICB
+
+- **The motor cover names.** How the flyer's options (Third-Party Act,
+  Act Plus, Levels 1 to 4, Comprehensive) map to the website's
+  (Liability Only, Collision and Upsets, Comprehensive) is being taken
+  up directly rather than through this document. Until it is settled
+  the page shows both lists without claiming a relationship, and the
+  two motor rows in the FAQ documents table keep ICB's own names.
+
+- **Bee.** The travel insurance page it hands out does not exist, and
+  it still treats the Payment Portal as a separate channel. Neither is
+  on the website and neither can be fixed from it. Being handled
+  directly.
+
+- **Where a completed claim form goes.** Answered: Mr Sal would rather
+  a claimant came into a branch. No claims email will be published.

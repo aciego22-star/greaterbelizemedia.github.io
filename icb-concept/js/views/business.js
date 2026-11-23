@@ -106,6 +106,37 @@ ICB.views = ICB.views || {};
               id: "seg-title"
             }) +
             '<div class="card-grid">' + segs + "</div>" +
+            /* Bonds.
+
+               ICB's review, 4 Nov 2026: "Bonds aren't listed." The FAQ
+               says ICB offers them, so the gap was real, and the page
+               had no category that honestly fits one. A bond is not a
+               kind of cover alongside property or motor; it is a
+               different instrument, which is why it gets its own block
+               under the grid rather than being pushed into a card
+               beside Marine Hull.
+
+               Every fact here is from ICB's own FAQ answer, which is
+               the whole of what ICB publishes about bonds: "A bond
+               supports a stated obligation and works differently from
+               ordinary insurance. The applicant may have to provide
+               collateral security. Contact your nearest branch to
+               request more information." Nothing is said about which
+               bonds ICB writes, for whom, or on what terms, because
+               nobody at ICB has told us. Written 23 Nov 2026 at
+               Albert's instruction. */
+            '<div class="prod-prose prod-prose--after rv">' +
+              "<h3>" + R.esc(T("And bonds, which are not quite insurance.",
+                               "Y las fianzas, que no son del todo un seguro.")) + "</h3>" +
+              "<p>" + R.esc(T(
+                "A bond is not insurance in the ordinary sense, and ICB says as much: it supports a stated obligation rather than paying out for a loss. Where a contract or a public body requires one, the bond stands behind a promise the business has already made, which is why ICB may ask an applicant to provide collateral security before issuing it.",
+                "Una fianza no es un seguro en el sentido corriente, y ICB lo dice así: respalda una obligación determinada en lugar de pagar por una pérdida. Cuando un contrato o una entidad pública exige una, la fianza respalda una promesa que el negocio ya hizo, y por eso ICB puede pedirle al solicitante una garantía colateral antes de emitirla.")) + "</p>" +
+              "<p>" + R.esc(T(
+                "In practice that makes a bond a conversation rather than something to pick off a page. Tell ICB which bond has been asked of you and the team will explain what putting one in place involves.",
+                "En la práctica, eso hace de una fianza una conversación y no algo que se elige de una página. Dígale a ICB qué fianza le están pidiendo y el equipo le explicará lo que implica constituirla.")) + "</p>" +
+              '<p class="card-links"><a href="#/contact?topic=business">' +
+                R.esc(T("Ask ICB about a bond", "Consultar a ICB sobre una fianza")) + "</a></p>" +
+            "</div>" +
           "</div>" +
         "</section>" +
 

@@ -89,14 +89,25 @@ ICB.views = ICB.views || {};
     return out + "</article>";
   }
 
-  function coverageSection(block, R) {
+  /* A titled grid of cards, each a name and what it is.
+
+     Takes opts because the Property page now renders two of them: the
+     four categories, then ICB's three Homeowners cover levels. Two
+     sections on one page cannot share an id, and they are not the same
+     kind of thing, so the eyebrow moves too. Everything defaults to
+     what the single caller used before. */
+  function coverageSection(block, R, opts) {
     if (!block || !block.items || !block.items.length) return "";
+    opts = opts || {};
+    var id = opts.id || "cov-title";
     var after = (block.after || []).map(function (p) {
       return "<p>" + R.esc(p) + "</p>";
     }).join("");
-    return '<section class="section section--tint" aria-labelledby="cov-title">' +
+    return '<section class="section' + (opts.tint === false ? "" : " section--tint") +
+        '" aria-labelledby="' + R.esc(id) + '">' +
       '<div class="shell">' +
-        R.sectionHead({ eyebrow: ICB.s("coverageOptions"), title: block.title, sub: block.sub || null, id: "cov-title" }) +
+        R.sectionHead({ eyebrow: opts.eyebrow || ICB.s("coverageOptions"), title: block.title,
+                        sub: block.sub || null, id: id }) +
         '<div class="cov-grid">' + block.items.map(function (i) { return coverageCard(i, R); }).join("") + "</div>" +
         (after ? '<div class="prod-prose prod-prose--after rv">' + after + "</div>" : "") +
       "</div>" +
@@ -321,6 +332,15 @@ ICB.views = ICB.views || {};
         "</section>" +
 
         proseBlock(p.intro, R, { id: "intro-title" }) +
+        /* The categories come before the Homeowners detail, so a
+           reader meets all four kinds of property first and then goes
+           deep on the one ICB publishes levels for. Untinted, because
+           the Homeowners section below it is tinted and two tinted
+           bands in a row read as one long band. */
+        coverageSection(p.categories, R, {
+          id: "cat-title", tint: false,
+          eyebrow: { en: "Available for", es: "Disponible para" }
+        }) +
         proseBlock(p.whyInsure, R, { id: "why-title", flush: true }) +
         coverageSection(p.coverageOptions, R) +
         panelSection(p.extensions, R, "ext-title", "shield") +

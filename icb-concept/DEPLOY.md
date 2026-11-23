@@ -10,6 +10,23 @@ static host can serve it.
 
 writes `dist/site`. That is the website. Drag that folder onto Netlify.
 
+### If ICB ever sends a new version of a claim form
+
+The nine English PDFs in `assets/forms` are ICB's own files and are
+dropped in as they arrive. The nine Spanish ones beside them are
+generated:
+
+    node build/forms-es.js        # needs the dev server on 8123
+
+So a new English form means editing the matching entry in
+`build/forms-es-data.js` and running that, or the two versions of the
+same form start asking different questions. Read the header of
+`build/forms-es.js` first. The short version: every question is a
+translation of a question ICB actually asks, and the declarations are
+printed in both languages with ICB's English under the Spanish, which
+is what makes a signature on the Spanish form a signature on ICB's
+own words.
+
 There used to be a second build, `dist/no-bee`, so ICB could be shown
 the site with and without the assistant. That choice was made: the
 assistant stays, and the site now has a page explaining it, so a build
