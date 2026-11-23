@@ -2349,6 +2349,9 @@
   object-fit: contain;
 }
 @media (max-width: 767px) {
+  .hero-slides__slide img {
+    object-position: var(--slide-pos-mobile, center);
+  }
   .hero-slides__slide--contain {
     background: var(--slide-bg-mobile, var(--burgundy-900));
   }

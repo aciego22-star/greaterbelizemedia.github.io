@@ -9,8 +9,11 @@ function Slide({ i, active, show }: { i: number; active: boolean; show: boolean 
     <div
       className={`hero-slides__slide ${active ? 'is-active' : ''} ${s.fit === 'contain' ? 'hero-slides__slide--contain' : ''}`}
       style={
-        s.backdrop
-          ? ({ '--slide-bg-desktop': s.backdrop.desktop, '--slide-bg-mobile': s.backdrop.mobile } as CSSProperties)
+        s.backdrop || s.mobilePosition
+          ? ({
+              ...(s.backdrop && { '--slide-bg-desktop': s.backdrop.desktop, '--slide-bg-mobile': s.backdrop.mobile }),
+              ...(s.mobilePosition && { '--slide-pos-mobile': s.mobilePosition }),
+            } as CSSProperties)
           : undefined
       }
       role="group"

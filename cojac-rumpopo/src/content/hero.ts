@@ -19,6 +19,11 @@ export interface HeroSlide {
    * any spare space is filled with `backdrop`. Photos use the default 'cover'.
    */
   fit?: 'cover' | 'contain';
+  /**
+   * Phones: which part of a 'cover' photo to keep when the frame trims it, e.g.
+   * 'center top' keeps words near the top whole. Default 'center'.
+   */
+  mobilePosition?: string;
   /** CSS backgrounds behind a 'contain' slide, matched to the artwork's edges. */
   backdrop?: { desktop: string; mobile: string };
 }
@@ -27,7 +32,19 @@ export const heroIntervalMs = 6000;
 
 export const heroSlides: HeroSlide[] = [
   {
-    // Promotion supplied by the family (Nov 2026): shown first.
+    // Supplied by the family (Nov 2026): shown first, then the Slush promotion.
+    id: 'trimming-the-tree',
+    desktop: '/hero/Cojacs_Hero_Trimming_The_Tree_Desktop_16x9',
+    mobile: '/hero/Cojacs_Hero_Trimming_The_Tree_Mobile_9x16',
+    alt: t(
+      'A bottle of Cojac’s Sumptuous Rum Po-Po beside a glass of rumpopo topped with nutmeg, in front of a lit Christmas tree. Trimming the tree? Add rumpopo to that!',
+      'Una botella de Cojac’s Sumptuous Rum Po-Po junto a un vaso de rumpopo con nuez moscada, frente a un árbol de Navidad iluminado. Texto: «Trimming the tree? Add rumpopo to that!» (¿Decorando el árbol? ¡Agrégale rumpopo!)',
+    ),
+    // The words sit near the top: on phones, trim from the bottom only.
+    mobilePosition: 'center top',
+  },
+  {
+    // Promotion supplied by the family (Nov 2026).
     id: 'rumpopo-slush',
     desktop: '/hero/Cojacs_Hero_00_Rumpopo_Slush_Desktop_16x9',
     mobile: '/hero/Cojacs_Hero_00_Rumpopo_Slush_Mobile_9x16',
