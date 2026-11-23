@@ -2062,3 +2062,102 @@ and so are the four Belizean Pride carton images in `products/`, which carry
 `RECREATION_NOTE` on the pages that show them. No note was added here, because
 this artwork is the co-operative's own brand material rather than something
 built for the site, and that is theirs to assert. Flagged rather than decided.
+
+## A second Insights article: Belizean queen conch
+
+The client asked for a new Insights piece on the back of a conch promotion
+they had just run on Facebook, and for the site to be updated with it.
+
+### Where the facts came from, and where they did not
+
+The Facebook post itself could not be read from here. It is not publicly
+indexed and the page needs a sign-in, so nothing in the article quotes it,
+paraphrases it or assumes what it offered. The client was told that plainly.
+Conch is the TOPIC because that is what they are promoting; the article does
+not pretend to be a write-up of the campaign.
+
+Every factual claim is taken from this site's own approved content, which is
+the one source that is both accurate and already signed off:
+
+- season dates, the quota caveat and the three size limits: `build_seasons.py`
+  and `FAQ_PRODUCTS`
+- frozen queen conch meat, 85% cleaned, packed in Belize City: the catalogue
+- HACCP and United States FDA wording: `FAQ_RESPONSIBLE`
+- "an open season is not a stock statement": the client's own FAQ answer,
+  which was worth a section of its own because it is the thing buyers most
+  often get wrong
+
+Nothing asserts a tonnage, an export figure, a certification, an award or a
+sales outcome. "85% cleaned" is stated as the grade NatFish supplies and is
+NOT defined, because a definition of that trade term is not on the site and
+inventing one would be the easiest mistake to make here.
+
+**The spiny lobster article is the client's copy and says so. This one is
+ours**, drafted at their request, and the header comment in `build_pages.py`
+now records which is which so the distinction survives.
+
+### The hero is the artwork they pulled from What's New
+
+The conch carton banner went into the What's New hero on 27 October and came
+straight back out: "I don't think it fits. I'll figure out where to place it
+later." An article about queen conch is that place. It is the client's own
+artwork, it was already processed and sitting unreferenced, and the subject
+of the piece is literally the product on the carton.
+
+Rendering it took the banner component rather than the article's usual
+`hero_picture()`, and that is the whole point: `hero_picture` crops to the
+figure with `object-fit: cover`, which on this artwork would cut the printed
+wording off. `page_banner()` takes the frame ratio from the file, so nothing
+is cropped. Measured on the page: the rendered box is 1.7778 against the
+file's 1.7778.
+
+`page_banner()` now takes a `cls`, because it is used on two different
+grounds. On the navy page hero it carries a dark drop shadow; on a white
+article page that reads as grime, so `.page-banner--article` swaps it for a
+lighter lift and takes the same vertical rhythm as `.article__figure`.
+
+### Insights now holds a list, not one article
+
+`ARTICLE` and `ARTICLE_BODY` were singular throughout: the card helper, the
+schema builder, the body renderer, the reading-time counter and the sitemap
+all reached for the one article by name. They take an article now, and
+`ARTICLES` is the list, newest first. Adding the next piece is a dict and a
+body at the top of that list.
+
+Two details worth keeping:
+
+**`functools.partial`, not a lambda.** `PAGES` maps a slug to the function
+that renders it. A lambda in that comprehension would close over the loop
+variable and every article would render the last one in the list.
+
+**No inline tags inside a paragraph.** The translation extractor keys on text
+nodes, so an `<i>` or an `<a>` mid-sentence splits it into fragments that
+have to be translated separately and reassembled, which is how the species
+line in the FAQ came out broken once before. The lobster article italicises
+its binomial inline and lives with it; this one does not, and where it needs
+a link, the link is its own element. That is what the "link" body type is.
+
+### Measured
+
+Thirteen pages at 1440 and 390: no console errors, no failed requests, no
+horizontal overflow. The only console line anywhere is the Chatbase embed's
+CSP notice on the AI page, which predates all of this.
+
+Spanish: 739 strings, 0 missing. All 36 new strings translated against the
+vocabulary the site already uses, checked in the browser with the toggle, and
+no English left in the article's headings after the switch.
+
+Reading time 3 minutes, counted from the rendered text rather than guessed.
+Social card generated at 1200x630 from the carton artwork, fitted by height
+so the printed wording is not shaved; `make-social-card.py` now builds both
+articles' cards rather than one.
+
+**Package: 30.41 MiB**, up from 29.86 because the conch banner derivatives
+are referenced again and so are back in the deployment.
+
+### Still open
+
+Whether anything specific from the Facebook promotion should be reflected in
+the piece. The article stands on its own without it, but if the campaign made
+a particular offer or named a format, the article is the natural place to
+echo it and nobody here can see the post.

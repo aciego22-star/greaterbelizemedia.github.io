@@ -6208,6 +6208,21 @@ body.nav-open {
   color: var(--turq-300);
 }
 
+/* --------------------------------- artwork as an article lead figure -- */
+/* An Insights article whose lead image is finished artwork rather than a
+   photograph reuses the page banner, because that is the component that
+   takes its frame ratio from the file and therefore crops nothing. What
+   changes here is only the surface it sits on: the page hero is navy, an
+   article is white, so the dark drop shadow and the pale inner ground that
+   read well on navy are swapped for a lighter lift, and the figure takes the
+   same vertical rhythm as .article__figure next to it. */
+
+.page-banner--article {
+  margin: clamp(1.6rem, 4vw, 2.6rem) 0;
+  background: #eef1f4;
+  box-shadow: 0 12px 30px rgba(3, 25, 42, 0.13);
+}
+
   </style>
   <script type="application/ld+json">
   {
@@ -6837,7 +6852,7 @@ body.nav-open {
 
   <p class="visually-hidden" id="lang-status" role="status" aria-live="polite"></p>
 
-  <script src="assets/js/natfish-strings.js?v=9f6fdc6d"></script>
+  <script src="assets/js/natfish-strings.js?v=9d98ccbf"></script>
   <script src="assets/js/natfish-i18n.js?v=b8a289c3"></script>
   <script src="assets/js/natfish-seasons.js?v=c270a135"></script>
   <script src="assets/js/natfish.js?v=79e88ac3"></script>

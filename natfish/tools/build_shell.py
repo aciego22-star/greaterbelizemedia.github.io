@@ -1633,7 +1633,7 @@ def banner_tiers(stem):
     return BANNER_TIERS[stem]
 
 
-def page_banner(stem):
+def page_banner(stem, *, cls="page-banner"):
     """The artwork banner that sits under a page hero's heading.
 
     Not `about_hero_picture()` and not `hero_picture()`, because both of those
@@ -1649,13 +1649,18 @@ def page_banner(stem):
     stylesheet as two custom properties and switched on the same 600px line
     the <source> is, rather than being inferred from the <img> - which carries
     the desktop file's dimensions and would be wrong on a phone.
+
+    `cls` exists because this is used in two places with different grounds:
+    the navy page hero, where it carries a dark drop shadow, and the lead
+    figure of an Insights article, which is on white. Same markup and the same
+    no-crop guarantee, different surface.
     """
     d = img_dir(stem)
     mob, desk = f"{stem}-mobile", f"{stem}-desktop"
     mw, mh = DIMS[mob]
     dw, dh = DIMS[desk]
     phone = f"(max-width: {HERO_PHONE_BP}px)"
-    return f"""<figure class="page-banner" style="--ratio-d:{dw} / {dh}; --ratio-m:{mw} / {mh}">
+    return f"""<figure class="{cls}" style="--ratio-d:{dw} / {dh}; --ratio-m:{mw} / {mh}">
           <picture>
             <source media="{phone}" type="image/webp" srcset="{_srcset(d, mob, banner_tiers(mob), 'webp')}" sizes="100vw" width="{mw}" height="{mh}">
             <source type="image/webp" srcset="{_srcset(d, desk, banner_tiers(desk), 'webp')}" sizes="(max-width: 1248px) 100vw, 1200px" width="{dw}" height="{dh}">

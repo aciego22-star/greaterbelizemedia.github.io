@@ -36,6 +36,7 @@ PAGES = [
     ("insights", "insights.html"),
     ("insights-belizean-caribbean-spiny-lobster",
      "insights-belizean-caribbean-spiny-lobster.html"),
+    ("insights-belizean-queen-conch", "insights-belizean-queen-conch.html"),
     # Same reason: the Miami card's "Read the Article" button is an internal
     # link, so without its page the featured item on What's New is a dead end
     # in the preview.

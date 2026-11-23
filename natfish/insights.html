@@ -6208,6 +6208,21 @@ body.nav-open {
   color: var(--turq-300);
 }
 
+/* --------------------------------- artwork as an article lead figure -- */
+/* An Insights article whose lead image is finished artwork rather than a
+   photograph reuses the page banner, because that is the component that
+   takes its frame ratio from the file and therefore crops nothing. What
+   changes here is only the surface it sits on: the page hero is navy, an
+   article is white, so the dark drop shadow and the pale inner ground that
+   read well on navy are swapped for a lighter lift, and the figure takes the
+   same vertical rhythm as .article__figure next to it. */
+
+.page-banner--article {
+  margin: clamp(1.6rem, 4vw, 2.6rem) 0;
+  background: #eef1f4;
+  box-shadow: 0 12px 30px rgba(3, 25, 42, 0.13);
+}
+
   </style>
   <script type="application/ld+json">
   {
@@ -6474,10 +6489,27 @@ body.nav-open {
     <section class="section" aria-labelledby="insights-list-h">
       <div class="container">
         <div class="section-head reveal section-head--center">
-          <span class="eyebrow">Latest article</span>
+          <span class="eyebrow">Latest articles</span>
           <h2 id="insights-list-h">Seafood education from the co-operative</h2>
         </div>
         <div class="insight-grid">
+          <article class="insight-card reveal">
+            <a class="insight-card__media" href="insights-belizean-queen-conch.html" tabindex="-1" aria-hidden="true">
+              <picture>
+          <source type="image/webp" srcset="assets/img/official/banner-whats-new-conch-desktop-800.webp 800w, assets/img/official/banner-whats-new-conch-desktop-1200.webp 1200w, assets/img/official/banner-whats-new-conch-desktop-1920.webp 1920w" sizes="(max-width: 640px) 92vw, (max-width: 1024px) 46vw, 30vw">
+          <img src="assets/img/official/banner-whats-new-conch-desktop-1200.webp" width="1920" height="1080" alt="" style="--ratio:1920 / 1080" loading="lazy" decoding="async">
+        </picture>
+            </a>
+            <div class="insight-card__body">
+              <p class="update-card__meta">
+                <span class="update-card__tag">Seafood Education</span>
+                <time class="update-card__date" datetime="2026-11-23">November 23, 2026</time>
+              </p>
+              <h3><a href="insights-belizean-queen-conch.html">Belizean Queen Conch: Season, Size Rules and What Buyers Should Know</a></h3>
+              <p>Queen conch season is open in Belize. How the season works, the size limits behind it, and what to check before ordering.</p>
+              <a class="arrow-link" href="insights-belizean-queen-conch.html">Read the article on Belizean queen conch</a>
+            </div>
+          </article>
           <article class="insight-card reveal">
             <a class="insight-card__media" href="insights-belizean-caribbean-spiny-lobster.html" tabindex="-1" aria-hidden="true">
               <picture>
@@ -6585,7 +6617,7 @@ body.nav-open {
 
   <p class="visually-hidden" id="lang-status" role="status" aria-live="polite"></p>
 
-  <script src="assets/js/natfish-strings.js?v=9f6fdc6d"></script>
+  <script src="assets/js/natfish-strings.js?v=9d98ccbf"></script>
   <script src="assets/js/natfish-i18n.js?v=b8a289c3"></script>
   <script src="assets/js/natfish-seasons.js?v=c270a135"></script>
   <script src="assets/js/natfish.js?v=79e88ac3"></script>

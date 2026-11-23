@@ -2707,3 +2707,135 @@ ES.update({
         "Caja de producto Belizean Pride de carne cruda congelada de caracol "
         "reina.",
 })
+
+# The queen conch Insights article. Vocabulary follows what the site already
+# uses: "caracol reina", "veda", "cuota nacional de captura", "Departamento
+# de Pesca de Belice", "la cooperativa", "Ciudad de Belice", and the HACCP and
+# FDA wording from the Responsible Fisheries page. "Belizean Pride" and
+# "NatFish" stay in English, as everywhere else.
+ES.update({
+    "Belizean Queen Conch: Season, Size Rules and What Buyers Should Know":
+        "Caracol reina de Belice: temporada, tallas mínimas y lo que debe "
+        "saber el comprador",
+    "Belizean Queen Conch: Season, Size Rules and What Buyers Should Know | NatFish":
+        "Caracol reina de Belice: temporada, tallas mínimas y lo que debe "
+        "saber el comprador | NatFish",
+    "Queen conch season is open in Belize. How the season works, the size limits behind it, and what to check before ordering.":
+        "La temporada de caracol reina está abierta en Belice. Cómo funciona "
+        "la temporada, las tallas mínimas que la rigen y qué conviene "
+        "verificar antes de hacer un pedido.",
+    "Read the article on Belizean queen conch":
+        "Leer el artículo sobre el caracol reina de Belice",
+    "November 23, 2026": "23 de noviembre de 2026",
+    "Latest articles": "Últimos artículos",
+
+    "Queen conch, known scientifically as Strombus gigas, is one of the two fisheries that define seafood in Belize. Alongside Caribbean spiny lobster it supports fishing families along the coast and the cayes, and it reaches kitchens at home and abroad under the Belizean Pride label.":
+        "El caracol reina, conocido científicamente como Strombus gigas, es "
+        "una de las dos pesquerías que definen los productos del mar en "
+        "Belice. Junto con la langosta espinosa del Caribe, sostiene a "
+        "familias pescadoras a lo largo de la costa y los cayos, y llega a "
+        "cocinas dentro y fuera del país bajo la marca Belizean Pride.",
+    "It is also one of the most closely regulated species the co-operative handles. Understanding how that regulation works is the clearest way to understand what you are buying.":
+        "También es una de las especies más reguladas que maneja la "
+        "cooperativa. Entender cómo funciona esa regulación es la forma más "
+        "clara de entender lo que se está comprando.",
+
+    "A Fishery That Runs on a Calendar":
+        "Una pesquería que se rige por un calendario",
+    "Belize does not allow queen conch to be taken all year. The standard open season runs from 1 October to 30 June, and the fishery is closed from 1 July to 30 September.":
+        "Belice no permite extraer caracol reina durante todo el año. La "
+        "temporada abierta estándar va del 1 de octubre al 30 de junio, y la "
+        "pesquería permanece cerrada del 1 de julio al 30 de septiembre.",
+    "Those closed months are not an obstacle to work around. They give the species time to breed, which is what keeps the fishery, and the livelihoods built on it, working season after season.":
+        "Esos meses de veda no son un obstáculo que haya que sortear. Le dan "
+        "a la especie tiempo para reproducirse, que es lo que mantiene la "
+        "pesquería, y los medios de vida que dependen de ella, funcionando "
+        "temporada tras temporada.",
+    "A second limit matters just as much. Belize manages queen conch against a national catch quota, and the season may close earlier than 30 June when that quota is reached. The date on the calendar is the outer edge of the season rather than a promise about it.":
+        "Un segundo límite importa igual. Belice maneja el caracol reina con "
+        "una cuota nacional de captura, y la temporada puede cerrarse antes "
+        "del 30 de junio cuando se alcanza esa cuota. La fecha del calendario "
+        "es el límite exterior de la temporada, no una promesa sobre ella.",
+
+    "The Size Limits Behind Every Legal Conch":
+        "Las tallas mínimas detrás de cada caracol legal",
+    "Alongside the season, Belize sets minimums that a conch must meet before it can be taken or sold:":
+        "Además de la temporada, Belice fija mínimos que un caracol debe "
+        "cumplir antes de poder ser extraído o vendido:",
+    "A minimum shell length of 7 inches.":
+        "Una longitud mínima de la concha de 7 pulgadas.",
+    "A minimum market-clean weight of 3 ounces.":
+        "Un peso mínimo limpio de mercado de 3 onzas.",
+    "A minimum fillet weight of 2.75 ounces.":
+        "Un peso mínimo de filete de 2.75 onzas.",
+    "These thresholds give animals a chance to reach maturity and reproduce before they are harvested. They are set by the Belize Fisheries Department and they apply to everyone, from an individual fisher to a co-operative.":
+        "Estos umbrales dan a los animales la oportunidad de alcanzar la "
+        "madurez y reproducirse antes de ser capturados. Los establece el "
+        "Departamento de Pesca de Belice y rigen para todos, desde un "
+        "pescador individual hasta una cooperativa.",
+    "View Belize seafood seasons and size limits":
+        "Ver las temporadas y tallas mínimas de los productos del mar de Belice",
+
+    "What NatFish Supplies": "Lo que suministra NatFish",
+    "NatFish receives queen conch from its member fishers and prepares it for market as frozen queen conch meat, cleaned to 85%. It is packed under the Belizean Pride label at the co-operative’s facility in Belize City.":
+        "NatFish recibe caracol reina de sus pescadores socios y lo prepara "
+        "para el mercado como carne de caracol reina congelada, limpia al "
+        "85%. Se empaca bajo la marca Belizean Pride en las instalaciones de "
+        "la cooperativa en Ciudad de Belice.",
+    "Conch is a firm, lean meat that holds its texture, which is why it turns up in ceviche, fritters, soups and stews across Belize and the wider Caribbean. The frozen format supports distribution to households, restaurants, hotels and distributors where the correct cold chain is maintained.":
+        "El caracol es una carne firme y magra que conserva su textura, por "
+        "lo que aparece en ceviches, frituras, sopas y guisos en Belice y en "
+        "todo el Caribe. El formato congelado permite la distribución a "
+        "hogares, restaurantes, hoteles y distribuidores cuando se mantiene "
+        "la cadena de frío correcta.",
+
+    "Handling Is Most of the Quality":
+        "El manejo es la mayor parte de la calidad",
+    "Like all seafood, conch depends on what happens between the water and the kitchen. Temperature control, hygienic processing and sound packaging decide the condition in which the product arrives.":
+        "Como todo producto del mar, el caracol depende de lo que ocurre "
+        "entre el agua y la cocina. El control de temperatura, el "
+        "procesamiento higiénico y un empaque adecuado determinan en qué "
+        "condición llega el producto.",
+    "NatFish works to operate in accordance with HACCP principles and United States FDA regulations for the handling of its seafood. For a buyer, the practical checks are the familiar ones: packaging intact on arrival, the product kept properly frozen, and safe preparation once it is thawed.":
+        "NatFish trabaja para operar conforme a las normas HACCP y de la FDA "
+        "de Estados Unidos en el manejo de sus productos del mar. Para el "
+        "comprador, las comprobaciones prácticas son las de siempre: el "
+        "empaque intacto al recibirlo, el producto bien congelado y una "
+        "preparación segura una vez descongelado.",
+
+    "An Open Season Is Not a Stock Statement":
+        "Una temporada abierta no es una declaración de existencias",
+    "This is the point most worth carrying away. A regulatory open season describes what the law permits. It does not describe what the co-operative has in its freezers on any given day.":
+        "Este es el punto más importante que conviene retener. Una temporada "
+        "abierta según la normativa describe lo que la ley permite. No "
+        "describe lo que la cooperativa tiene en sus congeladores un día "
+        "determinado.",
+    "Season dates summarise standing Belize Fisheries regulations and can change through quota closures or official management notices. What is actually available depends on what members have landed, what has been processed and what is already committed. The only reliable way to know is to ask.":
+        "Las fechas de temporada resumen los reglamentos vigentes del "
+        "Departamento de Pesca de Belice y pueden cambiar por cierres de "
+        "cuota o avisos oficiales de manejo. Lo que realmente hay disponible "
+        "depende de lo que hayan desembarcado los socios, de lo que se haya "
+        "procesado y de lo que ya esté comprometido. La única manera "
+        "confiable de saberlo es preguntar.",
+
+    "Ordering Belizean Pride Conch":
+        "Cómo pedir caracol Belizean Pride",
+    "Belizean Pride queen conch is produced and packed by National Fishermen Producers Co-operative Society Ltd. Buyers can contact the co-operative directly to:":
+        "El caracol reina Belizean Pride es producido y empacado por National "
+        "Fishermen Producers Co-operative Society Ltd. Los compradores pueden "
+        "comunicarse directamente con la cooperativa para:",
+    "Confirm whether queen conch is currently available.":
+        "Confirmar si hay caracol reina disponible actualmente.",
+    "Ask about quantities and current formats.":
+        "Consultar sobre cantidades y formatos disponibles.",
+    "Receive ordering and collection information.":
+        "Recibir información sobre pedidos y recolección.",
+    "Request storage and handling guidance.":
+        "Solicitar orientación sobre almacenamiento y manejo.",
+    "Ask about other NatFish seafood products.":
+        "Consultar sobre otros productos del mar de NatFish.",
+    "Buying directly keeps the purchase connected to the co-operative and to the Belizean fishers who harvested it, and it gives the buyer one point of contact for the Belizean Pride range.":
+        "Comprar directamente mantiene la compra ligada a la cooperativa y a "
+        "los pescadores beliceños que realizaron la captura, y le da al "
+        "comprador un único punto de contacto para la línea Belizean Pride.",
+})

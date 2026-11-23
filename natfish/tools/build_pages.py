@@ -24,10 +24,12 @@ from build_shell import (
     NAV_LABEL, ORG_ID, _plain, faq_node, page_url, shipped_image,
     about_hero_preload, contact_strip, cta_band, faq_section, footer, head,
     header, hero_picture,
-    hero_preload, hero_tiers, identity_ribbon, logo_full, page_banner_preload,
-    page_hero, picture,
+    hero_preload, hero_tiers, identity_ribbon, logo_full, banner_tiers,
+    page_banner, page_banner_preload, page_hero, picture,
 )
 from video_dims import VIDEO_DIMS
+
+import functools
 
 import json
 import re
@@ -578,7 +580,7 @@ def home():
           how it is prepared and what buyers should know.
         </p>
         <div class="insight-grid insight-grid--feature">
-          {article_card()}
+          {article_card(ARTICLES[0])}
         </div>
       </div>
     </section>
@@ -2617,7 +2619,26 @@ def contact():
 
 INSIGHTS_PAGE = "insights.html"
 
-ARTICLE = {
+# Articles, newest first. That order is the published order on the landing
+# page and the homepage preview, so a new piece goes at the TOP of this list
+# and nothing else has to change.
+#
+# `img_kind` says how the hero is rendered, because the two sources behave
+# differently. "hero" is a client hero pair, cropped to the frame by
+# object-fit. "banner" is finished artwork whose frame takes its ratio from
+# the file, so nothing is ever cropped out of it - which matters when the
+# subject is a printed carton.
+#
+# PROVENANCE. The spiny lobster article is the client's copy, used exactly as
+# supplied. The queen conch article was drafted here at the client's request
+# and every factual claim in it is taken from this site's own approved
+# content: the season dates, the quota caveat and the three size limits come
+# from tools/build_seasons.py and FAQ_PRODUCTS, the product description from
+# the catalogue, and the HACCP and FDA sentence from FAQ_RESPONSIBLE. Nothing
+# in it asserts a figure, a certification or an outcome the site does not
+# already state.
+
+ARTICLE_LOBSTER = {
     "slug": "insights-belizean-caribbean-spiny-lobster.html",
     "category": "Seafood Education",
     "title": "Belizean Caribbean Spiny Lobster: What Makes It Special?",
@@ -2625,6 +2646,10 @@ ARTICLE = {
     "date_iso": "2026-09-02",
     "date_display": "September 2, 2026",
     "img": "hero-belizean-pride-range",
+    "img_kind": "hero",
+    "og": "official/og-article-spiny-lobster",
+    "read_more": "Read the article on Belizean spiny lobster",
+    "about": {"name": "Caribbean spiny lobster", "alternateName": "Panulirus argus"},
     "alt": ("Belizean Pride wild-caught Caribbean spiny lobster products from "
             "NatFish in Belize."),
     "excerpt": ("Learn what sets Belizean Caribbean spiny lobster apart and how "
@@ -2635,9 +2660,30 @@ ARTICLE = {
              "role of NatFish."),
 }
 
+ARTICLE_CONCH = {
+    "slug": "insights-belizean-queen-conch.html",
+    "category": "Seafood Education",
+    "title": "Belizean Queen Conch: Season, Size Rules and What Buyers Should Know",
+    "author": "NatFish Team",
+    "date_iso": "2026-11-23",
+    "date_display": "November 23, 2026",
+    "img": "banner-whats-new-conch",
+    "img_kind": "banner",
+    "og": "official/og-article-queen-conch",
+    "read_more": "Read the article on Belizean queen conch",
+    "about": {"name": "Queen conch", "alternateName": "Strombus gigas"},
+    "alt": "Belizean Pride queen conch frozen raw meat product box.",
+    "excerpt": ("Queen conch season is open in Belize. How the season works, "
+                "the size limits behind it, and what to check before "
+                "ordering."),
+    "meta": ("Belize&rsquo;s queen conch season, the legal size limits that "
+             "govern it and how NatFish prepares frozen queen conch meat, "
+             "85% cleaned, under the Belizean Pride label."),
+}
+
 # The article body, as supplied. Section headings become <h2>; the bullet list
 # stays a list. Nothing is reworded, shortened or padded with search terms.
-ARTICLE_BODY = [
+ARTICLE_LOBSTER_BODY = [
     ("p", "Caribbean spiny lobster is one of Belize&rsquo;s most recognizable "
           "seafood products. Known scientifically as <i>Panulirus argus</i>, it "
           "represents much more than a meal. It connects Belize&rsquo;s marine "
@@ -2727,22 +2773,127 @@ ARTICLE_BODY = [
           "origin to the finished product."),
 ]
 
+# No inline <i> or <a> inside a paragraph anywhere below, on purpose. The
+# translation extractor keys on text nodes, so a tag in the middle of a
+# sentence splits it into fragments that have to be translated separately and
+# reassembled - which is how the species line in the FAQ came out broken once
+# already. Where this article needs a link, the link is its own element.
+ARTICLE_CONCH_BODY = [
+    ("p", "Queen conch, known scientifically as Strombus gigas, is one of the "
+          "two fisheries that define seafood in Belize. Alongside Caribbean "
+          "spiny lobster it supports fishing families along the coast and the "
+          "cayes, and it reaches kitchens at home and abroad under the "
+          "Belizean Pride label."),
+    ("p", "It is also one of the most closely regulated species the "
+          "co-operative handles. Understanding how that regulation works is "
+          "the clearest way to understand what you are buying."),
 
-def reading_time():
+    ("h2", "A Fishery That Runs on a Calendar"),
+    ("p", "Belize does not allow queen conch to be taken all year. The "
+          "standard open season runs from 1 October to 30 June, and the "
+          "fishery is closed from 1 July to 30 September."),
+    ("p", "Those closed months are not an obstacle to work around. They give "
+          "the species time to breed, which is what keeps the fishery, and "
+          "the livelihoods built on it, working season after season."),
+    ("p", "A second limit matters just as much. Belize manages queen conch "
+          "against a national catch quota, and the season may close earlier "
+          "than 30 June when that quota is reached. The date on the calendar "
+          "is the outer edge of the season rather than a promise about it."),
+
+    ("h2", "The Size Limits Behind Every Legal Conch"),
+    ("p", "Alongside the season, Belize sets minimums that a conch must meet "
+          "before it can be taken or sold:"),
+    ("ul", [
+        "A minimum shell length of 7 inches.",
+        "A minimum market-clean weight of 3 ounces.",
+        "A minimum fillet weight of 2.75 ounces.",
+    ]),
+    ("p", "These thresholds give animals a chance to reach maturity and "
+          "reproduce before they are harvested. They are set by the Belize "
+          "Fisheries Department and they apply to everyone, from an "
+          "individual fisher to a co-operative."),
+    ("link", ("seafood-seasons.html",
+              "View Belize seafood seasons and size limits")),
+
+    ("h2", "What NatFish Supplies"),
+    ("p", "NatFish receives queen conch from its member fishers and prepares "
+          "it for market as frozen queen conch meat, cleaned to 85%. It is "
+          "packed under the Belizean Pride label at the co-operative&rsquo;s "
+          "facility in Belize City."),
+    ("p", "Conch is a firm, lean meat that holds its texture, which is why it "
+          "turns up in ceviche, fritters, soups and stews across Belize and "
+          "the wider Caribbean. The frozen format supports distribution to "
+          "households, restaurants, hotels and distributors where the correct "
+          "cold chain is maintained."),
+
+    ("h2", "Handling Is Most of the Quality"),
+    ("p", "Like all seafood, conch depends on what happens between the water "
+          "and the kitchen. Temperature control, hygienic processing and "
+          "sound packaging decide the condition in which the product "
+          "arrives."),
+    ("p", "NatFish works to operate in accordance with HACCP principles and "
+          "United States FDA regulations for the handling of its seafood. For "
+          "a buyer, the practical checks are the familiar ones: packaging "
+          "intact on arrival, the product kept properly frozen, and safe "
+          "preparation once it is thawed."),
+
+    ("h2", "An Open Season Is Not a Stock Statement"),
+    ("p", "This is the point most worth carrying away. A regulatory open "
+          "season describes what the law permits. It does not describe what "
+          "the co-operative has in its freezers on any given day."),
+    ("p", "Season dates summarise standing Belize Fisheries regulations and "
+          "can change through quota closures or official management notices. "
+          "What is actually available depends on what members have landed, "
+          "what has been processed and what is already committed. The only "
+          "reliable way to know is to ask."),
+
+    ("h2", "Ordering Belizean Pride Conch"),
+    ("p", "Belizean Pride queen conch is produced and packed by National "
+          "Fishermen Producers Co-operative Society Ltd. Buyers can contact "
+          "the co-operative directly to:"),
+    ("ul", [
+        "Confirm whether queen conch is currently available.",
+        "Ask about quantities and current formats.",
+        "Receive ordering and collection information.",
+        "Request storage and handling guidance.",
+        "Ask about other NatFish seafood products.",
+    ]),
+    ("p", "Buying directly keeps the purchase connected to the co-operative "
+          "and to the Belizean fishers who harvested it, and it gives the "
+          "buyer one point of contact for the Belizean Pride range."),
+]
+
+ARTICLE_LOBSTER["body"] = ARTICLE_LOBSTER_BODY
+ARTICLE_CONCH["body"] = ARTICLE_CONCH_BODY
+
+# Newest first.
+ARTICLES = [ARTICLE_CONCH, ARTICLE_LOBSTER]
+
+# The homepage preview and the sitemap both used to reach for the one article
+# by name. They take the newest instead, so adding a piece moves them.
+ARTICLE = ARTICLES[0]
+
+# Slug -> publication date, for the sitemap's lastmod.
+ARTICLE_DATES = {a["slug"]: a["date_iso"] for a in ARTICLES}
+
+
+def reading_time(a):
     """Minutes, counted from the finished article rather than guessed.
 
     225 words a minute is the usual reading speed for prose of this kind.
     Counted from the rendered text, so it cannot drift from what is on the page.
     """
     words = 0
-    for kind, body in ARTICLE_BODY:
+    for kind, body in a["body"]:
+        if kind == "link":
+            continue
         chunks = body if isinstance(body, list) else [body]
         for chunk in chunks:
             words += len(re.sub(r"<[^>]+>|&[a-z]+;", " ", chunk).split())
     return max(1, round(words / 225))
 
 
-def article_nodes():
+def article_nodes(a):
     """The article, tied to the same organisation every other page names.
 
     author and publisher are @id references rather than fresh Organization
@@ -2752,14 +2903,13 @@ def article_nodes():
     `citation` carries the sources the piece actually rests on, which is the
     difference between a page a model will quote and one it will not.
     """
-    a = ARTICLE
     url = f"{SITE_URL}/{a['slug']}"
     return [{
         "@type": "Article",
         "@id": url + "#article",
         "headline": a["title"],
         "description": a["meta"],
-        "image": [f"{SITE_URL}/assets/img/official/og-article-spiny-lobster.jpg"],
+        "image": [f"{SITE_URL}/assets/img/{a['og']}.jpg"],
         "datePublished": a["date_iso"],
         "dateModified": a["date_iso"],
         "author": {"@id": ORG_ID},
@@ -2769,24 +2919,30 @@ def article_nodes():
         "inLanguage": "en-BZ",
         "articleSection": a["category"],
         "about": [
-            {"@type": "Thing", "name": "Caribbean spiny lobster",
-             "alternateName": "Panulirus argus"},
+            {"@type": "Thing", **a["about"]},
             {"@id": ORG_ID},
         ],
         "citation": [SRC_FISHSOURCE, SRC_FISHWISE],
     }]
 
 
-def article_body_html():
-    """The article body as semantic HTML: headings, paragraphs and one list.
+def article_body_html(a):
+    """The article body as semantic HTML: headings, paragraphs and lists.
 
     Built here rather than injected by script, so the article is readable with
     JavaScript off and indexable by anything that fetches the page.
+
+    A "link" item is its own paragraph holding nothing but the link, rather
+    than an anchor buried in a sentence, so the surrounding prose stays one
+    text node for the translator.
     """
     nl = "\n"
     out = []
-    for kind, body in ARTICLE_BODY:
-        if kind == "ul":
+    for kind, body in a["body"]:
+        if kind == "link":
+            href, label = body
+            out.append(f'<p><a class="arrow-link" href="{href}">{label}</a></p>')
+        elif kind == "ul":
             items = (nl + "            ").join(f"<li>{i}</li>" for i in body)
             out.append('<ul class="article__list">' + nl + "            " + items
                        + nl + "          </ul>")
@@ -2797,16 +2953,28 @@ def article_body_html():
     return (nl + "          ").join(out)
 
 
-def article_card(*, heading_level="h3"):
-    """The article's card, shared by the homepage preview and the landing page.
+def card_tiers(a):
+    """The tier ladder for an article's card image.
+
+    A hero pair and a banner pair are processed by different scripts into
+    different tier tables, so the card has to ask the right one. Naming a
+    ladder the file does not have is a 404 in the card, which is the kind of
+    thing that only shows up on the page nobody reloaded.
+    """
+    stem = a["img"] + "-desktop"
+    return hero_tiers(stem) if a["img_kind"] == "hero" else banner_tiers(stem)
+
+
+def article_card(a, *, heading_level="h3"):
+    """One article's card, shared by the homepage preview and the landing page.
 
     One definition so the two can never disagree about the title, the excerpt
     or the date.
     """
-    a = ARTICLE
+    stem = a["img"] + "-desktop"
     return f"""<article class="insight-card reveal">
             <a class="insight-card__media" href="{a['slug']}" tabindex="-1" aria-hidden="true">
-              {picture(a['img'] + '-desktop', "(max-width: 640px) 92vw, (max-width: 1024px) 46vw, 30vw", alt="", tiers=hero_tiers(a['img'] + '-desktop'))}
+              {picture(stem, "(max-width: 640px) 92vw, (max-width: 1024px) 46vw, 30vw", alt="", tiers=card_tiers(a))}
             </a>
             <div class="insight-card__body">
               <p class="update-card__meta">
@@ -2815,13 +2983,13 @@ def article_card(*, heading_level="h3"):
               </p>
               <{heading_level}><a href="{a['slug']}">{a['title']}</a></{heading_level}>
               <p>{a['excerpt']}</p>
-              <a class="arrow-link" href="{a['slug']}">Read the article on Belizean spiny lobster</a>
+              <a class="arrow-link" href="{a['slug']}">{a['read_more']}</a>
             </div>
           </article>"""
 
 
 def insights():
-    a = ARTICLE
+    cards = "\n          ".join(article_card(a) for a in ARTICLES)
     return (
         head(
             "Insights from NatFish | Belizean Seafood Knowledge",
@@ -2846,11 +3014,11 @@ def insights():
     <section class="section" aria-labelledby="insights-list-h">
       <div class="container">
         <div class="section-head reveal section-head--center">
-          <span class="eyebrow">Latest article</span>
+          <span class="eyebrow">{"Latest articles" if len(ARTICLES) > 1 else "Latest article"}</span>
           <h2 id="insights-list-h">Seafood education from the co-operative</h2>
         </div>
         <div class="insight-grid">
-          {article_card()}
+          {cards}
         </div>
       </div>
     </section>
@@ -3069,15 +3237,30 @@ def news_article_page():
     )
 
 
-def article_page():
-    a = ARTICLE
-    mins = reading_time()
+def article_hero(a):
+    """The article's lead image.
+
+    A hero pair is cropped to the figure by object-fit, which is right for a
+    photograph. A banner is finished artwork whose frame takes its ratio from
+    the file, so the carton and its printed wording are never cropped out of
+    it - the same rule the Seafood & Services banner follows, and the reason
+    this is two branches rather than one.
+    """
+    if a["img_kind"] == "banner":
+        return page_banner(a["img"], cls="page-banner page-banner--article")
+    return f"""<figure class="article__figure reveal">
+          {hero_picture(a['img'], 1, eager=True)}
+        </figure>"""
+
+
+def article_page(a):
+    mins = reading_time(a)
     return (
         head(
             f"{a['title']} | NatFish",
             a["meta"],
             a["slug"],
-            og_image="official/og-article-spiny-lobster",
+            og_image=a["og"],
             og_type="article",
             extra_head="\n".join([
                 f'  <meta property="article:published_time" content="{a["date_iso"]}">',
@@ -3085,7 +3268,7 @@ def article_page():
                 f'  <meta property="article:section" content="{a["category"]}">',
                 f'  <meta name="author" content="{a["author"]}">',
             ]),
-            extra_nodes=article_nodes(),
+            extra_nodes=article_nodes(a),
             trail=[("Home", "index.html"), ("Insights", INSIGHTS_PAGE),
                    (a["title"], a["slug"])],
         )
@@ -3117,14 +3300,12 @@ def article_page():
       </div>
 
       <div class="container">
-        <figure class="article__figure reveal">
-          {hero_picture(a['img'], 1, eager=True)}
-        </figure>
+        {article_hero(a)}
       </div>
 
       <div class="container container--narrow">
         <div class="article__body reveal">
-          {article_body_html()}
+          {article_body_html(a)}
         </div>
       </div>
     </article>
@@ -3157,7 +3338,9 @@ PAGES = {
     "contact.html": contact,
     "insights.html": insights,
     NEWS_ARTICLE_PAGE: news_article_page,
-    ARTICLE["slug"]: article_page,
+    # functools.partial, not a lambda in a loop: a lambda would close over the
+    # loop variable and every article would render the last one.
+    **{a["slug"]: functools.partial(article_page, a) for a in ARTICLES},
 }
 
 
@@ -3208,9 +3391,12 @@ PAGE_SUMMARY = {
     NEWS_ARTICLE_PAGE:
         "NATFISH at the Americas Food & Beverage Show 2026 in Miami, as part "
         "of Belize's first Country Pavilion, facilitated by BELTRAIDE.",
-    ARTICLE["slug"]:
+    ARTICLE_LOBSTER["slug"]:
         "What distinguishes Belizean Caribbean spiny lobster, how it is "
         "handled and what buyers should know.",
+    ARTICLE_CONCH["slug"]:
+        "Belize's queen conch season and size limits, how NatFish prepares "
+        "the meat, and why an open season is not a stock statement.",
 }
 
 # A page with no summary would be silently absent from llms.txt, which is the
@@ -3237,11 +3423,11 @@ def write_sitemap():
         extra = ""
         if name == "index.html":
             extra = "\n    <priority>1.0</priority>"
-        elif name == ARTICLE["slug"]:
-            # The one page with a real publication date. Everything else is
+        elif name in ARTICLE_DATES:
+            # The pages with a real publication date. Everything else is
             # evergreen, and a lastmod stamped from the build clock would just
             # tell a crawler the whole site changed every time it was rebuilt.
-            extra = f"\n    <lastmod>{ARTICLE['date_iso']}</lastmod>"
+            extra = f"\n    <lastmod>{ARTICLE_DATES[name]}</lastmod>"
         return f"  <url>\n    <loc>{page_url(name)}</loc>{extra}\n  </url>"
 
     urls = "\n".join(entry(name) for name in PAGES)

@@ -32,6 +32,7 @@ PAGES=(
   contact.html
   insights.html
   insights-belizean-caribbean-spiny-lobster.html
+  insights-belizean-queen-conch.html
   news-americas-food-beverage-show-2026.html
 )
 
